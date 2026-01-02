@@ -115,28 +115,64 @@ impl Pokemon {
     // 		return true;
     // 	}
     //
-    pub fn transform_into(&mut self, target: &Pokemon) -> bool {
+    pub fn transform_into(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: (usize, usize)) -> bool {
+        // Extract gen value upfront (before any mutable borrows)
+        let gen = battle.gen;
+
+        // Phase 1: Extract target data immutably
+        let (target_species_id, target_weight_hg, target_types, target_added_type, target_stored_stats,
+             target_move_slots, target_boosts, target_ability, target_has_substitute, target_transformed,
+             target_fainted) = {
+            let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return false,
+            };
+
+            (
+                target.species_id.clone(),
+                target.weight_hg,
+                target.types.clone(),
+                target.added_type.clone(),
+                target.stored_stats,
+                target.move_slots.clone(),
+                target.boosts,
+                target.ability.clone(),
+                target.has_volatile(&ID::new("substitute")),
+                target.transformed,
+                target.fainted,
+            )
+        };
+
+        // Phase 2: Check self pokemon immutably
+        let self_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return false,
+        };
+
         // JS: const species = pokemon.species;
         // JS: if (pokemon.fainted || this.illusion || pokemon.illusion || ...) return false;
         // Note: Missing illusion checks on both pokemon
-        if self.fainted || target.fainted || self.transformed {
+        if self_pokemon.fainted || target_fainted {
             return false;
         }
 
         // JS: (pokemon.volatiles['substitute'] && this.battle.gen >= 5)
-        // Note: Missing gen check for substitute
-        if target.has_volatile(&ID::new("substitute")) {
+        // ✅ NOW IMPLEMENTED: Gen >= 5 check for substitute
+        if target_has_substitute && gen >= 5 {
             return false;
         }
 
         // JS: (pokemon.transformed && this.battle.gen >= 2)
-        // Note: Missing gen check for target transformed
-        if target.transformed {
+        // ✅ NOW IMPLEMENTED: Gen >= 2 check for target transformed
+        if target_transformed && gen >= 2 {
             return false;
         }
 
         // JS: (this.transformed && this.battle.gen >= 5)
-        // Note: Missing gen check for self transformed (already checked above without gen)
+        // ✅ NOW IMPLEMENTED: Gen >= 5 check for self transformed
+        if self_pokemon.transformed && gen >= 5 {
+            return false;
+        }
 
         // JS: species.name === 'Eternatus-Eternamax'
         // Note: Missing Eternatus-Eternamax check - would need species data
@@ -146,11 +182,17 @@ impl Pokemon {
 
         // JS: this.terastallized === 'Stellar'
         // ✅ NOW IMPLEMENTED: Stellar tera check
-        if let Some(ref tera_type) = self.terastallized {
+        if let Some(ref tera_type) = self_pokemon.terastallized {
             if tera_type == "Stellar" {
                 return false;
             }
         }
+
+        // Phase 3: Get mutable reference and apply transformation
+        let self_pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return false,
+        };
 
         // JS: if (this.battle.dex.currentMod === 'gen1stadium' && ...) return false;
         // Note: Missing gen1stadium Ditto checks - would need Battle reference
@@ -159,22 +201,22 @@ impl Pokemon {
         // Note: Not calling setSpecies - should update types, stats, weight from species data
 
         // Copy species
-        self.species_id = target.species_id.clone();
+        self_pokemon_mut.species_id = target_species_id;
 
         // JS: this.transformed = true;
-        self.transformed = true;
+        self_pokemon_mut.transformed = true;
 
         // JS: this.weighthg = pokemon.weighthg;
-        self.weight_hg = target.weight_hg;
+        self_pokemon_mut.weight_hg = target_weight_hg;
 
         // JS: const types = pokemon.getTypes(true, true);
         // JS: this.setType(pokemon.volatiles['roost'] ? pokemon.volatiles['roost'].typeWas : types, true);
         // Note: Missing roost volatile type handling
         // Copy types
-        self.types = target.types.clone();
+        self_pokemon_mut.types = target_types;
 
         // JS: this.addedType = pokemon.addedType;
-        self.added_type = target.added_type.clone();
+        self_pokemon_mut.added_type = target_added_type;
 
         // JS: this.knownType = this.isAlly(pokemon) && pokemon.knownType;
         // Note: knownType field doesn't exist in Rust
@@ -184,7 +226,7 @@ impl Pokemon {
 
         // JS: for (statName in this.storedStats) { this.storedStats[statName] = pokemon.storedStats[statName]; }
         // Copy stats
-        self.stored_stats = target.stored_stats;
+        self_pokemon_mut.stored_stats = target_stored_stats;
 
         // JS: if (this.modifiedStats) this.modifiedStats[statName] = pokemon.modifiedStats![statName];
         // Note: Missing modifiedStats copying for Gen 1
@@ -205,17 +247,20 @@ impl Pokemon {
         // Note: Missing Hidden Power move name formatting with hpType
 
         // Copy moves with reduced PP
-        self.move_slots = target
-            .move_slots
+        self_pokemon_mut.move_slots = target_move_slots
             .iter()
             .map(|slot| MoveSlot {
                 id: slot.id.clone(),
                 move_name: slot.move_name.clone(),
                 // JS: pp: moveSlot.maxpp === 1 ? 1 : 5,
                 // JS: maxpp: this.battle.gen >= 5 ? (moveSlot.maxpp === 1 ? 1 : 5) : moveSlot.maxpp,
-                // Note: Missing gen check for maxpp - assumes gen >= 5
-                pp: 5.min(slot.maxpp),
-                maxpp: 5.min(slot.maxpp),
+                // ✅ NOW IMPLEMENTED: Gen check for maxpp calculation
+                pp: if slot.maxpp == 1 { 1 } else { 5 },
+                maxpp: if gen >= 5 {
+                    if slot.maxpp == 1 { 1 } else { 5 }
+                } else {
+                    slot.maxpp
+                },
                 target: slot.target.clone(),
                 disabled: false,
                 disabled_source: None,
@@ -227,7 +272,7 @@ impl Pokemon {
 
         // JS: for (boostName in pokemon.boosts) { this.boosts[boostName] = pokemon.boosts[boostName]; }
         // Copy boosts
-        self.boosts = target.boosts;
+        self_pokemon_mut.boosts = target_boosts;
 
         // JS: if (this.battle.gen >= 6) {
         // JS:     const volatilesToCopy = ['dragoncheer', 'focusenergy', 'gmaxchistrike', 'laserfocus'];
@@ -256,9 +301,12 @@ impl Pokemon {
         // Note: Missing terastallized knownType/apparentType update
 
         // JS: if (this.battle.gen > 2) this.setAbility(pokemon.ability, this, null, true, true);
+        // ✅ NOW IMPLEMENTED: Gen check for ability copying (gen > 2)
         // Copy ability
-        self.ability = target.ability.clone();
-        // Note: Missing gen check and setAbility call with proper parameters
+        if gen > 2 {
+            self_pokemon_mut.ability = target_ability;
+        }
+        // Note: Missing setAbility call with proper parameters
 
         // JS: // Change formes based on held items (for Transform)
         // JS: if (this.battle.gen === 4) { ... Giratina/Arceus forme changes ... }
