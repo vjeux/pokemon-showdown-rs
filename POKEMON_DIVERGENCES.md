@@ -563,9 +563,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing Ogerpon/Terapagos canTerastallize blocking
 
 #### add_volatile.rs
-- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 12, 15 & 20)
+- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 12, 15, 20 & 21)
 - Issue: Missing linkedStatus bidirectional linking, source HP check, and EffectState field assignments
-- Action: Implemented full linkedStatus bidirectional linking using EffectState.data HashMap, source HP check, and EffectState source/sourceSlot assignments
+- Action: Implemented full linkedStatus bidirectional linking using EffectState.data HashMap, source HP check, and EffectState target/source/sourceSlot assignments
 - Notes:
   - Fairly complete implementation with duration callback support
   - ✅ NOW IMPLEMENTED (Session 24 Part 12): linkedStatus parameter added to signature
@@ -577,13 +577,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED: runStatusImmunity check for volatile immunity
   - ✅ NOW IMPLEMENTED (Session 24 Part 15): source HP check for linkedStatus
   - ✅ NOW IMPLEMENTED (Session 24 Part 20): EffectState.source and source_slot assignments
+  - ✅ NOW IMPLEMENTED (Session 24 Part 21): EffectState.target assignment
   - ❌ Still missing: HP check with affectsFainted flag (needs condition data access)
   - ❌ Still missing: battle.event source/sourceEffect defaulting
   - ❌ Still missing: runEvent('TryAddVolatile')
   - ❌ Still missing: sourceEffect parameter and assignment to EffectState
   - Has onRestart callback support
   - Has singleEvent('Start') with rollback on failure
-  - Now ~82% complete (was ~78%)
+  - Now ~85% complete (was ~82%)
 
 #### calculate_stat.rs
 - Status: ✅ Fixed (Documented)
@@ -2085,6 +2086,34 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 2 feature implementations (source + source_slot assignments)
   - 1 file modified (pokemon/add_volatile.rs)
   - 6 insertions, 1 deletion
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 21 - 2026-01-02 (add_volatile EffectState target - COMPLETED)
+- **Goal**: Add missing EffectState.target assignment in add_volatile
+- **Completed**:
+  - ✅ Implemented EffectState.target assignment
+  - ✅ JavaScript logic: `this.volatiles[status.id] = this.battle.initEffectState({ id: status.id, name: status.name, target: this });`
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - add_volatile.rs - Now ~85% complete (was ~82%)
+    - ✅ NOW IMPLEMENTED: EffectState.target assignment
+    - JavaScript equivalent:
+      - `initEffectState({ id: status.id, name: status.name, target: this })`
+    - Rust implementation:
+      - `state.target = Some(target_pos);`
+- **Technical Details**:
+  - EffectState struct already has target field
+  - Field exists in src/event_system.rs but was not being set
+  - Simple one-line fix: Set target to the Pokemon receiving the volatile
+  - Completes the basic EffectState initialization (id, target, source, source_slot, duration)
+- **Session Statistics**:
+  - 1 method improved (add_volatile.rs)
+  - 1 feature implementation (target assignment)
+  - 1 file modified (pokemon/add_volatile.rs)
+  - 2 insertions
   - 1 commit pushed to git
   - 100% compilation success rate
 
