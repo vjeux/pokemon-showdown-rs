@@ -35,7 +35,7 @@ pub fn on_base_power(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.is_grounded(battle)
+        source_pokemon.is_grounded(battle, false)
     };
 
     if is_grounded {

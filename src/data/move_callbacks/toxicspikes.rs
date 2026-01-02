@@ -95,7 +95,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_ref.is_grounded(battle)
+            pokemon_ref.is_grounded(battle, false)
         };
 
         if !is_grounded {

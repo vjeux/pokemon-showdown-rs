@@ -18,7 +18,7 @@ impl Pokemon {
     // 		return item !== 'airballoon';
     // 	}
     //
-    pub fn is_grounded(&self, battle: &Battle) -> bool {
+    pub fn is_grounded(&self, battle: &Battle, negate_immunity: bool) -> bool {
         // JS: if ('gravity' in this.battle.field.pseudoWeather) return true;
         // ✅ NOW IMPLEMENTED: Gravity check
         let gravity_id = ID::new("gravity");
@@ -50,16 +50,25 @@ impl Pokemon {
         }
 
         // JS: if (!negateImmunity && this.hasType('Flying') && !(this.hasType('???') && 'roost' in this.volatiles)) return false;
-        // Note: Missing negateImmunity parameter
-        // Note: Missing special ??? + Roost case for Fire/Flying with Burn Up
-        if self.has_type(battle, "Flying") {
-            return false;
+        // ✅ NOW IMPLEMENTED: negateImmunity parameter
+        // ✅ NOW IMPLEMENTED: Special ??? + Roost case for Fire/Flying with Burn Up
+        if !negate_immunity && self.has_type(battle, "Flying") {
+            // Special case: If Pokemon has ??? type AND Roost volatile, it IS grounded
+            // This happens when Fire/Flying uses Burn Up (loses Fire, becomes ???) then Roost
+            let has_unknown_type = self.has_type(battle, "???");
+            let has_roost = self.has_volatile(&ID::new("roost"));
+
+            // If it has both ??? and Roost, don't return false (continue to other checks)
+            // Otherwise, Flying type means not grounded
+            if !(has_unknown_type && has_roost) {
+                return false;
+            }
         }
 
         // JS: if (this.hasAbility('levitate') && !this.battle.suppressingAbility(this)) return null;
-        // Note: Missing suppressingAbility check - would need Battle reference
+        // Note: Missing suppressingAbility check - would need Battle.suppressingAbility()
         // Note: Should return Option<bool> to represent null, but signature is bool
-        if self.ability.as_str() == "levitate" {
+        if self.has_ability(battle, &["levitate"]) {
             return false;
         }
 
