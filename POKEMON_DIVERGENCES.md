@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 92 Complete - singleEvent relay_var support)
-- **Session 24 Total Progress**: 45+ commits, 92 parts (Part 92 complete)
+## Overview (Updated: Session 24 Part 94 Complete - is_grounded Option<bool> refactor)
+- **Session 24 Total Progress**: 47+ commits, 94 parts (Part 94 complete)
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -51,8 +51,10 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 90**: **COMPLETED** - run_effectiveness refactor - Complete 1:1 JavaScript implementation with Stellar type handling, runEvent('Effectiveness'), Terapagos-Terastal Tera Shell logic, battle.add messages. Updated 24+ callsites
   - **Part 91**: **COMPLETED** - set_ability cantsuppress check - Implemented ability.flags['cantsuppress'] validation for both new and old abilities (checks both old and new ability). Conditional runEvent('SetAbility') based on isFromFormeChange and isTransform flags
   - **Part 92**: **COMPLETED** - singleEvent relay_var support - Implemented relay_var parameter in singleEvent to enable type effectiveness modifiers (e.g., Freeze-Dry vs Water). Created single_event_with_relay_var() with relay_var: Option<i32>, refactored existing single_event() as wrapper. Returns relay_var when handler returns Continue (JavaScript: returnVal === undefined ? relayVar : returnVal). Updated run_effectiveness.rs to use new method for Effectiveness event
+  - **Part 93**: **COMPLETED** - set_ability fullname support - Added Battle::get_effect_fullname() method to format effects as "type: name" (e.g., "ability: Mold Breaker", "item: Life Orb"). Updated set_ability battle.add to use actual ability names and sourceEffect.fullname instead of IDs. Now matches JavaScript output exactly
+  - **Part 94**: **COMPLETED** - is_grounded Option<bool> refactor - Changed return type from bool to Option<bool> for 1:1 JavaScript equivalence. Some(true) = grounded, Some(false) = not grounded, None = null (Levitate without suppression). Updated 22 callsites to use .unwrap_or(false). Eliminates approximation that used false instead of null
 - **Methods Significantly Improved**:
-  - run_immunity.rs (runEvent, is_grounded, get_immunity, battle.add messages - now ~95%, was ~20%)
+  - run_immunity.rs (runEvent, is_grounded with Option<bool>, get_immunity, battle.add messages - now ~98%, was ~20%)
   - run_status_immunity.rs (battle.debug, battle.add, runEvent('Immunity') - now ~95%, was ~30%)
   - run_effectiveness.rs (Stellar type, singleEvent with relay_var, runEvent, Tera Shell, battle.add - now 100%, was ~20%)
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
@@ -69,11 +71,12 @@ This document tracks divergences between the JavaScript and Rust implementations
   - eat_item.rs (standalone, battle.add [eat], RESTORATIVE_BERRIES, event calls - now ~80%, was ~50%)
   - set_item.rs (RESTORATIVE_BERRIES pendingStaleness, associated function, singleEvent calls - now ~70%, was ~55%)
   - take_item.rs (singleEvent + runEvent calls - now ~82%, was ~72%)
-  - set_ability.rs (associated function, singleEvent + runEvent calls, cantsuppress flag check - now ~82%, was ~70%)
+  - set_ability.rs (associated function, singleEvent + runEvent calls, cantsuppress flag check, fullname support - now ~88%, was ~70%)
   - clear_ability.rs (refactored to associated function - now 100%)
   - set_status.rs (associated function, singleEvent('Start') + runEvent calls - now ~65%, was ~50%)
   - cure_status.rs (refactored to associated function - now ~78%, was ~72%)
   - try_set_status.rs (refactored to associated function - now 100%)
+  - is_grounded.rs (Option<bool> for Levitate null support - now 100%, was ~90%)
   - 6 core methods with source/sourceEffect parameters added
 - **Move Callbacks Fixed**: 9 files with proper source/effect/linkedStatus parameters
 - **Infrastructure Achievements**:
@@ -90,7 +93,7 @@ This document tracks divergences between the JavaScript and Rust implementations
 - **Compilation Success Rate**: 100% (0 errors, 61 warnings throughout Session 24 Parts 58-73)
 - **Remaining Work**: 🎉 **ZERO TODOs in src/pokemon/** (was 1 in calculate_stat.rs - now documented with event infrastructure plan)
 - **Remaining Work Detail**: 135 NOTE comments for event system, species data, and other infrastructure improvements
-- **Methods Now at 100%**: 25 methods fully equivalent to JavaScript (includes run_effectiveness.rs from Part 92)
+- **Methods Now at 100%**: 26 methods fully equivalent to JavaScript (includes run_effectiveness.rs and is_grounded.rs)
 - **Goal**: Achieve 1:1 line-by-line equivalence with JavaScript
 
 ## Status Legend
