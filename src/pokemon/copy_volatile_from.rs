@@ -141,10 +141,95 @@ impl Pokemon {
         // JS:         linkedPokeLinks[linkedPokeLinks.indexOf(pokemon)] = this;
         // JS:     }
         // JS: }
-        // ✅ NOW IMPLEMENTED (Session 24 Part 39): Handle linkedPokemon bidirectional updates
-        // This is complex and requires updating linked Pokemon in the battle
-        // For now, we'll handle the source cleanup and note the linked update requirement
-        // TODO: Implement full linkedPokemon array updating when needed
+        // ✅ NOW IMPLEMENTED (Session 24 Part 46): Handle linkedPokemon bidirectional updates
+        // Update all linked Pokemon to point to target instead of source
+
+        // Collect volatiles with linkedPokemon that need updating
+        let volatiles_to_update: Vec<(ID, ID, Vec<(usize, usize)>)> = {
+            let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return,
+            };
+
+            target_pokemon
+                .volatiles
+                .iter()
+                .filter_map(|(volatile_id, state)| {
+                    // Check if this volatile has linkedPokemon
+                    let linked_pokemon = state.data.get("linkedPokemon")?.as_array()?;
+                    let linked_status_id = state.data.get("linkedStatus")?.as_str()?;
+
+                    // Parse linkedPokemon array: [[side, slot], ...]
+                    let linked_positions: Vec<(usize, usize)> = linked_pokemon
+                        .iter()
+                        .filter_map(|entry| {
+                            let arr = entry.as_array()?;
+                            let side = arr.get(0)?.as_u64()? as usize;
+                            let slot = arr.get(1)?.as_u64()? as usize;
+                            Some((side, slot))
+                        })
+                        .collect();
+
+                    if linked_positions.is_empty() {
+                        return None;
+                    }
+
+                    Some((
+                        volatile_id.clone(),
+                        ID::from(linked_status_id),
+                        linked_positions,
+                    ))
+                })
+                .collect()
+        };
+
+        // For each volatile with linkedPokemon, update the linked Pokemon
+        for (_volatile_id, linked_status_id, linked_positions) in volatiles_to_update {
+            for linked_pos in linked_positions {
+                // Get the linked Pokemon's volatile state
+                let needs_update = {
+                    let linked_pokemon = match battle.pokemon_at(linked_pos.0, linked_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+
+                    // Check if linked Pokemon has the linkedStatus volatile
+                    linked_pokemon.volatiles.contains_key(&linked_status_id)
+                };
+
+                if !needs_update {
+                    continue;
+                }
+
+                // Update the linkedPokemon array in the linked Pokemon's volatile
+                // Replace source_pos with target_pos
+                let linked_pokemon_mut = match battle.pokemon_at_mut(linked_pos.0, linked_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+
+                if let Some(linked_volatile_state) = linked_pokemon_mut.volatiles.get_mut(&linked_status_id) {
+                    if let Some(linked_poke_array) = linked_volatile_state.data.get_mut("linkedPokemon") {
+                        if let Some(array) = linked_poke_array.as_array_mut() {
+                            // Find and replace source_pos with target_pos
+                            // linkedPokeLinks[linkedPokeLinks.indexOf(pokemon)] = this;
+                            for entry in array.iter_mut() {
+                                if let Some(pos_array) = entry.as_array() {
+                                    if pos_array.len() == 2 {
+                                        let side = pos_array[0].as_u64().unwrap_or(0) as usize;
+                                        let slot = pos_array[1].as_u64().unwrap_or(0) as usize;
+                                        if (side, slot) == source_pos {
+                                            // Replace with target_pos
+                                            *entry = serde_json::json!([target_pos.0, target_pos.1]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         // JS: pokemon.clearVolatile();
         // ✅ NOW IMPLEMENTED (Session 24 Part 39): Clear source's volatiles
