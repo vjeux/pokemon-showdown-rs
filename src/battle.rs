@@ -551,6 +551,8 @@ pub struct PlayerOptions {
 }
 
 /// Request state for the whole battle
+/// TODO: Not in JavaScript - Rust-specific enum for tracking battle request state
+/// JavaScript uses string literals for request types ('move' | 'switch' | 'teampreview' | null)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum BattleRequestState {
     #[default]
@@ -785,6 +787,8 @@ pub struct Battle {
 }
 
 /// Priority item for sorting actions/handlers
+/// TODO: Not in JavaScript - Rust-specific helper for sorting priority queues
+/// JavaScript uses inline sorting with anonymous comparator functions
 #[derive(Debug, Clone, Default)]
 pub struct PriorityItem {
     pub order: Option<i32>,
