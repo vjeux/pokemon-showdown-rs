@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(source)
 ///
@@ -34,9 +35,7 @@ pub fn on_hit(
 
     // Iterate through all pokemon on the side and cure their status
     for poke_idx in 0..pokemon_count {
-        if let Some(ally) = battle.pokemon_at_mut(source_side, poke_idx) {
-            ally.cure_status(false);
-        }
+        Pokemon::cure_status(battle, (source_side, poke_idx), false);
     }
 
     EventResult::Continue

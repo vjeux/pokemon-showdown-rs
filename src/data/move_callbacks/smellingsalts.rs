@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// basePowerCallback(pokemon, target, move) {
 ///     if (target.status === 'par') {
@@ -103,7 +104,7 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
 
-        if let Some((status, removed_nightmare, _silent)) = target_mut.cure_status(false) {
+        if let Some((status, removed_nightmare, _silent)) = Pokemon::cure_status(battle, target, false) {
             let full_name = format!("{}: {}", target_ident, target_name);
             battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
             if removed_nightmare {

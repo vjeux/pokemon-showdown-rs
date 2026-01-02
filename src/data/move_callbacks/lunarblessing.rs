@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(pokemon) {
 ///     const success = !!this.heal(this.modify(pokemon.maxhp, 0.25));
@@ -44,7 +45,7 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
 
-    let cure_status_result = pokemon_mut.cure_status(false);
+    let cure_status_result = Pokemon::cure_status(battle, pokemon_pos, false);
     let cured = cure_status_result.is_some();
 
     if let Some((status, removed_nightmare, _silent)) = cure_status_result {

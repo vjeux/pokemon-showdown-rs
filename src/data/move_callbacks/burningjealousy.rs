@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target, source, move)
 ///
@@ -47,7 +48,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.try_set_status(ID::from("brn"), Some("move: Burning Jealousy"));
+        Pokemon::try_set_status(battle, target, ID::from("brn"), Some("move: Burning Jealousy"));
     }
 
     EventResult::Continue

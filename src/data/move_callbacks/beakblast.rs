@@ -7,7 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
-use crate::pokemon::Pokemon;
+use crate::Pokemon;
 
 /// priorityChargeCallback(pokemon) {
 ///     pokemon.addVolatile('beakblast');
@@ -88,11 +88,7 @@ pub mod condition {
         //     source.trySetStatus('brn', target);
         // }
         if battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
-            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            source_pokemon.try_set_status(ID::from("brn"), None);
+            Pokemon::try_set_status(battle, source, ID::from("brn"), None);
         }
 
         EventResult::Continue

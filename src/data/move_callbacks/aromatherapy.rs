@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target, source, move) {
 ///     this.add('-activate', source, 'move: Aromatherapy');
@@ -156,7 +157,7 @@ pub fn on_hit(
             None => continue,
         };
 
-        if let Some((status, removed_nightmare, _silent)) = ally_mut.cure_status(false) {
+        if let Some((status, removed_nightmare, _silent)) = Pokemon::cure_status(battle, ally_pos, false) {
             let full_name = format!("{}: {}", ally_ident, ally_name);
             battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
             if removed_nightmare {

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTryHit(target) {
 ///     const activeTeam = target.side.activeTeam();
@@ -56,7 +57,7 @@ pub fn on_try_hit(
                 None => continue,
             };
 
-            if let Some((status, removed_nightmare, _silent)) = pokemon_mut.cure_status(false) {
+            if let Some((status, removed_nightmare, _silent)) = Pokemon::cure_status(battle, (target_side_index, slot_index), false) {
                 let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
                 battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
                 if removed_nightmare {
@@ -83,7 +84,7 @@ pub fn on_try_hit(
                 None => continue,
             };
 
-            if let Some((status, removed_nightmare, _silent)) = pokemon_mut.cure_status(false) {
+            if let Some((status, removed_nightmare, _silent)) = Pokemon::cure_status(battle, (foe_side_index, slot_index), false) {
                 let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
                 battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
                 if removed_nightmare {

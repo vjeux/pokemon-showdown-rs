@@ -6,8 +6,8 @@
 
 use crate::battle::Battle;
 use crate::dex_data::ID;
-    use crate::pokemon::Pokemon;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
@@ -194,11 +194,7 @@ pub mod condition {
         //     source.trySetStatus('psn', target);
         // }
         if battle.check_move_makes_contact(&move_id, source_pos, target_pos, false) {
-            let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            source_pokemon.try_set_status(ID::from("psn"), None);
+            Pokemon::try_set_status(battle, source_pos, ID::from("psn"), None);
         }
 
         // return this.NOT_FAIL;
@@ -241,7 +237,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.try_set_status(ID::from("psn"), None);
+            Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), None);
         }
 
         EventResult::Continue

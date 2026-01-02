@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onDamagingHit(damage, target, source, move) {
 ///     if (this.checkMoveMakesContact(move, source, target) && !source.status && source.runStatusImmunity('powder')) {
@@ -61,21 +62,15 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     let r = battle.random(100) as i32;
 
     // Apply status based on random roll
-    // Get mutable reference to source Pokemon
-    let source_mut = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
     if r < 11 {
         // JavaScript: source.setStatus('slp', target);
-        source_mut.try_set_status(crate::dex_data::ID::from("slp"), None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("slp"), None);
     } else if r < 21 {
         // JavaScript: source.setStatus('par', target);
-        source_mut.try_set_status(crate::dex_data::ID::from("par"), None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("par"), None);
     } else if r < 30 {
         // JavaScript: source.setStatus('psn', target);
-        source_mut.try_set_status(crate::dex_data::ID::from("psn"), None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("psn"), None);
     }
 
     EventResult::Continue

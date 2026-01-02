@@ -9,7 +9,12 @@ impl Pokemon {
     // 		return this.setStatus(this.status || status, source, sourceEffect);
     // 	}
     //
-    pub fn try_set_status(&mut self, status_id: ID, _source_effect: Option<&str>) -> bool {
+    pub fn try_set_status(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        status_id: ID,
+        _source_effect: Option<&str>
+    ) -> bool {
         // JS: return this.setStatus(this.status || status, source, sourceEffect);
         //
         // If already has a status, setStatus will be called with the current status
@@ -19,11 +24,19 @@ impl Pokemon {
         // the current status if it exists, or the new status if not. Then setStatus
         // checks if it's the same status and fails. This is functionally equivalent to
         // checking if we already have a status and returning false.
-        if !self.status.is_empty() {
+        let has_status = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return false,
+            };
+            !pokemon.status.is_empty()
+        };
+
+        if has_status {
             return false;
         }
 
         // Call setStatus which will handle all immunity checks and events
-        self.set_status(status_id, None, None, false)
+        Pokemon::set_status(battle, pokemon_pos, status_id, None, None, false)
     }
 }

@@ -38,12 +38,12 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.cureStatus();
     // pokemon.removeVolatile('confusion');
 
+    Pokemon::cure_status(battle, pokemon_pos, false);
+
     let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
         None => return EventResult::Continue,
     };
-
-    pokemon_mut.cure_status(false);
     pokemon_mut.remove_volatile(&"confusion".into());
 
     EventResult::Continue

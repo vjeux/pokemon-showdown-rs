@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onResidual(pokemon) {
 ///     if (pokemon.hp && pokemon.status && this.randomChance(33, 100)) {
@@ -34,12 +35,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
         );
 
         // pokemon.cureStatus()
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        if let Some((status, removed_nightmare, _silent)) = pokemon_mut.cure_status(false) {
+        if let Some((status, removed_nightmare, _silent)) = Pokemon::cure_status(battle, pokemon_pos, false) {
             let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
             battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
             if removed_nightmare {

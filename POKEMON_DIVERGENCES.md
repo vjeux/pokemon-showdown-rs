@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 76 Complete - Continuing NOTE Fixes)
-- **Session 24 Total Progress**: 40+ commits, 76 parts completed
+## Overview (Updated: Session 24 Part 77 Complete - Continuing NOTE Fixes)
+- **Session 24 Total Progress**: 40+ commits, 77 parts completed
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -35,6 +35,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 74**: set_item singleEvent calls - Implemented singleEvent('End') for old item and singleEvent('Start') for new item
   - **Part 75**: take_item singleEvent call - Implemented singleEvent('End') for removed item
   - **Part 76**: set_ability singleEvent calls - Refactored to associated function, implemented singleEvent('End') for old ability and singleEvent('Start') for new ability with gen > 3 check
+  - **Part 77**: **MAJOR REFACTOR** - set_status/cure_status/try_set_status to associated functions + singleEvent('Start') in set_status with rollback logic. Updated 60+ callsites across ability/item/move callbacks
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
@@ -52,6 +53,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - take_item.rs (singleEvent('End') for removed item - now ~78%, was ~72%)
   - set_ability.rs (associated function, singleEvent('End'/'Start') with gen checks - now ~75%, was ~70%)
   - clear_ability.rs (refactored to associated function - now 100%)
+  - set_status.rs (associated function, singleEvent('Start') with rollback - now ~60%, was ~50%)
+  - cure_status.rs (refactored to associated function - now ~78%, was ~72%)
+  - try_set_status.rs (refactored to associated function - now 100%)
   - 6 core methods with source/sourceEffect parameters added
 - **Move Callbacks Fixed**: 9 files with proper source/effect/linkedStatus parameters
 - **Infrastructure Achievements**:
@@ -64,7 +68,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - RESTORATIVE_BERRIES staleness tracking (eat_item + set_item)
   - **base_hp_type/base_hp_power fields** for Transform untransform support
   - **get_moves protocol format** - returns full JSON objects (breaking change)
-  - 250+ callsites updated across codebase
+  - 250+ callsites updated across codebase (includes 60+ for status method refactor in Part 77)
 - **Compilation Success Rate**: 100% (0 errors, 61 warnings throughout Session 24 Parts 58-73)
 - **Remaining Work**: 🎉 **ZERO TODOs in src/pokemon/** (was 1 in calculate_stat.rs - now documented with event infrastructure plan)
 - **Remaining Work Detail**: 135 NOTE comments for event system, species data, and other infrastructure improvements

@@ -451,17 +451,13 @@ pub fn spread_move_hit(
                 // Apply status from secondary effect
                 // JS: moveHit applies moveData.status if present
                 if let Some(ref status_name) = secondary_effect.status {
-                    eprintln!("[SPREAD_MOVE_HIT T{}] Applying status '{}' from secondary to target {:?}",
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Applying status '{}' to {:?}",
                         battle.turn, status_name, target_pos);
 
-                    // Get mutable reference to target pokemon
-                    if let Some(side) = battle.sides.get_mut(target_pos.0) {
-                        if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
-                            let status_id = crate::dex_data::ID::new(status_name);
-                            let applied = pokemon.set_status(status_id, None, None, false);
-                            eprintln!("[SPREAD_MOVE_HIT T{}] Status '{}' applied: {}", battle.turn, status_name, applied);
-                        }
-                    }
+                    // Apply status using associated function
+                    let status_id = crate::dex_data::ID::new(status_name);
+                    let applied = Pokemon::set_status(battle, target_pos, status_id, None, None, false);
+                    eprintln!("[SPREAD_MOVE_HIT T{}] Status '{}' applied: {}", battle.turn, status_name, applied);
                 }
 
                 // Apply volatile status from secondary effect

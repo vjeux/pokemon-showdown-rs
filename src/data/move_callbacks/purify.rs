@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target, source) {
 ///     if (!target.cureStatus()) {
@@ -40,7 +41,7 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
 
-    let cure_result = target_mut.cure_status(false);
+    let cure_result = Pokemon::cure_status(battle, target, false);
 
     if let Some((status, removed_nightmare, _silent)) = cure_result {
         let full_name = format!("{}: {}", target_ident, target_name);

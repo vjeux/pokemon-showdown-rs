@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// basePowerCallback(pokemon, target, move) {
 ///     if (target.status === 'slp' || target.hasAbility('comatose')) {
@@ -74,11 +75,7 @@ pub fn on_hit(
 
     // if (target.status === 'slp') target.cureStatus();
     if is_asleep {
-        let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target.cure_status(false);
+        Pokemon::cure_status(battle, target_pos, false);
     }
 
     EventResult::Continue

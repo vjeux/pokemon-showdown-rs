@@ -114,12 +114,7 @@ pub fn on_hit(
     };
 
     if has_sleep {
-        let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        target_mut.cure_status(false);
+        Pokemon::cure_status(battle, target, false);
     }
 
     EventResult::Continue

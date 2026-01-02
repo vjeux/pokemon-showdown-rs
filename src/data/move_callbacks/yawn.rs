@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTryHit(target) {
 ///     if (target.status || !target.runStatusImmunity('slp')) {
@@ -118,12 +119,7 @@ pub mod condition {
         );
 
         // target.trySetStatus('slp', this.effectState.source);
-        let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        target_mut.try_set_status(ID::from("slp"), None);
+        Pokemon::try_set_status(battle, target, ID::from("slp"), None);
 
         EventResult::Continue
     }

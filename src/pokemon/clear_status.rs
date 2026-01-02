@@ -77,13 +77,7 @@ impl Pokemon {
         }
 
         // JS: this.setStatus('');
-        {
-            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return false,
-            };
-            pokemon.set_status(ID::empty(), None, None, false);
-        }
+        Pokemon::set_status(battle, pokemon_pos, ID::empty(), None, None, false);
 
         // JS: return true;
         true

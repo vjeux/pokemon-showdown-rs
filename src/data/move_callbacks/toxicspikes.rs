@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -166,14 +167,14 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                pokemon_mut.try_set_status(ID::from("tox"), Some("Toxic Spikes"));
+                Pokemon::try_set_status(battle, pokemon_pos, ID::from("tox"), Some("Toxic Spikes"));
             } else {
                 // pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
                 let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                pokemon_mut.try_set_status(ID::from("psn"), Some("Toxic Spikes"));
+                Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), Some("Toxic Spikes"));
             }
         }
 

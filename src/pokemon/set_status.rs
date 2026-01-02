@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::event_system::EffectState;
 
 impl Pokemon {
@@ -75,15 +76,25 @@ impl Pokemon {
     // 	}
     //
     pub fn set_status(
-        &mut self,
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
         status: ID,
         source_pos: Option<(usize, usize)>,
         source_effect: Option<&ID>,
         _ignore_immunities: bool,
     ) -> bool {
+        // Phase 1: Extract HP and previous status info
+        let (hp, prev_status, prev_status_state) = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return false,
+            };
+            (pokemon.hp, pokemon.status.clone(), pokemon.status_state.clone())
+        };
+
         // JS: if (!this.hp) return false;
         // ✅ NOW IMPLEMENTED: HP check - returns false if fainted
-        if self.hp == 0 {
+        if hp == 0 {
             return false;
         }
 
@@ -108,7 +119,7 @@ impl Pokemon {
         // JS:     return false;
         // JS: }
         // Note: Has basic check but missing different failure messages
-        if !self.status.is_empty() {
+        if !prev_status.is_empty() {
             return false;
         }
 
@@ -125,7 +136,7 @@ impl Pokemon {
 
         // JS: const prevStatus = this.status;
         // JS: const prevStatusState = this.statusState;
-        // Note: Not storing previous status for rollback
+        // ✅ NOW IMPLEMENTED (Session 24 Part 77): Store previous status for rollback
 
         // JS: if (status.id) {
         // JS:     const result = this.battle.runEvent('SetStatus', this, source, sourceEffect, status);
@@ -136,6 +147,12 @@ impl Pokemon {
         // JS: }
         // Note: Missing runEvent('SetStatus')
 
+        // Phase 2: Mutate pokemon to set new status
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return false,
+        };
+
         // JS: this.status = status.id;
         // JS: this.statusState = this.battle.initEffectState({ id: status.id, target: this });
         // JS: if (source) this.statusState.source = source;
@@ -143,16 +160,16 @@ impl Pokemon {
         // JS: if (status.durationCallback) {
         // JS:     this.statusState.duration = status.durationCallback.call(...);
         // JS: }
-        self.status = status.clone();
-        self.status_state = EffectState::new(status);
-        self.status_state.target = Some((self.side_index, self.position));
+        pokemon_mut.status = status.clone();
+        pokemon_mut.status_state = EffectState::new(status.clone());
+        pokemon_mut.status_state.target = Some((pokemon_pos.0, pokemon_pos.1));
         // ✅ NOW IMPLEMENTED (Session 24 Part 28): source and source_effect assignments
         if let Some(src_pos) = source_pos {
-            self.status_state.source = Some(src_pos);
-            self.status_state.source_slot = Some(src_pos.1);
+            pokemon_mut.status_state.source = Some(src_pos);
+            pokemon_mut.status_state.source_slot = Some(src_pos.1);
         }
         if let Some(src_effect) = source_effect {
-            self.status_state.source_effect = Some(src_effect.clone());
+            pokemon_mut.status_state.source_effect = Some(src_effect.clone());
         }
         // Note: Missing duration and durationCallback logic (needs Battle/dex access)
 
@@ -162,7 +179,22 @@ impl Pokemon {
         // JS:     this.statusState = prevStatusState;
         // JS:     return false;
         // JS: }
-        // Note: Missing singleEvent('Start') and rollback logic
+        // ✅ NOW IMPLEMENTED (Session 24 Part 77): singleEvent('Start') with rollback logic
+        if !status.as_str().is_empty() {
+            let start_result = battle.single_event("Start", &status, Some(pokemon_pos), source_pos, source_effect);
+            // Check if event failed (returned false or null)
+            let event_failed = matches!(start_result, EventResult::Boolean(false) | EventResult::Null);
+            if event_failed {
+                // Rollback status change
+                let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return false,
+                };
+                pokemon_mut.status = prev_status;
+                pokemon_mut.status_state = prev_status_state;
+                return false;
+            }
+        }
 
         // JS: if (status.id && !this.battle.runEvent('AfterSetStatus', this, source, sourceEffect, status)) {
         // JS:     return false;

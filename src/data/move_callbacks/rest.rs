@@ -5,7 +5,9 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// ```ignore
 /// onTry(source) {
@@ -171,14 +173,8 @@ pub fn on_hit(
     // JavaScript: target.setStatus('slp', source, move)
     // source = target (self-targeting move)
     // move = "rest"
-    let result = {
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        // ✅ NOW PASSING: source_pos = Some(target), source_effect = Some("rest"), ignore_immunities = false
-        target_pokemon.set_status(ID::from("slp"), Some(target), Some(&ID::new("rest")), false)
-    };
+    // ✅ NOW PASSING: source_pos = Some(target), source_effect = Some("rest"), ignore_immunities = false
+    let result = Pokemon::set_status(battle, target, ID::from("slp"), Some(target), Some(&ID::new("rest")), false);
 
     // if (!result) return result;
     if !result {

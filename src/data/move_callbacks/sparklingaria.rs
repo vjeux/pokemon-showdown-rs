@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterMove(source, target, move) {
 ///     if (source.fainted || !move.hitTargets || move.hasSheerForce) {
@@ -123,7 +124,7 @@ pub fn on_after_move(
                 None => continue,
             };
 
-            if let Some((status, removed_nightmare, _silent)) = pokemon_mut.cure_status(false) {
+            if let Some((status, removed_nightmare, _silent)) = Pokemon::cure_status(battle, pokemon_pos, false) {
                 let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
                 battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
                 if removed_nightmare {

@@ -6,17 +6,14 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onResidual(pokemon) {
 ///     pokemon.trySetStatus('brn', pokemon);
 /// }
 pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.trySetStatus('brn', pokemon);
-    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-    pokemon_mut.try_set_status(crate::dex_data::ID::new("brn"), None);
+    Pokemon::try_set_status(battle, pokemon_pos, crate::dex_data::ID::new("brn"), None);
 
     EventResult::Continue
 }

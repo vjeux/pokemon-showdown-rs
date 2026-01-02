@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target, source)
 ///
@@ -48,11 +49,11 @@ pub fn on_hit(
 
     if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
         if result == 0 {
-            target_pokemon.try_set_status(ID::from("psn"), None);
+            Pokemon::try_set_status(battle, target, ID::from("psn"), None);
         } else if result == 1 {
-            target_pokemon.try_set_status(ID::from("par"), None);
+            Pokemon::try_set_status(battle, target, ID::from("par"), None);
         } else {
-            target_pokemon.try_set_status(ID::from("slp"), None);
+            Pokemon::try_set_status(battle, target, ID::from("slp"), None);
         }
     }
 

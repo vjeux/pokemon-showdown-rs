@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(pokemon) {
 ///     if (['', 'slp', 'frz'].includes(pokemon.status)) return false;
@@ -39,7 +40,7 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
 
-    if let Some((status, removed_nightmare, _silent)) = pokemon_mut.cure_status(false) {
+    if let Some((status, removed_nightmare, _silent)) = Pokemon::cure_status(battle, pokemon_pos, false) {
         let full_name = format!("{}: {}", pokemon_ident, pokemon_name);
         battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
         if removed_nightmare {
