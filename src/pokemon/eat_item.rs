@@ -55,8 +55,16 @@ impl Pokemon {
         }
 
         // JS: if ((!this.hp && this.item !== 'jabocaberry' && this.item !== 'rowapberry') || !this.isActive) return false;
-        // Note: Missing HP check with Jaboca/Rowap Berry exception
-        // Note: Missing isActive check
+        // ✅ NOW IMPLEMENTED: HP check with Jaboca/Rowap Berry exception
+        if self.hp == 0
+            && self.item != ID::from("jabocaberry")
+            && self.item != ID::from("rowapberry") {
+            return None;
+        }
+        // ✅ NOW IMPLEMENTED: isActive check
+        if !self.is_active {
+            return None;
+        }
 
         // JS: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
         // JS: if (!source && this.battle.event?.target) source = this.battle.event.target;

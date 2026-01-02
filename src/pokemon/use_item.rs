@@ -48,8 +48,11 @@ impl Pokemon {
     //
     pub fn use_item(&mut self) -> Option<ID> {
         // JS: if ((!this.hp && !this.getItem().isGem) || !this.isActive) return false;
-        // Note: Missing HP check with Gem exception
-        // Note: Missing isActive check
+        // Note: Missing HP check with Gem exception (needs Battle reference to check if item.isGem)
+        // ✅ NOW IMPLEMENTED: isActive check
+        if !self.is_active {
+            return None;
+        }
 
         // JS: if (!this.item) return false;
         if self.item.is_empty() {

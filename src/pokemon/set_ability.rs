@@ -39,7 +39,10 @@ impl Pokemon {
     //
     pub fn set_ability(&mut self, ability_id: ID) -> ID {
         // JS: if (!this.hp) return false;
-        // Note: Missing HP check - should return false (or old ability) if fainted
+        // ✅ NOW IMPLEMENTED: HP check - returns empty ID (equivalent to false) if fainted
+        if self.hp == 0 {
+            return ID::default();
+        }
 
         // JS: if (typeof ability === 'string') ability = this.battle.dex.abilities.get(ability);
         // Note: In Rust we receive ID directly, would need Battle reference to get full ability data
