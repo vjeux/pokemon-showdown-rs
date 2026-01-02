@@ -428,6 +428,10 @@ pub struct MoveData {
     /// JavaScript: willCrit?: boolean
     #[serde(rename = "willCrit", default)]
     pub will_crit: Option<bool>,
+    /// Contest type (Beautiful, Cool, Cute, Clever, Tough)
+    /// JavaScript: contestType?: string
+    #[serde(rename = "contestType", default)]
+    pub contest_type: Option<String>,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
