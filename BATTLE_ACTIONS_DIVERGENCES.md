@@ -633,6 +633,31 @@ These files exist only in Rust and should be evaluated:
 - All modifiers applied in exact order matching JavaScript
 - 1:1 match with JavaScript modifyDamage lines 11-81
 
+### 2026-01-02
+**Refactored: get_confusion_damage.rs signature** ✅ API FIXED!
+- Changed from static function to proper battle action:
+  - **BEFORE**: `get_confusion_damage(level, attack, defense, base_power, random_factor)`
+  - **AFTER**: `get_confusion_damage(battle, pokemon_pos, base_power)`
+  - Matches JavaScript signature: `getConfusionDamage(pokemon, basePower)`
+- Now calls pokemon fields directly:
+  - Reads pokemon.stored_stats.atk and .def
+  - Reads pokemon.boosts for Atk and Def
+  - Reads pokemon.level
+  - Checks battle.field.pseudo_weather for Wonder Room
+- Applies stat calculation inline:
+  - Checks Wonder Room (swaps def/spd)
+  - Applies boost table [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
+  - Clamps boost to [-6, 6] range
+  - NOTE: Should call pokemon.calculate_stat() but has borrow checker issues
+  - TODO: Refactor calculate_stat API to avoid &mut Battle requirement when called on pokemon reference
+- Damage formula matches JavaScript exactly:
+  - `baseDamage = tr(tr(tr(tr(2 * level / 5 + 2) * basePower * attack) / defense) / 50) + 2`
+  - Truncates at each step
+  - Applies 16-bit truncation for base damage
+  - Calls battle.randomizer() directly
+  - Returns max(1, damage)
+- 1:1 match with JavaScript getConfusionDamage
+
 ---
 
 ## Next Steps
