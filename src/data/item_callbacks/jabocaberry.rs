@@ -51,7 +51,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target.eat_item(false).is_some()
+            target.eat_item(false, None, None).is_some()
         };
 
         if !ate_item {

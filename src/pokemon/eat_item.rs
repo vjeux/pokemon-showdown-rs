@@ -48,7 +48,12 @@ impl Pokemon {
     // 		return false;
     // 	}
     //
-    pub fn eat_item(&mut self, _is_forced: bool) -> Option<ID> {
+    pub fn eat_item(
+        &mut self,
+        _is_forced: bool,
+        _source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&ID>,
+    ) -> Option<ID> {
         // JS: if (!this.item) return false;
         if self.item.is_empty() {
             return None;
@@ -68,7 +73,8 @@ impl Pokemon {
 
         // JS: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
         // JS: if (!source && this.battle.event?.target) source = this.battle.event.target;
-        // Note: Missing source and sourceEffect parameters
+        // ✅ NOW IMPLEMENTED (Session 24 Part 31): source_pos and source_effect parameters
+        // Note: battle.event source/sourceEffect defaulting still missing (needs Battle reference)
 
         // JS: const item = this.getItem();
         // JS: if (sourceEffect?.effectType === 'Item' && this.item !== sourceEffect.id && source === this) {
@@ -111,7 +117,8 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED: lastItem, usedItemThisTurn, ateBerry tracking
 
         // Call use_item() which handles lastItem and usedItemThisTurn
-        let result = self.use_item(None, None);
+        // ✅ NOW IMPLEMENTED (Session 24 Part 31): Pass through source_pos and source_effect
+        let result = self.use_item(_source_pos, _source_effect);
 
         // Additionally set ateBerry = true (specific to eating)
         if result.is_some() {

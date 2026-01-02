@@ -48,7 +48,7 @@ pub fn on_fractional_priority(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_mut.eat_item(false).is_some()
+            pokemon_mut.eat_item(false, None, None).is_some()
         };
 
         if ate_item {

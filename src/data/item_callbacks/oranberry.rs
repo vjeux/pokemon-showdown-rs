@@ -23,7 +23,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     };
 
     if pokemon_mut.hp <= pokemon_mut.maxhp / 2 {
-        pokemon_mut.eat_item(false);
+        pokemon_mut.eat_item(false, None, None);
     }
 
     EventResult::Continue

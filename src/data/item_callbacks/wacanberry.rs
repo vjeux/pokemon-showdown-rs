@@ -80,7 +80,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_mut.eat_item(false)
+        target_mut.eat_item(false, None, None)
     };
 
     if item_eaten.is_some() {

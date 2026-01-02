@@ -42,7 +42,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
     if should_eat {
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            pokemon.eat_item(false);
+            pokemon.eat_item(false, None, None);
         }
     }
 

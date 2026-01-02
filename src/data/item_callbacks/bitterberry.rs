@@ -23,7 +23,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     };
 
     if pokemon_mut.volatiles.contains_key(&"confusion".into()) {
-        pokemon_mut.eat_item(false);
+        pokemon_mut.eat_item(false, None, None);
     }
 
     EventResult::Continue

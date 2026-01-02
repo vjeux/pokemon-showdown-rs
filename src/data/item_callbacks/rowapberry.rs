@@ -55,7 +55,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let eaten = target_mut.eat_item(false);
+        let eaten = target_mut.eat_item(false, None, None);
 
         (eaten.is_some(), has_ripen, base_maxhp)
     };

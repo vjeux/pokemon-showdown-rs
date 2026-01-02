@@ -140,7 +140,7 @@ pub fn on_hit_field(
             Some(p) => p,
             None => continue,
         };
-        pokemon_mut.eat_item(true);
+        pokemon_mut.eat_item(true, None, None);
     }
 
     EventResult::Continue

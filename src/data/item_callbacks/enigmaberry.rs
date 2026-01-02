@@ -49,7 +49,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_mut.eat_item(false).is_some()
+        target_mut.eat_item(false, None, None).is_some()
     };
 
     if item_eaten {

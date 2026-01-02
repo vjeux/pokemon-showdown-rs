@@ -98,7 +98,7 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
 
-    pokemon_mut.eat_item(true);
+    pokemon_mut.eat_item(true, None, None);
 
     EventResult::Continue
 }
