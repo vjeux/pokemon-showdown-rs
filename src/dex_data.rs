@@ -199,12 +199,25 @@ impl StatID {
 /// Stats table (all 6 stats)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 /// JavaScript equivalent: StatsTable (sim/global-types.ts)
+/// 6 fields in JavaScript
 pub struct StatsTable {
+    /// Hit Points
+    /// JavaScript: hp: number
     pub hp: i32,
+    /// Attack
+    /// JavaScript: atk: number
     pub atk: i32,
+    /// Defense
+    /// JavaScript: def: number
     pub def: i32,
+    /// Special Attack
+    /// JavaScript: spa: number
     pub spa: i32,
+    /// Special Defense
+    /// JavaScript: spd: number
     pub spd: i32,
+    /// Speed
+    /// JavaScript: spe: number
     pub spe: i32,
 }
 
@@ -283,13 +296,28 @@ impl BoostID {
 /// Boosts table
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 /// JavaScript equivalent: BoostsTable (sim/global-types.ts)
+/// 7 fields in JavaScript
 pub struct BoostsTable {
+    /// Attack boost (-6 to +6)
+    /// JavaScript: atk: number
     pub atk: i8,
+    /// Defense boost (-6 to +6)
+    /// JavaScript: def: number
     pub def: i8,
+    /// Special Attack boost (-6 to +6)
+    /// JavaScript: spa: number
     pub spa: i8,
+    /// Special Defense boost (-6 to +6)
+    /// JavaScript: spd: number
     pub spd: i8,
+    /// Speed boost (-6 to +6)
+    /// JavaScript: spe: number
     pub spe: i8,
+    /// Accuracy boost (-6 to +6)
+    /// JavaScript: accuracy: number
     pub accuracy: i8,
+    /// Evasion boost (-6 to +6)
+    /// JavaScript: evasion: number
     pub evasion: i8,
 }
 

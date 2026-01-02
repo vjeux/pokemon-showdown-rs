@@ -118,15 +118,19 @@ pub enum DamageResult {
 /// Equivalent to MoveHitData in battle-actions.ts
 #[derive(Debug, Clone, Default)]
 /// JavaScript equivalent: MoveHitData (sim/dex-moves.ts)
-/// Fields: crit, typeMod, zBrokeProtect
-/// JavaScript equivalent: MoveHitData (sim/dex-moves.ts)
-/// Fields: crit, typeMod, zBrokeProtect
-/// JavaScript equivalent: MoveHitData (sim/dex-moves.ts)
-/// Fields: crit, typeMod, zBrokeProtect
+/// 3 fields in JavaScript
 pub struct MoveHitData {
+    /// Critical hit flag
+    /// JavaScript: crit: boolean
     pub crit: bool,
+    /// Type effectiveness modifier
+    /// JavaScript: typeMod: number
     pub type_mod: i32,
+    // TODO: DELETE - Not in JavaScript MoveHitData
+    /// Damage dealt (Rust-specific tracking)
     pub damage: i32,
+    /// Z-Move broke through protect
+    /// JavaScript: zBrokeProtect: boolean
     pub z_broke_protect: bool,
 }
 
@@ -465,15 +469,27 @@ pub struct MoveFlags {
 
 /// Max move data
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+/// JavaScript equivalent: MaxMoveData (sim/dex-moves.ts)
+/// 1 field in JavaScript
 pub struct MaxMoveData {
+    /// Base power of the Max Move
+    /// JavaScript: basePower: number
     pub base_power: i32,
 }
 
 /// Z-move data
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+/// JavaScript equivalent: ZMoveData (sim/dex-moves.ts)
+/// 3 fields in JavaScript
 pub struct ZMoveData {
+    /// Base power of the Z-Move
+    /// JavaScript: basePower?: number
     pub base_power: Option<i32>,
+    /// Stat boosts from Z-Move
+    /// JavaScript: boost?: SparseBoostsTable
     pub boost: Option<BoostsTable>,
+    /// Effect ID
+    /// JavaScript: effect?: IDEntry
     pub effect: Option<String>,
 }
 

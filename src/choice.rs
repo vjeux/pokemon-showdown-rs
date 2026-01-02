@@ -280,18 +280,25 @@ pub fn parse_choices(input: &str) -> Result<Vec<Choice>, ChoiceError> {
     Ok(choices)
 }
 
-/// Request data sent to players
+/// Battle request sent to players
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: BattleRequest (sim/side.ts)
+/// 5 fields in JavaScript
 pub struct BattleRequest {
     /// Request type
+    /// JavaScript: requestType: 'move' | 'switch' | 'teamPreview' | 'wait'
     pub request_type: RequestType,
     /// Active Pokemon info
+    /// JavaScript: active: ActiveRequest[]
     pub active: Vec<ActiveRequest>,
     /// Side info (team)
+    /// JavaScript: side: SideRequestData
     pub side: SideRequest,
     /// Can undo?
+    /// JavaScript: canUndo: boolean
     pub can_undo: bool,
     /// No cancel?
+    /// JavaScript: noCancel: boolean
     pub no_cancel: bool,
 }
 
@@ -310,20 +317,29 @@ pub enum RequestType {
 
 /// Active Pokemon request data
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: ActiveRequest (sim/side.ts)
+/// 7 fields in JavaScript
 pub struct ActiveRequest {
     /// Available moves
+    /// JavaScript: moves: MoveRequest[]
     pub moves: Vec<MoveRequest>,
     /// Can mega evolve?
+    /// JavaScript: canMega: boolean
     pub can_mega: bool,
     /// Can use Z-move?
+    /// JavaScript: canZMove?: (ZMoveRequest | null)[]
     pub can_zmove: Option<Vec<Option<ZMoveRequest>>>,
     /// Can Dynamax?
+    /// JavaScript: canDynamax: boolean
     pub can_dynamax: bool,
     /// Can Terastallize?
+    /// JavaScript: canTerastallize?: string
     pub can_terastallize: Option<String>,
     /// Trapped?
+    /// JavaScript: trapped: boolean
     pub trapped: bool,
     /// Maybe trapped?
+    /// JavaScript: maybeTrapped: boolean
     pub maybe_trapped: bool,
 }
 

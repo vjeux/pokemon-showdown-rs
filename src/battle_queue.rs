@@ -173,45 +173,58 @@ pub enum SwitchActionType {
 /// Team preview choice action
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: TeamAction (sim/battle-queue.ts)
-/// Fields: choice, priority, speed, pokemon, index
-/// JavaScript equivalent: TeamAction (sim/battle-queue.ts)
-/// Fields: choice, priority, speed, pokemon, index
-/// JavaScript equivalent: TeamAction (sim/battle-queue.ts)
-/// Fields: choice, priority, speed, pokemon, index
+/// 5 fields in JavaScript
 pub struct TeamAction {
+    /// Action type (always 'team' in JavaScript)
+    /// JavaScript: choice: 'team'
+    pub choice: TeamActionType,
     /// Priority (negative index for team actions)
     pub priority: i8,
     /// Speed of pokemon (for tie-breaking)
+    /// JavaScript: speed: 1
     pub speed: f64,
+    // TODO: DELETE - Not in JavaScript TeamAction (Rust-specific for tie-breaking)
     /// Sub-order for tie-breaking (lower = earlier)
     pub sub_order: i32,
+    // TODO: DELETE - Not in JavaScript TeamAction (Rust-specific for tie-breaking)
     /// Effect order for tie-breaking (lower = earlier)
     pub effect_order: i32,
     /// Pokemon index
+    /// JavaScript: pokemon: Pokemon
+    /// TODO: Rust uses index instead of Pokemon reference due to ownership
     pub pokemon_index: usize,
+    // TODO: DELETE - Not in JavaScript TeamAction (Rust-specific)
     /// Side index
     pub side_index: usize,
     /// New index in team order
     pub index: usize,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum TeamActionType {
+    Team,
+}
+
 /// Field action (not done by a pokemon)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: FieldAction (sim/battle-queue.ts)
-/// Fields: choice, priority, speed, pokemon
-/// JavaScript equivalent: FieldAction (sim/battle-queue.ts)
-/// Fields: choice, priority, speed, pokemon
-/// JavaScript equivalent: FieldAction (sim/battle-queue.ts)
-/// Fields: choice, priority, speed, pokemon
+/// 4 fields in JavaScript
 pub struct FieldAction {
     /// Action type
+    /// JavaScript: choice: 'start' | 'residual' | 'pass' | 'beforeTurn'
     pub choice: FieldActionType,
     /// Priority
+    /// JavaScript: priority: number
     pub priority: i8,
+    // TODO: DELETE - Not in JavaScript FieldAction (Rust-specific for tie-breaking)
     /// Sub-order for tie-breaking (lower = earlier)
     pub sub_order: i32,
+    // TODO: DELETE - Not in JavaScript FieldAction (Rust-specific for tie-breaking)
     /// Effect order for tie-breaking (lower = earlier)
     pub effect_order: i32,
+    // Note: JavaScript has 'speed' and 'pokemon' fields, but FieldActions don't have a pokemon
+    // JavaScript: speed is not used in Rust implementation
+    // JavaScript: pokemon is undefined for field actions
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -226,29 +239,38 @@ pub enum FieldActionType {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: PokemonAction (sim/battle-queue.ts)
 /// 6 fields in JavaScript
-/// JavaScript equivalent: PokemonAction (sim/battle-queue.ts)
-/// 6 fields in JavaScript
-/// JavaScript equivalent: PokemonAction (sim/battle-queue.ts)
-/// 6 fields in JavaScript
 pub struct PokemonAction {
     /// Action type
+    /// JavaScript: choice: 'start' | 'beforeTurn' | 'megaEvo' | 'megaEvoX' | 'megaEvoY' | 'shift' | 'runSwitch' | 'event' | 'runDynamax' | 'terastallize' | 'residual'
     pub choice: PokemonActionType,
+    // TODO: DELETE - Not in JavaScript PokemonAction (Rust-specific)
     /// Order for sorting
     pub order: i32,
     /// Priority
+    /// JavaScript: priority: number
     pub priority: i8,
     /// Speed
+    /// JavaScript: speed: number
     pub speed: f64,
+    // TODO: DELETE - Not in JavaScript PokemonAction (Rust-specific for tie-breaking)
     /// Sub-order for tie-breaking (lower = earlier)
     pub sub_order: i32,
+    // TODO: DELETE - Not in JavaScript PokemonAction (Rust-specific for tie-breaking)
     /// Effect order for tie-breaking (lower = earlier)
     pub effect_order: i32,
     /// Pokemon index
+    /// JavaScript: pokemon: Pokemon
+    /// TODO: Rust uses index instead of Pokemon reference due to ownership
     pub pokemon_index: usize,
+    // TODO: DELETE - Not in JavaScript PokemonAction (Rust-specific)
     /// Side index
     pub side_index: usize,
     /// Event name (for event actions)
+    /// JavaScript: event?: string
     pub event: Option<String>,
+    // TODO: Missing from Rust - JavaScript has 'dragger' field
+    // JavaScript: dragger?: Pokemon
+    // Would need to add: pub dragger: Option<(usize, usize)>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]

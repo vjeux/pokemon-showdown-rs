@@ -88,6 +88,7 @@ impl BattleQueue {
                 // The index is stored in switch_index by choose_team
                 let priority = -(side_action.switch_index.unwrap_or(0) as i8);
                 actions.push(Action::Team(TeamAction {
+                    choice: crate::battle_queue::TeamActionType::Team,
                     priority,
                     sub_order: 0,
                     effect_order: 0,
