@@ -86,17 +86,18 @@ impl Pokemon {
         // JS:         if (move === 'hiddenpower') {
         // JS:             return `${move}${toID(this.hpType)}${this.battle.gen < 6 ? '' : this.hpPower}` as ID;
         // JS:         }
-        // Note: Missing Hidden Power formatting with type and power
+        // ✅ NOW IMPLEMENTED (Session 24 Part 63): Hidden Power formatting handled in get_moves()
 
         // JS:         if (move === 'frustration' || move === 'return') {
         // JS:             const basePowerCallback = this.battle.dex.moves.get(move).basePowerCallback as (pokemon: Pokemon) => number;
         // JS:             return `${move}${basePowerCallback(this)}` as ID;
         // JS:         }
-        // Note: Missing Return/Frustration power calculation
+        // Note: Missing Return/Frustration power calculation (needs Dex access in get_moves)
 
         // JS:         return move as ID;
         // JS:     }),
-        // Note: Currently calling get_moves() which returns Vec<String>
+        // ✅ NOW IMPLEMENTED (Session 24 Part 63): get_moves() returns full move objects
+        // Note: get_moves() handles Hidden Power formatting internally
 
         // JS:     baseAbility: this.baseAbility,
         // ✅ NOW IMPLEMENTED (Session 24 Part 56): baseAbility field
