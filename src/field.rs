@@ -25,16 +25,21 @@ pub struct Field {
     pub id: ID,
 
     /// Current weather ID (empty string = no weather)
+    /// JavaScript: weather: ID
     pub weather: ID,
     /// Weather effect state
+    /// JavaScript: weatherState: EffectState
     pub weather_state: EffectState,
 
     /// Current terrain ID (empty string = no terrain)
+    /// JavaScript: terrain: ID
     pub terrain: ID,
     /// Terrain effect state
+    /// JavaScript: terrainState: EffectState
     pub terrain_state: EffectState,
 
     /// Pseudo-weather conditions (like Trick Room, Magic Room, etc.)
+    /// JavaScript: pseudoWeather: { [id: string]: EffectState }
     pub pseudo_weather: HashMap<ID, EffectState>,
 }
 

@@ -107,34 +107,56 @@ impl EffectData {
 /// Effect state - matches JavaScript EffectState
 /// Stores state for temporary effects (volatiles, side conditions, etc.)
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+/// JavaScript equivalent: EffectState (sim/global-types.ts)
+/// Dynamic fields in JavaScript (properties can be added at runtime)
 pub struct EffectState {
     /// Effect ID
+    /// JavaScript: id: ID
     pub id: ID,
     /// Target of the effect
+    /// JavaScript: target?: Pokemon
+    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub target: Option<(usize, usize)>,
     /// Source of the effect
+    /// JavaScript: source?: Pokemon
+    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub source: Option<(usize, usize)>,
     /// Duration remaining (turns)
+    /// JavaScript: duration?: number
     pub duration: Option<i32>,
     /// Time (for sorting)
+    /// JavaScript: time?: number
     pub time: Option<i32>,
+    // TODO: DELETE - Not in JavaScript EffectState (JavaScript uses implicit sorting)
     /// Effect order (for sorting multiple effects)
     pub effect_order: i32,
     /// Side index (for side conditions)
+    /// JavaScript: side?: Side
+    /// TODO: Rust uses index instead of Side reference due to ownership
     pub side: Option<usize>,
     /// Target side index (for side conditions)
+    /// JavaScript: targetSide?: Side
+    /// TODO: Rust uses index instead of Side reference due to ownership
     pub target_side: Option<usize>,
     /// Source effect that caused this effect
+    /// JavaScript: sourceEffect?: Effect
+    /// TODO: Rust uses ID instead of full Effect object
     pub source_effect: Option<ID>,
     /// Source slot (for slot conditions)
+    /// JavaScript: sourceSlot?: number
     pub source_slot: Option<usize>,
     /// Hit count (for multi-hit moves like Rollout)
+    /// JavaScript: hitCount?: number
     pub hit_count: Option<i32>,
     /// Contact hit count (for Rocky Helmet, etc.)
+    /// JavaScript: contactHitCount?: number
     pub contact_hit_count: Option<i32>,
     /// Prankster boosted flag (for priority moves affected by Prankster)
+    /// JavaScript: pranksterBoosted?: boolean
     pub prankster_boosted: bool,
     /// Custom data storage (for effect-specific state)
+    /// JavaScript: [key: string]: any (dynamic properties)
+    /// TODO: Rust uses HashMap for dynamic properties that JavaScript adds at runtime
     pub data: std::collections::HashMap<String, serde_json::Value>,
 }
 
