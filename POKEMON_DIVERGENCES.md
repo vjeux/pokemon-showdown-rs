@@ -1358,6 +1358,29 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 2 commits pushed to git (is_grounded, transform_into)
   - 100% compilation success rate
 
+### Session 20 - 2026-01-01 (set_species improvements + continuing)
+- **Goal**: Continue fixing TODOs and NOTEs with focus on simple improvements
+- **Completed**:
+  - ✅ set_species improvements:
+    - Added proper isTransform parameter handling (was being ignored)
+    - Now only sets base_stored_stats when NOT transforming (matches JavaScript behavior)
+    - Added Gen 1 burn/para stat drops (gen <= 1)
+      - Paralysis: Speed multiplied by 0.25
+      - Burn: Attack multiplied by 0.5
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+- **Methods Now Improved**:
+  - set_species.rs - Now ~80% complete (was ~70%)
+    - ✅ Has: isTransform parameter handling
+    - ✅ Has: Gen 1 burn/para stat drops
+    - ❌ Still missing: ModifySpecies event, species.maxHP override, knownType field
+- **Session Statistics (so far)**:
+  - 1 method improved (set_species)
+  - 2 feature implementations (isTransform handling, Gen 1 status drops)
+  - 1 file modified
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
