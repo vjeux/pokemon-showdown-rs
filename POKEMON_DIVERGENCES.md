@@ -636,15 +636,18 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Design pattern: work around borrow checker by returning data
 
 #### eat_item.rs
-- Status: ✅ Fixed (Partially Implemented - Session 24 Part 14)
-- Issue: Very simplified, just delegates to use_item()
-- Action: Added HP check, isActive check, and item tracking fields, documented remaining missing pieces
+- Status: ✅ Fixed (Improved - Session 24 Parts 14 & 31)
+- Issue: Missing source and sourceEffect parameters
+- Action: Added HP check, isActive check, item tracking, and missing parameters (Session 24 Part 31)
 - Notes:
   - ✅ NOW IMPLEMENTED: HP check with Jaboca/Rowap Berry exception
   - ✅ NOW IMPLEMENTED: isActive check
   - ✅ NOW IMPLEMENTED (Session 24 Part 14): lastItem, usedItemThisTurn, ateBerry tracking
   - ✅ NOW IMPLEMENTED (Session 24 Part 14): Fixed incorrect comment (staleness fields do exist)
-  - Missing source and sourceEffect parameters
+  - ✅ NOW IMPLEMENTED (Session 24 Part 31): source_pos parameter
+  - ✅ NOW IMPLEMENTED (Session 24 Part 31): source_effect parameter
+  - ✅ NOW IMPLEMENTED (Session 24 Part 31): Pass through source_pos and source_effect to use_item
+  - ✅ NOW IMPLEMENTED (Session 24 Part 31): Updated 60 callsites to pass None, None
   - Missing sourceEffect item type check
   - Missing runEvent('UseItem') and runEvent('TryEatItem')
   - Missing battle.add('-enditem') message
@@ -652,7 +655,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing RESTORATIVE_BERRIES staleness logic (fields exist, need logic)
   - Missing runEvent('AfterUseItem')
   - Delegates to use_item() then additionally sets ateBerry = true
-  - Now ~60% complete (was ~50%)
+  - Now ~50% complete (was ~45%)
 
 #### faint.rs
 - Status: ✅ Fixed (Documented)
@@ -2532,6 +2535,54 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 2 parameters added (_source_pos, _source_effect)
   - 58 callsites updated across pokemon/, data/item_callbacks/
   - ~5 lines of implementation code (just parameters, no field assignments)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+#### Session 24 Part 31 - 2026-01-02 (eat_item Parameters - COMPLETED)
+- **Goal**: Add missing parameters to eat_item signature (1-to-1 with JavaScript)
+- **Completed**:
+  - ✅ Discovered that eat_item was missing 2 parameters
+  - ✅ JavaScript signature: `eatItem(force?: boolean, source?: Pokemon, sourceEffect?: Effect)`
+  - ✅ Rust signature before: `eat_item(&mut self, _is_forced: bool) -> Option<ID>`
+  - ✅ Rust signature after: `eat_item(&mut self, _is_forced: bool, _source_pos: Option<(usize, usize)>, _source_effect: Option<&ID>) -> Option<ID>`
+  - ✅ Added 2 parameters: _source_pos, _source_effect
+  - ✅ Updated internal use_item call to pass through source_pos and source_effect
+  - ✅ Updated 60 callsites across item_callbacks and move_callbacks to pass None, None
+  - ✅ Used perl script for batch updates (efficient for large number of callsites)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit (60 files changed)
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - pokemon/eat_item.rs - Now ~50% complete (was ~45%)
+    - ✅ NOW IMPLEMENTED: source_pos parameter support
+    - ✅ NOW IMPLEMENTED: source_effect parameter support
+    - ✅ NOW IMPLEMENTED: Pass through source_pos and source_effect to use_item
+    - JavaScript equivalent:
+      - `eatItem(force?: boolean, source?: Pokemon, sourceEffect?: Effect)`
+    - Rust implementation:
+      - `pub fn eat_item(&mut self, _is_forced: bool, _source_pos: Option<(usize, usize)>, _source_effect: Option<&ID>) -> Option<ID>`
+    - Lines 121: Pass parameters to use_item: `self.use_item(_source_pos, _source_effect)`
+    - ❌ Still missing: battle.event source/sourceEffect defaulting
+    - ❌ Still missing: sourceEffect item type check
+    - ❌ Still missing: runEvent('UseItem') and runEvent('TryEatItem')
+    - ❌ Still missing: battle.add message
+    - ❌ Still missing: singleEvent('Eat') and runEvent('EatItem')
+    - ❌ Still missing: RESTORATIVE_BERRIES staleness logic
+    - ❌ Still missing: runEvent('AfterUseItem')
+    - Note: Parameters now flow through: eat_item → use_item, maintaining consistency
+- **Technical Details**:
+  - Parameters added: _source_pos (Option<(usize, usize)>), _source_effect (Option<&ID>)
+  - 60 callsites updated (largest single-method update in Session 24)
+  - Used perl script: `s/\.eat_item\((true|false)\)/.eat_item($1, None, None)/g` for efficiency
+  - Both parameters prefixed with underscore (not yet used in implementation beyond passing to use_item)
+  - Maintains call chain: eat_item calls use_item, so parameters flow through properly
+- **Session Statistics**:
+  - 1 method improved (eat_item.rs)
+  - 1 infrastructure change (added missing parameters to core API)
+  - 60 files modified (1 pokemon method + 57 item callbacks + 2 move callbacks)
+  - 2 parameters added (_source_pos, _source_effect)
+  - 60 callsites updated across data/item_callbacks/, data/move_callbacks/
+  - ~8 lines of implementation code (parameters + pass-through to use_item)
   - 1 commit pushed to git
   - 100% compilation success rate
 
