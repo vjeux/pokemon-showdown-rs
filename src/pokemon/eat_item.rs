@@ -101,21 +101,26 @@ impl Pokemon {
         // JS:     this.pendingStaleness = undefined;
         // JS: }
         // Note: Missing RESTORATIVE_BERRIES staleness logic
-        // Note: pendingStaleness and staleness fields don't exist in Rust
+        // Note: Would need to check RESTORATIVE_BERRIES constant and update staleness fields
 
         // JS: this.lastItem = this.item;
         // JS: this.item = '';
         // JS: this.battle.clearEffectState(this.itemState);
         // JS: this.usedItemThisTurn = true;
         // JS: this.ateBerry = true;
-        // Note: Missing lastItem, usedItemThisTurn, ateBerry tracking
+        // ✅ NOW IMPLEMENTED: lastItem, usedItemThisTurn, ateBerry tracking
+
+        // Call use_item() which handles lastItem and usedItemThisTurn
+        let result = self.use_item();
+
+        // Additionally set ateBerry = true (specific to eating)
+        if result.is_some() {
+            self.ate_berry = true;
+        }
 
         // JS: this.battle.runEvent('AfterUseItem', this, null, null, item);
         // Note: Missing runEvent('AfterUseItem')
 
-        // Currently just delegates to use_item()
-        // Would check if item is edible (berry)
-        // For now, same as use_item
-        self.use_item()
+        result
     }
 }
