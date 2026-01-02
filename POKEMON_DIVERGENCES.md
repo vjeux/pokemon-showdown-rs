@@ -218,10 +218,15 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Note: Missing runEvent('NegateImmunity'), isGrounded() for Ground type, immunity messages
 
 #### get_types.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Partially Implemented)
 - Issue: Missing runEvent('Type') call and gen check for default type
-- Action: Added empty types check to return "Normal", documented missing runEvent and gen check
-- Note: Assumes gen >= 5 for "Normal" vs "???" decision
+- Action: Added get_types_full with preterastallized parameter, improved type handling
+- Notes:
+  - ✅ NOW IMPLEMENTED: preterastallized parameter support via get_types_full method
+  - ✅ Properly checks !preterastallized before returning Terastallized type
+  - Has empty types check to return "Normal"
+  - Missing runEvent('Type') call (needs Battle reference)
+  - Missing gen check for "Normal" vs "???" (assumes gen >= 5)
 
 #### get_updated_details.rs
 - Status: ✅ Fixed (Documented)
@@ -980,9 +985,10 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Fixed get_action_speed.rs - Implemented twisteddimensionmod rule check and proper trunc - now fully 1-to-1! (MERGED)
   - ✅ Fixed calculate_stat.rs - Refactored to take Battle parameter, implemented Wonder Room (MERGED)
   - ✅ Fixed run_status_immunity.rs - Added fainted check and empty string check (MERGED)
+  - ✅ Fixed get_types.rs - Added get_types_full with preterastallized parameter (MERGED)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
 - **Methods Now Fully 1-to-1**: has_item.rs, max_move_disabled.rs, get_action_speed.rs
-- **Methods Significantly Improved**: update_max_hp.rs, try_trap.rs, is_grounded.rs, calculate_stat.rs, run_status_immunity.rs
+- **Methods Significantly Improved**: update_max_hp.rs, try_trap.rs, is_grounded.rs, calculate_stat.rs, run_status_immunity.rs, get_types.rs
 - **Path Forward**:
   - Phase 1 (Current): Fix methods that can be improved without API changes
   - Phase 2 (Next): Refactor method signatures to take Battle where needed

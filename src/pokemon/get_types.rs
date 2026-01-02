@@ -15,10 +15,16 @@ impl Pokemon {
     // 	}
     //
     pub fn get_types(&self, exclude_added: bool) -> Vec<String> {
+        self.get_types_full(exclude_added, false)
+    }
+
+    pub fn get_types_full(&self, exclude_added: bool, preterastallized: bool) -> Vec<String> {
         // JS: if (!preterastallized && this.terastallized && this.terastallized !== 'Stellar') return [this.terastallized];
-        if let Some(ref tera) = self.terastallized {
-            if tera != "Stellar" {
-                return vec![tera.clone()];
+        if !preterastallized {
+            if let Some(ref tera) = self.terastallized {
+                if tera != "Stellar" {
+                    return vec![tera.clone()];
+                }
             }
         }
 
