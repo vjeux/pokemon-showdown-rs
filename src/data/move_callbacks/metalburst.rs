@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// damageCallback(pokemon) {
 ///     const lastDamagedBy = pokemon.getLastDamagedBy(true);
@@ -20,13 +21,7 @@ pub fn damage_callback(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // const lastDamagedBy = pokemon.getLastDamagedBy(true);
-    let last_damaged_by = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon.get_last_damaged_by(true)
-    };
+    let last_damaged_by = Pokemon::get_last_damaged_by(battle, pokemon_pos, true);
 
     // if (lastDamagedBy !== undefined) {
     if let Some(damaged_by) = last_damaged_by {
@@ -49,13 +44,7 @@ pub fn on_try(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // const lastDamagedBy = source.getLastDamagedBy(true);
-    let last_damaged_by = {
-        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source.get_last_damaged_by(true)
-    };
+    let last_damaged_by = Pokemon::get_last_damaged_by(battle, source_pos, true);
 
     // if (!lastDamagedBy?.thisTurn) return false;
     match last_damaged_by {
@@ -89,13 +78,7 @@ pub fn on_modify_target(
     };
 
     // const lastDamagedBy = source.getLastDamagedBy(true);
-    let last_damaged_by = {
-        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source_pokemon.get_last_damaged_by(true)
-    };
+    let last_damaged_by = Pokemon::get_last_damaged_by(battle, source, true);
 
     // if (lastDamagedBy) {
     if let Some(damaged_by) = last_damaged_by {
