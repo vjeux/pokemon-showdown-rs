@@ -16,6 +16,8 @@ use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// Effect types - matches JavaScript effectType
+/// TODO: Not in JavaScript - Rust-specific enum for effect type constants
+/// JavaScript uses string literals for effect types ('Ability', 'Item', 'Move', etc.)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum EffectType {
     Ability,
@@ -287,6 +289,8 @@ impl EffectState {
 }
 
 /// Event handler with priority information
+/// TODO: Not in JavaScript - Rust-specific struct for organizing event handlers
+/// JavaScript manages handler ordering via inline sorting in runEvent
 #[derive(Debug, Clone)]
 pub struct EventHandler {
     /// Effect that owns this handler
