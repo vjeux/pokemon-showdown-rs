@@ -90,9 +90,9 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Action: Review and verify against JS source
 
 #### boost_by.rs
-- Status: ❌ Not Started
-- Issue: Multiple "TODO: implement the same logic as JavaScript"
-- Action: Implement missing logic
+- Status: ✅ Fixed
+- Issue: Extra stats tracking logic not in JavaScript
+- Action: Removed stats_raised_this_turn and stats_lowered_this_turn tracking to match JS exactly
 
 #### calculate_stat.rs
 - Status: ❌ Not Started
@@ -176,6 +176,16 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Issue: "TODO: implement the same logic as JavaScript"
 - Action: Complete ability retrieval logic
 
+#### got_attacked.rs
+- Status: ✅ Fixed (New entry)
+- Issue: Setting last_damage field that doesn't exist in JavaScript
+- Action: Removed last_damage assignment to match JS exactly
+
+#### has_type.rs
+- Status: ✅ Fixed (New entry)
+- Issue: Using toLowerCase() when JavaScript doesn't
+- Action: Removed toLowerCase() calls for case-sensitive comparison like JS
+
 #### get_health.rs
 - Status: ✅ Fixed (New file)
 - Issue: Method was missing entirely
@@ -252,6 +262,14 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Fixed .as_str() unstable method usage
   - ✅ Project compiles successfully (0 errors, 0 warnings)
 - **Next**: Continue with boost_by, calculate_stat, copy_volatile_from, eat_item, faint, get_ability, etc.
+
+### Session 3 - 2026-01-01 (Continuation Session 2)
+- **Completed**:
+  - ✅ Fixed has_type.rs (removed toLowerCase() to match JS case-sensitive comparison)
+  - ✅ Fixed boost_by.rs (removed extra stats tracking not in JS)
+  - ✅ Fixed got_attacked.rs (removed last_damage assignment not in JS)
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+- **Next**: Continue with remaining TODOs (calculate_stat, eat_item, faint, etc.)
 
 ## Notes
 - Must compile after each fix

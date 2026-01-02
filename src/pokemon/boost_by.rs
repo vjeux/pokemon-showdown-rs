@@ -23,18 +23,10 @@ impl Pokemon {
 
         // JS: for (boostName in boosts) { delta = boosts[boostName]!; this.boosts[boostName] += delta; }
         for (boost_name, boost_delta) in capped_boosts {
+            // JS: delta = boosts[boostName]!;
             delta = boost_delta;
-            // TODO: implement the same logic as JavaScript
+            // JS: this.boosts[boostName] += delta;
             self.boosts.boost(boost_name, boost_delta);
-
-            // TODO: implement the same logic as JavaScript
-            // This is NOT correctly ported logic:
-            // Track if stats were raised or lowered this turn
-            if boost_delta > 0 {
-                self.stats_raised_this_turn = true;
-            } else if boost_delta < 0 {
-                self.stats_lowered_this_turn = true;
-            }
         }
 
         // JS: return delta;

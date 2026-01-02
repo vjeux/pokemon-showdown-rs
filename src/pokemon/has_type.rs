@@ -17,10 +17,10 @@ impl Pokemon {
     // 	}
     //
     pub fn has_type(&self, type_name: &str) -> bool {
-        // TODO: implement the same logic as JavaScript
-        // It doesn't call toLowercase()
+        // JS: const thisTypes = this.getTypes();
+        // JS: return thisTypes.includes(type);
         self.get_types(false)
             .iter()
-            .any(|t| t.to_lowercase() == type_name.to_lowercase())
+            .any(|t| t == type_name)
     }
 }

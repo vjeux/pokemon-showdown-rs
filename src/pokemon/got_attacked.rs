@@ -25,11 +25,6 @@ impl Pokemon {
         source_side: usize,
         source_pos: usize,
     ) {
-        // TODO: implement the same logic as JavaScript
-        // lastDamage doesn't exist in JavaScript and therefore shouldn't exist in rust
-        self.last_damage = damage;
-        self.times_attacked += 1;
-
         // JS: this.attackedBy.push({ source, damage, move: move.id, thisTurn: true, ... })
         self.attacked_by.push(Attacker {
             source: (source_side, source_pos),
@@ -38,5 +33,8 @@ impl Pokemon {
             move_id: Some(move_id),
             slot: (source_side, source_pos), // Same as source for tracking
         });
+
+        // Track times attacked (not in JS source, but used for mechanics)
+        self.times_attacked += 1;
     }
 }
