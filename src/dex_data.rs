@@ -90,7 +90,8 @@ pub fn to_id(text: &str) -> String {
 }
 
 /// Gender names
-/// JavaScript equivalent: GenderName type (sim/global-types.ts)
+/// JavaScript equivalent: GenderName (sim/global-types.ts)
+/// JavaScript: 'M' | 'F' | 'N'
 /// JavaScript uses a lookup table: {M: "M", F: "F", N: "N"}
 /// Any other value (like "Male", "Female", "None") falls through to randomization
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Default)]
