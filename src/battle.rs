@@ -414,20 +414,31 @@ impl Default for EventInfo {
 /// Contains read-only event information that callbacks can access
 /// Equivalent to JavaScript's `this` context in event callbacks
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: `this` in event callbacks (sim/battle.ts)
+/// JavaScript uses `this.event` context object with dynamic properties
 pub struct EventContext {
     /// Event ID/name (e.g., "Hit", "ModifyDamage")
+    /// JavaScript: this.event (implicit event name)
     pub event_id: String,
     /// Target of the event (side_idx, poke_idx)
+    /// JavaScript: this.event.target (Pokemon reference)
+    /// TODO: Rust uses indices instead of Pokemon reference due to ownership
     pub target: Option<(usize, usize)>,
     /// Source of the event
+    /// JavaScript: this.event.source (Pokemon reference)
+    /// TODO: Rust uses indices instead of Pokemon reference due to ownership
     pub source: Option<(usize, usize)>,
     /// Effect that caused the event
+    /// JavaScript: this.event.effect (Effect object)
+    /// TODO: Rust uses ID instead of full Effect object
     pub effect: Option<ID>,
     /// Modifier accumulated during event processing (4096 = 1.0x)
     /// In JavaScript: this.event.modifier
+    /// JavaScript: this.event.modifier: number
     pub modifier: i32,
     /// Relay variable passed to the event
     /// This is the value being modified through the event chain
+    /// JavaScript: relayVar parameter (number or any type)
     pub relay_var: Option<i32>,
 }
 
