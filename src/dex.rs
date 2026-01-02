@@ -42,36 +42,67 @@ pub use deserialize_is_max::deserialize_is_max;
 pub use deserialize_ohko::deserialize_ohko;
 
 /// Gender ratio structure
+/// Gender ratio (chance of male vs female)
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
+/// JavaScript equivalent: GenderRatio (sim/dex-species.ts)
+/// 2 fields in JavaScript
 pub struct GenderRatio {
+    /// Probability of male (0.0 to 1.0)
+    /// JavaScript: M: number
     #[serde(default)]
     pub m: f64,
+    /// Probability of female (0.0 to 1.0)
+    /// JavaScript: F: number
     #[serde(default)]
     pub f: f64,
 }
 
 /// Abilities structure (mapping slot to ability name)
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// JavaScript equivalent: Abilities (sim/dex-species.ts)
+/// 4 fields in JavaScript
 pub struct AbilitySlots {
+    /// Regular ability slot 0
+    /// JavaScript: "0": string
     #[serde(rename = "0", default)]
     pub slot0: Option<String>,
+    /// Regular ability slot 1 (second ability)
+    /// JavaScript: "1"?: string
     #[serde(rename = "1", default)]
     pub slot1: Option<String>,
+    /// Hidden ability
+    /// JavaScript: "H"?: string
     #[serde(rename = "H", default)]
     pub hidden: Option<String>,
+    /// Special ability (event-only)
+    /// JavaScript: "S"?: string
     #[serde(rename = "S", default)]
     pub special: Option<String>,
 }
 
 /// Base stats as stored in JSON
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+/// JavaScript equivalent: StatsTable (sim/global-types.ts)
+/// 6 fields in JavaScript
 pub struct BaseStatsData {
+    /// Hit Points
+    /// JavaScript: hp: number
     pub hp: i32,
+    /// Attack
+    /// JavaScript: atk: number
     pub atk: i32,
+    /// Defense
+    /// JavaScript: def: number
     pub def: i32,
+    /// Special Attack
+    /// JavaScript: spa: number
     pub spa: i32,
+    /// Special Defense
+    /// JavaScript: spd: number
     pub spd: i32,
+    /// Speed
+    /// JavaScript: spe: number
     pub spe: i32,
 }
 
@@ -742,20 +773,24 @@ pub struct FlingData {
 /// Type effectiveness data
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: TypeData (sim/dex-data.ts)
-/// Fields: damageTaken, HPdvs, HPivs, isNonstandard
-/// JavaScript equivalent: TypeData (sim/dex-data.ts)
-/// Fields: damageTaken, HPdvs, HPivs, isNonstandard
-/// JavaScript equivalent: TypeData (sim/dex-data.ts)
-/// Fields: damageTaken, HPdvs, HPivs, isNonstandard
+/// ~4 fields in JavaScript
 pub struct TypeData {
+    /// Type matchup chart (opponent type -> effectiveness)
+    /// JavaScript: damageTaken: { [attackingType: string]: number }
     #[serde(rename = "damageTaken")]
     pub damage_taken: HashMap<String, u8>,
 }
 
 /// Ruleset data
 #[derive(Debug, Clone, Serialize, Deserialize)]
+/// JavaScript equivalent: RulesetData (sim/dex-formats.ts)
+/// 2 fields in JavaScript
 pub struct RulesetData {
+    /// Ruleset name
+    /// JavaScript: name: string
     pub name: String,
+    /// Mod ID (optional)
+    /// JavaScript: mod?: string
     #[serde(default, rename = "mod")]
     pub mod_id: Option<String>,
 }
@@ -763,15 +798,17 @@ pub struct RulesetData {
 /// Nature data
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: NatureData (sim/dex-data.ts)
-/// Fields: name, plus, minus
-/// JavaScript equivalent: NatureData (sim/dex-data.ts)
-/// Fields: name, plus, minus
-/// JavaScript equivalent: NatureData (sim/dex-data.ts)
-/// Fields: name, plus, minus
+/// 3 fields in JavaScript
 pub struct NatureData {
+    /// Nature name
+    /// JavaScript: name: string
     pub name: String,
+    /// Stat that gets a 1.1x boost
+    /// JavaScript: plus?: StatIDExceptHP
     #[serde(default)]
     pub plus: Option<String>,
+    /// Stat that gets a 0.9x penalty
+    /// JavaScript: minus?: StatIDExceptHP
     #[serde(default)]
     pub minus: Option<String>,
 }
@@ -779,13 +816,23 @@ pub struct NatureData {
 /// Event data for learnsets
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+/// JavaScript equivalent: EventInfo (sim/dex-species.ts)
+/// 4 fields in JavaScript
 pub struct EventData {
+    /// Generation of the event
+    /// JavaScript: generation?: number
     #[serde(default)]
     pub generation: Option<u8>,
+    /// Level of the event Pokemon
+    /// JavaScript: level?: number
     #[serde(default)]
     pub level: Option<u8>,
+    /// Moves the event Pokemon knows
+    /// JavaScript: moves?: string[]
     #[serde(default)]
     pub moves: Vec<String>,
+    /// Source/description of the event
+    /// JavaScript: source?: string
     #[serde(default)]
     pub source: Option<String>,
 }
