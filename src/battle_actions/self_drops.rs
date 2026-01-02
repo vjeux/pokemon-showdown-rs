@@ -77,13 +77,12 @@ pub fn self_drops(
 
                 if should_apply {
                     // this.moveHit(source, source, move, moveData.self, isSecondary, true);
-                    // TODO: Implement moveHit function
-                    // This would apply the self boosts to the source Pokemon
-                    // For now, we can apply boosts directly
+                    // Apply all self effects to the source Pokemon
+
                     if let Some(ref active_move) = battle.active_move.clone() {
                         if let Some(ref self_data) = active_move.self_data {
+                            // Apply stat boosts
                             if let Some(ref boosts) = self_data.boosts {
-                                // Convert BoostsTable to array of (stat_name, value) tuples
                                 let mut boost_array = Vec::new();
                                 if boosts.atk != 0 {
                                     boost_array.push(("atk", boosts.atk));
@@ -109,6 +108,69 @@ pub fn self_drops(
 
                                 battle.boost(&boost_array, source_pos, Some(source_pos), None, false, true);
                             }
+
+                            // Apply status from self effect (to source)
+                            // JS: if (moveData.status) {
+                            //     hitResult = target.setStatus(moveData.status, source, move);
+                            // }
+                            if let Some(ref status_name) = self_data.status {
+                                let status_id = crate::dex_data::ID::new(status_name);
+                                let _applied = Pokemon::set_status(battle, source_pos, status_id, None, None, false);
+                            }
+
+                            // Apply volatile status from self effect (to source)
+                            // JS: if (moveData.volatileStatus) {
+                            //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
+                            // }
+                            if let Some(ref volatile_status_name) = self_data.volatile_status {
+                                let volatile_id = crate::dex_data::ID::new(volatile_status_name);
+                                Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None);
+                            }
+
+                            // Apply side condition from self effect (to source's side)
+                            // JS: if (moveData.sideCondition) {
+                            //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
+                            // }
+                            if let Some(ref side_condition_name) = self_data.side_condition {
+                                let side_condition_id = crate::dex_data::ID::new(side_condition_name);
+                                let _applied = battle.sides[source_pos.0].add_side_condition(side_condition_id, None);
+                            }
+
+                            // Apply slot condition from self effect (to source's slot)
+                            // JS: if (moveData.slotCondition) {
+                            //     hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
+                            // }
+                            if let Some(ref slot_condition_name) = self_data.slot_condition {
+                                let slot_condition_id = crate::dex_data::ID::new(slot_condition_name);
+                                let _applied = battle.sides[source_pos.0].add_slot_condition(source_pos.1, slot_condition_id, None);
+                            }
+
+                            // Apply pseudo weather from self effect
+                            // JS: if (moveData.pseudoWeather) {
+                            //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
+                            // }
+                            if let Some(ref pseudo_weather_name) = self_data.pseudo_weather {
+                                let pseudo_weather_id = crate::dex_data::ID::new(pseudo_weather_name);
+                                let _applied = battle.field.add_pseudo_weather(pseudo_weather_id, None);
+                            }
+
+                            // Apply terrain from self effect
+                            // JS: if (moveData.terrain) {
+                            //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
+                            // }
+                            if let Some(ref terrain_name) = self_data.terrain {
+                                let terrain_id = crate::dex_data::ID::new(terrain_name);
+                                let _applied = battle.field.set_terrain(terrain_id, None);
+                            }
+
+                            // Apply weather from self effect
+                            // JS: if (moveData.weather) {
+                            //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
+                            // }
+                            if let Some(ref weather_name) = self_data.weather {
+                                let weather_id = crate::dex_data::ID::new(weather_name);
+                                let _applied = battle.field.set_weather(weather_id, None);
+                            }
                         }
                     }
                 }
@@ -121,11 +183,11 @@ pub fn self_drops(
                 }
             } else {
                 // this.moveHit(source, source, move, moveData.self, isSecondary, true);
-                // TODO: Implement moveHit function
-                // This would apply the self effects to the source Pokemon
-                // For self-drop moves without boosts check, just apply directly
+                // Apply all self effects to the source Pokemon
+
                 if let Some(ref active_move) = battle.active_move.clone() {
                     if let Some(ref self_data) = active_move.self_data {
+                        // Apply stat boosts
                         if let Some(ref boosts) = self_data.boosts {
                             let mut boost_array = Vec::new();
                             if boosts.atk != 0 {
@@ -151,6 +213,69 @@ pub fn self_drops(
                             }
 
                             battle.boost(&boost_array, source_pos, Some(source_pos), None, false, true);
+                        }
+
+                        // Apply status from self effect (to source)
+                        // JS: if (moveData.status) {
+                        //     hitResult = target.setStatus(moveData.status, source, move);
+                        // }
+                        if let Some(ref status_name) = self_data.status {
+                            let status_id = crate::dex_data::ID::new(status_name);
+                            let _applied = Pokemon::set_status(battle, source_pos, status_id, None, None, false);
+                        }
+
+                        // Apply volatile status from self effect (to source)
+                        // JS: if (moveData.volatileStatus) {
+                        //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
+                        // }
+                        if let Some(ref volatile_status_name) = self_data.volatile_status {
+                            let volatile_id = crate::dex_data::ID::new(volatile_status_name);
+                            Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None);
+                        }
+
+                        // Apply side condition from self effect (to source's side)
+                        // JS: if (moveData.sideCondition) {
+                        //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
+                        // }
+                        if let Some(ref side_condition_name) = self_data.side_condition {
+                            let side_condition_id = crate::dex_data::ID::new(side_condition_name);
+                            let _applied = battle.sides[source_pos.0].add_side_condition(side_condition_id, None);
+                        }
+
+                        // Apply slot condition from self effect (to source's slot)
+                        // JS: if (moveData.slotCondition) {
+                        //     hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
+                        // }
+                        if let Some(ref slot_condition_name) = self_data.slot_condition {
+                            let slot_condition_id = crate::dex_data::ID::new(slot_condition_name);
+                            let _applied = battle.sides[source_pos.0].add_slot_condition(source_pos.1, slot_condition_id, None);
+                        }
+
+                        // Apply pseudo weather from self effect
+                        // JS: if (moveData.pseudoWeather) {
+                        //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
+                        // }
+                        if let Some(ref pseudo_weather_name) = self_data.pseudo_weather {
+                            let pseudo_weather_id = crate::dex_data::ID::new(pseudo_weather_name);
+                            let _applied = battle.field.add_pseudo_weather(pseudo_weather_id, None);
+                        }
+
+                        // Apply terrain from self effect
+                        // JS: if (moveData.terrain) {
+                        //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
+                        // }
+                        if let Some(ref terrain_name) = self_data.terrain {
+                            let terrain_id = crate::dex_data::ID::new(terrain_name);
+                            let _applied = battle.field.set_terrain(terrain_id, None);
+                        }
+
+                        // Apply weather from self effect
+                        // JS: if (moveData.weather) {
+                        //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
+                        // }
+                        if let Some(ref weather_name) = self_data.weather {
+                            let weather_id = crate::dex_data::ID::new(weather_name);
+                            let _applied = battle.field.set_weather(weather_id, None);
                         }
                     }
                 }
