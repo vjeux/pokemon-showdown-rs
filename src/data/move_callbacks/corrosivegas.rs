@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target, source) {
 ///     const item = target.takeItem(source);
@@ -28,13 +29,7 @@ pub fn on_hit(
     let source = pokemon_pos;
 
     // const item = target.takeItem(source);
-    let item = {
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.take_item()
-    };
+    let item = Pokemon::take_item(battle, target, Some(source));
 
     // if (item) {
     if let Some(item_id) = item {

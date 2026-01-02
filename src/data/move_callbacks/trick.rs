@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTryImmunity(target) {
 ///     return !target.hasAbility('stickyhold');
@@ -70,22 +71,10 @@ pub fn on_hit(
     };
 
     // const yourItem = target.takeItem(source);
-    let your_item = {
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.take_item()
-    };
+    let your_item = Pokemon::take_item(battle, target, Some(source_pos));
 
     // const myItem = source.takeItem();
-    let my_item = {
-        let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        source_pokemon.take_item()
-    };
+    let my_item = Pokemon::take_item(battle, source_pos, None);
 
     // if (target.item || source.item || (!yourItem && !myItem)) {
     //     if (yourItem) target.item = yourItem.id;

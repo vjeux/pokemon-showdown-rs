@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(pokemon, source) {
 ///     const item = pokemon.getItem();
@@ -39,13 +40,7 @@ pub fn on_hit(
 
     // if ((item.isBerry || item.isGem) && pokemon.takeItem(source)) {
     if is_berry_or_gem {
-        let took_item = {
-            let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            pokemon_pokemon.take_item().is_some()
-        };
+        let took_item = Pokemon::take_item(battle, pokemon, None).is_some();
         if took_item {
             // this.add('-enditem', pokemon, item.name, '[from] move: Incinerate');
             let pokemon_ident = {

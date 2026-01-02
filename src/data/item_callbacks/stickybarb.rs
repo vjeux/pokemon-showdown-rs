@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onResidual(pokemon) {
 ///     this.damage(pokemon.baseMaxhp / 8);
@@ -75,13 +76,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
     }
 
     // Take item from target
-    let barb = {
-        let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target.take_item()
-    };
+    let barb = Pokemon::take_item(battle, target_pos, Some(source_pos));
 
     // if (!barb) return;
     let barb = match barb {

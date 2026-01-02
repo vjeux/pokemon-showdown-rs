@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onBasePower(basePower, source, target, move) {
 ///     const item = target.getItem();
@@ -102,13 +103,9 @@ pub fn on_after_hit(
         return EventResult::Continue;
     }
 
-    //     const item = target.takeItem();
+        //     const item = target.takeItem();
     let taken_item = {
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        let item = target_pokemon.take_item();
+        let item = Pokemon::take_item(battle, target, Some(source));
         eprintln!("KNOCKOFF AfterHit: Removed item {:?}", item);
         item
     };

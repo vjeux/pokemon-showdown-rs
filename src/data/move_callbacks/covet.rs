@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterHit(target, source, move) {
 ///     if (source.item || source.volatiles['gem']) {
@@ -48,13 +49,7 @@ pub fn on_after_hit(
     }
 
     // const yourItem = target.takeItem(source);
-    let your_item = {
-        let target_pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.take_item()
-    };
+    let your_item = Pokemon::take_item(battle, target_pos, Some(source_pos));
 
     // if (!yourItem) {
     //     return;
