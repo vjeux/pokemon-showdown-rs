@@ -115,11 +115,46 @@ impl Pokemon {
             self.can_terastallize = self.tera_type.clone();
         }
 
-        // JS: for (const i in this.volatiles) { if (this.volatiles[i].linkedStatus) {...} }
-        // Note: Missing removeLinkedVolatiles() call for each linked volatile
-        // This requires properly implementing linked_pokemon and linked_status in EffectState.data
-        // For now, skip this step as the infrastructure isn't fully implemented
-        // See remove_linked_volatiles.rs for details on what's needed
+        // JS: for (const i in this.volatiles) {
+        // JS:     if (this.volatiles[i].linkedStatus) {
+        // JS:         this.removeLinkedVolatiles(this.volatiles[i].linkedStatus, this.volatiles[i].linkedPokemon);
+        // JS:     }
+        // JS: }
+        // ✅ NOW IMPLEMENTED: Loop through volatiles and remove linked volatiles
+        let this_pokemon = (self.side_index, self.position);
+        for (_volatile_id, volatile_state) in &self.volatiles {
+            // Check if this volatile has linkedStatus and linkedPokemon
+            if let Some(linked_status_value) = volatile_state.data.get("linkedStatus") {
+                if let Some(linked_pokemon_value) = volatile_state.data.get("linkedPokemon") {
+                    // Parse linkedStatus as ID
+                    if let Some(linked_status_str) = linked_status_value.as_str() {
+                        let linked_status_id = ID::from(linked_status_str);
+
+                        // Parse linkedPokemon as array of positions
+                        if let Some(linked_pokemon_array) = linked_pokemon_value.as_array() {
+                            let mut linked_pokemon_positions = Vec::new();
+                            for pos_value in linked_pokemon_array {
+                                if let Some(pos_arr) = pos_value.as_array() {
+                                    if pos_arr.len() == 2 {
+                                        if let (Some(side), Some(slot)) = (pos_arr[0].as_u64(), pos_arr[1].as_u64()) {
+                                            linked_pokemon_positions.push((side as usize, slot as usize));
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Call remove_linked_volatiles
+                            Pokemon::remove_linked_volatiles(
+                                battle,
+                                this_pokemon,
+                                &linked_status_id,
+                                &linked_pokemon_positions,
+                            );
+                        }
+                    }
+                }
+            }
+        }
 
         // JS: if (this.species.name === 'Eternatus-Eternamax' && this.volatiles['dynamax']) {...}
         // Special case for Eternamax - preserve dynamax volatile
