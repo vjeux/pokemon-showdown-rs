@@ -10,6 +10,7 @@ use once_cell::sync::Lazy;
 use std::collections::HashMap;
 
 /// Type of condition
+/// JavaScript equivalent: EffectType for conditions (sim/dex-conditions.ts)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub enum ConditionType {
     /// Non-volatile status (burn, paralysis, poison, sleep, freeze)
@@ -30,6 +31,8 @@ pub enum ConditionType {
 }
 
 /// Condition definition
+/// JavaScript equivalent: ConditionData (sim/dex-conditions.ts)
+/// ~30 fields in JavaScript
 #[derive(Debug, Clone)]
 pub struct ConditionDef {
     /// Unique ID
@@ -111,6 +114,7 @@ pub struct ConditionDef {
 }
 
 /// Move restriction type
+/// TODO: Not in JavaScript - Rust-specific enum for categorizing move restrictions
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum MoveRestriction {
     /// Taunt: No status moves
