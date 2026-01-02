@@ -169,9 +169,17 @@ mod on_event;
 mod on_event_priority;
 mod run_custom_event_handlers;
 
+/// JavaScript equivalent: { side: SideID, secret: string, shared: string }
+/// 3 fields in JavaScript
 pub struct SplitMessage {
+    /// Side ID for side-specific content
+    /// JavaScript: side: SideID
     pub side: SideID,
+    /// Secret message (shown only to this side)
+    /// JavaScript: secret: string
     pub secret: String,
+    /// Shared message (shown to all players)
+    /// JavaScript: shared: string
     pub shared: String,
 }
 
@@ -190,33 +198,43 @@ pub enum Arg<'a> {
 /// JavaScript: interface EventListener extends EventListenerWithoutPriority
 #[derive(Clone)]
 /// JavaScript equivalent: EventListener (sim/battle.ts)
-/// Fields: order, priority, subOrder, effectOrder, speed
-/// JavaScript equivalent: EventListener (sim/battle.ts)
-/// Fields: order, priority, subOrder, effectOrder, speed
-/// JavaScript equivalent: EventListener (sim/battle.ts)
-/// Fields: order, priority, subOrder, effectOrder, speed
+/// 10 fields in JavaScript
 pub struct EventListener {
     /// Effect that owns this handler
+    /// JavaScript: effect: BasicEffect (via effectId)
     pub effect_id: ID,
     /// Type of effect (Ability, Item, Move, Status, etc.)
+    /// JavaScript: effectType: EffectType
     pub effect_type: EffectType,
     /// Target Pokemon (optional)
+    /// JavaScript: target?: Pokemon
+    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub target: Option<(usize, usize)>,
     /// Index for multi-target events
+    /// JavaScript: index?: number
     pub index: Option<usize>,
     /// Effect state
+    /// JavaScript: state?: EffectState
     pub state: Option<EffectState>,
     /// Effect holder (Pokemon/Side/Field/Battle)
+    /// JavaScript: effectHolder?: Pokemon
+    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub effect_holder: Option<(usize, usize)>,
     /// Order value (false = first in JS, represented as Option<i32>)
+    /// JavaScript: order?: false | number
+    /// TODO: Rust cannot represent the union type (false | number), uses Option<i32>
     pub order: Option<i32>,
     /// Priority value (higher = earlier)
+    /// JavaScript: priority: number
     pub priority: i32,
     /// Sub-order for same priority
+    /// JavaScript: subOrder: number
     pub sub_order: i32,
     /// Effect order (for hazards and abilities with same priority)
+    /// JavaScript: effectOrder?: number
     pub effect_order: Option<i32>,
     /// Speed stat (for speed-based sorting)
+    /// JavaScript: speed?: number
     pub speed: Option<f64>,
 }
 
@@ -248,15 +266,21 @@ pub type SpreadMoveHitResult = (Vec<Option<i32>>, Vec<Option<(usize, usize)>>);
 
 /// Custom event handler registered via onEvent (for testing)
 /// JavaScript: { callback, target, priority, order, subOrder }
+/// JavaScript equivalent: CustomEventHandler (sim/battle.ts)
+/// 4 fields in JavaScript
 pub struct CustomEventHandler {
     /// The callback function - now receives EventContext instead of &mut Battle
     /// This eliminates the circular reference and unsafe code
+    /// JavaScript: callback: (this: Battle, ...args: any[]) => any
     pub callback: EventCallback,
     /// Priority for event ordering (higher = earlier)
+    /// JavaScript: priority: number
     pub priority: i32,
     /// Order value
+    /// JavaScript: order: boolean
     pub order: bool,
     /// Sub-order for same priority
+    /// JavaScript: subOrder: number
     pub sub_order: i32,
 }
 
@@ -528,7 +552,6 @@ pub enum BattleRequestState {
 #[derive(Serialize, Deserialize)]
 /// JavaScript equivalent: Battle (sim/battle.ts)
 /// 153 fields in JavaScript
-/// JavaScript equivalent: Battle (sim/global-types.ts)
 pub struct Battle {
     /// Battle ID
     /// JavaScript: readonly id: ID
@@ -549,37 +572,51 @@ pub struct Battle {
     pub format_data: EffectState,
 
     /// Game type (singles, doubles, etc.)
+    /// JavaScript: readonly gameType: GameType
     pub game_type: GameType,
     /// Generation
+    /// JavaScript: readonly gen: number
     pub gen: u8,
     /// Number of active pokemon per half-field
+    /// JavaScript: readonly activePerHalf: number
     pub active_per_half: usize,
     /// Dex for accessing Pokemon data
+    /// JavaScript: readonly dex: ModdedDex
     #[serde(skip)]
     pub dex: crate::dex::Dex,
     /// Rule table for format rules
+    /// JavaScript: readonly ruleTable: Map<string, string>
     #[serde(skip)]
     pub rule_table: Option<crate::data::formats::RuleTable>,
 
     /// The battle field
+    /// JavaScript: readonly field: Field
     pub field: Field,
     /// The sides (players)
+    /// JavaScript: readonly sides: Side[]
     pub sides: Vec<Side>,
     /// The action queue
+    /// JavaScript: readonly queue: BattleQueue
     pub queue: BattleQueue,
     /// Speed order for active Pokemon (JS: speedOrder)
     /// Maps active pokemon to their position: side.n * sides.length + position
+    /// JavaScript: speedOrder: Pokemon[]
+    /// TODO: Rust uses indices instead of Pokemon references due to ownership
     pub speed_order: Vec<usize>,
 
     /// Random number generator
+    /// JavaScript: readonly prng: PRNG
     #[serde(skip)]
     pub prng: PRNG,
     /// Starting PRNG seed
+    /// JavaScript: readonly prngSeed: PRNGSeed
     pub prng_seed: PRNGSeed,
 
     /// Battle log
+    /// JavaScript: readonly log: string[]
     pub log: Vec<String>,
     /// Input log
+    /// JavaScript: readonly inputLog: string[]
     pub input_log: Vec<String>,
     /// Message log (for clients)
     /// JavaScript: readonly messageLog: string[]
@@ -594,22 +631,29 @@ pub struct Battle {
     pub report_percentages: bool,
 
     /// Current request state
+    /// JavaScript: requestState: 'teamPreview' | 'move' | 'switch' | ''
+    /// TODO: Rust uses enum instead of string union
     pub request_state: BattleRequestState,
     // TODO: DELETE - Not in JavaScript Battle class
     /// Whether requests have been sent to players
-    /// JavaScript: sentRequests
     pub sent_requests: bool,
     /// Current turn number
+    /// JavaScript: turn: number
     pub turn: i32,
     /// Is it mid-turn?
+    /// JavaScript: midTurn: boolean
     pub mid_turn: bool,
     /// Has the battle started?
+    /// JavaScript: started: boolean
     pub started: bool,
     /// Has the battle ended?
+    /// JavaScript: ended: boolean
     pub ended: bool,
     /// Was this battle deserialized from saved state?
+    /// JavaScript: deserialized?: boolean
     pub deserialized: bool,
     /// Winner (side ID string)
+    /// JavaScript: winner?: string
     pub winner: Option<String>,
 
     /// Battle actions handler
@@ -622,16 +666,20 @@ pub struct Battle {
     /// JavaScript: lastMove: ActiveMove | null
     pub last_move: Option<crate::battle_actions::ActiveMove>,
     /// Last successful move this turn (for Dancer ability)
+    /// JavaScript: lastSuccessfulMoveThisTurn?: ID
     pub last_successful_move_this_turn: Option<ID>,
     /// Last move log line index (for attrLastMove)
+    /// JavaScript: lastMoveLine: number
     pub last_move_line: i32,
     /// Last damage dealt (for Counter in Gen 1)
+    /// JavaScript: lastDamage: number
     pub last_damage: i32,
     /// Quick Claw roll result for this turn (Gen 2-3)
     /// JavaScript: quickClawRoll: boolean
     pub quick_claw_roll: bool,
 
     /// Currently active move being executed
+    /// JavaScript: activeMove: ActiveMove | null
     pub active_move: Option<crate::battle_actions::ActiveMove>,
     /// Pokemon currently using a move
     /// JavaScript: activePokemon: Pokemon | null
@@ -643,16 +691,20 @@ pub struct Battle {
     pub active_target: Option<(usize, usize)>, // (side_idx, poke_idx)
 
     /// Effect order counter
+    /// JavaScript: effectOrder: number
     pub effect_order: i32,
 
     /// Current effect (JavaScript: effect: Effect)
     /// NOTE: Rust also has current_effect for internal use
+    /// JavaScript: effect: Effect | null
     pub effect: Option<ID>,
     /// Current effect state (JavaScript: effectState: EffectState)
     /// NOTE: Rust also has current_effect_state for internal use
+    /// JavaScript: effectState: EffectState
     pub effect_state: EffectState,
     /// Current event object (JavaScript: event: AnyObject)
     /// NOTE: Rust also has current_event for internal use
+    /// JavaScript: event: AnyObject
     pub event: Option<EventInfo>,
 
     // TODO: DELETE - Not in JavaScript Battle class
@@ -675,7 +727,7 @@ pub struct Battle {
     /// JavaScript: sentLogPos: number
     pub sent_log_pos: usize,
     /// Whether end message has been sent
-    /// JavaScript: sentEnd
+    /// JavaScript: sentEnd: boolean
     pub sent_end: bool,
 
     /// Team generator (for random battles)
@@ -689,18 +741,24 @@ pub struct Battle {
     pub send: Option<Box<dyn Fn(&str, &str) + Send + Sync>>,
 
     /// Debug mode
+    /// JavaScript: debugMode?: boolean
     pub debug_mode: bool,
     /// Rated match (boolean true or string description)
+    /// JavaScript: rated?: boolean | string
+    /// TODO: Rust uses Option<String> instead of the union type
     pub rated: Option<String>,
     /// Strict choices (errors on invalid choices)
+    /// JavaScript: strictChoices?: boolean
     pub strict_choices: bool,
     /// Support choice cancellation (allow undo)
-    /// JavaScript: supportCancel
+    /// JavaScript: supportCancel: boolean
     pub support_cancel: bool,
     /// Force random chance outcome (for testing)
+    /// JavaScript: forceRandomChance?: boolean
     pub force_random_chance: Option<bool>,
 
     /// Hints shown to players
+    /// JavaScript: hints: Set<string>
     pub hints: HashSet<String>,
 
     /// Custom event handlers (for testing)
@@ -710,7 +768,7 @@ pub struct Battle {
     pub events: std::collections::HashMap<String, Vec<CustomEventHandler>>,
 
     /// Faint queue - Pokemon waiting to faint
-    /// Equivalent to battle.ts faintQueue
+    /// JavaScript: faintQueue: FaintData[]
     pub faint_queue: Vec<FaintData>,
 }
 
