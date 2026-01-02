@@ -140,12 +140,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Updated 2 callsites (healingwish.rs, lunardance.rs)
 
 #### clear_volatile_full.rs
-- Status: ❌ Not Started
-- Issues:
-  - Should be moved to clear_volatile.rs
-  - Missing hpType and hpPower implementation
-  - attacked_by field doesn't exist in Rust Pokemon struct
-- Action: Consolidate with clear_volatile.rs and implement missing fields
+- Status: 📝 Not Applicable (File does not exist)
+- Issue: Was listed as needing consolidation with clear_volatile.rs
+- Note: This file does not exist in the codebase, may have been a planned feature or already consolidated
 
 #### copy_volatile_from.rs
 - Status: ✅ Fixed (Session 24 Part 39)
@@ -161,9 +158,10 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing: linkedPokemon bidirectional link updating (complex, requires multi-Pokemon updates)
 
 #### copy_volatile_from_full.rs
-- Status: ❌ Not Started
-- Issue: "TODO: implement the same logic as JavaScript"
-- Action: Complete volatile copying logic
+- Status: ✅ Deleted (Session 24 Part 41)
+- Issue: Was a duplicate implementation
+- Action: Deleted redundant file, consolidated into copy_volatile_from.rs
+- Note: copy_volatile_from.rs is now the canonical 1-to-1 JavaScript implementation
 
 #### cure_status.rs
 - Status: ❌ Not Started
