@@ -177,7 +177,9 @@ pub fn run_move_effects(
                         let mut state = crate::event_system::EffectState::new(volatile_id.clone());
                         state.duration = final_duration;
                         state.target = Some(target_pos);
+                        state.source = Some(_source_pos);
                         state.source_slot = Some(_source_pos.1);
+                        state.source_effect = Some(move_data.id.clone());
 
                         pokemon.volatiles.insert(volatile_id.clone(), state);
                         eprintln!("[RUN_MOVE_EFFECTS] Successfully added volatile '{}' with duration {:?}", volatile_status, final_duration);
