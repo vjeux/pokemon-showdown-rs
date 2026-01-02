@@ -53,9 +53,11 @@ impl BattleQueue {
                         pokemon_index: pokemon_idx,
                         move_id: move_id.clone(),
                         target_loc: side_action.target_loc.unwrap_or(0),
+                        original_target: None, // Will be set during target resolution
                         mega: side_action.mega,
                         zmove: side_action.zmove.clone(),
                         max_move: side_action.max_move.clone(),
+                        source_effect: None,
                         terastallize: side_action.terastallize.clone(),
                         move_priority_modified: None,
                         priority: 0,
