@@ -2226,6 +2226,39 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
+### Session 24 Part 25 - 2026-01-02 (battle_actions EffectState target - COMPLETED)
+- **Goal**: Add missing EffectState.target assignments in spread_move_hit and run_move_effects
+- **Completed**:
+  - ✅ Discovered 2 battle_actions files missing target assignments when creating volatile states
+  - ✅ Both files add volatile status effects from move secondaries
+  - ✅ Added target assignment in spread_move_hit.rs: `state.target = Some(target_pos);`
+  - ✅ Added target assignment in run_move_effects.rs: `state.target = Some(target_pos);`
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Files Now Improved**:
+  - battle_actions/spread_move_hit.rs - Now properly initializes volatile EffectState.target
+    - ✅ NOW IMPLEMENTED: `state.target = Some(target_pos);`
+    - Context: Adds volatile status from move secondary effects (spread moves)
+  - battle_actions/run_move_effects.rs - Now properly initializes volatile EffectState.target
+    - ✅ NOW IMPLEMENTED: `state.target = Some(target_pos);`
+    - Context: Adds volatile status from move effects
+    - Already had source_slot assignment, now also has target
+- **Technical Details**:
+  - Found by systematic search for EffectState::new calls
+  - Both files handle volatile status application from moves
+  - spread_move_hit handles secondary effects for multi-target moves
+  - run_move_effects handles primary move effects
+  - Simple pattern: Create EffectState, set duration, set target
+  - Completes EffectState initialization pattern across battle_actions module
+- **Session Statistics**:
+  - 2 files improved (spread_move_hit, run_move_effects)
+  - 2 feature implementations (2 target assignments)
+  - 2 files modified in src/battle_actions/
+  - 2 insertions (1 per file)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
