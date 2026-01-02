@@ -29,6 +29,7 @@ mod winner;
 mod destroy;
 
 /// Protocol message types
+/// JavaScript equivalent: Protocol messages parsed from strings (sim/battle-stream.ts)
 #[derive(Debug, Clone, PartialEq)]
 pub enum BattleMessage {
     // Battle initialization
@@ -828,6 +829,7 @@ pub struct BattleStream {
 
 /// Replay mode options
 /// Equivalent to replay option in battle-stream.ts
+/// JavaScript equivalent: 'spectator' | true | false (sim/battle-stream.ts)
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
 pub enum ReplayMode {
     #[default]
