@@ -48,11 +48,7 @@ impl Pokemon {
         // JS:     this.battle.add('-end', this, 'Nightmare', '[silent]');
         // JS: }
         let removed_nightmare = if status_str == "slp" {
-            let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return None,
-            };
-            pokemon_mut.volatiles.remove(&ID::new("nightmare")).is_some()
+            Pokemon::remove_volatile(battle, pokemon_pos, &ID::new("nightmare"))
         } else {
             false
         };

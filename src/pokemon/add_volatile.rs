@@ -258,6 +258,10 @@ impl Pokemon {
         match start_result {
             EventResult::Boolean(false) => {
                 // Start event failed, remove the volatile
+                // NOTE: Direct removal is correct here (not Pokemon::remove_volatile) because:
+                // 1. JavaScript does direct `delete this.volatiles[status.id]` (not removeVolatile)
+                // 2. This is rollback before linkedPokemon setup, so no cleanup needed
+                // 3. We shouldn't call singleEvent('End') for a volatile that failed Start
                 let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                     Some(p) => p,
                     None => return false,
