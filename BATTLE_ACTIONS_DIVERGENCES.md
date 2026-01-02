@@ -492,6 +492,24 @@ These files exist only in Rust and should be evaluated:
 - 1:1 match with JavaScript implementation
 
 ### 2026-01-02
+**Fixed: run_move_effects.rs** ✅ IMPLEMENTATION CORRECTED!
+- Changed boost application to use battle.boost() instead of direct modification
+  - BEFORE: Directly modified pokemon.boosts (no events fired)
+  - AFTER: Uses battle.boost() to fire ChangeBoost events and handle limits
+  - JavaScript: `this.boost(moveData.boosts, target, source, move)`
+- Changed status application to use Pokemon::set_status()
+  - BEFORE: Manually set pokemon.status field
+  - AFTER: Uses Pokemon::set_status() for immunity checks and events
+  - JavaScript: `target.setStatus(moveData.status, source, move)`
+- Changed volatile application to use Pokemon::add_volatile()
+  - BEFORE: Manually created EffectState and inserted into volatiles map
+  - AFTER: Uses Pokemon::add_volatile() for proper event handling
+  - JavaScript: `target.addVolatile(moveData.volatileStatus, source, move)`
+- Reduced code from 213 lines to 122 lines (91 lines removed)
+- Now consistent with secondaries.rs, self_drops.rs, spread_move_hit.rs patterns
+- 1:1 match with JavaScript implementation
+
+### 2026-01-02
 **Completed: secondaries.rs ModifySecondaries event** ✅ EVENT IMPLEMENTED!
 - Implemented ModifySecondaries event to allow abilities to filter/modify secondaries
 - Fires event before applying any secondary effects for each target
