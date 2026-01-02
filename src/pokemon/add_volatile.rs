@@ -184,10 +184,15 @@ impl Pokemon {
         // JS:     this.volatiles[status.id].sourceSlot = source.getSlot();
         // JS: }
         // JS: if (sourceEffect) this.volatiles[status.id].sourceEffect = sourceEffect;
-        // Note: Missing source, sourceSlot, sourceEffect assignments to EffectState
         // Create effect state with duration
         let mut state = crate::event_system::EffectState::new(volatile_id.clone());
         state.duration = final_duration;
+        // ✅ NOW IMPLEMENTED: source, sourceSlot assignments (Session 24 Part 20)
+        if let Some(src_pos) = source_pos {
+            state.source = Some(src_pos);
+            state.source_slot = Some(src_pos.1); // slot = position
+        }
+        // Note: sourceEffect parameter not in function signature yet - would need to add
 
         pokemon_mut.volatiles.insert(volatile_id.clone(), state);
 
