@@ -798,21 +798,31 @@ impl BattleMessage {
 
 /// Battle stream for managing a battle with protocol I/O
 /// Equivalent to BattleStream class in battle-stream.ts
+/// JavaScript equivalent: BattleStream (sim/battle-stream.ts)
+/// 8 fields in JavaScript
 pub struct BattleStream {
     /// The underlying battle
+    /// JavaScript: battle: Battle
     battle: Option<Battle>,
     /// Output message queue
+    /// JavaScript: (not explicitly stored, generated on-demand via battle.log)
     output_queue: VecDeque<String>,
     /// Input buffer (not yet implemented)
+    /// JavaScript: (not explicitly stored in BattleStream)
     #[allow(dead_code)]
     input_buffer: String,
     /// Debug mode
+    /// JavaScript: debug: boolean
     pub debug: bool,
     /// No-catch mode (propagate errors instead of catching)
+    /// JavaScript: noCatch: boolean
     pub no_catch: bool,
     /// Replay mode
+    /// JavaScript: replay: 'spectator' | true | false
+    /// TODO: Rust uses enum, JavaScript uses union type
     pub replay: ReplayMode,
     /// Keep alive (don't end stream on battle end)
+    /// JavaScript: keepAlive: boolean
     pub keep_alive: bool,
 }
 
@@ -829,10 +839,20 @@ pub enum ReplayMode {
 /// Stream options
 /// Equivalent to BattleStream constructor options in battle-stream.ts
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: BattleStream constructor options (sim/battle-stream.ts)
+/// 4 fields in JavaScript
 pub struct BattleStreamOptions {
+    /// Debug mode
+    /// JavaScript: debug?: boolean
     pub debug: bool,
+    /// No-catch mode
+    /// JavaScript: noCatch?: boolean
     pub no_catch: bool,
+    /// Keep alive mode
+    /// JavaScript: keepAlive?: boolean
     pub keep_alive: bool,
+    /// Replay mode
+    /// JavaScript: replay?: 'spectator' | true | false
     pub replay: ReplayMode,
 }
 
@@ -846,18 +866,26 @@ impl BattleStream {
 
 /// Player streams container
 /// Equivalent to the return type of getPlayerStreams() in battle-stream.ts
+/// JavaScript equivalent: ObjectReadWriteStream[] (indexed by channel)
+/// 6 fields in JavaScript (indexed streams)
 pub struct PlayerStreams {
     /// Omniscient stream (sees all)
+    /// JavaScript: streams[-1]
     pub omniscient: VecDeque<String>,
     /// Spectator stream (public info only)
+    /// JavaScript: streams[0]
     pub spectator: VecDeque<String>,
     /// Player 1 stream
+    /// JavaScript: streams[1]
     pub p1: VecDeque<String>,
     /// Player 2 stream
+    /// JavaScript: streams[2]
     pub p2: VecDeque<String>,
     /// Player 3 stream (for multi battles)
+    /// JavaScript: streams[3]
     pub p3: VecDeque<String>,
     /// Player 4 stream (for multi battles)
+    /// JavaScript: streams[4]
     pub p4: VecDeque<String>,
 }
 
