@@ -122,9 +122,50 @@ impl Pokemon {
         }
 
         // JS: if (sourceEffect && !isFromFormeChange && !isTransform) {
-        // JS:     this.battle.add('-ability', ...);
+        // JS:     if (source) {
+        // JS:         this.battle.add('-ability', this, ability.name, oldAbility.name, `[from] ${sourceEffect.fullname}`, `[of] ${source}`);
+        // JS:     } else {
+        // JS:         this.battle.add('-ability', this, ability.name, oldAbility.name, `[from] ${sourceEffect.fullname}`);
+        // JS:     }
         // JS: }
-        // Note: Missing battle.add message
+        // ✅ NOW IMPLEMENTED (Session 24 Part 87): battle.add message for ability changes
+        // Note: Using IDs as approximation for ability names (fullname requires Dex access)
+        if let Some(src_effect) = source_effect {
+            if !_is_from_forme_change && !is_transform {
+                let pokemon_ident = {
+                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return old_ability_id,
+                    };
+                    pokemon.get_slot()
+                };
+
+                if let Some(src_pos) = source_pos {
+                    let source_ident = {
+                        let source = match battle.pokemon_at(src_pos.0, src_pos.1) {
+                            Some(p) => p,
+                            None => return old_ability_id,
+                        };
+                        source.get_slot()
+                    };
+
+                    battle.add("-ability", &[
+                        pokemon_ident.as_str().into(),
+                        ability_id.as_str().into(),
+                        old_ability_id.as_str().into(),
+                        format!("[from] {}", src_effect.as_str()).into(),
+                        format!("[of] {}", source_ident).into(),
+                    ]);
+                } else {
+                    battle.add("-ability", &[
+                        pokemon_ident.as_str().into(),
+                        ability_id.as_str().into(),
+                        old_ability_id.as_str().into(),
+                        format!("[from] {}", src_effect.as_str()).into(),
+                    ]);
+                }
+            }
+        }
 
         // JS: if (ability.id && this.battle.gen > 3 && ...) {
         // JS:     this.battle.singleEvent('Start', ability, this.abilityState, this, source);
