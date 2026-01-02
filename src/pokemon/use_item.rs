@@ -109,7 +109,38 @@ impl Pokemon {
         // JS:     }
         // JS:     break;
         // JS: }
-        // Note: Missing battle.add message with special cases for Red Card and Gems (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 50): battle.add messages for item consumption
+        // Prepare message arguments (extract data, then drop borrows before battle.add call)
+        let message_args: Vec<Arg> = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return None,
+            };
+            let pokemon_str = format!("{}", pokemon);
+            let item_str = item_id.to_string();
+
+            if item_id.as_str() == "redcard" {
+                // Red Card case: add source if available
+                if let Some(source_pos) = _source_pos {
+                    if let Some(source) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                        let source_str = format!("[of] {}", source);
+                        vec![Arg::String(pokemon_str), Arg::String(item_str), Arg::String(source_str)]
+                    } else {
+                        vec![Arg::String(pokemon_str), Arg::String(item_str)]
+                    }
+                } else {
+                    vec![Arg::String(pokemon_str), Arg::String(item_str)]
+                }
+            } else if is_gem {
+                // Gem case: add '[from] gem'
+                vec![Arg::String(pokemon_str), Arg::String(item_str), Arg::String("[from] gem".to_string())]
+            } else {
+                // Default case: just pokemon and item
+                vec![Arg::String(pokemon_str), Arg::String(item_str)]
+            }
+        };
+        // All borrows dropped - now safe to call battle.add
+        battle.add("-enditem", &message_args);
 
         // JS: if (item.boosts) {
         // JS:     this.battle.boost(item.boosts, this, source, item);
