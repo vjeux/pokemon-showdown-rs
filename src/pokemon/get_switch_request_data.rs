@@ -81,7 +81,6 @@ impl Pokemon {
         });
 
         // JS:     moves: this[forAlly ? 'baseMoves' : 'moves'].map(move => {
-        // Note: Missing forAlly parameter to choose baseMoves vs moves
         // ✅ NOW IMPLEMENTED (Session 24 Part 68): forAlly parameter support
         //
         // Get move IDs based on forAlly parameter
