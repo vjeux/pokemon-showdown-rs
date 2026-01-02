@@ -37,13 +37,7 @@ pub fn on_hit(
         return EventResult::Continue;
     }
 
-    let has_immunity = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.run_status_immunity(battle, "slp", false)
-    };
+    let has_immunity = Pokemon::run_status_immunity(battle, target, "slp", false);
 
     if !has_immunity {
         return EventResult::Continue;
@@ -88,13 +82,7 @@ pub fn on_after_sub_damage(
         return EventResult::Continue;
     }
 
-    let has_immunity = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        target_pokemon.run_status_immunity(battle, "slp", false)
-    };
+    let has_immunity = Pokemon::run_status_immunity(battle, target, "slp", false);
 
     if !has_immunity {
         return EventResult::Continue;

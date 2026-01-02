@@ -13,13 +13,7 @@ impl Pokemon {
     //
     pub fn try_trap(battle: &mut Battle, pokemon_pos: (usize, usize), is_hidden: bool) -> bool {
         // JS: if (!this.runStatusImmunity('trapped')) return false;
-        let can_be_trapped = {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return false,
-            };
-            pokemon.run_status_immunity(battle, "trapped", false)
-        };
+        let can_be_trapped = Pokemon::run_status_immunity(battle, pokemon_pos, "trapped", false);
 
         if !can_be_trapped {
             return false;

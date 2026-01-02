@@ -30,7 +30,7 @@ pub fn on_try_hit(
         };
 
         let has_status = !target_pokemon.status.is_empty();
-        let has_immunity = target_pokemon.run_status_immunity(battle, "slp", false);
+        let has_immunity = Pokemon::run_status_immunity(battle, target, "slp", false);
 
         (has_status, has_immunity)
     };

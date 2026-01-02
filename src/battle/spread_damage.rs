@@ -194,14 +194,10 @@ impl Battle {
                     let effect_type = self.get_effect_type(eff);
                     if effect_type == "Weather" {
                         // Check if target is immune to this weather effect
-                        if let Some(side) = self.sides.get(side_idx) {
-                            if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                                if !pokemon.run_status_immunity(self, effect_id, false) {
-                                    // Target is immune to this weather damage
-                                    ret_vals.push(Some(0));
-                                    continue;
-                                }
-                            }
+                        if !Pokemon::run_status_immunity(self, (side_idx, poke_idx), effect_id, false) {
+                            // Target is immune to this weather damage
+                            ret_vals.push(Some(0));
+                            continue;
                         }
                     }
                 }

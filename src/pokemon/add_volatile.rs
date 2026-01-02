@@ -152,13 +152,7 @@ impl Pokemon {
         // JS:     return false;
         // JS: }
         // ✅ NOW IMPLEMENTED: runStatusImmunity check for volatile
-        let can_be_volatile = {
-            let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
-                Some(p) => p,
-                None => return false,
-            };
-            pokemon.run_status_immunity(battle, volatile_id.as_str(), false)
-        };
+        let can_be_volatile = Pokemon::run_status_immunity(battle, target_pos, volatile_id.as_str(), false);
 
         if !can_be_volatile {
             // ✅ NOW IMPLEMENTED (Session 24 Part 37): sourceEffect.status check for -immune message

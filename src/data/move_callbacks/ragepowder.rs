@@ -92,13 +92,7 @@ pub mod condition {
         };
 
         // if (source.runStatusImmunity('powder') && this.validTarget(ragePowderUser, source, move.target))
-        let has_powder_immunity = {
-            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            source_pokemon.run_status_immunity(battle, "powder", false)
-        };
+        let has_powder_immunity = Pokemon::run_status_immunity(battle, source, "powder", false);
 
         if !has_powder_immunity {
             return EventResult::Continue;

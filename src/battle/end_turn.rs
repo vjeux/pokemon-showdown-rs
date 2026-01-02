@@ -716,7 +716,7 @@ impl Battle {
             let should_run_maybe_trap = {
                 let pokemon = &self.sides[pokemon_pos.0].pokemon[pokemon_pos.1];
                 // Run if type is not known OR if not immune to trapped status
-                pokemon.known_type.is_none() || pokemon.run_status_immunity(self, "trapped", false)
+                pokemon.known_type.is_none() || Pokemon::run_status_immunity(self, pokemon_pos, "trapped", false)
             };
 
             if should_run_maybe_trap {
