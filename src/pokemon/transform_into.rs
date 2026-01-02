@@ -122,7 +122,7 @@ impl Pokemon {
         // Phase 1: Extract target data immutably
         let (target_species_id, target_weight_hg, target_types, target_added_type, target_stored_stats,
              target_move_slots, target_boosts, target_ability, target_has_substitute, target_transformed,
-             target_fainted) = {
+             target_fainted, target_times_attacked) = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return false,
@@ -140,6 +140,7 @@ impl Pokemon {
                 target.has_volatile(&ID::new("substitute")),
                 target.transformed,
                 target.fainted,
+                target.times_attacked,
             )
         };
 
@@ -237,7 +238,8 @@ impl Pokemon {
         // Note: Missing hpType/hpPower conditional copying based on gen
 
         // JS: this.timesAttacked = pokemon.timesAttacked;
-        // Note: Missing timesAttacked copying - field doesn't exist in Rust
+        // ✅ NOW IMPLEMENTED: timesAttacked copying
+        self_pokemon_mut.times_attacked = target_times_attacked;
 
         // JS: for (const moveSlot of pokemon.moveSlots) {
         // JS:     let moveName = moveSlot.move;
