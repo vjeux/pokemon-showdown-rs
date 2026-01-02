@@ -29,14 +29,13 @@ pub fn on_hit(
     // for (const pokemon of source.foes()) {
     //     pokemon.addVolatile('attract');
     // }
-    let source_side = source_pos.0;
-    let foe_side = 1 - source_side;
-
-    let foe_positions: Vec<(usize, usize)> = battle
-        .get_all_active(false)
-        .into_iter()
-        .filter(|(side_idx, _)| *side_idx == foe_side)
-        .collect();
+    let foe_positions = {
+        let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.foes(battle, false)
+    };
 
     for foe_pos in foe_positions {
         Pokemon::add_volatile(battle, foe_pos, ID::from("attract"), Some(source_pos));
