@@ -91,6 +91,33 @@ pub fn modify_damage(
     // baseDamage += 2;
     base_damage += 2;
 
+    // if (move.spreadHit) {
+    //   const spreadModifier = this.battle.gameType === "freeforall" ? 0.5 : 0.75;
+    //   this.battle.debug(`Spread modifier: ${spreadModifier}`);
+    //   baseDamage = this.battle.modify(baseDamage, spreadModifier);
+    // }
+    if let Some(ref active_move) = battle.active_move {
+        if active_move.spread_hit {
+            let spread_modifier = if battle.game_type == crate::dex_data::GameType::FreeForAll {
+                0.5
+            } else {
+                0.75
+            };
+            eprintln!("[MODIFY_DAMAGE] Spread modifier: {}", spread_modifier);
+            base_damage = battle.modify_f(base_damage, spread_modifier);
+        }
+        // else if (move.multihitType === "parentalbond" && move.hit > 1) {
+        //   const bondModifier = this.battle.gen > 6 ? 0.25 : 0.5;
+        //   this.battle.debug(`Parental Bond modifier: ${bondModifier}`);
+        //   baseDamage = this.battle.modify(baseDamage, bondModifier);
+        // }
+        else if active_move.multi_hit_type.as_deref() == Some("parentalbond") && active_move.hit > 1 {
+            let bond_modifier = if battle.gen > 6 { 0.25 } else { 0.5 };
+            eprintln!("[MODIFY_DAMAGE] Parental Bond modifier: {}", bond_modifier);
+            base_damage = battle.modify_f(base_damage, bond_modifier);
+        }
+    }
+
     // baseDamage = this.battle.runEvent("WeatherModifyDamage", pokemon, target, move, baseDamage);
     eprintln!("[MODIFY_DAMAGE] Before WeatherModifyDamage event: base_damage={}", base_damage);
     if let Some(modified) = battle.run_event(
