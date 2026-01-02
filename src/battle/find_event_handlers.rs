@@ -196,9 +196,9 @@ impl Battle {
         }
 
         // JavaScript: handlers.push(...this.findBattleEventHandlers(`on${eventName}`));
-        let battle_handler_ids = self.find_battle_event_handlers(&prefixed_event);
-        for id in battle_handler_ids {
-            handlers.push((event_name.to_string(), id, None));
+        let battle_handlers = self.find_battle_event_handlers(&prefixed_event, None, None);
+        for handler in battle_handlers {
+            handlers.push((event_name.to_string(), handler.effect_id, handler.effect_holder));
         }
 
         handlers
