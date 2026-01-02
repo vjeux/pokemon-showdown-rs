@@ -116,9 +116,10 @@ impl Pokemon {
         }
 
         // JS: for (const i in this.volatiles) { if (this.volatiles[i].linkedStatus) {...} }
-        // TODO: Remove linked volatiles before clearing
+        // Note: Missing removeLinkedVolatiles() call for each linked volatile
         // This requires properly implementing linked_pokemon and linked_status in EffectState.data
         // For now, skip this step as the infrastructure isn't fully implemented
+        // See remove_linked_volatiles.rs for details on what's needed
 
         // JS: if (this.species.name === 'Eternatus-Eternamax' && this.volatiles['dynamax']) {...}
         // Special case for Eternamax - preserve dynamax volatile

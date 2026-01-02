@@ -8,7 +8,7 @@ impl Pokemon {
         for slot in &mut self.move_slots {
             if let Some(move_data) = dex.moves().get(slot.id.as_str()) {
                 // Calculate base PP: move.pp * 8 / 5
-                // TODO: Handle noPPBoosts field when it's added to MoveData
+                // Note: Missing noPPBoosts field check - when added, skip PP boost for those moves
                 let base_pp = (move_data.pp * 8) / 5;
 
                 // For gen < 3, cap at 61

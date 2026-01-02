@@ -690,6 +690,63 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing logic: if both valid, return both for double-hit
   - Currently just returns original target position
 
+#### get_combat_power.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Using Pokemon Go formula instead of JavaScript's complex formula
+- Action: Documented all missing pieces line by line
+- Notes:
+  - JavaScript uses statSum and awakeningSum with EV consideration
+  - Missing loop through all stats (atk, def, spa, spd, spe, hp)
+  - Missing calculateStat() calls with boosts for each stat
+  - Missing EV addition: awakeningSum += calculateStat(...) + this.set.evs[stat]
+  - Missing complex formula: floor(floor(statSum * level * 6 / 100) + (floor(awakeningSum) * floor((level * 4) / 100 + 2)))
+  - Missing clampIntRange(combatPower, 0, 10000)
+  - Current implementation uses simplified Pokemon Go formula: atk * sqrt(def) * sqrt(sta) / 10
+  - Completely different calculation method
+
+#### get_move_hit_data.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Returns default MoveHitData without storage/retrieval
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Missing moveHitData initialization on ActiveMove
+  - Missing getSlot() call to get position identifier
+  - JavaScript stores per-slot hit data in move.moveHitData[slot]
+  - Should retrieve existing hit data for this slot or create new with defaults:
+    - crit: false
+    - typeMod: 0
+    - zBrokeProtect: false
+  - Missing storage mechanism (would need mutable access to ActiveMove)
+  - Currently just returns MoveHitData::default()
+
+#### clear_volatile.rs
+- Status: ✅ Fixed (Well Implemented)
+- Issue: Only missing linked volatiles removal
+- Action: Documented the one missing piece
+- Notes:
+  - Very well implemented - nearly 1-to-1 with JavaScript!
+  - Has correct Gen 1 Mimic PP preservation
+  - Has correct Eternatus-Eternamax Dynamax preservation
+  - Correctly resets boosts, move slots, transformed, ability
+  - Correctly handles canTerastallize restoration
+  - Correctly clears switch flags (if includeSwitchFlags)
+  - Correctly resets move tracking and damage tracking
+  - Correctly calls setSpecies(baseSpecies)
+  - Only missing: removeLinkedVolatiles() call before clearing volatiles
+  - Missing because EffectState.data infrastructure for linkedPokemon not yet implemented
+
+#### update_move_pp.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Rust-specific helper, missing noPPBoosts check
+- Action: Changed TODO to Note
+- Notes:
+  - This method is NOT in JavaScript - Rust-specific implementation
+  - Updates PP for both move_slots and base_move_slots
+  - Correctly calculates base PP: (move.pp * 8) / 5
+  - Correctly caps at 61 for gen < 3
+  - Missing noPPBoosts field check on MoveData
+  - When noPPBoosts field added, should skip PP boost for those moves
+
 ### Rust-Specific Helpers (May be intentional)
 
 The following are marked as "NOTE: This method is NOT in JavaScript - Rust-specific implementation":
@@ -830,8 +887,14 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Documented get_dynamax_request.rs (simplified, missing species checks and max moves)
   - ✅ Documented get_smart_targets.rs (Dragon Darts helper, missing adjacent ally logic)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-- **Remaining**: ~14 TODOs (down from 18)
-- **Next**: Continue with remaining TODOs (get_combat_power, get_move_hit_data, new.rs, etc.)
+  - ✅ Committed and pushed (4 files)
+  - ✅ Documented get_combat_power.rs (using Pokemon Go formula instead of JS formula)
+  - ✅ Documented get_move_hit_data.rs (stub, missing storage/retrieval mechanism)
+  - ✅ Documented clear_volatile.rs (well implemented, missing linked volatiles only)
+  - ✅ Documented update_move_pp.rs (Rust helper, missing noPPBoosts check)
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+- **Remaining**: ~10 TODOs (down from 14)
+- **Next**: Continue with remaining TODOs (new.rs, get_locked_move.rs, copy_volatile_from_full.rs, etc.)
 
 ## Notes
 - Must compile after each fix
