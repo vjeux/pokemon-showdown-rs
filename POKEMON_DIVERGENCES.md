@@ -366,9 +366,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Overall: **Now ~85% complete** (was ~40% before Session 15)
 
 #### ignoring_item.rs
-- Status: ✅ Fixed (Significantly Improved)
-- Issue: Missing Magic Room, isFling parameter, Ability Shield check, and gen checks
-- Action: Refactored to take Battle parameter, implemented Magic Room, isFling, Ability Shield, and gen checks
+- Status: ✅ Fixed (Fully Implemented - Session 24 Part 47)
+- Issue: Missing Magic Room, isFling parameter, Ability Shield check, Primal Orb check, ignoreKlutz flag, and gen checks
+- Action: Refactored to take Battle parameter, implemented all missing features
 - Notes:
   - ✅ NOW IMPLEMENTED: Refactored signature to take `battle: &Battle, is_fling: bool`
   - ✅ NOW IMPLEMENTED: Magic Room pseudo-weather check
@@ -376,10 +376,10 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED: Ability Shield check (prevents Klutz effect)
   - ✅ NOW IMPLEMENTED: Gen >= 5 check for inactive Pokemon (returns true)
   - ✅ NOW IMPLEMENTED: Gen >= 5 check for Fling with Klutz ability
+  - ✅ NOW IMPLEMENTED (Session 24 Part 47): Primal Orb check (Red/Blue Orb never suppressed)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 47): ignoreKlutz flag check (Macho Brace, Power items)
   - ✅ Updated 51 callsites across codebase
-  - Missing Primal Orb check (needs item data access)
-  - Missing ignoreKlutz flag check (needs item data access)
-  - Some items ignore Klutz (e.g., Macho Brace, Power items)
+  - Now **100% 1-to-1 with JavaScript!**
 
 #### run_status_immunity.rs
 - Status: ✅ Fixed (Significantly Improved)
@@ -2980,6 +2980,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 16. remove_linked_volatiles.rs - ✅ Complete (Session 24 Part 8)
 17. copy_volatile_from.rs - ✅ Complete (Session 24 Parts 39 & 46)
 18. get_smart_targets.rs - ✅ Complete (Session 24 Part 45)
+19. ignoring_item.rs - ✅ Complete (Session 24 Part 47)
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. try_set_status.rs - Core logic correct, simplified
