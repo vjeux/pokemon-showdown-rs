@@ -347,31 +347,37 @@ pub struct ActiveRequest {
 #[derive(Debug, Clone)]
 /// JavaScript equivalent: MoveRequest (sim/side.ts)
 /// 8 fields in JavaScript
-/// JavaScript equivalent: MoveRequest (sim/side.ts)
-/// 8 fields in JavaScript
-/// JavaScript equivalent: MoveRequest (sim/side.ts)
-/// 8 fields in JavaScript
 pub struct MoveRequest {
     /// Move ID
+    /// JavaScript: id: ID
     pub id: ID,
     /// Move name
+    /// JavaScript: move: string
     pub name: String,
     /// Current PP
+    /// JavaScript: pp: number
     pub pp: u8,
     /// Max PP
+    /// JavaScript: maxpp: number
     pub maxpp: u8,
     /// Move target type
+    /// JavaScript: target: string
     pub target: String,
     /// Is move disabled?
+    /// JavaScript: disabled: boolean
     pub disabled: bool,
 }
 
 /// Z-Move request data
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: ZMoveRequest (sim/side.ts)
+/// 2 fields in JavaScript
 pub struct ZMoveRequest {
     /// Z-Move name
+    /// JavaScript: move: string
     pub name: String,
     /// Z-Move target
+    /// JavaScript: target: string
     pub target: String,
 }
 
@@ -381,12 +387,16 @@ pub struct ZMoveRequest {
 #[derive(Debug, Clone, Default)]
 pub struct SideRequest {
     /// Player name
+    /// JavaScript: name: string
     pub name: String,
     /// Player ID
+    /// JavaScript: id: string
     pub id: String,
     /// Pokemon on team
+    /// JavaScript: pokemon: PokemonRequestData[]
     pub pokemon: Vec<PokemonSwitchRequestData>,
     /// No cancel allowed?
+    /// JavaScript: noCancel?: boolean
     pub no_cancel: Option<bool>,
 }
 
@@ -396,32 +406,46 @@ pub struct SideRequest {
 #[derive(Debug, Clone)]
 pub struct PokemonSwitchRequestData {
     /// Pokemon ident (e.g., "p1: Pikachu")
+    /// JavaScript: ident: string
     pub ident: String,
     /// Details string
+    /// JavaScript: details: string
     pub details: String,
     /// HP and status condition
+    /// JavaScript: condition: string
     pub condition: String,
     /// Is this Pokemon active?
+    /// JavaScript: active: boolean
     pub active: bool,
     /// Stats (except HP)
+    /// JavaScript: stats: StatsExceptHP
     pub stats: RequestStatsExceptHP,
     /// Moves
+    /// JavaScript: moves: ID[]
     pub moves: Vec<ID>,
     /// Base ability
+    /// JavaScript: baseAbility: ID
     pub base_ability: ID,
     /// Item
+    /// JavaScript: item: ID
     pub item: ID,
     /// Pokeball
+    /// JavaScript: pokeball: ID
     pub pokeball: ID,
     /// Current ability (if different from base)
+    /// JavaScript: ability?: ID
     pub ability: Option<ID>,
     /// Is commanding another Pokemon (Dondozo/Tatsugiri)
+    /// JavaScript: commanding?: boolean
     pub commanding: Option<bool>,
     /// Is reviving (Revival Blessing)
+    /// JavaScript: reviving?: boolean
     pub reviving: Option<bool>,
     /// Tera type
+    /// JavaScript: teraType?: string
     pub tera_type: Option<String>,
     /// Has terastallized
+    /// JavaScript: terastallized?: string
     pub terastallized: Option<String>,
 }
 
@@ -431,45 +455,66 @@ pub struct PokemonSwitchRequestData {
 #[derive(Debug, Clone, Default)]
 pub struct PokemonMoveRequestData {
     /// Available moves
+    /// JavaScript: moves: MoveOption[]
     pub moves: Vec<MoveRequestOption>,
     /// Maybe disabled by Imprison, etc.
+    /// JavaScript: maybeDisabled?: boolean
     pub maybe_disabled: Option<bool>,
     /// Maybe locked by Choice item, etc.
+    /// JavaScript: maybeLocked?: boolean
     pub maybe_locked: Option<bool>,
     /// Trapped by ability/move
+    /// JavaScript: trapped?: boolean
     pub trapped: Option<bool>,
     /// Maybe trapped
+    /// JavaScript: maybeTrapped?: boolean
     pub maybe_trapped: Option<bool>,
     /// Can mega evolve
+    /// JavaScript: canMegaEvo?: boolean
     pub can_mega_evo: Option<bool>,
     /// Can mega evolve X
+    /// JavaScript: canMegaEvoX?: boolean
     pub can_mega_evo_x: Option<bool>,
     /// Can mega evolve Y
+    /// JavaScript: canMegaEvoY?: boolean
     pub can_mega_evo_y: Option<bool>,
     /// Can ultra burst
+    /// JavaScript: canUltraBurst?: boolean
     pub can_ultra_burst: Option<bool>,
     /// Can use Z-move
+    /// JavaScript: canZMove?: (ZMoveOption | null)[]
     pub can_z_move: Option<Vec<Option<ZMoveOption>>>,
     /// Can Dynamax
+    /// JavaScript: canDynamax?: boolean
     pub can_dynamax: Option<bool>,
     /// Max moves available
+    /// JavaScript: maxMoves?: DynamaxOptions
     pub max_moves: Option<DynamaxOptions>,
     /// Can Terastallize (tera type if available)
+    /// JavaScript: canTerastallize?: string
     pub can_terastallize: Option<String>,
 }
 
 /// Move option in request
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: MoveOption (sim/side.ts)
+/// 5 fields in JavaScript
 pub struct MoveRequestOption {
     /// Move name
+    /// JavaScript: move: string
     pub move_name: String,
     /// Move ID
+    /// JavaScript: id: ID
     pub id: ID,
     /// Move target type
+    /// JavaScript: target?: string
     pub target: Option<String>,
     /// Is move disabled?
+    /// JavaScript: disabled?: boolean | string
+    /// TODO: Rust uses MoveDisabled enum to represent boolean | string union
     pub disabled: Option<MoveDisabled>,
     /// What disabled the move
+    /// JavaScript: disabledSource?: string
     pub disabled_source: Option<String>,
 }
 
@@ -488,38 +533,61 @@ pub enum MoveDisabled {
 #[derive(Debug, Clone)]
 pub struct DynamaxOptions {
     /// Max moves available
+    /// JavaScript: maxMoves: MaxMoveOption[]
     pub max_moves: Vec<MaxMoveOption>,
     /// Gigantamax forme if available
+    /// JavaScript: gigantamax?: string
     pub gigantamax: Option<String>,
 }
 
 /// Max move option
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: MaxMoveOption (sim/side.ts)
+/// 3 fields in JavaScript
 pub struct MaxMoveOption {
     /// Move name
+    /// JavaScript: move: string
     pub move_name: String,
     /// Move target type
+    /// JavaScript: target: string
     pub target: String,
     /// Is move disabled?
+    /// JavaScript: disabled?: boolean
     pub disabled: Option<bool>,
 }
 
 /// Z-Move option
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: ZMoveOption (sim/side.ts)
+/// 2 fields in JavaScript
 pub struct ZMoveOption {
     /// Z-Move name
+    /// JavaScript: move: string
     pub move_name: String,
     /// Z-Move target type
+    /// JavaScript: target: string
     pub target: String,
 }
 
 /// Stats except HP (for requests)
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: StatsExceptHP (sim/global-types.ts)
+/// 5 fields in JavaScript
 pub struct RequestStatsExceptHP {
+    /// Attack stat
+    /// JavaScript: atk: number
     pub atk: i32,
+    /// Defense stat
+    /// JavaScript: def: number
     pub def: i32,
+    /// Special Attack stat
+    /// JavaScript: spa: number
     pub spa: i32,
+    /// Special Defense stat
+    /// JavaScript: spd: number
     pub spd: i32,
+    /// Speed stat
+    /// JavaScript: spe: number
     pub spe: i32,
 }
 
