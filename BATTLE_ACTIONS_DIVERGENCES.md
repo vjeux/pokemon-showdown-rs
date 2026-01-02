@@ -6,8 +6,8 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 5 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move)
-**Remaining stubs**: 12
+**Completed implementations**: 6 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move)
+**Remaining stubs**: 11
 
 ## Files with Stubs (Not Implemented)
 
@@ -18,10 +18,10 @@ These files are completely unimplemented stubs:
 3. ~~`run_mega_evo.rs` - runMegaEvo~~ ✅ IMPLEMENTED
 4. ~~`can_z_move.rs` - canZMove~~ ✅ IMPLEMENTED
 5. ~~`get_z_move.rs` - getZMove~~ ✅ IMPLEMENTED
-6. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
-7. `force_switch.rs` - forceSwitch
-8. `get_active_max_move.rs` - getActiveMaxMove
-9. `get_active_z_move.rs` - getActiveZMove
+6. ~~`get_active_z_move.rs` - getActiveZMove~~ ✅ IMPLEMENTED
+7. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
+8. `force_switch.rs` - forceSwitch
+9. `get_active_max_move.rs` - getActiveMaxMove
 10. `get_max_move.rs` - getMaxMove
 11. `hit_step_break_protect.rs` - hitStepBreakProtect
 12. `hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent
@@ -117,6 +117,19 @@ These files exist only in Rust and should be evaluated:
 - Checks move PP availability
 - Adds "Z-" prefix for status moves
 - Note: Species.isPrimal field doesn't exist - using name pattern check
+
+### 2026-01-02 - Commit bbdb0b7a
+**Implemented: get_active_z_move**
+- Implemented 1:1 port of getActiveZMove from JavaScript battle-actions.ts
+- Returns ActiveMove for Z-Moves with appropriate properties
+- Handles specific Z-moves from items (Pikashunium Z, etc.)
+- Handles status move Z-moves (returns move with Z-flags)
+- Handles damaging Z-moves (creates typed Z-move with custom power)
+- Copies category and priority from base move
+- Added helper functions:
+  - move_data_to_active_move() - Convert MoveData to ActiveMove
+  - move_data_flags_to_active_flags() - Convert move flags
+- Note: Full dex.getActiveMove() method should be implemented
 
 ---
 
