@@ -51,14 +51,29 @@ impl Pokemon {
     // 	}
     //
     pub fn get_stat(&self, battle: &mut Battle, stat: StatID, unboosted: bool, unmodified: bool) -> i32 {
+        // JS: let statName = toID(statName) as StatIDExceptHP;
+        let mut stat_name = stat;
+
+        // JS: Download ignores Wonder Room's effect, but this results in
+        // JS: stat stages being calculated on the opposite defensive stat
+        // ✅ NOW IMPLEMENTED: Wonder Room swap for unmodified (Download)
+        if unmodified && battle.field.has_pseudo_weather(&ID::new("wonderroom")) {
+            stat_name = match stat_name {
+                StatID::Def => StatID::SpD,
+                StatID::SpD => StatID::Def,
+                _ => stat_name,
+            };
+        }
+
         // JS: let stat = this.storedStats[statName];
-        let base_stat = self.stored_stats.get(stat);
+        let base_stat = self.stored_stats.get(stat_name);
+
         if unboosted {
             return base_stat;
         }
 
         // JS: let boost = boosts[statName];
-        let boost = match stat {
+        let boost = match stat_name {
             StatID::HP => return base_stat,
             StatID::Atk => self.boosts.atk,
             StatID::Def => self.boosts.def,
@@ -85,7 +100,7 @@ impl Pokemon {
         //         stat = this.battle.runEvent('Modify' + statTable[statName], this, null, null, stat);
         //     }
         if !unmodified {
-            let event_name = match stat {
+            let event_name = match stat_name {
                 StatID::Atk => "ModifyAtk",
                 StatID::Def => "ModifyDef",
                 StatID::SpA => "ModifySpA",
@@ -104,7 +119,7 @@ impl Pokemon {
         }
 
         // JS: if (statName === 'spe' && stat > 10000 && !this.battle.format.battle?.trunc) stat = 10000;
-        if stat == StatID::Spe && stat_value > 10000 {
+        if stat_name == StatID::Spe && stat_value > 10000 {
             stat_value = 10000;
         }
 
