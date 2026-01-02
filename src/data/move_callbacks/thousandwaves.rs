@@ -34,8 +34,17 @@ pub fn on_hit(
 
     if source_is_active {
         // target.addVolatile('trapped', source, move, 'trapper');
+        // JavaScript: target.addVolatile('trapped', source, move, 'trapper')
+        // ✅ NOW PASSING: source_pos = Some(source), source_effect = Some("thousandwaves"), linked_status = Some("trapper")
         use crate::pokemon::Pokemon;
-        Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(source), None, None);
+        Pokemon::add_volatile(
+            battle,
+            target,
+            ID::from("trapped"),
+            Some(source),
+            Some(&ID::new("thousandwaves")),
+            Some(ID::from("trapper")),
+        );
     }
 
     EventResult::Continue

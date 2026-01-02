@@ -23,7 +23,7 @@ use crate::pokemon::Pokemon;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
+    source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // if (target?.statsRaisedThisTurn) {
@@ -44,7 +44,17 @@ pub fn on_hit(
     };
 
     if stats_raised {
-        Pokemon::add_volatile(battle, target, ID::from("confusion"), None, None, None);
+        // target.addVolatile('confusion', source, move);
+        // JavaScript: target.addVolatile('confusion', source, move)
+        // ✅ NOW PASSING: source_pos = Some(source_pos), source_effect = Some("alluringvoice"), linked_status = None
+        Pokemon::add_volatile(
+            battle,
+            target,
+            ID::from("confusion"),
+            Some(source_pos),
+            Some(&ID::new("alluringvoice")),
+            None,
+        );
     }
 
     EventResult::Continue

@@ -25,7 +25,16 @@ pub fn on_hit(
     let source = pokemon_pos;
 
     // return target.addVolatile('trapped', source, move, 'trapper');
-    let result = Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(source), None, None);
+    // JavaScript: target.addVolatile('trapped', source, move, 'trapper')
+    // ✅ NOW PASSING: source_pos = Some(source), source_effect = Some("meanlook"), linked_status = Some("trapper")
+    let result = Pokemon::add_volatile(
+        battle,
+        target,
+        ID::from("trapped"),
+        Some(source),
+        Some(&ID::new("meanlook")),
+        Some(ID::from("trapper")),
+    );
 
     EventResult::Boolean(result)
 }

@@ -168,12 +168,16 @@ pub fn on_hit(
     let _source = pokemon_pos;
 
     // const result = target.setStatus('slp', source, move);
+    // JavaScript: target.setStatus('slp', source, move)
+    // source = target (self-targeting move)
+    // move = "rest"
     let result = {
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.set_status(ID::from("slp"), None, None, false)
+        // ✅ NOW PASSING: source_pos = Some(target), source_effect = Some("rest"), ignore_immunities = false
+        target_pokemon.set_status(ID::from("slp"), Some(target), Some(&ID::new("rest")), false)
     };
 
     // if (!result) return result;
