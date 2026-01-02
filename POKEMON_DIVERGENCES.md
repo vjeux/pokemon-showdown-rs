@@ -332,12 +332,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Would need Battle reference to check allySide field
 
 #### is_adjacent.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Migrated to Battle)
 - Issue: Missing same-side vs different-side adjacency calculation
-- Action: Documented current implementation and what's missing
+- Action: Migrated to Battle::is_adjacent which has full implementation
 - Notes:
-  - Currently assumes same side
-  - Missing different-side adjacency formula using active.length
+  - ✅ Complete implementation exists in Battle::is_adjacent
+  - ✅ Updated end_turn.rs callsite to use Battle version
+  - ✅ Pokemon version deprecated and documented
+  - Battle version handles same-side (position diff) and different-side (complex formula) correctly
 
 #### is_grounded.rs
 - Status: ✅ Fixed (Significantly Improved)

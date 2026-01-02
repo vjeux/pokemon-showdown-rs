@@ -767,21 +767,8 @@ impl Battle {
                 let active0_pos = actives[0];
                 let active1_pos = actives[1];
 
-                // Get pokemon data for adjacency check
-                let (_p0_position, p1_position, p1_fainted) = {
-                    let p0 = &self.sides[active0_pos.0].pokemon[active0_pos.1];
-                    let p1 = &self.sides[active1_pos.0].pokemon[active1_pos.1];
-                    (p0.position, p1.position, p1.fainted)
-                };
-
-                // Check if not adjacent
-                let is_adjacent = if let Some(p0) = self.sides.get(active0_pos.0)
-                    .and_then(|s| s.pokemon.get(active0_pos.1))
-                {
-                    p0.is_adjacent(p1_position, p1_fainted, self.active_per_half)
-                } else {
-                    true // If can't check, assume adjacent to skip swap
-                };
+                // Check if not adjacent using Battle::is_adjacent (fully implemented)
+                let is_adjacent = self.is_adjacent(active0_pos, active1_pos);
 
                 if !is_adjacent {
                     // JS: this.swapPosition(actives[0], 1, '[silent]');
