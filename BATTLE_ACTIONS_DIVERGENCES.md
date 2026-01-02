@@ -6,8 +6,8 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 3 (can_mega_evo, can_ultra_burst, run_mega_evo)
-**Remaining stubs**: 14
+**Completed implementations**: 5 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move)
+**Remaining stubs**: 12
 
 ## Files with Stubs (Not Implemented)
 
@@ -16,13 +16,13 @@ These files are completely unimplemented stubs:
 1. ~~`can_mega_evo.rs` - canMegaEvo~~ ✅ IMPLEMENTED
 2. ~~`can_ultra_burst.rs` - canUltraBurst~~ ✅ IMPLEMENTED (Converted to standalone function)
 3. ~~`run_mega_evo.rs` - runMegaEvo~~ ✅ IMPLEMENTED
-4. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
-5. `can_z_move.rs` - canZMove
-6. `force_switch.rs` - forceSwitch
-7. `get_active_max_move.rs` - getActiveMaxMove
-8. `get_active_z_move.rs` - getActiveZMove
-9. `get_max_move.rs` - getMaxMove
-10. `get_z_move.rs` - getZMove
+4. ~~`can_z_move.rs` - canZMove~~ ✅ IMPLEMENTED
+5. ~~`get_z_move.rs` - getZMove~~ ✅ IMPLEMENTED
+6. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
+7. `force_switch.rs` - forceSwitch
+8. `get_active_max_move.rs` - getActiveMaxMove
+9. `get_active_z_move.rs` - getActiveZMove
+10. `get_max_move.rs` - getMaxMove
 11. `hit_step_break_protect.rs` - hitStepBreakProtect
 12. `hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent
 13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop
@@ -97,15 +97,39 @@ These files exist only in Rust and should be evaluated:
   - Rust: `forme_change(new_species_id, new_types, new_ability)`
   - Full 1:1 forme_change rewrite needed in future
 
+### 2026-01-02 - Commit 54ce0cd2
+**Implemented: get_z_move**
+- Implemented 1:1 port of getZMove from JavaScript battle-actions.ts
+- Handles Z-crystals for specific moves (e.g., Pikashunium Z)
+- Handles generic type-based Z-crystals (e.g., Normalium Z)
+- Returns status move name for Status category moves
+- Returns typed Z-move name for damaging moves
+- Uses item.extra field to access zMoveFrom and zMoveType
+- Note: ItemData fields not properly typed (using serde_json::Value)
+
+### 2026-01-02 - Commit 140875e0
+**Implemented: can_z_move**
+- Implemented 1:1 port of canZMove from JavaScript battle-actions.ts
+- Returns Vec<Option<ZMoveOption>> with Z-moves for each move slot
+- Checks side.zMoveUsed flag
+- Prevents Z-moves for transformed Mega/Primal/Ultra formes
+- Verifies item compatibility with itemUser
+- Checks move PP availability
+- Adds "Z-" prefix for status moves
+- Note: Species.isPrimal field doesn't exist - using name pattern check
+
 ---
 
 ## Next Steps
 
 1. ~~Implement canUltraBurst and runMegaEvo to complete Mega Evolution functionality~~ ✅ COMPLETED
-2. Implement remaining stubbed files by porting from JavaScript battle-actions.ts (14 remaining)
-3. Complete partial implementations with missing TODOs
-4. Rewrite forme_change to match JavaScript 1:1
-5. Verify Rust-specific files are necessary or can be removed
-6. Ensure all implementations match JavaScript line-by-line
-7. Run battle tests to verify correctness
+2. ~~Implement Z-Move functions (getZMove, canZMove)~~ ✅ COMPLETED
+3. Implement remaining stubbed files by porting from JavaScript battle-actions.ts (12 remaining)
+4. Complete partial implementations with missing TODOs
+5. Add proper typing for ItemData (z_move, zMoveFrom, zMoveType fields)
+6. Add isPrimal field to SpeciesData
+7. Rewrite forme_change to match JavaScript 1:1
+8. Verify Rust-specific files are necessary or can be removed
+9. Ensure all implementations match JavaScript line-by-line
+10. Run battle tests to verify correctness
 
