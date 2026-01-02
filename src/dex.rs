@@ -510,6 +510,22 @@ pub struct MoveData {
     /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses boolean | object union
     #[serde(rename = "ignoreImmunity", default)]
     pub ignore_immunity: Option<serde_json::Value>,
+    /// Fixed damage amount (like "level" for Seismic Toss)
+    /// JavaScript: damage?: number | string | boolean
+    #[serde(default)]
+    pub damage: Option<serde_json::Value>,
+    /// Forces target to switch out
+    /// JavaScript: forceSwitch?: boolean
+    #[serde(rename = "forceSwitch", default)]
+    pub force_switch: bool,
+    /// Breaks through Protect/Detect
+    /// JavaScript: breaksProtect?: boolean
+    #[serde(rename = "breaksProtect", default)]
+    pub breaks_protect: bool,
+    /// Is this a stalling move (Protect, Detect, etc.)
+    /// JavaScript: stallingMove?: boolean
+    #[serde(rename = "stallingMove", default)]
+    pub stalling_move: bool,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
