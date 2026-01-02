@@ -35,7 +35,9 @@ pub fn run_move(
     };
 
     // pokemon.activeMoveActions++;
-    // TODO: Implement activeMoveActions tracking
+    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        pokemon.active_move_actions += 1;
+    }
 
     // Get target
     // let target = this.battle.getTarget(pokemon, maxMove || zMove || moveOrMoveName, targetLoc, originalTarget);
@@ -82,7 +84,9 @@ pub fn run_move(
         battle.clear_active_move(true);
 
         // pokemon.moveThisTurnResult = willTryMove;
-        // TODO: Implement moveThisTurnResult tracking
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.move_this_turn_result = Some(will_try_move);
+        }
         return;
     }
 
@@ -116,7 +120,18 @@ pub fn run_move(
         // TODO: Implement PP deduction (already done in run_action?)
 
         // pokemon.moveUsed(move, targetLoc);
-        // TODO: Implement moveUsed tracking
+        // Note: Need to extract gen before calling move_used to avoid borrow checker issues
+        let gen = battle.gen;
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            // Manually inline move_used to avoid double borrow
+            pokemon.last_move = Some(move_id.clone());
+            if gen == 2 {
+                pokemon.last_move_encore = Some(move_id.clone());
+            }
+            pokemon.last_move_used = Some(move_id.clone());
+            pokemon.last_move_target_loc = Some(target_loc);
+            pokemon.move_this_turn = Some(move_id.clone());
+        }
     }
 
     // Handle Z-Move
