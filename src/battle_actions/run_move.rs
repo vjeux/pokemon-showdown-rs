@@ -92,7 +92,31 @@ pub fn run_move(
 
     // Check for 'cantusetwice' flag
     // if (move.flags['cantusetwice'] && pokemon.lastMove?.id === move.id)
-    // TODO: Implement cantusetwice handling
+    let has_cantusetwice_flag = base_move.flags.contains_key("cantusetwice");
+    if has_cantusetwice_flag {
+        let last_move_matches = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return,
+            };
+            pokemon.last_move.as_ref().map_or(false, |lm| lm == move_id)
+        };
+
+        if last_move_matches {
+            // Move can't be used twice in a row
+            // JavaScript typically shows a fail message and returns
+            let pokemon_ident = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return,
+                };
+                pokemon.get_slot()
+            };
+            battle.add("-fail", &[crate::battle::Arg::String(pokemon_ident)]);
+            battle.attr_last_move(&["[still]"]);
+            return;
+        }
+    }
 
     // Call beforeMoveCallback
     // if (move.beforeMoveCallback)
@@ -198,7 +222,9 @@ pub fn run_move(
 
     // Handle 'cantusetwice' hint
     // if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id))
-    // TODO: Implement cantusetwice hint
+    if has_cantusetwice_flag {
+        Pokemon::remove_volatile(battle, pokemon_pos, move_id);
+    }
 
     // Handle Dancer ability
     // if (move.flags['dance'] && moveDidSomething && !move.isExternal)
