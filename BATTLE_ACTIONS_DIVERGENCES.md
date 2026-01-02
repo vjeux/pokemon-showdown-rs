@@ -491,6 +491,32 @@ These files exist only in Rust and should be evaluated:
 - Prevents self effects from applying multiple times on subsequent hits
 - 1:1 match with JavaScript implementation
 
+### 2026-01-02
+**Completed: spread_move_hit.rs secondary effects** ✅ TODO COMPLETED!
+- Implemented full secondary effect handling for all effect types:
+  - side_condition (e.g., Stealth Rock, Spikes)
+  - slot_condition (e.g., Future Sight)
+  - pseudo_weather (e.g., Trick Room, Echoed Voice)
+  - terrain (e.g., Electric Terrain, Grassy Terrain)
+  - weather (e.g., Rain Dance, Sunny Day)
+- Infrastructure change: Extended MoveSecondary struct in src/dex.rs
+  - Added 5 new fields: side_condition, slot_condition, pseudo_weather, terrain, weather
+  - Now has 9 fields matching JavaScript SecondaryEffect interface
+  - All fields use proper serde rename attributes for JSON compatibility
+- JavaScript source: moveHit applies these effects using:
+  - `target.side.addSideCondition(moveData.sideCondition, source, move)`
+  - `target.side.addSlotCondition(target, moveData.slotCondition, source, move)`
+  - `this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move)`
+  - `this.battle.field.setTerrain(moveData.terrain, source, move)`
+  - `this.battle.field.setWeather(moveData.weather, source, move)`
+- Rust implementation uses corresponding methods:
+  - `battle.sides[target_pos.0].add_side_condition(id, None)`
+  - `battle.sides[target_pos.0].add_slot_condition(target_pos.1, id, None)`
+  - `battle.field.add_pseudo_weather(id, None)`
+  - `battle.field.set_terrain(id, None)`
+  - `battle.field.set_weather(id, None)`
+- 1:1 match with JavaScript implementation
+
 ---
 
 ## Next Steps
