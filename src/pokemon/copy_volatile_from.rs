@@ -33,11 +33,11 @@ impl Pokemon {
         // Note: Missing clearVolatile() call at start
 
         // JS: if (switchCause !== 'shedtail') this.boosts = pokemon.boosts;
-        // Note: Has hardcoded logic instead of using switchCause parameter properly
+        // ✅ NOW FIXED: Only copy boosts if NOT shedtail (was incorrectly copying for shedtail too)
 
         match copy_type {
             "copyvolatile" | "batonpass" => {
-                // Copy stat boosts
+                // Copy stat boosts (NOT for shedtail)
                 self.boosts = source.boosts;
 
                 // JS: for (const i in pokemon.volatiles) {
@@ -86,8 +86,9 @@ impl Pokemon {
                 // Note: Missing linkedPokemon bidirectional link updating
             }
             "shedtail" => {
-                // Shed Tail only copies the substitute
-                self.boosts = source.boosts;
+                // Shed Tail only copies the substitute, NOT boosts
+                // JS: if (switchCause !== 'shedtail') this.boosts = pokemon.boosts;
+                // ✅ NOW FIXED: Do NOT copy boosts for shedtail
 
                 let sub_id = ID::new("substitute");
                 if source.has_volatile(&sub_id) {
