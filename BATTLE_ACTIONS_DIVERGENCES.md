@@ -6,8 +6,8 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 8 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move)
-**Remaining stubs**: 9
+**Completed implementations**: 9 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move, after_move_secondary_event)
+**Remaining stubs**: 8
 
 ## Files with Stubs (Not Implemented)
 
@@ -21,7 +21,7 @@ These files are completely unimplemented stubs:
 6. ~~`get_active_z_move.rs` - getActiveZMove~~ ✅ IMPLEMENTED
 7. ~~`get_max_move.rs` - getMaxMove~~ ✅ IMPLEMENTED
 8. ~~`get_active_max_move.rs` - getActiveMaxMove~~ ✅ IMPLEMENTED
-9. `after_move_secondary_event.rs` - afterMoveSecondaryEvent
+9. ~~`after_move_secondary_event.rs` - afterMoveSecondaryEvent~~ ✅ IMPLEMENTED
 10. `force_switch.rs` - forceSwitch
 11. `hit_step_break_protect.rs` - hitStepBreakProtect
 12. `hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent
@@ -155,6 +155,19 @@ These files exist only in Rust and should be evaluated:
 - Copies priority from base move (for Psychic Terrain, Quick Guard)
 - Sets isZOrMaxPowered flag
 - Reuses helper functions from get_active_z_move
+
+### 2026-01-02 - Commit 76fd121c
+**Implemented: after_move_secondary_event**
+- Implemented 1:1 port of afterMoveSecondaryEvent from JavaScript battle-actions.ts
+- Fires AfterMoveSecondary events after a move hits
+- Checks for Sheer Force ability suppression:
+  - If move.hasSheerForce AND pokemon has ability 'sheerforce', skip events
+  - Otherwise fire events normally
+- Fires singleEvent('AfterMoveSecondary') for first target
+- Fires runEvent('AfterMoveSecondary') for each target
+- Uses two-phase borrow pattern to avoid borrowing battle twice
+- Correctly calls has_ability(&Battle, &["sheerforce"])
+- Passes move ID as effect_id parameter
 
 ---
 
