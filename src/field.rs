@@ -13,7 +13,6 @@ use crate::dex_data::{EffectState, ID};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: Field (sim/field.ts)
 /// 7 fields in JavaScript
-/// JavaScript equivalent: Field (sim/global-types.ts)
 pub struct Field {
     // Core reference (readonly in JavaScript)
     /// JavaScript: readonly battle: Battle
