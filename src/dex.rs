@@ -185,6 +185,10 @@ pub struct SpeciesData {
     /// JavaScript: baseSpecies?: string
     #[serde(default)]
     pub base_species: Option<String>,
+    /// Base forme name
+    /// JavaScript: baseForme?: string
+    #[serde(rename = "baseForme", default)]
+    pub base_forme: Option<String>,
     /// Forme name
     /// JavaScript: forme?: string
     #[serde(default)]
