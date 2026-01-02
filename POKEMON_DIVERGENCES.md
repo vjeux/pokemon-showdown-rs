@@ -164,10 +164,15 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Note: copy_volatile_from.rs is now the canonical 1-to-1 JavaScript implementation
 
 #### cure_status.rs
-- Status: ❌ Not Started
+- Status: ✅ Fixed (Documented)
 - Issue: "TODO: have the callsite pass in the Battle object"
-- Note: Due to Rust borrow checker limitations
-- Action: Refactor to match JS pattern
+- Action: Refactored to return tuple for caller to handle Battle operations
+- Notes:
+  - Returns `Option<(String, bool, bool)>` - (status_id, removed_nightmare, silent)
+  - Callsites handle battle.add() messages themselves
+  - This design avoids borrow checker conflicts
+  - 9+ callsites successfully using this pattern (ability callbacks, move callbacks)
+  - Rust-appropriate solution given borrow checker constraints
 
 #### deduct_pp.rs
 - Status: ✅ Fixed
