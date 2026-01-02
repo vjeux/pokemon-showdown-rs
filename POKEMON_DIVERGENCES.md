@@ -824,13 +824,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Currently just returns MoveHitData::default()
 
 #### clear_volatile.rs
-- Status: ✅ Fixed (Fully Implemented - Session 24 Part 9)
-- Issue: Missing removeLinkedVolatiles call
-- Action: Implemented full linkedPokemon removal before clearing volatiles
+- Status: ✅ Fixed (Fully Implemented - Session 24 Parts 9 & 17)
+- Issue: Missing removeLinkedVolatiles call and Gen 2 lastMoveEncore reset
+- Action: Implemented full linkedPokemon removal before clearing volatiles and Gen 2 lastMoveEncore reset
 - Notes:
   - ✅ NOW IMPLEMENTED: removeLinkedVolatiles call for each linked volatile
+  - ✅ NOW IMPLEMENTED (Session 24 Part 17): Gen 2 lastMoveEncore reset
   - Very well implemented - now 100% 1-to-1 with JavaScript!
   - Has correct Gen 1 Mimic PP preservation
+  - Has correct Gen 2 lastMoveEncore reset
   - Has correct Eternatus-Eternamax Dynamax preservation
   - Correctly resets boosts, move slots, transformed, ability
   - Correctly handles canTerastallize restoration
@@ -1936,6 +1938,37 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 documentation error fixed (field exists, not missing)
   - 1 file modified (pokemon/take_item.rs)
   - 2 insertions, 1 deletion
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 17 - 2026-01-01 (clear_volatile Gen 2 lastMoveEncore Reset - COMPLETED)
+- **Goal**: Add missing Gen 2 lastMoveEncore reset in clear_volatile
+- **Completed**:
+  - ✅ Implemented Gen 2 lastMoveEncore reset
+  - ✅ JavaScript logic: `if (this.battle.gen === 2) this.lastMoveEncore = null;`
+  - ✅ Fixed outdated comment - field WAS added in Session 24 Part 11
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - clear_volatile.rs - Still 100% complete (added missing Gen 2 check)
+    - ✅ NOW IMPLEMENTED: Gen 2 lastMoveEncore reset
+    - ✅ Resets last_move_encore = None when gen == 2
+    - JavaScript equivalent:
+      - `if (this.battle.gen === 2) this.lastMoveEncore = null;`
+    - Rust implementation:
+      - `if battle.gen == 2 { self.last_move_encore = None; }`
+- **Technical Details**:
+  - Comment said "Not tracked in Rust" but field was added in Session 24 Part 11
+  - clear_volatile has access to Battle parameter for gen check
+  - Simple gen check and field reset
+  - Maintains 100% 1-to-1 equivalence with JavaScript
+- **Session Statistics**:
+  - 1 method improved (clear_volatile.rs)
+  - 1 feature implemented (Gen 2 lastMoveEncore reset)
+  - 1 outdated comment fixed
+  - 1 file modified (pokemon/clear_volatile.rs)
+  - 5 insertions, 1 deletion
   - 1 commit pushed to git
   - 100% compilation success rate
 
