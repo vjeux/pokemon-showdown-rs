@@ -2259,6 +2259,52 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
+### Session 24 Part 26 - 2026-01-02 (battle_actions EffectState source/source_effect - COMPLETED)
+- **Goal**: Add missing EffectState.source and source_effect field assignments in battle_actions
+- **Completed**:
+  - ✅ Discovered that Session 24 Part 25 only added target but missed source and source_effect
+  - ✅ JavaScript pattern: `this.volatiles[status.id].source = source;`
+  - ✅ JavaScript pattern: `if (sourceEffect) this.volatiles[status.id].sourceEffect = sourceEffect;`
+  - ✅ Added source assignments in both files: `state.source = Some(source_pos)`
+  - ✅ Added source_slot assignments: `state.source_slot = Some(source_pos.1)`
+  - ✅ Added source_effect assignments: `state.source_effect = Some(move_data.id.clone())`
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Files Now Fully Improved**:
+  - battle_actions/run_move_effects.rs - Now properly initializes ALL EffectState fields
+    - ✅ NOW IMPLEMENTED: source, source_slot, source_effect assignments
+    - ✅ Already had: target, duration assignments
+    - JavaScript equivalent:
+      - `this.volatiles[status.id] = this.battle.initEffectState({ id: status.id, target: this })`
+      - `this.volatiles[status.id].source = source`
+      - `this.volatiles[status.id].sourceSlot = source.getSlot()`
+      - `if (sourceEffect) this.volatiles[status.id].sourceEffect = sourceEffect`
+    - Rust implementation:
+      - `state.target = Some(target_pos);`
+      - `state.source = Some(_source_pos);`
+      - `state.source_slot = Some(_source_pos.1);`
+      - `state.source_effect = Some(move_data.id.clone());`
+  - battle_actions/spread_move_hit.rs - Now properly initializes ALL EffectState fields
+    - ✅ NOW IMPLEMENTED: source, source_slot, source_effect assignments
+    - ✅ Already had: target, duration assignments
+    - Same pattern as run_move_effects.rs
+- **Technical Details**:
+  - Session 24 Part 25 only added target, but JavaScript also sets source and sourceEffect
+  - When a move applies a volatile status:
+    - source = the Pokemon using the move (_source_pos / source_pos)
+    - sourceEffect = the move being used (move_data.id / move_id)
+    - sourceSlot = the position of the source Pokemon (source_pos.1)
+  - Both files had all the data available but weren't setting the fields
+  - Now both files have complete EffectState initialization matching JavaScript
+- **Session Statistics**:
+  - 2 files improved (run_move_effects, spread_move_hit)
+  - 6 feature implementations (3 fields × 2 files: source, source_slot, source_effect)
+  - 2 files modified in src/battle_actions/
+  - 6 insertions (3 per file)
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
