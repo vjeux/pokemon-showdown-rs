@@ -1,20 +1,20 @@
+// JS Source:
+//
+// 	getNature() {
+// 		return this.battle.dex.natures.get(this.set.nature);
+// 	}
+//
+// Note: In Rust, we store the nature string directly on Pokemon.
+// The JavaScript version looks it up from dex, but we just return the stored value.
+
 use crate::*;
 
 impl Pokemon {
-
     /// Get nature
     /// Equivalent to getNature in pokemon.ts
-    /// Note: Nature is applied at stat calculation time; we return default here
-    //
-    // 	getNature() {
-    // 		return this.battle.dex.natures.get(this.set.nature);
-    // 	}
-    //
     pub fn get_nature(&self) -> &str {
-        // TODO: implement the same logic as JavaScript
-        
-        // In battle, the nature is already applied to stored_stats
-        // The actual nature value would need to be stored if needed
-        "Hardy" // Default neutral nature
+        // JS: return this.battle.dex.natures.get(this.set.nature);
+        // In Rust: Pokemon.nature is already the nature string
+        &self.nature
     }
 }

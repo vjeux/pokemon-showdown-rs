@@ -76,13 +76,14 @@ pub fn on_hit(
     // const ppDeducted = target.deductPP(move.id, 4);
     // if (!ppDeducted) return false;
     let pp_deducted = {
+        let gen = battle.gen;
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.deduct_pp(&move_id, 4)
+        target_pokemon.deduct_pp(gen, &move_id, Some(4))
     };
-    if !pp_deducted {
+    if pp_deducted == 0 {
         return EventResult::Boolean(false);
     }
 

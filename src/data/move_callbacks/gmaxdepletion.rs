@@ -82,16 +82,17 @@ pub fn on_hit(
 
         //     const ppDeducted = pokemon.deductPP(move.id, 2);
         let pp_deducted = {
+            let gen = battle.gen;
             let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.deduct_pp(&actual_move_id, 2)
+            pokemon.deduct_pp(gen, &actual_move_id, Some(2))
         };
 
         //     if (ppDeducted) {
         //         this.add("-activate", pokemon, 'move: G-Max Depletion', move.name, ppDeducted);
-        if pp_deducted {
+        if pp_deducted > 0 {
             let move_name = battle.dex.moves().get_by_id(&actual_move_id)
                 .map(|m| m.name.clone())
                 .unwrap_or_else(|| actual_move_id.to_string());

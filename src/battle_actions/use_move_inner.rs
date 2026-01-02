@@ -679,7 +679,7 @@ pub fn use_move_inner(
         // JS: if (extraPP > 0) pokemon.deductPP(callerMoveForPressure || moveOrMoveName, extraPP);
         if extra_pp > 0 {
             let (side_idx, poke_idx) = pokemon_pos;
-            battle.sides[side_idx].pokemon[poke_idx].deduct_pp(move_or_move_name, extra_pp as u8);
+            battle.sides[side_idx].pokemon[poke_idx].deduct_pp(battle.gen, move_or_move_name, Some(extra_pp as u8));
         }
     }
 

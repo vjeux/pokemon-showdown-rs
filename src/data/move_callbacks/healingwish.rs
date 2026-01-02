@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTryHit(source) {
 ///     if (!this.canSwitch(source.side)) {
@@ -114,13 +115,7 @@ pub mod condition {
             battle.heal(maxhp, Some(target), None, None);
 
             // target.clearStatus();
-            {
-                let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                target_pokemon.clear_status();
-            }
+            Pokemon::clear_status(battle, target);
 
             // this.add('-heal', target, target.getHealth, '[from] move: Healing Wish');
             let health = {
