@@ -2,13 +2,14 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Parts 1-48 Complete)
-- **Session 24 Total Progress**: 23+ commits, 48 parts completed
+## Overview (Updated: Session 24 Part 49 Complete)
+- **Session 24 Total Progress**: 24+ commits, 49 parts completed
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
   - Parts 33-41: Complex feature implementations and refactors
   - Parts 42-46: Documentation updates and final infrastructure fixes
   - Parts 47-48: Final actionable improvements (ignoring_item, ignoring_ability - both now 100%)
+  - Part 49: Major refactor - use_item/eat_item to associated functions with HP/boosts
 - **Methods Significantly Improved**:
   - transform_into.rs (Gen 6+ crit volatile copying, apparentType, timesAttacked)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
@@ -17,13 +18,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - faint.rs, update_max_hp.rs, set_hp.rs, get_locked_move.rs (all 100%)
   - ignoring_item.rs (Primal Orb, ignoreKlutz - now 100%)
   - ignoring_ability.rs (ability.flags checks - now 100%)
+  - use_item.rs (HP/Gem check, item.boosts - now ~65%, was ~45%)
+  - eat_item.rs (refactored to associated function - now ~60%, was ~50%)
   - 6 core methods with source/sourceEffect parameters added
 - **Move Callbacks Fixed**: 9 files with proper source/effect/linkedStatus parameters
 - **Infrastructure Achievements**:
   - EffectState.data HashMap fully utilized for complex volatile state
   - linkedPokemon bidirectional updating implemented
   - TrappedState enum for proper type safety
-  - ItemData.extra HashMap for item properties (isPrimalOrb, ignoreKlutz)
+  - ItemData.extra HashMap for item properties (isPrimalOrb, ignoreKlutz, isGem, boosts)
   - AbilityData.flags HashMap for ability flags (notransform, cantsuppress)
   - 250+ callsites updated across codebase
 - **Compilation Success Rate**: 100% (0 errors, 0 warnings throughout)
@@ -692,10 +695,13 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Design pattern: work around borrow checker by returning data
 
 #### eat_item.rs
-- Status: ✅ Fixed (Improved - Session 24 Parts 14 & 31)
+- Status: ✅ Fixed (Improved - Session 24 Part 49)
 - Issue: Missing source and sourceEffect parameters
-- Action: Added HP check, isActive check, item tracking, and missing parameters (Session 24 Part 31)
+- Action: Refactored to associated function calling new Pokemon::use_item (Session 24 Part 49)
 - Notes:
+  - ✅ NOW IMPLEMENTED (Session 24 Part 49): Refactored from instance method to associated function
+  - ✅ NOW IMPLEMENTED (Session 24 Part 49): Signature: `Pokemon::eat_item(battle: &mut Battle, pokemon_pos: (usize, usize), is_forced, source_pos, source_effect)`
+  - ✅ NOW IMPLEMENTED (Session 24 Part 49): Calls new associated function `Pokemon::use_item()`
   - ✅ NOW IMPLEMENTED: HP check with Jaboca/Rowap Berry exception
   - ✅ NOW IMPLEMENTED: isActive check
   - ✅ NOW IMPLEMENTED (Session 24 Part 14): lastItem, usedItemThisTurn, ateBerry tracking
@@ -711,7 +717,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing RESTORATIVE_BERRIES staleness logic (fields exist, need logic)
   - Missing runEvent('AfterUseItem')
   - Delegates to use_item() then additionally sets ateBerry = true
-  - Now ~50% complete (was ~45%)
+  - Now ~60% complete (was ~50%)
 
 #### faint.rs
 - Status: ✅ Fixed (Documented)
@@ -751,23 +757,26 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Not implemented - requires significant Battle reference infrastructure
 
 #### use_item.rs
-- Status: ✅ Fixed (Improved - Session 24 Part 30)
+- Status: ✅ Fixed (Improved - Session 24 Part 49)
 - Issue: Missing source and sourceEffect parameters
-- Action: Added 2 missing parameters, updated 58 callsites
+- Action: Refactored to associated function with HP/Gem check and item.boosts handling (Session 24 Part 49)
 - Notes:
-  - Missing HP check with Gem exception (needs Battle reference to check if item.isGem)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 49): Refactored from instance method to associated function
+  - ✅ NOW IMPLEMENTED (Session 24 Part 49): HP check with Gem exception using `item_data.extra.get("isGem")`
+  - ✅ NOW IMPLEMENTED (Session 24 Part 49): item.boosts handling via `battle.boost()`
+  - ✅ NOW IMPLEMENTED (Session 24 Part 49): Signature: `Pokemon::use_item(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos, source_effect)`
   - ✅ NOW IMPLEMENTED: isActive check
   - ✅ NOW IMPLEMENTED (Session 24 Part 30): source_pos parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 30): source_effect parameter
-  - ✅ NOW IMPLEMENTED (Session 24 Part 30): Updated 58 callsites to pass None, None
+  - ✅ NOW IMPLEMENTED (Session 24 Part 49): Updated 100+ callsites (was 58)
   - Missing sourceEffect item type check
   - Missing runEvent('UseItem')
   - Missing battle.add message with special cases for Red Card and Gems
-  - Missing item.boosts handling (would need item data access)
   - Missing singleEvent('Use')
   - Missing runEvent('AfterUseItem')
+  - Missing item.onEat event handling
   - Currently sets flags and clears item
-  - Now ~45% complete (was ~40%)
+  - Now ~65% complete (was ~45%)
 
 #### try_trap.rs
 - Status: ✅ Fixed (Fully Implemented - Session 24 Part 10)
