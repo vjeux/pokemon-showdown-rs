@@ -498,17 +498,22 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing runEvent('AfterSetStatus')
 
 #### take_item.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Simplified implementation missing event calls and gen checks
-- Action: Documented all missing pieces line by line
+- Status: ✅ Fixed (Significantly Improved - Session 24)
+- Issue: Missing source parameter and Gen 4 Multitype/itemKnockedOff checks
+- Action: Refactored to associated function and implemented Gen 4 protection
 - Notes:
-  - Missing source parameter
-  - Missing Gen 4 and earlier Multitype/itemKnockedOff checks
-  - Missing runEvent('TakeItem')
-  - Not storing oldItemState or calling clearEffectState
-  - Missing pendingStaleness reset (field doesn't exist in Rust)
-  - Missing singleEvent('End')
-  - Missing runEvent('AfterTakeItem')
+  - ✅ NOW IMPLEMENTED (Session 24): Refactored to associated function `Pokemon::take_item(battle, pokemon_pos, source_pos)`
+  - ✅ NOW IMPLEMENTED (Session 24): source_pos parameter (optional, defaults to self)
+  - ✅ NOW IMPLEMENTED (Session 24): Gen 4 and earlier Multitype/itemKnockedOff checks
+  - ✅ NOW IMPLEMENTED (Session 24): Prevents item removal if source.item_knocked_off is true (Gen <= 4)
+  - ✅ NOW IMPLEMENTED (Session 24): Prevents Arceus (Multitype ability) from having items removed (Gen <= 4)
+  - ✅ NOW IMPLEMENTED (Session 24): Updated 13 callsites across move/item callbacks
+  - ❌ Still missing: runEvent('TakeItem')
+  - ❌ Still missing: oldItemState storage and clearEffectState call
+  - ❌ Still missing: pendingStaleness reset (field doesn't exist in Rust)
+  - ❌ Still missing: singleEvent('End')
+  - ❌ Still missing: runEvent('AfterTakeItem')
+  - Now ~70% complete (was ~30%)
 
 #### transform_into.rs
 - Status: ✅ Fixed (Partially Implemented)
@@ -1514,6 +1519,13 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ No callsites to update (method not currently used in codebase)
   - ✅ All changes compile successfully (0 errors, 0 warnings)
   - ✅ Committed and pushed 1 commit
+- **Completed Part 6 - take_item**:
+  - ✅ Refactored take_item to associated function with source_pos parameter
+  - ✅ Implemented Gen <= 4 Multitype/itemKnockedOff protection checks
+  - ✅ Prevents Arceus item removal in Gen 4 and earlier
+  - ✅ Updated 13 callsites across move/item callbacks
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
 - **Methods Now Fully Implemented (1-to-1 with JS)**:
   - update_max_hp.rs - Now 100% complete (was ~90%)
     - ✅ Has: Battle parameter for battle.add access
@@ -1559,11 +1571,12 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - details: Added shiny flag formatting with proper protocol string format
   - set_hp: Refactored to associated function with battle.trunc and proper overflow handling
   - get_locked_move: Refactored to associated function with runEvent('LockMove') call
+  - take_item: Refactored to associated function with Gen 4 Multitype/itemKnockedOff checks, updated 13 callsites
 - **Session Statistics**:
-  - 5 methods improved (update_max_hp fully complete, set_hp fully complete, get_locked_move fully complete, is_grounded significantly improved, details improved)
-  - 6 feature implementations (battle.add call, suppressingAbility check, shiny flag, battle.trunc with overflow handling, runEvent LockMove, associated function refactoring)
-  - 6 files modified (update_max_hp.rs, is_grounded.rs, details.rs, set_hp.rs, painsplit.rs, get_locked_move.rs)
-  - 6 commits pushed to git (including documentation update)
+  - 6 methods improved (update_max_hp fully complete, set_hp fully complete, get_locked_move fully complete, take_item significantly improved, is_grounded significantly improved, details improved)
+  - 8 feature implementations (battle.add call, suppressingAbility check, shiny flag, battle.trunc, runEvent LockMove, Gen 4 Multitype checks, itemKnockedOff checks, source parameter)
+  - 18 files modified (update_max_hp, is_grounded, details, set_hp, painsplit, get_locked_move, take_item + 9 move callbacks + 1 item callback)
+  - 8 commits pushed to git (6 code + 2 documentation)
   - 100% compilation success rate
 
 ### Implementation Progress Summary
