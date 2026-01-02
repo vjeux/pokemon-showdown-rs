@@ -16,9 +16,6 @@ use crate::pokemon::{Pokemon, PokemonSet};
 use crate::prng::{PRNGSeed, PRNG};
 use crate::side::{Side};
 
-/// Split message for side-specific content
-/// JavaScript equivalent: { side: SideID, secret: string, shared: string }
-
 // Function modules
 
 // Function modules
