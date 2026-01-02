@@ -752,21 +752,40 @@ pub struct SecondaryEffect {
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: HitEffect (in SecondaryEffect.self field)
 /// 9 fields in JavaScript HitEffect
-/// TODO: Missing fields from HitEffect: status, slotCondition, pseudoWeather, terrain, weather, onHit
 pub struct SelfEffect {
     /// Stat boosts to apply
     /// JavaScript: boosts?: SparseBoostsTable
     pub boosts: Option<BoostsTable>,
-    /// Chance of the effect occurring (percentage)
-    /// JavaScript: chance?: number
-    pub chance: Option<i32>,
-    /// Side condition to apply
-    /// JavaScript: sideCondition?: string
-    pub side_condition: Option<String>,
+    /// Status condition to inflict
+    /// JavaScript: status?: string
+    pub status: Option<String>,
     /// Volatile status to inflict
     /// JavaScript: volatileStatus?: string
     #[serde(rename = "volatileStatus")]
     pub volatile_status: Option<String>,
+    /// Side condition to apply
+    /// JavaScript: sideCondition?: string
+    #[serde(rename = "sideCondition")]
+    pub side_condition: Option<String>,
+    /// Slot condition to apply
+    /// JavaScript: slotCondition?: string
+    #[serde(rename = "slotCondition")]
+    pub slot_condition: Option<String>,
+    /// Pseudo-weather to apply
+    /// JavaScript: pseudoWeather?: string
+    #[serde(rename = "pseudoWeather")]
+    pub pseudo_weather: Option<String>,
+    /// Terrain to apply
+    /// JavaScript: terrain?: string
+    pub terrain: Option<String>,
+    /// Weather to apply
+    /// JavaScript: weather?: string
+    pub weather: Option<String>,
+    /// Chance of the effect occurring (percentage)
+    /// JavaScript: chance?: number
+    pub chance: Option<i32>,
+    // Note: onHit callback cannot be stored in Rust data structures
+    // JavaScript: onHit?: MoveEventMethods['onHit']
 }
 
 /// Z-Move request option

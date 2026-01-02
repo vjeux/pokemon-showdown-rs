@@ -183,9 +183,14 @@ pub fn on_modify_move(
             // move.self = { sideCondition: 'waterpledge' };
             active_move.self_effect = Some(crate::battle_actions::SelfEffect {
                 boosts: None,
-                chance: None,
-                side_condition: Some("waterpledge".to_string()),
+                status: None,
                 volatile_status: None,
+                side_condition: Some("waterpledge".to_string()),
+                slot_condition: None,
+                pseudo_weather: None,
+                terrain: None,
+                weather: None,
+                chance: None,
             });
         }
     }
