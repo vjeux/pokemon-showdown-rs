@@ -35,7 +35,7 @@ pub fn base_power_callback(
 
     // if (pokemon.species_id.as_str() === 'Greninja-Ash' && pokemon.hasAbility('battlebond') && !pokemon.transformed)
     if pokemon.species_id == ID::from("greninjaash")
-        && pokemon.has_ability(&["battlebond"])
+        && pokemon.has_ability(battle, &["battlebond"])
         && !pokemon.transformed
     {
         return EventResult::Number(active_move.base_power + 5);

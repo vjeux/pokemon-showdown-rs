@@ -76,8 +76,8 @@ pub fn on_hit(
                     None => continue,
                 };
                 (
-                    ally.has_ability(&["sapsipper"]),
-                    ally.has_ability(&["goodasgold"]),
+                    ally.has_ability(battle, &["sapsipper"]),
+                    ally.has_ability(battle, &["goodasgold"]),
                 )
             };
 

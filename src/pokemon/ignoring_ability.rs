@@ -25,10 +25,10 @@ impl Pokemon {
     // 		return false;
     // 	}
     //
-    pub fn ignoring_ability(&self) -> bool {
+    pub fn ignoring_ability(&self, battle: &Battle) -> bool {
         // JS: if (this.battle.gen >= 5 && !this.isActive) return true;
-        // Note: Gen check not implemented - assumes gen >= 5
-        if !self.is_active {
+        // ✅ NOW IMPLEMENTED: Gen check
+        if battle.gen >= 5 && !self.is_active {
             return true;
         }
 
@@ -47,8 +47,33 @@ impl Pokemon {
         }
 
         // JS: if (this.hasItem('Ability Shield') || this.ability === 'neutralizinggas') return false;
-        // JS: Check all active pokemon for Neutralizing Gas ability
-        // Note: Neutralizing Gas check not implemented - would need Battle reference to getAllActive()
+        // ✅ NOW IMPLEMENTED: Ability Shield and Neutralizing Gas check
+        if self.has_item(battle, &["abilityshield"]) || self.ability.as_str() == "neutralizinggas" {
+            return false;
+        }
+
+        // JS: for (const pokemon of this.battle.getAllActive()) {
+        // JS:     if (pokemon.ability === 'neutralizinggas' && !pokemon.volatiles['gastroacid'] &&
+        // JS:         !pokemon.transformed && !pokemon.abilityState.ending && !this.volatiles['commanding']) {
+        // JS:         return true;
+        // JS:     }
+        // JS: }
+        // ✅ NOW IMPLEMENTED: Check all active Pokemon for Neutralizing Gas
+        for side in &battle.sides {
+            for pokemon in &side.pokemon {
+                if !pokemon.is_active {
+                    continue;
+                }
+                if pokemon.ability.as_str() == "neutralizinggas"
+                    && !pokemon.has_volatile(&ID::new("gastroacid"))
+                    && !pokemon.transformed
+                    && !pokemon.ability_state.data.get("ending").and_then(|v| v.as_bool()).unwrap_or(false)
+                    && !self.has_volatile(&ID::new("commanding"))
+                {
+                    return true;
+                }
+            }
+        }
 
         false
     }

@@ -34,7 +34,7 @@ pub fn on_hit(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.has_ability(&["mirrorarmor"])
+            target_pokemon.has_ability(battle, &["mirrorarmor"])
         };
 
         if !has_mirrorarmor {

@@ -72,7 +72,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.has_ability(&["protosynthesis"])
+        pokemon.has_ability(battle, &["protosynthesis"])
     };
 
     if has_protosynthesis {
@@ -102,7 +102,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.has_ability(&["quarkdrive"])
+        pokemon.has_ability(battle, &["quarkdrive"])
     };
 
     if has_quarkdrive {

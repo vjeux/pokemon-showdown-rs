@@ -51,7 +51,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Number(5),
                 };
-                source_pokemon.has_ability(&["persistent"])
+                source_pokemon.has_ability(battle, &["persistent"])
             };
 
             if has_persistent {

@@ -30,7 +30,7 @@ pub fn on_try(
         };
 
         let has_sleep = source_pokemon.status == ID::from("slp");
-        let has_comatose = source_pokemon.has_ability(&["comatose"]);
+        let has_comatose = source_pokemon.has_ability(battle, &["comatose"]);
 
         has_sleep || has_comatose
     };

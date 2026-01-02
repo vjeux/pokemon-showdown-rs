@@ -54,7 +54,7 @@ pub fn on_hit_side(
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.has_ability(&["plus", "minus"])
+            pokemon.has_ability(battle, &["plus", "minus"])
         };
 
         if !has_plus_or_minus {

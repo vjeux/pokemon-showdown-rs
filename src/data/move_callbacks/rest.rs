@@ -43,7 +43,7 @@ pub fn on_try(
         };
         (
             source_pokemon.status.clone(),
-            source_pokemon.has_ability(&["comatose"]),
+            source_pokemon.has_ability(battle, &["comatose"]),
         )
     };
 
@@ -86,7 +86,7 @@ pub fn on_try(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_ability(&["insomnia"])
+        source_pokemon.has_ability(battle, &["insomnia"])
     };
 
     if has_insomnia {
@@ -120,7 +120,7 @@ pub fn on_try(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_ability(&["vitalspirit"])
+        source_pokemon.has_ability(battle, &["vitalspirit"])
     };
 
     if has_vital_spirit {

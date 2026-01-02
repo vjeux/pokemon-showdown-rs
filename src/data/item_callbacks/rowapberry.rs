@@ -28,7 +28,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
         };
 
         let alive_and_active = source.hp > 0 && source.is_active;
-        let has_magic_guard = source.has_ability(&["magicguard"]);
+        let has_magic_guard = source.has_ability(battle, &["magicguard"]);
 
         (is_special, alive_and_active, has_magic_guard)
     };
@@ -43,7 +43,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let has_ripen = target.has_ability(&["ripen"]);
+        let has_ripen = target.has_ability(battle, &["ripen"]);
 
         let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,

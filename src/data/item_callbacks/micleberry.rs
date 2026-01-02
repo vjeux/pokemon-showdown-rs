@@ -21,14 +21,14 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
     // }
 
     let should_eat = {
-        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             let quarter_hp = pokemon.maxhp / 4;
             let half_hp = pokemon.maxhp / 2;
 
             if pokemon.hp <= quarter_hp {
                 true
             } else if pokemon.hp <= half_hp {
-                let has_gluttony = pokemon.has_ability(&["gluttony"]);
+                let has_gluttony = pokemon.has_ability(battle, &["gluttony"]);
                 let gluttony_active = pokemon.ability_state.data.get("gluttony")
                     .and_then(|v| v.as_bool())
                     .unwrap_or(false);

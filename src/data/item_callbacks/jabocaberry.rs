@@ -30,37 +30,41 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
         let move_is_physical = active_move.category == "Physical";
         let source_hp = source.hp;
         let source_is_active = source.is_active;
-        let source_has_magic_guard = source.has_ability(&["magicguard"]);
+        let source_has_magic_guard = source.has_ability(battle, &["magicguard"]);
 
         (move_is_physical, source_hp, source_is_active, source_has_magic_guard)
     };
 
     if move_is_physical && source_hp > 0 && source_is_active && !source_has_magic_guard {
-        // if (target.eatItem())
-        let (_ate_item, source_base_maxhp, target_has_ripen) = {
+        // Phase 1: Check if target has ripen ability
+        let target_has_ripen = {
+            let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target.has_ability(battle, &["ripen"])
+        };
+
+        // Phase 2: Eat the item (requires mutable access)
+        let ate_item = {
             let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
+            target.eat_item(false).is_some()
+        };
 
-            let ate_item = target.eat_item(false).is_some();
+        if !ate_item {
+            return EventResult::Continue;
+        }
 
-            if !ate_item {
-                return EventResult::Continue;
-            }
-
-            // Get target's ripen ability check and source base_maxhp
-            let target_has_ripen = target.has_ability(&["ripen"]);
-
-            // Get source's base_maxhp
+        // Phase 3: Get source's base_maxhp
+        let source_base_maxhp = {
             let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-
-            let source_base_maxhp = source.base_maxhp;
-
-            (ate_item, source_base_maxhp, target_has_ripen)
+            source.base_maxhp
         };
 
         // this.damage(source.baseMaxhp / (target.hasAbility('ripen') ? 4 : 8), source, target);

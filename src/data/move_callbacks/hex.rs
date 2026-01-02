@@ -38,7 +38,7 @@ pub fn base_power_callback(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.has_ability(&["comatose"])
+        target_pokemon.has_ability(battle, &["comatose"])
     };
 
     if has_status || has_comatose {

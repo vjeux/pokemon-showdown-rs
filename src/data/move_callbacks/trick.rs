@@ -22,7 +22,7 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.has_ability(&["stickyhold"])
+        target_pokemon.has_ability(battle, &["stickyhold"])
     };
 
     // Return the negation - if has stickyhold, return false (immune), otherwise true (not immune)

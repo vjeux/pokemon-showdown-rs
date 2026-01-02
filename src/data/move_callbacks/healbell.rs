@@ -86,7 +86,7 @@ pub fn on_hit(
                     Some(p) => p,
                     None => continue,
                 };
-                ally.has_ability(&["soundproof"])
+                ally.has_ability(battle, &["soundproof"])
             };
 
             if has_soundproof {
@@ -115,7 +115,7 @@ pub fn on_hit(
                     Some(p) => p,
                     None => continue,
                 };
-                ally.has_ability(&["goodasgold"])
+                ally.has_ability(battle, &["goodasgold"])
             };
 
             if has_goodasgold {

@@ -16,7 +16,7 @@ use crate::event::EventResult;
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // Check conditions for eating the item
     let should_eat = {
-        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             let quarter_hp = pokemon.maxhp / 4;
             let half_hp = pokemon.maxhp / 2;
 
@@ -25,7 +25,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
                 true
             } else if pokemon.hp <= half_hp {
                 // (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony') && pokemon.abilityState.gluttony)
-                let has_gluttony = pokemon.has_ability(&["gluttony"]);
+                let has_gluttony = pokemon.has_ability(battle, &["gluttony"]);
                 let gluttony_active = pokemon.ability_state.data.get("gluttony")
                     .and_then(|v| v.as_bool())
                     .unwrap_or(false);

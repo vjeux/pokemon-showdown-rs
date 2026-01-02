@@ -37,7 +37,7 @@ pub fn base_power_callback(
     };
 
     // if (target.status === 'slp' || target.hasAbility('comatose'))
-    if target.status == ID::from("slp") || target.has_ability(&["comatose"]) {
+    if target.status == ID::from("slp") || target.has_ability(battle, &["comatose"]) {
         let bp = active_move.base_power * 2;
         // this.debug('BP doubled on sleeping target');
         battle.debug("BP doubled on sleeping target");

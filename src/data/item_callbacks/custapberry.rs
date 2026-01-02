@@ -35,7 +35,7 @@ pub fn on_fractional_priority(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.hp, pokemon.maxhp, pokemon.has_ability(&["gluttony"]))
+        (pokemon.hp, pokemon.maxhp, pokemon.has_ability(battle, &["gluttony"]))
     };
 
     // pokemon.hp <= pokemon.maxhp / 4 || (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony') ...)

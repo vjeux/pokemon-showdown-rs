@@ -253,7 +253,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.has_ability(&["serenegrace"])
+            pokemon.has_ability(battle, &["serenegrace"])
         };
 
         // Get the active move - first check if we need to double secondaries

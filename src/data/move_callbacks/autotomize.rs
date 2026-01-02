@@ -25,7 +25,7 @@ pub fn on_try_hit(
     };
 
     // const hasContrary = pokemon.hasAbility('contrary');
-    let has_contrary = pokemon.has_ability(&["contrary"]);
+    let has_contrary = pokemon.has_ability(battle, &["contrary"]);
 
     // if ((!hasContrary && pokemon.boosts.spe === 6) || (hasContrary && pokemon.boosts.spe === -6)) {
     //     return false;

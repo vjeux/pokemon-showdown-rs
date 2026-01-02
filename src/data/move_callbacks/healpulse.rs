@@ -41,7 +41,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_ability(&["megalauncher"])
+        source_pokemon.has_ability(battle, &["megalauncher"])
     };
 
     let success = if has_megalauncher {

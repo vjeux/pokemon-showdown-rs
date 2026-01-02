@@ -73,7 +73,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.has_ability(&["levitate"])
+            pokemon.has_ability(battle, &["levitate"])
         };
         if has_flying || has_levitate {
             applies = true;

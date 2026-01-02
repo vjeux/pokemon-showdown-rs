@@ -30,7 +30,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Number(5),
                 };
-                (source_pokemon.has_ability(&["persistent"]), source_pokemon.get_slot())
+                (source_pokemon.has_ability(battle, &["persistent"]), source_pokemon.get_slot())
             };
 
             if has_persistent {
@@ -130,7 +130,7 @@ pub mod condition {
                         return EventResult::Continue;
                     },
                 };
-                (source_pokemon.has_ability(&["persistent"]), source_pokemon.get_slot())
+                (source_pokemon.has_ability(battle, &["persistent"]), source_pokemon.get_slot())
             };
 
             if has_persistent {

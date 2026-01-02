@@ -58,7 +58,7 @@ pub fn on_hit_side(
                 None => continue,
             };
             let has_ability =
-                ally_pokemon.has_ability(&["plus"]) || ally_pokemon.has_ability(&["minus"]);
+                ally_pokemon.has_ability(battle, &["plus"]) || ally_pokemon.has_ability(battle, &["minus"]);
             let has_maxguard = ally_pokemon.volatiles.contains_key(&ID::from("maxguard"));
             (has_ability, has_maxguard)
         };

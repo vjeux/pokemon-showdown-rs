@@ -28,7 +28,7 @@ pub mod condition {
                 None => return EventResult::Boolean(false),
             };
             let status = pokemon_pokemon.status.clone();
-            let has_comatose = pokemon_pokemon.has_ability(&["comatose"]);
+            let has_comatose = pokemon_pokemon.has_ability(battle, &["comatose"]);
             (status, has_comatose)
         };
 

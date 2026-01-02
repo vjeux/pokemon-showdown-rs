@@ -30,7 +30,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Number(5),
                 };
-                source_pokemon.has_ability(&["persistent"])
+                source_pokemon.has_ability(battle, &["persistent"])
             };
 
             if has_persistent {
@@ -109,7 +109,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.has_ability(&["persistent"])
+            source_pokemon.has_ability(battle, &["persistent"])
         } else {
             false
         };

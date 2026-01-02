@@ -174,7 +174,7 @@ impl Battle {
             if let Some((side_idx, poke_idx)) = target {
                 if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                        if pokemon.ignoring_ability() {
+                        if pokemon.ignoring_ability(self) {
                             self.debug(&format!(
                                 "{} handler suppressed by Gastro Acid or Neutralizing Gas",
                                 event_id

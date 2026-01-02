@@ -63,7 +63,7 @@ pub fn on_try_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        attacker_pokemon.has_ability(&["gulpmissile"])
+        attacker_pokemon.has_ability(battle, &["gulpmissile"])
             && attacker_pokemon.species_id.as_str() == "Cramorant"
             && !attacker_pokemon.transformed
     };
