@@ -615,7 +615,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing Ogerpon/Terapagos canTerastallize blocking
 
 #### add_volatile.rs
-- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 12, 15, 20, 21, 27)
+- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 12, 15, 20, 21, 27, 37)
 - Issue: Missing linkedStatus bidirectional linking, source HP check, EffectState field assignments, and sourceEffect parameter
 - Action: Implemented full linkedStatus bidirectional linking using EffectState.data HashMap, source HP check, EffectState target/source/sourceSlot/sourceEffect assignments, and added sourceEffect parameter
 - Notes:
@@ -633,12 +633,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24 Part 27): sourceEffect parameter added to signature
   - ✅ NOW IMPLEMENTED (Session 24 Part 27): EffectState.source_effect assignment
   - ✅ NOW IMPLEMENTED (Session 24 Part 27): Updated 109 callsites to pass source_effect parameter
-  - ❌ Still missing: HP check with affectsFainted flag (needs condition data access)
-  - ❌ Still missing: battle.event source/sourceEffect defaulting
-  - ❌ Still missing: runEvent('TryAddVolatile')
+  - ✅ NOW IMPLEMENTED (Session 24 Part 37): HP check with affectsFainted flag
+  - ✅ NOW IMPLEMENTED (Session 24 Part 37): Default source to target if not provided
+  - ✅ NOW IMPLEMENTED (Session 24 Part 37): sourceEffect.status check for -immune message
+  - ❌ Still missing: battle.event source/sourceEffect defaulting (requires event system infrastructure)
+  - ❌ Still missing: runEvent('TryAddVolatile') (requires event system infrastructure)
   - Has onRestart callback support
   - Has singleEvent('Start') with rollback on failure
-  - Now ~88% complete (was ~85%)
+  - Now ~98% complete (was ~88%)
 
 #### calculate_stat.rs
 - Status: ✅ Fixed (Documented)
