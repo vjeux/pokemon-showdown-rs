@@ -88,64 +88,122 @@ impl From<BaseStatsData> for StatsTable {
     }
 }
 
-/// Species data from the pokedex
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// Pokemon species data from the Dex
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
+/// JavaScript equivalent: SpeciesData (sim/dex-species.ts)
+/// 50+ fields in JavaScript
 pub struct SpeciesData {
+    /// Species number in the Pokedex
+    /// JavaScript: num: number
     #[serde(default)]
     pub num: i32,
+    /// Species name
+    /// JavaScript: name: string
     pub name: String,
+    /// Type(s)
+    /// JavaScript: types: string[]
     #[serde(default)]
     pub types: Vec<String>,
+    /// Base stats
+    /// JavaScript: baseStats: StatsTable
     #[serde(default)]
     pub base_stats: BaseStatsData,
+    /// Abilities
+    /// JavaScript: abilities: { 0: string, 1?: string, H?: string, S?: string }
     #[serde(default)]
     pub abilities: AbilitySlots,
+    /// Height in meters
+    /// JavaScript: heightm: number
     #[serde(default)]
     pub heightm: f64,
+    /// Weight in kilograms
+    /// JavaScript: weightkg: number
     #[serde(default)]
     pub weightkg: f64,
+    /// Gender
+    /// JavaScript: gender?: 'M' | 'F' | 'N'
     #[serde(default)]
     pub gender: Option<String>,
+    /// Gender ratio
+    /// JavaScript: genderRatio?: { M: number, F: number }
     #[serde(default)]
     pub gender_ratio: Option<GenderRatio>,
+    /// Evolutions
+    /// JavaScript: evos: string[]
     #[serde(default)]
     pub evos: Vec<String>,
+    /// Pre-evolution
+    /// JavaScript: prevo?: string
     #[serde(default)]
     pub prevo: Option<String>,
+    /// Evolution level
+    /// JavaScript: evoLevel?: number
     #[serde(default)]
     pub evo_level: Option<i32>,
+    /// Base species (for formes)
+    /// JavaScript: baseSpecies?: string
     #[serde(default)]
     pub base_species: Option<String>,
+    /// Forme name
+    /// JavaScript: forme?: string
     #[serde(default)]
     pub forme: Option<String>,
+    /// Other formes
+    /// JavaScript: otherFormes?: string[]
     #[serde(default)]
     pub other_formes: Vec<String>,
+    /// Cosmetic formes
+    /// JavaScript: cosmeticFormes?: string[]
     #[serde(default)]
     pub cosmetic_formes: Vec<String>,
+    /// Is this a cosmetic forme?
+    /// JavaScript: isCosmeticForme?: boolean
     #[serde(default)]
     pub is_cosmetic_forme: bool,
+    /// Generation introduced
+    /// JavaScript: gen?: number
     #[serde(default)]
     pub gen: Option<u8>,
+    /// Tags
+    /// JavaScript: tags?: string[]
     #[serde(default)]
     pub tags: Vec<String>,
+    /// Egg groups
+    /// JavaScript: eggGroups?: string[]
     #[serde(rename = "eggGroups", default)]
     pub egg_groups: Vec<String>,
+    /// Battle-only forme
+    /// JavaScript: battleOnly?: string | string[]
     #[serde(rename = "battleOnly", default)]
     pub battle_only: StringOrVec,
+    /// Forme order
+    /// JavaScript: formeOrder?: string[]
     #[serde(rename = "formeOrder", default)]
     pub forme_order: Vec<String>,
+    /// Required items for forme change
+    /// JavaScript: requiredItems?: string[]
     #[serde(rename = "requiredItems", default)]
     pub required_items: Vec<String>,
     // Format data fields
+    /// Tier in formats
+    /// JavaScript: tier?: string
     #[serde(default)]
     pub tier: Option<String>,
+    /// Doubles tier
+    /// JavaScript: doublesTier?: string
     #[serde(default)]
     pub doubles_tier: Option<String>,
+    /// National Dex tier
+    /// JavaScript: natDexTier?: string
     #[serde(rename = "natDexTier", default)]
     pub nat_dex_tier: Option<String>,
+    /// Nonstandard status
+    /// JavaScript: isNonstandard?: Nonstandard | null
     #[serde(default)]
     pub is_nonstandard: Option<String>,
+    /// Does this species exist?
+    /// JavaScript: exists: boolean
     #[serde(default = "default_true")]
     pub exists: bool,
 }
