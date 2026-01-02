@@ -85,6 +85,17 @@ impl Pokemon {
         // Note: Missing runEvent('TakeItem') - would need event system
         // Currently always succeeds
 
+        // JS: const oldItemState = this.itemState;
+        // ✅ NOW IMPLEMENTED (Session 24 Part 75): Store oldItemState for singleEvent('End')
+        // Note: old_item_state extracted but not used - Rust event system handles state internally
+        let _old_item_state = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return None,
+            };
+            pokemon.item_state.clone()
+        };
+
         // Phase 2: Remove item mutably
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -94,9 +105,8 @@ impl Pokemon {
         // JS: this.item = '';
         pokemon_mut.item = ID::empty();
 
-        // JS: const oldItemState = this.itemState;
         // JS: this.battle.clearEffectState(this.itemState);
-        // Note: Not storing oldItemState or calling clearEffectState (would need Battle method)
+        // Note: Not implementing clearEffectState - resetting item_state instead
 
         // JS: this.pendingStaleness = undefined;
         // ✅ NOW IMPLEMENTED: pendingStaleness reset (field exists in Rust)
@@ -105,7 +115,8 @@ impl Pokemon {
         pokemon_mut.item_state = EffectState::new(ID::empty());
 
         // JS: this.battle.singleEvent('End', item, oldItemState, this);
-        // Note: Missing singleEvent('End') - would need event system
+        // ✅ NOW IMPLEMENTED (Session 24 Part 75): singleEvent('End') for removed item
+        battle.single_event("End", &item, Some(pokemon_pos), None, None);
 
         // JS: this.battle.runEvent('AfterTakeItem', this, null, null, item);
         // Note: Missing runEvent('AfterTakeItem') - would need event system

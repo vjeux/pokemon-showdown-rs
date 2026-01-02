@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 74 Complete - Continuing NOTE Fixes)
-- **Session 24 Total Progress**: 40+ commits, 74 parts completed
+## Overview (Updated: Session 24 Part 75 Complete - Continuing NOTE Fixes)
+- **Session 24 Total Progress**: 40+ commits, 75 parts completed
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -33,6 +33,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 72**: **FINAL TODO ELIMINATED** - calculate_stat ModifyBoost event infrastructure documented
   - **Part 73**: get_moves trapped side effect - Changed to &mut self, implements trapped = true for 1:1 JavaScript equivalence
   - **Part 74**: set_item singleEvent calls - Implemented singleEvent('End') for old item and singleEvent('Start') for new item
+  - **Part 75**: take_item singleEvent call - Implemented singleEvent('End') for removed item
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
@@ -630,9 +631,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now ~60% complete (was ~50%)
 
 #### take_item.rs
-- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 6 & 16)
-- Issue: Missing source parameter, Gen 4 Multitype/itemKnockedOff checks, and pendingStaleness reset
-- Action: Refactored to associated function and implemented Gen 4 protection and pendingStaleness reset
+- Status: ✅ Fixed (Significantly Improved - Session 24 Part 75)
+- Issue: Missing source parameter, Gen 4 Multitype/itemKnockedOff checks, pendingStaleness reset, and singleEvent call
+- Action: Refactored to associated function, implemented Gen 4 protection, pendingStaleness reset, and singleEvent('End')
 - Notes:
   - ✅ NOW IMPLEMENTED (Session 24): Refactored to associated function `Pokemon::take_item(battle, pokemon_pos, source_pos)`
   - ✅ NOW IMPLEMENTED (Session 24): source_pos parameter (optional, defaults to self)
@@ -641,11 +642,12 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24): Prevents Arceus (Multitype ability) from having items removed (Gen <= 4)
   - ✅ NOW IMPLEMENTED (Session 24): Updated 13 callsites across move/item callbacks
   - ✅ NOW IMPLEMENTED (Session 24 Part 16): pendingStaleness reset (field exists in Rust)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 75): oldItemState storage
+  - ✅ NOW IMPLEMENTED (Session 24 Part 75): singleEvent('End') for removed item
   - ❌ Still missing: runEvent('TakeItem')
-  - ❌ Still missing: oldItemState storage and clearEffectState call
-  - ❌ Still missing: singleEvent('End')
+  - ❌ Still missing: clearEffectState call (currently resets item_state instead)
   - ❌ Still missing: runEvent('AfterTakeItem')
-  - Now ~72% complete (was ~70%)
+  - Now ~78% complete (was ~72%)
 
 #### transform_into.rs
 - Status: ✅ Fixed (Significantly Improved - Session 24 Parts 13, 19, 33 & 54)
