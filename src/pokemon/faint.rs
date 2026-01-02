@@ -27,20 +27,34 @@ impl Pokemon {
     // 	}
     //
     pub fn faint(&mut self) -> i32 {
+        // JS: if (this.fainted || this.faintQueued) return 0;
         if self.fainted || self.faint_queued {
             return 0;
         }
+
+        // JS: const d = this.hp;
         let damage = self.hp;
+
+        // JS: this.hp = 0;
         self.hp = 0;
+
+        // JS: this.switchFlag = false;
         self.switch_flag = false;
+
+        // JS: this.faintQueued = true;
         self.faint_queued = true;
 
-        // TODO: implement the same logic as JavaScript
-        //      this.battle.faintQueue.push({
-        //          target: this,
-        //          source,
-        //          effect,
-        //      });
+        // JS: this.battle.faintQueue.push({
+        // JS:     target: this,
+        // JS:     source,
+        // JS:     effect,
+        // JS: });
+        // Note: Missing source and effect parameters
+        // Note: Missing battle.faintQueue.push() - would need Battle reference
+        // Pokemon is marked as faint_queued but not added to battle's faint queue
+        // This is a borrow checker workaround - caller must add to faint queue
+
+        // JS: return d;
         damage
     }
 }

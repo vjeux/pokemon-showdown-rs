@@ -49,12 +49,63 @@ impl Pokemon {
     // 	}
     //
     pub fn eat_item(&mut self, _is_forced: bool) -> Option<ID> {
-        // TODO: implement the same logic as JavaScript
-        
+        // JS: if (!this.item) return false;
         if self.item.is_empty() {
             return None;
         }
 
+        // JS: if ((!this.hp && this.item !== 'jabocaberry' && this.item !== 'rowapberry') || !this.isActive) return false;
+        // Note: Missing HP check with Jaboca/Rowap Berry exception
+        // Note: Missing isActive check
+
+        // JS: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
+        // JS: if (!source && this.battle.event?.target) source = this.battle.event.target;
+        // Note: Missing source and sourceEffect parameters
+
+        // JS: const item = this.getItem();
+        // JS: if (sourceEffect?.effectType === 'Item' && this.item !== sourceEffect.id && source === this) {
+        // JS:     return false;
+        // JS: }
+        // Note: Missing sourceEffect item type check
+
+        // JS: if (
+        // JS:     this.battle.runEvent('UseItem', this, null, null, item) &&
+        // JS:     (force || this.battle.runEvent('TryEatItem', this, null, null, item))
+        // JS: ) { ... }
+        // Note: Missing runEvent('UseItem') and runEvent('TryEatItem')
+
+        // JS: this.battle.add('-enditem', this, item, '[eat]');
+        // Note: Missing battle.add message
+
+        // JS: this.battle.singleEvent('Eat', item, this.itemState, this, source, sourceEffect);
+        // JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
+        // Note: Missing singleEvent('Eat') and runEvent('EatItem')
+
+        // JS: if (RESTORATIVE_BERRIES.has(item.id)) {
+        // JS:     switch (this.pendingStaleness) {
+        // JS:     case 'internal':
+        // JS:         if (this.staleness !== 'external') this.staleness = 'internal';
+        // JS:         break;
+        // JS:     case 'external':
+        // JS:         this.staleness = 'external';
+        // JS:         break;
+        // JS:     }
+        // JS:     this.pendingStaleness = undefined;
+        // JS: }
+        // Note: Missing RESTORATIVE_BERRIES staleness logic
+        // Note: pendingStaleness and staleness fields don't exist in Rust
+
+        // JS: this.lastItem = this.item;
+        // JS: this.item = '';
+        // JS: this.battle.clearEffectState(this.itemState);
+        // JS: this.usedItemThisTurn = true;
+        // JS: this.ateBerry = true;
+        // Note: Missing lastItem, usedItemThisTurn, ateBerry tracking
+
+        // JS: this.battle.runEvent('AfterUseItem', this, null, null, item);
+        // Note: Missing runEvent('AfterUseItem')
+
+        // Currently just delegates to use_item()
         // Would check if item is edible (berry)
         // For now, same as use_item
         self.use_item()

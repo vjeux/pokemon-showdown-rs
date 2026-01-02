@@ -513,6 +513,61 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Caller must call battle.add() with returned data
   - Design pattern: work around borrow checker by returning data
 
+#### eat_item.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Very simplified, just delegates to use_item()
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Missing HP check with Jaboca/Rowap Berry exception for fainted Pokemon
+  - Missing isActive check
+  - Missing source and sourceEffect parameters
+  - Missing sourceEffect item type check
+  - Missing runEvent('UseItem') and runEvent('TryEatItem')
+  - Missing battle.add('-enditem') message
+  - Missing singleEvent('Eat') and runEvent('EatItem')
+  - Missing RESTORATIVE_BERRIES staleness logic
+  - Missing pendingStaleness and staleness fields (don't exist in Rust)
+  - Missing lastItem, usedItemThisTurn, ateBerry tracking
+  - Missing runEvent('AfterUseItem')
+  - Currently just calls use_item()
+
+#### faint.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing battle.faintQueue.push()
+- Action: Documented borrow checker workaround
+- Notes:
+  - Missing source and effect parameters
+  - Missing battle.faintQueue.push() - would need Battle reference
+  - Pokemon is marked as faint_queued but not added to battle's faint queue
+  - This is a borrow checker workaround - caller must add to faint queue
+  - Otherwise correctly sets hp=0, switch_flag=false, faint_queued=true
+
+#### get_last_damaged_by.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Returns None, not implemented
+- Action: Documented what full implementation would need
+- Notes:
+  - Missing attackedBy: Vec<Attacker> field on Pokemon struct
+  - Missing tracking of all attacks in battle (push to attackedBy on damage)
+  - Missing filtering by damageValue type (number)
+  - Missing isAlly check when filterOutSameSide is true
+  - Should return last attacker that dealt damage
+  - Currently returns None
+
+#### get_move_targets.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Empty stub file with TODO
+- Action: Documented complexity of full implementation
+- Notes:
+  - Complex method that determines all targets for a move
+  - Would need move target type handling (normal, allAdjacent, allAdjacentFoes, etc.)
+  - Would need redirection logic (Follow Me, Rage Powder, Lightning Rod, Storm Drain, etc.)
+  - Would need Pressure targets calculation
+  - Would need battle format considerations (singles, doubles, triples)
+  - Would need Missing Pokemon handling
+  - Would need Substitute interactions
+  - Not implemented - requires significant Battle reference infrastructure
+
 ### Rust-Specific Helpers (May be intentional)
 
 The following are marked as "NOTE: This method is NOT in JavaScript - Rust-specific implementation":
