@@ -354,10 +354,16 @@ pub fn get_damage(
         if !has_dynamax_volatile {
             base_power = 0;
             eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower to 0");
-        } else {
-            // TODO: Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
-            // This would require checking if the base move (the original move before dynamax conversion) is also a Max move
-            // For now, this is rare and not needed for our current test case
+        } else if let Some(ref base_move_id) = move_data.base_move {
+            // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
+            // This checks if the base move (the original move before dynamax conversion) is also a Max move
+            if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
+                if base_move_data.is_max.is_some() {
+                    // Hacked Max Move: the base move is itself a Max move
+                    base_power = 0;
+                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower to 0");
+                }
+            }
         }
     }
 

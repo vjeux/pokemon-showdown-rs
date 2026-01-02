@@ -42,9 +42,9 @@ These files have implementations but with TODOs for missing functionality:
 - ~~Line 173: move.target === 'self' and toxic special cases~~ ✅ IMPLEMENTED
 - ~~Line 195: Miss message and Blunder Policy handling~~ ✅ IMPLEMENTED
 
-### get_damage.rs
-- Line 358: Second condition check for move.isMax
-- Line 364: NOTE about not returning early if base_power == 0
+### ~~get_damage.rs~~ ✅ COMPLETED
+- ~~Line 358: Second condition check for move.isMax~~ ✅ IMPLEMENTED
+- Line 364: NOTE about not returning early if base_power == 0 (this is a comment, not a TODO)
 
 ### run_move.rs
 Multiple missing features:
@@ -288,6 +288,16 @@ These files exist only in Rust and should be evaluated:
 - Infrastructure note: Accesses `battle.active_move` for ActiveMove-specific fields
   - Avoids massive signature refactor through all callers
   - Falls back to defaults if active_move is None
+
+### 2026-01-02
+**Completed: get_damage** ✅ TODO IMPLEMENTED!
+- Implemented hacked Max Move detection:
+  - JavaScript: `if (move.isMax && this.dex.moves.get(move.baseMove).isMax) { basePower = 0; }`
+  - Checks if base_move (original move before dynamax) is also a Max move
+  - Sets basePower to 0 for hacked Max Moves
+  - Accesses `move_data.base_move` field
+  - Looks up base move in `battle.dex.moves()` and checks `is_max` field
+  - 1:1 match with JavaScript condition
 
 ---
 
