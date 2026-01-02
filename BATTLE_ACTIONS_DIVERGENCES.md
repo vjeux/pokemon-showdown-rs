@@ -736,7 +736,7 @@ These files exist only in Rust and should be evaluated:
 - 1:1 match with JavaScript implementation
 
 ### 2026-01-02
-**Partially Completed: run_move** ⚠️ 5/9 TODOs IMPLEMENTED!
+**Partially Completed: run_move** ⚠️ 6/9 TODOs IMPLEMENTED!
 - Implemented activeMoveActions tracking:
   - JavaScript: `pokemon.activeMoveActions++;`
   - Rust: `pokemon.active_move_actions += 1;`
@@ -759,10 +759,14 @@ These files exist only in Rust and should be evaluated:
   - JavaScript: `if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id))`
   - Rust: Calls Pokemon::remove_volatile to clean up volatile after move execution
   - Removes temporary volatile status set by the move
-- **Remaining 4 TODOs:**
-  - pranksterBoosted (needs calculation logic)
+- Implemented PP deduction (line 142):
+  - JavaScript: `if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle'))`
+  - Rust: Calls pokemon.deduct_pp(gen, move_id, Some(1)) and stores result
+  - Matches JavaScript pattern (condition check without action - incomplete in JS source)
+  - Returns amount of PP deducted (0 on failure)
+- **Remaining 3 TODOs:**
+  - pranksterBoosted (needs priority calculation logic)
   - beforeMoveCallback (needs callback system infrastructure)
-  - PP deduction verification (might already be done elsewhere)
   - Dancer ability activation (needs ability check and recursive runMove call)
 
 ---
@@ -778,7 +782,7 @@ This session focused on systematic file-by-file review to ensure 1:1 line-by-lin
 4. ✅ drag_in.rs - Added missing isActive check
 5. ✅ can_terastallize.rs - Refactored signature to match JavaScript (battle, pokemon_pos)
 6. ✅ switch_in.rs - Added 3 missing features (switchCopyFlag, Gen 4 lastMove, Gen 4 lastItem)
-7. ⚠️ run_move.rs - Partially completed: 5/9 TODOs implemented (activeMoveActions, moveThisTurnResult, moveUsed, cantusetwice handling, cantusetwice hint)
+7. ⚠️ run_move.rs - Partially completed: 6/9 TODOs implemented (activeMoveActions, moveThisTurnResult, moveUsed, cantusetwice handling, cantusetwice hint, PP deduction)
 
 **Files Verified as Correct:**
 - calc_recoil_damage.rs
