@@ -445,17 +445,22 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Returns true correctly
 
 #### set_type.rs
-- Status: ✅ Fixed (Partially Implemented)
-- Issue: Missing enforce parameter and all validation/field updates
-- Action: Implemented enforce parameter, validations, and field resets
+- Status: ✅ Fixed (Significantly Improved - Session 22)
+- Issue: Missing Arceus/Silvally protection and Battle parameter
+- Action: Refactored to associated function with Battle parameter, implemented Arceus/Silvally protection
 - Notes:
+  - ✅ NOW IMPLEMENTED (Session 22): Refactored from instance method to associated function
+  - ✅ NOW IMPLEMENTED (Session 22): Battle parameter for gen checks and species data access
+  - ✅ NOW IMPLEMENTED (Session 22): Arceus (493) protection - Gen 5+: blocks type changes
+  - ✅ NOW IMPLEMENTED (Session 22): Silvally (773) protection - Gen 5+: blocks type changes
+  - ✅ NOW IMPLEMENTED (Session 22): Gen 4 Arceus with Multitype protection
+  - ✅ NOW IMPLEMENTED (Session 22): Two-phase borrow pattern to avoid borrow checker conflicts
   - ✅ NOW IMPLEMENTED: enforce parameter (defaults to false in JS)
   - ✅ NOW IMPLEMENTED: Stellar type check when !enforce (prevents Stellar as base type)
   - ✅ NOW IMPLEMENTED: Terastallized protection when !enforce (can't change type while tera'd)
   - ✅ NOW IMPLEMENTED: Empty type validation (returns false instead of panicking)
   - ✅ NOW IMPLEMENTED: addedType reset (sets self.added_type = None)
   - ✅ NOW IMPLEMENTED: Returns bool instead of void
-  - Missing Arceus (493) and Silvally (773) protection (needs gen and species data)
   - Missing knownType field assignment (field doesn't exist)
   - Missing apparentType field assignment (field doesn't exist)
   - Updated 6 callsites (reflecttype, magicpowder, conversion, conversion2, camouflage, soak)
@@ -1390,6 +1395,55 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 3 commits pushed to git
   - 100% compilation success rate
 
+### Session 21 - 2026-01-01 (Status Review)
+- **Goal**: Review progress and identify next improvements
+- **Status Assessment**:
+  - ✅ All code compiles successfully (0 errors, 0 warnings)
+  - ✅ All changes committed and pushed to git
+  - ✅ 6 commits across Sessions 19-20
+  - ✅ 5 methods significantly improved
+  - 📊 Remaining: ~230 notes across 51 files
+  - 📊 Total methods: 119 in src/pokemon/
+- **Key Improvements Made (Sessions 19-20)**:
+  - is_grounded: negate_immunity parameter, ??? + Roost case
+  - transform_into: 5 gen checks, eliminated unsafe code
+  - set_species: isTransform handling, Gen 1 status drops
+  - run_status_immunity: message parameter
+- **Next Focus Areas**:
+  - Methods needing Battle parameter refactoring
+  - Missing struct fields (knownType, apparentType, attackedBy)
+  - Event system integration (runEvent, singleEvent)
+  - Complex data access requirements
+
+### Session 22 - 2026-01-01 (set_type Arceus/Silvally Protection)
+- **Goal**: Implement Arceus/Silvally type change protection in set_type
+- **Completed**:
+  - ✅ Refactored set_type from instance method to associated function
+  - ✅ Added Battle parameter for gen checks and species data access
+  - ✅ Implemented Arceus (493) protection - Gen 5+: blocks type changes
+  - ✅ Implemented Silvally (773) protection - Gen 5+: blocks type changes
+  - ✅ Implemented Gen 4 Arceus with Multitype ability protection
+  - ✅ Used two-phase borrow pattern to avoid borrow checker conflicts
+  - ✅ Updated 6 callsites (soak, magicpowder, conversion, camouflage, conversion2, reflecttype)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+- **Methods Now Significantly Improved**:
+  - set_type.rs - Now ~90% complete (was ~75%)
+    - ✅ Has: All validations, Arceus/Silvally protection, gen checks
+    - ❌ Missing: knownType and apparentType field assignments (fields don't exist)
+- **Technical Details**:
+  - Changed signature from `&mut self, Vec<String>, bool` to `(battle: &mut Battle, pokemon_pos, Vec<String>, bool)`
+  - Phase 1: Extract species_num and terastallized status immutably
+  - Phase 2: Check Gen 5+ Arceus/Silvally, Gen 4 Multitype
+  - Phase 3: Get mutable reference and apply type changes
+  - Pattern follows transform_into and try_trap refactorings
+- **Session Statistics**:
+  - 1 method significantly improved (set_type)
+  - 6 feature implementations (Arceus gen5+, Silvally gen5+, Multitype gen4, Battle parameter, two-phase pattern, associated function)
+  - 7 files modified (1 pokemon method + 6 move callbacks)
+  - 6 callsites updated
+  - 1 commit pushed to git
+  - 100% compilation success rate
 
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
