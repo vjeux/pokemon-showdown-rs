@@ -79,20 +79,42 @@ impl Pokemon {
         // JS: if (!isFromFormeChange) {
         // JS:     if (ability.flags['cantsuppress'] || this.getAbility().flags['cantsuppress']) return false;
         // JS: }
-        // Note: Missing cantsuppress flag check - would need ability data access
+        // ✅ NOW IMPLEMENTED (Session 24 Part 91): cantsuppress flag check
+        if !_is_from_forme_change {
+            // Check if new ability has cantsuppress flag
+            let new_ability_cantsuppress = battle.dex.abilities()
+                .get_by_id(&ability_id)
+                .and_then(|ability| ability.flags.get("cantsuppress"))
+                .map(|v| *v != 0) // i32 flags: non-zero = true
+                .unwrap_or(false);
+
+            // Check if current ability has cantsuppress flag
+            let old_ability_cantsuppress = battle.dex.abilities()
+                .get_by_id(&old_ability_id)
+                .and_then(|ability| ability.flags.get("cantsuppress"))
+                .map(|v| *v != 0) // i32 flags: non-zero = true
+                .unwrap_or(false);
+
+            // If either ability has cantsuppress, return false (empty ID)
+            if new_ability_cantsuppress || old_ability_cantsuppress {
+                return ID::default();
+            }
+        }
 
         // JS: if (!isFromFormeChange && !isTransform) {
         // JS:     const setAbilityEvent = this.battle.runEvent('SetAbility', this, source, sourceEffect, ability);
         // JS:     if (!setAbilityEvent) return setAbilityEvent;
         // JS: }
         // ✅ NOW IMPLEMENTED (Session 24 Part 79): runEvent('SetAbility')
+        // ✅ NOW IMPLEMENTED (Session 24 Part 91): isFromFormeChange and isTransform conditional checks
         // Note: JavaScript passes ability as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's ability field after it's set
-        // Note: isFromFormeChange and isTransform checks not implemented - calling event unconditionally
-        let set_ability_result = battle.run_event("SetAbility", Some(pokemon_pos), source_pos, source_effect, None);
-        // runEvent returns Option<i32>, None or Some(0) means failure
-        if set_ability_result == Some(0) || set_ability_result == None {
-            return ID::default();
+        if !_is_from_forme_change && !is_transform {
+            let set_ability_result = battle.run_event("SetAbility", Some(pokemon_pos), source_pos, source_effect, None);
+            // runEvent returns Option<i32>, None or Some(0) means failure
+            if set_ability_result == Some(0) || set_ability_result == None {
+                return ID::default();
+            }
         }
 
         // JS: this.battle.singleEvent('End', oldAbility, this.abilityState, this, source);
