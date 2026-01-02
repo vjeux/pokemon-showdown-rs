@@ -1318,6 +1318,33 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 commit pushed to git
   - 100% compilation success rate
 
+### Session 19 - 2026-01-01 (is_grounded negate_immunity parameter)
+- **Goal**: Add missing negate_immunity parameter and special cases to is_grounded method
+- **Completed**:
+  - ✅ Added negate_immunity: bool parameter to is_grounded:
+    - JavaScript signature: isGrounded(negateImmunity = false)
+    - Rust signature: is_grounded(&self, battle: &Battle, negate_immunity: bool) -> bool
+  - ✅ Implemented special ??? + Roost case for Fire/Flying with Burn Up:
+    - When Pokemon has both ??? type AND Roost volatile, it IS grounded
+    - This handles Fire/Flying using Burn Up (loses Fire → ???) then Roost
+  - ✅ Changed ability check to use has_ability() method instead of direct field check
+  - ✅ Updated ~21 callsites across codebase to pass false (JavaScript default value)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+- **Methods Now Significantly Improved**:
+  - is_grounded.rs - Now ~85% complete (was ~75%)
+    - ✅ Has: negate_immunity parameter, special ??? + Roost case, has_ability() call
+    - ❌ Still missing: suppressingAbility check for Levitate
+    - ❌ Should return Option<bool> to represent null, but signature is bool
+- **Session Statistics**:
+  - 1 method significantly improved (is_grounded)
+  - 1 parameter added (negate_immunity)
+  - 1 special case implemented (??? + Roost)
+  - 13 files modified (1 pokemon method + ~12 callsites)
+  - ~21 callsites updated
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
