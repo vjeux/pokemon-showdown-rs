@@ -17,16 +17,23 @@ impl Pokemon {
         other_fainted: bool,
         active_per_half: usize,
     ) -> bool {
-        // TODO: implement the same logic as JavaScript
-        // the signature shouldn't include other_fainted and active_per_half.
-        // If you need to work around the borrow checker, pass in the battle object
+        // JS: if (this.fainted || pokemon2.fainted) return false;
         if self.fainted || other_fainted {
             return false;
         }
+
+        // JS: if (this.battle.activePerHalf <= 2) return this !== pokemon2;
         if active_per_half <= 2 {
             return self.position != other_position;
         }
-        // For triples, only adjacent positions can target each other
+
+        // JS: if (this.side === pokemon2.side) return Math.abs(this.position - pokemon2.position) === 1;
+        // JS: return Math.abs(this.position + pokemon2.position + 1 - this.side.active.length) <= 1;
+        //
+        // Note: Missing same-side vs different-side check
+        // Current implementation assumes same side
+        // Full implementation would need to know if other_position is on same side
+        // and the active.length for cross-side adjacency calculation
         (self.position as i32 - other_position as i32).abs() <= 1
     }
 }

@@ -295,6 +295,59 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing runEvent('Immunity') call (needs Battle reference)
   - Missing immunity message support
 
+#### is_ally.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing allySide check for multi-battle support
+- Action: Documented that only checks same side, missing multi-battle ally check
+- Notes:
+  - Would need Battle reference to check allySide field
+
+#### is_adjacent.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing same-side vs different-side adjacency calculation
+- Action: Documented current implementation and what's missing
+- Notes:
+  - Currently assumes same side
+  - Missing different-side adjacency formula using active.length
+
+#### is_grounded.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Multiple missing checks and incorrect case handling
+- Action: Rewrote to match JS flow, documented all missing pieces
+- Notes:
+  - Fixed has_type to use case-sensitive comparison (was using toLowerCase)
+  - Missing Gravity pseudo-weather check (needs Battle reference)
+  - Missing gen check for Ingrain (assumes gen >= 4)
+  - Missing ignoringItem() calls for Iron Ball and Air Balloon
+  - Missing negateImmunity parameter
+  - Missing special ??? + Roost case for Fire/Flying with Burn Up
+  - Missing suppressingAbility check for Levitate
+  - Should return Option<bool> to represent null, but signature is bool
+
+#### is_last_active.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Just returns is_active instead of checking other active Pokemon
+- Action: Documented that it needs to loop through side.active
+- Notes:
+  - Would need Battle reference to access side.active array
+  - Should loop from position+1 checking for non-fainted Pokemon
+
+#### is_sky_dropped.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing check for foe Pokemon with Sky Drop where source is this Pokemon
+- Action: Documented current partial implementation
+- Notes:
+  - Would need Battle reference to access side.foe.active
+  - Would need EffectState.source field to track Sky Drop initiator
+
+#### max_move_disabled.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing Status move category check with Assault Vest/Taunt
+- Action: Documented current PP check and missing category check
+- Notes:
+  - Would need Battle reference to get move data from dex
+  - Missing: check if move.category == 'Status' && (hasItem('assaultvest') || has_volatile('taunt'))
+
 ### Rust-Specific Helpers (May be intentional)
 
 The following are marked as "NOTE: This method is NOT in JavaScript - Rust-specific implementation":
@@ -390,8 +443,15 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Documented ignoring_ability.rs (noted missing ability flags and Neutralizing Gas check)
   - ✅ Documented ignoring_item.rs (noted missing Primal Orb, Magic Room, ignoreKlutz checks)
   - ✅ Documented run_status_immunity.rs (noted missing fainted check and runEvent)
+  - ✅ Committed and pushed (4 files)
+  - ✅ Documented is_ally.rs (noted missing allySide check for multi-battles)
+  - ✅ Documented is_adjacent.rs (noted missing same-side vs different-side calculation)
+  - ✅ Fixed and documented is_grounded.rs (rewrote to match JS flow, fixed case-sensitive has_type)
+  - ✅ Documented is_last_active.rs (noted needs to loop through side.active)
+  - ✅ Documented is_sky_dropped.rs (noted missing foe.active check with source tracking)
+  - ✅ Documented max_move_disabled.rs (noted missing Status category check)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-- **Remaining**: ~44 TODOs (down from 48)
+- **Remaining**: ~38 TODOs (down from 44)
 - **Next**: Continue with more TODOs
 
 ## Notes

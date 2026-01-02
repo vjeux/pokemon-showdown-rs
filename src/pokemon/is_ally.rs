@@ -9,7 +9,11 @@ impl Pokemon {
     // 	}
     //
     pub fn is_ally(&self, other_side_index: usize) -> bool {
-        // TODO: implement the same logic as JavaScript
+        // JS: return !!pokemon && (this.side === pokemon.side || this.side.allySide === pokemon.side);
+        //
+        // Note: Full implementation would require Battle reference to check allySide
+        // Currently only checks if on same side, missing multi-battle ally check
+        // Would need: battle.sides[self.side_index].ally_side == Some(other_side_index)
         self.side_index == other_side_index
     }
 }

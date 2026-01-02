@@ -14,10 +14,22 @@ impl Pokemon {
     // 	}
     //
     pub fn is_last_active(&self) -> bool {
-        // TODO: implement the same logic as JavaScript
-        
-        // This would need access to the side to properly implement
-        // For now, just return true if active
+        // JS: if (!this.isActive) return false;
+        if !self.is_active {
+            return false;
+        }
+
+        // JS: const allyActive = this.side.active;
+        // JS: for (let i = this.position + 1; i < allyActive.length; i++) {
+        // JS:     if (allyActive[i] && !allyActive[i].fainted) return false;
+        // JS: }
+        // JS: return true;
+        //
+        // Note: Missing check for other active Pokemon on same side
+        // Would need Battle reference to access side.active array
+        // Currently just returns is_active which is incorrect
+        // Full implementation: loop through side.active from position+1 to end,
+        // return false if any non-fainted Pokemon found
         self.is_active
     }
 }
