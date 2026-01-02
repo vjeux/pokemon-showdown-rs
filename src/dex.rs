@@ -177,75 +177,136 @@ pub struct ConditionData {
     // Add other condition fields as needed
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// Move data from the Dex
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 /// JavaScript equivalent: MoveData (sim/dex-moves.ts)
-/// 74 fields in JavaScript
-/// JavaScript equivalent: MoveData (sim/dex-moves.ts)
-/// 74 fields in JavaScript
-/// JavaScript equivalent: MoveData (sim/dex-moves.ts)
-/// 74 fields in JavaScript
+/// 40+ fields in JavaScript
 pub struct MoveData {
+    /// Move number in the Dex
+    /// JavaScript: num: number
     #[serde(default)]
     pub num: i32,
+    /// Move name
+    /// JavaScript: name: string
     pub name: String,
+    /// Move ID
+    /// JavaScript: id: ID
     #[serde(default)]
     pub id: ID, // Move ID (computed from name or provided)
+    /// Move type
+    /// JavaScript: type: string
     #[serde(rename = "type")]
     pub move_type: String,
+    /// Move category (Physical/Special/Status)
+    /// JavaScript: category: string
     pub category: String,
+    /// Base power
+    /// JavaScript: basePower: number
     #[serde(default)]
     pub base_power: i32,
+    /// Accuracy (number or true for always hits)
+    /// JavaScript: accuracy: true | number
     #[serde(default, deserialize_with = "deserialize_accuracy")]
     pub accuracy: Accuracy,
+    /// Power Points
+    /// JavaScript: pp: number
     #[serde(default)]
     pub pp: i32,
+    /// Move priority (-7 to +7)
+    /// JavaScript: priority: number
     #[serde(default)]
     pub priority: i8,
+    /// Target type
+    /// JavaScript: target: string
     #[serde(default)]
     pub target: String,
+    /// Critical hit ratio
+    /// JavaScript: critRatio: number
     #[serde(rename = "critRatio", default = "default_crit_ratio")]
     pub crit_ratio: i32,
+    /// Secondary effect
+    /// JavaScript: secondary?: SecondaryEffect | null
     #[serde(default)]
     pub secondary: Option<MoveSecondary>,
+    /// Multiple secondary effects
+    /// JavaScript: secondaries?: SecondaryEffect[] | null
     #[serde(default)]
     pub secondaries: Option<Vec<MoveSecondary>>,
+    /// Self-targeting effect
+    /// JavaScript: self?: SecondaryEffect | null
     #[serde(default, rename = "self")]
     pub self_effect: Option<MoveSecondary>,
+    /// Move flags
+    /// JavaScript: flags: MoveFlags
     #[serde(default)]
     pub flags: HashMap<String, i32>,
+    /// Stat boosts
+    /// JavaScript: boosts?: SparseBoostsTable
     #[serde(default)]
     pub boosts: Option<HashMap<String, i32>>,
+    /// Status condition to inflict
+    /// JavaScript: status?: string
     #[serde(default)]
     pub status: Option<String>,
+    /// Volatile status to inflict
+    /// JavaScript: volatileStatus?: string
     #[serde(rename = "volatileStatus", default)]
     pub volatile_status: Option<String>,
+    /// Condition data for moves that create conditions
+    /// JavaScript: condition?: ConditionData
     #[serde(default)]
     pub condition: Option<ConditionData>,
+    /// HP drain fraction [numerator, denominator]
+    /// JavaScript: drain?: [number, number]
     #[serde(default)]
     pub drain: Option<(i32, i32)>,
+    /// Recoil damage fraction [numerator, denominator]
+    /// JavaScript: recoil?: [number, number]
     #[serde(default)]
     pub recoil: Option<(i32, i32)>,
+    /// Healing fraction [numerator, denominator]
+    /// JavaScript: heal?: [number, number]
     #[serde(default)]
     pub heal: Option<(i32, i32)>,
+    /// Multi-hit specification
+    /// JavaScript: multihit?: number | [number, number]
     #[serde(default)]
     pub multihit: Option<Multihit>,
+    /// Z-Move identifier
+    /// JavaScript: isZ?: boolean | IDEntry
     #[serde(rename = "isZ", default)]
     pub is_z: Option<String>,
+    /// Max Move identifier
+    /// JavaScript: isMax?: boolean | string
     #[serde(rename = "isMax", default, deserialize_with = "deserialize_is_max")]
     pub is_max: Option<IsMax>,
+    /// OHKO type
+    /// JavaScript: ohko?: boolean | 'Ice'
     #[serde(default, deserialize_with = "deserialize_ohko")]
     pub ohko: Option<Ohko>,
+    /// Self-destruct type
+    /// JavaScript: selfdestruct?: 'always' | 'ifHit' | boolean
     #[serde(default)]
     pub selfdestruct: Option<String>,
+    /// Tracks target location
+    /// JavaScript: tracksTarget?: boolean
     #[serde(rename = "tracksTarget", default)]
     pub tracks_target: Option<bool>,
+    /// Smart target selection
+    /// JavaScript: smartTarget?: boolean
     #[serde(rename = "smartTarget", default)]
     pub smart_target: Option<bool>,
+    /// Base move (for moves that call other moves)
+    /// JavaScript: baseMove?: ID
     #[serde(rename = "baseMove", default)]
     pub base_move: Option<ID>,
+    /// Is Z or Max powered
+    /// JavaScript: isZOrMaxPowered?: boolean
     #[serde(rename = "isZOrMaxPowered", default)]
     pub is_z_or_max_powered: bool,
+    /// Will always crit
+    /// JavaScript: willCrit?: boolean
     #[serde(rename = "willCrit", default)]
     pub will_crit: Option<bool>,
 }
