@@ -150,10 +150,27 @@ impl Pokemon {
         // JS:         this.battle.add('-ability', this, ability.name, oldAbility.name, `[from] ${sourceEffect.fullname}`);
         // JS:     }
         // JS: }
-        // ✅ NOW IMPLEMENTED (Session 24 Part 87): battle.add message for ability changes
-        // Note: Using IDs as approximation for ability names (fullname requires Dex access)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 93): battle.add message with actual ability names and fullname
         if let Some(src_effect) = source_effect {
             if !_is_from_forme_change && !is_transform {
+                // Get ability names from Dex
+                let new_ability_name = battle
+                    .dex
+                    .abilities()
+                    .get_by_id(&ability_id)
+                    .map(|a| a.name.clone())
+                    .unwrap_or_else(|| ability_id.as_str().to_string());
+
+                let old_ability_name = battle
+                    .dex
+                    .abilities()
+                    .get_by_id(&old_ability_id)
+                    .map(|a| a.name.clone())
+                    .unwrap_or_else(|| old_ability_id.as_str().to_string());
+
+                // Get sourceEffect fullname (e.g., "ability: Mold Breaker", "item: Life Orb")
+                let source_effect_fullname = battle.get_effect_fullname(src_effect);
+
                 let pokemon_ident = {
                     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                         Some(p) => p,
@@ -173,17 +190,17 @@ impl Pokemon {
 
                     battle.add("-ability", &[
                         pokemon_ident.as_str().into(),
-                        ability_id.as_str().into(),
-                        old_ability_id.as_str().into(),
-                        format!("[from] {}", src_effect.as_str()).into(),
+                        new_ability_name.into(),
+                        old_ability_name.into(),
+                        format!("[from] {}", source_effect_fullname).into(),
                         format!("[of] {}", source_ident).into(),
                     ]);
                 } else {
                     battle.add("-ability", &[
                         pokemon_ident.as_str().into(),
-                        ability_id.as_str().into(),
-                        old_ability_id.as_str().into(),
-                        format!("[from] {}", src_effect.as_str()).into(),
+                        new_ability_name.into(),
+                        old_ability_name.into(),
+                        format!("[from] {}", source_effect_fullname).into(),
                     ]);
                 }
             }

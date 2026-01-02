@@ -59,4 +59,48 @@ impl Battle {
         }
         "Unknown"
     }
+
+    /// Get effect fullname in the format "effectType: name"
+    /// JavaScript equivalent: effect.fullname property
+    /// Examples: "ability: Mold Breaker", "item: Life Orb", "move: Tackle"
+    pub fn get_effect_fullname(&self, effect_id: &ID) -> String {
+        // Get effect type
+        let effect_type = self.get_effect_type(effect_id);
+
+        // Get effect name based on type
+        let name = match effect_type {
+            "Ability" => {
+                self.dex
+                    .abilities()
+                    .get_by_id(effect_id)
+                    .map(|a| a.name.clone())
+                    .unwrap_or_else(|| effect_id.as_str().to_string())
+            }
+            "Item" => {
+                self.dex
+                    .items()
+                    .get_by_id(effect_id)
+                    .map(|i| i.name.clone())
+                    .unwrap_or_else(|| effect_id.as_str().to_string())
+            }
+            "Move" => {
+                self.dex
+                    .moves()
+                    .get_by_id(effect_id)
+                    .map(|m| m.name.clone())
+                    .unwrap_or_else(|| effect_id.as_str().to_string())
+            }
+            "Status" | "Volatile" | "Weather" | "Terrain" => {
+                // For conditions, get name from condition data if available
+                crate::data::conditions::get_condition(effect_id)
+                    .map(|c| c.name.clone())
+                    .unwrap_or_else(|| effect_id.as_str().to_string())
+            }
+            _ => effect_id.as_str().to_string(),
+        };
+
+        // JavaScript fullname format: "effectType: name"
+        // Note: JavaScript uses lowercase effect type (e.g., "ability: Mold Breaker")
+        format!("{}: {}", effect_type.to_lowercase(), name)
+    }
 }
