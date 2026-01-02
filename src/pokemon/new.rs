@@ -285,6 +285,7 @@ impl Pokemon {
             move_slots,
 
             hp_type: set.hptype.clone(),
+            hp_power: None, // Will be calculated by Battle::dex.getHiddenPower(ivs)
 
             status: ID::empty(),
             status_state: EffectState::new(ID::empty()),

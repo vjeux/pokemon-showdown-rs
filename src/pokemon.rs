@@ -322,8 +322,9 @@ pub struct Pokemon {
     pub base_move_slots: Vec<MoveSlot>,
     pub move_slots: Vec<MoveSlot>,
 
-    // Hidden Power type
+    // Hidden Power type and power
     pub hp_type: Option<String>,
+    pub hp_power: Option<u8>,
 
     // Status
     pub status: ID,
