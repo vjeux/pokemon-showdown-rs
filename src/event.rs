@@ -212,6 +212,7 @@ impl EventResult {
 }
 
 /// Priority ordering for event handlers
+/// TODO: Not in JavaScript - Rust-specific for managing handler priority ordering
 #[derive(Debug, Clone, Default)]
 pub struct HandlerPriority {
     /// Order value (false = highest priority in JS, we use Option<i32>)
@@ -275,6 +276,7 @@ pub fn compare_priorities(
 }
 
 /// An event handler registered by an effect
+/// TODO: Not in JavaScript - Rust-specific for managing event handlers
 #[derive(Debug, Clone)]
 pub struct EventHandler {
     /// The effect ID (ability name, move name, etc.)
@@ -317,6 +319,8 @@ pub struct AbilityFlags {
 }
 
 /// Flags that can be set on moves
+/// JavaScript equivalent: MoveFlags (sim/dex-moves.ts)
+/// 27 fields in JavaScript
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct MoveFlags {
     /// Makes contact
@@ -382,6 +386,8 @@ impl MoveFlags {
 
 /// Condition data - for status, volatiles, side conditions, etc.
 /// This mirrors the JS "condition" object pattern
+/// JavaScript equivalent: ConditionData (sim/dex-conditions.ts)
+/// 13 fields in JavaScript
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConditionData {
     /// Unique ID
@@ -428,6 +434,7 @@ impl ConditionData {
 }
 
 /// Categories of type immunity
+/// TODO: Not in JavaScript - Rust-specific enum for categorizing immunity types
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ImmunityType {
     /// Type-based immunity (e.g., Ground moves on Flying types)
