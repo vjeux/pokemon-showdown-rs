@@ -286,6 +286,8 @@ impl Pokemon {
 
             hp_type: set.hptype.clone(),
             hp_power: None, // Will be calculated by Battle::dex.getHiddenPower(ivs)
+            base_hp_type: set.hptype.clone(), // JS: this.baseHpType = this.hpType;
+            base_hp_power: None, // Will be set after Battle::dex.getHiddenPower(ivs) calculates hp_power
 
             status: ID::empty(),
             status_state: EffectState::new(ID::empty()),

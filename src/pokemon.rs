@@ -325,6 +325,8 @@ pub struct Pokemon {
     // Hidden Power type and power
     pub hp_type: Option<String>,
     pub hp_power: Option<u8>,
+    pub base_hp_type: Option<String>,
+    pub base_hp_power: Option<u8>,
 
     // Status
     pub status: ID,

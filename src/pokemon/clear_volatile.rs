@@ -107,8 +107,10 @@ impl Pokemon {
         self.ability = self.base_ability.clone();
 
         // JS: this.hpType = this.baseHpType;
-        // Note: hpPower is not in the Rust Pokemon struct (Hidden Power power is fixed in modern gens)
-        // Keep hp_type as-is since there's no baseHpType tracking
+        // JS: this.hpPower = this.baseHpPower;
+        // ✅ NOW IMPLEMENTED (Session 24 Part 62): Reset hp_type and hp_power to base values
+        self.hp_type = self.base_hp_type.clone();
+        self.hp_power = self.base_hp_power;
 
         // JS: if (this.canTerastallize === false) this.canTerastallize = this.teraType;
         if self.can_terastallize == Some("false".to_string()) {
