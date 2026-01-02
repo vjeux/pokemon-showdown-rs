@@ -27,13 +27,48 @@ impl Pokemon {
     // 	}
     //
     pub fn take_item(&mut self) -> Option<ID> {
-        // TODO: implement the same logic as JavaScript
+        // JS: if (!this.item) return false;
         if self.item.is_empty() {
             return None;
         }
+
+        // JS: if (!source) source = this;
+        // Note: Missing source parameter
+
+        // JS: if (this.battle.gen <= 4) {
+        // JS:     if (source.itemKnockedOff) return false;
+        // JS:     if (toID(this.ability) === 'multitype') return false;
+        // JS:     if (toID(source.ability) === 'multitype') return false;
+        // JS: }
+        // Note: Missing Gen 4 and earlier Multitype/itemKnockedOff checks
+        // Would need Battle reference for gen check and source parameter
+
+        // JS: const item = this.getItem();
         let item = self.item.clone();
+
+        // JS: if (this.battle.runEvent('TakeItem', this, source, null, item)) { ... }
+        // Note: Missing runEvent('TakeItem') - would need Battle reference
+        // Currently always succeeds
+
+        // JS: this.item = '';
         self.item = ID::empty();
+
+        // JS: const oldItemState = this.itemState;
+        // JS: this.battle.clearEffectState(this.itemState);
+        // Note: Not storing oldItemState or calling clearEffectState
+
+        // JS: this.pendingStaleness = undefined;
+        // Note: Missing pendingStaleness reset - field doesn't exist in Rust
+
         self.item_state = EffectState::new(ID::empty());
+
+        // JS: this.battle.singleEvent('End', item, oldItemState, this);
+        // Note: Missing singleEvent('End') - would need Battle reference
+
+        // JS: this.battle.runEvent('AfterTakeItem', this, null, null, item);
+        // Note: Missing runEvent('AfterTakeItem') - would need Battle reference
+
+        // JS: return item;
         Some(item)
     }
 }

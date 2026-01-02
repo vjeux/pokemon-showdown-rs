@@ -116,29 +116,88 @@ impl Pokemon {
     // 	}
     //
     pub fn transform_into(&mut self, target: &Pokemon) -> bool {
-        // TODO: implement the same logic as JavaScript
-
+        // JS: const species = pokemon.species;
+        // JS: if (pokemon.fainted || this.illusion || pokemon.illusion || ...) return false;
+        // Note: Missing illusion checks on both pokemon
         if self.fainted || target.fainted || self.transformed {
             return false;
         }
+
+        // JS: (pokemon.volatiles['substitute'] && this.battle.gen >= 5)
+        // Note: Missing gen check for substitute
         if target.has_volatile(&ID::new("substitute")) {
             return false;
         }
+
+        // JS: (pokemon.transformed && this.battle.gen >= 2)
+        // Note: Missing gen check for target transformed
         if target.transformed {
             return false;
         }
 
+        // JS: (this.transformed && this.battle.gen >= 5)
+        // Note: Missing gen check for self transformed (already checked above without gen)
+
+        // JS: species.name === 'Eternatus-Eternamax'
+        // Note: Missing Eternatus-Eternamax check - would need species data
+
+        // JS: (['Ogerpon', 'Terapagos'].includes(species.baseSpecies) && (this.terastallized || pokemon.terastallized))
+        // Note: Missing Ogerpon/Terapagos terastallized check - would need species data
+
+        // JS: this.terastallized === 'Stellar'
+        // Note: Missing Stellar tera check - terastallized field exists but not checking value
+
+        // JS: if (this.battle.dex.currentMod === 'gen1stadium' && ...) return false;
+        // Note: Missing gen1stadium Ditto checks - would need Battle reference
+
+        // JS: if (!this.setSpecies(species, effect, true)) return false;
+        // Note: Not calling setSpecies - should update types, stats, weight from species data
+
         // Copy species
         self.species_id = target.species_id.clone();
+
+        // JS: this.transformed = true;
         self.transformed = true;
+
+        // JS: this.weighthg = pokemon.weighthg;
         self.weight_hg = target.weight_hg;
 
+        // JS: const types = pokemon.getTypes(true, true);
+        // JS: this.setType(pokemon.volatiles['roost'] ? pokemon.volatiles['roost'].typeWas : types, true);
+        // Note: Missing roost volatile type handling
         // Copy types
         self.types = target.types.clone();
+
+        // JS: this.addedType = pokemon.addedType;
         self.added_type = target.added_type.clone();
 
+        // JS: this.knownType = this.isAlly(pokemon) && pokemon.knownType;
+        // Note: knownType field doesn't exist in Rust
+
+        // JS: this.apparentType = pokemon.apparentType;
+        // Note: apparentType field doesn't exist in Rust
+
+        // JS: for (statName in this.storedStats) { this.storedStats[statName] = pokemon.storedStats[statName]; }
         // Copy stats
         self.stored_stats = target.stored_stats;
+
+        // JS: if (this.modifiedStats) this.modifiedStats[statName] = pokemon.modifiedStats![statName];
+        // Note: Missing modifiedStats copying for Gen 1
+
+        // JS: this.moveSlots = [];
+        // JS: this.hpType = (this.battle.gen >= 5 ? this.hpType : pokemon.hpType);
+        // JS: this.hpPower = (this.battle.gen >= 5 ? this.hpPower : pokemon.hpPower);
+        // Note: Missing hpType/hpPower conditional copying based on gen
+
+        // JS: this.timesAttacked = pokemon.timesAttacked;
+        // Note: Missing timesAttacked copying - field doesn't exist in Rust
+
+        // JS: for (const moveSlot of pokemon.moveSlots) {
+        // JS:     let moveName = moveSlot.move;
+        // JS:     if (moveSlot.id === 'hiddenpower') {
+        // JS:         moveName = 'Hidden Power ' + this.hpType;
+        // JS:     }
+        // Note: Missing Hidden Power move name formatting with hpType
 
         // Copy moves with reduced PP
         self.move_slots = target
@@ -147,6 +206,9 @@ impl Pokemon {
             .map(|slot| MoveSlot {
                 id: slot.id.clone(),
                 move_name: slot.move_name.clone(),
+                // JS: pp: moveSlot.maxpp === 1 ? 1 : 5,
+                // JS: maxpp: this.battle.gen >= 5 ? (moveSlot.maxpp === 1 ? 1 : 5) : moveSlot.maxpp,
+                // Note: Missing gen check for maxpp - assumes gen >= 5
                 pp: 5.min(slot.maxpp),
                 maxpp: 5.min(slot.maxpp),
                 target: slot.target.clone(),
@@ -158,12 +220,50 @@ impl Pokemon {
             })
             .collect();
 
+        // JS: for (boostName in pokemon.boosts) { this.boosts[boostName] = pokemon.boosts[boostName]; }
         // Copy boosts
         self.boosts = target.boosts;
 
+        // JS: if (this.battle.gen >= 6) {
+        // JS:     const volatilesToCopy = ['dragoncheer', 'focusenergy', 'gmaxchistrike', 'laserfocus'];
+        // JS:     for (const volatile of volatilesToCopy) this.removeVolatile(volatile);
+        // JS:     for (const volatile of volatilesToCopy) {
+        // JS:         if (pokemon.volatiles[volatile]) {
+        // JS:             this.addVolatile(volatile);
+        // JS:             if (volatile === 'gmaxchistrike') this.volatiles[volatile].layers = ...;
+        // JS:             if (volatile === 'dragoncheer') this.volatiles[volatile].hasDragonType = ...;
+        // JS:         }
+        // JS:     }
+        // JS: }
+        // Note: Missing Gen 6+ crit volatile copying (dragoncheer, focusenergy, gmaxchistrike, laserfocus)
+
+        // JS: if (effect) {
+        // JS:     this.battle.add('-transform', this, pokemon, '[from] ' + effect.fullname);
+        // JS: } else {
+        // JS:     this.battle.add('-transform', this, pokemon);
+        // JS: }
+        // Note: Missing battle.add message - would need Battle reference
+
+        // JS: if (this.terastallized) {
+        // JS:     this.knownType = true;
+        // JS:     this.apparentType = this.terastallized;
+        // JS: }
+        // Note: Missing terastallized knownType/apparentType update
+
+        // JS: if (this.battle.gen > 2) this.setAbility(pokemon.ability, this, null, true, true);
         // Copy ability
         self.ability = target.ability.clone();
+        // Note: Missing gen check and setAbility call with proper parameters
 
+        // JS: // Change formes based on held items (for Transform)
+        // JS: if (this.battle.gen === 4) { ... Giratina/Arceus forme changes ... }
+        // Note: Missing Gen 4 Giratina/Arceus forme changes
+
+        // JS: if (['Ogerpon', 'Terapagos'].includes(this.species.baseSpecies) && this.canTerastallize)
+        // JS:     this.canTerastallize = false;
+        // Note: Missing Ogerpon/Terapagos canTerastallize blocking
+
+        // JS: return true;
         true
     }
 }

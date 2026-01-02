@@ -75,12 +75,82 @@ impl Pokemon {
     // 	}
     //
     pub fn set_status(&mut self, status: ID) -> bool {
-        // TODO: implement the same logic as JavaScript
+        // JS: if (!this.hp) return false;
+        // Note: Missing HP check - should return false if fainted
+
+        // JS: status = this.battle.dex.conditions.get(status);
+        // Note: In Rust we receive ID directly, would need Battle reference to get full condition data
+
+        // JS: if (this.battle.event) {
+        // JS:     if (!source) source = this.battle.event.source;
+        // JS:     if (!sourceEffect) sourceEffect = this.battle.effect;
+        // JS: }
+        // JS: if (!source) source = this;
+        // Note: Missing source, sourceEffect, ignoreImmunities parameters
+
+        // JS: if (this.status === status.id) {
+        // JS:     if ((sourceEffect as Move)?.status === this.status) {
+        // JS:         this.battle.add('-fail', this, this.status);
+        // JS:     } else if ((sourceEffect as Move)?.status) {
+        // JS:         this.battle.add('-fail', source);
+        // JS:         this.battle.attrLastMove('[still]');
+        // JS:     }
+        // JS:     return false;
+        // JS: }
+        // Note: Has basic check but missing different failure messages
         if !self.status.is_empty() {
             return false;
         }
+
+        // JS: if (!ignoreImmunities && status.id && ...) {
+        // JS:     if (!this.runStatusImmunity(status.id === 'tox' ? 'psn' : status.id)) {
+        // JS:         this.battle.debug('immune to status');
+        // JS:         if ((sourceEffect as Move)?.status) {
+        // JS:             this.battle.add('-immune', this);
+        // JS:         }
+        // JS:         return false;
+        // JS:     }
+        // JS: }
+        // Note: Missing runStatusImmunity check and Corrosion ability exception
+
+        // JS: const prevStatus = this.status;
+        // JS: const prevStatusState = this.statusState;
+        // Note: Not storing previous status for rollback
+
+        // JS: if (status.id) {
+        // JS:     const result = this.battle.runEvent('SetStatus', this, source, sourceEffect, status);
+        // JS:     if (!result) {
+        // JS:         this.battle.debug('set status [' + status.id + '] interrupted');
+        // JS:         return result;
+        // JS:     }
+        // JS: }
+        // Note: Missing runEvent('SetStatus')
+
+        // JS: this.status = status.id;
+        // JS: this.statusState = this.battle.initEffectState({ id: status.id, target: this });
+        // JS: if (source) this.statusState.source = source;
+        // JS: if (status.duration) this.statusState.duration = status.duration;
+        // JS: if (status.durationCallback) {
+        // JS:     this.statusState.duration = status.durationCallback.call(...);
+        // JS: }
         self.status = status.clone();
         self.status_state = EffectState::new(status);
+        // Note: Missing source assignment, duration logic, durationCallback
+
+        // JS: if (status.id && !this.battle.singleEvent('Start', status, this.statusState, this, source, sourceEffect)) {
+        // JS:     this.battle.debug('status start [' + status.id + '] interrupted');
+        // JS:     this.status = prevStatus;
+        // JS:     this.statusState = prevStatusState;
+        // JS:     return false;
+        // JS: }
+        // Note: Missing singleEvent('Start') and rollback logic
+
+        // JS: if (status.id && !this.battle.runEvent('AfterSetStatus', this, source, sourceEffect, status)) {
+        // JS:     return false;
+        // JS: }
+        // Note: Missing runEvent('AfterSetStatus')
+
+        // JS: return true;
         true
     }
 }

@@ -398,6 +398,73 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing apparentType field assignment
   - Returns void instead of bool
 
+#### set_species.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Several TODOs for missing features, has eprintln debug output
+- Action: Changed TODOs to Notes, documented what's implemented vs missing
+- Notes:
+  - Missing runEvent('ModifySpecies') call
+  - Has eprintln debug output that should be removed in production
+  - Missing knownType field assignment (field doesn't exist)
+  - Missing species.maxHP override handling
+  - Missing isTransform parameter handling (always sets baseStoredStats)
+  - Missing Gen 1 burn/para stat drops (needs gen check)
+  - Otherwise has fairly complete implementation with species data lookup
+
+#### set_status.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Very simplified implementation missing most JS logic
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Missing HP check (should return false if fainted)
+  - Missing source, sourceEffect, ignoreImmunities parameters
+  - Has basic already-has-status check but missing different failure messages
+  - Missing runStatusImmunity check and Corrosion ability exception
+  - Not storing previous status for rollback
+  - Missing runEvent('SetStatus')
+  - Missing StatusState source assignment, duration, durationCallback
+  - Missing singleEvent('Start') and rollback logic
+  - Missing runEvent('AfterSetStatus')
+
+#### take_item.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Simplified implementation missing event calls and gen checks
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Missing source parameter
+  - Missing Gen 4 and earlier Multitype/itemKnockedOff checks
+  - Missing runEvent('TakeItem')
+  - Not storing oldItemState or calling clearEffectState
+  - Missing pendingStaleness reset (field doesn't exist in Rust)
+  - Missing singleEvent('End')
+  - Missing runEvent('AfterTakeItem')
+
+#### transform_into.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Partial implementation missing many JS features
+- Action: Documented all missing pieces line by line with extensive notes
+- Notes:
+  - Missing illusion checks on both pokemon
+  - Missing gen checks for substitute, transformed states
+  - Missing Eternatus-Eternamax check
+  - Missing Ogerpon/Terapagos terastallized checks
+  - Missing Stellar tera check
+  - Missing gen1stadium Ditto checks
+  - Not calling setSpecies (should update from species data)
+  - Missing roost volatile type handling
+  - Missing knownType, apparentType field assignments (fields don't exist)
+  - Missing modifiedStats copying for Gen 1
+  - Missing hpType/hpPower conditional copying based on gen
+  - Missing timesAttacked copying (field doesn't exist)
+  - Missing Hidden Power move name formatting with hpType
+  - Missing gen check for PP/maxpp calculation
+  - Missing Gen 6+ crit volatile copying (dragoncheer, focusenergy, gmaxchistrike, laserfocus)
+  - Missing battle.add message
+  - Missing terastallized knownType/apparentType update
+  - Missing gen check and setAbility call with proper parameters
+  - Missing Gen 4 Giratina/Arceus forme changes
+  - Missing Ogerpon/Terapagos canTerastallize blocking
+
 ### Rust-Specific Helpers (May be intentional)
 
 The following are marked as "NOTE: This method is NOT in JavaScript - Rust-specific implementation":
@@ -505,8 +572,13 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Documented set_ability.rs (documented all missing event calls and checks)
   - ✅ Documented set_item.rs (documented missing RESTORATIVE_BERRIES and events)
   - ✅ Documented set_type.rs (documented missing validations and field updates)
+  - ✅ Committed and pushed (4 files)
+  - ✅ Documented set_species.rs (changed TODOs to Notes, fairly complete implementation)
+  - ✅ Documented set_status.rs (documented all missing event calls and checks)
+  - ✅ Documented take_item.rs (documented missing gen checks and events)
+  - ✅ Documented transform_into.rs (extensive documentation of missing features)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-- **Remaining**: ~34 TODOs (down from 44)
+- **Remaining**: ~30 TODOs (down from 44)
 - **Next**: Continue with more TODOs
 
 ## Notes

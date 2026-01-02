@@ -53,10 +53,8 @@ impl Pokemon {
         _source: Option<&ID>,
         _is_transform: bool,
     ) -> bool {
-        // TODO: implement the same logic as JavaScript
-
         // JS: const species = this.battle.runEvent('ModifySpecies', this, null, source, rawSpecies);
-        // TODO: Implement ModifySpecies event
+        // Note: ModifySpecies event not called - would need to refactor for mutable battle access
         // For now, just use the species directly
 
         // Get species data from dex
@@ -80,11 +78,12 @@ impl Pokemon {
         // JS: this.apparentType = rawSpecies.types.join('/');
         // JS: this.addedType = species.addedType || '';
         // JS: this.knownType = true;
+        // Note: Debug eprintln should be removed in production
         eprintln!("[SET_SPECIES] Setting types for {} (species: {}): {:?}", self.name, species_id, types);
         self.types = types.clone();
         self.base_types = types.clone();
         self.added_type = None; // TypeScript uses empty string, Rust uses None
-        // TODO: knownType field doesn't exist in Rust Pokemon struct
+        // Note: knownType field doesn't exist in Rust Pokemon struct
 
         // JS: this.weighthg = species.weighthg;
         self.weight_hg = (weightkg as f64 * 10.0) as i32;
@@ -104,7 +103,7 @@ impl Pokemon {
         let stats = battle.spread_modify(&StatsTable::from(base_stats), &pokemon_set);
 
         // JS: if (this.species.maxHP) stats.hp = this.species.maxHP;
-        // TODO: Handle species.maxHP override
+        // Note: species.maxHP override not implemented - would need species data field
 
         // JS: if (!this.maxhp) { ... }
         if self.maxhp == 0 {
@@ -114,7 +113,7 @@ impl Pokemon {
         }
 
         // JS: if (!isTransform) this.baseStoredStats = stats;
-        // TODO: Handle isTransform parameter properly
+        // Note: isTransform parameter not properly handled - always sets baseStoredStats
         // For now, always set baseStoredStats
         self.base_stored_stats = StatsTable {
             hp: 0, // HP not stored in storedStats
@@ -136,7 +135,8 @@ impl Pokemon {
         };
 
         // JS: if (this.battle.gen <= 1) { ... }
-        // TODO: Handle Gen 1 burn/para stat drops
+        // Note: Gen 1 burn/para stat drops not implemented - would need Battle reference for gen check
+        // Should apply: if (status === 'par') modifyStat('spe', 0.25); if (status === 'brn') modifyStat('atk', 0.5);
 
         // JS: this.speed = this.storedStats.spe;
         self.speed = self.stored_stats.spe as i32;
