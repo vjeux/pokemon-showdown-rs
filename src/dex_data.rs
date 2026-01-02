@@ -533,32 +533,38 @@ impl EffectState {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: BasicEffect (sim/dex-data.ts)
 /// 16 fields in JavaScript
-/// JavaScript equivalent: BasicEffect (sim/global-types.ts)
-/// 7 fields in JavaScript
-/// JavaScript equivalent: BasicEffect (sim/dex-data.ts)
-/// 16 fields in JavaScript
-/// JavaScript equivalent: BasicEffect (sim/global-types.ts)
-/// 7 fields in JavaScript
-/// JavaScript equivalent: BasicEffect (sim/dex-data.ts)
-/// 16 fields in JavaScript
-/// JavaScript equivalent: BasicEffect (sim/global-types.ts)
-/// 7 fields in JavaScript
 pub struct BasicEffect {
+    /// JavaScript: id: ID
     pub id: ID,
+    /// JavaScript: name: string
     pub name: String,
+    /// JavaScript: fullname: string
     pub fullname: String,
+    /// JavaScript: effectType: EffectType
     pub effect_type: EffectType,
+    /// JavaScript: exists: boolean
     pub exists: bool,
+    /// JavaScript: num: number
     pub num: i32,
+    /// JavaScript: gen: number
     pub gen: u8,
+    /// JavaScript: shortDesc: string
     pub short_desc: String,
+    /// JavaScript: desc: string
     pub desc: String,
+    /// JavaScript: isNonstandard?: Nonstandard
     pub is_nonstandard: Option<Nonstandard>,
+    /// JavaScript: duration?: number
     pub duration: Option<i32>,
+    /// JavaScript: noCopy: boolean
     pub no_copy: bool,
+    /// JavaScript: affectsFainted: boolean
     pub affects_fainted: bool,
+    /// JavaScript: status?: ID
     pub status: Option<ID>,
+    /// JavaScript: weather?: ID
     pub weather: Option<ID>,
+    /// JavaScript: sourceEffect: string
     pub source_effect: String,
 }
 
@@ -608,10 +614,15 @@ impl std::fmt::Display for BasicEffect {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: Nature (sim/global-types.ts)
 pub struct Nature {
+    /// JavaScript: id: ID
     pub id: ID,
+    /// JavaScript: name: string
     pub name: String,
+    /// JavaScript: plus?: StatIDExceptHP
     pub plus: Option<StatID>,
+    /// JavaScript: minus?: StatIDExceptHP
     pub minus: Option<StatID>,
+    /// JavaScript: gen: number
     pub gen: u8,
 }
 
@@ -676,13 +687,20 @@ impl std::fmt::Display for Nature {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: TypeInfo (sim/global-types.ts)
 pub struct TypeInfo {
+    /// JavaScript: id: ID
     pub id: ID,
+    /// JavaScript: name: string
     pub name: String,
+    /// JavaScript: effectType: EffectType
     pub effect_type: EffectType,
+    /// JavaScript: exists: boolean
     pub exists: bool,
+    /// JavaScript: gen: number
     pub gen: u8,
+    /// JavaScript: isNonstandard?: Nonstandard
     pub is_nonstandard: Option<Nonstandard>,
     /// Type chart: 0 = normal, 1 = weakness, 2 = resistance, 3 = immunity
+    /// JavaScript: damageTaken: { [type: string]: number }
     pub damage_taken: HashMap<String, u8>,
 }
 
@@ -721,10 +739,6 @@ impl std::fmt::Display for TypeInfo {
 // =========================================================================
 
 /// Natures collection with caching
-/// JavaScript equivalent: DexNatures (sim/dex-data.ts)
-/// Fields: dex, allCache
-/// JavaScript equivalent: DexNatures (sim/dex-data.ts)
-/// Fields: dex, allCache
 /// JavaScript equivalent: DexNatures (sim/dex-data.ts)
 /// Fields: dex, allCache
 pub struct DexNatures {
