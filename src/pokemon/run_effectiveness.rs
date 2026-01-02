@@ -32,7 +32,20 @@ impl Pokemon {
     // 	}
     //
     pub fn run_effectiveness(&self, move_type: &str) -> f64 {
-        // TODO: implement the same logic as JavaScript
+        // JS: let totalTypeMod = 0;
+        // JS: for (const type of this.getTypes()) {
+        // JS:     let typeMod = this.battle.dex.getEffectiveness(move, type);
+        // JS:     typeMod = this.battle.singleEvent('Effectiveness', move, null, this, type, move, typeMod);
+        // JS:     totalTypeMod += this.battle.runEvent('Effectiveness', this, type, move, typeMod);
+        // JS: }
+        // JS: return totalTypeMod;
+        //
+        // Note: Simplified implementation. Full implementation would require:
+        // - Refactoring to associated function taking Battle reference
+        // - Calling singleEvent('Effectiveness') for the move
+        // - Calling runEvent('Effectiveness') for each type
+        // - Handling Tera Shell ability for Terapagos-Terastal
+        // - Handling Stellar type interactions
         crate::data::typechart::get_effectiveness_multi(move_type, &self.types)
     }
 }

@@ -10,7 +10,9 @@ impl Pokemon {
     // 	}
     //
     pub fn get_status(&self) -> Option<&ID> {
-        // TODO: implement the same logic as JavaScript
+        // JS: return this.battle.dex.conditions.getByID(this.status);
+        // In Rust, we return the ID directly (or None if no status)
+        // Callers can use battle.dex.conditions.get() if they need the full condition data
         if self.status.is_empty() {
             None
         } else {

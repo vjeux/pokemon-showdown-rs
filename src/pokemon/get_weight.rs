@@ -25,10 +25,14 @@ impl Pokemon {
     // 	}
     //
     pub fn get_weight(&self) -> i32 {
-        // TODO: implement the same logic as JavaScript
-        
-        // Base weight would come from species data
-        // For now return stored weight
-        self.weight_hg
+        // JS: const weighthg = this.battle.runEvent('ModifyWeight', this, null, null, this.weighthg);
+        // JS: return Math.max(1, weighthg);
+        //
+        // Note: In Rust, we cannot call runEvent without Battle reference.
+        // For now, return the base weight. Full implementation would require:
+        // - Refactoring to associated function: Pokemon::get_weight(battle, pokemon_pos)
+        // - Calling battle.run_event('ModifyWeight', pokemon_pos, self.weight_hg)
+        // - Returning max(1, modified_weight)
+        self.weight_hg.max(1)
     }
 }

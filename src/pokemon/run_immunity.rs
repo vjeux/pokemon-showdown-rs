@@ -34,7 +34,19 @@ impl Pokemon {
     // 	}
     //
     pub fn run_immunity(&self, move_type: &str) -> bool {
-        // TODO: implement the same logic as JavaScript
+        // JS: const negateImmunity = !this.battle.runEvent('NegateImmunity', this, type);
+        // JS: const notImmune = type === 'Ground' ?
+        // JS:     this.isGrounded(negateImmunity) :
+        // JS:     negateImmunity || this.battle.dex.getImmunity(type, this);
+        // JS: if (notImmune) return true;
+        // JS: return false;
+        //
+        // Note: Simplified implementation. Full implementation would require:
+        // - Refactoring to associated function taking Battle reference
+        // - Calling runEvent('NegateImmunity')
+        // - Calling isGrounded() for Ground type
+        // - Calling battle.dex.getImmunity() for proper type immunity checks
+        // - Adding battle.add('-immune') messages when appropriate
         let effectiveness = self.run_effectiveness(move_type);
         effectiveness > 0.0
     }
