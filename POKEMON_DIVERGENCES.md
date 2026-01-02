@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 90 Complete - run_effectiveness refactor)
-- **Session 24 Total Progress**: 43+ commits, 90 parts (Part 90 complete)
+## Overview (Updated: Session 24 Part 91 Complete - set_ability cantsuppress check)
+- **Session 24 Total Progress**: 44+ commits, 91 parts (Part 91 complete)
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -49,6 +49,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 88**: **COMPLETED** - run_immunity refactor - Complete 1:1 JavaScript implementation with runEvent('NegateImmunity'), is_grounded(), battle.dex.get_immunity(), and battle.add messages
   - **Part 89**: **COMPLETED** - run_status_immunity refactor - Complete 1:1 JavaScript implementation with battle.debug(), battle.add('-immune'), and runEvent('Immunity') for ability-based immunity. Updated 8 callsites
   - **Part 90**: **COMPLETED** - run_effectiveness refactor - Complete 1:1 JavaScript implementation with Stellar type handling, runEvent('Effectiveness'), Terapagos-Terastal Tera Shell logic, battle.add messages. Updated 24+ callsites
+  - **Part 91**: **COMPLETED** - set_ability cantsuppress check - Implemented ability.flags['cantsuppress'] validation for both new and old abilities (checks both old and new ability). Conditional runEvent('SetAbility') based on isFromFormeChange and isTransform flags
 - **Methods Significantly Improved**:
   - run_immunity.rs (runEvent, is_grounded, get_immunity, battle.add messages - now ~95%, was ~20%)
   - run_status_immunity.rs (battle.debug, battle.add, runEvent('Immunity') - now ~95%, was ~30%)
@@ -67,7 +68,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - eat_item.rs (standalone, battle.add [eat], RESTORATIVE_BERRIES, event calls - now ~80%, was ~50%)
   - set_item.rs (RESTORATIVE_BERRIES pendingStaleness, associated function, singleEvent calls - now ~70%, was ~55%)
   - take_item.rs (singleEvent + runEvent calls - now ~82%, was ~72%)
-  - set_ability.rs (associated function, singleEvent + runEvent calls - now ~78%, was ~70%)
+  - set_ability.rs (associated function, singleEvent + runEvent calls, cantsuppress flag check - now ~82%, was ~70%)
   - clear_ability.rs (refactored to associated function - now 100%)
   - set_status.rs (associated function, singleEvent('Start') + runEvent calls - now ~65%, was ~50%)
   - cure_status.rs (refactored to associated function - now ~78%, was ~72%)
@@ -557,15 +558,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ Updated all callsites across codebase
 
 #### set_ability.rs
-- Status: ✅ Fixed (Improved - Session 24 Part 76)
-- Issue: Missing source, sourceEffect, isFromFormeChange, isTransform parameters, singleEvent calls
-- Action: Refactored to associated function, added all parameters, implemented singleEvent calls with gen checks
+- Status: ✅ Fixed (Improved - Session 24 Parts 76, 79, 87, 91)
+- Issue: Missing source, sourceEffect, isFromFormeChange, isTransform parameters, singleEvent calls, cantsuppress flag check
+- Action: Refactored to associated function, added all parameters, implemented singleEvent calls with gen checks, cantsuppress validation, runEvent, battle.add message
 - Notes:
   - ✅ NOW IMPLEMENTED: HP check (returns empty ID when fainted, equivalent to false)
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): source_pos parameter
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): source_effect parameter
-  - ✅ NOW IMPLEMENTED (Session 24 Part 29): _is_from_forme_change parameter (declared but not used yet)
-  - ✅ NOW IMPLEMENTED (Session 24 Part 29): is_transform parameter (used in Part 76 for start event condition)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 29): _is_from_forme_change parameter (used in Part 91 for cantsuppress and runEvent conditions)
+  - ✅ NOW IMPLEMENTED (Session 24 Part 29): is_transform parameter (used in Part 76 for start event condition, Part 91 for runEvent condition)
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): ability_state.source assignment
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): ability_state.source_slot assignment
   - ✅ NOW IMPLEMENTED (Session 24 Part 29): ability_state.source_effect assignment
@@ -575,11 +576,12 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24 Part 76): gen > 3 check for ability start event
   - ✅ NOW IMPLEMENTED (Session 24 Part 76): Transform condition check (old ability != new ability || gen <= 4)
   - ✅ NOW IMPLEMENTED (Session 24 Part 76): Updated 7 callsites (clear_ability, transform_into, 5 move callbacks)
-  - Missing cantsuppress flag checks (would need ability data)
-  - Missing runEvent('SetAbility')
-  - Missing battle.add message
+  - ✅ NOW IMPLEMENTED (Session 24 Part 79): runEvent('SetAbility') before changing ability
+  - ✅ NOW IMPLEMENTED (Session 24 Part 87): battle.add message for ability changes with source tracking
+  - ✅ NOW IMPLEMENTED (Session 24 Part 91): ability.flags['cantsuppress'] check for both old and new abilities
+  - ✅ NOW IMPLEMENTED (Session 24 Part 91): Conditional runEvent('SetAbility') based on isFromFormeChange and isTransform flags
   - Returns old ability ID correctly
-  - Now ~75% complete (was ~60%)
+  - Now ~82% complete (was ~60%)
 
 #### set_item.rs
 - Status: ✅ Fixed (Improved - Session 24 Part 74)
