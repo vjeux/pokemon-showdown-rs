@@ -38,7 +38,7 @@ pub fn on_hit(
     };
 
     for foe_pos in foe_positions {
-        Pokemon::add_volatile(battle, foe_pos, ID::from("attract"), Some(source_pos), None);
+        Pokemon::add_volatile(battle, foe_pos, ID::from("attract"), Some(source_pos), None, None);
     }
 
     EventResult::Continue

@@ -24,7 +24,7 @@ pub fn on_hit(
     };
 
     // return target.addVolatile('trapped', source, move, 'trapper');
-    let result = Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(pokemon_pos), None);
+    let result = Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(pokemon_pos), None, None);
 
     EventResult::Boolean(result)
 }

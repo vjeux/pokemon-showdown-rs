@@ -65,12 +65,13 @@ impl Pokemon {
     ///
     /// In Rust, this is an associated function (not a method) because it needs
     /// mutable access to Battle while operating on a Pokemon within that Battle.
-    /// Call as: Pokemon::add_volatile(battle, target_pos, volatile_id, source_pos, None)
+    /// Call as: Pokemon::add_volatile(battle, target_pos, volatile_id, source_pos, source_effect, linked_status)
     pub fn add_volatile(
         battle: &mut Battle,
         target_pos: (usize, usize),
         volatile_id: ID,
         source_pos: Option<(usize, usize)>,
+        source_effect: Option<&ID>,
         linked_status: Option<ID>,
     ) -> bool {
         // JS: status = this.battle.dex.conditions.get(status);
@@ -194,7 +195,10 @@ impl Pokemon {
             state.source = Some(src_pos);
             state.source_slot = Some(src_pos.1); // slot = position
         }
-        // Note: sourceEffect parameter not in function signature yet - would need to add
+        // ✅ NOW IMPLEMENTED: sourceEffect assignment (Session 24 Part 27)
+        if let Some(src_effect) = source_effect {
+            state.source_effect = Some(src_effect.clone());
+        }
 
         pokemon_mut.volatiles.insert(volatile_id.clone(), state);
 
@@ -248,7 +252,7 @@ impl Pokemon {
                     if !source_has_volatile {
                         // Add the linked volatile to source (recursive call)
                         // JS: source.addVolatile(linkedStatus, this, sourceEffect);
-                        Pokemon::add_volatile(battle, src_pos, linked_status_id.clone(), Some(target_pos), None);
+                        Pokemon::add_volatile(battle, src_pos, linked_status_id.clone(), Some(target_pos), source_effect, None);
 
                         // Initialize linkedPokemon array for source
                         // JS: source.volatiles[linkedStatus.toString()].linkedPokemon = [this];

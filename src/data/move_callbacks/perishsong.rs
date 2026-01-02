@@ -105,7 +105,7 @@ pub fn on_hit_field(
 
                 if !has_perishsong {
                     // pokemon.addVolatile('perishsong');
-                    Pokemon::add_volatile(battle, pokemon_pos, ID::from("perishsong"), None, None);
+                    Pokemon::add_volatile(battle, pokemon_pos, ID::from("perishsong"), None, None, None);
 
                     // this.add('-start', pokemon, 'perish3', '[silent]');
                     let pokemon_arg = {

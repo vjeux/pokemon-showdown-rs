@@ -38,7 +38,7 @@ pub fn on_hit(
     }
 
     // target.addVolatile('leechseed', source);
-    Pokemon::add_volatile(battle, target, ID::from("leechseed"), Some(source), None);
+    Pokemon::add_volatile(battle, target, ID::from("leechseed"), Some(source), None, None);
 
     EventResult::Continue
 }

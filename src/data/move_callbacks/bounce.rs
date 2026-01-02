@@ -80,7 +80,7 @@ pub fn on_try_move(
     }
 
     // attacker.addVolatile('twoturnmove', defender);
-    Pokemon::add_volatile(battle, source_pos, ID::from("twoturnmove"), target_pos, None);
+    Pokemon::add_volatile(battle, source_pos, ID::from("twoturnmove"), target_pos, None, None);
 
     // return null;
     EventResult::Stop

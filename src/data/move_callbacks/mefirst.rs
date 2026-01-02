@@ -74,7 +74,7 @@ pub fn on_try_hit(
     }
 
     // pokemon.addVolatile('mefirst');
-    Pokemon::add_volatile(battle, pokemon, ID::from("mefirst"), None, None);
+    Pokemon::add_volatile(battle, pokemon, ID::from("mefirst"), None, None, None);
 
     // this.actions.useMove(move, pokemon, { target });
     crate::battle_actions::use_move(battle, &move_id, pokemon, Some(target), None, None, None);

@@ -19,7 +19,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
         None => return EventResult::Continue,
     };
 
-    Pokemon::add_volatile(battle, pokemon_pos, ID::new("metronome"), None, None);
+    Pokemon::add_volatile(battle, pokemon_pos, ID::new("metronome"), None, None, None);
 
     EventResult::Continue
 }

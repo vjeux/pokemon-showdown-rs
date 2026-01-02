@@ -45,7 +45,7 @@ pub fn damage_callback(
 /// }
 pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.addVolatile('counter');
-    Pokemon::add_volatile(battle, pokemon_pos, ID::from("counter"), None, None);
+    Pokemon::add_volatile(battle, pokemon_pos, ID::from("counter"), None, None, None);
 
     EventResult::Continue
 }

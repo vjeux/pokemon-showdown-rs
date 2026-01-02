@@ -55,7 +55,7 @@ pub fn on_hit(
     }
 
     // target.addVolatile('yawn');
-    Pokemon::add_volatile(battle, target, ID::from("yawn"), None, None);
+    Pokemon::add_volatile(battle, target, ID::from("yawn"), None, None, None);
 
     EventResult::Continue
 }
@@ -106,7 +106,7 @@ pub fn on_after_sub_damage(
     }
 
     // target.addVolatile('yawn');
-    Pokemon::add_volatile(battle, target, ID::from("yawn"), None, None);
+    Pokemon::add_volatile(battle, target, ID::from("yawn"), None, None, None);
 
     EventResult::Continue
 }

@@ -33,7 +33,7 @@ pub fn on_hit_side(battle: &mut Battle, source_pos: Option<(usize, usize)>) -> E
     };
 
     // source.addVolatile('stall');
-    Pokemon::add_volatile(battle, source, ID::from("stall"), None, None);
+    Pokemon::add_volatile(battle, source, ID::from("stall"), None, None, None);
 
     EventResult::Continue
 }

@@ -97,7 +97,7 @@ pub fn on_hit(
         };
 
         if has_volatile {
-            Pokemon::add_volatile(battle, source, volatile.clone(), None, None);
+            Pokemon::add_volatile(battle, source, volatile.clone(), None, None, None);
 
             if volatile == &ID::from("gmaxchistrike") {
                 let layers = {

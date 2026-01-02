@@ -61,7 +61,7 @@ pub fn on_hit(
     }
 
     // target.addVolatile('gastroacid');
-    Pokemon::add_volatile(battle, target, ID::from("gastroacid"), None, None);
+    Pokemon::add_volatile(battle, target, ID::from("gastroacid"), None, None, None);
 
     EventResult::Continue
 }
@@ -118,7 +118,7 @@ pub fn on_after_sub_damage(
     }
 
     // target.addVolatile('gastroacid');
-    Pokemon::add_volatile(battle, target, ID::from("gastroacid"), None, None);
+    Pokemon::add_volatile(battle, target, ID::from("gastroacid"), None, None, None);
 
     EventResult::Continue
 }

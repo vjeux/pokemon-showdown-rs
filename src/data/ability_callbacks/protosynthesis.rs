@@ -38,7 +38,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
         // Add protosynthesis volatile
         let volatile_id = ID::from("protosynthesis");
         eprintln!("[PROTOSYNTHESIS] Adding volatile");
-        Pokemon::add_volatile(battle, pokemon_pos, volatile_id, None, None);
+        Pokemon::add_volatile(battle, pokemon_pos, volatile_id, None, None, None);
     } else {
         // Check if pokemon has protosynthesis volatile and if it's not from Booster Energy
         let id = ID::from("protosynthesis");

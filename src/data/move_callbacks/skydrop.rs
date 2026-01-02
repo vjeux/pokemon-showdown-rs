@@ -370,7 +370,7 @@ pub fn on_try_hit(
         );
 
         // source.addVolatile('twoturnmove', target);
-        Pokemon::add_volatile(battle, source, ID::from("twoturnmove"), Some(target), None);
+        Pokemon::add_volatile(battle, source, ID::from("twoturnmove"), Some(target), None, None);
 
         // return null;
         return EventResult::Stop;

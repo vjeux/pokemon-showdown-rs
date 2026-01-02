@@ -41,7 +41,7 @@ pub fn on_hit(
     };
 
     if source_is_active {
-        Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(source_pos), None);
+        Pokemon::add_volatile(battle, target, ID::from("trapped"), Some(source_pos), None, None);
     }
 
     EventResult::Continue

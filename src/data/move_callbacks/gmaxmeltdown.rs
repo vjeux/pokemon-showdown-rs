@@ -48,7 +48,7 @@ pub fn on_hit(
 
         // Only add torment if not dynamaxed
         if !has_dynamax {
-            Pokemon::add_volatile(battle, foe_pos, ID::from("torment"), Some(source_pos), None);
+            Pokemon::add_volatile(battle, foe_pos, ID::from("torment"), Some(source_pos), None, None);
         }
     }
 

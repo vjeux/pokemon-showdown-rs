@@ -51,7 +51,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
         // pokemon.addVolatile('leppaberry');
         // pokemon.volatiles['leppaberry'].moveSlot = moveSlot;
-        Pokemon::add_volatile(battle, pokemon_pos, ID::from("leppaberry"), None, None);
+        Pokemon::add_volatile(battle, pokemon_pos, ID::from("leppaberry"), None, None, None);
 
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
