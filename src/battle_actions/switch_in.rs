@@ -153,6 +153,23 @@ pub fn switch_in(
             // Mark as being called back
             battle.sides[side_index].pokemon[old_idx].being_called_back = true;
 
+            // JS: let switchCopyFlag: 'copyvolatile' | 'shedtail' | boolean = false;
+            // JS: if (sourceEffect && typeof (sourceEffect as Move).selfSwitch === 'string') {
+            // JS:     switchCopyFlag = (sourceEffect as Move).selfSwitch!;
+            // JS: }
+            // Check if source effect is a move with selfSwitch property
+            let switch_copy_flag: Option<String> = if let Some(effect_id) = source_effect {
+                // Check if effect is a move and has selfSwitch property
+                if let Some(move_data) = battle.dex.moves().get(effect_id.as_str()) {
+                    // self_switch is Option<Value>, extract string if present
+                    move_data.self_switch.as_ref().and_then(|v| v.as_str()).map(|s| s.to_string())
+                } else {
+                    None
+                }
+            } else {
+                None
+            };
+
             // Run BeforeSwitchOut event (unless skipBeforeSwitchOutEventFlag or is_drag)
             let skip_event =
                 battle.sides[side_index].pokemon[old_idx].skip_before_switch_out_event_flag;
@@ -194,6 +211,34 @@ pub fn switch_in(
             // Cancel any queued action
             battle.queue.cancel_action(side_index, old_idx);
 
+            // JS: let newMove = null;
+            // JS: if (this.battle.gen === 4 && sourceEffect) {
+            // JS:     newMove = oldActive.lastMove;
+            // JS: }
+            let new_move = if battle.gen == 4 && source_effect.is_some() {
+                Some(battle.sides[side_index].pokemon[old_idx].last_move.clone())
+            } else {
+                None
+            };
+
+            // JS: if (switchCopyFlag) {
+            // JS:     pokemon.copyVolatileFrom(oldActive, switchCopyFlag);
+            // JS: }
+            if let Some(ref copy_flag) = switch_copy_flag {
+                // TODO: Implement Pokemon::copy_volatile_from
+                // This is used by Baton Pass (copyvolatile), Shed Tail (shedtail), etc.
+                // For now, just log a warning
+                eprintln!(
+                    "[SWITCH_IN] TODO: copyVolatileFrom not implemented (flag: {})",
+                    copy_flag
+                );
+            }
+
+            // JS: if (newMove) pokemon.lastMove = newMove;
+            if let Some(ref last_move_id) = new_move {
+                battle.sides[side_index].pokemon[pokemon_index].last_move = last_move_id.clone();
+            }
+
             // Clear volatiles on old Pokemon
             battle.sides[side_index].pokemon[old_idx].clear_volatiles();
         }
@@ -211,6 +256,16 @@ pub fn switch_in(
             if old_pokemon.fainted {
                 old_pokemon.status = ID::empty();
             }
+        }
+
+        // JS: if (this.battle.gen <= 4) {
+        // JS:     pokemon.lastItem = oldActive.lastItem;
+        // JS:     oldActive.lastItem = '';
+        // JS: }
+        if battle.gen <= 4 {
+            let old_last_item = battle.sides[side_index].pokemon[old_idx].last_item.clone();
+            battle.sides[side_index].pokemon[pokemon_index].last_item = old_last_item;
+            battle.sides[side_index].pokemon[old_idx].last_item = ID::empty();
         }
 
         // Swap positions in active array
