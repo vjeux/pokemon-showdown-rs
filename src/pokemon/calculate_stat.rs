@@ -41,7 +41,7 @@ impl Pokemon {
     // 		return this.battle.modify(stat, (modifier || 1));
     // 	}
     //
-    pub fn calculate_stat(&self, stat: StatID, boost: i8, modifier: f64) -> i32 {
+    pub fn calculate_stat(&self, battle: &mut Battle, stat: StatID, boost: i8, modifier: f64, _stat_user_pos: Option<(usize, usize)>) -> i32 {
         // JS: statName = toID(statName) as StatIDExceptHP;
         // JS: if (statName === 'hp') throw new Error("Please read `maxhp` directly");
         if stat == StatID::HP {
@@ -50,7 +50,7 @@ impl Pokemon {
 
         // JS: let stat = this.storedStats[statName];
         // Get base stat
-        let base_stat = self.stored_stats.get(stat);
+        let mut stat_value = self.stored_stats.get(stat);
 
         // JS: if ('wonderroom' in this.battle.field.pseudoWeather) {
         // JS:     if (statName === 'def') {
@@ -59,16 +59,24 @@ impl Pokemon {
         // JS:         stat = this.storedStats['def'];
         // JS:     }
         // JS: }
-        // Note: Missing Wonder Room check - would need Battle reference for field.pseudoWeather
-        // Should swap def <-> spd when Wonder Room is active
+        let wonderroom_id = ID::new("wonderroom");
+        if battle.field.has_pseudo_weather(&wonderroom_id) {
+            stat_value = match stat {
+                StatID::Def => self.stored_stats.get(StatID::SpD),
+                StatID::SpD => self.stored_stats.get(StatID::Def),
+                _ => stat_value,
+            };
+        }
 
         // JS: let boosts: SparseBoostsTable = {};
         // JS: const boostName = statName as BoostID;
         // JS: boosts[boostName] = boost;
         // JS: boosts = this.battle.runEvent('ModifyBoost', statUser || this, null, null, boosts);
         // JS: boost = boosts[boostName]!;
-        // Note: Missing runEvent('ModifyBoost') - would need Battle reference
-        // This allows abilities/items to modify stat boosts before calculation
+        // Note: runEvent('ModifyBoost') not yet fully implemented in Rust event system
+        // TODO: When event system supports ModifyBoost, use:
+        // let stat_user = stat_user_pos.unwrap_or((self.side_index, self.position));
+        // battle.run_event_modify_boost(stat_user, stat, boost);
 
         // JS: const boostTable = [1, 1.5, 2, 2.5, 3, 3.5, 4];
         // Apply boost
@@ -83,9 +91,9 @@ impl Pokemon {
         // JS:     stat = Math.floor(stat / boostTable[-boost]);
         // JS: }
         let boosted_stat = if clamped_boost >= 0 {
-            (base_stat as f64 * boost_table[clamped_boost as usize]) as i32
+            (stat_value as f64 * boost_table[clamped_boost as usize]) as i32
         } else {
-            (base_stat as f64 / boost_table[(-clamped_boost) as usize]) as i32
+            (stat_value as f64 / boost_table[(-clamped_boost) as usize]) as i32
         };
 
         // JS: return this.battle.modify(stat, (modifier || 1));

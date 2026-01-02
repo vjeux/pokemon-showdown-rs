@@ -95,9 +95,15 @@ This document tracks divergences between the JavaScript and Rust implementations
 - Action: Removed stats_raised_this_turn and stats_lowered_this_turn tracking to match JS exactly
 
 #### calculate_stat.rs
-- Status: ❌ Not Started
-- Issue: "TODO: implement the same logic as JavaScript"
-- Action: Complete stat calculation logic
+- Status: ✅ Fixed (Partially Implemented)
+- Issue: Missing Wonder Room and ModifyBoost
+- Action: Refactored to take Battle parameter, implemented Wonder Room
+- Notes:
+  - ✅ NOW IMPLEMENTED: Wonder Room pseudo-weather check (swaps Def <-> SpD)
+  - Refactored signature to take &mut Battle parameter
+  - Added stat_user_pos parameter to match JavaScript signature
+  - Missing runEvent('ModifyBoost') - requires event system infrastructure
+  - Otherwise implements boost table and modifier correctly
 
 #### clear_boosts.rs
 - Status: ✅ Fixed
@@ -970,9 +976,10 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Fixed is_grounded.rs - Added ignoringItem() checks for Iron Ball and Air Balloon (MERGED)
   - ✅ Fixed max_move_disabled.rs - Refactored to take Battle parameter, implemented Status category check - now fully 1-to-1! (MERGED)
   - ✅ Fixed get_action_speed.rs - Implemented twisteddimensionmod rule check and proper trunc - now fully 1-to-1! (MERGED)
+  - ✅ Fixed calculate_stat.rs - Refactored to take Battle parameter, implemented Wonder Room (MERGED)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
 - **Methods Now Fully 1-to-1**: has_item.rs, max_move_disabled.rs, get_action_speed.rs
-- **Methods Significantly Improved**: update_max_hp.rs, try_trap.rs, is_grounded.rs
+- **Methods Significantly Improved**: update_max_hp.rs, try_trap.rs, is_grounded.rs, calculate_stat.rs
 - **Path Forward**:
   - Phase 1 (Current): Fix methods that can be improved without API changes
   - Phase 2 (Next): Refactor method signatures to take Battle where needed
