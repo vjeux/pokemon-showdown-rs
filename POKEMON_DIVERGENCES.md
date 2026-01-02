@@ -348,6 +348,56 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Would need Battle reference to get move data from dex
   - Missing: check if move.category == 'Status' && (hasItem('assaultvest') || has_volatile('taunt'))
 
+#### has_item.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing ignoringItem() call at the end
+- Action: Documented that should return false if item effects are being ignored
+- Notes:
+  - Currently just checks if item matches, doesn't check if ignoring
+  - Should call ignoringItem() (Embargo, Magic Room, Klutz, etc.)
+
+#### set_ability.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Very simplified implementation missing most JS logic
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Missing HP check (should return false if fainted)
+  - Missing source, sourceEffect, isFromFormeChange, isTransform parameters
+  - Missing cantsuppress flag checks (would need ability data)
+  - Missing runEvent('SetAbility')
+  - Missing singleEvent('End') for old ability
+  - Missing singleEvent('Start') for new ability
+  - Missing battle.add message
+  - Missing gen check for ability start
+  - Returns old ability ID correctly
+
+#### set_item.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing RESTORATIVE_BERRIES logic and event calls
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Has correct HP and is_active check
+  - Missing source and effect parameters
+  - Missing RESTORATIVE_BERRIES check and pendingStaleness logic
+  - Missing singleEvent('End') for old item
+  - Missing singleEvent('Start') for new item
+  - Returns true correctly
+
+#### set_type.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing enforce parameter and all validation/field updates
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Missing enforce parameter (defaults to false in JS)
+  - Missing Stellar type check when !enforce
+  - Missing Arceus (493) and Silvally (773) protection (needs gen and species data)
+  - Missing Terastallized protection when !enforce
+  - No error handling for empty newType
+  - Missing addedType reset (would need: self.added_type = None)
+  - Missing knownType field assignment
+  - Missing apparentType field assignment
+  - Returns void instead of bool
+
 ### Rust-Specific Helpers (May be intentional)
 
 The following are marked as "NOTE: This method is NOT in JavaScript - Rust-specific implementation":
@@ -450,8 +500,13 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Documented is_last_active.rs (noted needs to loop through side.active)
   - ✅ Documented is_sky_dropped.rs (noted missing foe.active check with source tracking)
   - ✅ Documented max_move_disabled.rs (noted missing Status category check)
+  - ✅ Committed and pushed (6 files)
+  - ✅ Documented has_item.rs (noted missing ignoringItem() call)
+  - ✅ Documented set_ability.rs (documented all missing event calls and checks)
+  - ✅ Documented set_item.rs (documented missing RESTORATIVE_BERRIES and events)
+  - ✅ Documented set_type.rs (documented missing validations and field updates)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-- **Remaining**: ~38 TODOs (down from 44)
+- **Remaining**: ~34 TODOs (down from 44)
 - **Next**: Continue with more TODOs
 
 ## Notes

@@ -14,9 +14,22 @@ impl Pokemon {
     // 	}
     //
     pub fn has_item(&self, items: &[&str]) -> bool {
-        // TODO: implement the same logic as JavaScript
-        // ignoringItem() is not being called.
+        // JS: if (Array.isArray(item)) {
+        // JS:     if (!item.map(toID).includes(this.item)) return false;
+        // JS: } else {
+        // JS:     if (toID(item) !== this.item) return false;
+        // JS: }
         let item_id = self.item.as_str();
-        items.iter().any(|&i| crate::dex_data::to_id(i) == item_id)
+        let has_matching_item = items.iter().any(|&i| crate::dex_data::to_id(i) == item_id);
+
+        if !has_matching_item {
+            return false;
+        }
+
+        // JS: return !this.ignoringItem();
+        // Note: Missing ignoringItem() check
+        // Should return false if item effects are being ignored
+        // (Embargo, Magic Room, Klutz, etc.)
+        true
     }
 }

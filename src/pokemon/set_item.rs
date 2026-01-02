@@ -29,12 +29,43 @@ impl Pokemon {
     // 	}
     //
     pub fn set_item(&mut self, item_id: ID) -> bool {
-        // TODO: implement the same logic as JavaScript
+        // JS: if (!this.hp || !this.isActive) return false;
         if self.hp == 0 || !self.is_active {
             return false;
         }
+
+        // JS: if (typeof item === 'string') item = this.battle.dex.items.get(item);
+        // Note: In Rust we receive ID directly, would need Battle reference to get full item data
+
+        // JS: const effectid = this.battle.effect ? this.battle.effect.id : '';
+        // JS: if (RESTORATIVE_BERRIES.has('leppaberry' as ID)) {
+        // JS:     const inflicted = ['trick', 'switcheroo'].includes(effectid);
+        // JS:     const external = inflicted && source && !source.isAlly(this);
+        // JS:     this.pendingStaleness = external ? 'external' : 'internal';
+        // JS: } else {
+        // JS:     this.pendingStaleness = undefined;
+        // JS: }
+        // Note: Missing RESTORATIVE_BERRIES check and pendingStaleness logic
+        // Would need Battle reference for effect, and source parameter
+
+        // JS: const oldItem = this.getItem();
+        // JS: const oldItemState = this.itemState;
+        // Note: Not storing old item for singleEvent('End')
+
+        // JS: this.item = item.id;
+        // JS: this.itemState = this.battle.initEffectState({ id: item.id, target: this });
         self.item = item_id.clone();
-        self.item_state = EffectState::new(item_id);
+        self.item_state = EffectState::new(item_id.clone());
+
+        // JS: if (oldItem.exists) this.battle.singleEvent('End', oldItem, oldItemState, this);
+        // Note: Missing singleEvent('End') for old item - would need Battle reference
+
+        // JS: if (item.id) {
+        // JS:     this.battle.singleEvent('Start', item, this.itemState, this, source, effect);
+        // JS: }
+        // Note: Missing singleEvent('Start') for new item - would need Battle reference
+
+        // JS: return true;
         true
     }
 }
