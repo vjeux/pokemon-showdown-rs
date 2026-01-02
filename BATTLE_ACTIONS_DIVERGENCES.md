@@ -492,6 +492,16 @@ These files exist only in Rust and should be evaluated:
 - 1:1 match with JavaScript implementation
 
 ### 2026-01-02
+**Completed: secondaries.rs ModifySecondaries event** ✅ EVENT IMPLEMENTED!
+- Implemented ModifySecondaries event to allow abilities to filter/modify secondaries
+- Fires event before applying any secondary effects for each target
+- If event returns 0 or None, skips all secondaries for that target
+- Matches JavaScript: `this.battle.runEvent('ModifySecondaries', target, source, moveData, moveData.secondaries.slice())`
+- Enables abilities like Shield Dust to block secondary effects
+- Same implementation pattern as spread_move_hit.rs
+- 1:1 match with JavaScript
+
+### 2026-01-02
 **Removed: switch.rs** ✅ DUPLICATE FILE REMOVED
 - Removed switch.rs file (42 lines) - was a duplicate/leftover file
 - File contained Z-Power effect handling code already implemented in use_move_inner.rs
