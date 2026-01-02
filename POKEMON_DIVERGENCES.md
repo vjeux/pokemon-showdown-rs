@@ -557,9 +557,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing Ogerpon/Terapagos canTerastallize blocking
 
 #### add_volatile.rs
-- Status: ✅ Fixed (Significantly Improved - Session 24 Part 12)
-- Issue: Missing linkedStatus bidirectional linking
-- Action: Implemented full linkedStatus bidirectional linking using EffectState.data HashMap
+- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 12 & 15)
+- Issue: Missing linkedStatus bidirectional linking and source HP check
+- Action: Implemented full linkedStatus bidirectional linking using EffectState.data HashMap and source HP check
 - Notes:
   - Fairly complete implementation with duration callback support
   - ✅ NOW IMPLEMENTED (Session 24 Part 12): linkedStatus parameter added to signature
@@ -569,14 +569,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24 Part 12): Handles source already having linked volatile (appends to array)
   - ✅ NOW IMPLEMENTED (Session 24 Part 12): Updated 100 files (1 method + 99 callsites)
   - ✅ NOW IMPLEMENTED: runStatusImmunity check for volatile immunity
+  - ✅ NOW IMPLEMENTED (Session 24 Part 15): source HP check for linkedStatus
   - ❌ Still missing: HP check with affectsFainted flag (needs condition data access)
-  - ❌ Still missing: source HP check for linkedStatus
   - ❌ Still missing: battle.event source/sourceEffect defaulting
   - ❌ Still missing: runEvent('TryAddVolatile')
   - ❌ Still missing: source, sourceSlot, sourceEffect assignments to EffectState
   - Has onRestart callback support
   - Has singleEvent('Start') with rollback on failure
-  - Now ~75% complete (was ~60%)
+  - Now ~78% complete (was ~75%)
 
 #### calculate_stat.rs
 - Status: ✅ Fixed (Documented)
@@ -1873,6 +1873,38 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 1 feature implemented (ateBerry tracking)
   - 1 file modified (pokemon/eat_item.rs)
   - 11 insertions, 6 deletions
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 15 - 2026-01-01 (add_volatile source HP Check - COMPLETED)
+- **Goal**: Add missing source HP check for linkedStatus in add_volatile
+- **Completed**:
+  - ✅ Implemented source HP check for linkedStatus
+  - ✅ JavaScript logic: `if (linkedStatus && source && !source.hp) return false;`
+  - ✅ Prevents adding linked volatiles (Leech Seed, etc.) if source Pokemon is fainted
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - add_volatile.rs - Now ~78% complete (was ~75%)
+    - ✅ NOW IMPLEMENTED: source HP check for linkedStatus
+    - ✅ Checks if source Pokemon has 0 HP before adding linked volatile
+    - ✅ Returns false if source is fainted (prevents invalid Leech Seed, etc.)
+    - JavaScript equivalent:
+      - `if (linkedStatus && source && !source.hp) return false;`
+    - Rust implementation:
+      - `if let (Some(_linked_status_id), Some(src_pos)) = (linked_status.as_ref(), source_pos) { ... }`
+      - `if source_pokemon.hp == 0 { return false; }`
+- **Technical Details**:
+  - Checks both linkedStatus parameter and source_pos are Some
+  - Gets immutable reference to source Pokemon
+  - Returns false if source HP is 0 (fainted)
+  - Placed early in function before volatile creation
+- **Session Statistics**:
+  - 1 method improved (add_volatile.rs)
+  - 1 feature implemented (source HP check)
+  - 1 file modified (pokemon/add_volatile.rs)
+  - 11 insertions, 1 deletion
   - 1 commit pushed to git
   - 100% compilation success rate
 
