@@ -1439,6 +1439,7 @@ impl RuleTable {
 /// Format class - runtime format object
 #[derive(Debug, Clone)]
 /// JavaScript equivalent: Format (sim/global-types.ts)
+/// 16 fields in JavaScript
 pub struct Format {
     /// JavaScript: id: ID
     pub id: String,
@@ -1526,7 +1527,7 @@ impl Format {
 
 /// DexFormats - manages format loading and validation
 /// JavaScript equivalent: DexFormats (sim/dex-formats.ts)
-/// Fields: dex, formatsListCache, searchShow, default
+/// 4 fields in JavaScript (dex, formatsListCache, searchShow, default)
 pub struct DexFormats {
     /// Cache of loaded formats
     pub formats_cache: HashMap<ID, Format>,
