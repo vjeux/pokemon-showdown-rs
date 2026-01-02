@@ -45,7 +45,7 @@ pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>)
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.has_type("Flying")
+            pokemon.has_type(battle, "Flying")
         };
 
         (move_type, target_has_flying)

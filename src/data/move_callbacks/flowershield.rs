@@ -50,7 +50,7 @@ pub fn on_hit_field(
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.has_type("grass")
+            pokemon.has_type(battle, "grass")
         };
 
         if !has_grass_type {

@@ -63,7 +63,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.get_types(false)
+        target_pokemon.get_types(battle, false)
     };
 
     // Check if types match (single type case)

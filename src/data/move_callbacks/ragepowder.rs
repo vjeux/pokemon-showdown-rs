@@ -97,7 +97,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.run_status_immunity("powder")
+            source_pokemon.run_status_immunity(battle, "powder")
         };
 
         if !has_powder_immunity {

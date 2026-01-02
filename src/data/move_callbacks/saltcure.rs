@@ -40,7 +40,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_ref.has_type("Water") || pokemon_ref.has_type("Steel")
+            pokemon_ref.has_type(battle, "Water") || pokemon_ref.has_type(battle, "Steel")
         };
 
         let divisor = if has_water_or_steel { 4 } else { 8 };

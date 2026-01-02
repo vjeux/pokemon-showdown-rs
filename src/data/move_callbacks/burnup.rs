@@ -24,7 +24,7 @@ pub fn on_try_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.has_type("Fire")
+        pokemon.has_type(battle, "Fire")
     };
 
     if has_fire {

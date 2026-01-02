@@ -108,7 +108,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_ref.has_type("Poison")
+            pokemon_ref.has_type(battle, "Poison")
         };
 
         if has_poison_type {
@@ -142,7 +142,7 @@ pub mod condition {
                     None => return EventResult::Continue,
                 };
                 (
-                    pokemon_ref.has_type("Steel"),
+                    pokemon_ref.has_type(battle, "Steel"),
                     pokemon_ref.has_item(battle, &["heavydutyboots"]),
                 )
             };

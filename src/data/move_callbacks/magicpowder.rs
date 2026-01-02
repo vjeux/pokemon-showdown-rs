@@ -27,7 +27,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.get_types(false).join("")
+        target_pokemon.get_types(battle, false).join("")
     };
 
     // Try to set the type and check if it succeeded

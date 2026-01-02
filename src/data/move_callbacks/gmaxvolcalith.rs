@@ -42,7 +42,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.has_type("rock")
+            target_pokemon.has_type(battle, "rock")
         };
 
         if !has_rock_type {

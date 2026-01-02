@@ -281,7 +281,7 @@ pub fn on_try_hit(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.has_type("Flying")
+            pokemon.has_type(battle, "Flying")
         };
         if has_flying {
             let target_arg = {

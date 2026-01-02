@@ -31,7 +31,7 @@ pub fn on_try_immunity(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.get_types(false)
+        source_pokemon.get_types(battle, false)
     };
 
     let has_shared_type = {
@@ -40,7 +40,7 @@ pub fn on_try_immunity(
             None => return EventResult::Continue,
         };
 
-        source_types.iter().any(|type_name| target_pokemon.has_type(type_name))
+        source_types.iter().any(|type_name| target_pokemon.has_type(battle, type_name))
     };
 
     EventResult::Boolean(has_shared_type)

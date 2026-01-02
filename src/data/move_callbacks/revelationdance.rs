@@ -25,7 +25,7 @@ pub fn on_modify_type(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Event
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.get_types(false)
+        pokemon.get_types(battle, false)
     };
 
     let mut move_type = types.first().cloned().unwrap_or(String::from("Normal"));

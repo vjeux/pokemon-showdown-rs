@@ -38,7 +38,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.has_type("Ghost")
+        target_pokemon.has_type(battle, "Ghost")
     };
 
     if already_has_ghost {

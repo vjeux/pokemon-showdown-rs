@@ -49,7 +49,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.has_type(&move_type)
+        target_pokemon.has_type(battle, &move_type)
     };
 
     // Try to set the type and check if it succeeded

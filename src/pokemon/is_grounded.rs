@@ -52,7 +52,7 @@ impl Pokemon {
         // JS: if (!negateImmunity && this.hasType('Flying') && !(this.hasType('???') && 'roost' in this.volatiles)) return false;
         // Note: Missing negateImmunity parameter
         // Note: Missing special ??? + Roost case for Fire/Flying with Burn Up
-        if self.has_type("Flying") {
+        if self.has_type(battle, "Flying") {
             return false;
         }
 

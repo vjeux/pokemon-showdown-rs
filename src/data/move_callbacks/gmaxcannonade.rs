@@ -43,7 +43,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.has_type("water")
+            target_pokemon.has_type(battle, "water")
         };
 
         if !has_water_type {

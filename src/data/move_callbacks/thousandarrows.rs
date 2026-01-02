@@ -44,7 +44,7 @@ pub fn on_effectiveness(
             None => return EventResult::Continue,
         };
         let immunity = target_pokemon.run_immunity("Ground");
-        let has_flying = target_pokemon.has_type("Flying");
+        let has_flying = target_pokemon.has_type(battle, "Flying");
         (immunity, has_flying)
     };
 

@@ -22,7 +22,7 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.has_type("grass")
+        target_pokemon.has_type(battle, "grass")
     };
 
     EventResult::Boolean(!has_grass_type)

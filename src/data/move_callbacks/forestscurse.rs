@@ -28,7 +28,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.has_type("grass")
+        target_pokemon.has_type(battle, "grass")
     };
 
     if has_grass_type {

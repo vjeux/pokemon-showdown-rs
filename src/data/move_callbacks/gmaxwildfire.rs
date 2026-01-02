@@ -42,7 +42,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.has_type("fire")
+            target_pokemon.has_type(battle, "fire")
         };
 
         if !has_fire_type {

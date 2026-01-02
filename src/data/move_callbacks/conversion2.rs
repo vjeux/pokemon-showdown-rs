@@ -84,7 +84,7 @@ pub fn on_hit(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.has_type(&type_name)
+            source_pokemon.has_type(battle, &type_name)
         };
 
         if has_type {

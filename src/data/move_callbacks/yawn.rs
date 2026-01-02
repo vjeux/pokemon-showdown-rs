@@ -29,7 +29,7 @@ pub fn on_try_hit(
         };
 
         let has_status = !target_pokemon.status.is_empty();
-        let has_immunity = target_pokemon.run_status_immunity("slp");
+        let has_immunity = target_pokemon.run_status_immunity(battle, "slp");
 
         (has_status, has_immunity)
     };

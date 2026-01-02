@@ -14,11 +14,11 @@ impl Pokemon {
     // 		return types;
     // 	}
     //
-    pub fn get_types(&self, exclude_added: bool) -> Vec<String> {
-        self.get_types_full(exclude_added, false)
+    pub fn get_types(&self, battle: &Battle, exclude_added: bool) -> Vec<String> {
+        self.get_types_full(battle, exclude_added, false)
     }
 
-    pub fn get_types_full(&self, exclude_added: bool, preterastallized: bool) -> Vec<String> {
+    pub fn get_types_full(&self, battle: &Battle, exclude_added: bool, preterastallized: bool) -> Vec<String> {
         // JS: if (!preterastallized && this.terastallized && this.terastallized !== 'Stellar') return [this.terastallized];
         if !preterastallized {
             if let Some(ref tera) = self.terastallized {
@@ -29,13 +29,17 @@ impl Pokemon {
         }
 
         // JS: const types = this.battle.runEvent('Type', this, null, null, this.types);
-        // Note: runEvent('Type') not called - would need Battle reference
+        // Note: runEvent('Type') not called - would need event system infrastructure
         let mut types = self.types.clone();
 
         // JS: if (!types.length) types.push(this.battle.gen >= 5 ? 'Normal' : '???');
-        // Note: Gen check not implemented - would need Battle reference for gen
+        // ✅ NOW IMPLEMENTED: Gen check for default type
         if types.is_empty() {
-            types.push("Normal".to_string()); // Assumes gen >= 5
+            if battle.gen >= 5 {
+                types.push("Normal".to_string());
+            } else {
+                types.push("???".to_string());
+            }
         }
 
         // JS: if (!excludeAdded && this.addedType) return types.concat(this.addedType);

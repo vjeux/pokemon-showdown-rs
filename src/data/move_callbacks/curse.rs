@@ -31,7 +31,7 @@ pub fn on_modify_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_type("ghost")
+        source_pokemon.has_type(battle, "ghost")
     };
 
     if !source_has_ghost {
@@ -84,7 +84,7 @@ pub fn on_try_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.has_type("ghost")
+        source_pokemon.has_type(battle, "ghost")
     };
 
     if !source_has_ghost {

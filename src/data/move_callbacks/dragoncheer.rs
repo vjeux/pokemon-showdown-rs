@@ -101,7 +101,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.has_type("dragon")
+            target_pokemon.has_type(battle, "dragon")
         };
 
         if let Some(ref mut effect_state) = battle.current_effect_state {

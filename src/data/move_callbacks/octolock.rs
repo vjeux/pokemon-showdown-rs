@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTryImmunity(target) {
 ///     return this.dex.getImmunity('trapped', target);
@@ -182,11 +183,7 @@ pub mod condition {
 
             if is_active {
                 // pokemon.tryTrap();
-                let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                pokemon_pokemon.try_trap(false);
+                Pokemon::try_trap(battle, pokemon, false);
             }
         }
 

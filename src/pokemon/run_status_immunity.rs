@@ -27,7 +27,7 @@ impl Pokemon {
     // 		return true;
     // 	}
     //
-    pub fn run_status_immunity(&self, status: &str) -> bool {
+    pub fn run_status_immunity(&self, battle: &Battle, status: &str) -> bool {
         // JS: if (this.fainted) return false;
         if self.hp == 0 {
             return false;
@@ -45,10 +45,10 @@ impl Pokemon {
         // JS: }
         // Simplified type-based immunity check (partial implementation)
         let immune = match status {
-            "brn" => !self.has_type("Fire"),
-            "par" => !self.has_type("Electric"),
-            "psn" | "tox" => !self.has_type("Poison") && !self.has_type("Steel"),
-            "frz" => !self.has_type("Ice"),
+            "brn" => !self.has_type(battle, "Fire"),
+            "par" => !self.has_type(battle, "Electric"),
+            "psn" | "tox" => !self.has_type(battle, "Poison") && !self.has_type(battle, "Steel"),
+            "frz" => !self.has_type(battle, "Ice"),
             "slp" => true, // No type immunity to sleep
             "trapped" => true, // Trapped is a volatile, not a status - no type immunity
             _ => true,

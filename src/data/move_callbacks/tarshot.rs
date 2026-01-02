@@ -84,7 +84,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let types = target_pokemon.get_types(false);
+            let types = target_pokemon.get_types(battle, false);
             types.get(0).cloned().unwrap_or_default()
         };
 

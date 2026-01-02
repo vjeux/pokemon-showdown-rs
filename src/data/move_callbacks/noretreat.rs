@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTry(source, target, move) {
 ///     if (source.volatiles['noretreat']) return false;
@@ -86,13 +87,7 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // pokemon.tryTrap();
-        {
-            let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            pokemon_pokemon.try_trap(false);
-        }
+        Pokemon::try_trap(battle, pokemon, false);
 
         EventResult::Continue
     }

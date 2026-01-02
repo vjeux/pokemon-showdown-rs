@@ -220,7 +220,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (pokemon.has_type("Fire"), pokemon.base_maxhp)
+            (pokemon.has_type(battle, "Fire"), pokemon.base_maxhp)
         };
 
         if !has_fire {

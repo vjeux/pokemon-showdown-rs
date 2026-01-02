@@ -21,7 +21,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.has_type("Poison"), pokemon.base_maxhp)
+        (pokemon.has_type(battle, "Poison"), pokemon.base_maxhp)
     };
 
     if has_poison {

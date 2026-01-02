@@ -70,7 +70,7 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
         target
-            .get_types(true)
+            .get_types(battle, true)
             .into_iter()
             .filter(|t| t.as_str() != "???")
             .collect::<Vec<_>>()

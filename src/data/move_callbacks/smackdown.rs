@@ -66,7 +66,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.has_type("Flying")
+            pokemon.has_type(battle, "Flying")
         };
         let has_levitate = {
             let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {

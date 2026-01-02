@@ -16,10 +16,10 @@ impl Pokemon {
     // 		return false;
     // 	}
     //
-    pub fn has_type(&self, type_name: &str) -> bool {
+    pub fn has_type(&self, battle: &Battle, type_name: &str) -> bool {
         // JS: const thisTypes = this.getTypes();
         // JS: return thisTypes.includes(type);
-        self.get_types(false)
+        self.get_types(battle, false)
             .iter()
             .any(|t| t == type_name)
     }

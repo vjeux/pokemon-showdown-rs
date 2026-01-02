@@ -37,7 +37,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let types = target.get_types(false);
+        let types = target.get_types(battle, false);
         types.len() == 1 && types[0].as_str() == "Water"
     };
 

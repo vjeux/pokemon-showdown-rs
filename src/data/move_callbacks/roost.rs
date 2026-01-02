@@ -58,7 +58,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                target.has_type("Flying")
+                target.has_type(battle, "Flying")
             };
 
             if has_flying {
@@ -107,7 +107,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target.get_types(false)
+            target.get_types(battle, false)
         };
 
         let filtered_types: Vec<_> = types
