@@ -658,6 +658,27 @@ These files exist only in Rust and should be evaluated:
   - Returns max(1, damage)
 - 1:1 match with JavaScript getConfusionDamage
 
+### 2026-01-02
+**Completed: get_spread_damage.rs 1:1 port** ✅ ERROR HANDLING ADDED!
+- Added missing `battle.activeTarget` assignment:
+  - JavaScript: `this.battle.activeTarget = target`
+  - Rust: `battle.active_target = Some(target_pos)`
+  - Sets active target before calling getDamage for each target
+- Added initial damage reset:
+  - JavaScript: `damage[i] = undefined`
+  - Rust: `result_damages[i] = None`
+  - Resets damage to None before calculating
+- Implemented complete error handling for getDamage return values:
+  - **Number (Some(i32))**: Damage dealt, stored in result
+  - **False/Null (None)**: Damage calculation failed
+    - Checks if original damage[i] was false (not just undefined)
+    - If failed and not secondary/self: adds "-fail" message and "[still]" attribute
+    - Adds debug message: "damage calculation interrupted"
+    - Sets result to None and continues to next target
+- Uses actual is_secondary and is_self parameters (were prefixed with _ before)
+- Comment documentation matches JavaScript exactly
+- 1:1 match with JavaScript getSpreadDamage lines 1163-1184
+
 ---
 
 ## Next Steps
