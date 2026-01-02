@@ -80,12 +80,10 @@ pub trait RNG {
 /// initial seed.
 #[derive(Debug, Clone)]
 /// JavaScript equivalent: Gen5RNG (sim/prng.ts)
-/// Fields: seed
-/// JavaScript equivalent: Gen5RNG (sim/prng.ts)
-/// Fields: seed
-/// JavaScript equivalent: Gen5RNG (sim/prng.ts)
-/// Fields: seed
+/// 1 field in JavaScript
 pub struct Gen5RNG {
+    /// Current seed state (4 x 16-bit values)
+    /// JavaScript: seed: [number, number, number, number]
     seed: [u16; 4],
 }
 
@@ -203,7 +201,11 @@ impl RNG for Gen5RNG {
 /// Sodium-compatible RNG using ChaCha20
 /// This is a drop-in replacement for libsodium's randombytes_buf_deterministic
 #[derive(Debug, Clone)]
+/// JavaScript equivalent: SodiumRNG (sim/prng.ts)
+/// 1 field in JavaScript
 pub struct SodiumRNG {
+    /// Seed bytes (32 bytes = 256 bits)
+    /// JavaScript: seed: Uint8Array (32 bytes)
     seed: [u8; 32],
 }
 
@@ -282,14 +284,16 @@ impl RNG for SodiumRNG {
 /// If a seed isn't given, defaults to sodium.
 #[derive(Debug, Clone)]
 /// JavaScript equivalent: PRNG (sim/prng.ts)
-/// Fields: startingSeed
-/// JavaScript equivalent: PRNG (sim/prng.ts)
-/// Fields: startingSeed
-/// JavaScript equivalent: PRNG (sim/prng.ts)
-/// Fields: startingSeed
+/// 2 fields in JavaScript
 pub struct PRNG {
+    /// Starting seed value
+    /// JavaScript: startingSeed: PRNGSeed
     pub starting_seed: PRNGSeed,
+    /// RNG implementation (Gen5RNG or SodiumRNG)
+    /// JavaScript: rng: Gen5RNG | SodiumRNG
     rng: PRNGImpl,
+    // TODO: DELETE - Not in JavaScript PRNG (Rust-specific field for debugging)
+    /// Call count for debugging PRNG calls
     pub call_count: usize,
 }
 

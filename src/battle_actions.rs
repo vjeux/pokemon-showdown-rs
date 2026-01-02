@@ -537,42 +537,116 @@ pub struct ActiveMove {
 /// JavaScript equivalent: MoveFlags (sim/dex-moves.ts)
 /// 37 fields in JavaScript
 pub struct MoveFlags {
+    /// Ally-targeting animation flag
+    /// JavaScript: allyanim?: 1
     pub allyanim: bool,
+    /// Bite flag (affected by Strong Jaw)
+    /// JavaScript: bite?: 1
     pub bite: bool,
+    /// Bullet flag (blocked by Bulletproof)
+    /// JavaScript: bullet?: 1
     pub bullet: bool,
+    /// Bypass Substitute flag
+    /// JavaScript: bypasssub?: 1
     pub bypasssub: bool,
+    /// Can't use twice flag (e.g., Dynamax Cannon)
+    /// JavaScript: cantusetwice?: 1
     pub cant_use_twice: bool,
+    /// Charge flag (two-turn moves)
+    /// JavaScript: charge?: 1
     pub charge: bool,
+    /// Contact flag (makes physical contact)
+    /// JavaScript: contact?: 1
     pub contact: bool,
+    /// Dance flag (copied by Dancer)
+    /// JavaScript: dance?: 1
     pub dance: bool,
+    /// Defrost flag (thaws user)
+    /// JavaScript: defrost?: 1
     pub defrost: bool,
+    /// Distance flag (blocked by Wide Guard)
+    /// JavaScript: distance?: 1
     pub distance: bool,
+    /// Fail if used by Copycat
+    /// JavaScript: failcopycat?: 1
     pub failcopycat: bool,
+    /// Fail if used by Encore
+    /// JavaScript: failencore?: 1
     pub failencore: bool,
+    /// Fail if used by Instruct
+    /// JavaScript: failinstruct?: 1
     pub failinstruct: bool,
+    /// Fail if used by Me First
+    /// JavaScript: failmefirst?: 1
     pub failmefirst: bool,
+    /// Fail if used by Mimic
+    /// JavaScript: failmimic?: 1
     pub failmimic: bool,
+    /// Future move flag (Future Sight, Doom Desire)
+    /// JavaScript: futuremove?: 1
     pub future_move: bool,
+    /// Affected by Gravity
+    /// JavaScript: gravity?: 1
     pub gravity: bool,
+    /// Heal flag (blocked by Heal Block)
+    /// JavaScript: heal?: 1
     pub heal: bool,
+    /// Can be used by Metronome
+    /// JavaScript: metronome?: 1
     pub metronome: bool,
+    /// Mirror Move flag (can be copied)
+    /// JavaScript: mirror?: 1
     pub mirror: bool,
+    /// Must pressure flag (must deduct PP under Pressure)
+    /// JavaScript: mustpressure?: 1
     pub mustpressure: bool,
+    /// Blocked by Assist
+    /// JavaScript: noassist?: 1
     pub noassist: bool,
+    /// Cannot be used in Sky Battles
+    /// JavaScript: nonsky?: 1
     pub nonsky: bool,
+    /// Not affected by Parental Bond
+    /// JavaScript: noparentalbond?: 1
     pub noparentalbond: bool,
+    /// Cannot be Sketched
+    /// JavaScript: nosketch?: 1
     pub nosketch: bool,
+    /// Cannot be used by Sleep Talk
+    /// JavaScript: nosleeptalk?: 1
     pub nosleeptalk: bool,
+    /// Pledge combo flag
+    /// JavaScript: pledgecombo?: 1
     pub pledgecombo: bool,
+    /// Powder flag (blocked by Grass types and Overcoat)
+    /// JavaScript: powder?: 1
     pub powder: bool,
+    /// Protect flag (blocked by protection moves)
+    /// JavaScript: protect?: 1
     pub protect: bool,
+    /// Pulse flag (boosted by Mega Launcher)
+    /// JavaScript: pulse?: 1
     pub pulse: bool,
+    /// Punch flag (boosted by Iron Fist)
+    /// JavaScript: punch?: 1
     pub punch: bool,
+    /// Recharge flag (requires recharge next turn)
+    /// JavaScript: recharge?: 1
     pub recharge: bool,
+    /// Reflectable flag (can be bounced by Magic Coat)
+    /// JavaScript: reflectable?: 1
     pub reflectable: bool,
+    /// Slicing flag (boosted by Sharpness)
+    /// JavaScript: slicing?: 1
     pub slicing: bool,
+    /// Snatch flag (can be stolen by Snatch)
+    /// JavaScript: snatch?: 1
     pub snatch: bool,
+    /// Sound flag (blocked by Soundproof)
+    /// JavaScript: sound?: 1
     pub sound: bool,
+    /// Wind flag (boosted by Wind Power)
+    /// JavaScript: wind?: 1
     pub wind: bool,
 }
 
@@ -609,6 +683,7 @@ pub struct ZMoveData {
 /// 13 fields total in JavaScript
 pub struct SecondaryEffect {
     /// Chance of the effect occurring (percentage)
+    /// JavaScript: chance?: number
     pub chance: Option<i32>,
 
     // From HitEffect:
@@ -617,8 +692,14 @@ pub struct SecondaryEffect {
     /// Note: Cannot store function reference in Rust, would need callback system
     // pub on_hit: Option<...>,
 
+    /// Stat boosts to apply
+    /// JavaScript: boosts?: SparseBoostsTable
     pub boosts: Option<BoostsTable>,
+    /// Status condition to inflict
+    /// JavaScript: status?: string
     pub status: Option<String>,
+    /// Volatile status to inflict
+    /// JavaScript: volatileStatus?: string
     pub volatile_status: Option<String>,
 
     /// Side condition to apply
@@ -663,11 +744,20 @@ pub struct SecondaryEffect {
 /// Rust simplifies this with a dedicated struct
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: HitEffect (in SecondaryEffect.self field)
+/// 9 fields in JavaScript HitEffect
 /// TODO: Missing fields from HitEffect: status, slotCondition, pseudoWeather, terrain, weather, onHit
 pub struct SelfEffect {
+    /// Stat boosts to apply
+    /// JavaScript: boosts?: SparseBoostsTable
     pub boosts: Option<BoostsTable>,
+    /// Chance of the effect occurring (percentage)
+    /// JavaScript: chance?: number
     pub chance: Option<i32>,
+    /// Side condition to apply
+    /// JavaScript: sideCondition?: string
     pub side_condition: Option<String>,
+    /// Volatile status to inflict
+    /// JavaScript: volatileStatus?: string
     #[serde(rename = "volatileStatus")]
     pub volatile_status: Option<String>,
 }
@@ -700,11 +790,12 @@ pub enum SwitchCopyFlag {
 /// The actual methods that need battle access are implemented on Battle directly.
 /// JavaScript equivalent: BattleActions (sim/battle-actions.ts)
 /// 4 fields in JavaScript (battle, dex, MAX_MOVES, Z_MOVES)
-/// JavaScript equivalent: BattleActions (sim/global-types.ts)
 pub struct BattleActions<'a> {
     // TODO: Add battle reference when lifetime management is resolved
     // pub battle: &'a Battle,
 
+    /// Dex reference
+    /// JavaScript: readonly dex: ModdedDex
     pub dex: &'a Dex,
 
     // TODO: DELETE - gen is not in JavaScript BattleActions
@@ -764,47 +855,76 @@ impl<'a> BattleActions<'a> {
 
 /// Result from after move secondary event
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: Inline return type in battle-actions.ts afterMoveSecondarySelfEffects()
+/// 2 fields in JavaScript
 pub struct AfterMoveResult {
+    /// Self-switch effect type
+    /// JavaScript: selfSwitch?: 'copyvolatile' | 'shedtail' | true
     pub self_switch: Option<String>,
+    /// Force switch flag
+    /// JavaScript: forceSwitch?: boolean
     pub force_switch: bool,
 }
 
 /// Move effects to apply
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: Inline type in battle-actions.ts
+/// 4 fields in JavaScript
 pub struct MoveEffects {
+    /// Stat boosts to apply
+    /// JavaScript: boosts?: SparseBoostsTable
     pub boosts: Option<BoostsTable>,
+    /// Healing fraction
+    /// JavaScript: heal?: [number, number]
     pub heal: Option<(i32, i32)>,
+    /// Status condition to inflict
+    /// JavaScript: status?: string
     pub status: Option<String>,
+    /// Volatile status to inflict
+    /// JavaScript: volatileStatus?: string
     pub volatile_status: Option<String>,
 }
 
 /// Run move options for runMove
 /// Equivalent to the options parameter in battle-actions.ts runMove()
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: RunMoveOptions (sim/battle-actions.ts)
+/// 5 fields in JavaScript
 pub struct RunMoveOptions {
     /// Source effect that caused this move
+    /// JavaScript: sourceEffect?: Effect
     pub source_effect: Option<ID>,
     /// Z-move override
+    /// JavaScript: zMove?: string
     pub z_move: Option<String>,
     /// External move (Dancer, etc.)
+    /// JavaScript: externalMove?: boolean
     pub external_move: bool,
     /// Max move override
+    /// JavaScript: maxMove?: string
     pub max_move: Option<String>,
     /// Original target for redirection tracking
+    /// JavaScript: originalTarget?: Pokemon
     pub original_target: Option<usize>,
 }
 
 /// Use move options for useMove
 /// Equivalent to the options parameter in battle-actions.ts useMove()
 #[derive(Debug, Clone, Default)]
+/// JavaScript equivalent: UseMoveOptions (sim/battle-actions.ts)
+/// 4 fields in JavaScript
 pub struct UseMoveOptions {
     /// Target pokemon index
+    /// JavaScript: target?: Pokemon
     pub target: Option<usize>,
     /// Source effect
+    /// JavaScript: sourceEffect?: Effect
     pub source_effect: Option<ID>,
     /// Z-move override
+    /// JavaScript: zMove?: string
     pub z_move: Option<String>,
     /// Max move override
+    /// JavaScript: maxMove?: string
     pub max_move: Option<String>,
 }
 
