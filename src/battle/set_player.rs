@@ -69,7 +69,8 @@ impl Battle {
 
         if is_new {
             // Create player
-            let team = options.team.clone(); // For now, assume team is already unpacked
+            // JS: const team = this.getTeam(options);
+            let team = self.get_team(&options);
             let name = if !options.name.is_empty() {
                 options.name.clone()
             } else {

@@ -23,6 +23,7 @@ mod new;
 mod pokemon_at;
 mod pokemon_at_mut;
 mod set_player;
+mod get_team;
 mod start;
 mod start_battle;
 mod random;
