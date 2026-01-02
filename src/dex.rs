@@ -550,6 +550,34 @@ pub struct MoveData {
     /// JavaScript: overrideOffensivePokemon?: 'target' | 'source'
     #[serde(rename = "overrideOffensivePokemon", default)]
     pub override_offensive_pokemon: Option<String>,
+    /// Has crash damage on miss (High Jump Kick, etc.)
+    /// JavaScript: hasCrashDamage?: boolean
+    #[serde(rename = "hasCrashDamage", default)]
+    pub has_crash_damage: bool,
+    /// Mind Blown recoil flag
+    /// JavaScript: mindBlownRecoil?: boolean
+    #[serde(rename = "mindBlownRecoil", default)]
+    pub mind_blown_recoil: bool,
+    /// Struggle recoil flag
+    /// JavaScript: struggleRecoil?: boolean
+    #[serde(rename = "struggleRecoil", default)]
+    pub struggle_recoil: bool,
+    /// Steals target's stat boosts (Spectral Thief)
+    /// JavaScript: stealsBoosts?: boolean
+    #[serde(rename = "stealsBoosts", default)]
+    pub steals_boosts: bool,
+    /// Self boost effect (stat boosts to user)
+    /// JavaScript: selfBoost?: { boosts?: SparseBoostsTable }
+    #[serde(rename = "selfBoost", default)]
+    pub self_boost: Option<serde_json::Value>,
+    /// Multi-hit accuracy check per hit (Population Bomb)
+    /// JavaScript: multiaccuracy?: boolean
+    #[serde(rename = "multiaccuracy", default)]
+    pub multiaccuracy: bool,
+    /// No PP boosts allowed (Revival Blessing)
+    /// JavaScript: noPPBoosts?: boolean
+    #[serde(rename = "noPPBoosts", default)]
+    pub no_pp_boosts: bool,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
