@@ -139,7 +139,6 @@ pub struct MoveHitData {
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: ActiveMove (sim/dex-moves.ts)
 /// 35+ fields in JavaScript (plus inherited from MutableMove which is BasicEffect & MoveData & HitEffect)
-/// JavaScript equivalent: ActiveMove (sim/global-types.ts)
 pub struct ActiveMove {
     /// Effect type constant (always "Move")
     /// JavaScript: readonly effectType: 'Move'
