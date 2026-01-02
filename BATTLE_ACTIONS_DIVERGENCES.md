@@ -25,7 +25,7 @@ This document tracks divergences between the JavaScript implementation in `pokem
 **Remaining Work:**
 - 9 TODOs in run_move.rs (need Pokemon fields, callbacks, ability systems)
 - 1 deferred function (hit_step_move_hit_loop)
-- Other files with TODOs (use_move_inner, try_spread_move_hit, etc.)
+- Other files with TODOs (use_move_inner, etc.)
 
 ---
 
@@ -92,6 +92,17 @@ Multiple missing features (9 remaining, 4 completed):
 - Line 107: moveUsed tracking (needs Pokemon.moveUsed() method)
 - Line 170: cantusetwice hint (needs Pokemon.removeVolatile with move.id)
 - Line 174: Dancer ability activation (needs ability check and recursive move call)
+
+### ~~try_spread_move_hit.rs~~ ✅ COMPLETED
+- ~~Line 101: Invulnerability check (hitStepInvulnerabilityEvent)~~ ✅ IMPLEMENTED
+- ~~Line 125: TryHit event (hitStepTryHitEvent)~~ ✅ IMPLEMENTED
+- ~~Line 175: Type Immunity (hitStepTypeImmunity)~~ ✅ IMPLEMENTED
+- ~~Line 199: Move-specific Immunity (hitStepTryImmunity)~~ ✅ IMPLEMENTED
+- ~~Line 223: PrepareHit event~~ ✅ IMPLEMENTED
+- ~~Line 256: Accuracy check (hitStepAccuracy)~~ ✅ IMPLEMENTED
+- ~~Line 274: Break Protect (hitStepBreakProtect)~~ ✅ IMPLEMENTED
+- ~~Line 286: Steal Boosts (hitStepStealBoosts)~~ ✅ IMPLEMENTED
+- ~~Line 298: Move hit loop (spreadMoveHit)~~ ✅ IMPLEMENTED
 
 ## Rust-Specific Files (Not in JavaScript)
 
@@ -352,6 +363,44 @@ These files exist only in Rust and should be evaluated:
   - JavaScript: `if (this.battle.gen <= 4) { this.battle.activeMove = oldActiveMove; }`
   - Ensures Gen 4 compatibility for nested move calls
 - Remaining 9 TODOs require infrastructure (Pokemon fields, callback system, etc.)
+
+### 2026-01-02
+**Completed: try_spread_move_hit** ✅ ALL STEPS IMPLEMENTED!
+- Implemented full 7-step move execution pipeline from JavaScript battle-actions.ts:545
+- Step 0: Invulnerability Event (hitStepInvulnerabilityEvent)
+  - Clones active_move to pass to hit_step_invulnerability_event
+  - Filters targets based on invulnerability results
+- Step 1: TryHit Event (hitStepTryHitEvent)
+  - Runs TryHit event for each target using battle.run_event
+  - Handles Protect, Magic Bounce, Volt Absorb, etc.
+  - Filters out blocked targets
+- Step 2: Type Immunity (hitStepTypeImmunity)
+  - Clones active_move to pass to hit_step_type_immunity
+  - Checks type-based immunity (e.g., Ground vs Electric)
+  - Filters immune targets
+- Step 3: Move-specific Immunity (hitStepTryImmunity)
+  - Clones active_move to pass to hit_step_try_immunity
+  - Checks powder immunity, prankster immunity, etc.
+  - Filters immune targets
+- PrepareHit Event
+  - Calls single_event for move's onPrepareHit handler
+  - Calls run_event for pokemon/target PrepareHit handlers
+  - Returns false if event fails
+- Step 4: Accuracy Check (hitStepAccuracy)
+  - Calls hit_step_accuracy with remaining targets
+  - Filters targets that failed accuracy check
+- Step 5: Break Protect (hitStepBreakProtect)
+  - Clones active_move to pass to hit_step_break_protect
+  - Breaks protection moves like Protect, King's Shield
+- Step 6: Steal Boosts (hitStepStealBoosts)
+  - Clones active_move to pass to hit_step_steal_boosts
+  - Steals positive stat boosts (Spectral Thief)
+- Step 7: Move Hit Loop
+  - Calls spread_move_hit for damage calculation
+  - Accumulates total_damage for recoil handling
+  - Stores in active_move.total_damage
+- Borrow Checker Solution: Uses clone pattern for active_move to avoid borrowing conflicts
+- 1:1 match with JavaScript implementation
 
 ---
 

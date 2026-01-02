@@ -97,14 +97,36 @@ pub fn try_spread_move_hit(
     }
 
     // Implement the 7-step pipeline from JavaScript's trySpreadMoveHit
-    // Step 0: Invulnerability
-    // TODO: Implement invulnerability check (hitStepInvulnerabilityEvent)
+
+    // Step 0: Invulnerability (hitStepInvulnerabilityEvent)
+    // JavaScript: this.hitStepInvulnerabilityEvent
+    let invulnerability_results = {
+        let mut active_move_clone = battle.active_move.clone().unwrap();
+        crate::battle_actions::hit_step_invulnerability_event(
+            battle,
+            targets,
+            pokemon_pos,
+            &mut active_move_clone,
+        )
+    };
+
+    // Filter targets based on invulnerability
+    let mut targets_after_invuln = Vec::new();
+    for (i, &target) in targets.iter().enumerate() {
+        if invulnerability_results.get(i).copied().unwrap_or(false) {
+            targets_after_invuln.push(target);
+        }
+    }
+
+    if targets_after_invuln.is_empty() {
+        return false;
+    }
 
     // Step 1: TryHit event (Protect, Magic Bounce, Volt Absorb, etc.)
     // JavaScript (battle-actions.ts): this.hitStepTryHitEvent
     // This must run BEFORE accuracy check so that Protect can block the move
-    let mut try_hit_results = vec![true; targets.len()];
-    for (i, &target) in targets.iter().enumerate() {
+    let mut try_hit_results = vec![true; targets_after_invuln.len()];
+    for (i, &target) in targets_after_invuln.iter().enumerate() {
         // JavaScript: hitResult = this.battle.runEvent('TryHit', targets, pokemon, move);
         // Use run_event (not single_event) to check target's volatiles like kingsshield
         let hit_result = battle.run_event(
@@ -136,7 +158,7 @@ pub fn try_spread_move_hit(
     }
 
     // Filter targets based on TryHit results
-    let targets_after_try_hit: Vec<_> = targets.iter().enumerate()
+    let targets_after_try_hit: Vec<_> = targets_after_invuln.iter().enumerate()
         .filter(|(i, _)| try_hit_results[*i])
         .map(|(_, &t)| t)
         .collect();
@@ -147,7 +169,56 @@ pub fn try_spread_move_hit(
     }
 
     // Step 2-3: Type Immunity, Move-specific Immunity
-    // TODO: Implement these steps when needed
+    // JavaScript: this.hitStepTypeImmunity, this.hitStepTryImmunity
+    // NOTE: In gen 4-6, these steps are swapped (handled by generation-specific reordering)
+
+    // Step 2: Type Immunity
+    // JavaScript: this.hitStepTypeImmunity
+    let type_immunity_results = {
+        let mut active_move_clone = battle.active_move.clone().unwrap();
+        crate::battle_actions::hit_step_type_immunity(
+            battle,
+            &targets_after_try_hit,
+            pokemon_pos,
+            &mut active_move_clone,
+        )
+    };
+
+    // Filter targets based on type immunity
+    let mut targets_after_type_immunity = Vec::new();
+    for (i, &target) in targets_after_try_hit.iter().enumerate() {
+        if type_immunity_results.get(i).copied().unwrap_or(false) {
+            targets_after_type_immunity.push(target);
+        }
+    }
+
+    if targets_after_type_immunity.is_empty() {
+        return false;
+    }
+
+    // Step 3: Move-specific Immunity
+    // JavaScript: this.hitStepTryImmunity
+    let immunity_results = {
+        let active_move_clone = battle.active_move.clone().unwrap();
+        crate::battle_actions::hit_step_try_immunity(
+            battle,
+            &targets_after_type_immunity,
+            pokemon_pos,
+            &active_move_clone,
+        )
+    };
+
+    // Filter targets based on immunity results
+    let mut targets_after_immunity = Vec::new();
+    for (i, &target) in targets_after_type_immunity.iter().enumerate() {
+        if immunity_results.get(i).copied().unwrap_or(false) {
+            targets_after_immunity.push(target);
+        }
+    }
+
+    if targets_after_immunity.is_empty() {
+        return false;
+    }
 
     // PrepareHit event - must be called BEFORE accuracy check
     // JavaScript (battle-actions.ts:587):
@@ -158,7 +229,7 @@ pub fn try_spread_move_hit(
     let prepare_hit_result = battle.single_event(
         "PrepareHit",
         move_id,
-        Some(targets_after_try_hit[0]),
+        Some(targets_after_immunity[0]),
         Some(pokemon_pos),
         None,
     );
@@ -176,17 +247,17 @@ pub fn try_spread_move_hit(
     battle.run_event(
         "PrepareHit",
         Some(pokemon_pos),
-        Some(targets_after_try_hit[0]),
+        Some(targets_after_immunity[0]),
         Some(move_id),
         None,
     );
 
     // Step 4: Check accuracy
-    let hit_results = crate::battle_actions::hit_step_accuracy(battle, &targets_after_try_hit, pokemon_pos, move_id);
+    let hit_results = crate::battle_actions::hit_step_accuracy(battle, &targets_after_immunity, pokemon_pos, move_id);
 
     // Filter out targets that failed accuracy check
     let mut remaining_targets = Vec::new();
-    for (i, &target) in targets_after_try_hit.iter().enumerate() {
+    for (i, &target) in targets_after_immunity.iter().enumerate() {
         if hit_results.get(i).copied().unwrap_or(false) {
             remaining_targets.push(target);
         }
@@ -198,7 +269,31 @@ pub fn try_spread_move_hit(
     }
 
     // Step 5-6: Break Protect, Steal Boosts
-    // TODO: Implement these steps when needed
+    // JavaScript: this.hitStepBreakProtect, this.hitStepStealBoosts
+
+    // Step 5: Break protection effects
+    // JavaScript: this.hitStepBreakProtect
+    {
+        let active_move_clone = battle.active_move.clone().unwrap();
+        crate::battle_actions::hit_step_break_protect(
+            battle,
+            &remaining_targets,
+            pokemon_pos,
+            &active_move_clone,
+        );
+    }
+
+    // Step 6: Steal positive boosts (Spectral Thief)
+    // JavaScript: this.hitStepStealBoosts
+    {
+        let active_move_clone = battle.active_move.clone().unwrap();
+        crate::battle_actions::hit_step_steal_boosts(
+            battle,
+            &remaining_targets,
+            pokemon_pos,
+            &active_move_clone,
+        );
+    }
 
     // Step 7: Move hit loop (damage calculation)
     let target_list: Vec<Option<(usize, usize)>> = remaining_targets.iter().map(|&t| Some(t)).collect();
