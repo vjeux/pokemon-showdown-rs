@@ -175,9 +175,21 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ Updated all callsites across codebase
 
 #### faint.rs
-- Status: ❌ Not Started
-- Issue: "TODO: implement the same logic as JavaScript"
-- Action: Complete fainting logic
+- Status: ✅ Fixed (Session 24 Part 7)
+- Issue: Missing source/effect parameters and battle.faint_queue.push()
+- Action: Refactored to associated function with full 1-to-1 implementation
+- Notes:
+  - ✅ NOW IMPLEMENTED: Refactored from instance method to associated function
+  - ✅ NOW IMPLEMENTED: source_pos and effect parameters (1-to-1 with JavaScript)
+  - ✅ NOW IMPLEMENTED: battle.faint_queue.push() with FaintData struct
+  - ✅ Signature: `Pokemon::faint(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect: Option<&ID>) -> i32`
+  - ✅ Updated 5 callsites:
+    - src/battle/faint.rs: Battle wrapper method
+    - src/battle/lose.rs: Force side loss
+    - src/battle/spread_damage.rs: Instafaint handling
+    - src/data/move_callbacks/finalgambit.rs: Final Gambit move
+    - src/data/move_callbacks/destinybond.rs: Destiny Bond effect
+  - Now fully 1-to-1 with JavaScript!
 
 #### get_ability.rs
 - Status: ✅ Fixed (Documented)
@@ -1579,6 +1591,43 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 8 commits pushed to git (6 code + 2 documentation)
   - 100% compilation success rate
 
+### Session 24 Part 7 - 2026-01-01 (faint.rs Refactoring - COMPLETED)
+- **Goal**: Fix faint.rs to achieve 1-to-1 equivalence with JavaScript
+- **Completed**:
+  - ✅ Refactored faint.rs from instance method to associated function
+  - ✅ Added source_pos and effect parameters (matching JavaScript signature)
+  - ✅ Implemented battle.faint_queue.push() with FaintData struct
+  - ✅ Updated 5 callsites across battle system and move callbacks:
+    - src/battle/faint.rs: Battle wrapper method
+    - src/battle/lose.rs: Force side loss handling
+    - src/battle/spread_damage.rs: Instafaint for Gen 1-2
+    - src/data/move_callbacks/finalgambit.rs: Final Gambit move
+    - src/data/move_callbacks/destinybond.rs: Destiny Bond effect
+  - ✅ Added FaintData import to pokemon/faint.rs
+  - ✅ Fixed type errors (dereferencing target_pos in spread_damage)
+  - ✅ Removed unused variable warning
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+- **Methods Now Fully Implemented (1-to-1 with JS)**:
+  - faint.rs - Now 100% complete (was ~40%)
+    - ✅ NOW IMPLEMENTED: Associated function pattern
+    - ✅ NOW IMPLEMENTED: source_pos and effect parameters
+    - ✅ NOW IMPLEMENTED: battle.faint_queue.push() with FaintData
+    - ✅ Has: Correct hp=0, switch_flag=false, faint_queued=true behavior
+    - ✅ Has: Early return if already fainted/queued
+    - ✅ Signature: `Pokemon::faint(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect: Option<&ID>) -> i32`
+    - Now fully 1-to-1 with JavaScript!
+- **Technical Details**:
+  - Used two-phase borrow pattern (extract HP immutably, then mutate)
+  - All callsites use proper associated function syntax
+  - battle.faint_queue properly tracks target, source, and effect
+- **Session Statistics**:
+  - 1 method fully implemented (faint.rs)
+  - 6 files modified (1 pokemon method + 5 callsites)
+  - 5 callsites updated
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
@@ -1595,6 +1644,7 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 12. get_nature.rs - ✅ Complete
 13. update_max_hp.rs - ✅ Complete (Session 24)
 14. set_hp.rs - ✅ Complete (Session 24)
+15. faint.rs - ✅ Complete (Session 24 Part 7)
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. try_set_status.rs - Core logic correct, simplified
