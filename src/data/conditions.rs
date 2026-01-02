@@ -113,8 +113,9 @@ pub struct ConditionDef {
     pub blocks_priority: bool,
 }
 
-/// Move restriction type
-/// TODO: Not in JavaScript - Rust-specific enum for categorizing move restrictions
+/// Move restriction types for conditions
+/// TODO: Not in JavaScript - Rust-specific enum for organizing move restrictions
+/// JavaScript uses individual condition properties and checks
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum MoveRestriction {
     /// Taunt: No status moves
