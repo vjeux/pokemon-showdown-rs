@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterHit(target, pokemon, move) {
 ///     if (!move.hasSheerForce) {
@@ -50,7 +51,7 @@ pub fn on_after_hit(
             };
             let hp = pokemon.hp > 0;
             let removed = if hp {
-                pokemon.remove_volatile(&ID::from("leechseed"))
+                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("leechseed"))
             } else {
                 false
             };
@@ -142,7 +143,7 @@ pub fn on_after_hit(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.remove_volatile(&ID::from("partiallytrapped"));
+            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("partiallytrapped"));
         }
     }
 

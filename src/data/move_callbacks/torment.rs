@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -41,11 +42,7 @@ pub mod condition {
         };
 
         if has_dynamax {
-            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            pokemon_mut.remove_volatile(&ID::from("torment"));
+            Pokemon::remove_volatile(battle, pokemon, &ID::from("torment"));
             return EventResult::NotFail;
         }
 

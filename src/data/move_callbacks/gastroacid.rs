@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTryHit(target) {
 ///     if (target.getAbility().flags['cantsuppress']) {
@@ -153,7 +154,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.remove_volatile(&ID::from("gastroacid"));
+            Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("gastroacid"));
         }
 
         EventResult::Continue

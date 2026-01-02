@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::{Gender, ID};
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// ```ignore
 /// onTryImmunity(target, source) {
@@ -220,11 +221,7 @@ pub mod condition {
             battle.debug(&format!("Removing Attract volatile on {}", pokemon.name));
 
             // pokemon.removeVolatile('attract');
-            let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            pokemon_mut.remove_volatile(&attract_id);
+            Pokemon::remove_volatile(battle, pokemon_pos, &attract_id);
         }
 
         EventResult::Continue

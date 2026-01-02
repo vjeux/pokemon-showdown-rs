@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -126,7 +127,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.remove_volatile(&ID::from("powershift"));
+            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("powershift"));
         }
 
         EventResult::Continue

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(pokemon) {
 ///     let success = false;
@@ -48,7 +49,7 @@ pub fn on_hit(
         };
 
         if active_mut.has_volatile(&ID::from("substitute")) {
-            active_mut.remove_volatile(&ID::from("substitute"));
+            Pokemon::remove_volatile(battle, (active_mut.side_index, active_mut.position), &ID::from("substitute"));
             success = true;
         }
     }

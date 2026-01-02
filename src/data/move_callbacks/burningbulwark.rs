@@ -182,11 +182,7 @@ pub mod condition {
         };
 
         if should_remove_lockedmove {
-            let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            source_pokemon.remove_volatile(&lockedmove_id);
+            Pokemon::remove_volatile(battle, source_pos, &lockedmove_id);
         }
 
         // if (this.checkMoveMakesContact(move, source, target)) {

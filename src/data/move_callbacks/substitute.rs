@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTryHit(source) {
 ///     if (source.volatiles['substitute']) {
@@ -231,7 +232,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.remove_volatile(&ID::from("partiallytrapped"));
+            Pokemon::remove_volatile(battle, (target_pokemon.side_index, target_pokemon.position), &ID::from("partiallytrapped"));
         }
 
         EventResult::Continue
@@ -405,7 +406,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_mut.remove_volatile(&ID::from("substitute"));
+            Pokemon::remove_volatile(battle, (target_mut.side_index, target_mut.position), &ID::from("substitute"));
         } else {
             // this.add('-activate', target, 'move: Substitute', '[damage]');
             let target_slot = {

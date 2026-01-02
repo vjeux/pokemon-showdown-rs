@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
+use crate::Pokemon;
 
 /// onTryMove(attacker, defender, move) {
 ///     if (attacker.removeVolatile(move.id)) {
@@ -51,16 +52,16 @@ pub fn on_try_move(
         active_move.id.clone()
     };
 
-    let removed = {
-        let pokemon = match battle.pokemon_at_mut(attacker.0, attacker.1) {
+    let has_volatile = {
+        let pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
             Some(p) => p,
-
             None => return EventResult::Continue,
         };
-
-        pokemon.remove_volatile(&move_id)
+        pokemon.has_volatile(&move_id)
     };
-    if removed {
+
+    if has_volatile {
+        Pokemon::remove_volatile(battle, attacker, &move_id);
         return EventResult::Continue;
     }
 

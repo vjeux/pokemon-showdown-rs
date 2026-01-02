@@ -110,7 +110,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.remove_volatile(&ID::from("snatch"));
+            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("snatch"));
         }
 
         // this.add('-activate', snatchUser, 'move: Snatch', `[of] ${source}`);

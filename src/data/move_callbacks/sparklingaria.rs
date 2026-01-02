@@ -76,7 +76,7 @@ pub fn on_after_move(
                     Some(p) => p,
                     None => continue,
                 };
-                pokemon.remove_volatile(&ID::from("sparklingaria"));
+                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("sparklingaria"));
             }
         }
 
@@ -115,7 +115,7 @@ pub fn on_after_move(
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.remove_volatile(&ID::from("sparklingaria"))
+            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("sparklingaria"))
         };
 
         if (removed_volatile || number_targets > 1) && has_burn {

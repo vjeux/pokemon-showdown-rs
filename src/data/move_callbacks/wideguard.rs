@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTry() {
 ///     return !!this.queue.willAct();
@@ -166,11 +167,7 @@ pub mod condition {
         };
 
         if should_remove_lockedmove {
-            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            source_pokemon.remove_volatile(&lockedmove_id);
+            Pokemon::remove_volatile(battle, source, &lockedmove_id);
         }
 
         // return this.NOT_FAIL;

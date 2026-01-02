@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 83 Complete - Continuing NOTE Fixes)
-- **Session 24 Total Progress**: 40+ commits, 83 parts completed
+## Overview (Updated: Session 24 Part 84 In Progress - remove_volatile Refactor)
+- **Session 24 Total Progress**: 40+ commits, 84 parts (Part 84 in progress)
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -42,6 +42,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 81**: add_volatile runEvent call - Implemented runEvent('TryAddVolatile') before adding volatile
   - **Part 82**: use_item event calls - Implemented runEvent('UseItem'), singleEvent('Use'), and runEvent('AfterUseItem')
   - **Part 83**: eat_item event calls - Implemented runEvent('UseItem'), runEvent('TryEatItem'), singleEvent('Eat'), runEvent('EatItem'), and runEvent('AfterUseItem')
+  - **Part 84**: **IN PROGRESS** - remove_volatile refactor - Complete rewrite as associated function with HP check, singleEvent('End'), linkedPokemon cleanup. Affects 95 callsites. Progress: 49/113 E0499 borrow errors fixed (64 remaining)
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)

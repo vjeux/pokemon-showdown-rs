@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// basePowerCallback(pokemon) {
 ///     if (!pokemon.volatiles['stockpile']?.layers) return false;
@@ -100,7 +101,7 @@ pub fn on_after_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.remove_volatile(&ID::from("stockpile"));
+        Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("stockpile"));
     }
 
     EventResult::Continue

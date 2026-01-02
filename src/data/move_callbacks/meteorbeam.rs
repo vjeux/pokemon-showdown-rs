@@ -8,6 +8,7 @@ use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
+use crate::Pokemon;
 
 /// onTryMove(attacker, defender, move) {
 ///     if (attacker.removeVolatile(move.id)) {
@@ -43,7 +44,7 @@ pub fn on_try_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        attacker_pokemon.remove_volatile(&move_id)
+        Pokemon::remove_volatile(battle, (attacker_pokemon.side_index, attacker_pokemon.position), &move_id)
     };
 
     if removed {

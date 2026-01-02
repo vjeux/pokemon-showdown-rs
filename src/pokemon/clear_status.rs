@@ -44,17 +44,16 @@ impl Pokemon {
         if status.as_str() == "slp" {
             let nightmare_id = ID::from("nightmare");
             let had_nightmare = {
-                let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                     Some(p) => p,
                     None => return false,
                 };
-                if pokemon.has_volatile(&nightmare_id) {
-                    pokemon.remove_volatile(&nightmare_id);
-                    true
-                } else {
-                    false
-                }
+                pokemon.has_volatile(&nightmare_id)
             };
+
+            if had_nightmare {
+                Pokemon::remove_volatile(battle, pokemon_pos, &nightmare_id);
+            }
 
             if had_nightmare {
                 let side_id = format!("p{}", pokemon_pos.0 + 1);

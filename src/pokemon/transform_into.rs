@@ -332,11 +332,7 @@ impl Pokemon {
 
             // First pass: remove existing volatiles
             for volatile_id in &volatiles_to_copy {
-                let self_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => return false,
-                };
-                self_pokemon.remove_volatile(volatile_id);
+                Pokemon::remove_volatile(battle, pokemon_pos, volatile_id);
             }
 
             // Second pass: check target and add if present

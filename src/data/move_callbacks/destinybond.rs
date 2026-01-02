@@ -26,7 +26,7 @@ pub fn on_prepare_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.remove_volatile(&ID::from("destinybond"))
+        Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("destinybond"))
     };
 
     // return !pokemon.removeVolatile('destinybond');
@@ -179,7 +179,7 @@ pub mod condition {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.remove_volatile(&ID::from("destinybond"));
+        Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("destinybond"));
 
         EventResult::Continue
     }
@@ -201,7 +201,7 @@ pub mod condition {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.remove_volatile(&ID::from("destinybond"));
+        Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("destinybond"));
 
         EventResult::Continue
     }

@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// beforeMoveCallback(pokemon) {
 ///     if (pokemon.volatiles['bide']) return true;
@@ -258,11 +259,7 @@ pub mod condition {
             );
 
             // pokemon.removeVolatile('bide');
-            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            pokemon.remove_volatile(&bide_id);
+            Pokemon::remove_volatile(battle, pokemon_pos, &bide_id);
 
             // return false;
             return EventResult::Boolean(false);
@@ -294,7 +291,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        pokemon.remove_volatile(&ID::from("bide"));
+        Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("bide"));
 
         EventResult::Continue
     }

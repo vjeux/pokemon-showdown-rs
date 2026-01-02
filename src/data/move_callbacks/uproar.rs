@@ -159,11 +159,7 @@ pub mod condition {
 
         if has_throatchop {
             // target.removeVolatile('uproar');
-            let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            target_mut.remove_volatile(&ID::from("uproar"));
+            Pokemon::remove_volatile(battle, target, &ID::from("uproar"));
             return EventResult::Continue;
         }
 
@@ -178,11 +174,7 @@ pub mod condition {
 
         if last_move_is_struggle {
             // delete target.volatiles['uproar'];
-            let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            target_mut.remove_volatile(&ID::from("uproar"));
+            Pokemon::remove_volatile(battle, target, &ID::from("uproar"));
         }
 
         // this.add('-start', target, 'Uproar', '[upkeep]');

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTry(source, target, move) {
 ///     // Additional Gravity check for Z-move variant
@@ -198,7 +199,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_mut.remove_volatile(&ID::from("telekinesis"));
+            Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("telekinesis"));
 
             // this.add('-end', pokemon, 'Telekinesis', '[silent]');
             battle.add(

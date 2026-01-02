@@ -8,6 +8,7 @@ use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
+use crate::Pokemon;
 
 /// onPrepareHit(target, source, move) {
 ///     if (source.ignoringItem(true)) return false;
@@ -227,7 +228,7 @@ pub mod condition {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.remove_volatile(&ID::from("fling"));
+        Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("fling"));
 
         EventResult::Continue
     }

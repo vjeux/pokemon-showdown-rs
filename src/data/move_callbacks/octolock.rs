@@ -120,7 +120,7 @@ pub mod condition {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    pokemon_pokemon.remove_volatile(&ID::from("octolock"));
+                    Pokemon::remove_volatile(battle, (pokemon_pokemon.side_index, pokemon_pokemon.position), &ID::from("octolock"));
                 }
 
                 // this.add('-end', pokemon, 'Octolock', '[partiallytrapped]', '[silent]');

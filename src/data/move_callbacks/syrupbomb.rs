@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -67,7 +68,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_mut.remove_volatile(&ID::from("syrupbomb"));
+            Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("syrupbomb"));
         }
 
         EventResult::Continue

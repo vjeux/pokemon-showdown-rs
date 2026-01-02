@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onTry(source, target, move) {
 ///     if (move.sourceEffect === 'snatch') return;
@@ -114,7 +115,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.remove_volatile(&ID::from("stockpile"));
+        Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("stockpile"));
     }
 
     // return success || this.NOT_FAIL;

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterHit(target, pokemon, move) {
 ///     if (!move.hasSheerForce) {
@@ -59,7 +60,7 @@ pub fn on_after_hit(
             };
 
             if pokemon_mut.has_volatile(&ID::from("leechseed")) {
-                pokemon_mut.remove_volatile(&ID::from("leechseed"));
+                Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("leechseed"));
                 true
             } else {
                 false
@@ -147,7 +148,7 @@ pub fn on_after_hit(
         };
 
         if pokemon_mut.has_volatile(&ID::from("partiallytrapped")) {
-            pokemon_mut.remove_volatile(&ID::from("partiallytrapped"));
+            Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("partiallytrapped"));
         }
     }
 
@@ -208,7 +209,7 @@ pub fn on_after_sub_damage(
             };
 
             if pokemon_mut.has_volatile(&ID::from("leechseed")) {
-                pokemon_mut.remove_volatile(&ID::from("leechseed"));
+                Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("leechseed"));
                 true
             } else {
                 false
@@ -296,7 +297,7 @@ pub fn on_after_sub_damage(
         };
 
         if pokemon_mut.has_volatile(&ID::from("partiallytrapped")) {
-            pokemon_mut.remove_volatile(&ID::from("partiallytrapped"));
+            Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("partiallytrapped"));
         }
     }
 

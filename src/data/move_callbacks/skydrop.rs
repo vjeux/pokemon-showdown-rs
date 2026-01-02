@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
+use crate::Pokemon;
 
 /// ```ignore
 /// onModifyMove(move, source) {
@@ -112,14 +113,14 @@ pub fn on_move_fail(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.remove_volatile(&ID::from("skydrop"));
+            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("skydrop"));
         }
         {
             let pokemon = match battle.pokemon_at_mut(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.remove_volatile(&ID::from("twoturnmove"));
+            Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("twoturnmove"));
         }
 
         // if (target === this.effectState.target) {
@@ -251,7 +252,7 @@ pub fn on_try_hit(
             None => return EventResult::Continue,
         };
 
-        pokemon.remove_volatile(&move_id)
+        Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &move_id)
     };
 
     if removed {

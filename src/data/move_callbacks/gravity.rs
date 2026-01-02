@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -137,7 +138,7 @@ pub mod condition {
                     Some(p) => p,
                     None => continue,
                 };
-                pokemon.remove_volatile(&ID::from("bounce"))
+                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("bounce"))
             };
 
             let removed_fly = {
@@ -145,7 +146,7 @@ pub mod condition {
                     Some(p) => p,
                     None => continue,
                 };
-                pokemon.remove_volatile(&ID::from("fly"))
+                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("fly"))
             };
 
             if removed_bounce || removed_fly {
@@ -160,7 +161,7 @@ pub mod condition {
                     Some(p) => p,
                     None => continue,
                 };
-                pokemon.remove_volatile(&ID::from("twoturnmove"));
+                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("twoturnmove"));
             }
 
             // if (pokemon.volatiles['skydrop']) {
@@ -219,8 +220,8 @@ pub mod condition {
                     Some(p) => p,
                     None => continue,
                 };
-                pokemon.remove_volatile(&ID::from("skydrop"));
-                pokemon.remove_volatile(&ID::from("twoturnmove"));
+                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("skydrop"));
+                Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("twoturnmove"));
             }
 
             // if (pokemon.volatiles['magnetrise']) {

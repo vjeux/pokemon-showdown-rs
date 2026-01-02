@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
+use crate::Pokemon;
 
 /// onUpdate(pokemon) {
 ///     if (!pokemon.hp) return;
@@ -139,7 +140,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.remove_volatile(&ID::from("leppaberry"));
+        Pokemon::remove_volatile(battle, (pokemon_mut.side_index, pokemon_mut.position), &ID::from("leppaberry"));
     }
 
     // moveSlot.pp += 5;

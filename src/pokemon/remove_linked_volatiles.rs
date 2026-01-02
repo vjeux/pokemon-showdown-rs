@@ -79,9 +79,7 @@ impl Pokemon {
 
             // JS: linkedPoke.removeVolatile(linkedStatus);
             if should_remove_volatile {
-                if let Some(linked_poke) = battle.pokemon_at_mut(linked_poke_pos.0, linked_poke_pos.1) {
-                    linked_poke.remove_volatile(linked_status);
-                }
+                Pokemon::remove_volatile(battle, linked_poke_pos, linked_status);
             }
         }
     }

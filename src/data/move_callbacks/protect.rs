@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onPrepareHit(pokemon) {
 ///     return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
@@ -230,7 +231,7 @@ pub mod condition {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    pokemon.remove_volatile(&ID::from("lockedmove"));
+                    Pokemon::remove_volatile(battle, (pokemon.side_index, pokemon.position), &ID::from("lockedmove"));
                 }
             }
         }

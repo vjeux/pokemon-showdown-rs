@@ -9,6 +9,7 @@ use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
 use crate::Arg;
+use crate::Pokemon;
 
 /// onStart(pokemon) {
 ///     this.singleEvent('WeatherChange', this.effect, this.effectState, pokemon);
@@ -52,9 +53,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
         if has_volatile {
             // TODO: Check if fromBooster is set (need to implement effect state)
             // For now, remove the volatile if it's not sunny
-            if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                pokemon.remove_volatile(&id);
-            }
+            Pokemon::remove_volatile(battle, pokemon_pos, &id);
         }
     }
 
@@ -68,9 +67,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
 pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // Remove protosynthesis volatile
     let id = crate::dex_data::ID::from("protosynthesis");
-    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        pokemon.remove_volatile(&id);
-    }
+    Pokemon::remove_volatile(battle, pokemon_pos, &id);
 
     // Add silent end message
     let slot = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

@@ -28,12 +28,7 @@ pub fn on_after_move(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // pokemon.removeVolatile('beakblast');
-    let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    pokemon.remove_volatile(&ID::from("beakblast"));
+    Pokemon::remove_volatile(battle, source_pos, &ID::from("beakblast"));
 
     EventResult::Continue
 }
