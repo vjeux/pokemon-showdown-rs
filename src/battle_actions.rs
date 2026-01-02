@@ -52,6 +52,7 @@ mod hit_step_invulnerability_event;
 mod hit_step_steal_boosts;
 mod hit_step_try_hit_event;
 mod hit_step_try_immunity;
+mod hit_step_type_immunity;
 pub use can_mega_evo::can_mega_evo;
 pub use can_ultra_burst::can_ultra_burst;
 pub use run_mega_evo::run_mega_evo;
@@ -80,6 +81,7 @@ pub use hit_step_invulnerability_event::hit_step_invulnerability_event;
 pub use hit_step_steal_boosts::hit_step_steal_boosts;
 pub use hit_step_try_hit_event::hit_step_try_hit_event;
 pub use hit_step_try_immunity::hit_step_try_immunity;
+pub use hit_step_type_immunity::hit_step_type_immunity;
 
 /// Choosable target types for moves
 /// JavaScript equivalent: CHOOSABLE_TARGETS constant (sim/battle-actions.ts)
