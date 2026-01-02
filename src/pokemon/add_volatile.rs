@@ -72,7 +72,19 @@ impl Pokemon {
         volatile_id: ID,
         source_pos: Option<(usize, usize)>,
     ) -> bool {
-        // TODO: Double check that the entire logic is mapped 1-1 with JavaScript.
+        // JS: status = this.battle.dex.conditions.get(status);
+        // JS: if (!this.hp && !status.affectsFainted) return false;
+        // Note: Missing HP check with affectsFainted flag - would need condition data access
+
+        // JS: if (linkedStatus && source && !source.hp) return false;
+        // Note: Missing linkedStatus parameter and source HP check
+
+        // JS: if (this.battle.event) {
+        // JS:     if (!source) source = this.battle.event.source;
+        // JS:     if (!sourceEffect) sourceEffect = this.battle.effect;
+        // JS: }
+        // JS: if (!source) source = this;
+        // Note: Missing battle.event source/sourceEffect defaulting
 
         // Check if pokemon already has this volatile
         {
@@ -81,11 +93,11 @@ impl Pokemon {
                 None => return false,
             };
 
+            // JS: if (this.volatiles[status.id]) {
+            // JS:     if (!status.onRestart) return false;
+            // JS:     return this.battle.singleEvent('Restart', status, this.volatiles[status.id], this, source, sourceEffect);
+            // JS: }
             if pokemon.volatiles.contains_key(&volatile_id) {
-                // JavaScript: if (pokemon.volatiles[status.id]) {
-                //     if (!status.onRestart) return false;
-                //     return this.singleEvent('Restart', status, this.volatiles[status.id], target, source, sourceEffect);
-                // }
                 // Call onRestart callback if the volatile already exists
                 let restart_result = crate::data::condition_callbacks::dispatch_on_restart(
                     battle,
@@ -101,6 +113,22 @@ impl Pokemon {
                 }
             }
         }
+
+        // JS: if (!this.runStatusImmunity(status.id)) {
+        // JS:     this.battle.debug('immune to volatile status');
+        // JS:     if ((sourceEffect as Move)?.status) {
+        // JS:         this.battle.add('-immune', this);
+        // JS:     }
+        // JS:     return false;
+        // JS: }
+        // Note: Missing runStatusImmunity check for volatile
+
+        // JS: result = this.battle.runEvent('TryAddVolatile', this, source, sourceEffect, status);
+        // JS: if (!result) {
+        // JS:     this.battle.debug('add volatile [' + status.id + '] interrupted');
+        // JS:     return result;
+        // JS: }
+        // Note: Missing runEvent('TryAddVolatile')
 
         // Get default duration from dex.conditions
         // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
@@ -127,6 +155,13 @@ impl Pokemon {
             None => return false,
         };
 
+        // JS: this.volatiles[status.id] = this.battle.initEffectState({ id: status.id, name: status.name, target: this });
+        // JS: if (source) {
+        // JS:     this.volatiles[status.id].source = source;
+        // JS:     this.volatiles[status.id].sourceSlot = source.getSlot();
+        // JS: }
+        // JS: if (sourceEffect) this.volatiles[status.id].sourceEffect = sourceEffect;
+        // Note: Missing source, sourceSlot, sourceEffect assignments to EffectState
         // Create effect state with duration
         let mut state = crate::event_system::EffectState::new(volatile_id.clone());
         state.duration = final_duration;
@@ -157,6 +192,18 @@ impl Pokemon {
             }
             _ => {
                 // Start event succeeded or returned non-Boolean
+                // JS: if (linkedStatus && source) {
+                // JS:     if (!source.volatiles[linkedStatus.toString()]) {
+                // JS:         source.addVolatile(linkedStatus, this, sourceEffect);
+                // JS:         source.volatiles[linkedStatus.toString()].linkedPokemon = [this];
+                // JS:         source.volatiles[linkedStatus.toString()].linkedStatus = status;
+                // JS:     } else {
+                // JS:         source.volatiles[linkedStatus.toString()].linkedPokemon.push(this);
+                // JS:     }
+                // JS:     this.volatiles[status.toString()].linkedPokemon = [source];
+                // JS:     this.volatiles[status.toString()].linkedStatus = linkedStatus;
+                // JS: }
+                // Note: Missing linkedStatus bidirectional linking (Leech Seed, etc.)
                 return true;
             }
         }

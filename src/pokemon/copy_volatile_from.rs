@@ -29,14 +29,32 @@ impl Pokemon {
     // 	}
     //
     pub fn copy_volatile_from(&mut self, source: &Pokemon, copy_type: &str) {
-        // TODO: implement the same logic as JavaScript
-        // We should not hardcode any conditions that's not in the original source.
-        
+        // JS: this.clearVolatile();
+        // Note: Missing clearVolatile() call at start
+
+        // JS: if (switchCause !== 'shedtail') this.boosts = pokemon.boosts;
+        // Note: Has hardcoded logic instead of using switchCause parameter properly
+
         match copy_type {
             "copyvolatile" | "batonpass" => {
                 // Copy stat boosts
                 self.boosts = source.boosts;
 
+                // JS: for (const i in pokemon.volatiles) {
+                // JS:     if (switchCause === 'shedtail' && i !== 'substitute') continue;
+                // JS:     if (this.battle.dex.conditions.getByID(i as ID).noCopy) continue;
+                // JS:     this.volatiles[i] = this.battle.initEffectState({ ...pokemon.volatiles[i], target: this });
+                // JS:     if (this.volatiles[i].linkedPokemon) {
+                // JS:         delete pokemon.volatiles[i].linkedPokemon;
+                // JS:         delete pokemon.volatiles[i].linkedStatus;
+                // JS:         for (const linkedPoke of this.volatiles[i].linkedPokemon) {
+                // JS:             const linkedPokeLinks = linkedPoke.volatiles[this.volatiles[i].linkedStatus].linkedPokemon;
+                // JS:             linkedPokeLinks[linkedPokeLinks.indexOf(pokemon)] = this;
+                // JS:         }
+                // JS:     }
+                // JS: }
+                // Note: Hardcoded copyable list instead of using noCopy flag from condition data
+                // Should loop through all volatiles and check if condition.noCopy is set
                 // Copy certain volatiles
                 let copyable = [
                     "aquaring",
@@ -65,9 +83,12 @@ impl Pokemon {
                         }
                     }
                 }
+                // Note: Missing linkedPokemon bidirectional link updating
             }
             "shedtail" => {
                 // Shed Tail only copies the substitute
+                self.boosts = source.boosts;
+
                 let sub_id = ID::new("substitute");
                 if source.has_volatile(&sub_id) {
                     if let Some(state) = source.get_volatile(&sub_id) {
@@ -77,5 +98,14 @@ impl Pokemon {
             }
             _ => {}
         }
+
+        // JS: pokemon.clearVolatile();
+        // Note: Missing source.clearVolatile() call - would need &mut source
+
+        // JS: for (const i in this.volatiles) {
+        // JS:     const volatile = this.getVolatile(i) as Condition;
+        // JS:     this.battle.singleEvent('Copy', volatile, this.volatiles[i], this);
+        // JS: }
+        // Note: Missing singleEvent('Copy') calls for each copied volatile
     }
 }

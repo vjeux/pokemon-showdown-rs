@@ -465,6 +465,54 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing Gen 4 Giratina/Arceus forme changes
   - Missing Ogerpon/Terapagos canTerastallize blocking
 
+#### add_volatile.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Had TODO to double check 1-1 mapping
+- Action: Documented all missing pieces line by line
+- Notes:
+  - Fairly complete implementation with duration callback support
+  - Missing HP check with affectsFainted flag
+  - Missing linkedStatus parameter and source HP check
+  - Missing battle.event source/sourceEffect defaulting
+  - Missing runStatusImmunity check for volatile
+  - Missing runEvent('TryAddVolatile')
+  - Missing source, sourceSlot, sourceEffect assignments to EffectState
+  - Missing linkedStatus bidirectional linking (Leech Seed, etc.)
+  - Has onRestart callback support
+  - Has singleEvent('Start') with rollback on failure
+
+#### calculate_stat.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Missing Wonder Room and ModifyBoost
+- Action: Documented missing pieces
+- Notes:
+  - Missing Wonder Room pseudo-weather check (swap def <-> spd)
+  - Missing runEvent('ModifyBoost') to allow abilities/items to modify boosts
+  - Otherwise implements boost table and modifier correctly
+
+#### copy_volatile_from.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Hardcoded copyable list instead of using noCopy flag
+- Action: Documented what should be done vs current implementation
+- Notes:
+  - Missing clearVolatile() call at start
+  - Hardcoded copyable volatile list instead of checking condition.noCopy flag
+  - Should loop through all source volatiles and check noCopy
+  - Missing linkedPokemon bidirectional link updating
+  - Missing source.clearVolatile() call (would need &mut source)
+  - Missing singleEvent('Copy') calls for each copied volatile
+  - Has basic Baton Pass and Shed Tail logic
+
+#### cure_status.rs
+- Status: ✅ Fixed (Documented)
+- Issue: Had TODO about passing Battle object
+- Action: Documented that it returns data for caller due to borrow checker
+- Notes:
+  - Missing silent parameter for silent cure
+  - Returns (status, removed_nightmare) tuple for caller to log
+  - Caller must call battle.add() with returned data
+  - Design pattern: work around borrow checker by returning data
+
 ### Rust-Specific Helpers (May be intentional)
 
 The following are marked as "NOTE: This method is NOT in JavaScript - Rust-specific implementation":
@@ -577,9 +625,15 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Documented set_status.rs (documented all missing event calls and checks)
   - ✅ Documented take_item.rs (documented missing gen checks and events)
   - ✅ Documented transform_into.rs (extensive documentation of missing features)
+  - ✅ Committed and pushed (4 files)
+  - ✅ Documented add_volatile.rs (documented missing event calls, fairly complete)
+  - ✅ Documented calculate_stat.rs (noted missing Wonder Room and ModifyBoost)
+  - ✅ Documented copy_volatile_from.rs (noted hardcoded list vs noCopy flag)
+  - ✅ Documented cure_status.rs (documented borrow checker workaround pattern)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-- **Remaining**: ~30 TODOs (down from 44)
-- **Next**: Continue with more TODOs
+- **Remaining**: ~26 TODOs (down from 44)
+- **Total documented this session**: 22 files across 5 commits
+- **Next**: Continue with remaining TODOs
 
 ## Notes
 - Must compile after each fix

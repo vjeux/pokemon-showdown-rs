@@ -42,25 +42,53 @@ impl Pokemon {
     // 	}
     //
     pub fn calculate_stat(&self, stat: StatID, boost: i8, modifier: f64) -> i32 {
-        // TODO: implement the same logic as JavaScript
-
+        // JS: statName = toID(statName) as StatIDExceptHP;
+        // JS: if (statName === 'hp') throw new Error("Please read `maxhp` directly");
         if stat == StatID::HP {
             return self.maxhp;
         }
 
+        // JS: let stat = this.storedStats[statName];
         // Get base stat
         let base_stat = self.stored_stats.get(stat);
 
+        // JS: if ('wonderroom' in this.battle.field.pseudoWeather) {
+        // JS:     if (statName === 'def') {
+        // JS:         stat = this.storedStats['spd'];
+        // JS:     } else if (statName === 'spd') {
+        // JS:         stat = this.storedStats['def'];
+        // JS:     }
+        // JS: }
+        // Note: Missing Wonder Room check - would need Battle reference for field.pseudoWeather
+        // Should swap def <-> spd when Wonder Room is active
+
+        // JS: let boosts: SparseBoostsTable = {};
+        // JS: const boostName = statName as BoostID;
+        // JS: boosts[boostName] = boost;
+        // JS: boosts = this.battle.runEvent('ModifyBoost', statUser || this, null, null, boosts);
+        // JS: boost = boosts[boostName]!;
+        // Note: Missing runEvent('ModifyBoost') - would need Battle reference
+        // This allows abilities/items to modify stat boosts before calculation
+
+        // JS: const boostTable = [1, 1.5, 2, 2.5, 3, 3.5, 4];
         // Apply boost
         let clamped_boost = boost.clamp(-6, 6);
         let boost_table: [f64; 7] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
 
+        // JS: if (boost > 6) boost = 6;
+        // JS: if (boost < -6) boost = -6;
+        // JS: if (boost >= 0) {
+        // JS:     stat = Math.floor(stat * boostTable[boost]);
+        // JS: } else {
+        // JS:     stat = Math.floor(stat / boostTable[-boost]);
+        // JS: }
         let boosted_stat = if clamped_boost >= 0 {
             (base_stat as f64 * boost_table[clamped_boost as usize]) as i32
         } else {
             (base_stat as f64 / boost_table[(-clamped_boost) as usize]) as i32
         };
 
+        // JS: return this.battle.modify(stat, (modifier || 1));
         // Apply modifier
         ((boosted_stat as f64) * modifier) as i32
     }
