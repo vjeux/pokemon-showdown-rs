@@ -492,6 +492,15 @@ These files exist only in Rust and should be evaluated:
 - 1:1 match with JavaScript implementation
 
 ### 2026-01-02
+**Removed: switch.rs** ✅ DUPLICATE FILE REMOVED
+- Removed switch.rs file (42 lines) - was a duplicate/leftover file
+- File contained Z-Power effect handling code already implemented in use_move_inner.rs
+- JavaScript switch statement for Z-Power effects (heal, healreplacement, clearnegativeboost, redirect, crit2, curse) is correctly implemented in use_move_inner.rs lines 534+ using ZPowerResult enum
+- File was not referenced anywhere in the codebase (no 'mod switch' declaration)
+- Removed 2 TODOs by deleting this incorrect file
+- Compilation successful after removal
+
+### 2026-01-02
 **Completed: self_drops.rs** ✅ ALL TODOs COMPLETED!
 - Implemented all self effect types (both branches: with/without boosts check):
   - status (e.g., Rest inflicting sleep on self)
