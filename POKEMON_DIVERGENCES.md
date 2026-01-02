@@ -595,15 +595,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing ability to differentiate trap visibility for Shadow Tag vs Arena Trap
 
 #### update_max_hp.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Takes parameter instead of calculating from species, missing Dynamax
-- Action: Documented missing pieces
+- Status: ✅ Fixed (Partially Implemented)
+- Issue: Was missing Dynamax check, now implemented
+- Action: Added Dynamax volatile check for HP doubling
 - Notes:
+  - ✅ NOW IMPLEMENTED: Dynamax check - doubles max HP if has volatile('dynamax')
   - Takes new_base_max_hp as parameter instead of calculating from species.baseStats
   - JavaScript calculates: battle.statModify(this.species.baseStats, this.set, 'hp')
-  - Missing Dynamax check - should double max HP if has volatile('dynamax')
   - Missing battle.add('-heal', this, this.getHealth, '[silent]') message
-  - Otherwise has correct HP adjustment logic (proportional HP preservation)
+  - ✅ Has correct HP adjustment logic (proportional HP preservation)
 
 #### remove_linked_volatiles.rs
 - Status: ✅ Fixed (Documented)
@@ -946,6 +946,14 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 - **Remaining**: 0 TODOs! All documented! ✨
 - **Total documented this session**: 20 files across 5 batches
 - **Complete**: Went through every TODO/NOTE and documented them all!
+
+### Session 9 - 2026-01-01 (Implementation Phase Begins)
+- **Goal**: Start implementing missing functionality to achieve 1-to-1 equivalence
+- **Completed**:
+  - ✅ Fixed update_max_hp.rs - Added Dynamax check for HP doubling
+  - ✅ Project compiles successfully (0 errors, 0 warnings)
+- **In Progress**: Implementing simple improvements before large refactors
+- **Next**: Continue fixing methods, then plan Battle-dependent method refactoring
 
 ## Notes
 - Must compile after each fix

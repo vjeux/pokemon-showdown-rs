@@ -29,15 +29,18 @@ impl Pokemon {
 
         // JS: const newMaxHP = this.volatiles['dynamax'] ? (2 * this.baseMaxhp) : this.baseMaxhp;
         let old_maxhp = self.maxhp;
-        self.maxhp = new_base_max_hp;
-        // Note: Missing Dynamax check - should double max HP if Dynamaxed
-        // Note: Would need to check has_volatile("dynamax")
+        let new_max_hp = if self.has_volatile(&ID::new("dynamax")) {
+            2 * new_base_max_hp
+        } else {
+            new_base_max_hp
+        };
+        self.maxhp = new_max_hp;
 
         // JS: this.hp = this.hp <= 0 ? 0 : Math.max(1, newMaxHP - (this.maxhp - this.hp));
         // Adjust current HP proportionally
         if self.hp > 0 {
             let hp_lost = old_maxhp - self.hp;
-            self.hp = self.maxhp.saturating_sub(hp_lost).max(1);
+            self.hp = new_max_hp.saturating_sub(hp_lost).max(1);
         }
 
         // JS: if (this.hp) this.battle.add('-heal', this, this.getHealth, '[silent]');
