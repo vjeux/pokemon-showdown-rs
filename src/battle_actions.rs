@@ -52,6 +52,9 @@ pub use try_spread_move_hit::try_spread_move_hit;
 pub use hit_step_accuracy::hit_step_accuracy;
 pub use run_move::run_move;
 
+/// Choosable target types for moves
+/// JavaScript equivalent: CHOOSABLE_TARGETS constant (sim/battle-actions.ts)
+/// JavaScript: Set(['normal', 'any', 'adjacentAlly', 'adjacentAllyOrSelf', 'adjacentFoe'])
 pub static CHOOSABLE_TARGETS: Lazy<HashSet<&'static str>> = Lazy::new(|| {
     let mut set = HashSet::new();
     set.insert("normal");
