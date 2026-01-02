@@ -154,6 +154,7 @@ pub struct SpeciesData {
     pub weightkg: f64,
     /// Gender
     /// JavaScript: gender?: 'M' | 'F' | 'N'
+    /// TODO: Rust uses Option<String>, JavaScript uses literal union type
     #[serde(default)]
     pub gender: Option<String>,
     /// Gender ratio
@@ -206,6 +207,7 @@ pub struct SpeciesData {
     pub egg_groups: Vec<String>,
     /// Battle-only forme
     /// JavaScript: battleOnly?: string | string[]
+    /// TODO: Rust uses StringOrVec enum, JavaScript uses union type
     #[serde(rename = "battleOnly", default)]
     pub battle_only: StringOrVec,
     /// Forme order
@@ -231,6 +233,7 @@ pub struct SpeciesData {
     pub nat_dex_tier: Option<String>,
     /// Nonstandard status
     /// JavaScript: isNonstandard?: Nonstandard | null
+    /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
     #[serde(default)]
     pub is_nonstandard: Option<String>,
     /// Does this species exist?
@@ -309,6 +312,7 @@ pub struct MoveData {
     pub base_power: i32,
     /// Accuracy (number or true for always hits)
     /// JavaScript: accuracy: true | number
+    /// TODO: Rust uses Accuracy enum, JavaScript uses union type
     #[serde(default, deserialize_with = "deserialize_accuracy")]
     pub accuracy: Accuracy,
     /// Power Points
@@ -373,22 +377,27 @@ pub struct MoveData {
     pub heal: Option<(i32, i32)>,
     /// Multi-hit specification
     /// JavaScript: multihit?: number | [number, number]
+    /// TODO: Rust uses Multihit enum, JavaScript uses union type
     #[serde(default)]
     pub multihit: Option<Multihit>,
     /// Z-Move identifier
     /// JavaScript: isZ?: boolean | IDEntry
+    /// TODO: Rust uses Option<String>, JavaScript uses boolean | IDEntry union
     #[serde(rename = "isZ", default)]
     pub is_z: Option<String>,
     /// Max Move identifier
     /// JavaScript: isMax?: boolean | string
+    /// TODO: Rust uses IsMax enum, JavaScript uses boolean | string union
     #[serde(rename = "isMax", default, deserialize_with = "deserialize_is_max")]
     pub is_max: Option<IsMax>,
     /// OHKO type
     /// JavaScript: ohko?: boolean | 'Ice'
+    /// TODO: Rust uses Ohko enum, JavaScript uses boolean | string union
     #[serde(default, deserialize_with = "deserialize_ohko")]
     pub ohko: Option<Ohko>,
     /// Self-destruct type
     /// JavaScript: selfdestruct?: 'always' | 'ifHit' | boolean
+    /// TODO: Rust uses Option<String>, JavaScript uses union type
     #[serde(default)]
     pub selfdestruct: Option<String>,
     /// Tracks target location
@@ -722,14 +731,17 @@ pub struct ItemData {
     pub on_plate: Option<String>,
     /// Z-Move compatibility
     /// JavaScript: zMove?: string | true | ZMoveOptions
+    /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses union type
     #[serde(rename = "zMove", default)]
     pub z_move: Option<serde_json::Value>,
     /// Mega Evolution stone target (e.g., "Froslass-Mega")
     /// JavaScript: megaStone?: string
+    /// TODO: Rust uses StringOrVec, JavaScript uses string
     #[serde(rename = "megaStone", default)]
     pub mega_stone: Option<StringOrVec>,
     /// Pokemon species that can use this mega stone (e.g., "Froslass")
     /// JavaScript: megaEvolves?: string
+    /// TODO: Rust uses StringOrVec, JavaScript uses string
     #[serde(rename = "megaEvolves", default)]
     pub mega_evolves: Option<StringOrVec>,
     /// Species that can use this item
@@ -842,17 +854,17 @@ pub struct EventData {
 #[serde(rename_all = "camelCase")]
 /// JavaScript equivalent: LearnsetData (sim/dex-species.ts)
 /// Fields: learnset, eventData, eventOnly, encounters, exists
-/// JavaScript equivalent: LearnsetData (sim/dex-species.ts)
-/// Fields: learnset, eventData, eventOnly, encounters, exists
-/// JavaScript equivalent: LearnsetData (sim/dex-species.ts)
-/// Fields: learnset, eventData, eventOnly, encounters, exists
 pub struct LearnsetData {
     /// Map from move ID to learn methods (e.g., "9M", "8L15", "7E")
+    /// JavaScript: learnset: { [moveid: string]: string[] }
     #[serde(default)]
     pub learnset: HashMap<String, Vec<String>>,
     /// Event-only moves
+    /// JavaScript: eventData?: EventInfo[]
     #[serde(default)]
     pub event_data: Option<Vec<EventData>>,
+    /// Is this Pokemon event-only?
+    /// JavaScript: eventOnly?: boolean
     #[serde(default)]
     pub event_only: Option<bool>,
 }
@@ -860,36 +872,71 @@ pub struct LearnsetData {
 /// Format data
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+/// JavaScript equivalent: Format (sim/dex-formats.ts)
+/// ~20 fields in JavaScript
 pub struct FormatData {
+    /// Format name
+    /// JavaScript: name: string
     pub name: String,
+    /// Mod ID
+    /// JavaScript: mod?: string
     #[serde(default, rename = "mod")]
     pub mod_id: Option<String>,
+    /// Team setting
+    /// JavaScript: team?: string
     #[serde(default)]
     pub team: Option<String>,
+    /// Game type
+    /// JavaScript: gameType?: string
     #[serde(default)]
     pub game_type: Option<String>,
+    /// Description
+    /// JavaScript: desc?: string
     #[serde(default)]
     pub desc: Option<String>,
+    /// Debug mode
+    /// JavaScript: debug: boolean
     #[serde(default)]
     pub debug: bool,
+    /// Rated format
+    /// JavaScript: rated?: boolean | string
+    /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses boolean | string union
     #[serde(default)]
     pub rated: Option<serde_json::Value>, // can be bool or string
+    /// Search show
+    /// JavaScript: searchShow?: boolean
     #[serde(default)]
     pub search_show: Option<bool>,
+    /// Challenge show
+    /// JavaScript: challengeShow?: boolean
     #[serde(default)]
     pub challenge_show: Option<bool>,
+    /// Tournament show
+    /// JavaScript: tournamentShow?: boolean
     #[serde(default)]
     pub tournament_show: Option<bool>,
+    /// Best of default
+    /// JavaScript: bestOfDefault?: boolean
     #[serde(default)]
     pub best_of_default: Option<bool>,
+    /// Ruleset
+    /// JavaScript: ruleset: string[]
     #[serde(default)]
     pub ruleset: Vec<String>,
+    /// Banlist
+    /// JavaScript: banlist: string[]
     #[serde(default)]
     pub banlist: Vec<String>,
+    /// Restricted list
+    /// JavaScript: restricted: string[]
     #[serde(default)]
     pub restricted: Vec<String>,
+    /// Unban list
+    /// JavaScript: unbanlist: string[]
     #[serde(default)]
     pub unbanlist: Vec<String>,
+    /// Custom rules
+    /// JavaScript: customRules?: string[]
     #[serde(default)]
     pub custom_rules: Option<Vec<String>>,
 }
