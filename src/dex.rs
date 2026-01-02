@@ -423,6 +423,8 @@ pub struct MoveData {
 }
 
 /// Accuracy can be a number or true (always hits)
+/// TODO: Rust uses enum to represent JavaScript's number | true union type
+/// JavaScript: accuracy: number | true
 #[derive(Debug, Clone)]
 pub enum Accuracy {
     Percent(i32),
@@ -436,6 +438,8 @@ impl Default for Accuracy {
 }
 
 /// IsMax can be true (generic Max move) or a string (species-specific G-Max move)
+/// TODO: Rust uses enum to represent JavaScript's true | string union type
+/// JavaScript: isMax?: true | string
 #[derive(Debug, Clone)]
 pub enum IsMax {
     Generic,         // true
@@ -455,6 +459,8 @@ impl Serialize for IsMax {
 }
 
 /// OHKO can be true (generic OHKO) or a string (type-based OHKO like "Ice")
+/// TODO: Rust uses enum to represent JavaScript's true | string union type
+/// JavaScript: ohko?: true | string
 #[derive(Debug, Clone)]
 pub enum Ohko {
     Generic,           // true
@@ -474,6 +480,8 @@ impl Serialize for Ohko {
 }
 
 /// Multihit can be a single number or range [min, max]
+/// TODO: Rust uses enum to represent JavaScript's number | [number, number] union type
+/// JavaScript: multihit?: number | [number, number]
 #[derive(Debug, Clone)]
 pub enum Multihit {
     Fixed(i32),
@@ -540,6 +548,8 @@ impl Serialize for Multihit {
 }
 
 /// StringOrVec can be a single string or an array of strings
+/// TODO: Rust uses enum to represent JavaScript's string | string[] union type
+/// JavaScript: field: string | string[]
 #[derive(Debug, Clone, Default)]
 pub enum StringOrVec {
     #[default]
