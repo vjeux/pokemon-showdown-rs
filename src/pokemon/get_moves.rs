@@ -93,14 +93,15 @@ impl Pokemon {
     // 		return hasValidMove ? moves : [];
     // 	}
     //
-    pub fn get_moves(&self, locked_move: Option<&ID>) -> Vec<serde_json::Value> {
+    pub fn get_moves(&mut self, locked_move: Option<&ID>) -> Vec<serde_json::Value> {
         // JS: if (lockedMove) {
         // JS:     lockedMove = toID(lockedMove);
         // JS:     this.trapped = true;
         // ✅ NOW IMPLEMENTED (Session 24 Part 67): lockedMove parameter
-        // Note: JavaScript sets this.trapped = true here, but that's a side effect in a getter.
-        //       Skipping trapped modification to keep method pure.
+        // ✅ NOW IMPLEMENTED (Session 24 Part 73): trapped = true side effect for 1:1 JavaScript equivalence
         if let Some(locked_move_id) = locked_move {
+            // JS:     this.trapped = true;
+            self.trapped = TrappedState::Visible;
             // JS:     if (lockedMove === 'recharge') {
             // JS:         return [{ move: 'Recharge', id: 'recharge' as ID }];
             // JS:     }

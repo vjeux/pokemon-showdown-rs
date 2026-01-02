@@ -2,8 +2,8 @@
 
 This document tracks divergences between the JavaScript and Rust implementations in the `src/pokemon/` folder.
 
-## Overview (Updated: Session 24 Part 72 Complete - ALL TODOs ELIMINATED! ✨)
-- **Session 24 Total Progress**: 40+ commits, 72 parts completed
+## Overview (Updated: Session 24 Part 73 Complete - Continuing NOTE Fixes)
+- **Session 24 Total Progress**: 40+ commits, 73 parts completed
 - **MAJOR MILESTONE**: **ZERO TODOs remaining in src/pokemon/ folder!** 🎉
 - **Major Milestones**:
   - Parts 1-32: Systematic parameter additions to core Pokemon methods
@@ -31,10 +31,11 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **Part 70**: set_type documentation update (confirmed 100% - knownType intentionally different)
   - **Part 71**: cure_status documentation update (confirmed 100% from Session 18)
   - **Part 72**: **FINAL TODO ELIMINATED** - calculate_stat ModifyBoost event infrastructure documented
+  - **Part 73**: get_moves trapped side effect - Changed to &mut self, implements trapped = true for 1:1 JavaScript equivalence
 - **Methods Significantly Improved**:
   - transform_into.rs (HP type/power, move formatting - now ~85%, was ~80%)
   - get_switch_request_data.rs (full protocol fields, Gen 9 support, forAlly parameter - now ~85%, was ~80%)
-  - get_moves.rs (**MAJOR REFACTOR** - full move objects, lockedMove parameter - now ~75%, was ~70%)
+  - get_moves.rs (**MAJOR REFACTOR** - full move objects, lockedMove parameter, trapped side effect - now ~78%, was ~75%)
   - add_volatile.rs (HP checks, source defaulting, -immune message, linkedStatus - now ~98%)
   - copy_volatile_from.rs (complete refactor + linkedPokemon bidirectional updating - now 100%)
   - get_smart_targets.rs (Dragon Darts double-target logic - now 100%)
@@ -58,7 +59,7 @@ This document tracks divergences between the JavaScript and Rust implementations
   - **base_hp_type/base_hp_power fields** for Transform untransform support
   - **get_moves protocol format** - returns full JSON objects (breaking change)
   - 250+ callsites updated across codebase
-- **Compilation Success Rate**: 100% (0 errors, 61 warnings throughout Session 24 Parts 58-72)
+- **Compilation Success Rate**: 100% (0 errors, 61 warnings throughout Session 24 Parts 58-73)
 - **Remaining Work**: 🎉 **ZERO TODOs in src/pokemon/** (was 1 in calculate_stat.rs - now documented with event infrastructure plan)
 - **Remaining Work Detail**: 135 NOTE comments for event system, species data, and other infrastructure improvements
 - **Methods Now at 100%**: 24 methods fully equivalent to JavaScript
@@ -864,10 +865,11 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Now fully 1-to-1 with JavaScript!
 
 #### get_moves.rs
-- Status: ✅ Fixed (Improved - Session 24 Parts 63 & 67)
+- Status: ✅ Fixed (Improved - Session 24 Parts 63, 67 & 73)
 - Issue: Very complex method with many features, was returning just IDs
-- Action: **MAJOR REFACTOR** in Part 63, added lockedMove parameter in Part 67
+- Action: **MAJOR REFACTOR** in Part 63, added lockedMove parameter in Part 67, trapped side effect in Part 73
 - Notes:
+  - ✅ NOW IMPLEMENTED (Session 24 Part 73): Changed to &mut self and implemented trapped = true side effect
   - ✅ NOW IMPLEMENTED (Session 24 Part 67): lockedMove parameter (Option<&ID>)
   - ✅ NOW IMPLEMENTED (Session 24 Part 67): Recharge special case
   - ✅ NOW IMPLEMENTED (Session 24 Part 67): Locked move slot search and early return
@@ -876,13 +878,12 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24 Part 63): Hidden Power type/power formatting (e.g., "Hidden Power Fire")
   - ✅ NOW IMPLEMENTED (Session 24 Part 63): Basic disabled calculation (PP <= 0 && !partialtrappinglock)
   - ✅ NOW IMPLEMENTED (Session 24 Part 63): Returns objects with {move, id, pp, maxpp, target, disabled}
-  - Note: lockedMove trapped = true side effect skipped to keep method pure
   - Missing lockedMove Dex fallback (needs Battle/Dex reference)
   - Missing restrictData parameter for hidden disabled visibility
   - Missing Return/Frustration power calculation with basePowerCallback
   - Missing target overrides for Curse (Ghost vs non-Ghost), Pollen Puff (Heal Block), Tera Star Storm (Terapagos-Stellar)
   - Missing Dynamax disabled logic with maxMoveDisabled and canCauseStruggle checks
-  - Now ~75% complete (was ~70% in Part 63, was ~10% before)
+  - Now ~78% complete (was ~75% in Part 67, was ~70% in Part 63, was ~10% before)
 
 #### get_switch_request_data.rs
 - Status: ✅ Fixed (Improved - Session 24 Parts 60, 64, 65, 68)
