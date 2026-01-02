@@ -36,7 +36,7 @@ pub fn on_hit(
         (target_pokemon.get_slot(), target_pokemon.name.clone())
     };
 
-    let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+    let _target_mut = match battle.pokemon_at_mut(target.0, target.1) {
         Some(p) => p,
         None => return EventResult::Continue,
     };

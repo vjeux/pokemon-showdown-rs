@@ -99,7 +99,7 @@ pub fn on_hit(
     };
 
     if has_paralysis {
-        let target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+        let _target_mut = match battle.pokemon_at_mut(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

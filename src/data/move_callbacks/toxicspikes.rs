@@ -163,14 +163,14 @@ pub mod condition {
 
             if layers >= 2 {
                 // pokemon.trySetStatus('tox', pokemon.side.foe.active[0]);
-                let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                let _pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
                 Pokemon::try_set_status(battle, pokemon_pos, ID::from("tox"), Some("Toxic Spikes"));
             } else {
                 // pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
-                let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+                let _pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };

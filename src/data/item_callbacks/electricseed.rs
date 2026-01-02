@@ -30,7 +30,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
     };
 
     if should_use_item {
-        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        let _pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -48,7 +48,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // if (this.field.isTerrain('electricterrain')) { pokemon.useItem(); }
     if battle.field.terrain.as_str() == "electricterrain" {
-        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        let _pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

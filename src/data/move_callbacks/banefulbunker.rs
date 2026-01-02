@@ -229,7 +229,7 @@ pub mod condition {
         //     source.trySetStatus('psn', target);
         // }
         if move_data.is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
-            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            let _source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };

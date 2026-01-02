@@ -152,7 +152,7 @@ pub fn on_hit(
             (ally.get_slot(), ally.name.clone())
         };
 
-        let ally_mut = match battle.pokemon_at_mut(ally_pos.0, ally_pos.1) {
+        let _ally_mut = match battle.pokemon_at_mut(ally_pos.0, ally_pos.1) {
             Some(p) => p,
             None => continue,
         };

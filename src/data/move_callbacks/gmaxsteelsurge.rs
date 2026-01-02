@@ -61,7 +61,7 @@ pub mod condition {
         use crate::dex_data::ID;
 
         // Create a Steel-type move ID for effectiveness calculation
-        let steel_move_id = ID::from("stealthrock"); // Using Stealth Rock as base move
+        let _steel_move_id = ID::from("stealthrock"); // Using Stealth Rock as base move
 
         // Run effectiveness for Steel-type (the move type is checked in run_effectiveness)
         // Note: In full implementation, we'd modify battle.active_move.move_type to "Steel" temporarily

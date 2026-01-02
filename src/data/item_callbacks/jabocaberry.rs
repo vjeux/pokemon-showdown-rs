@@ -48,7 +48,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
 
         // Phase 2: Eat the item (requires mutable access)
         let ate_item = {
-            let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+            let _target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };

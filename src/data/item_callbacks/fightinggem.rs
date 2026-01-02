@@ -44,7 +44,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
     if active_move.move_type == "Fighting" {
         // Two-phase borrow: first get item, then modify pokemon
         let item_used = {
-            let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            let _source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };

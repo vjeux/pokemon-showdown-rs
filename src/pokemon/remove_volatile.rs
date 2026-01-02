@@ -24,7 +24,7 @@ impl Pokemon {
         volatile_id: &ID,
     ) -> bool {
         // Phase 1: Check HP and volatile existence
-        let (hp, has_volatile, linked_pokemon, linked_status) = {
+        let (_hp, _has_volatile, linked_pokemon, linked_status) = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return false,

@@ -26,7 +26,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usi
 
     if is_sound_move {
         // target.useItem();
-        let pokemon_mut = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+        let _pokemon_mut = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

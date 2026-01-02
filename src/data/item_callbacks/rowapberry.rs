@@ -52,7 +52,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
         };
         let base_maxhp = source.base_maxhp;
 
-        let target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+        let _target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

@@ -50,7 +50,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
 
     // Check type effectiveness against target (typeMod > 0 means super effective)
     let type_effectiveness = {
-        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+        let _target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -78,7 +78,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
 
     // if (target.eatItem())
     let item_eaten = {
-        let target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+        let _target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

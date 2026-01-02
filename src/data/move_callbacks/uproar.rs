@@ -52,7 +52,7 @@ pub fn on_try_hit(
         };
 
         if has_sleep {
-            let pokemon_mut = match battle.pokemon_at_mut(target_side_index, slot_index) {
+            let _pokemon_mut = match battle.pokemon_at_mut(target_side_index, slot_index) {
                 Some(p) => p,
                 None => continue,
             };
@@ -79,7 +79,7 @@ pub fn on_try_hit(
         };
 
         if has_sleep {
-            let pokemon_mut = match battle.pokemon_at_mut(foe_side_index, slot_index) {
+            let _pokemon_mut = match battle.pokemon_at_mut(foe_side_index, slot_index) {
                 Some(p) => p,
                 None => continue,
             };

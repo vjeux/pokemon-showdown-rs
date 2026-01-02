@@ -56,7 +56,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
     // Phase 2: Cure if needed
     if should_cure {
-        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        if let Some(_pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Pokemon::cure_status(battle, pokemon_pos, false);
         }
     }

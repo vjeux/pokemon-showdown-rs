@@ -47,7 +47,7 @@ pub fn on_hit(
 
     let result = battle.random(3);
 
-    if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+    if let Some(_target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
         if result == 0 {
             Pokemon::try_set_status(battle, target, ID::from("psn"), None);
         } else if result == 1 {

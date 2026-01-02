@@ -24,7 +24,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     };
 
     if is_water_move {
-        let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+        let _pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

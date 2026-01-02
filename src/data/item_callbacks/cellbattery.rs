@@ -31,7 +31,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
         // target.useItem();
         // Phase 1: Use the item (remove it from the pokemon)
         let item_id = {
-            let pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+            let _pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };

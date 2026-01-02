@@ -48,7 +48,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
     // pokemon.cureStatus();
     if has_paralysis {
-        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        if let Some(_pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Pokemon::cure_status(battle, pokemon_pos, false);
         }
     }

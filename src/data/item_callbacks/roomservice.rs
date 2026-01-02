@@ -73,7 +73,7 @@ pub fn on_any_pseudo_weather_change(battle: &mut Battle) -> EventResult {
 
     if has_trick_room {
         // pokemon.useItem(pokemon);
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        let _pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

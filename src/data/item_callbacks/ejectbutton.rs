@@ -134,7 +134,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
 
     // if (target.useItem())
     let item_used = {
-        let target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+        let _target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

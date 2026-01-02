@@ -38,7 +38,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         if try_heal_result.is_some() {
             // Phase 3: Try to use item
             let used_item = {
-                let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                let _pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
