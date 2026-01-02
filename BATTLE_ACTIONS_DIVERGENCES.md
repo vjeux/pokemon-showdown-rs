@@ -950,45 +950,72 @@ Files that are 1:1 with JavaScript but have TODOs that require major infrastruct
 - **Total files**: 42
 - **100% complete**: 34 (81%)
 - **Functionally complete with infrastructure TODOs**: 8 (19%)
-- **Total infrastructure-dependent TODOs**: 16
+- **Total infrastructure-dependent TODOs**: 25 (20 functional + 5 optimization notes)
 - **Blocking issues**: 0
 
 ## Infrastructure TODOs Breakdown
 
-Cannot be resolved within battle_actions/ module:
+Cannot be resolved within battle_actions/ module **(Total: 25 TODOs)**
+
+### Functional TODOs (20) - Require Infrastructure Implementation:
 
 1. **Callback system** (1 TODO)
    - beforeMoveCallback in run_move.rs
 
 2. **Priority calculation** (1 TODO)
-   - pranksterBoosted in run_move.rs
+   - pranksterBoosted in run_move.rs (variable defined but calculation not implemented)
 
 3. **Ability activation** (1 TODO)
    - Dancer ability in run_move.rs
 
-4. **Forme change system** (3 TODOs)
-   - Ogerpon, Terapagos formes in terastallize.rs
+4. **Forme change system** (4 TODOs)
+   - Ogerpon forme in terastallize.rs
+   - Terapagos-Stellar forme in terastallize.rs
    - illusion ending in terastallize.rs
+   - Morpeko special case in terastallize.rs
+   - Forme change signature mismatch in run_mega_evo.rs
 
-5. **Baton Pass system** (1 TODO)
-   - copy_volatile_from in switch_in.rs
+5. **Baton Pass system** (2 TODOs)
+   - copy_volatile_from in switch_in.rs (2 TODO comments for same feature)
 
 6. **Multihit infrastructure** (4 TODOs)
    - Array-based multihit in hit_step_move_hit_loop.rs
-   - Retargeting system
-   - Multiaccuracy system
-   - sleepUsable check
+   - Retargeting system in hit_step_move_hit_loop.rs
+   - Multiaccuracy system in hit_step_move_hit_loop.rs
+   - sleepUsable check in hit_step_move_hit_loop.rs
 
 7. **Damage infrastructure** (1 TODO)
    - zBrokeProtect flag via getMoveHitData in modify_damage.rs
 
-8. **Stat calculation optimization** (1 TODO)
-   - calculate_stat API refactor in get_confusion_damage.rs
+8. **Move execution** (1 TODO)
+   - moveHit function in try_move_hit.rs
 
-9. **Architecture notes** (3 NOTEs)
-   - ActiveMove smart_target in hit_step_accuracy.rs
-   - Helper function patterns in get_active_z_move.rs, get_active_max_move.rs
-   - Event placement in use_move_inner.rs
+9. **Side condition callbacks** (1 TODO)
+   - Hazards onSwitchIn callbacks in switch_in.rs
+
+10. **Move data** (1 TODO)
+    - getMoveData check in get_z_move.rs
+
+11. **Animation system** (1 TODO)
+    - addMove for Spectral Thief animation in hit_step_steal_boosts.rs
+
+### Optimization/Architecture Notes (5) - Current Implementation Works:
+
+12. **Helper function patterns** (3 NOTEs)
+    - getActiveMove helper method in get_active_max_move.rs
+    - getActiveMove conversion in get_active_z_move.rs (2 mentions)
+
+13. **Stat calculation optimization** (1 TODO)
+    - calculate_stat API refactor in get_confusion_damage.rs
+    - Current inline implementation works correctly
+
+14. **ActiveMove modification** (1 TODO)
+    - smart_target modification in hit_step_accuracy.rs
+    - Current use of battle.active_move works correctly
+
+15. **Constant verification** (1 TODO)
+    - NOT_FAIL constant value check in hit_step_try_hit_event.rs
+    - Current logic appears correct
 
 ## Conclusion
 
