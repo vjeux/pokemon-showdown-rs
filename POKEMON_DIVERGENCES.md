@@ -341,12 +341,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Would need EffectState.source field to track Sky Drop initiator
 
 #### max_move_disabled.rs
-- Status: ✅ Fixed (Documented)
+- Status: ✅ Fixed (Fully Implemented)
 - Issue: Missing Status move category check with Assault Vest/Taunt
-- Action: Documented current PP check and missing category check
+- Action: Refactored to take &Battle parameter, implemented full category check
 - Notes:
-  - Would need Battle reference to get move data from dex
-  - Missing: check if move.category == 'Status' && (hasItem('assaultvest') || has_volatile('taunt'))
+  - ✅ NOW IMPLEMENTED: Checks if move.category == 'Status'
+  - ✅ NOW IMPLEMENTED: Returns true if has Assault Vest or Taunt volatile
+  - Refactored signature to take &Battle parameter to access dex
+  - Now fully 1-to-1 with JavaScript!
 
 #### has_item.rs
 - Status: ✅ Fixed (Fully Implemented)
@@ -956,8 +958,9 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - ✅ Fixed has_item.rs - Added ignoringItem() check - now fully 1-to-1! (MERGED)
   - ✅ Fixed try_trap.rs - Added runStatusImmunity check (MERGED)
   - ✅ Fixed is_grounded.rs - Added ignoringItem() checks for Iron Ball and Air Balloon (MERGED)
+  - ✅ Fixed max_move_disabled.rs - Refactored to take Battle parameter, implemented Status category check - now fully 1-to-1! (MERGED)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
-- **Methods Now Fully 1-to-1**: has_item.rs
+- **Methods Now Fully 1-to-1**: has_item.rs, max_move_disabled.rs
 - **Methods Significantly Improved**: update_max_hp.rs, try_trap.rs, is_grounded.rs
 - **Path Forward**:
   - Phase 1 (Current): Fix methods that can be improved without API changes
@@ -968,15 +971,16 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 ### Implementation Progress Summary
 **Fully Implemented (1-to-1 with JavaScript):**
 1. has_item.rs - ✅ Complete
-2. clear_volatile.rs - ✅ Nearly complete (only missing linked volatiles removal which needs infrastructure)
-3. allies.rs, allies_and_self.rs, adjacent_allies.rs, adjacent_foes.rs, foes.rs - ✅ Complete
-4. clear_boosts.rs - ✅ Complete
-5. deduct_pp.rs - ✅ Complete
-6. disable_move.rs - ✅ Complete
-7. effective_weather.rs - ✅ Complete
-8. get_health.rs - ✅ Complete
-9. get_locked_move.rs - ✅ Returns field (missing runEvent call needs Battle)
-10. get_nature.rs - ✅ Complete
+2. max_move_disabled.rs - ✅ Complete
+3. clear_volatile.rs - ✅ Nearly complete (only missing linked volatiles removal which needs infrastructure)
+4. allies.rs, allies_and_self.rs, adjacent_allies.rs, adjacent_foes.rs, foes.rs - ✅ Complete
+5. clear_boosts.rs - ✅ Complete
+6. deduct_pp.rs - ✅ Complete
+7. disable_move.rs - ✅ Complete
+8. effective_weather.rs - ✅ Complete
+9. get_health.rs - ✅ Complete
+10. get_locked_move.rs - ✅ Returns field (missing runEvent call needs Battle)
+11. get_nature.rs - ✅ Complete
 
 **Partially Implemented (Core Logic Correct, Missing Events/Checks):**
 1. update_max_hp.rs - Has Dynamax check, missing battle.add
