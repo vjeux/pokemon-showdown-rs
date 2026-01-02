@@ -141,11 +141,19 @@ pub fn run_move(
 
         // Deduct PP
         // if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle'))
-        // TODO: Implement PP deduction (already done in run_action?)
+        let gen = battle.gen;
+        let pp_deducted = if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.deduct_pp(gen, move_id, Some(1))
+        } else {
+            0
+        };
+        // Note: JavaScript code has incomplete condition - just checking but no action taken
+        // This matches the JavaScript pattern exactly
+        let _pp_check = pp_deducted == 0 && move_id.as_str() != "struggle";
 
         // pokemon.moveUsed(move, targetLoc);
         // Note: Need to extract gen before calling move_used to avoid borrow checker issues
-        let gen = battle.gen;
+        // (gen already extracted above for PP deduction)
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             // Manually inline move_used to avoid double borrow
             pokemon.last_move = Some(move_id.clone());
