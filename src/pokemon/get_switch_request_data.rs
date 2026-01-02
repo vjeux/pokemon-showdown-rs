@@ -114,13 +114,17 @@ impl Pokemon {
         // JS:     entry.commanding = !!this.volatiles['commanding'] && !this.fainted;
         // JS:     entry.reviving = this.isActive && !!this.side.slotConditions[this.position]['revivalblessing'];
         // JS: }
-        // Note: Missing Gen 9+ commanding and reviving fields
+        // ✅ NOW IMPLEMENTED (Session 24 Part 64): commanding field
+        let commanding = self.has_volatile(&ID::new("commanding")) && !self.fainted;
+        // Note: reviving field needs Side.slotConditions reference
 
         // JS: if (this.battle.gen === 9) {
         // JS:     entry.teraType = this.teraType;
         // JS:     entry.terastallized = this.terastallized || '';
         // JS: }
-        // Note: Missing Gen 9 teraType and terastallized fields
+        // ✅ NOW IMPLEMENTED (Session 24 Part 64): teraType and terastallized fields
+        let tera_type = self.tera_type.as_deref().unwrap_or("");
+        let terastallized = self.terastallized.as_deref().unwrap_or("");
 
         // JS: return entry;
         serde_json::json!({
@@ -133,7 +137,10 @@ impl Pokemon {
             "ability": self.ability.as_str(),
             "baseAbility": self.base_ability.as_str(),
             "item": self.item.as_str(),
-            "pokeball": self.pokeball.as_str()
+            "pokeball": self.pokeball.as_str(),
+            "commanding": commanding,
+            "teraType": tera_type,
+            "terastallized": terastallized
         })
     }
 }
