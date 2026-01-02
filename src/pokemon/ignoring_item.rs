@@ -15,8 +15,15 @@ impl Pokemon {
     //
     pub fn ignoring_item(&self, battle: &Battle, is_fling: bool) -> bool {
         // JS: if (this.getItem().isPrimalOrb) return false;
-        // Note: Primal Orb check not implemented - would need item data access
+        // ✅ NOW IMPLEMENTED (Session 24 Part 47): Primal Orb check
         // Primal Orbs: Red Orb (Groudon), Blue Orb (Kyogre) - never suppressed
+        if let Some(item_data) = battle.dex.items().get_by_id(&self.item) {
+            if let Some(is_primal_orb) = item_data.extra.get("isPrimalOrb") {
+                if is_primal_orb.as_bool().unwrap_or(false) {
+                    return false;
+                }
+            }
+        }
 
         // JS: if (this.battle.gen >= 5 && !this.isActive) return true;
         // ✅ NOW IMPLEMENTED: Gen check for inactive Pokemon
@@ -43,8 +50,8 @@ impl Pokemon {
         }
 
         // JS: return !this.getItem().ignoreKlutz && this.hasAbility('klutz');
-        // Note: ignoreKlutz flag not checked - would need item data access
-        // Some items ignore Klutz (e.g., Macho Brace, Power items) but we can't check without item data
+        // ✅ NOW IMPLEMENTED (Session 24 Part 47): ignoreKlutz flag check
+        // Some items ignore Klutz (e.g., Macho Brace, Power items)
 
         // Ability Shield prevents ability suppression, including Klutz
         if self.has_item(battle, &["abilityshield"]) {
@@ -52,6 +59,15 @@ impl Pokemon {
         }
 
         if self.ability.as_str() == "klutz" {
+            // Check if item has ignoreKlutz flag
+            if let Some(item_data) = battle.dex.items().get_by_id(&self.item) {
+                if let Some(ignore_klutz) = item_data.extra.get("ignoreKlutz") {
+                    if ignore_klutz.as_bool().unwrap_or(false) {
+                        // Item ignores Klutz, so don't suppress it
+                        return false;
+                    }
+                }
+            }
             return true;
         }
 
