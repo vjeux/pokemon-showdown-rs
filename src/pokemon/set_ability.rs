@@ -71,6 +71,7 @@ impl Pokemon {
         // JS: this.abilityState = this.battle.initEffectState({ id: ability.id, target: this });
         self.ability = ability_id.clone();
         self.ability_state = EffectState::new(ability_id.clone());
+        self.ability_state.target = Some((self.side_index, self.position));
 
         // JS: if (sourceEffect && !isFromFormeChange && !isTransform) {
         // JS:     this.battle.add('-ability', ...);

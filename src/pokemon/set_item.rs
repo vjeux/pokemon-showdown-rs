@@ -56,6 +56,7 @@ impl Pokemon {
         // JS: this.itemState = this.battle.initEffectState({ id: item.id, target: this });
         self.item = item_id.clone();
         self.item_state = EffectState::new(item_id.clone());
+        self.item_state.target = Some((self.side_index, self.position));
 
         // JS: if (oldItem.exists) this.battle.singleEvent('End', oldItem, oldItemState, this);
         // Note: Missing singleEvent('End') for old item - would need Battle reference

@@ -92,6 +92,7 @@ impl Pokemon {
         if let Some(ability) = new_ability {
             self.ability = ability.clone();
             self.ability_state = EffectState::new(ability);
+            self.ability_state.target = Some((self.side_index, self.position));
         }
     }
 }

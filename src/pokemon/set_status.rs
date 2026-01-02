@@ -138,6 +138,7 @@ impl Pokemon {
         // JS: }
         self.status = status.clone();
         self.status_state = EffectState::new(status);
+        self.status_state.target = Some((self.side_index, self.position));
         // Note: Missing source assignment, duration logic, durationCallback
 
         // JS: if (status.id && !this.battle.singleEvent('Start', status, this.statusState, this, source, sourceEffect)) {
