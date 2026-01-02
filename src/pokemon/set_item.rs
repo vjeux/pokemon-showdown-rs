@@ -29,6 +29,7 @@ impl Pokemon {
     // 	}
     //
     pub fn set_item(&mut self, item_id: ID) -> bool {
+        // TODO: implement the same logic as JavaScript
         if self.hp == 0 || !self.is_active {
             return false;
         }

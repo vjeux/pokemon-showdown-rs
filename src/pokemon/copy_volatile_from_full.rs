@@ -6,6 +6,7 @@ impl Pokemon {
 
     /// Copy volatiles from another Pokemon (for Baton Pass)
     pub fn copy_volatile_from_full(&mut self, source: &Pokemon, is_shed_tail: bool) {
+        // TODO: implement the same logic as JavaScript
         // Copy boosts unless Shed Tail
         if !is_shed_tail {
             self.boosts = source.boosts;

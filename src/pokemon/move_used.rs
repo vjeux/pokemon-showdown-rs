@@ -12,6 +12,7 @@ impl Pokemon {
     // 	}
     //
     pub fn move_used(&mut self, move_id: ID, target_loc: Option<i8>) {
+        // TODO: implement the same logic as JavaScript
         self.last_move = Some(move_id.clone());
         self.last_move_used = Some(move_id.clone());
         self.last_move_target_loc = target_loc;

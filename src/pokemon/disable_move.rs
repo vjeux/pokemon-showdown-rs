@@ -19,6 +19,8 @@ impl Pokemon {
     // 	}
     //
     pub fn disable_move(&mut self, move_id: &str, source: Option<String>) {
+        // TODO: implement the same logic as JavaScript
+
         let id = crate::dex_data::to_id(move_id);
         if let Some(slot) = self.move_slots.iter_mut().find(|s| s.id.as_str() == id) {
             slot.disabled = true;

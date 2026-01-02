@@ -28,6 +28,7 @@ impl Pokemon {
     // 	}
     //
     pub fn run_status_immunity(&self, status: &str) -> bool {
+        // TODO: implement the same logic as JavaScript
         match status {
             "brn" => !self.has_type("fire"),
             "par" => !self.has_type("electric"),

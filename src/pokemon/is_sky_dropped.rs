@@ -15,6 +15,7 @@ impl Pokemon {
     // 	}
     //
     pub fn is_sky_dropped(&self) -> bool {
+        // TODO: implement the same logic as JavaScript
         self.has_volatile(&ID::new("skydrop"))
     }
 }

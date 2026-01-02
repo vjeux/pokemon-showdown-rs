@@ -20,6 +20,8 @@ impl Pokemon {
     /// Get combat power (for Pokemon Go style formats)
     /// Equivalent to getCombatPower in pokemon.ts
     pub fn get_combat_power(&self) -> i32 {
+        // TODO: implement the same logic as JavaScript
+
         // Simplified formula based on stats
         let atk = self.stored_stats.atk;
         let def = self.stored_stats.def;

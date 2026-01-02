@@ -18,6 +18,8 @@ impl Pokemon {
     // 	}
     //
     pub fn clear_status(&mut self) -> bool {
+        // TODO: implement the same logic as JavaScript
+        
         // Simplified stub - full logic with nightmare handling in Battle
         if self.status.is_empty() {
             return false;

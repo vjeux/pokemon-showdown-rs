@@ -15,6 +15,8 @@ impl Pokemon {
     // 	}
     //
     pub fn update_max_hp(&mut self, new_base_max_hp: i32) {
+        // TODO: implement the same logic as JavaScript
+
         if new_base_max_hp == self.base_maxhp {
             return;
         }

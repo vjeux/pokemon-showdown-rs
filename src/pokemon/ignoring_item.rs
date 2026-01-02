@@ -14,6 +14,8 @@ impl Pokemon {
     // 	}
     //
     pub fn ignoring_item(&self) -> bool {
+        // TODO: implement the same logic as JavaScript
+        
         // Gen 5+: inactive Pokemon have items suppressed
         if !self.is_active {
             return true;

@@ -30,6 +30,7 @@ impl Pokemon {
     // 	}
     //
     pub fn set_type(&mut self, new_types: Vec<String>) {
+        // TODO: implement the same logic as JavaScript
         self.types = new_types;
     }
 }

@@ -12,6 +12,8 @@ impl Pokemon {
     // 	}
     //
     pub fn max_move_disabled(&self, base_move_id: &ID) -> bool {
+        // TODO: implement the same logic as JavaScript
+
         // Check if the base move has PP
         if let Some(move_data) = self.get_move_data(base_move_id) {
             if move_data.pp == 0 {

@@ -9,6 +9,7 @@ impl Pokemon {
     // 	}
     //
     pub fn is_ally(&self, other_side_index: usize) -> bool {
+        // TODO: implement the same logic as JavaScript
         self.side_index == other_side_index
     }
 }

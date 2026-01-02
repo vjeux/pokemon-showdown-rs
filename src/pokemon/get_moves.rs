@@ -1,11 +1,3 @@
-// JS Source:
-// 
-// 	getMoves(lockedMove?: ID | null, restrictData?: boolean): {
-// 		move: string, id: ID, disabled?: string | boolean, disabledSource?: string,
-// 		target?: string, pp?: number, maxpp?: number,
-// 	}
-
-
 use crate::*;
 
 impl Pokemon {
@@ -102,6 +94,7 @@ impl Pokemon {
     // 	}
     //
     pub fn get_moves(&self) -> Vec<String> {
+        // TODO: implement the same logic as JavaScript
         self.move_slots
             .iter()
             .map(|slot| slot.id.as_str().to_string())

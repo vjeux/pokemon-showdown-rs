@@ -38,6 +38,7 @@ impl Pokemon {
     // 	}
     //
     pub fn set_ability(&mut self, ability_id: ID) -> ID {
+        // TODO: implement the same logic as JavaScript
         let old = self.ability.clone();
         self.ability = ability_id.clone();
         self.ability_state = EffectState::new(ability_id);

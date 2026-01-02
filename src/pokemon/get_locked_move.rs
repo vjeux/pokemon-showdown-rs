@@ -1,10 +1,3 @@
-// JS Source:
-// 	getLockedMove(): ID | null {
-// 		const lockedMove = this.battle.runEvent('LockMove', this);
-// 		return (lockedMove === true) ? null : lockedMove;
-// 	}
-
-
 use crate::*;
 
 impl Pokemon {
@@ -22,6 +15,8 @@ impl Pokemon {
     // 	}
     //
     pub fn get_locked_move(&self) -> Option<&ID> {
+        // TODO: implement the same logic as JavaScript
+
         self.locked_move.as_ref()
     }
 }

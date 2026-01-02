@@ -116,6 +116,8 @@ impl Pokemon {
     // 	}
     //
     pub fn transform_into(&mut self, target: &Pokemon) -> bool {
+        // TODO: implement the same logic as JavaScript
+
         if self.fainted || target.fainted || self.transformed {
             return false;
         }

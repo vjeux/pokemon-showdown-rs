@@ -12,6 +12,8 @@ impl Pokemon {
     // 	}
     //
     pub fn try_trap(&mut self, is_hidden: bool) -> bool {
+        // TODO: implement the same logic as JavaScript
+
         if self.trapped && is_hidden {
             return true;
         }

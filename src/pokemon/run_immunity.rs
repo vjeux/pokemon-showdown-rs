@@ -34,6 +34,7 @@ impl Pokemon {
     // 	}
     //
     pub fn run_immunity(&self, move_type: &str) -> bool {
+        // TODO: implement the same logic as JavaScript
         let effectiveness = self.run_effectiveness(move_type);
         effectiveness > 0.0
     }

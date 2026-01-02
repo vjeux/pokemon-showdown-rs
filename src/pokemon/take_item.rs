@@ -27,6 +27,7 @@ impl Pokemon {
     // 	}
     //
     pub fn take_item(&mut self) -> Option<ID> {
+        // TODO: implement the same logic as JavaScript
         if self.item.is_empty() {
             return None;
         }

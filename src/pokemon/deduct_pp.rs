@@ -1,5 +1,3 @@
-// NOTE: This method is NOT in JavaScript - Rust-specific implementation
-
 use crate::*;
 
 impl Pokemon {
@@ -24,6 +22,7 @@ impl Pokemon {
     // 	}
     //
     pub fn deduct_pp(&mut self, move_id: &ID, amount: u8) -> bool {
+        // TODO: implement the same logic as JavaScript
         if let Some(slot) = self.move_slots.iter_mut().find(|s| &s.id == move_id) {
             slot.pp = slot.pp.saturating_sub(amount);
             slot.used = true;

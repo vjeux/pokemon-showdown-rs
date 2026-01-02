@@ -12,6 +12,7 @@ impl Pokemon {
     // 	}
     //
     pub fn clear_boosts(&mut self) {
+        // TODO: implement the same logic as JavaScript
         self.boosts.clear();
     }
 }

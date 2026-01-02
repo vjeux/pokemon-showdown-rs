@@ -10,6 +10,8 @@ impl Pokemon {
     // 	}
     //
     pub fn try_set_status(&mut self, status_id: ID, _source_effect: Option<&str>) -> bool {
+        // TODO: implement the same logic as JavaScript
+
         // Check if already has status
         if !self.status.is_empty() {
             return false;

@@ -75,6 +75,7 @@ impl Pokemon {
     // 	}
     //
     pub fn set_status(&mut self, status: ID) -> bool {
+        // TODO: implement the same logic as JavaScript
         if !self.status.is_empty() {
             return false;
         }

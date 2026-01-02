@@ -12,6 +12,8 @@ impl Pokemon {
     /// which is necessary to recalculate stats. This is a borrow-checker requirement
     /// that doesn't exist in TypeScript where Pokemon has a battle reference.
     pub fn clear_volatile_full(&mut self, battle: &mut Battle, include_switch_flags: bool) {
+        // TODO: this should be moved to clear_volatile.rs
+
         // JS: this.boosts = { atk: 0, def: 0, spa: 0, spd: 0, spe: 0, accuracy: 0, evasion: 0 };
         self.boosts = BoostsTable::default();
 

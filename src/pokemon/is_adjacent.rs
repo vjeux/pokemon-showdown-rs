@@ -17,6 +17,9 @@ impl Pokemon {
         other_fainted: bool,
         active_per_half: usize,
     ) -> bool {
+        // TODO: implement the same logic as JavaScript
+        // the signature shouldn't include other_fainted and active_per_half.
+        // If you need to work around the borrow checker, pass in the battle object
         if self.fainted || other_fainted {
             return false;
         }

@@ -21,6 +21,8 @@ impl Pokemon {
     // 	}
     //
     pub fn effective_weather(&self, field_weather: &str) -> String {
+        // TODO: implement the same logic as JavaScript
+        
         // Cloud Nine and Air Lock negate weather
         // This would normally check all Pokemon on field
         // For now just return the field weather

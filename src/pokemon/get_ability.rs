@@ -9,6 +9,7 @@ impl Pokemon {
     // 	}
     //
     pub fn get_ability(&self) -> &ID {
+        // TODO: implement the same logic as JavaScript
         &self.ability
     }
 }

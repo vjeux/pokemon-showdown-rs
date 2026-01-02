@@ -38,6 +38,8 @@ impl Pokemon {
     // 	}
     //
     pub fn get_dynamax_request(&self, can_dynamax: bool) -> Option<serde_json::Value> {
+        // TODO: implement the same logic as JavaScript
+        
         if !can_dynamax || self.has_volatile(&ID::new("dynamax")) {
             return None;
         }

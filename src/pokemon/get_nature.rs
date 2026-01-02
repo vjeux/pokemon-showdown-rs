@@ -11,6 +11,8 @@ impl Pokemon {
     // 	}
     //
     pub fn get_nature(&self) -> &str {
+        // TODO: implement the same logic as JavaScript
+        
         // In battle, the nature is already applied to stored_stats
         // The actual nature value would need to be stored if needed
         "Hardy" // Default neutral nature

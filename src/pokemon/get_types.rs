@@ -15,6 +15,8 @@ impl Pokemon {
     // 	}
     //
     pub fn get_types(&self, exclude_added: bool) -> Vec<String> {
+        // TODO: implement the same logic as JavaScript
+        
         // JS: if (!preterastallized && this.terastallized && this.terastallized !== 'Stellar') return [this.terastallized];
         if let Some(ref tera) = self.terastallized {
             if tera != "Stellar" {

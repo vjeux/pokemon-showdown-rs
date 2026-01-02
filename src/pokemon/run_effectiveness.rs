@@ -32,6 +32,7 @@ impl Pokemon {
     // 	}
     //
     pub fn run_effectiveness(&self, move_type: &str) -> f64 {
+        // TODO: implement the same logic as JavaScript
         crate::data::typechart::get_effectiveness_multi(move_type, &self.types)
     }
 }

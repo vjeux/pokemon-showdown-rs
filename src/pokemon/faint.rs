@@ -34,6 +34,13 @@ impl Pokemon {
         self.hp = 0;
         self.switch_flag = false;
         self.faint_queued = true;
+
+        // TODO: implement the same logic as JavaScript
+        //      this.battle.faintQueue.push({
+        //          target: this,
+        //          source,
+        //          effect,
+        //      });
         damage
     }
 }

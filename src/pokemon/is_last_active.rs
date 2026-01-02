@@ -14,6 +14,8 @@ impl Pokemon {
     // 	}
     //
     pub fn is_last_active(&self) -> bool {
+        // TODO: implement the same logic as JavaScript
+        
         // This would need access to the side to properly implement
         // For now, just return true if active
         self.is_active

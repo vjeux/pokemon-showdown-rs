@@ -18,7 +18,6 @@ impl Pokemon {
     //
     pub fn get_capped_boost(&self, boosts: HashMap<crate::dex_data::BoostID, i8>) -> HashMap<crate::dex_data::BoostID, i8> {
         let mut capped_boost = HashMap::new();
-        // JS: for (boostName in boosts) { const boost = boosts[boostName]; if (!boost) continue; cappedBoost[boostName] = clampIntRange(this.boosts[boostName] + boost, -6, 6) - this.boosts[boostName]; }
         for (boost_name, boost) in boosts {
             if boost == 0 {
                 continue;

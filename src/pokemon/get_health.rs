@@ -52,6 +52,7 @@ impl Pokemon {
     // 	}
     //
     pub fn get_health(&self) -> String {
+        // TODO: implement the same logic as JavaScript
         if self.hp == 0 {
             return "0 fnt".to_string();
         }

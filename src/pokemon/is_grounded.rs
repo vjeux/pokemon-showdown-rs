@@ -19,6 +19,8 @@ impl Pokemon {
     // 	}
     //
     pub fn is_grounded(&self) -> bool {
+        // TODO: implement the same logic as JavaScript
+        
         // Flying type or Levitate makes you not grounded
         if self.types.iter().any(|t| t.to_lowercase() == "flying") {
             return false;

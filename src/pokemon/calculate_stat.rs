@@ -42,6 +42,8 @@ impl Pokemon {
     // 	}
     //
     pub fn calculate_stat(&self, stat: StatID, boost: i8, modifier: f64) -> i32 {
+        // TODO: implement the same logic as JavaScript
+
         if stat == StatID::HP {
             return self.maxhp;
         }

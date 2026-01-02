@@ -26,6 +26,8 @@ impl Pokemon {
     // 	}
     //
     pub fn ignoring_ability(&self) -> bool {
+        // TODO: implement the same logic as JavaScript
+
         // Gen 5+: inactive Pokemon have abilities suppressed
         if !self.is_active {
             return true;

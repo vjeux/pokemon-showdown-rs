@@ -25,6 +25,8 @@ impl Pokemon {
     // 	}
     //
     pub fn get_weight(&self) -> i32 {
+        // TODO: implement the same logic as JavaScript
+        
         // Base weight would come from species data
         // For now return stored weight
         self.weight_hg

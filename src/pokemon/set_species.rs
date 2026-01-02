@@ -53,6 +53,8 @@ impl Pokemon {
         _source: Option<&ID>,
         _is_transform: bool,
     ) -> bool {
+        // TODO: implement the same logic as JavaScript
+
         // JS: const species = this.battle.runEvent('ModifySpecies', this, null, source, rawSpecies);
         // TODO: Implement ModifySpecies event
         // For now, just use the species directly

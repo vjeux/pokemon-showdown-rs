@@ -19,6 +19,9 @@ impl Pokemon {
     // NOTE: Due to Rust borrow checker limitations, this returns data for the caller
     // to handle battle.add() calls, since we can't have &mut Pokemon and &mut Battle simultaneously
     pub fn cure_status(&mut self) -> Option<(String, bool)> {
+        // TODO: have the callsite pass in the Battle object
+
+
         // JS: if (!this.hp || !this.status) return false;
         if self.hp == 0 || self.status.is_empty() {
             return None;

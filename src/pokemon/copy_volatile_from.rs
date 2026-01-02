@@ -29,6 +29,9 @@ impl Pokemon {
     // 	}
     //
     pub fn copy_volatile_from(&mut self, source: &Pokemon, copy_type: &str) {
+        // TODO: implement the same logic as JavaScript
+        // We should not hardcode any conditions that's not in the original source.
+        
         match copy_type {
             "copyvolatile" | "batonpass" => {
                 // Copy stat boosts

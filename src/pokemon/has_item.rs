@@ -14,6 +14,8 @@ impl Pokemon {
     // 	}
     //
     pub fn has_item(&self, items: &[&str]) -> bool {
+        // TODO: implement the same logic as JavaScript
+        // ignoringItem() is not being called.
         let item_id = self.item.as_str();
         items.iter().any(|&i| crate::dex_data::to_id(i) == item_id)
     }

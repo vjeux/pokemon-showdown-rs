@@ -4,19 +4,6 @@ use crate::*;
 
 impl Pokemon {
     /// Update PP values for all move slots based on move data from Dex
-    /// JavaScript source:
-    // for (const moveid of this.set.moves) {
-    //     let move = this.battle.dex.moves.get(moveid);
-    //     let basepp = move.noPPBoosts ? move.pp : move.pp * 8 / 5;
-    //     if (this.battle.gen < 3) basepp = Math.min(61, basepp);
-    //     this.baseMoveSlots.push({
-    //         move: move.name,
-    //         id: move.id,
-    //         pp: basepp,
-    //         maxpp: basepp,
-    //         ...
-    //     });
-    // }
     pub fn update_move_pp(&mut self, dex: &Dex, gen: u8) {
         for slot in &mut self.move_slots {
             if let Some(move_data) = dex.moves().get(slot.id.as_str()) {

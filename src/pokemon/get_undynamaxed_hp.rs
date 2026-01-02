@@ -1,5 +1,3 @@
-// NOTE: This method is NOT in JavaScript - Rust-specific implementation
-
 use crate::*;
 
 impl Pokemon {

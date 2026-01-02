@@ -49,6 +49,8 @@ impl Pokemon {
     // 	}
     //
     pub fn eat_item(&mut self, _is_forced: bool) -> Option<ID> {
+        // TODO: implement the same logic as JavaScript
+        
         if self.item.is_empty() {
             return None;
         }

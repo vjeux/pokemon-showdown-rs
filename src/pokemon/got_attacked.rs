@@ -25,6 +25,8 @@ impl Pokemon {
         source_side: usize,
         source_pos: usize,
     ) {
+        // TODO: implement the same logic as JavaScript
+        // lastDamage doesn't exist in JavaScript and therefore shouldn't exist in rust
         self.last_damage = damage;
         self.times_attacked += 1;
 

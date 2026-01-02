@@ -10,6 +10,7 @@ impl Pokemon {
     // 	}
     //
     pub fn get_status(&self) -> Option<&ID> {
+        // TODO: implement the same logic as JavaScript
         if self.status.is_empty() {
             None
         } else {

@@ -16,6 +16,7 @@ impl Pokemon {
     // 	}
     //
     pub fn has_move(&self, move_id: &str) -> bool {
+        // TODO: implement the same logic as JavaScript
         let id = crate::dex_data::to_id(move_id);
         self.move_slots.iter().any(|slot| slot.id.as_str() == id)
     }

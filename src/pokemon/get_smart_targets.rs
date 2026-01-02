@@ -25,6 +25,8 @@ impl Pokemon {
         target_pos: usize,
         move_smart_target: bool,
     ) -> Vec<(usize, usize)> {
+        // TODO: implement the same logic as JavaScript
+        
         if !move_smart_target {
             return vec![(target_side, target_pos)];
         }

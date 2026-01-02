@@ -1,18 +1,6 @@
 use crate::*;
 
 impl Pokemon {
-
-    // ==========================================
-    // Methods ported from pokemon.ts
-    // ==========================================
-
-    /// String representation of Pokemon
-    //
-    // 	toString() {
-    // 		const fullname = (this.illusion) ? this.illusion.fullname : this.fullname;
-    // 		return this.isActive ? this.getSlot() + fullname.slice(2) : fullname;
-    // 	}
-    //
     /// Get updated details string for protocol
     //
     // 	getUpdatedDetails(level?: number) {
@@ -24,6 +12,7 @@ impl Pokemon {
     // 	}
     //
     pub fn get_updated_details(&self) -> String {
+        // TODO: implement the same logic as JavaScript
         let mut details = self.species_id.as_str().to_string();
         if self.level != 100 {
             details.push_str(&format!(", L{}", self.level));
