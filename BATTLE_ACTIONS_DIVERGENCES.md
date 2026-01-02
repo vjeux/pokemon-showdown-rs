@@ -6,8 +6,8 @@ This document tracks divergences between the JavaScript implementation in `pokem
 
 **Total files in battle_actions/**: 43
 **Total TODOs/NOTEs found**: 74
-**Completed implementations**: 13 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move, after_move_secondary_event, force_switch, hit_step_break_protect, hit_step_invulnerability_event, hit_step_steal_boosts)
-**Remaining stubs**: 4
+**Completed implementations**: 16 (can_mega_evo, can_ultra_burst, run_mega_evo, get_z_move, can_z_move, get_active_z_move, get_max_move, get_active_max_move, after_move_secondary_event, force_switch, hit_step_break_protect, hit_step_invulnerability_event, hit_step_steal_boosts, hit_step_try_hit_event, hit_step_try_immunity, hit_step_type_immunity)
+**Remaining stubs**: 1 (hit_step_move_hit_loop - deferred for infrastructure work)
 
 ## Files with Stubs (Not Implemented)
 
@@ -25,11 +25,13 @@ These files are completely unimplemented stubs:
 10. ~~`force_switch.rs` - forceSwitch~~ ✅ IMPLEMENTED
 11. ~~`hit_step_break_protect.rs` - hitStepBreakProtect~~ ✅ IMPLEMENTED
 12. ~~`hit_step_invulnerability_event.rs` - hitStepInvulnerabilityEvent~~ ✅ IMPLEMENTED
-13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop (DEFERRED - needs infrastructure work)
+13. `hit_step_move_hit_loop.rs` - hitStepMoveHitLoop **(DEFERRED - needs infrastructure work)**
 14. ~~`hit_step_steal_boosts.rs` - hitStepStealBoosts~~ ✅ IMPLEMENTED
-15. `hit_step_try_hit_event.rs` - hitStepTryHitEvent
-16. `hit_step_try_immunity.rs` - hitStepTryImmunity
-17. `hit_step_type_immunity.rs` - hitStepTypeImmunity
+15. ~~`hit_step_try_hit_event.rs` - hitStepTryHitEvent~~ ✅ IMPLEMENTED
+16. ~~`hit_step_try_immunity.rs` - hitStepTryImmunity~~ ✅ IMPLEMENTED
+17. ~~`hit_step_type_immunity.rs` - hitStepTypeImmunity~~ ✅ IMPLEMENTED
+
+**🎉 ALL SIMPLE STUBS COMPLETED! 16/17 functions implemented.**
 
 ## Files with Partial Implementation
 
@@ -222,6 +224,46 @@ These files exist only in Rust and should be evaluated:
   - Special case for Spectral Thief (needs addMove - TODO)
 - Converts BoostsTable to &[(&str, i8)] for battle.boost signature
 - Converts stolen boosts to HashMap<BoostID, i8> for Pokemon::set_boost signature
+
+### 2026-01-02 - Commit 2d4197dc
+**Implemented: hit_step_try_hit_event**
+- Implemented 1:1 port of hitStepTryHitEvent from JavaScript battle-actions.ts
+- Fires TryHit event for all targets using battle.run_event
+- Collects event results for each target
+- If no successes and at least one failure:
+  - Adds -fail message for attacker
+  - Calls battle.attr_last_move(&["[still]"])
+- Converts Option<i32> event results to Vec<bool>:
+  - Some(0) = false (explicit failure)
+  - Anything else = true (success or continue)
+- Returns boolean array indicating which targets were hit successfully
+
+### 2026-01-02 - Commit 8cd9328e
+**Implemented: hit_step_try_immunity**
+- Implemented 1:1 port of hitStepTryImmunity from JavaScript battle-actions.ts
+- Checks for immunity in three cases:
+  1. **Gen 6+ powder moves**: Checks if target has powder immunity using dex.get_immunity("powder", &target_types)
+  2. **TryImmunity event**: Fires single_event and checks for EventResult::Boolean(false)
+  3. **Gen 7+ prankster**: Checks prankster immunity for non-allies with Dark type
+- Gets target Pokemon types and passes to dex.get_immunity for type-based checks
+- Adds -immune message for each immunity case
+- Adds hint "Since gen 7, Dark is immune to Prankster moves." for prankster immunity
+  - Unless target has illusion or status immunity
+- Returns Vec<bool> indicating which targets can be hit
+- Uses helper function self_check_try_immunity to check TryImmunity and prankster cases
+
+### 2026-01-02 - Commit 887db312
+**Implemented: hit_step_type_immunity** ✅ FINAL SIMPLE STUB!
+- Implemented 1:1 port of hitStepTypeImmunity from JavaScript battle-actions.ts
+- Checks type-based immunity (e.g., Ground vs Electric, Ghost vs Normal)
+- Sets move.ignoreImmunity if undefined:
+  - Defaults to true for Status category moves
+  - Defaults to false for Physical/Special moves
+- Calls Pokemon::run_immunity for each target:
+  - Passes move type (active_move.id.as_str())
+  - Passes !move.smartTarget as show_message parameter
+- Returns Vec<bool> indicating which targets can be hit
+- Simple and straightforward implementation
 
 ---
 
