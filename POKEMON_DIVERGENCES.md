@@ -563,9 +563,9 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Missing Ogerpon/Terapagos canTerastallize blocking
 
 #### add_volatile.rs
-- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 12 & 15)
-- Issue: Missing linkedStatus bidirectional linking and source HP check
-- Action: Implemented full linkedStatus bidirectional linking using EffectState.data HashMap and source HP check
+- Status: ✅ Fixed (Significantly Improved - Session 24 Parts 12, 15 & 20)
+- Issue: Missing linkedStatus bidirectional linking, source HP check, and EffectState field assignments
+- Action: Implemented full linkedStatus bidirectional linking using EffectState.data HashMap, source HP check, and EffectState source/sourceSlot assignments
 - Notes:
   - Fairly complete implementation with duration callback support
   - ✅ NOW IMPLEMENTED (Session 24 Part 12): linkedStatus parameter added to signature
@@ -576,13 +576,14 @@ This document tracks divergences between the JavaScript and Rust implementations
   - ✅ NOW IMPLEMENTED (Session 24 Part 12): Updated 100 files (1 method + 99 callsites)
   - ✅ NOW IMPLEMENTED: runStatusImmunity check for volatile immunity
   - ✅ NOW IMPLEMENTED (Session 24 Part 15): source HP check for linkedStatus
+  - ✅ NOW IMPLEMENTED (Session 24 Part 20): EffectState.source and source_slot assignments
   - ❌ Still missing: HP check with affectsFainted flag (needs condition data access)
   - ❌ Still missing: battle.event source/sourceEffect defaulting
   - ❌ Still missing: runEvent('TryAddVolatile')
-  - ❌ Still missing: source, sourceSlot, sourceEffect assignments to EffectState
+  - ❌ Still missing: sourceEffect parameter and assignment to EffectState
   - Has onRestart callback support
   - Has singleEvent('Start') with rollback on failure
-  - Now ~78% complete (was ~75%)
+  - Now ~82% complete (was ~78%)
 
 #### calculate_stat.rs
 - Status: ✅ Fixed (Documented)
@@ -2051,6 +2052,39 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
   - 2 outdated comments fixed
   - 1 file modified (pokemon/transform_into.rs)
   - 50 insertions, 39 deletions
+  - 1 commit pushed to git
+  - 100% compilation success rate
+
+### Session 24 Part 20 - 2026-01-01 (add_volatile EffectState source/sourceSlot - COMPLETED)
+- **Goal**: Add missing EffectState.source and source_slot assignments in add_volatile
+- **Completed**:
+  - ✅ Implemented EffectState.source assignment
+  - ✅ Implemented EffectState.source_slot assignment
+  - ✅ JavaScript logic: `this.volatiles[status.id].source = source; this.volatiles[status.id].sourceSlot = source.getSlot();`
+  - ✅ Used existing source_pos parameter (already in signature)
+  - ✅ All changes compile successfully (0 errors, 0 warnings)
+  - ✅ Committed and pushed 1 commit
+  - ✅ Updated POKEMON_DIVERGENCES.md
+- **Methods Now Improved**:
+  - add_volatile.rs - Now ~82% complete (was ~78%)
+    - ✅ NOW IMPLEMENTED: EffectState.source assignment
+    - ✅ NOW IMPLEMENTED: EffectState.source_slot assignment
+    - JavaScript equivalent:
+      - `if (source) { this.volatiles[status.id].source = source; this.volatiles[status.id].sourceSlot = source.getSlot(); }`
+    - Rust implementation:
+      - `if let Some(src_pos) = source_pos { state.source = Some(src_pos); state.source_slot = Some(src_pos.1); }`
+    - Note: sourceEffect parameter not yet in signature (would need to add)
+- **Technical Details**:
+  - EffectState struct ALREADY HAS source, source_effect, and source_slot fields!
+  - Fields exist in src/event_system.rs but were not being set
+  - Simple fix: Just set the fields from the existing source_pos parameter
+  - source_slot uses position (src_pos.1) to match JavaScript's getSlot()
+  - No callsite changes needed (parameter already exists)
+- **Session Statistics**:
+  - 1 method improved (add_volatile.rs)
+  - 2 feature implementations (source + source_slot assignments)
+  - 1 file modified (pokemon/add_volatile.rs)
+  - 6 insertions, 1 deletion
   - 1 commit pushed to git
   - 100% compilation success rate
 
