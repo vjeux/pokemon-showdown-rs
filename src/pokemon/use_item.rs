@@ -95,7 +95,14 @@ impl Pokemon {
         // Note: Missing sourceEffect item type check (needs event system infrastructure)
 
         // JS: if (this.battle.runEvent('UseItem', this, null, null, item)) {
-        // Note: Missing runEvent('UseItem') (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 82): runEvent('UseItem')
+        // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
+        //       Passing None for now - handlers can check pokemon's item field
+        let use_item_result = battle.run_event("UseItem", Some(pokemon_pos), None, None, None);
+        // runEvent returns Option<i32>, None or Some(0) means failure
+        if use_item_result == Some(0) || use_item_result == None {
+            return None; // false in JavaScript
+        }
 
         // JS: switch (item.id) {
         // JS: case 'redcard':
@@ -193,7 +200,8 @@ impl Pokemon {
         }
 
         // JS: this.battle.singleEvent('Use', item, this.itemState, this, source, sourceEffect);
-        // Note: Missing singleEvent('Use') (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 82): singleEvent('Use')
+        battle.single_event("Use", &item_id, Some(pokemon_pos), _source_pos, None);
 
         // Phase 2: Mutate pokemon to consume item
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -214,7 +222,10 @@ impl Pokemon {
         pokemon_mut.used_item_this_turn = true;
 
         // JS: this.battle.runEvent('AfterUseItem', this, null, null, item);
-        // Note: Missing runEvent('AfterUseItem') (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED (Session 24 Part 82): runEvent('AfterUseItem')
+        // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
+        //       Passing None for now - handlers can check pokemon's item field which is now empty
+        battle.run_event("AfterUseItem", Some(pokemon_pos), None, None, None);
 
         // JS: return true;
         Some(item_id)
