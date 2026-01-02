@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterMoveSecondary(target, source, move) {
 ///     if (move.category === 'Special') {
@@ -32,9 +33,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
     }
 
     // target.eatItem();
-    if let Some(target) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-        target.eat_item(false, None, None);
-    }
+    Pokemon::eat_item(battle, target_pos, false, None, None);
 
     EventResult::Continue
 }

@@ -52,7 +52,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.use_item(None, None).is_some()
+            Pokemon::use_item(battle, source, None, None).is_some()
         };
 
         if used_item {

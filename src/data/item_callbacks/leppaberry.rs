@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onUpdate(pokemon) {
 ///     if (!pokemon.hp) return;
@@ -35,7 +36,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.eat_item(false, None, None);
+        Pokemon::eat_item(battle, pokemon_pos, false, None, None);
     }
 
     EventResult::Continue

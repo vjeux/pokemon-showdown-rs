@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHit(target, source, move) {
 ///     if (move && target.getMoveHitData(move).typeMod > 0) {
@@ -49,7 +50,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_mut.eat_item(false, None, None).is_some()
+        Pokemon::eat_item(battle, target_pos, false, None, None).is_some()
     };
 
     if item_eaten {

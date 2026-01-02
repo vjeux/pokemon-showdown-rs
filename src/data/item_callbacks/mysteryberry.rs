@@ -67,7 +67,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         }
 
         // pokemon.eatItem();
-        pokemon_mut.eat_item(false, None, None);
+        Pokemon::eat_item(battle, pokemon_pos, false, None, None);
     }
 
     EventResult::Continue

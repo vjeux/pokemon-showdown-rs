@@ -24,7 +24,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item(None, None).is_some()
+        Pokemon::use_item(battle, pokemon_pos, None, None).is_some()
     };
 
     if used_item {

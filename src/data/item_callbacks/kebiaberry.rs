@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onSourceModifyDamage(damage, source, target, move) {
 ///     if (move.type === 'Poison' && target.getMoveHitData(move).typeMod > 0) {
@@ -81,7 +82,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_mut.eat_item(false, None, None)
+        Pokemon::eat_item(battle, target_pos, false, None, None)
     };
 
     if item_eaten.is_some() {

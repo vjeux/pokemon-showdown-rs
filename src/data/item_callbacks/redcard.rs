@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterMoveSecondary(target, source, move) {
 ///     if (source && source !== target && source.hp && target.hp && move && move.category !== 'Status') {
@@ -90,7 +91,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_mut.use_item(None, None)
+        Pokemon::use_item(battle, target_pos, None, None)
     };
 
     if item_used.is_some() {

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterBoost(boost, target, source, effect) {
 ///     // Adrenaline Orb activates if Intimidate is blocked by an ability like Hyper Cutter,
@@ -53,7 +54,7 @@ pub fn on_after_boost(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_mut.use_item(None, None);
+            Pokemon::use_item(battle, target_pos, None, None);
         }
     }
 

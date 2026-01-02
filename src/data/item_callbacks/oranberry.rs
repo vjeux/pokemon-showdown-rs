@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onUpdate(pokemon) {
 ///     if (pokemon.hp <= pokemon.maxhp / 2) {
@@ -23,7 +24,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     };
 
     if pokemon_mut.hp <= pokemon_mut.maxhp / 2 {
-        pokemon_mut.eat_item(false, None, None);
+        Pokemon::eat_item(battle, pokemon_pos, false, None, None);
     }
 
     EventResult::Continue

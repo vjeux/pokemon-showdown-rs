@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onFractionalPriority(priority, pokemon) {
 ///     if (
@@ -48,7 +49,7 @@ pub fn on_fractional_priority(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_mut.eat_item(false, None, None).is_some()
+            Pokemon::eat_item(battle, pokemon_pos, false, None, None).is_some()
         };
 
         if ate_item {

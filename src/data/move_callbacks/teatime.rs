@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onHitField(target, source, move) {
 ///     const targets: Pokemon[] = [];
@@ -140,7 +141,7 @@ pub fn on_hit_field(
             Some(p) => p,
             None => continue,
         };
-        pokemon_mut.eat_item(true, None, None);
+        Pokemon::eat_item(battle, pokemon_pos, true, None, None);
     }
 
     EventResult::Continue

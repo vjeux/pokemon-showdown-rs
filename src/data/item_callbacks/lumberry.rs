@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterSetStatus(status, pokemon) {
 ///     pokemon.eatItem();
@@ -18,7 +19,7 @@ pub fn on_after_set_status(battle: &mut Battle, pokemon_pos: (usize, usize)) -> 
         None => return EventResult::Continue,
     };
 
-    pokemon_mut.eat_item(false, None, None);
+    Pokemon::eat_item(battle, pokemon_pos, false, None, None);
 
     EventResult::Continue
 }
@@ -39,7 +40,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     };
 
     if !pokemon_mut.status.is_empty() || pokemon_mut.volatiles.contains_key(&"confusion".into()) {
-        pokemon_mut.eat_item(false, None, None);
+        Pokemon::eat_item(battle, pokemon_pos, false, None, None);
     }
 
     EventResult::Continue

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onStart(pokemon) {
 ///     if (!pokemon.ignoringItem() && this.field.getPseudoWeather('trickroom')) {
@@ -39,11 +40,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
     // if (!pokemon.ignoringItem() && this.field.getPseudoWeather('trickroom'))
     if !ignoring_item && has_trick_room {
         // pokemon.useItem();
-        let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon_mut.use_item(None, None);
+        Pokemon::use_item(battle, target_pos, None, None);
     }
 
     EventResult::Continue
@@ -80,7 +77,7 @@ pub fn on_any_pseudo_weather_change(battle: &mut Battle) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item(None, None);
+        Pokemon::use_item(battle, pokemon_pos, None, None);
     }
 
     EventResult::Continue

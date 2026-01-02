@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onDamagingHit(damage, target, source, move) {
 ///     if (move.category === 'Physical' && source.hp && source.isActive && !source.hasAbility('magicguard')) {
@@ -51,7 +52,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target.eat_item(false, None, None).is_some()
+            Pokemon::eat_item(battle, target_pos, false, None, None).is_some()
         };
 
         if !ate_item {

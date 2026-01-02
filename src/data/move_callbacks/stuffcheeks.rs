@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onDisableMove(pokemon) {
 ///     if (!pokemon.getItem().isBerry) pokemon.disableMove('stuffcheeks');
@@ -98,7 +99,7 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
 
-    pokemon_mut.eat_item(true, None, None);
+    Pokemon::eat_item(battle, pokemon_pos, true, None, None);
 
     EventResult::Continue
 }

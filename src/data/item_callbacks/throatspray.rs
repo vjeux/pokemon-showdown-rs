@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterMoveSecondarySelf(target, source, move) {
 ///     if (move.flags['sound']) {
@@ -29,7 +30,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usi
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item(None, None);
+        Pokemon::use_item(battle, source_pos, None, None);
     }
 
     EventResult::Continue

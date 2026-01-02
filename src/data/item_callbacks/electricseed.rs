@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onStart(pokemon) {
 ///     if (!pokemon.ignoringItem() && this.field.isTerrain('electricterrain')) {
@@ -33,7 +34,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.use_item(None, None);
+        Pokemon::use_item(battle, pokemon_pos, None, None);
     }
 
     EventResult::Continue
@@ -51,7 +52,7 @@ pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.use_item(None, None);
+        Pokemon::use_item(battle, pokemon_pos, None, None);
     }
 
     EventResult::Continue

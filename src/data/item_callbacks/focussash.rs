@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onDamage(damage, target, source, effect) {
 ///     if (target.hp === target.maxhp && damage >= target.hp && effect && effect.effectType === 'Move') {
@@ -43,7 +44,7 @@ pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, us
         if effect_type == "Move" {
             // if (target.useItem())
             let used_item = if let Some(pokemon) = battle.pokemon_at_mut(target.0, target.1) {
-                pokemon.use_item(None, None).is_some()
+                Pokemon::use_item(battle, target, None, None).is_some()
             } else {
                 false
             };

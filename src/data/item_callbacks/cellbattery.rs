@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onDamagingHit(damage, target, source, move) {
 ///     if (move.type === 'Electric') {
@@ -34,7 +35,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            match pokemon.use_item(None, None) {
+            match Pokemon::use_item(battle, target_pos, None, None) {
                 Some(id) => id,
                 None => return EventResult::Continue,
             }

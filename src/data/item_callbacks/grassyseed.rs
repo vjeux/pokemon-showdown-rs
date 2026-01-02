@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onStart(pokemon) {
 ///     if (!pokemon.ignoringItem() && this.field.isTerrain('grassyterrain')) {
@@ -34,9 +35,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 
     if is_grassy_terrain {
         // pokemon.useItem();
-        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            pokemon.use_item(None, None);
-        }
+        Pokemon::use_item(battle, pokemon_pos, None, None);
     }
 
     EventResult::Continue
@@ -53,9 +52,7 @@ pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
 
     if is_grassy_terrain {
         // pokemon.useItem();
-        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            pokemon.use_item(None, None);
-        }
+        Pokemon::use_item(battle, pokemon_pos, None, None);
     }
 
     EventResult::Continue

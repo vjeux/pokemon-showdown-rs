@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onAfterBoost(boost, pokemon) {
 ///     if (this.effectState.eject || this.activeMove?.id === 'partingshot') return;
@@ -99,11 +100,7 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     };
 
     if let Some(pos) = target_pos {
-        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon_mut.use_item(None, None);
+        Pokemon::use_item(battle, pos, None, None);
     }
 
     EventResult::Continue
@@ -141,11 +138,7 @@ pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
     };
 
     if let Some(pos) = target_pos {
-        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon_mut.use_item(None, None);
+        Pokemon::use_item(battle, pos, None, None);
     }
 
     EventResult::Continue
@@ -183,11 +176,7 @@ pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
     };
 
     if let Some(pos) = target_pos {
-        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon_mut.use_item(None, None);
+        Pokemon::use_item(battle, pos, None, None);
     }
 
     EventResult::Continue
@@ -225,11 +214,7 @@ pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventRe
     };
 
     if let Some(pos) = target_pos {
-        let pokemon_mut = match battle.pokemon_at_mut(pos.0, pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon_mut.use_item(None, None);
+        Pokemon::use_item(battle, pos, None, None);
     }
 
     EventResult::Continue

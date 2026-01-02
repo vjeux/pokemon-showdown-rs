@@ -46,11 +46,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
 
     if is_ice {
         // source.useItem()
-        let used_item = if let Some(source_pokemon) = battle.pokemon_at_mut(source.0, source.1) {
-            source_pokemon.use_item(None, None).is_some()
-        } else {
-            false
-        };
+        let used_item = Pokemon::use_item(battle, source, None, None).is_some();
 
         if used_item {
             // source.addVolatile('gem');

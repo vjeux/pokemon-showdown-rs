@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onChargeMove(pokemon, target, move) {
 ///     if (pokemon.useItem()) {
@@ -27,7 +28,7 @@ pub fn on_charge_move(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_mut.use_item(None, None)
+        Pokemon::use_item(battle, pokemon_pos, None, None)
     };
 
     if used_item.is_some() {

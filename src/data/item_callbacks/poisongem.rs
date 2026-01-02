@@ -42,13 +42,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
 
     // if (move.type === 'Poison' && source.useItem())
     if move_type == "Poison" {
-        let used_item = {
-            let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            source_pokemon.use_item(None, None).is_some()
-        };
+        let used_item = Pokemon::use_item(battle, source_pos, None, None).is_some();
 
         if used_item {
             // source.addVolatile('gem');

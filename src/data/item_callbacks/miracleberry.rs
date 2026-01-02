@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onUpdate(pokemon) {
 ///     if (pokemon.status || pokemon.volatiles['confusion']) {
@@ -23,7 +24,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     };
 
     if !pokemon_mut.status.is_empty() || pokemon_mut.volatiles.contains_key(&"confusion".into()) {
-        pokemon_mut.eat_item(false, None, None);
+        Pokemon::eat_item(battle, pokemon_pos, false, None, None);
     }
 
     EventResult::Continue
