@@ -472,6 +472,27 @@ pub struct MoveData {
     /// JavaScript: sleepUsable?: boolean
     #[serde(rename = "sleepUsable", default)]
     pub sleep_usable: bool,
+    /// Weather condition set by this move
+    /// JavaScript: weather?: string
+    #[serde(default)]
+    pub weather: Option<String>,
+    /// Terrain condition set by this move
+    /// JavaScript: terrain?: string
+    #[serde(default)]
+    pub terrain: Option<String>,
+    /// Side condition set by this move (Stealth Rock, Reflect, etc.)
+    /// JavaScript: sideCondition?: string
+    #[serde(rename = "sideCondition", default)]
+    pub side_condition: Option<String>,
+    /// Slot condition set by this move (Future Sight, etc.)
+    /// JavaScript: slotCondition?: string
+    #[serde(rename = "slotCondition", default)]
+    pub slot_condition: Option<String>,
+    /// Self-switch flag (U-turn, Baton Pass, etc.)
+    /// JavaScript: selfSwitch?: boolean | string
+    /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses boolean | string union
+    #[serde(rename = "selfSwitch", default)]
+    pub self_switch: Option<serde_json::Value>,
     /// Nonstandard status (Past, Future, Unobtainable, etc.)
     /// JavaScript: isNonstandard?: Nonstandard | null
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
