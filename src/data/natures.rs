@@ -10,6 +10,7 @@ use once_cell::sync::Lazy;
 use std::collections::HashMap;
 
 /// Stat that can be modified by nature
+/// JavaScript equivalent: StatIDExceptHP (sim/global-types.ts)
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum NatureStat {
     Atk,
@@ -43,6 +44,8 @@ impl NatureStat {
 }
 
 /// Nature definition
+/// JavaScript equivalent: NatureData (sim/dex-data.ts)
+/// 3 fields in JavaScript
 #[derive(Debug, Clone, Copy)]
 pub struct NatureDef {
     /// Nature name
