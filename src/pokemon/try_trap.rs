@@ -13,8 +13,9 @@ impl Pokemon {
     //
     pub fn try_trap(&mut self, is_hidden: bool) -> bool {
         // JS: if (!this.runStatusImmunity('trapped')) return false;
-        // Note: Missing runStatusImmunity('trapped') check
-        // Note: Would need Battle reference to call runStatusImmunity
+        if !self.run_status_immunity("trapped") {
+            return false;
+        }
 
         // JS: if (this.trapped && isHidden) return true;
         if self.trapped && is_hidden {
@@ -25,6 +26,7 @@ impl Pokemon {
         self.trapped = true;
         // Note: Rust trapped field is bool, cannot represent 'hidden' state
         // Note: JavaScript uses bool | 'hidden' to distinguish visible vs hidden trap
+        // Note: This is a type system limitation - would need enum Trapped { Visible, Hidden }
 
         // JS: return true;
         true

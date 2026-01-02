@@ -586,14 +586,15 @@ This document tracks divergences between the JavaScript and Rust implementations
   - Currently just sets flags and clears item
 
 #### try_trap.rs
-- Status: ✅ Fixed (Documented)
-- Issue: Missing runStatusImmunity check and trapped type distinction
-- Action: Documented missing pieces
+- Status: ✅ Fixed (Partially Implemented)
+- Issue: Was missing runStatusImmunity check, now implemented
+- Action: Added runStatusImmunity('trapped') check
 - Notes:
-  - Missing runStatusImmunity('trapped') check (needs Battle reference)
-  - Rust trapped field is bool, cannot represent 'hidden' state
-  - JavaScript uses bool | 'hidden' to distinguish visible vs hidden trap
-  - Missing ability to differentiate trap visibility for Shadow Tag vs Arena Trap
+  - ✅ NOW IMPLEMENTED: runStatusImmunity('trapped') check
+  - ✅ Correctly returns false if Pokemon is immune to being trapped
+  - Rust trapped field is bool, cannot represent 'hidden' state (type system limitation)
+  - JavaScript uses bool | 'hidden' to distinguish visible vs hidden trap (Shadow Tag vs Arena Trap)
+  - Would need enum Trapped { Visible, Hidden } to fully match JavaScript
 
 #### update_max_hp.rs
 - Status: ✅ Fixed (Partially Implemented)
@@ -948,14 +949,15 @@ The following are marked as "NOTE: This method is NOT in JavaScript - Rust-speci
 - **Total documented this session**: 20 files across 5 batches
 - **Complete**: Went through every TODO/NOTE and documented them all!
 
-### Session 9 - 2026-01-01 (Implementation Phase Begins)
+### Session 9 - 2026-01-01 (Implementation Phase Continues)
 - **Goal**: Start implementing missing functionality to achieve 1-to-1 equivalence
 - **Completed**:
   - ✅ Fixed update_max_hp.rs - Added Dynamax check for HP doubling (MERGED)
   - ✅ Fixed has_item.rs - Added ignoringItem() check - now fully 1-to-1! (MERGED)
+  - ✅ Fixed try_trap.rs - Added runStatusImmunity check (MERGED)
   - ✅ Project compiles successfully (0 errors, 0 warnings)
 - **Methods Now Fully 1-to-1**: has_item.rs
-- **Methods Significantly Improved**: update_max_hp.rs (only missing battle.add message)
+- **Methods Significantly Improved**: update_max_hp.rs, try_trap.rs
 - **Path Forward**:
   - Phase 1 (Current): Fix methods that can be improved without API changes
   - Phase 2 (Next): Refactor method signatures to take Battle where needed
