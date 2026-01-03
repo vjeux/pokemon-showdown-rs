@@ -13,8 +13,14 @@ use crate::event::EventResult;
 ///         this.boost({ spe: -1 }, source, target, null, true);
 ///     }
 /// }
-pub fn on_damaging_hit(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    // Check if move makes contact
+    if let (Some(target), Some(source)) = (target_pos, source_pos) {
+        if battle.check_move_makes_contact(&crate::ID::from(move_id), source, target, true) {
+            // Lower attacker's Speed by 1 stage
+            battle.boost(&[("spe", -1)], source, Some(target), None, true, false);
+        }
+    }
     EventResult::Continue
 }
 

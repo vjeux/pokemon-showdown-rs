@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 25 (6.6%)
+- Completed: 31 (8.2%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -42,14 +42,25 @@
 24. **Psychic Surge** (psychicsurge.rs) - onStart: Sets psychic terrain
 25. **Misty Surge** (mistysurge.rs) - onStart: Sets misty terrain
 
+### Batch 6 - Damaging Hit Abilities (6 abilities)
+26. **Seed Sower** (seedsower.rs) - onDamagingHit: Sets grassy terrain when hit
+27. **Rock Head** (rockhead.rs) - onDamage: Prevents recoil damage except for Struggle
+28. **Sand Spit** (sandspit.rs) - onDamagingHit: Sets sandstorm when hit
+29. **Tangling Hair** (tanglinghair.rs) - onDamagingHit: Lowers attacker's Speed on contact moves
+30. **Aftermath** (aftermath.rs) - onDamagingHit: Damages attacker 1/4 max HP on contact if target faints
+31. **Cotton Down** (cottondown.rs) - onDamagingHit: Lowers Speed of all other active Pokemon when hit
+
 ## Current Session
-Implemented 25 abilities across 5 batches.
+Implemented 31 abilities across 6 batches.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
-- Using `battle.boost()` for stat boosts (Attack, Special Attack, etc.)
+- Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, etc.)
 - Using `battle.field.set_weather()` for weather-setting abilities
 - Using `battle.field.set_terrain()` for terrain-setting abilities
+- Using `battle.check_move_makes_contact()` to check for contact moves
+- Using `battle.get_all_active()` to iterate through all active Pokemon
+- Using `battle.damage()` to deal damage to Pokemon
 - Properly handling special cases (Kyogre/Blue Orb, Groudon/Red Orb)
 - All implementations follow Rust borrow checker patterns with two-phase access
 

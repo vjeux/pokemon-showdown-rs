@@ -13,8 +13,19 @@ use crate::event::EventResult;
 ///         if (this.activeMove.id !== 'struggle') return null;
 ///     }
 /// }
-pub fn on_damage(_battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    // If the effect is recoil damage
+    if let Some(eff_id) = effect_id {
+        if eff_id == "recoil" {
+            // Check if active move exists and is not Struggle
+            if let Some(ref active_move) = battle.active_move {
+                if active_move.id.as_str() != "struggle" {
+                    // Prevent recoil damage for all moves except Struggle
+                    return EventResult::Null;
+                }
+            }
+        }
+    }
     EventResult::Continue
 }
 
