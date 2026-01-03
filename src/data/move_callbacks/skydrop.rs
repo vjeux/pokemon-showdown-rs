@@ -454,9 +454,10 @@ pub mod condition {
         // We need to get the defender from the current context
         // In this callback, the defender would be accessed through the event context
         // For now, we'll implement by setting trapped on the effect source
-        if let Some(_source) = effect_source {
-            // battle.setTrapped(source, true);
-            // TODO: Implement battle.set_trapped
+        if let Some(source) = effect_source {
+            // defender.trapped = true;
+            use crate::pokemon::TrappedState;
+            battle.set_trapped(source, TrappedState::Visible);
         }
 
         EventResult::Continue
