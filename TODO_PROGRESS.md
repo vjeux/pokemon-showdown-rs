@@ -2122,3 +2122,50 @@ if (target && move.multiaccuracy && hit > 1) {
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
+
+### Batch 151 - SourceEffect SleepUsable Check (1 TODO)
+
+**Completed fixes:**
+- **SleepUsable** (hit_step_move_hit_loop.rs) - Implemented sourceEffect move's sleepUsable check
+
+**Implementation Details:**
+- Checks if active_move.source_effect exists
+- Looks up the source effect move in dex.moves()
+- Combines move.sleepUsable || sourceEffect.sleepUsable
+- Matches JavaScript: `const isSleepUsable = move.sleepUsable || this.dex.moves.get(move.sourceEffect).sleepUsable;`
+
+**Files Modified:**
+- src/battle_actions/hit_step_move_hit_loop.rs - Implemented sourceEffect sleepUsable check (14 insertions, 1 deletion)
+
+**Git Commit:**
+- a7e1bc75: "Implement sourceEffect sleepUsable check in hit loop (Batch 151)"
+
+**Progress:**
+- TODOs Resolved: 1
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+
+### Batch 152 - Z/Max Move Protection Breaking Damage (1 TODO)
+
+**Completed fixes:**
+- **zBrokeProtect** (modify_damage.rs) - Implemented zBrokeProtect check using getMoveHitData infrastructure
+
+**Implementation Details:**
+- Uses battle.get_move_hit_data(target_pos) to retrieve move hit data
+- Checks z_broke_protect flag from hit data
+- Applies 0.25x damage reduction when Z/Max move breaks through protection
+- Shows "-zbroken" message
+- Matches JavaScript: `if (move.isZOrMaxPowered && target.getMoveHitData(move).zBrokeProtect)`
+
+**Files Modified:**
+- src/battle_actions/modify_damage.rs - Implemented zBrokeProtect check (9 insertions, 4 deletions)
+
+**Git Commit:**
+- f7bc5486: "Implement zBrokeProtect check using getMoveHitData (Batch 152)"
+
+**Progress:**
+- TODOs Resolved: 1
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
