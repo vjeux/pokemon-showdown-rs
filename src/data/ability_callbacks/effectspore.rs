@@ -56,7 +56,11 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         return EventResult::Continue;
     }
 
-    // TODO: Check runStatusImmunity('powder') - for now, always pass
+    // Check runStatusImmunity('powder') - returns true if immune (should not apply status)
+    // JavaScript: source.runStatusImmunity('powder')
+    if !Pokemon::run_status_immunity(battle, source_pos, "powder", false) {
+        return EventResult::Continue;
+    }
 
     // JavaScript: const r = this.random(100);
     let r = battle.random(100) as i32;
