@@ -148,7 +148,34 @@ pub fn hit_step_move_hit_loop(
         //         this.battle.retargetLastMove(target);
         //     }
         // }
-        // TODO: Implement retargeting (needs addMove and retargetLastMove methods)
+        if let Some(target_pos) = targets_copy.get(0) {
+            if let SpreadMoveTarget::Target(target) = target_pos {
+                // Check if smartTarget is explicitly set (typeof move.smartTarget === 'boolean')
+                if active_move.smart_target.is_some() {
+                    if hit > 1 {
+                        // this.battle.addMove('-anim', pokemon, move.name, target);
+                        let pokemon_str = {
+                            let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+                                Some(p) => p,
+                                None => return,
+                            };
+                            pokemon.get_slot()
+                        };
+                        let target_str = {
+                            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                                Some(p) => p,
+                                None => return,
+                            };
+                            target_pokemon.get_slot()
+                        };
+                        battle.add_move(&["-anim", &pokemon_str, &active_move.name, &target_str]);
+                    } else {
+                        // this.battle.retargetLastMove(target);
+                        battle.retarget_last_move(*target);
+                    }
+                }
+            }
+        }
 
         // Handle multiaccuracy (Triple Kick)
         // if (target && move.multiaccuracy && hit > 1) {

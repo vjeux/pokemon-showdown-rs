@@ -193,8 +193,21 @@ pub fn hit_step_steal_boosts(
         //         this.battle.addMove('-anim', pokemon, "Spectral Thief", target);
         //     }
         if active_move.id.as_str() == "spectralthief" {
-            // TODO: Implement addMove for animations
-            // battle.add_move("-anim", attacker_pos, "Spectral Thief", target_pos);
+            let pokemon_str = {
+                let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+                    Some(p) => p,
+                    None => return,
+                };
+                pokemon.get_slot()
+            };
+            let target_str = {
+                let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                    Some(p) => p,
+                    None => return,
+                };
+                target_pokemon.get_slot()
+            };
+            battle.add_move(&["-anim", &pokemon_str, "Spectral Thief", &target_str]);
         }
     }
 
