@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 220 (57.9%)
+- Completed: 224 (58.9%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -537,6 +537,9 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 93 - Zero to Hero (1 ability)
 220. **Zero to Hero** (zerotohero.rs) - onSwitchOut: Changes Palafin to Hero forme when switching out (non-permanent forme change); onSwitchIn: Shows activation message when switching in as Hero forme; uses forme_change with base species checking and is_permanent=true; skips heroMessageDisplayed tracking (requires new Pokemon field not yet available)
 
+### Batch 94 - Zen Mode (1 ability)
+221-224. **Zen Mode** (zenmode.rs) - All 4 callbacks implemented: onResidual: Adds/removes zenmode volatile based on HP (HP <= 1/2 → add, HP > 1/2 in Zen forme → add then remove); onEnd: Removes zenmode volatile, sets transformed=false, forme changes back using species.battleOnly; condition::onStart: Changes to Darmanitan-Zen or Darmanitan-Galar-Zen based on species name; condition::onEnd: Changes back from Zen formes using species.battleOnly; uses volatile status system, forme_change infrastructure, and species.battle_only field (StringOrVec extraction pattern)
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -558,7 +561,8 @@ Partially completed As One Glastrier (Batch 90) - 3/4 callbacks (onFoeTryEatItem
 Completed Power Construct (Batch 91) - HP-based forme change to Zygarde-Complete.
 Completed Shields Down (Batch 92) - HP-based forme changes and status immunity in Meteor forme.
 Completed Zero to Hero (Batch 93) - Switch-triggered forme change for Palafin.
-Progress: 203→220/380 (57.9%).
+Completed Zen Mode (Batch 94) - HP-based volatile system with forme changes for Darmanitan using species.battle_only and StringOrVec extraction.
+Progress: 203→224/380 (58.9%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
