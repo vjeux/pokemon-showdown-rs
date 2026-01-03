@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 184 (48.4%)
+- Completed: 186 (48.9%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -391,6 +391,9 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 64 - Wind Move Response (1 TODO)
 184. **Wind Power** (windpower.rs) - onDamagingHit: Adds charge volatile when hit by wind moves (checks active_move.flags.wind); onSideConditionStart still needs implementation
 
+### Batch 65 - Ally Sleep Protection (2 TODOs)
+185. **Sweet Veil** (sweetveil.rs) - onAllySetStatus: Blocks sleep status from allies; onAllyTryAddVolatile: Blocks yawn volatile from allies
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -409,7 +412,8 @@ Completed Perish Body and Quick Draw (Batch 61) using add_volatile and random_ch
 Completed Cursed Body (Batch 62) using add_volatile with target as source parameter.
 Completed Aroma Veil (Batch 63) blocking specific volatiles from allies.
 Completed Wind Power onDamagingHit (Batch 64) adding charge on wind moves.
-Progress: 184/380 abilities (48.4%).
+Completed Sweet Veil (Batch 65) blocking sleep and yawn from allies.
+Progress: 186/380 abilities (48.9%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
