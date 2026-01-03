@@ -207,10 +207,10 @@ pub fn modify_damage(
     // let typeMod = target.runEffectiveness(move);
     // typeMod = this.battle.clampIntRange(typeMod, -6, 6);
     // target.getMoveHitData(move).typeMod = typeMod;
-    let mut type_mod = Pokemon::run_effectiveness(battle, target_pos, &move_data.id);
-    type_mod = battle.clamp_int_range(type_mod, Some(-6), Some(6));
-    eprintln!("[MODIFY_DAMAGE] Type effectiveness (via run_effectiveness): move_id={}, type_mod={}",
-        move_data.id, type_mod);
+    let type_mod = battle.get_type_effectiveness_mod(&move_type, &target_types);
+    eprintln!("[MODIFY_DAMAGE] Type effectiveness: move_type={}, target_types={:?}, type_mod={}",
+        move_type, target_types, type_mod);
+
     // Store type_mod in move hit data
     // target.getMoveHitData(move).typeMod = typeMod;
     if let Some(move_hit_data) = battle.get_move_hit_data_mut(target_pos) {
@@ -229,6 +229,9 @@ pub fn modify_damage(
     //     baseDamage = tr(baseDamage / 2);
     //   }
     // }
+    let type_mod = battle.get_type_effectiveness_mod(&move_type, &target_types);
+    eprintln!("[MODIFY_DAMAGE] Type effectiveness: move_type={}, target_types={:?}, type_mod={}",
+        &move_type, target_types, type_mod);
     if type_mod > 0 {
         battle.add("-supereffective", &[Arg::String(target_slot.clone())]);
         for _ in 0..type_mod {

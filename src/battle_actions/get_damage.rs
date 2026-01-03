@@ -168,25 +168,28 @@ pub fn get_damage(
     };
 
     // Check immunity first
-    // JavaScript: if (!target.runImmunity(move, !suppressMessages))
-    // For now, we'll do a basic type check (full immunity checking would be more complex)
-    let (target_side, target_poke) = target_pos;
-    let target_types = if let Some(side) = battle.sides.get(target_side) {
-        if let Some(pokemon) = side.pokemon.get(target_poke) {
-            pokemon.types.clone()
+    // JavaScript:if (source.ignoreImmunity && (source.ignoreImmunity === true || source.ignoreImmunity[type])) return true;
+    // JavaScript: if (!target.runImmunity(move, !suppressMessages)) return false;
+    
+    // Check if move ignores immunity (e.g., Z-moves)
+    let ignores_immunity = if let Some(ref ignore_imm) = move_data.ignore_immunity {
+        // Can be true (ignores all immunity) or an object with type names
+        if ignore_imm.as_bool() == Some(true) {
+            true
+        } else if let Some(obj) = ignore_imm.as_object() {
+            obj.contains_key(&move_data.move_type)
         } else {
-            return None;
+            false
         }
     } else {
-        return None;
+        false
     };
-
-    // Check type immunity
-    let effectiveness =
-        crate::data::typechart::get_effectiveness_multi(&move_data.move_type, &target_types);
-    if effectiveness == 0.0 {
+    
+    if !ignores_immunity && !Pokemon::run_immunity(battle, target_pos, &move_data.move_type, true) {
         return None; // Immune
     }
+
+    let (target_side, target_poke) = target_pos;
 
     // OHKO moves
     if move_data.ohko.is_some() {
