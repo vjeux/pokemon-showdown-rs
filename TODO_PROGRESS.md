@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 114 (30.0%)
+- Completed: 117 (30.8%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -244,15 +244,21 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 113. **Hydration** (hydration.rs) - onResidual: Cures status in rain/primordial sea (uses Pokemon::effective_weather and Pokemon::cure_status)
 114. **Healer** (healer.rs) - onResidual: 30% chance to cure adjacent ally's status (uses Pokemon::adjacent_allies)
 
+### Batch 32 - Damage Prevention & Team Support (3 abilities)
+115. **Magic Guard** (magicguard.rs) - onDamage: Prevents all non-move damage (checks if effect is a move by looking up in dex)
+116. **Victory Star** (victorystar.rs) - onAnyModifyAccuracy: Boosts ally accuracy by 1.1x (4506/4096)
+117. **Gluttony** (gluttony.rs) - onStart/onDamage: Sets gluttony flag in ability state for early berry consumption
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 19 abilities (batches 22-31).
-Progress: 114/380 abilities (30.0%).
+Implemented 22 abilities (batches 22-32).
+Progress: 117/380 abilities (30.8%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
 Completed damage modifier abilities using battle.get_move_hit_data() to access critical hit and type effectiveness data.
 Completed residual status cure abilities using Pokemon::effective_weather and Pokemon::adjacent_allies for weather checking and ally iteration.
+Completed Magic Guard using effect type detection via dex lookups.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)

@@ -12,8 +12,19 @@ use crate::event::EventResult;
 ///         return this.chainModify([4506, 4096]);
 ///     }
 /// }
-pub fn on_any_modify_accuracy(_battle: &mut Battle, _accuracy: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_any_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    let ability_holder = match battle.effect_state.target {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (source.isAlly(this.effectState.target) && typeof accuracy === 'number')
+    if let Some(src_pos) = source_pos {
+        if battle.is_ally(src_pos, ability_holder) {
+            return EventResult::Number(battle.chain_modify_fraction(4506, 4096));
+        }
+    }
+
     EventResult::Continue
 }
 
