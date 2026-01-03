@@ -5,12 +5,12 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: ~307 total (down from 330 at session start - resolved 22 in Batches 179-184)
+- **Remaining TODOs**: ~303 total (down from 330 at session start - resolved 26 in Batches 179-186)
   - Complex abilities requiring transform/illusion infrastructure: ~0 TODOs (ALL COMPLETE!)
   - Move callbacks requiring queue/event system extensions: ~7 TODOs (Pursuit fully complete)
-  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~311 TODOs
-- **Latest Progress**: Batch 184 - Ability dispatching in run_event_side (2 TODO comments resolved)
-- **Session 2 Summary**: Batches 179-184 - Event system improvements (22 TODOs resolved)
+  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~303 TODOs
+- **Latest Progress**: Batch 186 - beforeMoveCallback implementation in run_move (1 TODO resolved)
+- **Session 2 Summary**: Batches 179-186 - Event system improvements (26 TODOs resolved)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type), **Boost modification system complete** (Battle::run_event_boost() enables callbacks to modify stat boosts via relay_var_boost), **Pokemon action state infrastructure** (Battle::set_trapped(), Battle::decrement_active_move_actions() enable managing Pokemon battle state), **Side-level event system complete** (Battle::single_event_side() and Battle::run_event_side() enable firing events on Sides for side condition lifecycle)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
@@ -19,10 +19,10 @@
 ### Session Summary (Batches 167-183) - Latest
 
 **Session 1 (Batches 167-178)**: Resolved 18 TODOs (351 → 332)
-**Session 2 (Batches 179-184)**: Resolved 22 TODOs (330 → ~307)
-**Total**: Resolved 40 TODOs (351 → ~307)
+**Session 2 (Batches 179-186)**: Resolved 26 TODOs (330 → ~303)
+**Total**: Resolved 44 TODOs (351 → ~303)
 
-**TODOs Resolved This Session (179-184)**: 22 total
+**TODOs Resolved This Session (179-186)**: 26 total
 - Batch 179: 1 TODO (AfterSubDamage damage parameter in handle_move_event)
 - Batch 180: 1 TODO (Damage event dispatching in handle_move_event)
 - Batch 181: 10 TODO comments (callback checking in find_pokemon_event_handlers)
@@ -33,6 +33,10 @@
   - Pseudo weather, weather, terrain with callback and getKey validation
 - Batch 184: 2 TODO comments (ability dispatching in run_event_side)
   - Ability callback dispatching for SideConditionStart event
+- Batch 185: 3 TODO comments (resolve_priority calls in find_field_event_handlers)
+  - Proper event handler ordering and priority calculation
+- Batch 186: 1 TODO (beforeMoveCallback implementation in run_move)
+  - Enables Bide and Focus Punch pre-move callbacks
 
 **Previous Session (167-178)**: 18 total
 - Batch 167: 1 TODO (Sky Drop onFoeTrapPokemon)
@@ -614,6 +618,133 @@ for side_index in 0..self.sides.len() {
 **Compilation**: ✅ Successful
 
 **Git Commit**: "Batch 184: Implement ability dispatching in run_event_side"
+
+
+### Batch 185 - resolve_priority Calls in find_field_event_handlers (3 TODOs) ⭐
+
+**Files Modified**:
+- `src/battle/find_event_handlers.rs` - Changed signature from &self to &mut self
+- `src/battle/find_field_event_handlers.rs` - Changed signature and added resolve_priority calls
+
+**TODOs Resolved**: 3 TODO comments (lines 69, 98, 126 - all "Should call resolve_priority")
+
+This batch implements proper event handler priority resolution for field conditions (pseudo weather, weather, terrain). Previously, event handlers were created with default priority/order/sub_order values. Now they are properly calculated using the resolve_priority infrastructure.
+
+**Problem**: Event handlers for field conditions (pseudo weather, weather, terrain) had TODO comments to call resolve_priority but weren't doing so. This meant:
+- Handler ordering might be incorrect
+- Priority-based execution wasn't working properly
+- Speed ties weren't resolved correctly
+
+**Solution**:
+1. Changed `find_event_handlers` from `&self` to `&mut self` (prerequisite for calling resolve_priority)
+2. Changed `find_field_event_handlers` from `&self` to `&mut self`
+3. Added resolve_priority calls for all three field condition types
+4. Used collection pattern to avoid borrow checker issues (collect IDs first, then process)
+
+**JavaScript Reference**:
+```javascript
+for (const id in field.pseudoWeather) {
+    const pseudoWeatherState = field.pseudoWeather[id];
+    const pseudoWeather = this.dex.conditions.getByID(id as ID);
+    callback = this.getCallback(field, pseudoWeather, callbackName);
+    if (callback !== undefined || (getKey && pseudoWeatherState[getKey])) {
+        handlers.push(this.resolvePriority({
+            effect: pseudoWeather, callback, state: pseudoWeatherState,
+            end: customHolder ? null : field.removePseudoWeather, effectHolder: customHolder || field,
+        }, callbackName));
+    }
+}
+```
+
+**Rust Implementation** (pseudo weather example):
+```rust
+// Collect IDs first (immutable borrow)
+let pseudo_weather_ids: Vec<ID> = self.field.pseudo_weather.iter()
+    .filter(|(pw_id, pw_state)| {
+        let has_callback = self.has_callback(pw_id, callback_name);
+        let has_get_key = get_key.is_some_and(|key| {
+            pw_state.data.get(key).is_some()
+        });
+        has_callback || has_get_key
+    })
+    .map(|(pw_id, _)| pw_id.clone())
+    .collect();
+
+// Create handlers and call resolve_priority (mutable borrow)
+for pw_id in pseudo_weather_ids {
+    let mut handler = EventListener {
+        effect_id: pw_id,
+        effect_type: EffectType::Condition,
+        // ... other fields ...
+    };
+
+    // Call resolve_priority to fill in order/priority/sub_order
+    self.resolve_priority(&mut handler, callback_name);
+
+    handlers.push(handler);
+}
+```
+
+**Key Changes**:
+1. Collect data before calling resolve_priority (avoids "cannot borrow as mutable while borrowed as immutable")
+2. Create handler with default values
+3. Call resolve_priority to calculate proper priority, order, sub_order, speed
+4. Apply same pattern to weather and terrain
+
+**Effect**: Field condition event handlers now have proper priority resolution:
+- Priority values extracted from condition data
+- Sub-order calculated based on effect type (e.g., Weather = 5, Condition = 2)
+- Speed calculated from effect holder Pokemon stats
+- Enables correct event execution order
+
+**Compilation**: ✅ Successful
+
+**Git Commit**: "Batch 185: Implement resolve_priority calls in find_field_event_handlers"
+
+
+### Batch 186 - beforeMoveCallback Implementation (1 TODO) ⭐
+
+**File Modified**: `src/battle_actions/run_move.rs`
+
+**TODOs Resolved**: 1 TODO comment (line 123 - "Implement beforeMoveCallback")
+
+This batch implements beforeMoveCallback dispatching in run_move. This allows moves like Bide and Focus Punch to run custom logic immediately before the move executes.
+
+**Problem**: run_move had a TODO for calling beforeMoveCallback. The dispatcher already existed (dispatch_before_move_callback) but wasn't being called, so moves like Bide and Focus Punch couldn't run their pre-execution logic.
+
+**Solution**: Added has_callback check and dispatch call to run_move before the move executes.
+
+**JavaScript Reference**:
+```javascript
+// Call beforeMoveCallback
+if (move.beforeMoveCallback)
+    move.beforeMoveCallback.call(this, pokemon, target, move);
+```
+
+**Rust Implementation**:
+```rust
+// Call beforeMoveCallback
+// if (move.beforeMoveCallback)
+//     move.beforeMoveCallback.call(this, pokemon, target, move);
+if battle.has_callback(move_id, "beforeMoveCallback") {
+    crate::data::move_callbacks::dispatch_before_move_callback(battle, move_id.as_str(), pokemon_pos);
+}
+```
+
+**Key Changes**:
+1. Check if move has beforeMoveCallback using has_callback()
+2. Call dispatch_before_move_callback with battle, move_id, and pokemon_pos
+3. Placed before "Reset lastDamage" (matches JavaScript execution order)
+
+**Moves Enabled**:
+1. **Bide** - Sets up bide state to track damage taken
+2. **Focus Punch** - Checks if Pokemon was hit this turn and fails if so
+
+**Effect**: Moves with beforeMoveCallback now run their pre-execution logic correctly. This is critical for Bide (damage tracking) and Focus Punch (fail if hit check).
+
+**Compilation**: ✅ Successful
+
+**Git Commit**: "Batch 186: Implement beforeMoveCallback in run_move"
 
 
 ### Batch 177 - Side Condition Callback Wiring (Infrastructure Completion) ⭐
