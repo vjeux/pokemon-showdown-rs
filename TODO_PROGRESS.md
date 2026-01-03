@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 200 (52.6%)
+- Completed: 201 (52.9%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), **onSideConditionStart dispatcher infrastructure updated** (added pokemon_pos and side_condition_id parameters)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -430,6 +430,10 @@ Updated onSideConditionStart dispatcher infrastructure to properly pass pokemon_
 199. **Flower Gift** (flowergift.rs) - onAllyModifySpD: Boosts ally Special Defense by 1.5x in sun (checks Cherrim base species and effective weather)
 Note: onStart and onWeatherChange still need formeChange and singleEvent infrastructure
 
+### Batch 73 - Anticipation Ability (1 TODO - Partial Implementation)
+200. **Anticipation** (anticipation.rs) - onStart: Shows ability activation when foe has super-effective or OHKO move (uses pokemon.foes(), move_slots, dex.get_immunity, dex.get_effectiveness)
+Note: OHKO move detection not yet implemented (needs move data ohko field)
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -456,7 +460,8 @@ Completed Wind Rider onStart (Batch 69) checking for tailwind on switch-in.
 Completed Primordial Sea (Batch 70) following Desolate Land pattern for strong weather mechanics.
 Completed Unburden (Batch 71) using volatile status system and pokemon.item/ignoring_ability() methods.
 Completed Flower Gift ally modifiers (Batch 72) using effectState.target, base species checking, and effective weather.
-Progress: 200/380 abilities (52.6%).
+Completed Anticipation (Batch 73) checking foes' movesets for super-effective moves (partial - OHKO detection pending).
+Progress: 201/380 abilities (52.9%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
