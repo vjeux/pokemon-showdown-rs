@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 231 (60.8%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used)
+- Completed: 232 (61.1%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -554,6 +554,9 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 89-90 - As One Completion (2 TODOs)
 230-231. **As One (Spectrier)** and **As One (Glastrier)** (asonespectrier.rs, asoneglastrier.rs) - onFoeTryEatItem: Prevents foes from eating berries when unnerved flag is set (returns !effectState.unnerved); completes both As One abilities fully (previously partial 3/4 callbacks, now 4/4 complete)
 
+### Batch 98 - Emergency Exit (1 ability)
+232. **Emergency Exit** (emergencyexit.rs) - onEmergencyExit: Triggers switch when activated; checks battle.can_switch(), forceSwitchFlag, and switchFlag; clears all active Pokemon switchFlags; sets target.switchFlag = true; shows -activate message
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -581,7 +584,8 @@ Completed Sap Sipper Ally Protection (Batch 96) - onAllyTryHitSide boosts Attack
 Completed Pickpocket (Batch 97) - onAfterMoveSecondary steals items from contact attackers using Pokemon::take_item and Pokemon::set_item.
 Discovered item infrastructure exists (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item all implemented).
 Completed As One Spectrier and As One Glastrier (Batch 89-90 completion) - onFoeTryEatItem prevents berry eating when unnerved; both abilities now fully complete.
-Progress: 203→231/380 (60.8%).
+Completed Emergency Exit (Batch 98) - onEmergencyExit triggers switches using battle.can_switch() and switch flags.
+Progress: 203→232/380 (61.1%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
