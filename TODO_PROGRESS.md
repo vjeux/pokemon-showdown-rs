@@ -2058,3 +2058,67 @@ Continue searching for more implementable TODOs. Remaining TODOs primarily requi
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
+
+### Batch 150 - Multiaccuracy Logic for Triple Kick (1 TODO)
+
+**Completed fixes:**
+- **Multiaccuracy** (hit_step_move_hit_loop.rs) - Implemented per-hit accuracy checking for moves like Triple Kick
+
+**Infrastructure Used:**
+- ActiveMove.multi_accuracy field
+- Accuracy enum (Percent/AlwaysHits)
+- Pokemon.boosts.accuracy and Pokemon.boosts.evasion
+- battle.random_chance() for accuracy checks
+
+**Implementation Details:**
+- Checks if target exists, multi_accuracy is true, and hit > 1
+- Implements boost table: [1, 4/3, 5/3, 2, 7/3, 8/3, 3]
+- Applies accuracy boosts (multiply by boost_table[boost])
+- Applies evasion boosts (divide by boost_table[boost] for positive, multiply for negative)
+- Checks random_chance(accuracy, 100) and breaks loop if accuracy check fails
+- Note: Skips runEvent('ModifyBoost'), runEvent('ModifyAccuracy'), runEvent('Accuracy') for now (requires relay_var infrastructure)
+
+**JavaScript Equivalence:**
+```javascript
+if (target && move.multiaccuracy && hit > 1) {
+    let accuracy = move.accuracy;
+    const boostTable = [1, 4 / 3, 5 / 3, 2, 7 / 3, 8 / 3, 3];
+    if (accuracy !== true) {
+        if (!move.ignoreAccuracy) {
+            const boosts = this.battle.runEvent('ModifyBoost', pokemon, null, null, { ...pokemon.boosts });
+            const boost = this.battle.clampIntRange(boosts['accuracy'], -6, 6);
+            if (boost > 0) {
+                accuracy *= boostTable[boost];
+            } else {
+                accuracy /= boostTable[-boost];
+            }
+        }
+        if (!move.ignoreEvasion) {
+            const boosts = this.battle.runEvent('ModifyBoost', target, null, null, { ...target.boosts });
+            const boost = this.battle.clampIntRange(boosts['evasion'], -6, 6);
+            if (boost > 0) {
+                accuracy /= boostTable[boost];
+            } else if (boost < 0) {
+                accuracy *= boostTable[-boost];
+            }
+        }
+    }
+    accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy);
+    if (!move.alwaysHit) {
+        accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+        if (accuracy !== true && !this.battle.randomChance(accuracy, 100)) break;
+    }
+}
+```
+
+**Files Modified:**
+- src/battle_actions/hit_step_move_hit_loop.rs - Implemented multiaccuracy logic (127 insertions, 3 deletions)
+
+**Git Commit:**
+- 26a76146: "Implement multiaccuracy logic for moves like Triple Kick (Batch 150)"
+
+**Progress:**
+- TODOs Resolved: 1
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
