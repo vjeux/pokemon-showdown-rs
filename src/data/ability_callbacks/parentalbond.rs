@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex::Multihit;
 
 /// onPrepareHit(source, target, move) {
 ///     if (move.category === 'Status' || move.multihit || move.flags['noparentalbond'] || move.flags['charge'] ||
@@ -36,7 +37,7 @@ pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, 
     // move.multihit = 2;
     // move.multihitType = 'parentalbond';
     if let Some(ref mut active_move) = battle.active_move {
-        active_move.multi_hit = Some(2);
+        active_move.multi_hit = Some(Multihit::Fixed(2));
         active_move.multi_hit_type = Some("parentalbond".to_string());
     }
 

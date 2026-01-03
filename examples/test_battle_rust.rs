@@ -10,6 +10,7 @@
 /// Usage: cargo run --example test_battle_rust [seed_number]
 
 use pokemon_showdown::{Battle, BattleOptions, PlayerOptions, PokemonSet, PRNGSeed, ID};
+use pokemon_showdown::battle::TeamFormat;
 use pokemon_showdown::dex_data::{StatsTable, Gender};
 use std::fs;
 use std::env;
@@ -103,13 +104,13 @@ fn main() {
         seed: Some(PRNGSeed::Gen5([0, 0, 0, seed_num as u16])),
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
-            team: team1,
+            team: TeamFormat::Sets(team1),
             avatar: None,
             rating: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
-            team: team2,
+            team: TeamFormat::Sets(team2),
             avatar: None,
             rating: None,
         }),

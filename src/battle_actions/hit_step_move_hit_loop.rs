@@ -4,6 +4,7 @@
 
 use crate::*;
 use crate::battle_actions::{SpreadMoveDamage, SpreadMoveDamageValue, SpreadMoveTargets, SpreadMoveTarget, ActiveMove};
+use crate::dex::Multihit;
 
 /// Main loop for handling multi-hit moves
 /// Equivalent to battle-actions.ts hitStepMoveHitLoop()
@@ -39,12 +40,37 @@ pub fn hit_step_move_hit_loop(
     }
 
     // let targetHits = move.multihit || 1;
-    let mut target_hits = active_move.multi_hit.unwrap_or(1);
-
-    // if (Array.isArray(targetHits)) {
-    // Note: In Rust, multi_hit is Option<i32>, so we can't represent arrays
-    // This would need to be handled differently - for now we'll skip this logic
-    // TODO: Implement array-based multihit (would require changing ActiveMove.multi_hit type)
+    let mut target_hits = match &active_move.multi_hit {
+        Some(Multihit::Fixed(n)) => *n,
+        Some(Multihit::Range(min, max)) => {
+            // if (Array.isArray(targetHits)) {
+            // yes, it's hardcoded... meh
+            // if (targetHits[0] === 2 && targetHits[1] === 5) {
+            if *min == 2 && *max == 5 {
+                if battle.gen >= 5 {
+                    // 35-35-15-15 out of 100 for 2-3-4-5 hits
+                    let distribution = vec![2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5];
+                    let mut hits = battle.sample(&distribution) as i32;
+                    if hits < 4 {
+                        let has_loaded_dice = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
+                            .map(|p| p.has_item(battle, "loadeddice"))
+                            .unwrap_or(false);
+                        if has_loaded_dice {
+                            hits = 5 - battle.random(2) as i32;
+                        }
+                    }
+                    hits
+                } else {
+                    let distribution = vec![2, 2, 2, 3, 3, 3, 4, 5];
+                    battle.sample(&distribution) as i32
+                }
+            } else {
+                // For other ranges, just pick a random value in the range
+                battle.random((*max - *min + 1) as usize) as i32 + *min
+            }
+        }
+        None => 1,
+    };
 
     // Special case for loaded dice with targetHits == 10
     // if (targetHits === 10 && pokemon.hasItem('loadeddice')) targetHits -= this.battle.random(7);

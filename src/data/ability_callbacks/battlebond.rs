@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex::Multihit;
 
 /// onSourceAfterFaint(length, target, source, effect) {
 ///     if (source.bondTriggered) return;
@@ -152,7 +153,7 @@ pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
     if species_name == "Greninja-Ash" && !transformed {
         // move.multihit = 3;
         if let Some(ref mut active_move) = battle.active_move {
-            active_move.multi_hit = Some(3);
+            active_move.multi_hit = Some(Multihit::Fixed(3));
         }
     }
 

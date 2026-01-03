@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 
 use once_cell::sync::Lazy;
 
-use crate::dex::{Dex};
+use crate::dex::{Dex, Multihit};
 use crate::dex_data::{BoostsTable, ID};
 
 /// Choosable target types for moves
@@ -425,8 +425,8 @@ pub struct ActiveMove {
     pub multi_accuracy: bool,
     /// Number of hits for multi-hit moves
     /// JavaScript: multihit?: number | number[]
-    /// TODO: Rust uses Option<i32>, cannot represent number[] variant
-    pub multi_hit: Option<i32>,
+    /// Rust uses Multihit enum to represent number | [number, number] union type
+    pub multi_hit: Option<Multihit>,
     /// Multi-hit type (e.g., "parentalbond")
     /// JavaScript: multihitType?: string
     pub multi_hit_type: Option<String>,
