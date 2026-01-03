@@ -377,7 +377,40 @@ Completed Mountaineer using activeTurns check for just-switched-in immunity to R
 - All implementations follow Rust borrow checker patterns with two-phase access
 
 ## Next Steps
-- Continue with more boost-based abilities (Beast Boost, Soul-Heart, etc.)
-- Implement type-changing abilities (Aerilate, Refrigerate, etc.)
-- Implement abilities requiring complex infrastructure (move modification, forme changes)
+Based on systematic analysis of remaining TODOs, the following infrastructure is needed (in priority order):
+
+### Critical Infrastructure Needed
+1. **Volatile Status System** (37 references) - Highest priority
+   - Pokemon.addVolatile(id, source, sourceEffect)
+   - Pokemon.removeVolatile(id)
+   - Pokemon.hasVolatile(id) / Pokemon.volatiles[id] checking
+   - Volatile status effects (Flash Fire boost, Unburden speed, etc.)
+
+2. **Ability State System** (24 references)
+   - Pokemon.abilityState.data HashMap for per-ability state
+   - Used by: Gorilla Tactics (choiceLock), Berserk (checkedBerserk), etc.
+
+3. **Side Condition System** (10 references)
+   - Side.addSideCondition(id, source, sourceEffect)
+   - Side.removeSideCondition(id)
+   - Side.getSideCondition(id)
+   - Conditions: reflect, lightscreen, tailwind, toxicspikes, stealthrock, etc.
+
+4. **Queue/Turn Order System**
+   - this.queue.willMove(pokemon) - check if Pokemon will move this turn
+   - Used by: Analytic, Stall, and other speed-based abilities
+
+5. **Battle Utility Methods**
+   - Pokemon.getLastAttackedBy() - track damage sources
+   - Pokemon.isAlly(other) - check if Pokemon are allies
+   - this.attrLastMove('[still]') - animation control
+   - Pokemon.ignoringAbility() - check if abilities are suppressed
+
+### Implementation Strategy
+- Implement volatile status system first (unblocks 37+ abilities)
+- Then ability state (unblocks 24+ abilities including completing Gorilla Tactics)
+- Then side conditions (unblocks 10+ abilities)
+- Queue and utility methods as needed
+
+All infrastructure must be 1-to-1 with JavaScript implementation.
 
