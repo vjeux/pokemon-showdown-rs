@@ -71,11 +71,6 @@ impl Side {
                             // JavaScript:         break;
                             // JavaScript:     }
                             // JavaScript: }
-                            eprintln!("[AUTO_CHOOSE] Pokemon {} has {} moves", pokemon.name, pokemon.move_slots.len());
-                            eprintln!("[AUTO_CHOOSE] z_move_used = {}", self.z_move_used);
-                            for (i, move_slot) in pokemon.move_slots.iter().enumerate() {
-                                eprintln!("[AUTO_CHOOSE]   Move {}: {} (disabled={}, is_z={})", i, move_slot.id, move_slot.disabled, move_slot.is_z);
-                            }
                             let mut found_move = false;
                             for move_slot in &pokemon.move_slots {
                                 // Skip if disabled
@@ -85,16 +80,13 @@ impl Side {
                                 // Skip if PP is 0
                                 // JavaScript: if ((moveSlot.pp <= 0 && !this.volatiles['partialtrappinglock']) || ...) { disabled = true; }
                                 if move_slot.pp == 0 {
-                                    eprintln!("[AUTO_CHOOSE] Skipping move {} with 0 PP", move_slot.id);
                                     continue;
                                 }
                                 // Skip Z-moves if already used
                                 if move_slot.is_z && self.z_move_used {
-                                    eprintln!("[AUTO_CHOOSE] Skipping Z-move {} because z_move_used=true", move_slot.id);
                                     continue;
                                 }
 
-                                eprintln!("[AUTO_CHOOSE] Choosing move: {}", move_slot.id);
                                 let move_id = move_slot.id.clone();
                                 // Pass zmove name if this is a Z-move and it hasn't been used
                                 let zmove = if move_slot.is_z && !self.z_move_used {
@@ -107,7 +99,6 @@ impl Side {
                                 break;
                             }
                             if !found_move {
-                                eprintln!("[AUTO_CHOOSE] All moves disabled, using Struggle");
                                 // All moves disabled, use Struggle
                                 let _ = self.choose_move(
                                     ID::new("struggle"),
