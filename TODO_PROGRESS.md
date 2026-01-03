@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 207 (54.5%)
+- Completed: 209 (55.0%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -492,13 +492,21 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 78 - Lingering Aroma (1 ability)
 204. **Lingering Aroma** (lingeringaroma.rs) - onDamagingHit: Changes attacker's ability to Lingering Aroma on contact moves; skips if source ability has cantsuppress flag or already has lingeringaroma; uses Pokemon::set_ability, battle.check_move_makes_contact, dex.abilities().flags.get("cantsuppress") for implementation
 
+### Batch 79 - Forecast (1 ability)
+205. **Forecast** (forecast.rs) - onStart: Calls onWeatherChange; onWeatherChange: Changes Castform forme based on weather (Sunny in sun/desolateland, Rainy in rain/primordialsea, Snowy in hail/snowscape, base Castform otherwise); uses forme_change with base species checking, effective_weather, and transformed check
+
+### Batch 80 - Stance Change (1 ability)
+206. **Stance Change** (stancechange.rs) - onModifyMove: Changes Aegislash forme based on move (Aegislash-Blade for offensive moves, Aegislash for King's Shield); skips Status moves except kingsshield; uses forme_change with base species checking, active_move.category and active_move.id checks
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
 Completed Flower Gift (Batch 76) using new forme_change infrastructure.
 Completed Toxic Debris (Batch 77) using battle.is_ally() for side determination and active_move.category checking.
 Completed Lingering Aroma (Batch 78) using Pokemon::set_ability and check_move_makes_contact.
-Progress: 203→207/380 (54.5%).
+Completed Forecast (Batch 79) using forme_change for weather-based forme changes.
+Completed Stance Change (Batch 80) using forme_change for move-based forme changes.
+Progress: 203→209/380 (55.0%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
