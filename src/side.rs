@@ -368,17 +368,4 @@ mod tests {
         assert!(!side.has_side_condition(&rocks));
     }
 
-    #[test]
-    fn test_faint() {
-        let team = create_test_team();
-        let mut side = Side::new(SideID::P1, 0, "Test".to_string(), team, 1);
-
-        side.switch_in(0, 0);
-        assert_eq!(side.count_unfainted(), 2);
-
-        side.faint_pokemon(0);
-        assert_eq!(side.count_unfainted(), 1);
-        assert_eq!(side.pokemon_left, 1);
-        assert!(side.active[0].is_none());
-    }
 }

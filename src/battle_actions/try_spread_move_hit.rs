@@ -96,6 +96,50 @@ pub fn try_spread_move_hit(
         return false;
     }
 
+    // PrepareHit event - MUST be called BEFORE all moveSteps
+    // JavaScript (battle-actions.ts:587):
+    //   const hitResult = this.battle.singleEvent('Try', move, null, pokemon, targets[0], move) &&
+    //     this.battle.singleEvent('PrepareHit', move, {}, targets[0], pokemon, move) &&
+    //     this.battle.runEvent('PrepareHit', pokemon, targets[0], move);
+    //   if (!hitResult) {
+    //     if (hitResult === false) {
+    //       this.battle.add('-fail', pokemon);
+    //       this.battle.attrLastMove('[still]');
+    //     }
+    //     return hitResult === this.battle.NOT_FAIL;
+    //   }
+
+    eprintln!("[TRY_SPREAD_MOVE_HIT] About to call PrepareHit for move {:?}", move_id);
+
+    // First, call move's onPrepareHit handler via single_event
+    let prepare_hit_result = battle.single_event(
+        "PrepareHit",
+        move_id,
+        Some(targets[0]),
+        Some(pokemon_pos),
+        None,
+    );
+
+    eprintln!("[TRY_SPREAD_MOVE_HIT] PrepareHit single_event result: {:?}", prepare_hit_result);
+
+    // If single_event returned false/None/NotFail, the move fails
+    use crate::event::EventResult;
+    match prepare_hit_result {
+        EventResult::Boolean(false) | EventResult::NotFail | EventResult::Null => {
+            return false;
+        }
+        _ => {}
+    }
+
+    // Then, call run_event to find handlers on pokemon/target
+    battle.run_event(
+        "PrepareHit",
+        Some(pokemon_pos),
+        Some(targets[0]),
+        Some(move_id),
+        None,
+    );
+
     // Implement the 7-step pipeline from JavaScript's trySpreadMoveHit
 
     // Step 0: Invulnerability (hitStepInvulnerabilityEvent)
@@ -219,38 +263,6 @@ pub fn try_spread_move_hit(
     if targets_after_immunity.is_empty() {
         return false;
     }
-
-    // PrepareHit event - must be called BEFORE accuracy check
-    // JavaScript (battle-actions.ts:587):
-    //   this.battle.singleEvent("PrepareHit", move, {}, targets[0], pokemon, move) &&
-    //   this.battle.runEvent("PrepareHit", pokemon, targets[0], move);
-
-    // First, call move's onPrepareHit handler via single_event
-    let prepare_hit_result = battle.single_event(
-        "PrepareHit",
-        move_id,
-        Some(targets_after_immunity[0]),
-        Some(pokemon_pos),
-        None,
-    );
-
-    // If single_event returned false/None/NotFail, the move fails
-    use crate::event::EventResult;
-    match prepare_hit_result {
-        EventResult::Boolean(false) | EventResult::NotFail | EventResult::Null => {
-            return false;
-        }
-        _ => {}
-    }
-
-    // Then, call run_event to find handlers on pokemon/target
-    battle.run_event(
-        "PrepareHit",
-        Some(pokemon_pos),
-        Some(targets_after_immunity[0]),
-        Some(move_id),
-        None,
-    );
 
     // Step 4: Check accuracy
     let hit_results = crate::battle_actions::hit_step_accuracy(battle, &targets_after_immunity, pokemon_pos, move_id);

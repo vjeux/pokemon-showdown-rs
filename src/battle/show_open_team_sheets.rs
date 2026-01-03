@@ -5,12 +5,9 @@ impl Battle {
     /// Show open team sheets to players
     /// Equivalent to battle.ts showOpenTeamSheets() (battle.ts:3183-3221, 39 lines)
     ///
-    // TODO: INCOMPLETE IMPLEMENTATION - Missing Teams.pack() infrastructure
-    // Missing from TypeScript version:
-    // 1. Teams.pack() serialization function (teams.ts:119-200+)
-    //    - Converts PokemonSet[] to compact string format
-    //    - Needs Teams struct/module with pack() and packName() methods
-    // 2. Once Teams.pack() exists, uncomment the final this.add() calls
+    // NOTE: Simplified implementation
+    // Teams.pack() is implemented with basic fields (name/species/item/ability/moves/nature)
+    // Full implementation would include: EVs, IVs, shiny, level, happiness, hpType, pokeball, gigantamax, dynamaxLevel, teraType
     //
     // Architectural difference:
     // - TypeScript Pokemon has `set` field storing original PokemonSet
@@ -168,14 +165,8 @@ impl Battle {
             };
 
             // JS: this.add('showteam', side.id, Teams.pack(team));
-            // TODO: Implement Teams.pack() to serialize team to compact string format
-            // For now, just indicate teams are revealed without showing actual data
-            // TEMPORARY: Show message instead of packed team until Teams.pack() is implemented
-            // When Teams.pack() exists, replace this with:
-            // let packed_team = Teams::pack(&team);
-            // self.add("showteam", &[side_id.to_str().into(), packed_team.into()]);
-            let _ = team; // Suppress unused variable warning
-            self.add("-message", &[format!("Team sheet revealed for {}", side_id.to_str()).into()]);
+            let packed_team = crate::teams::Teams::pack(&team);
+            self.add("showteam", &[side_id.to_str().into(), packed_team.into()]);
         }
     }
 }

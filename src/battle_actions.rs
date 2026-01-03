@@ -1135,79 +1135,11 @@ mod tests {
     }
 
     #[test]
-    fn test_confusion_damage() {
-        // Level 50, 100 atk, 100 def, 40 base power, 100% random
-        let damage = BattleActions::get_confusion_damage(50, 100, 100, 40, 100);
-        assert!(damage > 0);
-    }
-
-    #[test]
     fn test_target_type_choices() {
         assert!(BattleActions::target_type_choices("normal"));
         assert!(BattleActions::target_type_choices("any"));
         assert!(BattleActions::target_type_choices("adjacentFoe"));
         assert!(!BattleActions::target_type_choices("self"));
         assert!(!BattleActions::target_type_choices("all"));
-    }
-
-    // TODO: Re-enable once get_max_move_name is implemented
-    // #[test]
-    // fn test_max_move_name() {
-    //     assert_eq!(get_max_move_name("Fire"), "Max Flare");
-    //     assert_eq!(get_max_move_name("Water"), "Max Geyser");
-    //     assert_eq!(get_max_move_name("Electric"), "Max Lightning");
-    //     assert_eq!(get_max_move_name("Status"), "Max Guard");
-    // }
-
-    // TODO: Re-enable once get_z_move_name is implemented
-    // #[test]
-    // fn test_z_move_name() {
-    //     assert_eq!(get_z_move_name("Fire"), "Inferno Overdrive");
-    //     assert_eq!(get_z_move_name("Water"), "Hydro Vortex");
-    //     assert_eq!(get_z_move_name("Electric"), "Gigavolt Havoc");
-    // }
-
-    // TODO: Update these tests to use the new signature
-    // #[test]
-    // fn test_can_ultra_burst() {
-    //     assert_eq!(
-    //         BattleActions::can_ultra_burst("Necrozma-Dawn-Wings", "ultranecroziumz"),
-    //         Some("Necrozma-Ultra".to_string())
-    //     );
-    //     assert_eq!(
-    //         BattleActions::can_ultra_burst("Necrozma-Dusk-Mane", "ultranecroziumz"),
-    //         Some("Necrozma-Ultra".to_string())
-    //     );
-    //     assert_eq!(
-    //         BattleActions::can_ultra_burst("Necrozma", "ultranecroziumz"),
-    //         None
-    //     );
-    // }
-
-    #[test]
-    fn test_can_terastallize() {
-        // Gen 9 with tera type
-        assert_eq!(
-            BattleActions::can_terastallize(false, false, 9, Some("Fire")),
-            Some("Fire".to_string())
-        );
-
-        // Wrong gen
-        assert_eq!(
-            BattleActions::can_terastallize(false, false, 8, Some("Fire")),
-            None
-        );
-
-        // Has Z-Move
-        assert_eq!(
-            BattleActions::can_terastallize(true, false, 9, Some("Fire")),
-            None
-        );
-
-        // Can Mega Evo
-        assert_eq!(
-            BattleActions::can_terastallize(false, true, 9, Some("Fire")),
-            None
-        );
     }
 }

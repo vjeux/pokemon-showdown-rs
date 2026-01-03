@@ -125,7 +125,7 @@ impl Battle {
                 }
             }
 
-            if !options.team.is_empty() {
+            if !matches!(options.team, crate::battle::TeamFormat::Empty) {
                 panic!("Player {} already has a team!", side_id.to_str());
             }
         }

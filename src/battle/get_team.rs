@@ -28,16 +28,27 @@ impl Battle {
     pub fn get_team(&mut self, options: &PlayerOptions) -> Vec<PokemonSet> {
         // JS: let team = options.team;
         // JS: if (typeof team === 'string') team = Teams.unpack(team);
-        // TODO: PlayerOptions.team needs to support String | Vec<PokemonSet> | None
-        // Currently Rust only supports Vec<PokemonSet> (no string unpacking)
-        // TODO: Implement Teams::unpack() for string team format
-
-        // JS: if (team) return team;
-        if !options.team.is_empty() {
-            return options.team.clone();
+        match &options.team {
+            crate::battle::TeamFormat::Packed(packed_string) => {
+                // Unpack the team string using Teams::unpack
+                if let Some(team) = crate::teams::Teams::unpack(packed_string, &self.dex) {
+                    return team;
+                }
+                // If unpacking fails, fall through to team generation
+            }
+            crate::battle::TeamFormat::Sets(sets) => {
+                // JS: if (team) return team;
+                if !sets.is_empty() {
+                    return sets.clone();
+                }
+                // If sets is empty, fall through to team generation
+            }
+            crate::battle::TeamFormat::Empty => {
+                // Fall through to team generation
+            }
         }
 
-        // Team is empty, need to generate random team
+        // Team is empty or unpacking failed, need to generate random team
         // JS: if (!options.seed) { options.seed = PRNG.generateSeed(); }
         // TODO: PlayerOptions needs seed field (currently missing)
         // For now, use battle.prng seed

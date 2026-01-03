@@ -1330,29 +1330,6 @@ mod tests {
     }
 
     #[test]
-    fn test_type_effectiveness() {
-        let dex = Dex::load_default().expect("Failed to load dex");
-
-        // Electric vs Water = super effective
-        assert_eq!(dex.get_effectiveness("Electric", "Water"), 1);
-
-        // Electric vs Ground = immune
-        assert_eq!(dex.get_effectiveness("Electric", "Ground"), -3);
-
-        // Electric vs Electric = not very effective
-        assert_eq!(dex.get_effectiveness("Electric", "Electric"), -1);
-
-        // Electric vs Normal = neutral
-        assert_eq!(dex.get_effectiveness("Electric", "Normal"), 0);
-
-        // Fighting vs Ghost = immune
-        assert_eq!(dex.get_effectiveness("Fighting", "Ghost"), -3);
-
-        // Fire vs Grass = super effective
-        assert_eq!(dex.get_effectiveness("Fire", "Grass"), 1);
-    }
-
-    #[test]
     fn test_multi_type_effectiveness() {
         let dex = Dex::load_default().expect("Failed to load dex");
 

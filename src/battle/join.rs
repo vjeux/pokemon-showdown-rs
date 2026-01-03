@@ -31,7 +31,7 @@ impl Battle {
             } else {
                 Some(avatar.to_string())
             },
-            team: vec![], // Team is handled separately in Rust
+            team: crate::battle::TeamFormat::Empty, // Team is handled separately in Rust
             rating: None,
         };
         self.set_player(slot, options);

@@ -68,6 +68,7 @@ mod lose;
 mod force_win;
 mod set_active_move;
 mod clear_active_move;
+mod modify_active_move;
 mod suppressing_ability;
 mod get_all_pokemon;
 mod is_adjacent;
@@ -549,14 +550,33 @@ pub struct PlayerOptions {
     /// JavaScript: name: string
     pub name: String,
     /// Player's team
-    /// JavaScript: team: PokemonSet[]
-    pub team: Vec<PokemonSet>,
+    /// JavaScript: team: PokemonSet[] | string
+    /// Rust: Uses TeamFormat enum to represent union type
+    pub team: TeamFormat,
     /// Player avatar
     /// JavaScript: avatar?: string
     pub avatar: Option<String>,
     /// Player rating
     /// JavaScript: rating?: number | string
     pub rating: Option<String>,
+}
+
+/// Team format - either packed string or array of Pokemon sets
+/// JavaScript equivalent: PokemonSet[] | string
+#[derive(Debug, Clone)]
+pub enum TeamFormat {
+    /// Empty team (will be generated)
+    Empty,
+    /// Packed team string (needs unpacking with Teams::unpack)
+    Packed(String),
+    /// Array of Pokemon sets
+    Sets(Vec<PokemonSet>),
+}
+
+impl Default for TeamFormat {
+    fn default() -> Self {
+        TeamFormat::Empty
+    }
 }
 
 /// Request state for the whole battle

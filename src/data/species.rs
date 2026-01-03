@@ -1084,8 +1084,8 @@ mod tests {
         assert_eq!(pika.name, "Pikachu");
         assert!(pika.has_type("Electric"));
         assert!(!pika.has_type("Normal"));
-        assert!(pika.has_ability(battle, "Static"));
-        assert!(pika.has_ability(battle, "Lightning Rod"));
+        assert!(pika.has_ability("Static"));
+        assert!(pika.has_ability("Lightning Rod"));
         assert_eq!(pika.base_stats.spe, 90);
     }
 
@@ -1137,7 +1137,7 @@ mod tests {
         let lando_t = get_species_by_name("Landorus-Therian").unwrap();
         assert_eq!(lando_t.base_species, Some("Landorus"));
         assert_eq!(lando_t.forme, Some("Therian"));
-        assert!(lando_t.has_ability(battle, "Intimidate"));
+        assert!(lando_t.has_ability("Intimidate"));
     }
 
     #[test]

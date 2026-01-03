@@ -57,19 +57,12 @@ pub fn on_modify_move(
         (10, 150)
     };
 
-    // Store magnitude and base_power in current effect state
-    // TODO: Once battle infrastructure supports modifying active move directly,
-    // this should set move.magnitude and move.basePower
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state.data.insert(
-            "magnitude".to_string(),
-            serde_json::to_value(magnitude).unwrap_or(serde_json::Value::Null),
-        );
-        effect_state.data.insert(
-            "basePower".to_string(),
-            serde_json::to_value(base_power).unwrap_or(serde_json::Value::Null),
-        );
-    }
+    // Set move.basePower and move.magnitude
+    battle.modify_active_move_base_power(base_power);
+    battle.set_active_move_property(
+        "magnitude",
+        serde_json::to_value(magnitude).unwrap_or(serde_json::Value::Null),
+    );
 
     EventResult::Continue
 }
@@ -83,16 +76,11 @@ pub fn on_use_move_message(
     _target_pos: Option<(usize, usize)>,
     _move_id: &str,
 ) -> EventResult {
-    // Get magnitude from current effect state
-    let magnitude = if let Some(ref effect_state) = battle.current_effect_state {
-        if let Some(mag_value) = effect_state.data.get("magnitude") {
-            mag_value.as_i64().unwrap_or(0) as i32
-        } else {
-            0
-        }
-    } else {
-        0
-    };
+    // Get magnitude from active move property
+    let magnitude = battle
+        .get_active_move_property("magnitude")
+        .and_then(|v| v.as_i64())
+        .unwrap_or(0) as i32;
 
     // this.add('-activate', pokemon, 'move: Magnitude', move.magnitude);
     let pokemon_arg = {

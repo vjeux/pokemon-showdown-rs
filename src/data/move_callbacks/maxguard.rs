@@ -153,15 +153,7 @@ pub mod condition {
 
         if let Some(true) = smart_target {
             // Set smartTarget to false
-            // TODO: Once battle infrastructure supports modifying active move directly,
-            // this should set move.smartTarget = false
-            // For now, we'll track this in effect state
-            if let Some(ref mut effect_state) = battle.current_effect_state {
-                effect_state.data.insert(
-                    "smartTargetDisabled".to_string(),
-                    serde_json::to_value(true).unwrap_or(serde_json::Value::Null),
-                );
-            }
+            battle.modify_active_move_smart_target(false);
         } else {
             // this.add('-activate', target, 'move: Max Guard');
             let target_arg = {
