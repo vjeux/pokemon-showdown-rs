@@ -109,7 +109,8 @@ impl Pokemon {
         // JS:     return false;
         // JS: }
         // ✅ NOW IMPLEMENTED: runEvent('Immunity') call for ability-based immunity
-        let immunity_result = battle.run_event("Immunity", Some(pokemon_pos), None, None, None);
+        // Pass status type as relay_var_type so immunity callbacks can check it
+        let immunity_result = battle.run_event_with_type("Immunity", Some(pokemon_pos), None, None, status);
 
         if let Some(val) = immunity_result {
             if val == 0 {

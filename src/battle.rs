@@ -122,6 +122,7 @@ mod run_event;
 mod run_event_float;
 mod run_event_bool;
 mod run_event_string;
+mod run_event_with_type;
 mod find_event_handlers;
 mod priority_event;
 mod get_event_modifier;

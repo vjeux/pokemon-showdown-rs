@@ -142,11 +142,21 @@ pub mod condition {
     /// onImmunity(type, pokemon) {
     ///     if (type === 'sandstorm' || type === 'hail') return false;
     /// }
-    pub fn on_immunity(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // This callback needs additional parameters - the immunity type
-        // The signature doesn't match the TypeScript version which takes (type, pokemon)
-        // TODO: This needs to be called with the type parameter to work correctly
-        // For now, we'll return Continue to not interfere
+    pub fn on_immunity(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+        // Get the immunity type from the event's relay_var_type
+        let immunity_type = match &battle.current_event {
+            Some(event) => event.relay_var_type.clone(),
+            None => return EventResult::Continue,
+        };
+
+        // if (type === 'sandstorm' || type === 'hail') return false;
+        if let Some(type_str) = immunity_type {
+            if type_str == "sandstorm" || type_str == "hail" {
+                // return false; - grant immunity to sandstorm and hail while underwater
+                return EventResult::Boolean(false);
+            }
+        }
+
         EventResult::Continue
     }
 
