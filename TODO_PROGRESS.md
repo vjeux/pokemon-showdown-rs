@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 246 (64.7%)
+- Completed: 247 (65.0%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -609,6 +609,9 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 ### Batch 112 - Mimicry (1 ability)
 248. **Mimicry** (mimicry.rs) - onStart: Triggers terrain change (singleEvent skipped); onTerrainChange: Changes Pokemon's type based on active terrain (Electric for electricterrain, Grass for grassyterrain, Fairy for mistyterrain, Psychic for psychicterrain, or reverts to base species types); uses field.get_terrain() to check terrain, battle.dex.species().get(pokemon.base_species.as_str()).types for base types, pokemon.get_types() to check current types, and Pokemon::set_type() to change types; shows different messages based on terrain_active and pokemon.transformed state; NOTE: singleEvent and battle.hint() skipped
 
+### Batch 113 - Harvest (1 ability)
+249. **Harvest** (harvest.rs) - onResidual: Restores consumed berry when Pokemon has no item and last item was a berry; activates in harsh sunlight (sun/desolateland) or 50% chance otherwise; checks pokemon.hp, pokemon.item.is_empty(), pokemon.last_item, and ItemData.is_berry; uses Pokemon::set_item to restore berry; clears pokemon.last_item after restoration; shows -item message with ability source
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -655,8 +658,9 @@ Completed Opportunist (Batch 109) - All 7 callbacks implemented using battle.eff
 Completed Libero (Batch 110) - onPrepareHit changes type to match move type using Pokemon::set_type() and pokemon.get_types().
 Completed Color Change (Batch 111) - onAfterMoveSecondary changes type after being hit using Pokemon::set_type() (Curse Glitch skipped).
 Completed Mimicry (Batch 112) - onTerrainChange changes type based on terrain using field.get_terrain() and base species types (singleEvent skipped).
-Progress: 243→246/380 (64.7%); Completed 3 type-changing abilities this continuation.
-Remaining TODOs: 94 (down from 97 - removed 1 from Libero, 1 from Color Change, 2 from Mimicry).
+Completed Harvest (Batch 113) - onResidual restores consumed berry in sun or 50% chance using pokemon.last_item and ItemData.is_berry.
+Progress: 246→247/380 (65.0%); Completed 4 abilities this continuation (3 type-changing + 1 berry restoration).
+Remaining TODOs: 93 (down from 94 - removed 1 from Harvest).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
