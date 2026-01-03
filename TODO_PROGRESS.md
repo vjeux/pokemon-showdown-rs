@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 37 (9.7%)
+- Completed: 43 (11.3%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -58,19 +58,29 @@
 36. **Rough Skin** (roughskin.rs) - onDamagingHit: Damages attacker 1/8 max HP on contact
 37. **Iron Barbs** (ironbarbs.rs) - onDamagingHit: Damages attacker 1/8 max HP on contact
 
+### Batch 8 - Type-Based Boost Abilities (6 abilities)
+38. **Stamina** (stamina.rs) - onDamagingHit: Boosts Defense by 1 when hit by any damaging move
+39. **Regenerator** (regenerator.rs) - onSwitchOut: Heals 1/3 max HP when switching out
+40. **Justified** (justified.rs) - onDamagingHit: Boosts Attack by 1 when hit by Dark-type move
+41. **Water Compaction** (watercompaction.rs) - onDamagingHit: Boosts Defense by 2 when hit by Water-type move
+42. **Steam Engine** (steamengine.rs) - onDamagingHit: Boosts Speed by 6 when hit by Water or Fire-type move
+43. **Motor Drive** (motordrive.rs) - onTryHit: Immune to Electric-type moves and boosts Speed by 1
+
 ## Current Session
-Implemented 37 abilities across 7 batches.
+Implemented 43 abilities across 8 batches.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
-- Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, etc.)
+- Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
 - Using `battle.field.set_weather()` for weather-setting abilities
 - Using `battle.field.set_terrain()` for terrain-setting abilities
 - Using `battle.check_move_makes_contact()` to check for contact moves
 - Using `battle.get_all_active()` to iterate through all active Pokemon
 - Using `battle.damage()` to deal damage to Pokemon
+- Using `battle.heal()` to heal Pokemon
 - Using `battle.random_chance()` for probability checks
 - Using `Pokemon::try_set_status()` to apply status conditions
+- Using `move_data.move_type` to check move types for type-based abilities
 - Properly handling special cases (Kyogre/Blue Orb, Groudon/Red Orb)
 - All implementations follow Rust borrow checker patterns with two-phase access
 

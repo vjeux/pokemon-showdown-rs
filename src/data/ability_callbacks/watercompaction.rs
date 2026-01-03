@@ -12,8 +12,22 @@ use crate::event::EventResult;
 ///         this.boost({ def: 2 });
 ///     }
 /// }
-pub fn on_damaging_hit(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    // Boost Defense by 2 stages when hit by a Water-type move
+    if let Some(target) = target_pos {
+        // Check if the move is Water-type
+        let is_water_type = {
+            let move_data = match battle.dex.moves().get(move_id) {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+            move_data.move_type == "Water"
+        };
+
+        if is_water_type {
+            battle.boost(&[("def", 2)], target, None, None, false, false);
+        }
+    }
     EventResult::Continue
 }
 
