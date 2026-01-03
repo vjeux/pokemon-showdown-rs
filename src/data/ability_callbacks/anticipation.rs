@@ -96,7 +96,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
             // Actually, looking at the JavaScript, it's checking move.ohko which is from the move data.
             // Let me check if we need to look this up differently.
 
-            if (has_immunity && is_super_effective) {
+            if has_immunity && is_super_effective {
                 // this.add('-ability', pokemon, 'Anticipation');
                 let pokemon_slot = {
                     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

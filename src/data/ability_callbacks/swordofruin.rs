@@ -75,7 +75,7 @@ pub fn on_any_modify_def(battle: &mut Battle, target_pos: Option<(usize, usize)>
     // if (move.ruinedDef !== abilityHolder) return;
 
     // First check if ruinedDef is set and if that Pokemon still has the ability
-    let (current_ruined, need_to_update) = {
+    let (_current_ruined, need_to_update) = {
         if let Some(ref active_move) = battle.active_move {
             if let Some(ruined_pos) = active_move.ruined_def {
                 // Check if the Pokemon at ruined_pos still has Sword of Ruin

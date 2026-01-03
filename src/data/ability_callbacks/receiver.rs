@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///     this.effectState.target.setAbility(ability, target);
 /// }
 pub fn on_ally_faint(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
+    
     use crate::Pokemon;
 
     let target_pos = match target_pos {

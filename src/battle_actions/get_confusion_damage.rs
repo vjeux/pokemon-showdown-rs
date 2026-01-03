@@ -28,6 +28,7 @@ use crate::dex_data::BoostID;
 ///     damage = this.battle.randomizer(damage);
 ///     return Math.max(1, damage);
 ///   }
+#[allow(dead_code)]
 pub fn get_confusion_damage(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),

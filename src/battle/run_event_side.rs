@@ -30,7 +30,7 @@ impl Battle {
     pub fn run_event_side(
         &mut self,
         event_id: &str,
-        side_idx: usize,
+        _side_idx: usize,
         source: Option<(usize, usize)>,
         effect: Option<&ID>,
     ) -> Option<i32> {

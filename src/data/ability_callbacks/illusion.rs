@@ -125,7 +125,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 ///     }
 /// }
 pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    use crate::pokemon::Pokemon;
+    
 
     // if (pokemon.illusion)
     let has_illusion = {

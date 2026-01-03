@@ -65,7 +65,7 @@ pub fn on_foe_maybe_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize
     }
 
     // if (pokemon.isGrounded(!pokemon.knownType)) // Negate immunity if the type is unknown
-    let (is_grounded, known_type) = {
+    let (is_grounded, _known_type) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,

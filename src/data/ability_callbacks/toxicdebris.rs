@@ -31,7 +31,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 
     // const side = source.isAlly(target) ? source.side.foe : source.side;
     let is_ally = battle.is_ally(source_pos, target_pos);
-    let target_side_index = source_pos.0;
+    let _target_side_index = source_pos.0;
 
     // If source is ally to target, we need the foe side of source's side
     // Otherwise we need source's side

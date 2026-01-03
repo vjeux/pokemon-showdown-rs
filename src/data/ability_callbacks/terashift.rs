@@ -17,7 +17,7 @@ use crate::event::EventResult;
 pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     use crate::battle::Arg;
     use crate::dex_data::ID;
-    use crate::Pokemon;
+    
 
     // if (pokemon.baseSpecies.baseSpecies !== 'Terapagos') return;
     let (base_species_base_species, forme) = {

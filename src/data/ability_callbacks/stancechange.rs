@@ -15,7 +15,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
     use crate::dex_data::ID;
-    use crate::Pokemon;
+    
 
     // Get attacker position from current event
     let attacker_pos = match &battle.current_event {

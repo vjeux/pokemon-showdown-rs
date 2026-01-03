@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
-use crate::Pokemon;
 
 /// onSwitchIn(pokemon) {
 ///     if (pokemon.isActive && pokemon.baseSpecies.name === 'Kyogre' && !pokemon.transformed) {

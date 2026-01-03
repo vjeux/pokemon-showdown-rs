@@ -22,7 +22,7 @@ use crate::event::EventResult;
 ///         this.add('-block', target, 'ability: Flower Veil', `[of] ${effectHolder}`);
 ///     }
 /// }
-pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::battle::Arg;
 
     // if ((source && target === source) || !target.hasType('Grass')) return;

@@ -31,7 +31,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 /// }
 pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
-    use crate::Pokemon;
+    
 
     // if (!pokemon.isActive || pokemon.baseSpecies.baseSpecies !== 'Cherrim' || pokemon.transformed) return;
     let (is_active, base_species_base_species, transformed, hp, species_id, effective_weather) = {

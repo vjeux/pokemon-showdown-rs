@@ -42,7 +42,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 /// }
 pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
-    use crate::Pokemon;
+    
 
     // if (pokemon.baseSpecies.baseSpecies !== 'Castform' || pokemon.transformed) return;
     let (is_active, base_species_base_species, transformed, species_id, effective_weather) = {

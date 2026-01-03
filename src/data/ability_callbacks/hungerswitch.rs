@@ -14,7 +14,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
-    use crate::Pokemon;
+    
 
     // if (pokemon.species.baseSpecies !== 'Morpeko' || pokemon.terastallized) return;
     let (base_species, terastallized, species_name) = {

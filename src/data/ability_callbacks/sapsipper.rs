@@ -44,7 +44,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///     }
 /// }
 pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    use crate::dex_data::ID;
+    
 
     // if (source === this.effectState.target || !target.isAlly(source)) return;
     let ability_holder = match battle.effect_state.target {
