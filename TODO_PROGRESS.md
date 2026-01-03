@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 98 (25.8%)
+- Completed: 100 (26.3%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -210,8 +210,14 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 97. **Solid Rock** (solidrock.rs) - onSourceModifyDamage: Reduces super-effective damage by 25% (0.75x modifier)
 98. **Prism Armor** (prismarmor.rs) - onSourceModifyDamage: Reduces super-effective damage by 25% (0.75x modifier)
 
+### Batch 23 - Ally Synergy (2 abilities)
+99. **Plus** (plus.rs) - onModifySpA: 1.5x Special Attack when ally has Plus or Minus ability
+100. **Minus** (minus.rs) - onModifySpA: 1.5x Special Attack when ally has Plus or Minus ability
+
 ## Current Session
-Completed major getMoveHitData infrastructure refactor and implemented 3 damage-reduction abilities that use it.
+Completed major getMoveHitData infrastructure refactor.
+Implemented 5 abilities using the new infrastructure (batches 22-23).
+Reached 100 abilities completed (26.3% - over one quarter complete)!
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Now using pokemon.foes(), pokemon.has_ability(), and modifying battle.active_move fields.
 
