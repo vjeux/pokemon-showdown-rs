@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 49 (12.9%)
+- Completed: 53 (13.9%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -74,8 +74,14 @@
 48. **Volt Absorb** (voltabsorb.rs) - onTryHit: Immune to Electric-type moves and heals 1/4 max HP
 49. **Water Absorb** (waterabsorb.rs) - onTryHit: Immune to Water-type moves and heals 1/4 max HP
 
+### Batch 10 - More Absorb & Boost Abilities (4 abilities)
+50. **Earth Eater** (eartheater.rs) - onTryHit: Immune to Ground-type moves and heals 1/4 max HP
+51. **Storm Drain** (stormdrain.rs) - onTryHit: Immune to Water-type moves and boosts Special Attack by 1
+52. **Lightning Rod** (lightningrod.rs) - onTryHit: Immune to Electric-type moves and boosts Special Attack by 1
+53. **Cheek Pouch** (cheekpouch.rs) - onEatItem: Heals 1/3 max HP when eating an item
+
 ## Current Session
-Implemented 49 abilities across 9 batches.
+Implemented 53 abilities across 10 batches.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
