@@ -2,8 +2,6 @@ use crate::*;
 
 impl Battle {
 
-    /// Boost a Pokemon's stats (legacy signature for compatibility)
-    /// TODO: This should be migrated to use the new boost_new() method
     /// Apply stat boosts to a Pokemon
     /// Equivalent to battle.ts boost() (battle.ts:1974-2043)
     ///
