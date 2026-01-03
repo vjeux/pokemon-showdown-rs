@@ -5,19 +5,19 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 337 total (down from 338 - resolved 1 in Batch 173: Pursuit beforeTurnCallback)
+- **Remaining TODOs**: 336 total (down from 337 - resolved 1 in Batch 174: NOT_FAIL handling in hit_step_try_hit_event)
   - Complex abilities requiring transform/illusion infrastructure: ~0 TODOs (ALL COMPLETE! - Imposter, Magic Bounce, Rebound, Illusion, and Commander all completed)
   - Move callbacks requiring queue/event system extensions: ~8 TODOs (down from ~9 - resolved Pursuit beforeTurnCallback, onBeforeSwitchOut still needs queue/runMove)
-  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 173 - Battle side condition infrastructure + Pursuit beforeTurnCallback (1 TODO resolved + MAJOR infrastructure)
+  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~335 TODOs
+- **Latest Progress**: Batch 174 - NOT_FAIL handling in hit_step_try_hit_event (1 TODO resolved)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type), **Boost modification system complete** (Battle::run_event_boost() enables callbacks to modify stat boosts via relay_var_boost), **Pokemon action state infrastructure** (Battle::set_trapped(), Battle::decrement_active_move_actions() enable managing Pokemon battle state)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
 ## Completed Implementations
 
-### Session Summary (Batches 167-173) - Latest
+### Session Summary (Batches 167-174) - Latest
 
-**TODOs Resolved This Session**: 12 total
+**TODOs Resolved This Session**: 13 total
 - Batch 167: 1 TODO (Sky Drop onFoeTrapPokemon)
 - Batch 168: 1 TODO (Sky Drop onFoeBeforeMove - Sky Drop now FULLY COMPLETE!)
 - Batch 169: 3 TODOs (Foresight onModifyBoost, Miracle Eye onModifyBoost, Mist onTryBoost)
@@ -25,9 +25,10 @@
 - Batch 171: 1 TODO (Heal Bell ally side support)
 - Batch 172: 1 TODO (Mist infiltrates check)
 - Batch 173: 1 TODO (Pursuit beforeTurnCallback)
+- Batch 174: 1 TODO (NOT_FAIL handling in hit_step_try_hit_event)
 
 **TODOs Added**: 0 (Mist infiltrates TODO was added in Batch 169 and removed in Batch 172)
-**Net Progress**: 351 → 337 TODOs (-14 total)
+**Net Progress**: 351 → 336 TODOs (-15 total)
 
 **Major Infrastructure Additions**: 5
 1. **Battle::set_trapped()** - Pokemon trapping state management (Batch 167)
@@ -73,6 +74,48 @@ Combined with existing ability support, these systems provide comprehensive batt
 - Batch 171: "Implement ally side support for Heal Bell in multi battles (Batch 171)"
 - Batch 172: "Implement infiltrates check for Mist condition (Batch 172)"
 - Batch 173: "Implement Battle side condition infrastructure and Pursuit beforeTurnCallback (Batch 173 - MAJOR)"
+- Batch 174: "Implement proper NOT_FAIL handling in hit_step_try_hit_event (Batch 174)"
+
+---
+
+### Batch 174 - NOT_FAIL Handling (1 TODO)
+
+**File Modified**: `src/battle_actions/hit_step_try_hit_event.rs`
+
+**TODO Resolved**: Implemented proper NOT_FAIL handling for TryHit event results
+
+**Implementation Details**:
+In `hit_step_try_hit_event()`, the final result mapping needed to properly handle Battle::NOT_FAIL according to JavaScript semantics.
+
+**JavaScript Reference**:
+```javascript
+// for (const i of targets.keys()) {
+//     if (hitResults[i] !== this.battle.NOT_FAIL) hitResults[i] = hitResults[i] || false;
+// }
+// return hitResults;
+```
+
+Where `Battle.NOT_FAIL = ""` (empty string), which is falsy in JavaScript.
+
+**Rust Implementation**:
+The function converts `Option<i32>` results from `battle.run_event()` into `Vec<bool>`:
+- `None` (from `EventResult::NotFail`) → `false` (NOT_FAIL is falsy)
+- `Some(0)` (from `EventResult::Boolean(false)`) → `false`
+- `Some(non-zero)` (from `EventResult::Boolean(true)`) → `true`
+
+This matches the JavaScript semantics exactly:
+- If result is NOT_FAIL (''): stays as NOT_FAIL (falsy, becomes false in boolean)
+- If result is truthy: stays true
+- If result is falsy but not NOT_FAIL: becomes false
+
+**Changes Made**:
+1. Replaced simple `r != Some(0)` with proper match statement
+2. Added comprehensive documentation of JavaScript NOT_FAIL semantics
+3. Properly mapped all three cases (None, Some(0), Some(non-zero))
+
+**Compilation**: ✅ Successful
+
+**Git Commit**: "Implement proper NOT_FAIL handling in hit_step_try_hit_event (Batch 174)"
 
 ---
 
