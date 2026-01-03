@@ -264,3 +264,56 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - TODOs resolved: 12
 - Category B now 4/5 complete (only boost.rs refactor note and handle_ability_event.rs Rust-specific remain)
 
+
+### Eleventh Implementation: reset_r_n_g.rs - resetRNG method ✅
+- **Issue**: Complete stub, no implementation
+- **Action**: Implemented full resetRNG() method matching JavaScript
+
+  **JavaScript** (battle.ts:1996-1999):
+  - `this.prng = new PRNG(seed)`
+  - `this.add('message', "The battle's RNG was reset.")`
+
+  **Rust** (reset_r_n_g.rs:15-23):
+  - Takes optional seed parameter, uses battle's prng_seed if not provided
+  - Creates new PRNG instance: `self.prng = PRNG::new(seed_to_use)`
+  - Logs message: `self.add("message", &[Arg::Str("The battle's RNG was reset.")])`
+
+- **Side Effects**: None (purely additive implementation)
+- **Result**: Matches JavaScript for RNG reset functionality
+- **Commit**: 36c17b2e
+
+### Twelfth Implementation: to_j_s_o_n.rs - toJSON method ✅
+- **Issue**: Complete stub, no implementation
+- **Action**: Implemented toJSON() method matching JavaScript
+
+  **JavaScript** (battle.ts:2002-2004):
+  - `return State.serializeBattle(this)`
+
+  **Rust** (to_j_s_o_n.rs:14-17):
+  - `crate::state::serialize_battle(self)`
+
+- **Side Effects**: None (purely additive implementation)
+- **Result**: Matches JavaScript for battle serialization
+- **Commit**: cf43c692
+
+### Thirteenth Implementation: to_string.rs - toString method ✅
+- **Issue**: Complete stub, no implementation
+- **Action**: Implemented toString() method matching JavaScript
+
+  **JavaScript** (battle.ts:2006-2008):
+  - `return \`Battle: ${this.format}\``
+
+  **Rust** (to_string.rs:14-17):
+  - `format!("Battle: {}", self.format_id.to_str())`
+
+- **Side Effects**: None (purely additive implementation)
+- **Result**: Matches JavaScript for string representation
+- **Commit**: a2d4bc7d
+
+**Updated Progress (2026-01-02 - Session 2):**
+- Files completed: 13 (6 Category A + 7 stub implementations)
+- Files remaining: 137
+- TODOs resolved: 15
+- All complete stub files (reset_r_n_g, to_j_s_o_n, to_string) now implemented
+- Next: Continue scanning for remaining stubs and partial implementations
+
