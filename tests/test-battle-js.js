@@ -65,65 +65,115 @@ battle.setPlayer('p2', {
     })),
 });
 
-// Parse TRACE_PRNG environment variable
-// Examples: TRACE_PRNG=1-5 (trace calls 1 through 5)
-//           TRACE_PRNG=10 (trace call 10)
-//           TRACE_PRNG=1,5,10 (trace calls 1, 5, and 10)
-const tracePrng = process.env.TRACE_PRNG || '';
-const traceCalls = new Set();
-if (tracePrng) {
-    tracePrng.split(',').forEach(part => {
-        if (part.includes('-')) {
-            const [start, end] = part.split('-').map(Number);
-            for (let i = start; i <= end; i++) {
-                traceCalls.add(i);
-            }
-        } else {
-            traceCalls.add(Number(part));
-        }
-    });
-}
-
-// Wrap PRNG to count calls and optionally trace
+// Wrap PRNG to count calls
 let totalPrngCalls = 0;
 const originalNext = battle.prng.rng.next.bind(battle.prng.rng);
 battle.prng.rng.next = function() {
     totalPrngCalls++;
-
-    // Trace specific calls if requested
-    if (traceCalls.has(totalPrngCalls)) {
-        console.error(`\n[JS PRNG #${totalPrngCalls}] Stack trace:`);
-        const stack = new Error().stack.split('\n').slice(2, 10);
-        stack.forEach(line => console.error('  ' + line.trim()));
-        console.error('');
-    }
-
     return originalNext();
-};
-
-// Patch speedSort to log what's being shuffled
-const originalSpeedSort = battle.speedSort.bind(battle);
-battle.speedSort = function(list, comparator) {
-    const prngBefore = totalPrngCalls;
-    const result = originalSpeedSort(list, comparator);
-    const prngAfter = totalPrngCalls;
-
-    if (prngAfter > prngBefore) {
-        console.error(`\n[SPEED_SORT SHUFFLED] Made ${prngAfter - prngBefore} PRNG calls sorting ${list.length} items:`);
-        list.forEach((item, i) => {
-            console.error(`  [${i}] effect=${item.effect?.id || item.id || 'unknown'}, speed=${item.speed || 0}, priority=${item.priority || 0}, subOrder=${item.subOrder || 0}, order=${item.order || 'none'}`);
-        });
-    }
-    return result;
 };
 
 console.log(`# JavaScript Battle Test - Seed ${seedNum}`);
 console.log(`# P1: ${teams.p1[0].name} vs P2: ${teams.p2[0].name}`);
 
+// Helper to format Pokemon detail
+function formatPokemonDetail(pokemon, side) {
+    if (!pokemon) return null;
+
+    const boosts = [];
+    for (const [stat, boost] of Object.entries(pokemon.boosts || {})) {
+        if (boost !== 0) {
+            boosts.push(`${stat}:${boost > 0 ? '+' : ''}${boost}`);
+        }
+    }
+
+    const volatiles = Object.keys(pokemon.volatiles || {}).filter(v => v !== 'lockedmove');
+
+    const moves = (pokemon.moveSlots || []).map(m => `${m.id}(${m.pp}/${m.maxpp})`).join(', ');
+
+    const statsStr = pokemon.stats
+        ? `Atk:${pokemon.stats.atk} Def:${pokemon.stats.def} SpA:${pokemon.stats.spa} SpD:${pokemon.stats.spd} Spe:${pokemon.stats.spe}`
+        : 'not initialized';
+
+    return {
+        name: pokemon.name,
+        species: pokemon.species?.name || 'unknown',
+        hp: `${pokemon.hp}/${pokemon.maxhp}`,
+        hpPercent: Math.floor((pokemon.hp / pokemon.maxhp) * 100),
+        status: pokemon.status || 'none',
+        item: pokemon.item || 'none',
+        ability: pokemon.ability || 'none',
+        stats: statsStr,
+        boosts: boosts.length > 0 ? boosts.join(', ') : 'none',
+        volatiles: volatiles.length > 0 ? volatiles.join(', ') : 'none',
+        moves: moves
+    };
+}
+
+function printBattleState(battle, iteration) {
+    console.error('');
+    console.error(`========== Turn ${battle.turn} (Iteration ${iteration}) ==========`);
+
+    // Field conditions
+    const weather = battle.field.weather?.id || 'none';
+    const terrain = battle.field.terrain?.id || 'none';
+    console.error(`Field: Weather=${weather}, Terrain=${terrain}, PRNG calls=${totalPrngCalls}`);
+
+    // Player 1 state
+    console.error('');
+    console.error('--- Player 1 ---');
+    battle.sides[0].active.forEach((pokemon, i) => {
+        if (pokemon) {
+            const detail = formatPokemonDetail(pokemon, battle.sides[0]);
+            console.error(`  Active[${i}]: ${detail.name} (${detail.species})`);
+            console.error(`    HP: ${detail.hp} (${detail.hpPercent}%) | Status: ${detail.status}`);
+            console.error(`    Item: ${detail.item} | Ability: ${detail.ability}`);
+            console.error(`    Stats: ${detail.stats}`);
+            console.error(`    Boosts: ${detail.boosts}`);
+            console.error(`    Volatiles: ${detail.volatiles}`);
+            console.error(`    Moves: ${detail.moves}`);
+        }
+    });
+
+    // Show side conditions for P1
+    const p1SideConditions = Object.keys(battle.sides[0].sideConditions || {});
+    if (p1SideConditions.length > 0) {
+        console.error(`  Side Conditions: ${p1SideConditions.join(', ')}`);
+    }
+
+    // Player 2 state
+    console.error('');
+    console.error('--- Player 2 ---');
+    battle.sides[1].active.forEach((pokemon, i) => {
+        if (pokemon) {
+            const detail = formatPokemonDetail(pokemon, battle.sides[1]);
+            console.error(`  Active[${i}]: ${detail.name} (${detail.species})`);
+            console.error(`    HP: ${detail.hp} (${detail.hpPercent}%) | Status: ${detail.status}`);
+            console.error(`    Item: ${detail.item} | Ability: ${detail.ability}`);
+            console.error(`    Stats: ${detail.stats}`);
+            console.error(`    Boosts: ${detail.boosts}`);
+            console.error(`    Volatiles: ${detail.volatiles}`);
+            console.error(`    Moves: ${detail.moves}`);
+        }
+    });
+
+    // Show side conditions for P2
+    const p2SideConditions = Object.keys(battle.sides[1].sideConditions || {});
+    if (p2SideConditions.length > 0) {
+        console.error(`  Side Conditions: ${p2SideConditions.join(', ')}`);
+    }
+
+    console.error('');
+}
+
 // Run battle for up to 100 turns
 for (let i = 1; i <= 100; i++) {
     const prngBefore = totalPrngCalls;
 
+    // Print detailed state before turn
+    printBattleState(battle, i);
+
+    console.error(`>>> Making choices for turn ${battle.turn}...`);
     battle.makeChoices('default', 'default');
 
     const prngAfter = totalPrngCalls;
@@ -137,8 +187,15 @@ for (let i = 1; i <= 100; i++) {
         .join(', ');
 
     console.log(`#${i}: turn=${battle.turn}, prng=${prngBefore}->${prngAfter}, P1=[${p1Active}], P2=[${p2Active}]`);
+    console.error(`>>> Turn ${battle.turn} completed. PRNG: ${prngBefore}->${prngAfter} (+${prngAfter - prngBefore} calls)`);
 
     if (battle.ended || i >= 100) {
+        console.error('');
+        console.error('========================================');
+        console.error(`Battle ended: ${battle.ended}`);
+        console.error(`Final turn: ${battle.turn}`);
+        console.error(`Total PRNG calls: ${totalPrngCalls}`);
+        console.error('========================================');
         console.log(`# Battle ended: ${battle.ended}, Turn: ${battle.turn}, Total PRNG: ${totalPrngCalls}`);
         break;
     }

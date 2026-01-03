@@ -8,17 +8,13 @@
 # 3. Running battles with those teams
 # 4. Comparing battle state turn-by-turn
 #
-# Usage: ./tests/compare-battles.sh [seed_number] [TRACE_PRNG]
-# Example: ./tests/compare-battles.sh 100 1-5  (trace PRNG calls 1-5)
+# Usage: ./tests/compare-battles.sh [seed_number]
+# Example: ./tests/compare-battles.sh 100
 
 SEED=${1:-1}
-TRACE_PRNG=${2:-}
 
 echo "======================================"
 echo "Battle Comparison Test - Seed $SEED"
-if [ -n "$TRACE_PRNG" ]; then
-    echo "PRNG Trace: $TRACE_PRNG"
-fi
 echo "======================================"
 echo ""
 
@@ -59,19 +55,16 @@ echo ""
 echo "Step 3: Running battles..."
 echo ""
 
-echo "  JavaScript battle:"
-if [ -n "$TRACE_PRNG" ]; then
-    TRACE_PRNG=$TRACE_PRNG node tests/test-battle-js.js $SEED 2>&1 | grep '^#[0-9]' > /tmp/js-battle-seed${SEED}.txt
-else
-    node tests/test-battle-js.js $SEED 2>&1 | grep '^#[0-9]' > /tmp/js-battle-seed${SEED}.txt
-fi
+echo "  Running JavaScript battle..."
+# Run JavaScript battle and save both full output and summary lines (suppress console output)
+node tests/test-battle-js.js $SEED > /tmp/js-battle-seed${SEED}-stdout.txt 2> /tmp/js-battle-seed${SEED}-stderr.txt
+cat /tmp/js-battle-seed${SEED}-stdout.txt /tmp/js-battle-seed${SEED}-stderr.txt > /tmp/js-battle-seed${SEED}-full.txt
+grep '^#[0-9]' /tmp/js-battle-seed${SEED}-full.txt > /tmp/js-battle-seed${SEED}.txt
 
-echo "  Rust battle:"
-if [ -n "$TRACE_PRNG" ]; then
-    docker exec -e TRACE_PRNG="$TRACE_PRNG" pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example test_battle_rust $SEED 2>&1 | grep '^#[0-9]'" > /tmp/rust-battle-seed${SEED}.txt
-else
-    docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example test_battle_rust $SEED 2>&1 | grep '^#[0-9]'" > /tmp/rust-battle-seed${SEED}.txt
-fi
+echo "  Running Rust battle..."
+# Run Rust battle and save both full output and summary lines (suppress console output)
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example test_battle_rust $SEED 2>&1" > /tmp/rust-battle-seed${SEED}-full.txt 2>&1
+grep '^#[0-9]' /tmp/rust-battle-seed${SEED}-full.txt > /tmp/rust-battle-seed${SEED}.txt
 
 # Step 4: Compare battle outputs
 echo ""
@@ -107,14 +100,63 @@ else
     diff /tmp/js-battle-seed${SEED}.txt /tmp/rust-battle-seed${SEED}.txt | head -40 || true
     echo ""
     echo "======================================"
+    echo "Generated Files"
+    echo "======================================"
+    echo ""
+    echo "Team Files:"
+    ls -lh /tmp/teams-seed${SEED}-js.json 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+    ls -lh /tmp/teams-seed${SEED}-rust.json 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+    echo ""
+    echo "Battle Summary (used for comparison):"
+    ls -lh /tmp/js-battle-seed${SEED}.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+    ls -lh /tmp/rust-battle-seed${SEED}.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+    echo ""
+    echo "JavaScript Detailed Logs:"
+    ls -lh /tmp/js-battle-seed${SEED}-stdout.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+    ls -lh /tmp/js-battle-seed${SEED}-stderr.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+    ls -lh /tmp/js-battle-seed${SEED}-full.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+    echo ""
+    echo "Rust Detailed Logs:"
+    ls -lh /tmp/rust-battle-seed${SEED}-full.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+    echo ""
+    echo "To debug divergence:"
+    echo "  1. Check which turn diverges above"
+    echo "  2. View detailed logs at that turn:"
+    echo "     cat /tmp/js-battle-seed${SEED}-full.txt | less"
+    echo "     cat /tmp/rust-battle-seed${SEED}-full.txt | less"
+    echo "  3. Compare side-by-side:"
+    echo "     diff /tmp/js-battle-seed${SEED}-full.txt /tmp/rust-battle-seed${SEED}-full.txt | less"
+    echo ""
+    echo "======================================"
     echo "BATTLE TEST FAILED FOR SEED $SEED"
     echo "======================================"
     exit 1
 fi
 
 echo ""
-echo "Output files:"
-echo "  JS teams:     /tmp/teams-seed${SEED}-js.json"
-echo "  Rust teams:   /tmp/teams-seed${SEED}-rust.json"
-echo "  JS battle:    /tmp/js-battle-seed${SEED}.txt"
-echo "  Rust battle:  /tmp/rust-battle-seed${SEED}.txt"
+echo "======================================"
+echo "Generated Files"
+echo "======================================"
+echo ""
+echo "Team Files:"
+ls -lh /tmp/teams-seed${SEED}-js.json 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+ls -lh /tmp/teams-seed${SEED}-rust.json 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+echo ""
+echo "Battle Summary (used for comparison):"
+ls -lh /tmp/js-battle-seed${SEED}.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+ls -lh /tmp/rust-battle-seed${SEED}.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+echo ""
+echo "JavaScript Detailed Logs:"
+ls -lh /tmp/js-battle-seed${SEED}-stdout.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+ls -lh /tmp/js-battle-seed${SEED}-stderr.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+ls -lh /tmp/js-battle-seed${SEED}-full.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+echo ""
+echo "Rust Detailed Logs:"
+ls -lh /tmp/rust-battle-seed${SEED}-full.txt 2>/dev/null | awk '{print "  "$9" ("$5")"}'
+echo ""
+echo "To view detailed logs:"
+echo "  cat /tmp/js-battle-seed${SEED}-full.txt"
+echo "  cat /tmp/rust-battle-seed${SEED}-full.txt"
+echo ""
+echo "To compare logs side-by-side:"
+echo "  diff /tmp/js-battle-seed${SEED}-full.txt /tmp/rust-battle-seed${SEED}-full.txt | less"
