@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 82 (21.6%)
+- Completed: 84 (22.1%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -137,10 +137,14 @@ This allows abilities to properly modify boost tables before they're applied, ma
 81. **Tangled Feet** (tangledfeet.rs) - onModifyAccuracy: Halves opponent's accuracy when Pokemon is confused
 82. **Cute Charm** (cutecharm.rs) - onDamagingHit: 30% chance to attract attacker on contact
 
+### Batch 17 - Advanced Volatile & Boost Handling (2 abilities)
+83. **Truant** (truant.rs) - onBeforeMove: Prevents Pokemon from moving every other turn via volatile status
+84. **Defiant** (defiant.rs) - onAfterEachBoost: Boosts Attack by 2 when any stat is lowered by an opponent
+
 ## Current Session
-Implemented 3 abilities in batch 16.
+Implemented 2 abilities in batch 17.
 All implementations are 1-to-1 from JavaScript and compile successfully.
-Now using volatile status infrastructure (Pokemon::add_volatile, checking Pokemon.volatiles).
+Now using battle.is_ally() to check Pokemon relationships.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
