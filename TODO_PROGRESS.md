@@ -978,3 +978,28 @@ Remaining TODOs: 74 (down from 75 - removed 1 Ripen TODO).
 Progress: 261/380 abilities (68.7%).
 Remaining TODOs: 68 (down from 74 - removed 6 TODOs: 3 from Air Lock + 3 from Cloud Nine).
 
+
+### Batch 126 - Flower Veil Ability (1 ability)
+
+**Completed ability:**
+262. **Flower Veil** (flowerveil.rs) - Protects Grass-type allies from stat drops, status conditions, and yawn:
+   - onAllyTryBoost: Prevents negative boosts to Grass-type allies; skips if target is source or target is not Grass-type; zeroes out negative boosts in relay_var_boost; shows '-block' message if no secondaries and boosts were prevented
+   - onAllySetStatus: Blocks status conditions on Grass-type allies; requires source exists, target ≠ source, effect exists, and effect ≠ yawn; shows '-block' message if effect is Synchronize or a move without secondaries; returns Null to prevent status
+   - onAllyTryAddVolatile: Blocks yawn volatile on Grass-type allies; shows '-block' message and returns Null
+
+**Implementation Notes:**
+- Uses `pokemon.has_type(battle, "Grass")` to check if ally is Grass-type
+- Modifies `battle.current_event.relay_var_boost` to zero out negative boosts (JavaScript uses `delete boost[i]`, Rust sets to 0)
+- Uses `battle.active_move.as_ref().map(|m| !m.secondaries.is_empty())` to check for secondary effects
+- Uses `battle.effect_state.target` to get the Flower Veil holder's position for `[of]` messages
+- All three callbacks show '-block' messages using format `["-block", target, "ability: Flower Veil", "[of] effect_holder"]`
+- Returns `EventResult::Null` to prevent status/volatile application
+
+**Files Modified:**
+- src/data/ability_callbacks/flowerveil.rs - Implemented 3 callbacks (228 lines added)
+
+**Git Commit**: 9c9c057a: "Implement Flower Veil ability (Batch 126)"
+
+Progress: 262/380 abilities (68.9%).
+Remaining TODOs: 65 (down from 68 - removed 3 Flower Veil TODOs).
+
