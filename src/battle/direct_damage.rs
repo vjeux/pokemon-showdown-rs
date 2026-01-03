@@ -263,8 +263,6 @@ impl Battle {
                 let old_hp = pokemon.hp;
                 pokemon.hp = pokemon.hp.saturating_sub(damage);
                 let actual = old_hp - pokemon.hp;
-                eprintln!("[DIRECT_DAMAGE] {} took {} damage (HP: {}/{}, effect: {:?})",
-                    pokemon.name, actual, pokemon.hp, pokemon.maxhp, effect_id);
                 actual
             } else {
                 0
