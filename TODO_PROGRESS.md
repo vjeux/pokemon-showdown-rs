@@ -1027,3 +1027,31 @@ Remaining TODOs: 65 (down from 68 - removed 3 Flower Veil TODOs).
 Progress: 262/380 abilities (68.9%).
 Remaining TODOs: 57 (down from 65 - removed 8 Protosynthesis TODOs).
 
+
+### Batch 128 - Quark Drive Ability (Complete Implementation)
+
+**Completed Quark Drive ability full implementation:**
+264. **Quark Drive** (quarkdrive.rs) - Completed all TODOs (identical to Protosynthesis but for Electric Terrain):
+   - onStart: Triggers TerrainChange event using battle.single_event() to check if Quark Drive should activate
+   - onTerrainChange: Checks if electric terrain is active using battle.field.is_terrain("electricterrain"), adds/removes volatile based on terrain, checks fromBooster flag before removing
+   - onEnd: Removes quarkdrive volatile and shows silent end message
+   - condition::onStart: Checks if effect is "boosterenergy", sets fromBooster flag in volatile data, adds [fromitem] message variant, calculates and stores bestStat in volatile's data HashMap
+   - condition::onModifyAtk/Def/SpA/SpD/Spe: Uses stored bestStat from volatile data instead of recalculating, checks pokemon.ignoring_ability(battle) before applying stat boosts
+   - condition::onEnd: Shows end message when volatile ends
+
+**Implementation Details:**
+- Identical pattern to Protosynthesis (Batch 127) but uses Electric Terrain instead of sun
+- fromBooster tracking: Uses volatile.data HashMap with serde_json::Value::Bool
+- bestStat storage: Uses volatile.data HashMap with serde_json::Value::String ("atk", "def", "spa", "spd", "spe")
+- ignoringAbility check: Uses pokemon.ignoring_ability(battle) method
+- Only removes quarkdrive volatile when not electric terrain AND not from Booster Energy
+- Applies 1.3x boost (5325/4096) to Atk/Def/SpA/SpD and 1.5x boost (3/2) to Spe based on bestStat
+
+**Files Modified:**
+- src/data/ability_callbacks/quarkdrive.rs - Removed 10 TODOs (317 lines added, 25 removed)
+
+**Git Commit**: a6593704: "Complete Quark Drive ability implementation (Batch 128)"
+
+Progress: 262/380 abilities (68.9%).
+Remaining TODOs: 47 (down from 57 - removed 10 Quark Drive TODOs).
+
