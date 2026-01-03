@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 224 (58.9%)
+- Completed: 227 (59.7%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -540,6 +540,11 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 94 - Zen Mode (1 ability)
 221-224. **Zen Mode** (zenmode.rs) - All 4 callbacks implemented: onResidual: Adds/removes zenmode volatile based on HP (HP <= 1/2 → add, HP > 1/2 in Zen forme → add then remove); onEnd: Removes zenmode volatile, sets transformed=false, forme changes back using species.battleOnly; condition::onStart: Changes to Darmanitan-Zen or Darmanitan-Galar-Zen based on species name; condition::onEnd: Changes back from Zen formes using species.battleOnly; uses volatile status system, forme_change infrastructure, and species.battle_only field (StringOrVec extraction pattern)
 
+### Batch 95 - Priority-Blocking Abilities (3 abilities)
+225. **Dazzling** (dazzling.rs) - onFoeTryMove: Blocks priority moves (priority > 0.1) from allies or all-targeting moves targeting this Pokemon or allies; uses battle.effect_state.target for ability holder, battle.active_move for move properties, battle.is_ally() for ally checking
+226. **Queenly Majesty** (queenlymajesty.rs) - onFoeTryMove: Identical to Dazzling (blocks priority moves from allies or all-targeting moves)
+227. **Armor Tail** (armortail.rs) - onFoeTryMove: Identical to Dazzling and Queenly Majesty (blocks priority moves from allies or all-targeting moves)
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -562,7 +567,8 @@ Completed Power Construct (Batch 91) - HP-based forme change to Zygarde-Complete
 Completed Shields Down (Batch 92) - HP-based forme changes and status immunity in Meteor forme.
 Completed Zero to Hero (Batch 93) - Switch-triggered forme change for Palafin.
 Completed Zen Mode (Batch 94) - HP-based volatile system with forme changes for Darmanitan using species.battle_only and StringOrVec extraction.
-Progress: 203→224/380 (58.9%).
+Completed Priority-Blocking Abilities (Batch 95) - Dazzling, Queenly Majesty, and Armor Tail share identical logic for blocking priority moves using battle.effect_state.target and battle.is_ally().
+Progress: 203→227/380 (59.7%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
