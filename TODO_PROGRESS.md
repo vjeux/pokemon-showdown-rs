@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 79 (20.8%)
+- Completed: 82 (21.6%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -132,9 +132,15 @@ This allows abilities to properly modify boost tables before they're applied, ma
 ### Batch 15 - Intimidate Response (1 ability)
 79. **Rattled** (rattled.rs) - onAfterBoost: Boosts Speed by 1 when Intimidated (completes Rattled implementation)
 
+### Batch 16 - Volatile Status Handling (3 abilities)
+80. **Electromorphosis** (electromorphosis.rs) - onDamagingHit: Adds charge volatile when hit
+81. **Tangled Feet** (tangledfeet.rs) - onModifyAccuracy: Halves opponent's accuracy when Pokemon is confused
+82. **Cute Charm** (cutecharm.rs) - onDamagingHit: 30% chance to attract attacker on contact
+
 ## Current Session
-Implemented 1 ability in batch 15.
+Implemented 3 abilities in batch 16.
 All implementations are 1-to-1 from JavaScript and compile successfully.
+Now using volatile status infrastructure (Pokemon::add_volatile, checking Pokemon.volatiles).
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)

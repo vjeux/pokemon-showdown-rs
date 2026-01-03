@@ -14,8 +14,23 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_modify_accuracy(_battle: &mut Battle, _accuracy: i32, _target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
+    // if (target?.volatiles['confusion'])
+    let has_confusion = {
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target.volatiles.contains_key(&crate::ID::from("confusion"))
+    };
+
+    if has_confusion {
+        // this.debug('Tangled Feet - decreasing accuracy');
+        // return this.chainModify(0.5);
+        let modified = battle.chain_modify(0.5);
+        return EventResult::Number(modified);
+    }
+
     EventResult::Continue
 }
 
