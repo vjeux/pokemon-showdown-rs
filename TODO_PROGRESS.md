@@ -5,11 +5,11 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 367 total (down from 368 - resolved 1 more in this session: Batch 157)
-  - Complex abilities requiring transform/redirect/rebound infrastructure: ~16 TODOs (down from 17 - Storm Drain completed)
+- **Remaining TODOs**: 365 total (down from 367 - resolved 2 more in this session: Batch 158)
+  - Complex abilities requiring transform/redirect/rebound infrastructure: ~14 TODOs (down from 16 - Neutralizing Gas completed)
   - Move callbacks requiring queue/event system extensions: ~24 TODOs
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 157 - Storm Drain Ability onAnyRedirectTarget (1 TODO resolved)
+- **Latest Progress**: Batch 158 - Neutralizing Gas Ability (2 TODOs resolved: onSwitchIn and onEnd callbacks)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
@@ -2420,6 +2420,77 @@ onAnyRedirectTarget(target, source, source2, move) {
 
 **Progress:**
 - TODOs Resolved: 1 (Storm Drain onAnyRedirectTarget)
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+
+### Batch 158 - Neutralizing Gas Ability (2 TODOs)
+
+**Completed ability:**
+276-277. **Neutralizing Gas** (neutralizinggas.rs) - Complete implementation of complex ability suppression system:
+   - onSwitchIn: Suppresses all active Pokemon abilities when Neutralizing Gas enters the field
+     - Shows ability activation message
+     - Sets ending=false flag in ability_state.data
+     - Checks for Ability Shield item (blocks suppression with -block message)
+     - Skips Pokemon with commanding volatile (Tatsugiri inside Dondozo)
+     - Fires End event for Illusion ability if present
+     - Removes slowstart volatile if present
+     - Fires End event for strong weather abilities (desolateland, primordialsea, deltastream)
+   - onEnd: Restarts all suppressed abilities when Neutralizing Gas leaves the field
+     - Checks if Pokemon is transformed (return early if so)
+     - Checks for other Neutralizing Gas Pokemon (return early if another exists)
+     - Shows -end message with ability name
+     - Sets ending=true flag in ability_state.data
+     - Speed sorts active Pokemon before restarting abilities (uses pre-calculated speeds to avoid borrow checker)
+     - Skips abilities with cantsuppress flag (Ice Face, Zen Mode, etc.)
+     - Skips Pokemon holding Ability Shield
+     - Fires Start event for each Pokemon's ability
+     - Special handling for gluttony ability (sets gluttony flag to false)
+
+**Implementation Details:**
+- Uses pokemon.ability_state.data HashMap to track "ending" flag (bool)
+- Uses battle.get_all_active(false) to iterate through all active Pokemon
+- Uses pokemon.has_item(battle, &["abilityshield"]) to check for Ability Shield
+- Uses pokemon.has_volatile(&ID::from("commanding")) to check commanding volatile
+- Uses pokemon.illusion.is_some() to check for Illusion
+- Uses Pokemon::remove_volatile(battle, target_pos, &ID::from("slowstart")) to remove slowstart
+- Uses battle.single_event("End", ability_id, target_pos, source_pos, Some("neutralizinggas")) to fire End events
+- Uses battle.speed_sort() with pre-calculated speed HashMap to avoid borrow checker conflicts
+- Pre-extracts speeds using battle.get_pokemon_stat(pos, StatID::Spe, false, false)
+- Creates HashMap lookup table for closure to access speeds without borrowing battle
+- Uses dex.abilities().get(ability_id).flags.get("cantsuppress") to check cantsuppress flag
+- Uses battle.single_event("Start", ability_id, target_pos, None, None) to restart abilities
+- Special gluttony handling: pokemon.ability_state.data.insert("gluttony", serde_json::json!(false))
+
+**Borrow Checker Solution:**
+The main challenge was speed sorting while needing to access battle methods. Solution:
+```rust
+// Extract speeds before sorting to avoid borrow checker issues
+let speeds: Vec<((usize, usize), f64)> = sorted_active.iter().map(|&pos| {
+    use crate::dex_data::StatID;
+    let speed = battle.get_pokemon_stat(pos, StatID::Spe, false, false) as f64;
+    (pos, speed)
+}).collect();
+
+// Create a HashMap for quick speed lookup in the closure
+let speed_map: std::collections::HashMap<(usize, usize), f64> = speeds.into_iter().collect();
+
+// Speed sort using pre-calculated speeds
+battle.speed_sort(&mut sorted_active, |&pos| {
+    use crate::battle::PriorityItem;
+    let speed = speed_map.get(&pos).copied().unwrap_or(0.0);
+    PriorityItem { order: None, priority: 0, speed, sub_order: 0, effect_order: 0, index: 0 }
+});
+```
+
+**Files Modified:**
+- src/data/ability_callbacks/neutralizinggas.rs - Implemented onSwitchIn and onEnd (295 lines added, 7 removed)
+
+**Git Commit:**
+- 3c415704: "Implement Neutralizing Gas ability - onEnd callback (Batch 158)"
+
+**Progress:**
+- TODOs Resolved: 2 (Neutralizing Gas onSwitchIn and onEnd callbacks)
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
