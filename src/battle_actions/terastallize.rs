@@ -74,7 +74,7 @@ pub fn terastallize(
         let valid_types = ["Fire", "Grass", "Rock", "Water"];
         if !valid_types.contains(&tera_type.as_str()) {
             // this.battle.hint("If Ogerpon Terastallizes into a type other than Fire, Grass, Rock, or Water, the game softlocks.");
-            battle.hint("If Ogerpon Terastallizes into a type other than Fire, Grass, Rock, or Water, the game softlocks.");
+            battle.hint("If Ogerpon Terastallizes into a type other than Fire, Grass, Rock, or Water, the game softlocks.", false, None);
             return;
         }
     }
@@ -118,7 +118,7 @@ pub fn terastallize(
     if let Some(pokemon) = battle.pokemon_at_mut(side_index, pokemon_index) {
         pokemon.added_type = String::new();
         pokemon.known_type = true;
-        pokemon.apparent_type = Some(tera_type_clone.clone());
+        pokemon.apparent_type = tera_type_clone.clone();
     }
 
     // if (pokemon.species.baseSpecies === 'Ogerpon') {

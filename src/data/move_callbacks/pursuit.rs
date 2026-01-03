@@ -7,6 +7,7 @@
 use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// basePowerCallback(pokemon, target, move) {
 ///     // You can't get here unless the pursuit succeeds
@@ -196,17 +197,179 @@ pub mod condition {
     ///         this.actions.runMove('pursuit', source, source.getLocOf(pokemon));
     ///     }
     /// }
-    pub fn on_before_switch_out(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: This callback needs infrastructure support for side condition sources
-        // The TypeScript version accesses this.effectState.sources which would be populated by beforeTurnCallback
-        // However, as noted above, the infrastructure for side condition sources doesn't exist yet
-        // This callback also needs:
-        // - battle.debug() method
-        // - queue.cancelMove() method
-        // - actions.runMegaEvo() method
-        // - actions.terastallize() method
-        // - actions.runMove() method
-        // This needs significant infrastructure changes
+    pub fn on_before_switch_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        use crate::battle_actions::{run_mega_evo, terastallize, run_move};
+        use crate::battle_queue::Action;
+
+        // this.debug('Pursuit start');
+        battle.debug("Pursuit start");
+
+        // pokemon.removeVolatile('destinybond');
+        let destinybond_id = ID::from("destinybond");
+        Pokemon::remove_volatile(battle, pokemon_pos, &destinybond_id);
+
+        // Get the sources array from the pursuit side condition
+        // for (const source of this.effectState.sources)
+        let sources = {
+            let pursuit_id = ID::from("pursuit");
+            let side_idx = pokemon_pos.0;
+
+            if let Some(data) = battle.get_side_condition_data_mut(side_idx, &pursuit_id) {
+                // Get sources array
+                if let Some(sources_value) = data.get("sources") {
+                    if let Some(sources_array) = sources_value.as_array() {
+                        // Extract source positions from JSON
+                        sources_array.iter().filter_map(|v| {
+                            // Sources are stored as PokemonSlot {side: usize, position: usize}
+                            let side = v.get("side")?.as_u64()? as usize;
+                            let position = v.get("position")?.as_u64()? as usize;
+                            Some((side, position))
+                        }).collect::<Vec<_>>()
+                    } else {
+                        Vec::new()
+                    }
+                } else {
+                    Vec::new()
+                }
+            } else {
+                Vec::new()
+            }
+        };
+
+        let mut already_added = false;
+
+        for source_pos in sources {
+            // if (!source.isAdjacent(pokemon) || !this.queue.cancelMove(source) || !source.hp) continue;
+
+            // Check if source is adjacent to pokemon
+            let is_adjacent = battle.is_adjacent(source_pos, pokemon_pos);
+            if !is_adjacent {
+                continue;
+            }
+
+            // Check if we can cancel the source's move
+            let cancelled = battle.queue.cancel_move(source_pos.0, source_pos.1);
+            if !cancelled {
+                continue;
+            }
+
+            // Check if source has HP
+            let has_hp = {
+                if let Some(source_pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                    source_pokemon.hp > 0
+                } else {
+                    false
+                }
+            };
+            if !has_hp {
+                continue;
+            }
+
+            // if (!alreadyAdded) {
+            //     this.add('-activate', pokemon, 'move: Pursuit');
+            //     alreadyAdded = true;
+            // }
+            if !already_added {
+                if let Some(target_pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    let target_ident = format!("p{}a: {}", pokemon_pos.0 + 1, target_pokemon.set.species);
+                    battle.add("-activate", &[
+                        crate::battle::Arg::String(target_ident),
+                        crate::battle::Arg::Str("move: Pursuit"),
+                    ]);
+                }
+                already_added = true;
+            }
+
+            // Check if source can mega evolve / ultra burst / terastallize
+            // if (source.canMegaEvo || source.canUltraBurst || source.canTerastallize) {
+            let (can_mega, can_tera) = {
+                if let Some(source_pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                    (source_pokemon.can_mega_evo.is_some(), source_pokemon.can_terastallize.is_some())
+                } else {
+                    (false, false)
+                }
+            };
+
+            if can_mega || can_tera {
+                // for (const [actionIndex, action] of this.queue.entries()) {
+                //     if (action.pokemon === source) {
+                //         if (action.choice === 'megaEvo') {
+                //             this.actions.runMegaEvo(source);
+                //         } else if (action.choice === 'terastallize') {
+                //             this.actions.terastallize(source);
+                //         } else {
+                //             continue;
+                //         }
+                //         this.queue.list.splice(actionIndex, 1);
+                //         break;
+                //     }
+                // }
+
+                // Find and remove mega/tera actions for this source
+                let mut action_to_remove: Option<usize> = None;
+                let mut is_mega = false;
+                let mut is_tera = false;
+
+                for (idx, action) in battle.queue.list.iter().enumerate() {
+                    // Check if this action is for the source Pokemon
+                    let matches = match action {
+                        Action::Move(ma) => {
+                            (ma.side_index, ma.pokemon_index) == source_pos
+                        }
+                        Action::Pokemon(pa) => {
+                            if (pa.side_index, pa.pokemon_index) == source_pos {
+                                match pa.choice {
+                                    crate::battle_queue::PokemonActionType::MegaEvo |
+                                    crate::battle_queue::PokemonActionType::MegaEvoX |
+                                    crate::battle_queue::PokemonActionType::MegaEvoY => {
+                                        is_mega = true;
+                                        true
+                                    }
+                                    crate::battle_queue::PokemonActionType::Terastallize => {
+                                        is_tera = true;
+                                        true
+                                    }
+                                    _ => false,
+                                }
+                            } else {
+                                false
+                            }
+                        }
+                        _ => false,
+                    };
+
+                    if matches && (is_mega || is_tera) {
+                        action_to_remove = Some(idx);
+                        break;
+                    }
+                }
+
+                // Run the mega/tera action
+                if is_mega {
+                    run_mega_evo(battle, source_pos.0, source_pos.1);
+                } else if is_tera {
+                    terastallize(battle, source_pos);
+                }
+
+                // Remove the action from queue
+                if let Some(idx) = action_to_remove {
+                    battle.queue.list.remove(idx);
+                }
+            }
+
+            // this.actions.runMove('pursuit', source, source.getLocOf(pokemon));
+            let target_loc = {
+                if let Some(source_pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                    let active_per_half = battle.sides[0].active.len();
+                    source_pokemon.get_loc_of(pokemon_pos.0, pokemon_pos.1, active_per_half)
+                } else {
+                    0 // Default location
+                }
+            };
+
+            run_move(battle, &ID::from("pursuit"), source_pos, target_loc, None, None, false, None, None);
+        }
+
         EventResult::Continue
     }
 }
