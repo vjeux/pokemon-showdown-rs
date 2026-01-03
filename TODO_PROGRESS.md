@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 71 (18.7%)
+- Completed: 72 (18.9%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -116,10 +116,12 @@ This allows abilities to properly modify boost tables before they're applied, ma
 70. **Guard Dog** (guarddog.rs) - onTryBoost: Prevents Attack drops from Intimidate and boosts Attack by 1 instead
 71. **Mirror Armor** (mirrorarmor.rs) - onTryBoost: Reflects all negative boosts back to the source (skips if target boost at -6 or source has no HP)
 
+### Batch 12 - Contact Speed Reduction (1 ability)
+72. **Gooey** (gooey.rs) - onDamagingHit: Lowers attacker's Speed by 1 on contact moves
+
 ## Current Session
-Implemented 18 abilities in batch 11 (4 new + 14 onTryBoost refactor).
+Implemented 1 ability in batch 12.
 All implementations are 1-to-1 from JavaScript and compile successfully.
-Major infrastructure change: Refactored onTryBoost to use mutable BoostsTable references.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
