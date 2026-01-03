@@ -157,19 +157,6 @@ impl Battle {
             None
         };
 
-        eprintln!("[FIELD_EVENT] Starting {} event, get_key={:?}", event_id, get_key);
-        // Debug: Check Pokemon states at start of Residual event
-        if event_id == "Residual" {
-            for (side_idx, side) in self.sides.iter().enumerate() {
-                for (poke_idx, pokemon) in side.pokemon.iter().enumerate() {
-                    if !pokemon.fainted {
-                        eprintln!("[FIELD_EVENT] INITIAL STATE CHECK: sides[{}].pokemon[{}] '{}' has {} volatiles: {:?}",
-                            side_idx, poke_idx, pokemon.name, pokemon.volatiles.len(), pokemon.volatiles.keys().collect::<Vec<_>>());
-                    }
-                }
-            }
-        }
-
         // Collect all handlers
         let mut handlers: Vec<FieldEventHandler> = Vec::new();
 
@@ -282,12 +269,6 @@ impl Battle {
 
         // JS: this.speedSort(handlers);
         // Sort handlers by Pokemon speed
-        eprintln!("[FIELD_EVENT] Sorting {} handlers before processing, turn={}", handlers.len(), self.turn);
-        for (i, h) in handlers.iter().enumerate() {
-            eprintln!("[FIELD_EVENT] Handler {} BEFORE SORT: effect={}, speed={}, order={:?}, priority={}, sub_order={}, is_field={}, is_side={}",
-                i, h.effect_id.as_str(), h.speed, h.order, h.priority, h.sub_order, h.is_field, h.is_side);
-        }
-        eprintln!("[FIELD_EVENT] About to call speed_sort at turn={}", self.turn);
         self.speed_sort(&mut handlers, |h| {
             PriorityItem {
                 order: h.order,
@@ -298,11 +279,6 @@ impl Battle {
                 index: 0,
             }
         });
-        eprintln!("[FIELD_EVENT] Done with speed_sort at turn={}", self.turn);
-        for (i, h) in handlers.iter().enumerate() {
-            eprintln!("[FIELD_EVENT] Handler {} AFTER SORT: effect={}, speed={}, order={:?}, priority={}, sub_order={}",
-                i, h.effect_id.as_str(), h.speed, h.order, h.priority, h.sub_order);
-        }
 
         // JS: while (handlers.length) { ... }
         while !handlers.is_empty() {
@@ -340,16 +316,10 @@ impl Battle {
                             // Check if this is a volatile with duration
                             if let Some(volatile_state) = pokemon.volatiles.get_mut(&handler.effect_id) {
                                 if let Some(duration) = volatile_state.duration.as_mut() {
-                                    eprintln!("[FIELD_EVENT] Decrementing duration for volatile '{}' on {} from {}",
-                                        handler.effect_id, pokemon.name, *duration);
                                     *duration -= 1;
                                     if *duration == 0 {
-                                        eprintln!("[FIELD_EVENT] Volatile '{}' on {} expired, removing",
-                                            handler.effect_id, pokemon.name);
                                         true
                                     } else {
-                                        eprintln!("[FIELD_EVENT] Volatile '{}' on {} duration now {}",
-                                            handler.effect_id, pokemon.name, *duration);
                                         false
                                     }
                                 } else {
@@ -369,8 +339,6 @@ impl Battle {
                         if let Some(pokemon) = self.sides.get_mut(side_idx)
                             .and_then(|s| s.pokemon.get_mut(poke_idx)) {
                             pokemon.volatiles.remove(&handler.effect_id);
-                            eprintln!("[FIELD_EVENT] Removed expired volatile '{}', remaining volatiles: {}",
-                                handler.effect_id, pokemon.volatiles.len());
                         }
                         // Skip calling the event handler for expired effects
                         if self.ended {
