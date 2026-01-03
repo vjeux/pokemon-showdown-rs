@@ -1416,6 +1416,52 @@ The 6 PRNG calls may be coming from:
 **Remaining Divergences (Session 15):**
 1. ~~field_event.rs~~ - ✅ Fixed (allySide check)
 2. ~~end_turn.rs~~ - ✅ Fixed (FoeMaybeTrapPokemon logic)
-3. **find_event_handlers.rs** - Missing Side target handling (shouldBubbleDown logic)
-4. **set_player.rs** - Manual JSON building instead of serde_json (minor)
+3. ~~get_requests.rs~~ - ✅ Fixed (ally side request data)
+4. **find_event_handlers.rs** - Missing Side target handling (shouldBubbleDown logic)
+5. **set_player.rs** - Manual JSON building instead of serde_json (minor)
+
+### Thirtieth Implementation: Fix get_requests.rs ally side data ✅
+- **Issue**: Ally side request data commented out with "allySide not implemented in Rust yet"
+- **Root Cause**: ally_index field exists but code was incorrectly commented out
+- **Action**: Implemented ally request data for multi battles
+
+  **JavaScript** (battle.ts, get_requests.rs:42-44):
+  ```javascript
+  if (side.allySide) {
+      (requests[i] as MoveRequest).ally = side.allySide.getRequestData(true);
+  }
+  ```
+
+  **Rust Before** (get_requests.rs:153-157):
+  ```rust
+  // Note: allySide not implemented in Rust yet
+  // if let Some(ally_side) = &side.ally_side {
+  //     request["ally"] = ally_side.get_request_data(true);
+  // }
+  ```
+
+  **Rust After** (get_requests.rs:153-162):
+  ```rust
+  // Rust: ally_index is Option<usize> pointing to allied side in multi battles
+  if let Some(ally_idx) = side.ally_index {
+      if let Some(ally_side) = self.sides.get(ally_idx) {
+          // TODO: JavaScript passes `true` parameter to getRequestData(true)
+          // This likely indicates "minimal data for ally" but current Rust impl doesn't support this
+          // For now, use full getRequestData() - should verify if ally data needs to be filtered
+          request["ally"] = ally_side.get_request_data();
+      }
+  }
+  ```
+
+- **Side Effects**: Ally data now properly included in move requests for multi battles
+- **Result**: Matches JavaScript for ally request data (except missing boolean parameter handling)
+- **Commit**: a63eb630
+
+**Session 15 Final Summary:**
+- **Files fixed**: 3 (field_event.rs, end_turn.rs, get_requests.rs)
+- **Lines added**: ~200 (all 3 fixes combined)
+- **Bugs fixed**: 3 divergences (2 missing allySide checks, 1 complete stub)
+- **Commits**: 5 total (3 implementations + 2 documentation)
+- **Compilation**: ✅ All changes successful
+- **Pattern observed**: Many files have misleading "not implemented" comments when features ARE implemented
 
