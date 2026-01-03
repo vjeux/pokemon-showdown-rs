@@ -13,8 +13,59 @@ use crate::event::EventResult;
 ///     source.addVolatile('perishsong');
 ///     target.addVolatile('perishsong');
 /// }
-pub fn on_damaging_hit(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    use crate::battle::Arg;
+    use crate::Pokemon;
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source_pos = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (!this.checkMoveMakesContact(move, source, target))
+    let makes_contact = battle.check_move_makes_contact(&crate::dex_data::ID::from(move_id), source_pos, target_pos, false);
+    if !makes_contact {
+        return EventResult::Continue;
+    }
+
+    // || source.volatiles['perishsong'])
+    let source_has_perishsong = {
+        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source.volatiles.contains_key(&crate::dex_data::ID::from("perishsong"))
+    };
+
+    if source_has_perishsong {
+        return EventResult::Continue;
+    }
+
+    // this.add('-ability', target, 'Perish Body');
+    let target_slot = {
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target.get_slot()
+    };
+
+    battle.add("-ability", &[
+        Arg::String(target_slot),
+        Arg::Str("Perish Body"),
+    ]);
+
+    // source.addVolatile('perishsong');
+    Pokemon::add_volatile(battle, source_pos, crate::dex_data::ID::from("perishsong"), None, None, None);
+
+    // target.addVolatile('perishsong');
+    Pokemon::add_volatile(battle, target_pos, crate::dex_data::ID::from("perishsong"), None, None, None);
+
     EventResult::Continue
 }
 

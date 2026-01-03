@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 179 (47.1%)
+- Completed: 181 (47.6%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -378,6 +378,10 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 178. **Embody Aspect (Teal)** (embodyaspectteal.rs) - onStart: Boosts Speed by 1 when Ogerpon-Teal-Tera is terastallized (one-time via ability_state.data["embodied"])
 179. **Embody Aspect (Wellspring)** (embodyaspectwellspring.rs) - onStart: Boosts Special Defense by 1 when Ogerpon-Wellspring-Tera is terastallized (one-time via ability_state.data["embodied"])
 
+### Batch 61 - Contact & Priority Abilities (2 abilities)
+180. **Perish Body** (perishbody.rs) - onDamagingHit: Inflicts perishsong on both attacker and target when hit by contact move (skips if attacker already has perishsong); uses Pokemon::add_volatile and check_move_makes_contact
+181. **Quick Draw** (quickdraw.rs) - onFractionalPriority: 30% chance to add +0.1 priority to non-Status moves (shows -activate message); uses battle.random_chance
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -392,7 +396,8 @@ Completed Damp (Batch 57) preventing explosion moves.
 Completed Oblivious (Batch 58) using remove_volatile for attract and taunt.
 Completed Screen Cleaner (Batch 59) using side condition system.
 Completed Embody Aspect family (Batch 60) using terastallized state and ability_state.data tracking.
-Progress: 179/380 abilities (47.1%).
+Completed Perish Body and Quick Draw (Batch 61) using add_volatile and random_chance.
+Progress: 181/380 abilities (47.6%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
