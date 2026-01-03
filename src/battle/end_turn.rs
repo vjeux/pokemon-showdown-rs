@@ -732,6 +732,8 @@ impl Battle {
         // JS: for (const source of pokemon.foes()) { ... check species.abilities ... }
         if self.gen >= 3 {
             for &(side_idx, poke_idx) in &pokemon_positions {
+                let pokemon_pos = (side_idx, poke_idx);
+
                 // Get adjacent foes for this pokemon
                 let foes = if let Some(pokemon) = self.sides.get(side_idx)
                     .and_then(|s| s.pokemon.get(poke_idx))
@@ -741,16 +743,113 @@ impl Battle {
                     Vec::new()
                 };
 
-                for (_foe_side_idx, _foe_idx) in foes {
-                    // TODO: Full implementation requires:
-                    // 1. Check species.abilities for all ability slots
-                    // 2. Check ruleTable for +hackmons and obtainableabilities
-                    // 3. Check for unreleased hidden abilities
-                    // 4. Call singleEvent('FoeMaybeTrapPokemon', ability, {}, pokemon, source)
-                    // For now, this is a stub to document the requirement
+                // JS: for (const source of pokemon.foes())
+                for (foe_side_idx, foe_idx) in foes {
+                    let foe_pos = (foe_side_idx, foe_idx);
 
-                    // The simplified version just notes that foe abilities could affect trapping
-                    // Full implementation would iterate through all possible abilities of the foe's species
+                    // JS: const species = (source.illusion || source).species;
+                    // Get the species (illusion species if active, otherwise real species)
+                    let (species_id, current_ability, has_abilities) = {
+                        let foe = &self.sides[foe_side_idx].pokemon[foe_idx];
+                        // Illusion is Option<usize> - index of pokemon providing illusion
+                        let species_to_use = if let Some(illusion_idx) = foe.illusion {
+                            &self.sides[foe_side_idx].pokemon[illusion_idx].species_id
+                        } else {
+                            &foe.species_id
+                        };
+                        let species = self.dex.species.get(species_to_use);
+                        let has_abs = species.map(|s| s.abilities.slot0.is_some() || s.abilities.slot1.is_some() || s.abilities.hidden.is_some()).unwrap_or(false);
+                        (species_to_use.clone(), foe.ability.clone(), has_abs)
+                    };
+
+                    // JS: if (!species.abilities) continue;
+                    if !has_abilities {
+                        continue;
+                    }
+
+                    // Get all ability slots for this species
+                    let ability_slots = if let Some(species) = self.dex.species.get(&species_id) {
+                        let mut slots = Vec::new();
+                        if let Some(ref a0) = species.abilities.slot0 {
+                            slots.push(("0", a0.clone()));
+                        }
+                        if let Some(ref a1) = species.abilities.slot1 {
+                            slots.push(("1", a1.clone()));
+                        }
+                        if let Some(ref ah) = species.abilities.hidden {
+                            slots.push(("H", ah.clone()));
+                        }
+                        slots
+                    } else {
+                        Vec::new()
+                    };
+
+                    // JS: for (const abilitySlot in species.abilities)
+                    for (slot_name, ability_name_str) in ability_slots {
+                        let ability_id = ID::new(&ability_name_str);
+
+                        // JS: if (abilityName === source.ability) continue;
+                        // Pokemon event was already run above so we don't need to run it again
+                        if ability_id == current_ability {
+                            continue;
+                        }
+
+                        // JS: const ruleTable = this.ruleTable;
+                        // JS: if ((ruleTable.has('+hackmons') || !ruleTable.has('obtainableabilities')) && !this.format.team)
+                        let skip_hackmons = if let Some(ref rule_table) = self.rule_table {
+                            let has_hackmons = rule_table.has("+hackmons");
+                            let has_obtainable = rule_table.has("obtainableabilities");
+                            let format_has_team = false; // TODO: this.format.team check
+                            (has_hackmons || !has_obtainable) && !format_has_team
+                        } else {
+                            false
+                        };
+
+                        if skip_hackmons {
+                            continue; // hackmons format
+                        }
+
+                        // JS: else if (abilitySlot === 'H' && species.unreleasedHidden) continue;
+                        if slot_name == "H" {
+                            // TODO: Check species.unreleased_hidden when field is added to SpeciesData
+                            // For now, skip this check (no unreleased hidden abilities in current data)
+                            /*
+                            if let Some(species) = self.dex.species.get(&species_id) {
+                                if species.unreleased_hidden {
+                                    continue; // unreleased hidden ability
+                                }
+                            }
+                            */
+                        }
+
+                        // JS: const ability = this.dex.abilities.get(abilityName);
+                        // JS: if (ruleTable.has('-ability:' + ability.id)) continue;
+                        if let Some(ref rule_table) = self.rule_table {
+                            let ban_rule = format!("-ability:{}", ability_id.as_str());
+                            if rule_table.has(&ban_rule) {
+                                continue;
+                            }
+                        }
+
+                        // JS: if (pokemon.knownType && !this.dex.getImmunity('trapped', pokemon)) continue;
+                        let should_skip = {
+                            let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                            pokemon.known_type && !Pokemon::run_status_immunity(self, pokemon_pos, "trapped", false)
+                        };
+
+                        if should_skip {
+                            continue;
+                        }
+
+                        // JS: this.singleEvent('FoeMaybeTrapPokemon', ability, {}, pokemon, source);
+                        self.single_event(
+                            "FoeMaybeTrapPokemon",
+                            &ability_id,
+                            Some(pokemon_pos),
+                            Some(foe_pos),
+                            None,
+                        );
+                    }
                 }
             }
         }
