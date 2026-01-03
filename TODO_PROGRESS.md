@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 241 (63.4%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result available), **battle.effect_state.target** (ability holder position tracking working)
+- Completed: 243 (63.9%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -597,6 +597,9 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 ### Batch 108 - Terashell (1 ability)
 244. **Terashell** (terashell.rs) - onAnyBeforeMove and onAnyAfterMove: Clears 'resisted' flag from battle.effect_state.data HashMap; simple state management for damage resistance tracking
 
+### Batch 109 - Opportunist (1 ability)
+245. **Opportunist** (opportunist.rs) - Complete implementation with all 7 callbacks: onFoeAfterBoost accumulates positive boosts from foes into battle.effect_state.data["boosts"] using serde_json HashMap; onAnySwitchIn/onAnyAfterMega/onAnyAfterTerastallization/onAnyAfterMove/onResidual apply accumulated boosts to battle.effect_state.target then clear them; onEnd clears boosts; uses battle.current_event.relay_var_boost for boost data
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -636,8 +639,9 @@ Completed Wandering Spirit (Batch 105) - onDamagingHit swaps abilities on contac
 Partially completed Battle Bond (Batch 106) - onModifyMove sets Water Shuriken multi-hit to 3 for Greninja-Ash (1/2 callbacks).
 Partially completed Parental Bond (Batch 107) - onPrepareHit sets moves to hit twice with multi_hit_type tracking (1/2 callbacks).
 Completed Terashell (Batch 108) - onAnyBeforeMove and onAnyAfterMove clear resisted flag from battle.effect_state.data.
-Progress: 203→242/380 (63.7%); Completed 39 full abilities + 2 partial this session.
-Remaining TODOs: 104 (down from 115 - removed 1 from Wandering Spirit, 1 from Battle Bond, 1 from Parental Bond, 2 from Terashell).
+Completed Opportunist (Batch 109) - All 7 callbacks implemented using battle.effect_state.data for boost accumulation and battle.current_event.relay_var_boost for boost data.
+Progress: 203→243/380 (63.9%); Completed 40 full abilities + 2 partial this session.
+Remaining TODOs: 97 (down from 115 - removed 1 from Wandering Spirit, 1 from Battle Bond, 1 from Parental Bond, 2 from Terashell, 7 from Opportunist).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
