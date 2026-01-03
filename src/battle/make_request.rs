@@ -1,6 +1,5 @@
 use crate::*;
 use crate::battle::BattleRequestState;
-use std::backtrace::Backtrace;
 
 impl Battle {
 
@@ -44,10 +43,6 @@ impl Battle {
     pub fn make_request(&mut self, request_type: Option<BattleRequestState>) {
         // JS: if (type) { this.requestState = type; ... } else { type = this.requestState; }
         let req_type = if let Some(rt) = request_type {
-            eprintln!("[MAKE_REQUEST] Setting request_state to {:?} (was {:?})", rt, self.request_state);
-            if matches!(rt, BattleRequestState::Switch) {
-                eprintln!("[MAKE_REQUEST SWITCH] Backtrace:\n{}", Backtrace::force_capture());
-            }
             self.request_state = rt;
             // JS: for (const side of this.sides) { side.clearChoice(); }
             for side in &mut self.sides {
@@ -55,7 +50,6 @@ impl Battle {
             }
             rt
         } else {
-            eprintln!("[MAKE_REQUEST] Using existing request_state: {:?}", self.request_state);
             self.request_state
         };
 

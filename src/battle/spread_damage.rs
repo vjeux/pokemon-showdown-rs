@@ -204,7 +204,6 @@ impl Battle {
 
                 // Fire Damage event
                 // JavaScript: targetDamage = this.runEvent('Damage', target, source, effect, targetDamage, true);
-                eprintln!("[SPREAD_DAMAGE] Before Damage event: target_damage={}", target_damage);
                 let event_result = self.run_event(
                     "Damage",
                     Some(target_pos),
@@ -214,7 +213,6 @@ impl Battle {
                 );
 
                 if let Some(modified_damage) = event_result {
-                    eprintln!("[SPREAD_DAMAGE] After Damage event: modified_damage={}", modified_damage);
                     target_damage = modified_damage;
                 } else {
                     // Event failed
@@ -263,15 +261,6 @@ impl Battle {
             };
 
             target_damage = actual_damage;
-
-            // Debug: Show which Pokemon took damage
-            if let Some((side, idx)) = target {
-                if let Some(s) = self.sides.get(side) {
-                    if let Some(p) = s.pokemon.get(idx) {
-                        eprintln!("[SPREAD_DAMAGE DEBUG] {} took {} damage (HP: {}/{})", p.name, target_damage, p.hp, p.maxhp);
-                    }
-                }
-            }
 
             ret_vals.push(Some(target_damage));
 
@@ -487,9 +476,6 @@ impl Battle {
                         let amount = ((target_damage as f64 * drain_num as f64)
                             / drain_denom as f64)
                             .round() as i32;
-
-                        eprintln!("[DRAIN DEBUG] target_damage={}, drain={}/{}, calculated amount={}",
-                            target_damage, drain_num, drain_denom, amount);
 
                         let drain_id = ID::new("drain");
                         self.heal(amount, Some(source_pos), target, Some(&drain_id));

@@ -704,3 +704,35 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - Files remaining: 132
 - **Major Achievement**: BattleRequest serialization infrastructure complete, unblocking multiple files
 
+---
+
+## Session 5: Code Cleanup and Debug Print Removal (2026-01-02)
+
+### Nineteenth Implementation: Remove debug prints (spread_damage.rs, make_request.rs) ✅
+- **Issue**: Multiple files contained eprintln! debug statements not present in JavaScript
+- **Action**: Removed all debug print statements to match JavaScript exactly
+
+  **Files Modified:**
+  1. **spread_damage.rs**: Removed 3 eprintln! statements
+     - Line 207: "[SPREAD_DAMAGE] Before Damage event" → removed
+     - Line 215: "[SPREAD_DAMAGE] After Damage event" → removed
+     - Line 269-274: "[SPREAD_DAMAGE DEBUG] Pokemon damage info" → removed
+     - Line 491-492: "[DRAIN DEBUG] drain calculation" → removed
+
+  2. **make_request.rs**: Removed 3 eprintln! statements and Backtrace import
+     - Removed `use std::backtrace::Backtrace;` import
+     - Line 47: "[MAKE_REQUEST] Setting request_state" → removed
+     - Line 49-50: "[MAKE_REQUEST SWITCH] Backtrace" → removed
+     - Line 58: "[MAKE_REQUEST] Using existing request_state" → removed
+
+- **Rationale**: JavaScript battle.ts uses this.debug() for debugging, not console logging
+- **Side Effects**: None - purely cleanup
+- **Result**: Code now matches JavaScript structure (no console.log equivalents in production code)
+- **Commit**: Pending
+
+**Progress Update (2026-01-02 - Session 5):**
+- Files cleaned: 2 (spread_damage.rs, make_request.rs)
+- Debug statements removed: 7
+- Files with debug prints remaining: ~18 (need systematic cleanup)
+- Next: Continue removing debug prints from other files
+
