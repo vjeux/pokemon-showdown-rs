@@ -1,5 +1,6 @@
 use crate::*;
 use crate::battle::BattleRequestState;
+use crate::side::RequestState;
 
 impl Battle {
 
@@ -45,7 +46,15 @@ impl Battle {
         let req_type = if let Some(rt) = request_type {
             self.request_state = rt;
             // JS: for (const side of this.sides) { side.clearChoice(); }
+            // CRITICAL: In JavaScript, side.requestState mirrors battle.requestState
+            // We need to set it here so side.isChoiceDone() can read it
             for side in &mut self.sides {
+                side.request_state = match rt {
+                    BattleRequestState::Move => RequestState::Move,
+                    BattleRequestState::Switch => RequestState::Switch,
+                    BattleRequestState::TeamPreview => RequestState::TeamPreview,
+                    BattleRequestState::None => RequestState::None,
+                };
                 side.clear_choice(rt);
             }
             rt
