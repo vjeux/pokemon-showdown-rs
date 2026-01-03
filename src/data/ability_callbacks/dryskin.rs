@@ -43,8 +43,42 @@ pub fn on_source_base_power(battle: &mut Battle, _base_power: i32, move_id: &str
 ///         this.damage(target.baseMaxhp / 8, target, target);
 ///     }
 /// }
-pub fn on_weather(_battle: &mut Battle, _weather_id: &str, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
+    // Check if target has Utility Umbrella
+    let has_umbrella = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.has_item(battle, &["utilityumbrella"])
+    };
+
+    if has_umbrella {
+        return EventResult::Continue;
+    }
+
+    if weather_id == "raindance" || weather_id == "primordialsea" {
+        // Heal 1/8 HP in rain
+        let heal_amount = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.base_maxhp / 8
+        };
+        battle.heal(heal_amount, Some(pokemon_pos), None, None);
+    } else if weather_id == "sunnyday" || weather_id == "desolateland" {
+        // Take 1/8 HP damage in sun
+        let damage = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.base_maxhp / 8
+        };
+        battle.damage(damage, Some(pokemon_pos), Some(pokemon_pos), None, false);
+    }
+
     EventResult::Continue
 }
 

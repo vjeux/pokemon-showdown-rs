@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 14 (3.7%)
+- Completed: 15 (3.9%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -24,8 +24,16 @@
 12. **Snow Cloak** (snowcloak.rs) - onModifyAccuracy: Lowers accuracy in hail/snow
 13. **Rain Dish** (raindish.rs) - onWeather: Heals 1/16 HP in rain (respects Utility Umbrella)
 
+### Batch 3 - Additional Weather Effects
+14. **Dry Skin** (dryskin.rs) - onWeather: Heals in rain, takes damage in sun (respects Utility Umbrella)
+
 ## Current Session
-Implemented 13 abilities across 2 batches.
+Implemented 14 abilities across 3 batches.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Focus on weather and terrain-based abilities with stat modifications and healing.
+
+## Notes
+- Many ability callbacks are already implemented (Blaze, Overgrow, Torrent, Hustle, Pure Power, Huge Power, Fur Coat, etc.)
+- Focusing on simple stat modifiers and weather/terrain-based effects first
+- More complex abilities requiring infrastructure changes are being documented separately
 
