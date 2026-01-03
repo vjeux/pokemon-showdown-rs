@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 232 (61.1%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking
+- Completed: 238 (62.6%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -557,6 +557,11 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 98 - Emergency Exit (1 ability)
 232. **Emergency Exit** (emergencyexit.rs) - onEmergencyExit: Triggers switch when activated; checks battle.can_switch(), forceSwitchFlag, and switchFlag; clears all active Pokemon switchFlags; sets target.switchFlag = true; shows -activate message
 
+### Batch 99 - Trapping Abilities (6 TODOs - 3 abilities)
+233-238. **Arena Trap** (arenatrap.rs) - onFoeTrapPokemon: Traps adjacent grounded Pokemon using Pokemon::try_trap; onFoeMaybeTrapPokemon: Sets maybeTrapped for grounded Pokemon (negates immunity if type unknown)
+**Magnet Pull** (magnetpull.rs) - onFoeTrapPokemon: Traps adjacent Steel-type Pokemon; onFoeMaybeTrapPokemon: Sets maybeTrapped for Steel-types or unknown types
+**Shadow Tag** (shadowtag.rs) - onFoeTrapPokemon: Traps adjacent Pokemon without Shadow Tag; onFoeMaybeTrapPokemon: Sets maybeTrapped for Pokemon without Shadow Tag
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -585,7 +590,9 @@ Completed Pickpocket (Batch 97) - onAfterMoveSecondary steals items from contact
 Discovered item infrastructure exists (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item all implemented).
 Completed As One Spectrier and As One Glastrier (Batch 89-90 completion) - onFoeTryEatItem prevents berry eating when unnerved; both abilities now fully complete.
 Completed Emergency Exit (Batch 98) - onEmergencyExit triggers switches using battle.can_switch() and switch flags.
-Progress: 203→232/380 (61.1%).
+Discovered trapping infrastructure exists (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent).
+Completed Arena Trap, Magnet Pull, and Shadow Tag (Batch 99) - all three trapping abilities using Pokemon::try_trap and maybeTrapped field.
+Progress: 203→238/380 (62.6%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
