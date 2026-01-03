@@ -12,8 +12,21 @@ use crate::event::EventResult;
 ///         this.damage(source.baseMaxhp / 8, source, target);
 ///     }
 /// }
-pub fn on_damaging_hit(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    // Damage attacker by 1/8 max HP on contact
+    if let (Some(target), Some(source)) = (target_pos, source_pos) {
+        if battle.check_move_makes_contact(&crate::ID::from(move_id), source, target, true) {
+            // Damage attacker by 1/8 of their max HP
+            let damage_amount = {
+                let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                source_pokemon.base_maxhp / 8
+            };
+            battle.damage(damage_amount, Some(source), Some(target), None, false);
+        }
+    }
     EventResult::Continue
 }
 

@@ -12,8 +12,20 @@ use crate::event::EventResult;
 ///         this.boost({ spe: 1 });
 ///     }
 /// }
-pub fn on_residual(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    // Boost Speed by 1 stage if Pokemon has been active for at least 1 turn
+    let active_turns = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.active_turns
+    };
+
+    if active_turns > 0 {
+        battle.boost(&[("spe", 1)], pokemon_pos, None, None, false, false);
+    }
+
     EventResult::Continue
 }
 

@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 31 (8.2%)
+- Completed: 37 (9.7%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -50,8 +50,16 @@
 30. **Aftermath** (aftermath.rs) - onDamagingHit: Damages attacker 1/4 max HP on contact if target faints
 31. **Cotton Down** (cottondown.rs) - onDamagingHit: Lowers Speed of all other active Pokemon when hit
 
+### Batch 7 - Contact & Residual Abilities (6 abilities)
+32. **Speed Boost** (speedboost.rs) - onResidual: Boosts Speed by 1 every turn after the first
+33. **Steadfast** (steadfast.rs) - onFlinch: Boosts Speed by 1 when Pokemon flinches
+34. **Poison Point** (poisonpoint.rs) - onDamagingHit: 30% chance to poison attacker on contact
+35. **Static** (static.rs) - onDamagingHit: 30% chance to paralyze attacker on contact
+36. **Rough Skin** (roughskin.rs) - onDamagingHit: Damages attacker 1/8 max HP on contact
+37. **Iron Barbs** (ironbarbs.rs) - onDamagingHit: Damages attacker 1/8 max HP on contact
+
 ## Current Session
-Implemented 31 abilities across 6 batches.
+Implemented 37 abilities across 7 batches.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
@@ -61,6 +69,8 @@ All implementations are 1-to-1 from JavaScript and compile successfully.
 - Using `battle.check_move_makes_contact()` to check for contact moves
 - Using `battle.get_all_active()` to iterate through all active Pokemon
 - Using `battle.damage()` to deal damage to Pokemon
+- Using `battle.random_chance()` for probability checks
+- Using `Pokemon::try_set_status()` to apply status conditions
 - Properly handling special cases (Kyogre/Blue Orb, Groudon/Red Orb)
 - All implementations follow Rust borrow checker patterns with two-phase access
 
