@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 250 (65.8%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking)
+- Completed: 251 (66.1%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -618,6 +618,9 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 ### Batch 115 - Gulp Missile (2 callbacks - 1 ability)
 251-252. **Gulp Missile** (gulpmissile.rs) - onDamagingHit: When hit in Cramorant forme, damages attacker for 1/4 HP; if Gulping forme, lowers attacker's Defense by 1; if Gorging forme, paralyzes attacker; changes back to base Cramorant; uses Pokemon::is_semi_invulnerable, battle.damage, Pokemon::try_set_status, and forme_change with unsafe pointer pattern; onSourceTryPrimaryHit: When Cramorant uses Surf, changes to Gulping (HP > 50%) or Gorging (HP <= 50%) forme based on HP threshold; uses pokemon.has_ability, pokemon.set.species for species checking
 
+### Batch 116 - Klutz (1 ability)
+253. **Klutz** (klutz.rs) - onStart: Calls battle.single_event("End") to disable item effects when Pokemon with Klutz switches in; checks pokemon.item and only fires event if item exists; uses battle.single_event infrastructure
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -667,11 +670,13 @@ Completed Mimicry (Batch 112) - onTerrainChange changes type based on terrain us
 Completed Harvest (Batch 113) - onResidual restores consumed berry in sun or 50% chance using pokemon.last_item and ItemData.is_berry.
 Completed Pickup (Batch 114) - onResidual picks up items from adjacent Pokemon using battle.sample() and used_item_this_turn.
 Completed Gulp Missile (Batch 115) - onDamagingHit and onSourceTryPrimaryHit use Pokemon::is_semi_invulnerable, pokemon.set.species, forme_change with unsafe pointer pattern.
+Completed Klutz (Batch 116) - onStart disables item effects using battle.single_event("End").
 **Discovered Pokemon::is_semi_invulnerable()** - Semi-invulnerable state checking method available.
 **Discovered pokemon.set.species** - Species name access for forme/species checking.
 **Discovered battle.sample() and battle.get_all_active()** - Random sampling and active Pokemon iteration infrastructure fully functional.
-Progress: 246→250/380 (65.8%); Completed 7 abilities this continuation (3 type-changing + 2 item-related + 1 forme-changing with state checks + 1 forme-changing with HP-based trigger).
-Remaining TODOs: 90 (down from 92 - removed 1 from Pickup, 2 from Gulp Missile).
+**Discovered battle.single_event()** - Single event firing system available for item/ability/status effects.
+Progress: 246→251/380 (66.1%); Completed 8 abilities this continuation (3 type-changing + 2 item-related + 1 forme-changing with state checks + 1 forme-changing with HP-based trigger + 1 item disabling).
+Remaining TODOs: 89 (down from 92 - removed 1 from Pickup, 2 from Gulp Missile, 1 from Klutz).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
