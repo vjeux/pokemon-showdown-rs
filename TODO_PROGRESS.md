@@ -854,5 +854,48 @@ Remaining TODOs: 82 (down from 83 - removed Costar TODO).
 - b0748919: "Implement Anger Shell ability (Batch 122)"
 
 Progress: 257/380 abilities (67.6%).
-Remaining TODOs: 76 (down from 82 - removed 3 Berserk TODOs + 3 Anger Shell TODOs).
+Remaining TODOs: 75 (down from 76 - removed Innards Out TODO).
+
+
+### Batch 123 - Infrastructure Fix: get_undynamaxed_hp Parameter
+
+**Infrastructure Change:**
+Modified `Pokemon::get_undynamaxed_hp()` to accept an optional amount parameter to match JavaScript's signature `getUndynamaxedHP(amount?: number)`.
+
+**Problem**: The Rust implementation didn't take a parameter, but JavaScript allows passing a custom HP amount to calculate the undynamaxed HP for. This was needed for Innards Out which passes the damage taken as the amount.
+
+**Solution**: Changed signature from `pub fn get_undynamaxed_hp(&self) -> i32` to `pub fn get_undynamaxed_hp(&self, amount: Option<i32>) -> i32`
+
+**Implementation**:
+```rust
+pub fn get_undynamaxed_hp(&self, amount: Option<i32>) -> i32 {
+    // const hp = amount || this.hp;
+    let hp = amount.unwrap_or(self.hp);
+
+    // if (this.volatiles['dynamax'])
+    if self.has_volatile(&ID::new("dynamax")) {
+        // return Math.ceil(hp * this.baseMaxhp / this.maxhp);
+        ((hp as f64) * (self.base_maxhp as f64) / (self.maxhp as f64)).ceil() as i32
+    } else {
+        // return hp;
+        hp
+    }
+}
+```
+
+**Files Modified:**
+- src/pokemon/get_undynamaxed_hp.rs - Added optional amount parameter
+- src/data/ability_callbacks/innardsout.rs - Removed TODO, now calls `get_undynamaxed_hp(Some(damage))`
+- src/data/move_callbacks/endeavor.rs - Updated to call `get_undynamaxed_hp(None)`
+- src/data/move_callbacks/ruination.rs - Updated to call `get_undynamaxed_hp(None)`
+- src/data/move_callbacks/superfang.rs - Updated to call `get_undynamaxed_hp(None)`
+- src/data/move_callbacks/guardianofalola.rs - Updated to call `get_undynamaxed_hp(None)`
+
+**Abilities Completed**:
+259. **Innards Out** (innardsout.rs) - Already had implementation, removed TODO by using proper get_undynamaxed_hp call
+
+**Git Commit**: a1f53a9b: "Fix get_undynamaxed_hp to accept optional amount parameter (Batch 123)"
+
+Progress: 258/380 abilities (67.9%).
+Remaining TODOs: 75 (down from 76 - removed 1 Innards Out TODO).
 
