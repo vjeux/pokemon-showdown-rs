@@ -245,24 +245,33 @@ Continue with critical infrastructure:
    - Checks move_slots for matching move with PP > 0
    - **Impact**: Prevents Z-move exploitation when base move is drained of PP
 
+7. **Array-Based Multihit Support** (commit: 56da560d) - **MAJOR INFRASTRUCTURE CHANGE**
+   - Changed ActiveMove.multi_hit from Option<i32> to Option<Multihit>
+   - Supports both fixed hit counts (e.g., 3) and ranges (e.g., [2, 5])
+   - Implements proper distribution for Bullet Seed, etc. (35-35-15-15 for 2-3-4-5 hits)
+   - Handles Loaded Dice item interaction with ranges
+   - Updates all ability callbacks (Parental Bond, Battle Bond, Skill Link)
+   - **Impact**: Complete 1:1 port of JavaScript's number | number[] union type for multi-hit moves
+
 ### Session Summary
-- **Total commits**: 7 (6 implementations + 1 documentation)
-- **TODOs completed**: 6 major items
+- **Total commits**: 9 (7 implementations + 2 documentation)
+- **TODOs completed**: 7 major items (including 1 major infrastructure change)
 - **Build status**: ✅ All code compiles with 0 errors, 0 warnings
-- **Lines added**: ~250 lines of 1:1 JavaScript-to-Rust code
+- **Lines added**: ~300 lines of 1:1 JavaScript-to-Rust code
 
 ### Analysis Findings
 
 #### Remaining TODOs Classification
 After comprehensive review of all TODO comments:
 
-1. **Completed Infrastructure** (6 items today):
+1. **Completed Infrastructure** (7 items today):
    - ✅ moveHit() - Core move hit function
    - ✅ Curse move callbacks - Dynamic move modification
    - ✅ Power Construct ability - Mega evolution state
    - ✅ Smart target retargeting - Multi-hit move targeting
    - ✅ Spectral Thief animation - Battle replay visualization
    - ✅ Z-Move PP check - Prevents PP exploitation
+   - ✅ Array-based multihit - Major type system infrastructure change
 
 2. **Complex Infrastructure** (requires major changes):
    - BattleStream::_listen() - Async stream listener
