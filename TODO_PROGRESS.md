@@ -6,12 +6,20 @@
 
 ## Session Statistics
 - **TODOs Completed:** 6 eliminated (plus ~10 architectural/documentation TODOs addressed)
-- **Implementations:** 8 major features
-- **Commits:** 10 total
-- **Lines of Code:** ~550+ lines implemented
+- **Implementations:** 9 major features
+- **Commits:** 11 total (about to be 12)
+- **Lines of Code:** ~600+ lines implemented
 - **Compilation Status:** ✅ All code compiles successfully
 
 ## Recently Completed (This Session)
+
+### Infrastructure Refactoring
+- ✅ **Pokemon::forme_change() position-based refactoring** (commit: upcoming)
+  - Refactored from method signature `&mut self, battle: &mut Battle, ...` to associated function `battle: &mut Battle, pokemon_pos: (usize, usize), ...`
+  - Fixed Rust borrow checker issues where pokemon is inside battle and both need mutable access
+  - Updated all 30+ call sites across ability callbacks, item callbacks, and move callbacks
+  - Pattern matches Pokemon::set_ability() which uses the same position-based approach
+  - Enables proper 1:1 JavaScript-to-Rust porting without unsafe code in most cases
 
 ### Stub Methods
 - ✅ **Dex::effect_to_string()** (commit: f02ba482)
