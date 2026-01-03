@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 142 (37.4%)
+- Completed: 145 (38.2%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
 - In Progress: Continuing systematic implementation
 
@@ -300,10 +300,15 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 141. **Aura Break** (aurabreak.rs) - onAnyTryPrimaryHit: Sets has_aura_break flag on move to reverse Dark Aura and Fairy Aura effects (skips self-targeting and Status moves)
 142. **Liquid Voice** (liquidvoice.rs) - onModifyType: Changes sound moves to Water type (skips Dynamax Pokemon, checks flags.sound)
 
+### Batch 42 - Ally Support & One-Time Boosts (3 abilities)
+143. **Hospitality** (hospitality.rs) - onStart: Heals adjacent allies for 1/4 of their max HP when switching in (uses Pokemon::adjacent_allies)
+144. **Dauntless Shield** (dauntlessshield.rs) - onStart: Boosts Defense by 1 once per battle (uses ability_state.data to track with "shieldBoost" flag)
+145. **Curious Medicine** (curiousmedicine.rs) - onStart: Clears all stat changes from adjacent allies when switching in (uses Pokemon::clear_boosts)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 47 abilities (batches 22-41).
-Progress: 142/380 abilities (37.4%).
+Implemented 50 abilities (batches 22-42).
+Progress: 145/380 abilities (38.2%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -320,6 +325,7 @@ Completed Mold Breaker, Sticky Hold, and Unaware using ignore_ability flag, item
 Completed No Guard, Simple, and Unseen Fist using invulnerability/accuracy overrides via effectState.target, stat change doubling via relay_var_boost, and move flag modification.
 Completed Turboblaze and Teravolt as variants of Mold Breaker (all three set ignore_ability flag).
 Completed Aura Break and Liquid Voice using has_aura_break flag setting and sound move type modification.
+Completed Hospitality, Dauntless Shield, and Curious Medicine using adjacent ally healing/boost clearing and ability_state.data for one-time boost tracking.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
