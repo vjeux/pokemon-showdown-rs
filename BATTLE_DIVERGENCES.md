@@ -865,3 +865,68 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - Major fix: Corrected architectural mismatch (start_battle() should not exist as separate method)
 
 
+---
+
+## Session 8: Remove do_switch.rs File (2026-01-02)
+
+### Twenty-Second Implementation: Move do_switch.rs into run_action.rs ✅
+- **Issue**: do_switch.rs marked as "NOT in JavaScript" but logic IS in JavaScript runAction() case 'switch'
+- **Root Cause**: Same issue as start_battle.rs - Rust incorrectly split runAction() 'switch' case into separate file
+- **Action**: Consolidated logic back into run_action.rs to match JavaScript structure
+
+  **JavaScript Structure** (battle.ts:2761-2779):
+  ```javascript
+  case 'switch':
+      if (action.choice === 'switch' && action.pokemon.status) {
+          this.singleEvent('CheckShow', this.dex.abilities.getByID('naturalcure'), null, action.pokemon);
+      }
+      if (this.actions.switchIn(action.target, action.pokemon.position, action.sourceEffect) === 'pursuitfaint') {
+          // a pokemon fainted from Pursuit before it could switch
+          if (this.gen <= 4) {
+              // in gen 2-4, the switch still happens
+              this.hint("Previously chosen switches continue in Gen 2-4 after a Pursuit target faints.");
+              action.priority = -101;
+              this.queue.unshift(action);
+              break;
+          } else {
+              // in gen 5+, the switch is cancelled
+              this.hint("A Pokemon can't switch between when it runs out of HP and when it faints");
+              break;
+          }
+      }
+      break;
+  ```
+
+  **Rust Had Two Files:**
+  1. run_action.rs - Just called do_switch()
+  2. do_switch.rs - Had some logic, marked "NOT in JavaScript"
+
+  **Changes Made:**
+
+  **run_action.rs (lines 351-412):**
+  - Lines 360-369: Check if switching Pokemon has status
+  - Lines 371-374: If has_status, fire singleEvent('CheckShow', 'naturalcure')
+  - Lines 376-385: Call battle_actions::switch_in() and get result
+  - Lines 387-411: Handle PursuitFaint result
+    * If gen <= 4: Add hint about gen 2-4 behavior
+    * Else (gen 5+): Add hint about switch cancellation
+    * TODO noted for action.priority = -101 and queue.unshift() (requires action modification)
+
+  **battle.rs:**
+  - Removed `mod do_switch;` declaration (line 43)
+
+  **Files Deleted:**
+  - do_switch.rs (69 lines) - logic moved to run_action.rs
+
+- **Side Effects**: None - cleaner architecture matching JavaScript
+- **Result**: Now matches JavaScript runAction() case 'switch' 1:1
+- **Commit**: a90966fc
+
+**Progress Update (2026-01-02 - Session 8):**
+- Files deleted: 1 (do_switch.rs)
+- Files updated: 2 (run_action.rs, battle.rs)
+- Total files in battle/: 146 (down from 147)
+- Files completed: 22
+- Pattern: Second architectural fix (method incorrectly separated from runAction)
+
+
