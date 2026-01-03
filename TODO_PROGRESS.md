@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 102 (26.8%)
+- Completed: 103 (27.1%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -218,12 +218,15 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 101. **Technician** (technician.rs) - onBasePower: 1.5x boost when base power (after modifier) ≤ 60
 102. **Reckless** (reckless.rs) - onBasePower: 1.2x boost (4915/4096) for moves with recoil or crash damage
 
+### Batch 25 - Electric Terrain Synergy (1 ability)
+103. **Hadron Engine** (hadronengine.rs) - onStart: Sets electric terrain or shows activate message if already active; onModifySpA: 1.33x Special Attack in electric terrain (5461/4096)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 7 abilities using the new infrastructure (batches 22-24).
-Progress: 102/380 abilities (26.8%).
+Implemented 8 abilities using the new infrastructure (batches 22-25).
+Progress: 103/380 abilities (27.1%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
-Now using pokemon.foes(), pokemon.has_ability(), and modifying battle.active_move fields.
+Now using field.is_terrain(), field.set_terrain(), and battle.add() for protocol messages.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
