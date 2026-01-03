@@ -80,7 +80,23 @@ impl Battle {
             //     this.sideConditions[status.id].duration =
             //         status.durationCallback.call(this.battle, this.active[0], source, sourceEffect);
             // }
-            // TODO: Call durationCallback if exists - requires condition callback infrastructure
+            // Call durationCallback if exists
+            let target_pos = if side_idx < self.sides.len() && !self.sides[side_idx].active.is_empty() {
+                Some((side_idx, 0)) // side.active[0]
+            } else {
+                None
+            };
+
+            let result = self.call_duration_callback(
+                &condition_id,
+                target_pos,
+                source_pos,
+                _source_effect.map(|id| id.as_str()),
+            );
+
+            if let crate::event::EventResult::Number(duration) = result {
+                state.duration = Some(duration);
+            }
         }
 
         // Add the condition
