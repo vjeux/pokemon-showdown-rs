@@ -899,3 +899,52 @@ pub fn get_undynamaxed_hp(&self, amount: Option<i32>) -> i32 {
 Progress: 258/380 abilities (67.9%).
 Remaining TODOs: 75 (down from 76 - removed 1 Innards Out TODO).
 
+
+### Batch 124 - Ripen Ability + EatItem Infrastructure (1 ability + infrastructure fix)
+
+**Completed Ripen ability:**
+259. **Ripen** (ripen.rs) - Ability that doubles berry effects:
+   - onTryHeal: Returns EventResult::Number(2) for berries to double healing; shows activate message for Berry Juice/Leftovers
+   - onChangeBoost: Doubles all stat boosts from berries by multiplying relay_var_boost values by 2
+   - onSourceModifyDamage: Checks berryWeaken flag and applies 0.5x damage modifier, then clears flag
+   - onTryEatItem: Shows activate message when eating any berry
+   - onEatItem: Sets berryWeaken flag when resistance berries are eaten (18 weaken berry types)
+
+**Infrastructure Fix - EatItem Event:**
+Fixed eat_item.rs to properly pass item_id parameter to runEvent("EatItem") call, matching JavaScript behavior.
+
+**Problem**: The Rust implementation at line 153 of eat_item.rs was calling:
+```rust
+battle.run_event("EatItem", Some(pokemon_pos), _source_pos, None, None);
+```
+
+But the JavaScript comment at line 150 showed:
+```javascript
+// JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
+```
+
+The JavaScript code passes `item` as the 4th parameter, which is required for abilities like Ripen to check which item was eaten.
+
+**Solution**: Changed line 153 to pass the item_id:
+```rust
+battle.run_event("EatItem", Some(pokemon_pos), _source_pos, Some(&item_id), None);
+```
+
+**Impact**: This infrastructure fix enables all EatItem callbacks to access the eaten item via `battle.current_event.effect`.
+
+**Ripen Implementation Details:**
+- Defined WEAKEN_BERRIES constant array with 18 resistance berry IDs (babiriberry, chartiberry, chilanberry, etc.)
+- Accesses item_id from `battle.current_event.effect`
+- Sets `pokemon.ability_state.data["berryWeaken"]` flag based on whether eaten item is in WEAKEN_BERRIES list
+- Uses serde_json::Value::Bool for flag storage
+- This flag is checked by onSourceModifyDamage to apply 0.5x damage reduction
+
+**Files Modified:**
+- src/data/ability_callbacks/ripen.rs - Completed onEatItem callback (54 lines added)
+- src/pokemon/eat_item.rs - Fixed runEvent call to pass item_id (1 line changed)
+
+**Git Commit**: e7bd5432: "Complete Ripen ability implementation (Batch 124) + EatItem infrastructure fix"
+
+Progress: 259/380 abilities (68.2%).
+Remaining TODOs: 74 (down from 75 - removed 1 Ripen TODO).
+
