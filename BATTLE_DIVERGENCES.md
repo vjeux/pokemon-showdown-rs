@@ -479,7 +479,7 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - Remaining files with eprintln: ~17 (cosmetic cleanup pending)
 
 **Session 11 Additional Progress:**
-- Files cleaned: 7 total
+- Files cleaned: 15 total
   1. commit_choices.rs: 9 debug prints removed
   2. direct_damage.rs: 1 debug print removed
   3. dispatch_single_event.rs: 14 debug prints removed
@@ -487,9 +487,17 @@ Starting comprehensive 1:1 verification of battle/ folder.
   5. end_turn.rs: 1 debug print removed
   6. field_event.rs: 11 debug prints removed
   7. handle_ability_event.rs: 4 debug prints removed
-- **Total debug prints removed this session: 43**
-- Commits this session: 6 (7c238e3e, 5400a87f, 053d3ec7, 9b8bde38, 93bba1b0, b253321c)
-- Remaining files with eprintln: ~13
+  8. handle_item_event.rs: 3 debug prints removed
+  9. handle_move_event.rs: 2 debug prints removed
+  10. random_chance.rs: 1 debug print + unused vars removed
+  11. sample.rs: 1 debug print + unused vars removed
+  12. random.rs: 2 debug prints + unused vars removed
+  13. randomizer.rs: 1 debug print removed
+  14. run_event.rs: 1 debug print removed
+  15. start.rs: 1 debug print removed
+- **Total debug prints removed this session: 56**
+- Commits this session: 10 (7c238e3e, 5400a87f, 053d3ec7, 9b8bde38, 93bba1b0, b253321c, 0e5a3184, 1541141c, c0ac3666)
+- Remaining files with eprintln: ~6 (27 debug prints remaining)
 
 ---
 
