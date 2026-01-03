@@ -61,17 +61,23 @@ pub fn hit_step_try_hit_event(
     // return hitResults;
 
     // Convert Option<i32> results to bool
-    // NOT_FAIL is a special value that means "don't fail but don't count as success either"
-    // In JavaScript: if (hitResults[i] !== this.battle.NOT_FAIL) hitResults[i] = hitResults[i] || false;
-    // This means: if not NOT_FAIL, convert to boolean (truthy or false)
-
-    // In Rust, run_event returns Option<i32>:
-    // - Some(0) = false
-    // - Some(NOT_FAIL) = NOT_FAIL (special value, need to check what it is)
-    // - Some(other) = true
-    // - None = treated as true
-
-    // For now, convert to bool: Some(0) = false, anything else = true
-    // TODO: Check Battle::NOT_FAIL constant value
-    hit_results.iter().map(|&r| r != Some(0)).collect()
+    // Battle::NOT_FAIL = "" (empty string), which is falsy in JavaScript
+    // In Rust, EventResult::NotFail becomes None in run_event
+    //
+    // JavaScript semantics:
+    // - If result is NOT_FAIL (''): leave as NOT_FAIL (falsy, becomes false in boolean)
+    // - If result is truthy: stays true
+    // - If result is falsy but not NOT_FAIL: becomes false
+    //
+    // Rust mapping:
+    // - None (from EventResult::NotFail) = NOT_FAIL -> false (falsy)
+    // - Some(0) (from EventResult::Boolean(false)) -> false
+    // - Some(non-zero) (from EventResult::Boolean(true)) -> true
+    hit_results.iter().map(|&r| {
+        match r {
+            None => false,        // NOT_FAIL is falsy
+            Some(0) => false,     // 0 is falsy
+            Some(_) => true,      // non-zero is truthy
+        }
+    }).collect()
 }
