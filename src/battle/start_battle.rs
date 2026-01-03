@@ -81,7 +81,8 @@ impl Battle {
             self.sides[side_idx].pokemon[poke_idx].base_species = new_species.clone();
 
             // JS: pokemon.details = pokemon.getUpdatedDetails();
-            // TODO: Implement getUpdatedDetails()
+            let details = self.sides[side_idx].pokemon[poke_idx].get_updated_details();
+            self.sides[side_idx].pokemon[poke_idx].details = details;
 
             // JS: pokemon.setAbility(species.abilities['0'], null, null, true);
             // TODO: Implement setAbility()
