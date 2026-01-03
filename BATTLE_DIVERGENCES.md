@@ -452,6 +452,34 @@ Starting comprehensive 1:1 verification of battle/ folder.
 
 ---
 
+## Session 11: Debug Print Cleanup - commit_choices.rs (2026-01-02)
+
+### Twenty-Fifth Implementation: Remove debug prints from commit_choices.rs ✅
+- **Issue**: Debug print statements not present in JavaScript
+- **Action**: Removed 9 eprintln! statements
+
+  **Lines Removed:**
+  - Line 29: `eprintln!("[COMMIT_CHOICES DEBUG] Called");`
+  - Line 74: `eprintln!("[COMMIT_CHOICES DEBUG] Sorting queue");`
+  - Lines 83-87: Debug loop printing actions before sorting
+  - Line 89: `eprintln!("[COMMIT_CHOICES DEBUG] Calling speed_sort");`
+  - Line 100: `eprintln!("[COMMIT_CHOICES DEBUG] speed_sort done");`
+  - Lines 103-107: Debug loop printing actions after sorting
+  - Line 125: `eprintln!("[COMMIT_CHOICES DEBUG] About to call turn_loop()");`
+
+- **Rationale**: JavaScript uses this.debug() for debugging, not console.log equivalents
+- **Side Effects**: None - purely cleanup
+- **Result**: Code matches JavaScript (no production debug prints)
+- **Commit**: 7c238e3e
+
+**Progress Update (2026-01-02 - Session 11):**
+- Debug prints removed: 9
+- Files updated: 1 (commit_choices.rs)
+- Total files in battle/: 145 (unchanged)
+- Remaining files with eprintln: ~17 (cosmetic cleanup pending)
+
+---
+
 ## Session 3 Findings (2026-01-02)
 
 **Files Examined:**
