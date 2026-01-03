@@ -115,7 +115,7 @@ impl Pokemon {
     // 		return true;
     // 	}
     //
-    pub fn transform_into(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: (usize, usize)) -> bool {
+    pub fn transform_into(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: (usize, usize), effect_id: Option<&dex_data::ID>) -> bool {
         // Extract gen value upfront (before any mutable borrows)
         let gen = battle.gen;
 
@@ -401,7 +401,7 @@ impl Pokemon {
         // JS: } else {
         // JS:     this.battle.add('-transform', this, pokemon);
         // JS: }
-        // ✅ NOW IMPLEMENTED: battle.add('-transform') message
+        // ✅ NOW IMPLEMENTED: battle.add('-transform') message with optional [from] effect
         {
             let self_ident = {
                 let self_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -417,13 +417,28 @@ impl Pokemon {
                 };
                 target_pokemon.get_slot()
             };
-            battle.add(
-                "-transform",
-                &[
-                    self_ident.as_str().into(),
-                    target_ident.as_str().into(),
-                ],
-            );
+
+            if let Some(effect) = effect_id {
+                // Add transform message with [from] effect
+                let from_str = format!("[from] ability: {}", effect.to_string());
+                battle.add(
+                    "-transform",
+                    &[
+                        self_ident.as_str().into(),
+                        target_ident.as_str().into(),
+                        from_str.into(),
+                    ],
+                );
+            } else {
+                // Add basic transform message
+                battle.add(
+                    "-transform",
+                    &[
+                        self_ident.as_str().into(),
+                        target_ident.as_str().into(),
+                    ],
+                );
+            }
         }
 
         // Get mutable reference again for final transformations

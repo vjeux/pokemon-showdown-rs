@@ -28,7 +28,7 @@ pub fn on_hit(
     //     return false;
 
     // Call Pokemon::transform_into as an associated function with battle and both positions
-    let success = Pokemon::transform_into(battle, pokemon, target);
+    let success = Pokemon::transform_into(battle, pokemon, target, None);
 
     if !success {
         return EventResult::NotFail;
