@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 145 (38.2%)
+- Completed: 147 (38.7%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
 - In Progress: Continuing systematic implementation
 
@@ -305,10 +305,14 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 144. **Dauntless Shield** (dauntlessshield.rs) - onStart: Boosts Defense by 1 once per battle (uses ability_state.data to track with "shieldBoost" flag)
 145. **Curious Medicine** (curiousmedicine.rs) - onStart: Clears all stat changes from adjacent allies when switching in (uses Pokemon::clear_boosts)
 
+### Batch 43 - Item Reveal & Ally Power Boost (2 abilities)
+146. **Frisk** (frisk.rs) - onStart: Reveals all opposing Pokemon's held items (uses get_all_active and filters by opposing side)
+147. **Power Spot** (powerspot.rs) - onAllyBasePower: Boosts ally moves by 1.3x (5325/4096) when attacker ≠ ability holder
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 50 abilities (batches 22-42).
-Progress: 145/380 abilities (38.2%).
+Implemented 52 abilities (batches 22-43).
+Progress: 147/380 abilities (38.7%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -326,6 +330,7 @@ Completed No Guard, Simple, and Unseen Fist using invulnerability/accuracy overr
 Completed Turboblaze and Teravolt as variants of Mold Breaker (all three set ignore_ability flag).
 Completed Aura Break and Liquid Voice using has_aura_break flag setting and sound move type modification.
 Completed Hospitality, Dauntless Shield, and Curious Medicine using adjacent ally healing/boost clearing and ability_state.data for one-time boost tracking.
+Completed Frisk and Power Spot using item revelation for foes and ally base power boost.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
