@@ -12,8 +12,33 @@ use crate::event::EventResult;
 ///         target.addVolatile('charge');
 ///     }
 /// }
-pub fn on_damaging_hit(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    use crate::Pokemon;
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (move.flags['wind'])
+    let is_wind_move = if let Some(ref active_move) = battle.active_move {
+        active_move.flags.wind
+    } else {
+        return EventResult::Continue;
+    };
+
+    if is_wind_move {
+        // target.addVolatile('charge');
+        Pokemon::add_volatile(
+            battle,
+            target_pos,
+            crate::dex_data::ID::from("charge"),
+            None,
+            None,
+            None,
+        );
+    }
+
     EventResult::Continue
 }
 

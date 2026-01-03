@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 183 (48.2%)
+- Completed: 184 (48.4%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -388,6 +388,9 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 63 - Ally Volatile Protection (1 ability)
 183. **Aroma Veil** (aromaveil.rs) - onAllyTryAddVolatile: Blocks attract, disable, encore, healblock, taunt, and torment from being added to allies when caused by moves; shows -block message; returns Null to prevent volatile
 
+### Batch 64 - Wind Move Response (1 TODO)
+184. **Wind Power** (windpower.rs) - onDamagingHit: Adds charge volatile when hit by wind moves (checks active_move.flags.wind); onSideConditionStart still needs implementation
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -405,7 +408,8 @@ Completed Embody Aspect family (Batch 60) using terastallized state and ability_
 Completed Perish Body and Quick Draw (Batch 61) using add_volatile and random_chance.
 Completed Cursed Body (Batch 62) using add_volatile with target as source parameter.
 Completed Aroma Veil (Batch 63) blocking specific volatiles from allies.
-Progress: 183/380 abilities (48.2%).
+Completed Wind Power onDamagingHit (Batch 64) adding charge on wind moves.
+Progress: 184/380 abilities (48.4%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
