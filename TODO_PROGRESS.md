@@ -6,7 +6,27 @@
 
 ## Recently Completed (This Session)
 
-### Infrastructure Implementations
+### Stub Methods
+- ✅ **Dex::effect_to_string()** (commit: f02ba482)
+  - Simple string return method
+
+- ✅ **Side::to_string()** (commit: f02ba482)
+  - Format: "{id}: {name}"
+
+- ✅ **Cleanup** (commit: 916e4fb0)
+  - Removed duplicate to_j_s_o_n.rs file (to_json.rs already implements this)
+
+### Critical Infrastructure
+- ✅ **BattleStream::_write_line()** (commit: ed7304c7)
+  - Full protocol handler with 18 command types
+  - Handles: start, player, p1-p4, forcewin, forcetie, forcelose, reseed, tiebreak, chat, eval, requestlog, requestexport, requestteam, show-openteamsheets, version
+  - 267 lines of 1:1 JavaScript-to-Rust implementation
+
+- ✅ **BattleStream::_write_lines()** (commit: ed7304c7)
+  - Batch protocol handler
+  - Splits input and calls _write_line for each command
+
+### Infrastructure Implementations (Previous Session)
 - ✅ **Active Move Modification System** (commit: 91fd09bf)
   - Created `Battle::modify_active_move_base_power()`
   - Created `Battle::modify_active_move_smart_target()`
@@ -36,22 +56,34 @@
 ## TODO Categories
 
 ### Category 1: Critical Infrastructure (Must Do First)
-- [ ] BattleStream::_writeLine() - Full protocol handler
-- [ ] BattleStream::_writeLines() - Batch protocol handler
-- [ ] BattleStream::_listen() - Stream listener
+- [x] BattleStream::_writeLine() - Full protocol handler ✅
+- [x] BattleStream::_writeLines() - Batch protocol handler ✅
+- [ ] BattleStream::_listen() - Stream listener (async)
 - [ ] Side::add_side_condition() - Full event system integration
 - [ ] Pokemon::forme_change() permanent formes
 - [ ] Battle::moveHit() - Core damage application function
 - [ ] TeamGenerator integration
 
 ### Category 2: Stub Methods (18 total)
-- [ ] Dex methods: effectToString, forFormat, getDescs, etc.
-- [ ] Side::toJSON(), Side::toString()
+- [x] Dex::effectToString() ✅
+- [x] Side::toString() ✅
+- [ ] Dex::forFormat()
+- [ ] Dex::getDescs()
+- [ ] Other Dex methods
+- [ ] Side::toJSON() (note: to_json already exists)
 
-## Next Up: Implement Stub Dex Methods
+## Next Up
 
-Starting with simple methods to build momentum.
+Continue with critical infrastructure:
+1. BattleStream::_listen() - Async stream listener
+2. Side::add_side_condition() - Event system integration
+3. Pokemon::forme_change() permanent formes
 
 ## Commits This Session
+- f02ba482 - Implement Dex::effect_to_string() and Side::to_string() stub methods
+- 916e4fb0 - Remove duplicate to_j_s_o_n.rs file
+- ed7304c7 - Implement BattleStream::_write_line() and _write_lines() protocol handlers
+
+## Previous Session
 - 91fd09bf - Implement major infrastructure
 - 4a54a588 - Implement Dex::get_alias()
