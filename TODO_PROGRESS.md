@@ -5,11 +5,11 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 350 total (down from 351 - resolved 1 more in this session: Batch 165)
+- **Remaining TODOs**: 348 total (down from 350 - resolved 2 more in this session: Batch 166)
   - Complex abilities requiring transform/illusion infrastructure: ~0 TODOs (ALL COMPLETE! - Imposter, Magic Bounce, Rebound, Illusion, and Commander all completed)
-  - Move callbacks requiring queue/event system extensions: ~21 TODOs (down from ~22 - resolved Magnetrise immunity)
+  - Move callbacks requiring queue/event system extensions: ~19 TODOs (down from ~21 - resolved Foresight and Miracle Eye onNegateImmunity)
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 165 - Magnetrise Condition Immunity (1 TODO callback resolved: Magnetrise onImmunity)
+- **Latest Progress**: Batch 166 - Foresight and Miracle Eye onNegateImmunity (2 TODO callbacks resolved)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
@@ -2981,4 +2981,74 @@ pub fn on_immunity(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventRe
 
 **Next Candidates:**
 With the type parameter infrastructure in place, other onImmunity/onNegateImmunity callbacks can now be implemented.
+
+
+### Batch 166 - Foresight and Miracle Eye onNegateImmunity (2 TODOs)
+
+**Completed move callbacks:**
+- **Foresight condition** (foresight.rs) - onNegateImmunity: Allows Normal/Fighting moves to hit Ghost-type Pokemon
+- **Miracle Eye condition** (miracleeye.rs) - onNegateImmunity: Allows Psychic moves to hit Dark-type Pokemon
+
+**Implementation Details:**
+- Both use the `relay_var_type` infrastructure from Batch 164
+- Check pokemon's type and the immunity type being negated
+- Return false to negate immunity (allow the move to hit)
+- Follow the same pattern as Magnetrise from Batch 165
+
+**JavaScript Equivalence:**
+
+Foresight:
+```javascript
+onNegateImmunity(pokemon, type) {
+    if (pokemon.hasType('Ghost') && ['Normal', 'Fighting'].includes(type)) return false;
+}
+```
+
+Miracle Eye:
+```javascript
+onNegateImmunity(pokemon, type) {
+    if (pokemon.hasType('Dark') && type === 'Psychic') return false;
+}
+```
+
+**Rust Implementation Pattern:**
+```rust
+pub fn on_negate_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    let immunity_type = match &battle.current_event {
+        Some(event) => event.relay_var_type.clone(),
+        None => return EventResult::Continue,
+    };
+
+    let has_type = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.has_type(battle, "TypeName")
+    };
+
+    if let Some(type_str) = immunity_type {
+        if has_type && type_str == "AttackingType" {
+            return EventResult::Boolean(false);
+        }
+    }
+
+    EventResult::Continue
+}
+```
+
+**Files Modified:**
+- src/data/move_callbacks/foresight.rs - Implemented onNegateImmunity (24 lines added, 6 removed)
+- src/data/move_callbacks/miracleeye.rs - Implemented onNegateImmunity (24 lines added, 6 removed)
+
+**Git Commit:**
+- b1218c52: "Implement Foresight and Miracle Eye onNegateImmunity callbacks (Batch 166)"
+
+**Progress:**
+- TODOs Resolved: 2 (Foresight and Miracle Eye onNegateImmunity callbacks)
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+**Note:**
+Both files still have onModifyBoost TODOs that require different infrastructure (boost parameter support).
 
