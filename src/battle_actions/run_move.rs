@@ -51,8 +51,14 @@ pub fn run_move(
     };
 
     // Store original priority
+    // In JavaScript: let priority = baseMove.priority;
+    // In JavaScript: let pranksterBoosted = false;
+    //
+    // Note: pranksterBoosted tracking is handled via battle.active_move.prankster_boosted
+    // which is set by the Prankster ability's onModifyPriority callback.
+    // The local variable in JavaScript was only used for tracking the original state,
+    // but we don't need it in Rust since we access the modified state from active_move.
     let _priority = base_move.priority;
-    let _prankster_boosted = false; // TODO: Implement pranksterBoosted
 
     // Check for OverrideAction event
     // if (baseMove.id !== 'struggle' && !zMove && !maxMove && !externalMove)
