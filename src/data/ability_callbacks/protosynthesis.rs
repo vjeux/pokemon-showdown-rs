@@ -50,9 +50,20 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
         eprintln!("[PROTOSYNTHESIS] Not sunny, has_volatile={}", has_volatile);
 
         if has_volatile {
-            // TODO: Check if fromBooster is set (need to implement effect state)
-            // For now, remove the volatile if it's not sunny
-            Pokemon::remove_volatile(battle, pokemon_pos, &id);
+            // Check if fromBooster is set
+            let from_booster = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                pokemon.volatiles.get(&id)
+                    .and_then(|v| v.data.get("fromBooster"))
+                    .and_then(|v| v.as_bool())
+                    .unwrap_or(false)
+            } else {
+                false
+            };
+
+            // Only remove volatile if it's not from Booster Energy
+            if !from_booster {
+                Pokemon::remove_volatile(battle, pokemon_pos, &id);
+            }
         }
     }
 
@@ -106,12 +117,35 @@ pub mod condition {
             return EventResult::Continue;
         };
 
-        // TODO: Check if effect is Booster Energy and set fromBooster
-        // For now, just add the activate message
-        battle.add("-activate", &[
-            Arg::String(slot.clone()),
-            Arg::String("ability: Protosynthesis".to_string()),
-        ]);
+        // Check if effect is Booster Energy
+        let is_booster_energy = battle.current_event.as_ref()
+            .and_then(|e| e.effect.as_ref())
+            .map(|eff| eff.as_str() == "boosterenergy")
+            .unwrap_or(false);
+
+        if is_booster_energy {
+            // Set fromBooster flag in volatile's data
+            let volatile_id = ID::from("protosynthesis");
+            if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                if let Some(volatile) = pokemon.volatiles.get_mut(&volatile_id) {
+                    volatile.data.insert(
+                        "fromBooster".to_string(),
+                        serde_json::Value::Bool(true),
+                    );
+                }
+            }
+
+            battle.add("-activate", &[
+                Arg::String(slot.clone()),
+                Arg::String("ability: Protosynthesis".to_string()),
+                Arg::String("[fromitem]".to_string()),
+            ]);
+        } else {
+            battle.add("-activate", &[
+                Arg::String(slot.clone()),
+                Arg::String("ability: Protosynthesis".to_string()),
+            ]);
+        }
 
         // Get best stat by computing it inline to avoid borrow issues
         let stats = [
@@ -132,11 +166,28 @@ pub mod condition {
             }
         }
 
-        // TODO: Store bestStat in effectState (need to implement effect state storage)
-        // For now, we'll rely on getBestStat being called again in the modify callbacks
+        // Store bestStat in volatile's effectState data
+        let volatile_id = ID::from("protosynthesis");
+        let stat_name = match best_stat {
+            StatID::Atk => "atk",
+            StatID::Def => "def",
+            StatID::SpA => "spa",
+            StatID::SpD => "spd",
+            StatID::Spe => "spe",
+            _ => "atk", // Fallback
+        };
+
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            if let Some(volatile) = pokemon.volatiles.get_mut(&volatile_id) {
+                volatile.data.insert(
+                    "bestStat".to_string(),
+                    serde_json::Value::String(stat_name.to_string()),
+                );
+            }
+        }
 
         // Add start message with best stat
-        let stat_name = match best_stat {
+        let display_stat = match best_stat {
             StatID::Atk => "Atk",
             StatID::Def => "Def",
             StatID::SpA => "SpA",
@@ -147,7 +198,7 @@ pub mod condition {
 
         battle.add("-start", &[
             Arg::String(slot),
-            Arg::String(format!("protosynthesis{}", stat_name)),
+            Arg::String(format!("protosynthesis{}", display_stat)),
         ]);
 
         EventResult::Continue
@@ -159,30 +210,31 @@ pub mod condition {
     ///     return this.chainModify([5325, 4096]);
     /// }
     pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // Get best stat by computing it inline to avoid borrow issues
-        let stats = [
-            crate::dex_data::StatID::Atk,
-            crate::dex_data::StatID::Def,
-            crate::dex_data::StatID::SpA,
-            crate::dex_data::StatID::SpD,
-            crate::dex_data::StatID::Spe,
-        ];
-        let mut best_stat = crate::dex_data::StatID::Atk;
-        let mut best_value = 0;
+        // Get bestStat from volatile's data
+        let volatile_id = ID::from("protosynthesis");
+        let best_stat = if let Some(pokemon) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+            pokemon.volatiles.get(&volatile_id)
+                .and_then(|v| v.data.get("bestStat"))
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+        } else {
+            return EventResult::Continue;
+        };
 
-        for stat in stats {
-            let value = battle.get_pokemon_stat(attacker_pos, stat, false, true);
-            if value > best_value {
-                best_value = value;
-                best_stat = stat;
-            }
-        }
-
-        if best_stat != StatID::Atk {
+        if best_stat != "atk" {
             return EventResult::Continue;
         }
 
-        // TODO: Check if pokemon is ignoring ability
+        // Check if pokemon is ignoring ability
+        let ignoring = if let Some(pokemon) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+            pokemon.ignoring_ability(battle)
+        } else {
+            return EventResult::Continue;
+        };
+
+        if ignoring {
+            return EventResult::Continue;
+        }
 
         // Apply 1.3x boost (5325/4096)
         let modified = battle.modify(atk, 5325, 4096);
@@ -195,30 +247,31 @@ pub mod condition {
     ///     return this.chainModify([5325, 4096]);
     /// }
     pub fn on_modify_def(battle: &mut Battle, def: i32, defender_pos: (usize, usize), _attacker_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // Get best stat by computing it inline to avoid borrow issues
-        let stats = [
-            crate::dex_data::StatID::Atk,
-            crate::dex_data::StatID::Def,
-            crate::dex_data::StatID::SpA,
-            crate::dex_data::StatID::SpD,
-            crate::dex_data::StatID::Spe,
-        ];
-        let mut best_stat = crate::dex_data::StatID::Atk;
-        let mut best_value = 0;
+        // Get bestStat from volatile's data
+        let volatile_id = ID::from("protosynthesis");
+        let best_stat = if let Some(pokemon) = battle.pokemon_at(defender_pos.0, defender_pos.1) {
+            pokemon.volatiles.get(&volatile_id)
+                .and_then(|v| v.data.get("bestStat"))
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+        } else {
+            return EventResult::Continue;
+        };
 
-        for stat in stats {
-            let value = battle.get_pokemon_stat(defender_pos, stat, false, true);
-            if value > best_value {
-                best_value = value;
-                best_stat = stat;
-            }
-        }
-
-        if best_stat != StatID::Def {
+        if best_stat != "def" {
             return EventResult::Continue;
         }
 
-        // TODO: Check if pokemon is ignoring ability
+        // Check if pokemon is ignoring ability
+        let ignoring = if let Some(pokemon) = battle.pokemon_at(defender_pos.0, defender_pos.1) {
+            pokemon.ignoring_ability(battle)
+        } else {
+            return EventResult::Continue;
+        };
+
+        if ignoring {
+            return EventResult::Continue;
+        }
 
         // Apply 1.3x boost (5325/4096)
         let modified = battle.modify(def, 5325, 4096);
@@ -231,30 +284,31 @@ pub mod condition {
     ///     return this.chainModify([5325, 4096]);
     /// }
     pub fn on_modify_sp_a(battle: &mut Battle, spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // Get best stat by computing it inline to avoid borrow issues
-        let stats = [
-            crate::dex_data::StatID::Atk,
-            crate::dex_data::StatID::Def,
-            crate::dex_data::StatID::SpA,
-            crate::dex_data::StatID::SpD,
-            crate::dex_data::StatID::Spe,
-        ];
-        let mut best_stat = crate::dex_data::StatID::Atk;
-        let mut best_value = 0;
+        // Get bestStat from volatile's data
+        let volatile_id = ID::from("protosynthesis");
+        let best_stat = if let Some(pokemon) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+            pokemon.volatiles.get(&volatile_id)
+                .and_then(|v| v.data.get("bestStat"))
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+        } else {
+            return EventResult::Continue;
+        };
 
-        for stat in stats {
-            let value = battle.get_pokemon_stat(attacker_pos, stat, false, true);
-            if value > best_value {
-                best_value = value;
-                best_stat = stat;
-            }
-        }
-
-        if best_stat != StatID::SpA {
+        if best_stat != "spa" {
             return EventResult::Continue;
         }
 
-        // TODO: Check if pokemon is ignoring ability
+        // Check if pokemon is ignoring ability
+        let ignoring = if let Some(pokemon) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+            pokemon.ignoring_ability(battle)
+        } else {
+            return EventResult::Continue;
+        };
+
+        if ignoring {
+            return EventResult::Continue;
+        }
 
         // Apply 1.3x boost (5325/4096)
         let modified = battle.modify(spa, 5325, 4096);
@@ -267,30 +321,31 @@ pub mod condition {
     ///     return this.chainModify([5325, 4096]);
     /// }
     pub fn on_modify_sp_d(battle: &mut Battle, spd: i32, defender_pos: (usize, usize), _attacker_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // Get best stat by computing it inline to avoid borrow issues
-        let stats = [
-            crate::dex_data::StatID::Atk,
-            crate::dex_data::StatID::Def,
-            crate::dex_data::StatID::SpA,
-            crate::dex_data::StatID::SpD,
-            crate::dex_data::StatID::Spe,
-        ];
-        let mut best_stat = crate::dex_data::StatID::Atk;
-        let mut best_value = 0;
+        // Get bestStat from volatile's data
+        let volatile_id = ID::from("protosynthesis");
+        let best_stat = if let Some(pokemon) = battle.pokemon_at(defender_pos.0, defender_pos.1) {
+            pokemon.volatiles.get(&volatile_id)
+                .and_then(|v| v.data.get("bestStat"))
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+        } else {
+            return EventResult::Continue;
+        };
 
-        for stat in stats {
-            let value = battle.get_pokemon_stat(defender_pos, stat, false, true);
-            if value > best_value {
-                best_value = value;
-                best_stat = stat;
-            }
-        }
-
-        if best_stat != StatID::SpD {
+        if best_stat != "spd" {
             return EventResult::Continue;
         }
 
-        // TODO: Check if pokemon is ignoring ability
+        // Check if pokemon is ignoring ability
+        let ignoring = if let Some(pokemon) = battle.pokemon_at(defender_pos.0, defender_pos.1) {
+            pokemon.ignoring_ability(battle)
+        } else {
+            return EventResult::Continue;
+        };
+
+        if ignoring {
+            return EventResult::Continue;
+        }
 
         // Apply 1.3x boost (5325/4096)
         let modified = battle.modify(spd, 5325, 4096);
@@ -303,30 +358,31 @@ pub mod condition {
     ///     return this.chainModify(1.5);
     /// }
     pub fn on_modify_spe(battle: &mut Battle, spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
-        // Get best stat by computing it inline to avoid borrow issues
-        let stats = [
-            crate::dex_data::StatID::Atk,
-            crate::dex_data::StatID::Def,
-            crate::dex_data::StatID::SpA,
-            crate::dex_data::StatID::SpD,
-            crate::dex_data::StatID::Spe,
-        ];
-        let mut best_stat = crate::dex_data::StatID::Atk;
-        let mut best_value = 0;
+        // Get bestStat from volatile's data
+        let volatile_id = ID::from("protosynthesis");
+        let best_stat = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.volatiles.get(&volatile_id)
+                .and_then(|v| v.data.get("bestStat"))
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+        } else {
+            return EventResult::Continue;
+        };
 
-        for stat in stats {
-            let value = battle.get_pokemon_stat(pokemon_pos, stat, false, true);
-            if value > best_value {
-                best_value = value;
-                best_stat = stat;
-            }
-        }
-
-        if best_stat != StatID::Spe {
+        if best_stat != "spe" {
             return EventResult::Continue;
         }
 
-        // TODO: Check if pokemon is ignoring ability
+        // Check if pokemon is ignoring ability
+        let ignoring = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.ignoring_ability(battle)
+        } else {
+            return EventResult::Continue;
+        };
+
+        if ignoring {
+            return EventResult::Continue;
+        }
 
         // Apply 1.5x boost (3/2 ratio)
         let modified = battle.modify(spe, 3, 2);
