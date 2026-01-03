@@ -80,7 +80,7 @@ impl Battle {
     // 	}
     //
     pub fn find_event_handlers(
-        &self,
+        &mut self,
         event_id: &str,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
