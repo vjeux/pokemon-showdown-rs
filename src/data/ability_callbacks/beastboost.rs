@@ -13,8 +13,49 @@ use crate::event::EventResult;
 ///         this.boost({ [bestStat]: length }, source);
 ///     }
 /// }
-pub fn on_source_after_faint(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_source_after_faint(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    // if (effect && effect.effectType === 'Move')
+    if let Some(eff_id) = effect_id {
+        if let Some(_move_data) = battle.dex.moves().get(eff_id) {
+            // Effect is a move
+            if let Some(src_pos) = source_pos {
+                // const bestStat = source.getBestStat(true, true);
+                // Calculate best stat directly without borrowing source
+                let stats = [
+                    crate::dex_data::StatID::Atk,
+                    crate::dex_data::StatID::Def,
+                    crate::dex_data::StatID::SpA,
+                    crate::dex_data::StatID::SpD,
+                    crate::dex_data::StatID::Spe,
+                ];
+
+                let mut best_stat = crate::dex_data::StatID::Atk;
+                let mut best_value = 0;
+
+                for stat in stats {
+                    let value = battle.get_pokemon_stat(src_pos, stat, true, true);
+                    if value > best_value {
+                        best_value = value;
+                        best_stat = stat;
+                    }
+                }
+
+                // Convert StatID to string for boost
+                let stat_name = match best_stat {
+                    crate::dex_data::StatID::Atk => "atk",
+                    crate::dex_data::StatID::Def => "def",
+                    crate::dex_data::StatID::SpA => "spa",
+                    crate::dex_data::StatID::SpD => "spd",
+                    crate::dex_data::StatID::Spe => "spe",
+                    _ => return EventResult::Continue, // Skip HP
+                };
+
+                // this.boost({ [bestStat]: length }, source);
+                // In practice, length is always 1 for Beast Boost
+                battle.boost(&[(stat_name, 1)], src_pos, None, effect_id, false, false);
+            }
+        }
+    }
     EventResult::Continue
 }
 

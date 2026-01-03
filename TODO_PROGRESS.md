@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 108 (28.4%)
+- Completed: 109 (28.7%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -232,12 +232,16 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 107. **Vessel of Ruin** (vesselofruin.rs) - onStart: Shows ability activation; onAnyModifySpA: Reduces opponents' Special Attack by 0.75x
 108. **Beads of Ruin** (beadsofruin.rs) - onStart: Shows ability activation; onAnyModifySpD: Reduces opponents' Special Defense by 0.75x
 
+### Batch 29 - Best Stat Boost (1 ability)
+109. **Beast Boost** (beastboost.rs) - onSourceAfterFaint: Boosts highest stat by 1 when KOing with a move (uses battle.get_pokemon_stat to calculate best stat)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 13 abilities (batches 22-28).
-Progress: 108/380 abilities (28.4%).
+Implemented 14 abilities (batches 22-29).
+Progress: 109/380 abilities (28.7%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
+Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
