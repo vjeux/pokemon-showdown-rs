@@ -278,7 +278,7 @@ pub fn parse_choices(input: &str) -> Result<Vec<Choice>, ChoiceError> {
 }
 
 /// Battle request sent to players
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: BattleRequest (sim/side.ts)
 /// 5 fields in JavaScript
 pub struct BattleRequest {
@@ -301,7 +301,7 @@ pub struct BattleRequest {
 
 /// Type of request
 /// JavaScript equivalent: 'move' | 'switch' | 'teamPreview' | 'wait' (sim/side.ts)
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub enum RequestType {
     /// Normal turn - choose moves/switches
     Move,
@@ -314,7 +314,7 @@ pub enum RequestType {
 }
 
 /// Active Pokemon request data
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: ActiveRequest (sim/side.ts)
 /// 7 fields in JavaScript
 pub struct ActiveRequest {
@@ -342,7 +342,7 @@ pub struct ActiveRequest {
 }
 
 /// Move request data
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: MoveRequest (sim/side.ts)
 /// 8 fields in JavaScript
 pub struct MoveRequest {
@@ -367,7 +367,7 @@ pub struct MoveRequest {
 }
 
 /// Z-Move request data
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: ZMoveRequest (sim/side.ts)
 /// 2 fields in JavaScript
 pub struct ZMoveRequest {
@@ -382,7 +382,7 @@ pub struct ZMoveRequest {
 /// Side request data (team info)
 /// JavaScript equivalent: SideRequestData (sim/side.ts)
 /// 4 fields in JavaScript
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct SideRequest {
     /// Player name
     /// JavaScript: name: string
@@ -401,7 +401,7 @@ pub struct SideRequest {
 /// Pokemon switch request data (team preview and force switch)
 /// JavaScript equivalent: PokemonSwitchRequestData (sim/side.ts)
 /// 14 fields in JavaScript
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct PokemonSwitchRequestData {
     /// Pokemon ident (e.g., "p1: Pikachu")
     /// JavaScript: ident: string
@@ -450,7 +450,7 @@ pub struct PokemonSwitchRequestData {
 /// Pokemon move request data (normal turn move selection)
 /// JavaScript equivalent: PokemonMoveRequestData (sim/side.ts)
 /// 13 fields in JavaScript
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub struct PokemonMoveRequestData {
     /// Available moves
     /// JavaScript: moves: MoveOption[]
@@ -494,7 +494,7 @@ pub struct PokemonMoveRequestData {
 }
 
 /// Move option in request
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: MoveOption (sim/side.ts)
 /// 5 fields in JavaScript
 pub struct MoveRequestOption {
@@ -518,7 +518,7 @@ pub struct MoveRequestOption {
 
 /// Move disabled state
 /// TODO: Rust uses enum to represent JavaScript's boolean | string union type
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub enum MoveDisabled {
     /// Disabled by name (e.g., "locked")
     Named(String),
@@ -529,7 +529,7 @@ pub enum MoveDisabled {
 /// Dynamax options
 /// JavaScript equivalent: DynamaxOptions (sim/side.ts)
 /// 2 fields in JavaScript
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct DynamaxOptions {
     /// Max moves available
     /// JavaScript: maxMoves: MaxMoveOption[]
@@ -540,7 +540,7 @@ pub struct DynamaxOptions {
 }
 
 /// Max move option
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: MaxMoveOption (sim/side.ts)
 /// 3 fields in JavaScript
 pub struct MaxMoveOption {
@@ -556,7 +556,7 @@ pub struct MaxMoveOption {
 }
 
 /// Z-Move option
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: ZMoveOption (sim/side.ts)
 /// 2 fields in JavaScript
 pub struct ZMoveOption {
@@ -569,7 +569,7 @@ pub struct ZMoveOption {
 }
 
 /// Stats except HP (for requests)
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: StatsExceptHP (sim/global-types.ts)
 /// 5 fields in JavaScript
 pub struct RequestStatsExceptHP {

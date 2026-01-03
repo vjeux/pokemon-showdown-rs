@@ -1,6 +1,5 @@
 use crate::*;
 use crate::battle::BattleRequestState;
-use crate::side::RequestState;
 use std::backtrace::Backtrace;
 
 impl Battle {
@@ -85,16 +84,12 @@ impl Battle {
 
         // JS: const requests = this.getRequests(type);
         // JS: for (let i = 0; i < this.sides.length; i++) { this.sides[i].activeRequest = requests[i]; }
-        // TODO: Implement full getRequests() logic and activeRequest assignment
-        // For now, just set request state
-        let side_request = match req_type {
-            BattleRequestState::Move => RequestState::Move,
-            BattleRequestState::Switch => RequestState::Switch,
-            BattleRequestState::TeamPreview => RequestState::TeamPreview,
-            BattleRequestState::None => RequestState::None,
-        };
-        for side in &mut self.sides {
-            side.request_state = side_request;
+        let requests = self.get_requests();
+        for i in 0..self.sides.len() {
+            // Convert serde_json::Value to BattleRequest
+            if let Ok(request) = serde_json::from_value(requests[i].clone()) {
+                self.sides[i].active_request = Some(request);
+            }
         }
 
         // JS: this.sentRequests = false;

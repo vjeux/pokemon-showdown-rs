@@ -499,3 +499,73 @@ Starting comprehensive 1:1 verification of battle/ folder.
 2. OR Continue verifying clean files and documenting infrastructure blocks
 3. OR Work on format callback system (another major infrastructure piece)
 
+
+---
+
+## Session 4: BattleRequest Serialization Infrastructure (2026-01-02)
+
+### Fifteenth Implementation: BattleRequest Serialization ✅
+- **Issue**: Type mismatch preventing activeRequest assignment in make_request.rs and undo_choice.rs
+- **Root Cause**: BattleRequest and all dependent types lacked Serialize/Deserialize derives
+- **Action**: Added `serde::Serialize, serde::Deserialize` to ALL request types in choice.rs
+
+  **Types Updated** (11 types total):
+  1. BattleRequest (line 281)
+  2. RequestType (line 304)
+  3. ActiveRequest (line 317)
+  4. MoveRequest (line 345)
+  5. ZMoveRequest (line 370)
+  6. SideRequest (line 385)
+  7. PokemonSwitchRequestData (line 404)
+  8. PokemonMoveRequestData (line 453)
+  9. MoveRequestOption (line 497)
+  10. MoveDisabled (line 521)
+  11. DynamaxOptions (line 532)
+  12. MaxMoveOption (line 543)
+  13. ZMoveOption (line 559)
+  14. RequestStatsExceptHP (line 572)
+
+- **Side Effects**: None - purely additive infrastructure change
+- **Result**: All request types can now be serialized/deserialized
+- **Commit**: Pending
+
+### Sixteenth Implementation: make_request.rs - activeRequest assignment ✅
+- **Issue**: TODO saying get_requests() couldn't be used due to type mismatch
+- **Action**: Implemented full activeRequest assignment matching JavaScript
+
+  **JavaScript** (battle.ts:1372-1376):
+  ```javascript
+  const requests = this.getRequests(type);
+  for (let i = 0; i < this.sides.length; i++) {
+      this.sides[i].activeRequest = requests[i];
+  }
+  ```
+
+  **Rust** (make_request.rs:87-93):
+  ```rust
+  let requests = self.get_requests();
+  for i in 0..self.sides.len() {
+      // Convert serde_json::Value to BattleRequest
+      if let Ok(request) = serde_json::from_value(requests[i].clone()) {
+          self.sides[i].active_request = Some(request);
+      }
+  }
+  ```
+
+- **Changes**:
+  - Removed workaround code that only set request_state
+  - Removed unused import `crate::side::RequestState`
+  - Now properly calls get_requests() and assigns to active_request
+  - Uses serde_json::from_value to convert Value to BattleRequest
+
+- **Side Effects**: None (purely additive implementation)
+- **Result**: Matches JavaScript for activeRequest assignment
+- **Commit**: Pending
+
+**Updated Progress (2026-01-02 - Session 4):**
+- Files completed: 16 (14 previous + 2 this session)
+- Infrastructure changes: 1 major (BattleRequest serialization)
+- TODOs resolved: 18 (16 previous + 2 this session)
+- Files remaining: 134
+- Next: Apply same fix to undo_choice.rs
+
