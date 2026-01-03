@@ -116,7 +116,48 @@ pub fn on_hit(
     //     if (myItem) source.item = myItem.id;
     //     return false;
     // }
-    // TODO: singleEvent('TakeItem') not implemented - skipping for now
+
+    // Check if TakeItem events allow the swap
+    let my_item_allowed = if let Some(ref my_item_id) = my_item {
+        let result = battle.single_event(
+            "TakeItem",
+            my_item_id,
+            Some(source_pos),
+            Some(target),
+            None,
+        );
+        !matches!(result, EventResult::Null | EventResult::Boolean(false))
+    } else {
+        true
+    };
+
+    let your_item_allowed = if let Some(ref your_item_id) = your_item {
+        let result = battle.single_event(
+            "TakeItem",
+            your_item_id,
+            Some(target),
+            Some(source_pos),
+            None,
+        );
+        !matches!(result, EventResult::Null | EventResult::Boolean(false))
+    } else {
+        true
+    };
+
+    if !my_item_allowed || !your_item_allowed {
+        // Restore items
+        if let Some(item_id) = your_item {
+            if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+                target_pokemon.item = item_id;
+            }
+        }
+        if let Some(item_id) = my_item {
+            if let Some(source_pokemon) = battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+                source_pokemon.item = item_id;
+            }
+        }
+        return EventResult::Boolean(false);
+    }
 
     // this.add('-activate', source, 'move: Trick', `[of] ${target}`);
     let (source_ident, target_ident) = {
