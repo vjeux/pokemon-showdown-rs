@@ -128,8 +128,8 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
                 let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
                 if let Some(pokemon_index) = active_slot {
                     if pokemon_index < side.pokemon.len() {
-                        let pokemon = &mut side.pokemon[pokemon_index];
-                        pokemon.forme_change(battle_ref2, ID::from(battle_only_species), Some(ID::from("zenmode")), false, "0", Some("[silent]"));
+                        
+                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from(battle_only_species), Some(ID::from("zenmode")), false, "0", Some("[silent]"));
                     }
                 }
             }
@@ -179,8 +179,8 @@ pub mod condition {
                     let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
                     if let Some(pokemon_index) = active_slot {
                         if pokemon_index < side.pokemon.len() {
-                            let pokemon = &mut side.pokemon[pokemon_index];
-                            pokemon.forme_change(battle_ref2, ID::from("darmanitanzen"), Some(ID::from("zenmode")), false, "0", None);
+                            
+                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("darmanitanzen"), Some(ID::from("zenmode")), false, "0", None);
                         }
                     }
                 }
@@ -197,8 +197,8 @@ pub mod condition {
                     let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
                     if let Some(pokemon_index) = active_slot {
                         if pokemon_index < side.pokemon.len() {
-                            let pokemon = &mut side.pokemon[pokemon_index];
-                            pokemon.forme_change(battle_ref2, ID::from("darmanitangalarzen"), Some(ID::from("zenmode")), false, "0", None);
+                            
+                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("darmanitangalarzen"), Some(ID::from("zenmode")), false, "0", None);
                         }
                     }
                 }
@@ -250,8 +250,8 @@ pub mod condition {
                     let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
                     if let Some(pokemon_index) = active_slot {
                         if pokemon_index < side.pokemon.len() {
-                            let pokemon = &mut side.pokemon[pokemon_index];
-                            pokemon.forme_change(battle_ref2, ID::from(battle_only_species), Some(ID::from("zenmode")), false, "0", None);
+                            
+                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from(battle_only_species), Some(ID::from("zenmode")), false, "0", None);
                         }
                     }
                 }

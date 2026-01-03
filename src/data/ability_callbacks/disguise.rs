@@ -271,9 +271,9 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
         if let Some(pokemon_index) = active_slot {
             if pokemon_index < side.pokemon.len() {
-                let pokemon = &mut side.pokemon[pokemon_index];
-                pokemon.forme_change(
+                crate::pokemon::Pokemon::forme_change(
                     battle_ref2,
+                    (pokemon_pos.0, pokemon_index),
                     ID::from(new_species_id),
                     Some(ID::from("disguise")),
                     true,

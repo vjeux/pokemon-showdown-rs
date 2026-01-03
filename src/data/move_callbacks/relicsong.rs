@@ -94,22 +94,17 @@ pub fn on_after_move_secondary_self(
             }
         };
 
-        // Use unsafe pointer pattern to call forme_change
-        let battle_ref1 = battle as *mut Battle;
-        let battle_ref2 = battle as *mut Battle;
-        unsafe {
-            if let Some(pokemon_pokemon) = (*battle_ref1).pokemon_at_mut(pokemon.0, pokemon.1) {
-                use crate::dex_data::ID;
-                pokemon_pokemon.forme_change(
-                    &mut *battle_ref2,
-                    ID::from(forme_name.as_str()),
-                    Some(effect_id),
-                    false,
-                    "0",
-                    Some("[msg]"),
-                );
-            }
-        }
+        // Use position-based forme_change
+        use crate::dex_data::ID;
+        crate::pokemon::Pokemon::forme_change(
+            battle,
+            pokemon,
+            ID::from(forme_name.as_str()),
+            Some(effect_id),
+            false,
+            "0",
+            Some("[msg]"),
+        );
     }
 
     EventResult::Continue

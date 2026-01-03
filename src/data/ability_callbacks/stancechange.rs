@@ -80,8 +80,15 @@ pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
             let active_slot = side.active.get(attacker_pos.1).cloned().flatten();
             if let Some(pokemon_index) = active_slot {
                 if pokemon_index < side.pokemon.len() {
-                    let pokemon = &mut side.pokemon[pokemon_index];
-                    pokemon.forme_change(battle_ref2, ID::from(target_forme), Some(ID::from("stancechange")), false, "0", None);
+                    crate::pokemon::Pokemon::forme_change(
+                        battle_ref2,
+                        (attacker_pos.0, pokemon_index),
+                        ID::from(target_forme),
+                        Some(ID::from("stancechange")),
+                        false,
+                        "0",
+                        None
+                    );
                 }
             }
         }

@@ -65,8 +65,8 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
         let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
         if let Some(pokemon_index) = active_slot {
             if pokemon_index < side.pokemon.len() {
-                let pokemon = &mut side.pokemon[pokemon_index];
-                pokemon.forme_change(battle_ref2, ID::from("eiscue"), Some(ID::from("iceface")), true, "0", None);
+                
+                crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("eiscue"), Some(ID::from("iceface")), true, "0", None);
             }
         }
     }
@@ -303,8 +303,8 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
         if let Some(pokemon_index) = active_slot {
             if pokemon_index < side.pokemon.len() {
-                let pokemon = &mut side.pokemon[pokemon_index];
-                pokemon.forme_change(battle_ref2, ID::from("eiscuenoice"), Some(ID::from("iceface")), true, "0", None);
+                
+                crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("eiscuenoice"), Some(ID::from("iceface")), true, "0", None);
             }
         }
     }
@@ -382,8 +382,8 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
         let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
         if let Some(pokemon_index) = active_slot {
             if pokemon_index < side.pokemon.len() {
-                let pokemon = &mut side.pokemon[pokemon_index];
-                pokemon.forme_change(battle_ref2, ID::from("eiscue"), Some(ID::from("iceface")), true, "0", None);
+                
+                crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("eiscue"), Some(ID::from("iceface")), true, "0", None);
             }
         }
     }

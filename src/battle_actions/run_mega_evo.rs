@@ -48,31 +48,26 @@ pub fn run_mega_evo(
     };
 
     // pokemon.formeChange(speciesid, pokemon.getItem(), true);
-    // TODO: Current forme_change method doesn't match JavaScript signature
-    // JavaScript: formeChange(speciesId: string | Species, source: Effect | null, isPermanent?: boolean, abilitySlot = '0', message?: string)
-    // Current Rust: forme_change(&mut self, new_species_id: ID, new_types: Vec<String>, new_ability: Option<ID>)
-    // For now, get the species data and call the simplified version
-    let (species_id, types, ability) = {
-        let species_data = battle.dex.species().get(&speciesid).cloned();
-        match species_data {
-            Some(sp) => {
-                let types = sp.types.clone();
-                let ability = sp.abilities.slot0.clone().map(|a| ID::from(a.as_str()));
-                (ID::from(sp.name.as_str()), types, ability)
-            }
-            None => return false,
-        }
+    // JavaScript: formeChange(speciesId, source, isPermanent, abilitySlot, message)
+    // Get the item as source
+    let item_id = {
+        let pokemon = &battle.sides[side_index].pokemon[pokemon_index];
+        pokemon.item.clone()
     };
 
-    // TODO: Use proper Pokemon::forme_change method
-    // The pokemon is at battle.sides[side_index].pokemon[pokemon_index]
-    // Need to call: pokemon.forme_change(battle, species_id, Some(item_id), true, "0", None)
-    // But this requires restructuring to avoid borrow conflicts
-    // For now, manually set the forme fields:
-    battle.sides[side_index].pokemon[pokemon_index].species_id = species_id;
-    battle.sides[side_index].pokemon[pokemon_index].types = types;
-    if let Some(ability_id) = ability {
-        battle.sides[side_index].pokemon[pokemon_index].ability = ability_id;
+    // Call the proper forme_change method (position-based to avoid borrow checker issues)
+    let success = crate::pokemon::Pokemon::forme_change(
+        battle,
+        (side_index, pokemon_index),
+        ID::from(speciesid.as_str()),
+        Some(item_id), // source (item)
+        true,          // is_permanent
+        "0",           // ability_slot
+        None,          // message
+    );
+
+    if !success {
+        return false;
     }
 
     // Limit one mega evolution

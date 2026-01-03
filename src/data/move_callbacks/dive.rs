@@ -83,22 +83,17 @@ pub fn on_try_move(
         };
 
         // attacker.formeChange(forme, move);
-        // Use unsafe pointer pattern to call forme_change (same as Flower Gift, Gulp Missile)
-        let battle_ref1 = battle as *mut Battle;
-        let battle_ref2 = battle as *mut Battle;
-        unsafe {
-            if let Some(attacker_pokemon) = (*battle_ref1).pokemon_at_mut(attacker.0, attacker.1) {
-                use crate::dex_data::ID;
-                attacker_pokemon.forme_change(
-                    &mut *battle_ref2,
-                    ID::from(forme),
-                    Some(move_id.clone()),
-                    false,
-                    "",
-                    None,
-                );
-            }
-        }
+        // Use position-based forme_change
+        use crate::dex_data::ID;
+        crate::pokemon::Pokemon::forme_change(
+            battle,
+            attacker,
+            ID::from(forme),
+            Some(move_id.clone()),
+            false,
+            "",
+            None,
+        );
     }
 
     // this.add('-prepare', attacker, move.name);

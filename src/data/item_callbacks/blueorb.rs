@@ -40,9 +40,9 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
             let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
             if let Some(pokemon_index) = active_slot {
                 if pokemon_index < side.pokemon.len() {
-                    let pokemon = &mut side.pokemon[pokemon_index];
-                    pokemon.forme_change(
+                    crate::pokemon::Pokemon::forme_change(
                         battle_ref2,
+                        (pokemon_pos.0, pokemon_index),
                         ID::from("kyogreprimal"),
                         Some(ID::from("blueorb")),
                         true,

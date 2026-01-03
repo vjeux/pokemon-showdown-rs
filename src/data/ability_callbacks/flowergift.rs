@@ -80,8 +80,15 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
                 let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
                 if let Some(pokemon_index) = active_slot {
                     if pokemon_index < side.pokemon.len() {
-                        let pokemon = &mut side.pokemon[pokemon_index];
-                        pokemon.forme_change(battle_ref2, ID::from("cherrimsunshine"), Some(ID::from("flowergift")), false, "0", Some("[msg]"));
+                        crate::pokemon::Pokemon::forme_change(
+                            battle_ref2,
+                            (pokemon_pos.0, pokemon_index),
+                            ID::from("cherrimsunshine"),
+                            Some(ID::from("flowergift")),
+                            false,
+                            "0",
+                            Some("[msg]")
+                        );
                     }
                 }
             }
@@ -101,8 +108,15 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
                 let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
                 if let Some(pokemon_index) = active_slot {
                     if pokemon_index < side.pokemon.len() {
-                        let pokemon = &mut side.pokemon[pokemon_index];
-                        pokemon.forme_change(battle_ref2, ID::from("cherrim"), Some(ID::from("flowergift")), false, "0", Some("[msg]"));
+                        crate::pokemon::Pokemon::forme_change(
+                            battle_ref2,
+                            (pokemon_pos.0, pokemon_index),
+                            ID::from("cherrim"),
+                            Some(ID::from("flowergift")),
+                            false,
+                            "0",
+                            Some("[msg]")
+                        );
                     }
                 }
             }
