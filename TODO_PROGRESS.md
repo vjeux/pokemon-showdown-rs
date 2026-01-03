@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 215 (56.6%)
+- Completed: 216 (56.8%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -516,6 +516,9 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 86 - Pastelveil (1 ability)
 212. **Pastelveil** (pastelveil.rs) - Prevents and cures poison on allies: onStart: Cures poison from all allies and self when switching in; onUpdate: Auto-cures poison from self; onAnySwitchIn: Calls onStart when any Pokemon switches in; onSetStatus: Blocks poison on self; onAllySetStatus: Blocks poison on allies; uses allies_and_self(), Pokemon::cure_status()
 
+### Batch 87 - Schooling (1 ability)
+213. **Schooling** (schooling.rs) - onStart/onResidual: Changes Wishiwashi forme based on HP (School forme when HP > 1/4 max HP and level >= 20); checks base species, level, transformed status; uses forme_change infrastructure
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -530,7 +533,8 @@ Completed Terashift (Batch 83) using forme_change with is_permanent=true.
 Completed Poisonpuppeteer (Batch 84) using Pokemon::add_volatile and status checking.
 Completed Receiver (Batch 85) using Pokemon::set_ability with noreceiver flag checking.
 Completed Pastelveil (Batch 86) using allies_and_self() and Pokemon::cure_status() with comprehensive poison prevention.
-Progress: 203→215/380 (56.6%).
+Completed Schooling (Batch 87) using pokemon.level and pokemon.transformed fields with forme_change.
+Progress: 203→216/380 (56.8%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
