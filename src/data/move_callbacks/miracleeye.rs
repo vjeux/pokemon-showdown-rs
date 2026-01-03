@@ -63,11 +63,30 @@ pub mod condition {
     /// onNegateImmunity(pokemon, type) {
     ///     if (pokemon.hasType('Dark') && type === 'Psychic') return false;
     /// }
-    pub fn on_negate_immunity(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: This callback needs type parameter support in the function signature
-        // The TypeScript version receives (pokemon, type) but we only have pokemon_pos
-        // For now, implementing a placeholder that always returns Continue
-        // This needs infrastructure changes to pass the type being checked
+    pub fn on_negate_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        // Get the type parameter from the event's relay_var_type
+        let immunity_type = match &battle.current_event {
+            Some(event) => event.relay_var_type.clone(),
+            None => return EventResult::Continue,
+        };
+
+        // Check if pokemon has the Dark type
+        let has_dark_type = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.has_type(battle, "Dark")
+        };
+
+        // if (pokemon.hasType('Dark') && type === 'Psychic') return false;
+        if let Some(type_str) = immunity_type {
+            if has_dark_type && type_str == "Psychic" {
+                // return false; - negate immunity, allowing Psychic to hit Dark
+                return EventResult::Boolean(false);
+            }
+        }
+
         EventResult::Continue
     }
 
