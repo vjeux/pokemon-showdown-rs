@@ -1282,3 +1282,78 @@ The 6 PRNG calls may be coming from:
 - Files in battle/ folder: 145
 - Next: Continue systematic file-by-file verification
 
+
+---
+
+## Session 15: Systematic 1:1 Verification and Fixes (2026-01-02)
+
+### Twenty-Eighth Implementation: Fix field_event.rs allySide check ✅
+- **Issue**: Missing `|| !side.allySide` check in field_event.rs
+- **Root Cause**: Comment claimed "allySide tracking not implemented in Rust" but it IS implemented via `ally_index` field
+- **Action**: Fixed conditional to match JavaScript 1:1
+
+  **JavaScript** (battle.ts, field_event.rs:107):
+  ```javascript
+  if (side.n < 2 || !side.allySide) {
+      handlers = handlers.concat(this.findSideEventHandlers(side, `onSide${eventid}`, getKey));
+  }
+  ```
+
+  **Rust Before** (field_event.rs:187):
+  ```rust
+  // Note: allySide tracking not implemented in Rust, so checking side_idx < 2
+  if side_idx < 2 {
+      // ... handlers
+  }
+  ```
+
+  **Rust After** (field_event.rs:187):
+  ```rust
+  // Rust: side.n == side_idx, side.allySide == ally_index
+  if side_idx < 2 || self.sides[side_idx].ally_index.is_none() {
+      // ... handlers
+  }
+  ```
+
+- **Explanation**:
+  - JavaScript: `side.allySide: Side | null` - reference to allied side in multi battles
+  - Rust: `side.ally_index: Option<usize>` - index of allied side (architectural adaptation for ownership)
+  - JavaScript condition: `side.n < 2 || !side.allySide` checks if side number < 2 OR no ally
+  - Rust equivalent: `side_idx < 2 || self.sides[side_idx].ally_index.is_none()`
+  - Previous code only checked `side_idx < 2`, missing the allySide check entirely
+
+- **Side Effects**: More accurate event handler collection in multi battles
+- **Result**: Matches JavaScript 1:1 for Side event handler filtering
+- **Commit**: 9762082b
+
+**Session 15 Findings:**
+- Total files in battle/: 145
+- Total TODO comments: 136
+- Implementation TODOs: ~14 (most are infrastructure-dependent)
+- Files marked "NOT in JavaScript": 58
+  - Many are MISLEADING - they show JavaScript source code in comments but claim "NOT in JavaScript"
+  - Examples: add.rs, add_move.rs, p1.rs, p2.rs all have JS source but marked as Rust-specific
+  - These should say "Rust architectural adaptation: separate file for organization" instead
+  - Some ARE truly Rust-specific helpers: pokemon_at.rs, get_pokemon_mut.rs (borrow checker helpers)
+
+**Divergences Identified:**
+1. **field_event.rs** - Fixed ✅ (missing allySide check)
+2. **find_event_handlers.rs** - Missing Side target handling (shouldBubbleDown logic)
+3. **end_turn.rs** - Stub for foe ability checking (FoeMaybeTrapPokemon event)
+4. **set_player.rs** - Manual JSON building instead of serde_json (minor, but not 1:1)
+
+**Infrastructure-Dependent TODOs (cannot fix without major changes):**
+- Teams::pack() / Teams::unpack() - team serialization
+- extractChannelMessages - split message handling
+- Format callbacks (onTeamPreview, onBattleStart, etc.)
+- PlayerOptions.seed field
+- gen1stadium currentMod
+
+**Progress (2026-01-02 - Session 15):**
+- Files fixed: 1 (field_event.rs)
+- Bugs found: 4 divergences identified
+- Commits: 1 (9762082b)
+- Compilation: ✅ Successful
+- Next: Fix remaining simple divergences (find_event_handlers Side target, end_turn foe abilities)
+
+
