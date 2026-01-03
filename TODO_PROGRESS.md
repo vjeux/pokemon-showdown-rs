@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 162 (42.6%)
+- Completed: 163 (42.9%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -342,11 +342,15 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 162. **Skill Link** (skilllink.rs) - onModifyMove: Multi-hit moves always hit maximum times (parses multi_hit_type "2-5" to set multi_hit to 5)
 163. **Stench** (stench.rs) - onModifyMove: Adds 10% flinch chance to damaging moves (pushes new SecondaryEffect with volatile_status="flinch" and chance=10)
 
+### Batch 51 - Stat-Based Conditional Boost (1 ability)
+164. **Download** (download.rs) - onStart: Compares total Defense vs Special Defense of all foes using battle.get_pokemon_stat(); boosts Special Attack if Defense ≥ Special Defense, otherwise boosts Attack
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
 Completed Serene Grace, Skill Link, and Stench (Batch 50) using ActiveMove.secondaries modification.
-Progress: 162/380 abilities (42.6%).
+Completed Download (Batch 51) using pokemon.foes() and battle.get_pokemon_stat().
+Progress: 163/380 abilities (42.9%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
