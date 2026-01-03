@@ -291,9 +291,6 @@ impl Battle {
                 let move_id_owned = self.active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
                 let move_id = move_id_owned.as_str();
 
-                eprintln!("[BASEPOWER DEBUG] Ability {} on BasePower event: base_power={}, attacker={:?}, defender={:?}, move_id={}",
-                    ability_id.as_str(), base_power, attacker_pos, defender_pos, move_id);
-
                 ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), base_power, attacker_pos, defender_pos, move_id)
             }
             "BasePowerPriority" => ability_callbacks::dispatch_on_base_power_priority(
@@ -446,7 +443,6 @@ impl Battle {
             "", // TODO: Wire through actual move_id
             ),
             "ModifyAtk" => {
-                eprintln!("[HANDLE_ABILITY_EVENT] ModifyAtk for ability={}", ability_id.as_str());
                 let (atk, defender_pos, move_id_str) = if let Some(ref event) = self.current_event {
                     (
                         event.relay_var.unwrap_or(0),
@@ -456,7 +452,6 @@ impl Battle {
                 } else {
                     (0, (0, 0), String::new())
                 };
-                eprintln!("[HANDLE_ABILITY_EVENT] Calling dispatch with atk={}, move_id={}", atk, move_id_str);
                 ability_callbacks::dispatch_on_modify_atk(self, ability_id.as_str(), atk, pokemon_pos, defender_pos, &move_id_str)
             }
             "ModifyAtkPriority" => ability_callbacks::dispatch_on_modify_atk_priority(
@@ -624,8 +619,6 @@ impl Battle {
                 };
                 // pokemon_pos is the defender (pokemon with the ability, e.g., Houndstone with Fluffy)
                 // source_pos is the attacker (e.g., Koraidon using Outrage)
-                eprintln!("[HANDLE_ABILITY_EVENT] SourceModifyDamage for ability={}, damage={}, source={:?}, target={:?}, move={}",
-                    ability_id.as_str(), damage, source_pos, pokemon_pos, move_id_str);
                 ability_callbacks::dispatch_on_source_modify_damage(
                     self,
                     ability_id.as_str(),
