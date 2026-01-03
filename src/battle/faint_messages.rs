@@ -183,8 +183,27 @@ impl Battle {
                 // JS:     pokemon.baseSpecies = this.dex.species.get(pokemon.set.species || pokemon.set.name);
                 // JS:     pokemon.baseAbility = toID(pokemon.set.ability);
                 // JS: }
-                // TODO: formeRegression not yet implemented in Pokemon struct
-                // This handles forme changes like Zen Mode Darmanitan, Mega Evolution, etc.
+                if self.sides[side_idx].pokemon[poke_idx].forme_regression
+                    && !self.sides[side_idx].pokemon[poke_idx].transformed
+                {
+                    // Get species from set
+                    let species_name = {
+                        let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                        if !pokemon.set.species.is_empty() {
+                            pokemon.set.species.clone()
+                        } else {
+                            pokemon.set.name.clone()
+                        }
+                    };
+
+                    // JS: pokemon.baseSpecies = this.dex.species.get(pokemon.set.species || pokemon.set.name);
+                    let base_species_id = ID::from(species_name.as_str());
+                    self.sides[side_idx].pokemon[poke_idx].base_species = base_species_id;
+
+                    // JS: pokemon.baseAbility = toID(pokemon.set.ability);
+                    let base_ability_id = ID::from(self.sides[side_idx].pokemon[poke_idx].set.ability.as_str());
+                    self.sides[side_idx].pokemon[poke_idx].base_ability = base_ability_id;
+                }
 
                 // JS: pokemon.clearVolatile(false);
                 // Use unsafe pointer split to allow pokemon to access battle for set_species call
@@ -230,7 +249,40 @@ impl Battle {
                 // JS:     pokemon.updateMaxHp();
                 // JS:     pokemon.formeRegression = false;
                 // JS: }
-                // TODO: formeRegression not yet implemented in Pokemon struct
+                if self.sides[side_idx].pokemon[poke_idx].forme_regression {
+                    // JS: pokemon.details = pokemon.getUpdatedDetails();
+                    let details = self.sides[side_idx].pokemon[poke_idx].get_updated_details();
+
+                    // Get Pokemon IDENT for add() call
+                    let ident = {
+                        let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                        format!("p{}a: {}", side_idx + 1, pokemon.name)
+                    };
+
+                    // JS: this.add('detailschange', pokemon, pokemon.details, '[silent]');
+                    self.add("detailschange", &[
+                        Arg::Str(&ident),
+                        Arg::Str(&details),
+                        Arg::Str("[silent]"),
+                    ]);
+
+                    // JS: pokemon.updateMaxHp();
+                    // update_max_hp is a static method that needs new_base_max_hp parameter
+                    // For formeRegression, we need to recalculate from the base species
+                    let new_base_max_hp = {
+                        let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                        // Get base HP stat from species
+                        if let Some(species_data) = self.dex.species().get(pokemon.base_species.as_str()) {
+                            species_data.base_stats.hp
+                        } else {
+                            pokemon.base_maxhp
+                        }
+                    };
+                    Pokemon::update_max_hp(self, (side_idx, poke_idx), new_base_max_hp);
+
+                    // JS: pokemon.formeRegression = false;
+                    self.sides[side_idx].pokemon[poke_idx].forme_regression = false;
+                }
 
                 // JS: pokemon.side.faintedThisTurn = pokemon;
                 self.sides[side_idx].fainted_this_turn = Some(poke_idx);
