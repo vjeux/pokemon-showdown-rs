@@ -1055,3 +1055,28 @@ Remaining TODOs: 57 (down from 65 - removed 8 Protosynthesis TODOs).
 Progress: 262/380 abilities (68.9%).
 Remaining TODOs: 47 (down from 57 - removed 10 Quark Drive TODOs).
 
+
+### Batch 129 - Blue Orb and Red Orb Items (Forme Change Fix)
+
+**Fixed item callbacks to use proper Pokemon::forme_change:**
+265. **Blue Orb** (blueorb.rs) - Replaced manual forme change code with Pokemon::forme_change call using unsafe pointer pattern
+266. **Red Orb** (redorb.rs) - Replaced manual forme change code with Pokemon::forme_change call using unsafe pointer pattern
+
+**Implementation Details:**
+- Both items had TODO comments to use proper Pokemon::forme_change method
+- Replaced manual species_id, types, and ability setting with proper forme_change calls
+- Uses unsafe pointer pattern (battle_ref1 and battle_ref2) to work around Rust borrow checker, same as Flower Gift
+- Passes is_permanent=true for Primal Reversion formes
+- Source effect is the item ID ("blueorb", "redorb")
+- Blue Orb: Kyogre → Kyogre-Primal
+- Red Orb: Groudon → Groudon-Primal
+
+**Files Modified:**
+- src/data/item_callbacks/blueorb.rs - Removed TODO (18 lines removed, replaced with forme_change call)
+- src/data/item_callbacks/redorb.rs - Removed TODO (18 lines removed, replaced with forme_change call)
+
+**Git Commit**: b2d72f6c: "Fix Blue Orb and Red Orb to use Pokemon::forme_change (Batch 129)"
+
+Progress: 262/380 abilities (68.9%).
+Remaining TODOs: 45 (down from 47 - removed 2 item callback TODOs).
+
