@@ -36,18 +36,27 @@ pub fn on_any_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
     battle.attr_last_move(&["[still]"]);
 
     // this.add('cant', this.effectState.target, 'ability: Damp', effect, `[of] ${target}`);
-    // Note: effectState.target would be the Damp holder's position
-    // For now, we need to get this from the current event context
-    // This is a limitation - we'd need effectState.target infrastructure
-    // Let's use target_pos as a temporary workaround since the signature provides it
-    let target_slot = if let Some(pos) = target_pos {
-        let pokemon = match battle.pokemon_at(pos.0, pos.1) {
+    // this.effectState.target is the Damp holder's position
+    let damp_holder_pos = match battle.effect_state.target {
+        Some(pos) => pos,
+        None => return EventResult::Boolean(false),
+    };
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Boolean(false),
+    };
+
+    let (damp_holder_slot, target_slot) = {
+        let damp_holder = match battle.pokemon_at(damp_holder_pos.0, damp_holder_pos.1) {
             Some(p) => p,
             None => return EventResult::Boolean(false),
         };
-        pokemon.get_slot()
-    } else {
-        return EventResult::Boolean(false);
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Boolean(false),
+        };
+        (damp_holder.get_slot(), target.get_slot())
     };
 
     // Get the move name for the message
@@ -57,10 +66,8 @@ pub fn on_any_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
         effect.to_string()
     };
 
-    // For now, we can't properly get effectState.target, so we'll show a simplified message
-    // TODO: Once effectState infrastructure is available, use effectState.target for damp_holder
     battle.add("cant", &[
-        Arg::String(target_slot.clone()),
+        Arg::String(damp_holder_slot),
         Arg::Str("ability: Damp"),
         Arg::String(effect_name),
         Arg::String(format!("[of] {}", target_slot)),
