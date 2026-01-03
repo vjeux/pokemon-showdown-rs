@@ -1116,3 +1116,75 @@ Starting comprehensive 1:1 verification of battle/ folder.
 3. OR Update comments on Rust-specific architectural files
 
 
+---
+
+## Session 12: Critical Bug Fix - make_request.rs (2026-01-02)
+
+### Twenty-Sixth Implementation: Fix side.request_state not being set ✅ CRITICAL
+- **Issue**: Battles panicked with "Choices are done immediately after a request"
+- **Root Cause**: `make_request()` set battle-level `request_state` but never set side-level `request_state`
+  - JavaScript: `side.isChoiceDone()` reads from `this.requestState` (side's own field)
+  - JavaScript: `side.requestState` mirrors `battle.requestState` (implicit in JavaScript)
+  - Rust: `side.request_state` was never set, remained `None`
+  - Result: `is_choice_done()` always returned `true`, triggering panic
+
+- **Action**: Set `side.request_state` when making requests to mirror battle state
+
+  **JavaScript behavior** (make_request.rs:11-14):
+  ```javascript
+  if (type) {
+      this.requestState = type;  // Sets battle.requestState
+      for (const side of this.sides) {
+          side.clearChoice();  // Side reads battle.requestState
+      }
+  }
+  ```
+
+  **Rust implementation** (make_request.rs:46-58):
+  ```rust
+  self.request_state = rt;  // Set battle.request_state
+  for side in &mut self.sides {
+      // NEW: Set side.request_state to mirror battle state
+      side.request_state = match rt {
+          BattleRequestState::Move => RequestState::Move,
+          BattleRequestState::Switch => RequestState::Switch,
+          BattleRequestState::TeamPreview => RequestState::TeamPreview,
+          BattleRequestState::None => RequestState::None,
+      };
+      side.clear_choice(rt);
+  }
+  ```
+
+- **Side Effects**: Battles can now run to completion without panicking
+- **Result**: ✅ Battles execute successfully (PRNG divergence remains as separate issue)
+- **Commit**: a2ed6b81
+
+**Progress Update (2026-01-02 - Session 12):**
+- **CRITICAL FIX**: Battles no longer panic, can run to completion
+- Battle test for seed 1: Runs to turn 34 (was panicking on turn 1)
+- Known remaining issue: PRNG divergence (Rust starts at call 6, JavaScript at call 0)
+- Files modified: 1 (make_request.rs)
+- Lines added: 9 (import + request_state setting)
+
+---
+
+## Session 12 Status Summary
+
+**Major Achievement:**
+- 🎯 **CRITICAL**: Fixed battle execution crash - battles can now run!
+- This was blocking ALL battle testing and validation
+
+**Current Battle Test Status:**
+- Seed 1: ✅ Runs to completion (turn 34)
+- Issue: PRNG divergence (6 extra calls at start)
+- This is expected - likely team generation or initialization differences
+
+**Files Completed This Session:** 1 (make_request.rs)
+**Total Commits:** 16 (across all sessions)
+**Compilation:** ✅ All changes compile successfully
+
+**Next Steps:**
+1. Investigate PRNG divergence (6 extra calls before turn 1)
+2. Continue 1:1 verification of battle/ files
+3. Address infrastructure TODOs
+
