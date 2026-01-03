@@ -609,3 +609,98 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - Files remaining: 133
 - **Success**: BattleRequest serialization unblocked make_request.rs and undo_choice.rs
 
+### Eighteenth Implementation: start_battle.rs - setAbility and Behemoth moves ✅
+- **Issue**: Two TODOs for missing functionality in Zacian/Zamazenta forme changes
+- **Action**: Implemented both setAbility call and Iron Head -> Behemoth move replacement
+
+  **setAbility Implementation** (battle.ts:2670):
+  ```javascript
+  pokemon.setAbility(species.abilities['0'], null, null, true);
+  ```
+
+  **Rust** (start_battle.rs:88-100):
+  ```rust
+  let (_species_id, ability_id) = {
+      let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+      let species = self.dex.species.get(&pokemon.species_id);
+      let ability_0 = species.and_then(|s| s.abilities.slot0.clone());
+      (pokemon.species_id.clone(), ability_0)
+  };
+
+  if let Some(ability_str) = ability_id {
+      let ability = ID::new(&ability_str);
+      Pokemon::set_ability(self, (side_idx, poke_idx), ability, None, None, true, false);
+  }
+  ```
+
+  **Behemoth Move Replacement** (battle.ts:2673-2686):
+  ```javascript
+  const behemothMove = {
+      'Zacian-Crowned': 'behemothblade', 'Zamazenta-Crowned': 'behemothbash',
+  };
+  const ironHeadIndex = pokemon.baseMoves.indexOf('ironhead');
+  if (ironHeadIndex >= 0) {
+      const move = this.dex.moves.get(behemothMove[rawSpecies.name]);
+      pokemon.baseMoveSlots[ironHeadIndex] = {
+          move: move.name, id: move.id, pp: ..., maxpp: ...,
+          target: move.target, disabled: false, disabledSource: '', used: false
+      };
+      pokemon.moveSlots = pokemon.baseMoveSlots.slice();
+  }
+  ```
+
+  **Rust** (start_battle.rs:108-147):
+  ```rust
+  let behemoth_move_id = if new_species.as_str() == "zaciancrowned" {
+      Some(ID::new("behemothblade"))
+  } else if new_species.as_str() == "zamazentacrowned" {
+      Some(ID::new("behemothbash"))
+  } else { None };
+
+  if let Some(behemoth_id) = behemoth_move_id {
+      let pokemon = &mut self.sides[side_idx].pokemon[poke_idx];
+      if let Some(iron_head_index) = pokemon.base_move_slots.iter()
+          .position(|slot| slot.id.as_str() == "ironhead") {
+          if let Some(behemoth_move) = self.dex.moves.get(&behemoth_id) {
+              let pp = if behemoth_move.no_pp_boosts {
+                  behemoth_move.pp
+              } else {
+                  behemoth_move.pp * 8 / 5
+              } as u8;
+
+              pokemon.base_move_slots[iron_head_index] = MoveSlot {
+                  id: behemoth_id.clone(),
+                  move_name: behemoth_move.name.clone(),
+                  pp, maxpp: pp,
+                  target: Some(behemoth_move.target.clone()),
+                  disabled: false,
+                  disabled_source: Some(String::new()),
+                  used: false,
+                  virtual_move: false,
+                  is_z: false,
+              };
+              pokemon.move_slots = pokemon.base_move_slots.clone();
+          }
+      }
+  }
+  ```
+
+- **Changes**:
+  - Added `use crate::pokemon::MoveSlot;` import
+  - Implemented setAbility() using Pokemon::set_ability static method
+  - Accessed AbilitySlots.slot0 instead of .get("0")
+  - Implemented full Behemoth move replacement logic
+  - Used base_move_slots.iter().position() to find Iron Head
+  - Correctly initialized all MoveSlot fields including is_z and virtual_move
+
+- **Side Effects**: None (purely additive implementation)
+- **Result**: Matches JavaScript for Zacian/Zamazenta forme change logic
+- **Commit**: Pending
+
+**Session 4 Final Summary (2026-01-02):**
+- Files completed: 18 total (14 previous + 4 this session)
+- Infrastructure changes: 1 major (BattleRequest serialization)
+- TODOs resolved: 21 (16 previous + 5 this session)
+- Files remaining: 132
+- **Major Achievement**: BattleRequest serialization infrastructure complete, unblocking multiple files
+

@@ -1,6 +1,7 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
 
 use crate::*;
+use crate::pokemon::MoveSlot;
 
 impl Battle {
 
@@ -85,7 +86,18 @@ impl Battle {
             self.sides[side_idx].pokemon[poke_idx].details = details;
 
             // JS: pokemon.setAbility(species.abilities['0'], null, null, true);
-            // TODO: Implement setAbility()
+            // Get the species and its ability
+            let (_species_id, ability_id) = {
+                let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                let species = self.dex.species.get(&pokemon.species_id);
+                let ability_0 = species.and_then(|s| s.abilities.slot0.clone());
+                (pokemon.species_id.clone(), ability_0)
+            };
+
+            if let Some(ability_str) = ability_id {
+                let ability = ID::new(&ability_str);
+                Pokemon::set_ability(self, (side_idx, poke_idx), ability, None, None, true, false);
+            }
 
             // JS: pokemon.baseAbility = pokemon.ability;
             let ability = self.sides[side_idx].pokemon[poke_idx].ability.clone();
@@ -96,7 +108,45 @@ impl Battle {
             // JS: };
             // JS: const ironHeadIndex = pokemon.baseMoves.indexOf('ironhead');
             // JS: if (ironHeadIndex >= 0) { ... replace with behemoth move ... }
-            // TODO: Implement Iron Head -> Behemoth move replacement
+            let behemoth_move_id = if new_species.as_str() == "zaciancrowned" {
+                Some(ID::new("behemothblade"))
+            } else if new_species.as_str() == "zamazentacrowned" {
+                Some(ID::new("behemothbash"))
+            } else {
+                None
+            };
+
+            if let Some(behemoth_id) = behemoth_move_id {
+                // Find Iron Head in base moves
+                let pokemon = &mut self.sides[side_idx].pokemon[poke_idx];
+                if let Some(iron_head_index) = pokemon.base_move_slots.iter().position(|slot| slot.id.as_str() == "ironhead") {
+                    // Get the behemoth move data
+                    if let Some(behemoth_move) = self.dex.moves.get(&behemoth_id) {
+                        // JS: pokemon.baseMoveSlots[ironHeadIndex] = { move: move.name, id: move.id, pp: ..., maxpp: ..., target: ..., disabled: false, disabledSource: '', used: false }
+                        let pp = if behemoth_move.no_pp_boosts {
+                            behemoth_move.pp
+                        } else {
+                            behemoth_move.pp * 8 / 5
+                        } as u8;
+
+                        pokemon.base_move_slots[iron_head_index] = MoveSlot {
+                            id: behemoth_id.clone(),
+                            move_name: behemoth_move.name.clone(),
+                            pp,
+                            maxpp: pp,
+                            target: Some(behemoth_move.target.clone()),
+                            disabled: false,
+                            disabled_source: Some(String::new()),
+                            used: false,
+                            virtual_move: false,
+                            is_z: false,
+                        };
+
+                        // JS: pokemon.moveSlots = pokemon.baseMoveSlots.slice();
+                        pokemon.move_slots = pokemon.base_move_slots.clone();
+                    }
+                }
+            }
         }
 
         // JS: this.format.onBattleStart?.call(this);
