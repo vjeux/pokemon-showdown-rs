@@ -128,24 +128,10 @@ pub mod condition {
                 .unwrap_or(false);
 
             if is_z_or_max {
-                let _move_id = match &battle.active_move {
-                    Some(active_move) => active_move.id.clone(),
-                    None => return EventResult::Continue,
-                };
-
-                let _target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-
-                // TODO: Implement move_hit_data system
-                // In JavaScript: target.getMoveHitData(move).zBrokeProtect = true;
-                // Needs proper MoveHitData tracking on Pokemon or Battle
-                /*
-                if let Some(hit_data) = target_pokemon.get_move_hit_data_mut(&move_id) {
+                // Set zBrokeProtect in move hit data
+                if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
                     hit_data.z_broke_protect = true;
                 }
-                */
             }
 
             // return;

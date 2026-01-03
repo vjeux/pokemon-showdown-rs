@@ -196,20 +196,10 @@ pub mod condition {
 
             //     if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             if is_z || is_max {
-                let _target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                // TODO: Implement move_hit_data system
-                // In JavaScript: target.getMoveHitData(move).zBrokeProtect = true;
-                // Needs proper MoveHitData tracking on Pokemon or Battle
-                /*
-                if let Some(ref move_id) = battle.active_move.as_ref().map(|m| m.clone()) {
-                    if let Some(hit_data) = target_pokemon.get_move_hit_data_mut(move_id) {
-                        hit_data.z_broke_protect = true;
-                    }
+                // Set zBrokeProtect in move hit data
+                if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+                    hit_data.z_broke_protect = true;
                 }
-                */
             }
 
             //     return;
