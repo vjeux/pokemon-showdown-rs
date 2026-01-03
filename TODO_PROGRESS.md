@@ -1541,3 +1541,57 @@ pub z_broke_protect: bool,
 
 Progress: 273/380 abilities (71.8%) - no change (move callbacks, not abilities).
 Remaining TODOs: 28 (down from 33 - removed 5 move callback TODOs).
+
+
+### Batch 143 - Additional zBrokeProtect Implementations (2 TODOs)
+
+**Completed move callbacks:**
+282-283. **King's Shield** (kingsshield.rs) and **Mat Block** (matblock.rs) - Set zBrokeProtect for Z/Max moves
+
+**Discovery**: These 2 move callbacks had TODOs claiming "move_hit_data system" wasn't implemented, but it was added in Batch 142. The TODOs were outdated.
+
+**Implementation Details:**
+- Both moves use the same pattern as Batch 142's protection moves
+- Use `battle.get_move_hit_data_mut(target)` to set z_broke_protect = true for Z/Max moves
+- Removed unnecessary unused variables (_move_id, _target_pokemon)
+- Simplified code by using existing infrastructure
+
+**Files Modified:**
+- src/data/move_callbacks/kingsshield.rs - Removed TODO, set zBrokeProtect (14 lines removed, 4 added)
+- src/data/move_callbacks/matblock.rs - Removed TODO, set zBrokeProtect (14 lines removed, 4 added)
+
+**Git Commit**: 93a5ee5d: "Implement zBrokeProtect for King's Shield and Mat Block (Batch 143)"
+
+Progress: 273/380 abilities (71.8%) - no change (move callbacks, not abilities).
+Remaining TODOs: 26 (down from 28 - removed 2 move callback TODOs).
+
+
+## Session Summary (Batches 141-143)
+
+**Achievements:**
+- Discovered Pokemon::forme_change() already exists from Batch 76
+- Added z_broke_protect field to MoveHitData struct (major infrastructure)
+- Implemented 10 TODOs across 3 batches (3 + 5 + 2)
+- All code compiles successfully
+
+**Infrastructure Changes:**
+- Added z_broke_protect field to pokemon::MoveHitData (Batch 142)
+- Updated MoveHitData initialization in get_move_hit_data.rs
+
+**Pattern Discovered:**
+Many TODOs claiming infrastructure doesn't exist are actually outdated - the infrastructure was implemented in earlier batches. Systematic search and checking reveals these opportunities.
+
+**Batches Completed:**
+- **Batch 141**: 3 forme change move callbacks (Dive, Relic Song, Polar Flare)
+- **Batch 142**: 5 getMoveHitData TODOs + infrastructure (Aurora Veil + 4 protection moves)
+- **Batch 143**: 2 additional zBrokeProtect implementations (King's Shield + Mat Block)
+
+**TODO Count:**
+- Session start: 36 TODOs
+- Session end: 26 TODOs
+- Completed: 10 TODOs
+
+**Next Steps:**
+- Continue searching for more implementable TODOs
+- Focus on finding TODOs that incorrectly claim infrastructure is missing
+- Look for simple, straightforward implementations
