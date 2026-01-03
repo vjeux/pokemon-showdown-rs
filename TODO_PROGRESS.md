@@ -750,3 +750,41 @@ Based on systematic analysis of remaining TODOs, the following infrastructure is
 
 All infrastructure must be 1-to-1 with JavaScript implementation.
 
+
+### Batch 120 - Major Infrastructure: Accuracy Enum (Flash Fire TODO Resolution)
+
+**MAJOR INFRASTRUCTURE CHANGE - Accuracy Enum:**
+Resolved the long-standing Flash Fire TODO by implementing proper Accuracy enum support in ActiveMove. This is a major refactor affecting 12 files across the codebase.
+
+**Problem**: JavaScript's `accuracy` field can be either `true` (always hits) or a number (percentage). Rust's `i32` type cannot represent this union type, requiring a lossy conversion where 0 represented "always hits".
+
+**Solution**: Changed `ActiveMove.accuracy` from `i32` to `crate::dex::Accuracy` enum which has two variants:
+- `Accuracy::Percent(i32)` - Percentage accuracy (e.g., 100, 70, 50)
+- `Accuracy::AlwaysHits` - Always hits (true in JavaScript)
+
+**Implementation Details**:
+1. **src/battle_actions.rs**: Changed `pub accuracy: i32` to `pub accuracy: crate::dex::Accuracy`
+2. **src/dex.rs**: Added custom `Deserialize` impl for `Accuracy` enum to match existing custom `Serialize` impl. The custom impls are required to properly serialize/deserialize as either boolean `true` or integer values in JSON.
+3. **src/dex/get_active_move.rs**: Removed lossy conversion, now uses `move_data.accuracy.clone()` directly
+4. **src/battle_actions/get_active_z_move.rs**: Removed enum-to-i32 conversion
+5. **src/battle_actions/get_active_max_move.rs**: Removed enum-to-i32 conversion
+6. **src/data/ability_callbacks/flashfire.rs**: Removed TODO, now sets `active_move.accuracy = Accuracy::AlwaysHits`
+7. **src/data/move_callbacks/**: Updated 6 move callbacks to use enum:
+   - skydrop.rs: `accuracy = 0` → `Accuracy::AlwaysHits`
+   - thunder.rs: `accuracy = 0` → `Accuracy::AlwaysHits`, `accuracy = 50` → `Accuracy::Percent(50)`
+   - hurricane.rs: `accuracy = 0` → `Accuracy::AlwaysHits`, `accuracy = 50` → `Accuracy::Percent(50)`
+   - pursuit.rs: `accuracy = 0` → `Accuracy::AlwaysHits`
+   - sandsearstorm.rs: `accuracy = 0` → `Accuracy::AlwaysHits`
+   - wildboltstorm.rs: `accuracy = 0` → `Accuracy::AlwaysHits`
+8. **src/battle_actions/hit_step_accuracy.rs**: Already correctly handled the enum (no changes needed)
+
+**Impact**: This change properly represents JavaScript's `accuracy: true | number` union type in Rust, enabling exact 1-to-1 semantics. The Accuracy enum has a Default impl that returns `Percent(100)`, which works with ActiveMove's derived Default trait.
+
+**Files Modified**: 12 total
+**TODOs Removed**: 1 (Flash Fire accuracy TODO)
+**Compilation**: Successful with all changes
+**Git**: Committed (86cd5127) and pushed to master
+
+Progress: 255/380 abilities (67.1%).
+Remaining TODOs: 83 (down from 84 - removed Flash Fire TODO).
+
