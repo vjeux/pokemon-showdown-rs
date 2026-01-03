@@ -788,3 +788,71 @@ Resolved the long-standing Flash Fire TODO by implementing proper Accuracy enum 
 Progress: 255/380 abilities (67.1%).
 Remaining TODOs: 83 (down from 84 - removed Flash Fire TODO).
 
+
+### Batch 121 - Costar Volatile State Copying
+
+**Completed Costar ability volatile state copying:**
+Removed TODO by implementing proper copying of volatile state properties (layers and hasDragonType) from ally to pokemon.
+
+**Problem**: The JavaScript code copies not just the volatile status, but also properties like `pokemon.volatiles[volatile].layers` and `pokemon.volatiles[volatile].hasDragonType`. The initial implementation only added the volatiles without copying these properties.
+
+**Solution**: Access and modify the `EffectState.data` HashMap (from event_system.rs) to copy dynamic properties:
+- For `gmaxchistrike`: Copy `layers` value from ally's volatile to pokemon's volatile
+- For `dragoncheer`: Copy `hasDragonType` boolean from ally's volatile to pokemon's volatile
+
+**Implementation Details**:
+- Used `pokemon.volatiles.get(volatile_id).and_then(|v| v.data.get("layers"))` to read ally's layers
+- Used `pokemon.volatiles.get_mut(volatile_id)` to modify pokemon's volatile data
+- Stored properties in `data` HashMap using `serde_json::Value::Number()` and `serde_json::Value::Bool()`
+- Properly handles the two different EffectState structs (dex_data.rs vs event_system.rs)
+
+**Note**: The EffectState in event_system.rs (used for pokemon.volatiles) stores dynamic properties in a `data: HashMap<String, serde_json::Value>` field, matching JavaScript's ability to add arbitrary properties at runtime.
+
+**Files Modified**: 1 (src/data/ability_callbacks/costar.rs)
+**TODOs Removed**: 1 (Costar volatile property copying)
+**Compilation**: Successful
+**Git**: Committed (75dbc81f) and pushed to master
+
+Progress: 255/380 abilities (67.1%).
+Remaining TODOs: 82 (down from 83 - removed Costar TODO).
+
+
+### Batch 122 - HP-Based Boost Abilities (Berserk and Anger Shell)
+
+**Completed abilities:**
+257. **Berserk** (berserk.rs) - HP-based ability that boosts Special Attack when HP drops below 50%:
+   - onDamage: Sets checkedBerserk flag based on whether effect is a Move, not multi-hit, and doesn't have Sheer Force boost
+   - onTryEatItem: Prevents healing berry consumption when checkedBerserk is false (allows berry eating to trigger the HP threshold)
+   - onAfterMoveSecondary: Boosts SpA by 1 when HP drops below 50% (checks HP before and after damage using lastAttackedBy)
+
+258. **Anger Shell** (angershell.rs) - HP-based ability that boosts offensive stats and lowers defensive stats when HP drops below 50%:
+   - onDamage: Sets checkedAngerShell flag (identical logic to Berserk)
+   - onTryEatItem: Prevents healing berry consumption when checkedAngerShell is false (identical logic to Berserk)
+   - onAfterMoveSecondary: Boosts Atk/SpA/Spe by 1 and lowers Def/SpD by 1 when HP drops below 50%
+
+**Infrastructure Used:**
+- `pokemon.get_last_attacked_by()` - Returns Option<&Attacker> with damage field for tracking pre-damage HP
+- `Attacker.damage` - Damage dealt by attacker
+- `active_move.total_damage` - Total damage from multi-hit moves
+- `battle.effect_state.data` HashMap - Stores checkedBerserk/checkedAngerShell flags using serde_json::Value
+- `battle.boost()` - Applies stat boosts with signature `boost(&[(&str, i8)], target_pos, source_pos, effect, is_secondary, is_self)`
+- `pokemon.has_ability(battle, &[&str])` - Checks if Pokemon has any of the listed abilities
+
+**Implementation Notes:**
+- JavaScript's `move.multihit` → Rust's `active_move.multi_hit.is_some() || active_move.multi_hit_type.is_some()`
+- JavaScript's `!move.smartTarget` → Rust's `!smart_target.unwrap_or(false)` (smart_target is Option<bool>)
+- Both abilities share healing berry prevention logic to ensure berries can be eaten post-threshold
+- HP threshold calculation: `target.hp <= target.maxhp / 2 && target.hp + damage > target.maxhp / 2`
+- Difference between Berserk and Anger Shell is only the boost array (1 stat vs 5 stats)
+
+**Files Modified:**
+- src/data/ability_callbacks/berserk.rs - Implemented all 3 callbacks (151 lines added)
+- src/data/ability_callbacks/angershell.rs - Implemented all 3 callbacks (146 lines added)
+
+**Git Commits:**
+- dbd29d14: "Implement Berserk ability (Batch 122)"
+- b0748919: "Implement Anger Shell ability (Batch 122)"
+
+Progress: 257/380 abilities (67.6%).
+Remaining TODOs: 76 (down from 82 - removed 3 Berserk TODOs + 3 Anger Shell TODOs).
+
