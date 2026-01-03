@@ -12,8 +12,22 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 1 }, pokemon, pokemon);
 ///     }
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    // if (pokemon.side.sideConditions['tailwind'])
+    let has_tailwind = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let side_index = pokemon.side_index;
+        battle.sides[side_index].get_side_condition(&crate::dex_data::ID::from("tailwind")).is_some()
+    };
+
+    if has_tailwind {
+        // this.boost({ atk: 1 }, pokemon, pokemon);
+        battle.boost(&[("atk", 1)], pokemon_pos, Some(pokemon_pos), None, false, false);
+    }
+
     EventResult::Continue
 }
 

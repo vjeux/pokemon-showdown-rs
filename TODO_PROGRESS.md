@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 190 (50.0%) 🎉 **MILESTONE REACHED!**
+- Completed: 191 (50.3%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), **onSideConditionStart dispatcher infrastructure updated** (added pokemon_pos and side_condition_id parameters)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -411,6 +411,9 @@ Updated onSideConditionStart dispatcher infrastructure to properly pass pokemon_
 ### Batch 68 - Wind Move Immunity (1 TODO) 🎉 **50% MILESTONE!**
 189. **Wind Rider** (windrider.rs) - onTryHit: Grants immunity to wind moves when target ≠ source, boosts Attack by 1 (Note: immunity message logic incomplete until battle.boost() returns success status)
 
+### Batch 69 - Tailwind Check (1 TODO)
+190. **Wind Rider** (windrider.rs) - onStart: Boosts Attack if tailwind is active on Pokemon's side (uses Side::get_side_condition)
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -433,7 +436,8 @@ Completed Sweet Veil (Batch 65) blocking sleep and yawn from allies.
 Completed Teraform Zero (Batch 66) clearing weather and terrain on terastallization.
 Completed Wind Power and Wind Rider onSideConditionStart (Batch 67) with major infrastructure change to dispatcher.
 Completed Wind Rider onTryHit (Batch 68) granting immunity to wind moves and boosting Attack.
-🎉 **50% MILESTONE REACHED!** Progress: 190/380 abilities (50.0%).
+Completed Wind Rider onStart (Batch 69) checking for tailwind on switch-in.
+Progress: 191/380 abilities (50.3%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
