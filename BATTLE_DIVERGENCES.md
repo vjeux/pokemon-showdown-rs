@@ -136,15 +136,29 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - **Result**: Matches JavaScript logic flow (infrastructure-limited for callbacks/state)
 - **Commit**: 015a4b0d
 
+**Sixth Implementation: find_side_event_handlers.rs** ✅
+- **Issue**: Returned `Vec<(ID, Option<(usize, usize)>)>` (wrong return type), should return `EventListener[]`
+- **Action**: Implemented 1:1 logic flow matching JavaScript
+  - Returns `Vec<EventListener>` (correct type)
+  - Implements loop over side.sideConditions
+  - Added TODOs for getCallback and getKey checks (architectural difference)
+  - Added TODO for state field (should be sideConditionData)
+- **Side Effects**:
+  - Updated call site in field_event.rs to use new signature (4 params: callback_name, side_idx, get_key, custom_holder)
+  - Updated call site to extract effect_id and holder from EventListener
+- **Result**: Matches JavaScript logic flow (infrastructure-limited for callbacks/state)
+- **Commit**: a3661b57
+
 **Progress:**
-- Files completed: 5
-- Files remaining: 146
-- TODOs resolved: 1 (find_pokemon_event_handlers wrong return type)
-- New TODOs added: ~12 (infrastructure-dependent: getCallback checks, getKey conditions, state population for each handler type)
-- Current TODO count: ~209
+- Files completed: 6
+- Files remaining: 145
+- TODOs resolved: 6 (all Category A stubs)
+- New TODOs added: ~34 (infrastructure-dependent: getCallback checks, getKey conditions, state population)
+- Infrastructure fixes: 1 (added Terrain to EffectType)
+- Current TODO count: ~212
 
 **Next Steps:**
-1. Implement last Category A stub (find_side_event_handlers)
+1. ~~Implement last Category A stub (find_side_event_handlers)~~ ✅ COMPLETED
 2. Fix Category B partial implementations
 3. Verify Category D clean files
 
