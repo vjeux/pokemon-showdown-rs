@@ -1657,3 +1657,26 @@ Many TODOs claiming missing infrastructure are outdated - infrastructure was add
 - All code compiles successfully ✓
 - All commits pushed to git ✓
 - Documentation fully updated ✓
+
+
+### Batch 145 - Zero to Hero heroMessageDisplayed Tracking (2 TODOs)
+
+**Completed ability:**
+285. **Zero to Hero** (zerotohero.rs) - Completed heroMessageDisplayed tracking in both onSwitchOut and onSwitchIn callbacks
+
+**Discovery**: The `pokemon.hero_message_displayed` field already existed at line 606 in pokemon.rs! The TODOs were outdated.
+
+**Implementation Details:**
+- **onSwitchOut**: Sets `hero_message_displayed = false` when Palafin switches out (not in Hero forme)
+- **onSwitchIn**: Checks `!hero_message_displayed` before showing activation message
+- **onSwitchIn**: Sets `hero_message_displayed = true` after showing activation message  
+- Prevents duplicate "-activate, ability: Zero to Hero" messages
+- Uses existing infrastructure (no changes needed outside zerotohero.rs)
+
+**Files Modified:**
+- src/data/ability_callbacks/zerotohero.rs - Removed 2 TODOs, implemented hero_message_displayed tracking (17 lines added, 6 removed)
+
+**Git Commit**: eb0bcfa6: "Implement Zero to Hero heroMessageDisplayed tracking (Batch 145)"
+
+Progress: 274/380 abilities (72.1%) - no change (completing existing ability).
+Remaining TODOs: 23 (down from 25 - removed 2 ability callback TODOs).
