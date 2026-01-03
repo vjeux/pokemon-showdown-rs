@@ -1315,10 +1315,11 @@ pub fn dispatch_on_modify_priority(
 pub fn dispatch_on_modify_s_t_a_b(
     battle: &mut Battle,
     ability_id: &str,
+    stab: f64,
     source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "adaptability" => adaptability::on_modify_s_t_a_b(battle, source_pos, target_pos, move_id),
+        "adaptability" => adaptability::on_modify_s_t_a_b(battle, stab, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -3791,27 +3792,30 @@ pub fn dispatch_on_modify_priority_sub_order(
 pub fn dispatch_on_modify_s_t_a_b_priority(
     battle: &mut Battle,
     ability_id: &str,
+    stab: f64,
     source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_s_t_a_b(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifySTABOrder callbacks (alias for onModifySTAB)
 pub fn dispatch_on_modify_s_t_a_b_order(
     battle: &mut Battle,
     ability_id: &str,
+    stab: f64,
     source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_s_t_a_b(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifySTABSubOrder callbacks (alias for onModifySTAB)
 pub fn dispatch_on_modify_s_t_a_b_sub_order(
     battle: &mut Battle,
     ability_id: &str,
+    stab: f64,
     source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_s_t_a_b(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, move_id)
 }
 
 /// Dispatch onModifySecondariesPriority callbacks (alias for onModifySecondaries)

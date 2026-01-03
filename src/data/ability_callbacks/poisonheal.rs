@@ -13,8 +13,26 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_damage(_battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    // if (effect.id === 'psn' || effect.id === 'tox')
+    if let Some(eff_id) = effect_id {
+        if eff_id == "psn" || eff_id == "tox" {
+            // this.heal(target.baseMaxhp / 8);
+            let heal_amount = {
+                let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Boolean(false),
+                };
+                target.base_maxhp / 8
+            };
+
+            battle.heal(heal_amount, Some(target_pos), None, None);
+
+            // return false;
+            return EventResult::Boolean(false);
+        }
+    }
+
     EventResult::Continue
 }
 

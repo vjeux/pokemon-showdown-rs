@@ -491,12 +491,19 @@ impl Battle {
                 0, pokemon_pos, None,
             "", // TODO: Wire through actual move_id
             ),
-            "ModifySTAB" => ability_callbacks::dispatch_on_modify_s_t_a_b(
-                self,
-                ability_id.as_str(),
-                None, Some(pokemon_pos),
-            "", // TODO: Wire through actual move_id
-            ),
+            "ModifySTAB" => {
+                let (stab, source_pos, target_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                    (
+                        event.relay_var_float.unwrap_or(1.0),
+                        event.source,
+                        event.target,
+                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                    )
+                } else {
+                    (1.0, None, Some(pokemon_pos), String::new())
+                };
+                ability_callbacks::dispatch_on_modify_s_t_a_b(self, ability_id.as_str(), stab, source_pos, target_pos, &move_id_str)
+            }
             "ModifySecondaries" => ability_callbacks::dispatch_on_modify_secondaries(self, ability_id.as_str()),
             "ModifySpA" => {
                 let (spa, defender_pos, move_id_str) = if let Some(ref event) = self.current_event {

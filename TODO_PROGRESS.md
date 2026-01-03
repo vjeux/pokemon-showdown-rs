@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 123 (32.4%)
-- Infrastructure: Major getMoveHitData refactor completed
+- Completed: 126 (33.2%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -259,10 +259,23 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 122. **Soul-Heart** (soulheart.rs) - onAnyFaint: Boosts Special Attack by 1 when any Pokemon faints
 123. **Leaf Guard** (leafguard.rs) - onSetStatus/onTryAddVolatile: Prevents status and yawn in harsh sunlight (uses Pokemon::effective_weather)
 
+### Batch 35 - STAB Boost & Damage Modification (3 abilities + infrastructure)
+
+**Infrastructure Change:**
+Updated onModifySTAB dispatcher infrastructure to properly handle STAB modification:
+1. **Dispatcher Signature Update**: Added `stab: f64` parameter to `dispatch_on_modify_s_t_a_b` and all alias functions (`dispatch_on_modify_s_t_a_b_priority`, `dispatch_on_modify_s_t_a_b_order`, `dispatch_on_modify_s_t_a_b_sub_order`)
+2. **Event Wiring**: Updated `handle_ability_event.rs` to extract STAB value from `event.relay_var_float` and wire through source/target positions and move ID from event
+3. **ActiveMove Access**: Abilities now access `battle.active_move.force_stab` and `battle.active_move.move_type` for STAB calculations
+
+**New Ability Implementations:**
+124. **Poison Heal** (poisonheal.rs) - onDamage: Heals 1/8 max HP from poison/toxic instead of taking damage (checks effect.id === "psn" || "tox")
+125. **Neuroforce** (neuroforce.rs) - onModifyDamage: 1.25x damage (5120/4096) on super-effective hits (checks move hit data type_mod > 0)
+126. **Adaptability** (adaptability.rs) - onModifySTAB: Increases STAB bonus from 1.5x to 2x, or 2x to 2.25x (checks move.forceSTAB || source.hasType(move.type))
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 28 abilities (batches 22-34).
-Progress: 123/380 abilities (32.4%).
+Implemented 31 abilities (batches 22-35).
+Progress: 126/380 abilities (33.2%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -271,6 +284,8 @@ Completed residual status cure abilities using Pokemon::effective_weather and Po
 Completed Magic Guard using effect type detection via dex lookups.
 Completed Telepathy, Anger Point, and Pressure using ally detection, move hit data, and PP deduction.
 Completed Friend Guard, Soul-Heart, and Leaf Guard using ally damage reduction, faint detection, and weather-based status prevention.
+Completed onModifySTAB infrastructure update: Added stab parameter to dispatcher functions, wired event.relay_var_float through handle_ability_event.rs, and enabled abilities to access battle.active_move for STAB calculations.
+Completed Poison Heal, Neuroforce, and Adaptability using poison damage reversal, super-effective damage boost, and STAB bonus increase.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
