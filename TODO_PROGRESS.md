@@ -1981,3 +1981,44 @@ Extract all values as **owned Strings** (not `&str`) so borrows are immediately 
 **Documentation complete and up-to-date.**
 **Project compiles successfully with no errors.**
 
+
+### Batch 148 - MoveHitData Infrastructure Usage (4 TODOs)
+
+**Completed fixes:**
+- **Wind Rider** (windrider.rs) - Fixed onTryHit to properly use battle.boost() return value to show immunity message only when boost fails
+- **Spiky Shield** (spikyshield.rs) - Implemented z_broke_protect tracking using battle.get_move_hit_data_mut()
+- **Silk Trap** (silktrap.rs) - Implemented z_broke_protect tracking using battle.get_move_hit_data_mut()
+- **Obstruct** (obstruct.rs) - Implemented z_broke_protect tracking using battle.get_move_hit_data_mut()
+
+**Infrastructure Used:**
+- battle.boost() already returns bool indicating success/failure
+- battle.get_move_hit_data_mut() provides mutable access to MoveHitData
+- MoveHitData.z_broke_protect field added in Batch 142
+
+**Implementation Details:**
+- Wind Rider: Check boost return value, show immunity only if boost failed (stat already maxed)
+- Protection moves: Set z_broke_protect = true when Z/Max moves hit, matching JavaScript behavior
+
+**Files Modified:**
+- src/data/ability_callbacks/windrider.rs - Used boost() return value (14 insertions, 17 deletions)
+- src/data/move_callbacks/spikyshield.rs - Implemented z_broke_protect (3 insertions, 5 deletions)
+- src/data/move_callbacks/silktrap.rs - Implemented z_broke_protect (3 insertions, 4 deletions)
+- src/data/move_callbacks/obstruct.rs - Implemented z_broke_protect (3 insertions, 7 deletions)
+
+**Git Commits:**
+- f0ae90ea: "Fix Wind Rider ability to use battle.boost() return value (Batch 148)"
+- 332f54bc: "Implement move_hit_data.z_broke_protect for Spiky Shield, Silk Trap, and Obstruct (Batch 148)"
+
+**Progress:**
+- TODOs Resolved: 4
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+**Next Steps:**
+Continue searching for more implementable TODOs. Remaining TODOs primarily require major infrastructure:
+- Transform system (Imposter, Illusion, Commander)
+- Move redirection (Lightning Rod, Storm Drain)
+- Move reflection (Magic Bounce, Rebound)
+- Ability suppression (Neutralizing Gas)
+- Various Battle methods (use_move, set_trapped, etc.)
+
