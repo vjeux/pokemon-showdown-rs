@@ -11,8 +11,28 @@ use crate::event::EventResult;
 ///     if (this.suppressingAbility(pokemon)) return;
 ///     this.add('-ability', pokemon, 'Dark Aura');
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::battle::Arg;
+
+    // if (this.suppressingAbility(pokemon)) return;
+    if battle.suppressing_ability(Some(pokemon_pos)) {
+        return EventResult::Continue;
+    }
+
+    // this.add('-ability', pokemon, 'Dark Aura');
+    let pokemon_id = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add("-ability", &[
+        Arg::String(pokemon_id),
+        Arg::Str("Dark Aura"),
+    ]);
+
     EventResult::Continue
 }
 
@@ -22,8 +42,56 @@ pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResu
 ///     if (move.auraBooster !== this.effectState.target) return;
 ///     return this.chainModify([move.hasAuraBreak ? 3072 : 5448, 4096]);
 /// }
-pub fn on_any_base_power(_battle: &mut Battle, _base_power: i32, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    // Get the Dark Aura holder
+    let aura_holder = match battle.effect_state.target {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target === source || move.category === 'Status' || move.type !== 'Dark') return;
+    if target_pos == source_pos {
+        return EventResult::Continue;
+    }
+
+    let (category, move_type) = if let Some(ref active_move) = battle.active_move {
+        (active_move.category.clone(), active_move.move_type.clone())
+    } else {
+        return EventResult::Continue;
+    };
+
+    if category == "Status" || move_type != "Dark" {
+        return EventResult::Continue;
+    }
+
+    // if (!move.auraBooster?.hasAbility('Dark Aura')) move.auraBooster = this.effectState.target;
+    // if (move.auraBooster !== this.effectState.target) return;
+    let should_boost = if let Some(ref mut active_move) = battle.active_move {
+        if active_move.aura_booster.is_none() {
+            active_move.aura_booster = Some(aura_holder);
+        }
+        active_move.aura_booster == Some(aura_holder)
+    } else {
+        false
+    };
+
+    if !should_boost {
+        return EventResult::Continue;
+    }
+
+    // return this.chainModify([move.hasAuraBreak ? 3072 : 5448, 4096]);
+    let has_aura_break = if let Some(ref active_move) = battle.active_move {
+        active_move.has_aura_break.unwrap_or(false)
+    } else {
+        false
+    };
+
+    let modifier = if has_aura_break {
+        battle.chain_modify_fraction(3072, 4096) // 0.75x with Aura Break
+    } else {
+        battle.chain_modify_fraction(5448, 4096) // 1.33x normally
+    };
+
+    EventResult::Number(modifier)
 }
 

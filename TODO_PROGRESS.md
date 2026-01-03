@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 151 (39.7%)
+- Completed: 155 (40.8%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
 - In Progress: Continuing systematic implementation
 
@@ -315,10 +315,16 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 150. **Normalize** (normalize.rs) - onModifyType: Changes all moves to Normal type (1.2x power with typeChangerBoosted tracking); onBasePower: Boosts changed moves by 1.2x (4915/4096)
 151. **Galvanize** (galvanize.rs) - onModifyType: Changes Normal-type moves to Electric type (1.2x power with typeChangerBoosted tracking); onBasePower: Boosts changed moves by 1.2x (4915/4096)
 
+### Batch 45 - Aura Abilities & Strong Weathers (4 abilities)
+152. **Dark Aura** (darkaura.rs) - onStart: Shows ability with suppressingAbility check; onAnyBasePower: Boosts Dark-type moves by 1.33x (5448/4096) or 0.75x (3072/4096) with Aura Break (uses aura_booster tracking)
+153. **Fairy Aura** (fairyaura.rs) - onStart: Shows ability with suppressingAbility check; onAnyBasePower: Boosts Fairy-type moves by 1.33x (5448/4096) or 0.75x (3072/4096) with Aura Break (uses aura_booster tracking)
+154. **Delta Stream** (deltastream.rs) - onStart: Sets deltastream weather; onAnySetWeather: Prevents non-strong weathers from replacing deltastream (onEnd requires EffectState.source infrastructure)
+155. **Desolate Land** (desolateland.rs) - onStart: Sets desolateland weather; onAnySetWeather: Prevents non-strong weathers from replacing desolateland (onEnd requires EffectState.source infrastructure)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 56 abilities (batches 22-44).
-Progress: 151/380 abilities (39.7%).
+Implemented 60 abilities (batches 22-45).
+Progress: 155/380 abilities (40.8%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -338,6 +344,8 @@ Completed Aura Break and Liquid Voice using has_aura_break flag setting and soun
 Completed Hospitality, Dauntless Shield, and Curious Medicine using adjacent ally healing/boost clearing and ability_state.data for one-time boost tracking.
 Completed Frisk and Power Spot using item revelation for foes and ally base power boost.
 Completed type-changing abilities (Refrigerate, Aerilate, Normalize, Galvanize) using ActiveMove.type_changer_boosted tracking and pokemon.terastallized checks, with proper exclusion lists for special moves.
+Completed Dark Aura and Fairy Aura using aura_booster tracking, has_aura_break detection, and battle.suppressing_ability checks.
+Completed Delta Stream and Desolate Land with onStart weather setting and onAnySetWeather strong weather protection (onEnd handlers require EffectState.source infrastructure addition).
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
