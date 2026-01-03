@@ -930,3 +930,58 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - Pattern: Second architectural fix (method incorrectly separated from runAction)
 
 
+---
+
+## Session 9: Remove run_residual.rs File (2026-01-02)
+
+### Twenty-Third Implementation: Move run_residual.rs into run_action.rs ✅
+- **Issue**: run_residual.rs marked as "NOT in JavaScript" but logic IS in JavaScript runAction() case 'residual'
+- **Root Cause**: Same pattern as start_battle.rs and do_switch.rs - Rust incorrectly split runAction() 'residual' case into separate file
+- **Action**: Consolidated logic back into run_action.rs to match JavaScript structure
+
+  **JavaScript Structure** (battle.ts:2810-2817):
+  ```javascript
+  case 'residual':
+      this.add('');
+      this.clearActiveMove(true);
+      this.updateSpeed();
+      residualPokemon = this.getAllActive().map(pokemon => [pokemon, pokemon.getUndynamaxedHP()] as const);
+      this.fieldEvent('Residual');
+      if (!this.ended) this.add('upkeep');
+      break;
+  ```
+
+  **Rust Had Two Files:**
+  1. run_action.rs - Just called run_residual()
+  2. run_residual.rs - Had logic, marked "NOT in JavaScript"
+
+  **Changes Made:**
+
+  **run_action.rs (lines 415-447):**
+  - Lines 425-426: `self.add("", &[]);` - empty log line
+  - Lines 428-429: `self.clear_active_move(true);` - clear active move
+  - Lines 431-432: `self.update_speed();` - update speed
+  - Lines 434-436: Added note about residualPokemon tracking (not yet implemented for EmergencyExit)
+  - Lines 438-441: `self.field_event("Residual", None);` - fire field residual event
+    * Added note: JavaScript ONLY calls fieldEvent, NOT eachEvent
+  - Lines 443-446: Conditional `self.add("upkeep", &[]);` if battle not ended
+
+  **battle.rs:**
+  - Removed `mod run_residual;` declaration (line 49)
+
+  **Files Deleted:**
+  - run_residual.rs (33 lines) - logic moved to run_action.rs
+
+- **Side Effects**: None - cleaner architecture matching JavaScript
+- **Result**: Now matches JavaScript runAction() case 'residual' 1:1
+- **Commit**: de198d5f
+
+**Progress Update (2026-01-02 - Session 9):**
+- Files deleted: 1 (run_residual.rs)
+- Files updated: 2 (run_action.rs, battle.rs)
+- Total files in battle/: 145 (down from 146)
+- Files completed: 23
+- Pattern: Third architectural fix (method incorrectly separated from runAction)
+- **Total runAction cases consolidated: 3** (start, switch, residual)
+
+
