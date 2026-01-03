@@ -70,7 +70,53 @@ impl Battle {
         if is_new {
             // Create player
             // JS: const team = this.getTeam(options);
-            let team = self.get_team(&options);
+            let mut team = self.get_team(&options);
+
+            // BEFORE creating Pokemon objects, pre-fill gender in PokemonSets
+            // This matches JavaScript timing where gender randomization happens in Pokemon constructor
+            // JavaScript (pokemon.ts:41): this.gender = genders[set.gender] || this.species.gender || this.battle.sample(['M', 'F']);
+            for pokemon_set in &mut team {
+                if pokemon_set.gender == Gender::None {
+                    let species_id = ID::new(&pokemon_set.species);
+                    let species_data = self.dex.species.get(&species_id);
+
+                    // Check species.gender: 'M', 'F', 'N', or '' (randomize)
+                    let gender = if let Some(species) = species_data {
+                        if let Some(ref species_gender) = species.gender {
+                            match species_gender.as_str() {
+                                "M" => Gender::Male,
+                                "F" => Gender::Female,
+                                "N" => Gender::None,
+                                _ => {
+                                    // Empty or unknown species.gender, randomize
+                                    if self.random(2) == 0 {
+                                        Gender::Male
+                                    } else {
+                                        Gender::Female
+                                    }
+                                }
+                            }
+                        } else {
+                            // No species.gender field, randomize
+                            if self.random(2) == 0 {
+                                Gender::Male
+                            } else {
+                                Gender::Female
+                            }
+                        }
+                    } else {
+                        // No species found, randomize
+                        if self.random(2) == 0 {
+                            Gender::Male
+                        } else {
+                            Gender::Female
+                        }
+                    };
+
+                    pokemon_set.gender = gender;
+                }
+            }
+
             let name = if !options.name.is_empty() {
                 options.name.clone()
             } else {
@@ -83,60 +129,10 @@ impl Battle {
             }
             self.sides[slot_num] = side;
 
-            // Randomize gender for Pokemon without specified gender
-            // JavaScript: this.gender = genders[set.gender] || this.species.gender || this.battle.sample(['M', 'F']);
-            // where species.gender can be:
-            //   'M' = always male
-            //   'F' = always female
-            //   'N' = genderless
-            //   '' (empty) or undefined = randomize
+            // Update Z-move flags and PP using Dex
+            // These updates need Pokemon objects to exist, so they happen after Side::new()
             let pokemon_count = self.sides[slot_num].pokemon.len();
             for poke_idx in 0..pokemon_count {
-                if self.sides[slot_num].pokemon[poke_idx].gender == Gender::None {
-                    let species_id = self.sides[slot_num].pokemon[poke_idx].species_id.clone();
-
-                    // Look up species.gender from dex
-                    let species_data = self.dex.species.get(&species_id);
-
-                    let gender = if let Some(species) = species_data {
-                        // Check species.gender field
-                        if let Some(ref species_gender) = species.gender {
-                            match species_gender.as_str() {
-                                "M" => Gender::Male,
-                                "F" => Gender::Female,
-                                "N" => Gender::None,
-                                _ => {
-                                    // Empty or unknown, randomize
-                                    let rand = self.random(2);
-                                    if rand == 0 {
-                                        Gender::Male
-                                    } else {
-                                        Gender::Female
-                                    }
-                                }
-                            }
-                        } else {
-                            // No species.gender, randomize
-                            let rand = self.random(2);
-                            if rand == 0 {
-                                Gender::Male
-                            } else {
-                                Gender::Female
-                            }
-                        }
-                    } else {
-                        // No species found, default to random
-                        let rand = self.random(2);
-                        if rand == 0 {
-                            Gender::Male
-                        } else {
-                            Gender::Female
-                        }
-                    };
-
-                    self.sides[slot_num].pokemon[poke_idx].gender = gender;
-                }
-
                 // Update Z-move flags using Dex
                 self.sides[slot_num].pokemon[poke_idx].update_move_z_flags(&self.dex);
 
