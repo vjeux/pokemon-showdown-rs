@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 182 (47.9%)
+- Completed: 183 (48.2%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -385,6 +385,9 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 62 - Disable Chance (1 ability)
 182. **Cursed Body** (cursedbody.rs) - onDamagingHit: 30% chance to add disable volatile to attacker when hit (skips Max moves, futuremove, struggle, and if source already disabled); uses Pokemon::add_volatile and active_move.flags.future_move
 
+### Batch 63 - Ally Volatile Protection (1 ability)
+183. **Aroma Veil** (aromaveil.rs) - onAllyTryAddVolatile: Blocks attract, disable, encore, healblock, taunt, and torment from being added to allies when caused by moves; shows -block message; returns Null to prevent volatile
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -401,7 +404,8 @@ Completed Screen Cleaner (Batch 59) using side condition system.
 Completed Embody Aspect family (Batch 60) using terastallized state and ability_state.data tracking.
 Completed Perish Body and Quick Draw (Batch 61) using add_volatile and random_chance.
 Completed Cursed Body (Batch 62) using add_volatile with target as source parameter.
-Progress: 182/380 abilities (47.9%).
+Completed Aroma Veil (Batch 63) blocking specific volatiles from allies.
+Progress: 183/380 abilities (48.2%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
