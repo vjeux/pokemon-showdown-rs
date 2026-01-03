@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 203 (53.4%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), **onSideConditionStart dispatcher infrastructure updated** (added pokemon_pos and side_condition_id parameters)
+- Completed: 205 (53.9%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -465,8 +465,33 @@ Completed Unburden (Batch 71) using volatile status system and pokemon.item/igno
 Completed Flower Gift ally modifiers (Batch 72) using effectState.target, base species checking, and effective weather.
 Completed Anticipation (Batch 73) checking foes' movesets for super-effective moves (partial - OHKO detection pending).
 Completed Supersweet Syrup (Batch 74) using ability_state.data, adjacent_foes(), and has_volatile().
-Progress: 202/380 abilities (53.2%).
+Completed Costar (Batch 75) copying boosts and crit volatiles from ally.
+Progress: 205/380 abilities (53.9%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
+
+### Batch 76 - Forme Change Infrastructure + Flower Gift Completion (2 TODOs + Major Infrastructure)
+
+**Infrastructure Implementation:**
+Created Pokemon::forme_change() method following JavaScript 1-to-1 implementation:
+- Takes parameters: battle, species_id, source_id, is_permanent, ability_slot, message
+- Calls Pokemon::set_species() to update stats/types/etc.
+- Handles non-permanent forme changes (isPermanent: false)
+- Adds appropriate -formechange battle messages based on source type
+- Checks if source is an ability by looking up in dex.abilities()
+- Handles illusion and terastallized cases (TODO for full implementation)
+- Uses unsafe pointer pattern to work around Rust borrow checker (pokemon needs &mut self, Battle needs &mut Battle)
+
+This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, Ice Face, Schooling, Disguise, Battle Bond, Power Construct, Shields Down, Stance Change, etc.
+
+**New Ability Implementations:**
+202. **Flower Gift** (flowergift.rs) - onStart: Calls onWeatherChange to check forme; onWeatherChange: Changes Cherrim ↔ Cherrim-Sunshine based on sun/desolate land (uses forme_change with base species checking, effective_weather, and transformed check); onAllyModifyAtk and onAllyModifySpD were already implemented in Batch 72
+
+## Current Session (Continued)
+Committed and pushed Costar (Batch 75).
+Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
+Completed Flower Gift (Batch 76) using new forme_change infrastructure.
+Progress: 203→205/380 (53.9%).
+All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)

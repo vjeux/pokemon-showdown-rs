@@ -54,7 +54,14 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
         };
 
         use crate::dex_data::ID;
-        pokemon_mut.forme_change(ID::from("groudonprimal"), new_types, new_ability);
+        // TODO: Use proper Pokemon::forme_change method
+        // pokemon_mut.forme_change(battle, ID::from("groudonprimal"), Some(ID::from("redorb")), true, "0", None);
+        // For now, manually set the forme fields:
+        pokemon_mut.species_id = ID::from("groudonprimal");
+        pokemon_mut.types = new_types;
+        if let Some(ability) = new_ability {
+            pokemon_mut.ability = ability;
+        }
     }
 
     EventResult::Continue

@@ -64,7 +64,16 @@ pub fn run_mega_evo(
         }
     };
 
-    battle.sides[side_index].pokemon[pokemon_index].forme_change(species_id, types, ability);
+    // TODO: Use proper Pokemon::forme_change method
+    // The pokemon is at battle.sides[side_index].pokemon[pokemon_index]
+    // Need to call: pokemon.forme_change(battle, species_id, Some(item_id), true, "0", None)
+    // But this requires restructuring to avoid borrow conflicts
+    // For now, manually set the forme fields:
+    battle.sides[side_index].pokemon[pokemon_index].species_id = species_id;
+    battle.sides[side_index].pokemon[pokemon_index].types = types;
+    if let Some(ability_id) = ability {
+        battle.sides[side_index].pokemon[pokemon_index].ability = ability_id;
+    }
 
     // Limit one mega evolution
     // const wasMega = pokemon.canMegaEvo;
