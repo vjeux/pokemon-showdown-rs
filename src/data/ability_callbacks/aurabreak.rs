@@ -33,8 +33,27 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///     if (target === source || move.category === 'Status') return;
 ///     move.hasAuraBreak = true;
 /// }
-pub fn on_any_try_primary_hit(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_any_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    // if (target === source || move.category === 'Status') return;
+    if target_pos == source_pos {
+        return EventResult::Continue;
+    }
+
+    let is_status = if let Some(ref active_move) = battle.active_move {
+        active_move.category == "Status"
+    } else {
+        false
+    };
+
+    if is_status {
+        return EventResult::Continue;
+    }
+
+    // move.hasAuraBreak = true;
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.has_aura_break = Some(true);
+    }
+
     EventResult::Continue
 }
 

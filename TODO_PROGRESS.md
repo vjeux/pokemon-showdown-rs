@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 140 (36.8%)
+- Completed: 142 (37.4%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
 - In Progress: Continuing systematic implementation
 
@@ -296,10 +296,14 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 139. **Turboblaze** (turboblaze.rs) - onModifyMove: Sets ignore_ability flag to bypass target abilities (already had onStart, identical to Mold Breaker)
 140. **Teravolt** (teravolt.rs) - onModifyMove: Sets ignore_ability flag to bypass target abilities (already had onStart, identical to Mold Breaker and Turboblaze)
 
+### Batch 41 - Aura & Type Modification (2 abilities)
+141. **Aura Break** (aurabreak.rs) - onAnyTryPrimaryHit: Sets has_aura_break flag on move to reverse Dark Aura and Fairy Aura effects (skips self-targeting and Status moves)
+142. **Liquid Voice** (liquidvoice.rs) - onModifyType: Changes sound moves to Water type (skips Dynamax Pokemon, checks flags.sound)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 45 abilities (batches 22-40).
-Progress: 140/380 abilities (36.8%).
+Implemented 47 abilities (batches 22-41).
+Progress: 142/380 abilities (37.4%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -315,6 +319,7 @@ Completed Battery, Contrary, and Intimidate using ally base power boost, in-plac
 Completed Mold Breaker, Sticky Hold, and Unaware using ignore_ability flag, item removal prevention with special handling for Sticky Barb, and stat boost zeroing based on active Pokemon positioning.
 Completed No Guard, Simple, and Unseen Fist using invulnerability/accuracy overrides via effectState.target, stat change doubling via relay_var_boost, and move flag modification.
 Completed Turboblaze and Teravolt as variants of Mold Breaker (all three set ignore_ability flag).
+Completed Aura Break and Liquid Voice using has_aura_break flag setting and sound move type modification.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
