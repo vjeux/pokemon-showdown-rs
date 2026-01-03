@@ -199,8 +199,10 @@ impl Battle {
             // Note: allySide tracking not implemented in Rust, so checking side_idx < 2
             if side_idx < 2 {
                 let side_event = format!("onSide{}", event_id);
-                let side_handlers = self.find_side_event_handlers(&side_event, side_idx);
-                for (effect_id, holder) in side_handlers {
+                let side_handlers = self.find_side_event_handlers(&side_event, side_idx, get_key, None);
+                for handler in side_handlers {
+                    let effect_id = handler.effect_id;
+                    let holder = handler.effect_holder;
                     let effect_type = self.determine_effect_type(effect_id.as_str());
                     let handler = self.create_field_handler(
                         effect_id,
