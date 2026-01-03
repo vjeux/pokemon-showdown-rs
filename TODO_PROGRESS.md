@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 247 (65.0%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available)
+- Completed: 248 (65.3%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -612,6 +612,9 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 ### Batch 113 - Harvest (1 ability)
 249. **Harvest** (harvest.rs) - onResidual: Restores consumed berry when Pokemon has no item and last item was a berry; activates in harsh sunlight (sun/desolateland) or 50% chance otherwise; checks pokemon.hp, pokemon.item.is_empty(), pokemon.last_item, and ItemData.is_berry; uses Pokemon::set_item to restore berry; clears pokemon.last_item after restoration; shows -item message with ability source
 
+### Batch 114 - Pickup (1 ability)
+250. **Pickup** (pickup.rs) - onResidual: Picks up items from adjacent Pokemon that used items this turn; filters active Pokemon by last_item, used_item_this_turn, and adjacency; randomly samples one target using battle.sample(); takes target's last_item and clears it; sets Pokemon's item using Pokemon::set_item; shows -item message with ability source
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -659,8 +662,10 @@ Completed Libero (Batch 110) - onPrepareHit changes type to match move type usin
 Completed Color Change (Batch 111) - onAfterMoveSecondary changes type after being hit using Pokemon::set_type() (Curse Glitch skipped).
 Completed Mimicry (Batch 112) - onTerrainChange changes type based on terrain using field.get_terrain() and base species types (singleEvent skipped).
 Completed Harvest (Batch 113) - onResidual restores consumed berry in sun or 50% chance using pokemon.last_item and ItemData.is_berry.
-Progress: 246→247/380 (65.0%); Completed 4 abilities this continuation (3 type-changing + 1 berry restoration).
-Remaining TODOs: 93 (down from 94 - removed 1 from Harvest).
+Completed Pickup (Batch 114) - onResidual picks up items from adjacent Pokemon using battle.sample() and used_item_this_turn.
+**Discovered battle.sample() and battle.get_all_active()** - Random sampling and active Pokemon iteration infrastructure fully functional.
+Progress: 246→248/380 (65.3%); Completed 5 abilities this continuation (3 type-changing + 2 item-related).
+Remaining TODOs: 92 (down from 93 - removed 1 from Harvest, 1 from Pickup).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
