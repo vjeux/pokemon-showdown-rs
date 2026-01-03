@@ -82,7 +82,11 @@ impl Battle {
             let side_idx = side_id.index();
             if self.sides[side_idx].request_state != RequestState::None {
                 // JavaScript: side.emitRequest({ wait: true, side: side.getRequestData() });
-                // TODO: Implement emitRequest
+                let request = serde_json::json!({
+                    "wait": true,
+                    "side": self.sides[side_idx].get_request_data(),
+                });
+                self.sides[side_idx].emit_request(&request);
 
                 // JavaScript: side.clearChoice();
                 self.sides[side_idx].choice = crate::side::Choice::new();
