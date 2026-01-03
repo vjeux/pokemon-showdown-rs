@@ -36,9 +36,12 @@ pub fn on_modify_move(
 
     if !source_has_ghost {
         // move.target = move.nonGhostTarget!;
-        // TODO: Modify the current move's target to nonGhostTarget
-        // This requires access to the current move state which may not be directly available
-        // For now, we'll leave this as a placeholder
+        // Modify the active move's target to nonGhostTarget
+        // In the JavaScript data, Curse has nonGhostTarget: "normal"
+        if let Some(ref mut active_move) = battle.active_move {
+            // The nonGhostTarget for Curse is "normal"
+            active_move.target = "normal".to_string();
+        }
     } else if let Some(target) = target_pos {
         // else if (source.isAlly(target)) {
         //     move.target = 'randomNormal';
@@ -46,7 +49,9 @@ pub fn on_modify_move(
         let is_ally = battle.is_ally(source, target);
         if is_ally {
             // move.target = 'randomNormal';
-            // TODO: Modify the current move's target to randomNormal
+            if let Some(ref mut active_move) = battle.active_move {
+                active_move.target = "randomNormal".to_string();
+            }
         }
     }
 
@@ -91,30 +96,55 @@ pub fn on_try_hit(
         // delete move.volatileStatus;
         // delete move.onHit;
         // move.self = { boosts: { spe: -1, atk: 1, def: 1 } };
-        // TODO: Modify the current move's properties
-        // This would require access to the active move state which isn't directly available here
-        // The move modification would happen in the move execution logic
+        // Modify the active move to be the non-Ghost version
+        if let Some(ref mut active_move) = battle.active_move {
+            // Clear volatile status (delete move.volatileStatus)
+            active_move.volatile_status = None;
+
+            // Set self-boost effect (move.self = { boosts: { spe: -1, atk: 1, def: 1 } })
+            use crate::battle_actions::SelfEffect;
+            use crate::dex_data::BoostsTable;
+
+            active_move.self_effect = Some(SelfEffect {
+                boosts: Some(BoostsTable {
+                    atk: 1,
+                    def: 1,
+                    spa: 0,
+                    spd: 0,
+                    spe: -1,
+                    accuracy: 0,
+                    evasion: 0,
+                }),
+                status: None,
+                volatile_status: None,
+                side_condition: None,
+                slot_condition: None,
+                pseudo_weather: None,
+                terrain: None,
+                weather: None,
+                chance: None,
+            });
+        }
     } else {
         // else if (move.volatileStatus && target.volatiles['curse']) {
         //     return false;
         // }
-        // Check if move has volatileStatus
-        let move_has_volatile_status = battle.active_move
-            .as_ref()
+        let has_volatile_status = battle.active_move.as_ref()
             .and_then(|m| m.volatile_status.as_ref())
             .is_some();
 
-        // Check if target already has curse volatile
-        let target_has_curse = {
-            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
+        if has_volatile_status {
+            let has_curse_volatile = {
+                let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target_pokemon.volatiles.contains_key(&ID::from("curse"))
             };
-            target_pokemon.volatiles.contains_key(&ID::from("curse"))
-        };
 
-        if move_has_volatile_status && target_has_curse {
-            return EventResult::Boolean(false);
+            if has_curse_volatile {
+                return EventResult::Boolean(false);
+            }
         }
     }
 
