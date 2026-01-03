@@ -401,8 +401,7 @@ pub fn spread_move_hit(
 
             // JS: const secondaries = this.battle.runEvent('ModifySecondaries', target, source, moveData, moveData.secondaries.slice());
             // Call ModifySecondaries event to allow abilities like Shield Dust to filter secondaries
-            // For now, we use a simple approach: if the event returns anything other than Continue, skip this secondary
-            let modify_result = battle.run_event(
+            battle.run_event(
                 "ModifySecondaries",
                 Some(target_pos),
                 Some(source_pos),
@@ -410,16 +409,16 @@ pub fn spread_move_hit(
                 None,
             );
 
-            // If ModifySecondaries event returns a falsy value (like EventResult::Null or EventResult::Boolean(false)),
-            // it means the secondary should be blocked (e.g., by Shield Dust)
-            if let Some(result) = modify_result {
-                if result == 0 {
-                    eprintln!("[SPREAD_MOVE_HIT T{}] ModifySecondaries returned 0, skipping secondary", battle.turn);
-                    continue;
-                }
-            } else {
-                // None means the event blocked the secondary
-                eprintln!("[SPREAD_MOVE_HIT T{}] ModifySecondaries returned None, skipping secondary", battle.turn);
+            // After ModifySecondaries, check if there are any secondaries left
+            // Shield Dust filters out secondaries by modifying active_move.secondaries
+            // If all secondaries were filtered out, skip the PRNG call
+            let has_secondaries = battle.active_move
+                .as_ref()
+                .map(|m| !m.secondaries.is_empty())
+                .unwrap_or(false);
+
+            if !has_secondaries {
+                eprintln!("[SPREAD_MOVE_HIT T{}] No secondaries left after ModifySecondaries (filtered by Shield Dust or similar), skipping PRNG call", battle.turn);
                 continue;
             }
 
