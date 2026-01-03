@@ -1832,7 +1832,7 @@ pub fn dispatch_condition_on_immunity(
     match move_id {
         "dig" => dig::condition::on_immunity(battle, source_pos),
         "dive" => dive::condition::on_immunity(battle, source_pos),
-        "magnetrise" => magnetrise::condition::on_immunity(battle),
+        "magnetrise" => magnetrise::condition::on_immunity(battle, source_pos),
         "telekinesis" => telekinesis::condition::on_immunity(battle, immunity_type),
         _ => EventResult::Continue,
     }

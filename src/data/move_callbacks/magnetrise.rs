@@ -113,11 +113,21 @@ pub mod condition {
     /// onImmunity(type) {
     ///     if (type === 'Ground') return false;
     /// }
-    pub fn on_immunity(_battle: &mut Battle) -> EventResult {
-        // TODO: This callback needs the type parameter to work correctly
-        // The TypeScript version checks: if (type === 'Ground') return false;
-        // Once the event system supports passing the type parameter, implement:
-        // if type_id == "ground" { return EventResult::Boolean(false); }
+    pub fn on_immunity(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+        // Get the immunity type from the event's relay_var_type
+        let immunity_type = match &battle.current_event {
+            Some(event) => event.relay_var_type.clone(),
+            None => return EventResult::Continue,
+        };
+
+        // if (type === 'Ground') return false;
+        if let Some(type_str) = immunity_type {
+            if type_str == "Ground" {
+                // return false; - grant immunity to Ground-type moves while levitating
+                return EventResult::Boolean(false);
+            }
+        }
+
         EventResult::Continue
     }
 
