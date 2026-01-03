@@ -45,21 +45,28 @@ pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, targe
 
     if is_from_move {
         // const effectHolder = this.effectState.target;
+        let effect_holder_pos = match battle.effect_state.target {
+            Some(pos) => pos,
+            None => return EventResult::Null,
+        };
+
         // this.add('-block', target, 'ability: Aroma Veil', `[of] ${effectHolder}`);
-        // For now, we can't get effectState.target easily, but we can show the message without it
-        // TODO: Once effectState infrastructure is available, use effectState.target for effect_holder
-        let target_slot = {
+        let (target_slot, effect_holder_slot) = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Null,
             };
-            target.get_slot()
+            let effect_holder = match battle.pokemon_at(effect_holder_pos.0, effect_holder_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Null,
+            };
+            (target.get_slot(), effect_holder.get_slot())
         };
 
         battle.add("-block", &[
             Arg::String(target_slot),
             Arg::Str("ability: Aroma Veil"),
-            // TODO: Add [of] ${effectHolder} when effectState.target is available
+            Arg::String(format!("[of] {}", effect_holder_slot)),
         ]);
     }
 
