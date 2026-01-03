@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 175 (46.1%)
+- Completed: 179 (47.1%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -372,6 +372,12 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 59 - Side Condition Removal (1 ability)
 175. **Screen Cleaner** (screencleaner.rs) - onStart: Removes reflect, lightscreen, and auroraveil from all sides (pokemon's side + foe sides); shows -activate message once when removing any screens; uses Side::get_side_condition, Side::remove_side_condition, and Side::foe_sides_with_conditions
 
+### Batch 60 - Embody Aspect Family (4 abilities)
+176. **Embody Aspect (Cornerstone)** (embodyaspectcornerstone.rs) - onStart: Boosts Defense by 1 when Ogerpon-Cornerstone-Tera is terastallized (one-time via ability_state.data["embodied"])
+177. **Embody Aspect (Hearthflame)** (embodyaspecthearthflame.rs) - onStart: Boosts Attack by 1 when Ogerpon-Hearthflame-Tera is terastallized (one-time via ability_state.data["embodied"])
+178. **Embody Aspect (Teal)** (embodyaspectteal.rs) - onStart: Boosts Speed by 1 when Ogerpon-Teal-Tera is terastallized (one-time via ability_state.data["embodied"])
+179. **Embody Aspect (Wellspring)** (embodyaspectwellspring.rs) - onStart: Boosts Special Defense by 1 when Ogerpon-Wellspring-Tera is terastallized (one-time via ability_state.data["embodied"])
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -385,7 +391,8 @@ Completed Thermal Exchange (Batch 56) using cure_status and status immunity.
 Completed Damp (Batch 57) preventing explosion moves.
 Completed Oblivious (Batch 58) using remove_volatile for attract and taunt.
 Completed Screen Cleaner (Batch 59) using side condition system.
-Progress: 175/380 abilities (46.1%).
+Completed Embody Aspect family (Batch 60) using terastallized state and ability_state.data tracking.
+Progress: 179/380 abilities (47.1%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
