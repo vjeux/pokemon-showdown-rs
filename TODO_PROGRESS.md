@@ -5,11 +5,11 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 377 total (down from 398 - resolved 21 more in this session: Batches 148-152)
+- **Remaining TODOs**: 374 total (down from 377 - resolved 3 more in this session: Batch 153)
   - Complex abilities requiring transform/redirect/rebound infrastructure: ~18 TODOs (Imposter, Illusion, Commander, Neutralizing Gas, Magic Bounce, Rebound, Lightning Rod, Storm Drain)
-  - Move callbacks requiring queue/event system extensions: ~27 TODOs (down from 30)
+  - Move callbacks requiring queue/event system extensions: ~24 TODOs (down from 27)
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 152 - Z/Max Move Protection Breaking Damage (1 TODO resolved)
+- **Latest Progress**: Batch 153 - attackedBy Field Usage (3 TODOs resolved)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
@@ -2166,6 +2166,65 @@ if (target && move.multiaccuracy && hit > 1) {
 
 **Progress:**
 - TODOs Resolved: 1
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+
+### Batch 153 - attackedBy Field Usage (3 TODOs)
+
+**Completed fixes:**
+- **Avalanche** (avalanche.rs) - Implemented proper attackedBy checking using pokemon.attacked_by field
+- **Revenge** (revenge.rs) - Implemented proper attackedBy checking using pokemon.attacked_by field
+- **copyVolatileFrom** (switch_in.rs) - Implemented proper call to Pokemon::copy_volatile_from for Baton Pass/Shed Tail
+
+**Infrastructure Discovery:**
+All three TODOs claimed infrastructure didn't exist, but investigation revealed:
+- `pokemon.attacked_by: Vec<Attacker>` field exists at line 668 in pokemon.rs
+- `Attacker` struct has source, damage, and this_turn fields exactly as needed
+- `Pokemon::copy_volatile_from` method fully implemented at src/pokemon/copy_volatile_from.rs
+
+**Implementation Details:**
+
+**Avalanche/Revenge:**
+```rust
+let damaged_by_target = {
+    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    pokemon.attacked_by.iter().any(|attacker| {
+        attacker.source == target && attacker.damage > 0 && attacker.this_turn
+    })
+};
+
+if damaged_by_target {
+    return EventResult::Number(move_data.base_power * 2);
+}
+```
+
+**copyVolatileFrom:**
+```rust
+if let Some(ref copy_flag) = switch_copy_flag {
+    Pokemon::copy_volatile_from(
+        battle,
+        (side_index, pokemon_index),
+        (side_index, old_idx),
+        Some(copy_flag.as_str()),
+    );
+}
+```
+
+**Files Modified:**
+- src/data/move_callbacks/avalanche.rs - Removed TODO, implemented attackedBy checking (22 lines changed)
+- src/data/move_callbacks/revenge.rs - Removed TODO, implemented attackedBy checking (25 lines changed)
+- src/battle_actions/switch_in.rs - Removed TODO, implemented copyVolatileFrom call (7 lines changed)
+
+**Git Commit:**
+- 391e00e0 (after rebase: 44111027): "Implement attackedBy checking and copyVolatileFrom (Batch 153)"
+
+**Progress:**
+- TODOs Resolved: 3 (2 move callbacks + 1 battle action)
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
