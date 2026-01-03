@@ -1499,3 +1499,45 @@ unsafe {
 
 Progress: 273/380 abilities (71.8%) - no change (move callbacks, not abilities).
 Remaining TODOs: 33 (down from 36 - removed 3 move callback TODOs).
+
+### Batch 142 - getMoveHitData Infrastructure + Protection Moves (5 TODOs + Infrastructure)
+
+**Major Infrastructure Change:**
+Added `z_broke_protect` field to MoveHitData struct to track when Z-Moves or Max Moves break through protection.
+
+**Problem**: Protection moves (Protect, Baneful Bunker, Burning Bulwark, Quick Guard, Wide Guard) needed to track when Z-Moves or Max Moves break through protection, but the MoveHitData struct didn't have this field.
+
+**Solution**: Added new field to pokemon::MoveHitData struct:
+```rust
+/// Did this Z/Max move break through protection?
+/// JavaScript: zBrokeProtect: boolean
+pub z_broke_protect: bool,
+```
+
+**Completed move callbacks:**
+277. **Aurora Veil** (auroraveil.rs) - Added crit check via getMoveHitData: Now checks both crit and infiltrates flags before applying damage reduction
+278-281. **Protection moves** - Set zBrokeProtect for Z/Max moves:
+   - **Baneful Bunker** (banefulbunker.rs) - Sets z_broke_protect when Z/Max moves hit
+   - **Burning Bulwark** (burningbulwark.rs) - Sets z_broke_protect when Z/Max moves hit
+   - **Quick Guard** (quickguard.rs) - Sets z_broke_protect when Z/Max moves hit
+   - **Wide Guard** (wideguard.rs) - Sets z_broke_protect when Z/Max moves hit
+
+**Implementation Details:**
+- Aurora Veil: Uses `battle.get_move_hit_data(target)` to check crit flag
+- Protection moves: Use `battle.get_move_hit_data_mut(target_pos)` to set z_broke_protect = true
+- Updated MoveHitData initialization in get_move_hit_data.rs to include new field (default: false)
+- Updated struct comment from "4 fields" to "5 fields"
+
+**Files Modified:**
+- src/pokemon.rs - Added z_broke_protect field to MoveHitData struct
+- src/battle/get_move_hit_data.rs - Initialize z_broke_protect to false
+- src/data/move_callbacks/auroraveil.rs - Added crit check (8 lines changed)
+- src/data/move_callbacks/banefulbunker.rs - Set z_broke_protect (3 lines changed)
+- src/data/move_callbacks/burningbulwark.rs - Set z_broke_protect (3 lines changed)
+- src/data/move_callbacks/quickguard.rs - Set z_broke_protect (3 lines changed)
+- src/data/move_callbacks/wideguard.rs - Set z_broke_protect (3 lines changed)
+
+**Git Commit**: ab227284: "Add zBrokeProtect field to MoveHitData and implement getMoveHitData TODOs (Batch 142)"
+
+Progress: 273/380 abilities (71.8%) - no change (move callbacks, not abilities).
+Remaining TODOs: 28 (down from 33 - removed 5 move callback TODOs).
