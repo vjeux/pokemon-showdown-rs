@@ -413,7 +413,37 @@ impl Battle {
             Action::Field(field_action) => {
                 match field_action.choice {
                     FieldActionType::Residual => {
-                        self.run_residual();
+                        // JS: case 'residual':
+                        // JS:     this.add('');
+                        // JS:     this.clearActiveMove(true);
+                        // JS:     this.updateSpeed();
+                        // JS:     residualPokemon = this.getAllActive().map(pokemon => [pokemon, pokemon.getUndynamaxedHP()] as const);
+                        // JS:     this.fieldEvent('Residual');
+                        // JS:     if (!this.ended) this.add('upkeep');
+                        // JS:     break;
+
+                        // JS: this.add('');
+                        self.add("", &[]);
+
+                        // JS: this.clearActiveMove(true);
+                        self.clear_active_move(true);
+
+                        // JS: this.updateSpeed();
+                        self.update_speed();
+
+                        // JS: residualPokemon = this.getAllActive().map(pokemon => [pokemon, pokemon.getUndynamaxedHP()] as const);
+                        // Note: We don't track residualPokemon yet for EmergencyExit handling
+                        // This will be needed when implementing EmergencyExit abilities
+
+                        // JS: this.fieldEvent('Residual');
+                        // NOTE: JavaScript ONLY calls fieldEvent, NOT eachEvent!
+                        // fieldEvent handles all residual effects including items/abilities
+                        self.field_event("Residual", None);
+
+                        // JS: if (!this.ended) this.add('upkeep');
+                        if !self.ended {
+                            self.add("upkeep", &[]);
+                        }
                     }
                     FieldActionType::BeforeTurn => {
                         // JS: this.eachEvent('BeforeTurn');

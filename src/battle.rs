@@ -46,7 +46,6 @@ mod insert_field_action;
 mod queue_insert_choice;
 mod field_event_switch_in;
 mod get_move_target;
-mod run_residual;
 mod faint_messages;
 mod debug;
 mod get_debug_log;
