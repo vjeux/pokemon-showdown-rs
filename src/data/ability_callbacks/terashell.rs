@@ -10,16 +10,20 @@ use crate::event::EventResult;
 /// onAnyBeforeMove() {
 ///     delete this.effectState.resisted;
 /// }
-pub fn on_any_before_move(_battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_any_before_move(battle: &mut Battle) -> EventResult {
+    // delete this.effectState.resisted;
+    battle.effect_state.data.remove("resisted");
+
     EventResult::Continue
 }
 
 /// onAnyAfterMove() {
 ///     delete this.effectState.resisted;
 /// }
-pub fn on_any_after_move(_battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
+    // delete this.effectState.resisted;
+    battle.effect_state.data.remove("resisted");
+
     EventResult::Continue
 }
 

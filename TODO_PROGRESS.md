@@ -594,6 +594,9 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 ### Batch 107 - Parental Bond (partial - 1/2 callbacks)
 243. **Parental Bond** (parentalbond.rs) - onPrepareHit: Sets moves to hit twice unless Status/already multi-hit/special flags/spread/Z/Max; modifies active_move.multi_hit and active_move.multi_hit_type; checks all move flags (noparentalbond, charge, future_move), spread_hit, is_z, is_max fields (Note: onSourceModifySecondaries still needs infrastructure)
 
+### Batch 108 - Terashell (1 ability)
+244. **Terashell** (terashell.rs) - onAnyBeforeMove and onAnyAfterMove: Clears 'resisted' flag from battle.effect_state.data HashMap; simple state management for damage resistance tracking
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -632,8 +635,9 @@ Completed Truant (Batch 104) - removed 1 TODO by implementing onStart using poke
 Completed Wandering Spirit (Batch 105) - onDamagingHit swaps abilities on contact using Pokemon::set_ability for both source and target, with failskillswap flag checking.
 Partially completed Battle Bond (Batch 106) - onModifyMove sets Water Shuriken multi-hit to 3 for Greninja-Ash (1/2 callbacks).
 Partially completed Parental Bond (Batch 107) - onPrepareHit sets moves to hit twice with multi_hit_type tracking (1/2 callbacks).
-Progress: 203→241/380 (63.4%); Completed 38 full abilities + 2 partial this session.
-Remaining TODOs: 106 (down from 115 - removed 1 from Wandering Spirit, 1 from Battle Bond, 1 from Parental Bond).
+Completed Terashell (Batch 108) - onAnyBeforeMove and onAnyAfterMove clear resisted flag from battle.effect_state.data.
+Progress: 203→242/380 (63.7%); Completed 39 full abilities + 2 partial this session.
+Remaining TODOs: 104 (down from 115 - removed 1 from Wandering Spirit, 1 from Battle Bond, 1 from Parental Bond, 2 from Terashell).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
