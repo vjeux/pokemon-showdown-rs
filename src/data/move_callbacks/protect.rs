@@ -141,22 +141,11 @@ pub mod condition {
             };
 
             if is_z || is_max {
-                let _move_id = {
-                    let active_move = match &battle.active_move {
-                        Some(active_move) => active_move,
-                        None => return EventResult::Continue,
-                    };
-                    active_move.clone()
-                };
-
                 // Set z_broke_protect on the target pokemon's move hit data
-                // TODO: MoveHitData doesn't have z_broke_protect field yet
-                // Need to add this field or track it differently
-                // let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-                //     Some(p) => p,
-                //     None => return EventResult::Continue,
-                // };
-                // target_pokemon.get_move_hit_data(&move_id.id).z_broke_protect = true;
+                // target.getMoveHitData(move).zBrokeProtect = true;
+                if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+                    hit_data.z_broke_protect = true;
+                }
             }
 
             // return;
