@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 112 (29.5%)
+- Completed: 114 (30.0%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -240,14 +240,19 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 111. **Tinted Lens** (tintedlens.rs) - onModifyDamage: 2x damage on not-very-effective hits (checks move hit data type_mod < 0)
 112. **Competitive** (competitive.rs) - onAfterEachBoost: Boosts Special Attack by 2 when any stat is lowered by an opponent
 
+### Batch 31 - Status Cure Abilities (2 abilities)
+113. **Hydration** (hydration.rs) - onResidual: Cures status in rain/primordial sea (uses Pokemon::effective_weather and Pokemon::cure_status)
+114. **Healer** (healer.rs) - onResidual: 30% chance to cure adjacent ally's status (uses Pokemon::adjacent_allies)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 17 abilities (batches 22-30).
-Progress: 112/380 abilities (29.5%).
+Implemented 19 abilities (batches 22-31).
+Progress: 114/380 abilities (30.0%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
 Completed damage modifier abilities using battle.get_move_hit_data() to access critical hit and type effectiveness data.
+Completed residual status cure abilities using Pokemon::effective_weather and Pokemon::adjacent_allies for weather checking and ally iteration.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
