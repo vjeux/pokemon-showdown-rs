@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 187 (49.2%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions)
+- Completed: 189 (49.7%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), **onSideConditionStart dispatcher infrastructure updated** (added pokemon_pos and side_condition_id parameters)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -397,6 +397,17 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 66 - Weather/Terrain Clear (1 TODO)
 186. **Teraform Zero** (teraformzero.rs) - onAfterTerastallization: Clears weather and terrain when Terapagos-Stellar terastallizes (uses field.clear_weather and field.clear_terrain)
 
+### Batch 67 - Side Condition Response + Infrastructure (2 TODOs + major infrastructure)
+187. **Wind Power** (windpower.rs) - onSideConditionStart: Adds charge volatile when tailwind starts
+188. **Wind Rider** (windrider.rs) - onSideConditionStart: Boosts Attack when tailwind starts
+
+**Infrastructure Change:**
+Updated onSideConditionStart dispatcher infrastructure to properly pass pokemon_pos and side_condition_id parameters:
+- Modified `dispatch_on_side_condition_start` and all alias functions (_priority, _order, _sub_order) in `src/data/ability_callbacks/mod.rs`
+- Updated `handle_ability_event.rs` to extract side_condition_id from `current_event.effect`
+- Updated windpower.rs and windrider.rs function signatures to accept new parameters
+- This enables proper implementation of abilities that respond to specific side conditions
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -417,7 +428,8 @@ Completed Aroma Veil (Batch 63) blocking specific volatiles from allies.
 Completed Wind Power onDamagingHit (Batch 64) adding charge on wind moves.
 Completed Sweet Veil (Batch 65) blocking sleep and yawn from allies.
 Completed Teraform Zero (Batch 66) clearing weather and terrain on terastallization.
-Progress: 187/380 abilities (49.2%).
+Completed Wind Power and Wind Rider onSideConditionStart (Batch 67) with major infrastructure change to dispatcher.
+Progress: 189/380 abilities (49.7%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes

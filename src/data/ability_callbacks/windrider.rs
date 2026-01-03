@@ -36,8 +36,13 @@ pub fn on_try_hit(_battle: &mut Battle, _target_pos: (usize, usize), _source_pos
 ///         this.boost({ atk: 1 }, pokemon, pokemon);
 ///     }
 /// }
-pub fn on_side_condition_start(_battle: &mut Battle, _source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_side_condition_start(battle: &mut Battle, pokemon_pos: (usize, usize), side_condition_id: &str, _source_pos: Option<(usize, usize)>) -> EventResult {
+    // if (sideCondition.id === 'tailwind')
+    if side_condition_id == "tailwind" {
+        // this.boost({ atk: 1 }, pokemon, pokemon);
+        battle.boost(&[("atk", 1)], pokemon_pos, Some(pokemon_pos), None, false, false);
+    }
+
     EventResult::Continue
 }
 

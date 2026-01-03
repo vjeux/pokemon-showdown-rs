@@ -48,8 +48,22 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 ///         pokemon.addVolatile('charge');
 ///     }
 /// }
-pub fn on_side_condition_start(_battle: &mut Battle, _source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_side_condition_start(battle: &mut Battle, pokemon_pos: (usize, usize), side_condition_id: &str, _source_pos: Option<(usize, usize)>) -> EventResult {
+    use crate::Pokemon;
+
+    // if (sideCondition.id === 'tailwind')
+    if side_condition_id == "tailwind" {
+        // pokemon.addVolatile('charge');
+        Pokemon::add_volatile(
+            battle,
+            pokemon_pos,
+            crate::dex_data::ID::from("charge"),
+            None,
+            None,
+            None,
+        );
+    }
+
     EventResult::Continue
 }
 

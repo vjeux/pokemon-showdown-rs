@@ -1477,11 +1477,13 @@ pub fn dispatch_on_set_status(
 pub fn dispatch_on_side_condition_start(
     battle: &mut Battle,
     ability_id: &str,
+    pokemon_pos: (usize, usize),
+    side_condition_id: &str,
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "windpower" => windpower::on_side_condition_start(battle, source_pos),
-        "windrider" => windrider::on_side_condition_start(battle, source_pos),
+        "windpower" => windpower::on_side_condition_start(battle, pokemon_pos, side_condition_id, source_pos),
+        "windrider" => windrider::on_side_condition_start(battle, pokemon_pos, side_condition_id, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -4035,27 +4037,33 @@ pub fn dispatch_on_set_status_sub_order(
 pub fn dispatch_on_side_condition_start_priority(
     battle: &mut Battle,
     ability_id: &str,
+    pokemon_pos: (usize, usize),
+    side_condition_id: &str,
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_side_condition_start(battle, ability_id, source_pos)
+    dispatch_on_side_condition_start(battle, ability_id, pokemon_pos, side_condition_id, source_pos)
 }
 
 /// Dispatch onSideConditionStartOrder callbacks (alias for onSideConditionStart)
 pub fn dispatch_on_side_condition_start_order(
     battle: &mut Battle,
     ability_id: &str,
+    pokemon_pos: (usize, usize),
+    side_condition_id: &str,
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_side_condition_start(battle, ability_id, source_pos)
+    dispatch_on_side_condition_start(battle, ability_id, pokemon_pos, side_condition_id, source_pos)
 }
 
 /// Dispatch onSideConditionStartSubOrder callbacks (alias for onSideConditionStart)
 pub fn dispatch_on_side_condition_start_sub_order(
     battle: &mut Battle,
     ability_id: &str,
+    pokemon_pos: (usize, usize),
+    side_condition_id: &str,
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_side_condition_start(battle, ability_id, source_pos)
+    dispatch_on_side_condition_start(battle, ability_id, pokemon_pos, side_condition_id, source_pos)
 }
 
 /// Dispatch onSourceAfterFaintPriority callbacks (alias for onSourceAfterFaint)

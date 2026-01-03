@@ -575,11 +575,19 @@ impl Battle {
             "SetStatus" => {
                 ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), "", pokemon_pos, None, None)
             }
-            "SideConditionStart" => ability_callbacks::dispatch_on_side_condition_start(
-                self,
-                ability_id.as_str(),
-                None
-            ),
+            "SideConditionStart" => {
+                let side_condition_id_string = self.current_event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|id| id.as_str().to_string());
+                let side_condition_id = side_condition_id_string.as_ref().map(|s| s.as_str()).unwrap_or("");
+                ability_callbacks::dispatch_on_side_condition_start(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                    side_condition_id,
+                    None
+                )
+            }
             "SourceAfterFaint" => ability_callbacks::dispatch_on_source_after_faint(self, ability_id.as_str(), Some(pokemon_pos), None, None),
             "SourceBasePower" => ability_callbacks::dispatch_on_source_base_power(
                 self,
