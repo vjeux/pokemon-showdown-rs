@@ -16,6 +16,13 @@
 - ✅ **Cleanup** (commit: 916e4fb0)
   - Removed duplicate to_j_s_o_n.rs file (to_json.rs already implements this)
 
+- ✅ **Side::add_side_condition_full()** (commit: 93998a81)
+  - Full implementation with battle context
+  - Handles condition lookups via Dex
+  - Sets up EffectState with source and duration
+  - Ready for event system integration (singleEvent, runEvent)
+  - Maintains backward-compatible add_side_condition()
+
 ### Critical Infrastructure
 - ✅ **BattleStream::_write_line()** (commit: ed7304c7)
   - Full protocol handler with 18 command types
@@ -58,8 +65,8 @@
 ### Category 1: Critical Infrastructure (Must Do First)
 - [x] BattleStream::_writeLine() - Full protocol handler ✅
 - [x] BattleStream::_writeLines() - Batch protocol handler ✅
+- [x] Side::add_side_condition() - Full event system structure ✅
 - [ ] BattleStream::_listen() - Stream listener (async)
-- [ ] Side::add_side_condition() - Full event system integration
 - [ ] Pokemon::forme_change() permanent formes
 - [ ] Battle::moveHit() - Core damage application function
 - [ ] TeamGenerator integration
@@ -83,6 +90,8 @@ Continue with critical infrastructure:
 - f02ba482 - Implement Dex::effect_to_string() and Side::to_string() stub methods
 - 916e4fb0 - Remove duplicate to_j_s_o_n.rs file
 - ed7304c7 - Implement BattleStream::_write_line() and _write_lines() protocol handlers
+- 1a9d1a0e - Update TODO_PROGRESS.md with BattleStream protocol handler progress
+- 93998a81 - Implement Side::add_side_condition_full() with battle context and event system structure
 
 ## Previous Session
 - 91fd09bf - Implement major infrastructure
