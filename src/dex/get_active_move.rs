@@ -30,7 +30,7 @@ impl Dex {
             fullname: String::new(), // Will be set during battle
             num: move_data.num,
             exists: true,
-            gen: 9, // TODO: Get from Dex or move data when available
+            gen: self.gen,
             short_desc: String::new(),
             desc: String::new(),
             is_nonstandard: None,

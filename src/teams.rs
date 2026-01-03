@@ -575,7 +575,6 @@ impl Teams {
             if ch.is_numeric() || ch.is_uppercase() {
                 if !result.is_empty() && !prev_was_space {
                     result.push(' ');
-                    prev_was_space = true;
                 }
                 result.push(ch);
                 prev_was_space = false;
