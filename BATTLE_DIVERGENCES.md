@@ -773,3 +773,31 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - Need work: ~71 files (47%)
 - Blocked by infrastructure: ~25-30 files (17-20%)
 
+---
+
+## Session 6: Duplicate File Cleanup (2026-01-02)
+
+### Twentieth Implementation: Remove duplicate files and consolidate ✅
+- **Issue**: Duplicate files for same functionality (reset_r_n_g.rs vs reset_rng.rs, to_j_s_o_n.rs vs to_json.rs)
+- **Root Cause**: Created new implementations in Session 2 but didn't update imports or remove old files
+- **Action**: Consolidated into single files and deleted duplicates
+
+  **Files Deleted:**
+  1. reset_r_n_g.rs (duplicate, not imported)
+  2. to_j_s_o_n.rs (duplicate, not imported)
+
+  **Files Updated:**
+  1. reset_rng.rs - Updated with 1:1 implementation from reset_r_n_g.rs
+  2. to_json.rs - Updated with 1:1 implementation from to_j_s_o_n.rs
+
+- **Changes**: Fixed type signature in reset_rng() to use `Option<PRNGSeed>` instead of `Option<[u32; 4]>`
+- **Side Effects**: None - reduces file count and potential confusion
+- **Result**: Single source of truth for each method, matches JavaScript 1:1
+- **Commit**: Pending
+
+**Progress Update (2026-01-02 - Session 6):**
+- Files cleaned: 2 duplicates removed
+- Files updated: 2 (reset_rng.rs, to_json.rs)
+- Total files in battle/: 148 (down from 150)
+- Next: Continue systematic cleanup and verification
+

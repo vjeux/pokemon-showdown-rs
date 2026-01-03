@@ -1,21 +1,24 @@
-// NOTE: This method is NOT in JavaScript - Rust-specific implementation
+// 1:1 port of resetRNG from battle.ts
+//
+// JS Source:
+// 	resetRNG(seed: PRNGSeed | null = this.prngSeed) {
+// 		this.prng = new PRNG(seed);
+// 		this.add('message', "The battle's RNG was reset.");
+// 	}
 
 use crate::*;
+use crate::prng::PRNG;
 
 impl Battle {
-
-    /// Reset the PRNG with a new seed
-    /// Equivalent to battle.ts resetRNG()
-    // TypeScript source:
-    // /** Note that passing `undefined` resets to the starting seed, but `null` will roll a new seed */
-    // 	resetRNG(seed: PRNGSeed | null = this.prngSeed) {
-    // 		this.prng = new PRNG(seed);
-    // 		this.add('message', "The battle's RNG was reset.");
-    // 	}
-    //
+    /// Reset the battle's random number generator
+    /// Equivalent to battle.ts resetRNG() (battle.ts:1996-1999)
     pub fn reset_rng(&mut self, seed: Option<crate::prng::PRNGSeed>) {
-        let new_seed = seed.unwrap_or_else(|| self.prng_seed.clone());
-        self.prng = PRNG::new(Some(new_seed));
-        self.add("message", &["The battle's RNG was reset.".into()]);
+        // JS: this.prng = new PRNG(seed);
+        // Use provided seed or the battle's original prngSeed
+        let seed_to_use = seed.or_else(|| Some(self.prng_seed.clone()));
+        self.prng = PRNG::new(seed_to_use);
+
+        // JS: this.add('message', "The battle's RNG was reset.");
+        self.add("message", &[Arg::Str("The battle's RNG was reset.")]);
     }
 }
