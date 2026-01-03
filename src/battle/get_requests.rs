@@ -6,16 +6,8 @@ impl Battle {
     /// Get requests for all players
     /// Equivalent to battle.ts getRequests() (battle.ts:1372-1424, 53 lines)
     ///
-    // TODO: INCOMPLETE IMPLEMENTATION - Missing Pokemon.get_move_request_data()
-    // Missing from TypeScript version:
-    // 1. Pokemon.getMoveRequestData() method (pokemon.ts:733-826, ~94 lines)
-    //    - Returns moves array with id, name, pp, maxpp, target, disabled
-    //    - Returns canMegaEvo, canUltraBurst, canZMove, canDynamax, canTerastallize, maxMoves
-    //    - Returns trapped status
-    //    - Returns maybeDisabled, maybeTrapped flags
-    // 2. Side.getRequestData() may be missing some fields - not verified
-    // Current implementation: Uses null for active array entries (move requests)
-    // Once Pokemon.getMoveRequestData() exists, replace null with pokemon.get_move_request_data()
+    // Note: Changed from &self to &mut self because getMoveRequestData() modifies Pokemon state
+    // (maybe_disabled, maybe_locked, maybe_trapped fields) which matches JavaScript behavior
     //
     // 	getRequests(type: RequestState) {
     // 		// default to no request
@@ -66,7 +58,7 @@ impl Battle {
     // 		return requests;
     // 	}
     //
-    pub fn get_requests(&self) -> Vec<serde_json::Value> {
+    pub fn get_requests(&mut self) -> Vec<serde_json::Value> {
         // JS: const requests: ChoiceRequest[] = Array(this.sides.length).fill(null);
         let mut requests: Vec<Option<serde_json::Value>> = vec![None; self.sides.len()];
 
@@ -127,21 +119,30 @@ impl Battle {
             // JS: default (move requests):
             BattleRequestState::Move | BattleRequestState::None => {
                 // JS: for (let i = 0; i < this.sides.length; i++)
-                for (i, side) in self.sides.iter().enumerate() {
+                // Note: Can't use iter() here because get_move_request_data needs &mut self
+                for i in 0..self.sides.len() {
+                    let side = &self.sides[i];
+
                     // JS: if (!side.pokemonLeft) continue;
                     if side.pokemon_left == 0 {
                         continue;
                     }
 
                     // JS: const activeData = side.active.map(pokemon => pokemon?.getMoveRequestData());
-                    // TODO: Implement Pokemon.get_move_request_data() and call it here
-                    // For now, use null placeholders
-                    let active_data: Vec<serde_json::Value> = side.active.iter().map(|poke_opt| {
+                    // Collect active pokemon indices first to avoid borrow checker issues
+                    let active_indices: Vec<Option<usize>> = side.active.clone();
+
+                    let active_data: Vec<serde_json::Value> = active_indices.iter().map(|poke_opt| {
                         match poke_opt {
-                            Some(_) => serde_json::Value::Null, // TODO: pokemon.get_move_request_data()
+                            Some(poke_idx) => {
+                                Pokemon::get_move_request_data(self, (i, *poke_idx))
+                            }
                             None => serde_json::Value::Null,
                         }
                     }).collect();
+
+                    // Re-fetch side reference after mutable calls
+                    let side = &self.sides[i];
 
                     // JS: requests[i] = { active: activeData, side: side.getRequestData() };
                     let request = serde_json::json!({

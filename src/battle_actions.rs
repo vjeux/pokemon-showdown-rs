@@ -6,6 +6,7 @@
 //! Handles all battle actions: moves, switches, damage calculation, etc.
 
 use std::collections::HashSet;
+use serde::{Deserialize, Serialize};
 
 use once_cell::sync::Lazy;
 
@@ -825,7 +826,7 @@ pub struct SelfEffect {
 /// Z-Move request option
 /// JavaScript equivalent: ZMoveOption (sim/side.ts)
 /// 2 fields in JavaScript
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ZMoveOption {
     pub move_name: String,
     pub target: String,
