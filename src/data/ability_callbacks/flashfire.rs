@@ -16,16 +16,74 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(_battle: &mut Battle, _target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), _move_id: &str) -> EventResult {
+    use crate::battle::Arg;
+    use crate::dex_data::ID;
+    use crate::pokemon::Pokemon;
+
+    // if (target !== source && move.type === 'Fire')
+    if target_pos == source_pos {
+        return EventResult::Continue;
+    }
+
+    let move_type = if let Some(ref active_move) = battle.active_move {
+        active_move.move_type.clone()
+    } else {
+        return EventResult::Continue;
+    };
+
+    if move_type != "Fire" {
+        return EventResult::Continue;
+    }
+
+    // move.accuracy = true;
+    // TODO: ActiveMove.accuracy is i32, cannot represent 'true' (always hit)
+    // This is documented in src/battle_actions.rs
+    // For now, skip setting accuracy - Flash Fire immunity still works
+    // if let Some(ref mut active_move) = battle.active_move {
+    //     active_move.accuracy = ???;
+    // }
+
+    // if (!target.addVolatile('flashfire'))
+    let added = Pokemon::add_volatile(
+        battle,
+        target_pos,
+        ID::from("flashfire"),
+        Some(source_pos),
+        None,
+        None,
+    );
+
+    if !added {
+        // this.add('-immune', target, '[from] ability: Flash Fire');
+        let target_id = {
+            let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target.get_slot()
+        };
+
+        battle.add("-immune", &[
+            Arg::String(target_id),
+            Arg::Str("[from] ability: Flash Fire"),
+        ]);
+    }
+
+    // return null;
+    EventResult::Null
 }
 
 /// onEnd(pokemon) {
 ///     pokemon.removeVolatile('flashfire');
 /// }
-pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::dex_data::ID;
+    use crate::pokemon::Pokemon;
+
+    // pokemon.removeVolatile('flashfire');
+    Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("flashfire"));
+
     EventResult::Continue
 }
 
@@ -35,8 +93,23 @@ pub mod condition {
     /// onStart(target) {
     ///     this.add('-start', target, 'ability: Flash Fire');
     /// }
-    pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        use crate::battle::Arg;
+
+        // this.add('-start', target, 'ability: Flash Fire');
+        let pokemon_id = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        battle.add("-start", &[
+            Arg::String(pokemon_id),
+            Arg::Str("ability: Flash Fire"),
+        ]);
+
         EventResult::Continue
     }
 
@@ -46,9 +119,35 @@ pub mod condition {
     ///         return this.chainModify(1.5);
     ///     }
     /// }
-    pub fn on_modify_atk(_battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+    pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+        use crate::dex_data::ID;
+
+        // if (move.type === 'Fire' && attacker.hasAbility('flashfire'))
+        let move_type = if let Some(ref active_move) = battle.active_move {
+            active_move.move_type.clone()
+        } else {
+            return EventResult::Continue;
+        };
+
+        if move_type != "Fire" {
+            return EventResult::Continue;
+        }
+
+        let has_flash_fire = {
+            let attacker = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            attacker.ability == ID::from("flashfire") || attacker.base_ability == ID::from("flashfire")
+        };
+
+        if !has_flash_fire {
+            return EventResult::Continue;
+        }
+
+        // this.debug('Flash Fire boost');
+        // return this.chainModify(1.5);
+        EventResult::Number(battle.chain_modify(1.5))
     }
 
     /// onModifySpA(atk, attacker, defender, move) {
@@ -57,16 +156,59 @@ pub mod condition {
     ///         return this.chainModify(1.5);
     ///     }
     /// }
-    pub fn on_modify_sp_a(_battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+    pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+        use crate::dex_data::ID;
+
+        // if (move.type === 'Fire' && attacker.hasAbility('flashfire'))
+        let move_type = if let Some(ref active_move) = battle.active_move {
+            active_move.move_type.clone()
+        } else {
+            return EventResult::Continue;
+        };
+
+        if move_type != "Fire" {
+            return EventResult::Continue;
+        }
+
+        let has_flash_fire = {
+            let attacker = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            attacker.ability == ID::from("flashfire") || attacker.base_ability == ID::from("flashfire")
+        };
+
+        if !has_flash_fire {
+            return EventResult::Continue;
+        }
+
+        // this.debug('Flash Fire boost');
+        // return this.chainModify(1.5);
+        EventResult::Number(battle.chain_modify(1.5))
     }
 
     /// onEnd(target) {
     ///     this.add('-end', target, 'ability: Flash Fire', '[silent]');
     /// }
-    pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+        use crate::battle::Arg;
+
+        // this.add('-end', target, 'ability: Flash Fire', '[silent]');
+        let pokemon_id = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        battle.add("-end", &[
+            Arg::String(pokemon_id),
+            Arg::Str("ability: Flash Fire"),
+            Arg::Str("[silent]"),
+        ]);
+
         EventResult::Continue
     }
 }
+

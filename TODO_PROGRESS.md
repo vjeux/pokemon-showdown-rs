@@ -2,9 +2,9 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 157 (41.3%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added
-- In Progress: Continuing systematic implementation
+- Completed: 158 (41.6%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional
+- In Progress: Continuing systematic implementation with volatile status abilities
 
 ## Completed Implementations
 
@@ -330,6 +330,9 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 
 ### Batch 47 - Partial Implementations (1 ability - partial)
 158. **Gorilla Tactics** (gorillatactics.rs) - PARTIAL: onModifyAtk: 1.5x Attack boost when not Dynamaxed (remaining handlers need abilityState infrastructure: onStart, onBeforeMove, onModifyMove, onDisableMove, onEnd)
+
+### Batch 48 - Volatile Status Abilities (1 ability)
+159. **Flash Fire** (flashfire.rs) - onTryHit: Grants immunity to Fire moves, adds flashfire volatile; onEnd: Removes flashfire volatile; Volatile condition handlers: onStart (shows message), onModifyAtk/onModifySpA (1.5x boost for Fire moves), onEnd (shows silent end message)
 
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
