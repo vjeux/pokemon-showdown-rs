@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 219 (57.6%)
+- Completed: 220 (57.9%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -534,6 +534,9 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 92 - Shields Down (1 ability)
 218-219. **Shields Down** (shieldsdown.rs) - All callbacks implemented: onStart/onResidual: Changes Minior between Meteor forme (HP > 1/2) and Core forme (HP <= 1/2) based on HP threshold; onSetStatus: Blocks all status conditions in Meteor forme; onTryAddVolatile: Blocks yawn volatile in Meteor forme; uses pokemon.set.species for forme restoration
 
+### Batch 93 - Zero to Hero (1 ability)
+220. **Zero to Hero** (zerotohero.rs) - onSwitchOut: Changes Palafin to Hero forme when switching out (non-permanent forme change); onSwitchIn: Shows activation message when switching in as Hero forme; uses forme_change with base species checking and is_permanent=true; skips heroMessageDisplayed tracking (requires new Pokemon field not yet available)
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -554,7 +557,8 @@ Partially completed As One Spectrier (Batch 89) - 3/4 callbacks (onFoeTryEatItem
 Partially completed As One Glastrier (Batch 90) - 3/4 callbacks (onFoeTryEatItem needs item system).
 Completed Power Construct (Batch 91) - HP-based forme change to Zygarde-Complete.
 Completed Shields Down (Batch 92) - HP-based forme changes and status immunity in Meteor forme.
-Progress: 203→219/380 (57.6%).
+Completed Zero to Hero (Batch 93) - Switch-triggered forme change for Palafin.
+Progress: 203→220/380 (57.9%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
