@@ -569,3 +569,43 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - Files remaining: 134
 - Next: Apply same fix to undo_choice.rs
 
+### Seventeenth Implementation: undo_choice.rs - activeRequest emit ✅
+- **Issue**: TODO saying emit_request couldn't be called due to type mismatch
+- **Action**: Implemented emitRequest() call matching JavaScript
+
+  **JavaScript** (battle.ts:3035):
+  ```javascript
+  if (updated) side.emitRequest(side.activeRequest!, true);
+  ```
+
+  **Rust** (undo_choice.rs:108-117):
+  ```rust
+  if updated {
+      if let Some(side) = self.sides.get(side_idx) {
+          if let Some(ref active_request) = side.active_request {
+              // Convert BattleRequest to JSON for emit_request
+              if let Ok(request_json) = serde_json::to_value(active_request) {
+                  side.emit_request(&request_json);
+              }
+          }
+      }
+  }
+  ```
+
+- **Changes**:
+  - Uncommented previously disabled code
+  - Added serde_json::to_value() to convert BattleRequest to Value
+  - Removed TODO and workaround comments
+  - Removed unused variable warning suppression
+
+- **Side Effects**: None (purely additive implementation)
+- **Result**: Matches JavaScript for emitRequest() call when request is updated
+- **Commit**: Pending
+
+**Final Progress (2026-01-02 - Session 4):**
+- Files completed: 17 (14 previous + 3 this session)
+- Infrastructure changes: 1 major (BattleRequest serialization enabling 3+ file fixes)
+- TODOs resolved: 19 (16 previous + 3 this session)
+- Files remaining: 133
+- **Success**: BattleRequest serialization unblocked make_request.rs and undo_choice.rs
+

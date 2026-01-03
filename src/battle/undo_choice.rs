@@ -105,19 +105,15 @@ impl Battle {
         }
 
         // JS: if (updated) side.emitRequest(side.activeRequest!, true);
-        // TODO: emit_request expects &serde_json::Value but active_request is Option<BattleRequest>
-        // Need to either:
-        // 1. Store activeRequest as JSON instead of BattleRequest struct, OR
-        // 2. Add Serialize derive to BattleRequest and convert here
-        // For now, skip emitting since emit_request is a stub anyway
         if updated {
-            let _ = updated; // Silence unused warning
-            // if let Some(side) = self.sides.get(side_idx) {
-            //     if let Some(ref active_request) = side.active_request {
-            //         // Need to convert BattleRequest to JSON here
-            //         side.emit_request(active_request);
-            //     }
-            // }
+            if let Some(side) = self.sides.get(side_idx) {
+                if let Some(ref active_request) = side.active_request {
+                    // Convert BattleRequest to JSON for emit_request
+                    if let Ok(request_json) = serde_json::to_value(active_request) {
+                        side.emit_request(&request_json);
+                    }
+                }
+            }
         }
     }
 }
