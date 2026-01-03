@@ -478,6 +478,19 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - Total files in battle/: 145 (unchanged)
 - Remaining files with eprintln: ~17 (cosmetic cleanup pending)
 
+**Session 11 Additional Progress:**
+- Files cleaned: 7 total
+  1. commit_choices.rs: 9 debug prints removed
+  2. direct_damage.rs: 1 debug print removed
+  3. dispatch_single_event.rs: 14 debug prints removed
+  4. each_event.rs: 3 debug prints removed
+  5. end_turn.rs: 1 debug print removed
+  6. field_event.rs: 11 debug prints removed
+  7. handle_ability_event.rs: 4 debug prints removed
+- **Total debug prints removed this session: 43**
+- Commits this session: 6 (7c238e3e, 5400a87f, 053d3ec7, 9b8bde38, 93bba1b0, b253321c)
+- Remaining files with eprintln: ~13
+
 ---
 
 ## Session 3 Findings (2026-01-02)
