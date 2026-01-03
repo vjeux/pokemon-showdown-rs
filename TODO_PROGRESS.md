@@ -5,11 +5,11 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 374 total (down from 377 - resolved 3 more in this session: Batch 153)
+- **Remaining TODOs**: 369 total (down from 374 - resolved 5 more in this session: Batch 155)
   - Complex abilities requiring transform/redirect/rebound infrastructure: ~18 TODOs (Imposter, Illusion, Commander, Neutralizing Gas, Magic Bounce, Rebound, Lightning Rod, Storm Drain)
   - Move callbacks requiring queue/event system extensions: ~24 TODOs (down from 27)
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 153 - attackedBy Field Usage (3 TODOs resolved)
+- **Latest Progress**: Batch 155 - Event Handler State Fields (5 TODOs resolved)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
@@ -2225,6 +2225,104 @@ if let Some(ref copy_flag) = switch_copy_flag {
 
 **Progress:**
 - TODOs Resolved: 3 (2 move callbacks + 1 battle action)
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+
+### Batch 154 - Shell Trap Queue Methods (1 TODO)
+
+**Completed move callback:**
+- **Shell Trap** (shelltrap.rs) - Implemented queue.will_move() and queue.prioritize_action() calls
+
+**Infrastructure Discovery:**
+TODO was outdated - both methods already exist in BattleQueue:
+- `BattleQueue::will_move()` method exists at src/battle_queue/will_move.rs
+- `BattleQueue::prioritize_action()` method exists at src/battle_queue/prioritize_action.rs
+
+**Implementation Details:**
+```rust
+if battle.queue.will_move(pokemon.0, pokemon.1).is_some() {
+    battle.queue.prioritize_action(pokemon.0, pokemon.1);
+}
+```
+
+**Files Modified:**
+- src/data/move_callbacks/shelltrap.rs - Removed TODO, implemented queue calls (2 lines changed)
+
+**Git Commit:**
+- Part of continuation session
+
+**Progress:**
+- TODOs Resolved: 1 (move callback)
+- Compilation: ✓ Successful
+- Git: ✓ Committed and pushed
+
+
+### Batch 155 - Event Handler State Fields (5 TODOs)
+
+**Completed fixes:**
+Fixed event handler state fields in find_pokemon_event_handlers.rs to properly pass EffectState to EventListener:
+- **status_state** (line 95) - Changed from None to pokemon.status_state.clone()
+- **volatile_state** (line 119) - Changed from None to volatile_state.clone()
+- **ability_state** (line 140) - Changed from None to pokemon.ability_state.clone()
+- **item_state** (line 161) - Changed from None to pokemon.item_state.clone()
+- **species_state** (line 182) - Changed from None to pokemon.species_state.clone()
+
+**Type Discovery:**
+Discovered two different EffectState types in the codebase:
+- `event_system::EffectState` - Used for Pokemon state (status, volatiles, ability, item, species)
+- `dex_data::EffectState` - Used for Side state (slot_conditions)
+
+EventListener.state expects `event_system::EffectState` (imported in battle.rs), so:
+- ✓ Pokemon state fields: Successfully fixed with .clone()
+- ✗ Slot condition state: Kept as None due to type mismatch (requires larger refactor)
+
+**Implementation Details:**
+
+All Pokemon state fields now properly cloned and passed to EventListener.state, matching JavaScript behavior where event handlers receive actual state objects:
+
+```rust
+// JavaScript: state: pokemon.statusState
+// Rust:
+state: Some(pokemon.status_state.clone()),
+
+// JavaScript: state: volatileState  
+// Rust:
+state: Some(volatile_state.clone()),
+
+// JavaScript: state: pokemon.abilityState
+// Rust:
+state: Some(pokemon.ability_state.clone()),
+
+// JavaScript: state: pokemon.itemState
+// Rust:
+state: Some(pokemon.item_state.clone()),
+
+// JavaScript: state: pokemon.speciesState
+// Rust:
+state: Some(pokemon.species_state.clone()),
+
+// JavaScript: state: slotConditionState
+// Rust (type mismatch):
+state: None, // TODO: Type mismatch - slot_conditions uses dex_data::EffectState
+```
+
+**Type System Learnings:**
+- EventListener.state field type: `Option<EffectState>` (owned, not borrowed)
+- Pokemon.volatiles: `HashMap<ID, EffectState>` where EffectState is from event_system module
+- Pokemon state fields (status_state, ability_state, item_state, species_state): All `EffectState` from event_system module
+- Side.slot_conditions: `Vec<HashMap<ID, EffectState>>` where EffectState is from dex_data module
+- Must use .clone() to convert &EffectState references to owned EffectState values
+
+**Files Modified:**
+- src/battle/find_pokemon_event_handlers.rs - Fixed 5 state fields (7 lines changed)
+
+**Git Commit:**
+- c2b866a2: "Implement event handler state fields - Pokemon state (Batch 155)"
+
+**Progress:**
+- TODOs Resolved: 5 (Pokemon state fields in event handlers)
+- TODOs Remaining: 1 (slot_condition_state - requires type system refactor)
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
