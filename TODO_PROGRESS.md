@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 209 (55.0%)
+- Completed: 210 (55.3%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -498,6 +498,9 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 80 - Stance Change (1 ability)
 206. **Stance Change** (stancechange.rs) - onModifyMove: Changes Aegislash forme based on move (Aegislash-Blade for offensive moves, Aegislash for King's Shield); skips Status moves except kingsshield; uses forme_change with base species checking, active_move.category and active_move.id checks
 
+### Batch 81 - Hunger Switch (1 ability)
+207. **Hunger Switch** (hungerswitch.rs) - onResidual: Alternates Morpeko forme every turn (Morpeko ↔ Morpeko-Hangry); skips if not Morpeko or if terastallized; uses forme_change with base species checking
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -506,7 +509,8 @@ Completed Toxic Debris (Batch 77) using battle.is_ally() for side determination 
 Completed Lingering Aroma (Batch 78) using Pokemon::set_ability and check_move_makes_contact.
 Completed Forecast (Batch 79) using forme_change for weather-based forme changes.
 Completed Stance Change (Batch 80) using forme_change for move-based forme changes.
-Progress: 203→209/380 (55.0%).
+Completed Hunger Switch (Batch 81) using forme_change for turn-based forme alternation.
+Progress: 203→210/380 (55.3%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
