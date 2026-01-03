@@ -241,3 +241,26 @@ Starting comprehensive 1:1 verification of battle/ folder.
 3. Verify Category D clean files (61 files need 1:1 verification)
 4. Scan for any files with deviations from battle.ts
 
+
+### Tenth Implementation: lose.rs - emitRequest call ✅
+- **Issue**: TODO comment saying emitRequest needs to be implemented
+- **Root Cause**: Side.emit_request() method already existed, just wasn't being called
+- **Action**: Added missing emit_request() call matching JavaScript
+
+  **JavaScript** (battle.ts:1516):
+  - `side.emitRequest({ wait: true, side: side.getRequestData() });`
+
+  **Rust** (lose.rs:85-89):
+  - Construct request JSON with wait: true and side.getRequestData()
+  - Call `self.sides[side_idx].emit_request(&request)`
+
+- **Side Effects**: None (purely additive implementation)
+- **Result**: Matches JavaScript for losing side request handling
+- **Commit**: d5d93fc2
+
+**Updated Progress (2026-01-02):**
+- Files completed: 10 (6 Category A + 4 Category B)
+- Files remaining: 141
+- TODOs resolved: 12
+- Category B now 4/5 complete (only boost.rs refactor note and handle_ability_event.rs Rust-specific remain)
+
