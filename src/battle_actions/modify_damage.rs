@@ -303,13 +303,18 @@ pub fn modify_damage(
     //   this.battle.add("-zbroken", target);
     // }
     // Check if move is Z-powered or Max-powered and broke through protect
+    // Z-moves and Max moves that break through protection deal reduced damage
     let (is_z_or_max_powered, z_broke_protect) = {
         if let Some(ref active_move) = battle.active_move {
             let is_z_or_max = active_move.is_z_or_max_powered;
-            // Note: zBrokeProtect is stored in getMoveHitData which we don't have access to here
-            // For now, we'll skip this check as it requires infrastructure changes
-            // TODO: Implement getMoveHitData storage for zBrokeProtect flag
-            (is_z_or_max, false)
+
+            // Check if this Z/Max move broke through protection
+            // target.getMoveHitData(move).zBrokeProtect
+            let broke_protect = battle.get_move_hit_data(target_pos)
+                .map(|hit_data| hit_data.z_broke_protect)
+                .unwrap_or(false);
+
+            (is_z_or_max, broke_protect)
         } else {
             (false, false)
         }
