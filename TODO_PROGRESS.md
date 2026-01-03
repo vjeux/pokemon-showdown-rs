@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 227 (59.7%)
+- Completed: 228 (60.0%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -545,6 +545,9 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 226. **Queenly Majesty** (queenlymajesty.rs) - onFoeTryMove: Identical to Dazzling (blocks priority moves from allies or all-targeting moves)
 227. **Armor Tail** (armortail.rs) - onFoeTryMove: Identical to Dazzling and Queenly Majesty (blocks priority moves from allies or all-targeting moves)
 
+### Batch 96 - Sap Sipper Ally Protection (1 ability)
+228. **Sap Sipper** (sapsipper.rs) - onAllyTryHitSide: Boosts Attack when an ally is targeted by a Grass-type move (skips if source is ability holder or target is not an ally of source); uses battle.effect_state.target, battle.is_ally(), and battle.active_move.move_type
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -568,7 +571,8 @@ Completed Shields Down (Batch 92) - HP-based forme changes and status immunity i
 Completed Zero to Hero (Batch 93) - Switch-triggered forme change for Palafin.
 Completed Zen Mode (Batch 94) - HP-based volatile system with forme changes for Darmanitan using species.battle_only and StringOrVec extraction.
 Completed Priority-Blocking Abilities (Batch 95) - Dazzling, Queenly Majesty, and Armor Tail share identical logic for blocking priority moves using battle.effect_state.target and battle.is_ally().
-Progress: 203→227/380 (59.7%).
+Completed Sap Sipper Ally Protection (Batch 96) - onAllyTryHitSide boosts Attack when ally targeted by Grass move.
+Progress: 203→228/380 (60.0%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes

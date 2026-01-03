@@ -43,8 +43,49 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///         this.boost({ atk: 1 }, this.effectState.target);
 ///     }
 /// }
-pub fn on_ally_try_hit_side(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    use crate::dex_data::ID;
+
+    // if (source === this.effectState.target || !target.isAlly(source)) return;
+    let ability_holder = match battle.effect_state.target {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source_pos = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Skip if source is the ability holder
+    if source_pos == ability_holder {
+        return EventResult::Continue;
+    }
+
+    // Skip if target is not an ally of source
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    if !battle.is_ally(target_pos, source_pos) {
+        return EventResult::Continue;
+    }
+
+    // if (move.type === 'Grass')
+    let is_grass = {
+        let active_move = match &battle.active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+        active_move.move_type == "Grass"
+    };
+
+    if is_grass {
+        // this.boost({ atk: 1 }, this.effectState.target);
+        battle.boost(&[("atk", 1)], ability_holder, None, None, false, false);
+    }
+
     EventResult::Continue
 }
 
