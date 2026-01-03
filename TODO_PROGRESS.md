@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 126 (33.2%)
+- Completed: 129 (33.9%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
 - In Progress: Continuing systematic implementation
 
@@ -272,10 +272,15 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 125. **Neuroforce** (neuroforce.rs) - onModifyDamage: 1.25x damage (5120/4096) on super-effective hits (checks move hit data type_mod > 0)
 126. **Adaptability** (adaptability.rs) - onModifySTAB: Increases STAB bonus from 1.5x to 2x, or 2x to 2.25x (checks move.forceSTAB || source.hasType(move.type))
 
+### Batch 36 - OHKO Protection & Item Blocking (3 abilities)
+127. **Sturdy** (sturdy.rs) - onTryHit: Prevents OHKO moves with immunity message; onDamage: Survives lethal damage at full HP with 1 HP remaining (checks effect.effectType === 'Move')
+128. **Unnerve** (unnerve.rs) - onStart: Shows ability activation (one-time via effectState.unnerved flag); onEnd: Resets unnerved flag; onFoeTryEatItem: Prevents foes from eating berries
+129. **Wonder Guard** (wonderguard.rs) - onTryHit: Prevents non-super-effective moves from hitting (checks runEffectiveness <= 0, handles skydrop/struggle/status exceptions, respects smartTarget flag)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 31 abilities (batches 22-35).
-Progress: 126/380 abilities (33.2%).
+Implemented 34 abilities (batches 22-36).
+Progress: 129/380 abilities (33.9%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -286,6 +291,7 @@ Completed Telepathy, Anger Point, and Pressure using ally detection, move hit da
 Completed Friend Guard, Soul-Heart, and Leaf Guard using ally damage reduction, faint detection, and weather-based status prevention.
 Completed onModifySTAB infrastructure update: Added stab parameter to dispatcher functions, wired event.relay_var_float through handle_ability_event.rs, and enabled abilities to access battle.active_move for STAB calculations.
 Completed Poison Heal, Neuroforce, and Adaptability using poison damage reversal, super-effective damage boost, and STAB bonus increase.
+Completed Sturdy, Unnerve, and Wonder Guard using OHKO immunity, EffectState.data for shared state tracking, and type effectiveness checking via move hit data.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)

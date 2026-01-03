@@ -12,24 +12,60 @@ use crate::event::EventResult;
 ///     this.add('-ability', pokemon, 'Unnerve');
 ///     this.effectState.unnerved = true;
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::battle::Arg;
+
+    // if (this.effectState.unnerved) return;
+    let already_unnerved = battle.effect_state.data.get("unnerved")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(false);
+    if already_unnerved {
+        return EventResult::Continue;
+    }
+
+    let pokemon_id = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let side_id = format!("p{}", pokemon.side_index + 1);
+        if pokemon.is_active {
+            let pos_letter = (b'a' + pokemon.position as u8) as char;
+            format!("{}{}: {}", side_id, pos_letter, pokemon.name)
+        } else {
+            format!("{}: {}", side_id, pokemon.name)
+        }
+    };
+
+    // this.add('-ability', pokemon, 'Unnerve');
+    battle.add("-ability", &[
+        Arg::String(pokemon_id),
+        Arg::Str("Unnerve"),
+    ]);
+
+    // this.effectState.unnerved = true;
+    battle.effect_state.data.insert("unnerved".to_string(), serde_json::Value::Bool(true));
+
     EventResult::Continue
 }
 
 /// onEnd() {
 ///     this.effectState.unnerved = false;
 /// }
-pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+    // this.effectState.unnerved = false;
+    battle.effect_state.data.insert("unnerved".to_string(), serde_json::Value::Bool(false));
     EventResult::Continue
 }
 
 /// onFoeTryEatItem() {
 ///     return !this.effectState.unnerved;
 /// }
-pub fn on_foe_try_eat_item(_battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
+    // return !this.effectState.unnerved;
+    let unnerved = battle.effect_state.data.get("unnerved")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(false);
+    EventResult::Boolean(!unnerved)
 }
 
