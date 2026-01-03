@@ -199,6 +199,60 @@ Continue with critical infrastructure:
 - b9b38629 - Update TODO_PROGRESS.md with Teams JSON parsing progress
 - 6099a829 - Implement Pokemon::forme_change() permanent formes (Mega/Primal/Ultra Burst)
 
+## Current Session (2026-01-03)
+
+### Completed Items
+
+1. **BattleActions::moveHit()** (commit: dabe7732)
+   - Created src/battle_actions/move_hit.rs
+   - Calls spreadMoveHit and returns first damage result
+   - Returns Option<i32>: Some(damage), None (undefined/true), or handled by spreadMoveHit
+   - Updated try_move_hit.rs to call moveHit instead of placeholder
+   - **Impact**: Completed critical infrastructure item for move execution flow
+
+2. **Curse Move Callbacks** (commit: 6c929aa0)
+   - Implemented onModifyMove: Dynamically modify move target based on Ghost typing
+     - Non-Ghost: Set target to "normal"
+     - Ghost vs ally: Set target to "randomNormal"
+   - Implemented onTryHit: Modify move properties based on Ghost typing
+     - Non-Ghost: Clear volatileStatus, set self_effect with stat boosts (spe: -1, atk: +1, def: +1)
+     - Ghost: Check if target already has curse volatile, return false if so
+   - **Impact**: Demonstrates proper use of active_move infrastructure for dynamic move modification
+
+### Analysis Findings
+
+#### Remaining TODOs Classification
+After comprehensive review of all TODO comments:
+
+1. **Completed Infrastructure** (2 items today):
+   - ✅ moveHit() - Core move hit function
+   - ✅ Curse move callbacks - Dynamic move modification
+
+2. **Complex Infrastructure** (requires major changes):
+   - BattleStream::_listen() - Async stream listener
+   - Dex methods (loadData, forFormat, etc.) - Mod system and file loading
+   - Queue manipulation (Curse Glitch in trickortreat.rs, instruct.rs)
+   - Dynamic callback assignment (fling.rs berry eating logic)
+   - Event systems (Memory event for multiattack.rs)
+   - TeamGenerator integration
+
+3. **Edge Cases** (noted, working alternatives in place):
+   - Free-for-all rotation logic (courtchange.rs)
+   - Mega evolution/forme regression (powerconstruct.rs)
+   - Custom move data in tryMoveHit (bide.rs has workaround)
+
+4. **Architectural Differences** (by design, not bugs):
+   - Use of indices instead of references (ownership model)
+   - Enums instead of union types (type system)
+   - Static dispatch instead of dynamic callbacks (performance)
+   - These are documented in comments, not actual TODOs to implement
+
+### Build Status
+```bash
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo build 2>&1"
+# Result: ✅ Success (0 errors, 0 warnings)
+```
+
 ## Previous Session
 - 91fd09bf - Implement major infrastructure
 - 4a54a588 - Implement Dex::get_alias()
