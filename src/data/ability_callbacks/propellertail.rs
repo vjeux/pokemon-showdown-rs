@@ -11,8 +11,14 @@ use crate::event::EventResult;
 ///     // most of the implementation is in Battle#getTarget
 ///     move.tracksTarget = move.target !== 'scripted';
 /// }
-pub fn on_modify_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
+    // move.tracksTarget = move.target !== 'scripted';
+    if let Some(ref mut active_move) = battle.active_move {
+        if active_move.target != "scripted" {
+            active_move.tracks_target = true;
+        }
+    }
+
     EventResult::Continue
 }
 

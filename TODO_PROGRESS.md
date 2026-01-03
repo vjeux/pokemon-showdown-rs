@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 84 (22.1%)
+- Completed: 88 (23.2%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -141,10 +141,16 @@ This allows abilities to properly modify boost tables before they're applied, ma
 83. **Truant** (truant.rs) - onBeforeMove: Prevents Pokemon from moving every other turn via volatile status
 84. **Defiant** (defiant.rs) - onAfterEachBoost: Boosts Attack by 2 when any stat is lowered by an opponent
 
+### Batch 18 - Residual Damage & Move Modification (4 abilities)
+85. **Bad Dreams** (baddreams.rs) - onResidual: Damages sleeping foes for 1/8 max HP each turn
+86. **Long Reach** (longreach.rs) - onModifyMove: Removes contact flag from all moves
+87. **Propeller Tail** (propellertail.rs) - onModifyMove: Sets tracksTarget to ignore redirection
+88. **Illuminate** (illuminate.rs) - onModifyMove: Sets ignoreEvasion to bypass evasion boosts
+
 ## Current Session
-Implemented 2 abilities in batch 17.
+Implemented 4 abilities in batch 18.
 All implementations are 1-to-1 from JavaScript and compile successfully.
-Now using battle.is_ally() to check Pokemon relationships.
+Now using pokemon.foes(), pokemon.has_ability(), and modifying battle.active_move fields.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)

@@ -10,8 +10,12 @@ use crate::event::EventResult;
 /// onModifyMove(move) {
 ///     delete move.flags['contact'];
 /// }
-pub fn on_modify_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
+    // delete move.flags['contact'];
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.flags.contact = false;
+    }
+
     EventResult::Continue
 }
 
