@@ -5,12 +5,12 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 346 total (down from 347 - resolved 1 more in this session: Batch 168)
+- **Remaining TODOs**: 344 total (down from 346 - resolved 3 boost TODOs, added 1 minor TODO: Batch 169)
   - Complex abilities requiring transform/illusion infrastructure: ~0 TODOs (ALL COMPLETE! - Imposter, Magic Bounce, Rebound, Illusion, and Commander all completed)
-  - Move callbacks requiring queue/event system extensions: ~17 TODOs (down from ~18 - resolved Sky Drop onFoeBeforeMove, Sky Drop now fully complete!)
+  - Move callbacks requiring queue/event system extensions: ~15 TODOs (down from ~17 - resolved 3 boost callbacks: Foresight, Miracle Eye, Mist)
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 168 - Battle::decrement_active_move_actions infrastructure + Sky Drop onFoeBeforeMove (1 TODO callback resolved + major infrastructure, Sky Drop fully complete!)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type)
+- **Latest Progress**: Batch 169 - Battle::run_event_boost infrastructure + Foresight, Miracle Eye, and Mist boost callbacks (3 TODOs resolved + MAJOR infrastructure - boost modification system!)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type), **Boost modification system complete** (Battle::run_event_boost() enables callbacks to modify stat boosts via relay_var_boost), **Pokemon action state infrastructure** (Battle::set_trapped(), Battle::decrement_active_move_actions() enable managing Pokemon battle state)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
 ## Completed Implementations
@@ -3248,4 +3248,188 @@ This batch completes Sky Drop entirely! Combined with Batch 167's onFoeTrapPokem
 
 **Impact:**
 This infrastructure enables any move or ability callback to decrement the active move actions counter, which is used for complex multi-turn move mechanics.
+
+
+### Batch 169 - Battle::run_event_boost Infrastructure + Foresight, Miracle Eye, and Mist Boost Callbacks (3 TODOs + MAJOR Infrastructure)
+
+**MAJOR Infrastructure Addition:**
+Created `Battle::run_event_boost()` method to enable boost modification callbacks.
+
+**Problem**: Multiple condition callbacks (Foresight, Miracle Eye, Mist) needed to modify Pokemon stat boosts (BoostsTable), but there was no event system support for passing and modifying boosts. The JavaScript code passes boosts as a parameter that callbacks modify in-place:
+
+```javascript
+boosts = this.battle.runEvent('ModifyBoost', this, null, null, { ...boosts });
+```
+
+**Solution**: Created a new event runner method following the pattern of existing run_event_* methods:
+
+```rust
+/// Run event with boost modification support
+/// Used for events that need to modify a BoostsTable
+/// Examples: ModifyBoost, TryBoost events
+///
+/// JavaScript equivalent: boosts = this.runEvent('ModifyBoost', target, source, effect, boosts)
+///
+/// The boosts are passed via relay_var_boost and callbacks can modify them in place.
+/// The modified boosts are returned.
+pub fn run_event_boost(
+    &mut self,
+    event_id: &str,
+    target: Option<(usize, usize)>,
+    source: Option<(usize, usize)>,
+    source_effect: Option<&ID>,
+    boosts: BoostsTable,
+) -> BoostsTable {
+    // ... implementation
+}
+```
+
+**How It Works:**
+1. Takes initial BoostsTable as input
+2. Sets `battle.current_event.relay_var_boost = Some(boosts)`
+3. Dispatches event handlers via `find_event_handlers()` and `dispatch_single_event()`
+4. Callbacks access and modify boosts via `battle.current_event.relay_var_boost`
+5. Extracts and returns the modified boosts after all handlers run
+
+**Callback Pattern:**
+```rust
+pub fn on_modify_boost(battle: &mut Battle) -> EventResult {
+    if let Some(ref mut event) = battle.current_event {
+        if let Some(ref mut boosts) = event.relay_var_boost {
+            if boosts.evasion > 0 {
+                boosts.evasion = 0;  // Modify boosts in-place
+            }
+        }
+    }
+    EventResult::Continue
+}
+```
+
+**Infrastructure Details:**
+- Created Battle::run_event_boost() method in new file: src/battle/run_event_boost.rs (87 lines)
+- Added module declaration in src/battle.rs
+- Leverages existing relay_var_boost field in EventInfo (already present since Batch 147)
+- Follows same pattern as run_event_with_type() for consistency
+- Handles event depth checking and parent context restoration
+- Returns modified BoostsTable after event processing
+
+**Completed move callbacks:**
+1. **Foresight** (foresight.rs) - onModifyBoost: Removes positive evasion boosts when opponent has Foresight
+2. **Miracle Eye** (miracleeye.rs) - onModifyBoost: Removes positive evasion boosts when opponent has Miracle Eye
+3. **Mist** (mist.rs) - onTryBoost: Blocks negative stat changes for team protected by Mist
+
+**JavaScript Equivalence - Foresight/Miracle Eye:**
+```javascript
+onModifyBoost(boosts) {
+    if (boosts.evasion && boosts.evasion > 0) {
+        boosts.evasion = 0;
+    }
+}
+```
+
+**Rust Implementation - Foresight/Miracle Eye:**
+```rust
+pub fn on_modify_boost(battle: &mut Battle) -> EventResult {
+    if let Some(ref mut event) = battle.current_event {
+        if let Some(ref mut boosts) = event.relay_var_boost {
+            if boosts.evasion > 0 {
+                boosts.evasion = 0;
+            }
+        }
+    }
+    EventResult::Continue
+}
+```
+
+**JavaScript Equivalence - Mist:**
+```javascript
+onTryBoost(boost, target, source, effect) {
+    if (effect.effectType === 'Move' && effect.infiltrates && !target.isAlly(source)) return;
+    if (source && target !== source) {
+        let showMsg = false;
+        let i: BoostID;
+        for (i in boost) {
+            if (boost[i]! < 0) {
+                delete boost[i];
+                showMsg = true;
+            }
+        }
+        if (showMsg && !(effect as ActiveMove).secondaries) {
+            this.add('-activate', target, 'move: Mist');
+        }
+    }
+}
+```
+
+**Rust Implementation - Mist:**
+```rust
+pub fn on_try_boost(
+    battle: &mut Battle,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
+) -> EventResult {
+    // Skip infiltrates check (TODO for future)
+    if let (Some(source), Some(target)) = (source_pos, target_pos) {
+        if target == source {
+            return EventResult::Continue;
+        }
+
+        let mut show_msg = false;
+        if let Some(ref mut event) = battle.current_event {
+            if let Some(ref mut boosts) = event.relay_var_boost {
+                // Remove all negative boosts
+                if boosts.atk < 0 { boosts.atk = 0; show_msg = true; }
+                if boosts.def < 0 { boosts.def = 0; show_msg = true; }
+                if boosts.spa < 0 { boosts.spa = 0; show_msg = true; }
+                if boosts.spd < 0 { boosts.spd = 0; show_msg = true; }
+                if boosts.spe < 0 { boosts.spe = 0; show_msg = true; }
+                if boosts.accuracy < 0 { boosts.accuracy = 0; show_msg = true; }
+                if boosts.evasion < 0 { boosts.evasion = 0; show_msg = true; }
+            }
+        }
+
+        if show_msg && !has_secondaries {
+            battle.add("-activate", &[target_arg.into(), "move: Mist".into()]);
+        }
+    }
+    EventResult::Continue
+}
+```
+
+**Files Modified:**
+- src/battle/run_event_boost.rs - New infrastructure file (87 lines added)
+- src/battle.rs - Added run_event_boost module declaration (1 line added)
+- src/data/move_callbacks/foresight.rs - Removed TODO, implemented onModifyBoost (12 lines changed)
+- src/data/move_callbacks/miracleeye.rs - Removed TODO, implemented onModifyBoost (12 lines changed)
+- src/data/move_callbacks/mist.rs - Removed TODO, implemented onTryBoost (56 lines changed)
+
+**Git Commit:**
+- 097550d2: "Implement Battle::run_event_boost infrastructure and complete Foresight, Miracle Eye, and Mist boost callbacks (Batch 169)"
+
+**Progress:**
+- TODOs Resolved: 3 (Foresight onModifyBoost, Miracle Eye onModifyBoost, Mist onTryBoost)
+- TODOs Added: 1 (Mist infiltrates check - minor, future enhancement)
+- Net TODOs: -2 (346→344)
+- Infrastructure Addition: 1 MAJOR (Battle::run_event_boost method + boost modification system)
+- Compilation: ✓ Successful (warnings only, no errors)
+- Git: ✓ Committed and pushed
+
+**Why This Is Major:**
+This infrastructure addition is on par with the type parameter system (Batch 164) and enables an entire category of callbacks:
+- **ModifyBoost events**: Modify stat stage calculations (Unaware, Simple, Contrary already use this)
+- **TryBoost events**: Block or modify stat changes before they're applied (Flower Veil, Mist, etc.)
+- **Future boost-related events**: Any event that needs to inspect or modify stat boosts
+
+**Related Infrastructure:**
+- **relay_var_boost** field already existed in EventInfo (added in Batch 147)
+- **BoostsTable** struct already existed in dex_data.rs
+- **Ability boost callbacks** (Flower Veil, Contrary, Simple, etc.) already used this pattern
+- This batch completes the **event system side** of boost modification support
+
+**Impact:**
+This infrastructure enables all condition callbacks to modify Pokemon stat boosts using the established relay_var pattern. Combined with existing ability support, the boost modification system is now fully functional across the entire event system. This unblocks future TODO implementations that require boost modification (weather conditions, terrains, etc.).
+
+**TODO Added:**
+Mist's infiltrates check (minor - requires accessing move infiltrates property which isn't currently passed to callbacks). The core functionality is complete.
 
