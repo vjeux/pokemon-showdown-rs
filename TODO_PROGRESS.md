@@ -1357,3 +1357,95 @@ Remaining TODOs: 41 (down from 42 - removed 1 ability callback TODO).
 Progress: 264/380 abilities (69.5%).
 Remaining TODOs: 39 (down from 41 - removed 2 ability callback TODOs).
 
+
+### Batch 139 - Parental Bond onSourceModifySecondaries (1 TODO)
+
+**Completed ability:**
+- **Parental Bond** (parentalbond.rs) - onSourceModifySecondaries: Filters secondaries to keep only flinch effects when Secret Power is used with Parental Bond on first hit
+
+**Infrastructure Discovery:**
+- ActiveMove.hit field exists (pub hit: i32) - tracks which hit of a multi-hit move is being executed
+- This was claimed to need infrastructure but was already implemented
+
+**Implementation Details:**
+- Checks if move.multihitType === 'parentalbond' && move.id === 'secretpower' && move.hit < 2
+- Filters secondaries array to keep only effects with volatile_status === 'flinch'
+- Prevents accidentally suppressing King's Rock/Razor Fang effects
+- Uses active_move.multi_hit_type, active_move.id, and active_move.hit fields
+
+**Files Modified:**
+- src/data/ability_callbacks/parentalbond.rs - Implemented onSourceModifySecondaries (20 lines added)
+
+**Git Commit**: f742aa47: "Implement Parental Bond onSourceModifySecondaries (Batch 139)"
+
+Progress: 264/380 abilities (69.5%).
+Remaining TODOs: 38 (down from 39 - removed 1 Parental Bond TODO).
+
+
+### Batch 140 - Natural Cure Ability (2 TODOs)
+
+**Completed ability:**
+272-273. **Natural Cure** (naturalcure.rs) - Full implementation:
+   - onCheckShow: Complex logic to determine which Pokemon's Natural Cure will be visible in Doubles/Triples
+   - onSwitchOut: Cures status when switching out
+
+**Infrastructure Discovery:**
+- pokemon.show_cure field exists (Option<bool>) - tracks visibility of Natural Cure activation
+- battle.queue.will_switch(side_index, pokemon_index) exists - checks if Pokemon will switch this turn
+- Pokemon::clear_status(battle, pokemon_pos) is a static method (not pokemon.clear_status())
+- Pokemon.status is ID (not Option<ID>) - use !status.is_empty() instead of status.is_some()
+- battle.sides is Vec<Side>, accessed via battle.sides[index] (no battle.side() method)
+- AbilitySlots is a struct with slot0, slot1, hidden, special fields (not a HashMap)
+
+**Implementation Details:**
+- onCheckShow:
+  - Skips in singles (active.length === 1)
+  - Skips if showCure already determined (true or false)
+  - Iterates through all active Pokemon on the switching Pokemon's side
+  - Filters for Pokemon that: have status, don't have showCure set, could have Natural Cure (ability list contains it), have multiple possible abilities (slot1 or hidden exists), and are switching this turn
+  - If cure list is unambiguous (empty or all known), marks each as showCure = true
+  - If ambiguous (some known, some unknown), shows message with count and marks all as showCure = false
+- onSwitchOut:
+  - Sets showCure = true if undefined (ability is known)
+  - Shows -curestatus message if showCure === true
+  - Calls Pokemon::clear_status() to remove status
+  - Resets showCure to undefined if it was false (allows future detection)
+
+**Type System Fixes:**
+- Used !pokemon.status.is_empty() instead of pokemon.status.is_some()
+- Accessed battle.sides[pokemon_pos.0] instead of battle.side(pokemon_pos.0)
+- Used species.abilities.slot0, slot1, hidden, special instead of .values() or .get()
+- Called Pokemon::clear_status(battle, pokemon_pos) as static method
+
+**Files Modified:**
+- src/data/ability_callbacks/naturalcure.rs - Implemented both callbacks (209 lines added, replacing 2 TODO stubs)
+
+**Git Commit**: d03a81d4: "Implement Natural Cure ability (Batch 140)"
+
+Progress: 273/380 abilities (71.8%).
+Remaining TODOs: 36 (down from 38 - removed 2 Natural Cure TODOs).
+
+
+## Session Summary (Batch 139-140)
+
+**Achievements:**
+- Discovered ActiveMove.hit field for tracking multi-hit progress
+- Discovered Pokemon.show_cure, queue.will_switch(), and other Natural Cure infrastructure
+- Learned type patterns: Pokemon.status is ID (not Option<ID>), battle.sides is Vec (not method)
+- Implemented 2 abilities with 3 total callback implementations
+
+**Infrastructure Learnings:**
+- ActiveMove.hit tracks which hit of a multi-hit move (1-indexed)
+- Pokemon.show_cure is Option<bool> for Natural Cure visibility tracking
+- AbilitySlots has named fields (slot0, slot1, hidden, special) not methods
+- Pokemon::clear_status() is a static method requiring battle parameter
+- ID type has is_empty() method for checking status presence
+
+**Compilation:**
+- All code compiles successfully
+- Committed and pushed to master
+
+**Next Steps:**
+- Continue searching for more implementable TODOs
+- Look for other abilities that might have been marked as needing infrastructure but actually don't
+- Current remaining: 36 TODOs down from 39 at start of this continuation session
