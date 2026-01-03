@@ -13,8 +13,20 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.75);
 ///     }
 /// }
-pub fn on_source_modify_damage(_battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), _target_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), target_pos: (usize, usize), _move_id: &str) -> EventResult {
+    // if (target.getMoveHitData(move).typeMod > 0) {
+    //     this.debug('Filter neutralize');
+    //     return this.chainModify(0.75);
+    // }
+
+    // Check if the move is super-effective
+    if let Some(move_hit_data) = battle.get_move_hit_data(target_pos) {
+        if move_hit_data.type_mod > 0 {
+            eprintln!("Filter neutralize");
+            return EventResult::Number(battle.chain_modify(0.75));
+        }
+    }
+
     EventResult::Continue
 }
 

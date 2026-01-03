@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 95 (25.0%)
+- Completed: 98 (25.8%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -205,8 +205,13 @@ JavaScript's getMoveHitData() stores hit data (crit, typeMod, zBrokeProtect) per
 
 This infrastructure enables implementation of damage-reduction abilities (Filter, Solid Rock, Prism Armor) and many other abilities that need access to move hit data.
 
+### Batch 22 - Super-Effective Damage Reduction (3 abilities)
+96. **Filter** (filter.rs) - onSourceModifyDamage: Reduces super-effective damage by 25% (0.75x modifier)
+97. **Solid Rock** (solidrock.rs) - onSourceModifyDamage: Reduces super-effective damage by 25% (0.75x modifier)
+98. **Prism Armor** (prismarmor.rs) - onSourceModifyDamage: Reduces super-effective damage by 25% (0.75x modifier)
+
 ## Current Session
-Completed major getMoveHitData infrastructure refactor.
+Completed major getMoveHitData infrastructure refactor and implemented 3 damage-reduction abilities that use it.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Now using pokemon.foes(), pokemon.has_ability(), and modifying battle.active_move fields.
 
