@@ -395,9 +395,15 @@ impl Battle {
                     if self.gen <= 4 {
                         // In gen 2-4, the switch still happens
                         self.hint("Previously chosen switches continue in Gen 2-4 after a Pursuit target faints.", false, None);
-                        // TODO: action.priority = -101 and queue.unshift(action)
-                        // This requires modifying action priority and re-queueing
-                        // For now, the switch already happened via switch_in()
+                        // action.priority = -101 and queue.unshift(action)
+                        let mut requeue_action = action.clone();
+                        match &mut requeue_action {
+                            Action::Switch(switch_action) => {
+                                switch_action.priority = -101;
+                            },
+                            _ => {}
+                        }
+                        self.queue.unshift(requeue_action);
                     } else {
                         // In gen 5+, the switch is cancelled
                         self.hint("A Pokemon can't switch between when it runs out of HP and when it faints", false, None);
@@ -722,7 +728,12 @@ impl Battle {
                         });
 
                         // JS: this.battle.speedOrder = allActive.map((a) => a.side.n * a.battle.sides.length + a.position);
-                        // TODO: Rust doesn't have speedOrder field yet - add it if needed
+                        self.speed_order = all_active_with_speeds
+                            .iter()
+                            .map(|((s_idx, p_idx), _speed)| {
+                                s_idx * self.sides.len() + p_idx
+                            })
+                            .collect();
 
                         // JS: this.battle.fieldEvent("SwitchIn", switchersIn);
                         self.field_event_switch_in(&switchers_in);

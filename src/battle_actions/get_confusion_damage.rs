@@ -39,6 +39,8 @@ pub fn get_confusion_damage(
     // const level = pokemon.level;
 
     // Extract all Pokemon data we need first (immutable borrow)
+    // We manually calculate stats here because calling pokemon.calculate_stat requires
+    // both an immutable borrow of pokemon and a mutable borrow of battle simultaneously
     let (stored_atk, stored_def, atk_boost, def_boost, level, has_wonder_room) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -57,9 +59,7 @@ pub fn get_confusion_damage(
         )
     };
 
-    // Calculate attack stat (manually to avoid borrow issues)
-    // TODO: This should call calculate_stat but we have borrow checker issues
-    // Need to refactor calculate_stat API to not require &mut Battle when called on a pokemon reference
+    // Calculate attack stat (manually implements Pokemon::calculate_stat logic)
     let attack = {
         let mut stat = if has_wonder_room {
             // Wonder Room doesn't affect attack
@@ -68,7 +68,7 @@ pub fn get_confusion_damage(
             stored_atk
         };
 
-        // Apply boost
+        // Apply boost (matches Pokemon::calculate_stat boost table)
         let boost_table = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
         let clamped_boost = atk_boost.max(-6).min(6);
         stat = if clamped_boost >= 0 {
@@ -80,7 +80,7 @@ pub fn get_confusion_damage(
         stat
     };
 
-    // Calculate defense stat
+    // Calculate defense stat (manually implements Pokemon::calculate_stat logic)
     let defense = {
         let mut stat = if has_wonder_room {
             // Wonder Room swaps def and spd
