@@ -1471,6 +1471,8 @@ pub struct Format {
     pub custom_rules: Option<Vec<String>>,
     /// JavaScript: ruleTable?: RuleTable
     pub rule_table: Option<RuleTable>,
+    /// JavaScript: team?: string
+    pub team: Option<String>,
     /// JavaScript: exists: boolean
     pub exists: bool,
 }
@@ -1498,6 +1500,7 @@ impl Format {
             unbanlist: def.unbans.iter().map(|s| s.to_string()).collect(),
             custom_rules: None,
             rule_table: None,
+            team: None, // Set when format uses team generation (e.g., random battles)
             exists: true,
         }
     }
@@ -1520,6 +1523,7 @@ impl Format {
             unbanlist: Vec::new(),
             custom_rules: None,
             rule_table: None,
+            team: None,
             exists: false,
         }
     }

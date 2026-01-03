@@ -799,7 +799,9 @@ impl Battle {
                         let skip_hackmons = if let Some(ref rule_table) = self.rule_table {
                             let has_hackmons = rule_table.has("+hackmons");
                             let has_obtainable = rule_table.has("obtainableabilities");
-                            let format_has_team = false; // TODO: this.format.team check
+                            let format_has_team = self.format.as_ref()
+                                .and_then(|f| f.team.as_ref())
+                                .is_some();
                             (has_hackmons || !has_obtainable) && !format_has_team
                         } else {
                             false
