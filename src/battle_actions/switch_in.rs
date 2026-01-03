@@ -225,12 +225,12 @@ pub fn switch_in(
             // JS:     pokemon.copyVolatileFrom(oldActive, switchCopyFlag);
             // JS: }
             if let Some(ref copy_flag) = switch_copy_flag {
-                // TODO: Implement Pokemon::copy_volatile_from
-                // This is used by Baton Pass (copyvolatile), Shed Tail (shedtail), etc.
-                // For now, just log a warning
-                eprintln!(
-                    "[SWITCH_IN] TODO: copyVolatileFrom not implemented (flag: {})",
-                    copy_flag
+                // pokemon.copyVolatileFrom(oldActive, switchCopyFlag);
+                Pokemon::copy_volatile_from(
+                    battle,
+                    (side_index, pokemon_index),
+                    (side_index, old_idx),
+                    Some(copy_flag.as_str()),
                 );
             }
 
