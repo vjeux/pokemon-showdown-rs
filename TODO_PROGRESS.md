@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 210 (55.3%)
+- Completed: 213 (56.1%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -501,6 +501,15 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 81 - Hunger Switch (1 ability)
 207. **Hunger Switch** (hungerswitch.rs) - onResidual: Alternates Morpeko forme every turn (Morpeko ↔ Morpeko-Hangry); skips if not Morpeko or if terastallized; uses forme_change with base species checking
 
+### Batch 82 - Mummy (1 ability)
+208. **Mummy** (mummy.rs) - onDamagingHit: Changes attacker's ability to Mummy on contact moves; skips if source ability has cantsuppress flag or already has mummy; uses Pokemon::set_ability, battle.check_move_makes_contact, dex.abilities().flags.get("cantsuppress")
+
+### Batch 83 - Terashift (1 ability)
+209. **Terashift** (terashift.rs) - onSwitchIn: Changes Terapagos to Terastal forme on switch-in; checks if not already in Terastal forme; uses forme_change with is_permanent=true
+
+### Batch 84 - Poisonpuppeteer (1 ability)
+210. **Poisonpuppeteer** (poisonpuppeteer.rs) - onAnyAfterSetStatus: When Pecharunt poisons a foe with a move, adds confusion volatile status to the target; checks source is Pecharunt, target ≠ source, effect is Move, status is psn/tox
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -510,7 +519,10 @@ Completed Lingering Aroma (Batch 78) using Pokemon::set_ability and check_move_m
 Completed Forecast (Batch 79) using forme_change for weather-based forme changes.
 Completed Stance Change (Batch 80) using forme_change for move-based forme changes.
 Completed Hunger Switch (Batch 81) using forme_change for turn-based forme alternation.
-Progress: 203→210/380 (55.3%).
+Completed Mummy (Batch 82) using Pokemon::set_ability and check_move_makes_contact (similar to Lingering Aroma).
+Completed Terashift (Batch 83) using forme_change with is_permanent=true.
+Completed Poisonpuppeteer (Batch 84) using Pokemon::add_volatile and status checking.
+Progress: 203→213/380 (56.1%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes

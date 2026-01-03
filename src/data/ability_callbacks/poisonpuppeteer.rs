@@ -14,8 +14,69 @@ use crate::event::EventResult;
 ///         target.addVolatile('confusion');
 ///     }
 /// }
-pub fn on_any_after_set_status(_battle: &mut Battle, _status: Option<&str>, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_any_after_set_status(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    use crate::dex_data::ID;
+    use crate::Pokemon;
+
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+    let source_pos = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+    let status_id = match status {
+        Some(s) => s,
+        None => return EventResult::Continue,
+    };
+
+    // if (source.baseSpecies.name !== "Pecharunt") return;
+    let source_base_species_name = {
+        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let species_data = match battle.dex.species().get(source.species_id.as_str()) {
+            Some(data) => data,
+            None => return EventResult::Continue,
+        };
+
+        species_data.base_species.clone().unwrap_or_default()
+    };
+
+    if source_base_species_name != "Pecharunt" {
+        return EventResult::Continue;
+    }
+
+    // if (source !== this.effectState.target || target === source || effect.effectType !== 'Move') return;
+    let ability_holder_pos = match battle.effect_state.target {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    if source_pos != ability_holder_pos || target_pos == source_pos {
+        return EventResult::Continue;
+    }
+
+    // Check if effect is a Move
+    let is_move_effect = if let Some(effect_id_str) = effect_id {
+        battle.dex.moves().get_by_id(&ID::from(effect_id_str)).is_some()
+    } else {
+        false
+    };
+
+    if !is_move_effect {
+        return EventResult::Continue;
+    }
+
+    // if (status.id === 'psn' || status.id === 'tox')
+    if status_id == "psn" || status_id == "tox" {
+        // target.addVolatile('confusion');
+        Pokemon::add_volatile(battle, target_pos, ID::from("confusion"), Some(source_pos), None, None);
+    }
+
     EventResult::Continue
 }
 
