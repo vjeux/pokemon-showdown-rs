@@ -172,6 +172,7 @@ mod get_type_effectiveness_mod;
 mod on_event;
 mod on_event_priority;
 mod run_custom_event_handlers;
+mod use_move;
 
 /// JavaScript equivalent: { side: SideID, secret: string, shared: string }
 /// 3 fields in JavaScript

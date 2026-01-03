@@ -68,8 +68,7 @@ pub fn on_hit(
     }
 
     // this.actions.useMove(move.id, pokemon);
-    // TODO: Implement use_move method in Battle
-    // battle.use_move(&move_id, pokemon_pos);
+    battle.use_move(&actual_move_id, _pokemon_pos, None, None, None, None);
 
     EventResult::Continue
 }

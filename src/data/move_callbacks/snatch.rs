@@ -144,8 +144,7 @@ pub mod condition {
 
         // this.actions.useMove(move.id, snatchUser);
         let _move_id = ID::from(move_id);
-        // TODO: Implement use_move method in Battle
-        // battle.use_move(&move_id, snatch_user);
+        battle.use_move(&_move_id, snatch_user, None, None, None, None);
 
         // return null;
         EventResult::Stop

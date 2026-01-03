@@ -29,7 +29,7 @@ mod run_mega_evo;
 mod can_terastallize;
 mod terastallize;
 mod run_z_power;
-mod use_move;
+pub mod use_move;
 mod use_move_inner;
 mod switch_in;
 mod drag_in;
