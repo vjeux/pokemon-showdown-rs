@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 216 (56.8%)
+- Completed: 217 (57.1%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -519,6 +519,15 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 87 - Schooling (1 ability)
 213. **Schooling** (schooling.rs) - onStart/onResidual: Changes Wishiwashi forme based on HP (School forme when HP > 1/4 max HP and level >= 20); checks base species, level, transformed status; uses forme_change infrastructure
 
+### Batch 88 - Power of Alchemy (1 ability)
+214. **Power of Alchemy** (powerofalchemy.rs) - onAllyFaint: Copies fainted ally's ability; identical to Receiver; checks ability holder has HP, fainted ally's ability doesn't have noreceiver flag and isn't noability; uses Pokemon::set_ability
+
+### Batch 89 - As One Spectrier (partial - 3/4 callbacks)
+215. **As One (Spectrier)** (asonespectrier.rs) - Partial implementation: onStart: Shows "As One" and "Unnerve" ability messages, sets unnerved flag in ability_state.data; onEnd: Resets unnerved flag; onSourceAfterFaint: Boosts Special Attack by 1 when KOing with a move (uses grimneigh as source ability); onFoeTryEatItem: TODO (needs item system)
+
+### Batch 90 - As One Glastrier (partial - 3/4 callbacks)
+216. **As One (Glastrier)** (asoneglastrier.rs) - Partial implementation: onStart: Shows "As One" and "Unnerve" ability messages, sets unnerved flag in ability_state.data; onEnd: Resets unnerved flag; onSourceAfterFaint: Boosts Attack by 1 when KOing with a move (uses chillingneigh as source ability); onFoeTryEatItem: TODO (needs item system)
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -534,7 +543,10 @@ Completed Poisonpuppeteer (Batch 84) using Pokemon::add_volatile and status chec
 Completed Receiver (Batch 85) using Pokemon::set_ability with noreceiver flag checking.
 Completed Pastelveil (Batch 86) using allies_and_self() and Pokemon::cure_status() with comprehensive poison prevention.
 Completed Schooling (Batch 87) using pokemon.level and pokemon.transformed fields with forme_change.
-Progress: 203→216/380 (56.8%).
+Completed Power of Alchemy (Batch 88) - identical implementation to Receiver.
+Partially completed As One Spectrier (Batch 89) - 3/4 callbacks (onFoeTryEatItem needs item system).
+Partially completed As One Glastrier (Batch 90) - 3/4 callbacks (onFoeTryEatItem needs item system).
+Progress: 203→217/380 (57.1%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
