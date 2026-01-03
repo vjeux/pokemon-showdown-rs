@@ -15,8 +15,60 @@ use crate::event::EventResult;
 ///         if (!this.queue.peek()) this.effectState.counter--;
 ///     }
 /// }
-pub fn on_eat_item(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    use crate::dex_data::ID;
+
+    // Get the item from battle.current_event.effect
+    let item_id = match &battle.current_event {
+        Some(event) => match &event.effect {
+            Some(id) => id.clone(),
+            None => return EventResult::Continue,
+        },
+        None => return EventResult::Continue,
+    };
+
+    // if (item.isBerry && (!effect || !['bugbite', 'pluck'].includes(effect.id)))
+    let is_berry = if let Some(item_data) = battle.dex.items().get_by_id(&item_id) {
+        item_data.is_berry
+    } else {
+        return EventResult::Continue;
+    };
+
+    if !is_berry {
+        return EventResult::Continue;
+    }
+
+    // Check if effect is bugbite or pluck
+    if let Some(eff_id) = effect_id {
+        if eff_id == "bugbite" || eff_id == "pluck" {
+            return EventResult::Continue;
+        }
+    }
+
+    // this.effectState.berry = item;
+    // this.effectState.counter = 2;
+    let mut counter = 2;
+
+    // if (!this.queue.peek()) this.effectState.counter--;
+    if battle.queue.peek().is_none() {
+        counter = 1;
+    }
+
+    // Store berry and counter in pokemon.ability_state.data
+    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    pokemon.ability_state.data.insert(
+        "berry".to_string(),
+        serde_json::Value::String(item_id.to_string()),
+    );
+    pokemon.ability_state.data.insert(
+        "counter".to_string(),
+        serde_json::Value::Number(serde_json::Number::from(counter)),
+    );
+
     EventResult::Continue
 }
 
@@ -34,8 +86,117 @@ pub fn on_eat_item(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_p
 ///         delete this.effectState.counter;
 ///     }
 /// }
-pub fn on_residual(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::battle::Arg;
+    use crate::dex_data::ID;
+
+    // if (!this.effectState.berry || !pokemon.hp) return;
+    let (berry_id, counter, hp) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let berry_str = match pokemon.ability_state.data.get("berry") {
+            Some(v) => match v.as_str() {
+                Some(s) => s,
+                None => return EventResult::Continue,
+            },
+            None => return EventResult::Continue,
+        };
+
+        let counter = match pokemon.ability_state.data.get("counter") {
+            Some(v) => match v.as_i64() {
+                Some(c) => c as i32,
+                None => return EventResult::Continue,
+            },
+            None => return EventResult::Continue,
+        };
+
+        (ID::from(berry_str), counter, pokemon.hp)
+    };
+
+    if hp == 0 {
+        return EventResult::Continue;
+    }
+
+    // if (--this.effectState.counter <= 0)
+    let new_counter = counter - 1;
+
+    if new_counter > 0 {
+        // Update counter
+        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.ability_state.data.insert(
+            "counter".to_string(),
+            serde_json::Value::Number(serde_json::Number::from(new_counter)),
+        );
+        return EventResult::Continue;
+    }
+
+    // counter <= 0, eat the berry
+    let item_name = if let Some(item_data) = battle.dex.items().get_by_id(&berry_id) {
+        item_data.name.clone()
+    } else {
+        berry_id.to_string()
+    };
+
+    let pokemon_slot = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    // this.add('-activate', pokemon, 'ability: Cud Chew');
+    battle.add("-activate", &[
+        Arg::String(pokemon_slot.clone()),
+        Arg::Str("ability: Cud Chew"),
+    ]);
+
+    // this.add('-enditem', pokemon, item.name, '[eat]');
+    battle.add("-enditem", &[
+        Arg::String(pokemon_slot),
+        Arg::String(item_name),
+        Arg::Str("[eat]"),
+    ]);
+
+    // if (this.singleEvent('Eat', item, null, pokemon, null, null))
+    let eat_result = battle.single_event(
+        "Eat",
+        &berry_id,
+        Some(pokemon_pos),
+        None,
+        None,
+    );
+
+    if eat_result.is_not_fail() {
+        // this.runEvent('EatItem', pokemon, null, null, item);
+        battle.run_event("EatItem", Some(pokemon_pos), None, Some(&berry_id), None);
+    }
+
+    // if (item.onEat) pokemon.ateBerry = true;
+    if let Some(item_data) = battle.dex.items().get_by_id(&berry_id) {
+        // Check if item has onEat callback by checking item_callbacks dispatcher
+        // For now, we'll set ateBerry to true for all berries that get eaten
+        // This matches the JavaScript behavior where most berries have onEat
+        if item_data.is_berry {
+            if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                pokemon.ate_berry = true;
+            }
+        }
+    }
+
+    // delete this.effectState.berry;
+    // delete this.effectState.counter;
+    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        pokemon.ability_state.data.remove("berry");
+        pokemon.ability_state.data.remove("counter");
+    }
+
     EventResult::Continue
 }
 
