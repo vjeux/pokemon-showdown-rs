@@ -19,8 +19,74 @@ use crate::event::EventResult;
 ///         // Taunt's volatile already sends the -end message when removed
 ///     }
 /// }
-pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::battle::Arg;
+    use crate::Pokemon;
+
+    // if (pokemon.volatiles['attract'])
+    let has_attract = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.volatiles.contains_key(&crate::dex_data::ID::from("attract"))
+    };
+
+    if has_attract {
+        // this.add('-activate', pokemon, 'ability: Oblivious');
+        let pokemon_slot = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        battle.add("-activate", &[
+            Arg::String(pokemon_slot.clone()),
+            Arg::Str("ability: Oblivious"),
+        ]);
+
+        // pokemon.removeVolatile('attract');
+        Pokemon::remove_volatile(battle, pokemon_pos, &crate::dex_data::ID::from("attract"));
+
+        // this.add('-end', pokemon, 'move: Attract', '[from] ability: Oblivious');
+        battle.add("-end", &[
+            Arg::String(pokemon_slot),
+            Arg::Str("move: Attract"),
+            Arg::Str("[from] ability: Oblivious"),
+        ]);
+    }
+
+    // if (pokemon.volatiles['taunt'])
+    let has_taunt = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.volatiles.contains_key(&crate::dex_data::ID::from("taunt"))
+    };
+
+    if has_taunt {
+        // this.add('-activate', pokemon, 'ability: Oblivious');
+        let pokemon_slot = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        battle.add("-activate", &[
+            Arg::String(pokemon_slot),
+            Arg::Str("ability: Oblivious"),
+        ]);
+
+        // pokemon.removeVolatile('taunt');
+        // Taunt's volatile already sends the -end message when removed
+        Pokemon::remove_volatile(battle, pokemon_pos, &crate::dex_data::ID::from("taunt"));
+    }
+
     EventResult::Continue
 }
 
