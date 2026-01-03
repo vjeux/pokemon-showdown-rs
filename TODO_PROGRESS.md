@@ -576,6 +576,12 @@ Completed effectState.target implementation for Sweet Veil (originally Batch 65)
 - onAllyTryAddVolatile: Now properly uses battle.effect_state.target for effect holder position when blocking yawn
 - Both callbacks show -block messages with [of] effect_holder parameter
 
+### Batch 103 - Damp Completion (1 TODO removed)
+Completed effectState.target implementation for Damp (originally Batch 57):
+- onAnyTryMove: Now properly uses battle.effect_state.target for Damp holder position
+- Shows cant message with Damp holder as first argument (not explosion user)
+- Properly distinguishes between Damp holder and explosion user in battle messages
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -609,7 +615,9 @@ Completed Arena Trap, Magnet Pull, and Shadow Tag (Batch 99) - all three trappin
 Completed Wimp Out (Batch 100) - identical to Emergency Exit, triggers switch using battle.can_switch() and switch flags.
 Completed Aroma Veil (Batch 101) - removed 2 TODOs by implementing battle.effect_state.target for effect holder in onAllyTryAddVolatile.
 Completed Sweet Veil (Batch 102) - removed 2 TODOs by implementing battle.effect_state.target for effect holder in both onAllySetStatus and onAllyTryAddVolatile.
-Progress: 203→239/380 (62.9%).
+Completed Damp (Batch 103) - removed 1 TODO by implementing battle.effect_state.target for Damp holder in onAnyTryMove.
+Progress: 203→239/380 (62.9%); Cleaned up 5 TODOs from previously completed abilities.
+Remaining TODOs: 110 (down from 115).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
