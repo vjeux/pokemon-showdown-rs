@@ -11,13 +11,22 @@ use crate::event::EventResult;
 ///     this.debug('Shield Dust prevent secondary');
 ///     return secondaries.filter(effect => !!effect.self);
 /// }
-pub fn on_modify_secondaries(_battle: &mut Battle) -> EventResult {
+pub fn on_modify_secondaries(battle: &mut Battle) -> EventResult {
     // JavaScript: return secondaries.filter(effect => !!effect.self);
     // This filters out all secondaries that don't have effect.self
     // In other words, it blocks all opponent-targeting secondaries
-    // For now, we block ALL secondaries by returning Null
-    // TODO: Check if the specific secondary has 'self' and only block if it doesn't
-    eprintln!("[SHIELD_DUST] Blocking secondary effect");
-    EventResult::Null
+
+    if let Some(ref mut active_move) = battle.active_move {
+        // Filter secondaries to keep only effects with self_effect = true
+        // !!effect.self in JavaScript means "keep if self is truthy"
+        let original_len = active_move.secondaries.len();
+        active_move.secondaries.retain(|effect| effect.self_effect);
+
+        if active_move.secondaries.len() < original_len {
+            battle.debug("Shield Dust prevent secondary");
+        }
+    }
+
+    EventResult::Continue
 }
 
