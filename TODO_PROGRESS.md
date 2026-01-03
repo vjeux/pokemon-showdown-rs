@@ -704,13 +704,47 @@ Progress: 269/380 abilities (70.8%) - no change (move callback, not ability).
 Remaining TODOs: 32 (down from 33 - removed 1 move callback TODO).
 
 
+### Batch 137 - Queue Infrastructure + Quash Move (2 TODOs + Infrastructure)
+
+**Major Infrastructure Implementation:**
+Created `BattleQueue::will_move_mut()` method to enable mutable access to queued actions:
+- Returns `Option<&mut MoveAction>` for modifying action properties
+- Mirrors `will_move()` but provides mutable reference
+- Required for moves like Quash that need to modify action.order
+- Created new file: src/battle_queue/will_move_mut.rs
+- Added module declaration in src/battle_queue.rs
+
+**Completed move:**
+- **Quash** (quash.rs) - onHit: Uses will_move_mut() to modify target's action order to 201 (forces target to move last); checks active_per_half == 1 to fail in singles; uses will_move() to check if target has an action, then will_move_mut() to modify action.order
+
+**Implementation Details:**
+- First checks if action exists using will_move() (immutable)
+- Then gets mutable reference using will_move_mut() to modify order
+- Sets action.order = 201 which makes the target move last
+- JavaScript: `action.order = 201;` → Rust: `battle.queue.will_move_mut(target).map(|a| a.order = 201)`
+
+**Files Modified:**
+- src/battle_queue/will_move_mut.rs - New infrastructure file (30 lines)
+- src/battle_queue.rs - Added will_move_mut module declaration (1 line)
+- src/data/move_callbacks/quash.rs - Removed 2 TODOs and implemented queue modification (4 lines changed)
+
+**Git Commits**:
+- c682e5fe: "Add BattleQueue::will_move_mut infrastructure for mutable action access (Batch 137)"
+- 03db4f31: "Implement Quash move using will_move_mut (Batch 137)"
+
+Progress: 269/380 abilities (70.8%) - no change (move callback, not ability).
+Remaining TODOs: 30 (down from 32 - removed 2 Quash TODOs).
+
+
 ## Current Session (Continued - Latest)
 Completed Shield Dust (Batch 134) - proper secondary filtering using self_effect field.
 Completed Ice Face (Batch 135) - all 5 callbacks using forme_change, ability_state.data, and weather checking.
 Completed Payback move (Batch 136) - using battle.queue.will_move() discovered in Batch 132.
+**MAJOR INFRASTRUCTURE**: Created BattleQueue::will_move_mut() for mutable action access (Batch 137).
+Completed Quash move (Batch 137) - using will_move_mut() to modify action order.
 **Discovered type patterns**: active_move.category is String (not Option<String>), active_move.flags is MoveFlags struct (not HashMap), active_move.infiltrates is bool (not Option<bool>).
-Progress: 269/380 abilities (70.8%); Completed 7 TODOs this continuation session (6 ability TODOs + 1 move TODO).
-Remaining TODOs: 32 (down from 39 at session start).
+Progress: 269/380 abilities (70.8%); Completed 9 TODOs this continuation session (6 ability TODOs + 3 move TODOs).
+Remaining TODOs: 30 (down from 39 at session start).
 All implementations compile successfully, have been committed, and pushed to the repository!
 
 ## Current Session (Continued)
