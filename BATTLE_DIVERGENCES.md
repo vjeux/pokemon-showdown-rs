@@ -985,3 +985,57 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - **Total runAction cases consolidated: 3** (start, switch, residual)
 
 
+---
+
+## Session 10: Debug Print Cleanup (2026-01-02)
+
+### Twenty-Fourth Implementation: Remove debug prints from run_action.rs ✅
+- **Issue**: Debug print statements not present in JavaScript
+- **Action**: Removed 2 eprintln! statements
+
+  **Lines Removed:**
+  - Lines 321-324: `eprintln!("RUN_ACTION Move: p{}{} uses {}", ...)` - Move action debug
+  - Line 774: `eprintln!("[RUN_ACTION GEN8] Next action is move/dynamax, will sort queue")` - Gen 8 queue debug
+
+- **Rationale**: JavaScript uses this.debug() for debugging, not console.log equivalents
+- **Side Effects**: None - purely cleanup
+- **Result**: Code matches JavaScript (no production debug prints)
+- **Commit**: c57f5790
+
+**Progress Update (2026-01-02 - Session 10):**
+- Debug prints removed: 2
+- Files updated: 1 (run_action.rs)
+- Total files in battle/: 145 (unchanged)
+- Remaining files with eprintln: ~18 (cosmetic cleanup pending)
+
+---
+
+## Sessions 7-10 Cumulative Summary (2026-01-02)
+
+**Major Achievements:**
+1. **Architectural Fixes:** Consolidated 3 runAction() cases incorrectly separated into files
+   - start_battle.rs → inlined into case 'start'
+   - do_switch.rs → inlined into case 'switch'
+   - run_residual.rs → inlined into case 'residual'
+
+2. **Duplicate Removal:** Removed 2 duplicate files
+   - reset_r_n_g.rs
+   - to_j_s_o_n.rs
+
+3. **Code Cleanup:** Removed debug prints not in JavaScript
+
+**Statistics:**
+- **Files Deleted:** 5 (3.3% reduction from 150 to 145)
+- **Lines Removed:** ~355 lines of duplicated/misplaced code
+- **Commits:** 10 commits across 4 sessions
+- **Files Completed:** 23 (15.9% of 145)
+- **Compilation:** ✅ All changes compile successfully
+
+**Files with TODOs Remaining:** 22 (down from 23)
+
+**Next Session Priorities:**
+1. Continue removing debug prints from other files
+2. Address remaining TODOs (22 files)
+3. Verify more files for 1:1 correspondence
+
+
