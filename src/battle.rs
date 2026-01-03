@@ -40,7 +40,6 @@ mod choose;
 mod get_log;
 mod make_choices;
 mod commit_choices;
-mod do_switch;
 mod compare_action_priority;
 mod insert_run_switch_action;
 mod insert_field_action;
