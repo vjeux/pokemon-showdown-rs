@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 104 (27.4%)
+- Completed: 105 (27.6%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -224,12 +224,15 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 ### Batch 26 - Burn Immunity (1 ability)
 104. **Water Bubble** (waterbubble.rs) - Already had stat modifiers implemented; Added onUpdate: Cures burn status automatically; onSetStatus: Prevents burn with immunity message
 
+### Batch 27 - Stat Debuff Aura (1 ability)
+105. **Sword of Ruin** (swordofruin.rs) - onStart: Shows ability activation (respects suppressingAbility); onAnyModifyDef: Reduces opponents' Defense by 0.75x (uses effectState.target and ActiveMove.ruined_def tracking)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 9 abilities (batches 22-26).
-Progress: 104/380 abilities (27.4%).
+Implemented 10 abilities (batches 22-27).
+Progress: 105/380 abilities (27.6%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
-Now using field.is_terrain(), field.set_terrain(), battle.add(), and Pokemon::cure_status().
+Now using battle.effect_state.target for ability holder tracking and ActiveMove ruined_* fields for Ruin ability coordination.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
