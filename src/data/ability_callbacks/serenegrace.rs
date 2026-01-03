@@ -38,12 +38,14 @@ pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
                 *chance *= 2;
             }
         }
-    }
 
-    // if (move.self?.chance) move.self.chance *= 2;
-    // TODO: ActiveMove doesn't have a self field yet
-    // This would be for self-inflicted secondary effects (like Superpower lowering own stats)
-    // For now, skip this part as the infrastructure doesn't exist
+        // if (move.self?.chance) move.self.chance *= 2;
+        if let Some(ref mut self_effect) = active_move.self_effect {
+            if let Some(ref mut chance) = self_effect.chance {
+                *chance *= 2;
+            }
+        }
+    }
 
     EventResult::Continue
 }

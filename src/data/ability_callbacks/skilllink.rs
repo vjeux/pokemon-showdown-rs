@@ -40,9 +40,9 @@ pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
 
         // if (move.multiaccuracy)
         //     delete move.multiaccuracy
-        // TODO: ActiveMove doesn't have a multi_accuracy field yet
-        // This is for moves like Triple Axel that can miss on later hits
-        // For now, skip this part as the infrastructure doesn't exist
+        // Set multi_accuracy to false to disable per-hit accuracy checks
+        // This makes moves like Triple Axel always hit all times
+        active_move.multi_accuracy = false;
     }
 
     EventResult::Continue
