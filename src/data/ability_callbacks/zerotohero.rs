@@ -56,8 +56,10 @@ pub fn on_switch_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
             }
         }
 
-        // Skip: pokemon.heroMessageDisplayed = false;
-        // TODO: Implement heroMessageDisplayed tracking when pokemon field is available
+        // pokemon.heroMessageDisplayed = false;
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.hero_message_displayed = false;
+        }
     }
 
     EventResult::Continue
@@ -95,8 +97,15 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
     }
 
     // if (!pokemon.heroMessageDisplayed && pokemon.species.forme === 'Hero')
-    // Skip heroMessageDisplayed check - always show message for now
-    if forme.as_deref() == Some("Hero") {
+    let hero_message_displayed = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.hero_message_displayed
+    };
+
+    if !hero_message_displayed && forme.as_deref() == Some("Hero") {
         // this.add('-activate', pokemon, 'ability: Zero to Hero');
         let pokemon_slot = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -111,8 +120,10 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
             Arg::Str("ability: Zero to Hero"),
         ]);
 
-        // Skip: pokemon.heroMessageDisplayed = true;
-        // TODO: Implement heroMessageDisplayed tracking when pokemon field is available
+        // pokemon.heroMessageDisplayed = true;
+        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.hero_message_displayed = true;
+        }
     }
 
     EventResult::Continue
