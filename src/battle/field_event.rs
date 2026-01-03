@@ -183,8 +183,8 @@ impl Battle {
             // JS: if (side.n < 2 || !side.allySide) {
             //         handlers = handlers.concat(this.findSideEventHandlers(side, `onSide${eventid}`, getKey));
             //     }
-            // Note: allySide tracking not implemented in Rust, so checking side_idx < 2
-            if side_idx < 2 {
+            // Rust: side.n == side_idx, side.allySide == ally_index
+            if side_idx < 2 || self.sides[side_idx].ally_index.is_none() {
                 let side_event = format!("onSide{}", event_id);
                 let side_handlers = self.find_side_event_handlers(&side_event, side_idx, get_key, None);
                 for handler in side_handlers {
