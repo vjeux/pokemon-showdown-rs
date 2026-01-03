@@ -130,7 +130,7 @@ pub fn run_move_effects(
         // }
         if let Some(ref weather_id) = move_data.weather {
             let weather = crate::dex_data::ID::new(weather_id);
-            battle.field.set_weather(weather, None);
+            battle.set_weather(weather, Some(_source_pos), None);
         }
 
         // Apply terrain

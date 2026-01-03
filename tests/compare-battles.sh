@@ -13,6 +13,10 @@
 
 SEED=${1:-1}
 
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_DIR="$( cd "$SCRIPT_DIR/.." && pwd )"
+
 echo "======================================"
 echo "Battle Comparison Test - Seed $SEED"
 echo "======================================"
@@ -23,7 +27,7 @@ echo "Step 1: Generating teams..."
 echo ""
 
 echo "  JavaScript team generation:"
-node tests/generate-test-teams.js $SEED
+node $PROJECT_DIR/tests/generate-test-teams.js $SEED
 
 echo ""
 echo "  Rust team generation:"
@@ -57,7 +61,7 @@ echo ""
 
 echo "  Running JavaScript battle..."
 # Run JavaScript battle and save both full output and summary lines (suppress console output)
-node tests/test-battle-js.js $SEED > /tmp/js-battle-seed${SEED}-stdout.txt 2> /tmp/js-battle-seed${SEED}-stderr.txt
+node $PROJECT_DIR/tests/test-battle-js.js $SEED > /tmp/js-battle-seed${SEED}-stdout.txt 2> /tmp/js-battle-seed${SEED}-stderr.txt
 cat /tmp/js-battle-seed${SEED}-stdout.txt /tmp/js-battle-seed${SEED}-stderr.txt > /tmp/js-battle-seed${SEED}-full.txt
 grep '^#[0-9]' /tmp/js-battle-seed${SEED}-full.txt > /tmp/js-battle-seed${SEED}.txt
 

@@ -149,6 +149,7 @@ impl Battle {
     // 	}
     //
     pub fn field_event(&mut self, event_id: &str, targets: Option<&[(usize, usize)]>) {
+        eprintln!("[DEBUG field_event] Event='{}', current weather='{}'", event_id, self.field.weather);
         let callback_name = format!("on{}", event_id);
         // JS: if (eventid === 'Residual') { getKey = 'duration'; }
         let get_key = if event_id == "Residual" {
@@ -162,7 +163,7 @@ impl Battle {
 
         // JS: let handlers = this.findFieldEventHandlers(this.field, `onField${eventid}`, getKey);
         let field_event = format!("onField{}", event_id);
-        let field_handlers = self.find_field_event_handlers(&field_event, None, None);
+        let field_handlers = self.find_field_event_handlers(&field_event, get_key, None);
         for handler in field_handlers {
             let effect_id = handler.effect_id;
             let holder = handler.effect_holder;
@@ -281,8 +282,11 @@ impl Battle {
         });
 
         // JS: while (handlers.length) { ... }
+        eprintln!("[DEBUG] Processing {} field event handlers for event '{}'", handlers.len(), event_id);
         while !handlers.is_empty() {
             let handler = handlers.remove(0);
+            eprintln!("[DEBUG] Handler: effect={}, is_field={}, is_side={}, holder={:?}",
+                handler.effect_id, handler.is_field, handler.is_side, handler.holder);
 
             // JS: if ((handler.effectHolder as Pokemon).fainted) {
             //         if (!(handler.state?.isSlotCondition)) continue;
@@ -306,6 +310,70 @@ impl Battle {
             //             continue;
             //         }
             //     }
+
+            // Handle field effects (weather, terrain, pseudo-weather)
+            if event_id == "Residual" && handler.is_field {
+                eprintln!("[DEBUG] Residual event for field effect: {}", handler.effect_id);
+                let should_clear = {
+                    // Check weather
+                    if self.field.weather == handler.effect_id {
+                        if let Some(duration) = self.field.weather_state.duration.as_mut() {
+                            eprintln!("[DEBUG] Weather {} duration before: {}", handler.effect_id, *duration);
+                            *duration -= 1;
+                            eprintln!("[DEBUG] Weather {} duration after: {}", handler.effect_id, *duration);
+                            *duration == 0
+                        } else {
+                            eprintln!("[DEBUG] Weather {} has no duration", handler.effect_id);
+                            false
+                        }
+                    }
+                    // Check terrain
+                    else if self.field.terrain == handler.effect_id {
+                        if let Some(duration) = self.field.terrain_state.duration.as_mut() {
+                            *duration -= 1;
+                            *duration == 0
+                        } else {
+                            false
+                        }
+                    }
+                    // Check pseudo-weather
+                    else if let Some(pw_state) = self.field.pseudo_weather.get_mut(&handler.effect_id) {
+                        if let Some(duration) = pw_state.duration.as_mut() {
+                            *duration -= 1;
+                            *duration == 0
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    }
+                };
+
+                // Clear expired field effects
+                if should_clear {
+                    // Clear weather
+                    if self.field.weather == handler.effect_id {
+                        self.field.weather = ID::new("");
+                        self.field.weather_state = crate::event_system::EffectState::new(ID::new(""));
+                    }
+                    // Clear terrain
+                    else if self.field.terrain == handler.effect_id {
+                        self.field.terrain = ID::new("");
+                        self.field.terrain_state = crate::event_system::EffectState::new(ID::new(""));
+                    }
+                    // Clear pseudo-weather
+                    else {
+                        self.field.pseudo_weather.remove(&handler.effect_id);
+                    }
+
+                    if self.ended {
+                        return;
+                    }
+                    continue;
+                }
+            }
+
+            // Handle Pokemon volatiles and status effects
             if event_id == "Residual" {
                 // Handle volatile/status duration decrements
                 if let Some((side_idx, poke_idx)) = handler.holder {

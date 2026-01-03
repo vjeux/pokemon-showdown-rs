@@ -160,6 +160,7 @@ mod retarget_last_move;
 mod run_pick_team;
 mod send_updates;
 mod set_trapped;
+mod set_weather;
 mod show_open_team_sheets;
 mod spread_modify;
 mod stat_modify;

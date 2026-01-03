@@ -115,8 +115,8 @@ function printBattleState(battle, iteration) {
     console.error(`========== Turn ${battle.turn} (Iteration ${iteration}) ==========`);
 
     // Field conditions
-    const weather = battle.field.weather?.id || 'none';
-    const terrain = battle.field.terrain?.id || 'none';
+    const weather = battle.field.weather || 'none';
+    const terrain = battle.field.terrain || 'none';
     console.error(`Field: Weather=${weather}, Terrain=${terrain}, PRNG calls=${totalPrngCalls}`);
 
     // Player 1 state
