@@ -25,7 +25,7 @@ pub fn damage_callback(
     };
 
     // return this.clampIntRange(target.getUndynamaxedHP() / 2, 1);
-    let damage = (target.get_undynamaxed_hp() / 2).max(1);
+    let damage = (target.get_undynamaxed_hp(None) / 2).max(1);
 
     EventResult::Number(damage)
 }

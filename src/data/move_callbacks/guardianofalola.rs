@@ -36,7 +36,7 @@ pub fn damage_callback(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.get_undynamaxed_hp() * 3 / 4
+        target_pokemon.get_undynamaxed_hp(None) * 3 / 4
     };
 
     // if (target.volatiles['protect'] || target.volatiles['banefulbunker'] || target.volatiles['kingsshield'] ||
