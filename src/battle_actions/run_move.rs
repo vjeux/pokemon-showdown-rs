@@ -120,7 +120,10 @@ pub fn run_move(
 
     // Call beforeMoveCallback
     // if (move.beforeMoveCallback)
-    // TODO: Implement beforeMoveCallback
+    //     move.beforeMoveCallback.call(this, pokemon, target, move);
+    if battle.has_callback(move_id, "beforeMoveCallback") {
+        crate::data::move_callbacks::dispatch_before_move_callback(battle, move_id.as_str(), pokemon_pos);
+    }
 
     // Reset lastDamage
     // pokemon.lastDamage = 0;
