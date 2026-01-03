@@ -5,12 +5,12 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 362 total (down from 364 - resolved 2 more in this session: Batch 160)
-  - Complex abilities requiring transform/redirect/rebound infrastructure: ~11 TODOs (down from 13 - Imposter and Magic Bounce completed)
+- **Remaining TODOs**: 360 total (down from 362 - resolved 2 more in this session: Batch 161)
+  - Complex abilities requiring transform/illusion infrastructure: ~9 TODOs (down from 11 - Imposter, Magic Bounce, and Rebound completed)
   - Move callbacks requiring queue/event system extensions: ~24 TODOs
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 160 - Magic Bounce Ability (2 TODO callbacks resolved, move reflection infrastructure confirmed working)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce working, crate::battle_actions::use_move available)
+- **Latest Progress**: Batch 161 - Rebound Ability (2 TODO callbacks resolved, move reflection with activeTurns check)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
 ## Completed Implementations
@@ -2596,6 +2596,66 @@ onTryHit(target, source, move) {
 **Progress:**
 - TODOs Resolved: 2 (Magic Bounce onTryHit and onAllyTryHitSide)
 - Infrastructure Confirmed: crate::battle_actions::use_move() available for move reflection
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+
+### Batch 161 - Rebound Ability (2 TODOs)
+
+**Completed ability:**
+281-282. **Rebound** (rebound.rs) - Complete implementation of move reflection with switch-in restriction:
+   - onTryHit: Reflects reflectable moves back to original source (only on switch-in turn)
+     - Checks effectState.target.activeTurns == 0 (only works on switch-in turn)
+     - Checks target ≠ source, !has_bounced, flags.reflectable, !target.isSemiInvulnerable()
+     - Sets active_move.has_bounced = true and active_move.prankster_boosted = false
+     - Calls crate::battle_actions::use_move() to reflect the move with swapped positions
+     - Returns EventResult::Null to prevent original move from hitting
+   - onAllyTryHitSide: Reflects side-targeting moves when targeting allies (only on switch-in turn)
+     - Checks effectState.target.activeTurns == 0 (only works on switch-in turn)
+     - Checks !target.isAlly(source), !has_bounced, flags.reflectable, !target.isSemiInvulnerable()
+     - Gets Rebound holder from battle.effect_state.target
+     - Sets active_move.has_bounced = true and active_move.prankster_boosted = false
+     - Calls crate::battle_actions::use_move() with Rebound holder as user
+     - Returns EventResult::Null to prevent original move from hitting
+
+**Key Difference from Magic Bounce:**
+- **Magic Bounce**: Always reflects reflectable moves (no turn restriction)
+- **Rebound**: Only reflects reflectable moves on the turn you switch in (activeTurns == 0)
+
+**Implementation Details:**
+- Uses pokemon.active_turns field to check if Pokemon just switched in
+- Gets Rebound holder from battle.effect_state.target to check active_turns
+- Returns EventResult::Continue early if active_turns > 0
+- Otherwise follows same pattern as Magic Bounce (Batch 160)
+- Uses Pokemon::is_semi_invulnerable(battle, target_pos) for invulnerability checks
+- Calls crate::battle_actions::use_move() for move reflection
+- Returns EventResult::Null to block original move execution
+
+**JavaScript Equivalence:**
+```javascript
+onTryHit(target, source, move) {
+    if (this.effectState.target.activeTurns) return;  // Only on switch-in turn
+
+    if (target === source || move.hasBounced || !move.flags['reflectable'] || target.isSemiInvulnerable()) {
+        return;
+    }
+    const newMove = this.dex.getActiveMove(move.id);
+    newMove.hasBounced = true;
+    newMove.pranksterBoosted = false;
+    this.actions.useMove(newMove, target, { target: source });
+    return null;
+}
+```
+
+**Files Modified:**
+- src/data/ability_callbacks/rebound.rs - Implemented both callbacks (156 lines added, 8 removed)
+
+**Git Commit:**
+- cbfc52b1: "Implement Rebound ability (Batch 161)"
+
+**Progress:**
+- TODOs Resolved: 2 (Rebound onTryHit and onAllyTryHitSide)
+- Infrastructure Used: pokemon.active_turns field for switch-in turn detection
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
