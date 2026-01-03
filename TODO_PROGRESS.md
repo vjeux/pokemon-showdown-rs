@@ -2,9 +2,9 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 158 (41.6%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional
-- In Progress: Continuing systematic implementation with volatile status abilities
+- Completed: 159 (41.8%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
+- In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
 
@@ -334,34 +334,14 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 48 - Volatile Status Abilities (1 ability)
 159. **Flash Fire** (flashfire.rs) - onTryHit: Grants immunity to Fire moves, adds flashfire volatile; onEnd: Removes flashfire volatile; Volatile condition handlers: onStart (shows message), onModifyAtk/onModifySpA (1.5x boost for Fire moves), onEnd (shows silent end message)
 
+### Batch 49 - Fainted Pokemon Tracking (1 ability)
+160. **Supreme Overlord** (supremeoverlord.rs) - onStart: Tracks number of fainted teammates (up to 5) in ability_state.data["fallen"]; onBasePower: Boosts power based on fallen count (10%/20%/30%/40%/50% for 1-5 fallen); onEnd: Shows fallen count in end message
+
 ## Current Session
-Completed major getMoveHitData infrastructure refactor.
-Implemented 62 abilities (batches 22-46).
-Progress: 157/380 abilities (41.3%).
+Completed Flash Fire (Batch 48) using volatile status infrastructure.
+Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
+Progress: 159/380 abilities (41.8%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
-Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
-Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
-Completed damage modifier abilities using battle.get_move_hit_data() to access critical hit and type effectiveness data.
-Completed residual status cure abilities using Pokemon::effective_weather and Pokemon::adjacent_allies for weather checking and ally iteration.
-Completed Magic Guard using effect type detection via dex lookups.
-Completed Telepathy, Anger Point, and Pressure using ally detection, move hit data, and PP deduction.
-Completed Friend Guard, Soul-Heart, and Leaf Guard using ally damage reduction, faint detection, and weather-based status prevention.
-Completed onModifySTAB infrastructure update: Added stab parameter to dispatcher functions, wired event.relay_var_float through handle_ability_event.rs, and enabled abilities to access battle.active_move for STAB calculations.
-Completed Poison Heal, Neuroforce, and Adaptability using poison damage reversal, super-effective damage boost, and STAB bonus increase.
-Completed Sturdy, Unnerve, and Wonder Guard using OHKO immunity, EffectState.data for shared state tracking, and type effectiveness checking via move hit data.
-Completed Battery, Contrary, and Intimidate using ally base power boost, in-place boost reversal via battle.current_event.relay_var_boost, and adjacent foe targeting with Substitute immunity.
-Completed Mold Breaker, Sticky Hold, and Unaware using ignore_ability flag, item removal prevention with special handling for Sticky Barb, and stat boost zeroing based on active Pokemon positioning.
-Completed No Guard, Simple, and Unseen Fist using invulnerability/accuracy overrides via effectState.target, stat change doubling via relay_var_boost, and move flag modification.
-Completed Turboblaze and Teravolt as variants of Mold Breaker (all three set ignore_ability flag).
-Completed Aura Break and Liquid Voice using has_aura_break flag setting and sound move type modification.
-Completed Hospitality, Dauntless Shield, and Curious Medicine using adjacent ally healing/boost clearing and ability_state.data for one-time boost tracking.
-Completed Frisk and Power Spot using item revelation for foes and ally base power boost.
-Completed type-changing abilities (Refrigerate, Aerilate, Normalize, Galvanize) using ActiveMove.type_changer_boosted tracking and pokemon.terastallized checks, with proper exclusion lists for special moves.
-Completed Dark Aura and Fairy Aura using aura_booster tracking, has_aura_break detection, and battle.suppressing_ability checks.
-Completed EffectState.source infrastructure: Added source field to EffectState struct (src/dex_data.rs) to track which Pokemon created an effect. This enables proper weather source tracking for strong weather abilities.
-Completed Delta Stream and Desolate Land with full onStart, onAnySetWeather, and onEnd handlers using EffectState.source for weather source hand-off mechanics.
-Completed Moody using battle.sample() for random stat selection with proper boost application (excludes accuracy/evasion, boosts one stat by 2, lowers another by 1).
-Completed Mountaineer using activeTurns check for just-switched-in immunity to Rock-type moves.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
