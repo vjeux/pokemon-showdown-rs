@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 129 (33.9%)
+- Completed: 132 (34.7%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
 - In Progress: Continuing systematic implementation
 
@@ -277,10 +277,15 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 128. **Unnerve** (unnerve.rs) - onStart: Shows ability activation (one-time via effectState.unnerved flag); onEnd: Resets unnerved flag; onFoeTryEatItem: Prevents foes from eating berries
 129. **Wonder Guard** (wonderguard.rs) - onTryHit: Prevents non-super-effective moves from hitting (checks runEffectiveness <= 0, handles skydrop/struggle/status exceptions, respects smartTarget flag)
 
+### Batch 37 - Stat Boost Reversal & Ally Support (3 abilities)
+130. **Battery** (battery.rs) - onAllyBasePower: Boosts ally Special moves by 1.3x (5325/4096) when attacker ≠ ability holder (uses effectState.target and active_move.category)
+131. **Contrary** (contrary.rs) - onChangeBoost: Reverses all stat changes by multiplying boosts by -1 (skips Z-Power boosts, modifies battle.current_event.relay_var_boost in place)
+132. **Intimidate** (intimidate.rs) - onStart: Lowers Attack of all adjacent foes by 1 (shows immunity for Substitute, uses Pokemon::adjacent_foes)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 34 abilities (batches 22-36).
-Progress: 129/380 abilities (33.9%).
+Implemented 37 abilities (batches 22-37).
+Progress: 132/380 abilities (34.7%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -292,6 +297,7 @@ Completed Friend Guard, Soul-Heart, and Leaf Guard using ally damage reduction, 
 Completed onModifySTAB infrastructure update: Added stab parameter to dispatcher functions, wired event.relay_var_float through handle_ability_event.rs, and enabled abilities to access battle.active_move for STAB calculations.
 Completed Poison Heal, Neuroforce, and Adaptability using poison damage reversal, super-effective damage boost, and STAB bonus increase.
 Completed Sturdy, Unnerve, and Wonder Guard using OHKO immunity, EffectState.data for shared state tracking, and type effectiveness checking via move hit data.
+Completed Battery, Contrary, and Intimidate using ally base power boost, in-place boost reversal via battle.current_event.relay_var_boost, and adjacent foe targeting with Substitute immunity.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)

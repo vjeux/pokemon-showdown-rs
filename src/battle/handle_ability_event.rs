@@ -315,7 +315,17 @@ impl Battle {
                 pokemon_pos,
             ),
             "ChangeBoost" => {
-                ability_callbacks::dispatch_on_change_boost(self, ability_id.as_str(), Some(pokemon_pos), None, None)
+                let (target_pos, source_pos, effect_id_string) = if let Some(ref event) = self.current_event {
+                    (
+                        event.target,
+                        event.source,
+                        event.effect.as_ref().map(|id| id.as_str().to_string())
+                    )
+                } else {
+                    (Some(pokemon_pos), None, None)
+                };
+                let effect_id = effect_id_string.as_ref().map(|s| s.as_str());
+                ability_callbacks::dispatch_on_change_boost(self, ability_id.as_str(), target_pos, source_pos, effect_id)
             }
             "CheckShow" => {
                 ability_callbacks::dispatch_on_check_show(self, ability_id.as_str(), pokemon_pos)
