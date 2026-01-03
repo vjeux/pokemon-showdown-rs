@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// basePowerCallback(pokemon, target, move) {
@@ -58,13 +59,48 @@ pub fn base_power_callback(
 ///         data.sources.push(pokemon);
 ///     }
 /// }
-pub fn before_turn_callback(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: This callback needs infrastructure support for side condition sources
-    // The TypeScript version calls side.addSideCondition('pursuit', pokemon) where pokemon is the source
-    // But the Rust add_side_condition signature is: fn add_side_condition(&mut self, id: ID, duration: Option<i32>)
-    // It doesn't support passing a source pokemon parameter
-    // Additionally, there's no getSideConditionData equivalent to manage the sources array in effect state
-    // This needs infrastructure changes to support source tracking in side conditions
+pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    let pokemon = pokemon_pos;
+
+    // Get pokemon slot before we start modifying side conditions
+    let pokemon_slot = {
+        let p = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        p.get_slot()
+    };
+
+    // for (const side of this.sides) {
+    for side_idx in 0..battle.sides.len() {
+        // if (side.hasAlly(pokemon)) continue;
+        let is_ally = pokemon.0 == side_idx || battle.sides[side_idx].ally_index == Some(pokemon.0);
+        if is_ally {
+            continue;
+        }
+
+        // side.addSideCondition('pursuit', pokemon);
+        let pursuit_id = ID::from("pursuit");
+        battle.add_side_condition(side_idx, pursuit_id.clone(), Some(pokemon), None);
+
+        // const data = side.getSideConditionData('pursuit');
+        // if (!data.sources) {
+        //     data.sources = [];
+        // }
+        // data.sources.push(pokemon);
+        if let Some(data) = battle.get_side_condition_data_mut(side_idx, &pursuit_id) {
+            // Get or create sources array
+            let sources = data.entry("sources".to_string()).or_insert_with(|| {
+                serde_json::Value::Array(vec![])
+            });
+
+            // Add pokemon position to sources array
+            if let Some(sources_array) = sources.as_array_mut() {
+                sources_array.push(serde_json::to_value(&pokemon_slot).unwrap());
+            }
+        }
+    }
+
     EventResult::Continue
 }
 

@@ -51,6 +51,7 @@ mod debug;
 mod get_debug_log;
 mod add;
 mod add_move;
+mod add_side_condition;
 mod hint;
 mod trunc;
 mod chain;
