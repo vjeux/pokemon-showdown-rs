@@ -52,27 +52,24 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 
         if is_wind_move {
             // if (!this.boost({ atk: 1 }, target, target))
-            // Note: boost() returns whether the boost was successful (stat not already maxed)
-            // In Rust, we'll always try to boost and check if it fails
-            let boost_result = battle.boost(&[("atk", 1)], target_pos, Some(target_pos), None, false, false);
+            let boost_succeeded = battle.boost(&[("atk", 1)], target_pos, Some(target_pos), None, false, false);
 
             // If boost failed (returns false in JS), show immunity message
-            // In Rust, boost() doesn't return a result, so we'll always show the message for now
-            // TODO: Update battle.boost() to return success status to match JS behavior exactly
-
-            // For now, we'll show immune message unconditionally when hit by wind move
-            let target_slot = {
-                let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-                    Some(p) => p,
-                    None => return EventResult::Null,
+            if !boost_succeeded {
+                let target_slot = {
+                    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Null,
+                    };
+                    target.get_slot()
                 };
-                target.get_slot()
-            };
 
-            // Always boost attack (since we can't check if it succeeded yet)
-            // this.add('-immune', target, '[from] ability: Wind Rider');
-            // Note: The immunity message is only shown if the boost failed in JS
-            // We'll implement this correctly once boost() returns a result
+                // this.add('-immune', target, '[from] ability: Wind Rider');
+                battle.add("-immune", &[
+                    Arg::from(target_slot),
+                    Arg::from("[from] ability: Wind Rider"),
+                ]);
+            }
 
             // return null;
             return EventResult::Null;
