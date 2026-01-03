@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 167 (43.9%)
+- Completed: 169 (44.5%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -352,6 +352,10 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 166. **Sheer Force** (sheerforce.rs) - onModifyMove: Removes secondaries, self effect, and selfBoost for clangoroussoulblaze; sets has_sheer_force flag; onBasePower: Applies 1.3x power boost (5325/4096) when has_sheer_force is true
 167. **Forewarn** (forewarn.rs) - onStart: Reveals highest base power move from all foes; handles OHKO moves (bp=150), counter/metalburst/mirrorcoat (bp=120), bp=1 (bp=80), non-Status moves with bp=0 (bp=80); randomly samples from tied moves and shows -activate message
 
+### Batch 54 - Contact Status & Priority Modification (2 abilities)
+168. **Effect Spore** (effectspore.rs) - onDamagingHit: 30% chance to inflict sleep/paralysis/poison on attacker when hit by contact move; completed powder immunity check using Pokemon::run_status_immunity; probabilities: 11% sleep, 10% paralysis, 9% poison
+169. **Mycelium Might** (myceliummight.rs) - onFractionalPriority: Lowers priority of Status moves by 0.1 (returns -1 as fractional priority is multiplied by 10 internally); onModifyMove: Sets ignore_ability flag for Status moves to bypass target abilities
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -359,7 +363,8 @@ Completed Serene Grace, Skill Link, and Stench (Batch 50) using ActiveMove.secon
 Completed Download (Batch 51) using pokemon.foes() and battle.get_pokemon_stat().
 Completed Gorilla Tactics (Batch 52) using ability_state.data for choice-lock tracking.
 Completed Sheer Force and Forewarn (Batch 53) using ActiveMove fields and move data lookup.
-Progress: 167/380 abilities (43.9%).
+Completed Effect Spore and Mycelium Might (Batch 54) using run_status_immunity and ActiveMove fields.
+Progress: 169/380 abilities (44.5%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
