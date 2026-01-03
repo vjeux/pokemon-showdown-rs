@@ -736,6 +736,33 @@ Progress: 269/380 abilities (70.8%) - no change (move callback, not ability).
 Remaining TODOs: 30 (down from 32 - removed 2 Quash TODOs).
 
 
+### Batch 138 - Serene Grace and Skill Link Infrastructure Discovery (2 TODOs)
+
+**Completed abilities:**
+270-271. **Serene Grace** (serenegrace.rs) - onModifyMove: Discovered ActiveMove.self_effect already exists; doubles self effect chance using self_effect.chance field; completes full secondary/self chance doubling
+272. **Skill Link** (skilllink.rs) - onModifyMove: Discovered ActiveMove.multi_accuracy already exists; sets multi_accuracy = false to disable per-hit accuracy checks for moves like Triple Axel
+
+**Infrastructure Discovery:**
+These TODOs were marked as needing infrastructure, but the fields already existed:
+- ActiveMove.self_effect: Option<SelfEffect> with SelfEffect.chance: Option<i32>
+- ActiveMove.multi_accuracy: bool
+Both fields were present but not used in these abilities - the TODOs were outdated!
+
+**Implementation Details:**
+- Serene Grace: Added doubling of `active_move.self_effect.chance` alongside existing secondaries doubling
+- Skill Link: Set `active_move.multi_accuracy = false` to match JavaScript's `delete move.multiaccuracy`
+- JavaScript `delete` → Rust `= false` for bool fields
+
+**Files Modified:**
+- src/data/ability_callbacks/serenegrace.rs - Removed TODO and implemented self effect chance doubling (6 lines added, 4 removed)
+- src/data/ability_callbacks/skilllink.rs - Removed TODO and set multi_accuracy to false (3 lines added, 3 removed)
+
+**Git Commit**: c8e8a2d9: "Complete Serene Grace and Skill Link - use existing ActiveMove fields (Batch 138)"
+
+Progress: 271/380 abilities (71.3%).
+Remaining TODOs: 28 (down from 30 - removed 2 ability TODOs).
+
+
 ## Session Summary (Latest Continuation)
 
 **Session Achievements:**
@@ -743,27 +770,29 @@ Remaining TODOs: 30 (down from 32 - removed 2 Quash TODOs).
 - **Batch 135**: Ice Face (5 TODOs) - Complete implementation with forme changes, ability_state tracking, weather checking
 - **Batch 136**: Payback (1 TODO) - Using battle.queue.will_move() for move ordering
 - **Batch 137**: MAJOR INFRASTRUCTURE + Quash (2 TODOs)
-  - Created BattleQueue::will_move_mut() for mutable action access  - Implemented Quash move with action order modification
+  - Created BattleQueue::will_move_mut() for mutable action access
+  - Implemented Quash move with action order modification
+- **Batch 138**: Serene Grace + Skill Link (2 TODOs) - Discovered existing ActiveMove fields
 
 **Key Discoveries:**
 - Type patterns: active_move.category is String, flags is struct, infiltrates is bool
 - Infrastructure exists: queue.will_move(), pokemon.ability_state.data, forme_change, has_volatile, etc.
 - Successfully created will_move_mut() infrastructure to enable queue manipulation
+- ActiveMove.self_effect and multi_accuracy fields already exist - some TODOs were outdated!
 
 **Statistics:**
-- TODOs completed: 9 (6 ability + 3 move)
+- TODOs completed: 11 (8 ability + 3 move)
 - Infrastructure additions: 1 major (will_move_mut)
 - Starting TODOs: 39
-- Ending TODOs: 30
-- Progress: 70.8% abilities complete (269/380)
+- Ending TODOs: 28
+- Progress: 71.3% abilities complete (271/380)
 - All code compiles, committed, and pushed
 
 **Remaining Work:**
-The 30 remaining TODOs require infrastructure not yet available:
+The 28 remaining TODOs require infrastructure not yet available:
 - Transform/Illusion system (5 abilities)
 - Redirect system (2 abilities)
 - Magic Bounce system (2 abilities)
-- ActiveMove.self and multi_accuracy fields (2 abilities)
 - Pokemon.heroMessageDisplayed, attackedBy fields (multiple TODOs)
 - Event callback parameter extensions (type, boosts parameters)
 - Various Battle methods (tryMoveHit, set_trapped, etc.)
