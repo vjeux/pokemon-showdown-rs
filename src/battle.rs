@@ -74,6 +74,7 @@ mod is_pokemon_fainted;
 mod get_random_target;
 mod update_speed;
 mod damage;
+mod decrement_active_move_actions;
 mod direct_damage;
 mod heal;
 mod boost;

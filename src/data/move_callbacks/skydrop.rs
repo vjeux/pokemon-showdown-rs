@@ -488,8 +488,9 @@ pub mod condition {
 
         // The attacker would be passed via event context
         // For this implementation, we check if the current actor is the effect source
-        if let Some(_source) = effect_source {
-            // TODO: Implement battle.decrement_active_move_actions
+        if let Some(source) = effect_source {
+            // attacker.activeMoveActions--;
+            battle.decrement_active_move_actions(source);
             battle.debug("Sky drop nullifying.");
             return EventResult::Stop;
         }
