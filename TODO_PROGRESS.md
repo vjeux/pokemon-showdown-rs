@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 163 (42.9%)
+- Completed: 165 (43.4%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -328,8 +328,8 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 156. **Moody** (moody.rs) - onResidual: Randomly boosts one stat (excluding accuracy/evasion) by 2 and lowers a different stat by 1 (uses BoostID::stats_only and battle.sample for random selection)
 157. **Mountaineer** (mountaineer.rs) - onTryHit: Grants immunity to Rock-type moves when Pokemon just switched in (activeTurns == 0), shows immunity message and returns Null to block hit
 
-### Batch 47 - Partial Implementations (1 ability - partial)
-158. **Gorilla Tactics** (gorillatactics.rs) - PARTIAL: onModifyAtk: 1.5x Attack boost when not Dynamaxed (remaining handlers need abilityState infrastructure: onStart, onBeforeMove, onModifyMove, onDisableMove, onEnd)
+### Batch 47 - Partial Implementations (moved to Batch 52)
+(See Batch 52 for completed implementation)
 
 ### Batch 48 - Volatile Status Abilities (1 ability)
 159. **Flash Fire** (flashfire.rs) - onTryHit: Grants immunity to Fire moves, adds flashfire volatile; onEnd: Removes flashfire volatile; Volatile condition handlers: onStart (shows message), onModifyAtk/onModifySpA (1.5x boost for Fire moves), onEnd (shows silent end message)
@@ -345,12 +345,16 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 51 - Stat-Based Conditional Boost (1 ability)
 164. **Download** (download.rs) - onStart: Compares total Defense vs Special Defense of all foes using battle.get_pokemon_stat(); boosts Special Attack if Defense ≥ Special Defense, otherwise boosts Attack
 
+### Batch 52 - Choice-Lock Mechanics (1 ability)
+165. **Gorilla Tactics** (gorillatactics.rs) - Completed all handlers: onStart: Initializes ability_state.data["choiceLock"] = ""; onBeforeMove: Prevents using different move when locked, shows -fail message and returns false; onModifyMove: Sets choiceLock to current move ID (skips if already locked or Z/Max/Struggle); onDisableMove: Disables all moves except the locked one (not when Dynamaxed); onModifyAtk: 1.5x Attack boost when not Dynamaxed; onEnd: Clears choiceLock
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
 Completed Serene Grace, Skill Link, and Stench (Batch 50) using ActiveMove.secondaries modification.
 Completed Download (Batch 51) using pokemon.foes() and battle.get_pokemon_stat().
-Progress: 163/380 abilities (42.9%).
+Completed Gorilla Tactics (Batch 52) using ability_state.data for choice-lock tracking.
+Progress: 165/380 abilities (43.4%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
