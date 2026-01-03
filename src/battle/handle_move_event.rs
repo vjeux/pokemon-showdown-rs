@@ -100,10 +100,7 @@ impl Battle {
             "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, source_pos, target),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_id, source_pos),
             "ModifyMove" => {
-                eprintln!("[HANDLE_MOVE_EVENT] ModifyMove for move_id={}", move_id);
-                let result = move_callbacks::dispatch_on_modify_move(self, move_id, source_pos, target);
-                eprintln!("[HANDLE_MOVE_EVENT] ModifyMove for move_id={} returned {:?}", move_id, result);
-                result
+                move_callbacks::dispatch_on_modify_move(self, move_id, source_pos, target)
             }
             "ModifyPriority" => {
                 move_callbacks::dispatch_on_modify_priority(self, move_id, source_pos)

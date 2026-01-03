@@ -47,13 +47,11 @@ impl Battle {
                 )
             }
             "AfterMoveSecondarySelf" => {
-                eprintln!("[HANDLE_ITEM_EVENT] AfterMoveSecondarySelf: current_event.source={:?}, target={:?}", source, target);
                 // In JavaScript: onAfterMoveSecondarySelf(source, target, move)
                 // where source = the Pokemon using the item (target param to handle_item_event)
                 // and target = the target of the move (source from current_event)
                 // So we need to swap them when calling the dispatcher
                 if let Some(target_of_move) = source {
-                    eprintln!("[HANDLE_ITEM_EVENT] Calling dispatcher with source_pos={:?} (attacker), target_pos={:?} (move target)", target, Some(target_of_move));
                     let move_id_str = if let Some(ref active_move) = self.active_move {
                         active_move.id.to_string()
                     } else {
@@ -72,7 +70,6 @@ impl Battle {
                         EventResult::Continue
                     }
                 } else {
-                    eprintln!("[HANDLE_ITEM_EVENT] source is None, returning Continue");
                     EventResult::Continue
                 }
             }
