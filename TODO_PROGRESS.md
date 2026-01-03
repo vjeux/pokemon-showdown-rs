@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 217 (57.1%)
+- Completed: 219 (57.6%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -528,6 +528,12 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 90 - As One Glastrier (partial - 3/4 callbacks)
 216. **As One (Glastrier)** (asoneglastrier.rs) - Partial implementation: onStart: Shows "As One" and "Unnerve" ability messages, sets unnerved flag in ability_state.data; onEnd: Resets unnerved flag; onSourceAfterFaint: Boosts Attack by 1 when KOing with a move (uses chillingneigh as source ability); onFoeTryEatItem: TODO (needs item system)
 
+### Batch 91 - Power Construct (1 ability)
+217. **Power Construct** (powerconstruct.rs) - onResidual: Changes Zygarde to Complete forme when HP <= 1/2 max HP; checks base species is Zygarde, not transformed, HP > 0, and not already Complete; uses forme_change with is_permanent=true; skips canMegaEvo and formeRegression (mega evolution system not available)
+
+### Batch 92 - Shields Down (1 ability)
+218-219. **Shields Down** (shieldsdown.rs) - All callbacks implemented: onStart/onResidual: Changes Minior between Meteor forme (HP > 1/2) and Core forme (HP <= 1/2) based on HP threshold; onSetStatus: Blocks all status conditions in Meteor forme; onTryAddVolatile: Blocks yawn volatile in Meteor forme; uses pokemon.set.species for forme restoration
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -546,7 +552,9 @@ Completed Schooling (Batch 87) using pokemon.level and pokemon.transformed field
 Completed Power of Alchemy (Batch 88) - identical implementation to Receiver.
 Partially completed As One Spectrier (Batch 89) - 3/4 callbacks (onFoeTryEatItem needs item system).
 Partially completed As One Glastrier (Batch 90) - 3/4 callbacks (onFoeTryEatItem needs item system).
-Progress: 203→217/380 (57.1%).
+Completed Power Construct (Batch 91) - HP-based forme change to Zygarde-Complete.
+Completed Shields Down (Batch 92) - HP-based forme changes and status immunity in Meteor forme.
+Progress: 203→219/380 (57.6%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
