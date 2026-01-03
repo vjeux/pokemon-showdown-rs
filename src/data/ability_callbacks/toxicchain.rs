@@ -18,7 +18,19 @@ use crate::event::EventResult;
 pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // 30% chance to badly poison the target after damaging them
     if let (Some(target), Some(_source)) = (target_pos, source_pos) {
-        // TODO: Check for Shield Dust ability and Covert Cloak item when those are implemented
+        // Despite not being a secondary, Shield Dust / Covert Cloak block Toxic Chain's effect
+        // if (target.hasAbility('shielddust') || target.hasItem('covertcloak')) return;
+        let has_shield_dust_or_cloak = {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target_pokemon.has_ability(battle, &["shielddust"]) || target_pokemon.has_item(battle, &["covertcloak"])
+        };
+
+        if has_shield_dust_or_cloak {
+            return EventResult::Continue;
+        }
 
         if battle.random_chance(3, 10) {
             // Try to set toxic (badly poisoned) status on the target
