@@ -494,7 +494,12 @@ pub struct EffectState {
     /// JavaScript: duration?: number
     pub duration: Option<i32>,
 
-    // TODO: DELETE - Not in JavaScript EffectState (only has id, effectOrder, duration)
+    /// Source Pokemon that created this effect (side_idx, pokemon_idx)
+    /// JavaScript: source?: Pokemon
+    /// Rust uses position tuple instead of Pokemon reference
+    pub source: Option<(usize, usize)>,
+
+    // TODO: DELETE - Not in JavaScript EffectState (only has id, effectOrder, duration, source)
     // These fields may belong in a different Rust struct or be Rust-specific extensions
     /// Number of layers (for Spikes, Toxic Spikes, etc.)
     pub layers: Option<i32>,
@@ -519,6 +524,7 @@ impl EffectState {
             id,
             effect_order: 0,
             duration: None,
+            source: None,
             layers: None,
             source_slot: None,
             target_side: None,

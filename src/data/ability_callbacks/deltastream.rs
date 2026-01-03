@@ -60,14 +60,43 @@ pub fn on_any_set_weather(battle: &mut Battle, _target_pos: Option<(usize, usize
 ///     }
 ///     this.field.clearWeather();
 /// }
-pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    // This requires EffectState to have a source field tracking the weather source Pokemon
-    // Currently EffectState only has id, effectOrder, duration, layers, and source_slot
-    // JavaScript's EffectState.source stores the Pokemon that set the weather
-    // Need to either:
-    // 1. Add source: Option<(usize, usize)> to EffectState
-    // 2. Use a different mechanism to track weather source
+pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::dex_data::ID;
+
+    // if (this.field.weatherState.source !== pokemon) return;
+    let weather_source = battle.field.get_weather_state().source;
+    if weather_source != Some(pokemon_pos) {
+        return EventResult::Continue;
+    }
+
+    // for (const target of this.getAllActive())
+    let all_active = battle.get_all_active(false);
+
+    for active_pos in all_active {
+        // if (target === pokemon) continue;
+        if active_pos == pokemon_pos {
+            continue;
+        }
+
+        // if (target.hasAbility('deltastream'))
+        let has_delta_stream = {
+            let pokemon = match battle.pokemon_at(active_pos.0, active_pos.1) {
+                Some(p) => p,
+                None => continue,
+            };
+            pokemon.base_ability == ID::from("deltastream") || pokemon.ability == ID::from("deltastream")
+        };
+
+        if has_delta_stream {
+            // this.field.weatherState.source = target;
+            battle.field.get_weather_state_mut().source = Some(active_pos);
+            return EventResult::Continue;
+        }
+    }
+
+    // this.field.clearWeather();
+    battle.field.clear_weather();
+
     EventResult::Continue
 }
 

@@ -315,11 +315,14 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 150. **Normalize** (normalize.rs) - onModifyType: Changes all moves to Normal type (1.2x power with typeChangerBoosted tracking); onBasePower: Boosts changed moves by 1.2x (4915/4096)
 151. **Galvanize** (galvanize.rs) - onModifyType: Changes Normal-type moves to Electric type (1.2x power with typeChangerBoosted tracking); onBasePower: Boosts changed moves by 1.2x (4915/4096)
 
-### Batch 45 - Aura Abilities & Strong Weathers (4 abilities)
+### Batch 45 - Aura Abilities & Strong Weathers (4 abilities + infrastructure)
 152. **Dark Aura** (darkaura.rs) - onStart: Shows ability with suppressingAbility check; onAnyBasePower: Boosts Dark-type moves by 1.33x (5448/4096) or 0.75x (3072/4096) with Aura Break (uses aura_booster tracking)
 153. **Fairy Aura** (fairyaura.rs) - onStart: Shows ability with suppressingAbility check; onAnyBasePower: Boosts Fairy-type moves by 1.33x (5448/4096) or 0.75x (3072/4096) with Aura Break (uses aura_booster tracking)
-154. **Delta Stream** (deltastream.rs) - onStart: Sets deltastream weather; onAnySetWeather: Prevents non-strong weathers from replacing deltastream (onEnd requires EffectState.source infrastructure)
-155. **Desolate Land** (desolateland.rs) - onStart: Sets desolateland weather; onAnySetWeather: Prevents non-strong weathers from replacing desolateland (onEnd requires EffectState.source infrastructure)
+154. **Delta Stream** (deltastream.rs) - onStart: Sets deltastream weather; onAnySetWeather: Prevents non-strong weathers from replacing deltastream; onEnd: Transfers weather source to another Pokemon with Delta Stream or clears weather (uses EffectState.source)
+155. **Desolate Land** (desolateland.rs) - onStart: Sets desolateland weather; onAnySetWeather: Prevents non-strong weathers from replacing desolateland; onEnd: Transfers weather source to another Pokemon with Desolate Land or clears weather (uses EffectState.source)
+
+**EffectState.source Infrastructure (Major Change):**
+Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_data.rs to track which Pokemon created an effect. This matches JavaScript's `EffectState.source` which stores the Pokemon that set the weather/terrain. Required for proper strong weather source tracking and hand-off mechanics.
 
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
@@ -345,7 +348,8 @@ Completed Hospitality, Dauntless Shield, and Curious Medicine using adjacent all
 Completed Frisk and Power Spot using item revelation for foes and ally base power boost.
 Completed type-changing abilities (Refrigerate, Aerilate, Normalize, Galvanize) using ActiveMove.type_changer_boosted tracking and pokemon.terastallized checks, with proper exclusion lists for special moves.
 Completed Dark Aura and Fairy Aura using aura_booster tracking, has_aura_break detection, and battle.suppressing_ability checks.
-Completed Delta Stream and Desolate Land with onStart weather setting and onAnySetWeather strong weather protection (onEnd handlers require EffectState.source infrastructure addition).
+Completed EffectState.source infrastructure: Added source field to EffectState struct (src/dex_data.rs) to track which Pokemon created an effect. This enables proper weather source tracking for strong weather abilities.
+Completed Delta Stream and Desolate Land with full onStart, onAnySetWeather, and onEnd handlers using EffectState.source for weather source hand-off mechanics.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
