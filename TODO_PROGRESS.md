@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 174 (45.8%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
+- Completed: 175 (46.1%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -369,6 +369,9 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 58 - Attract & Taunt Auto-Removal (1 ability)
 174. **Oblivious** (oblivious.rs) - onUpdate: Automatically removes attract and taunt volatile statuses when present; shows -activate message and -end message for attract; other handlers already implemented (onImmunity, onTryHit, onTryBoost)
 
+### Batch 59 - Side Condition Removal (1 ability)
+175. **Screen Cleaner** (screencleaner.rs) - onStart: Removes reflect, lightscreen, and auroraveil from all sides (pokemon's side + foe sides); shows -activate message once when removing any screens; uses Side::get_side_condition, Side::remove_side_condition, and Side::foe_sides_with_conditions
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -381,7 +384,8 @@ Completed Synchronize and Own Tempo (Batch 55) using try_set_status and remove_v
 Completed Thermal Exchange (Batch 56) using cure_status and status immunity.
 Completed Damp (Batch 57) preventing explosion moves.
 Completed Oblivious (Batch 58) using remove_volatile for attract and taunt.
-Progress: 174/380 abilities (45.8%).
+Completed Screen Cleaner (Batch 59) using side condition system.
+Progress: 175/380 abilities (46.1%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
