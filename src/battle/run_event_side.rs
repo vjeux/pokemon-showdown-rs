@@ -41,29 +41,8 @@ impl Battle {
         // 3. Run each handler
         // 4. Combine results
 
-        // The main use case for SideConditionStart is abilities like Screen Cleaner
+        // The main use case for SideConditionStart is abilities like Screen Cleaner, Wind Power, Wind Rider
         // that react when a side condition is added
-
-        // Find and run ability handlers
-        // For each active Pokemon on all sides:
-        for side_index in 0..self.sides.len() {
-            let active_count = self.sides[side_index].active.len();
-            for pokemon_index in 0..active_count {
-                if let Some(pokemon) = self.pokemon_at(side_index, pokemon_index) {
-                    if pokemon.fainted {
-                        continue;
-                    }
-                    let ability_id = pokemon.ability.clone();
-
-                    // Check if this ability has a handler for this event
-                    if self.has_callback(&ability_id, event_id) {
-                        // TODO: Dispatch to ability callback with proper parameters
-                        // This requires ability callbacks to support side-level events
-                        // For now, we skip this until we have actual callbacks that need it
-                    }
-                }
-            }
-        }
 
         // Store event context for nested events
         let _parent_event = self.current_event.clone();
@@ -72,11 +51,47 @@ impl Battle {
         event_info.effect = effect.cloned();
         self.current_event = Some(event_info);
 
-        // TODO: Dispatch to handlers
-        // For now, return None (no handler modified the result)
+        // Find and run ability handlers
+        // For each active Pokemon on all sides:
+        for side_index in 0..self.sides.len() {
+            let active_count = self.sides[side_index].active.len();
+            for pokemon_index in 0..active_count {
+                let (ability_id, fainted) = {
+                    match self.pokemon_at(side_index, pokemon_index) {
+                        Some(p) => (p.ability.clone(), p.fainted),
+                        None => continue,
+                    }
+                };
+
+                if fainted {
+                    continue;
+                }
+
+                // Check if this ability has a handler for this event
+                if self.has_callback(&ability_id, event_id) {
+                    // Dispatch to ability callback based on event type
+                    if event_id == "SideConditionStart" {
+                        // Extract side_condition_id from effect parameter
+                        let side_condition_id = effect.map(|id| id.as_str()).unwrap_or("");
+
+                        use crate::data::ability_callbacks;
+                        ability_callbacks::dispatch_on_side_condition_start(
+                            self,
+                            ability_id.as_str(),
+                            (side_index, pokemon_index),
+                            side_condition_id,
+                            source,
+                        );
+                    }
+                    // Add more event types here as needed (SideStart, SideEnd, etc.)
+                }
+            }
+        }
 
         self.current_event = _parent_event;
 
+        // For now, return None (no handler modified the result)
+        // Full implementation would track and return modified results
         None
     }
 }
