@@ -55,9 +55,11 @@ pub fn on_hit(
     let mut success = false;
 
     // const allies = [...target.side.pokemon, ...target.side.allySide?.pokemon || []];
-    // For now, we'll just iterate through the target's side pokemon
-    // TODO: Add ally side support when double battles are fully implemented
-    let allies: Vec<(usize, usize)> = battle.sides[target.0]
+    // Collect allies from both the target's side and the ally side (for multi battles)
+    let mut allies: Vec<(usize, usize)> = Vec::new();
+
+    // Add target's side pokemon
+    let target_side_active: Vec<(usize, usize)> = battle.sides[target.0]
         .active
         .iter()
         .enumerate()
@@ -69,6 +71,25 @@ pub fn on_hit(
             }
         })
         .collect();
+    allies.extend(target_side_active);
+
+    // Add ally side pokemon (for multi battles)
+    let ally_side_index = battle.sides[target.0].ally_index;
+    if let Some(ally_idx) = ally_side_index {
+        let ally_side_active: Vec<(usize, usize)> = battle.sides[ally_idx]
+            .active
+            .iter()
+            .enumerate()
+            .filter_map(|(i, &active)| {
+                if active.is_some() {
+                    Some((ally_idx, i))
+                } else {
+                    None
+                }
+            })
+            .collect();
+        allies.extend(ally_side_active);
+    }
 
     // for (const ally of allies) {
     for ally_pos in allies {
