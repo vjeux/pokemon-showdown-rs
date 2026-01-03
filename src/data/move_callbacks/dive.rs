@@ -70,7 +70,7 @@ pub fn on_try_move(
     };
 
     if should_forme_change {
-        let _forme = {
+        let forme = {
             let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -82,8 +82,23 @@ pub fn on_try_move(
             }
         };
 
-        // TODO: Implement forme_change method in Battle
-        // battle.forme_change(attacker, forme, false, None, None);
+        // attacker.formeChange(forme, move);
+        // Use unsafe pointer pattern to call forme_change (same as Flower Gift, Gulp Missile)
+        let battle_ref1 = battle as *mut Battle;
+        let battle_ref2 = battle as *mut Battle;
+        unsafe {
+            if let Some(attacker_pokemon) = (*battle_ref1).pokemon_at_mut(attacker.0, attacker.1) {
+                use crate::dex_data::ID;
+                attacker_pokemon.forme_change(
+                    &mut *battle_ref2,
+                    ID::from(forme),
+                    Some(move_id.clone()),
+                    false,
+                    "",
+                    None,
+                );
+            }
+        }
     }
 
     // this.add('-prepare', attacker, move.name);
