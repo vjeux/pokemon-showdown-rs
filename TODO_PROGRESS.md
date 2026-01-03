@@ -948,3 +948,33 @@ battle.run_event("EatItem", Some(pokemon_pos), _source_pos, Some(&item_id), None
 Progress: 259/380 abilities (68.2%).
 Remaining TODOs: 74 (down from 75 - removed 1 Ripen TODO).
 
+
+### Batch 125 - Air Lock and Cloud Nine Abilities (2 abilities)
+
+**Completed abilities:**
+260. **Air Lock** (airlock.rs) - Weather-suppressing ability:
+   - onSwitchIn: Shows '-ability' message and calls own onStart callback
+   - onStart: Sets pokemon.abilityState.ending = false and calls each_event("WeatherChange", "airlock")
+   - onEnd: Sets pokemon.abilityState.ending = true and calls each_event("WeatherChange", "airlock")
+
+261. **Cloud Nine** (cloudnine.rs) - Weather-suppressing ability (identical to Air Lock):
+   - onSwitchIn: Shows '-ability' message and calls own onStart callback
+   - onStart: Sets pokemon.abilityState.ending = false and calls each_event("WeatherChange", "cloudnine")
+   - onEnd: Sets pokemon.abilityState.ending = true and calls each_event("WeatherChange", "cloudnine")
+
+**Implementation Notes:**
+- Both abilities are identical except for their names
+- Uses `battle.each_event()` infrastructure to trigger WeatherChange events on all active Pokemon
+- Uses `pokemon.ability_state.data` HashMap to store "ending" flag
+- onSwitchIn calls the ability's own onStart callback by calling `on_start(battle, pokemon_pos)`
+- The "ending" flag distinguishes between the ability activating (false) and deactivating (true)
+
+**Files Modified:**
+- src/data/ability_callbacks/airlock.rs - Implemented 3 callbacks (68 lines added)
+- src/data/ability_callbacks/cloudnine.rs - Implemented 3 callbacks (68 lines added)
+
+**Git Commit**: f3feac90: "Implement Air Lock and Cloud Nine abilities (Batch 125)"
+
+Progress: 261/380 abilities (68.7%).
+Remaining TODOs: 68 (down from 74 - removed 6 TODOs: 3 from Air Lock + 3 from Cloud Nine).
+
