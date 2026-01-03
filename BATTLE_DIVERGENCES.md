@@ -1252,3 +1252,33 @@ The 6 PRNG calls may be coming from:
 **Files Modified:** 1
 - src/battle/set_player.rs: Removed gender randomization (46 lines deleted)
 
+
+---
+
+## Session 14: Code Cleanup and 1:1 Verification (2026-01-02)
+
+### Twenty-Seventh Implementation: Remove debug prints from auto_choose.rs ✅
+- **Issue**: 7 eprintln! debug statements not present in JavaScript
+- **Location**: src/side/auto_choose.rs (not in battle/ but affects overall 1:1 equivalence)
+- **Action**: Removed all debug print statements
+
+  **Lines Removed:**
+  - Line 74: Pokemon move count logging
+  - Line 75: Z-move used status logging
+  - Lines 76-78: Move iteration debug loop
+  - Line 88: PP skip logging
+  - Line 93: Z-move skip logging
+  - Line 97: Move selection logging
+  - Line 110: Struggle fallback logging
+
+- **Rationale**: JavaScript uses this.debug() for debugging, not console.log equivalents
+- **Side Effects**: None - purely cleanup
+- **Result**: Code matches JavaScript (no production debug prints)
+- **Commit**: 2dcb91c2
+
+**Progress Update (2026-01-02 - Session 14):**
+- Debug prints removed: 7 (from auto_choose.rs)
+- Total commits this session: 1
+- Files in battle/ folder: 145
+- Next: Continue systematic file-by-file verification
+
