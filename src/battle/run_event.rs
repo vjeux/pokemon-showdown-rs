@@ -352,8 +352,6 @@ impl Battle {
             let event_result =
                 self.dispatch_single_event(&event_variant, &effect_id, holder_target, source);
 
-            eprintln!("[RUN_EVENT] Handler returned: {:?}", event_result);
-
             match event_result {
                 EventResult::Boolean(false) => {
                     // JavaScript: if (!relayVar) break;

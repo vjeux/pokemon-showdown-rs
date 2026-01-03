@@ -26,9 +26,6 @@ impl Battle {
         let division = inner as f64 / 100.0;
         let result = self.trunc(division, None) as i32;
 
-        eprintln!("[RANDOMIZER] base_damage={}, roll={}, multiplier={}, product={}, inner={}, division={}, result={}",
-            base_damage, roll, multiplier, product, inner, division, result);
-
         result
     }
 }
