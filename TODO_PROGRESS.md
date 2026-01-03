@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 191 (50.3%)
+- Completed: 194 (51.1%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), **onSideConditionStart dispatcher infrastructure updated** (added pokemon_pos and side_condition_id parameters)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -414,6 +414,11 @@ Updated onSideConditionStart dispatcher infrastructure to properly pass pokemon_
 ### Batch 69 - Tailwind Check (1 TODO)
 190. **Wind Rider** (windrider.rs) - onStart: Boosts Attack if tailwind is active on Pokemon's side (uses Side::get_side_condition)
 
+### Batch 70 - Strong Weather (Primordial Sea) (3 TODOs)
+191. **Primordial Sea** (primordialsea.rs) - onStart: Sets primordialsea weather
+192. **Primordial Sea** (primordialsea.rs) - onAnySetWeather: Prevents non-strong weathers from replacing primordialsea (checks strongWeathers array)
+193. **Primordial Sea** (primordialsea.rs) - onEnd: Transfers weather source to another Pokemon with Primordial Sea or clears weather (uses EffectState.source, battle.get_all_active, and field methods)
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -437,7 +442,8 @@ Completed Teraform Zero (Batch 66) clearing weather and terrain on terastallizat
 Completed Wind Power and Wind Rider onSideConditionStart (Batch 67) with major infrastructure change to dispatcher.
 Completed Wind Rider onTryHit (Batch 68) granting immunity to wind moves and boosting Attack.
 Completed Wind Rider onStart (Batch 69) checking for tailwind on switch-in.
-Progress: 191/380 abilities (50.3%).
+Completed Primordial Sea (Batch 70) following Desolate Land pattern for strong weather mechanics.
+Progress: 194/380 abilities (51.1%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
