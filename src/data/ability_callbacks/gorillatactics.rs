@@ -46,9 +46,25 @@ pub fn on_modify_move(_battle: &mut Battle, _move_id: &str, _pokemon_pos: (usize
 ///     this.debug('Gorilla Tactics Atk Boost');
 ///     return this.chainModify(1.5);
 /// }
-pub fn on_modify_atk(_battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+    use crate::dex_data::ID;
+
+    // if (pokemon.volatiles['dynamax']) return;
+    let has_dynamax = {
+        let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.volatiles.contains_key(&ID::from("dynamax"))
+    };
+
+    if has_dynamax {
+        return EventResult::Continue;
+    }
+
+    // this.debug('Gorilla Tactics Atk Boost');
+    // return this.chainModify(1.5);
+    EventResult::Number(battle.chain_modify(1.5))
 }
 
 /// onDisableMove(pokemon) {

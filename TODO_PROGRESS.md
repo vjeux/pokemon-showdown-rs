@@ -328,6 +328,9 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 156. **Moody** (moody.rs) - onResidual: Randomly boosts one stat (excluding accuracy/evasion) by 2 and lowers a different stat by 1 (uses BoostID::stats_only and battle.sample for random selection)
 157. **Mountaineer** (mountaineer.rs) - onTryHit: Grants immunity to Rock-type moves when Pokemon just switched in (activeTurns == 0), shows immunity message and returns Null to block hit
 
+### Batch 47 - Partial Implementations (1 ability - partial)
+158. **Gorilla Tactics** (gorillatactics.rs) - PARTIAL: onModifyAtk: 1.5x Attack boost when not Dynamaxed (remaining handlers need abilityState infrastructure: onStart, onBeforeMove, onModifyMove, onDisableMove, onEnd)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
 Implemented 62 abilities (batches 22-46).
