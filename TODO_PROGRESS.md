@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 91 (23.9%)
+- Completed: 93 (24.5%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -168,8 +168,12 @@ Updated `hit_step_type_immunity.rs` to use the new enum.
 90. **Scrappy** (scrappy.rs) - onModifyMove: Sets ignoreImmunity for Fighting and Normal types to hit Ghost types
 91. **Mind's Eye** (mindseye.rs) - onModifyMove: Sets ignoreEvasion and ignoreImmunity for Fighting/Normal types
 
+### Batch 20 - Move Targeting & Infiltration (2 abilities)
+92. **Stalwart** (stalwart.rs) - onModifyMove: Sets tracksTarget based on move.target (ignores redirection unless 'scripted')
+93. **Infiltrator** (infiltrator.rs) - onModifyMove: Sets infiltrates flag to bypass Substitute/screens
+
 ## Current Session
-Implemented 3 abilities in batch 19 plus major infrastructure refactor for ignoreImmunity.
+Implemented 2 abilities in batch 20.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Now using pokemon.foes(), pokemon.has_ability(), and modifying battle.active_move fields.
 

@@ -10,8 +10,12 @@ use crate::event::EventResult;
 /// onModifyMove(move) {
 ///     move.infiltrates = true;
 /// }
-pub fn on_modify_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
+    // move.infiltrates = true;
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.infiltrates = true;
+    }
+
     EventResult::Continue
 }
 
