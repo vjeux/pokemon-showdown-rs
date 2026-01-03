@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 171 (45.0%)
+- Completed: 172 (45.3%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -360,6 +360,9 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 170. **Synchronize** (synchronize.rs) - onAfterSetStatus: Reflects status conditions back to the source; skips if no source, source is self, effect is toxicspikes, or status is sleep/freeze; shows -activate message and applies status to source using try_set_status with "synchronize" as source effect
 171. **Own Tempo** (owntempo.rs) - onUpdate: Automatically removes confusion volatile status when present; shows -activate message before removing confusion; uses Pokemon::remove_volatile to clear confusion status
 
+### Batch 56 - Burn Immunity & Auto-Cure (1 ability)
+172. **Thermal Exchange** (thermalexchange.rs) - onDamagingHit: Boosts Attack when hit by Fire-type move (already implemented); onUpdate: Automatically cures burn status when present, shows -activate message; onSetStatus: Prevents burn status, shows -immune message if caused by a move with status, returns false to block burn application
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -369,7 +372,8 @@ Completed Gorilla Tactics (Batch 52) using ability_state.data for choice-lock tr
 Completed Sheer Force and Forewarn (Batch 53) using ActiveMove fields and move data lookup.
 Completed Effect Spore and Mycelium Might (Batch 54) using run_status_immunity and ActiveMove fields.
 Completed Synchronize and Own Tempo (Batch 55) using try_set_status and remove_volatile.
-Progress: 171/380 abilities (45.0%).
+Completed Thermal Exchange (Batch 56) using cure_status and status immunity.
+Progress: 172/380 abilities (45.3%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
