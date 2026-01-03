@@ -36,7 +36,28 @@ impl Battle {
 
         // Check if condition already exists
         if self.sides[side_idx].side_conditions.contains_key(&condition_id) {
-            // TODO: Handle onSideRestart event
+            // if (!(status as any).onSideRestart) return false;
+            // return this.battle.singleEvent('SideRestart', status, this.sideConditions[status.id], this, source, sourceEffect);
+
+            // Check if condition has onSideRestart callback
+            if self.has_callback(&condition_id, "SideRestart") {
+                // Fire SideRestart event
+                let result = self.single_event_side(
+                    "SideRestart",
+                    &condition_id,
+                    side_idx,
+                    source_pos,
+                    _source_effect,
+                );
+
+                // Convert EventResult to bool
+                return match result {
+                    crate::event::EventResult::Boolean(b) => b,
+                    crate::event::EventResult::Number(n) => n != 0,
+                    _ => false,
+                };
+            }
+
             return false;
         }
 
@@ -54,14 +75,47 @@ impl Battle {
         // Get condition data for duration
         if let Some(condition_data) = self.dex.conditions.get(&condition_id) {
             state.duration = condition_data.duration;
-            // TODO: Call durationCallback if exists
+
+            // if (status.durationCallback) {
+            //     this.sideConditions[status.id].duration =
+            //         status.durationCallback.call(this.battle, this.active[0], source, sourceEffect);
+            // }
+            // TODO: Call durationCallback if exists - requires condition callback infrastructure
         }
 
         // Add the condition
-        self.sides[side_idx].side_conditions.insert(condition_id, state);
+        self.sides[side_idx].side_conditions.insert(condition_id.clone(), state);
 
-        // TODO: Fire SideStart event via battle.single_event()
-        // TODO: Fire SideConditionStart via battle.run_event()
+        // if (!this.battle.singleEvent('SideStart', status, this.sideConditions[status.id], this, source, sourceEffect)) {
+        //     delete this.sideConditions[status.id];
+        //     return false;
+        // }
+        if self.has_callback(&condition_id, "SideStart") {
+            let result = self.single_event_side(
+                "SideStart",
+                &condition_id,
+                side_idx,
+                source_pos,
+                _source_effect,
+            );
+
+            // Check if event returned false (failure)
+            let success = match result {
+                crate::event::EventResult::Boolean(false) => false,
+                crate::event::EventResult::Number(0) => false,
+                crate::event::EventResult::NotFail => false,
+                _ => true,
+            };
+
+            if !success {
+                // Remove the condition we just added
+                self.sides[side_idx].side_conditions.remove(&condition_id);
+                return false;
+            }
+        }
+
+        // this.battle.runEvent('SideConditionStart', this, source, status);
+        self.run_event_side("SideConditionStart", side_idx, source_pos, Some(&condition_id));
 
         true
     }
