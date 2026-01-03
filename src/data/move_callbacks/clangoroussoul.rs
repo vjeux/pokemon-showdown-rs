@@ -69,8 +69,10 @@ pub fn on_try_hit(
     }
 
     // delete move.boosts;
-    // TODO: We can't delete move.boosts from immutable move_data
-    // This is handled differently in the Rust implementation
+    // Clear boosts from active_move so Sheer Force doesn't apply
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.boosts = None;
+    }
 
     EventResult::Continue
 }
