@@ -26,7 +26,6 @@ impl Battle {
     // 	this.turnLoop();
     // }
     pub fn commit_choices(&mut self) {
-        eprintln!("[COMMIT_CHOICES DEBUG] Called");
         // JS: this.updateSpeed();
         self.update_speed();
 
@@ -71,7 +70,6 @@ impl Battle {
         // JS: this.queue.sort();
         // JavaScript's BattleQueue.sort() calls this.battle.speedSort(this.list)
         // speedSort gets action speed first via getActionSpeed, then sorts
-        eprintln!("[COMMIT_CHOICES DEBUG] Sorting queue");
         let mut list = std::mem::take(&mut self.queue.list);
 
         // getActionSpeed is called inside resolveAction (line 270 in battle-queue.ts)
@@ -79,14 +77,6 @@ impl Battle {
             self.get_action_speed(action);
         }
 
-        // DEBUG: Log all actions before sorting
-        eprintln!("[COMMIT_CHOICES DEBUG] Actions before sorting:");
-        for (i, action) in list.iter().enumerate() {
-            eprintln!("  Action {}: priority={}, speed={}, order={:?}",
-                i, action.priority(), action.speed(), action.order());
-        }
-
-        eprintln!("[COMMIT_CHOICES DEBUG] Calling speed_sort on {} actions", list.len());
         self.speed_sort(&mut list, |action| {
             PriorityItem {
                 order: Some(action.order()),
@@ -97,14 +87,6 @@ impl Battle {
                 index: 0,
             }
         });
-        eprintln!("[COMMIT_CHOICES DEBUG] speed_sort done");
-
-        // DEBUG: Log all actions AFTER sorting
-        eprintln!("[COMMIT_CHOICES DEBUG] Actions AFTER sorting:");
-        for (i, action) in list.iter().enumerate() {
-            eprintln!("  Action {}: priority={}, speed={}, order={:?}",
-                i, action.priority(), action.speed(), action.order());
-        }
 
         self.queue.list = list;
 
@@ -122,7 +104,6 @@ impl Battle {
         }
 
         // JS: this.turnLoop();
-        eprintln!("[COMMIT_CHOICES DEBUG] About to call turn_loop()");
         self.turn_loop();
     }
 }
