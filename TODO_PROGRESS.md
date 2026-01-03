@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 109 (28.7%)
+- Completed: 112 (29.5%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -235,13 +235,19 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 ### Batch 29 - Best Stat Boost (1 ability)
 109. **Beast Boost** (beastboost.rs) - onSourceAfterFaint: Boosts highest stat by 1 when KOing with a move (uses battle.get_pokemon_stat to calculate best stat)
 
+### Batch 30 - Damage Modifiers & Competitive Spirit (3 abilities)
+110. **Sniper** (sniper.rs) - onModifyDamage: 1.5x damage on critical hits (checks move hit data crit flag)
+111. **Tinted Lens** (tintedlens.rs) - onModifyDamage: 2x damage on not-very-effective hits (checks move hit data type_mod < 0)
+112. **Competitive** (competitive.rs) - onAfterEachBoost: Boosts Special Attack by 2 when any stat is lowered by an opponent
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 14 abilities (batches 22-29).
-Progress: 109/380 abilities (28.7%).
+Implemented 17 abilities (batches 22-30).
+Progress: 112/380 abilities (29.5%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
+Completed damage modifier abilities using battle.get_move_hit_data() to access critical hit and type effectiveness data.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
