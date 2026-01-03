@@ -27,15 +27,63 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_try_boost(
-        _battle: &mut Battle,
-        _target_pos: Option<(usize, usize)>,
-        _source_pos: Option<(usize, usize)>,
+        battle: &mut Battle,
+        target_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
         _effect_id: Option<&str>,
     ) -> EventResult {
-        // TODO: This callback needs boost parameter support in the function signature
-        // The TypeScript version receives (boost, target, source, effect) and modifies boost in-place
-        // It removes negative boosts from the boost object and shows a message
-        // This needs infrastructure changes to pass mutable boosts reference
+        // if (effect.effectType === 'Move' && effect.infiltrates && !target.isAlly(source)) return;
+        // For now, we skip the infiltrates check as it requires move data access
+        // TODO: Add infiltrates check once move data is accessible in callbacks
+
+        // if (source && target !== source) {
+        if let (Some(source), Some(target)) = (source_pos, target_pos) {
+            if target == source {
+                return EventResult::Continue;
+            }
+
+            // let showMsg = false;
+            // for (i in boost) {
+            //     if (boost[i]! < 0) {
+            //         delete boost[i];
+            //         showMsg = true;
+            //     }
+            // }
+            let mut show_msg = false;
+            if let Some(ref mut event) = battle.current_event {
+                if let Some(ref mut boosts) = event.relay_var_boost {
+                    if boosts.atk < 0 { boosts.atk = 0; show_msg = true; }
+                    if boosts.def < 0 { boosts.def = 0; show_msg = true; }
+                    if boosts.spa < 0 { boosts.spa = 0; show_msg = true; }
+                    if boosts.spd < 0 { boosts.spd = 0; show_msg = true; }
+                    if boosts.spe < 0 { boosts.spe = 0; show_msg = true; }
+                    if boosts.accuracy < 0 { boosts.accuracy = 0; show_msg = true; }
+                    if boosts.evasion < 0 { boosts.evasion = 0; show_msg = true; }
+                }
+            }
+
+            // if (showMsg && !(effect as ActiveMove).secondaries) {
+            //     this.add('-activate', target, 'move: Mist');
+            // }
+            if show_msg {
+                let has_secondaries = battle.active_move.as_ref()
+                    .map(|m| !m.secondaries.is_empty())
+                    .unwrap_or(false);
+
+                if !has_secondaries {
+                    let target_arg = {
+                        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                            Some(p) => p,
+                            None => return EventResult::Continue,
+                        };
+                        target_pokemon.get_slot()
+                    };
+
+                    battle.add("-activate", &[target_arg.into(), "move: Mist".into()]);
+                }
+            }
+        }
+
         EventResult::Continue
     }
 

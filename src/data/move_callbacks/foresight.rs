@@ -96,11 +96,18 @@ pub mod condition {
     ///         boosts.evasion = 0;
     ///     }
     /// }
-    pub fn on_modify_boost(_battle: &mut Battle) -> EventResult {
-        // TODO: This callback needs boosts parameter support in the function signature
-        // The TypeScript version receives (boosts) and modifies it in-place
-        // For now, implementing a placeholder that returns Continue
-        // This needs infrastructure changes to pass mutable boosts reference
+    pub fn on_modify_boost(battle: &mut Battle) -> EventResult {
+        // if (boosts.evasion && boosts.evasion > 0) {
+        //     boosts.evasion = 0;
+        // }
+        if let Some(ref mut event) = battle.current_event {
+            if let Some(ref mut boosts) = event.relay_var_boost {
+                if boosts.evasion > 0 {
+                    boosts.evasion = 0;
+                }
+            }
+        }
+
         EventResult::Continue
     }
 }
