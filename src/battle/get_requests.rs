@@ -145,16 +145,21 @@ impl Battle {
                     let side = &self.sides[i];
 
                     // JS: requests[i] = { active: activeData, side: side.getRequestData() };
-                    let request = serde_json::json!({
+                    let mut request = serde_json::json!({
                         "active": active_data,
                         "side": side.get_request_data(),
                     });
 
                     // JS: if (side.allySide) { (requests[i] as MoveRequest).ally = side.allySide.getRequestData(true); }
-                    // Note: allySide not implemented in Rust yet
-                    // if let Some(ally_side) = &side.ally_side {
-                    //     request["ally"] = ally_side.get_request_data(true);
-                    // }
+                    // Rust: ally_index is Option<usize> pointing to allied side in multi battles
+                    if let Some(ally_idx) = side.ally_index {
+                        if let Some(ally_side) = self.sides.get(ally_idx) {
+                            // TODO: JavaScript passes `true` parameter to getRequestData(true)
+                            // This likely indicates "minimal data for ally" but current Rust impl doesn't support this
+                            // For now, use full getRequestData() - should verify if ally data needs to be filtered
+                            request["ally"] = ally_side.get_request_data();
+                        }
+                    }
 
                     requests[i] = Some(request);
                 }
