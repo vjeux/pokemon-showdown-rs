@@ -591,6 +591,9 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 ### Batch 106 - Battle Bond (partial - 1/2 callbacks)
 242. **Battle Bond** (battlebond.rs) - onModifyMove: Sets Water Shuriken to always hit 3 times when used by Greninja-Ash (not transformed); checks species.name and pokemon.transformed; modifies active_move.multi_hit; uses battle.current_event.source for attacker position (Note: onSourceAfterFaint still needs pokemon.bondTriggered field and side.foePokemonLeft() method)
 
+### Batch 107 - Parental Bond (partial - 1/2 callbacks)
+243. **Parental Bond** (parentalbond.rs) - onPrepareHit: Sets moves to hit twice unless Status/already multi-hit/special flags/spread/Z/Max; modifies active_move.multi_hit and active_move.multi_hit_type; checks all move flags (noparentalbond, charge, future_move), spread_hit, is_z, is_max fields (Note: onSourceModifySecondaries still needs infrastructure)
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -627,9 +630,10 @@ Completed Sweet Veil (Batch 102) - removed 2 TODOs by implementing battle.effect
 Completed Damp (Batch 103) - removed 1 TODO by implementing battle.effect_state.target for Damp holder in onAnyTryMove.
 Completed Truant (Batch 104) - removed 1 TODO by implementing onStart using pokemon.active_turns and pokemon.move_this_turn_result fields.
 Completed Wandering Spirit (Batch 105) - onDamagingHit swaps abilities on contact using Pokemon::set_ability for both source and target, with failskillswap flag checking.
-Partially completed Battle Bond (Batch 106) - onModifyMove sets Water Shuriken multi-hit to 3 for Greninja-Ash (1/2 callbacks, onSourceAfterFaint still needs infrastructure).
-Progress: 203→241/380 (63.4%); Completed 38 full abilities + 1 partial this session.
-Remaining TODOs: 107 (down from 115 - removed 1 from Wandering Spirit, 1 from Battle Bond onModifyMove).
+Partially completed Battle Bond (Batch 106) - onModifyMove sets Water Shuriken multi-hit to 3 for Greninja-Ash (1/2 callbacks).
+Partially completed Parental Bond (Batch 107) - onPrepareHit sets moves to hit twice with multi_hit_type tracking (1/2 callbacks).
+Progress: 203→241/380 (63.4%); Completed 38 full abilities + 2 partial this session.
+Remaining TODOs: 106 (down from 115 - removed 1 from Wandering Spirit, 1 from Battle Bond, 1 from Parental Bond).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
