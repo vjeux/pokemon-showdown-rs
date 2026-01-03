@@ -21,8 +21,36 @@ use crate::event::EventResult;
 ///         return this.chainModify([5325, 4096]);
 ///     }
 /// }
-pub fn on_base_power(_battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+    // let boosted = true;
+    let mut boosted = true;
+
+    // for (const target of this.getAllActive()) {
+    let active_pokemon: Vec<(usize, usize)> = battle.get_all_active(false);
+
+    for target_pos in active_pokemon {
+        // if (target === pokemon) continue;
+        if target_pos == attacker_pos {
+            continue;
+        }
+
+        // if (this.queue.willMove(target)) {
+        if battle.queue.will_move(target_pos.0, target_pos.1).is_some() {
+            // boosted = false;
+            boosted = false;
+            // break;
+            break;
+        }
+    }
+
+    // if (boosted) {
+    if boosted {
+        // this.debug('Analytic boost');
+        battle.debug("Analytic boost");
+        // return this.chainModify([5325, 4096]);
+        return EventResult::Number(battle.chain_modify_fraction(5325, 4096));
+    }
+
     EventResult::Continue
 }
 
