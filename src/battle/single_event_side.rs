@@ -122,10 +122,10 @@ impl Battle {
     /// Helper method that routes side condition events to their callbacks
     fn dispatch_single_event_side(
         &mut self,
-        _event_id: &str,
+        event_id: &str,
         condition_id: &ID,
         _side_idx: usize,
-        _source: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
@@ -134,6 +134,158 @@ impl Battle {
         // This matches the pattern used in handle_side_condition_event.rs
 
         match condition_id.as_str() {
+            "auroraveil" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::auroraveil::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::auroraveil::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "craftyshield" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::craftyshield::condition::on_side_start(self, None, source),
+                    _ => EventResult::Continue,
+                }
+            }
+            "firepledge" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::firepledge::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::firepledge::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "gmaxcannonade" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::gmaxcannonade::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::gmaxcannonade::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "gmaxsteelsurge" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::gmaxsteelsurge::condition::on_side_start(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "gmaxvinelash" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::gmaxvinelash::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::gmaxvinelash::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "gmaxvolcalith" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::gmaxvolcalith::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::gmaxvolcalith::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "gmaxwildfire" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::gmaxwildfire::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::gmaxwildfire::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "grasspledge" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::grasspledge::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::grasspledge::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "lightscreen" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::lightscreen::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::lightscreen::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "luckychant" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::luckychant::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::luckychant::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "matblock" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::matblock::condition::on_side_start(self, None, source),
+                    _ => EventResult::Continue,
+                }
+            }
+            "mist" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::mist::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::mist::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "quickguard" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::quickguard::condition::on_side_start(self, None, source),
+                    _ => EventResult::Continue,
+                }
+            }
+            "reflect" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::reflect::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::reflect::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "safeguard" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::safeguard::condition::on_side_start(self, source),
+                    "SideEnd" => crate::data::move_callbacks::safeguard::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "spikes" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::spikes::condition::on_side_start(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "stealthrock" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::stealthrock::condition::on_side_start(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "stickyweb" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::stickyweb::condition::on_side_start(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "tailwind" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::tailwind::condition::on_side_start(self, source),
+                    "SideEnd" => crate::data::move_callbacks::tailwind::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "toxicspikes" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::toxicspikes::condition::on_side_start(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "waterpledge" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::waterpledge::condition::on_side_start(self),
+                    "SideEnd" => crate::data::move_callbacks::waterpledge::condition::on_side_end(self),
+                    _ => EventResult::Continue,
+                }
+            }
+            "wideguard" => {
+                match event_id {
+                    "SideStart" => crate::data::move_callbacks::wideguard::condition::on_side_start(self, None, source),
+                    _ => EventResult::Continue,
+                }
+            }
             // Add side conditions here as they're implemented
             // For now, we return Continue to allow the event system to work
             // without requiring all side conditions to be implemented
