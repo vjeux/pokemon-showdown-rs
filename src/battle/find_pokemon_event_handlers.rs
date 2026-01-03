@@ -92,7 +92,7 @@ impl Battle {
                 effect_type: EffectType::Status,
                 target: Some(target),
                 index: None,
-                state: None, // TODO: Should be pokemon.statusState
+                state: Some(pokemon.status_state.clone()),
                 effect_holder: Some(target),
                 order: None,
                 priority: 0,
@@ -103,7 +103,7 @@ impl Battle {
         }
 
         // JS: for (const id in pokemon.volatiles) {
-        for (volatile_id, _volatile_state) in &pokemon.volatiles {
+        for (volatile_id, volatile_state) in &pokemon.volatiles {
             // JS: const volatileState = pokemon.volatiles[id];
             // JS: const volatile = this.dex.conditions.getByID(id as ID);
             // JS: callback = this.getCallback(pokemon, volatile, callbackName);
@@ -116,7 +116,7 @@ impl Battle {
                 effect_type: EffectType::Condition,
                 target: Some(target),
                 index: None,
-                state: None, // TODO: Should be volatileState
+                state: Some(volatile_state.clone()),
                 effect_holder: Some(target),
                 order: None,
                 priority: 0,
@@ -137,7 +137,7 @@ impl Battle {
                 effect_type: EffectType::Ability,
                 target: Some(target),
                 index: None,
-                state: None, // TODO: Should be pokemon.abilityState
+                state: Some(pokemon.ability_state.clone()),
                 effect_holder: Some(target),
                 order: None,
                 priority: 0,
@@ -158,7 +158,7 @@ impl Battle {
                 effect_type: EffectType::Item,
                 target: Some(target),
                 index: None,
-                state: None, // TODO: Should be pokemon.itemState
+                state: Some(pokemon.item_state.clone()),
                 effect_holder: Some(target),
                 order: None,
                 priority: 0,
@@ -179,7 +179,7 @@ impl Battle {
             effect_type: EffectType::Condition, // TODO: Should this be a different type?
             target: Some(target),
             index: None,
-            state: None, // TODO: Should be pokemon.speciesState
+            state: Some(pokemon.species_state.clone()),
             effect_holder: Some(target),
             order: None,
             priority: 0,
@@ -203,7 +203,7 @@ impl Battle {
                     effect_type: EffectType::SlotCondition,
                     target: Some(target),
                     index: None,
-                    state: None, // TODO: Should be slotConditionState
+                    state: None, // TODO: Type mismatch - slot_conditions uses dex_data::EffectState but EventListener expects event_system::EffectState
                     effect_holder: Some(target),
                     order: None,
                     priority: 0,
