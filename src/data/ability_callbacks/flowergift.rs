@@ -39,8 +39,49 @@ pub fn on_weather_change(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> 
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_ally_modify_atk(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_ally_modify_atk(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+    // if (this.effectState.target.baseSpecies.baseSpecies !== 'Cherrim') return;
+    let ability_holder_is_cherrim = {
+        let ability_holder_pos = match battle.effect_state.target {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let ability_holder = match battle.pokemon_at(ability_holder_pos.0, ability_holder_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        ability_holder.get_base_species_base_species(&battle.dex).as_deref() == Some("Cherrim")
+    };
+
+    if !ability_holder_is_cherrim {
+        return EventResult::Continue;
+    }
+
+    // if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather()))
+    let ally_pos = match &battle.current_event {
+        Some(event) => event.target.unwrap_or((0, 0)),
+        None => return EventResult::Continue,
+    };
+
+    let is_sunny = {
+        let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let field_weather = battle.field.get_weather();
+        let effective_weather = ally.effective_weather(battle, field_weather.as_str());
+
+        effective_weather == "sunnyday" || effective_weather == "desolateland"
+    };
+
+    if is_sunny {
+        // return this.chainModify(1.5);
+        return EventResult::Number(battle.chain_modify(1.5));
+    }
+
     EventResult::Continue
 }
 
@@ -50,8 +91,49 @@ pub fn on_ally_modify_atk(_battle: &mut Battle, _pokemon_pos: (usize, usize)) ->
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_ally_modify_sp_d(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_ally_modify_sp_d(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+    // if (this.effectState.target.baseSpecies.baseSpecies !== 'Cherrim') return;
+    let ability_holder_is_cherrim = {
+        let ability_holder_pos = match battle.effect_state.target {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let ability_holder = match battle.pokemon_at(ability_holder_pos.0, ability_holder_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        ability_holder.get_base_species_base_species(&battle.dex).as_deref() == Some("Cherrim")
+    };
+
+    if !ability_holder_is_cherrim {
+        return EventResult::Continue;
+    }
+
+    // if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather()))
+    let ally_pos = match &battle.current_event {
+        Some(event) => event.target.unwrap_or((0, 0)),
+        None => return EventResult::Continue,
+    };
+
+    let is_sunny = {
+        let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let field_weather = battle.field.get_weather();
+        let effective_weather = ally.effective_weather(battle, field_weather.as_str());
+
+        effective_weather == "sunnyday" || effective_weather == "desolateland"
+    };
+
+    if is_sunny {
+        // return this.chainModify(1.5);
+        return EventResult::Number(battle.chain_modify(1.5));
+    }
+
     EventResult::Continue
 }
 
