@@ -15,8 +15,15 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_base_power(_battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), move_id: &str) -> EventResult {
+    if battle.field.is_weather("sandstorm") {
+        if let Some(active_move) = battle.dex.get_active_move(move_id) {
+            let move_type = active_move.move_type.as_str();
+            if move_type == "Rock" || move_type == "Ground" || move_type == "Steel" {
+                return EventResult::Number(battle.chain_modify_fraction(5325, 4096));
+            }
+        }
+    }
     EventResult::Continue
 }
 
