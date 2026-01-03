@@ -28,8 +28,6 @@ impl Battle {
     pub fn insert_run_switch_action(&mut self, side_index: usize, pokemon_index: usize) {
         use crate::battle_queue::{Action, PokemonAction, PokemonActionType};
 
-        eprintln!("[INSERT_RUN_SWITCH DEBUG] Inserting switch for side {} pokemon {}", side_index, pokemon_index);
-
         // Update Pokemon speed
         // JS: if (choice.pokemon) { choice.pokemon.updateSpeed(); }
         let new_speed = self.get_pokemon_action_speed(side_index, pokemon_index);
@@ -72,7 +70,6 @@ impl Battle {
 
         // JS: if (firstIndex === null) { this.list.push(...actions); }
         if first_index.is_none() {
-            eprintln!("[INSERT_RUN_SWITCH DEBUG] No conflicts, adding to end");
             self.queue.list.push(action);
         } else {
             // JS: if (lastIndex === null) lastIndex = this.list.length;
@@ -81,13 +78,9 @@ impl Battle {
 
             // JS: const index = firstIndex === lastIndex ? firstIndex : this.battle.random(firstIndex, lastIndex + 1);
             let index = if first == last {
-                eprintln!("[INSERT_RUN_SWITCH DEBUG] first == last = {}, using that index", first);
                 first
             } else {
-                eprintln!("[INSERT_RUN_SWITCH DEBUG] first = {}, last = {}, calling random({}, {})", first, last, first, last + 1);
-                let idx = self.random_with_range(first as i32, (last + 1) as i32) as usize;
-                eprintln!("[INSERT_RUN_SWITCH DEBUG] random returned {}", idx);
-                idx
+                self.random_with_range(first as i32, (last + 1) as i32) as usize
             };
 
             // JS: this.list.splice(index, 0, ...actions);
