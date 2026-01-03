@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 243 (63.9%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities)
+- Completed: 246 (64.7%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -600,6 +600,15 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 ### Batch 109 - Opportunist (1 ability)
 245. **Opportunist** (opportunist.rs) - Complete implementation with all 7 callbacks: onFoeAfterBoost accumulates positive boosts from foes into battle.effect_state.data["boosts"] using serde_json HashMap; onAnySwitchIn/onAnyAfterMega/onAnyAfterTerastallization/onAnyAfterMove/onResidual apply accumulated boosts to battle.effect_state.target then clear them; onEnd clears boosts; uses battle.current_event.relay_var_boost for boost data
 
+### Batch 110 - Libero (1 ability)
+246. **Libero** (libero.rs) - onPrepareHit: Changes Pokemon's type to match the type of the move it's about to use; checks move.hasBounced, move.flags.future_move, move.sourceEffect === 'snatch', move.callsMove to determine if type change should occur; uses pokemon.get_types() to check current types and Pokemon::set_type() to change type; uses effect_state.data["libero"] flag to prevent multiple type changes; shows -start typechange message
+
+### Batch 111 - Color Change (1 ability)
+247. **Color Change** (colorchange.rs) - onAfterMoveSecondary: Changes Pokemon's type to match the type of the move that hit it; checks target.hp, target.isActive (is_active field), move.category !== 'Status', type !== '???', and !target.hasType(type); uses Pokemon::set_type() to change type; shows -start typechange message; NOTE: Curse Glitch handling skipped (requires queue.willMove() infrastructure)
+
+### Batch 112 - Mimicry (1 ability)
+248. **Mimicry** (mimicry.rs) - onStart: Triggers terrain change (singleEvent skipped); onTerrainChange: Changes Pokemon's type based on active terrain (Electric for electricterrain, Grass for grassyterrain, Fairy for mistyterrain, Psychic for psychicterrain, or reverts to base species types); uses field.get_terrain() to check terrain, battle.dex.species().get(pokemon.base_species.as_str()).types for base types, pokemon.get_types() to check current types, and Pokemon::set_type() to change types; shows different messages based on terrain_active and pokemon.transformed state; NOTE: singleEvent and battle.hint() skipped
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -640,8 +649,14 @@ Partially completed Battle Bond (Batch 106) - onModifyMove sets Water Shuriken m
 Partially completed Parental Bond (Batch 107) - onPrepareHit sets moves to hit twice with multi_hit_type tracking (1/2 callbacks).
 Completed Terashell (Batch 108) - onAnyBeforeMove and onAnyAfterMove clear resisted flag from battle.effect_state.data.
 Completed Opportunist (Batch 109) - All 7 callbacks implemented using battle.effect_state.data for boost accumulation and battle.current_event.relay_var_boost for boost data.
-Progress: 203→243/380 (63.9%); Completed 40 full abilities + 2 partial this session.
-Remaining TODOs: 97 (down from 115 - removed 1 from Wandering Spirit, 1 from Battle Bond, 1 from Parental Bond, 2 from Terashell, 7 from Opportunist).
+**Discovered type system fully functional** - Pokemon::set_type, pokemon.get_types, pokemon.has_type all available and working.
+**Discovered field/terrain infrastructure** - field.get_terrain(), field.is_terrain_active(), field.is_terrain() all available.
+**Discovered species type access** - battle.dex.species().get(pokemon.base_species.as_str()).types for accessing base species types.
+Completed Libero (Batch 110) - onPrepareHit changes type to match move type using Pokemon::set_type() and pokemon.get_types().
+Completed Color Change (Batch 111) - onAfterMoveSecondary changes type after being hit using Pokemon::set_type() (Curse Glitch skipped).
+Completed Mimicry (Batch 112) - onTerrainChange changes type based on terrain using field.get_terrain() and base species types (singleEvent skipped).
+Progress: 243→246/380 (64.7%); Completed 3 type-changing abilities this continuation.
+Remaining TODOs: 94 (down from 97 - removed 1 from Libero, 1 from Color Change, 2 from Mimicry).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
