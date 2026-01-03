@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 72 (18.9%)
+- Completed: 73 (19.2%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -119,8 +119,11 @@ This allows abilities to properly modify boost tables before they're applied, ma
 ### Batch 12 - Contact Speed Reduction (1 ability)
 72. **Gooey** (gooey.rs) - onDamagingHit: Lowers attacker's Speed by 1 on contact moves
 
+### Batch 13 - Contact Burn (1 ability)
+73. **Flame Body** (flamebody.rs) - onDamagingHit: 30% chance to burn attacker on contact
+
 ## Current Session
-Implemented 1 ability in batch 12.
+Implemented 1 ability in batch 13.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
