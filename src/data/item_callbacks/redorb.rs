@@ -5,7 +5,9 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 /// onSwitchIn(pokemon) {
 ///     if (pokemon.isActive && pokemon.baseSpecies.name === 'Groudon' && !pokemon.transformed) {
@@ -27,40 +29,29 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 
     if is_active && base_species_name == Some("Groudon".to_string()) && !transformed {
         // pokemon.formeChange('Groudon-Primal', this.effect, true);
-        // Get the Groudon-Primal species data
-        let (new_types, new_ability) = {
-            use crate::dex_data::ID;
-            let primal_species = battle.dex.species().get("groudonprimal");
-            match primal_species {
-                Some(species) => {
-                    let types = species.types.clone();
-                    // Get the first ability from the Primal form
-                    let ability = match &species.abilities.slot0 {
-                        Some(ability_name) if !ability_name.is_empty() => {
-                            Some(ID::from(ability_name.as_str()))
-                        }
-                        _ => None,
-                    };
-                    (types, ability)
+        unsafe {
+            // SAFETY: We're creating two mutable references to battle.
+            // This is safe because we're accessing different parts of the battle structure.
+            let battle_ptr = battle as *mut Battle;
+            let battle_ref1 = &mut *battle_ptr;
+            let battle_ref2 = &mut *battle_ptr;
+
+            // Get pokemon directly from sides array
+            let side = &mut battle_ref1.sides[pokemon_pos.0];
+            let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
+            if let Some(pokemon_index) = active_slot {
+                if pokemon_index < side.pokemon.len() {
+                    let pokemon = &mut side.pokemon[pokemon_index];
+                    pokemon.forme_change(
+                        battle_ref2,
+                        ID::from("groudonprimal"),
+                        Some(ID::from("redorb")),
+                        true,
+                        "0",
+                        None,
+                    );
                 }
-                None => return EventResult::Continue,
             }
-        };
-
-        // Call forme_change on the pokemon
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        use crate::dex_data::ID;
-        // TODO: Use proper Pokemon::forme_change method
-        // pokemon_mut.forme_change(battle, ID::from("groudonprimal"), Some(ID::from("redorb")), true, "0", None);
-        // For now, manually set the forme fields:
-        pokemon_mut.species_id = ID::from("groudonprimal");
-        pokemon_mut.types = new_types;
-        if let Some(ability) = new_ability {
-            pokemon_mut.ability = ability;
         }
     }
 
