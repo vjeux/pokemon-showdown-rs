@@ -150,7 +150,7 @@ impl Pokemon {
         // JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
         // ✅ NOW IMPLEMENTED (Session 24 Part 83): singleEvent('Eat') and runEvent('EatItem')
         battle.single_event("Eat", &item_id, Some(pokemon_pos), _source_pos, None);
-        battle.run_event("EatItem", Some(pokemon_pos), _source_pos, None, None);
+        battle.run_event("EatItem", Some(pokemon_pos), _source_pos, Some(&item_id), None);
 
         // JS: if (RESTORATIVE_BERRIES.has(item.id)) {
         // JS:     switch (this.pendingStaleness) {

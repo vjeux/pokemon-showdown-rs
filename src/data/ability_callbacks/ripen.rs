@@ -14,8 +14,41 @@ use crate::event::EventResult;
 ///     }
 ///     if ((effect as Item).isBerry) return this.chainModify(2);
 /// }
-pub fn on_try_heal(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_heal(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    use crate::battle::Arg;
+
+    // if (!effect) return;
+    let effect_id = match effect_id {
+        Some(id) => id,
+        None => return EventResult::Continue,
+    };
+
+    // if (effect.name === 'Berry Juice' || effect.name === 'Leftovers')
+    if effect_id == "berryjuice" || effect_id == "leftovers" {
+        // this.add('-activate', target, 'ability: Ripen');
+        if let Some(target_pos) = target_pos {
+            let target_slot = {
+                let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target.get_slot()
+            };
+
+            battle.add("-activate", &[
+                Arg::String(target_slot),
+                Arg::Str("ability: Ripen"),
+            ]);
+        }
+    }
+
+    // if ((effect as Item).isBerry) return this.chainModify(2);
+    if let Some(item_data) = battle.dex.items().get(effect_id) {
+        if item_data.is_berry {
+            return EventResult::Number(2);
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -27,8 +60,29 @@ pub fn on_try_heal(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usiz
 ///         }
 ///     }
 /// }
-pub fn on_change_boost(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    // if (effect && (effect as Item).isBerry)
+    if let Some(effect_id) = effect_id {
+        if let Some(item_data) = battle.dex.items().get(effect_id) {
+            if item_data.is_berry {
+                // for (b in boost) { boost[b]! *= 2; }
+                // The boost table is in battle.current_event.relay_var_boost
+                if let Some(ref mut event) = battle.current_event {
+                    if let Some(ref mut boost_table) = event.relay_var_boost {
+                        // Double all boosts
+                        boost_table.atk *= 2;
+                        boost_table.def *= 2;
+                        boost_table.spa *= 2;
+                        boost_table.spd *= 2;
+                        boost_table.spe *= 2;
+                        boost_table.accuracy *= 2;
+                        boost_table.evasion *= 2;
+                    }
+                }
+            }
+        }
+    }
+
     EventResult::Continue
 }
 
@@ -38,16 +92,59 @@ pub fn on_change_boost(_battle: &mut Battle, _target_pos: Option<(usize, usize)>
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_damage(_battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), _target_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), target_pos: (usize, usize), _move_id: &str) -> EventResult {
+    // if (target.abilityState.berryWeaken)
+    let berry_weaken = {
+        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target.ability_state.data
+            .get("berryWeaken")
+            .and_then(|v| v.as_bool())
+            .unwrap_or(false)
+    };
+
+    if berry_weaken {
+        // target.abilityState.berryWeaken = false;
+        {
+            let target = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            target.ability_state.data.insert(
+                "berryWeaken".to_string(),
+                serde_json::Value::Bool(false),
+            );
+        }
+
+        // return this.chainModify(0.5);
+        return EventResult::Number(battle.chain_modify_fraction(1, 2));
+    }
+
     EventResult::Continue
 }
 
 /// onTryEatItem(item, pokemon) {
 ///     this.add('-activate', pokemon, 'ability: Ripen');
 /// }
-pub fn on_try_eat_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::battle::Arg;
+
+    // this.add('-activate', pokemon, 'ability: Ripen');
+    let pokemon_slot = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add("-activate", &[
+        Arg::String(pokemon_slot),
+        Arg::Str("ability: Ripen"),
+    ]);
+
     EventResult::Continue
 }
 
@@ -58,8 +155,51 @@ pub fn on_try_eat_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> Ev
 ///     // Record if the pokemon ate a berry to resist the attack
 ///     pokemon.abilityState.berryWeaken = weakenBerries.includes(item.name);
 /// }
-pub fn on_eat_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    // const weakenBerries = [...]
+    const WEAKEN_BERRIES: &[&str] = &[
+        "babiriberry",
+        "chartiberry",
+        "chilanberry",
+        "chopleberry",
+        "cobaberry",
+        "colburberry",
+        "habanberry",
+        "kasibberry",
+        "kebiaberry",
+        "occaberry",
+        "passhoberry",
+        "payapaberry",
+        "rindoberry",
+        "roseliberry",
+        "shucaberry",
+        "tangaberry",
+        "wacanberry",
+        "yacheberry",
+    ];
+
+    // Get the item from battle.current_event.effect
+    let item_id = match &battle.current_event {
+        Some(event) => match &event.effect {
+            Some(id) => id.as_str(),
+            None => return EventResult::Continue,
+        },
+        None => return EventResult::Continue,
+    };
+
+    // pokemon.abilityState.berryWeaken = weakenBerries.includes(item.name);
+    let berry_weaken = WEAKEN_BERRIES.contains(&item_id);
+
+    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    pokemon.ability_state.data.insert(
+        "berryWeaken".to_string(),
+        serde_json::Value::Bool(berry_weaken),
+    );
+
     EventResult::Continue
 }
 
