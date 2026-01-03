@@ -120,7 +120,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.switch_flag, ally.switch_flag)
+        (pokemon.switch_flag.is_some(), ally.switch_flag.is_some())
     };
 
     if pokemon_switch_flag || ally_switch_flag {

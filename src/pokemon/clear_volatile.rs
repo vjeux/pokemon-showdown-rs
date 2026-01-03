@@ -175,7 +175,7 @@ impl Pokemon {
 
         // JS: if (includeSwitchFlags) {...}
         if include_switch_flags {
-            self.switch_flag = false;
+            self.switch_flag = None;
             self.force_switch_flag = false;
         }
 

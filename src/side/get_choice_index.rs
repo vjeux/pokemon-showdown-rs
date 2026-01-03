@@ -60,7 +60,7 @@ impl Side {
                     while index < self.active.len() {
                         if let Some(Some(pokemon_idx)) = self.active.get(index) {
                             if let Some(pokemon) = self.pokemon.get(*pokemon_idx) {
-                                if !pokemon.switch_flag {
+                                if pokemon.switch_flag.is_none() {
                                     self.choose_pass();
                                     index += 1;
                                     continue;

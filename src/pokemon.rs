@@ -560,10 +560,11 @@ pub struct Pokemon {
     /// Maybe locked by choice item
     /// JavaScript: maybeLocked: boolean | null
     pub maybe_locked: Option<bool>, // Choice items may lock next turn
-    /// Switch flag (ID of move or true/false)
+    /// Switch flag (ID of move that forced switch, or None)
     /// JavaScript: switchFlag: ID | boolean
-    // TODO: Change type to support both ID and boolean
-    pub switch_flag: bool,
+    /// In JavaScript: string (move ID) or false
+    /// In Rust: Some(String) for move ID, None for false
+    pub switch_flag: Option<String>,
     /// Force switch flag
     /// JavaScript: forceSwitchFlag: boolean
     pub force_switch_flag: bool,

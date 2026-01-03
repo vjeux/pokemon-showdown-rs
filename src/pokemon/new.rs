@@ -313,7 +313,7 @@ impl Pokemon {
             maybe_disabled: false,
             // JavaScript: this.maybeLocked = false;
             maybe_locked: Some(false),
-            switch_flag: false,
+            switch_flag: None,
             force_switch_flag: false,
             newly_switched: false,
             being_called_back: false,

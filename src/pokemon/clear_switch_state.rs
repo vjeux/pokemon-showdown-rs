@@ -11,7 +11,7 @@ impl Pokemon {
         self.clear_volatiles();
         self.clear_boosts();
         self.last_move = None;
-        self.switch_flag = false;
+        self.switch_flag = None;
         self.force_switch_flag = false;
         self.trapped = TrappedState::None;
         self.maybe_trapped = false;

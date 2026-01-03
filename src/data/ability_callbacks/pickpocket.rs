@@ -54,7 +54,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (!target.item.is_empty(), target.switch_flag, target.force_switch_flag)
+        (!target.item.is_empty(), target.switch_flag.is_some(), target.force_switch_flag)
     };
 
     if target_has_item || target_switch_flag || target_force_switch_flag {
@@ -66,7 +66,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source.switch_flag
+        source.switch_flag.is_some()
     };
 
     if source_switch_flag {

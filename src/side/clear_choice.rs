@@ -42,7 +42,7 @@ impl Side {
                 .active
                 .iter()
                 .filter_map(|&opt_idx| opt_idx.and_then(|idx| self.pokemon.get(idx)))
-                .filter(|p| p.switch_flag)
+                .filter(|p| p.switch_flag.is_some())
                 .count();
 
             // Count benched Pokemon that aren't fainted

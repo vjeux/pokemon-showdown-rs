@@ -32,7 +32,7 @@ pub fn on_emergency_exit(battle: &mut Battle, target_pos: Option<(usize, usize)>
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (target.force_switch_flag, target.switch_flag)
+        (target.force_switch_flag, target.switch_flag.is_some())
     };
 
     // Check if can switch
@@ -51,7 +51,7 @@ pub fn on_emergency_exit(battle: &mut Battle, target_pos: Option<(usize, usize)>
         for active_slot in 0..active_count {
             if let Some(pokemon_index) = battle.sides[side_idx].active[active_slot] {
                 if pokemon_index < battle.sides[side_idx].pokemon.len() {
-                    battle.sides[side_idx].pokemon[pokemon_index].switch_flag = false;
+                    battle.sides[side_idx].pokemon[pokemon_index].switch_flag = None;
                 }
             }
         }
@@ -62,7 +62,7 @@ pub fn on_emergency_exit(battle: &mut Battle, target_pos: Option<(usize, usize)>
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    target_mut.switch_flag = true;
+    target_mut.switch_flag = Some(String::new()); // Generic switch (ability-triggered)
 
     // this.add('-activate', target, 'ability: Wimp Out');
     let target_slot = target_mut.get_slot();

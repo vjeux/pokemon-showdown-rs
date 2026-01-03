@@ -810,7 +810,7 @@ impl Battle {
             side.active.iter().any(|&opt_idx| {
                 if let Some(poke_idx) = opt_idx {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                        return pokemon.switch_flag;
+                        return pokemon.switch_flag.is_some();
                     }
                 }
                 false
@@ -824,7 +824,7 @@ impl Battle {
             if switches[i] && self.can_switch(i) == 0 {
                 // JS: for (const pokemon of this.sides[i].active) { pokemon.switchFlag = false; }
                 for poke_idx in self.sides[i].pokemon.iter_mut() {
-                    poke_idx.switch_flag = false;
+                    poke_idx.switch_flag = None;
                 }
                 // JS: if (!reviveSwitch) switches[i] = false;
                 switches[i] = false;
@@ -847,7 +847,7 @@ impl Battle {
                 for poke_idx in active_positions {
                     let should_run_event = {
                         let pokemon = &self.sides[i].pokemon[poke_idx];
-                        pokemon.hp > 0 && pokemon.switch_flag && !pokemon.skip_before_switch_out_event_flag
+                        pokemon.hp > 0 && pokemon.switch_flag.is_some() && !pokemon.skip_before_switch_out_event_flag
                     };
 
                     if should_run_event {
@@ -869,7 +869,7 @@ impl Battle {
                             switches[i] = self.sides[i].active.iter().any(|&opt_idx| {
                                 if let Some(idx) = opt_idx {
                                     if let Some(p) = self.sides[i].pokemon.get(idx) {
-                                        return p.switch_flag;
+                                        return p.switch_flag.is_some();
                                     }
                                 }
                                 false

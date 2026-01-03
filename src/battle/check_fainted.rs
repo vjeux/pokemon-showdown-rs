@@ -35,7 +35,7 @@ impl Battle {
                         // JS: pokemon.status = 'fnt' as ID;
                         pokemon.status = ID::new("fnt");
                         // JS: pokemon.switchFlag = true;
-                        pokemon.switch_flag = true;
+                        pokemon.switch_flag = Some(String::new()); // Generic switch (fainted)
                     }
                 }
             }

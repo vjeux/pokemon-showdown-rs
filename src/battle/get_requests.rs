@@ -78,7 +78,7 @@ impl Battle {
                         match poke_idx_opt {
                             Some(poke_idx) => {
                                 side.pokemon.get(*poke_idx)
-                                    .map(|p| p.switch_flag)
+                                    .map(|p| p.switch_flag.is_some())
                                     .unwrap_or(false)
                             }
                             None => false,

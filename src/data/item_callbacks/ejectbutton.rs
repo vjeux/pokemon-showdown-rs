@@ -114,7 +114,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
         let all_active = battle.get_all_active(false);
         all_active.iter().any(|&pos| {
             battle.pokemon_at(pos.0, pos.1)
-                .map(|p| p.switch_flag)
+                .map(|p| p.switch_flag.is_some())
                 .unwrap_or(false)
         })
     };
@@ -129,7 +129,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_mut.switch_flag = true;
+        target_mut.switch_flag = Some(String::new());
     }
 
     // if (target.useItem())
@@ -144,12 +144,12 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
     if item_used.is_some() {
         // source.switchFlag = false;
         if let Some(source_mut) = battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-            source_mut.switch_flag = false;
+            source_mut.switch_flag = None;
         }
     } else {
         // target.switchFlag = false;
         if let Some(target_mut) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-            target_mut.switch_flag = false;
+            target_mut.switch_flag = None;
         }
     }
 

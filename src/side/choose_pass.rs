@@ -45,7 +45,7 @@ impl Side {
                 // Check if the Pokemon at this index has switchFlag set
                 let has_switch_flag = if let Some(Some(pokemon_idx)) = self.active.get(index) {
                     if let Some(pokemon) = self.pokemon.get(*pokemon_idx) {
-                        pokemon.switch_flag
+                        pokemon.switch_flag.is_some()
                     } else {
                         false
                     }

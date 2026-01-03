@@ -30,7 +30,7 @@ pub fn on_ally_after_use_item(battle: &mut Battle, pokemon_pos: (usize, usize)) 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.switch_flag
+        pokemon.switch_flag.is_some()
     };
 
     if switch_flag {

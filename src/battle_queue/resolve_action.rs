@@ -278,15 +278,28 @@ impl BattleQueue {
                 //     action.pokemon.switchFlag = false;
                 // }
 
-                // TODO: In JavaScript, switchFlag can be a string (move ID that forced switch) or false.
-                // In Rust, it's just a bool. This means we can't set source_effect based on switchFlag.
-                // For now, we just clear the flag.
                 if !mid_turn {
                     let pokemon_pos = (switch_action.side_index, switch_action.pokemon_index);
 
+                    // Get switch flag
+                    let switch_flag = {
+                        let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1);
+                        pokemon.and_then(|p| p.switch_flag.clone())
+                    };
+
+                    // Set source effect if switchFlag is a non-empty move ID
+                    // Need to use actions.last_mut() to get mutable reference
+                    if let Some(flag_str) = switch_flag {
+                        if !flag_str.is_empty() {
+                            if let Some(Action::Switch(switch_action_mut)) = actions.last_mut() {
+                                switch_action_mut.source_effect = Some(ID::from(flag_str.as_str()));
+                            }
+                        }
+                    }
+
                     // Clear switch flag
                     if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                        pokemon.switch_flag = false;
+                        pokemon.switch_flag = None;
                     }
                 }
             }

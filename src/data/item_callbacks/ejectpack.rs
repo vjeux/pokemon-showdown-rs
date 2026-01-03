@@ -259,7 +259,7 @@ pub fn on_use_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize, usi
             Some(p) => p,
             None => continue,
         };
-        if pokemon.switch_flag {
+        if pokemon.switch_flag.is_some() {
             return EventResult::Boolean(false);
         }
     }
@@ -277,7 +277,7 @@ pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_mut.switch_flag = true;
+    pokemon_mut.switch_flag = Some(String::new());
 
     EventResult::Continue
 }

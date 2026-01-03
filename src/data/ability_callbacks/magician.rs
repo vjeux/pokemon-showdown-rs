@@ -45,7 +45,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usi
         };
 
         (
-            source.switch_flag,
+            source.switch_flag.is_some(),
             !source.item.is_empty(),
             source.volatiles.contains_key(&ID::from("gem")),
         )

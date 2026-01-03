@@ -64,7 +64,7 @@ impl Pokemon {
             pokemon.hp = 0;
 
             // JS: this.switchFlag = false;
-            pokemon.switch_flag = false;
+            pokemon.switch_flag = None;
 
             // JS: this.faintQueued = true;
             pokemon.faint_queued = true;
