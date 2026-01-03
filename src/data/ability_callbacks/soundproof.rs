@@ -44,8 +44,31 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///         this.add('-immune', this.effectState.target, '[from] ability: Soundproof');
 ///     }
 /// }
-pub fn on_ally_try_hit_side(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_ally_try_hit_side(battle: &mut Battle, holder_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    // if (move.flags['sound'])
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
+        if move_data.flags.contains_key("sound") {
+            // this.add('-immune', this.effectState.target, '[from] ability: Soundproof');
+            if let Some(pos) = holder_pos {
+                let holder_slot = {
+                    let holder = match battle.pokemon_at(pos.0, pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    holder.get_slot()
+                };
+
+                battle.add(
+                    "-immune",
+                    &[
+                        crate::battle::Arg::from(holder_slot),
+                        crate::battle::Arg::from("[from] ability: Soundproof"),
+                    ],
+                );
+            }
+        }
+    }
+
     EventResult::Continue
 }
 

@@ -15,8 +15,49 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(_battle: &mut Battle, _target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
+    // if (target !== source && move.type === 'Water')
+    if target_pos == source_pos {
+        return EventResult::Continue;
+    }
+
+    if let Some(move_data) = battle.dex.moves().get(move_id) {
+        if move_data.move_type == "Water" {
+            // if (!this.heal(target.baseMaxhp / 4))
+            let heal_amount = {
+                let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target.base_maxhp / 4
+            };
+
+            let healed = battle.heal(heal_amount, Some(target_pos), None, None);
+
+            if healed.is_none() || healed == Some(0) {
+                // this.add('-immune', target, '[from] ability: Dry Skin');
+                let target_slot = {
+                    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    target.get_slot()
+                };
+
+                battle.add(
+                    "-immune",
+                    &[
+                        crate::battle::Arg::from(target_slot),
+                        crate::battle::Arg::from("[from] ability: Dry Skin"),
+                    ],
+                );
+            }
+
+            // return null;
+            return EventResult::Null;
+        }
+    }
+
     EventResult::Continue
 }
 

@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 73 (19.2%)
+- Completed: 78 (20.5%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -122,8 +122,15 @@ This allows abilities to properly modify boost tables before they're applied, ma
 ### Batch 13 - Contact Burn (1 ability)
 73. **Flame Body** (flamebody.rs) - onDamagingHit: 30% chance to burn attacker on contact
 
+### Batch 14 - Type-Based Boosts & Immunities (5 abilities)
+74. **Rattled** (rattled.rs) - onDamagingHit: Boosts Speed by 1 when hit by Dark/Bug/Ghost-type move
+75. **Thermal Exchange** (thermalexchange.rs) - onDamagingHit: Boosts Attack by 1 when hit by Fire-type move
+76. **Dry Skin** (dryskin.rs) - onTryHit: Immune to Water-type moves and heals 1/4 max HP (shows immune message if already at full HP)
+77. **Soundproof** (soundproof.rs) - onAllyTryHitSide: Protects allies from sound moves by showing immune message
+78. **Overcoat** (overcoat.rs) - onTryHit: Immune to powder moves when target ≠ source
+
 ## Current Session
-Implemented 1 ability in batch 13.
+Implemented 5 abilities in batch 14.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
