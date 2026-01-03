@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 100 (26.3%)
+- Completed: 102 (26.8%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -214,10 +214,14 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 99. **Plus** (plus.rs) - onModifySpA: 1.5x Special Attack when ally has Plus or Minus ability
 100. **Minus** (minus.rs) - onModifySpA: 1.5x Special Attack when ally has Plus or Minus ability
 
+### Batch 24 - Base Power Modification (2 abilities)
+101. **Technician** (technician.rs) - onBasePower: 1.5x boost when base power (after modifier) ≤ 60
+102. **Reckless** (reckless.rs) - onBasePower: 1.2x boost (4915/4096) for moves with recoil or crash damage
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 5 abilities using the new infrastructure (batches 22-23).
-Reached 100 abilities completed (26.3% - over one quarter complete)!
+Implemented 7 abilities using the new infrastructure (batches 22-24).
+Progress: 102/380 abilities (26.8%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Now using pokemon.foes(), pokemon.has_ability(), and modifying battle.active_move fields.
 

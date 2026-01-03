@@ -15,8 +15,23 @@ use crate::event::EventResult;
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_base_power(_battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+    // const basePowerAfterMultiplier = this.modify(basePower, this.event.modifier);
+    let modifier = battle.get_event_modifier();
+    let base_power_after_multiplier = battle.modify_f(base_power, modifier as f64 / 4096.0);
+
+    // this.debug(`Base Power: ${basePowerAfterMultiplier}`);
+    eprintln!("Base Power: {}", base_power_after_multiplier);
+
+    // if (basePowerAfterMultiplier <= 60) {
+    //     this.debug('Technician boost');
+    //     return this.chainModify(1.5);
+    // }
+    if base_power_after_multiplier <= 60 {
+        eprintln!("Technician boost");
+        return EventResult::Number(battle.chain_modify(1.5));
+    }
+
     EventResult::Continue
 }
 
