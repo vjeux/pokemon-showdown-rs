@@ -684,12 +684,33 @@ Progress: 269/380 abilities (70.8%).
 Remaining TODOs: 33 (down from 38 - removed 5 Ice Face TODOs).
 
 
+### Batch 136 - Payback Move (1 TODO)
+
+**Completed move:**
+- **Payback** (payback.rs) - base_power_callback: Uses battle.queue.will_move() to check if target will move; doubles base power when target has already moved or won't move this turn; discovered in Batch 132 that queue infrastructure exists
+
+**Implementation Details:**
+- Removed hardcoded `let will_move = false;` placeholder
+- Changed to `battle.queue.will_move(target.0, target.1).is_some()`
+- Matches JavaScript logic: `target.newlySwitched || this.queue.willMove(target)`
+- Returns normal base power if target will move, 2x base power otherwise
+
+**Files Modified:**
+- src/data/move_callbacks/payback.rs - Removed TODO and implemented queue.will_move() check (1 line changed)
+
+**Git Commit**: fc830e09: "Implement Payback move using battle.queue.will_move (Batch 136)"
+
+Progress: 269/380 abilities (70.8%) - no change (move callback, not ability).
+Remaining TODOs: 32 (down from 33 - removed 1 move callback TODO).
+
+
 ## Current Session (Continued - Latest)
 Completed Shield Dust (Batch 134) - proper secondary filtering using self_effect field.
 Completed Ice Face (Batch 135) - all 5 callbacks using forme_change, ability_state.data, and weather checking.
+Completed Payback move (Batch 136) - using battle.queue.will_move() discovered in Batch 132.
 **Discovered type patterns**: active_move.category is String (not Option<String>), active_move.flags is MoveFlags struct (not HashMap), active_move.infiltrates is bool (not Option<bool>).
-Progress: 269→270/380 (71.1%); Completed 6 TODOs this continuation session.
-Remaining TODOs: 33 (down from 39 at session start).
+Progress: 269/380 abilities (70.8%); Completed 7 TODOs this continuation session (6 ability TODOs + 1 move TODO).
+Remaining TODOs: 32 (down from 39 at session start).
 All implementations compile successfully, have been committed, and pushed to the repository!
 
 ## Current Session (Continued)
