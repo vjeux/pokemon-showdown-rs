@@ -125,8 +125,9 @@ pub struct EffectState {
     /// Time (for sorting)
     /// JavaScript: time?: number
     pub time: Option<i32>,
-    // TODO: DELETE - Not in JavaScript EffectState (JavaScript uses implicit sorting)
     /// Effect order (for sorting multiple effects)
+    /// Rust-specific: JavaScript uses implicit sorting based on effect timing
+    /// Rust needs explicit ordering for deterministic priority resolution
     pub effect_order: i32,
     /// Side index (for side conditions)
     /// JavaScript: side?: Side

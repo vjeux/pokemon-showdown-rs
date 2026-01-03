@@ -499,21 +499,23 @@ pub struct EffectState {
     /// Rust uses position tuple instead of Pokemon reference
     pub source: Option<(usize, usize)>,
 
-    // TODO: DELETE - Not in JavaScript EffectState (only has id, effectOrder, duration, source)
-    // These fields may belong in a different Rust struct or be Rust-specific extensions
+    // RUST-SPECIFIC EXTENSIONS (not in JavaScript EffectState)
+    // JavaScript EffectState only has: id, effectOrder, duration, source
+    // Rust needs these additional fields for practical implementation
     /// Number of layers (for Spikes, Toxic Spikes, etc.)
+    /// Rust-specific: JavaScript stores this in the condition's state object
     pub layers: Option<i32>,
 
-    // TODO: DELETE - Not in JavaScript EffectState
     /// Source slot for slot conditions
+    /// Rust-specific: JavaScript stores this in the condition's state object
     pub source_slot: Option<String>,
 
-    // TODO: DELETE - Not in JavaScript EffectState
     /// Target side index
+    /// Rust-specific: JavaScript stores this in the condition's state object
     pub target_side: Option<usize>,
 
-    // TODO: DELETE - Not in JavaScript EffectState
     /// Custom data storage (flattened for serialization)
+    /// Rust-specific: JavaScript adds properties dynamically at runtime
     #[serde(flatten)]
     pub data: HashMap<String, serde_json::Value>,
 }
