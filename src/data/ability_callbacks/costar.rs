@@ -91,10 +91,52 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
             // pokemon.addVolatile(volatile);
             Pokemon::add_volatile(battle, pokemon_pos, volatile_id.clone(), None, None, None);
 
-            // Note: Copying layers and hasDragonType properties requires accessing volatile state data
-            // This would need EffectState.data HashMap access which is complex
-            // For now, we're adding the volatile without copying those extra properties
-            // TODO: Implement layers and hasDragonType copying when volatile state structure allows
+            // if (volatile === 'gmaxchistrike') pokemon.volatiles[volatile].layers = ally.volatiles[volatile].layers;
+            if volatile_id.as_str() == "gmaxchistrike" {
+                let ally_layers = {
+                    let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    ally.volatiles.get(volatile_id)
+                        .and_then(|v| v.data.get("layers"))
+                        .and_then(|v| v.as_i64())
+                        .map(|v| v as i32)
+                };
+
+                if let Some(layers) = ally_layers {
+                    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    if let Some(volatile) = pokemon.volatiles.get_mut(volatile_id) {
+                        volatile.data.insert("layers".to_string(), serde_json::Value::Number(layers.into()));
+                    }
+                }
+            }
+
+            // if (volatile === 'dragoncheer') pokemon.volatiles[volatile].hasDragonType = ally.volatiles[volatile].hasDragonType;
+            if volatile_id.as_str() == "dragoncheer" {
+                let ally_has_dragon_type = {
+                    let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    ally.volatiles.get(volatile_id)
+                        .and_then(|v| v.data.get("hasDragonType"))
+                        .and_then(|v| v.as_bool())
+                };
+
+                if let Some(has_dragon_type) = ally_has_dragon_type {
+                    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    if let Some(volatile) = pokemon.volatiles.get_mut(volatile_id) {
+                        volatile.data.insert("hasDragonType".to_string(), serde_json::Value::Bool(has_dragon_type));
+                    }
+                }
+            }
         }
     }
 
