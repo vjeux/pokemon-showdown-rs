@@ -13,8 +13,38 @@ use crate::event::EventResult;
 ///         pokemon.removeVolatile('confusion');
 ///     }
 /// }
-pub fn on_update(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::battle::Arg;
+    use crate::Pokemon;
+
+    // if (pokemon.volatiles['confusion'])
+    let has_confusion = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.volatiles.contains_key(&crate::dex_data::ID::from("confusion"))
+    };
+
+    if has_confusion {
+        // this.add('-activate', pokemon, 'ability: Own Tempo');
+        let pokemon_slot = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        battle.add("-activate", &[
+            Arg::String(pokemon_slot),
+            Arg::Str("ability: Own Tempo"),
+        ]);
+
+        // pokemon.removeVolatile('confusion');
+        Pokemon::remove_volatile(battle, pokemon_pos, &crate::dex_data::ID::from("confusion"));
+    }
+
     EventResult::Continue
 }
 
