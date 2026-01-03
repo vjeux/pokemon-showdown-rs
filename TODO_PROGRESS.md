@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 159 (41.8%)
+- Completed: 162 (42.6%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -337,10 +337,16 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 49 - Fainted Pokemon Tracking (1 ability)
 160. **Supreme Overlord** (supremeoverlord.rs) - onStart: Tracks number of fainted teammates (up to 5) in ability_state.data["fallen"]; onBasePower: Boosts power based on fallen count (10%/20%/30%/40%/50% for 1-5 fallen); onEnd: Shows fallen count in end message
 
+### Batch 50 - Secondary Effect Modification (3 abilities)
+161. **Serene Grace** (serenegrace.rs) - onModifyMove: Doubles chance of all secondary effects (modifies ActiveMove.secondaries[].chance *= 2)
+162. **Skill Link** (skilllink.rs) - onModifyMove: Multi-hit moves always hit maximum times (parses multi_hit_type "2-5" to set multi_hit to 5)
+163. **Stench** (stench.rs) - onModifyMove: Adds 10% flinch chance to damaging moves (pushes new SecondaryEffect with volatile_status="flinch" and chance=10)
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
-Progress: 159/380 abilities (41.8%).
+Completed Serene Grace, Skill Link, and Stench (Batch 50) using ActiveMove.secondaries modification.
+Progress: 162/380 abilities (42.6%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
