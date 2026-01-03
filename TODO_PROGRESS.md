@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 88 (23.2%)
+- Completed: 91 (23.9%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -147,8 +147,29 @@ This allows abilities to properly modify boost tables before they're applied, ma
 87. **Propeller Tail** (propellertail.rs) - onModifyMove: Sets tracksTarget to ignore redirection
 88. **Illuminate** (illuminate.rs) - onModifyMove: Sets ignoreEvasion to bypass evasion boosts
 
+### Batch 19 - Ignore Immunity Infrastructure & Abilities (3 abilities + major refactor)
+
+**Infrastructure Change:**
+Created new `IgnoreImmunity` enum in `src/battle_actions.rs` to properly represent JavaScript's union type `boolean | { [k: string]: boolean }`:
+```rust
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum IgnoreImmunity {
+    /// Ignore all type immunities (true)
+    All,
+    /// Ignore specific type immunities ({ Type: true, ... })
+    Specific(HashMap<String, bool>),
+}
+```
+Changed `ActiveMove.ignore_immunity` field from `Option<bool>` to `Option<IgnoreImmunity>`.
+Updated `hit_step_type_immunity.rs` to use the new enum.
+
+**New Ability Implementations:**
+89. **Keen Eye** (keeneye.rs) - onModifyMove: Sets ignoreEvasion to bypass evasion boosts
+90. **Scrappy** (scrappy.rs) - onModifyMove: Sets ignoreImmunity for Fighting and Normal types to hit Ghost types
+91. **Mind's Eye** (mindseye.rs) - onModifyMove: Sets ignoreEvasion and ignoreImmunity for Fighting/Normal types
+
 ## Current Session
-Implemented 4 abilities in batch 18.
+Implemented 3 abilities in batch 19 plus major infrastructure refactor for ignoreImmunity.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Now using pokemon.foes(), pokemon.has_ability(), and modifying battle.active_move fields.
 

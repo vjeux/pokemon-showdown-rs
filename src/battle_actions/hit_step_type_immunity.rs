@@ -30,7 +30,9 @@ pub fn hit_step_type_immunity(
     //     move.ignoreImmunity = (move.category === 'Status');
     // }
     if active_move.ignore_immunity.is_none() {
-        active_move.ignore_immunity = Some(active_move.category == "Status");
+        if active_move.category == "Status" {
+            active_move.ignore_immunity = Some(crate::battle_actions::IgnoreImmunity::All);
+        }
     }
 
     // const hitResults = [];

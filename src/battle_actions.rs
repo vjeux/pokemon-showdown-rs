@@ -5,7 +5,7 @@
 //! This is a 1:1 port of sim/battle-actions.ts
 //! Handles all battle actions: moves, switches, damage calculation, etc.
 
-use std::collections::HashSet;
+use std::collections::{HashSet, HashMap};
 use serde::{Deserialize, Serialize};
 
 use once_cell::sync::Lazy;
@@ -175,6 +175,16 @@ pub struct MoveHitData {
     /// Z-Move broke through protect
     /// JavaScript: zBrokeProtect: boolean
     pub z_broke_protect: bool,
+}
+
+/// Ignore immunity setting for moves
+/// JavaScript: ignoreImmunity?: boolean | { [k: string]: boolean }
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum IgnoreImmunity {
+    /// Ignore all type immunities (true)
+    All,
+    /// Ignore specific type immunities ({ Type: true, ... })
+    Specific(HashMap<String, bool>),
 }
 
 /// Active move state - represents a move being executed
@@ -385,8 +395,7 @@ pub struct ActiveMove {
     pub ignore_positive_evasion: Option<bool>,
     /// Ignore type immunity
     /// JavaScript: ignoreImmunity?: boolean | { [k: string]: boolean }
-    /// TODO: Rust uses Option<bool>, cannot represent object variant
-    pub ignore_immunity: Option<bool>,
+    pub ignore_immunity: Option<IgnoreImmunity>,
     /// Ignore defensive stat changes
     /// JavaScript: ignoreDefensive: boolean
     pub ignore_defensive: bool,

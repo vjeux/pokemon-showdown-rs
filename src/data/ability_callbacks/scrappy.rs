@@ -14,8 +14,29 @@ use crate::event::EventResult;
 ///         move.ignoreImmunity['Normal'] = true;
 ///     }
 /// }
-pub fn on_modify_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
+    if let Some(ref mut active_move) = battle.active_move {
+        // if (!move.ignoreImmunity) move.ignoreImmunity = {};
+        // if (move.ignoreImmunity !== true)
+        match &mut active_move.ignore_immunity {
+            Some(crate::battle_actions::IgnoreImmunity::All) => {
+                // Already set to true (All), don't override
+            }
+            Some(crate::battle_actions::IgnoreImmunity::Specific(ref mut map)) => {
+                // Add to existing map
+                map.insert("Fighting".to_string(), true);
+                map.insert("Normal".to_string(), true);
+            }
+            None => {
+                // Create new map with Fighting and Normal
+                let mut map = std::collections::HashMap::new();
+                map.insert("Fighting".to_string(), true);
+                map.insert("Normal".to_string(), true);
+                active_move.ignore_immunity = Some(crate::battle_actions::IgnoreImmunity::Specific(map));
+            }
+        }
+    }
+
     EventResult::Continue
 }
 
