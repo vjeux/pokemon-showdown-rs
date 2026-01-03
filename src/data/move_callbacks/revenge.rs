@@ -22,7 +22,6 @@ pub fn base_power_callback(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let pokemon = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -31,29 +30,21 @@ pub fn base_power_callback(
     // const damagedByTarget = pokemon.attackedBy.some(
     //     p => p.source === target && p.damage > 0 && p.thisTurn
     // );
-    // TODO: Pokemon struct doesn't have attacked_by field yet
-    // For now, use hurt_this_turn as a workaround to check if damaged this turn
     let damaged_by_target = {
-        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        // If pokemon was hurt this turn, assume it was by the target
-        // This is a simplification until attacked_by tracking is implemented
-        pokemon_pokemon.hurt_this_turn.unwrap_or(0) > 0
+
+        pokemon.attacked_by.iter().any(|attacker| {
+            attacker.source == target && attacker.damage > 0 && attacker.this_turn
+        })
     };
 
     // if (damagedByTarget) {
     if damaged_by_target {
         // this.debug(`BP doubled for getting hit by ${target}`);
-        let target_arg = {
-            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            target_pokemon.get_slot()
-        };
-        battle.debug(&format!("BP doubled for getting hit by {}", target_arg));
+        eprintln!("[REVENGE] BP doubled for getting hit by {:?}", target);
 
         // return move.basePower * 2;
         let base_power = {

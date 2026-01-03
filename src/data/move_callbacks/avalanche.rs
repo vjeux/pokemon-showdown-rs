@@ -22,14 +22,8 @@ pub fn base_power_callback(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // Get the pokemon (user of the move)
-    let _pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
     // Get the target
-    let _target = match target_pos {
+    let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -46,16 +40,28 @@ pub fn base_power_callback(
         None => return EventResult::Continue,
     };
 
-    // TODO: Infrastructure gap - Pokemon.attackedBy field not yet implemented
-    // This should check: pokemon.attackedBy.some(p => p.source === target && p.damage > 0 && p.thisTurn)
-    // For now, return base power without modification
     // const damagedByTarget = pokemon.attackedBy.some(
     //     p => p.source === target && p.damage > 0 && p.thisTurn
     // );
+    let damaged_by_target = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        pokemon.attacked_by.iter().any(|attacker| {
+            attacker.source == target && attacker.damage > 0 && attacker.this_turn
+        })
+    };
+
     // if (damagedByTarget) {
     //     this.debug(`BP doubled for getting hit by ${target}`);
     //     return move.basePower * 2;
     // }
+    if damaged_by_target {
+        eprintln!("[AVALANCHE] BP doubled for getting hit by {:?}", target);
+        return EventResult::Number(move_data.base_power * 2);
+    }
 
     // return move.basePower;
     EventResult::Number(move_data.base_power)
