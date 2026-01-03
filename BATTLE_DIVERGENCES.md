@@ -1357,3 +1357,65 @@ The 6 PRNG calls may be coming from:
 - Next: Fix remaining simple divergences (find_event_handlers Side target, end_turn foe abilities)
 
 
+### Twenty-Ninth Implementation: Implement FoeMaybeTrapPokemon in end_turn.rs ✅
+- **Issue**: Complete stub for foe ability checking that affects trapping behavior (Gen 3+)
+- **Root Cause**: Complex 25-line JavaScript logic was stubbed out with TODO comments
+- **Action**: Implemented full JavaScript logic matching battle.ts:124-149 line-by-line
+
+  **JavaScript** (battle.ts:124-149):
+  ```javascript
+  if (this.gen > 2) {
+      for (const source of pokemon.foes()) {
+          const species = (source.illusion || source).species;
+          if (!species.abilities) continue;
+          for (const abilitySlot in species.abilities) {
+              const abilityName = species.abilities[abilitySlot];
+              if (abilityName === source.ability) continue;  // already checked
+              const ruleTable = this.ruleTable;
+              if ((ruleTable.has('+hackmons') || !ruleTable.has('obtainableabilities')) && !this.format.team) continue;
+              else if (abilitySlot === 'H' && species.unreleasedHidden) continue;
+              const ability = this.dex.abilities.get(abilityName);
+              if (ruleTable.has('-ability:' + ability.id)) continue;
+              if (pokemon.knownType && !this.dex.getImmunity('trapped', pokemon)) continue;
+              this.singleEvent('FoeMaybeTrapPokemon', ability, {}, pokemon, source);
+          }
+      }
+  }
+  ```
+
+  **Rust Implementation** (end_turn.rs:733-850):
+  - Lines 733-745: Gen 3+ check and loop through pokemon positions
+  - Lines 746-763: Loop through foes, handle illusion, get species abilities
+  - Lines 765-785: Check if species has abilities, collect all ability slots (0, 1, H)
+  - Lines 787-794: Loop through ability slots, skip if same as current ability
+  - Lines 796-810: Check rule table for hackmons/obtainableabilities formats
+  - Lines 812-823: Check unreleased hidden abilities (TODO: field missing from SpeciesData)
+  - Lines 825-827: Check if ability is banned by rule table
+  - Lines 829-837: Check trapped immunity (if pokemon type known and immune to trapped, skip)
+  - Lines 839-846: Call single_event('FoeMaybeTrapPokemon', ability, pokemon, foe)
+
+- **Implementation Details**:
+  - `illusion` field is `Option<usize>` (index), not a tuple
+  - AbilitySlots fields: `slot0`, `slot1`, `hidden` (not `slotH`)
+  - RuleTable method: `has()` (not `has_rule()`)
+  - `single_event()` signature: 5 parameters (event_id, effect_id, target, source, source_effect)
+  - `unreleased_hidden` field doesn't exist in SpeciesData yet (added TODO for future)
+
+- **Side Effects**: More accurate trapping behavior for abilities like Shadow Tag, Arena Trap, etc.
+- **Result**: Matches JavaScript 1:1 for foe ability trapping checks (except unreleasedHidden which needs SpeciesData field)
+- **Commit**: fb1a998f
+
+**Session 15 Summary:**
+- Files fixed: 2 (field_event.rs, end_turn.rs)
+- Lines added: ~180 (field_event fix + FoeMaybeTrapPokemon implementation)
+- Bugs fixed: 2 major divergences from JavaScript
+- Commits: 3 (9762082b field_event, 987d6126 docs, fb1a998f end_turn)
+- Compilation: ✅ All changes compile successfully
+- Infrastructure issues found: SpeciesData missing `unreleased_hidden` field
+
+**Remaining Divergences (Session 15):**
+1. ~~field_event.rs~~ - ✅ Fixed (allySide check)
+2. ~~end_turn.rs~~ - ✅ Fixed (FoeMaybeTrapPokemon logic)
+3. **find_event_handlers.rs** - Missing Side target handling (shouldBubbleDown logic)
+4. **set_player.rs** - Manual JSON building instead of serde_json (minor)
+
