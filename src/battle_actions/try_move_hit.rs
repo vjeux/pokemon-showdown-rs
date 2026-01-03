@@ -43,6 +43,7 @@
 
 use crate::*;
 use crate::event::EventResult;
+use crate::battle_actions::move_hit::move_hit;
 
 /// Try to hit with a field-wide move (all, foeSide, allySide, allyTeam targets)
 /// Equivalent to tryMoveHit() in battle-actions.ts
@@ -174,9 +175,16 @@ pub fn try_move_hit(
     }
 
     // return this.moveHit(isFFAHazard ? targets : target, pokemon, move);
-    // TODO: Implement moveHit function
-    // For now, return true to indicate the move succeeded
-    // JavaScript: moveHit returns damage value or false
-    // moveHit would handle the actual damage calculation and application
+    // Call moveHit with either all targets (for FFA hazards) or just the first target
+    if is_ffa_hazard {
+        // For FFA hazards, pass all targets
+        let target_opts: Vec<Option<(usize, usize)>> = targets.iter().map(|&t| Some(t)).collect();
+        move_hit(battle, &target_opts, pokemon_pos, move_id, false, false);
+    } else {
+        // For single target, pass just the first target
+        let target_opts = vec![Some(target)];
+        move_hit(battle, &target_opts, pokemon_pos, move_id, false, false);
+    }
+
     true
 }
