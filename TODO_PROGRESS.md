@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 205 (53.9%)
+- Completed: 207 (54.5%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -486,11 +486,19 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 **New Ability Implementations:**
 202. **Flower Gift** (flowergift.rs) - onStart: Calls onWeatherChange to check forme; onWeatherChange: Changes Cherrim ↔ Cherrim-Sunshine based on sun/desolate land (uses forme_change with base species checking, effective_weather, and transformed check); onAllyModifyAtk and onAllyModifySpD were already implemented in Batch 72
 
+### Batch 77 - Toxic Debris (1 ability)
+203. **Toxic Debris** (toxicdebris.rs) - onDamagingHit: When hit by Physical move, adds toxic spikes to appropriate side (source's foe side if ally, source's side if not ally); checks layers < 2, uses battle.is_ally() for side determination, active_move.category for Physical check, Side::add_side_condition for adding spikes
+
+### Batch 78 - Lingering Aroma (1 ability)
+204. **Lingering Aroma** (lingeringaroma.rs) - onDamagingHit: Changes attacker's ability to Lingering Aroma on contact moves; skips if source ability has cantsuppress flag or already has lingeringaroma; uses Pokemon::set_ability, battle.check_move_makes_contact, dex.abilities().flags.get("cantsuppress") for implementation
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
 Completed Flower Gift (Batch 76) using new forme_change infrastructure.
-Progress: 203→205/380 (53.9%).
+Completed Toxic Debris (Batch 77) using battle.is_ally() for side determination and active_move.category checking.
+Completed Lingering Aroma (Batch 78) using Pokemon::set_ability and check_move_makes_contact.
+Progress: 203→207/380 (54.5%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
