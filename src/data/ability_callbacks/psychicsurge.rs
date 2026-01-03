@@ -10,8 +10,9 @@ use crate::event::EventResult;
 /// onStart(source) {
 ///     this.field.setTerrain('psychicterrain');
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+    // Set terrain to Psychic Terrain
+    battle.field.set_terrain(crate::ID::from("psychicterrain"), None);
     EventResult::Continue
 }
 

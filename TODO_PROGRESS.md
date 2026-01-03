@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 21 (5.5%)
+- Completed: 25 (6.6%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -36,13 +36,20 @@
 20. **Snow Warning** (snowwarning.rs) - onStart: Sets snow
 21. **Sand Stream** (sandstream.rs) - onStart: Sets sandstorm
 
+### Batch 5 - Terrain Setting Abilities (4 abilities)
+22. **Electric Surge** (electricsurge.rs) - onStart: Sets electric terrain
+23. **Grassy Surge** (grassysurge.rs) - onStart: Sets grassy terrain
+24. **Psychic Surge** (psychicsurge.rs) - onStart: Sets psychic terrain
+25. **Misty Surge** (mistysurge.rs) - onStart: Sets misty terrain
+
 ## Current Session
-Implemented 21 abilities across 4 batches.
+Implemented 25 abilities across 5 batches.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, etc.)
 - Using `battle.field.set_weather()` for weather-setting abilities
+- Using `battle.field.set_terrain()` for terrain-setting abilities
 - Properly handling special cases (Kyogre/Blue Orb, Groudon/Red Orb)
 - All implementations follow Rust borrow checker patterns with two-phase access
 
