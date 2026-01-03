@@ -1123,3 +1123,57 @@ Remaining TODOs: 44 (down from 45 - removed 1 move callback TODO).
 Progress: 262/380 abilities (68.9%).
 Remaining TODOs: 42 (down from 44 - removed 2 ability callback TODOs).
 
+
+### Batch 132 - Analytic Ability + Queue Infrastructure Discovery (1 TODO)
+
+**Infrastructure Discovery:**
+- battle.queue.will_move(side_index, pokemon_index) exists and is available!
+- battle.queue.will_switch(side_index, pokemon_index) exists and is available!
+- battle.queue.peek() exists and is available!
+- This unlocks multiple abilities that were waiting for queue system
+
+**Completed ability:**
+263. **Analytic** (analytic.rs) - onBasePower: Boosts base power by 1.3x (5325/4096) when Pokemon is moving last; checks if any other active Pokemon will move this turn using battle.queue.will_move(); uses battle.get_all_active(false) and battle.chain_modify_fraction()
+
+**Implementation Details:**
+- Iterates through all active Pokemon except the attacker
+- Uses battle.queue.will_move(target.0, target.1) to check if each Pokemon will move
+- If none will move (moving last), applies 1.3x boost
+- Shows debug message when boost is applied
+
+**Files Modified:**
+- src/data/ability_callbacks/analytic.rs - Implemented onBasePower (29 lines added)
+
+**Git Commit**: 3f29d097: "Implement Analytic ability using battle.queue.will_move (Batch 132)"
+
+Progress: 263/380 abilities (69.2%).
+Remaining TODOs: 41 (down from 42 - removed 1 ability callback TODO).
+
+
+### Batch 133 - Cud Chew Ability (2 TODOs)
+
+**Completed ability:**
+264. **Cud Chew** (cudchew.rs) - Full implementation with queue.peek() infrastructure:
+   - onEatItem: Stores eaten berry in pokemon.ability_state.data["berry"] with counter=2 (or 1 if queue is empty)
+   - onResidual: Decrements counter each turn, re-eats berry when counter reaches 0
+   - Uses battle.queue.peek() to check if turn order queue is empty
+   - Uses battle.single_event("Eat") to fire item's Eat event
+   - Uses battle.run_event("EatItem") to trigger EatItem event
+   - Skips bugbite/pluck berries (not stored for later eating)
+   - Sets pokemon.ate_berry = true for all eaten berries
+
+**Implementation Details:**
+- Checks item.is_berry from dex.items().get_by_id()
+- Stores berry ID and counter in ability_state.data HashMap using serde_json::Value
+- Counter starts at 2, or 1 if queue.peek() is None (eaten during residuals)
+- Shows -activate and -enditem messages when re-eating berry
+- Clears berry and counter from ability_state.data after eating
+
+**Files Modified:**
+- src/data/ability_callbacks/cudchew.rs - Implemented both callbacks (169 lines added)
+
+**Git Commit**: 203ff97d: "Implement Cud Chew ability using battle.queue.peek (Batch 133)"
+
+Progress: 264/380 abilities (69.5%).
+Remaining TODOs: 39 (down from 41 - removed 2 ability callback TODOs).
+
