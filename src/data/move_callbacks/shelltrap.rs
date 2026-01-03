@@ -166,11 +166,9 @@ pub mod condition {
             // if (action) {
             //     this.queue.prioritizeAction(action);
             // }
-            // TODO: Implement queue_will_move and queue_prioritize_action methods in Battle
-            // let action = battle.queue_will_move(pokemon);
-            // if action.is_some() {
-            //     battle.queue_prioritize_action(pokemon);
-            // }
+            if battle.queue.will_move(pokemon.0, pokemon.1).is_some() {
+                battle.queue.prioritize_action(pokemon.0, pokemon.1);
+            }
         }
 
         EventResult::Continue
