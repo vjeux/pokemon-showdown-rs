@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 43 (11.3%)
+- Completed: 49 (12.9%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -66,8 +66,16 @@
 42. **Steam Engine** (steamengine.rs) - onDamagingHit: Boosts Speed by 6 when hit by Water or Fire-type move
 43. **Motor Drive** (motordrive.rs) - onTryHit: Immune to Electric-type moves and boosts Speed by 1
 
+### Batch 9 - Type Immunity & Absorb Abilities (6 abilities)
+44. **Sap Sipper** (sapsipper.rs) - onTryHit: Immune to Grass-type moves and boosts Attack by 1
+45. **Well-Baked Body** (wellbakedbody.rs) - onTryHit: Immune to Fire-type moves and boosts Defense by 2
+46. **Weak Armor** (weakarmor.rs) - onDamagingHit: Lowers Defense by 1 and boosts Speed by 2 when hit by Physical move
+47. **Innards Out** (innardsout.rs) - onDamagingHit: Damages attacker by damage taken if target faints
+48. **Volt Absorb** (voltabsorb.rs) - onTryHit: Immune to Electric-type moves and heals 1/4 max HP
+49. **Water Absorb** (waterabsorb.rs) - onTryHit: Immune to Water-type moves and heals 1/4 max HP
+
 ## Current Session
-Implemented 43 abilities across 8 batches.
+Implemented 49 abilities across 9 batches.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
@@ -81,6 +89,8 @@ All implementations are 1-to-1 from JavaScript and compile successfully.
 - Using `battle.random_chance()` for probability checks
 - Using `Pokemon::try_set_status()` to apply status conditions
 - Using `move_data.move_type` to check move types for type-based abilities
+- Using `move_data.category` to check move category (Physical/Special/Status)
+- Using `EventResult::Null` to prevent moves from hitting (immunity)
 - Properly handling special cases (Kyogre/Blue Orb, Groudon/Red Orb)
 - All implementations follow Rust borrow checker patterns with two-phase access
 

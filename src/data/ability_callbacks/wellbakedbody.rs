@@ -15,8 +15,25 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(_battle: &mut Battle, _target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
+    // Immune to Fire-type moves and boost Defense by 2
+    if target_pos != source_pos {
+        // Check if the move is Fire-type
+        let is_fire = {
+            let move_data = match battle.dex.moves().get(move_id) {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+            move_data.move_type == "Fire"
+        };
+
+        if is_fire {
+            // Try to boost Defense by 2
+            battle.boost(&[("def", 2)], target_pos, None, None, false, false);
+            // Return Null to prevent the move from hitting
+            return EventResult::Null;
+        }
+    }
     EventResult::Continue
 }
 
