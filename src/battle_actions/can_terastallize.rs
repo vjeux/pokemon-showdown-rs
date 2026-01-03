@@ -14,7 +14,6 @@ use crate::*;
 ///     }
 ///     return pokemon.teraType;
 ///   }
-#[allow(dead_code)]
 pub fn can_terastallize(
     battle: &Battle,
     pokemon_pos: (usize, usize),

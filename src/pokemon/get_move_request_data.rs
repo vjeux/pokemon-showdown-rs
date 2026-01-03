@@ -70,6 +70,39 @@ impl Pokemon {
     ) -> serde_json::Value {
         let (side_idx, poke_idx) = pokemon_pos;
 
+        // Update can_terastallize based on current state (item, mega evo, gen)
+        // JavaScript: this.canTerastallize = this.battle.actions.canTerastallize(this);
+        let new_can_terastallize = crate::battle_actions::can_terastallize(battle, pokemon_pos);
+        {
+            let pokemon = match battle.pokemon_at_mut(side_idx, poke_idx) {
+                Some(p) => p,
+                None => return serde_json::Value::Null,
+            };
+            pokemon.can_terastallize = new_can_terastallize;
+        }
+
+        // Update can_mega_evo based on current state
+        // JavaScript: this.canMegaEvo = this.battle.actions.canMegaEvo(this);
+        let new_can_mega_evo = crate::battle_actions::can_mega_evo(battle, side_idx, poke_idx);
+        {
+            let pokemon = match battle.pokemon_at_mut(side_idx, poke_idx) {
+                Some(p) => p,
+                None => return serde_json::Value::Null,
+            };
+            pokemon.can_mega_evo = new_can_mega_evo;
+        }
+
+        // Update can_ultra_burst based on current state
+        // JavaScript: this.canUltraBurst = this.battle.actions.canUltraBurst(this);
+        let new_can_ultra_burst = crate::battle_actions::can_ultra_burst(battle, side_idx, poke_idx);
+        {
+            let pokemon = match battle.pokemon_at_mut(side_idx, poke_idx) {
+                Some(p) => p,
+                None => return serde_json::Value::Null,
+            };
+            pokemon.can_ultra_burst = new_can_ultra_burst;
+        }
+
         // JS: let lockedMove = this.maybeLocked ? null : this.getLockedMove();
         let locked_move: Option<ID> = {
             let pokemon = match battle.pokemon_at(side_idx, poke_idx) {

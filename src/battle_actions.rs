@@ -57,6 +57,8 @@ mod hit_step_try_immunity;
 mod hit_step_type_immunity;
 pub use can_mega_evo::can_mega_evo;
 pub use can_ultra_burst::can_ultra_burst;
+pub use can_terastallize::can_terastallize;
+pub use get_confusion_damage::get_confusion_damage;
 pub use run_mega_evo::run_mega_evo;
 pub use terastallize::terastallize;
 pub use use_move::use_move;
