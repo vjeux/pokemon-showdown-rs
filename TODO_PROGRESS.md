@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 53 (13.9%)
+- Completed: 71 (18.7%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -80,9 +80,46 @@
 52. **Lightning Rod** (lightningrod.rs) - onTryHit: Immune to Electric-type moves and boosts Special Attack by 1
 53. **Cheek Pouch** (cheekpouch.rs) - onEatItem: Heals 1/3 max HP when eating an item
 
+### Batch 11 - Contact Poison & Infrastructure Refactor (18 abilities)
+
+**New Ability Implementations:**
+54. **Toxic Chain** (toxicchain.rs) - onSourceDamagingHit: 30% chance to badly poison target after damaging them
+55. **Poison Touch** (poisontouch.rs) - onSourceDamagingHit: 30% chance to poison target on contact
+56. **Stakeout** (stakeout.rs) - onModifyAtk/onModifySpA: Doubles Attack and Special Attack against Pokemon that just switched in (activeTurns == 0)
+57. **Liquid Ooze** (liquidooze.rs) - onSourceTryHeal: Reverses drain/leechseed/strengthsap healing into damage
+
+**onTryBoost Infrastructure Refactor (14 abilities fixed):**
+This batch included a major infrastructure refactor for `onTryBoost` callbacks. The refactor changed the signature from:
+```rust
+pub fn on_try_boost(battle: &mut Battle, boost: &str, target_pos, source_pos, effect_id) -> EventResult
+```
+to:
+```rust
+pub fn on_try_boost(battle: &mut Battle, target_pos, boost: Option<&mut BoostsTable>) -> EventResult
+```
+
+This allows abilities to properly modify boost tables before they're applied, matching the JavaScript implementation exactly.
+
+**Abilities Fixed by Refactor:**
+58. **Big Pecks** (bigpecks.rs) - onTryBoost: Prevents Defense drops (except self-inflicted and secondaries/octolock)
+59. **Hyper Cutter** (hypercutter.rs) - onTryBoost: Prevents Attack drops (except self-inflicted and secondaries)
+60. **Clear Body** (clearbody.rs) - onTryBoost: Prevents all negative boosts (except self-inflicted and secondaries/octolock)
+61. **White Smoke** (whitesmoke.rs) - onTryBoost: Prevents all negative boosts (except self-inflicted and secondaries/octolock)
+62. **Full Metal Body** (fullmetalbody.rs) - onTryBoost: Prevents all negative boosts (except self-inflicted and secondaries/octolock)
+63. **Keen Eye** (keeneye.rs) - onTryBoost: Prevents accuracy drops (except self-inflicted and secondaries)
+64. **Illuminate** (illuminate.rs) - onTryBoost: Prevents accuracy drops (except self-inflicted and secondaries)
+65. **Mind's Eye** (mindseye.rs) - onTryBoost: Prevents accuracy drops (except self-inflicted and secondaries)
+66. **Inner Focus** (innerfocus.rs) - onTryBoost: Prevents Attack drops from Intimidate
+67. **Oblivious** (oblivious.rs) - onTryBoost: Prevents Attack drops from Intimidate
+68. **Own Tempo** (owntempo.rs) - onTryBoost: Prevents Attack drops from Intimidate
+69. **Scrappy** (scrappy.rs) - onTryBoost: Prevents Attack drops from Intimidate
+70. **Guard Dog** (guarddog.rs) - onTryBoost: Prevents Attack drops from Intimidate and boosts Attack by 1 instead
+71. **Mirror Armor** (mirrorarmor.rs) - onTryBoost: Reflects all negative boosts back to the source (skips if target boost at -6 or source has no HP)
+
 ## Current Session
-Implemented 53 abilities across 10 batches.
+Implemented 18 abilities in batch 11 (4 new + 14 onTryBoost refactor).
 All implementations are 1-to-1 from JavaScript and compile successfully.
+Major infrastructure change: Refactored onTryBoost to use mutable BoostsTable references.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)

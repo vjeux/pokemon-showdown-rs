@@ -13,8 +13,20 @@ use crate::event::EventResult;
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_modify_atk(_battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+    // Double Attack if defender just switched in (activeTurns == 0)
+    let defender_active_turns = {
+        let defender = match battle.pokemon_at(defender_pos.0, defender_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        defender.active_turns
+    };
+
+    if defender_active_turns == 0 {
+        battle.chain_modify(2.0);
+    }
+
     EventResult::Continue
 }
 
@@ -24,8 +36,20 @@ pub fn on_modify_atk(_battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usi
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_modify_sp_a(_battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+    // Double Special Attack if defender just switched in (activeTurns == 0)
+    let defender_active_turns = {
+        let defender = match battle.pokemon_at(defender_pos.0, defender_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        defender.active_turns
+    };
+
+    if defender_active_turns == 0 {
+        battle.chain_modify(2.0);
+    }
+
     EventResult::Continue
 }
 

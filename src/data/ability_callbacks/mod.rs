@@ -1781,23 +1781,24 @@ pub fn dispatch_on_try_add_volatile(
 pub fn dispatch_on_try_boost(
     battle: &mut Battle,
     ability_id: &str,
-    boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
+    target_pos: (usize, usize),
+    boost: Option<&mut crate::dex_data::BoostsTable>,
 ) -> EventResult {
     match ability_id {
-        "bigpecks" => bigpecks::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "clearbody" => clearbody::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "fullmetalbody" => fullmetalbody::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "guarddog" => guarddog::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "hypercutter" => hypercutter::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "illuminate" => illuminate::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "innerfocus" => innerfocus::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "keeneye" => keeneye::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "mindseye" => mindseye::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "mirrorarmor" => mirrorarmor::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "oblivious" => oblivious::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "owntempo" => owntempo::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "scrappy" => scrappy::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
-        "whitesmoke" => whitesmoke::on_try_boost(battle, boost, target_pos, source_pos, effect_id),
+        "bigpecks" => bigpecks::on_try_boost(battle, target_pos, boost),
+        "clearbody" => clearbody::on_try_boost(battle, target_pos, boost),
+        "fullmetalbody" => fullmetalbody::on_try_boost(battle, target_pos, boost),
+        "guarddog" => guarddog::on_try_boost(battle, target_pos, boost),
+        "hypercutter" => hypercutter::on_try_boost(battle, target_pos, boost),
+        "illuminate" => illuminate::on_try_boost(battle, target_pos, boost),
+        "innerfocus" => innerfocus::on_try_boost(battle, target_pos, boost),
+        "keeneye" => keeneye::on_try_boost(battle, target_pos, boost),
+        "mindseye" => mindseye::on_try_boost(battle, target_pos, boost),
+        "mirrorarmor" => mirrorarmor::on_try_boost(battle, target_pos, boost),
+        "oblivious" => oblivious::on_try_boost(battle, target_pos, boost),
+        "owntempo" => owntempo::on_try_boost(battle, target_pos, boost),
+        "scrappy" => scrappy::on_try_boost(battle, target_pos, boost),
+        "whitesmoke" => whitesmoke::on_try_boost(battle, target_pos, boost),
         _ => EventResult::Continue,
     }
 }
@@ -4489,27 +4490,30 @@ pub fn dispatch_on_try_add_volatile_sub_order(
 pub fn dispatch_on_try_boost_priority(
     battle: &mut Battle,
     ability_id: &str,
-    boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
+    target_pos: (usize, usize),
+    boost: Option<&mut crate::dex_data::BoostsTable>,
 ) -> EventResult {
-    dispatch_on_try_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
+    dispatch_on_try_boost(battle, ability_id, target_pos, boost)
 }
 
 /// Dispatch onTryBoostOrder callbacks (alias for onTryBoost)
 pub fn dispatch_on_try_boost_order(
     battle: &mut Battle,
     ability_id: &str,
-    boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
+    target_pos: (usize, usize),
+    boost: Option<&mut crate::dex_data::BoostsTable>,
 ) -> EventResult {
-    dispatch_on_try_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
+    dispatch_on_try_boost(battle, ability_id, target_pos, boost)
 }
 
 /// Dispatch onTryBoostSubOrder callbacks (alias for onTryBoost)
 pub fn dispatch_on_try_boost_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    boost: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
+    target_pos: (usize, usize),
+    boost: Option<&mut crate::dex_data::BoostsTable>,
 ) -> EventResult {
-    dispatch_on_try_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
+    dispatch_on_try_boost(battle, ability_id, target_pos, boost)
 }
 
 /// Dispatch onTryEatItemPriority callbacks (alias for onTryEatItem)

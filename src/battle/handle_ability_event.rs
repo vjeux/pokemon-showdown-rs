@@ -697,13 +697,39 @@ impl Battle {
                 "", pokemon_pos, None, None
             ),
             "TryBoost" => {
-                ability_callbacks::dispatch_on_try_boost(self, ability_id.as_str(), "", pokemon_pos, None, None)
+                // Temporarily take boost out of current_event to get mutable access
+                let mut boost = self.current_event.as_mut().and_then(|e| e.relay_var_boost.take());
+                let result = ability_callbacks::dispatch_on_try_boost(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                    boost.as_mut(),
+                );
+                // Put it back
+                if let Some(b) = boost {
+                    if let Some(ref mut event) = self.current_event {
+                        event.relay_var_boost = Some(b);
+                    }
+                }
+                result
             }
-            "TryBoostPriority" => ability_callbacks::dispatch_on_try_boost_priority(
-                self,
-                ability_id.as_str(),
-                "", pokemon_pos, None, None
-            ),
+            "TryBoostPriority" => {
+                // Temporarily take boost out of current_event to get mutable access
+                let mut boost = self.current_event.as_mut().and_then(|e| e.relay_var_boost.take());
+                let result = ability_callbacks::dispatch_on_try_boost_priority(
+                    self,
+                    ability_id.as_str(),
+                    pokemon_pos,
+                    boost.as_mut(),
+                );
+                // Put it back
+                if let Some(b) = boost {
+                    if let Some(ref mut event) = self.current_event {
+                        event.relay_var_boost = Some(b);
+                    }
+                }
+                result
+            }
             "TryEatItem" => {
                 ability_callbacks::dispatch_on_try_eat_item(self, ability_id.as_str())
             }

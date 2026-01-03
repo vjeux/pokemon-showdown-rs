@@ -15,8 +15,16 @@ use crate::event::EventResult;
 ///         target.trySetStatus('tox', source);
 ///     }
 /// }
-pub fn on_source_damaging_hit(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    // 30% chance to badly poison the target after damaging them
+    if let (Some(target), Some(_source)) = (target_pos, source_pos) {
+        // TODO: Check for Shield Dust ability and Covert Cloak item when those are implemented
+
+        if battle.random_chance(3, 10) {
+            // Try to set toxic (badly poisoned) status on the target
+            crate::pokemon::Pokemon::try_set_status(battle, target, crate::ID::from("tox"), None);
+        }
+    }
     EventResult::Continue
 }
 

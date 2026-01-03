@@ -36,8 +36,43 @@ pub fn on_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 ///         this.boost({ atk: 1 }, target, target, null, false, true);
 ///     }
 /// }
-pub fn on_try_boost(_battle: &mut Battle, _boost: &str, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_boost(
+    battle: &mut Battle,
+    target_pos: (usize, usize),
+    boost: Option<&mut crate::dex_data::BoostsTable>,
+) -> EventResult {
+    // Check if effect is Intimidate
+    let is_intimidate = battle.current_event.as_ref()
+        .and_then(|e| e.effect.as_ref())
+        .map(|id| id.as_str() == "intimidate")
+        .unwrap_or(false);
+
+    if !is_intimidate {
+        return EventResult::Continue;
+    }
+
+    // Check if we have a boost table
+    let boost = match boost {
+        Some(b) => b,
+        None => return EventResult::Continue,
+    };
+
+    // if (boost.atk) {
+    if boost.atk != 0 {
+        // delete boost.atk;
+        boost.atk = 0;
+
+        // this.boost({ atk: 1 }, target, target, null, false, true);
+        battle.boost(
+            &[("atk", 1)],
+            target_pos,
+            Some(target_pos),
+            None,
+            false,
+            true,
+        );
+    }
+
     EventResult::Continue
 }
 

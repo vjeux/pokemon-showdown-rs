@@ -16,8 +16,18 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_source_damaging_hit(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    // 30% chance to poison the target when attacker makes contact
+    if let (Some(target), Some(source)) = (target_pos, source_pos) {
+        // TODO: Check for Shield Dust ability and Covert Cloak item when those are implemented
+
+        if battle.check_move_makes_contact(&crate::ID::from(move_id), target, source, false) {
+            if battle.random_chance(3, 10) {
+                // Try to set poison status on the target
+                crate::pokemon::Pokemon::try_set_status(battle, target, crate::ID::from("psn"), None);
+            }
+        }
+    }
     EventResult::Continue
 }
 

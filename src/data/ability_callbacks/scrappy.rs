@@ -25,8 +25,52 @@ pub fn on_modify_move(_battle: &mut Battle, _move_id: &str) -> EventResult {
 ///         this.add('-fail', target, 'unboost', 'Attack', '[from] ability: Scrappy', `[of] ${target}`);
 ///     }
 /// }
-pub fn on_try_boost(_battle: &mut Battle, _boost: &str, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_try_boost(
+    battle: &mut Battle,
+    target_pos: (usize, usize),
+    boost: Option<&mut crate::dex_data::BoostsTable>,
+) -> EventResult {
+    // Check if effect is Intimidate
+    let is_intimidate = battle.current_event.as_ref()
+        .and_then(|e| e.effect.as_ref())
+        .map(|id| id.as_str() == "intimidate")
+        .unwrap_or(false);
+
+    if !is_intimidate {
+        return EventResult::Continue;
+    }
+
+    // Check if we have a boost table
+    let boost = match boost {
+        Some(b) => b,
+        None => return EventResult::Continue,
+    };
+
+    // if (boost.atk) {
+    if boost.atk != 0 {
+        // delete boost.atk;
+        boost.atk = 0;
+
+        let target_slot = {
+            let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        battle.add(
+            "-fail",
+            &[
+                crate::battle::Arg::from(target_slot.clone()),
+                crate::battle::Arg::from("unboost"),
+                crate::battle::Arg::from("Attack"),
+                crate::battle::Arg::from("[from] ability: Scrappy"),
+                crate::battle::Arg::from(format!("[of] {}", target_slot)),
+            ],
+        );
+    }
+
     EventResult::Continue
 }
 
