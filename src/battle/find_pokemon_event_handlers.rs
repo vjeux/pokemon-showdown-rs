@@ -209,14 +209,14 @@ impl Battle {
         // JS: const side = pokemon.side;
         // JS: for (const conditionid in side.slotConditions[pokemon.position]) {
         if let Some(slot_conds) = self.sides[side_idx].slot_conditions.get(pokemon.position) {
-            for (slot_cond_id, _slot_cond_state) in slot_conds {
+            for (slot_cond_id, slot_cond_state) in slot_conds {
                 // JS: const slotConditionState = side.slotConditions[pokemon.position][conditionid];
                 // JS: const slotCondition = this.dex.conditions.getByID(conditionid as ID);
                 // JS: callback = this.getCallback(pokemon, slotCondition, callbackName);
                 // JS: if (callback !== undefined || (getKey && slotConditionState[getKey])) {
                 let has_callback = self.has_callback(slot_cond_id, callback_name);
                 let has_get_key = get_key.is_some_and(|key| {
-                    _slot_cond_state.data.get(key).is_some()
+                    slot_cond_state.data.get(key).is_some()
                 });
 
                 if has_callback || has_get_key {
@@ -225,7 +225,7 @@ impl Battle {
                         effect_type: EffectType::SlotCondition,
                         target: Some(target),
                         index: None,
-                        state: None, // TODO: Type mismatch - slot_conditions uses dex_data::EffectState but EventListener expects event_system::EffectState
+                        state: Some(slot_cond_state.clone()),
                         effect_holder: Some(target),
                         order: None,
                         priority: 0,

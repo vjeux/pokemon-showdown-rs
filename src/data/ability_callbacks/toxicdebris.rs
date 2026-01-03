@@ -49,7 +49,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     let toxic_spikes_layers = {
         let side = &battle.sides[side_index];
         let toxic_spikes = side.get_side_condition(&ID::from("toxicspikes"));
-        toxic_spikes.and_then(|ts| ts.layers).unwrap_or(0)
+        toxic_spikes.and_then(|ts| ts.get_i32("layers")).unwrap_or(0)
     };
 
     // if (move.category === 'Physical' && (!toxicSpikes || toxicSpikes.layers < 2))

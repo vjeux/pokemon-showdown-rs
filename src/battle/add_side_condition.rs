@@ -6,6 +6,7 @@
 //! source tracking, which is needed for moves like Pursuit that track multiple sources.
 
 use crate::*;
+use crate::event_system::EffectState;
 
 impl Battle {
     /// Add a side condition to a specific side with source tracking
@@ -62,13 +63,13 @@ impl Battle {
         }
 
         // Create effect state with source tracking
-        let mut state = dex_data::EffectState::new(condition_id.clone());
+        let mut state = EffectState::new(condition_id.clone());
         state.source = source_pos;
 
         // If source exists, add source_slot field
         if let Some(source) = source_pos {
             if let Some(source_pokemon) = self.pokemon_at(source.0, source.1) {
-                state.source_slot = Some(source_pokemon.get_slot());
+                state.source_slot = Some(source_pokemon.position);
             }
         }
 

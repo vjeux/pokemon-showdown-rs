@@ -62,9 +62,7 @@ impl Battle {
                     effect_type: EffectType::SideCondition,
                     target: None,
                     index: None,
-                    // TODO: Type mismatch - side_conditions uses dex_data::EffectState but EventListener expects event_system::EffectState
-                    // Need to either convert between types or unify the EffectState types
-                    state: None,
+                    state: Some(sc_state.clone()),
                     effect_holder: custom_holder, // JS: customHolder || side (side not representable as tuple)
                     order: None,
                     priority: 0,

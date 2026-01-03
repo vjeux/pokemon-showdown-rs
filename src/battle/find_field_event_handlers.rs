@@ -2,6 +2,7 @@
 
 use crate::*;
 use crate::battle::{EventListener, EffectType};
+use crate::event_system::EffectState;
 
 impl Battle {
     /// Find field event handlers
@@ -53,7 +54,7 @@ impl Battle {
 
         // Collect pseudo weather IDs that have callbacks or getKey
         // (need to extract before calling resolve_priority due to borrow checker)
-        let pseudo_weather_ids: Vec<ID> = self.field.pseudo_weather.iter()
+        let pseudo_weather_handlers: Vec<(ID, EffectState)> = self.field.pseudo_weather.iter()
             .filter(|(pw_id, pw_state)| {
                 let has_callback = self.has_callback(pw_id, callback_name);
                 let has_get_key = get_key.is_some_and(|key| {
@@ -61,19 +62,18 @@ impl Battle {
                 });
                 has_callback || has_get_key
             })
-            .map(|(pw_id, _)| pw_id.clone())
+            .map(|(pw_id, pw_state)| (pw_id.clone(), pw_state.clone()))
             .collect();
 
         // JS: for (const id in field.pseudoWeather) {
-        for pw_id in pseudo_weather_ids {
+        for (pw_id, pw_state) in pseudo_weather_handlers {
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
-            // TODO: State type mismatch - field states are dex_data::EffectState but EventListener expects event_system::EffectState
             let mut handler = EventListener {
                 effect_id: pw_id,
                 effect_type: EffectType::Condition,
                 target: None,
                 index: None,
-                state: None, // TODO: Convert dex_data::EffectState to event_system::EffectState
+                state: Some(pw_state),
                 effect_holder: custom_holder, // JS: customHolder || field (field not representable as tuple)
                 order: None,
                 priority: 0,
@@ -91,27 +91,28 @@ impl Battle {
         // JS: const weather = field.getWeather();
         // JS: callback = this.getCallback(field, weather, callbackName);
         // JS: if (callback !== undefined || (getKey && this.field.weatherState[getKey])) {
-        let has_weather = if !self.field.weather.is_empty() {
+        let weather_handler = if !self.field.weather.is_empty() {
             let has_callback = self.has_callback(&self.field.weather, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 self.field.weather_state.data.get(key).is_some()
             });
-            has_callback || has_get_key
+            if has_callback || has_get_key {
+                Some((self.field.weather.clone(), self.field.weather_state.clone()))
+            } else {
+                None
+            }
         } else {
-            false
+            None
         };
 
-        if has_weather {
-            let weather_id = self.field.weather.clone();
-
+        if let Some((weather_id, weather_state)) = weather_handler {
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
-            // TODO: State type mismatch - field states are dex_data::EffectState but EventListener expects event_system::EffectState
             let mut handler = EventListener {
                 effect_id: weather_id,
                 effect_type: EffectType::Weather,
                 target: None,
                 index: None,
-                state: None, // TODO: Convert dex_data::EffectState to event_system::EffectState
+                state: Some(weather_state),
                 effect_holder: custom_holder, // JS: customHolder || field (field not representable as tuple)
                 order: None,
                 priority: 0,
@@ -129,27 +130,28 @@ impl Battle {
         // JS: const terrain = field.getTerrain();
         // JS: callback = this.getCallback(field, terrain, callbackName);
         // JS: if (callback !== undefined || (getKey && field.terrainState[getKey])) {
-        let has_terrain = if !self.field.terrain.is_empty() {
+        let terrain_handler = if !self.field.terrain.is_empty() {
             let has_callback = self.has_callback(&self.field.terrain, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 self.field.terrain_state.data.get(key).is_some()
             });
-            has_callback || has_get_key
+            if has_callback || has_get_key {
+                Some((self.field.terrain.clone(), self.field.terrain_state.clone()))
+            } else {
+                None
+            }
         } else {
-            false
+            None
         };
 
-        if has_terrain {
-            let terrain_id = self.field.terrain.clone();
-
+        if let Some((terrain_id, terrain_state)) = terrain_handler {
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
-            // TODO: State type mismatch - field states are dex_data::EffectState but EventListener expects event_system::EffectState
             let mut handler = EventListener {
                 effect_id: terrain_id,
                 effect_type: EffectType::Terrain,
                 target: None,
                 index: None,
-                state: None, // TODO: Convert dex_data::EffectState to event_system::EffectState
+                state: Some(terrain_state),
                 effect_holder: custom_holder, // JS: customHolder || field (field not representable as tuple)
                 order: None,
                 priority: 0,

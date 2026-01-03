@@ -7,7 +7,8 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-use crate::dex_data::{EffectState, SideID, ID};
+use crate::dex_data::{SideID, ID};
+use crate::event_system::EffectState;
 use crate::pokemon::{Pokemon, PokemonSet};
 
 // Function modules

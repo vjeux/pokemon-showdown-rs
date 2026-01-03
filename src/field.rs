@@ -7,7 +7,8 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-use crate::dex_data::{EffectState, ID};
+use crate::dex_data::ID;
+use crate::event_system::EffectState;
 
 /// The battle field - contains weather, terrain, and field-wide effects
 #[derive(Debug, Clone, Serialize, Deserialize)]
