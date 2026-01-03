@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 194 (51.1%)
+- Completed: 198 (52.1%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), **onSideConditionStart dispatcher infrastructure updated** (added pokemon_pos and side_condition_id parameters)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -419,6 +419,12 @@ Updated onSideConditionStart dispatcher infrastructure to properly pass pokemon_
 192. **Primordial Sea** (primordialsea.rs) - onAnySetWeather: Prevents non-strong weathers from replacing primordialsea (checks strongWeathers array)
 193. **Primordial Sea** (primordialsea.rs) - onEnd: Transfers weather source to another Pokemon with Primordial Sea or clears weather (uses EffectState.source, battle.get_all_active, and field methods)
 
+### Batch 71 - Unburden Ability (4 TODOs)
+194. **Unburden** (unburden.rs) - onAfterUseItem: Adds unburden volatile when item is used
+195. **Unburden** (unburden.rs) - onTakeItem: Adds unburden volatile when item is removed
+196. **Unburden** (unburden.rs) - onEnd: Removes unburden volatile when ability ends
+197. **Unburden** (unburden.rs) - condition::onModifySpe: Doubles speed when Pokemon has no item and is not ignoring ability (uses pokemon.item.is_empty() and pokemon.ignoring_ability())
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -443,7 +449,8 @@ Completed Wind Power and Wind Rider onSideConditionStart (Batch 67) with major i
 Completed Wind Rider onTryHit (Batch 68) granting immunity to wind moves and boosting Attack.
 Completed Wind Rider onStart (Batch 69) checking for tailwind on switch-in.
 Completed Primordial Sea (Batch 70) following Desolate Land pattern for strong weather mechanics.
-Progress: 194/380 abilities (51.1%).
+Completed Unburden (Batch 71) using volatile status system and pokemon.item/ignoring_ability() methods.
+Progress: 198/380 abilities (52.1%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes

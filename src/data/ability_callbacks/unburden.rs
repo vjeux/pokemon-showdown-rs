@@ -11,24 +11,50 @@ use crate::event::EventResult;
 ///     if (pokemon !== this.effectState.target) return;
 ///     pokemon.addVolatile('unburden');
 /// }
-pub fn on_after_use_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_after_use_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::Pokemon;
+
+    // pokemon.addVolatile('unburden');
+    Pokemon::add_volatile(
+        battle,
+        pokemon_pos,
+        crate::dex_data::ID::from("unburden"),
+        None,
+        None,
+        None,
+    );
+
     EventResult::Continue
 }
 
 /// onTakeItem(item, pokemon) {
 ///     pokemon.addVolatile('unburden');
 /// }
-pub fn on_take_item(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_take_item(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
+    use crate::Pokemon;
+
+    // pokemon.addVolatile('unburden');
+    Pokemon::add_volatile(
+        battle,
+        pokemon_pos,
+        crate::dex_data::ID::from("unburden"),
+        None,
+        None,
+        None,
+    );
+
     EventResult::Continue
 }
 
 /// onEnd(pokemon) {
 ///     pokemon.removeVolatile('unburden');
 /// }
-pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::Pokemon;
+
+    // pokemon.removeVolatile('unburden');
+    Pokemon::remove_volatile(battle, pokemon_pos, &crate::dex_data::ID::from("unburden"));
+
     EventResult::Continue
 }
 
@@ -40,8 +66,21 @@ pub mod condition {
     ///         return this.chainModify(2);
     ///     }
     /// }
-    pub fn on_modify_spe(_battle: &mut Battle, _spe: i32, _pokemon_pos: (usize, usize)) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+    pub fn on_modify_spe(battle: &mut Battle, _spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
+        // if (!pokemon.item && !pokemon.ignoringAbility())
+        let (has_no_item, ignoring_ability) = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            (pokemon.item.is_empty(), pokemon.ignoring_ability(battle))
+        };
+
+        if has_no_item && !ignoring_ability {
+            // return this.chainModify(2);
+            return EventResult::Number(2);
+        }
+
         EventResult::Continue
     }
 }

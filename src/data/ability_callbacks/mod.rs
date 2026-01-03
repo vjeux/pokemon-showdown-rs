@@ -1744,7 +1744,7 @@ pub fn dispatch_on_take_item(
 ) -> EventResult {
     match ability_id {
         "stickyhold" => stickyhold::on_take_item(battle, pokemon_pos, source_pos),
-        "unburden" => unburden::on_take_item(battle, pokemon_pos),
+        "unburden" => unburden::on_take_item(battle, pokemon_pos, source_pos),
         _ => EventResult::Continue,
     }
 }
