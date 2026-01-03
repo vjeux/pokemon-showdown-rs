@@ -26,6 +26,7 @@ mod clear;
 mod cancel_action;
 mod cancel_move;
 mod will_move;
+mod will_move_mut;
 mod will_move_pokemon;
 mod will_switch;
 mod will_act;
