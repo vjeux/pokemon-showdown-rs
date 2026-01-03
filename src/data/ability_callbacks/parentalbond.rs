@@ -49,8 +49,28 @@ pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, 
 ///         return secondaries.filter(effect => effect.volatileStatus === 'flinch');
 ///     }
 /// }
-pub fn on_source_modify_secondaries(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_source_modify_secondaries(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    // if (move.multihitType === 'parentalbond' && move.id === 'secretpower' && move.hit < 2)
+    let should_filter = if let Some(ref active_move) = battle.active_move {
+        active_move.multi_hit_type.as_deref() == Some("parentalbond")
+            && active_move.id.as_str() == "secretpower"
+            && active_move.hit < 2
+    } else {
+        return EventResult::Continue;
+    };
+
+    if !should_filter {
+        return EventResult::Continue;
+    }
+
+    // hack to prevent accidentally suppressing King's Rock/Razor Fang
+    // return secondaries.filter(effect => effect.volatileStatus === 'flinch');
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.secondaries.retain(|effect| {
+            effect.volatile_status.as_deref() == Some("flinch")
+        });
+    }
+
     EventResult::Continue
 }
 
