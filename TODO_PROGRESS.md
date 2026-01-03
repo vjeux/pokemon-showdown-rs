@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 103 (27.1%)
+- Completed: 104 (27.4%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -221,12 +221,15 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 ### Batch 25 - Electric Terrain Synergy (1 ability)
 103. **Hadron Engine** (hadronengine.rs) - onStart: Sets electric terrain or shows activate message if already active; onModifySpA: 1.33x Special Attack in electric terrain (5461/4096)
 
+### Batch 26 - Burn Immunity (1 ability)
+104. **Water Bubble** (waterbubble.rs) - Already had stat modifiers implemented; Added onUpdate: Cures burn status automatically; onSetStatus: Prevents burn with immunity message
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 8 abilities using the new infrastructure (batches 22-25).
-Progress: 103/380 abilities (27.1%).
+Implemented 9 abilities (batches 22-26).
+Progress: 104/380 abilities (27.4%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
-Now using field.is_terrain(), field.set_terrain(), and battle.add() for protocol messages.
+Now using field.is_terrain(), field.set_terrain(), battle.add(), and Pokemon::cure_status().
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
