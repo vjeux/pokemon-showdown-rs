@@ -1680,3 +1680,38 @@ Many TODOs claiming missing infrastructure are outdated - infrastructure was add
 
 Progress: 274/380 abilities (72.1%) - no change (completing existing ability).
 Remaining TODOs: 23 (down from 25 - removed 2 ability callback TODOs).
+
+
+### Batch 146 - Disguise Ability (4 TODOs)
+
+**Completed ability:**
+286-289. **Disguise** (disguise.rs) - Complete implementation of all 4 callbacks:
+   - onDamage: Blocks damage from Move-type effects, sets busted flag in effectState.data, returns 0 damage
+   - onCriticalHit: Prevents critical hits on Mimikyu/Mimikyu-Totem before disguise is busted (handles substitute bypass and immunity checks)
+   - onEffectiveness: Sets type effectiveness to 0 for Mimikyu/Mimikyu-Totem before disguise is busted (handles substitute bypass and immunity checks)
+   - onUpdate: When busted flag is set, changes to Busted forme (Mimikyu-Busted or Mimikyu-Busted-Totem) and deals 1/8 base max HP damage
+
+**Implementation Details:**
+- Uses battle.effect_state.data HashMap to track "busted" flag (bool)
+- Checks species_id for "mimikyu" or "mimikyutotem"
+- Uses pokemon.has_volatile() to check for substitute
+- Uses active_move.flags.bypasssub (bool field) for substitute bypass
+- Uses active_move.infiltrates (bool, not Option<bool>) for infiltration check
+- Uses active_move.category (String) for Status check
+- Uses Pokemon::run_immunity() with 4 parameters (battle, pokemon_pos, move_type, with_message)
+- Uses battle.damage() with 5 parameters (damage, target, source, effect, instafaint)
+- Uses forme_change() with unsafe pointer pattern for forme transformation
+- Fixed borrow checker issues by extracting move_type before calling run_immunity
+
+**Type Fixes:**
+- battle.damage() signature: `(i32, Option<(usize, usize)>, Option<(usize, usize)>, Option<&ID>, bool)`
+- Pokemon::run_immunity() signature: `(battle, pokemon_pos, move_type, with_message: bool)`
+- Extract move_type from active_move before calling run_immunity to avoid immutable/mutable borrow conflict
+
+**Files Modified:**
+- src/data/ability_callbacks/disguise.rs - Implemented all 4 callbacks (241 lines added, 14 removed)
+
+**Git Commit**: 85a88871: "Complete Disguise ability - all 4 callbacks (Batch 146)"
+
+Progress: 274 → 278/380 abilities (73.2%).
+Remaining TODOs: 19 (down from 23 - removed 4 Disguise TODOs).
