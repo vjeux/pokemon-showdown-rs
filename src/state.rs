@@ -5,7 +5,8 @@
 //! This module handles battle state serialization and deserialization,
 //! enabling battle saving, loading, and replay functionality.
 
-use crate::dex_data::{EffectState, ID};
+use crate::dex_data::ID;
+use crate::event_system::EffectState;
 use crate::prng::PRNGSeed;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;

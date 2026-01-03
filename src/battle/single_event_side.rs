@@ -93,10 +93,12 @@ impl Battle {
         // Set current event context
         self.current_effect = Some(effect_id.clone());
 
-        // Note: Side conditions use dex_data::EffectState, but current_effect_state expects event_system::EffectState
-        // For now, we set it to None since side condition callbacks don't access effectState
-        // TODO: Consider unifying EffectState types or converting between them
-        self.current_effect_state = None;
+        // Get side condition state and set as current effect state
+        // Since we unified EffectState types in Batch 188, Side now uses event_system::EffectState
+        let effect_state = self.sides.get(side_idx)
+            .and_then(|s| s.side_conditions.get(effect_id))
+            .cloned();
+        self.current_effect_state = effect_state;
 
         let mut event_info = EventInfo::new(event_id);
         event_info.target = None; // Side events don't have a Pokemon target
