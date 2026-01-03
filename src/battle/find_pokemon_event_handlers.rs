@@ -190,10 +190,12 @@ impl Battle {
         // JS: callback = this.getCallback(pokemon, species, callbackName);
         // JS: if (callback !== undefined) {
         // Note: Species don't have getKey (no duration field)
+        // Note: Species callbacks use Condition effectType (like volatiles) with subOrder 2
+        //       per JavaScript effectTypeOrder in battle.ts resolvePriority
         if self.has_callback(&pokemon.species_id, callback_name) {
             handlers.push(EventListener {
                 effect_id: pokemon.species_id.clone(),
-                effect_type: EffectType::Condition, // TODO: Should this be a different type?
+                effect_type: EffectType::Condition,
                 target: Some(target),
                 index: None,
                 state: Some(pokemon.species_state.clone()),
