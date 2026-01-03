@@ -1982,35 +1982,42 @@ Extract all values as **owned Strings** (not `&str`) so borrows are immediately 
 **Project compiles successfully with no errors.**
 
 
-### Batch 148 - MoveHitData Infrastructure Usage (4 TODOs)
+### Batch 148 - MoveHitData Infrastructure Usage (6 TODOs)
 
 **Completed fixes:**
 - **Wind Rider** (windrider.rs) - Fixed onTryHit to properly use battle.boost() return value to show immunity message only when boost fails
 - **Spiky Shield** (spikyshield.rs) - Implemented z_broke_protect tracking using battle.get_move_hit_data_mut()
 - **Silk Trap** (silktrap.rs) - Implemented z_broke_protect tracking using battle.get_move_hit_data_mut()
 - **Obstruct** (obstruct.rs) - Implemented z_broke_protect tracking using battle.get_move_hit_data_mut()
+- **Trick** (trick.rs) - Implemented TakeItem single_event checking before item swap
+- **Switcheroo** (switcheroo.rs) - Implemented TakeItem single_event checking before item swap
 
 **Infrastructure Used:**
 - battle.boost() already returns bool indicating success/failure
 - battle.get_move_hit_data_mut() provides mutable access to MoveHitData
 - MoveHitData.z_broke_protect field added in Batch 142
+- battle.single_event() for TakeItem event checking (discovered in Batch 117)
 
 **Implementation Details:**
 - Wind Rider: Check boost return value, show immunity only if boost failed (stat already maxed)
 - Protection moves: Set z_broke_protect = true when Z/Max moves hit, matching JavaScript behavior
+- Trick/Switcheroo: Check singleEvent('TakeItem') on both items, restore items and return false if either blocked
 
 **Files Modified:**
 - src/data/ability_callbacks/windrider.rs - Used boost() return value (14 insertions, 17 deletions)
 - src/data/move_callbacks/spikyshield.rs - Implemented z_broke_protect (3 insertions, 5 deletions)
 - src/data/move_callbacks/silktrap.rs - Implemented z_broke_protect (3 insertions, 4 deletions)
 - src/data/move_callbacks/obstruct.rs - Implemented z_broke_protect (3 insertions, 7 deletions)
+- src/data/move_callbacks/trick.rs - Implemented TakeItem checking (42 insertions, 1 deletion)
+- src/data/move_callbacks/switcheroo.rs - Implemented TakeItem checking (42 insertions, 1 deletion)
 
 **Git Commits:**
 - f0ae90ea: "Fix Wind Rider ability to use battle.boost() return value (Batch 148)"
 - 332f54bc: "Implement move_hit_data.z_broke_protect for Spiky Shield, Silk Trap, and Obstruct (Batch 148)"
+- 173d6701: "Implement singleEvent TakeItem checking for Trick and Switcheroo moves (Batch 148)"
 
 **Progress:**
-- TODOs Resolved: 4
+- TODOs Resolved: 6 (1 ability + 5 moves)
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
