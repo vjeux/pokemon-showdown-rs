@@ -33,8 +33,21 @@ pub mod condition {
         _effect_id: Option<&str>,
     ) -> EventResult {
         // if (effect.effectType === 'Move' && effect.infiltrates && !target.isAlly(source)) return;
-        // For now, we skip the infiltrates check as it requires move data access
-        // TODO: Add infiltrates check once move data is accessible in callbacks
+        if let (Some(source), Some(target)) = (source_pos, target_pos) {
+            // Check if the effect is a Move with infiltrates property
+            let has_infiltrates = battle.active_move.as_ref()
+                .map(|m| m.infiltrates)
+                .unwrap_or(false);
+
+            if has_infiltrates {
+                // Check if target is NOT an ally of source
+                let is_ally = battle.is_ally(target, source);
+                if !is_ally {
+                    // Infiltrating move bypasses Mist protection
+                    return EventResult::Continue;
+                }
+            }
+        }
 
         // if (source && target !== source) {
         if let (Some(source), Some(target)) = (source_pos, target_pos) {
