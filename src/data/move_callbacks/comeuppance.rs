@@ -86,9 +86,7 @@ pub fn on_modify_target(
         let new_target = battle.pokemon_at(damaged_by.slot.0, damaged_by.slot.1);
         if let Some(_target) = new_target {
             // Modify the target by returning the new target position
-            // TODO: This requires modifying target relay variable which we don't have direct access to
-            // For now, we'll use the event result to indicate the new target
-            // The battle system should handle this appropriately
+            return EventResult::Position(damaged_by.slot);
         }
     }
 

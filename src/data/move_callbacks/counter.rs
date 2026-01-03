@@ -147,9 +147,10 @@ pub mod condition {
             Some(slot_value) => {
                 if let Ok(slot_str) = serde_json::from_value::<String>(slot_value) {
                     // return this.getAtSlot(this.effectState.slot);
-                    if let Some(_new_target) = battle.get_at_slot(Some(&slot_str)) {
-                        // TODO: Return the new target position
-                        // For now, we'll just continue
+                    if let Some(new_target) = battle.get_at_slot(Some(&slot_str)) {
+                        // Return the new target position for move redirection
+                        let target_pos = (new_target.side_index, new_target.position);
+                        return EventResult::Position(target_pos);
                     }
                 }
                 EventResult::Continue

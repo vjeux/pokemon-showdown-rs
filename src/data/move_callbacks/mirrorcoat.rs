@@ -155,9 +155,10 @@ pub mod condition {
         if let Some(serde_json::Value::Number(slot_num)) = effect_slot {
             if let Some(slot_val) = slot_num.as_u64() {
                 let new_target = battle.get_at_slot(Some(&slot_val.to_string()));
-                if let Some(_target) = new_target {
-                    // TODO: Return the new target position
-                    // This needs infrastructure to return position from this event
+                if let Some(target) = new_target {
+                    // Return the new target position for move redirection
+                    let target_pos = (target.side_index, target.position);
+                    return EventResult::Position(target_pos);
                 }
             }
         }
