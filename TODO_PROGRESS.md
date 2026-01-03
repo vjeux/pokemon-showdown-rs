@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 78 (20.5%)
+- Completed: 79 (20.8%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -129,8 +129,11 @@ This allows abilities to properly modify boost tables before they're applied, ma
 77. **Soundproof** (soundproof.rs) - onAllyTryHitSide: Protects allies from sound moves by showing immune message
 78. **Overcoat** (overcoat.rs) - onTryHit: Immune to powder moves when target ≠ source
 
+### Batch 15 - Intimidate Response (1 ability)
+79. **Rattled** (rattled.rs) - onAfterBoost: Boosts Speed by 1 when Intimidated (completes Rattled implementation)
+
 ## Current Session
-Implemented 5 abilities in batch 14.
+Implemented 1 ability in batch 15.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
