@@ -1449,3 +1449,53 @@ Remaining TODOs: 36 (down from 38 - removed 2 Natural Cure TODOs).
 - Continue searching for more implementable TODOs
 - Look for other abilities that might have been marked as needing infrastructure but actually don't
 - Current remaining: 36 TODOs down from 39 at start of this continuation session
+
+
+### Batch 141 - Forme Change Move Callbacks (3 TODOs)
+
+**Completed move callbacks:**
+274-276. **Dive** (dive.rs), **Relic Song** (relicsong.rs), **Polar Flare** (polarflare.rs) - Implemented forme changes using Pokemon::forme_change() infrastructure from Batch 76
+
+**Discovery**: These 3 move callbacks had "TODO: Implement forme_change method in Battle" comments claiming the infrastructure didn't exist, but Pokemon::forme_change() was already implemented in Batch 76. The TODOs were outdated.
+
+**Implementation Details:**
+- **Dive**: Cramorant forme change based on HP (Gorging if HP <= 50%, Gulping if HP > 50%)
+- **Relic Song**: Meloetta forme toggle (Meloetta ↔ Meloetta-Pirouette)
+- **Polar Flare**: Ramnarok forme toggle (Ramnarok ↔ Ramnarok-Radiant)
+
+All three use the unsafe pointer pattern to work around Rust borrow checker:
+```rust
+let battle_ref1 = battle as *mut Battle;
+let battle_ref2 = battle as *mut Battle;
+unsafe {
+    if let Some(pokemon) = (*battle_ref1).pokemon_at_mut(pos.0, pos.1) {
+        pokemon.forme_change(
+            &mut *battle_ref2,
+            ID::from(forme_name.as_str()),
+            Some(move_id.clone()),
+            is_permanent,
+            ability_slot,
+            message,
+        );
+    }
+}
+```
+
+**Type System Learnings:**
+- Pokemon::forme_change() signature:
+  - species_id: ID (use ID::from(str))
+  - source_id: Option<ID> (use Some(id.clone()), not &id.to_string())
+  - ability_slot: &str (not Option<&str>)
+  - message: Option<&str>
+- ID::from() requires &str, use .as_str() on String
+- Variable shadowing pitfall: match arm variable name can shadow outer scope
+
+**Files Modified:**
+- src/data/move_callbacks/dive.rs - Removed TODO, implemented Cramorant forme change (21 lines added)
+- src/data/move_callbacks/relicsong.rs - Removed TODO, implemented Meloetta forme change (21 lines added)
+- src/data/move_callbacks/polarflare.rs - Removed TODO, implemented Ramnarok forme change (21 lines added)
+
+**Git Commit**: af78674a: "Implement forme change for Dive, Relic Song, and Polar Flare moves (Batch 141)"
+
+Progress: 273/380 abilities (71.8%) - no change (move callbacks, not abilities).
+Remaining TODOs: 33 (down from 36 - removed 3 move callback TODOs).
