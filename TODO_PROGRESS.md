@@ -5,24 +5,24 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: ~289 total (down from 330 at session start - resolved 40 in Batches 179-192)
+- **Remaining TODOs**: ~288 total (down from 330 at session start - resolved 42 in Batches 179-193)
   - Complex abilities requiring transform/illusion infrastructure: ~0 TODOs (ALL COMPLETE!)
   - Move callbacks requiring queue/event system extensions: ~3 TODOs (Copycat, Sleep Talk, Snatch, Magic Coat fully complete)
-  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~289 TODOs
-- **Latest Progress**: Batch 192 - Implement use_move infrastructure for move callbacks (4 TODOs resolved)
-- **Session 2 Summary**: Batches 179-192 - Event system improvements and infrastructure (40 TODOs resolved)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type), **Boost modification system complete** (Battle::run_event_boost() enables callbacks to modify stat boosts via relay_var_boost), **Pokemon action state infrastructure** (Battle::set_trapped(), Battle::decrement_active_move_actions() enable managing Pokemon battle state), **Side-level event system complete** (Battle::single_event_side() and Battle::run_event_side() enable firing events on Sides for side condition lifecycle), **EffectState type system FULLY unified** (Codebase exclusively uses event_system::EffectState, dex_data::EffectState eliminated from all usage), **use_move infrastructure complete** (Battle::use_move() and Battle::use_move_with_bounced() enable move callbacks to execute other moves)
+  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~288 TODOs
+- **Latest Progress**: Batch 193 - Implement BattleQueue::resolve_action infrastructure (1 TODO resolved)
+- **Session 2 Summary**: Batches 179-193 - Event system improvements and infrastructure (42 TODOs resolved)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type), **Boost modification system complete** (Battle::run_event_boost() enables callbacks to modify stat boosts via relay_var_boost), **Pokemon action state infrastructure** (Battle::set_trapped(), Battle::decrement_active_move_actions() enable managing Pokemon battle state), **Side-level event system complete** (Battle::single_event_side() and Battle::run_event_side() enable firing events on Sides for side condition lifecycle), **EffectState type system FULLY unified** (Codebase exclusively uses event_system::EffectState, dex_data::EffectState eliminated from all usage), **use_move infrastructure complete** (Battle::use_move() and Battle::use_move_with_bounced() enable move callbacks to execute other moves), **BattleQueue::resolve_action complete** (Action expansion and ordering: mega/tera/dynamax before moves, beforeTurnMove/priorityCharge insertion, fractional priority calculation, target resolution)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
 ## Completed Implementations
 
-### Session Summary (Batches 167-192) - Latest
+### Session Summary (Batches 167-193) - Latest
 
 **Session 1 (Batches 167-178)**: Resolved 18 TODOs (351 → 332)
-**Session 2 (Batches 179-192)**: Resolved 40 TODOs (330 → ~289)
-**Total**: Resolved 58 TODOs (351 → ~289)
+**Session 2 (Batches 179-193)**: Resolved 42 TODOs (330 → ~288)
+**Total**: Resolved 60 TODOs (351 → ~288)
 
-**TODOs Resolved This Session (179-192)**: 40 total
+**TODOs Resolved This Session (179-193)**: 42 total
 - Batch 179: 1 TODO (AfterSubDamage damage parameter in handle_move_event)
 - Batch 180: 1 TODO (Damage event dispatching in handle_move_event)
 - Batch 181: 10 TODO comments (callback checking in find_pokemon_event_handlers)
@@ -69,6 +69,20 @@
   - Implemented use_move in snatch.rs (line 147)
   - Implemented use_move_with_bounced in magiccoat.rs (lines 135, 214)
   - JavaScript pattern: battle.actions.useMove() → Rust pattern: battle.use_move()
+- Batch 193: 1 TODO (BattleQueue::resolve_action infrastructure)
+  - Added has_before_turn_callback() helper in move_callbacks/mod.rs
+  - Added has_priority_charge_callback() helper in move_callbacks/mod.rs
+  - Implemented complete BattleQueue::resolve_action() method (300+ lines)
+  - Handles action expansion: move with mega → [megaEvo, move]
+  - Inserts beforeTurnMove (order 5), mega (104), tera (106), dynamax (105), priorityCharge (107) actions
+  - Calculates fractional priority via FractionalPriority event
+  - Resolves target locations for moves without explicit targets
+  - Processes switch actions and clears switch flags
+  - Defers speed calculation for Gen 7 mega evolution
+  - Calls get_action_speed for all resolved actions
+  - Fixed borrow checker by collecting actions to prepend first, then inserting in reverse order
+  - Added TODO for switchFlag limitation (Rust uses bool, JS uses string | false)
+  - Major infrastructure: Enables complex action ordering (mega before move, etc.)
 
 **Previous Session (167-178)**: 18 total
 - Batch 167: 1 TODO (Sky Drop onFoeTrapPokemon)
@@ -85,9 +99,9 @@
 - Batch 178: 1 TODO (durationCallback)
 
 **TODOs Added**: 0
-**Net Progress**: 351 → 289 TODOs (-62 total across both sessions)
+**Net Progress**: 351 → 288 TODOs (-63 total across both sessions)
 
-**Major Infrastructure Additions**: 10
+**Major Infrastructure Additions**: 11
 1. **Battle::set_trapped()** - Pokemon trapping state management (Batch 167)
 2. **Battle::decrement_active_move_actions()** - Move action counter management (Batch 168)
 3. **Battle::run_event_boost()** - Complete boost modification event system (Batch 169) ⭐
@@ -98,6 +112,7 @@
 8. **Side condition callback wiring** - Connected 23 side conditions to dispatch_single_event_side (Batch 177) ⭐
 9. **durationCallback infrastructure** - Battle::call_duration_callback dispatcher for 14 side conditions (Batch 178) ⭐
 10. **use_move infrastructure** - Battle::use_move() and Battle::use_move_with_bounced() for move execution callbacks (Batch 192) ⭐
+11. **BattleQueue::resolve_action infrastructure** - Action expansion and ordering system, enables mega/tera/dynamax sequencing (Batch 193) ⭐
 
 **Completed Moves This Session:**
 - **Sky Drop** - ⭐ FULLY COMPLETE! All 12 callbacks implemented (Batches 167-168)
