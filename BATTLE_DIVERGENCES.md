@@ -317,3 +317,26 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - All complete stub files (reset_r_n_g, to_j_s_o_n, to_string) now implemented
 - Next: Continue scanning for remaining stubs and partial implementations
 
+
+### Fourteenth Implementation: start_battle.rs - getUpdatedDetails call ✅
+- **Issue**: TODO comment saying get_updated_details() needs to be implemented
+- **Root Cause**: Pokemon.get_updated_details() method already existed, just wasn't being called
+- **Action**: Added missing get_updated_details() call for Zacian/Zamazenta forme changes
+
+  **JavaScript** (battle.ts):
+  - `pokemon.details = pokemon.getUpdatedDetails()`
+
+  **Rust** (start_battle.rs:84-85):
+  - `let details = self.sides[side_idx].pokemon[poke_idx].get_updated_details()`
+  - `self.sides[side_idx].pokemon[poke_idx].details = details`
+
+- **Side Effects**: None (purely additive implementation)
+- **Result**: Matches JavaScript for forme change details updating
+- **Commit**: f3978eaf
+
+**Updated Progress (2026-01-02 - Ongoing):**
+- Files completed: 14 (6 Category A + 8 stub/partial implementations)
+- Files remaining: 136
+- TODOs resolved: 16
+- Session achievements: 5 implementations (lose, reset_rng, to_json, to_string, start_battle)
+
