@@ -61,7 +61,7 @@ impl Side {
                         if pokemon.is_fainted() {
                             self.choose_pass();
                         } else {
-                            // Find first non-disabled move
+                            // JavaScript auto_choose uses request.moves, not pokemon.move_slots
                             // JavaScript: if (autoChoose) {
                             // JavaScript:     for (const [i, move2] of request.moves.entries()) {
                             // JavaScript:         if (move2.disabled) continue;
@@ -71,6 +71,12 @@ impl Side {
                             // JavaScript:         break;
                             // JavaScript:     }
                             // JavaScript: }
+
+                            // NOTE: We need to reconstruct the Battle to get request data
+                            // This is a workaround because auto_choose only has &mut self
+                            // We'll use move_slots directly but WITHOUT checking is_z
+                            // This matches JavaScript which iterates request.moves (no Z-moves there)
+
                             let mut found_move = false;
                             for move_slot in &pokemon.move_slots {
                                 // Skip if disabled
@@ -78,23 +84,18 @@ impl Side {
                                     continue;
                                 }
                                 // Skip if PP is 0
-                                // JavaScript: if ((moveSlot.pp <= 0 && !this.volatiles['partialtrappinglock']) || ...) { disabled = true; }
                                 if move_slot.pp == 0 {
                                     continue;
                                 }
-                                // Skip Z-moves if already used
-                                if move_slot.is_z && self.z_move_used {
+                                // IMPORTANT: Do NOT select Z-moves during auto_choose
+                                // JavaScript's request.moves does not include Z-moves
+                                // Z-moves are in request.canZMove and only used with event='zmove'
+                                if move_slot.is_z {
                                     continue;
                                 }
 
                                 let move_id = move_slot.id.clone();
-                                // Pass zmove name if this is a Z-move and it hasn't been used
-                                let zmove = if move_slot.is_z && !self.z_move_used {
-                                    Some(move_slot.move_name.clone())
-                                } else {
-                                    None
-                                };
-                                let _ = self.choose_move(move_id, None, false, zmove, None, None);
+                                let _ = self.choose_move(move_id, None, false, None, None, None);
                                 found_move = true;
                                 break;
                             }

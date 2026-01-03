@@ -113,6 +113,46 @@ pub fn run_move_effects(
             Pokemon::add_volatile(battle, target_pos, volatile_id, Some(_source_pos), None, None);
         }
 
+        // Apply side condition
+        // JavaScript (battle-actions.ts:1257): if (moveData.sideCondition) {
+        //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
+        //     didSomething = this.combineResults(didSomething, hitResult);
+        // }
+        if let Some(ref side_condition) = move_data.side_condition {
+            let condition_id = crate::dex_data::ID::new(side_condition);
+            battle.add_side_condition(target_pos.0, condition_id, Some(_source_pos), None);
+        }
+
+        // Apply weather
+        // JavaScript (battle-actions.ts:1263): if (moveData.weather) {
+        //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
+        //     didSomething = this.combineResults(didSomething, hitResult);
+        // }
+        if let Some(ref weather_id) = move_data.weather {
+            let weather = crate::dex_data::ID::new(weather_id);
+            battle.field.set_weather(weather, None);
+        }
+
+        // Apply terrain
+        // JavaScript (battle-actions.ts:1266): if (moveData.terrain) {
+        //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
+        //     didSomething = this.combineResults(didSomething, hitResult);
+        // }
+        if let Some(ref terrain_id) = move_data.terrain {
+            let terrain = crate::dex_data::ID::new(terrain_id);
+            battle.field.set_terrain(terrain, None);
+        }
+
+        // Apply pseudo-weather
+        // JavaScript (battle-actions.ts:1269): if (moveData.pseudoWeather) {
+        //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
+        //     didSomething = this.combineResults(didSomething, hitResult);
+        // }
+        if let Some(ref pseudo_weather) = move_data.pseudo_weather {
+            let pseudo_id = crate::dex_data::ID::new(pseudo_weather);
+            battle.field.add_pseudo_weather(pseudo_id, None);
+        }
+
         // Keep damage result
         // In the real implementation, we'd check if any effects failed
         // and update result_damages[i] accordingly
