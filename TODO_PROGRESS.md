@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 252 (66.3%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure)
+- Completed: 254 (66.8%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -624,6 +624,9 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 ### Batch 117 - Item Transfer (1 ability)
 254. **Symbiosis** (symbiosis.rs) - onAllyAfterUseItem: Transfers item from ability holder to ally when ally uses item; checks pokemon.switch_flag, gets source from battle.effect_state.target, uses Pokemon::take_item to remove item from source, calls battle.single_event("TakeItem") to check if transfer is allowed (EventResult::Null or Boolean(false) blocks transfer), uses Pokemon::set_item to give item to ally, restores item to source on any failure, shows -activate message with source slot, ability name, item name, and [of] ally slot
 
+### Batch 118 - Ability Copying (2 callbacks - 1 ability)
+255-256. **Trace** (trace.rs) - onStart: Sets seek flag in battle.effect_state.data, checks for adjacent foes with noability (sets seek=false), checks for Ability Shield item (shows -block message, sets seek=false), calls battle.single_event("Update") if seek=true; onUpdate: Filters adjacent foes by notrace flag and noability, randomly samples valid target using battle.sample(), copies ability using Pokemon::set_ability(); uses pokemon.adjacent_foes(), pokemon.has_item(), pokemon.get_ability(), dex.abilities().flags, and effect_state.data HashMap
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -675,12 +678,16 @@ Completed Pickup (Batch 114) - onResidual picks up items from adjacent Pokemon u
 Completed Gulp Missile (Batch 115) - onDamagingHit and onSourceTryPrimaryHit use Pokemon::is_semi_invulnerable, pokemon.set.species, forme_change with unsafe pointer pattern.
 Completed Klutz (Batch 116) - onStart disables item effects using battle.single_event("End").
 Completed Symbiosis (Batch 117) - onAllyAfterUseItem transfers items from ability holder to ally using Pokemon::take_item, battle.single_event("TakeItem"), and Pokemon::set_item.
+Completed Trace (Batch 118) - onStart and onUpdate copy abilities from adjacent foes using pokemon.adjacent_foes(), pokemon.has_item(), Pokemon::set_ability(), and dex.abilities().flags.
 **Discovered Pokemon::is_semi_invulnerable()** - Semi-invulnerable state checking method available.
 **Discovered pokemon.set.species** - Species name access for forme/species checking.
 **Discovered battle.sample() and battle.get_all_active()** - Random sampling and active Pokemon iteration infrastructure fully functional.
 **Discovered battle.single_event()** - Single event firing system available for item/ability/status effects, returns EventResult for checking success/failure.
-Progress: 246→252/380 (66.3%); Completed 9 abilities this continuation (3 type-changing + 3 item-related + 1 forme-changing with state checks + 1 forme-changing with HP-based trigger + 1 item transfer).
-Remaining TODOs: 88 (down from 92 - removed 1 from Pickup, 2 from Gulp Missile, 1 from Klutz, 1 from Symbiosis).
+**Discovered pokemon.adjacent_foes()** - Adjacent foe position retrieval method available on Pokemon.
+**Discovered Pokemon::set_ability()** - Ability changing infrastructure available with full event system integration.
+**Discovered dex.abilities().flags** - Ability flag checking available (flags stored as i32, use .map(|v| *v != 0) to convert to bool).
+Progress: 246→254/380 (66.8%); Completed 11 abilities this continuation (3 type-changing + 3 item-related + 1 forme-changing with state checks + 1 forme-changing with HP-based trigger + 1 item transfer + 2 ability copying).
+Remaining TODOs: 85 (down from 92 - removed 1 from Pickup, 2 from Gulp Missile, 1 from Klutz, 1 from Symbiosis, 2 from Trace).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
