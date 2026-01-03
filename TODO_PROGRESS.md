@@ -5,12 +5,12 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 360 total (down from 362 - resolved 2 more in this session: Batch 161)
-  - Complex abilities requiring transform/illusion infrastructure: ~9 TODOs (down from 11 - Imposter, Magic Bounce, and Rebound completed)
+- **Remaining TODOs**: 356 total (down from 360 - resolved 4 more in this session: Batch 162)
+  - Complex abilities requiring transform/illusion infrastructure: ~5 TODOs (down from 9 - Imposter, Magic Bounce, Rebound, and Illusion completed)
   - Move callbacks requiring queue/event system extensions: ~24 TODOs
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 161 - Rebound Ability (2 TODO callbacks resolved, move reflection with activeTurns check)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available)
+- **Latest Progress**: Batch 162 - Illusion Ability (4 TODO callbacks resolved: onBeforeSwitchIn, onDamagingHit, onEnd, onFaint)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
 ## Completed Implementations
@@ -2656,6 +2656,84 @@ onTryHit(target, source, move) {
 **Progress:**
 - TODOs Resolved: 2 (Rebound onTryHit and onAllyTryHitSide)
 - Infrastructure Used: pokemon.active_turns field for switch-in turn detection
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+
+### Batch 162 - Illusion Ability (4 TODOs)
+
+**Completed ability:**
+283-286. **Illusion** (illusion.rs) - Complete implementation of disguise system:
+   - onBeforeSwitchIn: Sets illusion to rightmost non-fainted Pokemon on team
+     - Clears previous illusion (pokemon.illusion = None)
+     - Iterates from rightmost Pokemon backwards (position + 1..side_pokemon_count).rev()
+     - Skips fainted Pokemon
+     - Checks if Pokemon is terastallized - skips Ogerpon and Terapagos as disguise targets
+     - Sets pokemon.illusion = Some(i) where i is the index of the disguise Pokemon
+   - onDamagingHit: Fires End event when hit by damaging move
+     - Checks if pokemon.illusion.is_some()
+     - Calls battle.single_event("End", &illusion_id, Some(target), source_pos, None)
+   - onEnd: Clears illusion and shows reveal messages
+     - Clears pokemon.illusion = None
+     - Gets updated details using pokemon.get_updated_details() instance method
+     - Shows "-replace" message with updated details
+     - Shows "-end, Illusion" message
+     - If illusionlevelmod rule is active, shows hint using battle.hint(message, true, None)
+   - onFaint: Clears illusion when Pokemon faints
+     - Sets pokemon.illusion = None
+
+**Implementation Details:**
+- Uses pokemon.illusion: Option<usize> field to store disguise Pokemon index
+- Uses pokemon.terastallized.is_some() to check if terastallized
+- Uses pokemon.get_updated_details() instance method (not static method)
+- Uses battle.rule_table: Option<RuleTable> to check for illusionlevelmod rule
+- Uses battle.hint(message: &str, once: bool, side_id: Option<SideID>) with 3 parameters
+- Clones pokemon_slot before first .into() call to avoid move errors
+
+**Type System Fixes:**
+- target_base_species.as_str() != "Ogerpon" (ID comparison requires .as_str())
+- pokemon.get_updated_details() is instance method, not Pokemon::get_updated_details(battle, pos)
+- battle.hint() requires 3 parameters: (message, once, side_id)
+- pokemon_slot.clone().into() needed before first use to avoid moved value error
+
+**JavaScript Equivalence:**
+```javascript
+onBeforeSwitchIn(pokemon) {
+    pokemon.illusion = null;
+    for (let i = pokemon.side.pokemon.length - 1; i > pokemon.position; i--) {
+        const possibleTarget = pokemon.side.pokemon[i];
+        if (!possibleTarget.fainted) {
+            if (!pokemon.terastallized || !['Ogerpon', 'Terapagos'].includes(possibleTarget.species.baseSpecies)) {
+                pokemon.illusion = possibleTarget;
+            }
+            break;
+        }
+    }
+}
+
+onEnd(pokemon) {
+    if (pokemon.illusion) {
+        this.debug('illusion cleared');
+        pokemon.illusion = null;
+        const details = pokemon.getUpdatedDetails();
+        this.add('replace', pokemon, details);
+        this.add('-end', pokemon, 'Illusion');
+        if (this.ruleTable.has('illusionlevelmod')) {
+            this.hint("Illusion Level Mod is active, so this Pokémon's true level was hidden.", true);
+        }
+    }
+}
+```
+
+**Files Modified:**
+- src/data/ability_callbacks/illusion.rs - Implemented all 4 callbacks (138 lines added, 9 removed)
+
+**Git Commit:**
+- 7bedb225: "Implement Illusion ability - all 4 callbacks (Batch 162)"
+
+**Progress:**
+- TODOs Resolved: 4 (Illusion onBeforeSwitchIn, onDamagingHit, onEnd, onFaint)
+- Infrastructure Used: pokemon.illusion, pokemon.get_updated_details(), battle.rule_table, battle.hint()
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
