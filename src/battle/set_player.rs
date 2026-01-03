@@ -70,52 +70,7 @@ impl Battle {
         if is_new {
             // Create player
             // JS: const team = this.getTeam(options);
-            let mut team = self.get_team(&options);
-
-            // BEFORE creating Pokemon objects, pre-fill gender in PokemonSets
-            // This matches JavaScript timing where gender randomization happens in Pokemon constructor
-            // JavaScript (pokemon.ts:41): this.gender = genders[set.gender] || this.species.gender || this.battle.sample(['M', 'F']);
-            for pokemon_set in &mut team {
-                if pokemon_set.gender == Gender::None {
-                    let species_id = ID::new(&pokemon_set.species);
-                    let species_data = self.dex.species.get(&species_id);
-
-                    // Check species.gender: 'M', 'F', 'N', or '' (randomize)
-                    let gender = if let Some(species) = species_data {
-                        if let Some(ref species_gender) = species.gender {
-                            match species_gender.as_str() {
-                                "M" => Gender::Male,
-                                "F" => Gender::Female,
-                                "N" => Gender::None,
-                                _ => {
-                                    // Empty or unknown species.gender, randomize
-                                    if self.random(2) == 0 {
-                                        Gender::Male
-                                    } else {
-                                        Gender::Female
-                                    }
-                                }
-                            }
-                        } else {
-                            // No species.gender field, randomize
-                            if self.random(2) == 0 {
-                                Gender::Male
-                            } else {
-                                Gender::Female
-                            }
-                        }
-                    } else {
-                        // No species found, randomize
-                        if self.random(2) == 0 {
-                            Gender::Male
-                        } else {
-                            Gender::Female
-                        }
-                    };
-
-                    pokemon_set.gender = gender;
-                }
-            }
+            let team = self.get_team(&options);
 
             let name = if !options.name.is_empty() {
                 options.name.clone()
