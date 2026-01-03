@@ -78,9 +78,24 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 /// onFoeTryEatItem() {
 ///     return !this.effectState.unnerved;
 /// }
-pub fn on_foe_try_eat_item(_battle: &mut Battle) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
+    // Get ability holder position from effectState.target
+    let ability_holder_pos = match battle.effect_state.target {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Check if unnerved flag is set
+    let is_unnerved = {
+        let pokemon = match battle.pokemon_at(ability_holder_pos.0, ability_holder_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.ability_state.data.get("unnerved").and_then(|v| v.as_bool()).unwrap_or(false)
+    };
+
+    // return !this.effectState.unnerved;
+    EventResult::Boolean(!is_unnerved)
 }
 
 /// onSourceAfterFaint(length, target, source, effect) {
