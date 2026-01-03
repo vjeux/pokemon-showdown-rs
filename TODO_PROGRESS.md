@@ -2030,3 +2030,31 @@ Continue searching for more implementable TODOs. Remaining TODOs primarily requi
 - Ability suppression (Neutralizing Gas)
 - Various Battle methods (use_move, set_trapped, etc.)
 
+
+### Batch 149 - Flinch Event and Additional MoveHitData (2 TODOs)
+
+**Completed fixes:**
+- **Flinch condition** (condition_callbacks.rs) - Implemented runEvent('Flinch') call in flinch onBeforeMovePriority handler
+- **Protect** (protect.rs) - Implemented z_broke_protect tracking using battle.get_move_hit_data_mut()
+
+**Infrastructure Used:**
+- battle.run_event() for event dispatching
+- battle.get_move_hit_data_mut() for MoveHitData access
+
+**Implementation Details:**
+- Flinch: Added battle.run_event("Flinch", pokemon_pos, ...) to match JavaScript behavior
+- Protect: Same pattern as Spiky Shield/Silk Trap/Obstruct from Batch 148
+
+**Files Modified:**
+- src/data/condition_callbacks.rs - Added runEvent('Flinch') call (2 insertions, 1 deletion)
+- src/data/move_callbacks/protect.rs - Implemented z_broke_protect (4 insertions, 15 deletions)
+
+**Git Commits:**
+- 00e5105f: "Implement Flinch runEvent in condition callback (Batch 149)"
+- d6707a8c: "Implement z_broke_protect for Protect move (Batch 149)"
+
+**Progress:**
+- TODOs Resolved: 2
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
