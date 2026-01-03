@@ -28,6 +28,17 @@
   - Parses to Vec<PokemonSet>, packs to string, then unpacks normally
   - Matches JavaScript behavior: `buf = this.pack(JSON.parse(buf))`
 
+- ✅ **Pokemon::forme_change() permanent formes** (commit: 6099a829)
+  - Complete implementation of permanent forme changes (Mega Evolution, Primal Reversion, Ultra Burst)
+  - Updates base_species, details, sends detailschange message
+  - Handles item source effects (Z-Move → Ultra Burst, Primal Orbs → Primal, Mega Stones → Mega)
+  - Handles status source effects (forme reversion like Shaymin-Sky → Shaymin)
+  - Implements ability changes for permanent formes with proper slot selection
+  - Updates base_ability and handles forme_regression flag
+  - Implements terastallized type handling (known_type, apparent_type)
+  - 150+ lines of 1:1 JavaScript-to-Rust implementation
+  - TODO: HP update requires stat calculation infrastructure (stat_modify)
+
 ### Critical Infrastructure
 - ✅ **BattleStream::_write_line()** (commit: ed7304c7)
   - Full protocol handler with 18 command types
@@ -71,8 +82,8 @@
 - [x] BattleStream::_writeLine() - Full protocol handler ✅
 - [x] BattleStream::_writeLines() - Batch protocol handler ✅
 - [x] Side::add_side_condition() - Full event system structure ✅
+- [x] Pokemon::forme_change() permanent formes ✅
 - [ ] BattleStream::_listen() - Stream listener (async)
-- [ ] Pokemon::forme_change() permanent formes
 - [ ] Battle::moveHit() - Core damage application function
 - [ ] TeamGenerator integration
 
@@ -88,8 +99,9 @@
 
 Continue with critical infrastructure:
 1. BattleStream::_listen() - Async stream listener
-2. Side::add_side_condition() - Event system integration
-3. Pokemon::forme_change() permanent formes
+2. Battle::moveHit() - Core damage application
+3. TeamGenerator integration
+4. Stat calculation infrastructure (for updateMaxHp in forme changes)
 
 ## Commits This Session
 - f02ba482 - Implement Dex::effect_to_string() and Side::to_string() stub methods
@@ -99,6 +111,8 @@ Continue with critical infrastructure:
 - 93998a81 - Implement Side::add_side_condition_full() with battle context and event system structure
 - 3c1be929 - Update TODO_PROGRESS.md with add_side_condition_full progress
 - f2171416 - Implement Teams::unpack() JSON array parsing support
+- b9b38629 - Update TODO_PROGRESS.md with Teams JSON parsing progress
+- 6099a829 - Implement Pokemon::forme_change() permanent formes (Mega/Primal/Ultra Burst)
 
 ## Previous Session
 - 91fd09bf - Implement major infrastructure
