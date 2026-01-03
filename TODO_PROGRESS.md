@@ -23,6 +23,11 @@
   - Ready for event system integration (singleEvent, runEvent)
   - Maintains backward-compatible add_side_condition()
 
+- ✅ **Teams::unpack() JSON parsing** (commit: f2171416)
+  - Handles JSON array format: `[{...}, {...}]`
+  - Parses to Vec<PokemonSet>, packs to string, then unpacks normally
+  - Matches JavaScript behavior: `buf = this.pack(JSON.parse(buf))`
+
 ### Critical Infrastructure
 - ✅ **BattleStream::_write_line()** (commit: ed7304c7)
   - Full protocol handler with 18 command types
@@ -92,6 +97,8 @@ Continue with critical infrastructure:
 - ed7304c7 - Implement BattleStream::_write_line() and _write_lines() protocol handlers
 - 1a9d1a0e - Update TODO_PROGRESS.md with BattleStream protocol handler progress
 - 93998a81 - Implement Side::add_side_condition_full() with battle context and event system structure
+- 3c1be929 - Update TODO_PROGRESS.md with add_side_condition_full progress
+- f2171416 - Implement Teams::unpack() JSON array parsing support
 
 ## Previous Session
 - 91fd09bf - Implement major infrastructure
