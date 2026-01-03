@@ -1595,3 +1595,65 @@ Many TODOs claiming infrastructure doesn't exist are actually outdated - the inf
 - Continue searching for more implementable TODOs
 - Focus on finding TODOs that incorrectly claim infrastructure is missing
 - Look for simple, straightforward implementations
+
+
+### Batch 144 - Battle Bond Ability (1 TODO)
+
+**Completed ability:**
+284. **Battle Bond** (battlebond.rs) - onSourceAfterFaint: Boosts Atk/SpA/Spe when Greninja-Bond KOs a foe with a move
+
+**Discovery**: Infrastructure already existed! Both pokemon.bond_triggered field and side.foe_pokemon_left() method were already implemented in the codebase.
+
+**Implementation Details:**
+- Checks bondTriggered flag (return early if already triggered - one per battle)
+- Verifies effect is a Move by checking if it exists in dex.moves()
+- Validates Pokemon is Greninja-Bond species (species_id === "greninjabond")
+- Checks HP > 0 and not transformed
+- Uses side.foe_pokemon_left() to check if any foes remain
+- Boosts Attack, Special Attack, and Speed by 1 each using battle.boost()
+- Shows '-activate' message with 'ability: Battle Bond'
+- Sets bondTriggered flag to prevent duplicate activation
+
+**Infrastructure Used:**
+- `pokemon.bond_triggered` field (line 604 in pokemon.rs)
+- `side.foe_pokemon_left()` method (src/side/foe_pokemon_left.rs)
+- Both existed but weren't being used by this ability
+
+**Files Modified:**
+- src/data/ability_callbacks/battlebond.rs - Removed TODO, implemented onSourceAfterFaint (88 lines added, 2 removed)
+
+**Git Commit**: feb5f904: "Implement Battle Bond onSourceAfterFaint callback (Batch 144)"
+
+Progress: 274/380 abilities (72.1%) - up from 273/380.
+Remaining TODOs: 25 (down from 26 - removed 1 ability callback TODO).
+
+
+## Updated Session Summary (Batches 141-144)
+
+**Total Achievements:**
+- **4 batches completed** (141, 142, 143, 144)
+- **11 TODOs implemented** (3 + 5 + 2 + 1)
+- **1 major infrastructure addition** (z_broke_protect field in MoveHitData)
+- **1 ability completion** (Battle Bond - first new ability implemented this session!)
+
+**Infrastructure Work:**
+- Added z_broke_protect field to pokemon::MoveHitData struct (Batch 142)
+- Updated MoveHitData initialization to include new field
+- Discovered bond_triggered and foe_pokemon_left() already exist (Batch 144)
+
+**Pattern Recognition:**
+Many TODOs claiming missing infrastructure are outdated - infrastructure was added in earlier batches but TODOs weren't updated.
+
+**Detailed Breakdown:**
+- **Batch 141**: 3 move callbacks (Dive, Relic Song, Polar Flare forme changes)
+- **Batch 142**: 1 infrastructure + 5 move callbacks (Aurora Veil + 4 protection moves)
+- **Batch 143**: 2 move callbacks (King's Shield + Mat Block)
+- **Batch 144**: 1 ability (Battle Bond onSourceAfterFaint)
+
+**Progress Metrics:**
+- Session start: 36 TODOs, 273 abilities (71.8%)
+- Session end: 25 TODOs, 274 abilities (72.1%)
+- Completed: 11 TODOs (30.6% reduction in remaining TODOs!)
+- All code compiles successfully ✓
+- All commits pushed to git ✓
+- Documentation fully updated ✓
