@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 93 (24.5%)
+- Completed: 95 (25.0%)
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -172,8 +172,12 @@ Updated `hit_step_type_immunity.rs` to use the new enum.
 92. **Stalwart** (stalwart.rs) - onModifyMove: Sets tracksTarget based on move.target (ignores redirection unless 'scripted')
 93. **Infiltrator** (infiltrator.rs) - onModifyMove: Sets infiltrates flag to bypass Substitute/screens
 
+### Batch 21 - Priority Modification (2 abilities)
+94. **Gale Wings** (galewings.rs) - onModifyPriority: Adds +1 priority to Flying-type moves when at full HP
+95. **Prankster** (prankster.rs) - onModifyPriority: Adds +1 priority to Status moves and sets pranksterBoosted flag
+
 ## Current Session
-Implemented 2 abilities in batch 20.
+Implemented 2 abilities in batch 21.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Now using pokemon.foes(), pokemon.has_ability(), and modifying battle.active_move fields.
 
