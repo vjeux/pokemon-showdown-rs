@@ -5,11 +5,11 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 365 total (down from 367 - resolved 2 more in this session: Batch 158)
-  - Complex abilities requiring transform/redirect/rebound infrastructure: ~14 TODOs (down from 16 - Neutralizing Gas completed)
+- **Remaining TODOs**: 364 total (down from 365 - resolved 1 more in this session: Batch 159)
+  - Complex abilities requiring transform/redirect/rebound infrastructure: ~13 TODOs (down from 14 - Imposter completed)
   - Move callbacks requiring queue/event system extensions: ~24 TODOs
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 158 - Neutralizing Gas Ability (2 TODOs resolved: onSwitchIn and onEnd callbacks)
+- **Latest Progress**: Batch 159 - Imposter Ability + transform_into Infrastructure (1 TODO resolved, major infrastructure enhancement)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
@@ -2491,6 +2491,55 @@ battle.speed_sort(&mut sorted_active, |&pos| {
 
 **Progress:**
 - TODOs Resolved: 2 (Neutralizing Gas onSwitchIn and onEnd callbacks)
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+
+### Batch 159 - Imposter Ability + Transform Infrastructure (1 TODO + Major Infrastructure)
+
+**Major Infrastructure Enhancement:**
+Modified `Pokemon::transform_into()` method to support optional effect parameter for proper 1-to-1 JavaScript equivalence.
+
+**Problem**: The JavaScript version of transformInto accepts an effect parameter to show `[from] ability: Name` in battle messages, but the Rust version didn't support this.
+
+**Solution**: Added optional `effect_id: Option<&dex_data::ID>` parameter to transform_into method.
+
+**Infrastructure Changes:**
+1. **transform_into signature**: Changed from `(battle, pokemon_pos, target_pos)` to `(battle, pokemon_pos, target_pos, effect_id: Option<&dex_data::ID>)`
+2. **Battle message**: Updated to conditionally include `[from] ability: X` when effect_id is Some
+3. **Transform move**: Updated call site to pass `None` for effect parameter
+
+**Completed ability:**
+278. **Imposter** (imposter.rs) - onSwitchIn: Transforms into mirror position on foe's side
+   - Calculates mirror position using `foe_active.length - 1 - pokemon.position`
+   - Gets foe side index using `battle.sides[pokemon_side_idx].foe_index`
+   - Filters active Pokemon by foe side to get foe_active list
+   - Calls `Pokemon::transform_into(battle, pokemon_pos, target_pos, Some(&ID::from("imposter")))`
+   - Shows proper `[from] ability: Imposter` message via transform_into infrastructure
+
+**Implementation Details:**
+- Uses `battle.get_all_active(false)` to get all active Pokemon
+- Filters by `side_idx == foe_side_idx` to get foe's active Pokemon
+- Calculates mirror index: `foe_active_on_side.len().saturating_sub(1).saturating_sub(pokemon_position)`
+- Uses saturating arithmetic to handle edge cases (empty lists, out of bounds)
+- Returns EventResult::Continue if no valid target found
+
+**Type System Details:**
+- `effect_id` parameter is `Option<&dex_data::ID>` (borrowed reference, not owned)
+- Must create owned `ID::from("imposter")` first, then pass reference `Some(&imposter_id)`
+- Battle message format: `format!("[from] ability: {}", effect.to_string())`
+
+**Files Modified:**
+- src/pokemon/transform_into.rs - Added effect_id parameter, updated battle message logic (28 lines added, 11 removed)
+- src/data/move_callbacks/transform.rs - Updated call site to pass None (1 line changed)
+- src/data/ability_callbacks/imposter.rs - Implemented onSwitchIn (43 lines added, 3 removed)
+
+**Git Commit:**
+- f1575674: "Implement Imposter ability + transform_into infrastructure (Batch 159)"
+
+**Progress:**
+- TODOs Resolved: 1 (Imposter onSwitchIn)
+- Infrastructure Enhancement: Pokemon::transform_into now supports effect parameter
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
