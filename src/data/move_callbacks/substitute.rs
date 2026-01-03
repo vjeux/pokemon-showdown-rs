@@ -446,10 +446,10 @@ pub mod condition {
         }
 
         // this.singleEvent('AfterSubDamage', move, null, target, source, move, damage);
-        battle.single_event("AfterSubDamage", &move_id, Some(target), Some(source), Some(&move_id));
+        battle.single_event_with_relay_var("AfterSubDamage", &move_id, Some(target), Some(source), Some(&move_id), Some(actual_damage));
 
         // this.runEvent('AfterSubDamage', target, source, move, damage);
-        battle.run_event("AfterSubDamage", Some(target), Some(source), Some(&move_id), None);
+        battle.run_event("AfterSubDamage", Some(target), Some(source), Some(&move_id), Some(actual_damage));
 
         // return this.HIT_SUBSTITUTE;
         EventResult::HitSubstitute

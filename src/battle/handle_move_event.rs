@@ -63,8 +63,14 @@ impl Battle {
                 self, move_id, source_pos, target,
             ),
             "AfterSubDamage" => {
-                // TODO: AfterSubDamage needs damage value from relay_var
-                move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos, 0, target)
+                // Get damage from relay_var
+                let damage = self
+                    .current_event
+                    .as_ref()
+                    .and_then(|e| e.relay_var)
+                    .unwrap_or(0);
+
+                move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos, damage, target)
             }
             "BasePower" => {
                 // Get base_power from relay_var
