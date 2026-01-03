@@ -83,9 +83,36 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
         }
     }
 
-    // Skip: pokemon.canMegaEvo = pokemon.canMegaEvo === false ? false : this.actions.canMegaEvo(pokemon);
-    // Skip: pokemon.formeRegression = true;
-    // TODO: Implement canMegaEvo and formeRegression when mega evolution system is available
+    // pokemon.canMegaEvo = pokemon.canMegaEvo === false ? false : this.actions.canMegaEvo(pokemon);
+    // pokemon.formeRegression = true;
+    {
+        use crate::battle_actions::can_mega_evo;
+
+        // First check if canMegaEvo is already false
+        let should_update_can_mega_evo = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.can_mega_evo != Some("false".to_string())
+        };
+
+        // If not false, calculate new canMegaEvo value
+        let new_can_mega_evo = if should_update_can_mega_evo {
+            can_mega_evo(battle, pokemon_pos.0, pokemon_pos.1)
+        } else {
+            Some("false".to_string())
+        };
+
+        // Now update the pokemon
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        pokemon_mut.can_mega_evo = new_can_mega_evo;
+        pokemon_mut.forme_regression = true;
+    }
 
     EventResult::Continue
 }
