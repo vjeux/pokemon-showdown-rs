@@ -67,7 +67,20 @@ pub fn hit_step_move_hit_loop(
     let mut move_damage: SpreadMoveDamage = Vec::new();
 
     // const isSleepUsable = move.sleepUsable || this.dex.moves.get(move.sourceEffect).sleepUsable;
-    let is_sleep_usable = active_move.sleep_usable; // TODO: Check sourceEffect move's sleepUsable
+    let is_sleep_usable = {
+        let base_sleep_usable = active_move.sleep_usable;
+
+        // Check if sourceEffect move also has sleepUsable
+        if let Some(ref source_effect_id) = active_move.source_effect {
+            if let Some(source_effect_move) = battle.dex.moves().get(source_effect_id.as_str()) {
+                base_sleep_usable || source_effect_move.sleep_usable
+            } else {
+                base_sleep_usable
+            }
+        } else {
+            base_sleep_usable
+        }
+    };
 
     // let targetsCopy: (Pokemon | false | null)[] = targets.slice(0);
     let mut targets_copy = targets.clone();
