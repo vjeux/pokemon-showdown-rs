@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 117 (30.8%)
+- Completed: 120 (31.6%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -249,16 +249,22 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 116. **Victory Star** (victorystar.rs) - onAnyModifyAccuracy: Boosts ally accuracy by 1.1x (4506/4096)
 117. **Gluttony** (gluttony.rs) - onStart/onDamage: Sets gluttony flag in ability state for early berry consumption
 
+### Batch 33 - Ally Protection & Rage Boost (3 abilities)
+118. **Telepathy** (telepathy.rs) - onTryHit: Prevents hitting allies with non-status moves (returns Null to block)
+119. **Anger Point** (angerpoint.rs) - onHit: Maximizes Attack (+12 stages) when hit by a critical hit (uses getMoveHitData)
+120. **Pressure** (pressure.rs) - onDeductPP: Causes moves to use 1 extra PP when targeting this Pokemon
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 22 abilities (batches 22-32).
-Progress: 117/380 abilities (30.8%).
+Implemented 25 abilities (batches 22-33).
+Progress: 120/380 abilities (31.6%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
 Completed damage modifier abilities using battle.get_move_hit_data() to access critical hit and type effectiveness data.
 Completed residual status cure abilities using Pokemon::effective_weather and Pokemon::adjacent_allies for weather checking and ally iteration.
 Completed Magic Guard using effect type detection via dex lookups.
+Completed Telepathy, Anger Point, and Pressure using ally detection, move hit data, and PP deduction.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)

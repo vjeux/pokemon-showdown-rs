@@ -33,8 +33,23 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///     if (target.isAlly(source)) return;
 ///     return 1;
 /// }
-pub fn on_deduct_p_p(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_deduct_p_p(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
+    let target_pos = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source_pos = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target.isAlly(source)) return;
+    if battle.is_ally(target_pos, source_pos) {
+        return EventResult::Continue;
+    }
+
+    // return 1;
+    EventResult::Number(1)
 }
 
