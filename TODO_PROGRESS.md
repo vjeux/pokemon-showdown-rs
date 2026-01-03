@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 169 (44.5%)
+- Completed: 171 (45.0%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -356,6 +356,10 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 168. **Effect Spore** (effectspore.rs) - onDamagingHit: 30% chance to inflict sleep/paralysis/poison on attacker when hit by contact move; completed powder immunity check using Pokemon::run_status_immunity; probabilities: 11% sleep, 10% paralysis, 9% poison
 169. **Mycelium Might** (myceliummight.rs) - onFractionalPriority: Lowers priority of Status moves by 0.1 (returns -1 as fractional priority is multiplied by 10 internally); onModifyMove: Sets ignore_ability flag for Status moves to bypass target abilities
 
+### Batch 55 - Status Reflection & Confusion Prevention (2 abilities)
+170. **Synchronize** (synchronize.rs) - onAfterSetStatus: Reflects status conditions back to the source; skips if no source, source is self, effect is toxicspikes, or status is sleep/freeze; shows -activate message and applies status to source using try_set_status with "synchronize" as source effect
+171. **Own Tempo** (owntempo.rs) - onUpdate: Automatically removes confusion volatile status when present; shows -activate message before removing confusion; uses Pokemon::remove_volatile to clear confusion status
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -364,7 +368,8 @@ Completed Download (Batch 51) using pokemon.foes() and battle.get_pokemon_stat()
 Completed Gorilla Tactics (Batch 52) using ability_state.data for choice-lock tracking.
 Completed Sheer Force and Forewarn (Batch 53) using ActiveMove fields and move data lookup.
 Completed Effect Spore and Mycelium Might (Batch 54) using run_status_immunity and ActiveMove fields.
-Progress: 169/380 abilities (44.5%).
+Completed Synchronize and Own Tempo (Batch 55) using try_set_status and remove_volatile.
+Progress: 171/380 abilities (45.0%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
