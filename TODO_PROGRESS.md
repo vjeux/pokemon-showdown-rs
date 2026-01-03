@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 239 (62.9%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available)
+- Completed: 240 (63.2%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result available)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -582,6 +582,9 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 - Shows cant message with Damp holder as first argument (not explosion user)
 - Properly distinguishes between Damp holder and explosion user in battle messages
 
+### Batch 104 - Truant onStart (1 TODO removed)
+240. **Truant** (truant.rs) - onStart: Manages truant volatile based on activeTurns and moveThisTurnResult; removes truant volatile at start, adds it back if Pokemon has been active and moved this turn; uses pokemon.active_turns and pokemon.move_this_turn_result fields (Note: queue.willMove check not yet available)
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -616,8 +619,9 @@ Completed Wimp Out (Batch 100) - identical to Emergency Exit, triggers switch us
 Completed Aroma Veil (Batch 101) - removed 2 TODOs by implementing battle.effect_state.target for effect holder in onAllyTryAddVolatile.
 Completed Sweet Veil (Batch 102) - removed 2 TODOs by implementing battle.effect_state.target for effect holder in both onAllySetStatus and onAllyTryAddVolatile.
 Completed Damp (Batch 103) - removed 1 TODO by implementing battle.effect_state.target for Damp holder in onAnyTryMove.
-Progress: 203→239/380 (62.9%); Cleaned up 5 TODOs from previously completed abilities.
-Remaining TODOs: 110 (down from 115).
+Completed Truant (Batch 104) - removed 1 TODO by implementing onStart using pokemon.active_turns and pokemon.move_this_turn_result fields.
+Progress: 203→240/380 (63.2%); Cleaned up 6 TODOs and added 1 new ability.
+Remaining TODOs: 109 (down from 115).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
