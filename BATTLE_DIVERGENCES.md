@@ -801,3 +801,67 @@ Starting comprehensive 1:1 verification of battle/ folder.
 - Total files in battle/: 148 (down from 150)
 - Next: Continue systematic cleanup and verification
 
+
+---
+
+## Session 7: Remove start_battle.rs File (2026-01-02)
+
+### Twenty-First Implementation: Move start_battle.rs into run_action.rs ✅
+- **Issue**: start_battle.rs marked as "NOT in JavaScript" but logic IS in JavaScript runAction() case 'start'
+- **Root Cause**: Rust incorrectly split runAction() 'start' case into separate file
+- **Action**: Consolidated logic back into run_action.rs to match JavaScript structure
+
+  **JavaScript Structure** (battle.ts:2629-2701):
+  ```javascript
+  runAction(action: Action) {
+      switch (action.choice) {
+      case 'start': {
+          // ... all logic here including Zacian/Zamazenta
+      }
+  }
+  ```
+
+  **Rust Had Two Files:**
+  1. run_action.rs - Had TODO for Zacian/Zamazenta
+  2. start_battle.rs - Had full implementation, incorrectly marked "NOT in JavaScript"
+
+  **Changes Made:**
+
+  **run_action.rs:**
+  - Added `use crate::pokemon::MoveSlot;` import
+  - Lines 381-503: Added complete Zacian/Zamazenta forme change implementation
+    * Collects all_pokemon_positions Vec to avoid borrow issues
+    * Checks for zacian+rustedsword or zamazenta+rustedshield
+    * Calls pokemon.setSpecies() with unsafe block
+    * Updates baseSpecies, details (via getUpdatedDetails)
+    * Calls Pokemon::set_ability() for species.abilities['0']
+    * Updates baseAbility = ability
+    * Replaces Iron Head with Behemoth Blade/Bash in base_move_slots
+    * Clones to move_slots
+  - Lines 541-568: Added forfeited player logic
+    * If pokemon_left == 0: Set active[slot] = Some(slot), mark fainted, hp = 0
+    * Else: Call battle_actions::switch_in() normally
+  - Lines 574-577: Reuse all_pokemon_positions for singleEvent('Start') loop
+    * Avoids creating new double loop
+
+  **battle.rs:**
+  - Removed `mod start_battle;` declaration (line 28)
+  - Deleted test_battle_start() test (lines 914-939)
+    * Test called battle.start_battle() which no longer exists
+    * Method not part of public API anymore
+
+  **Files Deleted:**
+  - start_battle.rs (214 lines) - logic moved to run_action.rs
+
+- **Side Effects**: None - cleaner architecture matching JavaScript
+- **Result**: Now matches JavaScript runAction() case 'start' 1:1, proper file organization
+- **Commit**: 7feec367
+
+**Progress Update (2026-01-02 - Session 7):**
+- Files deleted: 1 (start_battle.rs)
+- Files updated: 2 (run_action.rs, battle.rs)
+- Total files in battle/: 147 (down from 148)
+- Files completed: 21
+- Major fix: Corrected architectural mismatch (start_battle() should not exist as separate method)
+
+
