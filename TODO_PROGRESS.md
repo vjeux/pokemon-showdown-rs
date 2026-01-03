@@ -565,6 +565,17 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 100 - Wimp Out (1 ability)
 239. **Wimp Out** (wimpout.rs) - onEmergencyExit: Triggers switch when HP drops below 50%, identical to Emergency Exit; uses battle.can_switch(), clears all switchFlags, sets target.switchFlag = true, shows -activate message
 
+### Batch 101 - Aroma Veil Completion (2 TODOs removed)
+Completed effectState.target implementation for Aroma Veil (originally Batch 63):
+- onAllyTryAddVolatile: Now properly uses battle.effect_state.target for effect holder position
+- Shows -block message with [of] effect_holder parameter
+
+### Batch 102 - Sweet Veil Completion (2 TODOs removed)
+Completed effectState.target implementation for Sweet Veil (originally Batch 65):
+- onAllySetStatus: Now properly uses battle.effect_state.target for effect holder position when blocking sleep
+- onAllyTryAddVolatile: Now properly uses battle.effect_state.target for effect holder position when blocking yawn
+- Both callbacks show -block messages with [of] effect_holder parameter
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -596,6 +607,8 @@ Completed Emergency Exit (Batch 98) - onEmergencyExit triggers switches using ba
 Discovered trapping infrastructure exists (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent).
 Completed Arena Trap, Magnet Pull, and Shadow Tag (Batch 99) - all three trapping abilities using Pokemon::try_trap and maybeTrapped field.
 Completed Wimp Out (Batch 100) - identical to Emergency Exit, triggers switch using battle.can_switch() and switch flags.
+Completed Aroma Veil (Batch 101) - removed 2 TODOs by implementing battle.effect_state.target for effect holder in onAllyTryAddVolatile.
+Completed Sweet Veil (Batch 102) - removed 2 TODOs by implementing battle.effect_state.target for effect holder in both onAllySetStatus and onAllyTryAddVolatile.
 Progress: 203→239/380 (62.9%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
