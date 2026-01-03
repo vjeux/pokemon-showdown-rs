@@ -126,7 +126,9 @@ pub mod condition {
             }
 
             // target.getMoveHitData(move).zBrokeProtect = true;
-            // TODO: getMoveHitData().zBrokeProtect not yet implemented
+            if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+                hit_data.z_broke_protect = true;
+            }
             // return;
             return EventResult::Continue;
         }

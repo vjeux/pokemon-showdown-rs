@@ -123,9 +123,13 @@ pub mod condition {
             .map(|m| m.infiltrates)
             .unwrap_or(false);
 
-        // TODO: Add crit check via getMoveHitData when available
-        // For now, check infiltrates only
-        if infiltrates {
+        // Check crit via getMoveHitData
+        let crit = battle
+            .get_move_hit_data(target)
+            .map(|hit_data| hit_data.crit)
+            .unwrap_or(false);
+
+        if crit || infiltrates {
             return EventResult::Continue;
         }
 

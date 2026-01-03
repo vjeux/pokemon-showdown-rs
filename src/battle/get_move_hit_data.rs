@@ -37,6 +37,7 @@ impl Battle {
                 type_mod: 0,
                 damage: 0,
                 hit_substitute: false,
+                z_broke_protect: false,
             }))
         } else {
             None

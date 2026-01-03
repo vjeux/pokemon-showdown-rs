@@ -735,7 +735,7 @@ pub struct GetMoveTargetsResult {
 /// Move hit data for tracking crit, type effectiveness, etc.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 /// JavaScript equivalent: inline tracking object (sim/battle-actions.ts)
-/// 4 fields in JavaScript (used in damage calculation tracking)
+/// 5 fields in JavaScript (used in damage calculation and protection tracking)
 pub struct MoveHitData {
     /// Was this hit a critical hit?
     /// JavaScript: crit: boolean
@@ -749,6 +749,9 @@ pub struct MoveHitData {
     /// Did the move hit the substitute instead?
     /// JavaScript: hitSubstitute: boolean
     pub hit_substitute: bool,
+    /// Did this Z/Max move break through protection?
+    /// JavaScript: zBrokeProtect: boolean
+    pub z_broke_protect: bool,
 }
 
 // =============================================================================

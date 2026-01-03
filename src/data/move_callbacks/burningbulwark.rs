@@ -121,7 +121,10 @@ pub mod condition {
 
             // if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
             if move_data.is_z.is_some() || move_data.is_max.is_some() {
-                // TODO: getMoveHitData not yet implemented to set zBrokeProtect
+                // Set zBrokeProtect in move hit data
+                if let Some(hit_data) = battle.get_move_hit_data_mut(target_pos) {
+                    hit_data.z_broke_protect = true;
+                }
             }
 
             // return;
