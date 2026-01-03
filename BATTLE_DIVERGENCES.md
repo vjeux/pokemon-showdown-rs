@@ -160,5 +160,48 @@ Starting comprehensive 1:1 verification of battle/ folder.
 **Next Steps:**
 1. ~~Implement last Category A stub (find_side_event_handlers)~~ ✅ COMPLETED
 2. Fix Category B partial implementations
+   - ~~get_requests.rs - Missing Pokemon.get_move_request_data()~~ ✅ COMPLETED
+   - handle_ability_event.rs - Missing parameter wire-through
+   - faint_messages.rs - Missing formeRegression
+   - end_turn.rs - Missing swapPosition, canDynamaxNow
+   - boost.rs - Needs migration to boost_new()
 3. Verify Category D clean files
+
+---
+
+## Category B Implementations
+
+### Seventh Implementation: get_requests.rs + Pokemon.get_move_request_data() ✅
+- **Issue**: get_requests.rs returned null for move requests instead of calling Pokemon.getMoveRequestData()
+- **Root Cause**: Pokemon.get_move_request_data() was only a 20-line stub, JavaScript version is 94 lines
+- **Action**: Complete refactor of both files
+
+  **Pokemon.get_move_request_data()** (pokemon.ts:733-826):
+  - Changed from instance method (&self) to static method (&mut Battle, pokemon_pos) to access battle context
+  - Implemented full JavaScript logic line-by-line:
+    * `let lockedMove = this.maybeLocked ? null : this.getLockedMove()`
+    * `const isLastActive = this.isLastActive()`
+    * `const canSwitchIn = this.battle.canSwitch(this.side) > 0`
+    * `let moves = this.getMoves(lockedMove, isLastActive)` with Struggle fallback
+    * isLastActive branch: Updates `maybeDisabled`, `maybeLocked`, `maybeTrapped` fields
+    * Non-last-active branch: Resets those fields to false
+    * If not locked: adds `canMegaEvo`, `canMegaEvoX`, `canMegaEvoY`, `canUltraBurst`
+    * Calls `battle.actions.canZMove()` for Z-Move options
+    * Calls `getDynamaxRequest()` for `canDynamax` and `maxMoves`
+    * Includes `canTerastallize` type
+  - Two-phase borrow pattern for state updates (read immutably, then write mutably)
+
+  **Battle.get_requests()** (battle.ts:1372-1424):
+  - Changed signature from `&self` to `&mut self` because getMoveRequestData() has side effects
+  - Line 139-140: Replaced null placeholders with actual `Pokemon::get_move_request_data(self, (i, *poke_idx))` calls
+  - Fixed borrow checker by cloning `side.active` indices before mapping over them
+  - Removed all TODO comments from file header (lines 9-18 deleted)
+
+  **Infrastructure Changes**:
+  - Added `Serialize, Deserialize` derives to `ZMoveOption` struct (battle_actions.rs:828)
+  - Added `use serde::{Deserialize, Serialize};` import (battle_actions.rs:9)
+
+- **Side Effects**: None (purely additive implementation)
+- **Result**: Matches JavaScript 1:1 for move request data generation
+- **Commit**: 239deb16
 
