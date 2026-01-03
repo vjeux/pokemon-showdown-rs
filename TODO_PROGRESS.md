@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 213 (56.1%)
+- Completed: 215 (56.6%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -510,6 +510,12 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 84 - Poisonpuppeteer (1 ability)
 210. **Poisonpuppeteer** (poisonpuppeteer.rs) - onAnyAfterSetStatus: When Pecharunt poisons a foe with a move, adds confusion volatile status to the target; checks source is Pecharunt, target ≠ source, effect is Move, status is psn/tox
 
+### Batch 85 - Receiver (1 ability)
+211. **Receiver** (receiver.rs) - onAllyFaint: Copies fainted ally's ability; checks ability holder has HP, fainted ally's ability doesn't have noreceiver flag and isn't noability; uses Pokemon::set_ability
+
+### Batch 86 - Pastelveil (1 ability)
+212. **Pastelveil** (pastelveil.rs) - Prevents and cures poison on allies: onStart: Cures poison from all allies and self when switching in; onUpdate: Auto-cures poison from self; onAnySwitchIn: Calls onStart when any Pokemon switches in; onSetStatus: Blocks poison on self; onAllySetStatus: Blocks poison on allies; uses allies_and_self(), Pokemon::cure_status()
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -522,7 +528,9 @@ Completed Hunger Switch (Batch 81) using forme_change for turn-based forme alter
 Completed Mummy (Batch 82) using Pokemon::set_ability and check_move_makes_contact (similar to Lingering Aroma).
 Completed Terashift (Batch 83) using forme_change with is_permanent=true.
 Completed Poisonpuppeteer (Batch 84) using Pokemon::add_volatile and status checking.
-Progress: 203→213/380 (56.1%).
+Completed Receiver (Batch 85) using Pokemon::set_ability with noreceiver flag checking.
+Completed Pastelveil (Batch 86) using allies_and_self() and Pokemon::cure_status() with comprehensive poison prevention.
+Progress: 203→215/380 (56.6%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
