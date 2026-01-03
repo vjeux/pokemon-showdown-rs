@@ -588,6 +588,9 @@ Completed effectState.target implementation for Damp (originally Batch 57):
 ### Batch 105 - Wandering Spirit (1 ability)
 241. **Wandering Spirit** (wanderingspirit.rs) - onDamagingHit: Swaps abilities with attacker on contact moves; checks failskillswap flag and dynamax volatile; shows different messages for allies (Skill Swap) vs opponents (ability swap); uses Pokemon::set_ability for both source and target, battle.check_move_makes_contact, battle.is_ally(), and dex.abilities().flags
 
+### Batch 106 - Battle Bond (partial - 1/2 callbacks)
+242. **Battle Bond** (battlebond.rs) - onModifyMove: Sets Water Shuriken to always hit 3 times when used by Greninja-Ash (not transformed); checks species.name and pokemon.transformed; modifies active_move.multi_hit; uses battle.current_event.source for attacker position (Note: onSourceAfterFaint still needs pokemon.bondTriggered field and side.foePokemonLeft() method)
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -624,8 +627,9 @@ Completed Sweet Veil (Batch 102) - removed 2 TODOs by implementing battle.effect
 Completed Damp (Batch 103) - removed 1 TODO by implementing battle.effect_state.target for Damp holder in onAnyTryMove.
 Completed Truant (Batch 104) - removed 1 TODO by implementing onStart using pokemon.active_turns and pokemon.move_this_turn_result fields.
 Completed Wandering Spirit (Batch 105) - onDamagingHit swaps abilities on contact using Pokemon::set_ability for both source and target, with failskillswap flag checking.
-Progress: 203→241/380 (63.4%); Completed 38 abilities this session.
-Remaining TODOs: 108 (down from 115).
+Partially completed Battle Bond (Batch 106) - onModifyMove sets Water Shuriken multi-hit to 3 for Greninja-Ash (1/2 callbacks, onSourceAfterFaint still needs infrastructure).
+Progress: 203→241/380 (63.4%); Completed 38 full abilities + 1 partial this session.
+Remaining TODOs: 107 (down from 115 - removed 1 from Wandering Spirit, 1 from Battle Bond onModifyMove).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
