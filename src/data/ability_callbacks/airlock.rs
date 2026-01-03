@@ -12,17 +12,50 @@ use crate::event::EventResult;
 ///     this.add('-ability', pokemon, 'Air Lock');
 ///     ((this.effect as any).onStart as (p: Pokemon) => void).call(this, pokemon);
 /// }
-pub fn on_switch_in(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
-    EventResult::Continue
+pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::battle::Arg;
+
+    // this.add('-ability', pokemon, 'Air Lock');
+    let pokemon_slot = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add("-ability", &[
+        Arg::String(pokemon_slot),
+        Arg::Str("Air Lock"),
+    ]);
+
+    // ((this.effect as any).onStart as (p: Pokemon) => void).call(this, pokemon);
+    // This calls the ability's own onStart callback
+    on_start(battle, pokemon_pos)
 }
 
 /// onStart(pokemon) {
 ///     pokemon.abilityState.ending = false; // Clear the ending flag
 ///     this.eachEvent('WeatherChange', this.effect);
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::dex_data::ID;
+
+    // pokemon.abilityState.ending = false;
+    {
+        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.ability_state.data.insert(
+            "ending".to_string(),
+            serde_json::Value::Bool(false),
+        );
+    }
+
+    // this.eachEvent('WeatherChange', this.effect);
+    battle.each_event("WeatherChange", Some(&ID::from("airlock")), None);
+
     EventResult::Continue
 }
 
@@ -30,8 +63,24 @@ pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResu
 ///     pokemon.abilityState.ending = true;
 ///     this.eachEvent('WeatherChange', this.effect);
 /// }
-pub fn on_end(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::dex_data::ID;
+
+    // pokemon.abilityState.ending = true;
+    {
+        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.ability_state.data.insert(
+            "ending".to_string(),
+            serde_json::Value::Bool(true),
+        );
+    }
+
+    // this.eachEvent('WeatherChange', this.effect);
+    battle.each_event("WeatherChange", Some(&ID::from("airlock")), None);
+
     EventResult::Continue
 }
 
