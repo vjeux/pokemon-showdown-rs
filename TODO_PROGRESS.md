@@ -5,12 +5,12 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 369 total (down from 374 - resolved 5 more in this session: Batch 155)
-  - Complex abilities requiring transform/redirect/rebound infrastructure: ~18 TODOs (Imposter, Illusion, Commander, Neutralizing Gas, Magic Bounce, Rebound, Lightning Rod, Storm Drain)
-  - Move callbacks requiring queue/event system extensions: ~24 TODOs (down from 27)
+- **Remaining TODOs**: 368 total (down from 369 - resolved 1 more in this session: Batch 156)
+  - Complex abilities requiring transform/redirect/rebound infrastructure: ~17 TODOs (down from 18 - Lightning Rod completed)
+  - Move callbacks requiring queue/event system extensions: ~24 TODOs
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 155 - Event Handler State Fields (5 TODOs resolved)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event)
+- **Latest Progress**: Batch 156 - Lightning Rod Ability onAnyRedirectTarget (1 TODO resolved)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
 ## Completed Implementations
@@ -2323,6 +2323,61 @@ state: None, // TODO: Type mismatch - slot_conditions uses dex_data::EffectState
 **Progress:**
 - TODOs Resolved: 5 (Pokemon state fields in event handlers)
 - TODOs Remaining: 1 (slot_condition_state - requires type system refactor)
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+
+### Batch 156 - Lightning Rod Ability onAnyRedirectTarget (1 TODO)
+
+**Completed ability:**
+274. **Lightning Rod** (lightningrod.rs) - onAnyRedirectTarget: Redirects Electric-type moves to Pokemon with Lightning Rod ability
+
+**Infrastructure Discovery:**
+All required infrastructure already exists:
+- `battle.effect_state.target` - Tracks ability holder position (Option<(usize, usize)>)
+- `battle.valid_target(target, source, target_type)` - Validates if target is valid for move redirection
+- `EventResult::Position((usize, usize))` - Returns redirected target position
+- `active_move.flags.pledgecombo` - Pledge combo flag to skip redirection
+- `active_move.target` - Move target type (String)
+- `active_move.smart_target` - Smart targeting flag (Option<bool>)
+
+**Implementation Details:**
+- Checks if move is Electric-type and not a pledge combo
+- Determines redirect target type: "normal" for randomNormal/adjacentFoe, otherwise uses move.target
+- Gets Lightning Rod holder from battle.effect_state.target
+- Validates if holder is a valid target for the move using battle.valid_target()
+- Disables smart targeting by setting active_move.smart_target = Some(false)
+- Shows "-activate" message when redirecting to different target
+- Returns EventResult::Position(lightning_rod_holder) to redirect the move
+
+**Type Discovery:**
+- `battle.effect_state` is `EffectState` struct (not Option<EffectState>)
+- `battle.effect_state.target` is `Option<(usize, usize)>`
+- Must match on `battle.effect_state.target` directly, not `&battle.effect_state`
+
+**JavaScript Equivalence:**
+```javascript
+onAnyRedirectTarget(target, source, source2, move) {
+    if (move.type !== 'Electric' || move.flags['pledgecombo']) return;
+    const redirectTarget = ['randomNormal', 'adjacentFoe'].includes(move.target) ? 'normal' : move.target;
+    if (this.validTarget(this.effectState.target, source, redirectTarget)) {
+        if (move.smartTarget) move.smartTarget = false;
+        if (this.effectState.target !== target) {
+            this.add('-activate', this.effectState.target, 'ability: Lightning Rod');
+        }
+        return this.effectState.target;
+    }
+}
+```
+
+**Files Modified:**
+- src/data/ability_callbacks/lightningrod.rs - Implemented onAnyRedirectTarget (77 lines added, 2 removed)
+
+**Git Commit:**
+- aa369992: "Implement Lightning Rod onAnyRedirectTarget (Batch 156)"
+
+**Progress:**
+- TODOs Resolved: 1 (Lightning Rod onAnyRedirectTarget)
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
 
