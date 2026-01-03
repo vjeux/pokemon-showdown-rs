@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 155 (40.8%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
+- Completed: 157 (41.3%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -324,10 +324,14 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 **EffectState.source Infrastructure (Major Change):**
 Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_data.rs to track which Pokemon created an effect. This matches JavaScript's `EffectState.source` which stores the Pokemon that set the weather/terrain. Required for proper strong weather source tracking and hand-off mechanics.
 
+### Batch 46 - Stat Randomization & Type Immunity (2 abilities)
+156. **Moody** (moody.rs) - onResidual: Randomly boosts one stat (excluding accuracy/evasion) by 2 and lowers a different stat by 1 (uses BoostID::stats_only and battle.sample for random selection)
+157. **Mountaineer** (mountaineer.rs) - onTryHit: Grants immunity to Rock-type moves when Pokemon just switched in (activeTurns == 0), shows immunity message and returns Null to block hit
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 60 abilities (batches 22-45).
-Progress: 155/380 abilities (40.8%).
+Implemented 62 abilities (batches 22-46).
+Progress: 157/380 abilities (41.3%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -350,6 +354,8 @@ Completed type-changing abilities (Refrigerate, Aerilate, Normalize, Galvanize) 
 Completed Dark Aura and Fairy Aura using aura_booster tracking, has_aura_break detection, and battle.suppressing_ability checks.
 Completed EffectState.source infrastructure: Added source field to EffectState struct (src/dex_data.rs) to track which Pokemon created an effect. This enables proper weather source tracking for strong weather abilities.
 Completed Delta Stream and Desolate Land with full onStart, onAnySetWeather, and onEnd handlers using EffectState.source for weather source hand-off mechanics.
+Completed Moody using battle.sample() for random stat selection with proper boost application (excludes accuracy/evasion, boosts one stat by 2, lowers another by 1).
+Completed Mountaineer using activeTurns check for just-switched-in immunity to Rock-type moves.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
