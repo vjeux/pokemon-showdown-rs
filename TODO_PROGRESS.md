@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 172 (45.3%)
+- Completed: 174 (45.8%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -363,6 +363,12 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 56 - Burn Immunity & Auto-Cure (1 ability)
 172. **Thermal Exchange** (thermalexchange.rs) - onDamagingHit: Boosts Attack when hit by Fire-type move (already implemented); onUpdate: Automatically cures burn status when present, shows -activate message; onSetStatus: Prevents burn status, shows -immune message if caused by a move with status, returns false to block burn application
 
+### Batch 57 - Explosion Move Prevention (1 ability)
+173. **Damp** (damp.rs) - onAnyTryMove: Prevents explosion moves (explosion, mindblown, mistyexplosion, selfdestruct) from being used; shows cant message with [still] animation; returns false to block move; onAnyDamage: Prevents Aftermath damage (already implemented)
+
+### Batch 58 - Attract & Taunt Auto-Removal (1 ability)
+174. **Oblivious** (oblivious.rs) - onUpdate: Automatically removes attract and taunt volatile statuses when present; shows -activate message and -end message for attract; other handlers already implemented (onImmunity, onTryHit, onTryBoost)
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -373,7 +379,9 @@ Completed Sheer Force and Forewarn (Batch 53) using ActiveMove fields and move d
 Completed Effect Spore and Mycelium Might (Batch 54) using run_status_immunity and ActiveMove fields.
 Completed Synchronize and Own Tempo (Batch 55) using try_set_status and remove_volatile.
 Completed Thermal Exchange (Batch 56) using cure_status and status immunity.
-Progress: 172/380 abilities (45.3%).
+Completed Damp (Batch 57) preventing explosion moves.
+Completed Oblivious (Batch 58) using remove_volatile for attract and taunt.
+Progress: 174/380 abilities (45.8%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
