@@ -10,8 +10,12 @@ use crate::event::EventResult;
 /// onModifyPriority(priority, pokemon, target, move) {
 ///     if (move?.flags['heal']) return priority + 3;
 /// }
-pub fn on_modify_priority(_battle: &mut Battle, _priority: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_modify_priority(battle: &mut Battle, priority: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+    if let Some(active_move) = battle.dex.get_active_move(move_id) {
+        if active_move.flags.heal {
+            return EventResult::Number(priority + 3);
+        }
+    }
     EventResult::Continue
 }
 
