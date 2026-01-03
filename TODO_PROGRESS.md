@@ -15,6 +15,53 @@
 
 ## Completed Implementations
 
+### Session Summary (Batches 167-170) - Latest
+
+**TODOs Resolved This Session**: 9 total
+- Batch 167: 1 TODO (Sky Drop onFoeTrapPokemon)
+- Batch 168: 1 TODO (Sky Drop onFoeBeforeMove - Sky Drop now FULLY COMPLETE!)
+- Batch 169: 3 TODOs (Foresight onModifyBoost, Miracle Eye onModifyBoost, Mist onTryBoost)
+- Batch 170: 4 TODOs (Counter, Mirror Coat, Metal Burst, Comeuppance target redirection)
+
+**TODOs Added**: 1 minor (Mist infiltrates check)
+**Net Progress**: 351 → 340 TODOs (-11 total, -8 net)
+
+**Major Infrastructure Additions**: 4
+1. **Battle::set_trapped()** - Pokemon trapping state management (Batch 167)
+2. **Battle::decrement_active_move_actions()** - Move action counter management (Batch 168)
+3. **Battle::run_event_boost()** - Complete boost modification event system (Batch 169) ⭐
+4. **Move target redirection pattern** - Retaliation move targeting using EventResult::Position (Batch 170)
+
+**Completed Moves This Session:**
+- **Sky Drop** - ⭐ FULLY COMPLETE! All 12 callbacks implemented (Batches 167-168)
+  - onModifyMove, onMoveFail, onTry, onTryHit, onHit
+  - condition::onAnyDragOut, onFoeTrapPokemon, onFoeBeforeMove, onRedirectTarget
+  - condition::onAnyInvulnerability, onAnyBasePower, onFaint
+- **Foresight** - onModifyBoost: Removes positive evasion boosts (Batch 169)
+- **Miracle Eye** - onModifyBoost: Removes positive evasion boosts (Batch 169)
+- **Mist** - onTryBoost: Blocks negative stat changes for protected team (Batch 169)
+- **Counter** - onTryHit: Redirects to last physical attacker (Batch 170)
+- **Mirror Coat** - onTryHit: Redirects to last special attacker (Batch 170)
+- **Metal Burst** - onTryMove: Redirects to last damager (Batch 170)
+- **Comeuppance** - onTryMove: Redirects to last damager (Batch 170)
+
+**Infrastructure Impact:**
+The boost modification system (Batch 169) is a MAJOR milestone - it's on par with the type parameter system (Batch 164) and enables an entire category of stat modification callbacks across the event system. This infrastructure:
+- Enables ModifyBoost events (modify stat stage calculations)
+- Enables TryBoost events (block or modify stat changes before application)
+- Works across all event handlers (abilities, items, conditions, moves)
+- Uses the established relay_var pattern for consistency
+
+Combined with existing ability support, the boost modification system is now fully functional throughout the entire battle simulation.
+
+**Git Commits:**
+- Batch 167: "Add Battle::set_trapped infrastructure and implement Sky Drop onFoeTrapPokemon (Batch 167 - partial)"
+- Batch 168: "Implement Battle::decrement_active_move_actions infrastructure and complete Sky Drop onFoeBeforeMove (Batch 168)"
+- Batch 169: "Implement Battle::run_event_boost infrastructure and complete Foresight, Miracle Eye, and Mist boost callbacks (Batch 169)"
+- Batch 170: "Implement move target redirection for Counter, Mirror Coat, Metal Burst, and Comeuppance (Batch 170)"
+
+---
+
 ### Batch 1 - Basic Weather/Terrain Modifiers (5 abilities)
 1. **Sand Rush** (sandrush.rs) - onModifySpe: Doubles speed in sandstorm
 2. **Triage** (triage.rs) - onModifyPriority: Adds +3 priority to healing moves
