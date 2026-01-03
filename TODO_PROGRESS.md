@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 201 (52.9%)
+- Completed: 202 (53.2%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), **onSideConditionStart dispatcher infrastructure updated** (added pokemon_pos and side_condition_id parameters)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -434,6 +434,9 @@ Note: onStart and onWeatherChange still need formeChange and singleEvent infrast
 200. **Anticipation** (anticipation.rs) - onStart: Shows ability activation when foe has super-effective or OHKO move (uses pokemon.foes(), move_slots, dex.get_immunity, dex.get_effectiveness)
 Note: OHKO move detection not yet implemented (needs move data ohko field)
 
+### Batch 74 - Supersweet Syrup Ability (1 TODO)
+201. **Supersweet Syrup** (supersweetsyrup.rs) - onStart: Lowers evasion of adjacent foes by 1 when switching in (uses ability_state.data for syrupTriggered flag, pokemon.adjacent_foes(), has_volatile for substitute check)
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -461,7 +464,8 @@ Completed Primordial Sea (Batch 70) following Desolate Land pattern for strong w
 Completed Unburden (Batch 71) using volatile status system and pokemon.item/ignoring_ability() methods.
 Completed Flower Gift ally modifiers (Batch 72) using effectState.target, base species checking, and effective weather.
 Completed Anticipation (Batch 73) checking foes' movesets for super-effective moves (partial - OHKO detection pending).
-Progress: 201/380 abilities (52.9%).
+Completed Supersweet Syrup (Batch 74) using ability_state.data, adjacent_foes(), and has_volatile().
+Progress: 202/380 abilities (53.2%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
