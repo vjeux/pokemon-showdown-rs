@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 165 (43.4%)
+- Completed: 167 (43.9%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -348,13 +348,18 @@ Added `source: Option<(usize, usize)>` field to EffectState struct in src/dex_da
 ### Batch 52 - Choice-Lock Mechanics (1 ability)
 165. **Gorilla Tactics** (gorillatactics.rs) - Completed all handlers: onStart: Initializes ability_state.data["choiceLock"] = ""; onBeforeMove: Prevents using different move when locked, shows -fail message and returns false; onModifyMove: Sets choiceLock to current move ID (skips if already locked or Z/Max/Struggle); onDisableMove: Disables all moves except the locked one (not when Dynamaxed); onModifyAtk: 1.5x Attack boost when not Dynamaxed; onEnd: Clears choiceLock
 
+### Batch 53 - Secondary Effect Removal & Move Preview (2 abilities)
+166. **Sheer Force** (sheerforce.rs) - onModifyMove: Removes secondaries, self effect, and selfBoost for clangoroussoulblaze; sets has_sheer_force flag; onBasePower: Applies 1.3x power boost (5325/4096) when has_sheer_force is true
+167. **Forewarn** (forewarn.rs) - onStart: Reveals highest base power move from all foes; handles OHKO moves (bp=150), counter/metalburst/mirrorcoat (bp=120), bp=1 (bp=80), non-Status moves with bp=0 (bp=80); randomly samples from tied moves and shows -activate message
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
 Completed Serene Grace, Skill Link, and Stench (Batch 50) using ActiveMove.secondaries modification.
 Completed Download (Batch 51) using pokemon.foes() and battle.get_pokemon_stat().
 Completed Gorilla Tactics (Batch 52) using ability_state.data for choice-lock tracking.
-Progress: 165/380 abilities (43.4%).
+Completed Sheer Force and Forewarn (Batch 53) using ActiveMove fields and move data lookup.
+Progress: 167/380 abilities (43.9%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
