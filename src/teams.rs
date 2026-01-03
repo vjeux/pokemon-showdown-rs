@@ -222,12 +222,24 @@ impl Teams {
         // JS: if (buf.startsWith('[') && buf.endsWith(']')) {
         // JS:   try { buf = this.pack(JSON.parse(buf)); } catch { return null; }
         // JS: }
-        // Note: Rust doesn't have JSON parsing of PokemonSet[] built-in
-        // This handles JSON array format - skip for now, return None
-        if buf.starts_with('[') && buf.ends_with(']') {
-            // TODO: Implement JSON parsing if needed
-            return None;
-        }
+        // Handle JSON array format by parsing and re-packing
+        let buf = if buf.starts_with('[') && buf.ends_with(']') {
+            // Try to parse as JSON array of PokemonSet
+            match serde_json::from_str::<Vec<PokemonSet>>(buf) {
+                Ok(pokemon_sets) => {
+                    // Pack the team back to packed string format
+                    Self::pack(&pokemon_sets)
+                }
+                Err(_) => {
+                    // JSON parsing failed, return None
+                    return None;
+                }
+            }
+        } else {
+            buf.to_string()
+        };
+
+        let buf = buf.as_str();
 
         let mut team = Vec::new();
         let mut i = 0;
