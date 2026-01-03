@@ -139,10 +139,134 @@ pub fn hit_step_move_hit_loop(
 
         // Handle multiaccuracy (Triple Kick)
         // if (target && move.multiaccuracy && hit > 1) {
-        //     // ... accuracy calculation ...
-        //     if (accuracy !== true && !this.battle.randomChance(accuracy, 100)) break;
+        //     let accuracy = move.accuracy;
+        //     const boostTable = [1, 4 / 3, 5 / 3, 2, 7 / 3, 8 / 3, 3];
+        //     if (accuracy !== true) {
+        //         if (!move.ignoreAccuracy) {
+        //             const boosts = this.battle.runEvent('ModifyBoost', pokemon, null, null, { ...pokemon.boosts });
+        //             const boost = this.battle.clampIntRange(boosts['accuracy'], -6, 6);
+        //             if (boost > 0) {
+        //                 accuracy *= boostTable[boost];
+        //             } else {
+        //                 accuracy /= boostTable[-boost];
+        //             }
+        //         }
+        //         if (!move.ignoreEvasion) {
+        //             const boosts = this.battle.runEvent('ModifyBoost', target, null, null, { ...target.boosts });
+        //             const boost = this.battle.clampIntRange(boosts['evasion'], -6, 6);
+        //             if (boost > 0) {
+        //                 accuracy /= boostTable[boost];
+        //             } else if (boost < 0) {
+        //                 accuracy *= boostTable[-boost];
+        //             }
+        //         }
+        //     }
+        //     accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy);
+        //     if (!move.alwaysHit) {
+        //         accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+        //         if (accuracy !== true && !this.battle.randomChance(accuracy, 100)) break;
+        //     }
         // }
-        // TODO: Implement multiaccuracy logic
+        if !targets_copy.is_empty() && active_move.multi_accuracy && hit > 1 {
+            use crate::dex::Accuracy;
+
+            let target = match targets_copy.first() {
+                Some(SpreadMoveTarget::Position(pos)) => *pos,
+                _ => {
+                    // No valid target, skip multiaccuracy check
+                    hit += 1;
+                    continue;
+                }
+            };
+
+            // let accuracy = move.accuracy;
+            let mut accuracy_value = match &active_move.accuracy {
+                Accuracy::AlwaysHits => {
+                    // accuracy === true, skip checks
+                    hit += 1;
+                    continue;
+                }
+                Accuracy::Percent(acc) => *acc as f64,
+            };
+
+            // const boostTable = [1, 4 / 3, 5 / 3, 2, 7 / 3, 8 / 3, 3];
+            let boost_table = [1.0, 4.0 / 3.0, 5.0 / 3.0, 2.0, 7.0 / 3.0, 8.0 / 3.0, 3.0];
+
+            // if (!move.ignoreAccuracy)
+            if !active_move.ignore_accuracy {
+                // const boosts = this.battle.runEvent('ModifyBoost', pokemon, null, null, { ...pokemon.boosts });
+                // For now, directly read pokemon boosts - full event system would modify boosts
+                let accuracy_boost = {
+                    let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+                        Some(p) => p,
+                        None => {
+                            hit += 1;
+                            continue;
+                        }
+                    };
+                    pokemon.boosts.accuracy
+                };
+
+                // const boost = this.battle.clampIntRange(boosts['accuracy'], -6, 6);
+                let boost = accuracy_boost.max(-6).min(6);
+
+                // if (boost > 0) {
+                //     accuracy *= boostTable[boost];
+                // } else {
+                //     accuracy /= boostTable[-boost];
+                // }
+                if boost > 0 {
+                    accuracy_value *= boost_table[boost as usize];
+                } else if boost < 0 {
+                    accuracy_value /= boost_table[(-boost) as usize];
+                }
+            }
+
+            // if (!move.ignoreEvasion)
+            if !active_move.ignore_evasion {
+                // const boosts = this.battle.runEvent('ModifyBoost', target, null, null, { ...target.boosts });
+                let evasion_boost = {
+                    let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                        Some(p) => p,
+                        None => {
+                            hit += 1;
+                            continue;
+                        }
+                    };
+                    target_pokemon.boosts.evasion
+                };
+
+                // const boost = this.battle.clampIntRange(boosts['evasion'], -6, 6);
+                let boost = evasion_boost.max(-6).min(6);
+
+                // if (boost > 0) {
+                //     accuracy /= boostTable[boost];
+                // } else if (boost < 0) {
+                //     accuracy *= boostTable[-boost];
+                // }
+                if boost > 0 {
+                    accuracy_value /= boost_table[boost as usize];
+                } else if boost < 0 {
+                    accuracy_value *= boost_table[(-boost) as usize];
+                }
+            }
+
+            // accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy);
+            // accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+            // Note: Full event system would modify accuracy_value here
+            // For now, we skip the event firing since it requires complex relay_var handling
+
+            // if (!move.alwaysHit) {
+            //     if (accuracy !== true && !this.battle.randomChance(accuracy, 100)) break;
+            // }
+            if !active_move.always_hit.unwrap_or(false) {
+                // Check random chance
+                if !battle.random_chance(accuracy_value as i32, 100) {
+                    // Accuracy check failed, break out of hit loop
+                    break;
+                }
+            }
+        }
 
         // Modifies targetsCopy (which is why it's a copy)
         // [moveDamageThisHit, targetsCopy] = this.spreadMoveHit(targetsCopy, pokemon, move, moveData);
