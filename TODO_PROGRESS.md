@@ -219,6 +219,19 @@ Continue with critical infrastructure:
      - Ghost: Check if target already has curse volatile, return false if so
    - **Impact**: Demonstrates proper use of active_move infrastructure for dynamic move modification
 
+3. **Power Construct Ability** (commit: 585f4616)
+   - Implemented canMegaEvo and formeRegression after Zygarde forme change
+   - Uses existing can_mega_evo() function to check mega evolution eligibility
+   - Follows JavaScript logic: If canMegaEvo is false, keep it false; otherwise recalculate
+   - Sets forme_regression = true to allow reverting forme
+   - **Impact**: Completes Power Construct ability implementation for proper mega evolution state management
+
+### Session Summary
+- **Total commits**: 4 (3 implementations + 1 documentation)
+- **TODOs completed**: 3 major items
+- **Build status**: ✅ All code compiles with 0 errors, 0 warnings
+- **Lines added**: ~150 lines of 1:1 JavaScript-to-Rust code
+
 ### Analysis Findings
 
 #### Remaining TODOs Classification
