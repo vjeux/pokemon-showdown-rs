@@ -778,8 +778,8 @@ impl Battle {
                 if !is_adjacent {
                     // JS: this.swapPosition(actives[0], 1, '[silent]');
                     // JS: this.swapPosition(actives[1], 1, '[silent]');
-                    // TODO: Implement swapPosition method
-                    // For now, this is a stub
+                    self.swap_position(active0_pos, 1, Some("[silent]"));
+                    self.swap_position(active1_pos, 1, Some("[silent]"));
 
                     // JS: this.add('-center');
                     self.add("-center", &[]);
@@ -801,19 +801,30 @@ impl Battle {
         // JS:     }
         // JS: }
         if self.game_type == GameType::Multi {
-            for _side in &self.sides {
-                // Check if side can dynamax now (would need canDynamaxNow() method)
-                // For now, this is a stub as canDynamaxNow() is not yet implemented
-                // TODO: Implement canDynamaxNow() method on Side
+            let game_type_str = match self.game_type {
+                GameType::Multi => "multi",
+                GameType::Singles => "singles",
+                GameType::Doubles => "doubles",
+                GameType::Triples => "triples",
+                GameType::Rotation => "rotation",
+                GameType::FreeForAll => "freeforall",
+            };
 
-                // If we had the method:
-                // if side.can_dynamax_now() {
-                //     if self.turn == 1 {
-                //         self.add_split(&side.id, &["-candynamax".into(), side.id.to_str().into()]);
-                //     } else {
-                //         self.add("-candynamax", &[side.id.to_str().into()]);
-                //     }
-                // }
+            for side_idx in 0..self.sides.len() {
+                let side = &self.sides[side_idx];
+                // JS: if (side.canDynamaxNow())
+                if side.can_dynamax_now(self.gen, game_type_str, self.turn) {
+                    let side_id_str = side.id.to_str();
+
+                    // JS: if (this.turn === 1)
+                    if self.turn == 1 {
+                        // JS: this.addSplit(side.id, ['-candynamax', side.id]);
+                        self.add_split(side_id_str, &["-candynamax", side_id_str], None);
+                    } else {
+                        // JS: this.add('-candynamax', side.id);
+                        self.add("-candynamax", &[Arg::Str(side_id_str)]);
+                    }
+                }
             }
         }
 
