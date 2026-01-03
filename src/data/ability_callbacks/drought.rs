@@ -11,8 +11,22 @@ use crate::event::EventResult;
 ///     if (source.species.id === 'groudon' && source.item === 'redorb') return;
 ///     this.field.setWeather('sunnyday');
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    // Check if it's Groudon with Red Orb
+    let is_groudon_with_red_orb = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.species_id.as_str() == "groudon" && pokemon.item.as_str() == "redorb"
+    };
+
+    if is_groudon_with_red_orb {
+        return EventResult::Continue;
+    }
+
+    // Set weather to Sunny Day
+    battle.field.set_weather(crate::ID::from("sunnyday"), None);
     EventResult::Continue
 }
 

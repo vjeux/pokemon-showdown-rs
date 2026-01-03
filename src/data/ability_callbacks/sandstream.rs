@@ -10,8 +10,9 @@ use crate::event::EventResult;
 /// onStart(source) {
 ///     this.field.setWeather('sandstorm');
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+    // Set weather to Sandstorm
+    battle.field.set_weather(crate::ID::from("sandstorm"), None);
     EventResult::Continue
 }
 
