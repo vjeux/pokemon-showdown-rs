@@ -1188,3 +1188,67 @@ Starting comprehensive 1:1 verification of battle/ folder.
 2. Continue 1:1 verification of battle/ files
 3. Address infrastructure TODOs
 
+
+---
+
+## Session 13: PRNG Divergence Investigation (2026-01-02)
+
+### Investigation Summary
+
+**Goal:** Identify and fix the 6 extra PRNG calls happening at battle start in Rust vs JavaScript
+
+**Findings:**
+1. JavaScript makes NO PRNG calls during battle initialization
+   - First PRNG call happens in turn 2 during accuracy check (hitStepAccuracy)
+   - Battle::new, setPlayer, Side construction, Pokemon construction: 0 PRNG calls
+
+2. Rust makes 6 extra PRNG calls BEFORE turn 1
+   - Causes persistent 6-call offset throughout entire battle
+   - Results in different damage calculations (e.g., Slowbro 260 HP vs 262 HP)
+
+**Investigation Steps:**
+
+1. **Examined gender randomization in set_player.rs**
+   - BEFORE: Gender randomization happened AFTER Pokemon creation
+   - JavaScript: Randomization happens IN Pokemon constructor (pokemon.ts:41)
+   - Found 2 Pokemon with empty gender ("" for Genesect-Shock and Zacian)
+   - However: Both are genderless species (species.gender === 'N')
+   - JavaScript: `genders[""] || 'N' || sample()` → 'N' (no randomization!)
+
+2. **Removed gender randomization from set_player.rs** (Commits: 58985120, e2c60d18)
+   - Deleted lines 78-118 (gender randomization loop)
+   - Gender should come from team JSON (pre-generated teams)
+   - For dynamic teams, gender should be set during team generation
+   - Result: Code cleaner, but PRNG divergence UNCHANGED (still 6 extra calls)
+
+3. **Searched for other PRNG calls during initialization**
+   - Checked: Battle::new, set_player, start, Side::new, Pokemon::new
+   - Checked: clear_volatile, clear_volatiles
+   - Result: NO `random()` or `sample()` calls found in any initialization code!
+
+**Current Status:**
+- ✅ Removed incorrect gender randomization from set_player
+- ❌ PRNG divergence still present (6 extra calls)
+- ❓ Source of 6 calls remains unidentified
+
+**Hypothesis:**
+The 6 PRNG calls may be coming from:
+1. Event handlers firing during initialization (onBattleStart, onBegin, etc.)
+2. Ability initialization (if abilities call random during setup)
+3. Item initialization (if items call random during setup)
+4. Move initialization (PP calculation, Z-move detection?)
+5. Stats calculation (if random is called during stat spread?)
+
+**Next Steps:**
+1. Add PRNG tracing to Rust (print stack trace for first 10 calls)
+2. Compare event execution order between JS and Rust during initialization
+3. Check if abilities/items fire events during Pokemon construction
+4. Verify no random calls in set_species, calc_stats, or other init functions
+
+**Commits This Session:** 2
+- 58985120: Fix PRNG divergence: Move gender randomization before Side::new()
+- e2c60d18: Remove incorrect gender randomization from set_player
+
+**Files Modified:** 1
+- src/battle/set_player.rs: Removed gender randomization (46 lines deleted)
+
