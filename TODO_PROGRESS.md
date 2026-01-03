@@ -1003,3 +1003,27 @@ Remaining TODOs: 68 (down from 74 - removed 6 TODOs: 3 from Air Lock + 3 from Cl
 Progress: 262/380 abilities (68.9%).
 Remaining TODOs: 65 (down from 68 - removed 3 Flower Veil TODOs).
 
+
+### Batch 127 - Protosynthesis Ability (Complete Implementation)
+
+**Completed Protosynthesis ability full implementation:**
+263. **Protosynthesis** (protosynthesis.rs) - Completed all TODOs:
+   - onWeatherChange: Checks fromBooster flag in volatile's data before removing volatile when weather is not sunny
+   - condition::onStart: Checks if effect is "boosterenergy", sets fromBooster flag in volatile data, adds [fromitem] message variant, stores bestStat in volatile's data HashMap
+   - condition::onModifyAtk/Def/SpA/SpD/Spe: Uses stored bestStat from volatile data instead of recalculating, checks pokemon.ignoringAbility(battle) before applying stat boosts
+
+**Implementation Details:**
+- fromBooster tracking: Uses volatile.data HashMap with serde_json::Value::Bool to track if volatile was added by Booster Energy item
+- bestStat storage: Uses volatile.data HashMap with serde_json::Value::String to store which stat is boosted ("atk", "def", "spa", "spd", "spe")
+- ignoringAbility check: Uses pokemon.ignoring_ability(battle) method which requires battle parameter
+- Only removes protosynthesis volatile when not sunny AND not from Booster Energy
+- Applies 1.3x boost (5325/4096) to Atk/Def/SpA/SpD and 1.5x boost (3/2) to Spe based on bestStat
+
+**Files Modified:**
+- src/data/ability_callbacks/protosynthesis.rs - Removed 8 TODOs (164 lines changed, 108 removed)
+
+**Git Commit**: 13f1e73f: "Complete Protosynthesis ability implementation (Batch 127)"
+
+Progress: 262/380 abilities (68.9%).
+Remaining TODOs: 57 (down from 65 - removed 8 Protosynthesis TODOs).
+
