@@ -26,9 +26,9 @@ impl Battle {
     // 	}
     pub fn find_side_event_handlers(
         &self,
-        _callback_name: &str,
+        callback_name: &str,
         side_idx: usize,
-        _get_key: Option<&str>,
+        get_key: Option<&str>,
         custom_holder: Option<(usize, usize)>,
     ) -> Vec<EventListener> {
         // JS: const handlers: EventListener[] = [];
@@ -41,33 +41,38 @@ impl Battle {
         };
 
         // JS: for (const id in side.sideConditions) {
-        for (sc_id, _sc_state) in &side.side_conditions {
+        for (sc_id, sc_state) in &side.side_conditions {
             // JS: const sideConditionData = side.sideConditions[id];
             // JS: const sideCondition = this.dex.conditions.getByID(id as ID);
             // JS: const callback = this.getCallback(side, sideCondition, callbackName);
-            // TODO: Should check callback via getCallback (architectural difference)
+            let has_callback = self.has_callback(sc_id, callback_name);
 
             // JS: if (callback !== undefined || (getKey && sideConditionData[getKey])) {
-            // TODO: Should check getKey condition
-            // For now, always add all side conditions
-
-            // JS: handlers.push(this.resolvePriority({
-            // JS:     effect: sideCondition, callback, state: sideConditionData,
-            // JS:     end: customHolder ? null : side.removeSideCondition, effectHolder: customHolder || side,
-            // JS: }, callbackName));
-            handlers.push(EventListener {
-                effect_id: sc_id.clone(),
-                effect_type: EffectType::SideCondition,
-                target: None,
-                index: None,
-                state: None, // TODO: Should be sideConditionData
-                effect_holder: custom_holder, // JS: customHolder || side (side not representable as tuple)
-                order: None,
-                priority: 0,
-                sub_order: 0,
-                effect_order: None,
-                speed: None,
+            let has_get_key = get_key.is_some_and(|key| {
+                sc_state.data.get(key).is_some()
             });
+
+            if has_callback || has_get_key {
+                // JS: handlers.push(this.resolvePriority({
+                // JS:     effect: sideCondition, callback, state: sideConditionData,
+                // JS:     end: customHolder ? null : side.removeSideCondition, effectHolder: customHolder || side,
+                // JS: }, callbackName));
+                handlers.push(EventListener {
+                    effect_id: sc_id.clone(),
+                    effect_type: EffectType::SideCondition,
+                    target: None,
+                    index: None,
+                    // TODO: Type mismatch - side_conditions uses dex_data::EffectState but EventListener expects event_system::EffectState
+                    // Need to either convert between types or unify the EffectState types
+                    state: None,
+                    effect_holder: custom_holder, // JS: customHolder || side (side not representable as tuple)
+                    order: None,
+                    priority: 0,
+                    sub_order: 0,
+                    effect_order: None,
+                    speed: None,
+                });
+            }
         }
 
         // JS: return handlers;
