@@ -19,6 +19,16 @@ impl Battle {
 
         let pokemon_pos = target.unwrap_or((0, 0));
 
+        // Get Pokemon name for logging
+        let pokemon_name = if let Some(pokemon) = self.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.name.clone()
+        } else {
+            "Unknown".to_string()
+        };
+
+        crate::trace_ability!("turn={}, ability='{}' on {}, event='{}'",
+            self.turn, ability_id.as_str(), pokemon_name, event_id);
+
         // Extract context from current_event for parameter wiring
         let (event_source_pos, event_target_pos, _event_effect_id, event_status_id) = if let Some(ref event) = self.current_event {
             let effect_str = event.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new());
@@ -42,7 +52,7 @@ impl Battle {
             (0, 0.0)
         };
 
-        match event_id {
+        let result = match event_id {
             "AfterBoost" => {
                 ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), Some(pokemon_pos), None, None)
             }
@@ -810,6 +820,10 @@ impl Battle {
                 pokemon_pos,
             ),
             _ => EventResult::Continue,
-        }
+        };
+
+        crate::trace_ability!("  ← Ability '{}' on {} returned: {:?}", ability_id.as_str(), pokemon_name, result);
+
+        result
     }
 }

@@ -28,6 +28,7 @@ pub mod pokemon;
 pub mod prng;
 pub mod side;
 pub mod state;
+pub mod trace;
 pub mod team_generator;
 pub mod teams;
 

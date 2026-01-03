@@ -335,6 +335,10 @@ impl Battle {
         // Find and run all handlers for this event
         let mut handlers = self.find_event_handlers(event_id, target, source);
 
+        // Trace event firing
+        crate::trace_event!("turn={}, event='{}', target={:?}, source={:?}, handlers={}",
+            self.turn, event_id, target, source, handlers.len());
+
         // JavaScript: if (onEffect) { ... handlers.unshift(...) }
         // When onEffect is true, add the sourceEffect's handler at the BEGINNING of the handler list
         // This is used for events like BasePower where the move's onBasePower handler should be called
@@ -349,8 +353,12 @@ impl Battle {
         }
 
         for (event_variant, effect_id, holder_target) in handlers {
+            crate::trace_event!("  → Calling handler: effect='{}' on {:?}", effect_id, holder_target);
+
             let event_result =
                 self.dispatch_single_event(&event_variant, &effect_id, holder_target, source);
+
+            crate::trace_event!("  ← Handler returned: {:?}", event_result);
 
             match event_result {
                 EventResult::Boolean(false) => {

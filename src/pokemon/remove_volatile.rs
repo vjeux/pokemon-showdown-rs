@@ -23,6 +23,16 @@ impl Pokemon {
         pokemon_pos: (usize, usize),
         volatile_id: &ID,
     ) -> bool {
+        // Get Pokemon name for logging
+        let pokemon_name = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            pokemon.name.clone()
+        } else {
+            "Unknown".to_string()
+        };
+
+        crate::trace_volatile!("turn={}, REMOVE volatile='{}' from {}",
+            battle.turn, volatile_id.as_str(), pokemon_name);
+
         // Phase 1: Check HP and volatile existence
         let (_hp, _has_volatile, linked_pokemon, linked_status) = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

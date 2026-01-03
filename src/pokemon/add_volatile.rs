@@ -74,6 +74,16 @@ impl Pokemon {
         source_effect: Option<&ID>,
         linked_status: Option<ID>,
     ) -> bool {
+        // Get Pokemon name for logging
+        let pokemon_name = if let Some(pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
+            pokemon.name.clone()
+        } else {
+            "Unknown".to_string()
+        };
+
+        crate::trace_volatile!("turn={}, ADD volatile='{}' to {}, source_effect={:?}",
+            battle.turn, volatile_id.as_str(), pokemon_name, source_effect.map(|s| s.as_str()));
+
         // JS: status = this.battle.dex.conditions.get(status);
         // JS: if (!this.hp && !status.affectsFainted) return false;
         // ✅ NOW IMPLEMENTED (Session 24 Part 37): HP check with affectsFainted flag
