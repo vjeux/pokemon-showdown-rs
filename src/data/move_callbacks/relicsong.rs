@@ -95,7 +95,6 @@ pub fn on_after_move_secondary_self(
         };
 
         // Use position-based forme_change
-        use crate::dex_data::ID;
         crate::pokemon::Pokemon::forme_change(
             battle,
             pokemon,

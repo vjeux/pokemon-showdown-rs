@@ -920,13 +920,13 @@ mod tests {
             format_id: ID::new("gen9ou"),
             p1: Some(PlayerOptions {
                 name: "Alice".to_string(),
-                team: create_test_team(),
+                team: TeamFormat::Sets(create_test_team()),
                 avatar: None,
                 rating: None,
             }),
             p2: Some(PlayerOptions {
                 name: "Bob".to_string(),
-                team: create_test_team(),
+                team: TeamFormat::Sets(create_test_team()),
                 avatar: None,
                 rating: None,
             }),
