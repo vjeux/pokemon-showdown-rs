@@ -5,12 +5,12 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: ~303 total (down from 330 at session start - resolved 26 in Batches 179-186)
+- **Remaining TODOs**: ~302 total (down from 330 at session start - resolved 27 in Batches 179-187)
   - Complex abilities requiring transform/illusion infrastructure: ~0 TODOs (ALL COMPLETE!)
   - Move callbacks requiring queue/event system extensions: ~7 TODOs (Pursuit fully complete)
-  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~303 TODOs
-- **Latest Progress**: Batch 186 - beforeMoveCallback implementation in run_move (1 TODO resolved)
-- **Session 2 Summary**: Batches 179-186 - Event system improvements (26 TODOs resolved)
+  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~302 TODOs
+- **Latest Progress**: Batch 187 - Removed pranksterBoosted TODO (1 TODO resolved)
+- **Session 2 Summary**: Batches 179-187 - Event system improvements (27 TODOs resolved)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type), **Boost modification system complete** (Battle::run_event_boost() enables callbacks to modify stat boosts via relay_var_boost), **Pokemon action state infrastructure** (Battle::set_trapped(), Battle::decrement_active_move_actions() enable managing Pokemon battle state), **Side-level event system complete** (Battle::single_event_side() and Battle::run_event_side() enable firing events on Sides for side condition lifecycle)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
@@ -19,10 +19,10 @@
 ### Session Summary (Batches 167-183) - Latest
 
 **Session 1 (Batches 167-178)**: Resolved 18 TODOs (351 → 332)
-**Session 2 (Batches 179-186)**: Resolved 26 TODOs (330 → ~303)
-**Total**: Resolved 44 TODOs (351 → ~303)
+**Session 2 (Batches 179-187)**: Resolved 27 TODOs (330 → ~302)
+**Total**: Resolved 45 TODOs (351 → ~302)
 
-**TODOs Resolved This Session (179-186)**: 26 total
+**TODOs Resolved This Session (179-187)**: 27 total
 - Batch 179: 1 TODO (AfterSubDamage damage parameter in handle_move_event)
 - Batch 180: 1 TODO (Damage event dispatching in handle_move_event)
 - Batch 181: 10 TODO comments (callback checking in find_pokemon_event_handlers)
@@ -37,6 +37,8 @@
   - Proper event handler ordering and priority calculation
 - Batch 186: 1 TODO (beforeMoveCallback implementation in run_move)
   - Enables Bide and Focus Punch pre-move callbacks
+- Batch 187: 1 TODO (pranksterBoosted variable in run_move)
+  - Removed unused variable TODO - functionality implemented via ActiveMove
 
 **Previous Session (167-178)**: 18 total
 - Batch 167: 1 TODO (Sky Drop onFoeTrapPokemon)
@@ -745,6 +747,67 @@ if battle.has_callback(move_id, "beforeMoveCallback") {
 **Compilation**: ✅ Successful
 
 **Git Commit**: "Batch 186: Implement beforeMoveCallback in run_move"
+
+
+### Batch 187 - pranksterBoosted Variable Cleanup (1 TODO) ⭐
+
+**File Modified**: `src/battle_actions/run_move.rs`
+
+**TODOs Resolved**: 1 TODO comment (line 55 - "Implement pranksterBoosted")
+
+This batch removes an outdated TODO for the `_prankster_boosted` variable. The functionality is already fully implemented via the ActiveMove struct.
+
+**Problem**: The code had a TODO comment for implementing pranksterBoosted tracking, but the functionality was already implemented. The `_prankster_boosted` local variable was:
+- Prefixed with underscore (indicating intentionally unused)
+- Never referenced after initialization
+- Only tracking the original state before Prankster ability modification
+
+**Solution**: Removed the TODO and added documentation explaining that pranksterBoosted tracking is handled via `battle.active_move.prankster_boosted`.
+
+**How pranksterBoosted Works in Rust**:
+1. When a move is executed, `battle.set_active_move()` creates an ActiveMove struct
+2. The Prankster ability's `onModifyPriority` callback checks if the move category is "Status"
+3. If true, it sets `active_move.prankster_boosted = true` and increases priority by 1
+4. Other abilities (e.g., Queenly Majesty) can check `active_move.prankster_boosted` to block priority moves
+
+**JavaScript Reference**:
+```javascript
+// In JavaScript, the local variable was:
+let pranksterBoosted = false;
+
+// But the actual tracking happens on the move object:
+// move.pranksterBoosted = true; (set by Prankster ability)
+```
+
+**Rust Implementation**:
+```rust
+// Before (with TODO):
+let _priority = base_move.priority;
+let _prankster_boosted = false; // TODO: Implement pranksterBoosted
+
+// After (clarified):
+// Store original priority
+// In JavaScript: let priority = baseMove.priority;
+// In JavaScript: let pranksterBoosted = false;
+//
+// Note: pranksterBoosted tracking is handled via battle.active_move.prankster_boosted
+// which is set by the Prankster ability's onModifyPriority callback.
+// The local variable in JavaScript was only used for tracking the original state,
+// but we don't need it in Rust since we access the modified state from active_move.
+let _priority = base_move.priority;
+```
+
+**Key Points**:
+- The TODO was for an unused variable
+- Actual functionality exists in `ActiveMove` struct (`active_move.prankster_boosted` field)
+- Prankster ability sets the flag in `prankster::on_modify_priority()`
+- Magic Bounce, Rebound abilities clear it when bouncing moves
+
+**Effect**: Removed confusing TODO comment. The pranksterBoosted system is fully functional and has been working correctly all along.
+
+**Compilation**: ✅ Successful
+
+**Git Commit**: "Batch 187: Remove pranksterBoosted TODO - functionality already implemented"
 
 
 ### Batch 177 - Side Condition Callback Wiring (Infrastructure Completion) ⭐
