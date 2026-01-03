@@ -25,7 +25,6 @@ mod pokemon_at_mut;
 mod set_player;
 mod get_team;
 mod start;
-mod start_battle;
 mod random;
 mod random_chance;
 mod sample;
@@ -912,32 +911,6 @@ mod tests {
         assert_eq!(battle.sides[1].name, "Bob");
     }
 
-    #[test]
-    fn test_battle_start() {
-        let mut battle = Battle::new(BattleOptions {
-            format_id: ID::new("gen9ou"),
-            p1: Some(PlayerOptions {
-                name: "Alice".to_string(),
-                team: create_test_team(),
-                avatar: None,
-                rating: None,
-            }),
-            p2: Some(PlayerOptions {
-                name: "Bob".to_string(),
-                team: create_test_team(),
-                avatar: None,
-                rating: None,
-            }),
-            ..Default::default()
-        });
-
-        battle.start_battle();
-        assert_eq!(battle.turn, 1);
-
-        // Check that Pokemon are switched in
-        assert!(battle.sides[0].active[0].is_some());
-        assert!(battle.sides[1].active[0].is_some());
-    }
 
     #[test]
     fn test_battle_prng_deterministic() {

@@ -1,5 +1,6 @@
 use crate::*;
 use crate::battle::{PriorityItem, BattleRequestState};
+use crate::pokemon::MoveSlot;
 
 impl Battle {
 
@@ -377,15 +378,130 @@ impl Battle {
                         // JS: this.add('start');
                         self.add("start", &[]);
 
-                        // TODO: Zacian/Zamazenta forme changes (requires species transformation logic)
-                        // JS: Change Zacian/Zamazenta into their Crowned formes
-                        // This requires:
-                        // - Species data lookup (dex.species.get)
-                        // - pokemon.setSpecies()
-                        // - pokemon.setAbility()
-                        // - Move slot modification (behemothblade/behemothbash replacement)
+                        // JS: // Change Zacian/Zamazenta into their Crowned formes
+                        // JS: for (const pokemon of this.getAllPokemon()) { ... }
+                        // Collect all pokemon positions first to avoid borrow issues
+                        let all_pokemon_positions: Vec<(usize, usize)> = self
+                            .sides
+                            .iter()
+                            .enumerate()
+                            .flat_map(|(side_idx, side)| {
+                                (0..side.pokemon.len()).map(move |poke_idx| (side_idx, poke_idx))
+                            })
+                            .collect();
 
-                        // TODO: Format callbacks (requires format infrastructure)
+                        for (side_idx, poke_idx) in all_pokemon_positions.clone() {
+                            // JS: let rawSpecies: Species | null = null;
+                            // JS: if (pokemon.species.id === 'zacian' && pokemon.item === 'rustedsword') {
+                            // JS:     rawSpecies = this.dex.species.get('Zacian-Crowned');
+                            // JS: } else if (pokemon.species.id === 'zamazenta' && pokemon.item === 'rustedshield') {
+                            // JS:     rawSpecies = this.dex.species.get('Zamazenta-Crowned');
+                            // JS: }
+                            let (species_id, item) = {
+                                let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                                (pokemon.species_id.clone(), pokemon.item.clone())
+                            };
+
+                            let new_species = if species_id.as_str() == "zacian" && item.as_str() == "rustedsword" {
+                                Some(ID::new("zaciancrowned"))
+                            } else if species_id.as_str() == "zamazenta" && item.as_str() == "rustedshield" {
+                                Some(ID::new("zamazentacrowned"))
+                            } else {
+                                None
+                            };
+
+                            // JS: if (!rawSpecies) continue;
+                            if new_species.is_none() {
+                                continue;
+                            }
+                            let new_species = new_species.unwrap();
+
+                            // JS: const species = pokemon.setSpecies(rawSpecies);
+                            // JS: if (!species) continue;
+                            let success = {
+                                let pokemon = &mut self.sides[side_idx].pokemon[poke_idx];
+                                unsafe {
+                                    let p = pokemon as *mut Pokemon;
+                                    let b = self as *mut Battle;
+                                    (*p).set_species(&mut *b, &new_species, None, false)
+                                }
+                            };
+
+                            if !success {
+                                continue;
+                            }
+
+                            // JS: pokemon.baseSpecies = rawSpecies;
+                            self.sides[side_idx].pokemon[poke_idx].base_species = new_species.clone();
+
+                            // JS: pokemon.details = pokemon.getUpdatedDetails();
+                            let details = self.sides[side_idx].pokemon[poke_idx].get_updated_details();
+                            self.sides[side_idx].pokemon[poke_idx].details = details;
+
+                            // JS: pokemon.setAbility(species.abilities['0'], null, null, true);
+                            // Get the species and its ability
+                            let (_species_id, ability_id) = {
+                                let pokemon = &self.sides[side_idx].pokemon[poke_idx];
+                                let species = self.dex.species.get(&pokemon.species_id);
+                                let ability_0 = species.and_then(|s| s.abilities.slot0.clone());
+                                (pokemon.species_id.clone(), ability_0)
+                            };
+
+                            if let Some(ability_str) = ability_id {
+                                let ability = ID::new(&ability_str);
+                                Pokemon::set_ability(self, (side_idx, poke_idx), ability, None, None, true, false);
+                            }
+
+                            // JS: pokemon.baseAbility = pokemon.ability;
+                            let ability = self.sides[side_idx].pokemon[poke_idx].ability.clone();
+                            self.sides[side_idx].pokemon[poke_idx].base_ability = ability;
+
+                            // JS: const behemothMove: { [k: string]: string } = {
+                            // JS:     'Zacian-Crowned': 'behemothblade', 'Zamazenta-Crowned': 'behemothbash',
+                            // JS: };
+                            // JS: const ironHeadIndex = pokemon.baseMoves.indexOf('ironhead');
+                            // JS: if (ironHeadIndex >= 0) { ... replace with behemoth move ... }
+                            let behemoth_move_id = if new_species.as_str() == "zaciancrowned" {
+                                Some(ID::new("behemothblade"))
+                            } else if new_species.as_str() == "zamazentacrowned" {
+                                Some(ID::new("behemothbash"))
+                            } else {
+                                None
+                            };
+
+                            if let Some(behemoth_id) = behemoth_move_id {
+                                // Find Iron Head in base moves
+                                let pokemon = &mut self.sides[side_idx].pokemon[poke_idx];
+                                if let Some(iron_head_index) = pokemon.base_move_slots.iter().position(|slot| slot.id.as_str() == "ironhead") {
+                                    // Get the behemoth move data
+                                    if let Some(behemoth_move) = self.dex.moves.get(&behemoth_id) {
+                                        // JS: pokemon.baseMoveSlots[ironHeadIndex] = { move: move.name, id: move.id, pp: ..., maxpp: ..., target: ..., disabled: false, disabledSource: '', used: false }
+                                        let pp = if behemoth_move.no_pp_boosts {
+                                            behemoth_move.pp
+                                        } else {
+                                            behemoth_move.pp * 8 / 5
+                                        } as u8;
+
+                                        pokemon.base_move_slots[iron_head_index] = MoveSlot {
+                                            id: behemoth_id.clone(),
+                                            move_name: behemoth_move.name.clone(),
+                                            pp,
+                                            maxpp: pp,
+                                            target: Some(behemoth_move.target.clone()),
+                                            disabled: false,
+                                            disabled_source: Some(String::new()),
+                                            used: false,
+                                            virtual_move: false,
+                                            is_z: false,
+                                        };
+
+                                        // JS: pokemon.moveSlots = pokemon.baseMoveSlots.slice();
+                                        pokemon.move_slots = pokemon.base_move_slots.clone();
+                                    }
+                                }
+                            }
+                        }
+
                         // JS: this.format.onBattleStart?.call(this);
                         // JavaScript formats can have onBattleStart callbacks
                         // These cannot be deserialized from JSON - must be registered separately
@@ -422,30 +538,42 @@ impl Battle {
                         }
 
                         // JS: for (const side of this.sides) { for (let i = 0; i < side.active.length; i++) { this.actions.switchIn(side.pokemon[i], i); } }
-                        // Switch in all active Pokemon at battle start
+                        // JS: for (const side of this.sides) {
+                        // JS:     for (let i = 0; i < side.active.length; i++) {
+                        // JS:         if (!side.pokemonLeft) {
+                        // JS:             // forfeited before starting
+                        // JS:             side.active[i] = side.pokemon[i];
+                        // JS:             side.active[i].fainted = true;
+                        // JS:             side.active[i].hp = 0;
+                        // JS:         } else {
+                        // JS:             this.actions.switchIn(side.pokemon[i], i);
+                        // JS:         }
+                        // JS:     }
+                        // JS: }
                         for side_idx in 0..self.sides.len() {
-                            let active_length = self.sides[side_idx].active.len();
-                            for i in 0..active_length {
-                                // Switch in the ith Pokemon from the team into the ith active position
-                                // JS: this.actions.switchIn(side.pokemon[i], i);
-                                crate::battle_actions::switch_in(self, side_idx, i, i, None, false);
+                            let active_len = self.sides[side_idx].active.len();
+                            let pokemon_left = self.sides[side_idx].pokemon_left;
+
+                            for slot in 0..active_len {
+                                if pokemon_left == 0 {
+                                    // Forfeited before starting
+                                    self.sides[side_idx].active[slot] = Some(slot);
+                                    self.sides[side_idx].pokemon[slot].fainted = true;
+                                    self.sides[side_idx].pokemon[slot].hp = 0;
+                                } else {
+                                    // JS: this.actions.switchIn(side.pokemon[i], i);
+                                    crate::battle_actions::switch_in(self, side_idx, slot, slot, None, false);
+                                }
                             }
                         }
 
                         // JS: for (const pokemon of this.getAllPokemon()) { this.singleEvent('Start', ...); }
-                        // Call Start event for each Pokemon's species
-                        for side_idx in 0..self.sides.len() {
-                            for poke_idx in 0..self.sides[side_idx].pokemon.len() {
-                                let species_id =
-                                    self.sides[side_idx].pokemon[poke_idx].species_id.clone();
-                                self.single_event(
-                                    "Start",
-                                    &species_id,
-                                    Some((side_idx, poke_idx)),
-                                    None,
-                                    None,
-                                );
-                            }
+                        // JS: for (const pokemon of this.getAllPokemon()) {
+                        // JS:     this.singleEvent('Start', this.dex.conditions.getByID(pokemon.species.id), pokemon.speciesState, pokemon);
+                        // JS: }
+                        for (side_idx, poke_idx) in all_pokemon_positions {
+                            let species_id = self.sides[side_idx].pokemon[poke_idx].species_id.clone();
+                            self.single_event("Start", &species_id, Some((side_idx, poke_idx)), None, None);
                         }
 
                         // JS: this.midTurn = true;
