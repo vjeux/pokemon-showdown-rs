@@ -1080,3 +1080,46 @@ Remaining TODOs: 47 (down from 57 - removed 10 Quark Drive TODOs).
 Progress: 262/380 abilities (68.9%).
 Remaining TODOs: 45 (down from 47 - removed 2 item callback TODOs).
 
+
+### Batch 130 - Clangorous Soul Active Move Boosts Clearing (1 TODO)
+
+**Fixed move callback:**
+- **Clangorous Soul** (clangoroussoul.rs) - Fixed active_move.boosts clearing after applying boosts to prevent Sheer Force from incorrectly applying power boost
+
+**Implementation Details:**
+- JavaScript uses `delete move.boosts;` after applying boosts
+- Rust sets `active_move.boosts = None;` after calling battle.boost()
+- This prevents Sheer Force ability from giving a power boost to Clangorous Soul
+- The boosts need to be applied first, then cleared from the active move data structure
+
+**Files Modified:**
+- src/data/move_callbacks/clangoroussoul.rs - Cleared active_move.boosts after applying (1 line changed)
+
+**Git Commit**: 5934d8f7: "Fix Clangorous Soul to clear active_move.boosts after applying them (Batch 130)"
+
+Progress: 262/380 abilities (68.9%).
+Remaining TODOs: 44 (down from 45 - removed 1 move callback TODO).
+
+
+### Batch 131 - Shield Dust and Covert Cloak Blocking (2 TODOs - Poison Touch and Toxic Chain)
+
+**Fixed abilities:**
+- **Poison Touch** (poisontouch.rs) - Added Shield Dust ability and Covert Cloak item checks before applying poison
+- **Toxic Chain** (toxicchain.rs) - Added Shield Dust ability and Covert Cloak item checks before applying toxic status
+
+**Implementation Details:**
+- JavaScript comments note: "Despite not being a secondary, Shield Dust / Covert Cloak block Poison Touch's effect"
+- Both abilities check if target has Shield Dust ability OR Covert Cloak item
+- Uses `pokemon.has_ability(battle, &["shielddust"]) || pokemon.has_item(battle, &["covertcloak"])`
+- If either is present, returns EventResult::Continue without applying status
+- This is a special case where non-secondary effects are still blocked by these protective items/abilities
+
+**Files Modified:**
+- src/data/ability_callbacks/poisontouch.rs - Added Shield Dust/Covert Cloak checks (7 lines added)
+- src/data/ability_callbacks/toxicchain.rs - Added Shield Dust/Covert Cloak checks (7 lines added)
+
+**Git Commit**: e858c9cc: "Add Shield Dust and Covert Cloak checks to Poison Touch and Toxic Chain (Batch 131)"
+
+Progress: 262/380 abilities (68.9%).
+Remaining TODOs: 42 (down from 44 - removed 2 ability callback TODOs).
+
