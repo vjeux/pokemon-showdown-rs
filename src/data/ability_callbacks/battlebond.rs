@@ -16,8 +16,94 @@ use crate::event::EventResult;
 ///         source.bondTriggered = true;
 ///     }
 /// }
-pub fn on_source_after_faint(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_source_after_faint(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (source.bondTriggered) return;
+    let bond_triggered = {
+        let source_pokemon = match _battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.bond_triggered
+    };
+
+    if bond_triggered {
+        return EventResult::Continue;
+    }
+
+    // if (effect?.effectType !== 'Move') return;
+    let is_move = if let Some(eff_id) = effect_id {
+        _battle.dex.moves().get_by_id(&crate::dex_data::ID::from(eff_id)).is_some()
+    } else {
+        false
+    };
+
+    if !is_move {
+        return EventResult::Continue;
+    }
+
+    // if (source.species.id === 'greninjabond' && source.hp && !source.transformed && source.side.foePokemonLeft())
+    let (is_greninja_bond, has_hp, not_transformed) = {
+        let source_pokemon = match _battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (
+            source_pokemon.species_id.as_str() == "greninjabond",
+            source_pokemon.hp > 0,
+            !source_pokemon.transformed,
+        )
+    };
+
+    if !is_greninja_bond || !has_hp || !not_transformed {
+        return EventResult::Continue;
+    }
+
+    // Check if foes have Pokemon left
+    let foe_pokemon_left = {
+        if source.0 >= _battle.sides.len() {
+            return EventResult::Continue;
+        }
+        _battle.sides[source.0].foe_pokemon_left() > 0
+    };
+
+    if !foe_pokemon_left {
+        return EventResult::Continue;
+    }
+
+    // this.boost({ atk: 1, spa: 1, spe: 1 }, source, source, this.effect);
+    _battle.boost(
+        &[("atk", 1), ("spa", 1), ("spe", 1)],
+        source,
+        Some(source),
+        None,
+        false,
+        false,
+    );
+
+    // this.add('-activate', source, 'ability: Battle Bond');
+    let source_slot = {
+        let source_pokemon = match _battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.get_slot()
+    };
+
+    _battle.add("-activate", &[
+        source_slot.into(),
+        "ability: Battle Bond".into(),
+    ]);
+
+    // source.bondTriggered = true;
+    if let Some(source_pokemon) = _battle.pokemon_at_mut(source.0, source.1) {
+        source_pokemon.bond_triggered = true;
+    }
+
     EventResult::Continue
 }
 
