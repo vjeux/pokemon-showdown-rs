@@ -5,26 +5,27 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 340 total (down from 344 - resolved 4 move redirection TODOs: Batch 170)
+- **Remaining TODOs**: 339 total (down from 340 - resolved 1 in Batch 171: Heal Bell ally side support)
   - Complex abilities requiring transform/illusion infrastructure: ~0 TODOs (ALL COMPLETE! - Imposter, Magic Bounce, Rebound, Illusion, and Commander all completed)
-  - Move callbacks requiring queue/event system extensions: ~11 TODOs (down from ~15 - resolved 4 move redirection callbacks: Counter, Mirror Coat, Metal Burst, Comeuppance)
+  - Move callbacks requiring queue/event system extensions: ~10 TODOs (down from ~11 - resolved Heal Bell ally side support)
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 170 - Move target redirection for Counter, Mirror Coat, Metal Burst, and Comeuppance (4 TODOs resolved - retaliation moves now fully functional!)
+- **Latest Progress**: Batch 171 - Heal Bell ally side support for multi battles (1 TODO resolved)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type), **Boost modification system complete** (Battle::run_event_boost() enables callbacks to modify stat boosts via relay_var_boost), **Pokemon action state infrastructure** (Battle::set_trapped(), Battle::decrement_active_move_actions() enable managing Pokemon battle state)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
 ## Completed Implementations
 
-### Session Summary (Batches 167-170) - Latest
+### Session Summary (Batches 167-171) - Latest
 
-**TODOs Resolved This Session**: 9 total
+**TODOs Resolved This Session**: 10 total
 - Batch 167: 1 TODO (Sky Drop onFoeTrapPokemon)
 - Batch 168: 1 TODO (Sky Drop onFoeBeforeMove - Sky Drop now FULLY COMPLETE!)
 - Batch 169: 3 TODOs (Foresight onModifyBoost, Miracle Eye onModifyBoost, Mist onTryBoost)
 - Batch 170: 4 TODOs (Counter, Mirror Coat, Metal Burst, Comeuppance target redirection)
+- Batch 171: 1 TODO (Heal Bell ally side support)
 
 **TODOs Added**: 1 minor (Mist infiltrates check)
-**Net Progress**: 351 → 340 TODOs (-11 total, -8 net)
+**Net Progress**: 351 → 339 TODOs (-12 total, -9 net)
 
 **Major Infrastructure Additions**: 4
 1. **Battle::set_trapped()** - Pokemon trapping state management (Batch 167)
@@ -44,6 +45,7 @@
 - **Mirror Coat** - onTryHit: Redirects to last special attacker (Batch 170)
 - **Metal Burst** - onTryMove: Redirects to last damager (Batch 170)
 - **Comeuppance** - onTryMove: Redirects to last damager (Batch 170)
+- **Heal Bell** - onHit: Heals status for all allies including ally side in multi battles (Batch 171)
 
 **Infrastructure Impact:**
 The boost modification system (Batch 169) is a MAJOR milestone - it's on par with the type parameter system (Batch 164) and enables an entire category of stat modification callbacks across the event system. This infrastructure:
@@ -59,6 +61,7 @@ Combined with existing ability support, the boost modification system is now ful
 - Batch 168: "Implement Battle::decrement_active_move_actions infrastructure and complete Sky Drop onFoeBeforeMove (Batch 168)"
 - Batch 169: "Implement Battle::run_event_boost infrastructure and complete Foresight, Miracle Eye, and Mist boost callbacks (Batch 169)"
 - Batch 170: "Implement move target redirection for Counter, Mirror Coat, Metal Burst, and Comeuppance (Batch 170)"
+- Batch 171: "Implement ally side support for Heal Bell in multi battles (Batch 171)"
 
 ---
 
@@ -3586,4 +3589,105 @@ pub fn on_try_move(
 
 **Impact:**
 Retaliation moves (Counter, Mirror Coat, Metal Burst, Comeuppance) now correctly redirect their targets to the Pokemon that damaged them. These are critical competitive moves that allow Pokemon to punish attackers by returning damage. All 4 moves are now fully functional for target redirection.
+
+
+### Batch 171 - Heal Bell Ally Side Support for Multi Battles (1 TODO)
+
+**Completed move callback:**
+Implemented ally side support for Heal Bell to properly work in multi battles (4-player battles).
+
+**Problem**: Heal Bell only collected allies from the target's side, but in multi battles (doubles/triples with 4 players), Pokemon have ally sides as well. The JavaScript code collects allies from both `target.side.pokemon` and `target.side.allySide?.pokemon`, but the Rust implementation only collected from the target's side.
+
+**Solution**: Implemented dual collection pattern - collect allies from both the target's side and the ally side (if present using `Side.ally_index`).
+
+**JavaScript Equivalence:**
+```javascript
+onHit(target, source) {
+    this.add('-activate', source, 'move: Heal Bell');
+    let success = false;
+    const allies = [...target.side.pokemon, ...target.side.allySide?.pokemon || []];
+    for (const ally of allies) {
+        // ... heal ally status ...
+    }
+    return success;
+}
+```
+
+**Rust Implementation:**
+```rust
+pub fn on_hit(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
+    // ... activation message ...
+
+    let mut success = false;
+
+    // const allies = [...target.side.pokemon, ...target.side.allySide?.pokemon || []];
+    // Collect allies from both the target's side and the ally side (for multi battles)
+    let mut allies: Vec<(usize, usize)> = Vec::new();
+
+    // Add target's side pokemon
+    let target_side_active: Vec<(usize, usize)> = battle.sides[target.0]
+        .active
+        .iter()
+        .enumerate()
+        .filter_map(|(i, &active)| {
+            if active.is_some() {
+                Some((target.0, i))
+            } else {
+                None
+            }
+        })
+        .collect();
+    allies.extend(target_side_active);
+
+    // Add ally side pokemon (for multi battles)
+    let ally_side_index = battle.sides[target.0].ally_index;
+    if let Some(ally_idx) = ally_side_index {
+        let ally_side_active: Vec<(usize, usize)> = battle.sides[ally_idx]
+            .active
+            .iter()
+            .enumerate()
+            .filter_map(|(i, &active)| {
+                if active.is_some() {
+                    Some((ally_idx, i))
+                } else {
+                    None
+                }
+            })
+            .collect();
+        allies.extend(ally_side_active);
+    }
+
+    // for (const ally of allies) {
+    for ally_pos in allies {
+        // ... heal ally status ...
+    }
+
+    EventResult::Boolean(success)
+}
+```
+
+**Files Modified:**
+- src/data/move_callbacks/healbell.rs - Removed TODO, implemented ally side collection (18 lines added)
+
+**Git Commit:**
+- "Implement ally side support for Heal Bell in multi battles (Batch 171)"
+
+**Progress:**
+- TODOs Resolved: 1 (Heal Bell ally side support)
+- Compilation: ✓ Successful
+- Git: ✓ Committed and pushed
+
+**Technical Details:**
+- `Side.ally_index: Option<usize>` - Field tracking the allied side index in multi battles
+- In 2v2 battles (2 players), ally_index is None
+- In 4-player battles (2v2v2v2 or free-for-all), ally_index points to the allied side
+- Collection pattern: First collect from target side, then conditionally collect from ally side if present
+- Uses `battle.sides[side_idx].active` iterator to get active Pokemon positions
+
+**Impact:**
+Heal Bell now works correctly in multi battles by healing status conditions for both the user's side and their ally side. This is important for competitive formats that support 4-player battles where proper team healing is critical.
 
