@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 135 (35.5%)
+- Completed: 138 (36.3%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
 - In Progress: Continuing systematic implementation
 
@@ -287,10 +287,15 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 134. **Sticky Hold** (stickyhold.rs) - onTakeItem: Prevents item removal by opponents or Knock Off (allows Sticky Barb removal)
 135. **Unaware** (unaware.rs) - onAnyModifyBoost: Zeroes out stat boosts based on active Pokemon/target positions (def/spd/evasion when target is attacking, atk/def/spa/accuracy when target is defending)
 
+### Batch 39 - Accuracy Modification & Stat Doubling (3 abilities)
+136. **No Guard** (noguard.rs) - onAnyInvulnerability: Returns 0 when No Guard user is involved (makes Pokemon always hittable); onAnyAccuracy: Returns true when No Guard user is involved (makes moves always hit)
+137. **Simple** (simple.rs) - onChangeBoost: Doubles all stat changes by multiplying boosts by 2 (skips Z-Power boosts, modifies battle.current_event.relay_var_boost in place)
+138. **Unseen Fist** (unseenfist.rs) - onModifyMove: Removes protect flag from contact moves (sets flags.protect to false)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 40 abilities (batches 22-38).
-Progress: 135/380 abilities (35.5%).
+Implemented 43 abilities (batches 22-39).
+Progress: 138/380 abilities (36.3%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -304,6 +309,7 @@ Completed Poison Heal, Neuroforce, and Adaptability using poison damage reversal
 Completed Sturdy, Unnerve, and Wonder Guard using OHKO immunity, EffectState.data for shared state tracking, and type effectiveness checking via move hit data.
 Completed Battery, Contrary, and Intimidate using ally base power boost, in-place boost reversal via battle.current_event.relay_var_boost, and adjacent foe targeting with Substitute immunity.
 Completed Mold Breaker, Sticky Hold, and Unaware using ignore_ability flag, item removal prevention with special handling for Sticky Barb, and stat boost zeroing based on active Pokemon positioning.
+Completed No Guard, Simple, and Unseen Fist using invulnerability/accuracy overrides via effectState.target, stat change doubling via relay_var_boost, and move flag modification.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
