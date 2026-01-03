@@ -140,12 +140,6 @@ fn move_data_to_active_move(move_data: &crate::dex::MoveData) -> ActiveMove {
     // Create a basic ActiveMove from MoveData
     // This is a simplified conversion - full implementation would be in dex.getActiveMove()
 
-    // Convert Accuracy enum to i32
-    let accuracy = match move_data.accuracy {
-        crate::dex::Accuracy::AlwaysHits => 0, // true means always hits (represented as 0 or special value)
-        crate::dex::Accuracy::Percent(n) => n,
-    };
-
     ActiveMove {
         id: move_data.id.clone(),
         name: move_data.name.clone(),
@@ -162,7 +156,7 @@ fn move_data_to_active_move(move_data: &crate::dex::MoveData) -> ActiveMove {
         source_effect_name: None,
         condition: None,
         base_power: move_data.base_power,
-        accuracy,
+        accuracy: move_data.accuracy.clone(),
         pp: move_data.pp as u8, // Convert i32 to u8
         category: move_data.category.clone(),
         move_type: move_data.move_type.clone(),

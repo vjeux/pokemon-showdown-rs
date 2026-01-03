@@ -47,7 +47,7 @@ pub fn on_modify_move(
             Some(m) => m,
             None => return EventResult::Continue,
         };
-        active_move.accuracy = 0; // true means always hit
+        active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
         active_move.flags.contact = false;
     }
 

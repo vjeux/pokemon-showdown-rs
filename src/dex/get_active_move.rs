@@ -42,10 +42,7 @@ impl Dex {
             // From MoveData
             condition: None,
             base_power: move_data.base_power,
-            accuracy: match move_data.accuracy {
-                Accuracy::Percent(acc) => acc,
-                Accuracy::AlwaysHits => 0, // 0 means always hits
-            },
+            accuracy: move_data.accuracy.clone(),
             pp: move_data.pp as u8,
             category: move_data.category.clone(),
             move_type: move_data.move_type.clone(),

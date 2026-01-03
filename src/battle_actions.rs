@@ -251,8 +251,8 @@ pub struct ActiveMove {
     pub base_power: i32,
     /// Accuracy value
     /// JavaScript: accuracy: true | number
-    /// TODO: Rust uses i32, cannot represent 'true' variant (true = always hits)
-    pub accuracy: i32,
+    /// Rust: Uses Accuracy enum with Percent(i32) and AlwaysHits variants
+    pub accuracy: crate::dex::Accuracy,
     /// Power Points
     /// JavaScript: pp: number
     pub pp: u8,

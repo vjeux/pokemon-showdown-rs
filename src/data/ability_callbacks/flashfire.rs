@@ -37,12 +37,9 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     }
 
     // move.accuracy = true;
-    // TODO: ActiveMove.accuracy is i32, cannot represent 'true' (always hit)
-    // This is documented in src/battle_actions.rs
-    // For now, skip setting accuracy - Flash Fire immunity still works
-    // if let Some(ref mut active_move) = battle.active_move {
-    //     active_move.accuracy = ???;
-    // }
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
+    }
 
     // if (!target.addVolatile('flashfire'))
     let added = Pokemon::add_volatile(

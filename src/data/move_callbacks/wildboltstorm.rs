@@ -30,7 +30,7 @@ pub fn on_modify_move(
         if weather == "raindance" || weather == "primordialsea" {
             // move.accuracy = true;
             if let Some(ref mut active_move) = battle.active_move {
-                active_move.accuracy = 0; // true in JS means always hit, represented as 0 in Rust
+                active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
             }
         }
     }

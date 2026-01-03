@@ -45,13 +45,13 @@ pub fn on_modify_move(
             // case 'primordialsea':
             //     move.accuracy = true;
             "raindance" | "primordialsea" => {
-                active_move.accuracy = 0; // true in JS means always hit, represented as 0 in Rust
+                active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
             }
             // case 'sunnyday':
             // case 'desolateland':
             //     move.accuracy = 50;
             "sunnyday" | "desolateland" => {
-                active_move.accuracy = 50;
+                active_move.accuracy = crate::dex::Accuracy::Percent(50);
             }
             _ => {}
         }
