@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 105 (27.6%)
+- Completed: 108 (28.4%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -227,12 +227,17 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 ### Batch 27 - Stat Debuff Aura (1 ability)
 105. **Sword of Ruin** (swordofruin.rs) - onStart: Shows ability activation (respects suppressingAbility); onAnyModifyDef: Reduces opponents' Defense by 0.75x (uses effectState.target and ActiveMove.ruined_def tracking)
 
+### Batch 28 - Stat Debuff Aura Family (3 abilities)
+106. **Tablets of Ruin** (tabletsofruin.rs) - onStart: Shows ability activation; onAnyModifyAtk: Reduces opponents' Attack by 0.75x
+107. **Vessel of Ruin** (vesselofruin.rs) - onStart: Shows ability activation; onAnyModifySpA: Reduces opponents' Special Attack by 0.75x
+108. **Beads of Ruin** (beadsofruin.rs) - onStart: Shows ability activation; onAnyModifySpD: Reduces opponents' Special Defense by 0.75x
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 10 abilities (batches 22-27).
-Progress: 105/380 abilities (27.6%).
+Implemented 13 abilities (batches 22-28).
+Progress: 108/380 abilities (28.4%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
-Now using battle.effect_state.target for ability holder tracking and ActiveMove ruined_* fields for Ruin ability coordination.
+Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
