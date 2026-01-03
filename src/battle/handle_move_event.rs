@@ -86,9 +86,35 @@ impl Battle {
                 result
             }
             "Damage" => {
-                // TODO: Damage event needs damage, target_pos, source_pos, and effect_id
-                // This requires architectural changes to thread these values through dispatch
-                EventResult::Continue
+                // Extract all parameters immutably first
+                let (damage, effect_id) = {
+                    let damage = self
+                        .current_event
+                        .as_ref()
+                        .and_then(|e| e.relay_var)
+                        .unwrap_or(0);
+
+                    let effect_id = self
+                        .current_event
+                        .as_ref()
+                        .and_then(|e| e.effect.as_ref())
+                        .map(|id| id.to_string());
+
+                    (damage, effect_id)
+                };
+
+                if let Some(target_pos) = target {
+                    move_callbacks::dispatch_on_damage(
+                        self,
+                        move_id,
+                        damage,
+                        target_pos,
+                        Some(source_pos),
+                        effect_id.as_deref(),
+                    )
+                } else {
+                    EventResult::Continue
+                }
             }
             "DamagePriority" => {
                 // No moves implement DamagePriority event
