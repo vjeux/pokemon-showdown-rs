@@ -5,12 +5,12 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 356 total (down from 360 - resolved 4 more in this session: Batch 162)
-  - Complex abilities requiring transform/illusion infrastructure: ~5 TODOs (down from 9 - Imposter, Magic Bounce, Rebound, and Illusion completed)
+- **Remaining TODOs**: 353 total (down from 356 - resolved 3 more in this session: Batch 163)
+  - Complex abilities requiring transform/illusion infrastructure: ~0 TODOs (ALL COMPLETE! - Imposter, Magic Bounce, Rebound, Illusion, and Commander all completed)
   - Move callbacks requiring queue/event system extensions: ~24 TODOs
   - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~336 TODOs
-- **Latest Progress**: Batch 162 - Illusion Ability (4 TODO callbacks resolved: onBeforeSwitchIn, onDamagingHit, onEnd, onFaint)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available)
+- **Latest Progress**: Batch 163 - Commander Ability (3 TODO callbacks resolved: onAnySwitchIn, onStart, onUpdate) - ALL COMPLEX ABILITIES COMPLETE!
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
 ## Completed Implementations
@@ -2736,4 +2736,94 @@ onEnd(pokemon) {
 - Infrastructure Used: pokemon.illusion, pokemon.get_updated_details(), battle.rule_table, battle.hint()
 - Compilation: ✓ Successful (no errors, warnings only)
 - Git: ✓ Committed and pushed
+
+
+### Batch 163 - Commander Ability (3 TODOs) - ALL COMPLEX ABILITIES COMPLETE! 🎉
+
+**Completed ability:**
+287-289. **Commander** (commander.rs) - Complete implementation of Tatsugiri + Dondozo commanding system:
+   - onAnySwitchIn: Calls onUpdate for effectState.target (the ability holder)
+     - Gets ability holder position from battle.effect_state.target
+     - Calls on_update() for that Pokemon
+   - onStart: Calls onUpdate for the Pokemon that just gained the ability
+     - Directly calls on_update() for pokemon_pos
+   - onUpdate: Main commanding logic (only in Doubles)
+     - Checks if battle.game_type === Doubles (returns early if not)
+     - Checks if queue.peek() is RunSwitch action (returns early to avoid running during switch)
+     - Gets first ally using pokemon.allies(battle, false)
+     - Checks if pokemon or ally has switch_flag set (returns early if so)
+     - Checks if pokemon is Tatsugiri and ally is Dondozo (base species comparison)
+     - If not valid pair, removes commanding volatile if present
+     - If valid pair and not commanding:
+       - Checks if ally already has commanded volatile (returns if so)
+       - Cancels Pokemon's action using battle.queue.cancel_action()
+       - Shows "-activate" message with ability name and ally
+       - Adds commanding volatile to Tatsugiri
+       - Adds commanded volatile to Dondozo (with Tatsugiri as source)
+     - If already commanding and ally fainted:
+       - Removes commanding volatile from Tatsugiri
+
+**Implementation Details:**
+- Uses battle.game_type (GameType enum, not Option<GameType>) to check for Doubles
+- Uses battle.queue.peek() to check if next action is PokemonAction with RunSwitch choice
+- Uses pokemon.allies(battle, false) to get list of ally positions
+- Uses pokemon.switch_flag to check if Pokemon is switching
+- Uses pokemon.base_species.as_str() to compare species ("tatsugiri", "dondozo")
+- Uses pokemon.has_volatile(&ID::from("commanding")) to check for volatile
+- Uses Pokemon::remove_volatile(battle, pos, &ID::from("commanding")) to remove volatile
+- Uses battle.queue.cancel_action(side_index, pokemon_index) to cancel actions
+- Uses Pokemon::add_volatile(battle, pos, ID::from("id"), source_pos, source_effect, linked_status) with 6 parameters
+- Uses pokemon.fainted to check if ally has fainted
+
+**Type System Details:**
+- battle.game_type is GameType (not Option<GameType>) - match directly without Some()
+- battle.queue.peek() returns Option<&Action> which is an enum with variants
+- Action::Pokemon(pokemon_action) contains PokemonAction with choice field
+- PokemonActionType::RunSwitch is the enum variant for runSwitch action
+- Pokemon::add_volatile() takes 6 parameters, volatile_id is ID (not &ID), linked_status is last parameter
+
+**JavaScript Equivalence:**
+```javascript
+onUpdate(pokemon) {
+    if (this.gameType !== 'doubles') return;
+    if (this.queue.peek()?.choice === 'runSwitch') return;
+
+    const ally = pokemon.allies()[0];
+    if (pokemon.switchFlag || ally?.switchFlag) return;
+    if (!ally || pokemon.baseSpecies.baseSpecies !== 'Tatsugiri' || ally.baseSpecies.baseSpecies !== 'Dondozo') {
+        if (pokemon.getVolatile('commanding')) pokemon.removeVolatile('commanding');
+        return;
+    }
+
+    if (!pokemon.getVolatile('commanding')) {
+        if (ally.getVolatile('commanded')) return;
+        this.queue.cancelAction(pokemon);
+        this.add('-activate', pokemon, 'ability: Commander', `[of] ${ally}`);
+        pokemon.addVolatile('commanding');
+        ally.addVolatile('commanded', pokemon);
+    } else {
+        if (!ally.fainted) return;
+        pokemon.removeVolatile('commanding');
+    }
+}
+```
+
+**Files Modified:**
+- src/data/ability_callbacks/commander.rs - Implemented all 3 callbacks (185 lines added, 10 removed)
+
+**Git Commit:**
+- 8dc47718: "Implement Commander ability - all 3 callbacks (Batch 163)"
+
+**Progress:**
+- TODOs Resolved: 3 (Commander onAnySwitchIn, onStart, onUpdate)
+- Infrastructure Used: battle.game_type, pokemon.allies(), battle.queue.peek(), battle.queue.cancel_action(), Pokemon::add_volatile(), Pokemon::remove_volatile()
+- Compilation: ✓ Successful (no errors, warnings only)
+- Git: ✓ Committed and pushed
+
+**MILESTONE ACHIEVEMENT**: All complex abilities requiring transform/illusion/commanding infrastructure are now complete! This includes:
+1. Imposter (Batch 159) - Transform into mirror position Pokemon
+2. Magic Bounce (Batch 160) - Reflect status moves back to user
+3. Rebound (Batch 161) - Reflect status moves back to user (only on switch-in turn)
+4. Illusion (Batch 162) - Disguise as rightmost non-fainted teammate
+5. Commander (Batch 163) - Tatsugiri commands Dondozo in Doubles
 
