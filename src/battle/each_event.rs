@@ -23,7 +23,6 @@ impl Battle {
     // 	}
     //
     pub fn each_event(&mut self, event_id: &str, effect: Option<&ID>, relay_var: Option<bool>) {
-        eprintln!("[EACH_EVENT DEBUG] Called with event_id: {}", event_id);
         // JS: const actives = this.getAllActive();
         // Collect all active Pokemon with their speeds
         let mut actives: Vec<(usize, usize, i32)> = Vec::new();
@@ -36,8 +35,6 @@ impl Battle {
                 }
             }
         }
-
-        eprintln!("[EACH_EVENT DEBUG] Active count: {}", actives.len());
 
         // JS: if (!effect && this.effect) effect = this.effect;
         // Extract current_effect before mutable operations
@@ -59,8 +56,6 @@ impl Battle {
             effect_order: 0,
             index: 0,
         });
-
-        eprintln!("[EACH_EVENT DEBUG] Done with speed_sort");
 
         // JS: for (const pokemon of actives) {
         // JS:     this.runEvent(eventid, pokemon, null, effect, relayVar);

@@ -192,7 +192,6 @@ impl Battle {
     // 	}
     //
     pub fn end_turn(&mut self) {
-        eprintln!("[END_TURN] Called, turn {} -> {}", self.turn, self.turn + 1);
         self.turn += 1;
 
         // JS: this.lastSuccessfulMoveThisTurn = null;
