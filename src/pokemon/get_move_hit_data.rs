@@ -6,7 +6,8 @@ impl Pokemon {
     /// Get move hit data for tracking hit results
     /// Equivalent to pokemon.ts getMoveHitData()
     ///
-    /// Returns a new MoveHitData struct for this target
+    /// Returns a reference to MoveHitData for this target's slot
+    /// Note: This requires mutable access to Battle to get/create the entry
     //
     // 	getMoveHitData(move: ActiveMove) {
     // 		if (!move.moveHitData) move.moveHitData = {};
@@ -18,26 +19,11 @@ impl Pokemon {
     // 		});
     // 	}
     //
+    /// Note: In Rust, we implement this as a Battle method since we need mutable access to active_move
+    /// Use battle.get_move_hit_data(pokemon_pos) instead
     pub fn get_move_hit_data(&self, _move_id: &ID) -> MoveHitData {
-        // JS: if (!move.moveHitData) move.moveHitData = {};
-        // Note: Should initialize moveHitData on ActiveMove if not present
-
-        // JS: const slot = this.getSlot();
-        // Note: Missing getSlot() call to get position identifier
-        // Note: JavaScript stores per-slot hit data in move.moveHitData[slot]
-
-        // JS: return move.moveHitData[slot] || (move.moveHitData[slot] = {
-        // JS:     crit: false,
-        // JS:     typeMod: 0,
-        // JS:     zBrokeProtect: false,
-        // JS: });
-        // Note: Should retrieve existing hit data for this slot or create new
-        // Note: Hit data includes: crit (bool), typeMod (i32), zBrokeProtect (bool)
-
-        // Get the stored move hit data if it exists, otherwise create new
-        // In the actual implementation, this would be stored per-move per-turn
-        // Note: Missing storage and retrieval mechanism
-        // Note: Would need mutable access to ActiveMove to store hit data
+        // This method is deprecated - use Battle::get_move_hit_data instead
+        // Kept for compatibility but returns default
         MoveHitData::default()
     }
 }

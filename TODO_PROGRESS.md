@@ -3,6 +3,7 @@
 ## Summary
 - Total ability callback TODOs: 380
 - Completed: 95 (25.0%)
+- Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
 ## Completed Implementations
@@ -176,8 +177,36 @@ Updated `hit_step_type_immunity.rs` to use the new enum.
 94. **Gale Wings** (galewings.rs) - onModifyPriority: Adds +1 priority to Flying-type moves when at full HP
 95. **Prankster** (prankster.rs) - onModifyPriority: Adds +1 priority to Status moves and sets pranksterBoosted flag
 
+## Infrastructure Batch - getMoveHitData System
+
+**Major Infrastructure Refactor:**
+Implemented proper getMoveHitData infrastructure to match JavaScript's per-target hit data tracking system.
+
+**Changes Made:**
+1. **ActiveMove.move_hit_data**: Changed from `Option<MoveHitData>` to `HashMap<String, MoveHitData>` to store per-slot hit data
+2. **Battle::get_move_hit_data()**: Added immutable accessor method
+3. **Battle::get_move_hit_data_mut()**: Added mutable accessor method that creates entries on-demand
+4. **modify_damage.rs**: Updated to store type_mod in MoveHitData after calculating type effectiveness
+5. **get_active_move.rs**: Updated initialization to use HashMap::new()
+
+**Why This Change Was Needed:**
+JavaScript's getMoveHitData() stores hit data (crit, typeMod, zBrokeProtect) per target slot. This is essential for:
+- Spread moves that hit multiple targets (each target has different type effectiveness)
+- Abilities that check type effectiveness (Filter, Solid Rock, Prism Armor reduce super-effective damage)
+- Tracking per-target battle state during move execution
+
+**Files Modified:**
+- `src/battle_actions.rs` - Changed move_hit_data field type
+- `src/battle/get_move_hit_data.rs` - New Battle methods for accessing hit data
+- `src/battle.rs` - Added module declaration
+- `src/battle_actions/modify_damage.rs` - Store typeMod in hit data, fix borrow checker issues
+- `src/dex/get_active_move.rs` - Initialize with HashMap::new()
+- `src/pokemon/get_move_hit_data.rs` - Updated documentation
+
+This infrastructure enables implementation of damage-reduction abilities (Filter, Solid Rock, Prism Armor) and many other abilities that need access to move hit data.
+
 ## Current Session
-Implemented 2 abilities in batch 21.
+Completed major getMoveHitData infrastructure refactor.
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Now using pokemon.foes(), pokemon.has_ability(), and modifying battle.active_move fields.
 

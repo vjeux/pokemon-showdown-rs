@@ -125,6 +125,7 @@ mod run_event_string;
 mod find_event_handlers;
 mod priority_event;
 mod get_event_modifier;
+mod get_move_hit_data;
 mod set_event_modifier;
 mod randomizer;
 mod each_event;

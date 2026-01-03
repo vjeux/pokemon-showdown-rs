@@ -133,7 +133,7 @@ impl Dex {
             // ActiveMove-specific
             hit: 0,
             total_damage: 0,
-            move_hit_data: None,
+            move_hit_data: std::collections::HashMap::new(),
             spread_hit: false,
             last_hit: None,
             is_external: false,

@@ -499,7 +499,7 @@ pub struct ActiveMove {
     pub total_damage: i32,
     /// Move hit data for tracking crit, type effectiveness, etc.
     /// JavaScript: moveHitData?: MoveHitData
-    pub move_hit_data: Option<crate::pokemon::MoveHitData>,
+    pub move_hit_data: HashMap<String, crate::pokemon::MoveHitData>,
     /// Hit a spread move (doubles/triples)
     /// JavaScript: spreadHit: boolean
     pub spread_hit: bool,

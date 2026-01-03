@@ -191,13 +191,13 @@ pub fn modify_damage(
     // CRITICAL: Use active_move.move_type, not move_data.move_type!
     // Abilities like Pixilate modify active_move.move_type, so we need to read from there.
     let move_type = if let Some(ref active_move) = battle.active_move {
-        &active_move.move_type
+        active_move.move_type.clone()
     } else {
-        &move_data.move_type
+        move_data.move_type.clone()
     };
 
-    if move_type != "???" {
-        let has_stab = source_types.iter().any(|t| t == move_type);
+    if &move_type != "???" {
+        let has_stab = source_types.iter().any(|t| t == &move_type);
         if has_stab {
             base_damage = battle.modify(base_damage, 3, 2);
             eprintln!("[MODIFY_DAMAGE] After STAB: base_damage={}", base_damage);
@@ -207,6 +207,16 @@ pub fn modify_damage(
     // let typeMod = target.runEffectiveness(move);
     // typeMod = this.battle.clampIntRange(typeMod, -6, 6);
     // target.getMoveHitData(move).typeMod = typeMod;
+    let type_mod = battle.get_type_effectiveness_mod(&move_type, &target_types);
+    eprintln!("[MODIFY_DAMAGE] Type effectiveness: move_type={}, target_types={:?}, type_mod={}",
+        move_type, target_types, type_mod);
+
+    // Store type_mod in move hit data
+    // target.getMoveHitData(move).typeMod = typeMod;
+    if let Some(move_hit_data) = battle.get_move_hit_data_mut(target_pos) {
+        move_hit_data.type_mod = type_mod as i8;
+    }
+
     // if (typeMod > 0) {
     //   if (!suppressMessages) this.battle.add("-supereffective", target);
     //   for (let i = 0; i < typeMod; i++) {
@@ -219,9 +229,9 @@ pub fn modify_damage(
     //     baseDamage = tr(baseDamage / 2);
     //   }
     // }
-    let type_mod = battle.get_type_effectiveness_mod(move_type, &target_types);
+    let type_mod = battle.get_type_effectiveness_mod(&move_type, &target_types);
     eprintln!("[MODIFY_DAMAGE] Type effectiveness: move_type={}, target_types={:?}, type_mod={}",
-        move_type, target_types, type_mod);
+        &move_type, target_types, type_mod);
     if type_mod > 0 {
         battle.add("-supereffective", &[Arg::String(target_slot.clone())]);
         for _ in 0..type_mod {
