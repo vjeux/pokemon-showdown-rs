@@ -44,6 +44,7 @@ mod entries;
 mod entries_mut;
 mod find;
 mod splice;
+mod resolve_action;
 
 /// Move action
 #[derive(Debug, Clone, Serialize, Deserialize)]

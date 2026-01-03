@@ -1262,6 +1262,16 @@ pub fn dispatch_priority_charge_callback(
     }
 }
 
+/// Check if a move has a beforeTurnCallback
+pub fn has_before_turn_callback(move_id: &str) -> bool {
+    matches!(move_id, "counter" | "mirrorcoat" | "pursuit")
+}
+
+/// Check if a move has a priorityChargeCallback
+pub fn has_priority_charge_callback(move_id: &str) -> bool {
+    matches!(move_id, "beakblast" | "chillyreception" | "focuspunch" | "shelltrap")
+}
+
 // Condition dispatch functions
 /// Dispatch condition durationCallback callbacks
 pub fn dispatch_condition_duration_callback(
