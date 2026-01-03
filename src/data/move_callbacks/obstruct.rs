@@ -141,13 +141,10 @@ pub mod condition {
             };
 
             if is_z_or_max {
-                // TODO: Implement move hit data tracking
                 // target.getMoveHitData(move).zBrokeProtect = true;
-                // let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
-                //     Some(p) => p,
-                //     None => return EventResult::Continue,
-                // };
-                // target_pokemon.move_hit_data.z_broke_protect = true;
+                if let Some(hit_data) = battle.get_move_hit_data_mut(target) {
+                    hit_data.z_broke_protect = true;
+                }
             }
 
             // return;
