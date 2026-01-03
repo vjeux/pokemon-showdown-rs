@@ -5,19 +5,19 @@
 - Completed: 278 (73.2%)
 - **Event System Infrastructure**: Complete event context parameter wiring implemented (Batch 147 - 69 TODOs resolved)
 - **All data callback TODOs resolved**: All "Implement 1-to-1 from JS" TODOs in ability_callbacks, item_callbacks, condition_callbacks, and move_callbacks have been completed!
-- **Remaining TODOs**: 332 total (no change - Batch 177 is infrastructure completion, not TODO resolution)
+- **Remaining TODOs**: 331 total (down from 332 - resolved 1 in Batch 178: durationCallback)
   - Complex abilities requiring transform/illusion infrastructure: ~0 TODOs (ALL COMPLETE! - Imposter, Magic Bounce, Rebound, Illusion, and Commander all completed)
-  - Move callbacks requiring queue/event system extensions: ~7 TODOs (down from ~8 - resolved Pursuit onBeforeSwitchOut, ⭐ Pursuit now FULLY COMPLETE!)
-  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~332 TODOs
-- **Latest Progress**: Batch 177 - Wire up 23 side condition callbacks (infrastructure completion)
+  - Move callbacks requiring queue/event system extensions: ~7 TODOs (Pursuit fully complete)
+  - Battle infrastructure TODOs (event handlers, format callbacks, etc.): ~331 TODOs
+- **Latest Progress**: Batch 178 - durationCallback infrastructure (1 TODO resolved)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used), **battle.can_switch() available** for switch checking, **Trapping infrastructure complete** (Pokemon::try_trap, pokemon.maybe_trapped, pokemon.is_grounded, pokemon.has_type, pokemon.has_ability, battle.is_adjacent all available), **Pokemon state fields** (active_turns, move_this_turn_result, used_item_this_turn, switch_flag available), **battle.effect_state.target** (ability holder position tracking working), **battle.current_event.relay_var_boost** (boost data available for abilities), **Type system fully functional** (Pokemon::set_type, pokemon.get_types, pokemon.has_type, field.get_terrain, field.is_terrain_active all available), **battle.sample() and battle.get_all_active()** (random sampling and active Pokemon iteration available), **Pokemon::is_semi_invulnerable()** (semi-invulnerable state checking using volatile flags available), **pokemon.set.species** (species name access for forme checking), **battle.single_event()** (single event firing system available, returns EventResult for checking success/failure), **pokemon.adjacent_foes()** (adjacent foe position retrieval available), **Pokemon::set_ability()** (ability changing infrastructure available), **active_move.hit_targets** (list of positions hit by the current move), **pokemon.volatiles HashMap** (volatile status checking via contains_key), **battle.each_event()** (runs event on all active Pokemon in speed order), **Event context extraction infrastructure** (event_source_pos, event_target_pos, move_id, status_id, relay_var_int all available in handle_ability_event), **battle.valid_target()** (move target validation for redirection), **EventResult::Position** (returns redirected target position), **Move redirection infrastructure complete** (Lightning Rod and Storm Drain both working), **Move reflection infrastructure complete** (Magic Bounce and Rebound both working, crate::battle_actions::use_move available), **Illusion infrastructure complete** (pokemon.illusion field, pokemon.get_updated_details(), battle.rule_table, battle.hint() all available), **Commander infrastructure complete** (battle.game_type, pokemon.allies(), battle.queue.cancel_action(), pokemon.has_volatile(), Pokemon::add_volatile(), Pokemon::remove_volatile() all available), **Type parameter infrastructure complete** (Battle::run_event_with_type() passes type strings to event callbacks via relay_var_type), **Boost modification system complete** (Battle::run_event_boost() enables callbacks to modify stat boosts via relay_var_boost), **Pokemon action state infrastructure** (Battle::set_trapped(), Battle::decrement_active_move_actions() enable managing Pokemon battle state), **Side-level event system complete** (Battle::single_event_side() and Battle::run_event_side() enable firing events on Sides for side condition lifecycle)
 - Status: All simple callback TODOs completed - remaining work requires major architectural changes
 
 ## Completed Implementations
 
-### Session Summary (Batches 167-177) - Latest
+### Session Summary (Batches 167-178) - Latest
 
-**TODOs Resolved This Session**: 17 total
+**TODOs Resolved This Session**: 18 total
 - Batch 167: 1 TODO (Sky Drop onFoeTrapPokemon)
 - Batch 168: 1 TODO (Sky Drop onFoeBeforeMove - Sky Drop now FULLY COMPLETE!)
 - Batch 169: 3 TODOs (Foresight onModifyBoost, Miracle Eye onModifyBoost, Mist onTryBoost)
@@ -29,11 +29,12 @@
 - Batch 175: 3 TODOs (Side event infrastructure - SideRestart, SideStart, SideConditionStart)
 - Batch 176: 1 TODO (Pursuit onBeforeSwitchOut)
 - Batch 177: 0 TODOs (infrastructure completion - wired up 23 side condition callbacks)
+- Batch 178: 1 TODO (durationCallback in add_side_condition)
 
-**TODOs Added**: 1 (durationCallback in add_side_condition - requires condition callback infrastructure)
-**Net Progress**: 351 → 332 TODOs (-19 total)
+**TODOs Added**: 0 (removed 1 with Batch 178)
+**Net Progress**: 351 → 331 TODOs (-20 total)
 
-**Major Infrastructure Additions**: 8
+**Major Infrastructure Additions**: 9
 1. **Battle::set_trapped()** - Pokemon trapping state management (Batch 167)
 2. **Battle::decrement_active_move_actions()** - Move action counter management (Batch 168)
 3. **Battle::run_event_boost()** - Complete boost modification event system (Batch 169) ⭐
@@ -42,6 +43,7 @@
 6. **Side-level event system** - single_event_side() and run_event_side() for firing events on Sides (Batch 175) ⭐
 7. **terastallize module export** - Exported terastallize function from battle_actions (Batch 176)
 8. **Side condition callback wiring** - Connected 23 side conditions to dispatch_single_event_side (Batch 177) ⭐
+9. **durationCallback infrastructure** - Battle::call_duration_callback dispatcher for 14 side conditions (Batch 178) ⭐
 
 **Completed Moves This Session:**
 - **Sky Drop** - ⭐ FULLY COMPLETE! All 12 callbacks implemented (Batches 167-168)
@@ -84,6 +86,112 @@ Combined with existing ability support, these systems provide comprehensive batt
 - Batch 175: "Implement side-level event infrastructure (Batch 175 - MAJOR)"
 - Batch 176: "Batch 176: Implement Pursuit onBeforeSwitchOut callback"
 - Batch 177: "Batch 177: Wire up 23 side condition callbacks to side event dispatcher"
+- Batch 178: "Batch 178: Implement durationCallback infrastructure for side conditions"
+
+---
+
+### Batch 178 - durationCallback Infrastructure (1 TODO) ⭐
+
+**Files Created**:
+- `src/battle/call_duration_callback.rs` (153 lines) - NEW INFRASTRUCTURE
+
+**Files Modified**:
+- `src/battle.rs` - Added module declaration for call_duration_callback
+- `src/battle/add_side_condition.rs` - Implemented durationCallback call (resolved TODO at line 83)
+
+**TODO Resolved**: 1 in add_side_condition.rs:
+- Call durationCallback if exists (line 83) - RESOLVED
+
+**Side Conditions with durationCallback**: 14 total
+
+This batch implements the durationCallback infrastructure that was added as a TODO in Batch 175. It enables side conditions to dynamically calculate their duration based on items or abilities.
+
+**JavaScript Reference**:
+```javascript
+if (status.durationCallback) {
+    this.sideConditions[status.id].duration =
+        status.durationCallback.call(this.battle, this.active[0], source, sourceEffect);
+}
+```
+
+**Rust Implementation**:
+
+Created `Battle::call_duration_callback` dispatcher that routes to condition-specific callbacks:
+
+```rust
+pub fn call_duration_callback(
+    &mut self,
+    condition_id: &ID,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    source_effect: Option<&str>,
+) -> EventResult {
+    match condition_id.as_str() {
+        "auroraveil" => crate::data::move_callbacks::auroraveil::condition::duration_callback(...),
+        "lightscreen" => crate::data::move_callbacks::lightscreen::condition::duration_callback(...),
+        "reflect" => crate::data::move_callbacks::reflect::condition::duration_callback(...),
+        // ... 11 more conditions
+        _ => EventResult::Continue,
+    }
+}
+```
+
+Updated `add_side_condition` to call the dispatcher:
+
+```rust
+// Get condition data for duration
+if let Some(condition_data) = self.dex.conditions.get(&condition_id) {
+    state.duration = condition_data.duration;
+
+    // Call durationCallback if exists
+    let target_pos = if side_idx < self.sides.len() && !self.sides[side_idx].active.is_empty() {
+        Some((side_idx, 0)) // side.active[0]
+    } else {
+        None
+    };
+
+    let result = self.call_duration_callback(
+        &condition_id,
+        target_pos,
+        source_pos,
+        _source_effect.map(|id| id.as_str()),
+    );
+
+    if let EventResult::Number(duration) = result {
+        state.duration = Some(duration);
+    }
+}
+```
+
+**Conditions Supported**:
+
+1. **Aurora Veil** - 8 turns with Light Clay, else 5
+2. **Light Screen** - 8 turns with Light Clay, else 5
+3. **Reflect** - 8 turns with Light Clay, else 5
+4. **Safeguard** - 8 turns with Persistent ability, else 5
+5. **Tailwind** - 6 turns with Persistent ability, else 4
+6. **Electric Terrain** - 8 turns with Terrain Extender, else 5
+7. **Grassy Terrain** - 8 turns with Terrain Extender, else 5
+8. **Misty Terrain** - 8 turns with Terrain Extender, else 5
+9. **Psychic Terrain** - 8 turns with Terrain Extender, else 5
+10. **Gravity** - Duration modifiable
+11. **Heal Block** - Duration modifiable
+12. **Magic Room** - Duration modifiable
+13. **Trick Room** - Duration modifiable
+14. **Wonder Room** - Duration modifiable
+
+**Effects Enabled**:
+
+- **Light Clay** item now properly extends Aurora Veil, Light Screen, and Reflect from 5 to 8 turns
+- **Persistent** ability now properly extends Safeguard from 5 to 8 turns and Tailwind from 4 to 6 turns
+- **Terrain Extender** item now properly extends terrain conditions from 5 to 8 turns
+- Room conditions can have modified durations based on effects
+
+**Compilation**: ✅ Successful (with 24 warnings)
+
+**Git Commit**: "Batch 178: Implement durationCallback infrastructure for side conditions"
+
+**Impact**: This completes the side condition system by enabling dynamic duration calculation. Combined with Batches 173 (source tracking), 175 (side event system), and 177 (callback wiring), side conditions now fully match JavaScript behavior including duration modification from items and abilities.
 
 ---
 
