@@ -13,8 +13,20 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.75);
 ///     }
 /// }
-pub fn on_any_modify_damage(_battle: &mut Battle, _damage: i32, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_any_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+    let ability_holder = match battle.effect_state.target {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // if (target !== this.effectState.target && target.isAlly(this.effectState.target))
+    if let Some(tpos) = target_pos {
+        if tpos != ability_holder && battle.is_ally(tpos, ability_holder) {
+            eprintln!("Friend Guard weaken");
+            return EventResult::Number(battle.chain_modify(0.75));
+        }
+    }
+
     EventResult::Continue
 }
 

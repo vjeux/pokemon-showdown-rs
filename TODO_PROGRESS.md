@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 120 (31.6%)
+- Completed: 123 (32.4%)
 - Infrastructure: Major getMoveHitData refactor completed
 - In Progress: Continuing systematic implementation
 
@@ -254,10 +254,15 @@ This infrastructure enables implementation of damage-reduction abilities (Filter
 119. **Anger Point** (angerpoint.rs) - onHit: Maximizes Attack (+12 stages) when hit by a critical hit (uses getMoveHitData)
 120. **Pressure** (pressure.rs) - onDeductPP: Causes moves to use 1 extra PP when targeting this Pokemon
 
+### Batch 34 - Team Support & Sun Protection (3 abilities)
+121. **Friend Guard** (friendguard.rs) - onAnyModifyDamage: Reduces damage to allies by 0.75x (uses effectState.target)
+122. **Soul-Heart** (soulheart.rs) - onAnyFaint: Boosts Special Attack by 1 when any Pokemon faints
+123. **Leaf Guard** (leafguard.rs) - onSetStatus/onTryAddVolatile: Prevents status and yawn in harsh sunlight (uses Pokemon::effective_weather)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 25 abilities (batches 22-33).
-Progress: 120/380 abilities (31.6%).
+Implemented 28 abilities (batches 22-34).
+Progress: 123/380 abilities (32.4%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -265,6 +270,7 @@ Completed damage modifier abilities using battle.get_move_hit_data() to access c
 Completed residual status cure abilities using Pokemon::effective_weather and Pokemon::adjacent_allies for weather checking and ally iteration.
 Completed Magic Guard using effect type detection via dex lookups.
 Completed Telepathy, Anger Point, and Pressure using ally detection, move hit data, and PP deduction.
+Completed Friend Guard, Soul-Heart, and Leaf Guard using ally damage reduction, faint detection, and weather-based status prevention.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
