@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 147 (38.7%)
+- Completed: 151 (39.7%)
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated
 - In Progress: Continuing systematic implementation
 
@@ -309,10 +309,16 @@ Updated onModifySTAB dispatcher infrastructure to properly handle STAB modificat
 146. **Frisk** (frisk.rs) - onStart: Reveals all opposing Pokemon's held items (uses get_all_active and filters by opposing side)
 147. **Power Spot** (powerspot.rs) - onAllyBasePower: Boosts ally moves by 1.3x (5325/4096) when attacker ≠ ability holder
 
+### Batch 44 - Type-Changing Abilities (4 abilities)
+148. **Refrigerate** (refrigerate.rs) - onModifyType: Changes Normal-type moves to Ice type (1.2x power with typeChangerBoosted tracking); onBasePower: Boosts changed moves by 1.2x (4915/4096)
+149. **Aerilate** (aerilate.rs) - onModifyType: Changes Normal-type moves to Flying type (1.2x power with typeChangerBoosted tracking); onBasePower: Boosts changed moves by 1.2x (4915/4096)
+150. **Normalize** (normalize.rs) - onModifyType: Changes all moves to Normal type (1.2x power with typeChangerBoosted tracking); onBasePower: Boosts changed moves by 1.2x (4915/4096)
+151. **Galvanize** (galvanize.rs) - onModifyType: Changes Normal-type moves to Electric type (1.2x power with typeChangerBoosted tracking); onBasePower: Boosts changed moves by 1.2x (4915/4096)
+
 ## Current Session
 Completed major getMoveHitData infrastructure refactor.
-Implemented 52 abilities (batches 22-43).
-Progress: 147/380 abilities (38.7%).
+Implemented 56 abilities (batches 22-44).
+Progress: 151/380 abilities (39.7%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 Completed entire Ruin ability family using battle.effect_state.target and ActiveMove.ruined_* fields for proper multi-ability coordination.
 Completed Beast Boost using inline stat calculation to avoid borrow checker issues.
@@ -331,6 +337,7 @@ Completed Turboblaze and Teravolt as variants of Mold Breaker (all three set ign
 Completed Aura Break and Liquid Voice using has_aura_break flag setting and sound move type modification.
 Completed Hospitality, Dauntless Shield, and Curious Medicine using adjacent ally healing/boost clearing and ability_state.data for one-time boost tracking.
 Completed Frisk and Power Spot using item revelation for foes and ally base power boost.
+Completed type-changing abilities (Refrigerate, Aerilate, Normalize, Galvanize) using ActiveMove.type_changer_boosted tracking and pokemon.terastallized checks, with proper exclusion lists for special moves.
 
 ## Implementation Notes
 - Using `battle.boost()` for stat boosts (Attack, Special Attack, Speed, Defense, etc.)
