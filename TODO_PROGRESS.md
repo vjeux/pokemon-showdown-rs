@@ -2,8 +2,8 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 228 (60.0%)
-- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking)
+- Completed: 229 (60.3%)
+- Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), onSideConditionStart dispatcher infrastructure updated (added pokemon_pos and side_condition_id parameters), **Pokemon::forme_change infrastructure implemented** (handles non-permanent forme changes with ability source tracking), **Item system fully functional** (Pokemon::has_item, Pokemon::take_item, Pokemon::set_item, Pokemon::get_item exist and are used)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
 ## Completed Implementations
@@ -548,6 +548,9 @@ This infrastructure unblocks many forme-changing abilities: Forecast, Zen Mode, 
 ### Batch 96 - Sap Sipper Ally Protection (1 ability)
 228. **Sap Sipper** (sapsipper.rs) - onAllyTryHitSide: Boosts Attack when an ally is targeted by a Grass-type move (skips if source is ability holder or target is not an ally of source); uses battle.effect_state.target, battle.is_ally(), and battle.active_move.move_type
 
+### Batch 97 - Pickpocket (1 ability)
+229. **Pickpocket** (pickpocket.rs) - onAfterMoveSecondary: Steals item from attacker on contact moves when ability holder has no item; checks target.item, switchFlag, and forceSwitchFlag to prevent stealing during switches; uses Pokemon::take_item and Pokemon::set_item infrastructure; shows -enditem and -item battle messages
+
 ## Current Session (Continued)
 Committed and pushed Costar (Batch 75).
 Implemented major Pokemon::forme_change infrastructure to enable forme-changing abilities.
@@ -572,7 +575,8 @@ Completed Zero to Hero (Batch 93) - Switch-triggered forme change for Palafin.
 Completed Zen Mode (Batch 94) - HP-based volatile system with forme changes for Darmanitan using species.battle_only and StringOrVec extraction.
 Completed Priority-Blocking Abilities (Batch 95) - Dazzling, Queenly Majesty, and Armor Tail share identical logic for blocking priority moves using battle.effect_state.target and battle.is_ally().
 Completed Sap Sipper Ally Protection (Batch 96) - onAllyTryHitSide boosts Attack when ally targeted by Grass move.
-Progress: 203→228/380 (60.0%).
+Completed Pickpocket (Batch 97) - onAfterMoveSecondary steals items from contact attackers using Pokemon::take_item and Pokemon::set_item.
+Progress: 203→229/380 (60.3%).
 All implementations compile successfully and are 1-to-1 from JavaScript.
 
 ## Implementation Notes
