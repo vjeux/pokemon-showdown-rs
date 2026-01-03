@@ -70,8 +70,13 @@ pub fn get_z_move(
         //     const moveData = pokemon.getMoveData(move);
         //     // Draining the PP of the base move prevents the corresponding Z-move from being used.
         //     if (!moveData?.pp) return;
-        // TODO: Implement getMoveData check
-        // For now, skip this check
+        // Check if the Pokemon has a move slot with PP for this move
+        let has_pp = pokemon.move_slots.iter().any(|slot| {
+            slot.id.as_str() == move_id && slot.pp > 0
+        });
+        if !has_pp {
+            return None;
+        }
     }
 
     // Get move data
