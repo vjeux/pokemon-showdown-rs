@@ -107,8 +107,6 @@ impl Battle {
         self.field.weather = weather_id.clone();
         self.field.weather_state = crate::event_system::EffectState::new(weather_id.clone());
 
-        eprintln!("[DEBUG set_weather] Set weather to '{}'", weather_id);
-
         // Set source if provided
         if let Some(source_position) = source_pos {
             self.field.weather_state.source = Some(source_position);
@@ -119,7 +117,6 @@ impl Battle {
         // TODO: Get duration from dex condition data and call durationCallback
         // For now, hardcode duration=5 for all weather (standard Gen 9 duration)
         self.field.weather_state.duration = Some(5);
-        eprintln!("[DEBUG set_weather] Set weather duration to {:?}", self.field.weather_state.duration);
 
         // Fire 'FieldStart' event on the weather
         // If it returns false, revert to previous weather

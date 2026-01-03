@@ -52,10 +52,6 @@ impl Battle {
         // JS: const handlers: EventListener[] = [];
         let mut handlers: Vec<EventListener> = Vec::new();
 
-        eprintln!("[DEBUG find_field_event_handlers] callback={}, get_key={:?}", callback_name, get_key);
-        eprintln!("[DEBUG find_field_event_handlers] weather={}, duration={:?}",
-            self.field.weather, self.field.weather_state.duration);
-
         // Collect pseudo weather IDs that have callbacks or getKey
         // (need to extract before calling resolve_priority due to borrow checker)
         let pseudo_weather_handlers: Vec<(ID, EffectState)> = self.field.pseudo_weather.iter()
@@ -97,34 +93,24 @@ impl Battle {
         // JS: callback = this.getCallback(field, weather, callbackName);
         // JS: if (callback !== undefined || (getKey && this.field.weatherState[getKey])) {
         let weather_handler = if !self.field.weather.is_empty() {
-            eprintln!("[DEBUG] Weather='{}', get_key={:?}, duration={:?}",
-                self.field.weather, get_key, self.field.weather_state.duration);
             let has_callback = self.has_callback(&self.field.weather, callback_name);
             let has_get_key = if let Some(key) = get_key {
                 // JavaScript checks weatherState[getKey], which in Rust means checking if the duration field exists
-                let result = key == "duration" && self.field.weather_state.duration.is_some();
-                eprintln!("[DEBUG] Weather handler check: key={}, has_duration={:?}, result={}",
-                    key, self.field.weather_state.duration, result);
-                result
+                key == "duration" && self.field.weather_state.duration.is_some()
             } else {
                 false
             };
-            eprintln!("[DEBUG] Weather handler: has_callback={}, has_get_key={}", has_callback, has_get_key);
             if has_callback || has_get_key {
-                eprintln!("[DEBUG] Creating weather handler for '{}'", self.field.weather);
                 Some((self.field.weather.clone(), self.field.weather_state.clone()))
             } else {
-                eprintln!("[DEBUG] NOT creating weather handler");
                 None
             }
         } else {
-            eprintln!("[DEBUG] Weather is empty, skipping");
             None
         };
 
         if let Some((weather_id, weather_state)) = weather_handler {
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
-            eprintln!("[DEBUG] Adding weather handler to handlers vector");
             let mut handler = EventListener {
                 effect_id: weather_id,
                 effect_type: EffectType::Weather,
@@ -186,7 +172,6 @@ impl Battle {
         }
 
         // JS: return handlers;
-        eprintln!("[DEBUG] find_field_event_handlers returning {} handlers", handlers.len());
         handlers
     }
 }

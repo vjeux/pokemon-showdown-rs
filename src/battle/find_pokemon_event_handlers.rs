@@ -86,7 +86,8 @@ impl Battle {
         if !pokemon.status.is_empty() {
             let has_callback = self.has_callback(&pokemon.status, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
-                pokemon.status_state.data.get(key).is_some()
+                // JavaScript checks statusState[getKey], which means checking if duration exists
+                key == "duration" && pokemon.status_state.duration.is_some()
             });
 
             if has_callback || has_get_key {
@@ -114,7 +115,8 @@ impl Battle {
             // JS: if (callback !== undefined || (getKey && volatileState[getKey])) {
             let has_callback = self.has_callback(volatile_id, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
-                volatile_state.data.get(key).is_some()
+                // JavaScript checks volatileState[getKey], which means checking if duration exists
+                key == "duration" && volatile_state.duration.is_some()
             });
 
             if has_callback || has_get_key {
@@ -140,7 +142,8 @@ impl Battle {
         if !pokemon.ability.is_empty() {
             let has_callback = self.has_callback(&pokemon.ability, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
-                pokemon.ability_state.data.get(key).is_some()
+                // JavaScript checks abilityState[getKey], which means checking if duration exists
+                key == "duration" && pokemon.ability_state.duration.is_some()
             });
 
             if has_callback || has_get_key {
@@ -166,7 +169,8 @@ impl Battle {
         if !pokemon.item.is_empty() {
             let has_callback = self.has_callback(&pokemon.item, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
-                pokemon.item_state.data.get(key).is_some()
+                // JavaScript checks itemState[getKey], which means checking if duration exists
+                key == "duration" && pokemon.item_state.duration.is_some()
             });
 
             if has_callback || has_get_key {
@@ -218,7 +222,8 @@ impl Battle {
                 // JS: if (callback !== undefined || (getKey && slotConditionState[getKey])) {
                 let has_callback = self.has_callback(slot_cond_id, callback_name);
                 let has_get_key = get_key.is_some_and(|key| {
-                    slot_cond_state.data.get(key).is_some()
+                    // JavaScript checks slotConditionState[getKey], which means checking if duration exists
+                    key == "duration" && slot_cond_state.duration.is_some()
                 });
 
                 if has_callback || has_get_key {

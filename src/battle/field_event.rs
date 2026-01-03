@@ -149,7 +149,6 @@ impl Battle {
     // 	}
     //
     pub fn field_event(&mut self, event_id: &str, targets: Option<&[(usize, usize)]>) {
-        eprintln!("[DEBUG field_event] Event='{}', current weather='{}'", event_id, self.field.weather);
         let callback_name = format!("on{}", event_id);
         // JS: if (eventid === 'Residual') { getKey = 'duration'; }
         let get_key = if event_id == "Residual" {
@@ -282,11 +281,8 @@ impl Battle {
         });
 
         // JS: while (handlers.length) { ... }
-        eprintln!("[DEBUG] Processing {} field event handlers for event '{}'", handlers.len(), event_id);
         while !handlers.is_empty() {
             let handler = handlers.remove(0);
-            eprintln!("[DEBUG] Handler: effect={}, is_field={}, is_side={}, holder={:?}",
-                handler.effect_id, handler.is_field, handler.is_side, handler.holder);
 
             // JS: if ((handler.effectHolder as Pokemon).fainted) {
             //         if (!(handler.state?.isSlotCondition)) continue;
@@ -313,17 +309,13 @@ impl Battle {
 
             // Handle field effects (weather, terrain, pseudo-weather)
             if event_id == "Residual" && handler.is_field {
-                eprintln!("[DEBUG] Residual event for field effect: {}", handler.effect_id);
                 let should_clear = {
                     // Check weather
                     if self.field.weather == handler.effect_id {
                         if let Some(duration) = self.field.weather_state.duration.as_mut() {
-                            eprintln!("[DEBUG] Weather {} duration before: {}", handler.effect_id, *duration);
                             *duration -= 1;
-                            eprintln!("[DEBUG] Weather {} duration after: {}", handler.effect_id, *duration);
                             *duration == 0
                         } else {
-                            eprintln!("[DEBUG] Weather {} has no duration", handler.effect_id);
                             false
                         }
                     }

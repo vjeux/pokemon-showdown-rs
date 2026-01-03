@@ -671,16 +671,20 @@ pub fn use_move_inner(
         for &pressure_target in &pressure_targets {
             // Call DeductPP event for each pressure target
             // JS: const ppDrop = this.battle.runEvent('DeductPP', source, pokemon, move);
+            // NOTE: JavaScript doesn't pass a relay variable - pass None so handlers that don't
+            // implement onDeductPP return None instead of Some(1)
             if let Some(pp_drop) = battle.run_event(
                 "DeductPP",
                 Some(pressure_target),
                 Some(pokemon_pos),
                 Some(move_or_move_name),
-                Some(1),
+                None,  // Don't pass relay_var - let it default to None
             ) {
                 // JS: if (ppDrop !== true) extraPP += ppDrop || 0;
-                // runEvent returns Some(i32), we add it to extra PP
-                extra_pp += pp_drop;
+                // Only add if not 1 (JavaScript's true check)
+                if pp_drop != 1 {
+                    extra_pp += pp_drop;
+                }
             }
         }
 
