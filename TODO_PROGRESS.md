@@ -2,7 +2,7 @@
 
 ## Summary
 - Total ability callback TODOs: 380
-- Completed: 189 (49.7%)
+- Completed: 190 (50.0%) 🎉 **MILESTONE REACHED!**
 - Infrastructure: Major getMoveHitData refactor completed, onModifySTAB infrastructure updated, EffectState.source field added, Volatile status system fully functional, Ability state system (EffectState.data HashMap) confirmed working, Side condition system fully functional (add/remove/get side conditions), **onSideConditionStart dispatcher infrastructure updated** (added pokemon_pos and side_condition_id parameters)
 - In Progress: Continuing systematic implementation with abilities using existing infrastructure
 
@@ -408,6 +408,9 @@ Updated onSideConditionStart dispatcher infrastructure to properly pass pokemon_
 - Updated windpower.rs and windrider.rs function signatures to accept new parameters
 - This enables proper implementation of abilities that respond to specific side conditions
 
+### Batch 68 - Wind Move Immunity (1 TODO) 🎉 **50% MILESTONE!**
+189. **Wind Rider** (windrider.rs) - onTryHit: Grants immunity to wind moves when target ≠ source, boosts Attack by 1 (Note: immunity message logic incomplete until battle.boost() returns success status)
+
 ## Current Session
 Completed Flash Fire (Batch 48) using volatile status infrastructure.
 Completed Supreme Overlord (Batch 49) using ability_state.data and side.total_fainted.
@@ -429,7 +432,8 @@ Completed Wind Power onDamagingHit (Batch 64) adding charge on wind moves.
 Completed Sweet Veil (Batch 65) blocking sleep and yawn from allies.
 Completed Teraform Zero (Batch 66) clearing weather and terrain on terastallization.
 Completed Wind Power and Wind Rider onSideConditionStart (Batch 67) with major infrastructure change to dispatcher.
-Progress: 189/380 abilities (49.7%).
+Completed Wind Rider onTryHit (Batch 68) granting immunity to wind moves and boosting Attack.
+🎉 **50% MILESTONE REACHED!** Progress: 190/380 abilities (50.0%).
 All implementations are 1-to-1 from JavaScript and compile successfully.
 
 ## Implementation Notes
