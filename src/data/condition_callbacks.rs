@@ -139,7 +139,8 @@ pub fn dispatch_on_before_move(
                 format!("{}{}: {}", side_id, position_letter, pokemon.name)
             };
             battle.add("cant", &[Arg::String(pokemon_id), Arg::Str("flinch")]);
-            // TODO: Implement runEvent('Flinch', pokemon) when event system is ready
+            // this.runEvent('Flinch', pokemon);
+            battle.run_event("Flinch", Some(pokemon_pos), None, None, None);
             return EventResult::Boolean(false);
         }
         _ => EventResult::Continue,
