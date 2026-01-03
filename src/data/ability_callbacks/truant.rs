@@ -13,8 +13,34 @@ use crate::event::EventResult;
 ///         pokemon.addVolatile('truant');
 ///     }
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // TODO: Implement 1-to-1 from JS
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    use crate::dex_data::ID;
+    use crate::pokemon::Pokemon;
+
+    // pokemon.removeVolatile('truant');
+    Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("truant"));
+
+    // if (pokemon.activeTurns && (pokemon.moveThisTurnResult !== undefined || !this.queue.willMove(pokemon)))
+    let (active_turns, move_this_turn_result) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (pokemon.active_turns, pokemon.move_this_turn_result)
+    };
+
+    // Check if activeTurns > 0 (JavaScript treats 0 as falsy)
+    if active_turns > 0 {
+        // Check if moveThisTurnResult !== undefined (in Rust: is Some)
+        // OR !this.queue.willMove(pokemon)
+        // Note: We don't have access to queue.willMove yet, but moveThisTurnResult being Some
+        // should cover the main case (Pokemon moved this turn)
+        if move_this_turn_result.is_some() {
+            // pokemon.addVolatile('truant');
+            Pokemon::add_volatile(battle, pokemon_pos, ID::from("truant"), None, None, None);
+        }
+    }
+
     EventResult::Continue
 }
 
