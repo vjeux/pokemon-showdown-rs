@@ -1,5 +1,5 @@
 // JS Source:
-// 
+//
 // 	getRequestData(forAlly?: boolean): SideRequestData {
 // 		const data: SideRequestData = {
 // 			name: this.name,
@@ -19,34 +19,38 @@ impl Side {
 
     /// Get request data for protocol
     /// Equivalent to side.ts getRequestData()
-    //
-    // 	getRequestData(forAlly?: boolean): SideRequestData {
-    // 		const data: SideRequestData = {
-    // 			name: this.name,
-    // 			id: this.id,
-    // 			pokemon: [] as PokemonSwitchRequestData[],
-    // 		};
-    // 		for (const pokemon of this.pokemon) {
-    // 			data.pokemon.push(pokemon.getSwitchRequestData(forAlly));
-    // 		}
-    // 		return data;
-    // 	}
-    //
-    pub fn get_request_data(&self) -> serde_json::Value {
+    ///
+    /// JavaScript:
+    /// getRequestData(forAlly?: boolean): SideRequestData {
+    ///     const data: SideRequestData = {
+    ///         name: this.name,
+    ///         id: this.id,
+    ///         pokemon: [] as PokemonSwitchRequestData[],
+    ///     };
+    ///     for (const pokemon of this.pokemon) {
+    ///         data.pokemon.push(pokemon.getSwitchRequestData(forAlly));
+    ///     }
+    ///     return data;
+    /// }
+    pub fn get_request_data(&self, for_ally: bool) -> serde_json::Value {
+        // JS: const data: SideRequestData = {
+        // JS:     name: this.name,
+        // JS:     id: this.id,
+        // JS:     pokemon: [] as PokemonSwitchRequestData[],
+        // JS: };
+
+        // JS: for (const pokemon of this.pokemon) {
+        // JS:     data.pokemon.push(pokemon.getSwitchRequestData(forAlly));
+        // JS: }
+        let pokemon_data: Vec<serde_json::Value> = self.pokemon.iter()
+            .map(|p| p.get_switch_request_data(for_ally))
+            .collect();
+
+        // JS: return data;
         serde_json::json!({
             "name": self.name,
             "id": self.id_str(),
-            "pokemon": self.pokemon.iter().enumerate().map(|(i, p)| {
-                serde_json::json!({
-                    "ident": format!("{}: {}", self.id_str(), p.name),
-                    "details": format!("{}, L{}", p.species_id.as_str(), p.level),
-                    "condition": format!("{}/{}", p.hp, p.maxhp),
-                    "active": self.active.contains(&Some(i)),
-                    "moves": p.move_slots.iter().map(|m| m.id.as_str().to_string()).collect::<Vec<_>>(),
-                    "ability": p.ability.as_str(),
-                    "item": p.item.as_str()
-                })
-            }).collect::<Vec<_>>()
+            "pokemon": pokemon_data
         })
     }
 }

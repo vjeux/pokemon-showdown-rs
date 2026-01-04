@@ -66,7 +66,7 @@ impl Battle {
         if !self.sent_requests {
             // Get requests for all sides
             let requests: Vec<serde_json::Value> = self.sides.iter()
-                .map(|side| side.get_request_data())
+                .map(|side| side.get_request_data(false))
                 .collect();
 
             // Emit requests

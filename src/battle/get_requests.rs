@@ -91,7 +91,7 @@ impl Battle {
                         // JS: requests[i] = { forceSwitch: switchTable, side: side.getRequestData() };
                         requests[i] = Some(serde_json::json!({
                             "forceSwitch": switch_table,
-                            "side": side.get_request_data(),
+                            "side": side.get_request_data(false),
                         }));
                     }
                 }
@@ -108,7 +108,7 @@ impl Battle {
                     // JS: requests[i] = { teamPreview: true, maxChosenTeamSize, side: side.getRequestData() };
                     let mut request = serde_json::json!({
                         "teamPreview": true,
-                        "side": side.get_request_data(),
+                        "side": side.get_request_data(false),
                     });
                     if let Some(size) = max_chosen_team_size {
                         request["maxChosenTeamSize"] = serde_json::json!(size);
@@ -148,17 +148,15 @@ impl Battle {
                     // JS: requests[i] = { active: activeData, side: side.getRequestData() };
                     let mut request = serde_json::json!({
                         "active": active_data,
-                        "side": side.get_request_data(),
+                        "side": side.get_request_data(false),
                     });
 
                     // JS: if (side.allySide) { (requests[i] as MoveRequest).ally = side.allySide.getRequestData(true); }
                     // Rust: ally_index is Option<usize> pointing to allied side in multi battles
                     if let Some(ally_idx) = side.ally_index {
                         if let Some(ally_side) = self.sides.get(ally_idx) {
-                            // TODO: JavaScript passes `true` parameter to getRequestData(true)
-                            // This likely indicates "minimal data for ally" but current Rust impl doesn't support this
-                            // For now, use full getRequestData() - should verify if ally data needs to be filtered
-                            request["ally"] = ally_side.get_request_data();
+                            // Pass true to indicate this is ally data (use baseMoves instead of moves)
+                            request["ally"] = ally_side.get_request_data(true);
                         }
                     }
 
@@ -182,7 +180,7 @@ impl Battle {
                 // JS: requests[i] = { wait: true, side: this.sides[i].getRequestData() };
                 *request_opt = Some(serde_json::json!({
                     "wait": true,
-                    "side": self.sides[i].get_request_data(),
+                    "side": self.sides[i].get_request_data(false),
                 }));
             }
         }

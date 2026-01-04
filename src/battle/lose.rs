@@ -84,7 +84,7 @@ impl Battle {
                 // JavaScript: side.emitRequest({ wait: true, side: side.getRequestData() });
                 let request = serde_json::json!({
                     "wait": true,
-                    "side": self.sides[side_idx].get_request_data(),
+                    "side": self.sides[side_idx].get_request_data(false),
                 });
                 self.sides[side_idx].emit_request(&request);
 
