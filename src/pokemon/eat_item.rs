@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::event_system::EffectState;
 
 /// Check if an item is a restorative berry
@@ -118,15 +119,15 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 83): runEvent('UseItem') and runEvent('TryEatItem')
         // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's item field
-        let use_item_result = battle.run_event("UseItem", Some(pokemon_pos), None, None, None);
-        if use_item_result == Some(0) || use_item_result == None {
+        let use_item_result = battle.run_event("UseItem", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+        if matches!(use_item_result, EventResult::Number(0)) || matches!(use_item_result, EventResult::Null) {
             return None; // false in JavaScript
         }
 
         // Check TryEatItem unless forced
         if !_is_forced {
-            let try_eat_result = battle.run_event("TryEatItem", Some(pokemon_pos), None, None, None);
-            if try_eat_result == Some(0) || try_eat_result == None {
+            let try_eat_result = battle.run_event("TryEatItem", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+            if matches!(try_eat_result, EventResult::Number(0)) || matches!(try_eat_result, EventResult::Null) {
                 return None; // false in JavaScript
             }
         }
@@ -150,7 +151,7 @@ impl Pokemon {
         // JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
         // ✅ NOW IMPLEMENTED (Session 24 Part 83): singleEvent('Eat') and runEvent('EatItem')
         battle.single_event("Eat", &item_id, Some(pokemon_pos), _source_pos, None);
-        battle.run_event("EatItem", Some(pokemon_pos), _source_pos, Some(&item_id), None);
+        battle.run_event("EatItem", Some(pokemon_pos), _source_pos, Some(&item_id), EventResult::Continue, false, false);
 
         // JS: if (RESTORATIVE_BERRIES.has(item.id)) {
         // JS:     switch (this.pendingStaleness) {
@@ -213,7 +214,7 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 83): runEvent('AfterUseItem')
         // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's item field which is now empty
-        battle.run_event("AfterUseItem", Some(pokemon_pos), None, None, None);
+        battle.run_event("AfterUseItem", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
 
         // JS: return true;
         Some(item_id)

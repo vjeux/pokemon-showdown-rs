@@ -22,6 +22,7 @@
 // 	}
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle_actions::{SpreadMoveTargets, SpreadMoveTarget};
 
 /// Apply secondary effects of a move
@@ -71,26 +72,19 @@ pub fn secondaries(
             // Fire ModifySecondaries event for each secondary
             // In JavaScript, this returns a filtered/modified array
             // In Rust, we check the event result to see if we should skip this secondary
-            let modify_result = battle.run_event(
-                "ModifySecondaries",
-                Some(target_pos),
-                Some(source_pos),
-                Some(move_id),
-                None,
-            );
+            let modify_result = battle.run_event("ModifySecondaries", Some(target_pos), Some(source_pos), Some(move_id), EventResult::Continue, false, false);
 
             // If ModifySecondaries event returns a falsy value (like EventResult::Null or EventResult::Boolean(false)),
             // it means the secondaries should be blocked (e.g., by Shield Dust)
-            if let Some(result) = modify_result {
-                if result == 0 {
-                    // Event returned 0, skip all secondaries for this target
+            match modify_result {
+                EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null | EventResult::Continue => {
+                    // Event returned falsy value, skip all secondaries for this target
                     Vec::new()
-                } else {
+                }
+                _ => {
+                    // Event returned truthy value or didn't interfere, proceed with secondaries
                     secs
                 }
-            } else {
-                // None means the event blocked the secondaries
-                Vec::new()
             }
         } else {
             continue;

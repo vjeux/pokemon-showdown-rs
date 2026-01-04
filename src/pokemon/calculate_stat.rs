@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::dex_data::StatID;
 
 impl Pokemon {
@@ -79,7 +80,7 @@ impl Pokemon {
         // For now, we skip the event call since it has no effect and just use the boost directly
         let _stat_user_pos_resolved = _stat_user_pos.unwrap_or((self.side_index, self.position));
         // When ability callbacks are implemented, add:
-        // battle.run_event("ModifyBoost", Some(_stat_user_pos_resolved), None, None, Some(boost as i32), false);
+        // battle"ModifyBoost", Some(_stat_user_pos_resolved), None, None, Some(boost as i32), false, false, false);
 
         // JS: const boostTable = [1, 1.5, 2, 2.5, 3, 3.5, 4];
         // Apply boost

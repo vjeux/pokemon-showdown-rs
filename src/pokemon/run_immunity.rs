@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 
 impl Pokemon {
 
@@ -55,9 +56,10 @@ impl Pokemon {
         // NOTE: JavaScript NEGATES the result!
         // If runEvent returns truthy → negateImmunity = false
         // If runEvent returns falsy/undefined → negateImmunity = true
-        let negate_immunity = match battle.run_event("NegateImmunity", Some(pokemon_pos), None, None, None) {
-            Some(val) if val != 0 => false,  // Event returned truthy → DON'T negate (negateImmunity=false)
-            _ => true,  // Event returned falsy/None → DO negate (negateImmunity=true)
+        let negate_immunity = match battle.run_event("NegateImmunity", Some(pokemon_pos), None, None, EventResult::Continue, false, false) {
+            EventResult::Number(val) if val != 0 => false,  // Event returned truthy → DON'T negate (negateImmunity=false)
+            EventResult::Boolean(true) => false,  // Event returned true → DON'T negate
+            _ => true,  // Event returned falsy/Continue/Null → DO negate (negateImmunity=true)
         };
 
         // JS: const notImmune = type === 'Ground' ?

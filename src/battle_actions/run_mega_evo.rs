@@ -3,6 +3,7 @@
 //! 1:1 port of runMegaEvo from battle-actions.ts
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle_actions::{can_mega_evo, can_ultra_burst};
 
 /// Perform Mega Evolution or Ultra Burst
@@ -91,7 +92,7 @@ pub fn run_mega_evo(
     }
 
     // this.battle.runEvent('AfterMega', pokemon);
-    battle.run_event("AfterMega", Some((side_index, pokemon_index)), None, None, None);
+    battle.run_event("AfterMega", Some((side_index, pokemon_index)), None, None, EventResult::Continue, false, false);
 
     // return true;
     true

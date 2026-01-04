@@ -175,7 +175,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 
     if eat_result.is_not_fail() {
         // this.runEvent('EatItem', pokemon, null, null, item);
-        battle.run_event("EatItem", Some(pokemon_pos), None, Some(&berry_id), None);
+        battle.run_event("EatItem", Some(pokemon_pos), None, Some(&berry_id), EventResult::Continue, false, false);
     }
 
     // if (item.onEat) pokemon.ateBerry = true;

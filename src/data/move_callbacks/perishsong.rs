@@ -51,10 +51,12 @@ pub fn on_hit_field(
             Some(pokemon_pos),
             source,
             Some(&ID::from(move_id)),
-            None,
+            EventResult::Continue,
+            false,
+            false
         );
 
-        if invulnerability_result == Some(0) {
+        if matches!(invulnerability_result, EventResult::Boolean(false)) {
             // this.add('-miss', source, pokemon);
             let (source_arg, pokemon_arg) = {
                 let source_arg = if let Some(src) = source {
@@ -85,10 +87,12 @@ pub fn on_hit_field(
                 Some(pokemon_pos),
                 source,
                 Some(&ID::from(move_id)),
-                None,
+                EventResult::Continue,
+                false,
+                false
             );
 
-            if try_hit_result.is_none() {
+            if matches!(try_hit_result, EventResult::Null) {
                 // result = true;
                 result = true;
             // } else if (!pokemon.volatiles['perishsong']) {

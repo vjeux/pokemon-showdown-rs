@@ -144,6 +144,7 @@
 
 
 use crate::*;
+use crate::event::EventResult;
 
 /// Get damage for a move
 /// Equivalent to getDamage() in battle-actions.ts:1583
@@ -257,12 +258,14 @@ pub fn get_damage(
     let mut is_crit = false;
 
     // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
-    if let Some(modified_crit) = battle.run_event(
+    if let EventResult::Number(modified_crit) = battle.run_event(
         "ModifyCritRatio",
         Some(source_pos),
         Some(target_pos),
         Some(&move_data.id),
-        Some(crit_ratio),
+        EventResult::Number(crit_ratio),
+        false,
+        false
     ) {
         crit_ratio = modified_crit;
     }
@@ -322,12 +325,14 @@ pub fn get_damage(
     //                                                                                      on_effect=true
     // When on_effect is true, the move's onBasePower handler is called (e.g., Knock Off's 1.5x boost)
     eprintln!("[GET_DAMAGE] basePower BEFORE BasePower event: {}", base_power);
-    if let Some(modified_bp) = battle.run_event_with_effect(
+    if let EventResult::Number(modified_bp) = battle.run_event(
         "BasePower",
         Some(source_pos),
         Some(target_pos),
         Some(&move_data.id),
-        Some(base_power),
+        EventResult::Number(base_power),
+        true,
+        false
     ) {
         base_power = modified_bp;
         eprintln!("[GET_DAMAGE] basePower AFTER BasePower event: {}", base_power);
@@ -449,12 +454,24 @@ pub fn get_damage(
                 pokemon.name, pokemon.ability, attack);
         }
         eprintln!("[GET_DAMAGE] BEFORE ModifyAtk: attack={}", attack);
-        attack = battle.run_event("ModifyAtk", Some(source_pos), Some(target_pos), Some(&move_id), Some(attack)).unwrap_or(attack);
+        match battle.run_event("ModifyAtk", Some(source_pos), Some(target_pos), Some(&move_id), EventResult::Number(attack), false, false) {
+            EventResult::Number(n) => attack = n,
+            _ => {}
+        }
         eprintln!("[GET_DAMAGE] AFTER ModifyAtk: attack={}", attack);
-        defense = battle.run_event("ModifyDef", Some(target_pos), Some(source_pos), Some(&move_id), Some(defense)).unwrap_or(defense);
+        match battle.run_event("ModifyDef", Some(target_pos), Some(source_pos), Some(&move_id), EventResult::Number(defense), false, false) {
+            EventResult::Number(n) => defense = n,
+            _ => {}
+        }
     } else {
-        attack = battle.run_event("ModifySpA", Some(source_pos), Some(target_pos), Some(&move_id), Some(attack)).unwrap_or(attack);
-        defense = battle.run_event("ModifySpD", Some(target_pos), Some(source_pos), Some(&move_id), Some(defense)).unwrap_or(defense);
+        match battle.run_event("ModifySpA", Some(source_pos), Some(target_pos), Some(&move_id), EventResult::Number(attack), false, false) {
+            EventResult::Number(n) => attack = n,
+            _ => {}
+        }
+        match battle.run_event("ModifySpD", Some(target_pos), Some(source_pos), Some(&move_id), EventResult::Number(defense), false, false) {
+            EventResult::Number(n) => defense = n,
+            _ => {}
+        }
     }
 
     // Base damage calculation

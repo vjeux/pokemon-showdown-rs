@@ -70,13 +70,12 @@ pub fn on_try_move(
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;
     // }
-    if battle
-        .run_event("ChargeMove", Some(source_pos), target_pos, None, None)
-        .unwrap_or(0)
-        == 0
-    {
-        // return;
-        return EventResult::Continue;
+    match battle.run_event("ChargeMove", Some(source_pos), target_pos, None, EventResult::Continue, false, false) {
+        EventResult::Boolean(false) | EventResult::Null => {
+            // return;
+            return EventResult::Continue;
+        }
+        _ => {}
     }
 
     // attacker.addVolatile('twoturnmove', defender);

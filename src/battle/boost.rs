@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 
 impl Battle {
 
@@ -138,7 +139,9 @@ impl Battle {
             Some(target),
             source,
             effect_id.as_ref(),
-            None,
+            EventResult::Continue,
+            false,
+            false
         );
 
         // JS: boost = target.getCappedBoost(boost);
@@ -148,7 +151,7 @@ impl Battle {
         // This event can prevent boosts from being applied (e.g., Clear Body ability)
         // If the event handler needs to cancel boosts, it should set a flag or modify Pokemon state
         // Note: JavaScript can return null to cancel all boosts - we call the event for side effects
-        self.run_event("TryBoost", Some(target), source, effect_id.as_ref(), None);
+        self.run_event("TryBoost", Some(target), source, effect_id.as_ref(), EventResult::Continue, false, false);
 
         let mut success = false;
         let mut stats_raised = false;
@@ -290,7 +293,7 @@ impl Battle {
                         }
 
                         // JS: this.runEvent('AfterEachBoost', target, source, effect, currentBoost);
-                        self.run_event("AfterEachBoost", Some(target), source, None, None);
+                        self.run_event("AfterEachBoost", Some(target), source, None, EventResult::Continue, false, false);
                     } else {
                         // JS: } else if (effect?.effectType === 'Ability') {
                         //       if (isSecondary || isSelf) this.add(msg, target, boostName, boostBy);
@@ -330,7 +333,7 @@ impl Battle {
         }
 
         // JS: this.runEvent('AfterBoost', target, source, effect, boost);
-        self.run_event("AfterBoost", Some(target), source, None, None);
+        self.run_event("AfterBoost", Some(target), source, None, EventResult::Continue, false, false);
 
         // JS: if (Object.values(boost).some(x => x > 0)) target.statsRaisedThisTurn = true;
         // JS: if (Object.values(boost).some(x => x < 0)) target.statsLoweredThisTurn = true;

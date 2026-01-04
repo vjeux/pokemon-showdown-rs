@@ -31,7 +31,7 @@ impl Pokemon {
         // Note: In Rust, we cannot call runEvent without Battle reference.
         // For now, return the base weight. Full implementation would require:
         // - Refactoring to associated function: Pokemon::get_weight(battle, pokemon_pos)
-        // - Calling battle.run_event('ModifyWeight', pokemon_pos, self.weight_hg)
+        // - Calling battle.run_event_compat('ModifyWeight', pokemon_pos, self.weight_hg)
         // - Returning max(1, modified_weight)
         self.weight_hg.max(1)
     }

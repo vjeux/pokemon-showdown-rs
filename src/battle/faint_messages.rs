@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::battle::FaintData;
 
 impl Battle {
@@ -159,7 +160,9 @@ impl Battle {
                     Some((side_idx, poke_idx)),
                     faint_data.source,
                     faint_data.effect.as_ref(),
-                    None, // relay_var
+                    EventResult::Continue,
+                    false,
+                    false,
                 );
 
                 // JS: this.singleEvent('End', pokemon.getAbility(), pokemon.abilityState, pokemon);
@@ -389,7 +392,9 @@ impl Battle {
                     Some(faint_data.target),
                     faint_data.source,
                     faint_data.effect.as_ref(),
-                    None, // relay_var
+                    EventResult::Continue,
+                    false,
+                    false,
                 );
             }
         }

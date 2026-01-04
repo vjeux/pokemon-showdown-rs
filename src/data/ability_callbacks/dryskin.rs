@@ -34,7 +34,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 
             let healed = battle.heal(heal_amount, Some(target_pos), None, None);
 
-            if healed.is_none() || healed == Some(0) {
+            if healed.is_none() || matches!(healed, Some(0)) {
                 // this.add('-immune', target, '[from] ability: Dry Skin');
                 let target_slot = {
                     let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

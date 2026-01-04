@@ -6,6 +6,7 @@
 //! source tracking, which is needed for moves like Pursuit that track multiple sources.
 
 use crate::*;
+use crate::event::EventResult;
 use crate::event_system::EffectState;
 
 impl Battle {

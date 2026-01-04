@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::event_system::EffectState;
 
 impl Pokemon {
@@ -98,9 +99,9 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 82): runEvent('UseItem')
         // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's item field
-        let use_item_result = battle.run_event("UseItem", Some(pokemon_pos), None, None, None);
+        let use_item_result = battle.run_event("UseItem", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
         // runEvent returns Option<i32>, None or Some(0) means failure
-        if use_item_result == Some(0) || use_item_result == None {
+        if matches!(use_item_result, EventResult::Number(0)) || matches!(use_item_result, EventResult::Null) {
             return None; // false in JavaScript
         }
 
@@ -225,7 +226,7 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 82): runEvent('AfterUseItem')
         // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's item field which is now empty
-        battle.run_event("AfterUseItem", Some(pokemon_pos), None, None, None);
+        battle.run_event("AfterUseItem", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
 
         // JS: return true;
         Some(item_id)

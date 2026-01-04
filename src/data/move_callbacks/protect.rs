@@ -25,9 +25,9 @@ pub fn on_prepare_hit(
         return EventResult::Boolean(false);
     }
 
-    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, None);
+    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, EventResult::Continue, false, false);
 
-    if stall_result == Some(0) {
+    if matches!(stall_result, EventResult::Number(0)) {
         return EventResult::Boolean(false);
     }
 

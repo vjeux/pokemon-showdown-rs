@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::event_system::EffectState;
 
 impl Pokemon {
@@ -110,9 +111,9 @@ impl Pokemon {
         // Note: JavaScript passes ability as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's ability field after it's set
         if !_is_from_forme_change && !is_transform {
-            let set_ability_result = battle.run_event("SetAbility", Some(pokemon_pos), source_pos, source_effect, None);
+            let set_ability_result = battle.run_event("SetAbility", Some(pokemon_pos), source_pos, source_effect, EventResult::Continue, false, false);
             // runEvent returns Option<i32>, None or Some(0) means failure
-            if set_ability_result == Some(0) || set_ability_result == None {
+            if matches!(set_ability_result, EventResult::Number(0)) || matches!(set_ability_result, EventResult::Null) {
                 return ID::default();
             }
         }

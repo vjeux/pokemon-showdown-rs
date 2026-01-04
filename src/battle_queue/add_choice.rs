@@ -1,4 +1,5 @@
 use crate::battle_queue::BattleQueue;
+use crate::event::EventResult;
 
 impl BattleQueue {
 

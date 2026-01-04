@@ -1,6 +1,7 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
 
 use crate::*;
+use crate::event::EventResult;
 
 impl Pokemon {
     /// Update is_z flags for all move slots based on move data from Dex

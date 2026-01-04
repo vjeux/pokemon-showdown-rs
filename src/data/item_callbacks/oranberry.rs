@@ -36,9 +36,9 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 pub fn on_try_eat_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.runEvent('TryHeal', pokemon, null, this.effect, 10)) return false;
 
-    let result = battle.run_event("TryHeal", Some(pokemon_pos), None, None, Some(10));
+    let result = battle.run_event("TryHeal", Some(pokemon_pos), None, None, EventResult::Number(10), false, false);
 
-    if result.is_none() {
+    if matches!(result, EventResult::Null | EventResult::Continue) {
         return EventResult::Boolean(false);
     }
 

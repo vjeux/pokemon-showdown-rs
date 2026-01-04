@@ -29,10 +29,10 @@ pub fn on_prepare_hit(
     }
 
     eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Calling run_event StallMove");
-    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, None);
+    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, EventResult::Continue, false, false);
     eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] StallMove result: {:?}", stall_result);
 
-    let result = will_act && stall_result.unwrap_or(0) != 0;
+    let result = will_act && match stall_result { EventResult::Number(n) => n, _ => 0 } != 0;
     eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Returning {}", result);
     EventResult::Boolean(result)
 }

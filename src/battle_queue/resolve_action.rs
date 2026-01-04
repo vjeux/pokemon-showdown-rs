@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::battle_queue::*;
 
 impl BattleQueue {
@@ -214,7 +215,7 @@ impl BattleQueue {
                                 Some(&move_id),
                                 Some(0.0),
                             );
-                            result.unwrap_or(0.0)
+                            match result { Some(f) => f, None => 0.0 }
                         };
 
                         // Update the main action's fractional priority (it's now at the end of the actions list)

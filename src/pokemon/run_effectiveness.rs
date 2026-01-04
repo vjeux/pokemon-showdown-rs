@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 
 impl Pokemon {
 
@@ -93,14 +94,19 @@ impl Pokemon {
                     Some(pokemon_pos),
                     None,
                     Some(move_id),
-                    Some(type_mod),
+                    EventResult::Number(type_mod),
+                    false,
+                    false
                 );
 
-                if let Some(modified_mod) = event_result {
-                    total_type_mod += modified_mod;
-                } else {
-                    // Event didn't modify, use base type_mod
-                    total_type_mod += type_mod;
+                match event_result {
+                    EventResult::Number(modified_mod) => {
+                        total_type_mod += modified_mod;
+                    }
+                    _ => {
+                        // Event didn't modify, use base type_mod
+                        total_type_mod += type_mod;
+                    }
                 }
             }
         }

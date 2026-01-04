@@ -71,8 +71,8 @@ pub fn on_try_move(
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     //     return;
     // }
-    let charge_result = battle.run_event("ChargeMove", Some(attacker), defender, None, None);
-    if charge_result == Some(0) {
+    let charge_result = battle.run_event("ChargeMove", Some(attacker), defender, None, EventResult::Continue, false, false);
+    if matches!(charge_result, EventResult::Number(0)) {
         return EventResult::Continue;
     }
 

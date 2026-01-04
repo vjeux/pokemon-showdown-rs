@@ -208,6 +208,9 @@ pub enum Arg<'a> {
 /// JavaScript equivalent: EventListener (sim/battle.ts)
 /// 10 fields in JavaScript
 pub struct EventListener {
+    /// Event name/variant (e.g., "Damage", "AllyDamage", "SourceDamage")
+    /// Not in JavaScript - Rust-specific field to track event variant
+    pub event_name: String,
     /// Effect that owns this handler
     /// JavaScript: effect: BasicEffect (via effectId)
     pub effect_id: ID,

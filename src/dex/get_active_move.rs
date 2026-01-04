@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::battle_actions::ActiveMove;
 use crate::dex::Accuracy;
 

@@ -33,9 +33,9 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
     if should_heal {
         // Phase 2: Run TryHeal event
-        let try_heal_result = battle.run_event("TryHeal", Some(pokemon_pos), None, None, Some(20));
+        let try_heal_result = battle.run_event("TryHeal", Some(pokemon_pos), None, None, EventResult::Number(20), false, false);
 
-        if try_heal_result.is_some() {
+        if !matches!(try_heal_result, EventResult::Null | EventResult::Continue) {
             // Phase 3: Try to use item
             let used_item = {
                 let _pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

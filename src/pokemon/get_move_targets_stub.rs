@@ -1,6 +1,7 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
 
 use crate::*;
+use crate::event::EventResult;
 use crate::pokemon::GetMoveTargetsResult;
 use crate::dex_data::ID;
 
@@ -218,13 +219,15 @@ impl Pokemon {
                                 let encoded_target = (target_side as i32 * 10) + target_pos as i32;
 
                                 // Call RedirectTarget priority event
-                                if let Some(new_encoded) = battle.priority_event(
+                                let redirect_result = battle.priority_event(
                                     "RedirectTarget",
                                     Some(user_pos),
                                     Some(user_pos),
                                     Some(move_id),
-                                    Some(encoded_target),
-                                ) {
+                                    EventResult::Number(encoded_target),
+                                );
+
+                                if let EventResult::Number(new_encoded) = redirect_result {
                                     // Decode the new target position
                                     let new_side = (new_encoded / 10) as usize;
                                     let new_pos = (new_encoded % 10) as usize;

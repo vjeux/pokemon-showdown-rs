@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::battle::{PriorityItem, BattleRequestState};
 use crate::pokemon::MoveSlot;
 
@@ -601,7 +602,7 @@ impl Battle {
                         // JavaScript formats can have onBattleStart callbacks
                         // These cannot be deserialized from JSON - must be registered separately
                         // For now, emit an event that format-specific code can hook into
-                        self.run_event("BattleStart", None, None, None, None);
+                        self.run_event("BattleStart", None, None, None, EventResult::Continue, false, false);
 
                         // JS: for (const rule of this.ruleTable.keys()) { ... }
                         if let Some(ref rule_table) = self.rule_table {
@@ -627,7 +628,9 @@ impl Battle {
                                     None,
                                     None,
                                     None,
-                                    None,
+                                    EventResult::Continue,
+                                    false,
+                                    false
                                 );
                             }
                         }
@@ -883,7 +886,7 @@ impl Battle {
                         self.sides[i].pokemon[poke_idx].skip_before_switch_out_event_flag = true;
 
                         // Run BeforeSwitchOut event
-                        self.run_event("BeforeSwitchOut", Some((i, poke_idx)), None, None, None);
+                        self.run_event("BeforeSwitchOut", Some((i, poke_idx)), None, None, EventResult::Continue, false, false);
 
                         // Check faint messages
                         self.faint_messages(false, false, true);

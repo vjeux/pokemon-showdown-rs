@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 
 impl Battle {
 
@@ -134,7 +135,9 @@ impl Battle {
                 Some((side_idx, target_idx)),
                 Some((side_idx, poke_idx)),
                 None,
-                None,
+                EventResult::Continue,
+                false,
+                false,
             );
             // Second event: Swap on pokemon (source=target)
             self.run_event(
@@ -142,7 +145,9 @@ impl Battle {
                 Some((side_idx, poke_idx)),
                 Some((side_idx, target_idx)),
                 None,
-                None,
+                EventResult::Continue,
+                false,
+                false,
             );
         }
 

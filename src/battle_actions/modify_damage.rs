@@ -3,6 +3,7 @@
 //! 1:1 port of modifyDamage from battle-actions.ts:1449
 
 use crate::*;
+use crate::event::EventResult;
 
 /// Apply damage modifiers
 /// Equivalent to modifyDamage() in battle-actions.js:1449
@@ -120,12 +121,14 @@ pub fn modify_damage(
 
     // baseDamage = this.battle.runEvent("WeatherModifyDamage", pokemon, target, move, baseDamage);
     eprintln!("[MODIFY_DAMAGE] Before WeatherModifyDamage event: base_damage={}", base_damage);
-    if let Some(modified) = battle.run_event(
+    if let EventResult::Number(modified) = battle.run_event(
         "WeatherModifyDamage",
         Some(source_pos),
         Some(target_pos),
         Some(&move_data.id),
-        Some(base_damage),
+        EventResult::Number(base_damage),
+        false,
+        false
     ) {
         base_damage = modified;
         eprintln!("[MODIFY_DAMAGE] After WeatherModifyDamage event: base_damage={}", base_damage);
@@ -293,12 +296,14 @@ pub fn modify_damage(
 
     // baseDamage = this.battle.runEvent("ModifyDamage", pokemon, target, move, baseDamage);
     eprintln!("[MODIFY_DAMAGE] Before ModifyDamage event: base_damage={}", base_damage);
-    if let Some(modified) = battle.run_event(
+    if let EventResult::Number(modified) = battle.run_event(
         "ModifyDamage",
         Some(source_pos),
         Some(target_pos),
         Some(&move_data.id),
-        Some(base_damage),
+        EventResult::Number(base_damage),
+        false,
+        false
     ) {
         base_damage = modified;
         eprintln!("[MODIFY_DAMAGE] After ModifyDamage event: base_damage={}", base_damage);

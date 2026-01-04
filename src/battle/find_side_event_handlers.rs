@@ -58,6 +58,7 @@ impl Battle {
                 // JS:     end: customHolder ? null : side.removeSideCondition, effectHolder: customHolder || side,
                 // JS: }, callbackName));
                 handlers.push(EventListener {
+                    event_name: String::new(),
                     effect_id: sc_id.clone(),
                     effect_type: EffectType::SideCondition,
                     target: None,

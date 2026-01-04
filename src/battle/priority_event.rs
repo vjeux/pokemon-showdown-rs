@@ -8,6 +8,7 @@
 
 
 use crate::*;
+use crate::event::EventResult;
 
 impl Battle {
 
@@ -31,9 +32,9 @@ impl Battle {
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
         effect: Option<&ID>,
-        relay_var: Option<i32>,
-    ) -> Option<i32> {
-        // For priority events, we use fastExit behavior
-        self.run_event(event_id, target, source, effect, relay_var)
+        relay_var: EventResult,
+    ) -> EventResult {
+        // For priority events, we use fastExit behavior (fast_exit = true)
+        self.run_event(event_id, target, source, effect, relay_var, false, true)
     }
 }

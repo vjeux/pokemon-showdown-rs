@@ -15,6 +15,7 @@
 // 	}
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget};
 
 /// Fire TryPrimaryHit event for all targets
@@ -40,20 +41,15 @@ pub fn try_primary_hit_event(
         };
 
         // damage[i] = this.battle.runEvent('TryPrimaryHit', target, pokemon, moveData);
-        let result = battle.run_event(
-            "TryPrimaryHit",
-            Some(target_pos),
-            Some(pokemon_pos),
-            Some(move_id),
-            None,
-        );
+        let result = battle.run_event("TryPrimaryHit", Some(target_pos), Some(pokemon_pos), Some(move_id), EventResult::Continue, false, false);
 
         // JavaScript: damage[i] = result
         // Direct assignment - runEvent returns number | boolean | undefined in JS
-        // In Rust: Option<i32> maps to number | undefined
+        // In Rust: EventResult maps to number | boolean | null
         damage[i] = match result {
-            Some(val) => DamageResult::Damage(val),
-            None => DamageResult::Undefined,
+            EventResult::Number(val) => DamageResult::Damage(val),
+            EventResult::Null | EventResult::Continue => DamageResult::Undefined,
+            _ => DamageResult::Undefined,
         };
     }
 

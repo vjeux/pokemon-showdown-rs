@@ -1,6 +1,7 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
 
 use crate::*;
+use crate::event::EventResult;
 use crate::dex_data::StatID;
 
 impl Battle {
@@ -109,7 +110,7 @@ impl Battle {
             };
 
             // Run the Modify* event (e.g., ModifySpe for Slow Start)
-            if let Some(modified_stat) = self.run_event(event_name, Some(pokemon_pos), None, None, Some(stat_value)) {
+            if let EventResult::Number(modified_stat) = self.run_event(event_name, Some(pokemon_pos), None, None, EventResult::Number(stat_value), false, false) {
                 stat_value = modified_stat;
             }
         }

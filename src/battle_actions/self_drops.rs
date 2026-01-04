@@ -24,6 +24,7 @@
 // 	}
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle_actions::{SpreadMoveTargets, SpreadMoveTarget};
 
 /// Apply self stat drops after a move

@@ -202,9 +202,9 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 81): runEvent('TryAddVolatile')
         // Note: JavaScript passes status as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check the volatile_id being added
-        let try_add_result = battle.run_event("TryAddVolatile", Some(target_pos), source_pos, source_effect, None);
+        let try_add_result = battle.run_event("TryAddVolatile", Some(target_pos), source_pos, source_effect, EventResult::Continue, false, false);
         // runEvent returns Option<i32>, None or Some(0) means failure
-        if try_add_result == Some(0) || try_add_result == None {
+        if matches!(try_add_result, EventResult::Number(0)) || matches!(try_add_result, EventResult::Null) {
             return false;
         }
 

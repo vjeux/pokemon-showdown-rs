@@ -11,6 +11,7 @@
 //! - repeat
 
 use crate::dex_data::ID;
+use crate::event::EventResult;
 use serde::{Deserialize, Serialize};
 
 // Function modules

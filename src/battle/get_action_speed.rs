@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 
 impl Battle {
 
@@ -120,9 +121,11 @@ impl Battle {
                     Some(pokemon_pos),
                     None,
                     Some(&effect_id),
-                    Some(priority as i32),
+                    EventResult::Number(priority as i32),
+                    false,
+                    false,
                 );
-                if let Some(modified_priority) = relay_result {
+                if let EventResult::Number(modified_priority) = relay_result {
                     priority = modified_priority as i8;
                 }
 

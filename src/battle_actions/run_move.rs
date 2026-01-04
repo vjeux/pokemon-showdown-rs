@@ -6,6 +6,7 @@
 //! Most other effects use useMove instead.
 
 use crate::*;
+use crate::event::EventResult;
 
 /// Execute a move with full pipeline
 /// Equivalent to BattleActions.runMove() in battle-actions.ts
@@ -68,7 +69,7 @@ pub fn run_move(
         // const changedMove = this.battle.runEvent('OverrideAction', pokemon, target, baseMove);
         // JavaScript: if (changedMove && changedMove.id !== move.id) { ... }
         // For now, just run the event - full implementation would require changing the move
-        battle.run_event("OverrideAction", Some(pokemon_pos), Some(target_pos), Some(move_id), None);
+        battle.run_event("OverrideAction", Some(pokemon_pos), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
     }
 
     // Set active move
@@ -86,7 +87,7 @@ pub fn run_move(
 
     if !will_try_move {
         // this.battle.runEvent('MoveAborted', pokemon, target, move);
-        battle.run_event("MoveAborted", Some(pokemon_pos), Some(target_pos), Some(move_id), None);
+        battle.run_event("MoveAborted", Some(pokemon_pos), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
 
         // this.battle.clearActiveMove(true);
         battle.clear_active_move(true);
@@ -148,7 +149,7 @@ pub fn run_move(
         // lockedMove = this.battle.runEvent('LockMove', pokemon);
         // JavaScript: if (lockedMove === true) lockedMove = false;
         // JavaScript: if (!lockedMove) { ... deduct PP ... }
-        let _locked_move = battle.run_event("LockMove", Some(pokemon_pos), None, None, None);
+        let _locked_move = battle.run_event("LockMove", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
 
         // Deduct PP
         // if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle'))
@@ -237,7 +238,7 @@ pub fn run_move(
     battle.single_event("AfterMove", move_id, Some(pokemon_pos), Some(target_pos), Some(move_id));
 
     // this.battle.runEvent('AfterMove', pokemon, target, move);
-    battle.run_event("AfterMove", Some(pokemon_pos), Some(target_pos), Some(move_id), None);
+    battle.run_event("AfterMove", Some(pokemon_pos), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
 
     // Handle 'cantusetwice' hint
     // if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id))

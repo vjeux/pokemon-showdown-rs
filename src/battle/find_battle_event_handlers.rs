@@ -69,6 +69,7 @@ impl Battle {
                 // JS:     subOrder: handler.subOrder,
                 // JS: });
                 handlers.push(EventListener {
+                    event_name: String::new(),
                     // TODO: effect_id and effect_type should come from handler.target
                     // But CustomEventHandler doesn't have target field in current Rust implementation
                     effect_id: ID::from("customevent"),

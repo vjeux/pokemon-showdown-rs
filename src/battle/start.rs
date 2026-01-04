@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::battle::BattleRequestState;
 
 impl Battle {
@@ -174,7 +175,7 @@ impl Battle {
         // Similar to event system: Battle::on_event("FormatBegin", callback)
 
         // For now, emit an event that format-specific code can hook into
-        self.run_event("FormatBegin", None, None, None, None);
+        self.run_event("FormatBegin", None, None, None, EventResult::Continue, false, false);
 
         // JS: for (const rule of this.ruleTable.keys()) { subFormat.onBegin?.call(this); }
         if let Some(ref rule_table) = self.rule_table {
@@ -200,7 +201,7 @@ impl Battle {
                 // 1. Dex::get_format() method to look up formats by ID
                 // 2. Format callback registration system
                 // For now, emit an event that rule-specific code can hook into
-                self.run_event(&format!("RuleBegin:{}", rule), None, None, None, None);
+                self.run_event(&format!("RuleBegin:{}", rule), None, None, None, EventResult::Continue, false, false);
             }
         }
 

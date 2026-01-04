@@ -1,4 +1,6 @@
 use crate::*;
+use crate::event::EventResult;
+use crate::battle::EventListener;
 
 impl Battle {
 
@@ -15,7 +17,7 @@ impl Battle {
     /// - Currently simplified: only handles Pokemon targets (no Side/Battle distinction)
     /// - No array recursion (not used in current Rust codebase)
     /// - Calls specialized find*EventHandlers methods
-    /// - TODO: Add prefixed handler support when needed
+    /// - Returns full EventListener structs for proper sorting
     //
     // 	findEventHandlers(target: Pokemon | Pokemon[] | Side | Battle, eventName: string, source?: Pokemon | null) {
     // 		let handlers: EventListener[] = [];
@@ -84,7 +86,7 @@ impl Battle {
         event_id: &str,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
-    ) -> Vec<(String, ID, Option<(usize, usize)>)> {  // Now returns (event_variant, effect_id, target)
+    ) -> Vec<EventListener> {
         let mut handlers = Vec::new();
 
         // JavaScript: const prefixedHandlers = !['BeforeTurn', 'Update', 'Weather', 'WeatherChange', 'TerrainChange'].includes(eventName);
@@ -99,11 +101,12 @@ impl Battle {
         if let Some(target_pos) = target {
             // JavaScript: handlers = this.findPokemonEventHandlers(target, `on${eventName}`);
             let prefixed_event = format!("on{}", event_name);
-            let pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos, None);
-            // Add event variant name to each handler
-            for handler in pokemon_handlers {
-                handlers.push((event_name.to_string(), handler.effect_id, handler.effect_holder));
+            let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos, None);
+            // Add event name to each handler
+            for handler in &mut pokemon_handlers {
+                handler.event_name = event_name.to_string();
             }
+            handlers.extend(pokemon_handlers);
 
             if prefixed_handlers {
                 let (target_side, _target_idx) = target_pos;
@@ -120,22 +123,22 @@ impl Battle {
                     for poke_idx in side.active.iter().flatten() {
                         let ally_pos = (target_side, *poke_idx);
                         // onAlly handlers
-                        let ally_variant = format!("Ally{}", event_name);
                         let ally_event = format!("onAlly{}", event_name);
-                        let ally_handlers =
+                        let mut ally_handlers =
                             self.find_pokemon_event_handlers(&ally_event, ally_pos, None);
-                        for handler in ally_handlers {
-                            handlers.push((ally_variant.clone(), handler.effect_id, handler.effect_holder));
+                        for handler in &mut ally_handlers {
+                            handler.event_name = format!("Ally{}", event_name);
                         }
+                        handlers.extend(ally_handlers);
 
                         // onAny handlers
-                        let any_variant = format!("Any{}", event_name);
                         let any_event = format!("onAny{}", event_name);
-                        let any_handlers =
+                        let mut any_handlers =
                             self.find_pokemon_event_handlers(&any_event, ally_pos, None);
-                        for handler in any_handlers {
-                            handlers.push((any_variant.clone(), handler.effect_id, handler.effect_holder));
+                        for handler in &mut any_handlers {
+                            handler.event_name = format!("Any{}", event_name);
                         }
+                        handlers.extend(any_handlers);
                     }
                 }
 
@@ -151,22 +154,22 @@ impl Battle {
                         for poke_idx in side.active.iter().flatten() {
                             let foe_pos = (side_idx, *poke_idx);
                             // onFoe handlers
-                            let foe_variant = format!("Foe{}", event_name);
                             let foe_event = format!("onFoe{}", event_name);
-                            let foe_handlers =
+                            let mut foe_handlers =
                                 self.find_pokemon_event_handlers(&foe_event, foe_pos, None);
-                            for handler in foe_handlers {
-                                handlers.push((foe_variant.clone(), handler.effect_id, handler.effect_holder));
+                            for handler in &mut foe_handlers {
+                                handler.event_name = format!("Foe{}", event_name);
                             }
+                            handlers.extend(foe_handlers);
 
                             // onAny handlers
-                            let any_variant = format!("Any{}", event_name);
                             let any_event = format!("onAny{}", event_name);
-                            let any_handlers =
+                            let mut any_handlers =
                                 self.find_pokemon_event_handlers(&any_event, foe_pos, None);
-                            for handler in any_handlers {
-                                handlers.push((any_variant.clone(), handler.effect_id, handler.effect_holder));
+                            for handler in &mut any_handlers {
+                                handler.event_name = format!("Any{}", event_name);
                             }
+                            handlers.extend(any_handlers);
                         }
                     }
                 }
@@ -178,36 +181,34 @@ impl Battle {
         // }
         if let Some(source_pos) = source {
             if prefixed_handlers {
-                let source_variant = format!("Source{}", event_name);
                 let source_event = format!("onSource{}", event_name);
-                let source_handlers =
+                let mut source_handlers =
                     self.find_pokemon_event_handlers(&source_event, source_pos, None);
-                for handler in source_handlers {
-                    handlers.push((source_variant.clone(), handler.effect_id, handler.effect_holder));
+                for handler in &mut source_handlers {
+                    handler.event_name = format!("Source{}", event_name);
                 }
+                handlers.extend(source_handlers);
             }
         }
 
         // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
         let prefixed_event = format!("on{}", event_name);
-        let field_handlers = self.find_field_event_handlers(&prefixed_event, None, None);
-        for handler in field_handlers {
+        let mut field_handlers = self.find_field_event_handlers(&prefixed_event, None, None);
+        for handler in &mut field_handlers {
+            handler.event_name = event_name.to_string();
             // For Weather/Update/BeforeTurn events, field effects (like sandstorm) should use the target Pokemon
-            // that was passed to this function, not None. The event is being run ON that Pokemon.
-            // JavaScript doesn't have this issue because it passes target directly to the callback.
-            let handler_target = if !prefixed_handlers && target.is_some() {
-                target
-            } else {
-                handler.effect_holder
-            };
-            handlers.push((event_name.to_string(), handler.effect_id, handler_target));
+            if !prefixed_handlers && target.is_some() {
+                handler.effect_holder = target;
+            }
         }
+        handlers.extend(field_handlers);
 
         // JavaScript: handlers.push(...this.findBattleEventHandlers(`on${eventName}`));
-        let battle_handlers = self.find_battle_event_handlers(&prefixed_event, None, None);
-        for handler in battle_handlers {
-            handlers.push((event_name.to_string(), handler.effect_id, handler.effect_holder));
+        let mut battle_handlers = self.find_battle_event_handlers(&prefixed_event, None, None);
+        for handler in &mut battle_handlers {
+            handler.event_name = event_name.to_string();
         }
+        handlers.extend(battle_handlers);
 
         handlers
     }

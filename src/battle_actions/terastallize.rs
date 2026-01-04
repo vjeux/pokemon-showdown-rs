@@ -42,6 +42,7 @@
 // 	}
 
 use crate::*;
+use crate::event::EventResult;
 
 /// Handle Terastallization
 /// Equivalent to terastallize() in battle-actions.ts
@@ -233,5 +234,5 @@ pub fn terastallize(
     }
 
     // this.battle.runEvent('AfterTerastallization', pokemon);
-    battle.run_event("AfterTerastallization", Some(pokemon_pos), None, None, None);
+    battle.run_event("AfterTerastallization", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
 }

@@ -3,6 +3,7 @@
 //! 1:1 port of spreadMoveHit from battle-actions.ts:1043
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle::SpreadMoveHitResult;
 use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget};
 
@@ -421,13 +422,7 @@ pub fn spread_move_hit(
     // JS: if (damagedDamage.length && !isSecondary && !isSelf) { ... }
     if !damaged_damage.is_empty() && !is_secondary && !is_self {
         // JS: this.battle.runEvent('DamagingHit', damagedTargets, pokemon, move, damagedDamage);
-        battle.run_event(
-            "DamagingHit",
-            Some(source_pos),
-            None,
-            Some(move_id),
-            None,
-        );
+        battle.run_event("DamagingHit", Some(source_pos), None, Some(move_id), EventResult::Continue, false, false);
 
         // Check if moveData has onAfterHit
         // JS: if (moveData.onAfterHit) { for (const t of damagedTargets) { this.battle.singleEvent('AfterHit', moveData, {}, t, pokemon, move); } }
@@ -451,7 +446,7 @@ pub fn spread_move_hit(
         };
 
         if pokemon_hp > 0 && pokemon_hp <= pokemon_maxhp / 2 && pokemon_original_hp > pokemon_maxhp / 2 {
-            battle.run_event("EmergencyExit", Some(source_pos), None, None, None);
+            battle.run_event("EmergencyExit", Some(source_pos), None, None, EventResult::Continue, false, false);
         }
     }
 

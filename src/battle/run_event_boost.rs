@@ -54,9 +54,9 @@ impl Battle {
         // Find and run all handlers for this event
         let handlers = self.find_event_handlers(event_id, target, source);
 
-        for (event_variant, effect_id, holder_target) in handlers {
+        for handler in handlers {
             let event_result =
-                self.dispatch_single_event(&event_variant, &effect_id, holder_target, source);
+                self.dispatch_single_event(&handler.event_name, &handler.effect_id, handler.effect_holder, source);
 
             match event_result {
                 EventResult::Stop | EventResult::Null => {

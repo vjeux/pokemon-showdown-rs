@@ -1,6 +1,7 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
 
 use crate::*;
+use crate::event::EventResult;
 
 impl Battle {
 
@@ -234,16 +235,24 @@ impl Battle {
                     Some(target_pos),
                     source,
                     effect,
-                    Some(target_damage),
+                    EventResult::Number(target_damage),
+                    false,
+                    false,
                 );
 
-                if let Some(modified_damage) = event_result {
-                    target_damage = modified_damage;
-                } else {
-                    // Event failed
-                    self.debug("damage event failed");
-                    ret_vals.push(DamageResult::Undefined);
-                    continue;
+                match event_result {
+                    EventResult::Number(modified_damage) => {
+                        target_damage = modified_damage;
+                    }
+                    EventResult::Null => {
+                        // Event failed
+                        self.debug("damage event failed");
+                        ret_vals.push(DamageResult::Undefined);
+                        continue;
+                    }
+                    _ => {
+                        // Continue with current damage value
+                    }
                 }
             }
 

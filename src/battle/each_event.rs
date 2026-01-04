@@ -1,5 +1,6 @@
 use crate::*;
 use crate::battle::PriorityItem;
+use crate::event::EventResult;
 
 impl Battle {
 
@@ -60,10 +61,22 @@ impl Battle {
         // JS: for (const pokemon of actives) {
         // JS:     this.runEvent(eventid, pokemon, null, effect, relayVar);
         // JS: }
-        // Convert boolean relay_var to i32 for run_event (TypeScript uses 'any', Rust uses i32)
-        let relay_var_i32 = relay_var.map(|b| if b { 1 } else { 0 });
+        // Convert boolean relay_var to EventResult for run_event
+        let relay_var_result = match relay_var {
+            Some(true) => EventResult::Boolean(true),
+            Some(false) => EventResult::Boolean(false),
+            None => EventResult::Continue,
+        };
         for (side_idx, poke_idx, _speed) in actives {
-            self.run_event(event_id, Some((side_idx, poke_idx)), None, effect, relay_var_i32);
+            self.run_event(
+                event_id,
+                Some((side_idx, poke_idx)),
+                None,
+                effect,
+                relay_var_result.clone(),
+                false,
+                false,
+            );
         }
 
         // JS: if (eventid === 'Weather' && this.gen >= 7) {

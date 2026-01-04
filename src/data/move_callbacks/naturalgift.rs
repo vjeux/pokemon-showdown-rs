@@ -154,7 +154,7 @@ pub fn on_prepare_hit(
     }
 
     // this.runEvent('AfterUseItem', pokemon, null, null, item);
-    battle.run_event("AfterUseItem", Some(pokemon), None, Some(&item_id), None);
+    battle.run_event("AfterUseItem", Some(pokemon), None, Some(&item_id), EventResult::Continue, false, false);
 
     EventResult::Continue
 }

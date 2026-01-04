@@ -3,6 +3,7 @@
 //! 1:1 port of afterMoveSecondaryEvent from battle-actions.ts
 
 use crate::*;
+use crate::event::EventResult;
 
 /// Fire AfterMoveSecondary events after a move hits
 /// Equivalent to battle-actions.ts afterMoveSecondaryEvent()
@@ -49,13 +50,7 @@ pub fn after_move_secondary_event(
         // Note: runEvent in JavaScript takes targets array, but Rust version takes single target
         // We need to fire the event for each target
         for &target in targets {
-            battle.run_event(
-                "AfterMoveSecondary",
-                Some(target),
-                Some(attacker_pos),
-                Some(&active_move.id),
-                None,
-            );
+            battle.run_event("AfterMoveSecondary", Some(target), Some(attacker_pos), Some(&active_move.id), EventResult::Continue, false, false);
         }
     }
 

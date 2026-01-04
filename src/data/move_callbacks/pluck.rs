@@ -123,7 +123,7 @@ pub fn on_hit(
 
     if !matches!(eat_result, EventResult::Boolean(false)) {
         // this.runEvent('EatItem', source, source, move, item);
-        battle.run_event("EatItem", Some(source), Some(source), Some(&item_id), None);
+        battle.run_event("EatItem", Some(source), Some(source), Some(&item_id), EventResult::Continue, false, false);
 
         // if (item.id === 'leppaberry') target.staleness = 'external';
         if item_id == ID::from("leppaberry") {

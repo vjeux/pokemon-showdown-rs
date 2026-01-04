@@ -11,6 +11,7 @@
 // }
 
 use crate::*;
+use crate::event::EventResult;
 
 impl Pokemon {
     /// Get locked move (for multi-turn moves)
@@ -35,13 +36,13 @@ impl Pokemon {
 
         // JS: const lockedMove = this.battle.runEvent('LockMove', this);
         // ✅ NOW IMPLEMENTED: battle.run_event('LockMove') call
-        let event_result = battle.run_event("LockMove", Some(pokemon_pos), None, None, None);
+        let event_result = battle.run_event("LockMove", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
 
         // JS: return (lockedMove === true) ? null : lockedMove;
-        // ✅ NOW IMPLEMENTED: If runEvent returns Some(1) (true), return None
+        // ✅ NOW IMPLEMENTED: If runEvent returns true, return None
         // ✅ Otherwise return the locked_move from the field
         match event_result {
-            Some(1) => None, // true in JavaScript → null
+            EventResult::Boolean(true) => None, // true in JavaScript → null
             _ => locked_move, // Otherwise use the locked_move field
         }
     }

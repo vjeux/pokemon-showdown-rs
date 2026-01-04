@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 
 /// Inner implementation of useMove - handles the actual move execution
 /// Equivalent to battle-actions.ts useMoveInner() (lines 380-543)
@@ -271,13 +272,7 @@ pub fn use_move_inner(
             Some(&active_move.id),
         );
 
-        battle.run_event(
-            "ModifyType",
-            Some(pokemon_pos),
-            target_pos,
-            Some(&active_move.id),
-            None,
-        );
+        battle.run_event("ModifyType", Some(pokemon_pos), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
 
         if let Some(ref modified_move) = battle.active_move {
             active_move = modified_move.clone();
@@ -319,26 +314,10 @@ pub fn use_move_inner(
     // let targetRelayVar = { target };
     // targetRelayVar = this.battle.runEvent('ModifyTarget', pokemon, target, move, targetRelayVar, true);
     // if (targetRelayVar.target !== undefined) target = targetRelayVar.target;
-    let modify_target_result = battle.run_event(
-        "ModifyTarget",
-        Some(pokemon_pos),
-        target_pos,
-        Some(&active_move.id),
-        None,
-    );
+    let modify_target_result = battle.run_event("ModifyTarget", Some(pokemon_pos), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
 
     // Extract the new target if ModifyTarget returned a position
-    if let Some(new_target) = modify_target_result.and_then(|_| {
-        // Need to run single_event to get the result from the move's handler
-        let result = battle.single_event(
-            "ModifyTarget",
-            &active_move.id,
-            Some(pokemon_pos),
-            target_pos,
-            Some(&active_move.id),
-        );
-        result.position()
-    }) {
+    if let EventResult::Position(new_target) = modify_target_result {
         target_pos = Some(new_target);
     }
 
@@ -406,22 +385,10 @@ pub fn use_move_inner(
     }
 
     // move = this.battle.runEvent('ModifyType', pokemon, target, move, move);
-    battle.run_event(
-        "ModifyType",
-        Some(pokemon_pos),
-        target_pos,
-        Some(&active_move.id),
-        None,
-    );
+    battle.run_event("ModifyType", Some(pokemon_pos), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
 
     // move = this.battle.runEvent('ModifyMove', pokemon, target, move, move);
-    battle.run_event(
-        "ModifyMove",
-        Some(pokemon_pos),
-        target_pos,
-        Some(&active_move.id),
-        None,
-    );
+    battle.run_event("ModifyMove", Some(pokemon_pos), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
 
     // Get potentially modified move again
     if let Some(ref modified) = battle.active_move {
@@ -631,11 +598,13 @@ pub fn use_move_inner(
                 Some(pressure_target_pos),
                 Some(pokemon_pos),
                 Some(&active_move.id),
-                Some(1), // Default PP drop is 1
+                EventResult::Number(1), // Default PP drop is 1
+                false,
+                false,
             );
 
             // If the event returns a number > 1, it means Pressure is active
-            if let Some(pp_drop) = pp_drop_result {
+            if let EventResult::Number(pp_drop) = pp_drop_result {
                 if pp_drop > 1 {
                     extra_pp += (pp_drop - 1) as u8; // Add extra PP (beyond the base 1)
                 }
@@ -846,26 +815,14 @@ pub fn use_move_inner(
             Some(&active_move.id),
         );
 
-        battle.run_event(
-            "AfterMoveSecondarySelf",
-            Some(pokemon_pos),
-            Some(final_target),
-            Some(&active_move.id),
-            None,
-        );
+        battle.run_event("AfterMoveSecondarySelf", Some(pokemon_pos), Some(final_target), Some(&active_move.id), EventResult::Continue, false, false);
 
         let current_hp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].hp;
         let max_hp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;
 
         if pokemon_pos != final_target && active_move.category != "Status" {
             if current_hp <= max_hp / 2 && original_hp > max_hp / 2 {
-                battle.run_event(
-                    "EmergencyExit",
-                    Some(pokemon_pos),
-                    Some(pokemon_pos),
-                    None,
-                    None,
-                );
+                battle.run_event("EmergencyExit", Some(pokemon_pos), Some(pokemon_pos), None, EventResult::Continue, false, false);
             }
         }
     }

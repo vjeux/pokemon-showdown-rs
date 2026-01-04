@@ -26,10 +26,10 @@ pub fn on_prepare_hit(
     }
 
     // this.runEvent('StallMove', pokemon)
-    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, None);
+    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, EventResult::Continue, false, false);
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
-    EventResult::Boolean(will_act && stall_result.unwrap_or(0) != 0)
+    EventResult::Boolean(will_act && match stall_result { EventResult::Number(n) => n, _ => 0 } != 0)
 }
 
 /// onHit(pokemon) {

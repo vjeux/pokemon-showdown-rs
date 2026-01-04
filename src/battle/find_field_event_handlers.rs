@@ -1,6 +1,7 @@
 // 1:1 port of findFieldEventHandlers from battle.ts
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle::{EventListener, EffectType};
 use crate::event_system::EffectState;
 
@@ -70,6 +71,7 @@ impl Battle {
         for (pw_id, pw_state) in pseudo_weather_handlers {
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
             let mut handler = EventListener {
+                    event_name: String::new(),
                 effect_id: pw_id,
                 effect_type: EffectType::Condition,
                 target: None,
@@ -116,6 +118,7 @@ impl Battle {
         if let Some((weather_id, weather_state)) = weather_handler {
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
             let mut handler = EventListener {
+                    event_name: String::new(),
                 effect_id: weather_id,
                 effect_type: EffectType::Weather,
                 target: None,
@@ -156,6 +159,7 @@ impl Battle {
         if let Some((terrain_id, terrain_state)) = terrain_handler {
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
             let mut handler = EventListener {
+                    event_name: String::new(),
                 effect_id: terrain_id,
                 effect_type: EffectType::Terrain,
                 target: None,

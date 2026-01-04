@@ -55,6 +55,7 @@
 // }
 
 use crate::Battle;
+use crate::event::EventResult;
 use crate::dex_data::ID;
 
 impl Battle {

@@ -1,6 +1,7 @@
 // 1:1 port of findPokemonEventHandlers from battle.ts
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle::{EventListener, EffectType};
 
 impl Battle {
@@ -92,6 +93,7 @@ impl Battle {
 
             if has_callback || has_get_key {
                 handlers.push(EventListener {
+                    event_name: String::new(),
                     effect_id: pokemon.status.clone(),
                     effect_type: EffectType::Status,
                     target: Some(target),
@@ -124,6 +126,7 @@ impl Battle {
             if has_callback || has_get_key {
                 eprintln!("[FIND_POKEMON_EVENT_HANDLERS] Adding handler for volatile '{}'", volatile_id.as_str());
                 handlers.push(EventListener {
+                    event_name: String::new(),
                     effect_id: volatile_id.clone(),
                     effect_type: EffectType::Condition,
                     target: Some(target),
@@ -151,6 +154,7 @@ impl Battle {
 
             if has_callback || has_get_key {
                 handlers.push(EventListener {
+                    event_name: String::new(),
                     effect_id: pokemon.ability.clone(),
                     effect_type: EffectType::Ability,
                     target: Some(target),
@@ -181,6 +185,7 @@ impl Battle {
             if has_callback || has_get_key {
                 eprintln!("[FIND_POKEMON_EVENT_HANDLERS] Adding handler for item '{}'", pokemon.item.as_str());
                 handlers.push(EventListener {
+                    event_name: String::new(),
                     effect_id: pokemon.item.clone(),
                     effect_type: EffectType::Item,
                     target: Some(target),
@@ -204,6 +209,7 @@ impl Battle {
         //       per JavaScript effectTypeOrder in battle.ts resolvePriority
         if self.has_callback(&pokemon.species_id, callback_name) {
             handlers.push(EventListener {
+                    event_name: String::new(),
                 effect_id: pokemon.species_id.clone(),
                 effect_type: EffectType::Condition,
                 target: Some(target),
@@ -234,6 +240,7 @@ impl Battle {
 
                 if has_callback || has_get_key {
                     handlers.push(EventListener {
+                    event_name: String::new(),
                         effect_id: slot_cond_id.clone(),
                         effect_type: EffectType::SlotCondition,
                         target: Some(target),

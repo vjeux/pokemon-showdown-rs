@@ -86,16 +86,10 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize,
 
     use crate::dex_data::ID;
     // Run TryHeal event to check if healing would succeed
-    let event_result = battle.run_event(
-        "TryHeal",
-        Some(pokemon_pos),
-        None,
-        Some(&ID::from("enigmaberry")),
-        Some(heal_amount)
-    );
+    let event_result = battle.run_event("TryHeal", Some(pokemon_pos), None, Some(&ID::from("enigmaberry")), EventResult::Number(heal_amount), false, false);
 
     match event_result {
-        Some(amount) if amount > 0 => EventResult::Continue,
+        EventResult::Number(amount) if amount > 0 => EventResult::Continue,
         _ => EventResult::Boolean(false),
     }
 }

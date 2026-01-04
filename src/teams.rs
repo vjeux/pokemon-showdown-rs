@@ -4,6 +4,7 @@
 //! Equivalent to teams.ts in Pokemon Showdown
 
 use crate::{PokemonSet, Dex};
+use crate::event::EventResult;
 use crate::dex_data::{StatsTable, Gender};
 
 pub struct Teams;

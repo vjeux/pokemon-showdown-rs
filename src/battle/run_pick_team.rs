@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::battle::BattleRequestState;
 
 impl Battle {

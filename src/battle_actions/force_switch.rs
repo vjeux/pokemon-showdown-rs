@@ -3,6 +3,7 @@
 //! 1:1 port of forceSwitch from battle-actions.ts
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, ActiveMove};
 
 /// Handle forced switching from moves like Dragon Tail, Roar
@@ -57,13 +58,7 @@ pub fn force_switch(
 
                     if can_switch {
                         //     const hitResult = this.battle.runEvent('DragOut', target, source, move);
-                        let hit_result = battle.run_event(
-                            "DragOut",
-                            Some(target_pos),
-                            Some(source_pos),
-                            Some(&active_move.id),
-                            None,
-                        );
+                        let hit_result = battle.run_event("DragOut", Some(target_pos), Some(source_pos), Some(&active_move.id), EventResult::Continue, false, false);
 
                         //     if (hitResult) {
                         //         target.forceSwitchFlag = true;
@@ -72,12 +67,12 @@ pub fn force_switch(
                         //         this.battle.attrLastMove('[still]');
                         //         damage[i] = false;
                         //     }
-                        if hit_result.is_some() && hit_result != Some(0) {
+                        if !matches!(hit_result, EventResult::Null | EventResult::Continue) && !matches!(hit_result, EventResult::Number(0)) {
                             // hitResult is truthy (not None, not 0)
                             if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                                 target_pokemon.force_switch_flag = true;
                             }
-                        } else if hit_result == Some(0) && active_move.category == "Status" {
+                        } else if matches!(hit_result, EventResult::Number(0)) && active_move.category == "Status" {
                             // hitResult is false (0)
                             // Get source pokemon for add message
                             if let Some(source_pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {

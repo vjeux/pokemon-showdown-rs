@@ -1,4 +1,5 @@
 use crate::*;
+use crate::event::EventResult;
 use crate::battle::BattleRequestState;
 
 impl Battle {
@@ -668,7 +669,7 @@ impl Battle {
         // JS: this.runEvent('DisableMove', pokemon);
         // This allows abilities like Assault Vest, Gorilla Tactics, etc. to disable moves
         for pokemon_pos in &pokemon_positions {
-            self.run_event("DisableMove", Some(*pokemon_pos), None, None, None);
+            self.run_event("DisableMove", Some(*pokemon_pos), None, None, EventResult::Continue, false, false);
         }
 
         // Call singleEvent('DisableMove') for each move (allows move-specific disable logic)
@@ -713,7 +714,7 @@ impl Battle {
         // JS: if (!pokemon.knownType || this.dex.getImmunity('trapped', pokemon)) { this.runEvent('MaybeTrapPokemon', pokemon); }
         for &pokemon_pos in &pokemon_positions {
             // TrapPokemon event - allows moves/abilities to trap pokemon (e.g., Mean Look)
-            self.run_event("TrapPokemon", Some(pokemon_pos), None, None, None);
+            self.run_event("TrapPokemon", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
 
             // MaybeTrapPokemon event - conditional trapping based on type immunity
             // JS: if (!pokemon.knownType || this.dex.getImmunity('trapped', pokemon))
@@ -724,7 +725,7 @@ impl Battle {
             };
 
             if should_run_maybe_trap {
-                self.run_event("MaybeTrapPokemon", Some(pokemon_pos), None, None, None);
+                self.run_event("MaybeTrapPokemon", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
             }
         }
 

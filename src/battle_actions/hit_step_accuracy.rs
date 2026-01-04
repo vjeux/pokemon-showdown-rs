@@ -71,6 +71,7 @@
 
 
 use crate::*;
+use crate::event::EventResult;
 
 /// Check accuracy for each target
 /// Equivalent to hitStepAccuracy() in battle-actions.ts:580
@@ -185,12 +186,14 @@ pub fn hit_step_accuracy(
         } else {
             // Not an OHKO move - run ModifyAccuracy event
             // JavaScript: else { accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy); }
-            if let Some(modified_acc) = battle.run_event(
+            if let EventResult::Number(modified_acc) = battle.run_event(
                 "ModifyAccuracy",
                 Some(target_pos),
                 Some(pokemon_pos),
                 Some(&move_id),
-                Some(accuracy),
+                EventResult::Number(accuracy),
+                false,
+                false
             ) {
                 accuracy = modified_acc;
             }
@@ -259,12 +262,14 @@ pub fn hit_step_accuracy(
             accuracy = 0; // In Rust, 0 represents boolean true for accuracy
         } else {
             // accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
-            if let Some(modified_acc) = battle.run_event(
+            if let EventResult::Number(modified_acc) = battle.run_event(
                 "Accuracy",
                 Some(target_pos),
                 Some(pokemon_pos),
                 Some(&move_id),
-                Some(accuracy),
+                EventResult::Number(accuracy),
+                false,
+                false
             ) {
                 accuracy = modified_acc;
             }

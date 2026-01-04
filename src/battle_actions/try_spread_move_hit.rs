@@ -77,6 +77,7 @@
 
 
 use crate::*;
+use crate::event::EventResult;
 
 /// Try to hit targets with a spread move
 /// Equivalent to trySpreadMoveHit() in battle-actions.ts:545
@@ -143,19 +144,13 @@ pub fn try_spread_move_hit(
         Some(pokemon_pos),
         Some(move_id),
     );
-    let prepare_hit_2 = battle.run_event(
-        "PrepareHit",
-        Some(pokemon_pos),
-        target_0,
-        Some(move_id),
-        None,
-    );
+    let prepare_hit_2 = battle.run_event("PrepareHit", Some(pokemon_pos), target_0, Some(move_id), EventResult::Continue, false, false);
 
     // Check if all three events succeeded
     // In JS, truthy values pass, falsy values (false, null, undefined) fail
     let hit_result = !matches!(try_result, event::EventResult::Boolean(false) | event::EventResult::Null)
         && !matches!(prepare_hit_1, event::EventResult::Boolean(false) | event::EventResult::Null)
-        && prepare_hit_2.is_some();
+        && !matches!(prepare_hit_2, EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null);
 
     // JS: if (!hitResult) { ... }
     if !hit_result {
@@ -163,7 +158,7 @@ pub fn try_spread_move_hit(
         // JS: if (hitResult === false)
         let is_explicit_false = matches!(try_result, event::EventResult::Boolean(false))
             || matches!(prepare_hit_1, event::EventResult::Boolean(false))
-            || prepare_hit_2 == Some(0);
+            || matches!(prepare_hit_2, EventResult::Number(0));
 
         if is_explicit_false {
             // JS: this.battle.add('-fail', pokemon);

@@ -30,7 +30,7 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let foe_idx = battle.sides[pokemon_side_idx].foe_index.unwrap_or(1 - pokemon_side_idx);
+        let foe_idx = 1 - pokemon_side_idx;
         (pokemon.position, foe_idx)
     };
 

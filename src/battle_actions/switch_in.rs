@@ -3,6 +3,7 @@
 //! 1:1 port of switchIn from battle-actions.ts
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle::SwitchResult;
 use crate::event_system::EffectState;
 
@@ -179,7 +180,9 @@ pub fn switch_in(
                     Some((side_index, old_idx)),
                     None,
                     None,
-                    None,
+                    EventResult::Continue,
+                    false,
+                    false,
                 );
                 if battle.gen >= 5 {
                     // JS: this.battle.eachEvent("Update");
@@ -306,7 +309,9 @@ pub fn switch_in(
         Some((side_index, pokemon_index)),
         None,
         None,
-        None,
+        EventResult::Continue,
+        false,
+        false,
     );
 
     // Log the switch

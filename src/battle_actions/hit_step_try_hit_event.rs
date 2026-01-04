@@ -3,6 +3,7 @@
 //! 1:1 port of hitStepTryHitEvent from battle-actions.ts
 
 use crate::*;
+use crate::event::EventResult;
 use crate::battle_actions::ActiveMove;
 
 /// Fire TryHit event and handle failures
@@ -28,13 +29,7 @@ pub fn hit_step_try_hit_event(
     // const hitResults = this.battle.runEvent('TryHit', targets, pokemon, move);
     let mut hit_results = Vec::new();
     for &target_pos in targets {
-        let result = battle.run_event(
-            "TryHit",
-            Some(target_pos),
-            Some(attacker_pos),
-            Some(&active_move.id),
-            None,
-        );
+        let result = battle.run_event("TryHit", Some(target_pos), Some(attacker_pos), Some(&active_move.id), EventResult::Continue, false, false);
         hit_results.push(result);
     }
 
@@ -42,8 +37,8 @@ pub fn hit_step_try_hit_event(
     //     this.battle.add('-fail', pokemon);
     //     this.battle.attrLastMove('[still]');
     // }
-    let has_true = hit_results.iter().any(|&r| r.is_some() && r != Some(0));
-    let has_false = hit_results.iter().any(|&r| r == Some(0));
+    let has_true = hit_results.iter().any(|r| !matches!(r, EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null | EventResult::NotFail));
+    let has_false = hit_results.iter().any(|r| matches!(r, EventResult::Number(0)));
 
     if !has_true && has_false {
         if let Some(attacker_pokemon) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
@@ -73,11 +68,11 @@ pub fn hit_step_try_hit_event(
     // - None (from EventResult::NotFail) = NOT_FAIL -> false (falsy)
     // - Some(0) (from EventResult::Boolean(false)) -> false
     // - Some(non-zero) (from EventResult::Boolean(true)) -> true
-    hit_results.iter().map(|&r| {
+    hit_results.iter().map(|r| {
         match r {
-            None => false,        // NOT_FAIL is falsy
-            Some(0) => false,     // 0 is falsy
-            Some(_) => true,      // non-zero is truthy
+            EventResult::NotFail => false,        // NOT_FAIL is falsy
+            EventResult::Number(0) | EventResult::Boolean(false) => false,     // 0/false is falsy
+            _ => true,      // anything else is truthy
         }
     }).collect()
 }

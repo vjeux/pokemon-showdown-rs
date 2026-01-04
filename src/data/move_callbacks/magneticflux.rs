@@ -69,8 +69,8 @@ pub fn on_hit_side(
 
         if has_maxguard {
             let try_hit_result =
-                battle.run_event("TryHit", Some(ally_pos), Some(source), None, None);
-            if try_hit_result.unwrap_or(0) == 0 {
+                battle.run_event("TryHit", Some(ally_pos), Some(source), None, EventResult::Continue, false, false);
+            if match try_hit_result { EventResult::Number(n) => n, _ => 0 } == 0 {
                 continue;
             }
         }
