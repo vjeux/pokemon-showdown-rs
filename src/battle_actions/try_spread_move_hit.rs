@@ -356,6 +356,11 @@ pub fn try_spread_move_hit(
     for hit_num in 0..num_hits {
         eprintln!("[TRY_SPREAD_MOVE_HIT] Executing hit {} of {}", hit_num + 1, num_hits);
 
+        // Set the hit number on active_move (JavaScript: move.hit = hit)
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.hit = (hit_num + 1) as i32;
+        }
+
         let (damages, targets) =
             crate::battle_actions::spread_move_hit(battle, &final_targets, pokemon_pos, move_id, false, false);
 
