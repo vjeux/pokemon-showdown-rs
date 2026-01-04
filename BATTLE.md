@@ -934,6 +934,38 @@ Need to detect if turn_loop() is being called after a forced switch and NOT set 
 
 **Status:** Root cause identified, implementing fix next 🔧
 
+**UPDATE 2026-01-03 (Session 2):**
+After extensive investigation, discovered the issue is more complex than initially thought:
+
+1. **Both JS and Rust set mid_turn=false after forced switch**
+   - Iteration #29 (forced switch) correctly processes switch
+   - Calls end_turn() → turn increments 22→23
+   - Sets mid_turn=false at end
+
+2. **Turn 23 is called TWICE in Rust**
+   - Iteration #29: `>>> Making choices for turn 23...` (forced switch, 0 PRNG calls)
+   - Iteration #30: `>>> Making choices for turn 23...` (moves executed, 7 PRNG calls)
+   - Should be: iteration #30 should be turn 24
+
+3. **JavaScript correctly moves to turn 24**
+   - Iteration #29: turn 23 (forced switch)
+   - Iteration #30: turn 24 (normal moves)
+
+4. **Test runners are identical**
+   - Both use `battle.turn` for logging
+   - Both call `makeChoices()` in a loop
+   - No difference in loop logic
+
+5. **Investigation needed**
+   - Why does iteration #30 show turn=23 instead of turn=24?
+   - If end_turn() was called in iteration #29 (logs confirm it was), turn should be 23
+   - Then iteration #30 should call end_turn() again → turn=24
+   - But iteration #30 shows turn=23, meaning end_turn() was NOT called
+   - Likely: Kirlia faints in iteration #30, triggers forced switch, early return without end_turn()
+   - But WHY does Kirlia take damage in Rust and not in JavaScript?
+
+**Status:** Still investigating - need to understand why Kirlia takes damage in iteration #30 🔍
+
 ---
 
 ### Issue 13: partiallytrapped volatile not expiring when source faints (FIXED ✅)
