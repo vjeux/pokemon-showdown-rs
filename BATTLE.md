@@ -417,43 +417,41 @@ The extra PRNG calls were from gmaxterror (G-Max Terror move):
 
 ---
 
-### Issue 6: Minimum damage and Max move PRNG calls (IN PROGRESS 🔍)
+### Issue 6: Max move basePowerCallback (FIXED ✅)
 
-**Problem After Previous Fix:**
-After moving Max move check to after crit calculation and removing early return:
+**Problem After Moving Max move check:**
+After moving Max move check to after crit calculation:
 - Turn 26: JavaScript makes 4 PRNG calls (113->117), Rust makes 6 calls (113->119)
 - Rust makes EXTRA crit+randomizer calls for gmaxterror
 - JavaScript Zacian: 196 HP (no damage from gmaxterror)
 - Rust Zacian: 194 HP (2 damage from gmaxterror - critical hit!)
 
-**Investigation:**
-1. Found minimum damage mechanic in JavaScript (line 1832 of battle-actions.ts):
-   ```typescript
-   if (this.battle.gen !== 5 && !baseDamage) return 1;
-   ```
-   This is already implemented in Rust's modify_damage.rs (lines 327-331)
+**Root Cause Found:**
+JavaScript has an IMPLICIT basePowerCallback for ALL Max/G-Max moves that:
+1. Returns 0 if Pokemon doesn't have dynamax volatile
+2. This triggers early return in getDamage (line 1611) BEFORE crit calculation
+3. Prevents PRNG calls for crit and randomizer
 
-2. The issue: JavaScript doesn't make crit+randomizer calls for gmaxterror in turn 26
-   - JavaScript PRNG #113-117: secondaries, accuracy (gmaxterror), crit (zenheadbutt), randomizer (zenheadbutt), secondaries
-   - Rust PRNG #113-119: same + crit (gmaxterror), randomizer (gmaxterror)
+This basePowerCallback is not explicitly defined in moves.json/moves.ts, but is part of the
+Max move system logic.
 
-3. This means JavaScript's getDamage returns early BEFORE crit calculation for gmaxterror
-   - Only possible if basePower is 0 after basePowerCallback (line 1611 early return)
-   - OR if move fails immunity check
+**Fix (Commit 29690f19):**
+1. Added Max move check at beginning of `dispatch_base_power_callback()` in move_callbacks/mod.rs
+2. Returns `EventResult::Number(0)` if move is Max/G-Max and Pokemon doesn't have dynamax volatile
+3. This triggers early return in get_damage.rs (line 247) BEFORE crit calculation
+4. Removed incorrect Max move check from get_damage.rs that was setting basePower=0 AFTER crit
 
-4. Checked gmaxterror move definition:
-   - No basePowerCallback defined in moves.json or moves.ts
-   - basePower is 10, not 0
-   - No special immunity rules
+**Result:**
+- ✅ Turn 26 now matches perfectly: prng=113->117 (4 calls)
+- ✅ Golem HP matches: 197/288 in both
+- ✅ Zacian HP matches: 196/331 in both
+- ✅ gmaxterror correctly doesn't make crit/randomizer PRNG calls
 
-5. Hypothesis: JavaScript has a basePowerCallback OR BasePower event handler for ALL Max moves
-   that returns 0 when the Pokemon doesn't have dynamax volatile
-   - This would trigger the early return at line 1650 BEFORE crit calculation
-   - Need to find where this callback/event is defined
-
-**Current Status:**
-- Searching for global basePowerCallback or BasePower event handler for Max moves
-- May need to add detailed execution logging to compare JavaScript vs Rust step-by-step
+**Next Issue - Turn 27:**
+- JavaScript: prng=117->123 (6 calls), Zacian=195/331
+- Rust: prng=117->121 (4 calls), Zacian=196/331
+- Rust missing 2 PRNG calls, Zacian HP differs by 1
+- Hypothesis: gmaxterror should deal 1 damage in turn 27 (minimum damage mechanic)
 
 ---
 
