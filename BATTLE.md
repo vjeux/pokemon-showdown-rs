@@ -48,10 +48,37 @@ Removed the Z-move check from `src/side/auto_choose.rs`. Z-moves that are in the
 **Results:**
 - ✅ Sandstorm weather damage now applies to correct Pokemon (not duplicated)
 - ✅ Type immunity checks now work (Ground/Steel types immune to sandstorm)
-- ❌ Still seeing incorrect move damage values (different issue to investigate)
+- ✅ Turn 1-2 now match JavaScript exactly!
+- ❌ PRNG diverges at turn 4: JavaScript makes 2 calls, Rust makes 3 calls (1 extra)
 
 **Next Steps:**
-- Investigate why move damage differs (Sandaconda: 27 vs 16 HP, Metang: 15 vs 2 HP)
+- Investigate extra PRNG call in turn 4 (likely in move execution or speed resolution)
+
+---
+
+### Issue 3: PRNG divergence at turn 4 (IN PROGRESS 🔍)
+
+**Problem:**
+- Turns 1-2 match perfectly after weather fixes
+- Turn 4 shows PRNG divergence:
+  - JavaScript: prng=6->8 (2 calls)
+  - Rust: prng=6->9 (3 calls)
+- One extra PRNG call in Rust causing all subsequent turns to diverge
+
+**Moves Used in Turn 4:**
+- Sandaconda uses King's Shield (status move, priority +4)
+- Metang uses Rock Throw (damaging move)
+
+**Hypothesis:**
+Extra PRNG call could be from:
+1. Speed tie resolution (both moves have different priority, shouldn't tie)
+2. Move accuracy check (King's Shield has no accuracy, Rock Throw has 90%)
+3. Random damage multiplier being called when it shouldn't
+4. Some effect callback making an unexpected PRNG call
+
+**Next Steps:**
+- Add PRNG tracing to identify exactly where the extra call occurs
+- Compare JavaScript and Rust execution paths for turn 4
 
 ---
 
@@ -129,5 +156,5 @@ Removed the Z-move check from `src/side/auto_choose.rs`. Z-moves that are in the
 
 ## Notes
 
-- Seed 1: ✅ PASSING (41 iterations match exactly)
-- Seed 2: ❌ FAILING (diverges at turn 1 with damage issue)
+- Seed 1: ✅ PASSING (41 iterations match exactly - still passing after weather fixes!)
+- Seed 2: ❌ FAILING (turns 1-2 match, diverges at turn 4 with PRNG issue)
