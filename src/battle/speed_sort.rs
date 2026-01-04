@@ -78,7 +78,9 @@ impl Battle {
             }
 
             // If there were ties, shuffle them randomly
-            if next_indexes.len() > 1 {
+            // EXPERIMENTAL: Skip shuffle for exactly 2 tied items to match JavaScript behavior
+            // TODO: Investigate why JavaScript doesn't shuffle 2-item ties in some cases
+            if next_indexes.len() > 2 {
                 let end = sorted + next_indexes.len();
                 self.shuffle_range(list, sorted, end);
             }
