@@ -100,7 +100,7 @@ impl Dex {
             infiltrates: false,
             will_crit: move_data.will_crit,
             multi_accuracy: false,
-            multi_hit: None,
+            multi_hit: move_data.multihit.clone(),
             multi_hit_type: None,
             no_damage_variance: None,
             non_ghost_target: None,

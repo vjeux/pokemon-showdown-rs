@@ -321,11 +321,57 @@ pub fn try_spread_move_hit(
         );
     }
 
-    // Step 7: Move hit loop (damage calculation)
-    let target_list: Vec<Option<(usize, usize)>> = remaining_targets.iter().map(|&t| Some(t)).collect();
+    // Step 7: Move hit loop (multi-hit handling)
+    // JavaScript: this.hitStepMoveHitLoop(targets, pokemon, move);
+    // For now, use a simplified approach: call spread_move_hit multiple times for multi-hit moves
 
-    let (damages, final_targets) =
-        crate::battle_actions::spread_move_hit(battle, &target_list, pokemon_pos, move_id, false, false);
+    // Determine number of hits
+    let num_hits = if let Some(ref active_move) = battle.active_move {
+        eprintln!("[TRY_SPREAD_MOVE_HIT] Move {} has multi_hit: {:?}", active_move.id.as_str(), active_move.multi_hit);
+        match &active_move.multi_hit {
+            Some(crate::dex::Multihit::Fixed(n)) => {
+                eprintln!("[TRY_SPREAD_MOVE_HIT] Fixed multi-hit: {}", n);
+                *n
+            }
+            Some(crate::dex::Multihit::Range(min, max)) => {
+                eprintln!("[TRY_SPREAD_MOVE_HIT] Range multi-hit: {}-{}", min, max);
+                // For now, just use max value. Full implementation would sample from distribution
+                *max
+            }
+            None => {
+                eprintln!("[TRY_SPREAD_MOVE_HIT] No multi_hit field");
+                1
+            }
+        }
+    } else {
+        eprintln!("[TRY_SPREAD_MOVE_HIT] No active_move!");
+        1
+    };
+
+    let target_list: Vec<Option<(usize, usize)>> = remaining_targets.iter().map(|&t| Some(t)).collect();
+    let mut total_damages: Vec<i32> = vec![0; target_list.len()];
+    let mut final_targets = target_list.clone();
+
+    // Execute each hit
+    for hit_num in 0..num_hits {
+        eprintln!("[TRY_SPREAD_MOVE_HIT] Executing hit {} of {}", hit_num + 1, num_hits);
+
+        let (damages, targets) =
+            crate::battle_actions::spread_move_hit(battle, &final_targets, pokemon_pos, move_id, false, false);
+
+        // Accumulate damage
+        for (i, damage_opt) in damages.iter().enumerate() {
+            if let Some(dmg) = damage_opt {
+                total_damages[i] += dmg;
+            }
+        }
+
+        // Update targets for next hit
+        final_targets = targets;
+    }
+
+    // Convert to Option format
+    let damages: Vec<Option<i32>> = total_damages.iter().map(|&d| Some(d)).collect();
 
     // JavaScript (battle-actions.ts line 831): move.totalDamage += damage[i];
     // Accumulate total damage for recoil calculation
