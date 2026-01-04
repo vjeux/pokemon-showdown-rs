@@ -136,8 +136,21 @@ pub fn on_start(
         }
     }
 
-    // TODO: this.attrLastMove('[still]');
-    // TODO: this.runEvent('PrepareHit', attacker, defender, effect);
+    // JavaScript: this.attrLastMove('[still]');
+    battle.attr_last_move(&["[still]"]);
+
+    // JavaScript: this.runEvent('PrepareHit', attacker, defender, effect);
+    // Run side-effects normally associated with hitting (e.g., Protean, Libero)
+    let defender_pos = battle.current_event.as_ref().and_then(|e| e.source);
+    battle.run_event(
+        "PrepareHit",
+        Some(pokemon_pos),
+        defender_pos,
+        move_id.as_ref(),
+        EventResult::Continue,
+        false,
+        false,
+    );
 
     EventResult::Continue
 }
