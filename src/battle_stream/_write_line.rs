@@ -1,4 +1,6 @@
-// TODO: Implement _writeLine from JavaScript
+//! BattleStream::_writeLine - Process a single protocol command line
+//!
+//! 1:1 port of _writeLine from battle-stream.ts
 //
 // JS Source:
 // 
