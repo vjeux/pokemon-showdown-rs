@@ -93,7 +93,7 @@ impl Pokemon {
         species_id: ID,
         source_id: Option<ID>,
         is_permanent: bool,
-        _ability_slot: &str, // TODO: Use when implementing permanent forme changes with ability changes
+        ability_slot: &str,
         message: Option<&str>,
     ) -> bool {
         // const rawSpecies = this.battle.dex.species.get(speciesId);
@@ -315,13 +315,20 @@ impl Pokemon {
             if should_change_ability {
                 // Get the ability from the new forme
                 // const ability = species.abilities[abilitySlot] || species.abilities['0'];
-                // For now, we use ability slot '0' (primary ability)
-                // TODO: Use _ability_slot parameter when ability slot system is fully implemented
-
+                // JavaScript: species.abilities[abilitySlot] || species.abilities['0']
+                // Use the specified ability slot, defaulting to slot '0'
                 if let Some(species_data) = battle.dex.species().get(species_id.as_str()) {
-                    let ability_str = species_data.abilities.slot0.clone()
-                        .or_else(|| species_data.abilities.hidden.clone())
-                        .unwrap_or_else(|| "noability".to_string());
+                    // Map ability slot string to the appropriate field
+                    let ability_str = match ability_slot {
+                        "0" => species_data.abilities.slot0.clone(),
+                        "1" => species_data.abilities.slot1.clone(),
+                        "H" => species_data.abilities.hidden.clone(),
+                        "S" => species_data.abilities.special.clone(),
+                        _ => None, // Unknown slot, will fall through to default
+                    }
+                    // If the requested slot doesn't exist, fall back to slot '0'
+                    .or_else(|| species_data.abilities.slot0.clone())
+                    .unwrap_or_else(|| "noability".to_string());
 
                     let ability_to_set = crate::dex_data::ID::from(ability_str.as_str());
 
