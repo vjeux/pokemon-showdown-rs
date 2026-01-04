@@ -104,9 +104,64 @@ pub fn on_hit_field(
 
     // if (this.gameType === "freeforall") {
     if battle.game_type == GameType::FreeForAll {
-        // TODO: Implement free-for-all rotation logic
-        // For now, we'll skip this case as it's complex and requires 4-side support
-        // The standard 2-side case below is the most common scenario
+        // const sides = [this.sides[0], this.sides[3]!, this.sides[1], this.sides[2]!];
+        let side_order = vec![0, 3, 1, 2];
+
+        // const temp: { [k: number]: typeof source.side.sideConditions } = { 0: {}, 1: {}, 2: {}, 3: {} };
+        let mut temp: std::collections::HashMap<usize, std::collections::HashMap<crate::dex_data::ID, crate::event_system::EffectState>> =
+            std::collections::HashMap::new();
+        for i in 0..4 {
+            temp.insert(i, std::collections::HashMap::new());
+        }
+
+        // for (const side of sides) {
+        //     for (const id in side.sideConditions) {
+        //         if (!sideConditions.includes(id)) continue;
+        //         temp[side.n][id] = side.sideConditions[id];
+        //         delete side.sideConditions[id];
+        //         success = true;
+        //     }
+        // }
+        for &side_idx in &side_order {
+            if let Some(side) = battle.sides.get_mut(side_idx) {
+                let keys_to_remove: Vec<_> = side
+                    .side_conditions
+                    .keys()
+                    .filter(|id| side_conditions.contains(&id.as_str()))
+                    .cloned()
+                    .collect();
+
+                for id in keys_to_remove {
+                    if let Some(condition) = side.side_conditions.remove(&id) {
+                        temp.get_mut(&side_idx).unwrap().insert(id, condition);
+                        success = true;
+                    }
+                }
+            }
+        }
+
+        // for (let i = 0; i < 4; i++) {
+        //     const sourceSideConditions = temp[sides[i].n];
+        //     const targetSide = sides[(i + 1) % 4]; // the next side in rotation
+        //     for (const id in sourceSideConditions) {
+        //         targetSide.sideConditions[id] = sourceSideConditions[id];
+        //         targetSide.sideConditions[id].target = targetSide;
+        //     }
+        // }
+        for i in 0..4 {
+            let source_side_n = side_order[i];
+            let target_side_n = side_order[(i + 1) % 4];
+
+            let source_conditions = temp.get(&source_side_n).unwrap().clone();
+
+            if let Some(target_side) = battle.sides.get_mut(target_side_n) {
+                for (id, mut condition) in source_conditions {
+                    // targetSide.sideConditions[id].target = targetSide;
+                    condition.target_side = Some(target_side_n);
+                    target_side.side_conditions.insert(id, condition);
+                }
+            }
+        }
     } else {
         // const sourceSideConditions = source.side.sideConditions;
         // const targetSideConditions = source.side.foe.sideConditions;
