@@ -705,8 +705,10 @@ pub fn use_move_inner(
         // In JavaScript, NOT_FAIL is an empty string ""
         // Handle NOT_FAIL case - if move returned NOT_FAIL, clear moveThisTurnResult
         if hit_result.is_not_fail() {
-            // TODO: Set pokemon.moveThisTurnResult to null
-            // For now, we note that this was a NOT_FAIL result
+            // Set pokemon.moveThisTurnResult to null
+            if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                pokemon.move_this_turn_result = None;
+            }
         }
 
         // if (damage || damage === 0 || damage === undefined) moveResult = true;
