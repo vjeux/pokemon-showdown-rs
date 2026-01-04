@@ -814,15 +814,16 @@ impl Battle {
 
                         // JS: else if (abilitySlot === 'H' && species.unreleasedHidden) continue;
                         if slot_name == "H" {
-                            // TODO: Check species.unreleased_hidden when field is added to SpeciesData
-                            // For now, skip this check (no unreleased hidden abilities in current data)
-                            /*
-                            if let Some(species) = self.dex.species.get(&species_id) {
-                                if species.unreleased_hidden {
-                                    continue; // unreleased hidden ability
+                            // Check if hidden ability is unreleased
+                            if let Some(species) = self.dex.species().get_by_id(&species_id) {
+                                if let Some(ref unreleased) = species.unreleased_hidden {
+                                    // JavaScript: unreleasedHidden can be true or 'Past'
+                                    // Either value means the hidden ability is unreleased
+                                    if unreleased.is_some() {
+                                        continue; // unreleased hidden ability
+                                    }
                                 }
                             }
-                            */
                         }
 
                         // JS: const ability = this.dex.abilities.get(abilityName);
