@@ -224,10 +224,148 @@ impl Battle {
             );
         }
 
-        // TODO: Gen 1 no-progress checks (requires Pokemon.hasType())
-        // TODO: Staleness checks (requires Pokemon.volatileStaleness, Pokemon.staleness)
-        // TODO: Berry cycling checks (requires Harvest, Recycle, RESTORATIVE_BERRIES)
+        // JavaScript: if (!this.ruleTable.has('endlessbattleclause')) return;
+        if let Some(ref rule_table) = self.rule_table {
+            if !rule_table.has("endlessbattleclause") {
+                return false;
+            }
+        } else {
+            return false;
+        }
 
-        false
+        // JavaScript: if (this.format.gameType === 'freeforall') return;
+        if let Some(ref format) = self.format {
+            if format.game_type == crate::data::formats::GameType::FreeForAll {
+                return false;
+            }
+        }
+
+        // JavaScript: Are all Pokemon on every side stale, with at least one side containing an externally stale Pokemon?
+        // if (!stalenessBySide.every(s => !!s) || !stalenessBySide.some(s => s === 'external')) return;
+        if !staleness_by_side.iter().all(|s| s.is_some()) {
+            return false;
+        }
+        if !staleness_by_side.iter().any(|s| s.as_deref() == Some("external")) {
+            return false;
+        }
+
+        // JavaScript: Can both sides switch to a non-stale Pokemon?
+        // const canSwitch = [];
+        // for (const [i, trapped] of trappedBySide.entries()) {
+        //     canSwitch[i] = false;
+        //     if (trapped) break;
+        //     const side = this.sides[i];
+        //     for (const pokemon of side.pokemon) {
+        //         if (!pokemon.fainted && !(pokemon.volatileStaleness || pokemon.staleness)) {
+        //             canSwitch[i] = true;
+        //             break;
+        //         }
+        //     }
+        // }
+        let mut can_switch = vec![false; self.sides.len()];
+        for (i, &trapped) in trapped_by_side.iter().enumerate() {
+            if trapped {
+                break;
+            }
+
+            for pokemon in &self.sides[i].pokemon {
+                if !pokemon.fainted && pokemon.volatile_staleness.is_none() && pokemon.staleness.is_none() {
+                    can_switch[i] = true;
+                    break;
+                }
+            }
+        }
+
+        // JavaScript: if (canSwitch.every(s => s)) return;
+        if can_switch.iter().all(|&s| s) {
+            return false;
+        }
+
+        // JavaScript: Endless Battle Clause activates - we determine the winner by looking at each side's sets.
+        // const losers: Side[] = [];
+        // for (const side of this.sides) {
+        //     let berry = false; // Restorative Berry
+        //     let cycle = false; // Harvest or Recycle
+        //     for (const pokemon of side.pokemon) {
+        //         berry = RESTORATIVE_BERRIES.has(toID(pokemon.set.item));
+        //         if (['harvest', 'pickup'].includes(toID(pokemon.set.ability)) ||
+        //             pokemon.set.moves.map(toID).includes('recycle' as ID)) {
+        //             cycle = true;
+        //         }
+        //         if (berry && cycle) break;
+        //     }
+        //     if (berry && cycle) losers.push(side);
+        // }
+        let mut losers = Vec::new();
+        for (side_index, side) in self.sides.iter().enumerate() {
+            let mut berry = false;
+            let mut cycle = false;
+
+            for pokemon in &side.pokemon {
+                // Check for restorative berry
+                let item_id = pokemon.set.item.to_lowercase().replace(" ", "").replace("-", "");
+                berry = matches!(
+                    item_id.as_str(),
+                    "leppaberry" | "aguavberry" | "enigmaberry" | "figyberry"
+                    | "iapapaberry" | "magoberry" | "sitrusberry" | "wikiberry" | "oranberry"
+                );
+
+                // Check for Harvest or Pickup ability, or Recycle move
+                let ability_id = pokemon.set.ability.to_lowercase().replace(" ", "").replace("-", "");
+                if ability_id == "harvest" || ability_id == "pickup" {
+                    cycle = true;
+                }
+
+                for move_name in &pokemon.set.moves {
+                    let move_id = move_name.to_lowercase().replace(" ", "").replace("-", "");
+                    if move_id == "recycle" {
+                        cycle = true;
+                        break;
+                    }
+                }
+
+                if berry && cycle {
+                    break;
+                }
+            }
+
+            if berry && cycle {
+                losers.push(side_index);
+            }
+        }
+
+        // JavaScript: if (losers.length === 1) {
+        //     const loser = losers[0];
+        //     this.add('-message', `${loser.name}'s team started with the rudimentary means to perform restorative berry-cycling and thus loses.`);
+        //     return this.win(loser.foe);
+        // }
+        if losers.len() == 1 {
+            let loser_index = losers[0];
+            let loser_name = self.sides[loser_index].name.clone();
+            let winner_side_id = if loser_index == 0 {
+                SideID::P2
+            } else {
+                SideID::P1
+            };
+
+            self.add(
+                "-message",
+                &[format!("{}'s team started with the rudimentary means to perform restorative berry-cycling and thus loses.", loser_name).into()],
+            );
+            return self.win(Some(winner_side_id));
+        }
+
+        // JavaScript: if (losers.length === this.sides.length) {
+        //     this.add('-message', `Each side's team started with the rudimentary means to perform restorative berry-cycling.`);
+        // }
+        if losers.len() == self.sides.len() {
+            self.add(
+                "-message",
+                &["Each side's team started with the rudimentary means to perform restorative berry-cycling.".into()],
+            );
+        }
+
+        // JavaScript: return this.tie();
+        self.tie()
     }
 }
