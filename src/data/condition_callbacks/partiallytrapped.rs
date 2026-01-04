@@ -141,7 +141,7 @@ pub fn on_residual(
     eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Called for {:?}", pokemon_pos);
 
     // Get source and effect information from volatile state
-    let (source_pos, base_maxhp, bound_divisor) = {
+    let (source_pos, base_maxhp, bound_divisor, is_gmax_effect) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
@@ -158,13 +158,21 @@ pub fn on_residual(
             .and_then(|v| v.as_i64())
             .unwrap_or(8) as i32;
 
-        (source, pokemon.base_maxhp, divisor)
+        // JavaScript: const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
+        // G-Max Centiferno and G-Max Sandblast continue even after the user leaves the field
+        let gmax = pokemon.volatiles.get(&trap_id)
+            .and_then(|state| state.data.get("sourceEffect"))
+            .and_then(|v| v.get("id"))
+            .and_then(|v| v.as_str())
+            .map(|id| id == "gmaxcentiferno" || id == "gmaxsandblast")
+            .unwrap_or(false);
+
+        (source, pokemon.base_maxhp, divisor, gmax)
     };
 
     // JavaScript: if (source && (!source.isActive || source.hp <= 0 || !source.activeTurns) && !gmaxEffect)
     // Check if source Pokemon has fainted or is no longer active
     // G-Max traps (gmaxcentiferno, gmaxsandblast) continue even after source faints
-    // TODO: Check for G-Max traps when we implement them
     if let Some((source_side, source_poke)) = source_pos {
         let source_invalid = {
             if let Some(source) = battle.pokemon_at(source_side, source_poke) {
@@ -176,16 +184,39 @@ pub fn on_residual(
             }
         };
 
-        if source_invalid {
+        // Only remove trap if source is invalid AND it's not a G-Max effect
+        if source_invalid && !is_gmax_effect {
             // Remove the trap volatile without dealing damage
             eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Source Pokemon fainted/inactive, removing trap without damage");
 
+            // Get sourceEffect for battle log message
+            let source_effect_name = {
+                let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1).unwrap();
+                let trap_id = ID::from("partiallytrapped");
+                pokemon.volatiles.get(&trap_id)
+                    .and_then(|state| state.data.get("sourceEffect"))
+                    .and_then(|v| v.get("fullname"))
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("[partiallytrapped]")
+                    .to_string()
+            };
+
+            // Remove the volatile
             if let Some(pokemon_mut) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                 pokemon_mut.volatiles.remove(&ID::from("partiallytrapped"));
             }
 
             // JavaScript: this.add('-end', pokemon, this.effectState.sourceEffect, '[partiallytrapped]', '[silent]');
-            // TODO: Add battle log message when battle.add() supports this format
+            let pokemon_ident = {
+                let p = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1).unwrap();
+                p.get_slot()
+            };
+            battle.add("-end", &[
+                Arg::String(pokemon_ident),
+                Arg::String(source_effect_name),
+                Arg::Str("[partiallytrapped]"),
+                Arg::Str("[silent]")
+            ]);
 
             return EventResult::Continue;
         }
@@ -255,19 +286,18 @@ pub fn on_trap_pokemon(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
-    // TODO: Check for G-Max effects when effectState data is available
+    // JavaScript: const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
+    // JavaScript: if (this.effectState.source?.isActive || gmaxEffect) pokemon.tryTrap();
 
-    // if (this.effectState.source?.isActive || gmaxEffect) pokemon.tryTrap();
     let trap_id = ID::from("partiallytrapped");
-    let source_active = {
+    let (source_active, is_gmax_effect) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
         if let Some(volatile) = pokemon.volatiles.get(&trap_id) {
-            if let Some((source_side, source_poke)) = volatile.source {
+            let active = if let Some((source_side, source_poke)) = volatile.source {
                 if let Some(source) = battle.pokemon_at(source_side, source_poke) {
                     // Check if source is active
                     !source.fainted && source.hp > 0
@@ -276,13 +306,23 @@ pub fn on_trap_pokemon(
                 }
             } else {
                 false
-            }
+            };
+
+            // Check for G-Max effects (gmaxcentiferno, gmaxsandblast)
+            let gmax = volatile.data.get("sourceEffect")
+                .and_then(|v| v.get("id"))
+                .and_then(|v| v.as_str())
+                .map(|id| id == "gmaxcentiferno" || id == "gmaxsandblast")
+                .unwrap_or(false);
+
+            (active, gmax)
         } else {
-            false
+            (false, false)
         }
     };
 
-    if source_active {
+    // Trap pokemon if source is active OR it's a G-Max effect
+    if source_active || is_gmax_effect {
         // pokemon.tryTrap();
         crate::pokemon::Pokemon::try_trap(battle, pokemon_pos, false);
     }
