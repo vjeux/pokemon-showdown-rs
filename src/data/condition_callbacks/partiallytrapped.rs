@@ -43,11 +43,13 @@ pub fn on_start(
 }
 
 /// onResidual
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
 /// partiallytrapped: {
-///     onResidual(...) {
-///         // Extract implementation from conditions.ts
+///     onResidual(pokemon) {
+///         const source = this.effectState.source;
+///         // Gen 1 damage is 1/16, Gen 2+ damage is 1/8
+///         const damage = this.clampIntRange(pokemon.baseMaxhp / (this.gen >= 2 ? 8 : 16), 1);
+///         this.damage(damage, pokemon, source);
 ///     }
 /// }
 pub fn on_residual(
@@ -55,7 +57,29 @@ pub fn on_residual(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+
+    // Get pokemon and extract needed data
+    let (base_maxhp, gen) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (pokemon.base_maxhp, battle.gen)
+    };
+
+    // Calculate damage: Gen 1 = 1/16 max HP, Gen 2+ = 1/8 max HP
+    let divisor = if gen >= 2 { 8 } else { 16 };
+    let damage = std::cmp::max(1, base_maxhp / divisor);
+
+    eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Dealing {} damage (maxhp={}, divisor={})",
+        damage, base_maxhp, divisor);
+
+    // Deal damage
+    // JavaScript: this.damage(damage, pokemon, source);
+    // In Rust: battle.damage(damage, target, source, effect, instafaint)
+    use crate::dex_data::ID;
+    battle.damage(damage, Some(pokemon_pos), None, Some(&ID::from("partiallytrapped")), false);
+
     EventResult::Continue
 }
 
