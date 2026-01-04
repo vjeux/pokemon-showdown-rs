@@ -84,13 +84,10 @@ impl Battle {
             }
             self.sides[slot_num] = side;
 
-            // Update Z-move flags and PP using Dex
+            // Update PP values using Dex
             // These updates need Pokemon objects to exist, so they happen after Side::new()
             let pokemon_count = self.sides[slot_num].pokemon.len();
             for poke_idx in 0..pokemon_count {
-                // Update Z-move flags using Dex
-                self.sides[slot_num].pokemon[poke_idx].update_move_z_flags(&self.dex);
-
                 // Update PP values using Dex
                 // JavaScript: let basepp = move.noPPBoosts ? move.pp : move.pp * 8 / 5;
                 self.sides[slot_num].pokemon[poke_idx].update_move_pp(&self.dex, self.gen);

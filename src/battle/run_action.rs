@@ -588,7 +588,6 @@ impl Battle {
                                             disabled_source: Some(String::new()),
                                             used: false,
                                             virtual_move: false,
-                                            is_z: false,
                                         };
 
                                         // JS: pokemon.moveSlots = pokemon.baseMoveSlots.slice();

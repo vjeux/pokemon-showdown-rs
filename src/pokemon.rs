@@ -13,7 +13,6 @@ use crate::event_system::EffectState;
 
 // Function modules
 mod new;
-mod update_move_z_flags;
 mod update_move_pp;
 mod fullname;
 mod details;
@@ -165,8 +164,6 @@ pub struct MoveSlot {
     /// JavaScript: virtual?: boolean
     /// TODO: Rust uses virtual_move to avoid keyword conflict with potential 'virtual'
     pub virtual_move: bool,
-    // TODO: DELETE - Not in JavaScript MoveSlot (or verify if it exists)
-    pub is_z: bool,
 }
 
 impl MoveSlot {
@@ -181,7 +178,6 @@ impl MoveSlot {
             disabled_source: None,
             used: false,
             virtual_move: false,
-            is_z: false,
         }
     }
 }
