@@ -145,10 +145,9 @@ pub struct FormatDef {
     /// Is this format rated?
     /// JavaScript: rated?: boolean
     pub rated: bool,
-    /// Minimum ELO for this format
+    /// Minimum source generation for Pokemon (e.g., Gen 8+ only)
     /// JavaScript: minSourceGen?: number
-    /// TODO: JavaScript uses different field name
-    pub min_elo: Option<i32>,
+    pub min_source_gen: Option<i32>,
 }
 
 /// Standard ruleset definitions
@@ -374,7 +373,7 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             ],
             unbans: &[],
             rated: true,
-            min_elo: None,
+            min_source_gen: None,
         },
     );
 
@@ -404,7 +403,7 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             bans: &["Moody", "Baton Pass"],
             unbans: &[],
             rated: true,
-            min_elo: None,
+            min_source_gen: None,
         },
     );
 
@@ -439,7 +438,7 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             ],
             unbans: &[],
             rated: true,
-            min_elo: None,
+            min_source_gen: None,
         },
     );
 
@@ -478,7 +477,7 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             ],
             unbans: &[],
             rated: true,
-            min_elo: None,
+            min_source_gen: None,
         },
     );
 
@@ -506,7 +505,7 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             ],
             unbans: &[],
             rated: true,
-            min_elo: None,
+            min_source_gen: None,
         },
     );
 
@@ -525,7 +524,7 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             bans: &[],
             unbans: &[],
             rated: true,
-            min_elo: None,
+            min_source_gen: None,
         },
     );
 
@@ -564,7 +563,7 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             ],
             unbans: &[],
             rated: true,
-            min_elo: None,
+            min_source_gen: None,
         },
     );
 
@@ -602,7 +601,7 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             ],
             unbans: &[],
             rated: true,
-            min_elo: None,
+            min_source_gen: None,
         },
     );
 
@@ -630,7 +629,7 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             bans: &["Uber", "Baton Pass"],
             unbans: &[],
             rated: true,
-            min_elo: None,
+            min_source_gen: None,
         },
     );
 
