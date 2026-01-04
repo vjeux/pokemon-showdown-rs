@@ -364,20 +364,27 @@ Using improved PRNG tracing (commit 1b003677), identified the extra calls:
 - #117: from=100 (EXTRA secondary effect roll - 20% chance) <- spread_move_hit
 - #118: from=24 (EXTRA damage roll) <- get_damage
 
-**Root Cause FOUND:**
-The extra PRNG calls are from gmaxterror (G-Max Terror move):
+**Root Cause FOUND and FIXED ✅:**
+The extra PRNG calls were from gmaxterror (G-Max Terror move):
 - gmaxterror is a Gengar-specific Max move with `isMax: "Gengar"`
 - Golem-Alola doesn't have the 'dynamax' volatile
-- JavaScript: Max move check happens BEFORE crit calculation or via BasePower event returning 0 → NO PRNG calls
-- Rust: Max move check happens AFTER crit calculation → 2 PRNG calls (crit + randomizer)
+- JavaScript: Max move check returns early BEFORE crit calculation → NO PRNG calls
+- Rust (before fix): Max move check happened AFTER crit calculation → 2 PRNG calls (crit + randomizer)
 
-**PRNG Calls:**
-- #118: Crit check for gmaxterror (from=24)
-- #119: Damage randomizer for gmaxterror (from=16)
+**Fix Applied (Commit 61840515):**
+1. Moved Max move dynamax check to happen BEFORE crit calculation in get_damage.rs
+2. Added early return when Max move used without dynamax volatile
+3. This prevents all PRNG calls for Max moves without dynamax
 
-**Fix Needed:**
-Move the Max move dynamax check in get_damage.rs to happen BEFORE the crit calculation.
-This will set basePower = 0 before `if base_power > 0` check, preventing the crit PRNG call.
+**Result:**
+- ✅ Turn 26 now matches perfectly: both make 4 PRNG calls (113->117)
+- ✅ Zacian HP matches: 196/331 in both
+- ✅ Golem HP matches: 197/288 in both
+
+**Next Divergence:**
+- Turn 27: JavaScript prng=117->123 (6 calls), Rust prng=117->121 (4 calls)
+- Zacian HP differs: JS=195, Rust=196
+- Need to investigate next
 
 ---
 
