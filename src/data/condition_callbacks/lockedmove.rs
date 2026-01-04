@@ -5,107 +5,254 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// onResidual
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// lockedmove: {
-///     onResidual(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// onResidual(target) {
+///     if (target.status === 'slp') {
+///         // don't lock, and bypass confusion for calming
+///         delete target.volatiles['lockedmove'];
 ///     }
+///     this.effectState.trueDuration--;
 /// }
+/// ```
 pub fn on_residual(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[LOCKEDMOVE_ON_RESIDUAL] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // if (target.status === 'slp')
+    let is_asleep = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.status.as_str() == "slp"
+    };
+
+    if is_asleep {
+        // delete target.volatiles['lockedmove'];
+        let lockedmove_id = ID::from("lockedmove");
+        crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &lockedmove_id);
+    }
+
+    // this.effectState.trueDuration--;
+    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    let lockedmove_id = ID::from("lockedmove");
+    if let Some(volatile) = pokemon.volatiles.get_mut(&lockedmove_id) {
+        if let Some(true_duration_val) = volatile.data.get_mut("trueDuration") {
+            if let Some(true_duration) = true_duration_val.as_i64() {
+                *true_duration_val = serde_json::Value::Number(serde_json::Number::from(true_duration - 1));
+            }
+        }
+    }
+
     EventResult::Continue
 }
 
 /// onStart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// lockedmove: {
-///     onStart(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onStart(target, source, effect) {
+///     this.effectState.trueDuration = this.random(2, 4);
+///     this.effectState.move = effect.id;
 /// }
+/// ```
 pub fn on_start(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[LOCKEDMOVE_ON_START] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.effectState.trueDuration = this.random(2, 4);
+    let true_duration = battle.random_with_range(2, 4);
+
+    // this.effectState.move = effect.id;
+    let move_id = match &battle.effect {
+        Some(eff) => eff.to_string(),
+        None => return EventResult::Continue,
+    };
+
+    // Set volatile state data
+    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+
+    let lockedmove_id = ID::from("lockedmove");
+    if let Some(volatile) = pokemon.volatiles.get_mut(&lockedmove_id) {
+        volatile.data.insert("trueDuration".to_string(), serde_json::Value::Number(serde_json::Number::from(true_duration)));
+        volatile.data.insert("move".to_string(), serde_json::Value::String(move_id));
+    }
+
     EventResult::Continue
 }
 
 /// onRestart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// lockedmove: {
-///     onRestart(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// onRestart() {
+///     if (this.effectState.trueDuration >= 2) {
+///         this.effectState.duration = 2;
 ///     }
 /// }
+/// ```
 pub fn on_restart(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[LOCKEDMOVE_ON_RESTART] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // if (this.effectState.trueDuration >= 2)
+    let true_duration_ge_2 = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let lockedmove_id = ID::from("lockedmove");
+        pokemon.volatiles.get(&lockedmove_id)
+            .and_then(|v| v.data.get("trueDuration"))
+            .and_then(|d| d.as_i64())
+            .map(|d| d >= 2)
+            .unwrap_or(false)
+    };
+
+    if true_duration_ge_2 {
+        // this.effectState.duration = 2;
+        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let lockedmove_id = ID::from("lockedmove");
+        if let Some(volatile) = pokemon.volatiles.get_mut(&lockedmove_id) {
+            volatile.duration = Some(2);
+        }
+    }
+
     EventResult::Continue
 }
 
 /// onAfterMove
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// lockedmove: {
-///     onAfterMove(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// onAfterMove(pokemon) {
+///     if (this.effectState.duration === 1) {
+///         pokemon.removeVolatile('lockedmove');
 ///     }
 /// }
+/// ```
 pub fn on_after_move(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[LOCKEDMOVE_ON_AFTER_MOVE] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // if (this.effectState.duration === 1)
+    let duration_is_1 = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let lockedmove_id = ID::from("lockedmove");
+        pokemon.volatiles.get(&lockedmove_id)
+            .and_then(|v| v.duration)
+            .map(|d| d == 1)
+            .unwrap_or(false)
+    };
+
+    if duration_is_1 {
+        // pokemon.removeVolatile('lockedmove');
+        let lockedmove_id = ID::from("lockedmove");
+        crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &lockedmove_id);
+    }
+
     EventResult::Continue
 }
 
 /// onEnd
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// lockedmove: {
-///     onEnd(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onEnd(target) {
+///     if (this.effectState.trueDuration > 1) return;
+///     target.addVolatile('confusion');
 /// }
+/// ```
 pub fn on_end(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[LOCKEDMOVE_ON_END] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // if (this.effectState.trueDuration > 1) return;
+    let true_duration_gt_1 = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let lockedmove_id = ID::from("lockedmove");
+        pokemon.volatiles.get(&lockedmove_id)
+            .and_then(|v| v.data.get("trueDuration"))
+            .and_then(|d| d.as_i64())
+            .map(|d| d > 1)
+            .unwrap_or(false)
+    };
+
+    if true_duration_gt_1 {
+        return EventResult::Continue;
+    }
+
+    // target.addVolatile('confusion');
+    let confusion_id = ID::from("confusion");
+    crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, confusion_id, Some(pokemon_pos), None, None, None);
+
     EventResult::Continue
 }
 
 /// onLockMove
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// lockedmove: {
-///     onLockMove(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onLockMove(pokemon) {
+///     if (pokemon.volatiles['dynamax']) return;
+///     return this.effectState.move;
 /// }
+/// ```
 pub fn on_lock_move(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[LOCKEDMOVE_ON_LOCK_MOVE] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
+    // if (pokemon.volatiles['dynamax']) return;
+    let has_dynamax = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let dynamax_id = ID::from("dynamax");
+        pokemon.volatiles.contains_key(&dynamax_id)
+    };
+
+    if has_dynamax {
+        return EventResult::Continue;
+    }
+
+    // return this.effectState.move;
+    let move_id = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let lockedmove_id = ID::from("lockedmove");
+        pokemon.volatiles.get(&lockedmove_id)
+            .and_then(|v| v.data.get("move"))
+            .and_then(|m| m.as_str())
+            .map(|s| s.to_string())
+    };
+
+    match move_id {
+        Some(m) => EventResult::ID(ID::from(m.as_str())),
+        None => EventResult::Continue,
+    }
 }
 
