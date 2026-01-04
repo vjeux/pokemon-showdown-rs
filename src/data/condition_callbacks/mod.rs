@@ -81,6 +81,7 @@ pub fn dispatch_on_before_move(
     match condition_id {
         "flinch" => flinch::on_before_move(battle, pokemon_pos),
         "mustrecharge" => mustrecharge::on_before_move(battle, pokemon_pos),
+        "par" => par::on_before_move(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -94,6 +95,7 @@ pub fn dispatch_on_before_move_priority(
     match condition_id {
         "flinch" => flinch::on_before_move_priority(battle, pokemon_pos),
         "mustrecharge" => mustrecharge::on_before_move_priority(battle, pokemon_pos),
+        "par" => par::on_before_move_priority(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
 }

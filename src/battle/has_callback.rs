@@ -12,20 +12,16 @@ impl Battle {
     pub fn has_callback(&self, effect_id: &ID, event_id: &str) -> bool {
         let effect_str = effect_id.as_str();
 
-        // Check abilities
-        if self.dex.abilities().get(effect_str).is_some() {
-            return self.ability_has_callback(effect_str, event_id);
-        }
+        eprintln!("[HAS_CALLBACK] effect_id='{}', event_id='{}'", effect_str, event_id);
 
-        // Check items
-        if self.dex.items().get(effect_str).is_some() {
-            return self.item_has_callback(effect_str, event_id);
-        }
-
-        // Check conditions (status, volatile, weather, terrain) BEFORE moves
-        // This is important because some IDs like "sandstorm" exist as both moves and conditions
-        // The condition version should take priority for callback lookups
-        if crate::data::conditions::get_condition(effect_id).is_some() {
+        // IMPORTANT: Check conditions (status, volatile, weather, terrain) FIRST
+        // This is critical because some IDs like "stall" exist as both abilities AND conditions
+        // When checking a volatile, we want to find the CONDITION, not the ability
+        // In JavaScript, the volatile already has its callback attached, so there's no ambiguity
+        let condition_check = crate::data::conditions::get_condition(effect_id);
+        eprintln!("[HAS_CALLBACK] Checking conditions: found={}", condition_check.is_some());
+        if condition_check.is_some() {
+            eprintln!("[HAS_CALLBACK] Found as condition, calling condition_has_callback");
             return self.condition_has_callback(effect_str, event_id);
         }
 
@@ -37,20 +33,36 @@ impl Battle {
             if move_data.condition.is_some() {
                 // This is a move with an embedded condition (like King's Shield)
                 // Treat it as a condition for callback purposes
+                eprintln!("[HAS_CALLBACK] Found as move-embedded condition");
                 return self.condition_has_callback(effect_str, event_id);
             }
         }
 
+        // Check abilities
+        if self.dex.abilities().get(effect_str).is_some() {
+            eprintln!("[HAS_CALLBACK] Found as ability");
+            return self.ability_has_callback(effect_str, event_id);
+        }
+
+        // Check items
+        if self.dex.items().get(effect_str).is_some() {
+            eprintln!("[HAS_CALLBACK] Found as item");
+            return self.item_has_callback(effect_str, event_id);
+        }
+
         // Check moves
         if self.dex.moves().get(effect_str).is_some() {
+            eprintln!("[HAS_CALLBACK] Found as move");
             return self.move_has_callback(effect_str, event_id);
         }
 
         // Check species - species can have callbacks like onSwitchIn for form changes
         if self.dex.species().get(effect_str).is_some() {
+            eprintln!("[HAS_CALLBACK] Found as species");
             return self.species_has_callback(effect_str, event_id);
         }
 
+        eprintln!("[HAS_CALLBACK] Not found, returning false");
         false
     }
 
