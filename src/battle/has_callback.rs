@@ -561,116 +561,22 @@ impl Battle {
             }
         }
 
-        match event_id {
-            "onAfterBoost" => matches!(
-                item_id,
-                "adrenalineorb" | "ejectpack"
-            ),
-            "onAnyAfterMega" => matches!(
-                item_id,
-                "ejectpack" | "mirrorherb" | "whiteherb"
-            ),
-            "onAnyAfterMove" => matches!(
-                item_id,
-                "ejectpack" | "mirrorherb" | "whiteherb"
-            ),
-            "onAnyAfterTerastallization" => matches!(
-                item_id,
-                "mirrorherb"
-            ),
-            "onAnyPseudoWeatherChange" => matches!(
-                item_id,
-                "roomservice"
-            ),
-            "onAnySwitchIn" => matches!(
-                item_id,
-                "ejectpack" | "mirrorherb" | "whiteherb"
-            ),
-            "onChargeMove" => matches!(
-                item_id,
-                "powerherb"
-            ),
-            "onEffectiveness" => matches!(
-                item_id,
-                "ironball"
-            ),
-            "onEnd" => matches!(
-                item_id,
-                "ejectpack" | "mirrorherb" | "utilityumbrella"
-            ),
-            "onFoeAfterBoost" => matches!(
-                item_id,
-                "mirrorherb"
-            ),
-            "onImmunity" => matches!(
-                item_id,
-                "safetygoggles"
-            ),
-            "onModifyCritRatio" => matches!(
-                item_id,
-                "leek" | "luckypunch" | "razorclaw" | "scopelens" | "stick"
-            ),
-            "onModifyAtk" => matches!(
-                item_id,
-                "choiceband"
-            ),
-            "onModifySecondaries" => matches!(
-                item_id,
-                "covertcloak"
-            ),
-            "onModifySpe" => matches!(
-                item_id,
-                "ironball"
-            ),
-            "onModifyWeight" => matches!(
-                item_id,
-                "floatstone"
-            ),
-            "onResidual" => matches!(
-                item_id,
-                "ejectpack" | "leftovers" | "mirrorherb" | "toxicorb" | "whiteherb"
-            ),
-            "onStart" => matches!(
-                item_id,
-                "boosterenergy" | "roomservice" | "utilityumbrella"
-            ),
-            "onSwitchIn" => matches!(
-                item_id,
-                "blueorb" | "redorb"
-            ),
-            "onTakeItem" => matches!(
-                item_id,
-                "blueorb" | "boosterenergy" | "redorb"
-            ),
-            "onTryBoost" => matches!(
-                item_id,
-                "clearamulet"
-            ),
-            "onTryHit" => matches!(
-                item_id,
-                "safetygoggles"
-            ),
-            "onUpdate" => matches!(
-                item_id,
-                "boosterenergy" | "utilityumbrella"
-            ),
-            "onUse" => matches!(
-                item_id,
-                "ejectpack" | "mirrorherb" | "whiteherb"
-            ),
-            "onUseItem" => matches!(
-                item_id,
-                "ejectpack"
-            ),
-            "onModifyDamage" => matches!(
-                item_id,
-                "lifeorb"
-            ),
-            "onAfterMoveSecondarySelf" => matches!(
-                item_id,
-                "lifeorb"
-            ),
-            _ => false,
+        // Normalize event name to "onEventName" format for lookup
+        let normalized = if event_id.starts_with("on") {
+            event_id.to_string()
+        } else {
+            format!("on{}", event_id)
+        };
+
+        // Look up the item in dex data and check its extra field for callback boolean
+        if let Some(item_data) = self.dex.items().get(item_id) {
+            // Check if the callback key exists and is true
+            item_data.extra.get(&normalized)
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            // If not found in dex, return false
+            false
         }
     }
 

@@ -7,7 +7,8 @@
     },
     "ignoreKlutz": true,
     "num": 1881,
-    "gen": 9
+    "gen": 9,
+    "onSetAbility": true
   },
   "abomasite": {
     "name": "Abomasite",
@@ -19,7 +20,8 @@
     ],
     "num": 674,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "absolite": {
     "name": "Absolite",
@@ -31,7 +33,8 @@
     ],
     "num": 677,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "absolitez": {
     "name": "Absolite Z",
@@ -43,7 +46,8 @@
     ],
     "num": 2588,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "absorbbulb": {
     "name": "Absorb Bulb",
@@ -55,7 +59,8 @@
       "spa": 1
     },
     "num": 545,
-    "gen": 5
+    "gen": 5,
+    "onDamagingHit": true
   },
   "adamantcrystal": {
     "name": "Adamant Crystal",
@@ -66,7 +71,9 @@
       "Dialga-Origin"
     ],
     "num": 1777,
-    "gen": 8
+    "gen": 8,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "adamantorb": {
     "name": "Adamant Orb",
@@ -79,7 +86,8 @@
       "Dialga"
     ],
     "num": 135,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true
   },
   "adrenalineorb": {
     "name": "Adrenaline Orb",
@@ -91,7 +99,8 @@
       "spe": 1
     },
     "num": 846,
-    "gen": 7
+    "gen": 7,
+    "onAfterBoost": true
   },
   "aerodactylite": {
     "name": "Aerodactylite",
@@ -103,7 +112,8 @@
     ],
     "num": 672,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "aggronite": {
     "name": "Aggronite",
@@ -115,7 +125,8 @@
     ],
     "num": 667,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "aguavberry": {
     "name": "Aguav Berry",
@@ -126,7 +137,10 @@
       "type": "Dragon"
     },
     "num": 162,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "airballoon": {
     "name": "Air Balloon",
@@ -135,7 +149,10 @@
       "basePower": 10
     },
     "num": 541,
-    "gen": 5
+    "gen": 5,
+    "onStart": true,
+    "onDamagingHit": true,
+    "onAfterSubDamage": true
   },
   "alakazite": {
     "name": "Alakazite",
@@ -147,7 +164,8 @@
     ],
     "num": 679,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "aloraichiumz": {
     "name": "Aloraichium Z",
@@ -172,7 +190,8 @@
     ],
     "num": 755,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "ampharosite": {
     "name": "Ampharosite",
@@ -184,7 +203,8 @@
     ],
     "num": 658,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "apicotberry": {
     "name": "Apicot Berry",
@@ -195,7 +215,9 @@
       "type": "Ground"
     },
     "num": 205,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "armorfossil": {
     "name": "Armor Fossil",
@@ -216,7 +238,9 @@
       "type": "Ice"
     },
     "num": 153,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "assaultvest": {
     "name": "Assault Vest",
@@ -226,7 +250,9 @@
     },
     "onModifySpDPriority": 1,
     "num": 640,
-    "gen": 6
+    "gen": 6,
+    "onModifySpD": true,
+    "onDisableMove": true
   },
   "audinite": {
     "name": "Audinite",
@@ -238,7 +264,8 @@
     ],
     "num": 757,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "auspiciousarmor": {
     "name": "Auspicious Armor",
@@ -258,7 +285,9 @@
       "type": "Steel"
     },
     "num": 199,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "banettite": {
     "name": "Banettite",
@@ -270,7 +299,8 @@
     ],
     "num": 668,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "barbaracite": {
     "name": "Barbaracite",
@@ -282,7 +312,8 @@
     ],
     "num": 2581,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "baxcalibrite": {
     "name": "Baxcalibrite",
@@ -294,7 +325,8 @@
     ],
     "num": 2601,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "beastball": {
     "name": "Beast Ball",
@@ -313,7 +345,8 @@
     ],
     "num": 770,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "belueberry": {
     "name": "Belue Berry",
@@ -336,7 +369,8 @@
     },
     "num": 43,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true
   },
   "berrysweet": {
     "name": "Berry Sweet",
@@ -364,7 +398,8 @@
     },
     "onTryHealPriority": 1,
     "num": 296,
-    "gen": 4
+    "gen": 4,
+    "onTryHeal": true
   },
   "bindingband": {
     "name": "Binding Band",
@@ -383,7 +418,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 241,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "blackglasses": {
     "name": "Black Glasses",
@@ -393,7 +429,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 240,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "blacksludge": {
     "name": "Black Sludge",
@@ -404,7 +441,8 @@
     "onResidualOrder": 5,
     "onResidualSubOrder": 4,
     "num": 281,
-    "gen": 4
+    "gen": 4,
+    "onResidual": true
   },
   "blastoisinite": {
     "name": "Blastoisinite",
@@ -416,7 +454,8 @@
     ],
     "num": 661,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "blazikenite": {
     "name": "Blazikenite",
@@ -428,7 +467,8 @@
     ],
     "num": 664,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "blueorb": {
     "name": "Blue Orb",
@@ -440,7 +480,9 @@
     "isPrimalOrb": true,
     "num": 535,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSwitchIn": true,
+    "onTakeItem": true
   },
   "blukberry": {
     "name": "Bluk Berry",
@@ -472,7 +514,10 @@
     },
     "onSwitchInPriority": -2,
     "num": 1880,
-    "gen": 9
+    "gen": 9,
+    "onStart": true,
+    "onUpdate": true,
+    "onTakeItem": true
   },
   "bottlecap": {
     "name": "Bottle Cap",
@@ -491,7 +536,8 @@
     },
     "onModifyAccuracyPriority": -2,
     "num": 213,
-    "gen": 2
+    "gen": 2,
+    "onModifyAccuracy": true
   },
   "buggem": {
     "name": "Bug Gem",
@@ -499,7 +545,8 @@
     "isGem": true,
     "num": 558,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "buginiumz": {
     "name": "Buginium Z",
@@ -523,7 +570,8 @@
     ],
     "num": 909,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "burndrive": {
     "name": "Burn Drive",
@@ -535,7 +583,8 @@
     ],
     "num": 118,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "cameruptite": {
     "name": "Cameruptite",
@@ -547,7 +596,8 @@
     ],
     "num": 767,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "cellbattery": {
     "name": "Cell Battery",
@@ -559,7 +609,8 @@
       "atk": 1
     },
     "num": 546,
-    "gen": 5
+    "gen": 5,
+    "onDamagingHit": true
   },
   "chandelurite": {
     "name": "Chandelurite",
@@ -571,7 +622,8 @@
     ],
     "num": 2574,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "charcoal": {
     "name": "Charcoal",
@@ -581,7 +633,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 249,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "charizarditex": {
     "name": "Charizardite X",
@@ -593,7 +646,8 @@
     ],
     "num": 660,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "charizarditey": {
     "name": "Charizardite Y",
@@ -605,7 +659,8 @@
     ],
     "num": 678,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "chartiberry": {
     "name": "Charti Berry",
@@ -616,7 +671,9 @@
       "type": "Rock"
     },
     "num": 195,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "cheriberry": {
     "name": "Cheri Berry",
@@ -627,7 +684,9 @@
       "type": "Fire"
     },
     "num": 149,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "cherishball": {
     "name": "Cherish Ball",
@@ -647,7 +706,8 @@
     ],
     "num": 2575,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "chestoberry": {
     "name": "Chesto Berry",
@@ -658,7 +718,9 @@
       "type": "Water"
     },
     "num": 150,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "chilanberry": {
     "name": "Chilan Berry",
@@ -669,7 +731,9 @@
       "type": "Normal"
     },
     "num": 200,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "chilldrive": {
     "name": "Chill Drive",
@@ -681,7 +745,8 @@
     ],
     "num": 119,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "chimechite": {
     "name": "Chimechite",
@@ -693,7 +758,8 @@
     ],
     "num": 2587,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "chippedpot": {
     "name": "Chipped Pot",
@@ -713,7 +779,10 @@
     "onModifyAtkPriority": 1,
     "isChoice": true,
     "num": 220,
-    "gen": 3
+    "gen": 3,
+    "onStart": true,
+    "onModifyMove": true,
+    "onModifyAtk": true
   },
   "choicescarf": {
     "name": "Choice Scarf",
@@ -723,7 +792,10 @@
     },
     "isChoice": true,
     "num": 287,
-    "gen": 4
+    "gen": 4,
+    "onStart": true,
+    "onModifyMove": true,
+    "onModifySpe": true
   },
   "choicespecs": {
     "name": "Choice Specs",
@@ -734,7 +806,10 @@
     "onModifySpAPriority": 1,
     "isChoice": true,
     "num": 297,
-    "gen": 4
+    "gen": 4,
+    "onStart": true,
+    "onModifyMove": true,
+    "onModifySpA": true
   },
   "chopleberry": {
     "name": "Chople Berry",
@@ -745,7 +820,9 @@
       "type": "Fighting"
     },
     "num": 189,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "clawfossil": {
     "name": "Claw Fossil",
@@ -765,7 +842,8 @@
     },
     "onTryBoostPriority": 1,
     "num": 1882,
-    "gen": 9
+    "gen": 9,
+    "onTryBoost": true
   },
   "clefablite": {
     "name": "Clefablite",
@@ -777,7 +855,8 @@
     ],
     "num": 2559,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "cloversweet": {
     "name": "Clover Sweet",
@@ -797,7 +876,9 @@
       "type": "Flying"
     },
     "num": 192,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "colburberry": {
     "name": "Colbur Berry",
@@ -808,7 +889,9 @@
       "type": "Dark"
     },
     "num": 198,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "cornerstonemask": {
     "name": "Cornerstone Mask",
@@ -822,7 +905,9 @@
       "Ogerpon-Cornerstone"
     ],
     "num": 2406,
-    "gen": 9
+    "gen": 9,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "cornnberry": {
     "name": "Cornn Berry",
@@ -854,7 +939,8 @@
       "basePower": 30
     },
     "num": 1885,
-    "gen": 9
+    "gen": 9,
+    "onModifySecondaries": true
   },
   "crabominite": {
     "name": "Crabominite",
@@ -866,7 +952,8 @@
     ],
     "num": 2595,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "crackedpot": {
     "name": "Cracked Pot",
@@ -887,7 +974,8 @@
     },
     "onFractionalPriorityPriority": -2,
     "num": 210,
-    "gen": 4
+    "gen": 4,
+    "onEat": true
   },
   "damprock": {
     "name": "Damp Rock",
@@ -904,7 +992,8 @@
     "isGem": true,
     "num": 562,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "darkiniumz": {
     "name": "Darkinium Z",
@@ -928,7 +1017,8 @@
     ],
     "num": 919,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "darkranite": {
     "name": "Darkranite",
@@ -940,7 +1030,8 @@
     ],
     "num": 2593,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "dawnstone": {
     "name": "Dawn Stone",
@@ -976,7 +1067,8 @@
     ],
     "num": 227,
     "gen": 3,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifySpD": true
   },
   "deepseatooth": {
     "name": "Deep Sea Tooth",
@@ -990,7 +1082,8 @@
     ],
     "num": 226,
     "gen": 3,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifySpA": true
   },
   "delphoxite": {
     "name": "Delphoxite",
@@ -1002,7 +1095,8 @@
     ],
     "num": 2576,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "destinyknot": {
     "name": "Destiny Knot",
@@ -1012,7 +1106,8 @@
     },
     "onAttractPriority": -100,
     "num": 280,
-    "gen": 4
+    "gen": 4,
+    "onAttract": true
   },
   "diancite": {
     "name": "Diancite",
@@ -1024,7 +1119,8 @@
     ],
     "num": 764,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "diveball": {
     "name": "Dive Ball",
@@ -1053,7 +1149,8 @@
     ],
     "num": 116,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "dracoplate": {
     "name": "Draco Plate",
@@ -1062,7 +1159,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Dragon",
     "num": 311,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "dragalgite": {
     "name": "Dragalgite",
@@ -1074,7 +1173,8 @@
     ],
     "num": 2582,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "dragonfang": {
     "name": "Dragon Fang",
@@ -1084,7 +1184,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 250,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "dragongem": {
     "name": "Dragon Gem",
@@ -1092,7 +1193,8 @@
     "isGem": true,
     "num": 561,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "dragoninite": {
     "name": "Dragoninite",
@@ -1104,7 +1206,8 @@
     ],
     "num": 2562,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "dragoniumz": {
     "name": "Dragonium Z",
@@ -1128,7 +1231,8 @@
     ],
     "num": 918,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "dragonscale": {
     "name": "Dragon Scale",
@@ -1149,7 +1253,8 @@
     ],
     "num": 2585,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "dreadplate": {
     "name": "Dread Plate",
@@ -1158,7 +1263,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Dark",
     "num": 312,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "dreamball": {
     "name": "Dream Ball",
@@ -1212,7 +1319,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Ground",
     "num": 305,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "eelektrossite": {
     "name": "Eelektrossite",
@@ -1224,7 +1333,8 @@
     ],
     "num": 2573,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "eeviumz": {
     "name": "Eevium Z",
@@ -1247,7 +1357,8 @@
     },
     "onAfterMoveSecondaryPriority": 2,
     "num": 547,
-    "gen": 5
+    "gen": 5,
+    "onAfterMoveSecondary": true
   },
   "ejectpack": {
     "name": "Eject Pack",
@@ -1258,7 +1369,15 @@
     "onAnySwitchInPriority": -4,
     "onResidualOrder": 29,
     "num": 1119,
-    "gen": 8
+    "gen": 8,
+    "onAfterBoost": true,
+    "onAnySwitchIn": true,
+    "onAnyAfterMega": true,
+    "onAnyAfterMove": true,
+    "onResidual": true,
+    "onUseItem": true,
+    "onUse": true,
+    "onEnd": true
   },
   "electirizer": {
     "name": "Electirizer",
@@ -1275,7 +1394,8 @@
     "isGem": true,
     "num": 550,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "electricmemory": {
     "name": "Electric Memory",
@@ -1287,7 +1407,8 @@
     ],
     "num": 915,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "electricseed": {
     "name": "Electric Seed",
@@ -1300,7 +1421,9 @@
       "def": 1
     },
     "num": 881,
-    "gen": 7
+    "gen": 7,
+    "onStart": true,
+    "onTerrainChange": true
   },
   "electriumz": {
     "name": "Electrium Z",
@@ -1324,7 +1447,8 @@
     ],
     "num": 2569,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "enigmaberry": {
     "name": "Enigma Berry",
@@ -1335,7 +1459,10 @@
       "type": "Bug"
     },
     "num": 208,
-    "gen": 3
+    "gen": 3,
+    "onHit": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "eviolite": {
     "name": "Eviolite",
@@ -1346,7 +1473,9 @@
     "onModifyDefPriority": 2,
     "onModifySpDPriority": 2,
     "num": 538,
-    "gen": 5
+    "gen": 5,
+    "onModifyDef": true,
+    "onModifySpD": true
   },
   "excadrite": {
     "name": "Excadrite",
@@ -1358,7 +1487,8 @@
     ],
     "num": 2570,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "expertbelt": {
     "name": "Expert Belt",
@@ -1367,7 +1497,8 @@
       "basePower": 10
     },
     "num": 268,
-    "gen": 4
+    "gen": 4,
+    "onModifyDamage": true
   },
   "fairiumz": {
     "name": "Fairium Z",
@@ -1389,7 +1520,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 2401,
-    "gen": 9
+    "gen": 9,
+    "onBasePower": true
   },
   "fairygem": {
     "name": "Fairy Gem",
@@ -1397,7 +1529,8 @@
     "isGem": true,
     "num": 715,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "fairymemory": {
     "name": "Fairy Memory",
@@ -1409,7 +1542,8 @@
     ],
     "num": 920,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "falinksite": {
     "name": "Falinksite",
@@ -1421,7 +1555,8 @@
     ],
     "num": 2586,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "fastball": {
     "name": "Fast Ball",
@@ -1440,7 +1575,8 @@
     ],
     "num": 2564,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "fightinggem": {
     "name": "Fighting Gem",
@@ -1448,7 +1584,8 @@
     "isGem": true,
     "num": 553,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "fightingmemory": {
     "name": "Fighting Memory",
@@ -1460,7 +1597,8 @@
     ],
     "num": 904,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "fightiniumz": {
     "name": "Fightinium Z",
@@ -1483,7 +1621,10 @@
       "type": "Bug"
     },
     "num": 159,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "firegem": {
     "name": "Fire Gem",
@@ -1491,7 +1632,8 @@
     "isGem": true,
     "num": 548,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "firememory": {
     "name": "Fire Memory",
@@ -1503,7 +1645,8 @@
     ],
     "num": 912,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "firestone": {
     "name": "Fire Stone",
@@ -1533,7 +1676,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Fighting",
     "num": 303,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "flameorb": {
     "name": "Flame Orb",
@@ -1545,7 +1690,8 @@
     "onResidualOrder": 28,
     "onResidualSubOrder": 3,
     "num": 273,
-    "gen": 4
+    "gen": 4,
+    "onResidual": true
   },
   "flameplate": {
     "name": "Flame Plate",
@@ -1554,7 +1700,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Fire",
     "num": 298,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "floatstone": {
     "name": "Float Stone",
@@ -1563,7 +1711,8 @@
       "basePower": 30
     },
     "num": 539,
-    "gen": 5
+    "gen": 5,
+    "onModifyWeight": true
   },
   "floettite": {
     "name": "Floettite",
@@ -1575,7 +1724,8 @@
     ],
     "num": 2579,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "flowersweet": {
     "name": "Flower Sweet",
@@ -1592,7 +1742,8 @@
     "isGem": true,
     "num": 556,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "flyingmemory": {
     "name": "Flying Memory",
@@ -1604,7 +1755,8 @@
     ],
     "num": 905,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "flyiniumz": {
     "name": "Flyinium Z",
@@ -1626,7 +1778,8 @@
     },
     "onDamagePriority": -40,
     "num": 230,
-    "gen": 2
+    "gen": 2,
+    "onDamage": true
   },
   "focussash": {
     "name": "Focus Sash",
@@ -1636,7 +1789,8 @@
     },
     "onDamagePriority": -40,
     "num": 275,
-    "gen": 4
+    "gen": 4,
+    "onDamage": true
   },
   "fossilizedbird": {
     "name": "Fossilized Bird",
@@ -1695,7 +1849,8 @@
     ],
     "num": 2566,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "fullincense": {
     "name": "Full Incense",
@@ -1736,7 +1891,8 @@
     ],
     "num": 756,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "ganlonberry": {
     "name": "Ganlon Berry",
@@ -1747,7 +1903,9 @@
       "type": "Ice"
     },
     "num": 202,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "garchompite": {
     "name": "Garchompite",
@@ -1759,7 +1917,8 @@
     ],
     "num": 683,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "garchompitez": {
     "name": "Garchompite Z",
@@ -1771,7 +1930,8 @@
     ],
     "num": 2590,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "gardevoirite": {
     "name": "Gardevoirite",
@@ -1783,7 +1943,8 @@
     ],
     "num": 657,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "gengarite": {
     "name": "Gengarite",
@@ -1795,7 +1956,8 @@
     ],
     "num": 656,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "ghostgem": {
     "name": "Ghost Gem",
@@ -1803,7 +1965,8 @@
     "isGem": true,
     "num": 560,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "ghostiumz": {
     "name": "Ghostium Z",
@@ -1827,7 +1990,8 @@
     ],
     "num": 910,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "glalitite": {
     "name": "Glalitite",
@@ -1839,7 +2003,8 @@
     ],
     "num": 763,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "glimmoranite": {
     "name": "Glimmoranite",
@@ -1851,7 +2016,8 @@
     ],
     "num": 2600,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "goldbottlecap": {
     "name": "Gold Bottle Cap",
@@ -1872,7 +2038,8 @@
     ],
     "num": 2596,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "golurkite": {
     "name": "Golurkite",
@@ -1884,7 +2051,8 @@
     ],
     "num": 2594,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "grassgem": {
     "name": "Grass Gem",
@@ -1892,7 +2060,8 @@
     "isGem": true,
     "num": 551,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "grassiumz": {
     "name": "Grassium Z",
@@ -1916,7 +2085,8 @@
     ],
     "num": 914,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "grassyseed": {
     "name": "Grassy Seed",
@@ -1929,7 +2099,9 @@
       "def": 1
     },
     "num": 884,
-    "gen": 7
+    "gen": 7,
+    "onStart": true,
+    "onTerrainChange": true
   },
   "greatball": {
     "name": "Great Ball",
@@ -1948,7 +2120,8 @@
     ],
     "num": 2577,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "grepaberry": {
     "name": "Grepa Berry",
@@ -1980,7 +2153,9 @@
       "Giratina-Origin"
     ],
     "num": 1779,
-    "gen": 8
+    "gen": 8,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "griseousorb": {
     "name": "Griseous Orb",
@@ -1993,7 +2168,8 @@
       "Giratina"
     ],
     "num": 112,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true
   },
   "groundgem": {
     "name": "Ground Gem",
@@ -2001,7 +2177,8 @@
     "isGem": true,
     "num": 555,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "groundiumz": {
     "name": "Groundium Z",
@@ -2025,7 +2202,8 @@
     ],
     "num": 907,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "gyaradosite": {
     "name": "Gyaradosite",
@@ -2037,7 +2215,8 @@
     ],
     "num": 676,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "habanberry": {
     "name": "Haban Berry",
@@ -2048,7 +2227,9 @@
       "type": "Dragon"
     },
     "num": 197,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "hardstone": {
     "name": "Hard Stone",
@@ -2058,7 +2239,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 238,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "hawluchanite": {
     "name": "Hawluchanite",
@@ -2070,7 +2252,8 @@
     ],
     "num": 2583,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "healball": {
     "name": "Heal Ball",
@@ -2091,7 +2274,9 @@
       "Ogerpon-Hearthflame"
     ],
     "num": 2408,
-    "gen": 9
+    "gen": 9,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "heatranite": {
     "name": "Heatranite",
@@ -2103,7 +2288,8 @@
     ],
     "num": 2592,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "heatrock": {
     "name": "Heat Rock",
@@ -2150,7 +2336,8 @@
     ],
     "num": 680,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "hondewberry": {
     "name": "Hondew Berry",
@@ -2174,7 +2361,8 @@
     ],
     "num": 666,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "iapapaberry": {
     "name": "Iapapa Berry",
@@ -2185,7 +2373,10 @@
       "type": "Dark"
     },
     "num": 163,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "icegem": {
     "name": "Ice Gem",
@@ -2193,7 +2384,8 @@
     "isGem": true,
     "num": 552,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "icememory": {
     "name": "Ice Memory",
@@ -2205,7 +2397,8 @@
     ],
     "num": 917,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "icestone": {
     "name": "Ice Stone",
@@ -2223,7 +2416,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Ice",
     "num": 302,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "iciumz": {
     "name": "Icium Z",
@@ -2266,7 +2461,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Bug",
     "num": 308,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "ironball": {
     "name": "Iron Ball",
@@ -2275,7 +2472,9 @@
       "basePower": 130
     },
     "num": 278,
-    "gen": 4
+    "gen": 4,
+    "onEffectiveness": true,
+    "onModifySpe": true
   },
   "ironplate": {
     "name": "Iron Plate",
@@ -2284,7 +2483,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Steel",
     "num": 313,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "jabocaberry": {
     "name": "Jaboca Berry",
@@ -2295,7 +2496,9 @@
       "type": "Dragon"
     },
     "num": 211,
-    "gen": 4
+    "gen": 4,
+    "onDamagingHit": true,
+    "onEat": true
   },
   "jawfossil": {
     "name": "Jaw Fossil",
@@ -2317,7 +2520,8 @@
     ],
     "num": 675,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "kasibberry": {
     "name": "Kasib Berry",
@@ -2328,7 +2532,9 @@
       "type": "Ghost"
     },
     "num": 196,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "kebiaberry": {
     "name": "Kebia Berry",
@@ -2339,7 +2545,9 @@
       "type": "Poison"
     },
     "num": 190,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "keeberry": {
     "name": "Kee Berry",
@@ -2350,7 +2558,9 @@
       "type": "Fairy"
     },
     "num": 687,
-    "gen": 6
+    "gen": 6,
+    "onAfterMoveSecondary": true,
+    "onEat": true
   },
   "kelpsyberry": {
     "name": "Kelpsy Berry",
@@ -2373,7 +2583,8 @@
     },
     "onModifyMovePriority": -1,
     "num": 221,
-    "gen": 2
+    "gen": 2,
+    "onModifyMove": true
   },
   "kommoniumz": {
     "name": "Kommonium Z",
@@ -2408,7 +2619,9 @@
       "type": "Flying"
     },
     "num": 206,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "latiasite": {
     "name": "Latiasite",
@@ -2420,7 +2633,8 @@
     ],
     "num": 684,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "latiosite": {
     "name": "Latiosite",
@@ -2432,7 +2646,8 @@
     ],
     "num": 685,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "laxincense": {
     "name": "Lax Incense",
@@ -2443,7 +2658,8 @@
     "onModifyAccuracyPriority": -2,
     "num": 255,
     "gen": 3,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifyAccuracy": true
   },
   "leafstone": {
     "name": "Leaf Stone",
@@ -2467,7 +2683,8 @@
     ],
     "num": 259,
     "gen": 8,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifyCritRatio": true
   },
   "leftovers": {
     "name": "Leftovers",
@@ -2478,7 +2695,8 @@
     "onResidualOrder": 5,
     "onResidualSubOrder": 4,
     "num": 234,
-    "gen": 2
+    "gen": 2,
+    "onResidual": true
   },
   "leppaberry": {
     "name": "Leppa Berry",
@@ -2489,7 +2707,9 @@
       "type": "Fighting"
     },
     "num": 154,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "levelball": {
     "name": "Level Ball",
@@ -2507,7 +2727,9 @@
       "type": "Grass"
     },
     "num": 201,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "lifeorb": {
     "name": "Life Orb",
@@ -2516,7 +2738,9 @@
       "basePower": 30
     },
     "num": 270,
-    "gen": 4
+    "gen": 4,
+    "onModifyDamage": true,
+    "onAfterMoveSecondarySelf": true
   },
   "lightball": {
     "name": "Light Ball",
@@ -2546,7 +2770,9 @@
       "Pikachu-World"
     ],
     "num": 236,
-    "gen": 2
+    "gen": 2,
+    "onModifyAtk": true,
+    "onModifySpA": true
   },
   "lightclay": {
     "name": "Light Clay",
@@ -2564,7 +2790,8 @@
       "basePower": 30
     },
     "num": 1886,
-    "gen": 9
+    "gen": 9,
+    "onModifyMove": true
   },
   "lopunnite": {
     "name": "Lopunnite",
@@ -2576,7 +2803,8 @@
     ],
     "num": 768,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "loveball": {
     "name": "Love Ball",
@@ -2604,7 +2832,8 @@
     ],
     "num": 673,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "lucarionitez": {
     "name": "Lucarionite Z",
@@ -2616,7 +2845,8 @@
     ],
     "num": 2591,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "luckypunch": {
     "name": "Lucky Punch",
@@ -2629,7 +2859,8 @@
     ],
     "num": 256,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifyCritRatio": true
   },
   "lumberry": {
     "name": "Lum Berry",
@@ -2641,7 +2872,10 @@
     },
     "onAfterSetStatusPriority": -1,
     "num": 157,
-    "gen": 3
+    "gen": 3,
+    "onAfterSetStatus": true,
+    "onUpdate": true,
+    "onEat": true
   },
   "luminousmoss": {
     "name": "Luminous Moss",
@@ -2653,7 +2887,8 @@
       "spd": 1
     },
     "num": 648,
-    "gen": 6
+    "gen": 6,
+    "onDamagingHit": true
   },
   "lunaliumz": {
     "name": "Lunalium Z",
@@ -2685,7 +2920,9 @@
       "Palkia-Origin"
     ],
     "num": 1778,
-    "gen": 8
+    "gen": 8,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "lustrousorb": {
     "name": "Lustrous Orb",
@@ -2698,7 +2935,8 @@
       "Palkia"
     ],
     "num": 136,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true
   },
   "luxuryball": {
     "name": "Luxury Ball",
@@ -2731,7 +2969,8 @@
     },
     "num": 215,
     "gen": 3,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifySpe": true
   },
   "magearnite": {
     "name": "Magearnite",
@@ -2750,7 +2989,8 @@
     ],
     "num": 2597,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "magmarizer": {
     "name": "Magmarizer",
@@ -2769,7 +3009,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 242,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "magoberry": {
     "name": "Mago Berry",
@@ -2780,7 +3021,10 @@
       "type": "Ghost"
     },
     "num": 161,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "magostberry": {
     "name": "Magost Berry",
@@ -2800,7 +3044,8 @@
     "spritenum": 403,
     "num": 137,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "malamarite": {
     "name": "Malamarite",
@@ -2812,7 +3057,8 @@
     ],
     "num": 2580,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "maliciousarmor": {
     "name": "Malicious Armor",
@@ -2833,7 +3079,8 @@
     ],
     "num": 682,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "marangaberry": {
     "name": "Maranga Berry",
@@ -2844,7 +3091,9 @@
       "type": "Dark"
     },
     "num": 688,
-    "gen": 6
+    "gen": 6,
+    "onAfterMoveSecondary": true,
+    "onEat": true
   },
   "marshadiumz": {
     "name": "Marshadium Z",
@@ -2885,7 +3134,8 @@
     ],
     "num": 681,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "meadowplate": {
     "name": "Meadow Plate",
@@ -2894,7 +3144,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Grass",
     "num": 301,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "medichamite": {
     "name": "Medichamite",
@@ -2906,7 +3158,8 @@
     ],
     "num": 665,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "meganiumite": {
     "name": "Meganiumite",
@@ -2918,7 +3171,8 @@
     ],
     "num": 2563,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "mentalherb": {
     "name": "Mental Herb",
@@ -2927,7 +3181,8 @@
       "basePower": 10
     },
     "num": 219,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true
   },
   "meowsticite": {
     "name": "Meowsticite",
@@ -2946,7 +3201,8 @@
     ],
     "num": 2594,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "metagrossite": {
     "name": "Metagrossite",
@@ -2958,7 +3214,8 @@
     ],
     "num": 758,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "metalalloy": {
     "name": "Metal Alloy",
@@ -2974,7 +3231,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 233,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "metalpowder": {
     "name": "Metal Powder",
@@ -2988,7 +3246,8 @@
     ],
     "num": 257,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifyDef": true
   },
   "metronome": {
     "name": "Metronome",
@@ -3000,7 +3259,8 @@
       "onTryMovePriority": -2
     },
     "num": 277,
-    "gen": 4
+    "gen": 4,
+    "onStart": true
   },
   "mewniumz": {
     "name": "Mewnium Z",
@@ -3025,7 +3285,8 @@
     ],
     "num": 662,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "mewtwonitey": {
     "name": "Mewtwonite Y",
@@ -3037,7 +3298,8 @@
     ],
     "num": 663,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "micleberry": {
     "name": "Micle Berry",
@@ -3051,7 +3313,9 @@
       "duration": 2
     },
     "num": 209,
-    "gen": 4
+    "gen": 4,
+    "onResidual": true,
+    "onEat": true
   },
   "mimikiumz": {
     "name": "Mimikium Z",
@@ -3076,7 +3340,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Psychic",
     "num": 307,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "miracleseed": {
     "name": "Miracle Seed",
@@ -3086,7 +3352,8 @@
     "spritenum": 292,
     "onBasePowerPriority": 15,
     "num": 239,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "mirrorherb": {
     "name": "Mirror Herb",
@@ -3097,7 +3364,15 @@
     "onAnySwitchInPriority": -3,
     "onResidualOrder": 29,
     "num": 1883,
-    "gen": 9
+    "gen": 9,
+    "onFoeAfterBoost": true,
+    "onAnySwitchIn": true,
+    "onAnyAfterMega": true,
+    "onAnyAfterTerastallization": true,
+    "onAnyAfterMove": true,
+    "onResidual": true,
+    "onUse": true,
+    "onEnd": true
   },
   "mistyseed": {
     "name": "Misty Seed",
@@ -3110,7 +3385,9 @@
       "spd": 1
     },
     "num": 883,
-    "gen": 7
+    "gen": 7,
+    "onStart": true,
+    "onTerrainChange": true
   },
   "moonball": {
     "name": "Moon Ball",
@@ -3136,7 +3413,8 @@
     },
     "onBasePowerPriority": 16,
     "num": 266,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true
   },
   "mysticwater": {
     "name": "Mystic Water",
@@ -3146,7 +3424,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 243,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "nanabberry": {
     "name": "Nanab Berry",
@@ -3183,7 +3462,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 246,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "nomelberry": {
     "name": "Nomel Berry",
@@ -3203,7 +3483,8 @@
     "spritenum": 307,
     "isGem": true,
     "num": 564,
-    "gen": 5
+    "gen": 5,
+    "onSourceTryPrimaryHit": true
   },
   "normaliumz": {
     "name": "Normalium Z",
@@ -3224,7 +3505,9 @@
       "type": "Fire"
     },
     "num": 184,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "oddincense": {
     "name": "Odd Incense",
@@ -3235,7 +3518,8 @@
     "onBasePowerPriority": 15,
     "num": 314,
     "gen": 4,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onBasePower": true
   },
   "oldamber": {
     "name": "Old Amber",
@@ -3256,7 +3540,10 @@
       "type": "Poison"
     },
     "num": 155,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "ovalstone": {
     "name": "Oval Stone",
@@ -3297,7 +3584,9 @@
       "type": "Water"
     },
     "num": 185,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "payapaberry": {
     "name": "Payapa Berry",
@@ -3308,7 +3597,9 @@
       "type": "Psychic"
     },
     "num": 193,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "pechaberry": {
     "name": "Pecha Berry",
@@ -3319,7 +3610,9 @@
       "type": "Electric"
     },
     "num": 151,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "persimberry": {
     "name": "Persim Berry",
@@ -3330,7 +3623,9 @@
       "type": "Ground"
     },
     "num": 156,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "petayaberry": {
     "name": "Petaya Berry",
@@ -3341,7 +3636,9 @@
       "type": "Poison"
     },
     "num": 204,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "pidgeotite": {
     "name": "Pidgeotite",
@@ -3353,7 +3650,8 @@
     ],
     "num": 762,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "pikaniumz": {
     "name": "Pikanium Z",
@@ -3410,7 +3708,8 @@
     ],
     "num": 671,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "pixieplate": {
     "name": "Pixie Plate",
@@ -3419,7 +3718,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Fairy",
     "num": 644,
-    "gen": 6
+    "gen": 6,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "plumefossil": {
     "name": "Plume Fossil",
@@ -3440,7 +3741,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 245,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "poisongem": {
     "name": "Poison Gem",
@@ -3448,7 +3750,8 @@
     "isGem": true,
     "num": 554,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "poisoniumz": {
     "name": "Poisonium Z",
@@ -3472,7 +3775,8 @@
     ],
     "num": 906,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "pokeball": {
     "name": "Poke Ball",
@@ -3501,7 +3805,8 @@
       "basePower": 70
     },
     "num": 293,
-    "gen": 4
+    "gen": 4,
+    "onModifySpe": true
   },
   "powerband": {
     "name": "Power Band",
@@ -3511,7 +3816,8 @@
       "basePower": 70
     },
     "num": 292,
-    "gen": 4
+    "gen": 4,
+    "onModifySpe": true
   },
   "powerbelt": {
     "name": "Power Belt",
@@ -3521,7 +3827,8 @@
       "basePower": 70
     },
     "num": 290,
-    "gen": 4
+    "gen": 4,
+    "onModifySpe": true
   },
   "powerbracer": {
     "name": "Power Bracer",
@@ -3531,7 +3838,8 @@
       "basePower": 70
     },
     "num": 289,
-    "gen": 4
+    "gen": 4,
+    "onModifySpe": true
   },
   "powerherb": {
     "name": "Power Herb",
@@ -3540,7 +3848,8 @@
       "basePower": 10
     },
     "num": 271,
-    "gen": 4
+    "gen": 4,
+    "onChargeMove": true
   },
   "powerlens": {
     "name": "Power Lens",
@@ -3550,7 +3859,8 @@
       "basePower": 70
     },
     "num": 291,
-    "gen": 4
+    "gen": 4,
+    "onModifySpe": true
   },
   "powerweight": {
     "name": "Power Weight",
@@ -3560,7 +3870,8 @@
       "basePower": 70
     },
     "num": 294,
-    "gen": 4
+    "gen": 4,
+    "onModifySpe": true
   },
   "premierball": {
     "name": "Premier Ball",
@@ -3624,7 +3935,8 @@
     "isGem": true,
     "num": 557,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "psychicmemory": {
     "name": "Psychic Memory",
@@ -3636,7 +3948,8 @@
     ],
     "num": 916,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "psychicseed": {
     "name": "Psychic Seed",
@@ -3649,7 +3962,9 @@
       "spd": 1
     },
     "num": 882,
-    "gen": 7
+    "gen": 7,
+    "onStart": true,
+    "onTerrainChange": true
   },
   "psychiumz": {
     "name": "Psychium Z",
@@ -3672,7 +3987,9 @@
     "onBasePowerPriority": 23,
     "onModifyMovePriority": 1,
     "num": 1884,
-    "gen": 9
+    "gen": 9,
+    "onBasePower": true,
+    "onModifyMove": true
   },
   "pyroarite": {
     "name": "Pyroarite",
@@ -3684,7 +4001,8 @@
     ],
     "num": 2578,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "qualotberry": {
     "name": "Qualot Berry",
@@ -3726,7 +4044,8 @@
     ],
     "num": 274,
     "gen": 4,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifySpe": true
   },
   "rabutaberry": {
     "name": "Rabuta Berry",
@@ -3751,7 +4070,8 @@
     ],
     "num": 2585,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "raichunitey": {
     "name": "Raichunite Y",
@@ -3763,7 +4083,8 @@
     ],
     "num": 2586,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "rarebone": {
     "name": "Rare Bone",
@@ -3783,7 +4104,9 @@
       "type": "Grass"
     },
     "num": 152,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "razorclaw": {
     "name": "Razor Claw",
@@ -3792,7 +4115,8 @@
       "basePower": 80
     },
     "num": 326,
-    "gen": 4
+    "gen": 4,
+    "onModifyCritRatio": true
   },
   "razorfang": {
     "name": "Razor Fang",
@@ -3803,7 +4127,8 @@
     },
     "onModifyMovePriority": -1,
     "num": 327,
-    "gen": 4
+    "gen": 4,
+    "onModifyMove": true
   },
   "razzberry": {
     "name": "Razz Berry",
@@ -3834,7 +4159,8 @@
       "basePower": 10
     },
     "num": 542,
-    "gen": 5
+    "gen": 5,
+    "onAfterMoveSecondary": true
   },
   "redorb": {
     "name": "Red Orb",
@@ -3846,7 +4172,9 @@
     "isPrimalOrb": true,
     "num": 534,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSwitchIn": true,
+    "onTakeItem": true
   },
   "repeatball": {
     "name": "Repeat Ball",
@@ -3873,7 +4201,9 @@
       "type": "Grass"
     },
     "num": 187,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "ringtarget": {
     "name": "Ring Target",
@@ -3891,7 +4221,8 @@
     "isGem": true,
     "num": 559,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "rockincense": {
     "name": "Rock Incense",
@@ -3902,7 +4233,8 @@
     "onBasePowerPriority": 15,
     "num": 315,
     "gen": 4,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onBasePower": true
   },
   "rockiumz": {
     "name": "Rockium Z",
@@ -3926,7 +4258,8 @@
     ],
     "num": 908,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "rockyhelmet": {
     "name": "Rocky Helmet",
@@ -3936,7 +4269,8 @@
     },
     "onDamagingHitOrder": 2,
     "num": 540,
-    "gen": 5
+    "gen": 5,
+    "onDamagingHit": true
   },
   "roomservice": {
     "name": "Room Service",
@@ -3949,7 +4283,9 @@
       "spe": -1
     },
     "num": 1122,
-    "gen": 8
+    "gen": 8,
+    "onStart": true,
+    "onAnyPseudoWeatherChange": true
   },
   "rootfossil": {
     "name": "Root Fossil",
@@ -3970,7 +4306,8 @@
     "onBasePowerPriority": 15,
     "num": 318,
     "gen": 4,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onBasePower": true
   },
   "roseliberry": {
     "name": "Roseli Berry",
@@ -3981,7 +4318,9 @@
       "type": "Fairy"
     },
     "num": 686,
-    "gen": 6
+    "gen": 6,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "rowapberry": {
     "name": "Rowap Berry",
@@ -3992,7 +4331,9 @@
       "type": "Dark"
     },
     "num": 212,
-    "gen": 4
+    "gen": 4,
+    "onDamagingHit": true,
+    "onEat": true
   },
   "rustedshield": {
     "name": "Rusted Shield",
@@ -4001,7 +4342,8 @@
       "Zamazenta-Crowned"
     ],
     "num": 1104,
-    "gen": 8
+    "gen": 8,
+    "onTakeItem": true
   },
   "rustedsword": {
     "name": "Rusted Sword",
@@ -4010,7 +4352,8 @@
       "Zacian-Crowned"
     ],
     "num": 1103,
-    "gen": 8
+    "gen": 8,
+    "onTakeItem": true
   },
   "sablenite": {
     "name": "Sablenite",
@@ -4022,7 +4365,8 @@
     ],
     "num": 754,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "sachet": {
     "name": "Sachet",
@@ -4048,7 +4392,9 @@
       "basePower": 80
     },
     "num": 650,
-    "gen": 6
+    "gen": 6,
+    "onImmunity": true,
+    "onTryHit": true
   },
   "sailfossil": {
     "name": "Sail Fossil",
@@ -4069,7 +4415,9 @@
       "type": "Fighting"
     },
     "num": 203,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "salamencite": {
     "name": "Salamencite",
@@ -4081,7 +4429,8 @@
     ],
     "num": 769,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "sceptilite": {
     "name": "Sceptilite",
@@ -4093,7 +4442,8 @@
     ],
     "num": 753,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "scizorite": {
     "name": "Scizorite",
@@ -4105,7 +4455,8 @@
     ],
     "num": 670,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "scolipite": {
     "name": "Scolipite",
@@ -4117,7 +4468,8 @@
     ],
     "num": 2571,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "scopelens": {
     "name": "Scope Lens",
@@ -4126,7 +4478,8 @@
       "basePower": 30
     },
     "num": 232,
-    "gen": 2
+    "gen": 2,
+    "onModifyCritRatio": true
   },
   "scovillainite": {
     "name": "Scovillainite",
@@ -4138,7 +4491,8 @@
     ],
     "num": 2599,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "scraftinite": {
     "name": "Scraftinite",
@@ -4150,7 +4504,8 @@
     ],
     "num": 2572,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "seaincense": {
     "name": "Sea Incense",
@@ -4161,7 +4516,8 @@
     "onBasePowerPriority": 15,
     "num": 254,
     "gen": 3,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onBasePower": true
   },
   "sharpbeak": {
     "name": "Sharp Beak",
@@ -4171,7 +4527,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 244,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "sharpedonite": {
     "name": "Sharpedonite",
@@ -4183,7 +4540,8 @@
     ],
     "num": 759,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "shedshell": {
     "name": "Shed Shell",
@@ -4194,7 +4552,9 @@
     "onTrapPokemonPriority": -10,
     "onMaybeTrapPokemonPriority": -10,
     "num": 295,
-    "gen": 4
+    "gen": 4,
+    "onTrapPokemon": true,
+    "onMaybeTrapPokemon": true
   },
   "shellbell": {
     "name": "Shell Bell",
@@ -4204,7 +4564,8 @@
     },
     "onAfterMoveSecondarySelfPriority": -1,
     "num": 253,
-    "gen": 3
+    "gen": 3,
+    "onAfterMoveSecondarySelf": true
   },
   "shinystone": {
     "name": "Shiny Stone",
@@ -4225,7 +4586,8 @@
     ],
     "num": 117,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "shucaberry": {
     "name": "Shuca Berry",
@@ -4236,7 +4598,9 @@
       "type": "Ground"
     },
     "num": 191,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "silkscarf": {
     "name": "Silk Scarf",
@@ -4246,7 +4610,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 251,
-    "gen": 3
+    "gen": 3,
+    "onBasePower": true
   },
   "silverpowder": {
     "name": "Silver Powder",
@@ -4256,7 +4621,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 222,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "sitrusberry": {
     "name": "Sitrus Berry",
@@ -4267,7 +4633,10 @@
       "type": "Psychic"
     },
     "num": 158,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "skarmorite": {
     "name": "Skarmorite",
@@ -4279,7 +4648,8 @@
     ],
     "num": 2565,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "skullfossil": {
     "name": "Skull Fossil",
@@ -4298,7 +4668,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Flying",
     "num": 306,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "slowbronite": {
     "name": "Slowbronite",
@@ -4310,7 +4682,8 @@
     ],
     "num": 760,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "smoothrock": {
     "name": "Smooth Rock",
@@ -4344,7 +4717,8 @@
       "atk": 1
     },
     "num": 649,
-    "gen": 6
+    "gen": 6,
+    "onDamagingHit": true
   },
   "softsand": {
     "name": "Soft Sand",
@@ -4354,7 +4728,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 237,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "solganiumz": {
     "name": "Solganium Z",
@@ -4382,7 +4757,8 @@
       "Latias"
     ],
     "num": 225,
-    "gen": 3
+    "gen": 3,
+    "onBasePower": true
   },
   "spelltag": {
     "name": "Spell Tag",
@@ -4392,7 +4768,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 247,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "spelonberry": {
     "name": "Spelon Berry",
@@ -4414,7 +4791,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Water",
     "num": 299,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "spookyplate": {
     "name": "Spooky Plate",
@@ -4423,7 +4802,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Ghost",
     "num": 310,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "sportball": {
     "name": "Sport Ball",
@@ -4442,7 +4823,8 @@
     ],
     "num": 2589,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "starfberry": {
     "name": "Starf Berry",
@@ -4453,7 +4835,9 @@
       "type": "Psychic"
     },
     "num": 207,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onEat": true
   },
   "starminite": {
     "name": "Starminite",
@@ -4465,7 +4849,8 @@
     ],
     "num": 2561,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "starsweet": {
     "name": "Star Sweet",
@@ -4482,7 +4867,8 @@
     "isGem": true,
     "num": 563,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "steeliumz": {
     "name": "Steelium Z",
@@ -4506,7 +4892,8 @@
     ],
     "num": 761,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "steelmemory": {
     "name": "Steel Memory",
@@ -4518,7 +4905,8 @@
     ],
     "num": 911,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "stick": {
     "name": "Stick",
@@ -4531,7 +4919,8 @@
     ],
     "num": 259,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifyCritRatio": true
   },
   "stickybarb": {
     "name": "Sticky Barb",
@@ -4542,7 +4931,9 @@
     "onResidualOrder": 28,
     "onResidualSubOrder": 3,
     "num": 288,
-    "gen": 4
+    "gen": 4,
+    "onResidual": true,
+    "onHit": true
   },
   "stoneplate": {
     "name": "Stone Plate",
@@ -4551,7 +4942,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Rock",
     "num": 309,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "strangeball": {
     "name": "Strange Ball",
@@ -4589,7 +4982,8 @@
     ],
     "num": 752,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "sweetapple": {
     "name": "Sweet Apple",
@@ -4630,7 +5024,9 @@
       "type": "Bug"
     },
     "num": 194,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "tapuniumz": {
     "name": "Tapunium Z",
@@ -4677,7 +5073,8 @@
     ],
     "num": 2601,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "terrainextender": {
     "name": "Terrain Extender",
@@ -4703,7 +5100,8 @@
     ],
     "num": 258,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onModifyAtk": true
   },
   "throatspray": {
     "name": "Throat Spray",
@@ -4715,7 +5113,8 @@
       "spa": 1
     },
     "num": 1118,
-    "gen": 8
+    "gen": 8,
+    "onAfterMoveSecondarySelf": true
   },
   "thunderstone": {
     "name": "Thunder Stone",
@@ -4743,7 +5142,8 @@
     "onResidualOrder": 28,
     "onResidualSubOrder": 3,
     "num": 272,
-    "gen": 4
+    "gen": 4,
+    "onResidual": true
   },
   "toxicplate": {
     "name": "Toxic Plate",
@@ -4752,7 +5152,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Poison",
     "num": 304,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "tr00": {
     "name": "TR00",
@@ -5762,7 +6164,8 @@
     },
     "onBasePowerPriority": 15,
     "num": 248,
-    "gen": 2
+    "gen": 2,
+    "onBasePower": true
   },
   "tyranitarite": {
     "name": "Tyranitarite",
@@ -5774,7 +6177,8 @@
     ],
     "num": 669,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "ultraball": {
     "name": "Ultra Ball",
@@ -5821,7 +6225,10 @@
       "basePower": 60
     },
     "num": 1123,
-    "gen": 8
+    "gen": 8,
+    "onStart": true,
+    "onUpdate": true,
+    "onEnd": true
   },
   "venusaurite": {
     "name": "Venusaurite",
@@ -5833,7 +6240,8 @@
     ],
     "num": 659,
     "gen": 6,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "victreebelite": {
     "name": "Victreebelite",
@@ -5845,7 +6253,8 @@
     ],
     "num": 2560,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "wacanberry": {
     "name": "Wacan Berry",
@@ -5856,7 +6265,9 @@
       "type": "Electric"
     },
     "num": 186,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "watergem": {
     "name": "Water Gem",
@@ -5864,7 +6275,8 @@
     "isGem": true,
     "num": 549,
     "gen": 5,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onSourceTryPrimaryHit": true
   },
   "wateriumz": {
     "name": "Waterium Z",
@@ -5888,7 +6300,8 @@
     ],
     "num": 913,
     "gen": 7,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onTakeItem": true
   },
   "waterstone": {
     "name": "Water Stone",
@@ -5921,7 +6334,8 @@
     "onBasePowerPriority": 15,
     "num": 317,
     "gen": 4,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onBasePower": true
   },
   "weaknesspolicy": {
     "name": "Weakness Policy",
@@ -5934,7 +6348,8 @@
       "spa": 2
     },
     "num": 639,
-    "gen": 6
+    "gen": 6,
+    "onDamagingHit": true
   },
   "wellspringmask": {
     "name": "Wellspring Mask",
@@ -5948,7 +6363,9 @@
       "Ogerpon-Wellspring"
     ],
     "num": 2407,
-    "gen": 9
+    "gen": 9,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "wepearberry": {
     "name": "Wepear Berry",
@@ -5982,7 +6399,13 @@
     "onAnySwitchInPriority": -2,
     "onResidualOrder": 29,
     "num": 214,
-    "gen": 3
+    "gen": 3,
+    "onStart": true,
+    "onAnySwitchIn": true,
+    "onAnyAfterMega": true,
+    "onAnyAfterMove": true,
+    "onResidual": true,
+    "onUse": true
   },
   "widelens": {
     "name": "Wide Lens",
@@ -5992,7 +6415,8 @@
     },
     "onSourceModifyAccuracyPriority": -2,
     "num": 265,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyAccuracy": true
   },
   "wikiberry": {
     "name": "Wiki Berry",
@@ -6003,7 +6427,10 @@
       "type": "Rock"
     },
     "num": 160,
-    "gen": 3
+    "gen": 3,
+    "onUpdate": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "wiseglasses": {
     "name": "Wise Glasses",
@@ -6013,7 +6440,8 @@
     },
     "onBasePowerPriority": 16,
     "num": 267,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true
   },
   "yacheberry": {
     "name": "Yache Berry",
@@ -6024,7 +6452,9 @@
       "type": "Ice"
     },
     "num": 188,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyDamage": true,
+    "onEat": true
   },
   "zapplate": {
     "name": "Zap Plate",
@@ -6033,7 +6463,9 @@
     "onBasePowerPriority": 15,
     "forcedForme": "Arceus-Electric",
     "num": 300,
-    "gen": 4
+    "gen": 4,
+    "onBasePower": true,
+    "onTakeItem": true
   },
   "zeraorite": {
     "name": "Zeraorite",
@@ -6045,7 +6477,8 @@
     ],
     "num": 2598,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "zoomlens": {
     "name": "Zoom Lens",
@@ -6055,7 +6488,8 @@
     },
     "onSourceModifyAccuracyPriority": -2,
     "num": 276,
-    "gen": 4
+    "gen": 4,
+    "onSourceModifyAccuracy": true
   },
   "zygardite": {
     "name": "Zygardite",
@@ -6067,7 +6501,8 @@
     ],
     "num": 2584,
     "gen": 9,
-    "isNonstandard": "Future"
+    "isNonstandard": "Future",
+    "onTakeItem": true
   },
   "berry": {
     "name": "Berry",
@@ -6080,7 +6515,10 @@
     "onResidualOrder": 10,
     "num": 155,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onResidual": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "berserkgene": {
     "name": "Berserk Gene",
@@ -6090,7 +6528,8 @@
     },
     "num": 0,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true
   },
   "bitterberry": {
     "name": "Bitter Berry",
@@ -6102,7 +6541,9 @@
     },
     "num": 156,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true,
+    "onEat": true
   },
   "burntberry": {
     "name": "Burnt Berry",
@@ -6114,7 +6555,9 @@
     },
     "num": 153,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true,
+    "onEat": true
   },
   "goldberry": {
     "name": "Gold Berry",
@@ -6127,7 +6570,10 @@
     "onResidualOrder": 10,
     "num": 158,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onResidual": true,
+    "onTryEatItem": true,
+    "onEat": true
   },
   "iceberry": {
     "name": "Ice Berry",
@@ -6139,7 +6585,9 @@
     },
     "num": 152,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true,
+    "onEat": true
   },
   "mintberry": {
     "name": "Mint Berry",
@@ -6151,7 +6599,9 @@
     },
     "num": 150,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true,
+    "onEat": true
   },
   "miracleberry": {
     "name": "Miracle Berry",
@@ -6163,7 +6613,9 @@
     },
     "num": 157,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true,
+    "onEat": true
   },
   "mysteryberry": {
     "name": "Mystery Berry",
@@ -6175,21 +6627,25 @@
     },
     "num": 154,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true,
+    "onEat": true
   },
   "pinkbow": {
     "name": "Pink Bow",
     "spritenum": 444,
     "num": 251,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onBasePower": true
   },
   "polkadotbow": {
     "name": "Polkadot Bow",
     "spritenum": 444,
     "num": 251,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onBasePower": true
   },
   "przcureberry": {
     "name": "PRZ Cure Berry",
@@ -6201,7 +6657,9 @@
     },
     "num": 149,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true,
+    "onEat": true
   },
   "psncureberry": {
     "name": "PSN Cure Berry",
@@ -6213,7 +6671,9 @@
     },
     "num": 151,
     "gen": 2,
-    "isNonstandard": "Past"
+    "isNonstandard": "Past",
+    "onUpdate": true,
+    "onEat": true
   },
   "crucibellite": {
     "name": "Crucibellite",
@@ -6225,7 +6685,8 @@
     ],
     "num": -1,
     "gen": 6,
-    "isNonstandard": "CAP"
+    "isNonstandard": "CAP",
+    "onTakeItem": true
   },
   "vilevial": {
     "name": "Vile Vial",
@@ -6240,6 +6701,8 @@
     ],
     "num": -2,
     "gen": 8,
-    "isNonstandard": "CAP"
+    "isNonstandard": "CAP",
+    "onBasePower": true,
+    "onTakeItem": true
   }
 }
