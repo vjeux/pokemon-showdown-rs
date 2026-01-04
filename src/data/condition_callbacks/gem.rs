@@ -8,19 +8,22 @@ use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onBasePower
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// gem: {
-///     onBasePower(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onBasePowerPriority: 14,
+/// onBasePower(basePower, user, target, move) {
+///     this.debug('Gem Boost');
+///     return this.chainModify([5325, 4096]);
 /// }
+/// ```
 pub fn on_base_power(
-    _battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[GEM_ON_BASE_POWER] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
+    // this.debug('Gem Boost');
+    // In Rust, we use eprintln for debug messages (similar to JavaScript implementation)
+
+    // return this.chainModify([5325, 4096]);
+    EventResult::Number(battle.chain_modify_fraction(5325, 4096))
 }
 
