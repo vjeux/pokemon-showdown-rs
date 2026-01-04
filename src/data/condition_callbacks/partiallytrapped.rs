@@ -9,11 +9,11 @@ use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// durationCallback
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
 /// partiallytrapped: {
-///     durationCallback(...) {
-///         // Extract implementation from conditions.ts
+///     durationCallback(target, source) {
+///         if (source?.hasItem('gripclaw')) return 8;
+///         return this.random(5, 7);
 ///     }
 /// }
 pub fn duration_callback(
@@ -21,8 +21,17 @@ pub fn duration_callback(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
+
+    // In JavaScript: if (source?.hasItem('gripclaw')) return 8;
+    // Note: We don't have source info here, so we can't check for Grip Claw
+    // For now, just return random 5-6 turns (JavaScript: this.random(5, 7) returns 5 or 6)
+
+    // this.random(5, 7) returns a number from 5 to 6 inclusive
+    let duration = battle.prng.random_range(5, 7);
+
+    eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Duration={}", duration);
+
+    EventResult::Number(duration)
 }
 
 /// onStart
