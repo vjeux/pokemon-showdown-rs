@@ -249,14 +249,38 @@ pub mod condition {
 
             // const moveData: Partial<ActiveMove> = { ... };
             // this.actions.tryMoveHit(target, pokemon, moveData as ActiveMove);
-            // TODO: tryMoveHit with custom move data not yet fully implemented
-            // For now, we'll use a simplified version that deals direct damage
-            battle.direct_damage(
-                total_damage * 2,
-                Some(final_target),
-                Some(pokemon_pos),
-                None,
-            );
+            // Create custom move data for Bide's attack
+            use crate::battle_actions::ActiveMove;
+            use crate::dex::Accuracy;
+            use crate::battle_actions::MoveFlags;
+
+            let bide_move = ActiveMove {
+                id: ID::from("bide"),
+                name: "Bide".to_string(),
+                fullname: "move: Bide".to_string(),
+                accuracy: Accuracy::AlwaysHits,
+                damage: Some(total_damage * 2), // Fixed damage: totalDamage * 2
+                category: "Physical".to_string(),
+                priority: 1,
+                flags: MoveFlags {
+                    contact: true,
+                    protect: true,
+                    ..Default::default()
+                },
+                move_type: "Normal".to_string(),
+                target: "normal".to_string(),
+                ..Default::default()
+            };
+
+            // Set the custom ActiveMove on the battle
+            battle.active_move = Some(bide_move);
+            battle.active_pokemon = Some(pokemon_pos);
+            battle.active_target = Some(final_target);
+
+            // Call tryMoveHit with the target
+            use crate::battle_actions::try_move_hit;
+            let bide_id_for_hit = ID::from("bide");
+            try_move_hit(battle, &[final_target], pokemon_pos, &bide_id_for_hit);
 
             // pokemon.removeVolatile('bide');
             Pokemon::remove_volatile(battle, pokemon_pos, &bide_id);
