@@ -112,9 +112,82 @@ impl Battle {
     //
     pub fn maybe_trigger_endless_battle_clause(
         &mut self,
-        _trapped_by_side: &[bool],
-        _staleness_by_side: &[Option<String>],
+        trapped_by_side: &[bool],
+        staleness_by_side: &[Option<String>],
     ) -> bool {
+        // JavaScript: Gen 1 no-progress checks (lines 16-42)
+        if self.gen <= 1 {
+            // Collect all pokemon data to avoid borrow checker issues
+            let mut pokemon_data: Vec<Vec<(bool, Vec<String>, bool, Vec<String>, Vec<u8>, ID)>> = Vec::new();
+            let is_stadium = self.dex.current_mod.as_deref() == Some("gen1stadium");
+
+            for side in &self.sides {
+                let mut side_data = Vec::new();
+                for p in &side.pokemon {
+                    let types = p.get_types(self, false);
+                    let moves = p.set.moves.clone();
+                    let move_slot_pps: Vec<u8> = p.move_slots.iter().map(|slot| slot.pp).collect();
+                    let species_id = p.species_id.clone();
+                    side_data.push((
+                        p.fainted,
+                        types,
+                        p.status == ID::from("frz"),
+                        moves,
+                        move_slot_pps,
+                        species_id,
+                    ));
+                }
+                pokemon_data.push(side_data);
+            }
+
+            // Now do the checks
+            let no_progress_possible = (0..pokemon_data.len()).all(|i| {
+                let foe_index = if i == 0 { 1 } else { 0 };
+
+                // Check if all foes are Ghosts
+                let foe_all_ghosts = pokemon_data[foe_index].iter().all(|(fainted, types, _, _, _, _)| {
+                    *fainted || types.contains(&"Ghost".to_string())
+                });
+
+                // Check if all foes have only Transform
+                let foe_all_transform = pokemon_data[foe_index].iter().all(|(fainted, _, _, moves, _, species_id)| {
+                    if *fainted {
+                        return true;
+                    }
+                    // Transform will fail (depleting PP) if used against Ditto in Stadium 1
+                    if !is_stadium || species_id.as_str() != "ditto" {
+                        return moves.iter().all(|m| m.as_str() == "transform");
+                    }
+                    false
+                });
+
+                // Check if all pokemon on this side are in an endless state
+                pokemon_data[i].iter().all(|(fainted, _, is_frozen, moves, move_pps, _)| {
+                    if *fainted {
+                        return true;
+                    }
+                    // Frozen pokemon can't thaw in gen 1 without outside help
+                    if *is_frozen {
+                        return true;
+                    }
+                    // A pokemon can't lose PP if it Transforms into a pokemon with only Transform
+                    if moves.iter().all(|m| m.as_str() == "transform") && foe_all_transform {
+                        return true;
+                    }
+                    // Struggle can't damage yourself if every foe is a Ghost
+                    if move_pps.iter().all(|&pp| pp == 0) && foe_all_ghosts {
+                        return true;
+                    }
+                    false
+                })
+            });
+
+            if no_progress_possible {
+                self.add("message", &["This battle cannot progress. Endless Battle Clause activated!".into()]);
+                return self.tie();
+            }
+        }
+
         // JS: if (this.turn <= 100) return;
         if self.turn <= 100 {
             return false;
