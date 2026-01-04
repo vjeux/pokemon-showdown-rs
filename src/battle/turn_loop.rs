@@ -43,10 +43,6 @@ impl Battle {
         eprintln!("[TURN_LOOP #{}] Entry: turn={}, mid_turn={}, request_state={:?}, queue_size={}",
             call_id, self.turn, self.mid_turn, self.request_state, self.queue.list.len());
 
-        // Track whether we added beforeTurn/residual in this call
-        // We should only reset mid_turn if we added them (started a fresh turn)
-        let added_before_turn_residual = !self.mid_turn;
-
         self.add("", &[]);
 
         // Add timestamp (JS: this.add('t:', Math.floor(Date.now() / 1000)))
@@ -143,16 +139,10 @@ impl Battle {
         self.end_turn();
         eprintln!("[TURN_LOOP] After end_turn(), turn is now {}", self.turn);
 
-        // CRITICAL FIX: Only set mid_turn=false if we added beforeTurn/residual
-        // This prevents resetting mid_turn after processing forced switch continuations
-        // JavaScript has the same pattern: midTurn stays true across forced switch processing
-        if added_before_turn_residual {
-            eprintln!("[TURN_LOOP] We added beforeTurn/residual, setting mid_turn=false");
-            self.mid_turn = false;
-        } else {
-            eprintln!("[TURN_LOOP] We didn't add beforeTurn/residual (continuing mid-turn), keeping mid_turn=true");
-            // Keep mid_turn=true
-        }
+        // JavaScript ALWAYS sets midTurn=false at the end of turnLoop() (line 35 of JS source)
+        // This is NOT conditional - it happens whether we added beforeTurn/residual or not
+        eprintln!("[TURN_LOOP] Setting mid_turn=false (matches JavaScript line 35)");
+        self.mid_turn = false;
         self.queue.clear();
     }
 }

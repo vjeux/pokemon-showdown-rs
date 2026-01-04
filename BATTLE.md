@@ -1152,3 +1152,63 @@ Updated `src/data/condition_callbacks/partiallytrapped.rs` on_residual:
 **Commit:** a5191a53
 
 **Next Steps:**
+
+---
+
+## Session 2026-01-04: Residual Actions Not Being Added
+
+### Issue 15: Residual actions never added due to mid_turn always true (PARTIALLY FIXED ✅)
+
+**Problem:**
+- Iterations #1-#15 matched, then iteration #16 diverged
+- Dedenne HP was 133 in Rust but 107 in JavaScript (26 HP difference = partiallytrapped residual damage)
+- partiallytrapped on_residual callback was implemented but never called
+- All TURN_LOOP entries showed mid_turn=true, meaning beforeTurn/Residual actions were NEVER added
+
+**Root Cause:**
+Previous fix (Issue 14) attempted to conditionally reset mid_turn:
+```rust
+if added_before_turn_residual {
+    self.mid_turn = false;
+} else {
+    // Keep mid_turn=true
+}
+```
+
+This caused mid_turn to stay true forever, preventing beforeTurn/Residual from ever being added.
+
+**Correct Logic:**
+JavaScript ALWAYS sets midTurn=false at the end of turnLoop() (line 35 of JS source):
+```javascript
+this.endTurn();
+this.midTurn = false;  // ALWAYS executed if no early return
+this.queue.clear();
+```
+
+NOT conditionally based on whether beforeTurn/Residual were added.
+
+**Fix Applied:**
+Changed turn_loop.rs lines 146-150 to ALWAYS set mid_turn=false at the end:
+```rust
+// JavaScript ALWAYS sets midTurn=false at the end of turnLoop() (line 35 of JS source)
+// This is NOT conditional - it happens whether we added beforeTurn/residual or not
+self.mid_turn = false;
+self.queue.clear();
+```
+
+**Result:**
+- ✅ Iterations #1-#28 now match perfectly!  
+- ✅ Residual actions (beforeTurn, Residual) are now being added correctly
+- ✅ partiallytrapped residual damage is now being applied
+- ❌ NEW ISSUE at iteration #30: Kirlia faints in Rust but not in JavaScript
+
+**Next Issue - Iteration #30 Divergence:**
+- JavaScript #30: turn=24, prng=106->109 (3 calls), Kirlia survives (113/195 HP)
+- Rust #30: turn=23, prng=106->113 (7 calls), Kirlia faints (0/195 HP)
+
+Rust makes 4 extra PRNG calls and Kirlia takes lethal damage. The extra calls appear to be from beforeTurn/Residual events that JavaScript doesn't execute.
+
+**Status:** Iterations #1-#28 passing, investigating iteration #30 divergence 🔍
+
+---
+
