@@ -161,14 +161,6 @@ pub fn get_damage(
     target_pos: (usize, usize),
     move_id: &ID,
 ) -> Option<i32> {
-    // Log entry to track multiple calls
-    if move_id.as_str() == "gmaxterror" {
-        eprintln!("[GET_DAMAGE ENTRY] Turn {}: Called for move '{}' from {:?} to {:?}, PRNG={}",
-            battle.turn, move_id, source_pos, target_pos, battle.prng.call_count);
-        eprintln!("[GET_DAMAGE ENTRY] Stack trace:");
-        eprintln!("{}", std::backtrace::Backtrace::force_capture());
-    }
-
     // Get move data
     let move_data = match battle.dex.moves().get(move_id.as_str()) {
         Some(m) => m.clone(),
@@ -374,18 +366,18 @@ pub fn get_damage(
         // Check first condition: !source.volatiles["dynamax"] && move.isMax
         if !has_dynamax_volatile {
             if move_data.id.as_str() == "gmaxterror" {
-                eprintln!("[gmaxterror {}] Max move check: no dynamax volatile, setting basePower=0 and returning early", battle.turn);
+                eprintln!("[gmaxterror {}] Max move check: no dynamax volatile, setting basePower=0 and continuing (minimum damage will be 1)", battle.turn);
             }
-            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, basePower=0, returning Some(0)");
-            return Some(0); // Return 0 damage immediately, matching JavaScript
+            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower=0 and continuing");
+            base_power = 0; // Set basePower to 0, but continue calculation (minimum damage will be 1)
         } else if let Some(ref base_move_id) = move_data.base_move {
             // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
             // This checks if the base move (the original move before dynamax conversion) is also a Max move
             if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
                 if base_move_data.is_max.is_some() {
                     // Hacked Max Move: the base move is itself a Max move
-                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), basePower=0, returning Some(0)");
-                    return Some(0); // Return 0 damage immediately, matching JavaScript
+                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower=0 and continuing");
+                    base_power = 0; // Set basePower to 0, but continue calculation (minimum damage will be 1)
                 }
             }
         }

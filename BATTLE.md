@@ -295,7 +295,7 @@ In JavaScript, the kingsshield onTryHit blocks the move BEFORE the accuracy chec
 
 ## Notes
 
-- Seed 1: ✅ PASSING (41 iterations match exactly - still passing after weather fixes!)
+- Seed 1: ✅ PASSING (41 iterations match exactly - fixed flinch condition and Max move minimum damage!)
 - Seed 2: ❌ FAILING (turns 1-2 match, diverges at turn 4 with PRNG issue)
 
 
@@ -536,7 +536,7 @@ Added from/to parameter logging to random() function before calling next_raw().
 
 
 
-### Issue 8: Turn 25 - zenheadbutt secondary effect (FIXED ✅ - actually turn numbering issue!)
+### Issue 8: Turn 25-26 - zenheadbutt secondary effect and flinch (FIXED ✅)
 
 **Problem:**
 - Rust iteration #32 labeled as "turn 26": JavaScript makes 4 PRNG calls (113->117), Rust makes 5 calls (113->118)
@@ -558,9 +558,102 @@ After adding detailed logging, discovered:
 - PRNG #117: zenheadbutt secondary effect (flinch) - Rust makes this call, JavaScript doesn't
 - PRNG #118: gmaxterror crit check - Rust makes this call, JavaScript doesn't
 
-**Next Steps:**
-1. Investigate why JavaScript doesn't make the zenheadbutt secondary roll
-2. Check if there's an ability (Shield Dust?) that should filter it out
-3. Investigate why JavaScript doesn't make the gmaxterror crit check (should early return before crit)
+**Root Cause Analysis:**
+The flinch condition's `onBeforeMove` callback was not implemented - it just returned `EventResult::Continue`, which allowed the Pokemon to move even when flinched.
+
+JavaScript implementation:
+```javascript
+flinch: {
+    name: 'flinch',
+    duration: 1,
+    onBeforeMovePriority: 8,
+    onBeforeMove(pokemon) {
+        this.add('cant', pokemon, 'flinch');
+        this.runEvent('Flinch', pokemon);
+        return false;  // Prevents move
+    },
+},
+```
+
+**Fix Applied:**
+1. Implemented `on_before_move` in `src/data/condition_callbacks/flinch.rs`
+2. Added battle log message using `battle.add("cant", &[pokemon_slot, "flinch"])`
+3. Triggered 'Flinch' event via `battle.run_event_bool("Flinch", ...)`
+4. Returned `EventResult::Boolean(false)` to prevent the move
+
+**Result:**
+- ✅ Turn 26 now matches perfectly: both make 4 PRNG calls (113->117)
+- ✅ Golem flinches and cannot use gmaxterror
+- ✅ No extra PRNG calls from gmaxterror crit check
+- ❌ Turn 27 now diverges: JavaScript makes 6 calls (117->123), Rust makes 5 calls (117->122)
+
+**Commit:** [next commit]
+
+---
+
+### Issue 9: Turn 27 PRNG divergence - Max move early return preventing minimum damage (FIXED ✅)
+
+**Problem:**
+- Turn 26 matches after flinch fix
+- Turn 27 shows PRNG divergence:
+  - JavaScript: prng=117->123 (6 calls), Zacian takes 1 damage (196->195)
+  - Rust: prng=117->122 (5 calls), Zacian takes 0 damage (196->196)
+- Rust missing 1 PRNG call and not applying minimum damage
+
+**Investigation:**
+- Both implementations have gmaxterror being used without dynamax volatile
+- JavaScript's gmaxterror deals 1 damage despite basePower=0
+- Rust's gmaxterror deals 0 damage
+- Both have minimum damage check: `if (gen !== 5 && !baseDamage) return 1;`
+
+**Root Cause Found:**
+In JavaScript (battle-actions.ts lines 1675-1683):
+```javascript
+// Hacked Max Moves have 0 base power, even if you Dynamax
+if ((!source.volatiles['dynamax'] && move.isMax) || (move.isMax && this.dex.moves.get(move.baseMove).isMax)) {
+    basePower = 0;
+}
+// ... continues with damage calculation
+// ... eventually minimum damage check returns 1
+```
+
+In Rust (get_damage.rs lines 375-380, BEFORE fix):
+```rust
+if !has_dynamax_volatile {
+    eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, basePower=0, returning Some(0)");
+    return Some(0); // BUG: Early return skips minimum damage check!
+}
+```
+
+**The Issue:**
+- JavaScript sets basePower=0 and CONTINUES with damage calculation → minimum damage = 1
+- Rust returned Some(0) immediately, SKIPPING:
+  1. Rest of damage calculation
+  2. Minimum damage check in modify_damage
+  3. Result: gmaxterror deals 0 damage instead of 1
+
+**Fix Applied:**
+Changed get_damage.rs lines 375-391 to set `base_power = 0` and continue instead of early return:
+```rust
+if !has_dynamax_volatile {
+    eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower=0 and continuing");
+    base_power = 0; // Set basePower to 0, but continue calculation (minimum damage will be 1)
+} else if let Some(ref base_move_id) = move_data.base_move {
+    if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
+        if base_move_data.is_max.is_some() {
+            eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower=0 and continuing");
+            base_power = 0; // Set basePower to 0, but continue calculation (minimum damage will be 1)
+        }
+    }
+}
+```
+
+**Result:**
+- ✅ Turn 27 now matches: both make 6 PRNG calls (117->123)
+- ✅ Zacian takes 1 damage in both (196->195)
+- ✅ gmaxterror with basePower=0 correctly deals minimum damage (1 HP)
+- ✅ **ALL 41 TURNS NOW MATCH - SEED 1 FULLY PASSING!**
+
+**Commit:** [next commit]
 
 ---
