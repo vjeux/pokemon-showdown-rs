@@ -60,13 +60,84 @@ pub fn on_start(
         // attacker.addVolatile(effect.id);
         // Add a volatile for the specific move (e.g., "dig", "fly", "solarbeam")
         crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), None, None, None, None);
+
+        // JavaScript: let moveTargetLoc: number = attacker.lastMoveTargetLoc!;
+        let mut move_target_loc = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.last_move_target_loc.unwrap_or(0)
+        };
+
+        // JavaScript: if (effect.sourceEffect && this.dex.moves.get(effect.id).target !== 'self') {
+        let source_effect_exists = battle.active_move.as_ref()
+            .and_then(|m| m.source_effect.as_ref())
+            .is_some();
+
+        if source_effect_exists {
+            // Check if the move's target type is not 'self'
+            let move_target_type = battle.dex.moves().get(move_id_val.as_str())
+                .map(|m| m.target.as_str())
+                .unwrap_or("");
+
+            if move_target_type != "self" {
+                // Get defender position from battle.current_event.source
+                let mut defender_pos = battle.current_event.as_ref()
+                    .and_then(|e| e.source);
+
+                // JavaScript: if (defender.fainted) { defender = this.sample(attacker.foes(true)); }
+                if let Some(def_pos) = defender_pos {
+                    let defender_fainted = {
+                        let defender = match battle.pokemon_at(def_pos.0, def_pos.1) {
+                            Some(p) => p,
+                            None => return EventResult::Continue,
+                        };
+                        defender.fainted
+                    };
+
+                    if defender_fainted {
+                        // Sample a random foe
+                        // JavaScript: defender = this.sample(attacker.foes(true));
+                        let foes = {
+                            let attacker = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                                Some(p) => p,
+                                None => return EventResult::Continue,
+                            };
+                            attacker.foes(battle, true)
+                        };
+                        if !foes.is_empty() {
+                            let random_foe = battle.sample(&foes).copied();
+                            defender_pos = random_foe;
+                        }
+                    }
+                }
+
+                // JavaScript: moveTargetLoc = attacker.getLocOf(defender);
+                if let Some(def_pos) = defender_pos {
+                    let attacker = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    move_target_loc = attacker.get_loc_of(def_pos.0, def_pos.1, 1);
+                }
+            }
+        }
+
+        // JavaScript: attacker.volatiles[effect.id].targetLoc = moveTargetLoc;
+        // Store targetLoc in the move volatile's effectState.data
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        if let Some(state) = pokemon_mut.volatiles.get_mut(move_id_val) {
+            state.data.insert("targetLoc".to_string(), serde_json::json!(move_target_loc));
+        }
     }
 
-    // TODO: Handle lastMoveTargetLoc and targetLoc storage
     // TODO: this.attrLastMove('[still]');
     // TODO: this.runEvent('PrepareHit', attacker, defender, effect);
-
-    eprintln!("[TWOTURNMOVE_ON_START] Called for {:?}, stored move={:?}, added move volatile - TODO: lastMoveTargetLoc, attrLastMove, PrepareHit event", pokemon_pos, move_id);
 
     EventResult::Continue
 }
