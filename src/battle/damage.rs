@@ -55,7 +55,18 @@ impl Battle {
         };
 
         // JavaScript: return this.spreadDamage([damage], [target], source, effect, instafaint)[0];
-        let result = self.spread_damage(&[Some(damage)], &[target], source, effect, instafaint);
-        result.first().copied().flatten()
+        use crate::battle_actions::{SpreadMoveDamageValue, SpreadMoveTarget};
+
+        let target = target?; // Early return if target is None
+        let damages = vec![SpreadMoveDamageValue::Damage(damage)];
+        let targets = vec![SpreadMoveTarget::Target(target)];
+
+        let result = self.spread_damage(damages, &targets, source, effect, instafaint);
+
+        // Extract the damage value from the result
+        match result.first() {
+            Some(SpreadMoveDamageValue::Damage(n)) => Some(*n),
+            _ => None,
+        }
     }
 }

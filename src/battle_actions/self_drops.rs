@@ -41,11 +41,11 @@ pub fn self_drops(
     // Get moveData.self from active_move
     let (has_self_data, has_boosts, self_chance, is_multihit, self_dropped) = {
         if let Some(ref active_move) = battle.active_move {
-            let has_self = active_move.self_data.is_some();
-            let has_boosts = active_move.self_data.as_ref()
+            let has_self = active_move.self_effect.is_some();
+            let has_boosts = active_move.self_effect.as_ref()
                 .and_then(|s| s.boosts.as_ref())
                 .is_some();
-            let chance = active_move.self_data.as_ref()
+            let chance = active_move.self_effect.as_ref()
                 .and_then(|s| s.chance);
             let multihit = active_move.multi_hit.is_some();
             let dropped = active_move.self_dropped;
@@ -80,7 +80,7 @@ pub fn self_drops(
                     // Apply all self effects to the source Pokemon
 
                     if let Some(ref active_move) = battle.active_move.clone() {
-                        if let Some(ref self_data) = active_move.self_data {
+                        if let Some(ref self_data) = active_move.self_effect {
                             // Apply stat boosts
                             if let Some(ref boosts) = self_data.boosts {
                                 let mut boost_array = Vec::new();
@@ -186,7 +186,7 @@ pub fn self_drops(
                 // Apply all self effects to the source Pokemon
 
                 if let Some(ref active_move) = battle.active_move.clone() {
-                    if let Some(ref self_data) = active_move.self_data {
+                    if let Some(ref self_data) = active_move.self_effect {
                         // Apply stat boosts
                         if let Some(ref boosts) = self_data.boosts {
                             let mut boost_array = Vec::new();
@@ -219,7 +219,7 @@ pub fn self_drops(
                         // JS: if (moveData.status) {
                         //     hitResult = target.setStatus(moveData.status, source, move);
                         // }
-                        if let Some(ref status_name) = self_data.status {
+                        if let Some(status_name) = &self_data.status {
                             let status_id = crate::dex_data::ID::new(status_name);
                             let _applied = Pokemon::set_status(battle, source_pos, status_id, None, None, false);
                         }
@@ -228,7 +228,7 @@ pub fn self_drops(
                         // JS: if (moveData.volatileStatus) {
                         //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                         // }
-                        if let Some(ref volatile_status_name) = self_data.volatile_status {
+                        if let Some(volatile_status_name) = &self_data.volatile_status {
                             let volatile_id = crate::dex_data::ID::new(volatile_status_name);
                             Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None, None);
                         }

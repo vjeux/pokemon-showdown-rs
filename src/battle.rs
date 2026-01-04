@@ -272,7 +272,7 @@ pub enum EffectType {
 pub type EventCallback = Box<dyn Fn(&EventContext) -> Option<i32> + Send + Sync>;
 
 /// Type alias for spread move hit result (damages, targets)
-pub type SpreadMoveHitResult = (Vec<Option<i32>>, Vec<Option<(usize, usize)>>);
+pub type SpreadMoveHitResult = (crate::battle_actions::SpreadMoveDamage, crate::battle_actions::SpreadMoveTargets);
 
 /// Custom event handler registered via onEvent (for testing)
 /// JavaScript: { callback, target, priority, order, subOrder }

@@ -68,28 +68,32 @@
 - HP difference: Zacian 196 (Rust) vs 195 (JS) - 1 HP difference
 
 **Detailed Investigation:**
-- Rust PRNG sequence at turn 27:
-  - 117->121: 4 calls happen BEFORE zenheadbutt's USE_MOVE entry
-  - 121->122: zenheadbutt accuracy check
-  - 122->123: zenheadbutt crit check
-  - 123->124: zenheadbutt damage randomizer random(16)
-  - 124->125: zenheadbutt secondary chance random(100) for flinch
-  - 125->126: gmaxterror crit check
-  - 126->127: gmaxterror damage randomizer random(16)
-- The 117->121 calls occur within `make_choices()` but before move execution
-- Rust is missing 2 PRNG calls that JavaScript makes during this phase
-- NOT related to damage randomizer (both implementations call it correctly)
-- Likely related to the volatile addition refactoring in commit 16212962
+- Rust PRNG sequence at turn 26 (iteration #33):
+  - zenheadbutt executes: 117->121 (4 calls)
+    - 117->118: accuracy check
+    - 118->119: crit check
+    - 119->120: damage randomizer random(16)
+    - 120->121: secondary chance random(100) for flinch
+  - gmaxterror: BLOCKED, makes 0 PRNG calls
 
-**Hypothesis:**
-The refactoring changed WHEN certain callbacks are invoked during the battle flow,
-causing PRNG calls to shift between iterations or be skipped entirely.
+- JavaScript PRNG sequence at turn 26 (iteration #33):
+  - zenheadbutt executes: ~117->121 (4 calls, assumed same as Rust)
+  - gmaxterror executes: at least 1-2 calls
+    - Makes crit check (confirmed in logs)
+    - Possibly makes damage randomizer before basePower set to 0
+  - Total: 117->123 (6 calls)
+
+**Root Cause Found:**
+- Rust blocks gmaxterror before it can execute and make PRNG calls
+- JavaScript allows gmaxterror to start executing and makes PRNG calls (crit check minimum)
+- This is likely due to different handling of flinch or move validation timing
+- The blocking happens after RUN_MOVE entry but before USE_MOVE
 
 **Next Steps:**
-1. Add detailed PRNG tracing to both JavaScript and Rust for turn 27
-2. Identify exactly which 2 PRNG calls JavaScript makes that Rust skips
-3. Determine if this is callback timing, missing event handlers, or logic difference
-4. Fix the root cause to restore PRNG alignment
+1. Find where Rust blocks gmaxterror (BeforeMove event? Flinch check?)
+2. Determine why JavaScript allows partial execution with PRNG calls
+3. Align Rust behavior to match JavaScript's move execution flow
+4. May need to allow certain PRNG-generating checks before blocking moves
 
 ---
 

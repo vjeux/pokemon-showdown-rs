@@ -41,7 +41,7 @@ pub fn secondaries(
     // if (!moveData.secondaries) return;
     let has_secondaries = {
         if let Some(ref active_move) = battle.active_move {
-            active_move.secondaries.is_some() && !active_move.secondaries.as_ref().unwrap().is_empty()
+            !active_move.secondaries.is_empty()
         } else {
             false
         }
@@ -66,7 +66,7 @@ pub fn secondaries(
         // Call ModifySecondaries event to allow abilities like Shield Dust to filter secondaries
         // The event can modify or filter the secondaries array
         let secondaries = if let Some(ref active_move) = battle.active_move {
-            let mut secs = active_move.secondaries.clone().unwrap_or_default();
+            let mut secs = active_move.secondaries.clone();
 
             // Fire ModifySecondaries event for each secondary
             // In JavaScript, this returns a filtered/modified array
@@ -106,7 +106,7 @@ pub fn secondaries(
 
             // const secondaryOverflow = (secondary.boosts || secondary.self) && this.battle.gen <= 8;
             let has_boosts = secondary.boosts.is_some();
-            let has_self = secondary.self_data.is_some();
+            let has_self = secondary.self_effect;
             let secondary_overflow = (has_boosts || has_self) && battle.gen <= 8;
 
             // if (typeof secondary.chance === 'undefined' ||
@@ -159,7 +159,7 @@ pub fn secondaries(
                 // JS: if (moveData.status) {
                 //     hitResult = target.setStatus(moveData.status, source, move);
                 // }
-                if let Some(ref status_name) = secondary.status {
+                if let Some(status_name) = &secondary.status {
                     let status_id = crate::dex_data::ID::new(status_name);
                     let _applied = Pokemon::set_status(battle, target_pos, status_id, None, None, false);
                 }
@@ -168,7 +168,7 @@ pub fn secondaries(
                 // JS: if (moveData.volatileStatus) {
                 //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                 // }
-                if let Some(ref volatile_status_name) = secondary.volatile_status {
+                if let Some(volatile_status_name) = &secondary.volatile_status {
                     eprintln!("[SECONDARIES] Applying volatile_status='{}' to target={:?}", volatile_status_name, target_pos);
                     let volatile_id = crate::dex_data::ID::new(volatile_status_name);
                     Pokemon::add_volatile(battle, target_pos, volatile_id, Some(source_pos), Some(move_id), None, None);
@@ -178,7 +178,7 @@ pub fn secondaries(
                 // JS: if (moveData.sideCondition) {
                 //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
                 // }
-                if let Some(ref side_condition_name) = secondary.side_condition {
+                if let Some(side_condition_name) = &secondary.side_condition {
                     let side_condition_id = crate::dex_data::ID::new(side_condition_name);
                     let _applied = battle.sides[target_pos.0].add_side_condition(side_condition_id, None);
                 }
@@ -187,7 +187,7 @@ pub fn secondaries(
                 // JS: if (moveData.slotCondition) {
                 //     hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
                 // }
-                if let Some(ref slot_condition_name) = secondary.slot_condition {
+                if let Some(slot_condition_name) = &secondary.slot_condition {
                     let slot_condition_id = crate::dex_data::ID::new(slot_condition_name);
                     let _applied = battle.sides[target_pos.0].add_slot_condition(target_pos.1, slot_condition_id, None);
                 }
@@ -196,7 +196,7 @@ pub fn secondaries(
                 // JS: if (moveData.pseudoWeather) {
                 //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
                 // }
-                if let Some(ref pseudo_weather_name) = secondary.pseudo_weather {
+                if let Some(pseudo_weather_name) = &secondary.pseudo_weather {
                     let pseudo_weather_id = crate::dex_data::ID::new(pseudo_weather_name);
                     let _applied = battle.field.add_pseudo_weather(pseudo_weather_id, None);
                 }
@@ -205,7 +205,7 @@ pub fn secondaries(
                 // JS: if (moveData.terrain) {
                 //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
                 // }
-                if let Some(ref terrain_name) = secondary.terrain {
+                if let Some(terrain_name) = &secondary.terrain {
                     let terrain_id = crate::dex_data::ID::new(terrain_name);
                     let _applied = battle.field.set_terrain(terrain_id, None);
                 }
@@ -214,7 +214,7 @@ pub fn secondaries(
                 // JS: if (moveData.weather) {
                 //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
                 // }
-                if let Some(ref weather_name) = secondary.weather {
+                if let Some(weather_name) = &secondary.weather {
                     let weather_id = crate::dex_data::ID::new(weather_name);
                     let _applied = battle.field.set_weather(weather_id, None);
                 }

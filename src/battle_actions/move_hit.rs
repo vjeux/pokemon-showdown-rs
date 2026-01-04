@@ -14,6 +14,7 @@
 
 use crate::*;
 use crate::battle_actions::spread_move_hit::spread_move_hit;
+use crate::battle_actions::SpreadMoveDamageValue;
 
 /// Apply move hit to target(s)
 /// Equivalent to moveHit() in battle-actions.ts:1385
@@ -41,7 +42,10 @@ pub fn move_hit(
     // const retVal = this.spreadMoveHit(targets, pokemon, moveOrMoveName, moveData, isSecondary, isSelf)[0][0];
     let (damages, _targets) = spread_move_hit(battle, targets, pokemon_pos, move_id, move_data_id, is_secondary, is_self);
 
-    let ret_val = damages.get(0).and_then(|&d| d);
+    let ret_val = match damages.get(0) {
+        Some(SpreadMoveDamageValue::Damage(n)) => Some(*n),
+        _ => None,
+    };
 
     // return retVal === true ? undefined : retVal;
     // In JavaScript, retVal can be:

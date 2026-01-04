@@ -392,14 +392,19 @@ pub fn try_spread_move_hit(
             crate::battle_actions::spread_move_hit(battle, &final_targets, pokemon_pos, move_id, None, false, false);
 
         // Accumulate damage
-        for (i, damage_opt) in damages.iter().enumerate() {
-            if let Some(dmg) = damage_opt {
+        use crate::battle_actions::SpreadMoveDamageValue;
+        for (i, damage_value) in damages.iter().enumerate() {
+            if let SpreadMoveDamageValue::Damage(dmg) = damage_value {
                 total_damages[i] += dmg;
             }
         }
 
-        // Update targets for next hit
-        final_targets = targets;
+        // Update targets for next hit - convert SpreadMoveTargets to Vec<Option<(usize, usize)>>
+        use crate::battle_actions::SpreadMoveTarget;
+        final_targets = targets.iter().map(|t| match t {
+            SpreadMoveTarget::Target(pos) => Some(*pos),
+            _ => None,
+        }).collect();
     }
 
     // Convert to Option format

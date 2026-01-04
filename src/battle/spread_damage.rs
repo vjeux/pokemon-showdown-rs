@@ -129,34 +129,43 @@ impl Battle {
     //
     pub fn spread_damage(
         &mut self,
-        damages: &[Option<i32>], // Can be true (max damage), false, number, or undefined
-        targets: &[Option<(usize, usize)>],
+        damages: crate::battle_actions::SpreadMoveDamage,
+        targets: &crate::battle_actions::SpreadMoveTargets,
         source: Option<(usize, usize)>,
         effect: Option<&ID>,
         instafaint: bool,
-    ) -> Vec<Option<i32>> {
-        let mut ret_vals: Vec<Option<i32>> = Vec::new();
+    ) -> crate::battle_actions::SpreadMoveDamage {
+        use crate::battle_actions::{SpreadMoveDamageValue, SpreadMoveTarget};
+        let mut ret_vals: crate::battle_actions::SpreadMoveDamage = Vec::new();
 
         // Process damage for each target
         for i in 0..damages.len() {
-            let cur_damage = damages.get(i).copied().flatten();
-            let target = targets.get(i).copied().flatten();
+            let cur_damage = &damages[i];
+            let target = &targets[i];
 
-            // Handle undefined/null damage
-            if cur_damage.is_none() {
-                ret_vals.push(None);
-                continue;
-            }
-
-            let mut target_damage = cur_damage.unwrap();
+            // Handle undefined/failed damage
+            let damage_value = match cur_damage {
+                SpreadMoveDamageValue::Damage(n) => *n,
+                SpreadMoveDamageValue::Failed | SpreadMoveDamageValue::Undefined => {
+                    ret_vals.push(*cur_damage);
+                    continue;
+                }
+                SpreadMoveDamageValue::Success => {
+                    // Success means "true" in JS, which should calculate max damage
+                    // For now, treat as 0
+                    0
+                }
+            };
 
             // Handle missing or fainted target
-            if target.is_none() {
-                ret_vals.push(Some(0));
-                continue;
-            }
+            let target_pos = match target {
+                SpreadMoveTarget::Target(pos) => *pos,
+                _ => {
+                    ret_vals.push(SpreadMoveDamageValue::Damage(0));
+                    continue;
+                }
+            };
 
-            let target_pos = target.unwrap();
             let (side_idx, poke_idx) = target_pos;
 
             // Check if target exists and has HP
@@ -171,14 +180,16 @@ impl Battle {
             };
 
             if !has_hp {
-                ret_vals.push(Some(0));
+                ret_vals.push(SpreadMoveDamageValue::Damage(0));
                 continue;
             }
 
             if !is_active {
-                ret_vals.push(None); // JavaScript returns false
+                ret_vals.push(SpreadMoveDamageValue::Failed); // JavaScript returns false
                 continue;
             }
+
+            let mut target_damage = damage_value;
 
             // Clamp damage to at least 1 if non-zero
             if target_damage != 0 {
@@ -205,7 +216,7 @@ impl Battle {
                             side_idx, poke_idx, effect_id, is_immune);
                         if is_immune {
                             // Target is immune to this weather damage
-                            ret_vals.push(Some(0));
+                            ret_vals.push(SpreadMoveDamageValue::Damage(0));
                             continue;
                         }
                     }
@@ -226,7 +237,7 @@ impl Battle {
                 } else {
                     // Event failed
                     self.debug("damage event failed");
-                    ret_vals.push(None);
+                    ret_vals.push(SpreadMoveDamageValue::Undefined);
                     continue;
                 }
             }
@@ -281,7 +292,7 @@ impl Battle {
 
             target_damage = actual_damage;
 
-            ret_vals.push(Some(target_damage));
+            ret_vals.push(SpreadMoveDamageValue::Damage(target_damage));
 
             // Set hurtThisTurn
             if target_damage != 0 {
@@ -467,7 +478,7 @@ impl Battle {
                         let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
 
                         let recoil_id = ID::new("recoil");
-                        self.damage(amount, Some(source_pos), target, Some(&recoil_id), false);
+                        self.damage(amount, Some(source_pos), Some(target_pos), Some(&recoil_id), false);
                     }
                 }
 
@@ -485,7 +496,7 @@ impl Battle {
                         }
 
                         let drain_id = ID::new("drain");
-                        self.heal(amount, Some(source_pos), target, Some(&drain_id));
+                        self.heal(amount, Some(source_pos), Some(target_pos), Some(&drain_id));
                     }
                 }
 
@@ -497,7 +508,7 @@ impl Battle {
                             .round() as i32;
 
                         let drain_id = ID::new("drain");
-                        self.heal(amount, Some(source_pos), target, Some(&drain_id));
+                        self.heal(amount, Some(source_pos), Some(target_pos), Some(&drain_id));
                     }
                 }
             }
@@ -506,10 +517,11 @@ impl Battle {
         // Handle instafaint
         if instafaint {
             for i in 0..targets.len() {
-                if ret_vals.get(i).copied().flatten().is_none() {
+                // Check if this target has valid damage (skip Failed/Undefined)
+                if matches!(ret_vals.get(i), Some(SpreadMoveDamageValue::Failed) | Some(SpreadMoveDamageValue::Undefined) | None) {
                     continue;
                 }
-                if let Some(Some(target_pos)) = targets.get(i) {
+                if let Some(SpreadMoveTarget::Target(target_pos)) = targets.get(i) {
                     let should_faint = if let Some(side) = self.sides.get(target_pos.0) {
                         if let Some(pokemon) = side.pokemon.get(target_pos.1) {
                             pokemon.hp == 0

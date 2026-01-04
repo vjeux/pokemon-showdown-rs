@@ -3,27 +3,27 @@
 //! 1:1 port of runMoveEffects from battle-actions.ts:1201
 
 use crate::*;
+use crate::battle_actions::{SpreadMoveDamage, SpreadMoveDamageValue, SpreadMoveTargets, SpreadMoveTarget};
 
 /// Run move effects (boosts, healing, status, etc.)
 /// Equivalent to runMoveEffects() in battle-actions.ts:1201
 pub fn run_move_effects(
     battle: &mut Battle,
-    damages: &[Option<i32>],
-    targets: &[Option<(usize, usize)>],
+    damages: SpreadMoveDamage,
+    targets: &SpreadMoveTargets,
     _source_pos: (usize, usize),
     move_data: &crate::dex::MoveData,
     _is_secondary: bool,
     _is_self: bool,
-) -> Vec<Option<i32>> {
+) -> SpreadMoveDamage {
     eprintln!("[RUN_MOVE_EFFECTS] Called for move: {:?}, has status: {:?}", move_data.id, move_data.status);
-    let result_damages = damages.to_vec();
+    let result_damages = damages;
 
-    for &target in targets.iter() {
-        if target.is_none() {
-            continue;
-        }
-
-        let target_pos = target.unwrap();
+    for target in targets.iter() {
+        let target_pos = match target {
+            SpreadMoveTarget::Target(pos) => *pos,
+            _ => continue,
+        };
 
         // Apply boosts
         if let Some(ref boosts_map) = move_data.boosts {
