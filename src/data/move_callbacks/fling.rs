@@ -99,29 +99,68 @@ pub fn on_prepare_hit(
     // this.debug(`BP: ${move.basePower}`);
     battle.debug(&format!("BP: {}", fling.base_power));
 
-    // TODO: The following logic requires dynamic callback assignment which is incompatible with Rust's type system:
-    // - if (item.isBerry) { move.onHit = function (foe) { ... } }
-    // - else if (item.fling.effect) { move.onHit = item.fling.effect; }
+    // if (item.isBerry) {
+    //     if (source.hasAbility('cudchew')) {
+    //         this.singleEvent('EatItem', source.getAbility(), source.abilityState, source, source, move, item);
+    //     }
+    //     move.onHit = function (foe) { ... };
+    // } else if (item.fling.effect) {
+    //     move.onHit = item.fling.effect;
+    // } else {
+    //     ... secondaries logic ...
+    // }
     //
-    // These would require either:
-    // 1. Adding callback storage to ActiveMove (major architectural change)
-    // 2. Handling berry eating/effect logic directly in fling's onHit callback
-    // 3. Using a callback registry system
-    //
-    // However, we CAN handle the secondaries case:
+    // Store the item ID in the battle state so on_hit can access it
+    // The item will be removed by the fling volatile's onUpdate
+    battle.effect = Some(item_id.clone());
 
-    // Get item.isBerry to skip the secondaries logic for berries
+    // Get item.isBerry to handle berry case
     let is_berry = {
         battle.dex.items().get_by_id(&item_id)
             .map(|item| item.is_berry)
             .unwrap_or(false)
     };
 
-    if let Some(ref mut active_move) = battle.active_move {
-        // if (item.isBerry) { ... } - Skip, requires dynamic callback
-        // else if (item.fling.effect) { ... } - Skip, requires dynamic callback
-        // else { ... } - We can implement this part!
-        if !is_berry && fling.effect.is_none() {
+    // if (item.isBerry) {
+    if is_berry {
+        // if (source.hasAbility('cudchew')) {
+        //     this.singleEvent('EatItem', source.getAbility(), source.abilityState, source, source, move, item);
+        // }
+        let has_cudchew = {
+            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon_ref.has_ability(battle, &["cudchew"])
+        };
+
+        if has_cudchew {
+            let ability_id = {
+                let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon_ref.ability.clone()
+            };
+
+            battle.single_event(
+                "EatItem",
+                &ability_id,
+                Some(pokemon),
+                Some(pokemon),
+                Some(&item_id),
+            );
+        }
+
+        // The berry eating logic will be handled in on_hit callback
+    }
+    // else if (item.fling.effect) {
+    //     move.onHit = item.fling.effect;
+    // }
+    // The fling effect logic will be handled in on_hit callback via item.fling.effect
+    else if fling.effect.is_none() {
+        // else case - only add secondaries if no berry and no effect
+        if let Some(ref mut active_move) = battle.active_move {
             // if (!move.secondaries) move.secondaries = [];
             // (secondaries already exists as Vec, so we just push to it)
 
@@ -144,6 +183,84 @@ pub fn on_prepare_hit(
 
     // source.addVolatile('fling');
     Pokemon::add_volatile(battle, pokemon, ID::from("fling"), None, None, None, None);
+
+    EventResult::Continue
+}
+
+/// onHit(target, source) {
+///     // Handle berry or fling effect logic
+///     const item = source.lastItem;
+///     if (item.isBerry) {
+///         if (this.singleEvent('Eat', item, source.itemState, target, source, move)) {
+///             this.runEvent('EatItem', target, source, move, item);
+///             if (item.id === 'leppaberry') target.staleness = 'external';
+///         }
+///         if (item.onEat) target.ateBerry = true;
+///     }
+/// }
+pub fn on_hit(
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
+    let target = match target_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Get the flung item ID from battle.effect (set in on_prepare_hit)
+    let item_id = match &battle.effect {
+        Some(id) => id.clone(),
+        None => return EventResult::Continue,
+    };
+
+    // Get item data
+    let (is_berry, has_on_eat) = {
+        let item_data = match battle.dex.items().get_by_id(&item_id) {
+            Some(data) => data,
+            None => return EventResult::Continue,
+        };
+        (item_data.is_berry, item_data.extra.contains_key("onEat"))
+    };
+
+    // if (item.isBerry) {
+    if is_berry {
+        // if (this.singleEvent('Eat', item, source.itemState, target, source, move)) {
+        let eat_result = battle.single_event(
+            "Eat",
+            &item_id,
+            Some(target),
+            Some(source),
+            Some(&item_id),
+        );
+
+        if eat_result.boolean() != Some(false) {
+            // this.runEvent('EatItem', target, source, move, item);
+            battle.run_event("EatItem", Some(target), Some(source), Some(&item_id), EventResult::Continue, false, false);
+
+            // if (item.id === 'leppaberry') target.staleness = 'external';
+            if item_id.as_str() == "leppaberry" {
+                if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+                    target_pokemon.staleness = Some("external".to_string());
+                }
+            }
+        }
+
+        // if (item.onEat) target.ateBerry = true;
+        if has_on_eat {
+            if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+                target_pokemon.ate_berry = true;
+            }
+        }
+    }
+    // Note: fling.effect would be handled here if it's not None
+    // But that requires dynamic callback execution which isn't implemented yet
 
     EventResult::Continue
 }
