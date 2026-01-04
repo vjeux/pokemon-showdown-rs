@@ -25,20 +25,3 @@ pub fn on_base_power(
     EventResult::Continue
 }
 
-/// onBasePowerPriority
-/// TODO: Implement 1-to-1 from JavaScript
-/// JavaScript source (data/conditions.ts):
-/// gem: {
-///     onBasePowerPriority(...) {
-///         // Extract implementation from conditions.ts
-///     }
-/// }
-pub fn on_base_power_priority(
-    battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-) -> EventResult {
-    eprintln!("[GEM_ON_BASE_POWER_PRIORITY] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
-}
-

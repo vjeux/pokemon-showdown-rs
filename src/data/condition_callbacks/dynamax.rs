@@ -25,3 +25,105 @@ pub fn on_start(
     EventResult::Continue
 }
 
+/// onTryAddVolatile
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// dynamax: {
+///     onTryAddVolatile(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_try_add_volatile(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[DYNAMAX_ON_TRY_ADD_VOLATILE] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
+/// onBeforeSwitchOut
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// dynamax: {
+///     onBeforeSwitchOut(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_before_switch_out(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[DYNAMAX_ON_BEFORE_SWITCH_OUT] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
+/// onSourceModifyDamage
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// dynamax: {
+///     onSourceModifyDamage(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_source_modify_damage(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[DYNAMAX_ON_SOURCE_MODIFY_DAMAGE] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
+/// onDragOut
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// dynamax: {
+///     onDragOut(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_drag_out(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[DYNAMAX_ON_DRAG_OUT] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
+/// onResidual
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// dynamax: {
+///     onResidual(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_residual(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[DYNAMAX_ON_RESIDUAL] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
+/// onEnd
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// dynamax: {
+///     onEnd(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_end(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[DYNAMAX_ON_END] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+

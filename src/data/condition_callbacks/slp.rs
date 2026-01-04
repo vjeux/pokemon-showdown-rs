@@ -25,3 +25,20 @@ pub fn on_start(
     EventResult::Continue
 }
 
+/// onBeforeMove
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// slp: {
+///     onBeforeMove(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_before_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[SLP_ON_BEFORE_MOVE] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+

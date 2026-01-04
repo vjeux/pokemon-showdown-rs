@@ -25,19 +25,19 @@ pub fn on_before_move(
     EventResult::Continue
 }
 
-/// onBeforeMovePriority
+/// onStart
 /// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
 /// mustrecharge: {
-///     onBeforeMovePriority(...) {
+///     onStart(...) {
 ///         // Extract implementation from conditions.ts
 ///     }
 /// }
-pub fn on_before_move_priority(
+pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[MUSTRECHARGE_ON_BEFORE_MOVE_PRIORITY] Called for {:?}", pokemon_pos);
+    eprintln!("[MUSTRECHARGE_ON_START] Called for {:?}", pokemon_pos);
     // TODO: Implement callback
     EventResult::Continue
 }

@@ -25,3 +25,37 @@ pub fn on_start(
     EventResult::Continue
 }
 
+/// onSwitchIn
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// tox: {
+///     onSwitchIn(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_switch_in(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[TOX_ON_SWITCH_IN] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
+/// onResidual
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// tox: {
+///     onResidual(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_residual(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[TOX_ON_RESIDUAL] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+

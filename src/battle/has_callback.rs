@@ -841,67 +841,31 @@ impl Battle {
     /// This prevents false positives where we'd add handlers for callbacks
     /// that don't exist, which would cause incorrect speed_sort shuffling.
     pub fn condition_has_callback(&self, condition_id: &str, event_id: &str) -> bool {
-        // Normalize event name by removing "on" prefix if present for comparison
+        // Normalize event name to "onEventName" format for lookup
         let normalized = if event_id.starts_with("on") {
-            &event_id[2..]
+            event_id.to_string()
         } else {
-            event_id
+            format!("on{}", event_id)
         };
 
         eprintln!("[CONDITION_HAS_CALLBACK] condition_id='{}', event_id='{}', normalized='{}'",
             condition_id, event_id, normalized);
 
         // Special case: conditions don't have onAnySwitchIn
-        if normalized == "AnySwitchIn" {
+        if normalized == "onAnySwitchIn" {
             return false;
         }
 
-        // Check dispatchers to see which conditions have which callbacks
-        let result = match normalized {
-            "BeforeMove" => matches!(
-                condition_id,
-                "par" | "flinch"  // Paralysis has onBeforeMove (25% chance to prevent move), Flinch has onBeforeMove (100% chance to prevent move)
-            ),
-            "Residual" => matches!(
-                condition_id,
-                // Status conditions (from condition_callbacks.rs)
-                "brn" | "psn" | "tox" |
-                // Volatile conditions (from move_callbacks/mod.rs dispatch_condition_on_residual)
-                "aquaring" | "curse" | "encore" | "firepledge" | "gmaxcannonade" |
-                "gmaxvinelash" | "gmaxvolcalith" | "gmaxwildfire" | "grassyterrain" |
-                "iceball" | "ingrain" | "leechseed" | "nightmare" | "octolock" |
-                "perishsong" | "rollout" | "saltcure" | "syrupbomb" | "uproar" | "wish"
-            ),
-            "StallMove" => matches!(
-                condition_id,
-                "stall"  // Protect/King's Shield failure mechanic
-            ),
-            "TryPrimaryHit" => matches!(
-                condition_id,
-                "substitute"  // Has onTryPrimaryHit
-            ),
-            "TryHit" => matches!(
-                condition_id,
-                // Protect-like moves (from move_callbacks/mod.rs dispatch_condition_on_try_hit)
-                "banefulbunker" | "burningbulwark" | "craftyshield" | "kingsshield" |
-                "magiccoat" | "matblock" | "maxguard" | "obstruct" | "protect" |
-                "quickguard" | "silktrap" | "spikyshield" | "wideguard"
-            ),
-            "FieldResidual" => matches!(
-                condition_id,
-                // Weather conditions (from condition_callbacks.rs)
-                "sandstorm"
-            ),
-            "Weather" => matches!(
-                condition_id,
-                // Weather conditions that deal residual damage
-                "sandstorm"
-            ),
-            _ => {
-                // For other events, conservatively return false
-                // This can be expanded as more condition callbacks are implemented
-                false
-            }
+        // Look up the condition in dex data and check its extra field for callback boolean
+        let id = ID::from(condition_id);
+        let result = if let Some(condition_data) = self.dex.conditions.get(&id) {
+            // Check if the callback key exists and is true
+            condition_data.extra.get(&normalized)
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false)
+        } else {
+            // If not found in dex, return false
+            false
         };
 
         eprintln!("[CONDITION_HAS_CALLBACK] Returning {} for condition='{}', normalized='{}'",

@@ -4,8 +4,8 @@
  * Generate condition callback files and dispatchers
  *
  * This script:
- * 1. Reads data/conditions.ts from JavaScript
- * 2. Extracts all conditions and their callbacks
+ * 1. Loads data/conditions.ts from JavaScript by requiring it
+ * 2. Introspects each condition to find which properties are functions
  * 3. Generates Rust files in src/data/condition_callbacks/
  * 4. Updates mod.rs with all dispatch functions
  */
@@ -13,85 +13,136 @@
 const fs = require('fs');
 const path = require('path');
 
-// Load the JavaScript conditions
-const conditionsPath = path.join(__dirname, '../../pokemon-showdown-ts/data/conditions.ts');
-const conditionsSource = fs.readFileSync(conditionsPath, 'utf8');
+// Load the actual Conditions object from the transpiled JavaScript
+// First we need to build the TypeScript if not already done
+const projectRoot = path.join(__dirname, '../../pokemon-showdown-ts');
 
-// All possible callback names from JavaScript
-const ALL_CALLBACKS = [
-    'onStart', 'onRestart', 'onEnd',
-    'onBeforeMove', 'onBeforeMovePriority',
-    'onDisableMove', 'onLockMove',
-    'onResidual', 'onResidualOrder', 'onResidualPriority',
-    'onStallMove',
-    'onModifyAtk', 'onModifyAtkPriority',
-    'onTryMove', 'onTryMovePriority',
-    'onTryHit', 'onTryHitPriority',
-    'onTryPrimaryHit',
-    'onPrepareHit',
-    'onModifyMove',
-    'onBasePower', 'onBasePowerPriority',
-    'onModifyDef', 'onModifyDefPriority',
-    'onModifySpD', 'onModifySpDPriority',
-    'onModifySpe', 'onModifySpePriority',
-    'onEffectiveness', 'onEffectivenessPriority',
-    'onDamagingHit',
-    'onAfterMove', 'onAfterMoveSecondary',
-    'onSourceModifyDamage',
-    'onWeather', 'onWeatherModifyDamage',
-    'onFieldStart', 'onFieldEnd', 'onFieldResidual', 'onFieldResidualOrder',
-    'onSwitchIn',
-    'onBeforeSwitchOut', 'onBeforeSwitchOutPriority',
-    'onTrapPokemon', 'onTrapPokemonPriority',
-    'onDragOut', 'onDragOutPriority',
-    'onImmunity',
-    'onInvulnerability',
-    'onTryAddVolatile',
-    'onType', 'onTypePriority',
-    'onMoveAborted',
-    'onBeforeTurn',
-    'onFlinch',
-];
-
-// Parse conditions from TypeScript source
-function parseConditions(source) {
-    const conditions = {};
-
-    // Match each condition definition
-    // Pattern: conditionId: { ... }
-    const conditionRegex = /(\w+):\s*\{([^}]*(?:\{[^}]*\}[^}]*)*)\}/g;
-
-    let match;
-    while ((match = conditionRegex.exec(source)) !== null) {
-        const conditionId = match[1];
-        const body = match[2];
-
-        // Skip non-condition entries
-        if (conditionId === 'export' || conditionId === 'import' || conditionId === 'const') continue;
-
-        // Find all callbacks in this condition
-        const callbacks = [];
-        ALL_CALLBACKS.forEach(callback => {
-            if (body.includes(callback + '(') || body.includes(callback + ':')) {
-                callbacks.push(callback);
-            }
-        });
-
-        if (callbacks.length > 0 || body.includes('effectType')) {
-            conditions[conditionId] = {
-                callbacks,
-                source: body
-            };
-        }
-    }
-
-    return conditions;
+let Conditions;
+try {
+    // Try to require the compiled conditions from dist
+    const Dex = require(path.join(projectRoot, 'dist/sim/dex.js')).Dex;
+    Conditions = Dex.data.Conditions;
+    console.log('Loaded conditions from dist/sim');
+} catch (e) {
+    console.error('Error loading conditions:', e.message);
+    console.error('Make sure pokemon-showdown-ts is built');
+    process.exit(1);
 }
 
 // Convert callback name to snake_case
 function toSnakeCase(str) {
     return str.replace(/([A-Z])/g, '_$1').toLowerCase();
 }
+
+// Extract callbacks from a condition object
+function extractCallbacks(conditionId, conditionData) {
+    const callbacks = [];
+
+    // Iterate through all properties of the condition
+    for (const key in conditionData) {
+        // Skip if not own property
+        if (!conditionData.hasOwnProperty(key)) continue;
+
+        // Skip non-callback properties
+        if (!key.startsWith('on')) continue;
+
+        // Skip priority/order/suborder metadata (they end with Priority, Order, or SubOrder)
+        if (key.endsWith('Priority') || key.endsWith('Order') || key.endsWith('SubOrder')) {
+            continue;
+        }
+
+        // Check if it's a function
+        if (typeof conditionData[key] === 'function') {
+            callbacks.push(key);
+        }
+    }
+
+    return callbacks;
+}
+
+// Parse all conditions
+console.log('Extracting callbacks from conditions...');
+const conditions = {};
+
+for (const conditionId in Conditions) {
+    if (!Conditions.hasOwnProperty(conditionId)) continue;
+
+    const conditionData = Conditions[conditionId];
+    const callbacks = extractCallbacks(conditionId, conditionData);
+
+    if (callbacks.length > 0) {
+        conditions[conditionId] = {
+            callbacks,
+            data: conditionData
+        };
+    }
+}
+
+console.log(`\nFound ${Object.keys(conditions).length} conditions with callbacks:`);
+Object.entries(conditions).forEach(([id, data]) => {
+    console.log(`  ${id}: ${data.callbacks.join(', ')}`);
+});
+
+// Update conditions.json with callback information
+console.log('\nUpdating conditions.json with callback information...');
+const conditionsJsonPath = path.join(__dirname, '../data/conditions.json');
+let conditionsJson = {};
+
+// Load existing conditions.json
+if (fs.existsSync(conditionsJsonPath)) {
+    conditionsJson = JSON.parse(fs.readFileSync(conditionsJsonPath, 'utf8'));
+}
+
+// Add callback flags for each condition
+for (const conditionId in Conditions) {
+    if (!Conditions.hasOwnProperty(conditionId)) continue;
+
+    const conditionData = Conditions[conditionId];
+    const callbacks = extractCallbacks(conditionId, conditionData);
+
+    if (!conditionsJson[conditionId]) {
+        conditionsJson[conditionId] = {};
+    }
+
+    // Add callback boolean flags
+    callbacks.forEach(callback => {
+        conditionsJson[conditionId][callback] = true;
+    });
+
+    // Also preserve existing metadata (name, effectType, etc.)
+    if (conditionData.name) {
+        conditionsJson[conditionId].name = conditionData.name;
+    } else {
+        conditionsJson[conditionId].name = conditionId;
+    }
+
+    if (conditionData.effectType) {
+        conditionsJson[conditionId].effectType = conditionData.effectType;
+    }
+
+    if (conditionData.duration) {
+        conditionsJson[conditionId].duration = conditionData.duration;
+    }
+
+    // Preserve priority/order/suborder metadata
+    for (const key in conditionData) {
+        if (key.endsWith('Priority') || key.endsWith('Order') || key.endsWith('SubOrder')) {
+            conditionsJson[conditionId][key] = conditionData[key];
+        }
+    }
+
+    // Preserve other metadata flags
+    if (conditionData.noCopy !== undefined) {
+        conditionsJson[conditionId].noCopy = conditionData.noCopy;
+    }
+    if (conditionData.counterMax !== undefined) {
+        conditionsJson[conditionId].counterMax = conditionData.counterMax;
+    }
+}
+
+// Write updated conditions.json
+fs.writeFileSync(conditionsJsonPath, JSON.stringify(conditionsJson, null, 2));
+console.log(`  Updated ${conditionsJsonPath} with callback flags`);
 
 // Generate Rust file for a condition
 function generateConditionFile(conditionId, conditionData) {
@@ -227,15 +278,6 @@ pub fn dispatch_on_try_primary_hit(
 
     return content;
 }
-
-// Main execution
-console.log('Parsing JavaScript conditions...');
-const conditions = parseConditions(conditionsSource);
-
-console.log(`Found ${Object.keys(conditions).length} conditions with callbacks:`);
-Object.entries(conditions).forEach(([id, data]) => {
-    console.log(`  ${id}: ${data.callbacks.join(', ')}`);
-});
 
 // Create output directory
 const outDir = path.join(__dirname, '../src/data/condition_callbacks');

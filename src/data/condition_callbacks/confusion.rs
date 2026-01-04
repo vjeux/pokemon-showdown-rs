@@ -25,3 +25,37 @@ pub fn on_start(
     EventResult::Continue
 }
 
+/// onEnd
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// confusion: {
+///     onEnd(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_end(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[CONFUSION_ON_END] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
+/// onBeforeMove
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// confusion: {
+///     onBeforeMove(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_before_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[CONFUSION_ON_BEFORE_MOVE] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+

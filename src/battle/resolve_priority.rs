@@ -96,11 +96,45 @@ impl Battle {
     /// Get callback priority from dex data
     /// JavaScript: handler.priority = (handler.effect as any)[`${callbackName}Priority`] || 0;
     /// Returns 0 if no priority is specified (default in JS)
-    pub(crate) fn get_callback_priority(effect_type: EffectType, effect_id: &str, callback_name: &str) -> i32 {
-        // Most callbacks don't have custom priorities, return 0 by default
-        // Can be expanded as needed
-        let _ = (effect_type, effect_id, callback_name);
-        0
+    pub(crate) fn get_callback_priority(&self, effect_type: EffectType, effect_id: &str, callback_name: &str) -> i32 {
+        // Extract event name from callback (e.g., "onBeforeMove" -> "BeforeMove")
+        let event = if callback_name.starts_with("on") {
+            &callback_name[2..]
+        } else {
+            callback_name
+        };
+
+        // JavaScript: handler.priority = (handler.effect as any)[`${callbackName}Priority`] || 0;
+        // Construct the property name: e.g., "onBeforeMovePriority"
+        let property_name = format!("on{}Priority", event);
+
+        match effect_type {
+            EffectType::Ability => {
+                if let Some(ability_data) = self.dex.abilities().get(effect_id) {
+                    if let Some(value) = ability_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                    }
+                }
+                0
+            }
+            EffectType::Item => {
+                if let Some(item_data) = self.dex.items().get(effect_id) {
+                    if let Some(value) = item_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                    }
+                }
+                0
+            }
+            EffectType::Condition => {
+                if let Some(condition_data) = self.dex.conditions.get(&ID::from(effect_id)) {
+                    if let Some(value) = condition_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                    }
+                }
+                0
+            }
+            _ => 0,
+        }
     }
 
     /// Resolve event handler priority
@@ -186,7 +220,7 @@ impl Battle {
         //
         // Look up order and priority from dex data based on effect type and ID
         handler.order = self.get_callback_order(handler.effect_type, handler.effect_id.as_str(), callback_name);
-        handler.priority = Self::get_callback_priority(handler.effect_type, handler.effect_id.as_str(), callback_name);
+        handler.priority = self.get_callback_priority(handler.effect_type, handler.effect_id.as_str(), callback_name);
 
         // Check for custom sub_order from dex data first
         if let Some(custom_sub_order) = self.get_callback_sub_order(handler.effect_type, handler.effect_id.as_str(), callback_name) {

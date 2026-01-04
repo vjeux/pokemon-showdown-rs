@@ -25,20 +25,3 @@ pub fn on_before_move(
     EventResult::Continue
 }
 
-/// onBeforeMovePriority
-/// TODO: Implement 1-to-1 from JavaScript
-/// JavaScript source (data/conditions.ts):
-/// flinch: {
-///     onBeforeMovePriority(...) {
-///         // Extract implementation from conditions.ts
-///     }
-/// }
-pub fn on_before_move_priority(
-    battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-) -> EventResult {
-    eprintln!("[FLINCH_ON_BEFORE_MOVE_PRIORITY] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
-}
-

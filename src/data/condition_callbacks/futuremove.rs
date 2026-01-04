@@ -25,3 +25,37 @@ pub fn on_start(
     EventResult::Continue
 }
 
+/// onResidual
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// futuremove: {
+///     onResidual(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_residual(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[FUTUREMOVE_ON_RESIDUAL] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
+/// onEnd
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// futuremove: {
+///     onEnd(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_end(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[FUTUREMOVE_ON_END] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+

@@ -25,3 +25,37 @@ pub fn on_start(
     EventResult::Continue
 }
 
+/// onBeforeMove
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// choicelock: {
+///     onBeforeMove(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_before_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[CHOICELOCK_ON_BEFORE_MOVE] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
+/// onDisableMove
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// choicelock: {
+///     onDisableMove(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn on_disable_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[CHOICELOCK_ON_DISABLE_MOVE] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+

@@ -48,7 +48,7 @@ impl Battle {
 
         // Get order and priority from dex
         let order = self.get_callback_order(effect_type, effect_id.as_str(), callback_name);
-        let priority = Self::get_callback_priority(effect_type, effect_id.as_str(), callback_name);
+        let priority = self.get_callback_priority(effect_type, effect_id.as_str(), callback_name);
 
         // Get sub_order: first try custom value, then fall back to default based on effect type
         let sub_order = self.get_callback_sub_order(effect_type, effect_id.as_str(), callback_name)

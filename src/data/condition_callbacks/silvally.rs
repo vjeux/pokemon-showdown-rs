@@ -25,20 +25,3 @@ pub fn on_type(
     EventResult::Continue
 }
 
-/// onTypePriority
-/// TODO: Implement 1-to-1 from JavaScript
-/// JavaScript source (data/conditions.ts):
-/// silvally: {
-///     onTypePriority(...) {
-///         // Extract implementation from conditions.ts
-///     }
-/// }
-pub fn on_type_priority(
-    battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-) -> EventResult {
-    eprintln!("[SILVALLY_ON_TYPE_PRIORITY] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
-}
-
