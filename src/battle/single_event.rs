@@ -117,7 +117,7 @@ impl Battle {
         effect_id: &ID,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
-        _source_effect: Option<&ID>,
+        source_effect: Option<&ID>,
         relay_var: Option<i32>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
@@ -225,7 +225,7 @@ impl Battle {
             id: event_id.to_string(),
             target,
             source,
-            effect: Some(effect_id.clone()),
+            effect: source_effect.cloned(),
             modifier: 4096,
             relay_var,
             relay_var_float: None,
