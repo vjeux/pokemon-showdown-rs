@@ -135,15 +135,9 @@ impl Battle {
         }
 
         // Log to inputLog
-        // Format options as JSON - simplified version for now
-        let mut options_json = format!("{{\"name\":\"{}\"", options.name);
-        if let Some(avatar) = &options.avatar {
-            options_json.push_str(&format!(",\"avatar\":\"{}\"", avatar));
-        }
-        if let Some(rating) = &options.rating {
-            options_json.push_str(&format!(",\"rating\":\"{}\"", rating));
-        }
-        options_json.push('}');
+        // Format options as JSON using serde
+        let options_json = serde_json::to_string(&options)
+            .unwrap_or_else(|_| format!("{{\"name\":\"{}\"}}", options.name));
 
         self.input_log
             .push(format!(">player {} {}", side_id.to_str(), options_json));

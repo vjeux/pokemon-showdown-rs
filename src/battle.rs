@@ -554,7 +554,7 @@ pub struct BattleOptions {
 }
 
 /// Player/side creation options
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: PlayerOptions (sim/global-types.ts)
 /// 5 fields in JavaScript
 pub struct PlayerOptions {
@@ -579,7 +579,7 @@ pub struct PlayerOptions {
 
 /// Team format - either packed string or array of Pokemon sets
 /// JavaScript equivalent: PokemonSet[] | string
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum TeamFormat {
     /// Empty team (will be generated)
     Empty,
