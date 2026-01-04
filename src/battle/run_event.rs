@@ -408,14 +408,45 @@ impl Battle {
 
             // JavaScript: Ability suppression check (lines 192-229)
             // Check if ability is suppressed by Mold Breaker, etc.
-            if let Some(_ability_data) = self.dex.abilities().get(effect_id.as_str()) {
+            if let Some(ability_data) = self.dex.abilities().get(effect_id.as_str()) {
                 if let Some(handler_pos) = handler_target {
                     // Check if ability is suppressed by Mold Breaker
                     if self.suppressing_ability(Some(handler_pos)) {
-                        // TODO: Check ability flags for breakable
-                        // For now, skip suppressed abilities
-                        self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
-                        continue;
+                        // JavaScript: if (effect.flags['breakable']) { continue; }
+                        let is_breakable = ability_data.flags.get("breakable").copied().unwrap_or(0) != 0;
+
+                        if is_breakable {
+                            self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
+                            continue;
+                        }
+
+                        // JavaScript: if (!effect.num) { ... check AttackingEvents ... }
+                        // Custom abilities (no num) have their attacking events suppressed
+                        if ability_data.num == 0 {
+                            // List of attacking events that get suppressed for custom abilities
+                            let attacking_events = [
+                                "BeforeMove", "BasePower", "Immunity", "RedirectTarget", "Heal", "SetStatus",
+                                "CriticalHit", "ModifyAtk", "ModifyDef", "ModifySpA", "ModifySpD", "ModifySpe",
+                                "ModifyAccuracy", "ModifyBoost", "ModifyDamage", "ModifySecondaries",
+                                "ModifyWeight", "TryAddVolatile", "TryHit", "TryHitSide", "TryMove",
+                                "Boost", "DragOut", "Effectiveness",
+                            ];
+
+                            if attacking_events.contains(&event_id) {
+                                self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
+                                continue;
+                            }
+
+                            // JavaScript: else if (eventid === 'Damage' && sourceEffect && sourceEffect.effectType === 'Move')
+                            if event_id == "Damage" {
+                                if let Some(source_eff) = source_effect {
+                                    if self.get_effect_type(source_eff) == "Move" {
+                                        self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
