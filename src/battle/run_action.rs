@@ -319,29 +319,38 @@ impl Battle {
                 let target_loc = move_action.target_loc;
 
                 // Check if Pokemon can still act
-                if let Some(side) = self.sides.get(side_idx) {
+                let can_act = if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
                         if pokemon.is_fainted() {
-                            return;
+                            eprintln!("[RUN_ACTION] Pokemon is already fainted, skipping move execution: side={}, poke={}, move={}", side_idx, poke_idx, move_id.as_str());
+                            false  // Don't execute move, but continue to check_fainted
+                        } else {
+                            true  // Pokemon can act
                         }
                     } else {
+                        eprintln!("[RUN_ACTION] Pokemon doesn't exist, returning early: side={}, poke={}, move={}", side_idx, poke_idx, move_id.as_str());
                         return;
                     }
                 } else {
+                    eprintln!("[RUN_ACTION] Side doesn't exist, returning early: side={}, move={}", side_idx, move_id.as_str());
                     return;
-                }
+                };
 
-                crate::battle_actions::run_move(
-                    self,
-                    move_id,
-                    (side_idx, poke_idx),
-                    target_loc,
-                    None, // source_effect
-                    move_action.zmove.clone(), // z_move
-                    false, // external_move
-                    move_action.max_move.clone(), // max_move
-                    None, // original_target
-                );
+                if can_act {
+                    eprintln!("[RUN_ACTION] About to call run_move, move={}", move_id.as_str());
+                    crate::battle_actions::run_move(
+                        self,
+                        move_id,
+                        (side_idx, poke_idx),
+                        target_loc,
+                        None, // source_effect
+                        move_action.zmove.clone(), // z_move
+                        false, // external_move
+                        move_action.max_move.clone(), // max_move
+                        None, // original_target
+                    );
+                    eprintln!("[RUN_ACTION] After run_move, move={}", move_id.as_str());
+                }
             }
             Action::Switch(switch_action) => {
                 // JS: case 'switch':
@@ -811,6 +820,14 @@ impl Battle {
         //     }
         // In gen 3 or earlier, switching in fainted pokemon is done after every move
         let should_check_fainted = self.queue.peek().is_none() || self.gen <= 3;
+        eprintln!("[RUN_ACTION] After action, queue.peek()={:?}, should_check_fainted={}",
+            self.queue.peek().as_ref().map(|a| match a {
+                Action::Move(m) => format!("Move({})", m.move_id.as_str()),
+                Action::Switch(s) => format!("Switch({})", s.pokemon_index),
+                Action::Field(f) => format!("Field({:?})", f.choice),
+                _ => "Other".to_string(),
+            }),
+            should_check_fainted);
         if should_check_fainted {
             self.check_fainted();
         }
@@ -897,11 +914,14 @@ impl Battle {
         //             return true;
         //         }
         //     }
-        for player_switch in switches {
+        eprintln!("[RUN_ACTION] Switches array: {:?}", switches);
+        for (i, &player_switch) in switches.iter().enumerate() {
             if player_switch {
+                eprintln!("[RUN_ACTION] Side {} needs to switch, calling make_request(Switch)", i);
                 self.make_request(Some(BattleRequestState::Switch));
                 return;
             }
         }
+        eprintln!("[RUN_ACTION] Completed, no switches needed");
     }
 }

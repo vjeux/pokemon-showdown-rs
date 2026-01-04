@@ -859,6 +859,43 @@ pub fn duration_callback(
 
 ---
 
+**CRITICAL ROOT CAUSE FOUND:**
+
+After extensive logging and investigation, found the exact issue:
+
+1. **Iteration #6 (turn 5):**
+   - Dedenne uses spectralthief, faints Remoraid
+   - Remoraid tries to use memento
+   - Rust's run_action checks if Remoraid is_fainted() (line 324)
+   - Returns early at line 326 WITHOUT reaching check_fainted() code
+   - turn_loop's while loop exits (queue empty)
+   - Calls end_turn() → turn increments 5→6 ❌
+
+2. **Expected behavior (JavaScript):**
+   - Same sequence (spectralthief faints Remoraid, memento doesn't execute)
+   - But somehow check_fainted() IS called
+   - Switches array becomes [true, false]
+   - make_request(Switch) is called
+   - turn_loop returns early WITHOUT calling end_turn()
+   - Turn stays at 5 ✅
+
+3. **The bug:**
+   - When run_action returns early for a fainted Pokemon (line 326), it skips ALL the code at the end of run_action:
+     - check_fainted() (line 823)
+     - Switch detection (line 828-915)
+     - make_request(Switch) (line 912)
+   - This causes turn_loop to complete normally and call end_turn()
+   - JavaScript must handle this differently
+
+4. **Possible fixes:**
+   - Move check_fainted() call to BEFORE the early return check
+   - Or: Call check_fainted() even when returning early for fainted Pokemon
+   - Or: Check for fainted Pokemon in a different way that doesn't skip switch detection
+
+**Status:** Root cause identified, need to implement fix 🔧
+
+---
+
 ### Issue 14: Turn executing twice after forced switch (IN PROGRESS 🔍)
 
 **Problem:**

@@ -18,6 +18,7 @@ impl Battle {
     // 	}
     //
     pub fn check_fainted(&mut self) {
+        eprintln!("[CHECK_FAINTED] Called, turn={}", self.turn);
         // JS: for (const side of this.sides) {
         for side_idx in 0..self.sides.len() {
             // JS: for (const pokemon of side.active) {
@@ -32,6 +33,8 @@ impl Battle {
                 if let Some(pokemon) = self.sides[side_idx].pokemon.get_mut(poke_idx) {
                     // JS: if (pokemon.fainted) {
                     if pokemon.fainted {
+                        eprintln!("[CHECK_FAINTED] Found fainted Pokemon: side={}, poke={}, name={}",
+                            side_idx, poke_idx, pokemon.name);
                         // JS: pokemon.status = 'fnt' as ID;
                         pokemon.status = ID::new("fnt");
                         // JS: pokemon.switchFlag = true;

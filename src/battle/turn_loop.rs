@@ -1,5 +1,6 @@
 use crate::*;
 use crate::battle::BattleRequestState;
+use crate::battle_queue::Action;
 
 impl Battle {
 
@@ -36,8 +37,15 @@ impl Battle {
     // 	}
     //
     pub fn turn_loop(&mut self) {
-        eprintln!("[TURN_LOOP] Entry: turn={}, mid_turn={}, request_state={:?}, queue_size={}",
-            self.turn, self.mid_turn, self.request_state, self.queue.list.len());
+        static CALL_COUNTER: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+        let call_id = CALL_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+
+        eprintln!("[TURN_LOOP #{}] Entry: turn={}, mid_turn={}, request_state={:?}, queue_size={}",
+            call_id, self.turn, self.mid_turn, self.request_state, self.queue.list.len());
+
+        // Track whether we added beforeTurn/residual in this call
+        // We should only reset mid_turn if we added them (started a fresh turn)
+        let added_before_turn_residual = !self.mid_turn;
 
         self.add("", &[]);
 
@@ -110,7 +118,14 @@ impl Battle {
         let mut action_count = 0;
         while let Some(action) = self.queue.shift() {
             action_count += 1;
-            eprintln!("[TURN_LOOP] Processing action #{}, queue remaining: {}", action_count, self.queue.list.len());
+            let action_desc = match &action {
+                Action::Move(m) => format!("Move({})", m.move_id.as_str()),
+                Action::Switch(s) => format!("Switch(slot {})", s.pokemon_index),
+                Action::Field(f) => format!("Field({:?})", f.choice),
+                Action::Pokemon(p) => format!("Pokemon({:?})", p.choice),
+                Action::Team(_) => "Team".to_string(),
+            };
+            eprintln!("[TURN_LOOP] Processing action #{}: {}, queue remaining: {}", action_count, action_desc, self.queue.list.len());
             self.run_action(&action);
 
             if self.ended {
@@ -128,9 +143,16 @@ impl Battle {
         self.end_turn();
         eprintln!("[TURN_LOOP] After end_turn(), turn is now {}", self.turn);
 
-        // JS: this.midTurn = false;
-        eprintln!("[TURN_LOOP] Setting mid_turn=false");
-        self.mid_turn = false;
+        // CRITICAL FIX: Only set mid_turn=false if we added beforeTurn/residual
+        // This prevents resetting mid_turn after processing forced switch continuations
+        // JavaScript has the same pattern: midTurn stays true across forced switch processing
+        if added_before_turn_residual {
+            eprintln!("[TURN_LOOP] We added beforeTurn/residual, setting mid_turn=false");
+            self.mid_turn = false;
+        } else {
+            eprintln!("[TURN_LOOP] We didn't add beforeTurn/residual (continuing mid-turn), keeping mid_turn=true");
+            // Keep mid_turn=true
+        }
         self.queue.clear();
     }
 }
