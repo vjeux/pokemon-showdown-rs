@@ -309,7 +309,7 @@ pub fn spread_move_hit(
 
                         // Get mutable reference to source pokemon
                         let volatile_id = ID::new(volatile_status_name);
-                        Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None);
+                        Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None, None);
                         eprintln!("[SELF_EFFECT] Successfully added volatile '{}' to source", volatile_status_name);
                     }
                 }
@@ -355,7 +355,7 @@ pub fn spread_move_hit(
 
                     // Get mutable reference to source pokemon
                     let volatile_id = ID::new(volatile_status_name);
-                    Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None);
+                    Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None, None);
                     eprintln!("[SELF_EFFECT] Successfully added volatile '{}' to source", volatile_status_name);
                 }
             }

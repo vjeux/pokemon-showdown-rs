@@ -370,7 +370,7 @@ impl Pokemon {
 
                 if has_volatile {
                     // Add volatile to self
-                    Pokemon::add_volatile(battle, pokemon_pos, volatile_id.clone(), None, None, None);
+                    Pokemon::add_volatile(battle, pokemon_pos, volatile_id.clone(), None, None, None, None);
 
                     // Copy additional data fields
                     if let Some(layers) = layers_data {

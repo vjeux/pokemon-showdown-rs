@@ -37,7 +37,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
         // should cover the main case (Pokemon moved this turn)
         if move_this_turn_result.is_some() {
             // pokemon.addVolatile('truant');
-            Pokemon::add_volatile(battle, pokemon_pos, ID::from("truant"), None, None, None);
+            Pokemon::add_volatile(battle, pokemon_pos, ID::from("truant"), None, None, None, None);
         }
     }
 
@@ -82,14 +82,8 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
     }
 
     // pokemon.addVolatile('truant');
-    crate::pokemon::Pokemon::add_volatile(
-        battle,
-        pokemon_pos,
-        crate::ID::from("truant"),
-        None,
-        None,
-        None,
-    );
+    crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, crate::ID::from("truant"), None, None, None,
+            None);
 
     EventResult::Continue
 }

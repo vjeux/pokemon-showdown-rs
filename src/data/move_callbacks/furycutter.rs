@@ -45,7 +45,7 @@ pub fn base_power_callback(
     };
 
     if !has_furycutter || move_hit == 1 {
-        Pokemon::add_volatile(battle, pokemon, furycutter_id.clone(), None, None, None);
+        Pokemon::add_volatile(battle, pokemon, furycutter_id.clone(), None, None, None, None);
     }
 
     // const bp = this.clampIntRange(move.basePower * pokemon.volatiles['furycutter'].multiplier, 1, 160);

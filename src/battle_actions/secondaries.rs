@@ -163,7 +163,7 @@ pub fn secondaries(
                 // }
                 if let Some(ref volatile_status_name) = secondary.volatile_status {
                     let volatile_id = crate::dex_data::ID::new(volatile_status_name);
-                    Pokemon::add_volatile(battle, target_pos, volatile_id, None, None, None);
+                    Pokemon::add_volatile(battle, target_pos, volatile_id, None, None, None, None);
                 }
 
                 // Apply side condition from secondary effect

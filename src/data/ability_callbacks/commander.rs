@@ -206,10 +206,10 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         ]);
 
         // pokemon.addVolatile('commanding');
-        Pokemon::add_volatile(battle, pokemon_pos, ID::from("commanding"), None, None, None);
+        Pokemon::add_volatile(battle, pokemon_pos, ID::from("commanding"), None, None, None, None);
 
         // ally.addVolatile('commanded', pokemon);
-        Pokemon::add_volatile(battle, ally_pos, ID::from("commanded"), Some(pokemon_pos), None, None);
+        Pokemon::add_volatile(battle, ally_pos, ID::from("commanded"), Some(pokemon_pos), None, None, None);
     } else {
         // if (!ally.fainted) return;
         let ally_fainted = {

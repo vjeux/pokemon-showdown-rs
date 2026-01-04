@@ -117,17 +117,46 @@ map.insert(
 - ❌ NEW ISSUE: Hardcoded kingsshield in conditions.rs (should use moves.json embedded condition)
 - ❌ NEW ISSUE: King's Shield blocks moves BEFORE accuracy check (see Issue 5)
 
-**UPDATE:** Reverted hardcoded kingsshield from conditions.rs. The real issue is that King's Shield has an embedded condition in moves.json:
-```json
-"volatileStatus": "kingsshield",
-"condition": { "duration": 1, "onTryHitPriority": 3 }
-```
+**UPDATE:** Reverted hardcoded kingsshield from conditions.rs. Found the root cause:
 
-Need to implement proper support for embedded move conditions instead of hardcoding in conditions.rs.
+**Root Cause Analysis:**
+1. King's Shield has an embedded condition in moves.json:
+   ```json
+   "volatileStatus": "kingsshield",
+   "condition": { "duration": 1, "onTryHitPriority": 3 }
+   ```
+
+2. JavaScript's `addVolatile` receives the move parameter:
+   ```javascript
+   target.addVolatile(moveData.volatileStatus, source, move)
+   ```
+   This allows it to access the embedded condition from the move.
+
+3. Rust's implementation (run_move_effects.rs:113) doesn't pass the move:
+   ```rust
+   Pokemon::add_volatile(battle, target_pos, volatile_id, Some(_source_pos), None, None);
+   ```
+
+4. Without the move parameter, `add_volatile` can't access the embedded condition, so:
+   - `has_callback("kingsshield", "onTryHit")` returns false (condition not found)
+   - Duration isn't set (volatile persists indefinitely)
+   - Move isn't blocked (no onTryHit handler)
+
+**Proper Fix Being Implemented:**
+1. Modify `Pokemon::add_volatile` to accept optional `&ConditionData` parameter
+2. In `run_move_effects.rs`, pass `move_data.condition` when calling add_volatile
+3. When condition not found in dex, use the embedded condition data
+4. This matches JavaScript's behavior where addVolatile receives the move parameter
+
+**Implementation Plan:**
+- src/pokemon/add_volatile.rs: Add `embedded_condition: Option<&ConditionData>` parameter
+- src/battle_actions/run_move_effects.rs: Pass `move_data.condition.as_ref()` to add_volatile
+- When volatile not in dex.conditions, use embedded_condition for duration, priorities, etc.
+- This is 1-to-1 with JavaScript which accesses move.condition when adding volatiles
 
 ---
 
-### Issue 5: King's Shield blocking before accuracy check (IN PROGRESS 🔍)
+### Issue 5: King's Shield blocking before accuracy check (BLOCKED by Issue 4)
 
 **Problem:**
 After fixing the condition registration, King's Shield blocks ALL moves without checking accuracy first.

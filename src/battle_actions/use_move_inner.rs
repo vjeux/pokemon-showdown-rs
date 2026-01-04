@@ -602,12 +602,12 @@ pub fn use_move_inner(
                 ZPowerResult::Redirect => {
                     // JS: pokemon.addVolatile('followme', pokemon, zPower);
                     let followme_id = ID::new("followme");
-                    Pokemon::add_volatile(battle, (side_idx, poke_idx), followme_id, None, None, None);
+                    Pokemon::add_volatile(battle, (side_idx, poke_idx), followme_id, None, None, None, None);
                 }
                 ZPowerResult::Crit2 => {
                     // JS: pokemon.addVolatile('focusenergy', pokemon, zPower);
                     let focusenergy_id = ID::new("focusenergy");
-                    Pokemon::add_volatile(battle, (side_idx, poke_idx), focusenergy_id, None, None, None);
+                    Pokemon::add_volatile(battle, (side_idx, poke_idx), focusenergy_id, None, None, None, None);
                 }
                 ZPowerResult::None => {
                     // No Z-Power effect to apply

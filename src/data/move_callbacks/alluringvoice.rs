@@ -47,14 +47,8 @@ pub fn on_hit(
         // target.addVolatile('confusion', source, move);
         // JavaScript: target.addVolatile('confusion', source, move)
         // ✅ NOW PASSING: source_pos = Some(source_pos), source_effect = Some("alluringvoice"), linked_status = None
-        Pokemon::add_volatile(
-            battle,
-            target,
-            ID::from("confusion"),
-            Some(source_pos),
-            Some(&ID::new("alluringvoice")),
-            None,
-        );
+        Pokemon::add_volatile(battle, target, ID::from("confusion"), Some(source_pos), Some(&ID::new("alluringvoice")), None,
+            None);
     }
 
     EventResult::Continue

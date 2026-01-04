@@ -143,7 +143,7 @@ pub fn on_prepare_hit(
     }
 
     // source.addVolatile('fling');
-    Pokemon::add_volatile(battle, pokemon, ID::from("fling"), None, None, None);
+    Pokemon::add_volatile(battle, pokemon, ID::from("fling"), None, None, None, None);
 
     EventResult::Continue
 }

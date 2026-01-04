@@ -124,7 +124,7 @@ pub fn self_drops(
                             // }
                             if let Some(ref volatile_status_name) = self_data.volatile_status {
                                 let volatile_id = crate::dex_data::ID::new(volatile_status_name);
-                                Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None);
+                                Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None, None);
                             }
 
                             // Apply side condition from self effect (to source's side)
@@ -230,7 +230,7 @@ pub fn self_drops(
                         // }
                         if let Some(ref volatile_status_name) = self_data.volatile_status {
                             let volatile_id = crate::dex_data::ID::new(volatile_status_name);
-                            Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None);
+                            Pokemon::add_volatile(battle, source_pos, volatile_id, None, None, None, None);
                         }
 
                         // Apply side condition from self effect (to source's side)

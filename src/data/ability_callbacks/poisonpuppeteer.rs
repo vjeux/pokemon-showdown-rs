@@ -74,7 +74,7 @@ pub fn on_any_after_set_status(battle: &mut Battle, status: Option<&str>, target
     // if (status.id === 'psn' || status.id === 'tox')
     if status_id == "psn" || status_id == "tox" {
         // target.addVolatile('confusion');
-        Pokemon::add_volatile(battle, target_pos, ID::from("confusion"), Some(source_pos), None, None);
+        Pokemon::add_volatile(battle, target_pos, ID::from("confusion"), Some(source_pos), None, None, None);
     }
 
     EventResult::Continue

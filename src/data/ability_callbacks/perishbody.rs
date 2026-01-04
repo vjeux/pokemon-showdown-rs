@@ -61,10 +61,10 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     ]);
 
     // source.addVolatile('perishsong');
-    Pokemon::add_volatile(battle, source_pos, crate::dex_data::ID::from("perishsong"), None, None, None);
+    Pokemon::add_volatile(battle, source_pos, crate::dex_data::ID::from("perishsong"), None, None, None, None);
 
     // target.addVolatile('perishsong');
-    Pokemon::add_volatile(battle, target_pos, crate::dex_data::ID::from("perishsong"), None, None, None);
+    Pokemon::add_volatile(battle, target_pos, crate::dex_data::ID::from("perishsong"), None, None, None, None);
 
     EventResult::Continue
 }

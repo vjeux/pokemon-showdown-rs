@@ -14,7 +14,7 @@ use crate::Pokemon;
 /// }
 pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.addVolatile('beakblast');
-    Pokemon::add_volatile(battle, pokemon_pos, ID::from("beakblast"), None, None, None);
+    Pokemon::add_volatile(battle, pokemon_pos, ID::from("beakblast"), None, None, None, None);
 
     EventResult::Continue
 }

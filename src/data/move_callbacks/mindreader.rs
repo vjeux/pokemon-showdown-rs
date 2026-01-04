@@ -51,7 +51,7 @@ pub fn on_hit(
     };
 
     // source.addVolatile('lockon', target);
-    Pokemon::add_volatile(battle, source, ID::from("lockon"), Some(target), None, None);
+    Pokemon::add_volatile(battle, source, ID::from("lockon"), Some(target), None, None, None);
 
     // this.add('-activate', source, 'move: Mind Reader', `[of] ${target}`);
     let (source_arg, target_arg) = {

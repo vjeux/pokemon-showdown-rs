@@ -89,7 +89,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 
         if ally_has_volatile {
             // pokemon.addVolatile(volatile);
-            Pokemon::add_volatile(battle, pokemon_pos, volatile_id.clone(), None, None, None);
+            Pokemon::add_volatile(battle, pokemon_pos, volatile_id.clone(), None, None, None, None);
 
             // if (volatile === 'gmaxchistrike') pokemon.volatiles[volatile].layers = ally.volatiles[volatile].layers;
             if volatile_id.as_str() == "gmaxchistrike" {

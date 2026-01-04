@@ -52,10 +52,10 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
     // if (pokemon.hp <= pokemon.maxhp / 2 && !['Zen', 'Galar-Zen'].includes(pokemon.species.forme))
     if hp <= maxhp / 2 && forme.as_deref() != Some("Zen") && forme.as_deref() != Some("Galar-Zen") {
         // pokemon.addVolatile('zenmode');
-        Pokemon::add_volatile(battle, pokemon_pos, ID::from("zenmode"), Some(pokemon_pos), None, None);
+        Pokemon::add_volatile(battle, pokemon_pos, ID::from("zenmode"), Some(pokemon_pos), None, None, None);
     } else if hp > maxhp / 2 && (forme.as_deref() == Some("Zen") || forme.as_deref() == Some("Galar-Zen")) {
         // pokemon.addVolatile('zenmode'); // in case of base Darmanitan-Zen
-        Pokemon::add_volatile(battle, pokemon_pos, ID::from("zenmode"), Some(pokemon_pos), None, None);
+        Pokemon::add_volatile(battle, pokemon_pos, ID::from("zenmode"), Some(pokemon_pos), None, None, None);
         // pokemon.removeVolatile('zenmode');
         Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("zenmode"));
     }

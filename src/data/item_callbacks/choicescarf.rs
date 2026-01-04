@@ -48,7 +48,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 /// }
 pub fn on_modify_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // pokemon.addVolatile('choicelock');
-    Pokemon::add_volatile(battle, pokemon_pos, ID::new("choicelock"), None, None, None);
+    Pokemon::add_volatile(battle, pokemon_pos, ID::new("choicelock"), None, None, None, None);
 
     EventResult::Continue
 }

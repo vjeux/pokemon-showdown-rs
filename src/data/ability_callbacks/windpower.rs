@@ -29,14 +29,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 
     if is_wind_move {
         // target.addVolatile('charge');
-        Pokemon::add_volatile(
-            battle,
-            target_pos,
-            crate::dex_data::ID::from("charge"),
-            None,
-            None,
-            None,
-        );
+        Pokemon::add_volatile(battle, target_pos, crate::dex_data::ID::from("charge"), None, None, None,
+            None);
     }
 
     EventResult::Continue
@@ -54,14 +48,8 @@ pub fn on_side_condition_start(battle: &mut Battle, pokemon_pos: (usize, usize),
     // if (sideCondition.id === 'tailwind')
     if side_condition_id == "tailwind" {
         // pokemon.addVolatile('charge');
-        Pokemon::add_volatile(
-            battle,
-            pokemon_pos,
-            crate::dex_data::ID::from("charge"),
-            None,
-            None,
-            None,
-        );
+        Pokemon::add_volatile(battle, pokemon_pos, crate::dex_data::ID::from("charge"), None, None, None,
+            None);
     }
 
     EventResult::Continue

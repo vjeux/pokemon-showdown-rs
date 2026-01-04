@@ -53,6 +53,6 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 /// }
 pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.addVolatile('micleberry');
-    Pokemon::add_volatile(battle, pokemon_pos, "micleberry".into(), None, None, None);
+    Pokemon::add_volatile(battle, pokemon_pos, "micleberry".into(), None, None, None, None);
     EventResult::Continue
 }

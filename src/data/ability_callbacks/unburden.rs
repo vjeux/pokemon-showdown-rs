@@ -15,14 +15,8 @@ pub fn on_after_use_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
     use crate::Pokemon;
 
     // pokemon.addVolatile('unburden');
-    Pokemon::add_volatile(
-        battle,
-        pokemon_pos,
-        crate::dex_data::ID::from("unburden"),
-        None,
-        None,
-        None,
-    );
+    Pokemon::add_volatile(battle, pokemon_pos, crate::dex_data::ID::from("unburden"), None, None, None,
+            None);
 
     EventResult::Continue
 }
@@ -34,14 +28,8 @@ pub fn on_take_item(battle: &mut Battle, pokemon_pos: (usize, usize), _source_po
     use crate::Pokemon;
 
     // pokemon.addVolatile('unburden');
-    Pokemon::add_volatile(
-        battle,
-        pokemon_pos,
-        crate::dex_data::ID::from("unburden"),
-        None,
-        None,
-        None,
-    );
+    Pokemon::add_volatile(battle, pokemon_pos, crate::dex_data::ID::from("unburden"), None, None, None,
+            None);
 
     EventResult::Continue
 }

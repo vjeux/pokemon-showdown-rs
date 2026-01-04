@@ -73,6 +73,7 @@ impl Pokemon {
         source_pos: Option<(usize, usize)>,
         source_effect: Option<&ID>,
         linked_status: Option<ID>,
+        embedded_condition: Option<&crate::dex::ConditionData>,
     ) -> bool {
         // Get Pokemon name for logging
         let pokemon_name = if let Some(pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
@@ -81,20 +82,28 @@ impl Pokemon {
             "Unknown".to_string()
         };
 
-        crate::trace_volatile!("turn={}, ADD volatile='{}' to {}, source_effect={:?}",
-            battle.turn, volatile_id.as_str(), pokemon_name, source_effect.map(|s| s.as_str()));
+        crate::trace_volatile!("turn={}, ADD volatile='{}' to {}, source_effect={:?}, embedded_condition={}",
+            battle.turn, volatile_id.as_str(), pokemon_name, source_effect.map(|s| s.as_str()), embedded_condition.is_some());
 
         // JS: status = this.battle.dex.conditions.get(status);
         // JS: if (!this.hp && !status.affectsFainted) return false;
         // ✅ NOW IMPLEMENTED (Session 24 Part 37): HP check with affectsFainted flag
+        // ✅ NOW IMPLEMENTED: Check embedded condition if not in dex
         let (target_hp, affects_fainted) = {
             let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return false,
             };
+
+            // Try dex.conditions first, then fall back to embedded condition
             let affects_fainted = battle.dex.conditions.get(&volatile_id)
                 .and_then(|cond| cond.extra.get("affectsFainted"))
                 .and_then(|v| v.as_bool())
+                .or_else(|| {
+                    embedded_condition
+                        .and_then(|cond| cond.extra.get("affectsFainted"))
+                        .and_then(|v| v.as_bool())
+                })
                 .unwrap_or(false);
             (pokemon.hp, affects_fainted)
         };
@@ -199,10 +208,11 @@ impl Pokemon {
             return false;
         }
 
-        // Get default duration from dex.conditions
+        // Get default duration from dex.conditions or embedded condition
         // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
         let default_duration = battle.dex.conditions.get(&volatile_id)
-            .and_then(|cond| cond.duration);
+            .and_then(|cond| cond.duration)
+            .or_else(|| embedded_condition.and_then(|cond| cond.duration));
 
         // Check if condition has a durationCallback
         // JS: if (status.durationCallback) {
@@ -301,7 +311,7 @@ impl Pokemon {
                     if !source_has_volatile {
                         // Add the linked volatile to source (recursive call)
                         // JS: source.addVolatile(linkedStatus, this, sourceEffect);
-                        Pokemon::add_volatile(battle, src_pos, linked_status_id.clone(), Some(target_pos), source_effect, None);
+                        Pokemon::add_volatile(battle, src_pos, linked_status_id.clone(), Some(target_pos), source_effect, None, None);
 
                         // Initialize linkedPokemon array for source
                         // JS: source.volatiles[linkedStatus.toString()].linkedPokemon = [this];

@@ -15,7 +15,7 @@ pub fn priority_charge_callback(battle: &mut Battle, pokemon_pos: (usize, usize)
     use crate::pokemon::Pokemon;
 
     // pokemon.addVolatile('focuspunch');
-    Pokemon::add_volatile(battle, pokemon_pos, ID::from("focuspunch"), None, None, None);
+    Pokemon::add_volatile(battle, pokemon_pos, ID::from("focuspunch"), None, None, None, None);
 
     EventResult::Continue
 }

@@ -51,6 +51,7 @@ pub fn on_hit(
             Some(source_pos),
             Some(&ID::new("anchorshot")),
             Some(ID::from("trapper")),
+            None,
         );
     }
 

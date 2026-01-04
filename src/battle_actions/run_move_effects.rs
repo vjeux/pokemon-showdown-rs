@@ -110,7 +110,7 @@ pub fn run_move_effects(
         if let Some(ref volatile_status) = move_data.volatile_status {
             eprintln!("[RUN_MOVE_EFFECTS] Applying volatile status '{}' to target {:?}", volatile_status, target_pos);
             let volatile_id = crate::dex_data::ID::new(volatile_status);
-            Pokemon::add_volatile(battle, target_pos, volatile_id, Some(_source_pos), None, None);
+            Pokemon::add_volatile(battle, target_pos, volatile_id, Some(_source_pos), None, None, move_data.condition.as_ref());
         }
 
         // Apply side condition

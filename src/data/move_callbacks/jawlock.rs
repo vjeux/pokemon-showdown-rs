@@ -28,25 +28,27 @@ pub fn on_hit(
     // JavaScript: source.addVolatile('trapped', target, move, 'trapper')
     // ✅ NOW PASSING: source_pos = Some(target), source_effect = Some("jawlock"), linked_status = Some("trapper")
     Pokemon::add_volatile(
-        battle,
-        source,
-        ID::from("trapped"),
-        Some(target),
-        Some(&ID::new("jawlock")),
-        Some(ID::from("trapper")),
-    );
+            battle,
+            source,
+            ID::from("trapped"),
+            Some(target),
+            Some(&ID::new("jawlock")),
+            Some(ID::from("trapper")),
+            None,
+        );
 
     // target.addVolatile('trapped', source, move, 'trapper');
     // JavaScript: target.addVolatile('trapped', source, move, 'trapper')
     // ✅ NOW PASSING: source_pos = Some(source), source_effect = Some("jawlock"), linked_status = Some("trapper")
     Pokemon::add_volatile(
-        battle,
-        target,
-        ID::from("trapped"),
-        Some(source),
-        Some(&ID::new("jawlock")),
-        Some(ID::from("trapper")),
-    );
+            battle,
+            target,
+            ID::from("trapped"),
+            Some(source),
+            Some(&ID::new("jawlock")),
+            Some(ID::from("trapper")),
+            None,
+        );
 
     EventResult::Continue
 }

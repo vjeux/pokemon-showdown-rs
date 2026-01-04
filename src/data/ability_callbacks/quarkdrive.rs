@@ -35,7 +35,7 @@ pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
     if is_electric_terrain {
         // Add quarkdrive volatile
         let volatile_id = ID::from("quarkdrive");
-        Pokemon::add_volatile(battle, pokemon_pos, volatile_id, None, None, None);
+        Pokemon::add_volatile(battle, pokemon_pos, volatile_id, None, None, None, None);
     } else {
         // Check if pokemon has quarkdrive volatile and if it's not from Booster Energy
         let id = ID::from("quarkdrive");

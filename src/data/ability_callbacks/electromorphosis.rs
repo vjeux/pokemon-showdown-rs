@@ -17,14 +17,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     };
 
     // target.addVolatile('charge');
-    crate::pokemon::Pokemon::add_volatile(
-        battle,
-        target_pos,
-        crate::ID::from("charge"),
-        None,
-        None,
-        None,
-    );
+    crate::pokemon::Pokemon::add_volatile(battle, target_pos, crate::ID::from("charge"), None, None, None,
+            None);
 
     EventResult::Continue
 }

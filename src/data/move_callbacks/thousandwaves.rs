@@ -44,6 +44,7 @@ pub fn on_hit(
             Some(source),
             Some(&ID::new("thousandwaves")),
             Some(ID::from("trapper")),
+            None,
         );
     }
 

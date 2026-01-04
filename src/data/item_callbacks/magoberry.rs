@@ -98,7 +98,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // Phase 3: Check nature and add confusion if minus stat is 'spe'
     if let Some(nature_data) = battle.dex.natures().get(&nature_name) {
         if nature_data.minus.as_deref() == Some("spe") {
-            Pokemon::add_volatile(battle, pokemon_pos, "confusion".into(), None, None, None);
+            Pokemon::add_volatile(battle, pokemon_pos, "confusion".into(), None, None, None, None);
         }
     }
 

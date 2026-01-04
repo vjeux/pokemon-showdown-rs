@@ -42,14 +42,8 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     }
 
     // if (!target.addVolatile('flashfire'))
-    let added = Pokemon::add_volatile(
-        battle,
-        target_pos,
-        ID::from("flashfire"),
-        Some(source_pos),
-        None,
-        None,
-    );
+    let added = Pokemon::add_volatile(battle, target_pos, ID::from("flashfire"), Some(source_pos), None, None,
+            None);
 
     if !added {
         // this.add('-immune', target, '[from] ability: Flash Fire');

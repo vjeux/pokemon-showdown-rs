@@ -30,13 +30,14 @@ pub fn on_hit(
     // linkedStatus = 'trapper'
     // ✅ NOW PASSING: source_pos = Some(pokemon_pos), source_effect = Some("block"), linked_status = Some("trapper")
     let result = Pokemon::add_volatile(
-        battle,
-        target,
-        ID::from("trapped"),
-        Some(pokemon_pos),
-        Some(&ID::new("block")),
-        Some(ID::from("trapper")),
-    );
+            battle,
+            target,
+            ID::from("trapped"),
+            Some(pokemon_pos),
+            Some(&ID::new("block")),
+            Some(ID::from("trapper")),
+            None,
+        );
 
     EventResult::Boolean(result)
 }
