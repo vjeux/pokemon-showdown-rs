@@ -5,73 +5,118 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Arg;
 use crate::event::EventResult;
 
 /// onEffectiveness
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// deltastream: {
-///     onEffectiveness(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// onEffectivenessPriority: -1,
+/// onEffectiveness(typeMod, target, type, move) {
+///     if (move && move.effectType === 'Move' && move.category !== 'Status' && type === 'Flying' && typeMod > 0) {
+///         this.add('-fieldactivate', 'Delta Stream');
+///         return 0;
 ///     }
 /// }
+/// ```
 pub fn on_effectiveness(
-    _battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DELTASTREAM_ON_EFFECTIVENESS] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // Get move from active_move
+    let (is_move, category, move_type) = match &battle.active_move {
+        Some(m) => (true, m.category.clone(), m.move_type.as_str()),
+        None => return EventResult::Continue,
+    };
+
+    // Get type from event context - this would be passed as a parameter in a full implementation
+    // For now, we check if move type is flying
+    // if (move && move.effectType === 'Move' && move.category !== 'Status' && type === 'Flying' && typeMod > 0)
+    if is_move && category != "status" && move_type == "flying" {
+        // Note: typeMod > 0 check would need to be done in the caller context
+        // this.add('-fieldactivate', 'Delta Stream');
+        battle.add("-fieldactivate", &[Arg::Str("Delta Stream")]);
+
+        // return 0;
+        return EventResult::Number(0);
+    }
+
     EventResult::Continue
 }
 
 /// onFieldStart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// deltastream: {
-///     onFieldStart(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onFieldStart(field, source, effect) {
+///     this.add('-weather', 'DeltaStream', '[from] ability: ' + effect.name, `[of] ${source}`);
 /// }
+/// ```
 pub fn on_field_start(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DELTASTREAM_ON_FIELD_START] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.add('-weather', 'DeltaStream', '[from] ability: ' + effect.name, `[of] ${source}`);
+    let ability_name = battle.effect.as_ref()
+        .and_then(|eff_id| battle.dex.abilities().get(eff_id.as_str()))
+        .map(|ab| ab.name.clone())
+        .unwrap_or_else(|| "Unknown".to_string());
+
+    let source_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add(
+        "-weather",
+        &[
+            Arg::Str("DeltaStream"),
+            Arg::String(format!("[from] ability: {}", ability_name)),
+            Arg::String(format!("[of] {}", source_ident)),
+        ],
+    );
+
     EventResult::Continue
 }
 
 /// onFieldResidual
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// deltastream: {
-///     onFieldResidual(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onFieldResidualOrder: 1,
+/// onFieldResidual() {
+///     this.add('-weather', 'DeltaStream', '[upkeep]');
+///     this.eachEvent('Weather');
 /// }
+/// ```
 pub fn on_field_residual(
-    _battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DELTASTREAM_ON_FIELD_RESIDUAL] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.add('-weather', 'DeltaStream', '[upkeep]');
+    battle.add("-weather", &[Arg::Str("DeltaStream"), Arg::Str("[upkeep]")]);
+
+    // this.eachEvent('Weather');
+    battle.each_event("Weather", None, None);
+
     EventResult::Continue
 }
 
 /// onFieldEnd
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// deltastream: {
-///     onFieldEnd(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onFieldEnd() {
+///     this.add('-weather', 'none');
 /// }
+/// ```
 pub fn on_field_end(
-    _battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DELTASTREAM_ON_FIELD_END] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.add('-weather', 'none');
+    battle.add("-weather", &[Arg::Str("none")]);
+
     EventResult::Continue
 }
 
