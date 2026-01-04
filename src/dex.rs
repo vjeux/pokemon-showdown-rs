@@ -400,6 +400,22 @@ impl ConditionData {
         }
     }
 
+    /// Get effect type string
+    /// JavaScript equivalent: condition.effectType
+    /// Returns the effectType as a string: 'Status', 'Weather', 'Terrain', or 'Condition'
+    pub fn effect_type(&self) -> &str {
+        match self.effect_type.as_deref() {
+            Some("Status") => "Status",
+            Some("Weather") => "Weather",
+            Some("Terrain") => "Terrain",
+            Some("SideCondition") => "Condition",
+            Some("SlotCondition") => "Condition",
+            Some("PseudoWeather") => "Condition",
+            Some(other) => other,
+            None => "Condition",
+        }
+    }
+
     /// Can be passed by Baton Pass (inverse of noCopy)
     pub fn baton_passable(&self) -> bool {
         !self.no_copy
@@ -691,6 +707,15 @@ pub struct MoveData {
     /// Note: JavaScript has many callback methods that cannot be stored in data
     #[serde(flatten)]
     pub extra: HashMap<String, serde_json::Value>,
+}
+
+impl MoveData {
+    /// Get effect type
+    /// JavaScript equivalent: move.effectType (always 'Move')
+    /// In JavaScript, Move class declares: readonly effectType: 'Move'
+    pub fn effect_type(&self) -> &'static str {
+        "Move"
+    }
 }
 
 /// Accuracy can be a number or true (always hits)
@@ -1027,6 +1052,15 @@ pub struct AbilityData {
     pub extra: HashMap<String, serde_json::Value>,
 }
 
+impl AbilityData {
+    /// Get effect type
+    /// JavaScript equivalent: ability.effectType (always 'Ability')
+    /// In JavaScript, this is set in the Ability constructor: this.effectType = 'Ability'
+    pub fn effect_type(&self) -> &'static str {
+        "Ability"
+    }
+}
+
 /// Item data from the Dex
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// JavaScript equivalent: ItemData (sim/dex-items.ts)
@@ -1116,6 +1150,15 @@ pub struct ItemData {
     /// Note: JavaScript has many callback methods (onStart, onEnd, etc.) that cannot be stored in data
     #[serde(flatten)]
     pub extra: HashMap<String, serde_json::Value>,
+}
+
+impl ItemData {
+    /// Get effect type
+    /// JavaScript equivalent: item.effectType (always 'Item')
+    /// In JavaScript, this is set in the Item constructor: this.effectType = 'Item'
+    pub fn effect_type(&self) -> &'static str {
+        "Item"
+    }
 }
 
 /// Fling data for items that can be flung

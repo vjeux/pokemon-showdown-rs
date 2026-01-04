@@ -5,49 +5,40 @@ use crate::*;
 impl Battle {
 
     /// Get effect type for an effect ID
-    /// Rust helper method - JavaScript determines effect type dynamically via duck typing
-    /// This method checks the effect ID against dex lookups to categorize it
-    /// Returns: "Ability", "Item", "Move", "Status", "Volatile", "Weather", "Terrain", or "Unknown"
+    /// Rust helper method - JavaScript has effectType property on effect objects
+    /// This method looks up the effect by ID and returns its effectType
+    /// Returns: "Ability", "Item", "Move", "Status", "Weather", "Terrain", "Condition", or "Unknown"
+    ///
+    /// JavaScript equivalent:
+    /// In JavaScript, you have the effect object directly: `effect.effectType`
+    /// In Rust, we need to look it up by ID first, then call .effect_type()
     pub fn get_effect_type(&self, effect_id: &ID) -> &str {
-        // Check if it's an ability
-        if self.dex.abilities().get(effect_id.as_str()).is_some() {
-            return "Ability";
-        }
-        // Check if it's an item
-        if self.dex.items().get(effect_id.as_str()).is_some() {
-            return "Item";
-        }
-
-        // IMPORTANT: Check if this effect is the active field weather/terrain BEFORE checking moves
-        // Some IDs like "sandstorm" exist as both moves and weather conditions
-        // When the weather is active, we should return "Weather", not "Move"
         let effect_str = effect_id.as_str();
-        if !self.field.weather.is_empty() && self.field.weather.as_str() == effect_str {
-            return "Weather";
-        }
-        if !self.field.terrain.is_empty() && self.field.terrain.as_str() == effect_str {
-            return "Terrain";
+
+        // Check abilities
+        // JavaScript: ability.effectType === 'Ability'
+        if let Some(ability) = self.dex.abilities().get(effect_str) {
+            return ability.effect_type();
         }
 
-        // Check if it's a move
-        if self.dex.moves().get(effect_id.as_str()).is_some() {
-            return "Move";
+        // Check items
+        // JavaScript: item.effectType === 'Item'
+        if let Some(item) = self.dex.items().get(effect_str) {
+            return item.effect_type();
         }
-        // Check if it's a condition
+
+        // Check moves
+        // JavaScript: move.effectType === 'Move'
+        if let Some(move_data) = self.dex.moves().get(effect_str) {
+            return move_data.effect_type();
+        }
+
+        // Check conditions
+        // JavaScript: condition.effectType (can be 'Status', 'Weather', 'Terrain', 'Condition')
         if let Some(condition) = self.dex.conditions.get(effect_id) {
-            // Conditions can be Status, Volatile, Weather, Terrain, etc.
-            // JavaScript checks effectType field: if (effect.effectType === 'Status')
-            use crate::dex::ConditionType;
-            match condition.condition_type() {
-                ConditionType::Status => return "Status",
-                ConditionType::Volatile => return "Volatile",
-                ConditionType::Weather => return "Weather",
-                ConditionType::Terrain => return "Terrain",
-                ConditionType::SideCondition => return "Condition",
-                ConditionType::SlotCondition => return "Condition",
-                ConditionType::PseudoWeather => return "Condition",
-            }
+            return condition.effect_type();
         }
+
         "Unknown"
     }
 
@@ -81,7 +72,7 @@ impl Battle {
                     .map(|m| m.name.clone())
                     .unwrap_or_else(|| effect_id.as_str().to_string())
             }
-            "Status" | "Volatile" | "Weather" | "Terrain" => {
+            "Status" | "Weather" | "Terrain" | "Condition" => {
                 // For conditions, get name from condition data if available
                 self.dex.conditions.get(effect_id)
                     .map(|c| c.name.clone())
