@@ -252,10 +252,10 @@ pub fn get_damage(
     }
 
     // JavaScript: if (!source.volatiles["dynamax"] && move.isMax || move.isMax && this.dex.moves.get(move.baseMove).isMax) { basePower = 0; }
-    // CRITICAL: Max/G-Max moves used without dynamax have basePower set to 0!
+    // CRITICAL: Max/G-Max moves used without dynamax deal 0 damage!
     // This check MUST happen BEFORE the crit calculation to prevent PRNG calls for 0-damage moves
-    // IMPORTANT: We set basePower = 0 but DON'T return early - let the calculation continue
-    // JavaScript continues with baseDamage = 0, then modifyDamage adds +2 and randomizes → minimum 1-2 damage
+    // JavaScript: basePower event runs, then if (!basePower) return 0, triggering early return
+    // The explicit Max move check in JavaScript happens later, but the BasePower event returns 0 first
     if move_data.is_max.is_some() {
         let has_dynamax_volatile = if let Some(side) = battle.sides.get(source_pos.0) {
             if let Some(pokemon) = side.pokemon.get(source_pos.1) {
@@ -269,16 +269,16 @@ pub fn get_damage(
 
         // Check first condition: !source.volatiles["dynamax"] && move.isMax
         if !has_dynamax_volatile {
-            base_power = 0;
-            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower to 0 (will deal minimum damage)");
+            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, returning Some(0)");
+            return Some(0); // Return early - 0 damage, no PRNG calls
         } else if let Some(ref base_move_id) = move_data.base_move {
             // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
             // This checks if the base move (the original move before dynamax conversion) is also a Max move
             if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
                 if base_move_data.is_max.is_some() {
                     // Hacked Max Move: the base move is itself a Max move
-                    base_power = 0;
-                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower to 0 (will deal minimum damage)");
+                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), returning Some(0)");
+                    return Some(0); // Return early - 0 damage, no PRNG calls
                 }
             }
         }

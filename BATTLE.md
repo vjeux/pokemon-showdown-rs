@@ -383,35 +383,36 @@ The extra PRNG calls were from gmaxterror (G-Max Terror move):
 
 ---
 
-### Issue 6: Max move damage calculation (IN PROGRESS 🔍)
+### Issue 5: Turn 26 PRNG Divergence - Max moves without dynamax (FIXED ✅)
 
 **Problem:**
-After fixing the PRNG divergence for Max moves, discovered that Max moves with basePower=0 should still deal minimum damage (1-2) in JavaScript, not 0 damage.
+- Rust made 6 PRNG calls vs JavaScript's 4 calls in turn 26
+- gmaxterror (G-Max move) was making crit and damage randomizer calls even with basePower=0
 
-**Investigation:**
-- JavaScript: gmaxterror with basePower=0 deals 1 damage to Zacian in turn 26
-- Rust (first attempt): Early return with Some(0) → 0 damage
-- Need to let basePower=0 go through full calculation for minimum damage
+**Root Cause:**
+- Max move dynamax check happened AFTER crit calculation
+- This allowed basePower to trigger crit check before being set to 0
+- JavaScript avoids this by having BasePower event return 0, triggering early return
 
-**Current Status:**
-- Reverted early return, now setting basePower=0 but continuing calculation
-- This causes baseDamage=0, then modifyDamage adds +2 and randomizes
-- BUT: This makes an extra PRNG call for the randomizer!
-- JavaScript makes 4 PRNG calls in turn 26, Rust makes 5
-- Need to understand why JavaScript doesn't call randomizer for gmaxterror
+**Fix (Commit 61840515, final fix in current commit):**
+1. Moved Max move dynamax check to happen BEFORE crit calculation
+2. Added early return when Max move used without dynamax volatile
+3. Returns Some(0) immediately - no damage, no PRNG calls
 
-**PRNG Analysis:**
-- Turn 26 JavaScript: 113->117 (4 calls) for zenheadbutt only
-- Turn 26 Rust: 113->118 (5 calls) for zenheadbutt + gmaxterror randomizer
-- gmaxterror appears to NOT call randomizer in JavaScript
-- Investigating why...
+**Result:**
+- ✅ Turn 26 now matches perfectly: both make 4 PRNG calls (113->117)
+- ✅ Zacian HP matches: 196/331 in both
+- ✅ Golem HP matches: 197/288 in both
+- ✅ gmaxterror deals 0 damage as expected
+
+**Next Divergence:**
+- Turn 27: JavaScript prng=117->123 (6 calls), Rust prng=117->121 (4 calls)
+- Zacian HP differs: JS=195, Rust=196
+- Need to investigate
 
 ---
 
-### Issue 5: Turn 26 PRNG Divergence - Max moves without dynamax (PARTIALLY FIXED ✅)
-
-**Problem:**
-Rust PRNG tracing showed raw values but not the context (from/to parameters), making it hard to identify what type of RNG call was being made.
+### Debugging Tool Improvement: PRNG Tracing (COMPLETED ✅)
 
 **Solution:**
 Added from/to parameter logging to random() function before calling next_raw().
