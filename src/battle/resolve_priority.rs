@@ -37,7 +37,9 @@ impl Battle {
                 }
                 None
             }
-            EffectType::Condition => {
+            // Weather, Condition, and other effect types stored in conditions dex
+            EffectType::Condition | EffectType::Weather | EffectType::FieldCondition |
+            EffectType::SideCondition | EffectType::SlotCondition => {
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32);
@@ -64,7 +66,7 @@ impl Battle {
         // Construct the property name: e.g., "onResidualOrder"
         let property_name = format!("on{}Order", event);
 
-        match effect_type {
+        let result = match effect_type {
             EffectType::Ability => {
                 if let Some(ability_data) = self.dex.abilities().get(effect_id) {
                     if let Some(value) = ability_data.extra.get(&property_name) {
@@ -81,16 +83,30 @@ impl Battle {
                 }
                 None
             }
-            EffectType::Condition => {
+            // Weather, Condition, and other effect types stored in conditions dex
+            EffectType::Condition | EffectType::Weather | EffectType::FieldCondition |
+            EffectType::SideCondition | EffectType::SlotCondition => {
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
+                    eprintln!("[GET_CALLBACK_ORDER] Found condition '{}', looking for property '{}'", effect_id, property_name);
                     if let Some(value) = condition_data.extra.get(&property_name) {
-                        return value.as_i64().map(|v| v as i32);
+                        eprintln!("[GET_CALLBACK_ORDER] Found value: {:?}", value);
+                        let as_i64 = value.as_i64();
+                        eprintln!("[GET_CALLBACK_ORDER] as_i64() = {:?}", as_i64);
+                        let result_value = value.as_i64().map(|v| v as i32);
+                        eprintln!("[GET_CALLBACK_ORDER] Mapped result = {:?}", result_value);
+                        return result_value;
+                    } else {
+                        eprintln!("[GET_CALLBACK_ORDER] Property not found in extra");
                     }
+                } else {
+                    eprintln!("[GET_CALLBACK_ORDER] Condition '{}' not found in dex", effect_id);
                 }
                 None
             }
             _ => None,
-        }
+        };
+        eprintln!("[GET_CALLBACK_ORDER] Returning {:?} for effect_id={}, callback={}", result, effect_id, callback_name);
+        result
     }
 
     /// Get callback priority from dex data
@@ -125,7 +141,9 @@ impl Battle {
                 }
                 0
             }
-            EffectType::Condition => {
+            // Weather, Condition, and other effect types stored in conditions dex
+            EffectType::Condition | EffectType::Weather | EffectType::FieldCondition |
+            EffectType::SideCondition | EffectType::SlotCondition => {
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32).unwrap_or(0);

@@ -31,6 +31,23 @@ impl Battle {
         if self.dex.moves().get(effect_id).is_some() {
             return crate::battle::EffectType::Move;
         }
+        // Check conditions and return their actual effectType
+        if let Some(condition_data) = self.dex.conditions().get(effect_id) {
+            // Parse effectType string from condition data
+            if let Some(effect_type_value) = condition_data.extra.get("effectType") {
+                if let Some(effect_type_str) = effect_type_value.as_str() {
+                    return match effect_type_str {
+                        "Weather" => crate::battle::EffectType::Weather,
+                        "FieldCondition" | "Field" => crate::battle::EffectType::FieldCondition,
+                        "SideCondition" | "Side" => crate::battle::EffectType::SideCondition,
+                        "SlotCondition" | "Slot" => crate::battle::EffectType::SlotCondition,
+                        _ => crate::battle::EffectType::Condition,
+                    };
+                }
+            }
+            // Default to Condition if no effectType specified
+            return crate::battle::EffectType::Condition;
+        }
         // Default to Condition (volatiles, status, etc.)
         crate::battle::EffectType::Condition
     }
@@ -44,11 +61,32 @@ impl Battle {
         is_field: bool,
         is_side: bool,
         callback_name: &str,
+        event_id: &str,
     ) -> FieldEventHandler {
 
-        // Get order and priority from dex
-        let order = self.get_callback_order(effect_type, effect_id.as_str(), callback_name);
-        let priority = self.get_callback_priority(effect_type, effect_id.as_str(), callback_name);
+        use std::sync::atomic::{AtomicUsize, Ordering};
+        static CALL_ID: AtomicUsize = AtomicUsize::new(0);
+        let call_id = CALL_ID.fetch_add(1, Ordering::SeqCst);
+
+        // For field and side handlers, the callback name needs to be prefixed
+        // JS: if ((handler.effectHolder as Side).sideConditions) handlerEventid = `Side${eventid}`;
+        // JS: if ((handler.effectHolder as Field).pseudoWeather) handlerEventid = `Field${eventid}`;
+        let prefixed_callback = if is_field {
+            format!("onField{}", event_id)
+        } else if is_side {
+            format!("onSide{}", event_id)
+        } else {
+            callback_name.to_string()
+        };
+
+        eprintln!("[CREATE#{} START] effect={}, type={:?}, callback={}, prefixed={}",
+            call_id, effect_id.as_str(), effect_type, callback_name, prefixed_callback);
+
+        // Get order and priority from dex using the prefixed callback name
+        let order = self.get_callback_order(effect_type, effect_id.as_str(), &prefixed_callback);
+        let priority = self.get_callback_priority(effect_type, effect_id.as_str(), &prefixed_callback);
+
+        eprintln!("[CREATE#{} DONE] order={:?}, priority={}", call_id, order, priority);
 
         // Get sub_order: first try custom value, then fall back to default based on effect type
         let sub_order = self.get_callback_sub_order(effect_type, effect_id.as_str(), callback_name)
@@ -166,7 +204,7 @@ impl Battle {
         for handler in field_handlers {
             let effect_id = handler.effect_id;
             let holder = handler.effect_holder;
-            let effect_type = self.determine_effect_type(effect_id.as_str());
+            let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
             let handler = self.create_field_handler(
                 effect_id,
                 effect_type,
@@ -174,6 +212,7 @@ impl Battle {
                 true,
                 false,
                 &callback_name,
+                event_id,
             );
             handlers.push(handler);
         }
@@ -190,7 +229,7 @@ impl Battle {
                 for handler in side_handlers {
                     let effect_id = handler.effect_id;
                     let holder = handler.effect_holder;
-                    let effect_type = self.determine_effect_type(effect_id.as_str());
+                    let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
@@ -198,6 +237,7 @@ impl Battle {
                         false,
                         true,
                         &callback_name,
+                        event_id,
                     );
                     handlers.push(handler);
                 }
@@ -231,6 +271,7 @@ impl Battle {
                             false,
                             false,
                             &any_event,
+                            event_id,
                         );
                         handlers.push(handler);
                     }
@@ -257,6 +298,7 @@ impl Battle {
                         false,
                         false,
                         &callback_name,
+                        event_id,
                     );
                     handlers.push(handler);
                 }
@@ -269,6 +311,13 @@ impl Battle {
 
         // JS: this.speedSort(handlers);
         // Sort handlers by Pokemon speed
+        eprintln!("[FIELD_EVENT] event='{}', turn={}, handlers.len()={}, handler IDs: {:?}",
+            event_id, self.turn, handlers.len(),
+            handlers.iter().map(|h| h.effect_id.as_str()).collect::<Vec<_>>());
+        for (i, h) in handlers.iter().enumerate() {
+            eprintln!("  [{}] id={}, order={:?}, priority={}, speed={}, sub_order={}",
+                i, h.effect_id.as_str(), h.order, h.priority, h.speed, h.sub_order);
+        }
         self.speed_sort(&mut handlers, |h| {
             PriorityItem {
                 order: h.order,
