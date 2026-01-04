@@ -216,17 +216,29 @@ pub fn on_end(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     // this.add('-end', pokemon, this.effectState.sourceEffect, '[partiallytrapped]');
-    let pokemon_ident = {
+
+    // Get pokemon ident and sourceEffect from effectState
+    let (pokemon_ident, source_effect_name) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.get_slot()
+
+        let trap_id = ID::from("partiallytrapped");
+        let effect_name = pokemon.volatiles.get(&trap_id)
+            .and_then(|state| state.data.get("sourceEffect"))
+            .and_then(|v| v.get("fullname"))
+            .and_then(|v| v.as_str())
+            .unwrap_or("[partiallytrapped]");
+
+        (pokemon.get_slot(), effect_name.to_string())
     };
 
-    // TODO: Get sourceEffect from effectState to build proper message
-    // For now, just add a simple end message
-    battle.add("-end", &[Arg::String(pokemon_ident), Arg::Str("[partiallytrapped]")]);
+    battle.add("-end", &[
+        Arg::String(pokemon_ident),
+        Arg::String(source_effect_name),
+        Arg::Str("[partiallytrapped]")
+    ]);
 
     EventResult::Continue
 }
