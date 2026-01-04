@@ -966,6 +966,34 @@ After extensive investigation, discovered the issue is more complex than initial
 
 **Status:** Still investigating - need to understand why Kirlia takes damage in iteration #30 🔍
 
+**CRITICAL FINDING:**
+Checked "Making choices for turn X" logs:
+
+JavaScript:
+- Iteration #28: `>>> Making choices for turn 22...` (Swirlix faints)
+- Iteration #29: `>>> Making choices for turn 23...` (forced switch, 0 PRNG calls)
+- Iteration #30: `>>> Making choices for turn 24...` (normal moves, 3 PRNG calls)
+
+Rust:
+- Iteration #29: `>>> Making choices for turn 23...` (forced switch, 0 PRNG calls)
+- Iteration #30: `>>> Making choices for turn 23...` (DUPLICATE! 7 PRNG calls)
+
+**Root Cause Identified:**
+After iteration #29 (forced switch), JavaScript calls make_choices for turn 24, but Rust calls make_choices for turn 23 AGAIN!
+
+This explains why:
+- Rust executes turn 23's moves twice (once as forced switch, once as normal moves)
+- Rust iteration #30 makes different moves than JavaScript (different turn numbers)
+- Kirlia dies in Rust but lives in JavaScript (different battle states)
+
+**Next Steps:**
+- Find where JavaScript increments turn between iterations #29 and #30
+- Rust's end_turn() IS being called in iteration #29 (logs confirm turn 22→23)
+- But somehow JavaScript has turn=24 at start of iteration #30
+- Must be something in make_choices(), commit_choices(), or battle state management
+
+**Status:** Root cause narrowed down - investigating turn increment mechanism 🔍
+
 ---
 
 ### Issue 13: partiallytrapped volatile not expiring when source faints (FIXED ✅)
