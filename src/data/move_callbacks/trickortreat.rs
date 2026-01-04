@@ -82,8 +82,19 @@ pub fn on_hit(
     //         action.targetLoc = -1;
     //     }
     // }
-    // TODO: Implement Curse Glitch - requires modifying queue action targetLoc
-    // This is a complex edge case that requires queue manipulation infrastructure
+    let (side_active_len, target_position) = {
+        let target_side = &battle.sides[target.0];
+        (target_side.active.len(), target.1)
+    };
+
+    if side_active_len == 2 && target_position == 1 {
+        // Curse Glitch
+        if let Some(action) = battle.queue.will_move_mut(target.0, target.1) {
+            if action.move_id.as_str() == "curse" {
+                action.target_loc = -1;
+            }
+        }
+    }
 
     EventResult::Continue
 }
