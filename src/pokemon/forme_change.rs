@@ -323,8 +323,15 @@ impl Pokemon {
                         true
                     } else {
                         // Check if current ability can be suppressed
-                        // For now, always allow override for Tera formes (no source)
-                        true // TODO: Implement ability.flags.cantsuppress check
+                        // JavaScript: !this.getAbility().flags['cantsuppress']
+                        let current_ability_id = &battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].ability;
+                        let can_suppress = if let Some(ability_data) = battle.dex.abilities().get_by_id(current_ability_id) {
+                            // Check if cantsuppress flag is set
+                            ability_data.flags.get("cantsuppress").copied().unwrap_or(0) == 0
+                        } else {
+                            true // If ability not found, allow suppression
+                        };
+                        can_suppress
                     };
 
                     if should_override {
