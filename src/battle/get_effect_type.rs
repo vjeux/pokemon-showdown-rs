@@ -46,43 +46,48 @@ impl Battle {
     /// JavaScript equivalent: effect.fullname property
     /// Examples: "ability: Mold Breaker", "item: Life Orb", "move: Tackle"
     pub fn get_effect_fullname(&self, effect_id: &ID) -> String {
-        // Get effect type
-        let effect_type = self.get_effect_type(effect_id);
+        let effect_str = effect_id.as_str();
 
-        // Get effect name based on type
-        let name = match effect_type {
-            "Ability" => {
-                self.dex
-                    .abilities()
-                    .get_by_id(effect_id)
-                    .map(|a| a.name.clone())
-                    .unwrap_or_else(|| effect_id.as_str().to_string())
-            }
-            "Item" => {
-                self.dex
-                    .items()
-                    .get_by_id(effect_id)
-                    .map(|i| i.name.clone())
-                    .unwrap_or_else(|| effect_id.as_str().to_string())
-            }
-            "Move" => {
-                self.dex
-                    .moves()
-                    .get_by_id(effect_id)
-                    .map(|m| m.name.clone())
-                    .unwrap_or_else(|| effect_id.as_str().to_string())
-            }
-            "Status" | "Weather" | "Terrain" | "Condition" => {
-                // For conditions, get name from condition data if available
-                self.dex.conditions.get(effect_id)
-                    .map(|c| c.name.clone())
-                    .unwrap_or_else(|| effect_id.as_str().to_string())
-            }
-            _ => effect_id.as_str().to_string(),
-        };
+        // Check abilities - get both type and name in one lookup
+        // JavaScript: ability.fullname = `ability: ${ability.name}`
+        if let Some(ability) = self.dex.abilities().get(effect_str) {
+            return format!("{}: {}", ability.effect_type().to_lowercase(), ability.name);
+        }
 
-        // JavaScript fullname format: "effectType: name"
-        // Note: JavaScript uses lowercase effect type (e.g., "ability: Mold Breaker")
-        format!("{}: {}", effect_type.to_lowercase(), name)
+        // Check items - get both type and name in one lookup
+        // JavaScript: item.fullname = `item: ${item.name}`
+        if let Some(item) = self.dex.items().get(effect_str) {
+            return format!("{}: {}", item.effect_type().to_lowercase(), item.name);
+        }
+
+        // IMPORTANT: Check active weather/terrain BEFORE moves
+        // Same logic as get_effect_type() to maintain consistency
+        if !self.field.weather.is_empty() && self.field.weather.as_str() == effect_str {
+            if let Some(condition) = self.dex.conditions.get(effect_id) {
+                return format!("weather: {}", condition.name);
+            }
+            return format!("weather: {}", effect_str);
+        }
+        if !self.field.terrain.is_empty() && self.field.terrain.as_str() == effect_str {
+            if let Some(condition) = self.dex.conditions.get(effect_id) {
+                return format!("terrain: {}", condition.name);
+            }
+            return format!("terrain: {}", effect_str);
+        }
+
+        // Check moves - get both type and name in one lookup
+        // JavaScript: move.fullname = `move: ${move.name}`
+        if let Some(move_data) = self.dex.moves().get(effect_str) {
+            return format!("{}: {}", move_data.effect_type().to_lowercase(), move_data.name);
+        }
+
+        // Check conditions - get both type and name in one lookup
+        // JavaScript: condition.fullname format varies by effectType
+        if let Some(condition) = self.dex.conditions.get(effect_id) {
+            return format!("{}: {}", condition.effect_type().to_lowercase(), condition.name);
+        }
+
+        // Fallback - unknown effect
+        format!("unknown: {}", effect_str)
     }
 }
