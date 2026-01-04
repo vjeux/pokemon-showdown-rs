@@ -86,7 +86,8 @@ pub fn try_spread_move_hit(
     pokemon_pos: (usize, usize),
     move_id: &ID,
     not_active: bool,
-) -> bool {
+) -> crate::battle_actions::DamageResult {
+    use crate::battle_actions::DamageResult;
     // Convert targets to mutable Vec for filtering
     // JS: targets: Pokemon[]
     let mut target_list: Vec<(usize, usize)> = targets.to_vec();
@@ -178,8 +179,12 @@ pub fn try_spread_move_hit(
         }
 
         // JS: return hitResult === this.battle.NOT_FAIL;
-        // If it's NOT_FAIL (null/undefined), return true; if explicitly false, return false
-        return !is_explicit_false;
+        // If it's NOT_FAIL (null/undefined), return NOT_FAIL; if explicitly false, return Failed
+        if is_explicit_false {
+            return DamageResult::Failed;
+        } else {
+            return DamageResult::NotFail;
+        }
     }
 
     // JS: let atLeastOneFailure = false;
@@ -368,5 +373,9 @@ pub fn try_spread_move_hit(
     }
 
     // JS: return moveResult;
-    move_result
+    if move_result {
+        DamageResult::Undefined
+    } else {
+        DamageResult::Failed
+    }
 }

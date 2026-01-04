@@ -146,7 +146,7 @@ impl Battle {
             // Handle undefined/failed damage
             let damage_value = match cur_damage {
                 SpreadMoveDamageValue::Damage(n) => *n,
-                SpreadMoveDamageValue::Failed | SpreadMoveDamageValue::Undefined => {
+                SpreadMoveDamageValue::Failed | SpreadMoveDamageValue::Undefined | SpreadMoveDamageValue::NotFail => {
                     ret_vals.push(*cur_damage);
                     continue;
                 }

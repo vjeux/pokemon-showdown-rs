@@ -44,6 +44,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle_actions::move_hit::move_hit;
+use crate::battle_actions::DamageResult;
 
 /// Try to hit with a field-wide move (all, foeSide, allySide, allyTeam targets)
 /// Equivalent to tryMoveHit() in battle-actions.ts
@@ -55,7 +56,7 @@ pub fn try_move_hit(
     target_or_targets: &[(usize, usize)],
     pokemon_pos: (usize, usize),
     move_id: &ID,
-) -> bool {
+) -> DamageResult {
     // const target = Array.isArray(targetOrTargets) ? targetOrTargets[0] : targetOrTargets;
     // const targets = Array.isArray(targetOrTargets) ? targetOrTargets : [target];
     let target = target_or_targets[0];
@@ -106,13 +107,13 @@ pub fn try_move_hit(
         let pokemon_ident = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
-                None => return false,
+                None => return DamageResult::Failed,
             };
             format!("p{}a: {}", pokemon_pos.0 + 1, pokemon.set.species)
         };
         battle.add("-fail", &[crate::battle::Arg::String(pokemon_ident)]);
         battle.attr_last_move(&["[still]"]);
-        return false;
+        return DamageResult::Failed;
     }
 
     // Get move target type from active_move
@@ -121,7 +122,7 @@ pub fn try_move_hit(
         .unwrap_or_else(|| "normal".to_string());
 
     // const isFFAHazard = move.target === 'foeSide' && this.battle.gameType === 'freeforall';
-    let is_ffa_hazard = move_target == "foeSide" && battle.game_type == "freeforall";
+    let is_ffa_hazard = move_target == "foeSide" && battle.game_type == crate::dex_data::GameType::FreeForAll;
 
     // if (move.target === 'all') {
     //     hitResult = this.battle.runEvent('TryHitField', target, pokemon, move);
@@ -147,7 +148,7 @@ pub fn try_move_hit(
             }
         }
         if !all_success {
-            return false;
+            return DamageResult::Failed;
         }
         true
     } else {
@@ -165,13 +166,13 @@ pub fn try_move_hit(
         let pokemon_ident = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
-                None => return false,
+                None => return DamageResult::Failed,
             };
             format!("p{}a: {}", pokemon_pos.0 + 1, pokemon.set.species)
         };
         battle.add("-fail", &[crate::battle::Arg::String(pokemon_ident)]);
         battle.attr_last_move(&["[still]"]);
-        return false;
+        return DamageResult::Failed;
     }
 
     // return this.moveHit(isFFAHazard ? targets : target, pokemon, move);
@@ -179,12 +180,10 @@ pub fn try_move_hit(
     if is_ffa_hazard {
         // For FFA hazards, pass all targets
         let target_opts: Vec<Option<(usize, usize)>> = targets.iter().map(|&t| Some(t)).collect();
-        move_hit(battle, &target_opts, pokemon_pos, move_id, None, false, false);
+        move_hit(battle, &target_opts, pokemon_pos, move_id, None, false, false)
     } else {
         // For single target, pass just the first target
         let target_opts = vec![Some(target)];
-        move_hit(battle, &target_opts, pokemon_pos, move_id, None, false, false);
+        move_hit(battle, &target_opts, pokemon_pos, move_id, None, false, false)
     }
-
-    true
 }
