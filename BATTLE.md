@@ -909,33 +909,30 @@ When a Pokemon faints and forces a switch:
 - PRNG desynchronizes (4 extra calls)
 - All subsequent turns diverge
 
-**Next Steps:**
-- Clear action queue after forced switch is processed
-- Call end_turn() to increment turn counter
-- Need to understand JavaScript's queue management during forced switches
-- This may require checking if request_state was just cleared and queue should be emptied
-
-**Code Analysis:**
-Found the issue in turn_loop.rs:
+**Root Cause IDENTIFIED:**
+After processing a forced switch, Rust sets mid_turn=false in turn_loop():
 ```rust
-while let Some(action) = self.queue.shift() {
-    self.run_action(&action);
-    if self.request_state != BattleRequestState::None {
-        return;  // Early return, end_turn() NOT called
-    }
-}
-self.end_turn();  // Only called if loop completes
+self.end_turn();
+self.mid_turn = false;  // BUG! Should stay true after forced switch
+self.queue.clear();
 ```
 
-When forced switch happens:
-1. Pokemon faints → request_state set → turn_loop() returns early
-2. Test calls make_choices() → processes switch → request_state cleared
-3. commit_choices() → turn_loop() called AGAIN
-4. Queue still has move actions from before faint
-5. turn_loop() executes those moves (INCORRECT!)
-6. Should detect completed forced switch and call end_turn() immediately
+This causes the NEXT call to turn_loop() to add beforeTurn/residual actions, treating it as a NEW turn with moves to execute.
 
-**Status:** Root cause identified, needs implementation 🔍
+**Correct Behavior:**
+After a forced switch is processed:
+- mid_turn should remain TRUE
+- Next turn_loop() call should NOT add beforeTurn/residual
+- Should only process the switch and increment turn
+- mid_turn becomes false only when a turn completes WITHOUT interruptions
+
+**Fix Strategy:**
+Need to detect if turn_loop() is being called after a forced switch and NOT set mid_turn=false in that case. Possible approaches:
+1. Check if request_state was Switch at start of turn_loop()
+2. Track if this turn_loop() call processed a forced switch
+3. Add a flag like "processed_forced_switch"
+
+**Status:** Root cause identified, implementing fix next 🔧
 
 ---
 
