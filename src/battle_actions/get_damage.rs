@@ -346,38 +346,6 @@ pub fn get_damage(
     base_power = base_power.max(1);
     eprintln!("[GET_DAMAGE] basePower after clamp to min 1: {}", base_power);
 
-    // JavaScript: if ((!source.volatiles['dynamax'] && move.isMax) || (move.isMax && this.dex.moves.get(move.baseMove).isMax)) { basePower = 0; }
-    // CRITICAL: Max/G-Max moves used without dynamax have basePower set to 0 AFTER crit calculation!
-    // This happens AFTER the clamp above, so we can set basePower back to 0
-    // The damage calculation will continue with basePower=0, and modifyDamage will apply minimum damage check
-    if move_data.is_max.is_some() {
-        let has_dynamax_volatile = if let Some(side) = battle.sides.get(source_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-                pokemon.has_volatile(&ID::new("dynamax"))
-            } else {
-                false
-            }
-        } else {
-            false
-        };
-
-        // Check first condition: !source.volatiles["dynamax"] && move.isMax
-        if !has_dynamax_volatile {
-            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower=0");
-            base_power = 0; // Set to 0, don't return - let damage calc continue
-        } else if let Some(ref base_move_id) = move_data.base_move {
-            // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
-            // This checks if the base move (the original move before dynamax conversion) is also a Max move
-            if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
-                if base_move_data.is_max.is_some() {
-                    // Hacked Max Move: the base move is itself a Max move
-                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower=0");
-                    base_power = 0; // Set to 0, don't return - let damage calc continue
-                }
-            }
-        }
-    }
-
     // Get attacker level
     let level = if let Some(side) = battle.sides.get(source_pos.0) {
         if let Some(pokemon) = side.pokemon.get(source_pos.1) {
