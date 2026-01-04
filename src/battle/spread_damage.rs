@@ -150,6 +150,11 @@ impl Battle {
                     ret_vals.push(*cur_damage);
                     continue;
                 }
+                SpreadMoveDamageValue::Blocked => {
+                    // HIT_SUBSTITUTE - substitute blocked the hit, pass through
+                    ret_vals.push(SpreadMoveDamageValue::Blocked);
+                    continue;
+                }
                 SpreadMoveDamageValue::Success => {
                     // Success means "true" in JS, which should calculate max damage
                     // For now, treat as 0

@@ -51,8 +51,13 @@ pub fn try_primary_hit_event(
         // Convert event result to damage value
         // JavaScript runEvent returns number | boolean | undefined
         // We need to map this to SpreadMoveDamageValue
+        // Special case: 0 = Battle.HIT_SUBSTITUTE (substitute blocked the hit)
         if let Some(value) = result {
-            damage[i] = SpreadMoveDamageValue::Damage(value);
+            if value == Battle::HIT_SUBSTITUTE {
+                damage[i] = SpreadMoveDamageValue::Blocked;
+            } else {
+                damage[i] = SpreadMoveDamageValue::Damage(value);
+            }
         }
         // If result is None, keep the existing damage value
     }

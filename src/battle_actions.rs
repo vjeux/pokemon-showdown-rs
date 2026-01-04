@@ -1018,6 +1018,7 @@ pub struct UseMoveOptions {
 
 /// Spread move damage result type
 /// Can be damage amount, false (failed), or true/undefined (success with no damage)
+/// Or HIT_SUBSTITUTE (0) when substitute blocks the hit
 /// TODO: Rust uses enum to represent JavaScript's number | false | true | undefined union type
 /// JavaScript: number | false | true | undefined
 #[derive(Debug, Clone, Copy, Default)]
@@ -1027,6 +1028,7 @@ pub enum SpreadMoveDamageValue {
     Success,
     #[default]
     Undefined,
+    Blocked, // HIT_SUBSTITUTE - substitute took the hit
 }
 
 /// Result of spread move hit containing damage and target info

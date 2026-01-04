@@ -231,12 +231,9 @@ pub fn spread_move_hit(
     // Handle HIT_SUBSTITUTE and secondary move logic
     // JS: for (const i of targets.keys()) { if (damage[i] === this.battle.HIT_SUBSTITUTE) { damage[i] = true; targets[i] = null; } ... }
     for i in 0..targets_mut.len() {
-        // Check for HIT_SUBSTITUTE (0 from event) - indicates substitute blocked the hit
+        // Check for HIT_SUBSTITUTE - indicates substitute blocked the hit
         // JS: if (damage[i] === this.battle.HIT_SUBSTITUTE) { damage[i] = true; targets[i] = null; }
-        if let SpreadMoveDamageValue::Damage(0) = damage[i] {
-            // Check if this is actually HIT_SUBSTITUTE by checking event result type
-            // For now, treat Damage(0) from tryPrimaryHitEvent as potential HIT_SUBSTITUTE
-            // The actual check would be: if damage[i] === Battle::HIT_SUBSTITUTE
+        if matches!(damage[i], SpreadMoveDamageValue::Blocked) {
             damage[i] = SpreadMoveDamageValue::Success; // Convert to "true"
             targets_mut[i] = SpreadMoveTarget::None; // Remove target from processing
         }
