@@ -503,12 +503,14 @@ pub fn use_move_inner(
                                 battle.add("-clearnegativeboost", &[Arg::String(pokemon_id), Arg::Str("[zeffect]")]);
                             }
                             "redirect" => {
-                                // TODO: Implement redirect - requires addVolatile
-                                // For now, skip as it's complex
+                                // pokemon.addVolatile('followme', pokemon, zPower);
+                                let followme_id = ID::from("followme");
+                                Pokemon::add_volatile(battle, pokemon_pos, followme_id, Some(pokemon_pos), Some(&zpower_id), None, None);
                             }
                             "crit2" => {
-                                // TODO: Implement crit2 - requires addVolatile
-                                // For now, skip as it's complex
+                                // pokemon.addVolatile('focusenergy', pokemon, zPower);
+                                let focusenergy_id = ID::from("focusenergy");
+                                Pokemon::add_volatile(battle, pokemon_pos, focusenergy_id, Some(pokemon_pos), Some(&zpower_id), None, None);
                             }
                             "curse" => {
                                 let has_ghost = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1]
