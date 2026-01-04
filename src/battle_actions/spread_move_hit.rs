@@ -201,8 +201,17 @@ pub fn spread_move_hit(
         let should_fail = match hit_result {
             EventResult::Boolean(false) | EventResult::Number(0) => {
                 // JavaScript: if (hitResult === false)
-                // TODO: battle.add('-fail', pokemon);
-                // TODO: battle.attrLastMove('[still]');
+                // this.battle.add('-fail', pokemon);
+                // this.battle.attrLastMove('[still]');
+                if let Some(source_pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                    let source_ident = format!(
+                        "p{}a: {}",
+                        source_pos.0 + 1,
+                        source_pokemon.set.species
+                    );
+                    battle.add("-fail", &[crate::battle::Arg::String(source_ident)]);
+                    battle.attr_last_move(&["[still]"]);
+                }
                 true
             }
             EventResult::Null => {
@@ -381,6 +390,12 @@ pub fn spread_move_hit(
     //           }
     //       }
     //   }
+    // JavaScript line 105: const pokemonOriginalHP = pokemon.hp;
+    // Save source pokemon's original HP before DamagingHit event (for EmergencyExit check)
+    let pokemon_original_hp = battle.pokemon_at(source_pos.0, source_pos.1)
+        .map(|p| p.hp)
+        .unwrap_or(0);
+
     if !is_secondary && !is_self {
         // Collect targets that actually took damage
         let mut damaged_targets = Vec::new();
@@ -418,6 +433,20 @@ pub fn spread_move_hit(
                     Some(source_pos),
                     Some(move_id),
                 );
+            }
+
+            // JavaScript lines 113-115: EmergencyExit event
+            // if (pokemon.hp && pokemon.hp <= pokemon.maxhp / 2 && pokemonOriginalHP > pokemon.maxhp / 2) {
+            //     this.battle.runEvent('EmergencyExit', pokemon);
+            // }
+            if let Some(source_pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                let pokemon_hp = source_pokemon.hp;
+                let pokemon_maxhp = source_pokemon.maxhp;
+
+                // Check if source pokemon crossed the 50% HP threshold downward
+                if pokemon_hp > 0 && pokemon_hp <= pokemon_maxhp / 2 && pokemon_original_hp > pokemon_maxhp / 2 {
+                    battle.run_event("EmergencyExit", Some(source_pos), None, None, None);
+                }
             }
         }
     }
@@ -855,13 +884,93 @@ pub fn spread_move_hit(
     // this.battle.activeTarget = activeTarget;
     battle.active_target = saved_active_target;
 
-    // TODO: MISSING forceSwitch step (JavaScript line 91)
-    // JavaScript:
-    //   if (moveData.forceSwitch) damage = this.forceSwitch(damage, targets, pokemon, move);
-    //   for (const i of targets.keys()) {
+    // JavaScript line 91: forceSwitch step (step 6)
+    // if (moveData.forceSwitch) damage = this.forceSwitch(damage, targets, pokemon, move);
+    // for (const i of targets.keys()) {
     //     if (!damage[i] && damage[i] !== 0) targets[i] = false;
-    //   }
-    // Rust doesn't handle forceSwitch moves at all
+    // }
+    if move_data.force_switch {
+        // forceSwitch function (battle-actions.ts:1279-1295):
+        // for (const [i, target] of targets.entries()) {
+        //     if (target && target.hp > 0 && source.hp > 0 && this.battle.canSwitch(target.side)) {
+        //         const hitResult = this.battle.runEvent('DragOut', target, source, move);
+        //         if (hitResult) {
+        //             target.forceSwitchFlag = true;
+        //         } else if (hitResult === false && move.category === 'Status') {
+        //             this.battle.add('-fail', source);
+        //             this.battle.attrLastMove('[still]');
+        //             damage[i] = false;
+        //         }
+        //     }
+        // }
+        for (i, &target_opt) in filtered_targets.iter().enumerate() {
+            if let Some(target_pos) = target_opt {
+                // Check conditions: target.hp > 0 && source.hp > 0 && canSwitch
+                let (target_hp, source_hp, can_switch) = {
+                    let target_hp = battle.pokemon_at(target_pos.0, target_pos.1)
+                        .map(|p| p.hp)
+                        .unwrap_or(0);
+                    let source_hp = battle.pokemon_at(source_pos.0, source_pos.1)
+                        .map(|p| p.hp)
+                        .unwrap_or(0);
+                    let can_switch = battle.can_switch(target_pos.0) > 0;
+                    (target_hp, source_hp, can_switch)
+                };
+
+                if target_hp > 0 && source_hp > 0 && can_switch {
+                    // const hitResult = this.battle.runEvent('DragOut', target, source, move);
+                    let hit_result = battle.run_event(
+                        "DragOut",
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(move_id),
+                        None,
+                    );
+
+                    // if (hitResult) { target.forceSwitchFlag = true; }
+                    // run_event returns Option<i32> where Some(0) = false, Some(n>0) = truthy, None = null
+                    match hit_result {
+                        Some(n) if n > 0 => {
+                            // hitResult is truthy
+                            if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+                                target_pokemon.force_switch_flag = true;
+                            }
+                        }
+                        Some(0) => {
+                            // hitResult === false && move.category === 'Status'
+                            if move_data.category == "Status" {
+                                // this.battle.add('-fail', source);
+                                // this.battle.attrLastMove('[still]');
+                                // damage[i] = false;
+                                if let Some(source_pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                                    let source_ident = format!(
+                                        "p{}a: {}",
+                                        source_pos.0 + 1,
+                                        source_pokemon.set.species
+                                    );
+                                    battle.add("-fail", &[crate::battle::Arg::String(source_ident)]);
+                                    battle.attr_last_move(&["[still]"]);
+                                    damages[i] = None; // false
+                                }
+                            }
+                        }
+                        _ => {
+                            // hitResult is null or 0 with non-Status move, do nothing
+                        }
+                    }
+                }
+            }
+        }
+
+        // for (const i of targets.keys()) {
+        //     if (!damage[i] && damage[i] !== 0) targets[i] = false;
+        // }
+        for i in 0..damages.len() {
+            if damages[i].is_none() {
+                filtered_targets[i] = None;
+            }
+        }
+    }
 
     // Step 5: Trigger DamagingHit event for abilities that activate on dealing damage
     // JavaScript (battle-actions.ts:961-971):
