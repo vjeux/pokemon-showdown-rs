@@ -1251,3 +1251,43 @@ After forced switch (iteration #29), Rust sets `mid_turn=false` (following JavaS
 
 ---
 
+
+## Summary - Current Test Results
+
+### Seed 1: ✅ FULLY PASSING
+All iterations match JavaScript exactly!
+
+### Seed 2: ❌ DIVERGES AT ITERATION #2
+- Iteration #1 matches (prng 0->5)
+- Iteration #2 diverges:  
+  - JavaScript: prng=5->6 (1 call)
+  - Rust: prng=5->7 (2 calls)
+- Rust makes 1 extra PRNG call
+- All subsequent iterations diverge due to PRNG desync
+
+**Status:** Need to investigate what causes the extra PRNG call 🔍
+
+### Seed 3: ❌ DIVERGES AT ITERATION #30 (59.5% passing)
+- Iterations #1-#28 match perfectly
+- Iteration #30: beforeTurn/Residual incorrectly added (Issue #16)
+- Iterations #30-47 diverge due to different game state
+
+**Status:** Need to resolve mid_turn management after forced switch 🔍
+
+---
+
+## Session Summary
+
+**Fixes Completed:**
+1. ✅ Issue 14: Allow check_fainted to run even when Pokemon already fainted
+2. ✅ Issue 15: Always set mid_turn=false at end of turn_loop (not conditionally)
+
+**Results:**
+- Seed 1: 100% passing (all iterations match)
+- Seed 2: Needs investigation of iteration #2 PRNG divergence  
+- Seed 3: 59.5% passing (28/47 iterations), blocked on Issue #16
+
+**Next Steps:**
+- Investigate Seed 2 iteration #2 PRNG divergence (simpler issue)
+- Resolve Seed 3 Issue #16 (mid_turn after forced switch)
+
