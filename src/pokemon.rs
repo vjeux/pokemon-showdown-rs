@@ -446,10 +446,6 @@ pub struct Pokemon {
     /// JavaScript: itemKnockedOff: boolean
     pub item_knocked_off: bool,
 
-    // TODO: DELETE - Not in JavaScript Pokemon (implicit in volatiles)
-    // Choice item lock (Choice Band/Scarf/Specs)
-    pub locked_move: Option<ID>,
-
     // Types
     /// Current types
     /// JavaScript: types: string[]

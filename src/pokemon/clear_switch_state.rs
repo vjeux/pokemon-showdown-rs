@@ -19,6 +19,5 @@ impl Pokemon {
         self.being_called_back = false;
         self.active_turns = 0;
         self.active_move_actions = 0;
-        self.locked_move = None; // Clear Choice item lock
     }
 }

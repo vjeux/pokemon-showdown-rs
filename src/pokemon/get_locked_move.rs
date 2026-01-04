@@ -25,25 +25,19 @@ impl Pokemon {
     /// access to Battle for the runEvent() call.
     /// Call as: Pokemon::get_locked_move(battle, pokemon_pos)
     pub fn get_locked_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Option<ID> {
-        // Phase 1: Get locked_move field immutably
-        let locked_move = {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return None,
-            };
-            pokemon.locked_move.clone()
-        };
-
         // JS: const lockedMove = this.battle.runEvent('LockMove', this);
         // ✅ NOW IMPLEMENTED: battle.run_event('LockMove') call
+        // The event handlers return the locked move ID from volatile effectState
         let event_result = battle.run_event("LockMove", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
 
         // JS: return (lockedMove === true) ? null : lockedMove;
         // ✅ NOW IMPLEMENTED: If runEvent returns true, return None
-        // ✅ Otherwise return the locked_move from the field
+        // ✅ Otherwise return the move ID from the event result
         match event_result {
             EventResult::Boolean(true) => None, // true in JavaScript → null
-            _ => locked_move, // Otherwise use the locked_move field
+            EventResult::String(move_id) => Some(ID::from(move_id)), // Event handler returned move ID
+            EventResult::Continue => None, // No event handler fired, no locked move
+            _ => None, // Other results treated as no lock
         }
     }
 }

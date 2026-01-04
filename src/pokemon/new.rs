@@ -269,8 +269,6 @@ impl Pokemon {
             ate_berry: false,
             item_knocked_off: false,
 
-            locked_move: None,
-
             types: Vec::new(),
             // JavaScript: this.addedType = '';
             added_type: String::new(),
