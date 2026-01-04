@@ -7,7 +7,6 @@ pub mod abilities;
 pub mod ability_callbacks;
 pub mod condition_callbacks;
 pub mod conditions;
-pub mod duration_callbacks;
 pub mod formats;
 pub mod item_callbacks;
 pub mod items;

@@ -493,12 +493,17 @@ pub fn spread_move_hit(
                             .and_then(|cond| cond.duration);
 
                         // Call durationCallback if it exists
-                        let callback_duration = crate::data::duration_callbacks::dispatch_duration_callback(
-                            battle,
-                            volatile_id.as_str(),
-                            target_pos,
-                            Some(source_pos),
-                        );
+                        let callback_duration = {
+                            let result = crate::data::condition_callbacks::dispatch_duration_callback(
+                                battle,
+                                volatile_id.as_str(),
+                                target_pos,
+                            );
+                            match result {
+                                crate::event::EventResult::Number(n) => Some(n),
+                                _ => None,
+                            }
+                        };
 
                         // durationCallback overrides default duration
                         let final_duration = callback_duration.or(default_duration);
