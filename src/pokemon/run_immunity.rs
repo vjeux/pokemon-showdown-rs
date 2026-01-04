@@ -52,11 +52,12 @@ impl Pokemon {
         }
 
         // JS: const negateImmunity = !this.battle.runEvent('NegateImmunity', this, type);
-        // runEvent returns Some(1) if event should negate, None or Some(0) otherwise
+        // NOTE: JavaScript NEGATES the result!
+        // If runEvent returns truthy → negateImmunity = false
+        // If runEvent returns falsy/undefined → negateImmunity = true
         let negate_immunity = match battle.run_event("NegateImmunity", Some(pokemon_pos), None, None, None) {
-            Some(val) if val == 0 => false,
-            None => false,
-            _ => true,
+            Some(val) if val != 0 => false,  // Event returned truthy → DON'T negate (negateImmunity=false)
+            _ => true,  // Event returned falsy/None → DO negate (negateImmunity=true)
         };
 
         // JS: const notImmune = type === 'Ground' ?

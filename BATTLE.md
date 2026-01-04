@@ -1433,3 +1433,49 @@ This is a turn increment bug, not a type immunity bug. The type immunity fix is 
 **Status:** Type immunity fixed, but Issue #14 (turn increment after forced switch) remains 🔍
 
 ---
+
+### Issue 17: NegateImmunity event result was inverted (FIXED ✅)
+
+**Problem (2026-01-04):**
+After fixing the move TYPE vs move ID issue in hit_step_type_immunity.rs, outrage (Dragon-type) was still hitting Kirlia (Fairy-type) when it should be blocked. Deep investigation revealed run_immunity was returning TRUE when it should return FALSE.
+
+**Root Cause:**
+The NegateImmunity event result handling was inverted from JavaScript!
+
+**JavaScript:**
+```javascript
+const negateImmunity = !this.battle.runEvent('NegateImmunity', this, type);
+```
+JavaScript **NEGATES** the runEvent result with `!`. When runEvent returns truthy → negateImmunity = FALSE.
+
+**Rust (BEFORE fix):**
+```rust
+let negate_immunity = match battle.run_event("NegateImmunity", ...) {
+    Some(val) if val == 0 => false,
+    None => false,
+    _ => true,  // BUG: When event returns non-zero, negate_immunity = TRUE!
+};
+```
+
+This caused ALL type immunity checks to be bypassed whenever the NegateImmunity event returned a truthy value.
+
+**Fix Applied:**
+```rust
+let negate_immunity = match battle.run_event("NegateImmunity", ...) {
+    Some(val) if val != 0 => false,  // Event returned truthy → negateImmunity = FALSE
+    _ => true,  // Event returned falsy/None → negateImmunity = TRUE
+};
+```
+
+Inverted the logic to match JavaScript's `!` negation operator.
+
+**Commit:** [NEXT COMMIT]
+
+**Result:**
+- ✅ Type immunity now works correctly
+- ✅ Dragon-type moves correctly blocked by Fairy-type Pokemon  
+- ✅ **SEED 3 NOW 100% PASSING - ALL 36 ITERATIONS MATCH!**
+- ✅ This also resolved what appeared to be Issue #14 (turn increment bug) - it was actually just a side effect of the immunity bug causing different battle outcomes
+
+---
+
