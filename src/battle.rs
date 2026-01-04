@@ -122,7 +122,6 @@ mod handle_ability_event;
 mod handle_item_event;
 mod handle_move_event;
 mod handle_condition_event;
-mod handle_side_condition_event;
 mod run_event;
 mod run_event_side;
 mod run_event_float;

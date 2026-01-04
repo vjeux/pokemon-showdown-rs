@@ -17,42 +17,6 @@ struct FieldEventHandler {
 
 impl Battle {
 
-    /// Determine effect type from effect ID by checking dex
-    #[allow(dead_code)]
-    fn determine_effect_type(&self, effect_id: &str) -> crate::battle::EffectType {
-        // Check abilities
-        if self.dex.abilities().get(effect_id).is_some() {
-            return crate::battle::EffectType::Ability;
-        }
-        // Check items
-        if self.dex.items().get(effect_id).is_some() {
-            return crate::battle::EffectType::Item;
-        }
-        // Check moves
-        if self.dex.moves().get(effect_id).is_some() {
-            return crate::battle::EffectType::Move;
-        }
-        // Check conditions and return their actual effectType
-        if let Some(condition_data) = self.dex.conditions().get(effect_id) {
-            // Parse effectType string from condition data
-            if let Some(effect_type_value) = condition_data.extra.get("effectType") {
-                if let Some(effect_type_str) = effect_type_value.as_str() {
-                    return match effect_type_str {
-                        "Weather" => crate::battle::EffectType::Weather,
-                        "FieldCondition" | "Field" => crate::battle::EffectType::FieldCondition,
-                        "SideCondition" | "Side" => crate::battle::EffectType::SideCondition,
-                        "SlotCondition" | "Slot" => crate::battle::EffectType::SlotCondition,
-                        _ => crate::battle::EffectType::Condition,
-                    };
-                }
-            }
-            // Default to Condition if no effectType specified
-            return crate::battle::EffectType::Condition;
-        }
-        // Default to Condition (volatiles, status, etc.)
-        crate::battle::EffectType::Condition
-    }
-
     /// Helper to create a FieldEventHandler with proper order/priority from dex
     fn create_field_handler(
         &self,

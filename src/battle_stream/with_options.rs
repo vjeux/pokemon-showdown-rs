@@ -12,7 +12,6 @@ impl BattleStream {
         Self {
             battle: None,
             output_queue: VecDeque::new(),
-            input_buffer: String::new(),
             debug: options.debug,
             no_catch: options.no_catch,
             replay: options.replay,

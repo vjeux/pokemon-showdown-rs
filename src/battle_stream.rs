@@ -808,10 +808,6 @@ pub struct BattleStream {
     /// Output message queue
     /// JavaScript: (not explicitly stored, generated on-demand via battle.log)
     output_queue: VecDeque<String>,
-    /// Input buffer (not yet implemented)
-    /// JavaScript: (not explicitly stored in BattleStream)
-    #[allow(dead_code)]
-    input_buffer: String,
     /// Debug mode
     /// JavaScript: debug: boolean
     pub debug: bool,
