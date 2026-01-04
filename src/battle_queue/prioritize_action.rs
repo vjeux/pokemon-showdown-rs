@@ -1,4 +1,4 @@
-use crate::battle_queue::BattleQueue;
+use crate::battle_queue::{Action, BattleQueue};
 
 impl BattleQueue {
 
@@ -37,5 +37,20 @@ impl BattleQueue {
         } else {
             false
         }
+    }
+
+    /// Prioritize a specific action object (add it to the front of the queue)
+    /// This variant takes an action object directly instead of looking it up by pokemon
+    /// Equivalent to: prioritizeAction(action: MoveAction | SwitchAction, sourceEffect?: Effect)
+    pub fn prioritize_action_object(&mut self, mut action: Action) {
+        // action.order = 3;
+        match &mut action {
+            crate::battle_queue::Action::Move(m) => m.order = 3,
+            crate::battle_queue::Action::Switch(s) => s.order = 3,
+            crate::battle_queue::Action::Pokemon(p) => p.order = 3,
+            _ => {}
+        }
+        // this.list.unshift(action);
+        self.list.insert(0, action);
     }
 }

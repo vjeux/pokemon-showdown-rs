@@ -176,7 +176,7 @@ pub fn on_hit(
     //     moveid: target.lastMove.id,
     //     targetLoc: target.lastMoveTargetLoc!,
     // })[0] as MoveAction);
-    let _target_loc = {
+    let target_loc = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
@@ -184,8 +184,41 @@ pub fn on_hit(
         target_pokemon.last_move_target_loc.unwrap_or(0)
     };
 
-    // TODO: Implement resolveAction to create a move action with moveid and targetLoc
-    battle.queue.prioritize_action(target.0, target.1);
+    // Create a MoveAction for the Instruct move
+    use crate::battle_queue::{Action, MoveAction, MoveActionType};
+
+    let move_action = MoveAction {
+        choice: MoveActionType::Move,
+        order: 0, // Will be set by resolve_action/prioritize_action_object
+        priority: 0,
+        fractional_priority: 0.0,
+        speed: 0.0,
+        sub_order: 0,
+        effect_order: 0,
+        pokemon_index: target.1,
+        side_index: target.0,
+        target_loc,
+        original_target: None,
+        move_id: last_move_id,
+        mega: false,
+        zmove: None,
+        max_move: None,
+        source_effect: None,
+        terastallize: None,
+        move_priority_modified: None,
+    };
+
+    // Resolve the action (handles target resolution, speed calculation, etc.)
+    let actions = crate::battle_queue::BattleQueue::resolve_action(
+        Action::Move(move_action),
+        battle,
+        false,
+    );
+
+    // Prioritize the first resolved action (the main move action)
+    if let Some(action) = actions.into_iter().next() {
+        battle.queue.prioritize_action_object(action);
+    }
 
     EventResult::Continue
 }
