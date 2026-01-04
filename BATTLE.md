@@ -994,6 +994,37 @@ This explains why:
 
 **Status:** Root cause narrowed down - investigating turn increment mechanism 🔍
 
+**CRITICAL FINDINGS - ROOT CAUSE IDENTIFIED:**
+
+Traced the exact issue with detailed logging:
+
+**Iteration #29 (forced switch after Swirlix faints):**
+- STARTS with: `turn=22, mid_turn=TRUE, request_state=None, queue_size=2`
+- Does NOT add beforeTurn/residual (correct, mid_turn=true)
+- Processes switch action (Seedot switches in)
+- Calls end_turn() → turn increments 22→23
+- Sets mid_turn=FALSE at end
+- Outputs: `#29: turn=23, prng=106->106`
+
+**Iteration #30 (next turn):**
+- STARTS with: `turn=23, mid_turn=FALSE, request_state=None, queue_size=2`
+- **ADDS beforeTurn and residual** (BUG! mid_turn=false causes this)
+- Queue becomes: [beforeTurn, move1, move2, residual]
+- Extra beforeTurn/residual events cause extra PRNG calls
+- JavaScript: 3 PRNG calls, Kirlia survives
+- Rust: 7 PRNG calls (4 extra!), Kirlia faints
+
+**The Bug:**
+Iteration #29 processes a forced switch continuation (mid_turn was true on entry), but sets mid_turn=false at the end. This causes iteration #30 to incorrectly add beforeTurn/residual actions, leading to extra events and PRNG calls.
+
+**Expected Behavior (JavaScript):**
+JavaScript iteration #30 starts with mid_turn=true (somehow), preventing duplicate beforeTurn/residual.
+
+**Fix Attempted:**
+Tried keeping mid_turn=true if we entered with mid_turn=true. This prevented the extra PRNG calls in iteration #30, but broke earlier forced switches (iteration #6 diverged).
+
+**Status:** Need to understand JavaScript's midTurn management more precisely. The fix logic needs to be more nuanced than simply "keep mid_turn if we entered with it true". There must be a specific condition that determines when to reset mid_turn vs keep it. 🔧
+
 ---
 
 ### Issue 13: partiallytrapped volatile not expiring when source faints (FIXED ✅)
