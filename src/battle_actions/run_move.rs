@@ -248,7 +248,166 @@ pub fn run_move(
 
     // Handle Dancer ability
     // if (move.flags['dance'] && moveDidSomething && !move.isExternal)
-    // TODO: Implement Dancer ability activation
+    // JavaScript source (battle-actions.ts:322-348):
+    //     if (move.flags['dance'] && moveDidSomething && !move.isExternal) {
+    //         const dancers = [];
+    //         for (const currentPoke of this.battle.getAllActive()) {
+    //             if (pokemon === currentPoke) continue;
+    //             if (currentPoke.hasAbility('dancer') && !currentPoke.isSemiInvulnerable()) {
+    //                 dancers.push(currentPoke);
+    //             }
+    //         }
+    //         dancers.sort(
+    //             (a, b) => -(b.storedStats['spe'] - a.storedStats['spe']) || b.abilityState.effectOrder - a.abilityState.effectOrder
+    //         );
+    //         const targetOf1stDance = this.battle.activeTarget!;
+    //         for (const dancer of dancers) {
+    //             if (this.battle.faintMessages()) break;
+    //             if (dancer.fainted) continue;
+    //             this.battle.add('-activate', dancer, 'ability: Dancer');
+    //             const dancersTarget = !targetOf1stDance.isAlly(dancer) && pokemon.isAlly(dancer) ?
+    //                 targetOf1stDance :
+    //                 pokemon;
+    //             const dancersTargetLoc = dancer.getLocOf(dancersTarget);
+    //             this.runMove(move.id, dancer, dancersTargetLoc, { sourceEffect: this.dex.abilities.get('dancer'), externalMove: true });
+    //         }
+    //     }
+    let has_dance_flag = base_move.flags.contains_key("dance");
+    if has_dance_flag && move_did_something && !external_move {
+        // const dancers = [];
+        // for (const currentPoke of this.battle.getAllActive())
+        let mut dancers: Vec<(usize, usize)> = Vec::new();
+        let all_active = battle.get_all_active(false);
+
+        for current_poke_pos in all_active {
+            // if (pokemon === currentPoke) continue;
+            if current_poke_pos == pokemon_pos {
+                continue;
+            }
+
+            // if (currentPoke.hasAbility('dancer') && !currentPoke.isSemiInvulnerable())
+            let has_dancer_and_not_semi_invulnerable = {
+                let current_poke = match battle.pokemon_at(current_poke_pos.0, current_poke_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                let has_dancer = current_poke.has_ability(battle, &["dancer"]);
+                let is_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, current_poke_pos);
+                has_dancer && !is_semi_invulnerable
+            };
+
+            if has_dancer_and_not_semi_invulnerable {
+                dancers.push(current_poke_pos);
+            }
+        }
+
+        // Dancer activates in order of lowest speed stat to highest
+        // Ties go to whichever Pokemon has had the ability for the least amount of time
+        // JavaScript: dancers.sort((a, b) => -(b.storedStats['spe'] - a.storedStats['spe']) || b.abilityState.effectOrder - a.abilityState.effectOrder);
+        dancers.sort_by(|&a_pos, &b_pos| {
+            let a_speed = battle.pokemon_at(a_pos.0, a_pos.1)
+                .map(|p| p.stored_stats.spe)
+                .unwrap_or(0);
+            let b_speed = battle.pokemon_at(b_pos.0, b_pos.1)
+                .map(|p| p.stored_stats.spe)
+                .unwrap_or(0);
+
+            // JavaScript: -(b.storedStats['spe'] - a.storedStats['spe'])
+            // This is equivalent to: a.storedStats['spe'] - b.storedStats['spe']
+            // Which sorts in ascending order (lowest speed first)
+            let speed_cmp = a_speed.cmp(&b_speed);
+
+            if speed_cmp != std::cmp::Ordering::Equal {
+                return speed_cmp;
+            }
+
+            // Tie-breaker: abilityState.effectOrder (lower is earlier)
+            // JavaScript: b.abilityState.effectOrder - a.abilityState.effectOrder
+            let a_effect_order = battle.pokemon_at(a_pos.0, a_pos.1)
+                .and_then(|p| p.ability_state.data.get("effectOrder"))
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            let b_effect_order = battle.pokemon_at(b_pos.0, b_pos.1)
+                .and_then(|p| p.ability_state.data.get("effectOrder"))
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+
+            a_effect_order.cmp(&b_effect_order)
+        });
+
+        // const targetOf1stDance = this.battle.activeTarget!;
+        let target_of_1st_dance = battle.active_target;
+
+        // for (const dancer of dancers)
+        for dancer_pos in dancers {
+            // if (this.battle.faintMessages()) break;
+            if battle.faint_messages(false, false, false) {
+                break;
+            }
+
+            // if (dancer.fainted) continue;
+            let dancer_fainted = battle.pokemon_at(dancer_pos.0, dancer_pos.1)
+                .map(|p| p.fainted)
+                .unwrap_or(true);
+            if dancer_fainted {
+                continue;
+            }
+
+            // this.battle.add('-activate', dancer, 'ability: Dancer');
+            let dancer_ident = {
+                let dancer = match battle.pokemon_at(dancer_pos.0, dancer_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                dancer.get_slot()
+            };
+            battle.add("-activate", &[
+                crate::battle::Arg::String(dancer_ident),
+                crate::battle::Arg::Str("ability: Dancer"),
+            ]);
+
+            // const dancersTarget = !targetOf1stDance.isAlly(dancer) && pokemon.isAlly(dancer) ?
+            //     targetOf1stDance :
+            //     pokemon;
+            let dancers_target = if let Some(target_1st) = target_of_1st_dance {
+                // Check: !targetOf1stDance.isAlly(dancer) && pokemon.isAlly(dancer)
+                let target_not_ally_of_dancer = !battle.is_ally(target_1st, dancer_pos);
+                let pokemon_is_ally_of_dancer = battle.is_ally(pokemon_pos, dancer_pos);
+
+                if target_not_ally_of_dancer && pokemon_is_ally_of_dancer {
+                    target_1st
+                } else {
+                    pokemon_pos
+                }
+            } else {
+                pokemon_pos
+            };
+
+            // const dancersTargetLoc = dancer.getLocOf(dancersTarget);
+            let dancers_target_loc = {
+                let dancer = match battle.pokemon_at(dancer_pos.0, dancer_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                let active_per_half = battle.sides[dancer_pos.0].active.len();
+                dancer.get_loc_of(dancers_target.0, dancers_target.1, active_per_half)
+            };
+
+            // this.runMove(move.id, dancer, dancersTargetLoc, { sourceEffect: this.dex.abilities.get('dancer'), externalMove: true });
+            let dancer_ability_id = ID::new("dancer");
+            run_move(
+                battle,
+                move_id,
+                dancer_pos,
+                dancers_target_loc,
+                Some(&dancer_ability_id),
+                None, // z_move
+                true, // external_move
+                None, // max_move
+                None, // original_target
+            );
+        }
+    }
 
     // Faint messages and check win
     // this.battle.faintMessages();
