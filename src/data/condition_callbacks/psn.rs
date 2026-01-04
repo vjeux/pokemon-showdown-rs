@@ -5,39 +5,92 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Arg;
 use crate::event::EventResult;
 
 /// onStart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// psn: {
-///     onStart(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// onStart(target, source, sourceEffect) {
+///     if (sourceEffect && sourceEffect.effectType === 'Ability') {
+///         this.add('-status', target, 'psn', '[from] ability: ' + sourceEffect.name, `[of] ${source}`);
+///     } else {
+///         this.add('-status', target, 'psn');
 ///     }
 /// }
+/// ```
 pub fn on_start(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[PSN_ON_START] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // Get target ident
+    let target_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    // Check if sourceEffect is an ability
+    let is_ability = battle.effect.as_ref()
+        .and_then(|eff_id| battle.dex.abilities().get(eff_id.as_str()))
+        .is_some();
+
+    if is_ability {
+        // this.add('-status', target, 'psn', '[from] ability: ' + sourceEffect.name, `[of] ${source}`);
+        let ability_name = battle.effect.as_ref()
+            .and_then(|eff_id| battle.dex.abilities().get(eff_id.as_str()))
+            .map(|ab| ab.name.clone())
+            .unwrap_or_else(|| "Unknown".to_string());
+
+        let source_ident = battle.active_pokemon
+            .and_then(|(side_idx, poke_idx)| battle.pokemon_at(side_idx, poke_idx))
+            .map(|p| p.get_slot())
+            .unwrap_or_else(|| String::new());
+
+        battle.add(
+            "-status",
+            &[
+                Arg::String(target_ident),
+                Arg::Str("psn"),
+                Arg::String(format!("[from] ability: {}", ability_name)),
+                Arg::String(format!("[of] {}", source_ident)),
+            ],
+        );
+    } else {
+        // this.add('-status', target, 'psn');
+        battle.add("-status", &[Arg::String(target_ident), Arg::Str("psn")]);
+    }
+
     EventResult::Continue
 }
 
 /// onResidual
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// psn: {
-///     onResidual(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onResidualOrder: 9,
+/// onResidual(pokemon) {
+///     this.damage(pokemon.baseMaxhp / 8);
 /// }
+/// ```
 pub fn on_residual(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[PSN_ON_RESIDUAL] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.damage(pokemon.baseMaxhp / 8);
+    let base_maxhp = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.base_maxhp
+    };
+
+    let damage = base_maxhp / 8;
+
+    battle.damage(damage, Some(pokemon_pos), None, None, false);
+
     EventResult::Continue
 }
 
