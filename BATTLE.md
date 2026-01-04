@@ -536,26 +536,31 @@ Added from/to parameter logging to random() function before calling next_raw().
 
 
 
-### Issue 8: Turn 26 - gmaxterror getDamage called twice (IN PROGRESS 🔍)
+### Issue 8: Turn 25 - zenheadbutt secondary effect (FIXED ✅ - actually turn numbering issue!)
 
 **Problem:**
-- Turn 26: JavaScript makes 4 PRNG calls (113->117), Rust makes 5 calls (113->118)
-- Zacian HP now matches (196) after fixing early return for Max moves without dynamax
+- Rust iteration #32 labeled as "turn 26": JavaScript makes 4 PRNG calls (113->117), Rust makes 5 calls (113->118)
+- Zacian HP matches (196) after fixing Max move early return
 - But Rust makes 1 extra PRNG call
 
-**Root Cause Found:**
-getDamage is being called TWICE for gmaxterror in Rust:
-- PRNG #115: crit check, randomChance(1, 24), result=false
-- PRNG #118: crit check, randomChance(1, 24), result=true
+**Root Cause FOUND:**
+After adding detailed logging, discovered:
+1. Rust's turn numbers in output are OFF BY 1 (iteration #32 is actually turn 25, not 26)
+2. Turn 25 in Rust executes:
+   - zenheadbutt: PRNG 113->117 (4 calls total: accuracy + damage rolls + **secondary flinch roll at #117**)
+   - gmaxterror: PRNG 117->118 (1 call: crit check at #118, then early return due to basePower=0)
+3. JavaScript turn 26 (equivalent to Rust turn 25):
+   - Only makes 4 PRNG calls (113->117)
+   - Does NOT make the secondary flinch roll at #117
+   - Does NOT make the gmaxterror crit check at #118
 
-Both calls are from get_damage → random_chance, so getDamage is executing twice when it should only execute once.
-
-**Hypothesis:**
-gmaxterror might be hitting multiple targets (adjacentFoe), causing spread_move_hit to call getDamage for each target. But in a 1v1 battle, there should only be one target.
+**The Extra Calls:**
+- PRNG #117: zenheadbutt secondary effect (flinch) - Rust makes this call, JavaScript doesn't
+- PRNG #118: gmaxterror crit check - Rust makes this call, JavaScript doesn't
 
 **Next Steps:**
-1. Check how many targets gmaxterror is hitting in spread_move_hit
-2. Compare with JavaScript to see if it's also calling getDamage twice
-3. If Rust is calling it twice but JavaScript once, find why
+1. Investigate why JavaScript doesn't make the zenheadbutt secondary roll
+2. Check if there's an ability (Shield Dust?) that should filter it out
+3. Investigate why JavaScript doesn't make the gmaxterror crit check (should early return before crit)
 
 ---

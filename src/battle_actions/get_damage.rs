@@ -161,6 +161,14 @@ pub fn get_damage(
     target_pos: (usize, usize),
     move_id: &ID,
 ) -> Option<i32> {
+    // Log entry to track multiple calls
+    if move_id.as_str() == "gmaxterror" {
+        eprintln!("[GET_DAMAGE ENTRY] Turn {}: Called for move '{}' from {:?} to {:?}, PRNG={}",
+            battle.turn, move_id, source_pos, target_pos, battle.prng.call_count);
+        eprintln!("[GET_DAMAGE ENTRY] Stack trace:");
+        eprintln!("{}", std::backtrace::Backtrace::force_capture());
+    }
+
     // Get move data
     let move_data = match battle.dex.moves().get(move_id.as_str()) {
         Some(m) => m.clone(),
