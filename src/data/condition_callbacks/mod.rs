@@ -333,10 +333,11 @@ pub fn dispatch_on_modify_sp_d(
 pub fn dispatch_on_modify_spe(
     battle: &mut Battle,
     condition_id: &str,
+    spe: i32,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match condition_id {
-        "par" => par::on_modify_spe(battle, pokemon_pos),
+        "par" => par::on_modify_spe(battle, spe, pokemon_pos),
         _ => EventResult::Continue,
     }
 }

@@ -91,7 +91,7 @@ impl Battle {
                 condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, pokemon_pos)
             }
             "ModifySpe" => {
-                condition_callbacks::dispatch_on_modify_spe(self, condition_id, pokemon_pos)
+                condition_callbacks::dispatch_on_modify_spe(self, condition_id, 0, pokemon_pos)
             }
             "MoveAborted" => {
                 condition_callbacks::dispatch_on_move_aborted(self, condition_id, pokemon_pos)
