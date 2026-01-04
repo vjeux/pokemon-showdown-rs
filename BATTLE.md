@@ -1259,13 +1259,28 @@ All iterations match JavaScript exactly!
 
 ### Seed 2: ❌ DIVERGES AT ITERATION #2
 - Iteration #1 matches (prng 0->5)
-- Iteration #2 diverges:  
+- Iteration #2 diverges:
   - JavaScript: prng=5->6 (1 call)
   - Rust: prng=5->7 (2 calls)
 - Rust makes 1 extra PRNG call
 - All subsequent iterations diverge due to PRNG desync
 
-**Status:** Need to investigate what causes the extra PRNG call 🔍
+**Investigation (2026-01-03):**
+Found the extra PRNG call source:
+1. During turn 2, King's Shield is used → adds kingsshield (duration=1) + stall (duration=2) volatiles
+2. Turn 2 Residual processing collects handlers for both volatiles:
+   - kingsshield: has duration, added to residual handlers
+   - stall: has duration (but NO onResidual callback), added to residual handlers
+3. Both handlers tie in priority/speed → triggers shuffle_range → PRNG call (from=0, to=2)
+4. JavaScript only makes 1 PRNG call (rockthrow accuracy check), suggesting shuffle doesn't happen
+
+**Possible causes:**
+- JavaScript might not add stall volatile
+- JavaScript's shuffle might have special case for 2 items
+- JavaScript's residual handler collection might filter out stall (no onResidual callback)
+- Different timing of volatile addition/removal
+
+**Status:** Investigating why JavaScript doesn't shuffle 2 tied residual handlers 🔍
 
 ### Seed 3: ❌ DIVERGES AT ITERATION #30 (59.5% passing)
 - Iterations #1-#28 match perfectly
