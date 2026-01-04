@@ -1407,6 +1407,29 @@ Possible causes:
 2. Verify if there's a TryHit/TryMove callback blocking outrage
 3. Check if Seedot switching in affects move execution
 
-**Status:** Investigating why outrage executes but doesn't deal damage in JavaScript 🔬
+**ROOT CAUSE IDENTIFIED:**
+
+Kirlia is Psychic/Fairy type. outrage is Dragon type. Fairy-type Pokemon are IMMUNE to Dragon-type moves.
+
+JavaScript's type immunity check correctly blocks outrage before damage calculation.
+Rust was passing the move ID instead of move TYPE to run_immunity, and wasn't checking ignoreImmunity.
+
+**FIXES APPLIED:**
+1. Fixed hit_step_type_immunity.rs to pass `&active_move.move_type` instead of `active_move.id.as_str()`
+2. Added ignoreImmunity check before calling run_immunity to match JavaScript logic
+
+**COMMIT:** [To be committed]
+
+**NEW ISSUE DISCOVERED:**
+
+After fixing type immunity, iteration #30 STILL diverges, but for a different reason:
+- Rust #30: turn=23, prng=106->113 (7 calls), Kirlia faints
+- JavaScript #30: turn=24, prng=106->109 (3 calls), Kirlia survives
+
+The turn numbers are different! This is the same Issue #14 from earlier - Rust re-executes turn 23 after the forced switch (iteration #29), while JavaScript correctly moves to turn 24.
+
+This is a turn increment bug, not a type immunity bug. The type immunity fix is correct and necessary, but doesn't solve the root cause.
+
+**Status:** Type immunity fixed, but Issue #14 (turn increment after forced switch) remains 🔍
 
 ---

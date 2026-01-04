@@ -41,12 +41,28 @@ pub fn hit_step_type_immunity(
     // }
     let mut hit_results = Vec::new();
     for &target_pos in targets {
-        let hit_result = Pokemon::run_immunity(
-            battle,
-            target_pos,
-            active_move.id.as_str(),
-            !active_move.smart_target.unwrap_or(false),
-        );
+        // JavaScript runImmunity checks: if (source.ignoreImmunity && (source.ignoreImmunity === true || source.ignoreImmunity[type]))
+        // Check if move should ignore immunity for this type
+        let should_ignore_immunity = match &active_move.ignore_immunity {
+            Some(crate::battle_actions::IgnoreImmunity::All) => true,
+            Some(crate::battle_actions::IgnoreImmunity::Specific(map)) => {
+                map.get(&active_move.move_type).copied().unwrap_or(false)
+            },
+            None => false,
+        };
+
+        let hit_result = if should_ignore_immunity {
+            // Bypass immunity check - move hits regardless of type immunity
+            true
+        } else {
+            // Normal immunity check
+            Pokemon::run_immunity(
+                battle,
+                target_pos,
+                &active_move.move_type,
+                !active_move.smart_target.unwrap_or(false),
+            )
+        };
         hit_results.push(hit_result);
     }
 
