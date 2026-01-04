@@ -344,3 +344,62 @@ In JavaScript, the kingsshield onTryHit blocks the move BEFORE the accuracy chec
 2. Identify which code path is calling PRNG extra times
 3. Compare JavaScript and Rust execution at that turn
 
+
+
+**Investigation Progress:**
+
+Using improved PRNG tracing (commit 1b003677), identified the extra calls:
+
+**JavaScript turn 26 (PRNG 113->117):**
+- #113: from=100 (accuracy/chance check)
+- #114: from=100 (accuracy/chance check)
+- #115: from=24 (damage roll)
+- #116: from=16 (random selection)
+
+**Rust turn 26 (PRNG 113->119):**
+- #113: from=100 (accuracy/chance check)
+- #114: from=100 (accuracy/chance check) 
+- #115: from=24 (damage roll)
+- #116: from=16 (random selection)
+- #117: from=100 (EXTRA secondary effect roll - 20% chance) <- spread_move_hit
+- #118: from=24 (EXTRA damage roll) <- get_damage
+
+**Root Cause FOUND:**
+The extra PRNG calls are from gmaxterror (G-Max Terror move):
+- gmaxterror is a Gengar-specific Max move with `isMax: "Gengar"`
+- Golem-Alola doesn't have the 'dynamax' volatile
+- JavaScript: Max move check happens BEFORE crit calculation or via BasePower event returning 0 → NO PRNG calls
+- Rust: Max move check happens AFTER crit calculation → 2 PRNG calls (crit + randomizer)
+
+**PRNG Calls:**
+- #118: Crit check for gmaxterror (from=24)
+- #119: Damage randomizer for gmaxterror (from=16)
+
+**Fix Needed:**
+Move the Max move dynamax check in get_damage.rs to happen BEFORE the crit calculation.
+This will set basePower = 0 before `if base_power > 0` check, preventing the crit PRNG call.
+
+---
+
+### Debugging Tool Improvement: PRNG Tracing (COMPLETED ✅)
+
+**Problem:**
+Rust PRNG tracing showed raw values but not the context (from/to parameters), making it hard to identify what type of RNG call was being made.
+
+**Solution:**
+Added from/to parameter logging to random() function before calling next_raw().
+
+**Changes:**
+- Modified src/prng.rs random() function to log parameters when TRACE_PRNG is set
+- Now shows: [random(from=100, to=None)] before each PRNG call
+- Created tests/compare-prng-trace.sh to compare JS and Rust PRNG traces side-by-side
+
+**Commit:** 1b003677
+
+**Results:**
+- ✅ Can now identify accuracy checks (from=100)
+- ✅ Can identify damage rolls (from=24)
+- ✅ Can identify random selections (from=16, etc.)
+- ✅ Easy to spot divergences in PRNG usage patterns
+
+

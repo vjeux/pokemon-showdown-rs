@@ -251,13 +251,45 @@ pub fn get_damage(
         return Some(0); // No damage dealt, move continues
     }
 
+    // JavaScript: if (!source.volatiles["dynamax"] && move.isMax || move.isMax && this.dex.moves.get(move.baseMove).isMax) { basePower = 0; }
+    // CRITICAL: Max/G-Max moves used without dynamax do 0 damage!
+    // This check MUST happen BEFORE the crit calculation to prevent PRNG calls for 0-damage moves
+    // This happens when a Pokemon uses a Max move without being dynamaxed
+    if move_data.is_max.is_some() {
+        let has_dynamax_volatile = if let Some(side) = battle.sides.get(source_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+                pokemon.has_volatile(&ID::new("dynamax"))
+            } else {
+                false
+            }
+        } else {
+            false
+        };
+
+        // Check first condition: !source.volatiles["dynamax"] && move.isMax
+        if !has_dynamax_volatile {
+            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, returning Some(0)");
+            return Some(0); // Return early - no damage, no PRNG calls
+        } else if let Some(ref base_move_id) = move_data.base_move {
+            // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
+            // This checks if the base move (the original move before dynamax conversion) is also a Max move
+            if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
+                if base_move_data.is_max.is_some() {
+                    // Hacked Max Move: the base move is itself a Max move
+                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), returning Some(0)");
+                    return Some(0); // Return early - no damage, no PRNG calls
+                }
+            }
+        }
+    }
+
     // Calculate critical hit only if we might deal damage
     // JavaScript: let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
     let mut crit_ratio = move_data.crit_ratio;
     let mut is_crit = false;
 
     // Only calculate crit if basePower is non-zero
-    // This prevents PRNG calls for non-damaging moves
+    // This prevents PRNG calls for non-damaging moves AND for Max moves without dynamax
     if base_power > 0 {
         // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
         if let Some(modified_crit) = battle.run_event(
@@ -338,42 +370,6 @@ pub fn get_damage(
     } else {
         eprintln!("[GET_DAMAGE] No BasePower event modification");
     }
-
-    // JavaScript: if (!source.volatiles["dynamax"] && move.isMax || move.isMax && this.dex.moves.get(move.baseMove).isMax) { basePower = 0; }
-    // CRITICAL: Max/G-Max moves used without dynamax do 0 damage!
-    // This happens when a Pokemon uses a Max move in the turn after un-dynamaxing
-    if move_data.is_max.is_some() {
-        let has_dynamax_volatile = if let Some(side) = battle.sides.get(source_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-                pokemon.has_volatile(&ID::new("dynamax"))
-            } else {
-                false
-            }
-        } else {
-            false
-        };
-
-        // Check first condition: !source.volatiles["dynamax"] && move.isMax
-        if !has_dynamax_volatile {
-            base_power = 0;
-            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower to 0");
-        } else if let Some(ref base_move_id) = move_data.base_move {
-            // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
-            // This checks if the base move (the original move before dynamax conversion) is also a Max move
-            if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
-                if base_move_data.is_max.is_some() {
-                    // Hacked Max Move: the base move is itself a Max move
-                    base_power = 0;
-                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower to 0");
-                }
-            }
-        }
-    }
-
-    // NOTE: Do NOT return early if base_power == 0 here!
-    // JavaScript continues with the damage calculation even when basePower is 0,
-    // resulting in baseDamage=0, which then gets passed to modifyDamage
-    // modifyDamage will add 2 and randomize, resulting in 1 damage (minimum)
 
     // Get attacker level
     let level = if let Some(side) = battle.sides.get(source_pos.0) {
