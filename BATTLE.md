@@ -1354,3 +1354,59 @@ JavaScript may have subtle difference in:
 - Investigate Seed 2 iteration #2 PRNG divergence (simpler issue)
 - Resolve Seed 3 Issue #16 (mid_turn after forced switch)
 
+
+### Issue 16: Iteration #30 - Move Execution Order Investigation (IN PROGRESS 🔍)
+
+**CRITICAL FINDING:**
+
+Both JavaScript and Rust execute ALL 4 actions in iteration #30:
+1. beforeTurn
+2. wakeupslap (Kirlia → Seedot)
+3. outrage (Seedot → Kirlia)
+4. residual
+
+**PRNG Call Breakdown:**
+
+JavaScript (106→109, 3 calls total):
+- wakeupslap: 3 calls (accuracy, crit, damage randomizer)  
+- outrage: 0 calls ❌
+
+Rust (106->113, 7 calls total):
+- wakeupslap: 3 calls (accuracy #107, crit #108, damage randomizer #109)
+- outrage: 4 calls (accuracy #110, crit #111, damage randomizer #112, **duration #113**)
+
+**HP Outcomes:**
+
+JavaScript:
+- Seedot: 212 → 183 HP (took 29 damage from wakeupslap) ✓
+- Kirlia: 113 → 113 HP (NO damage from outrage) ❌
+
+Rust:
+- Seedot: 212 → 183 HP (took 29 damage from wakeupslap) ✓  
+- Kirlia: 113 → 0 HP (took 113+ damage from outrage, fainted) ✓
+
+**Key Observation:**
+
+outrage's PP decreases in JavaScript (16→15), proving the move executed.
+BUT outrage makes 0 PRNG calls and deals 0 damage.
+
+This means outrage fails/returns early AFTER consuming PP but BEFORE damage calculation.
+
+**Hypothesis:**
+
+outrage is blocked by a TryMove, TryHit, or similar event in JavaScript that isn't triggered in Rust.
+
+Possible causes:
+1. Target validation fails (Kirlia becomes invalid)
+2. Move is blocked by immunity check
+3. TryHit event prevents the move
+4. Something special about moves used by newly-switched Pokemon
+
+**Next Steps:**
+1. Check if JavaScript has immunity to Dragon-type moves (outrage is Dragon)
+2. Verify if there's a TryHit/TryMove callback blocking outrage
+3. Check if Seedot switching in affects move execution
+
+**Status:** Investigating why outrage executes but doesn't deal damage in JavaScript 🔬
+
+---
