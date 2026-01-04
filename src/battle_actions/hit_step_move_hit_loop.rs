@@ -477,7 +477,7 @@ pub fn hit_step_move_hit_loop(
                 Some(p) => p,
                 None => (0, 0, 0),
             };
-            let recoil = crate::battle_actions::calc_recoil_damage::calc_recoil_damage(
+            let recoil = battle_actions::BattleActions::calc_recoil_damage(
                 active_move.total_damage,
                 active_move.id.as_str(),
                 active_move.recoil,

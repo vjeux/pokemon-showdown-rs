@@ -764,11 +764,11 @@ pub fn use_move_inner(
     ) {
         // Field-wide moves - for now, treat like targeted moves with single target
         // Full implementation would use tryMoveHit instead of trySpreadMoveHit
-        crate::battle_actions::try_spread_move_hit(battle, &[target_pos], pokemon_pos, move_or_move_name)
+        crate::battle_actions::try_spread_move_hit(battle, &[target_pos], pokemon_pos, move_or_move_name, false)
     } else {
         // Targeted moves - use trySpreadMoveHit
         // For now, we're using a single target (proper implementation would get all targets)
-        crate::battle_actions::try_spread_move_hit(battle, &[target_pos], pokemon_pos, move_or_move_name)
+        crate::battle_actions::try_spread_move_hit(battle, &[target_pos], pokemon_pos, move_or_move_name, false)
     };
 
     // JS: this.battle.eachEvent('Update'); (line 969 - inside hit loop, after spreadMoveHit)

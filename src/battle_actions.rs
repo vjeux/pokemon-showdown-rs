@@ -59,6 +59,7 @@ mod hit_step_type_immunity;
 mod try_primary_hit_event;
 mod self_drops;
 mod secondaries;
+mod hit_step_move_hit_loop;
 pub use can_mega_evo::can_mega_evo;
 pub use can_ultra_burst::can_ultra_burst;
 pub use can_terastallize::can_terastallize;
@@ -95,6 +96,7 @@ pub use hit_step_type_immunity::hit_step_type_immunity;
 pub use try_primary_hit_event::try_primary_hit_event;
 pub use self_drops::self_drops;
 pub use secondaries::secondaries;
+pub use hit_step_move_hit_loop::hit_step_move_hit_loop;
 
 /// Choosable target types for moves
 /// JavaScript equivalent: CHOOSABLE_TARGETS constant (sim/battle-actions.ts)
