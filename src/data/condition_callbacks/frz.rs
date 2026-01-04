@@ -111,7 +111,7 @@ pub fn on_before_move(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     // Get move info
-    let (has_defrost, move_id, move_name) = match &battle.active_move {
+    let (has_defrost, move_id, _move_name) = match &battle.active_move {
         Some(m) => (m.flags.defrost, m.id.as_str(), m.name.clone()),
         None => return EventResult::Continue,
     };
