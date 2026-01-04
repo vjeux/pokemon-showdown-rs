@@ -50,10 +50,10 @@ pub fn hit_step_move_hit_loop(
                 if battle.gen >= 5 {
                     // 35-35-15-15 out of 100 for 2-3-4-5 hits
                     let distribution = vec![2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5];
-                    let mut hits = battle.sample(&distribution) as i32;
+                    let mut hits = *battle.sample(&distribution).unwrap();
                     if hits < 4 {
                         let has_loaded_dice = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
-                            .map(|p| p.has_item(battle, "loadeddice"))
+                            .map(|p| p.has_item(battle, &["loadeddice"]))
                             .unwrap_or(false);
                         if has_loaded_dice {
                             hits = 5 - battle.random(2) as i32;
@@ -62,11 +62,11 @@ pub fn hit_step_move_hit_loop(
                     hits
                 } else {
                     let distribution = vec![2, 2, 2, 3, 3, 3, 4, 5];
-                    battle.sample(&distribution) as i32
+                    *battle.sample(&distribution).unwrap()
                 }
             } else {
                 // For other ranges, just pick a random value in the range
-                battle.random((*max - *min + 1) as usize) as i32 + *min
+                battle.random((*max - *min + 1) as i32) + *min
             }
         }
         None => 1,
@@ -76,7 +76,7 @@ pub fn hit_step_move_hit_loop(
     // if (targetHits === 10 && pokemon.hasItem('loadeddice')) targetHits -= this.battle.random(7);
     if target_hits == 10 {
         let has_loaded_dice = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
-            .map(|p| p.has_item(battle, "loadeddice"))
+            .map(|p| p.has_item(battle, &["loadeddice"]))
             .unwrap_or(false);
         if has_loaded_dice {
             target_hits -= battle.random(7) as i32;
@@ -123,7 +123,7 @@ pub fn hit_step_move_hit_loop(
         // if (hit > 1 && pokemon.status === 'slp' && (!isSleepUsable || this.battle.gen === 4)) break;
         if hit > 1 {
             let is_asleep = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
-                .map(|p| p.status.as_ref().map(|s| s.as_str() == "slp").unwrap_or(false))
+                .map(|p| p.status.as_str() == "slp")
                 .unwrap_or(false);
             if is_asleep && (!is_sleep_usable || battle.gen == 4) {
                 break;
@@ -183,14 +183,20 @@ pub fn hit_step_move_hit_loop(
                         let pokemon_str = {
                             let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                                 Some(p) => p,
-                                None => return,
+                                None => {
+                                    hit += 1;
+                                    continue;
+                                }
                             };
                             pokemon.get_slot()
                         };
                         let target_str = {
                             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                                 Some(p) => p,
-                                None => return,
+                                None => {
+                                    hit += 1;
+                                    continue;
+                                }
                             };
                             target_pokemon.get_slot()
                         };
@@ -237,7 +243,7 @@ pub fn hit_step_move_hit_loop(
             use crate::dex::Accuracy;
 
             let target = match targets_copy.first() {
-                Some(SpreadMoveTarget::Position(pos)) => *pos,
+                Some(SpreadMoveTarget::Target(pos)) => *pos,
                 _ => {
                     // No valid target, skip multiaccuracy check
                     hit += 1;
@@ -325,7 +331,7 @@ pub fn hit_step_move_hit_loop(
             // if (!move.alwaysHit) {
             //     if (accuracy !== true && !this.battle.randomChance(accuracy, 100)) break;
             // }
-            if !active_move.always_hit.unwrap_or(false) {
+            if !active_move.always_hit {
                 // Check random chance
                 if !battle.random_chance(accuracy_value as i32, 100) {
                     // Accuracy check failed, break out of hit loop
@@ -336,12 +342,16 @@ pub fn hit_step_move_hit_loop(
 
         // Modifies targetsCopy (which is why it's a copy)
         // [moveDamageThisHit, targetsCopy] = this.spreadMoveHit(targetsCopy, pokemon, move, moveData);
-        let move_damage_this_hit = battle_actions::spread_move_hit(
+        let (move_damage_this_hit, targets_copy_updated) = crate::battle_actions::spread_move_hit(
             battle,
-            &mut targets_copy,
+            &targets_copy,
             attacker_pos,
-            active_move,
+            &active_move.id,
+            None, // hit_effect_id
+            false, // is_secondary
+            false, // is_self
         );
+        targets_copy = targets_copy_updated;
 
         // if (move.smartTarget) {
         //     moveDamage.push(...moveDamageThisHit);
@@ -391,7 +401,7 @@ pub fn hit_step_move_hit_loop(
         //     }
         // }
         if active_move.mindblown_recoil {
-            let (hp_before_recoil, max_hp) = {
+            let (hp_before_recoil, maxhp) = {
                 let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                     Some(p) => p,
                     None => {
@@ -399,23 +409,23 @@ pub fn hit_step_move_hit_loop(
                         continue;
                     }
                 };
-                (pokemon.hp, pokemon.max_hp)
+                (pokemon.hp, pokemon.maxhp)
             };
 
-            let recoil_damage = (max_hp as f64 / 2.0).round() as i32;
-            Pokemon::damage(battle, attacker_pos, recoil_damage, Some(attacker_pos), Some(&active_move.id));
+            let recoil_damage = (maxhp as f64 / 2.0).round() as i32;
+            battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&active_move.id), false);
             active_move.mindblown_recoil = false;
 
             let hp_after = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
                 .map(|p| p.hp)
                 .unwrap_or(0);
-            if hp_after <= max_hp / 2 && hp_before_recoil > max_hp / 2 {
+            if hp_after <= maxhp / 2 && hp_before_recoil > maxhp / 2 {
                 battle.run_event("EmergencyExit", Some(attacker_pos), Some(attacker_pos), None, None);
             }
         }
 
         // this.battle.eachEvent('Update');
-        battle.each_event("Update");
+        battle.each_event("Update", None, None);
 
         // if (!pokemon.hp && targets.length === 1) {
         //     hit++; // report the correct number of hits for multihit moves
@@ -458,7 +468,7 @@ pub fn hit_step_move_hit_loop(
                 let target_ident = format!("p{}a: {}", target_pos.0 + 1, target_pokemon.set.species);
                 battle.add("-hitcount", &[
                     crate::battle::Arg::String(target_ident),
-                    crate::battle::Arg::Number(hit - 1),
+                    crate::battle::Arg::from((hit - 1).to_string()),
                 ]);
             }
         }
@@ -472,22 +482,21 @@ pub fn hit_step_move_hit_loop(
     //     }
     // }
     if (active_move.recoil.is_some() || active_move.id.as_str() == "chloroblast") && active_move.total_damage > 0 {
-        let (hp_before_recoil, max_hp, recoil_damage) = {
-            let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
-                Some(p) => p,
-                None => (0, 0, 0),
-            };
-            let recoil = battle_actions::BattleActions::calc_recoil_damage(
-                active_move.total_damage,
-                active_move.id.as_str(),
-                active_move.recoil,
-                pokemon.max_hp,
-            );
-            (pokemon.hp, pokemon.max_hp, recoil)
+        let (hp_before_recoil, max_hp, recoil_damage) = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+            Some(pokemon) => {
+                let recoil = battle_actions::BattleActions::calc_recoil_damage(
+                    active_move.total_damage,
+                    active_move.id.as_str(),
+                    active_move.recoil,
+                    pokemon.maxhp,
+                );
+                (pokemon.hp, pokemon.maxhp, recoil)
+            }
+            None => (0, 0, 0),
         };
 
         if recoil_damage > 0 {
-            Pokemon::damage(battle, attacker_pos, recoil_damage, Some(attacker_pos), Some(&ID::from("recoil")));
+            battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&ID::from("recoil")), false);
 
             let hp_after = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
                 .map(|p| p.hp)
@@ -512,12 +521,9 @@ pub fn hit_step_move_hit_loop(
     //     }
     // }
     if active_move.struggle_recoil {
-        let (hp_before_recoil, max_hp, base_max_hp) = {
-            let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
-                Some(p) => p,
-                None => (0, 0, 0),
-            };
-            (pokemon.hp, pokemon.max_hp, pokemon.base_max_hp)
+        let (hp_before_recoil, max_hp, base_max_hp) = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+            Some(pokemon) => (pokemon.hp, pokemon.maxhp, pokemon.base_maxhp),
+            None => (0, 0, 0),
         };
 
         let recoil_damage = if battle.gen >= 5 {
@@ -526,7 +532,7 @@ pub fn hit_step_move_hit_loop(
             ((max_hp / 4) as i32).max(1)
         };
 
-        Pokemon::direct_damage(battle, attacker_pos, recoil_damage, Some(attacker_pos), Some(&ID::from("strugglerecoil")));
+        battle.direct_damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&ID::from("strugglerecoil")));
 
         let hp_after = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
             .map(|p| p.hp)
@@ -556,7 +562,14 @@ pub fn hit_step_move_hit_loop(
         if let SpreadMoveTarget::Target(target_pos) = target {
             if *target_pos != attacker_pos {
                 let damage_value = move_damage.get(i).cloned();
-                Pokemon::got_attacked(battle, *target_pos, &active_move.id, damage_value, attacker_pos);
+                // Extract i32 damage from SpreadMoveDamageValue
+                let damage_int = match damage_value {
+                    Some(SpreadMoveDamageValue::Damage(d)) => d,
+                    _ => 0,
+                };
+                if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+                    target_pokemon.got_attacked(active_move.id.clone(), damage_int, attacker_pos.0, attacker_pos.1);
+                }
 
                 if let Some(SpreadMoveDamageValue::Damage(_)) = damage_value {
                     let times_to_add = if active_move.smart_target.unwrap_or(false) { 1 } else { hit - 1 };
@@ -586,7 +599,7 @@ pub fn hit_step_move_hit_loop(
     }
 
     // this.battle.eachEvent('Update');
-    battle.each_event("Update");
+    battle.each_event("Update", None, None);
 
     // this.afterMoveSecondaryEvent(targetsCopy.filter(val => !!val), pokemon, move);
     let valid_targets: Vec<(usize, usize)> = targets_copy.iter()
@@ -632,11 +645,11 @@ pub fn hit_step_move_hit_loop(
                             Some(p) => p,
                             None => continue,
                         };
-                        (target.hp, target.max_hp, target.hurt_this_turn)
+                        (target.hp, target.maxhp, target.hurt_this_turn)
                     };
 
                     if target_hp > 0 {
-                        let target_hp_before_damage = hurt_this_turn + cur_damage;
+                        let target_hp_before_damage = hurt_this_turn.unwrap_or(0) + cur_damage;
                         if target_hp <= target_max_hp / 2 && target_hp_before_damage > target_max_hp / 2 {
                             battle.run_event("EmergencyExit", Some(*target_pos), Some(attacker_pos), None, None);
                         }
