@@ -204,6 +204,8 @@ pub fn spread_move_hit(
         is_self,
     );
 
+    eprintln!("[SPREAD_MOVE_HIT T{}] After run_move_effects, damages={:?}", battle.turn, damages);
+
     // JavaScript (battle-actions.ts:1103-1105):
     //   for (const i of targets.keys()) {
     //     if (!damage[i] && damage[i] !== 0) targets[i] = false;
@@ -386,10 +388,17 @@ pub fn spread_move_hit(
     //       }
     //     }
     //   }
-    eprintln!("[SPREAD_MOVE_HIT T{}] Checking secondary for move {}: has_secondary={}, filtered_targets.len()={}",
-        battle.turn, move_id, move_data.secondary.is_some(), filtered_targets.len());
-    if let Some(ref secondary_effect) = move_data.secondary {
-        eprintln!("[SPREAD_MOVE_HIT T{}] Processing secondary effect, chance={:?}", battle.turn, secondary_effect.chance);
+    // Get secondaries from active_move (which normalizes secondary -> secondaries)
+    // JS processes moveData.secondaries (plural) which is normalized from secondary (singular)
+    let has_secondaries_to_process = battle.active_move
+        .as_ref()
+        .map(|m| !m.secondaries.is_empty())
+        .unwrap_or(false);
+
+    eprintln!("[SPREAD_MOVE_HIT T{}] Checking secondaries for move {}: has_secondaries={}, filtered_targets.len()={}",
+        battle.turn, move_id, has_secondaries_to_process, filtered_targets.len());
+
+    if has_secondaries_to_process {
         // JS: for (const target of targets) { if (target === false) continue; ... }
         // Use filtered_targets instead of final_targets to match JavaScript filtering
         for (i, &target_opt) in filtered_targets.iter().enumerate() {
@@ -398,6 +407,8 @@ pub fn spread_move_hit(
                 continue;
             }
             let target_pos = target_opt.unwrap();
+
+            eprintln!("[SPREAD_MOVE_HIT T{}] Processing secondaries for move {} on target {:?}", battle.turn, move_id, target_pos);
 
             // JS: const secondaries = this.battle.runEvent('ModifySecondaries', target, source, moveData, moveData.secondaries.slice());
             // Call ModifySecondaries event to allow abilities like Shield Dust to filter secondaries
@@ -408,6 +419,8 @@ pub fn spread_move_hit(
                 Some(move_id),
                 None,
             );
+
+            eprintln!("[SPREAD_MOVE_HIT T{}] After ModifySecondaries event", battle.turn);
 
             // After ModifySecondaries, check if there are any secondaries left
             // Shield Dust filters out secondaries by modifying active_move.secondaries
@@ -422,25 +435,54 @@ pub fn spread_move_hit(
                 continue;
             }
 
-            eprintln!("[SPREAD_MOVE_HIT T{}] Making PRNG call for secondary on target {:?}", battle.turn, target_pos);
+            eprintln!("[SPREAD_MOVE_HIT T{}] Secondaries exist, will process {} secondary effects", battle.turn, battle.active_move.as_ref().map(|m| m.secondaries.len()).unwrap_or(0));
 
-            // JS: const secondaryRoll = this.battle.random(100);
-            let secondary_roll = battle.random(100) as i32;
-            eprintln!("[SPREAD_MOVE_HIT T{}] Secondary roll={}, chance={:?}", battle.turn, secondary_roll, secondary_effect.chance);
+            // Get the secondaries array from active_move
+            // JS: for (const secondary of secondaries) {
+            let secondaries_to_process: Vec<_> = battle.active_move
+                .as_ref()
+                .map(|m| m.secondaries.clone())
+                .unwrap_or_default();
 
-            // JS: const secondaryOverflow = (secondary.boosts || secondary.self) && this.battle.gen <= 8;
-            // For now, skip the overflow logic (gen 8 and below edge case)
-            // JS: if (typeof secondary.chance === "undefined" || secondaryRoll < secondary.chance)
-            let should_apply = secondary_effect.chance.map_or(true, |chance| secondary_roll < chance);
+            for secondary_effect in secondaries_to_process {
+                eprintln!("[SPREAD_MOVE_HIT T{}] Processing secondary effect, chance={:?}", battle.turn, secondary_effect.chance);
+                eprintln!("[SPREAD_MOVE_HIT T{}] Making PRNG call for secondary on target {:?}", battle.turn, target_pos);
 
-            if should_apply {
+                // JS: const secondaryRoll = this.battle.random(100);
+                let secondary_roll = battle.random(100) as i32;
+                eprintln!("[SPREAD_MOVE_HIT T{}] Secondary roll={}, chance={:?}", battle.turn, secondary_roll, secondary_effect.chance);
+
+                // JS: const secondaryOverflow = (secondary.boosts || secondary.self) && this.battle.gen <= 8;
+                // For now, skip the overflow logic (gen 8 and below edge case)
+                // JS: if (typeof secondary.chance === "undefined" || secondaryRoll < secondary.chance)
+                let should_apply = secondary_effect.chance.map_or(true, |chance| secondary_roll < chance);
+
+                if should_apply {
                 // JS: this.moveHit(target, source, move, secondary, true, isSelf);
                 // Apply boosts from secondary effect
-                if let Some(ref boosts) = secondary_effect.boosts {
-                    let boost_array: Vec<(&str, i8)> = boosts
-                        .iter()
-                        .map(|(stat, &value)| (stat.as_str(), value as i8))
-                        .collect();
+                if let Some(boosts) = secondary_effect.boosts {
+                    let mut boost_array: Vec<(&str, i8)> = Vec::new();
+                    if boosts.atk != 0 {
+                        boost_array.push(("atk", boosts.atk));
+                    }
+                    if boosts.def != 0 {
+                        boost_array.push(("def", boosts.def));
+                    }
+                    if boosts.spa != 0 {
+                        boost_array.push(("spa", boosts.spa));
+                    }
+                    if boosts.spd != 0 {
+                        boost_array.push(("spd", boosts.spd));
+                    }
+                    if boosts.spe != 0 {
+                        boost_array.push(("spe", boosts.spe));
+                    }
+                    if boosts.accuracy != 0 {
+                        boost_array.push(("accuracy", boosts.accuracy));
+                    }
+                    if boosts.evasion != 0 {
+                        boost_array.push(("evasion", boosts.evasion));
+                    }
 
                     battle.boost(
                         &boost_array,
@@ -468,7 +510,7 @@ pub fn spread_move_hit(
                 // JS: if (moveData.volatileStatus) {
                 //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                 // }
-                if let Some(ref volatile_status_name) = secondary_effect.volatile_status_secondary {
+                if let Some(ref volatile_status_name) = secondary_effect.volatile_status {
                     eprintln!("[SPREAD_MOVE_HIT T{}] Applying volatile status '{}' from secondary to target {:?}",
                         battle.turn, volatile_status_name, target_pos);
 
@@ -541,6 +583,7 @@ pub fn spread_move_hit(
                     eprintln!("[SPREAD_MOVE_HIT T{}] Weather '{}' applied: {}", battle.turn, weather_name, applied);
                 }
             }
+            } // End of for secondary_effect in secondaries_to_process
         }
     }
 
