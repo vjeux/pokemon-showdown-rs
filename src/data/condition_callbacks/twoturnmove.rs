@@ -43,9 +43,9 @@ pub fn on_start(
     // Get the move ID from battle.current_event.effect
     let move_id = battle.current_event.as_ref()
         .and_then(|e| e.effect.as_ref())
-        .map(|id| id.as_str().to_string());
+        .map(|id| id.clone());
 
-    if let Some(ref move_id_str) = move_id {
+    if let Some(ref move_id_val) = move_id {
         // Store move ID in twoturnmove volatile's effectState.data
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -54,19 +54,19 @@ pub fn on_start(
 
         let twoturnmove_id = ID::from("twoturnmove");
         if let Some(state) = pokemon_mut.volatiles.get_mut(&twoturnmove_id) {
-            state.data.insert("move".to_string(), serde_json::json!(move_id_str));
+            state.data.insert("move".to_string(), serde_json::json!(move_id_val.as_str()));
         }
-    }
 
-    // attacker.addVolatile(effect.id);
-    // TODO: Need to add volatile for the specific move (e.g., "dig", "fly", "solarbeam")
-    // This requires calling Pokemon::add_volatile again, which needs careful handling
+        // attacker.addVolatile(effect.id);
+        // Add a volatile for the specific move (e.g., "dig", "fly", "solarbeam")
+        crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), None, None, None, None);
+    }
 
     // TODO: Handle lastMoveTargetLoc and targetLoc storage
     // TODO: this.attrLastMove('[still]');
     // TODO: this.runEvent('PrepareHit', attacker, defender, effect);
 
-    eprintln!("[TWOTURNMOVE_ON_START] Called for {:?}, stored move={:?} - TODO: Add move volatile, lastMoveTargetLoc, attrLastMove, PrepareHit event", pokemon_pos, move_id);
+    eprintln!("[TWOTURNMOVE_ON_START] Called for {:?}, stored move={:?}, added move volatile - TODO: lastMoveTargetLoc, attrLastMove, PrepareHit event", pokemon_pos, move_id);
 
     EventResult::Continue
 }
