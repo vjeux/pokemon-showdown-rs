@@ -74,11 +74,11 @@
     "name": "partiallytrapped",
     "duration": 5,
     "onResidualOrder": 13,
+    "durationCallback": true,
     "onStart": true,
     "onResidual": true,
     "onEnd": true,
-    "onTrapPokemon": true,
-    "durationCallback": true
+    "onTrapPokemon": true
   },
   "lockedmove": {
     "name": "lockedmove",
@@ -136,7 +136,6 @@
     "name": "gem",
     "duration": 1,
     "affectsFainted": true,
-    "onBasePowerPriority": 14,
     "onBasePower": true
   },
   "raindance": {
@@ -144,18 +143,17 @@
     "effectType": "Weather",
     "duration": 5,
     "onFieldResidualOrder": 1,
+    "durationCallback": true,
     "onWeatherModifyDamage": true,
     "onFieldStart": true,
     "onFieldResidual": true,
-    "onFieldEnd": true,
-    "durationCallback": true
+    "onFieldEnd": true
   },
   "primordialsea": {
     "name": "PrimordialSea",
     "effectType": "Weather",
     "duration": 0,
     "onFieldResidualOrder": 1,
-    "onTryMovePriority": 1,
     "onTryMove": true,
     "onWeatherModifyDamage": true,
     "onFieldStart": true,
@@ -167,19 +165,18 @@
     "effectType": "Weather",
     "duration": 5,
     "onFieldResidualOrder": 1,
+    "durationCallback": true,
     "onWeatherModifyDamage": true,
     "onFieldStart": true,
     "onImmunity": true,
     "onFieldResidual": true,
-    "onFieldEnd": true,
-    "durationCallback": true
+    "onFieldEnd": true
   },
   "desolateland": {
     "name": "DesolateLand",
     "effectType": "Weather",
     "duration": 0,
     "onFieldResidualOrder": 1,
-    "onTryMovePriority": 1,
     "onTryMove": true,
     "onWeatherModifyDamage": true,
     "onFieldStart": true,
@@ -193,41 +190,39 @@
     "duration": 5,
     "onModifySpDPriority": 10,
     "onFieldResidualOrder": 1,
+    "durationCallback": true,
     "onModifySpD": true,
     "onFieldStart": true,
     "onFieldResidual": true,
     "onWeather": true,
-    "onFieldEnd": true,
-    "durationCallback": true
+    "onFieldEnd": true
   },
   "hail": {
     "name": "Hail",
     "effectType": "Weather",
     "duration": 5,
     "onFieldResidualOrder": 1,
+    "durationCallback": true,
     "onFieldStart": true,
     "onFieldResidual": true,
     "onWeather": true,
-    "onFieldEnd": true,
-    "durationCallback": true
+    "onFieldEnd": true
   },
   "snowscape": {
     "name": "Snowscape",
     "effectType": "Weather",
     "duration": 5,
-    "onModifyDefPriority": 10,
     "onFieldResidualOrder": 1,
+    "durationCallback": true,
     "onModifyDef": true,
     "onFieldStart": true,
     "onFieldResidual": true,
-    "onFieldEnd": true,
-    "durationCallback": true
+    "onFieldEnd": true
   },
   "deltastream": {
     "name": "DeltaStream",
     "effectType": "Weather",
     "duration": 0,
-    "onEffectivenessPriority": -1,
     "onFieldResidualOrder": 1,
     "onEffectiveness": true,
     "onFieldStart": true,
@@ -237,9 +232,6 @@
   "dynamax": {
     "name": "Dynamax",
     "noCopy": true,
-    "onBeforeSwitchOutPriority": -1,
-    "onDragOutPriority": 2,
-    "onResidualPriority": -100,
     "onStart": true,
     "onTryAddVolatile": true,
     "onBeforeSwitchOut": true,
@@ -251,8 +243,6 @@
   "commanded": {
     "name": "Commanded",
     "noCopy": true,
-    "onDragOutPriority": 2,
-    "onTrapPokemonPriority": -11,
     "onStart": true,
     "onDragOut": true,
     "onTrapPokemon": true
@@ -260,21 +250,16 @@
   "commanding": {
     "name": "Commanding",
     "noCopy": true,
-    "onDragOutPriority": 2,
-    "onTrapPokemonPriority": -11,
-    "onInvulnerability": false,
     "onDragOut": true,
     "onTrapPokemon": true,
     "onBeforeTurn": true
   },
   "arceus": {
     "name": "Arceus",
-    "onTypePriority": 1,
     "onType": true
   },
   "silvally": {
     "name": "Silvally",
-    "onTypePriority": 1,
     "onType": true
   },
   "rolloutstorage": {
