@@ -67,10 +67,24 @@ pub fn on_end(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     // target.removeVolatile(this.effectState.move);
-    // TODO: Need to get move ID from effectState to know which volatile to remove
-    // For now, we can't implement this without accessing the effectState
+    // Get the move ID from the twoturnmove volatile's effectState.data
+    let move_id = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
 
-    eprintln!("[TWOTURNMOVE_ON_END] Called for {:?} - TODO: Remove volatile (need effectState.move)", pokemon_pos);
+        let twoturnmove_id = ID::from("twoturnmove");
+        pokemon.volatiles.get(&twoturnmove_id)
+            .and_then(|v| v.data.get("move"))
+            .and_then(|m| m.as_str())
+            .map(|s| ID::from(s))
+    };
+
+    // Remove the volatile for the specific move (e.g., "dig", "fly", "solarbeam")
+    if let Some(id) = move_id {
+        crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &id);
+    }
 
     EventResult::Continue
 }
@@ -83,16 +97,28 @@ pub fn on_end(
 /// }
 /// ```
 pub fn on_lock_move(
-    _battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
     // return this.effectState.move;
-    // TODO: Need to access effectState.move to return the locked move ID
-    // This should return the move ID string that the Pokemon is locked into
+    // Get the move ID from the twoturnmove volatile's effectState.data
+    let move_id = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
 
-    eprintln!("[TWOTURNMOVE_ON_LOCK_MOVE] TODO: Return effectState.move");
+        let twoturnmove_id = ID::from("twoturnmove");
+        pokemon.volatiles.get(&twoturnmove_id)
+            .and_then(|v| v.data.get("move"))
+            .and_then(|m| m.as_str())
+            .map(|s| s.to_string())
+    };
 
-    EventResult::Continue
+    match move_id {
+        Some(id) => EventResult::String(id),
+        None => EventResult::Continue,
+    }
 }
 
 /// onMoveAborted
