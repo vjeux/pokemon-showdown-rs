@@ -13,6 +13,7 @@ pub mod choice;
 pub mod data;
 pub mod dex;
 pub mod dex_abilities;
+pub mod dex_conditions;
 pub mod dex_data;
 pub mod dex_formats;
 pub mod dex_items;

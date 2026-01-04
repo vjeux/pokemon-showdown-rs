@@ -74,7 +74,7 @@ impl Battle {
         }
 
         // Get condition data for duration
-        if let Some(condition_data) = self.dex.conditions.get(&condition_id) {
+        if let Some(condition_data) = self.dex.conditions().get_by_id(&condition_id) {
             state.duration = condition_data.duration;
 
             // if (status.durationCallback) {

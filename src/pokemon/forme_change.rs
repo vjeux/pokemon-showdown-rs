@@ -283,7 +283,7 @@ impl Pokemon {
                         pokemon.move_this_turn_result = Some(true); // Ultra Burst/Mega counts as an action for Truant
                     }
                     pokemon.forme_regression = true;
-                } else if battle.dex.conditions.get(source).is_some() {
+                } else if battle.dex.conditions().get(source.as_str()).is_some() {
                     // Source is a Status (e.g., Shaymin-Sky -> Shaymin)
                     let mut args = vec![
                         pokemon_slot.as_str().into(),

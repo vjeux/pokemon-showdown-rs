@@ -64,7 +64,7 @@ impl Side {
 
         // JavaScript: status = this.battle.dex.conditions.get(status);
         let (status_duration, _has_duration_callback, _has_on_side_restart) = {
-            if let Some(condition) = battle.dex.conditions.get(&status_id) {
+            if let Some(condition) = battle.dex.conditions().get_by_id(&status_id) {
                 (
                     condition.duration,
                     false, // TODO: Check for durationCallback

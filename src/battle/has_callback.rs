@@ -18,7 +18,7 @@ impl Battle {
         // This is critical because some IDs like "stall" exist as both abilities AND conditions
         // When checking a volatile, we want to find the CONDITION, not the ability
         // In JavaScript, the volatile already has its callback attached, so there's no ambiguity
-        let condition_check = self.dex.conditions.get(effect_id);
+        let condition_check = self.dex.conditions().get_by_id(effect_id);
         eprintln!("[HAS_CALLBACK] Checking conditions: found={}", condition_check.is_some());
         if condition_check.is_some() {
             eprintln!("[HAS_CALLBACK] Found as condition, calling condition_has_callback");
@@ -191,7 +191,7 @@ impl Battle {
 
         // Look up the condition in dex data and check its extra field for callback boolean
         let id = ID::from(condition_id);
-        let result = if let Some(condition_data) = self.dex.conditions.get(&id) {
+        let result = if let Some(condition_data) = self.dex.conditions().get_by_id(&id) {
             // Check the exact event_id first, then try with "on" prefix for backward compatibility
             let has_callback = condition_data.extra.get(event_id)
                 .and_then(|v| v.as_bool())

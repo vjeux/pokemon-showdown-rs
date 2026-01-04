@@ -96,7 +96,7 @@ impl Pokemon {
             };
 
             // Try dex.conditions first, then fall back to embedded condition
-            let affects_fainted = battle.dex.conditions.get(&volatile_id)
+            let affects_fainted = battle.dex.conditions().get_by_id(&volatile_id)
                 .and_then(|cond| cond.extra.get("affectsFainted"))
                 .and_then(|v| v.as_bool())
                 .or_else(|| {
@@ -210,7 +210,7 @@ impl Pokemon {
 
         // Get default duration from dex.conditions or embedded condition
         // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
-        let default_duration = battle.dex.conditions.get(&volatile_id)
+        let default_duration = battle.dex.conditions().get_by_id(&volatile_id)
             .and_then(|cond| cond.duration)
             .or_else(|| embedded_condition.and_then(|cond| cond.duration));
 

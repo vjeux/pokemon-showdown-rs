@@ -38,7 +38,7 @@ impl Battle {
                 None
             }
             EffectType::Condition => {
-                if let Some(condition_data) = self.dex.conditions.get(&ID::from(effect_id)) {
+                if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32);
                     }
@@ -82,7 +82,7 @@ impl Battle {
                 None
             }
             EffectType::Condition => {
-                if let Some(condition_data) = self.dex.conditions.get(&ID::from(effect_id)) {
+                if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32);
                     }
@@ -126,7 +126,7 @@ impl Battle {
                 0
             }
             EffectType::Condition => {
-                if let Some(condition_data) = self.dex.conditions.get(&ID::from(effect_id)) {
+                if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32).unwrap_or(0);
                     }

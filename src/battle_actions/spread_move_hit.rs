@@ -489,7 +489,7 @@ pub fn spread_move_hit(
 
                     if !already_has_volatile {
                         // Get default duration from dex.conditions
-                        let default_duration = battle.dex.conditions.get(&volatile_id)
+                        let default_duration = battle.dex.conditions().get_by_id(&volatile_id)
                             .and_then(|cond| cond.duration);
 
                         // Call durationCallback if it exists

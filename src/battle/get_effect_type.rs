@@ -35,7 +35,7 @@ impl Battle {
 
         // Check conditions
         // JavaScript: condition.effectType (can be 'Status', 'Weather', 'Terrain', 'Condition')
-        if let Some(condition) = self.dex.conditions.get(effect_id) {
+        if let Some(condition) = self.dex.conditions().get_by_id(effect_id) {
             return condition.effect_type();
         }
 
@@ -60,21 +60,6 @@ impl Battle {
             return format!("{}: {}", item.effect_type().to_lowercase(), item.name);
         }
 
-        // IMPORTANT: Check active weather/terrain BEFORE moves
-        // Same logic as get_effect_type() to maintain consistency
-        if !self.field.weather.is_empty() && self.field.weather.as_str() == effect_str {
-            if let Some(condition) = self.dex.conditions.get(effect_id) {
-                return format!("weather: {}", condition.name);
-            }
-            return format!("weather: {}", effect_str);
-        }
-        if !self.field.terrain.is_empty() && self.field.terrain.as_str() == effect_str {
-            if let Some(condition) = self.dex.conditions.get(effect_id) {
-                return format!("terrain: {}", condition.name);
-            }
-            return format!("terrain: {}", effect_str);
-        }
-
         // Check moves - get both type and name in one lookup
         // JavaScript: move.fullname = `move: ${move.name}`
         if let Some(move_data) = self.dex.moves().get(effect_str) {
@@ -83,7 +68,7 @@ impl Battle {
 
         // Check conditions - get both type and name in one lookup
         // JavaScript: condition.fullname format varies by effectType
-        if let Some(condition) = self.dex.conditions.get(effect_id) {
+        if let Some(condition) = self.dex.conditions().get_by_id(effect_id) {
             return format!("{}: {}", condition.effect_type().to_lowercase(), condition.name);
         }
 

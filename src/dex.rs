@@ -31,6 +31,7 @@ mod for_gen;
 mod species_helper;
 mod moves_helper;
 mod abilities_helper;
+mod conditions_helper;
 mod formats_helper;
 mod natures_helper;
 mod types_helper;
