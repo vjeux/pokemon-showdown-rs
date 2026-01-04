@@ -241,7 +241,6 @@ impl Pokemon {
             pokeball: ID::new(&set.pokeball),
             dynamax_level: set.dynamax_level,
             gigantamax: set.gigantamax,
-            shiny: set.shiny, // For getUpdatedDetails protocol output
 
             details: String::new(), // Will be set by details() method
 

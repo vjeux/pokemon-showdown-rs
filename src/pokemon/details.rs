@@ -19,8 +19,8 @@ impl Pokemon {
             details.push_str(&format!(", {}", self.gender.to_str()));
         }
 
-        // ✅ NOW IMPLEMENTED: Add shiny flag if Pokemon is shiny
-        if self.shiny {
+        // Add shiny flag if Pokemon is shiny (from set)
+        if self.set.shiny {
             details.push_str(", shiny");
         }
 

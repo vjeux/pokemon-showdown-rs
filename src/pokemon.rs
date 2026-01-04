@@ -379,8 +379,6 @@ pub struct Pokemon {
     /// Can Gigantamax?
     /// JavaScript: gigantamax: boolean
     pub gigantamax: bool,
-    // TODO: DELETE - Not in JavaScript Pokemon (belongs in PokemonSet only)
-    pub shiny: bool, // For getUpdatedDetails protocol output
 
     /// Details string sent to clients
     /// JavaScript: details: string

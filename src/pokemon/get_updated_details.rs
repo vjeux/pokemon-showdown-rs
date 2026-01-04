@@ -36,8 +36,7 @@ impl Pokemon {
         }
 
         // JS: + (this.set.shiny ? ', shiny' : '');
-        // ✅ NOW IMPLEMENTED: shiny flag from Pokemon struct
-        if self.shiny {
+        if self.set.shiny {
             details.push_str(", shiny");
         }
 
