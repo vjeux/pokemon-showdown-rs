@@ -853,8 +853,70 @@ pub fn duration_callback(
 - Issue 12: partiallytrapped duration_callback missing PRNG call (FIXED) → Iterations 1-28 match
 
 **Next Steps:**
-- Investigate iteration #30 Kirlia HP difference (24 HP)
-- This might be another residual damage issue or status damage
+- Fix battle flow bug causing turn 23 to execute twice
+- After forced switch, turn should increment without executing moves
+- This is a core battle logic issue, not a simple callback fix
+
+---
+
+### Issue 14: Turn executing twice after forced switch (IN PROGRESS 🔍)
+
+**Problem:**
+- After fixing partiallytrapped source faint, iteration #30 diverges
+  - JavaScript #30: turn=24, prng=106->109, Kirlia at 113/195 HP (alive)
+  - Rust #30: turn=23, prng=106->113, Kirlia at 0/195 HP (faints)
+- Rust makes 4 extra PRNG calls (7 vs 3) and Kirlia takes lethal damage
+
+**Investigation:**
+Turn flow analysis:
+- Iteration #28: turn 22, Swirlix faints
+- Iteration #29: turn 23, Seedot switches in, PRNG 106->106 (0 calls) - MATCHES JS
+- Iteration #30:
+  - JavaScript: turn **24**, PRNG 106->109 (3 calls), no moves in turn 23
+  - Rust: turn **23**, PRNG 106->113 (7 calls), Seedot uses outrage, Kirlia faints
+
+**Root Cause Found:**
+Rust battle loop executes turn 23 MULTIPLE times:
+```
+>>> Turn 23 completed. PRNG: 106->106 (+0 calls)   # 1st execution: forced switch processed
+>>> Making choices for turn 23...                    # Called again (BUG!)
+>>> Turn 23 completed. PRNG: 106->113 (+7 calls)  # 2nd execution: moves executed
+>>> Making choices for turn 23...                    # Called again (BUG!)
+```
+
+JavaScript executes turn 23 ONCE:
+```
+>>> Making choices for turn 23...
+>>> Turn 24 completed. PRNG: 106->109 (+3 calls)  # Turn incremented to 24
+```
+
+**Expected Behavior:**
+When a Pokemon faints and forces a switch:
+1. Process the forced switch (choose replacement Pokemon)
+2. Switch the Pokemon in
+3. **Increment turn counter and END the turn** (no moves executed)
+4. Next turn begins with both Pokemon making normal move choices
+
+**Current Rust Behavior:**
+1. Process the forced switch
+2. Switch the Pokemon in
+3. Execute moves in the SAME turn (incorrect!)
+4. Turn executes multiple times before incrementing
+
+**Impact:**
+- Seedot uses outrage in turn 23 instead of turn 24
+- Kirlia takes 135 damage and faints (should survive with 113 HP)
+- PRNG desynchronizes (4 extra calls)
+- All subsequent turns diverge
+
+**Next Steps:**
+- Investigate battle.make_choices() implementation
+- Check how forced switches are detected and processed
+- Ensure turn increments after forced switch without executing moves
+- This requires understanding battle flow state machine
+- May need to add a flag like "waiting_for_forced_switch" to skip move execution
+
+**Status:** IN PROGRESS 🔍
 
 ---
 
