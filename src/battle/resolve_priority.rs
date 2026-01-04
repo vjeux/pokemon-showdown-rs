@@ -210,7 +210,7 @@ impl Battle {
     // 			// If multiple hazards are present on one side, their event handlers all perfectly tie in speed, priority,
     // 			// and subOrder. They should activate in the order they were created, which is where effectOrder comes in.
     // 			// This also applies to speed ties for which ability like Lightning Rod redirects moves.
-    // 			// TODO: In-game, other events are also sorted this way, but that's an implementation for another refactor
+    // 			// Note: In-game, other events are also sorted this way, but that's an implementation for another refactor
     // 			handler.effectOrder = handler.state?.effectOrder;
     // 		}
     // 		if (handler.effectHolder && (handler.effectHolder as Pokemon).getStat) {
