@@ -209,7 +209,32 @@ impl Battle {
                 false
             }
         } else {
-            // If not found in dex, return false
+            // If not found in conditions dex, check if this is a move-embedded condition
+            // Some moves like "kingsshield" create volatile conditions with their own callbacks
+            // that are hardcoded in the move_callbacks dispatcher
+            eprintln!("[CONDITION_HAS_CALLBACK] Not found in conditions dex, checking if move-embedded");
+
+            // Check if this is a move with an embedded condition
+            if let Some(move_data) = self.dex.moves().get(condition_id) {
+                if move_data.condition.is_some() {
+                    eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition");
+                    // For move-embedded conditions, we need to check if the move_callbacks dispatcher
+                    // has this callback. For now, we'll conservatively return true for known events
+                    // that move conditions typically handle.
+                    // The dispatchers will return Continue if the callback doesn't exist.
+                    match event_id {
+                        "onStart" | "onTryHit" | "onTryPrimaryHit" | "onHit" | "onEnd" |
+                        "onBeforeTurn" | "onBeforeMove" | "onSourceModifyDamage" => {
+                            eprintln!("[CONDITION_HAS_CALLBACK] Event '{}' is commonly used by move conditions, returning true", event_id);
+                            return true;
+                        },
+                        _ => {
+                            eprintln!("[CONDITION_HAS_CALLBACK] Event '{}' not commonly used by move conditions", event_id);
+                        }
+                    }
+                }
+            }
+
             false
         };
 
