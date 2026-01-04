@@ -141,7 +141,7 @@ pub fn on_residual(
     eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Called for {:?}", pokemon_pos);
 
     // Get source and effect information from volatile state
-    let (source_pos, base_maxhp, gen) = {
+    let (source_pos, base_maxhp, bound_divisor) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
@@ -151,7 +151,14 @@ pub fn on_residual(
         let source = pokemon.volatiles.get(&trap_id)
             .and_then(|state| state.source);
 
-        (source, pokemon.base_maxhp, battle.gen)
+        // JavaScript: this.damage(pokemon.baseMaxhp / this.effectState.boundDivisor);
+        // Get boundDivisor from effectState (set in on_start: 6 for Binding Band, 8 otherwise)
+        let divisor = pokemon.volatiles.get(&trap_id)
+            .and_then(|state| state.data.get("boundDivisor"))
+            .and_then(|v| v.as_i64())
+            .unwrap_or(8) as i32;
+
+        (source, pokemon.base_maxhp, divisor)
     };
 
     // JavaScript: if (source && (!source.isActive || source.hp <= 0 || !source.activeTurns) && !gmaxEffect)
@@ -184,16 +191,14 @@ pub fn on_residual(
         }
     }
 
-    // Calculate damage: Gen 1 = 1/16 max HP, Gen 2+ = 1/8 max HP
-    let divisor = if gen >= 2 { 8 } else { 16 };
-    let damage = std::cmp::max(1, base_maxhp / divisor);
+    // Calculate damage using boundDivisor from effectState
+    // JavaScript: this.damage(pokemon.baseMaxhp / this.effectState.boundDivisor);
+    let damage = std::cmp::max(1, base_maxhp / bound_divisor);
 
     eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Dealing {} damage (maxhp={}, divisor={})",
-        damage, base_maxhp, divisor);
+        damage, base_maxhp, bound_divisor);
 
     // Deal damage
-    // JavaScript: this.damage(pokemon.baseMaxhp / this.effectState.boundDivisor);
-    // In Rust: battle.damage(damage, target, source, effect, instafaint)
     battle.damage(damage, Some(pokemon_pos), source_pos, Some(&ID::from("partiallytrapped")), false);
 
     EventResult::Continue
