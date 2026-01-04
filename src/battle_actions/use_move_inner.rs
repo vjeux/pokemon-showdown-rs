@@ -481,8 +481,10 @@ pub fn use_move_inner(
                                 battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&zpower_id));
                             }
                             "healreplacement" => {
-                                // TODO: Implement healreplacement - requires side slot conditions
-                                // For now, skip as it's complex
+                                // pokemon.side.addSlotCondition(pokemon, 'healreplacement', pokemon, move);
+                                let pokemon_position = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].position;
+                                let healreplacement_id = ID::from("healreplacement");
+                                battle.sides[pokemon_pos.0].add_slot_condition(pokemon_position, healreplacement_id, None);
                             }
                             "clearnegativeboost" => {
                                 // Clear negative boosts
