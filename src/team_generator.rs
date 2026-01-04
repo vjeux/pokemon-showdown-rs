@@ -273,23 +273,23 @@ mod tests {
 
         for pokemon in &team {
             // Check total EVs <= 510
-            let total = pokemon.evs.hp + pokemon.evs.atk + pokemon.evs.def
-                      + pokemon.evs.spa + pokemon.evs.spd + pokemon.evs.spe;
+            let total = pokemon.set.evs.hp + pokemon.set.evs.atk + pokemon.set.evs.def
+                      + pokemon.set.evs.spa + pokemon.set.evs.spd + pokemon.set.evs.spe;
             assert!(total <= 510, "Total EVs {} exceeds 510", total);
 
             // Check each stat <= 252
-            assert!(pokemon.evs.hp <= 252, "HP EVs {} exceeds 252", pokemon.evs.hp);
-            assert!(pokemon.evs.atk <= 252, "ATK EVs {} exceeds 252", pokemon.evs.atk);
-            assert!(pokemon.evs.def <= 252, "DEF EVs {} exceeds 252", pokemon.evs.def);
-            assert!(pokemon.evs.spa <= 252, "SPA EVs {} exceeds 252", pokemon.evs.spa);
-            assert!(pokemon.evs.spd <= 252, "SPD EVs {} exceeds 252", pokemon.evs.spd);
-            assert!(pokemon.evs.spe <= 252, "SPE EVs {} exceeds 252", pokemon.evs.spe);
+            assert!(pokemon.set.evs.hp <= 252, "HP EVs {} exceeds 252", pokemon.set.evs.hp);
+            assert!(pokemon.set.evs.atk <= 252, "ATK EVs {} exceeds 252", pokemon.set.evs.atk);
+            assert!(pokemon.set.evs.def <= 252, "DEF EVs {} exceeds 252", pokemon.set.evs.def);
+            assert!(pokemon.set.evs.spa <= 252, "SPA EVs {} exceeds 252", pokemon.set.evs.spa);
+            assert!(pokemon.set.evs.spd <= 252, "SPD EVs {} exceeds 252", pokemon.set.evs.spd);
+            assert!(pokemon.set.evs.spe <= 252, "SPE EVs {} exceeds 252", pokemon.set.evs.spe);
         }
 
         // Print first pokemon's EVs to verify distribution looks reasonable
         println!("Sample EVs: HP={}, ATK={}, DEF={}, SPA={}, SPD={}, SPE={}",
-            team[0].evs.hp, team[0].evs.atk, team[0].evs.def,
-            team[0].evs.spa, team[0].evs.spd, team[0].evs.spe);
+            team[0].set.evs.hp, team[0].set.evs.atk, team[0].set.evs.def,
+            team[0].set.evs.spa, team[0].set.evs.spd, team[0].set.evs.spe);
     }
 
     #[test]

@@ -402,10 +402,6 @@ pub struct Pokemon {
     /// JavaScript: storedStats: StatsExceptHPTable
     // TODO: Change to StatsExceptHPTable when that type exists
     pub stored_stats: StatsTable,
-    // TODO: DELETE - Not in JavaScript Pokemon (belongs in PokemonSet only)
-    pub evs: StatsTable, // Effort Values (for getCombatPower and other calculations)
-    // TODO: DELETE - Not in JavaScript Pokemon (belongs in PokemonSet only)
-    pub ivs: StatsTable, // Individual Values (for getCombatPower and other calculations)
     /// Stat boosts/drops (-6 to +6)
     /// JavaScript: boosts: BoostsTable
     pub boosts: BoostsTable,

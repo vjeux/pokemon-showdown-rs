@@ -48,7 +48,8 @@ impl Pokemon {
             stat_sum += calculated;
 
             // For awakening sum, add EV value
-            let ev_value = self.evs.get(*stat_id);
+            // JS: this.set.evs[stat]
+            let ev_value = self.set.evs.get(*stat_id);
             awakening_sum += calculated + ev_value;
         }
 

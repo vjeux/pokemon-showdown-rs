@@ -250,8 +250,6 @@ impl Pokemon {
 
             base_stored_stats: StatsTable::default(),
             stored_stats: StatsTable::default(),
-            evs: set.evs.clone(), // Copy EVs from set for getCombatPower
-            ivs: set.ivs.clone(), // Copy IVs from set for getCombatPower
             boosts: BoostsTable::new(),
             // JS Pokemon constructor doesn't set maxhp/hp directly
             // They're calculated later in clearVolatile() -> setSpecies() -> spreadModify()
