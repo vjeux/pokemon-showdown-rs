@@ -202,28 +202,62 @@ pub fn hit_step_accuracy(
         // JavaScript: if (accuracy !== true) { apply boosts }
         // In Rust, accuracy=0 represents true
         if accuracy != 0 {
-            // Phase 1: Extract data immutably
-            let (attacker_acc_boost, target_eva_boost) = {
-                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => return hit_results,
+            // JavaScript: let boost = 0;
+            let mut boost = 0;
+
+            // if (!move.ignoreAccuracy)
+            if !move_data.ignore_accuracy {
+                // const boosts = this.battle.runEvent('ModifyBoost', pokemon, null, null, { ...pokemon.boosts });
+                // boost = this.battle.clampIntRange(boosts['accuracy'], -6, 6);
+
+                // Create boosts table from pokemon's boosts
+                let boosts_table = {
+                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return hit_results,
+                    };
+                    pokemon.boosts.clone()
                 };
-                let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-                    Some(t) => t,
-                    None => continue,
+
+                // Run ModifyBoost event - returns modified boosts table
+                let modified_boosts = battle.run_event_boost(
+                    "ModifyBoost",
+                    Some(pokemon_pos),
+                    None,
+                    None,
+                    boosts_table,
+                );
+
+                // Extract accuracy boost and clamp to [-6, 6]
+                boost = modified_boosts.accuracy.max(-6).min(6);
+            }
+
+            // if (!move.ignoreEvasion)
+            if !move_data.ignore_evasion {
+                // const boosts = this.battle.runEvent('ModifyBoost', target, null, null, { ...target.boosts });
+                // boost = this.battle.clampIntRange(boost - boosts['evasion'], -6, 6);
+
+                // Create boosts table from target's boosts
+                let boosts_table = {
+                    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                        Some(t) => t,
+                        None => continue,
+                    };
+                    target.boosts.clone()
                 };
-                (pokemon.boosts.accuracy, target.boosts.evasion)
-            };
 
-            // Apply accuracy/evasion boosts
-            // Simplified version - just use accuracy/evasion boosts without checking flags
-            let mut boost;
+                // Run ModifyBoost event - returns modified boosts table
+                let modified_boosts = battle.run_event_boost(
+                    "ModifyBoost",
+                    Some(target_pos),
+                    None,
+                    None,
+                    boosts_table,
+                );
 
-            // Get attacker's accuracy boost
-            boost = attacker_acc_boost.max(-6).min(6);
-
-            // Subtract target's evasion boost
-            boost = (boost - target_eva_boost).max(-6).min(6);
+                // Extract evasion boost, subtract from accuracy boost, and clamp to [-6, 6]
+                boost = (boost - modified_boosts.evasion).max(-6).min(6);
+            }
 
             // Apply boost to accuracy
             if boost > 0 {

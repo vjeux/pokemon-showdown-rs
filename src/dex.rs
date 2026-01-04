@@ -616,6 +616,10 @@ pub struct MoveData {
     /// JavaScript: ignoreDefensive?: boolean
     #[serde(rename = "ignoreDefensive", default)]
     pub ignore_defensive: bool,
+    /// Ignore accuracy stat changes
+    /// JavaScript: ignoreAccuracy?: boolean
+    #[serde(rename = "ignoreAccuracy", default)]
+    pub ignore_accuracy: bool,
     /// Ignore evasion stat changes
     /// JavaScript: ignoreEvasion?: boolean
     #[serde(rename = "ignoreEvasion", default)]
