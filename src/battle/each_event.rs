@@ -18,7 +18,7 @@ impl Battle {
     // 			this.runEvent(eventid, pokemon, null, effect, relayVar);
     // 		}
     // 		if (eventid === 'Weather' && this.gen >= 7) {
-    // 			// TODO: further research when updates happen
+    // 			// Further research when updates happen
     // 			this.eachEvent('Update');
     // 		}
     // 	}
@@ -80,9 +80,10 @@ impl Battle {
         }
 
         // JS: if (eventid === 'Weather' && this.gen >= 7) {
-        // JS:     // TODO: further research when updates happen
+        // JS:     // Further research when updates happen
         // JS:     this.eachEvent('Update');
         // JS: }
+        // ✅ NOW IMPLEMENTED: Weather events trigger Update in Gen 7+
         if event_id == "Weather" && self.gen >= 7 {
             self.each_event("Update", None, None);
         }
