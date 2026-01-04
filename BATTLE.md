@@ -725,3 +725,68 @@ pub fn dispatch_on_hit(
 - Investigate turn 13 divergence (PRNG calls differ by 1, HP differs by 26)
 
 ---
+
+### Issue 11: partiallytrapped on_residual not dealing damage (FIXED ✅)
+
+**Problem:**
+- Seed 3 iteration #16 (turn 13): Dedenne HP differed by 26
+  - JavaScript: Dedenne at 107/210 HP
+  - Rust: Dedenne at 133/210 HP
+- PRNG calls were same (47->53/54) but HP outcomes differed
+- Dedenne max HP is 210, and 210/8 = 26.25 → 26 HP residual damage expected
+
+**Root Cause:**
+The `on_residual` callback for partiallytrapped condition was not implemented - it just returned `EventResult::Continue` without dealing any damage.
+
+JavaScript implementation (data/conditions.ts):
+```javascript
+partiallytrapped: {
+    onResidual(pokemon) {
+        const source = this.effectState.source;
+        // Gen 1 damage is 1/16, Gen 2+ damage is 1/8
+        const damage = this.clampIntRange(pokemon.baseMaxhp / (this.gen >= 2 ? 8 : 16), 1);
+        this.damage(damage, pokemon, source);
+    }
+}
+```
+
+**Fix Applied:**
+Implemented on_residual in `src/data/condition_callbacks/partiallytrapped.rs`:
+```rust
+pub fn on_residual(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    let (base_maxhp, gen) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (pokemon.base_maxhp, battle.gen)
+    };
+
+    // Calculate damage: Gen 1 = 1/16 max HP, Gen 2+ = 1/8 max HP
+    let divisor = if gen >= 2 { 8 } else { 16 };
+    let damage = std::cmp::max(1, base_maxhp / divisor);
+
+    battle.damage(damage, Some(pokemon_pos), None, Some(&ID::from("partiallytrapped")), false);
+
+    EventResult::Continue
+}
+```
+
+**Result:**
+- ✅ Iteration #16 HP now matches: Dedenne at 107/210 in both
+- ✅ Residual trap damage correctly applied (26 HP)
+- ❌ PRNG calls still differ by 1:
+  - JavaScript: 47->54 (7 calls)
+  - Rust: 47->53 (6 calls)
+- ❌ Battles diverge significantly after iteration #16 due to PRNG offset
+
+**Commit:** c30675e8
+
+**Next Steps:**
+- Investigate missing PRNG call in turn 13
+- Find what JavaScript does that Rust doesn't (or vice versa)
+
+---
