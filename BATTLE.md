@@ -910,13 +910,32 @@ When a Pokemon faints and forces a switch:
 - All subsequent turns diverge
 
 **Next Steps:**
-- Investigate battle.make_choices() implementation
-- Check how forced switches are detected and processed
-- Ensure turn increments after forced switch without executing moves
-- This requires understanding battle flow state machine
-- May need to add a flag like "waiting_for_forced_switch" to skip move execution
+- Clear action queue after forced switch is processed
+- Call end_turn() to increment turn counter
+- Need to understand JavaScript's queue management during forced switches
+- This may require checking if request_state was just cleared and queue should be emptied
 
-**Status:** IN PROGRESS 🔍
+**Code Analysis:**
+Found the issue in turn_loop.rs:
+```rust
+while let Some(action) = self.queue.shift() {
+    self.run_action(&action);
+    if self.request_state != BattleRequestState::None {
+        return;  // Early return, end_turn() NOT called
+    }
+}
+self.end_turn();  // Only called if loop completes
+```
+
+When forced switch happens:
+1. Pokemon faints → request_state set → turn_loop() returns early
+2. Test calls make_choices() → processes switch → request_state cleared
+3. commit_choices() → turn_loop() called AGAIN
+4. Queue still has move actions from before faint
+5. turn_loop() executes those moves (INCORRECT!)
+6. Should detect completed forced switch and call end_turn() immediately
+
+**Status:** Root cause identified, needs implementation 🔍
 
 ---
 
