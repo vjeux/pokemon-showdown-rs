@@ -335,8 +335,35 @@ pub fn try_spread_move_hit(
             }
             Some(crate::dex::Multihit::Range(min, max)) => {
                 eprintln!("[TRY_SPREAD_MOVE_HIT] Range multi-hit: {}-{}", min, max);
-                // For now, just use max value. Full implementation would sample from distribution
-                *max
+                let min_val = *min;
+                let max_val = *max;
+                let gen = battle.gen;
+                // Drop the reference before calling battle methods
+                drop(active_move);
+
+                // JavaScript logic for [2, 5] range:
+                // if (targetHits[0] === 2 && targetHits[1] === 5) {
+                //     if (this.battle.gen >= 5) {
+                //         // 35-35-15-15 out of 100 for 2-3-4-5 hits
+                //         targetHits = this.battle.sample([2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5]);
+                //     } else {
+                //         targetHits = this.battle.sample([2, 2, 2, 3, 3, 3, 4, 5]);
+                //     }
+                // } else {
+                //     targetHits = this.battle.random(targetHits[0], targetHits[1] + 1);
+                // }
+                if min_val == 2 && max_val == 5 {
+                    if gen >= 5 {
+                        // 35% chance of 2 hits, 35% of 3 hits, 15% of 4 hits, 15% of 5 hits
+                        let distribution = vec![2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5];
+                        *battle.sample(&distribution).unwrap_or(&2)
+                    } else {
+                        let distribution = vec![2, 2, 2, 3, 3, 3, 4, 5];
+                        *battle.sample(&distribution).unwrap_or(&2)
+                    }
+                } else {
+                    battle.random((max_val - min_val + 1) as i32) + min_val
+                }
             }
             None => {
                 eprintln!("[TRY_SPREAD_MOVE_HIT] No multi_hit field");
