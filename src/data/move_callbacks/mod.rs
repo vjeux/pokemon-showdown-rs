@@ -436,12 +436,10 @@ pub fn dispatch_base_power_callback(
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // CRITICAL: Check for Max/G-Max moves without dynamax volatile
-    // JavaScript: Max moves have an implicit basePowerCallback that returns 0 when used without dynamax
-    // This triggers the early return in getDamage (line 1611) BEFORE crit calculation
-    // Preventing PRNG calls for crit and randomizer
+    // JavaScript has implicit basePowerCallback for all Max moves that returns 0 if no dynamax
+    // This triggers early return in getDamage BEFORE crit calculation
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.is_max.is_some() {
-            // Check if Pokemon has dynamax volatile
             let has_dynamax = if let Some(side) = battle.sides.get(pokemon_pos.0) {
                 if let Some(pokemon) = side.pokemon.get(pokemon_pos.1) {
                     pokemon.has_volatile(&ID::new("dynamax"))
