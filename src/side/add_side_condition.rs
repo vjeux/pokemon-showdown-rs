@@ -63,13 +63,9 @@ impl Side {
         // Note: Simplified - we require source_pos to be provided
 
         // JavaScript: status = this.battle.dex.conditions.get(status);
-        let (status_duration, _has_duration_callback, _has_on_side_restart) = {
+        let status_duration = {
             if let Some(condition) = battle.dex.conditions().get_by_id(&status_id) {
-                (
-                    condition.duration,
-                    false, // TODO: Check for durationCallback
-                    false, // TODO: Check for onSideRestart
-                )
+                condition.duration
             } else {
                 return false; // Condition not found
             }
@@ -77,8 +73,24 @@ impl Side {
 
         // JavaScript: if (this.sideConditions[status.id]) { ... return onSideRestart ... }
         if self.side_conditions.contains_key(&status_id) {
-            // TODO: if (!(status as any).onSideRestart) return false;
-            // TODO: return this.battle.singleEvent('SideRestart', status, ...);
+            // if (!(status as any).onSideRestart) return false;
+            // return this.battle.singleEvent('SideRestart', status, ...);
+            if battle.has_callback(&status_id, "SideRestart") {
+                let side_idx = self.n;
+                let result = battle.single_event_side(
+                    "SideRestart",
+                    &status_id,
+                    side_idx,
+                    source_pos,
+                    source_effect.as_ref(),
+                );
+                // Convert EventResult to bool
+                return match result {
+                    crate::event::EventResult::Boolean(b) => b,
+                    crate::event::EventResult::Number(n) => n != 0,
+                    _ => false,
+                };
+            }
             return false;
         }
 
@@ -91,7 +103,23 @@ impl Side {
         effect_state.source_slot = source_slot;
 
         // JavaScript: if (status.durationCallback) { ... }
-        // TODO: Implement durationCallback support when callback system is ready
+        // Call durationCallback if it exists
+        let target_pos = if !self.active.is_empty() {
+            Some((self.n, 0)) // self.active[0]
+        } else {
+            None
+        };
+
+        let result = battle.call_duration_callback(
+            &status_id,
+            target_pos,
+            source_pos,
+            source_effect.as_ref().map(|id| id.as_str()),
+        );
+
+        if let crate::event::EventResult::Number(duration) = result {
+            effect_state.duration = Some(duration);
+        }
 
         // Store side index before borrowing battle mutably
         let side_idx = self.n;
