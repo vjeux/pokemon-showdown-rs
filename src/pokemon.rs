@@ -418,8 +418,6 @@ pub struct Pokemon {
     /// Current HP
     /// JavaScript: hp: number
     pub hp: i32,
-    // TODO: DELETE - Not in JavaScript Pokemon
-    pub max_hp_undynamaxed: i32,
 
     // Ability
     /// Base ability (from species)

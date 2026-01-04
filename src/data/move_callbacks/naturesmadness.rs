@@ -26,7 +26,7 @@ pub fn damage_callback(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let undynamaxed_hp = target_pokemon.max_hp_undynamaxed;
+        let undynamaxed_hp = target_pokemon.get_undynamaxed_hp(None);
         // Math.floor(target.getUndynamaxedHP() / 2)
         let damage = undynamaxed_hp / 2;
         // this.clampIntRange(..., 1)

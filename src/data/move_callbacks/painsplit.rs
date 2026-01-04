@@ -33,7 +33,7 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.max_hp_undynamaxed
+        target_pokemon.get_undynamaxed_hp(None)
     };
 
     // const averagehp = Math.floor((targetHP + pokemon.hp) / 2) || 1;

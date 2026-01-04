@@ -258,7 +258,6 @@ impl Pokemon {
             // Initialize to 0 so setSpecies() knows to calculate them
             maxhp: 0,
             base_maxhp: 0,
-            max_hp_undynamaxed: 0,
             hp: 0,
 
             base_ability: ability_id.clone(),
