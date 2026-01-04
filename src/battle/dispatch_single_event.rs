@@ -55,7 +55,10 @@ impl Battle {
 
         // Handle item events
         if self.dex.items().get(effect_id.as_str()).is_some() {
+            eprintln!("[DISPATCH_SINGLE_EVENT] Dispatching to handle_item_event for {}", effect_id.as_str());
             return self.handle_item_event(event_id, effect_id, target);
+        } else {
+            eprintln!("[DISPATCH_SINGLE_EVENT] {} is NOT an item in dex", effect_id.as_str());
         }
 
         // IMPORTANT: Check field weather/terrain BEFORE moves

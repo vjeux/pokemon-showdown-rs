@@ -17,6 +17,9 @@ impl Battle {
         use crate::data::item_callbacks;
         use crate::event::EventResult;
 
+        eprintln!("[HANDLE_ITEM_EVENT] event_id={}, item_id={}, target={:?}",
+            event_id, item_id.as_str(), target);
+
         let source = self.current_event.as_ref().and_then(|e| e.source);
         let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var);
         let relay_var_float = self.current_event.as_ref().and_then(|e| e.relay_var_float);
@@ -192,7 +195,14 @@ impl Battle {
                     pokemon_pos,
                 )
             }
-            "Hit" => item_callbacks::dispatch_on_hit(self, item_id.as_str(), pokemon_pos),
+            "Hit" => {
+                let move_id_str = if let Some(ref active_move) = self.active_move {
+                    active_move.id.to_string()
+                } else {
+                    String::new()
+                };
+                item_callbacks::dispatch_on_hit(self, item_id.as_str(), pokemon_pos, source, &move_id_str)
+            },
             "Immunity" => item_callbacks::dispatch_on_immunity(
                 self,
                 item_id.as_str(),

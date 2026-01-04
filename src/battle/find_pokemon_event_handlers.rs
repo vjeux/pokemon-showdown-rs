@@ -171,12 +171,15 @@ impl Battle {
         // JS: if (callback !== undefined || (getKey && pokemon.itemState[getKey])) {
         if !pokemon.item.is_empty() {
             let has_callback = self.has_callback(&pokemon.item, callback_name);
+            eprintln!("[FIND_POKEMON_EVENT_HANDLERS] Checking item '{}' for callback '{}': has_callback={}",
+                pokemon.item.as_str(), callback_name, has_callback);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks itemState[getKey], which means checking if duration exists
                 key == "duration" && pokemon.item_state.duration.is_some()
             });
 
             if has_callback || has_get_key {
+                eprintln!("[FIND_POKEMON_EVENT_HANDLERS] Adding handler for item '{}'", pokemon.item.as_str());
                 handlers.push(EventListener {
                     effect_id: pokemon.item.clone(),
                     effect_type: EffectType::Item,

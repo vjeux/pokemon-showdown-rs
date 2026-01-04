@@ -32,16 +32,20 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
     // target.getMoveHitData(move).typeMod > 0 means super effective
     let type_effectiveness = Pokemon::run_effectiveness(battle, target_pos, &move_id);
 
-    let (is_super_effective, target_base_maxhp) = {
+    let (is_super_effective, target_base_maxhp, target_hp) = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        (type_effectiveness > 0, target.base_maxhp)
+        (type_effectiveness > 0, target.base_maxhp, target.hp)
     };
 
+    eprintln!("[ENIGMABERRY] Turn {}: on_hit called for move '{}', type_effectiveness={}, is_super_effective={}, target HP={}/{}",
+        battle.turn, move_id, type_effectiveness, is_super_effective, target_hp, target_base_maxhp);
+
     if !is_super_effective {
+        eprintln!("[ENIGMABERRY] Turn {}: NOT super-effective, returning early (no heal)", battle.turn);
         return EventResult::Continue;
     }
 
@@ -57,8 +61,11 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
     if item_eaten {
         // this.heal(target.baseMaxhp / 4);
         let heal_amount = target_base_maxhp / 4;
+        eprintln!("[ENIGMABERRY] Turn {}: Berry eaten! Healing {} HP", battle.turn, heal_amount);
         use crate::dex_data::ID;
         battle.heal(heal_amount, Some(target_pos), source_pos, Some(&ID::from("enigmaberry")));
+    } else {
+        eprintln!("[ENIGMABERRY] Turn {}: Berry NOT eaten", battle.turn);
     }
 
     EventResult::Continue

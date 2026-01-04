@@ -721,11 +721,17 @@ pub fn dispatch_on_fractional_priority_priority(
 
 /// Dispatch onHit callbacks
 pub fn dispatch_on_hit(
-    _battle: &mut Battle,
-    _item_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
-    EventResult::Continue
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "enigmaberry" => enigmaberry::on_hit(battle, Some(pokemon_pos), source_pos, move_id),
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onImmunity callbacks
