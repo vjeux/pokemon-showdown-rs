@@ -33,7 +33,7 @@ impl Battle {
     pub fn find_battle_event_handlers(
         &self,
         callback_name: &str,
-        _get_key: Option<&str>,
+        get_key: Option<&str>,
         custom_holder: Option<(usize, usize)>,
     ) -> Vec<EventListener> {
         // JS: const handlers: EventListener[] = [];
@@ -46,8 +46,20 @@ impl Battle {
         // Format callbacks are handled through static dispatch (handle_format_event, etc.)
 
         // JS: if (callback !== undefined || (getKey && this.formatData[getKey])) {
-        // Since getCallback returns None, skip format handler for now
+        // Check if formatData has the specified key
+        let has_get_key = get_key.is_some_and(|key| {
+            match key {
+                "duration" => self.format_data.duration.is_some(),
+                _ => false,
+            }
+        });
+
+        // Since getCallback returns None, we can't create the format handler yet
+        // but we check get_key for correctness
         // TODO: Implement format event handlers when static dispatch system is ready
+        if has_get_key {
+            // Would create format handler here if getCallback was implemented
+        }
 
         // JS: if (this.events && (callback = this.events[callbackName]) !== undefined) {
         if let Some(custom_handlers) = self.events.get(callback_name) {
