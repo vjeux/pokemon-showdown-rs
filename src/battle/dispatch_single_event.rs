@@ -39,10 +39,12 @@ impl Battle {
             if let Some(pokemon) = self.pokemon_at(target_pos.0, target_pos.1) {
                 // Check if effect is in target's volatiles
                 if pokemon.volatiles.contains_key(effect_id) {
+                    eprintln!("[DISPATCH_SINGLE_EVENT] Found effect '{}' in target volatiles, routing to handle_condition_event", effect_str);
                     return self.handle_condition_event(event_id, effect_str, target);
                 }
                 // Check if effect is target's status
                 if !pokemon.status.is_empty() && pokemon.status.as_str() == effect_str {
+                    eprintln!("[DISPATCH_SINGLE_EVENT] Found effect '{}' as target status, routing to handle_condition_event", effect_str);
                     return self.handle_condition_event(event_id, effect_str, target);
                 }
             }

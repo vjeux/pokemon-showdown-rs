@@ -36,6 +36,8 @@ pub fn secondaries(
     move_id: &ID,
     _is_self: bool,
 ) {
+    eprintln!("[SECONDARIES] Called for move_id={}, targets.len={}", move_id.as_str(), targets.len());
+
     // if (!moveData.secondaries) return;
     let has_secondaries = {
         if let Some(ref active_move) = battle.active_move {
@@ -44,6 +46,8 @@ pub fn secondaries(
             false
         }
     };
+
+    eprintln!("[SECONDARIES] has_secondaries={}", has_secondaries);
 
     if !has_secondaries {
         return;
@@ -94,6 +98,9 @@ pub fn secondaries(
 
         // for (const secondary of secondaries) {
         for secondary in secondaries {
+            eprintln!("[SECONDARIES] Processing secondary: chance={:?}, volatile_status={:?}, target={:?}",
+                secondary.chance, secondary.volatile_status, target_pos);
+
             // const secondaryRoll = this.battle.random(100);
             let secondary_roll = battle.random(100);
 
@@ -162,8 +169,9 @@ pub fn secondaries(
                 //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                 // }
                 if let Some(ref volatile_status_name) = secondary.volatile_status {
+                    eprintln!("[SECONDARIES] Applying volatile_status='{}' to target={:?}", volatile_status_name, target_pos);
                     let volatile_id = crate::dex_data::ID::new(volatile_status_name);
-                    Pokemon::add_volatile(battle, target_pos, volatile_id, None, None, None, None);
+                    Pokemon::add_volatile(battle, target_pos, volatile_id, Some(source_pos), Some(move_id), None, None);
                 }
 
                 // Apply side condition from secondary effect
