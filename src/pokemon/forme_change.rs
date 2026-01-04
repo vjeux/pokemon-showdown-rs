@@ -5,6 +5,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::dex_data::StatsTable;
 
 impl Pokemon {
     /// Changes this Pokemon's forme to match the given speciesId.
@@ -229,11 +230,21 @@ impl Pokemon {
 
             // Update max HP
             // JavaScript: this.updateMaxHp();
-            // Note: updateMaxHp() in JS calculates new_base_max_hp from species.baseStats
-            // For now, we skip HP update as it requires stat calculation infrastructure
-            // TODO: Call Pokemon::update_max_hp() when stat calculation is available
-            // let new_base_max_hp = battle.stat_modify(species_base_stats, &self.set, "hp");
-            // Pokemon::update_max_hp(battle, (self.side_index, self.position), new_base_max_hp);
+            // updateMaxHp() in JS calculates new_base_max_hp from species.baseStats
+            {
+                // Get species base stats and Pokemon set
+                let new_base_max_hp = {
+                    let species_data = battle.dex.species().get(species_id.as_str())
+                        .expect("Species should exist (already validated)");
+                    let pokemon = &battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1];
+                    // Convert BaseStatsData to StatsTable
+                    let base_stats: StatsTable = species_data.base_stats.clone().into();
+                    battle.stat_modify(&base_stats, &pokemon.set, "hp")
+                };
+
+                // Call update_max_hp
+                Pokemon::update_max_hp(battle, pokemon_pos, new_base_max_hp);
+            }
 
             // Handle source effects
             if let Some(source) = source_id.as_ref() {
