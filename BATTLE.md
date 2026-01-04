@@ -1212,3 +1212,42 @@ Rust makes 4 extra PRNG calls and Kirlia takes lethal damage. The extra calls ap
 
 ---
 
+
+### Issue 16: Iteration #30 - beforeTurn/Residual added when they shouldn't be (IN PROGRESS 🔍)
+
+**Problem:**
+- Iterations #1-#28 pass perfectly
+- Iteration #30 diverges:
+  - JavaScript: turn=24, prng=106->109 (3 calls), Kirlia survives (113/195 HP)
+  - Rust: turn=23, prng=106->113 (7 calls), Kirlia faints (0/195 HP)
+
+**Investigation Findings:**
+
+1. **Volatiles Match**: Both JavaScript and Rust show Kirlia with `Volatiles: none` at iteration #30 start (partiallytrapped has expired)
+
+2. **Move Execution Differs**:
+   - Rust executes: beforeTurn + wakeupslap + outrage + Residual
+   - JavaScript executes: outrage only
+   - Seedot's outrage deals 135 damage, killing Kirlia (113 HP) in Rust
+   - JavaScript's Kirlia survives because wakeupslap doesn't execute
+
+3. **PRNG Call Breakdown**:
+   - Rust 7 calls: beforeTurn (~1) + wakeupslap (2) + outrage (2) + Residual (~2)
+   - JavaScript 3 calls: outrage only (2-3)
+
+**Root Cause Hypothesis:**
+
+After forced switch (iteration #29), Rust sets `mid_turn=false` (following JavaScript source code line 35), causing iteration #30 to add beforeTurn/Residual. But JavaScript's ACTUAL behavior suggests `midTurn` stays `true`, preventing these actions from being added.
+
+**Possible Explanations:**
+
+1. JavaScript source code in comments may not match actual implementation  
+2. There's an additional condition controlling beforeTurn/Residual insertion
+3. Forced switch handling differs in subtle ways not captured by the source comments
+
+**Status:** Needs JavaScript runtime behavior analysis 🔬
+
+**Progress:** 28/47 iterations matching (59.5%)
+
+---
+
