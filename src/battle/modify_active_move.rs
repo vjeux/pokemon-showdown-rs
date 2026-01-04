@@ -4,7 +4,6 @@
 //! Used by moves like Magnitude (modify basePower) and Max Guard (modify smartTarget)
 
 use crate::*;
-use crate::event::EventResult;
 
 impl Battle {
     /// Modify the base power of the active move

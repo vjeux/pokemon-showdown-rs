@@ -1,7 +1,6 @@
 // 1:1 port of findFieldEventHandlers from battle.ts
 
 use crate::*;
-use crate::event::EventResult;
 use crate::battle::{EventListener, EffectType};
 use crate::event_system::EffectState;
 

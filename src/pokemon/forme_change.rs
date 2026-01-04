@@ -3,7 +3,6 @@
 //! Pokemon Showdown - http://pokemonshowdown.com/
 
 use crate::*;
-use crate::event::EventResult;
 use crate::dex_data::ID;
 use crate::dex_data::StatsTable;
 

@@ -3,7 +3,6 @@
 //! 1:1 port of canMegaEvo from battle-actions.ts
 
 use crate::*;
-use crate::event::EventResult;
 use crate::dex_data::to_id;
 
 /// Check if Pokemon can Mega Evolve

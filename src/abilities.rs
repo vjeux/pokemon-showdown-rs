@@ -8,7 +8,6 @@
 
 // Re-export ability data type from dex
 pub use crate::dex::AbilityData;
-use crate::event::EventResult;
 
 // The Dex loads all abilities from data/abilities.json at initialization.
 // Access ability data via Battle.dex.abilities().get(ability_id)

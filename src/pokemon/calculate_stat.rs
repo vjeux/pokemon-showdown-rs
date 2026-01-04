@@ -1,5 +1,4 @@
 use crate::*;
-use crate::event::EventResult;
 use crate::dex_data::StatID;
 
 impl Pokemon {

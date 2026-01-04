@@ -6,7 +6,6 @@
 
 use crate::battle::Battle;
 use crate::battle::Arg;
-use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// onStart

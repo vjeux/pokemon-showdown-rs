@@ -6,7 +6,6 @@
 //! following the Pokemon Showdown JS architecture.
 
 use crate::dex_data::ID;
-use crate::event::EventResult;
 use once_cell::sync::Lazy;
 use std::collections::HashMap;
 

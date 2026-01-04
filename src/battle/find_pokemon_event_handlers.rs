@@ -1,7 +1,6 @@
 // 1:1 port of findPokemonEventHandlers from battle.ts
 
 use crate::*;
-use crate::event::EventResult;
 use crate::battle::{EventListener, EffectType};
 
 impl Battle {

@@ -3,7 +3,6 @@
 //! 1:1 port of hitStepTypeImmunity from battle-actions.ts
 
 use crate::*;
-use crate::event::EventResult;
 use crate::battle_actions::ActiveMove;
 
 /// Check type immunity (e.g., Ground vs Electric)

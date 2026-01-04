@@ -234,9 +234,9 @@ pub fn on_before_move(
             let clamped_boost = atk_boost.clamp(-6, 6);
             let boost_table: [f64; 7] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
             if clamped_boost >= 0 {
-                (atk_stat as f64 * boost_table[clamped_boost as usize])
+                atk_stat as f64 * boost_table[clamped_boost as usize]
             } else {
-                (atk_stat as f64 / boost_table[(-clamped_boost) as usize])
+                atk_stat as f64 / boost_table[(-clamped_boost) as usize]
             }
         };
 
@@ -246,9 +246,9 @@ pub fn on_before_move(
             let clamped_boost = def_boost.clamp(-6, 6);
             let boost_table: [f64; 7] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
             if clamped_boost >= 0 {
-                (def_stat as f64 * boost_table[clamped_boost as usize])
+                def_stat as f64 * boost_table[clamped_boost as usize]
             } else {
-                (def_stat as f64 / boost_table[(-clamped_boost) as usize])
+                def_stat as f64 / boost_table[(-clamped_boost) as usize]
             }
         };
 
