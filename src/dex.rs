@@ -627,6 +627,10 @@ pub struct MoveData {
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
     #[serde(rename = "isNonstandard", default)]
     pub is_nonstandard: Option<String>,
+    /// Extra fields for callback flags and other dynamic data
+    /// Note: JavaScript has many callback methods that cannot be stored in data
+    #[serde(flatten)]
+    pub extra: HashMap<String, serde_json::Value>,
 }
 
 /// Accuracy can be a number or true (always hits)

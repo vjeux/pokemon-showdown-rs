@@ -587,159 +587,27 @@ impl Battle {
 
     /// Check if a a move has a callback for an event
     pub fn move_has_callback(&self, move_id: &str, event_id: &str) -> bool {
-        match event_id {
-            "BasePower" => matches!(
-                move_id,
-                "barbbarrage" | "brine" | "collisioncourse" | "electrodrift" | "expandingforce" |
-                "facade" | "ficklebeam" | "fusionbolt" | "fusionflare" | "gravapple" |
-                "knockoff" | "lashout" | "mistyexplosion" | "psyblade" | "retaliate" |
-                "solarbeam" | "solarblade" | "venoshock"
-            ),
-            "onAfterHit" => matches!(
-                move_id,
-                "ceaselessedge" | "covet" | "icespinner" | "knockoff" | "mortalspin" |
-                "rapidspin" | "stoneaxe" | "thief"
-            ),
-            "onAfterMove" => matches!(
-                move_id,
-                "beakblast" | "iceball" | "mindblown" | "rollout" | "sparklingaria" |
-                "spitup" | "steelbeam"
-            ),
-            "onAfterMoveSecondarySelf" => matches!(
-                move_id,
-                "fellstinger" | "orderup" | "polarflare" | "relicsong"
-            ),
-            "onAfterSubDamage" => matches!(
-                move_id,
-                "ceaselessedge" | "coreenforcer" | "flameburst" | "gmaxsnooze" | "icespinner" |
-                "mortalspin" | "rapidspin" | "shellsidearm" | "splinteredstormshards" | "steelroller" |
-                "stoneaxe"
-            ),
-            "onDamage" => matches!(
-                move_id,
-                "falseswipe" | "holdback"
-            ),
-            "onDisableMove" => matches!(
-                move_id,
-                "belch" | "stuffcheeks"
-            ),
-            "onEffectiveness" => matches!(
-                move_id,
-                "flyingpress" | "freezedry" | "thousandarrows"
-            ),
-            "onHit" => matches!(
-                move_id,
-                "acupressure" | "afteryou" | "alluringvoice" | "allyswitch" | "anchorshot" |
-                "aromatherapy" | "assist" | "autotomize" | "banefulbunker" | "batonpass" |
-                "bellydrum" | "bestow" | "block" | "bugbite" | "burningbulwark" |
-                "burningjealousy" | "camouflage" | "clangoroussoul" | "clearsmog" | "conversion" |
-                "conversion2" | "copycat" | "coreenforcer" | "corrosivegas" | "curse" |
-                "defog" | "detect" | "direclaw" | "doodle" | "eeriespell" |
-                "endure" | "entrainment" | "filletaway" | "flameburst" | "floralhealing" |
-                "forestscurse" | "freezyfrost" | "genesissupernova" | "gmaxbefuddle" | "gmaxcentiferno" |
-                "gmaxcuddle" | "gmaxdepletion" | "gmaxfinale" | "gmaxfoamburst" | "gmaxgoldrush" |
-                "gmaxmalodor" | "gmaxmeltdown" | "gmaxreplenish" | "gmaxsandblast" | "gmaxsmite" |
-                "gmaxsnooze" | "gmaxstonesurge" | "gmaxstunshock" | "gmaxsweetness" | "gmaxtartness" |
-                "gmaxterror" | "gmaxvoltcrash" | "gmaxwindrage" | "guardsplit" | "guardswap" |
-                "healbell" | "healpulse" | "heartswap" | "incinerate" | "instruct" |
-                "jawlock" | "junglehealing" | "kingsshield" | "lockon" | "lunarblessing" |
-                "magicpowder" | "maxairstream" | "maxdarkness" | "maxflare" | "maxflutterby" |
-                "maxgeyser" | "maxguard" | "maxhailstorm" | "maxknuckle" | "maxlightning" |
-                "maxmindstorm" | "maxooze" | "maxovergrowth" | "maxphantasm" | "maxquake" |
-                "maxrockfall" | "maxstarfall" | "maxsteelspike" | "maxstrike" | "maxwyrmwind" |
-                "meanlook" | "metronome" | "mimic" | "mindreader" | "moonlight" |
-                "morningsun" | "obstruct" | "painsplit" | "partingshot" | "pluck" |
-                "polarflare" | "pollenpuff" | "powersplit" | "powerswap" | "protect" |
-                "psychup" | "purify" | "quash" | "recycle" | "reflecttype" |
-                "refresh" | "relicsong" | "rest" | "roleplay" | "sappyseed" |
-                "shedtail" | "shellsidearm" | "shoreup" | "silktrap" | "simplebeam" |
-                "sketch" | "skillswap" | "skydrop" | "sleeptalk" | "smellingsalts" |
-                "soak" | "speedswap" | "spiderweb" | "spikyshield" | "spiritshackle" |
-                "spite" | "splinteredstormshards" | "steelroller" | "strengthsap" | "stuffcheeks" |
-                "substitute" | "swallow" | "switcheroo" | "synthesis" | "takeheart" |
-                "thousandwaves" | "tidyup" | "topsyturvy" | "transform" | "trick" |
-                "trickortreat" | "venomdrench" | "wakeupslap" | "worryseed"
-            ),
-            "onHitField" => matches!(
-                move_id,
-                "courtchange" | "flowershield" | "haze" | "perishsong" | "rototiller" |
-                "teatime"
-            ),
-            "onHitSide" => matches!(
-                move_id,
-                "gearup" | "magneticflux" | "quickguard" | "wideguard"
-            ),
-            "onModifyMove" => matches!(
-                move_id,
-                "beatup" | "bleakwindstorm" | "blizzard" | "curse" | "expandingforce" |
-                "firepledge" | "grasspledge" | "growth" | "hurricane" | "iceball" |
-                "lightthatburnsthesky" | "magnitude" | "photongeyser" | "present" | "pursuit" |
-                "rollout" | "sandsearstorm" | "secretpower" | "shellsidearm" | "skydrop" |
-                "struggle" | "terablast" | "terastarstorm" | "terrainpulse" | "thunder" |
-                "waterpledge" | "weatherball" | "wildboltstorm"
-            ),
-            "onModifyTarget" => matches!(
-                move_id,
-                "comeuppance" | "metalburst"
-            ),
-            "onModifyType" => matches!(
-                move_id,
-                "aurawheel" | "hiddenpower" | "ivycudgel" | "judgment" | "multiattack" |
-                "naturalgift" | "ragingbull" | "revelationdance" | "technoblast" | "terablast" |
-                "terastarstorm" | "terrainpulse" | "weatherball"
-            ),
-            "onMoveFail" => matches!(
-                move_id,
-                "axekick" | "highjumpkick" | "jumpkick" | "skydrop" | "supercellslam"
-            ),
-            "onPrepareHit" => matches!(
-                move_id,
-                "allyswitch" | "banefulbunker" | "burningbulwark" | "destinybond" | "detect" |
-                "endure" | "firepledge" | "fling" | "grasspledge" | "ivycudgel" |
-                "kingsshield" | "maxguard" | "naturalgift" | "obstruct" | "protect" |
-                "shellsidearm" | "silktrap" | "spikyshield" | "terablast" | "waterpledge"
-            ),
-            "onTry" => matches!(
-                move_id,
-                "aurawheel" | "auroraveil" | "clangoroussoul" | "comeuppance" | "counter" |
-                "craftyshield" | "darkvoid" | "doomdesire" | "fakeout" | "filletaway" |
-                "firstimpression" | "followme" | "futuresight" | "hyperspacefury" | "lastresort" |
-                "magnetrise" | "matblock" | "metalburst" | "mirrorcoat" | "noretreat" |
-                "poltergeist" | "quickguard" | "ragepowder" | "rest" | "round" |
-                "skydrop" | "sleeptalk" | "snore" | "spitup" | "splash" |
-                "steelroller" | "stockpile" | "stuffcheeks" | "suckerpunch" | "swallow" |
-                "telekinesis" | "teleport" | "thunderclap" | "upperhand" | "wideguard"
-            ),
-            "onTryHit" => matches!(
-                move_id,
-                "autotomize" | "brickbreak" | "celebrate" | "clangoroussoul" | "curse" |
-                "disable" | "electrify" | "entrainment" | "filletaway" | "foresight" |
-                "gastroacid" | "grassknot" | "happyhour" | "healingwish" | "heatcrash" |
-                "heavyslam" | "helpinghand" | "lockon" | "lowkick" | "lunardance" |
-                "mefirst" | "mindreader" | "miracleeye" | "mirrormove" | "naturepower" |
-                "odorsleuth" | "pollenpuff" | "poltergeist" | "psychicfangs" | "psychoshift" |
-                "pursuit" | "ragingbull" | "revivalblessing" | "roleplay" | "shedtail" |
-                "simplebeam" | "skillswap" | "skydrop" | "splash" | "spotlight" |
-                "substitute" | "uproar" | "worryseed" | "yawn"
-            ),
-            "onTryImmunity" => matches!(
-                move_id,
-                "attract" | "captivate" | "dreameater" | "endeavor" | "leechseed" |
-                "octolock" | "switcheroo" | "synchronoise" | "trick" | "worryseed"
-            ),
-            "onTryMove" => matches!(
-                move_id,
-                "bounce" | "burnup" | "dig" | "dive" | "doubleshock" |
-                "echoedvoice" | "electroshot" | "fly" | "freezeshock" | "geomancy" |
-                "iceburn" | "meteorbeam" | "phantomforce" | "pollenpuff" | "razorwind" |
-                "shadowforce" | "shelltrap" | "skullbash" | "skyattack" | "solarbeam" |
-                "solarblade"
-            ),
-            "onUseMoveMessage" => matches!(
-                move_id,
-                "magnitude"
-            ),
-            _ => false,
+        // Look up the move in dex data and check its extra field for callback boolean
+        if let Some(move_data) = self.dex.moves().get(move_id) {
+            // Check the exact event_id first, then try with "on" prefix for backward compatibility
+            let has_callback = move_data.extra.get(event_id)
+                .and_then(|v| v.as_bool())
+                .unwrap_or(false);
+
+            if has_callback {
+                true
+            } else if !event_id.starts_with("on") {
+                // Try with "on" prefix for backward compatibility
+                let with_on = format!("on{}", event_id);
+                move_data.extra.get(&with_on)
+                    .and_then(|v| v.as_bool())
+                    .unwrap_or(false)
+            } else {
+                false
+            }
+        } else {
+            // If not found in dex, return false
+            false
         }
     }
 

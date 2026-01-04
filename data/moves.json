@@ -162,7 +162,8 @@
     "secondary": null,
     "target": "any",
     "type": "Flying",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "basePowerCallback": true
   },
   "acupressure": {
     "num": 367,
@@ -181,7 +182,8 @@
     "zMove": {
       "effect": "crit2"
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onHit": true
   },
   "aerialace": {
     "num": 332,
@@ -245,7 +247,8 @@
         "spe": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "agility": {
     "num": 97,
@@ -374,7 +377,9 @@
         "spe": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "amnesia": {
     "num": 133,
@@ -646,7 +651,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "aromaticmist": {
     "num": 597,
@@ -694,7 +700,8 @@
     "secondary": null,
     "target": "self",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "assurance": {
     "num": 372,
@@ -713,7 +720,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "basePowerCallback": true
   },
   "astonish": {
     "num": 310,
@@ -798,7 +806,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryImmunity": true
   },
   "aurasphere": {
     "num": 396,
@@ -842,7 +851,9 @@
       }
     },
     "target": "normal",
-    "type": "Electric"
+    "type": "Electric",
+    "onTry": true,
+    "onModifyType": true
   },
   "aurorabeam": {
     "num": 62,
@@ -893,7 +904,8 @@
         "spe": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTry": true
   },
   "autotomize": {
     "num": 475,
@@ -917,7 +929,9 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTryHit": true,
+    "onHit": true
   },
   "avalanche": {
     "num": 419,
@@ -936,7 +950,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Ice",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "basePowerCallback": true
   },
   "axekick": {
     "num": 853,
@@ -958,7 +973,8 @@
       "volatileStatus": "confusion"
     },
     "target": "normal",
-    "type": "Fighting"
+    "type": "Fighting",
+    "onMoveFail": true
   },
   "babydolleyes": {
     "num": 608,
@@ -1035,7 +1051,9 @@
         "def": 1
       }
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "barbbarrage": {
     "num": 839,
@@ -1055,7 +1073,8 @@
       "status": "psn"
     },
     "target": "normal",
-    "type": "Poison"
+    "type": "Poison",
+    "onBasePower": true
   },
   "barrage": {
     "num": 140,
@@ -1124,7 +1143,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "beakblast": {
     "num": 690,
@@ -1149,7 +1169,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Flying",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "priorityChargeCallback": true,
+    "onAfterMove": true
   },
   "beatup": {
     "num": 251,
@@ -1168,7 +1190,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "basePowerCallback": true,
+    "onModifyMove": true
   },
   "behemothbash": {
     "num": 782,
@@ -1229,7 +1253,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Poison",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onDisableMove": true
   },
   "bellydrum": {
     "num": 187,
@@ -1249,7 +1274,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "bestow": {
     "num": 516,
@@ -1275,7 +1301,8 @@
         "spe": 2
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "bide": {
     "num": 117,
@@ -1303,7 +1330,8 @@
     "secondary": null,
     "target": "self",
     "type": "Normal",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "beforeMoveCallback": true
   },
   "bind": {
     "num": 20,
@@ -1503,7 +1531,8 @@
       }
     },
     "target": "allAdjacentFoes",
-    "type": "Flying"
+    "type": "Flying",
+    "onModifyMove": true
   },
   "blizzard": {
     "num": 59,
@@ -1525,7 +1554,8 @@
     },
     "target": "allAdjacentFoes",
     "type": "Ice",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onModifyMove": true
   },
   "block": {
     "num": 335,
@@ -1548,7 +1578,8 @@
         "def": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "bloodmoon": {
     "num": 901,
@@ -1663,7 +1694,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Electric"
+    "type": "Electric",
+    "basePowerCallback": true
   },
   "boltstrike": {
     "num": 550,
@@ -1809,7 +1841,8 @@
     },
     "target": "any",
     "type": "Flying",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryMove": true
   },
   "bouncybubble": {
     "num": 733,
@@ -1930,7 +1963,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Fighting",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTryHit": true
   },
   "brine": {
     "num": 362,
@@ -1948,7 +1982,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Water",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onBasePower": true
   },
   "brutalswing": {
     "num": 693,
@@ -2033,7 +2068,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Bug",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "bugbuzz": {
     "num": 405,
@@ -2180,7 +2216,9 @@
     },
     "secondary": null,
     "target": "self",
-    "type": "Fire"
+    "type": "Fire",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "burningjealousy": {
     "num": 807,
@@ -2221,7 +2259,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Fire",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryMove": true
   },
   "buzzybuzz": {
     "num": 734,
@@ -2289,7 +2328,8 @@
         "evasion": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "captivate": {
     "num": 445,
@@ -2317,7 +2357,8 @@
         "spd": 2
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryImmunity": true
   },
   "catastropika": {
     "num": 658,
@@ -2354,7 +2395,9 @@
     },
     "secondary": {},
     "target": "normal",
-    "type": "Dark"
+    "type": "Dark",
+    "onAfterHit": true,
+    "onAfterSubDamage": true
   },
   "celebrate": {
     "num": 606,
@@ -2383,7 +2426,8 @@
         "spe": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true
   },
   "charge": {
     "num": 268,
@@ -2535,7 +2579,8 @@
       "onBeforeMovePriority": 100
     },
     "target": "all",
-    "type": "Ice"
+    "type": "Ice",
+    "priorityChargeCallback": true
   },
   "chipaway": {
     "num": 498,
@@ -2665,7 +2710,10 @@
     },
     "secondary": null,
     "target": "self",
-    "type": "Dragon"
+    "type": "Dragon",
+    "onTry": true,
+    "onTryHit": true,
+    "onHit": true
   },
   "clangoroussoulblaze": {
     "num": 728,
@@ -2711,7 +2759,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Poison",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "closecombat": {
     "num": 370,
@@ -2800,7 +2849,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Fighting",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onBasePower": true
   },
   "combattorque": {
     "num": 899,
@@ -2874,7 +2924,10 @@
     "secondary": null,
     "target": "scripted",
     "type": "Dark",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "damageCallback": true,
+    "onTry": true,
+    "onModifyTarget": true
   },
   "confide": {
     "num": 590,
@@ -3015,7 +3068,8 @@
         "spe": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "conversion2": {
     "num": 176,
@@ -3035,7 +3089,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "copycat": {
     "num": 383,
@@ -3062,7 +3117,8 @@
         "accuracy": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "coreenforcer": {
     "num": 687,
@@ -3084,7 +3140,9 @@
     "zMove": {
       "basePower": 140
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onHit": true,
+    "onAfterSubDamage": true
   },
   "corkscrewcrash": {
     "num": 638,
@@ -3120,7 +3178,8 @@
     },
     "secondary": null,
     "target": "allAdjacent",
-    "type": "Poison"
+    "type": "Poison",
+    "onHit": true
   },
   "cosmicpower": {
     "num": 322,
@@ -3223,7 +3282,10 @@
     "maxMove": {
       "basePower": 75
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "damageCallback": true,
+    "beforeTurnCallback": true,
+    "onTry": true
   },
   "courtchange": {
     "num": 756,
@@ -3239,7 +3301,8 @@
     },
     "secondary": null,
     "target": "all",
-    "type": "Normal"
+    "type": "Normal",
+    "onHitField": true
   },
   "covet": {
     "num": 343,
@@ -3260,7 +3323,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onAfterHit": true
   },
   "crabhammer": {
     "num": 152,
@@ -3305,7 +3369,8 @@
         "spd": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTry": true
   },
   "crosschop": {
     "num": 238,
@@ -3423,7 +3488,8 @@
     "maxMove": {
       "basePower": 140
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true
   },
   "curse": {
     "num": 174,
@@ -3448,7 +3514,10 @@
     "zMove": {
       "effect": "curse"
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onModifyMove": true,
+    "onTryHit": true,
+    "onHit": true
   },
   "cut": {
     "num": 15,
@@ -3537,7 +3606,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTry": true
   },
   "dazzlinggleam": {
     "num": 605,
@@ -3654,7 +3724,8 @@
         "accuracy": 1
       }
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onHit": true
   },
   "destinybond": {
     "num": 194,
@@ -3680,7 +3751,8 @@
     "zMove": {
       "effect": "redirect"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onPrepareHit": true
   },
   "detect": {
     "num": 197,
@@ -3704,7 +3776,9 @@
         "evasion": 1
       }
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "devastatingdrake": {
     "num": 652,
@@ -3770,7 +3844,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Ground",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onTryMove": true
   },
   "direclaw": {
     "num": 827,
@@ -3820,7 +3895,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "disarmingvoice": {
     "num": 574,
@@ -3889,7 +3965,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Water",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTryMove": true
   },
   "dizzypunch": {
     "num": 146,
@@ -3926,7 +4003,8 @@
     "flags": {},
     "secondary": null,
     "target": "adjacentFoe",
-    "type": "Normal"
+    "type": "Normal",
+    "onHit": true
   },
   "doomdesire": {
     "num": 353,
@@ -3943,7 +4021,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Steel",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTry": true
   },
   "doubleedge": {
     "num": 38,
@@ -4064,7 +4143,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Electric",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryMove": true
   },
   "doubleslap": {
     "num": 3,
@@ -4281,7 +4361,8 @@
     },
     "secondary": null,
     "target": "allAdjacentFoes",
-    "type": "Dragon"
+    "type": "Dragon",
+    "basePowerCallback": true
   },
   "dragonhammer": {
     "num": 692,
@@ -4455,7 +4536,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Psychic",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryImmunity": true
   },
   "drillpeck": {
     "num": 65,
@@ -4672,7 +4754,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "basePowerCallback": true,
+    "onTryMove": true
   },
   "eerieimpulse": {
     "num": 598,
@@ -4800,7 +4884,8 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "electroball": {
     "num": 486,
@@ -4825,7 +4910,8 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "basePowerCallback": true
   },
   "electrodrift": {
     "num": 879,
@@ -4843,7 +4929,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Electric",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onBasePower": true
   },
   "electroshot": {
     "num": 905,
@@ -4862,7 +4949,8 @@
     "secondary": null,
     "hasSheerForce": true,
     "target": "normal",
-    "type": "Electric"
+    "type": "Electric",
+    "onTryMove": true
   },
   "electroweb": {
     "num": 527,
@@ -4994,7 +5082,9 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "damageCallback": true,
+    "onTryImmunity": true
   },
   "endure": {
     "num": 203,
@@ -5020,7 +5110,9 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "energyball": {
     "num": 412,
@@ -5069,7 +5161,9 @@
         "spd": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true,
+    "onHit": true
   },
   "eruption": {
     "num": 284,
@@ -5087,7 +5181,8 @@
     "secondary": null,
     "target": "allAdjacentFoes",
     "type": "Fire",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "basePowerCallback": true
   },
   "esperwing": {
     "num": 840,
@@ -5150,7 +5245,9 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Psychic"
+    "type": "Psychic",
+    "onBasePower": true,
+    "onModifyMove": true
   },
   "explosion": {
     "num": 153,
@@ -5252,7 +5349,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onBasePower": true
   },
   "fairylock": {
     "num": 587,
@@ -5320,7 +5418,8 @@
     },
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTry": true
   },
   "faketears": {
     "num": 313,
@@ -5385,7 +5484,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onDamage": true
   },
   "featherdance": {
     "num": 297,
@@ -5472,7 +5572,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Bug",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onAfterMoveSecondarySelf": true
   },
   "ficklebeam": {
     "num": 907,
@@ -5489,7 +5590,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Dragon"
+    "type": "Dragon",
+    "onBasePower": true
   },
   "fierydance": {
     "num": 552,
@@ -5554,7 +5656,10 @@
     },
     "secondary": null,
     "target": "self",
-    "type": "Normal"
+    "type": "Normal",
+    "onTry": true,
+    "onTryHit": true,
+    "onHit": true
   },
   "finalgambit": {
     "num": 515,
@@ -5576,7 +5681,8 @@
     "zMove": {
       "basePower": 180
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "damageCallback": true
   },
   "fireblast": {
     "num": 126,
@@ -5677,7 +5783,10 @@
     "secondary": null,
     "target": "normal",
     "type": "Fire",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "basePowerCallback": true,
+    "onPrepareHit": true,
+    "onModifyMove": true
   },
   "firepunch": {
     "num": 7,
@@ -5738,7 +5847,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Bug",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTry": true
   },
   "fishiousrend": {
     "num": 755,
@@ -5758,7 +5868,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Water"
+    "type": "Water",
+    "basePowerCallback": true
   },
   "fissure": {
     "num": 90,
@@ -5809,7 +5920,8 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "basePowerCallback": true
   },
   "flameburst": {
     "num": 481,
@@ -5828,7 +5940,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Fire",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true,
+    "onAfterSubDamage": true
   },
   "flamecharge": {
     "num": 488,
@@ -6048,7 +6162,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onPrepareHit": true
   },
   "flipturn": {
     "num": 812,
@@ -6113,7 +6228,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "flowershield": {
     "num": 579,
@@ -6136,7 +6252,8 @@
         "def": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHitField": true
   },
   "flowertrick": {
     "num": 870,
@@ -6182,7 +6299,8 @@
     "secondary": null,
     "target": "any",
     "type": "Flying",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryMove": true
   },
   "flyingpress": {
     "num": 560,
@@ -6207,7 +6325,8 @@
     "zMove": {
       "basePower": 170
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onEffectiveness": true
   },
   "focusblast": {
     "num": 411,
@@ -6281,7 +6400,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Fighting",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "priorityChargeCallback": true,
+    "beforeMoveCallback": true
   },
   "followme": {
     "num": 266,
@@ -6306,7 +6427,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTry": true
   },
   "forcepalm": {
     "num": 395,
@@ -6356,7 +6478,8 @@
     "zMove": {
       "effect": "crit2"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "forestscurse": {
     "num": 571,
@@ -6385,7 +6508,8 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "foulplay": {
     "num": 492,
@@ -6426,7 +6550,8 @@
     },
     "target": "normal",
     "type": "Ice",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onEffectiveness": true
   },
   "freezeshock": {
     "num": 553,
@@ -6449,7 +6574,8 @@
     },
     "target": "normal",
     "type": "Ice",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTryMove": true
   },
   "freezingglare": {
     "num": 821,
@@ -6486,7 +6612,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Ice",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "frenzyplant": {
     "num": 338,
@@ -6554,7 +6681,8 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "basePowerCallback": true
   },
   "furyattack": {
     "num": 31,
@@ -6600,7 +6728,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Bug",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "basePowerCallback": true
   },
   "furyswipes": {
     "num": 154,
@@ -6644,7 +6773,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Electric",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onBasePower": true
   },
   "fusionflare": {
     "num": 558,
@@ -6663,7 +6793,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Fire",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onBasePower": true
   },
   "futuresight": {
     "num": 248,
@@ -6682,7 +6813,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Psychic",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTry": true
   },
   "gastroacid": {
     "num": 380,
@@ -6709,7 +6841,8 @@
         "spe": 1
       }
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onTryHit": true
   },
   "geargrind": {
     "num": 544,
@@ -6760,7 +6893,8 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHitSide": true
   },
   "genesissupernova": {
     "num": 703,
@@ -6814,7 +6948,8 @@
         "spe": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTryMove": true
   },
   "gigadrain": {
     "num": 202,
@@ -7386,7 +7521,9 @@
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Dark",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onHit": true,
+    "onAfterSubDamage": true
   },
   "gmaxsteelsurge": {
     "num": 1000,
@@ -7621,7 +7758,9 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "basePowerCallback": true,
+    "onTryHit": true
   },
   "grasspledge": {
     "num": 520,
@@ -7646,7 +7785,10 @@
     "secondary": null,
     "target": "normal",
     "type": "Grass",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "basePowerCallback": true,
+    "onPrepareHit": true,
+    "onModifyMove": true
   },
   "grasswhistle": {
     "num": 320,
@@ -7746,7 +7888,8 @@
       }
     },
     "target": "normal",
-    "type": "Grass"
+    "type": "Grass",
+    "onBasePower": true
   },
   "gravity": {
     "num": 356,
@@ -7830,7 +7973,8 @@
         "spa": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onModifyMove": true
   },
   "grudge": {
     "num": 288,
@@ -7871,7 +8015,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Fairy",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "damageCallback": true
   },
   "guardsplit": {
     "num": 470,
@@ -7894,7 +8039,8 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "guardswap": {
     "num": 385,
@@ -7919,7 +8065,8 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "guillotine": {
     "num": 12,
@@ -8012,7 +8159,8 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "basePowerCallback": true
   },
   "hail": {
     "num": 258,
@@ -8085,7 +8233,8 @@
         "spe": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true
   },
   "harden": {
     "num": 106,
@@ -8128,7 +8277,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Steel"
+    "type": "Steel",
+    "basePowerCallback": true
   },
   "haze": {
     "num": 114,
@@ -8148,7 +8298,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHitField": true
   },
   "headbutt": {
     "num": 29,
@@ -8264,7 +8415,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "healblock": {
     "num": 377,
@@ -8316,7 +8468,8 @@
     "secondary": null,
     "target": "self",
     "type": "Psychic",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTryHit": true
   },
   "healorder": {
     "num": 456,
@@ -8367,7 +8520,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "heartstamp": {
     "num": 531,
@@ -8413,7 +8567,8 @@
     "zMove": {
       "effect": "crit2"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "heatcrash": {
     "num": 535,
@@ -8439,7 +8594,9 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true,
+    "onTryHit": true
   },
   "heatwave": {
     "num": 257,
@@ -8487,7 +8644,9 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true,
+    "onTryHit": true
   },
   "helpinghand": {
     "num": 270,
@@ -8513,7 +8672,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "hex": {
     "num": 506,
@@ -8534,7 +8694,8 @@
     "zMove": {
       "basePower": 160
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "basePowerCallback": true
   },
   "hiddenpower": {
     "num": 237,
@@ -8553,7 +8714,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onModifyType": true
   },
   "hiddenpowerbug": {
     "num": 237,
@@ -8897,7 +9059,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Fighting",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onMoveFail": true
   },
   "holdback": {
     "num": 610,
@@ -8918,7 +9081,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onDamage": true
   },
   "holdhands": {
     "num": 607,
@@ -9093,7 +9257,8 @@
     },
     "target": "any",
     "type": "Flying",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onModifyMove": true
   },
   "hydrocannon": {
     "num": 308,
@@ -9255,7 +9420,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onTry": true
   },
   "hyperspacehole": {
     "num": 593,
@@ -9345,7 +9511,10 @@
     "secondary": null,
     "target": "normal",
     "type": "Ice",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "basePowerCallback": true,
+    "onModifyMove": true,
+    "onAfterMove": true
   },
   "icebeam": {
     "num": 58,
@@ -9389,7 +9558,8 @@
     },
     "target": "normal",
     "type": "Ice",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTryMove": true
   },
   "icefang": {
     "num": 423,
@@ -9502,7 +9672,9 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Ice"
+    "type": "Ice",
+    "onAfterHit": true,
+    "onAfterSubDamage": true
   },
   "iciclecrash": {
     "num": 556,
@@ -9622,7 +9794,8 @@
     "secondary": null,
     "target": "allAdjacentFoes",
     "type": "Fire",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onHit": true
   },
   "infernalparade": {
     "num": 844,
@@ -9642,7 +9815,8 @@
       "status": "brn"
     },
     "target": "normal",
-    "type": "Ghost"
+    "type": "Ghost",
+    "basePowerCallback": true
   },
   "inferno": {
     "num": 517,
@@ -9750,7 +9924,8 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "iondeluge": {
     "num": 569,
@@ -9864,7 +10039,9 @@
     "critRatio": 2,
     "secondary": null,
     "target": "normal",
-    "type": "Grass"
+    "type": "Grass",
+    "onPrepareHit": true,
+    "onModifyType": true
   },
   "jawlock": {
     "num": 746,
@@ -9883,7 +10060,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Dark"
+    "type": "Dark",
+    "onHit": true
   },
   "jetpunch": {
     "num": 857,
@@ -9920,7 +10098,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onModifyType": true
   },
   "jumpkick": {
     "num": 26,
@@ -9942,7 +10121,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Fighting",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onMoveFail": true
   },
   "junglehealing": {
     "num": 816,
@@ -9959,7 +10139,8 @@
     },
     "secondary": null,
     "target": "allies",
-    "type": "Grass"
+    "type": "Grass",
+    "onHit": true
   },
   "karatechop": {
     "num": 2,
@@ -10036,7 +10217,9 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "knockoff": {
     "num": 282,
@@ -10055,7 +10238,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onBasePower": true,
+    "onAfterHit": true
   },
   "kowtowcleave": {
     "num": 869,
@@ -10142,7 +10327,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Dark"
+    "type": "Dark",
+    "onBasePower": true
   },
   "lastresort": {
     "num": 387,
@@ -10161,7 +10347,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTry": true
   },
   "lastrespects": {
     "num": 854,
@@ -10178,7 +10365,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Ghost"
+    "type": "Ghost",
+    "basePowerCallback": true
   },
   "lavaplume": {
     "num": 436,
@@ -10335,7 +10523,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryImmunity": true
   },
   "leer": {
     "num": 43,
@@ -10490,7 +10679,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Psychic",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onModifyMove": true
   },
   "liquidation": {
     "num": 710,
@@ -10542,7 +10732,9 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true,
+    "onHit": true
   },
   "lovelykiss": {
     "num": 142,
@@ -10590,7 +10782,9 @@
     "zMove": {
       "basePower": 160
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true,
+    "onTryHit": true
   },
   "lowsweep": {
     "num": 490,
@@ -10683,7 +10877,8 @@
     },
     "secondary": null,
     "target": "allies",
-    "type": "Psychic"
+    "type": "Psychic",
+    "onHit": true
   },
   "lunardance": {
     "num": 461,
@@ -10705,7 +10900,8 @@
     "secondary": null,
     "target": "self",
     "type": "Psychic",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTryHit": true
   },
   "lunge": {
     "num": 679,
@@ -10864,7 +11060,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Psychic"
+    "type": "Psychic",
+    "onHit": true
   },
   "magicroom": {
     "num": 478,
@@ -10955,7 +11152,8 @@
         "spd": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHitSide": true
   },
   "magnetrise": {
     "num": 393,
@@ -10983,7 +11181,8 @@
         "evasion": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTry": true
   },
   "magnitude": {
     "num": 222,
@@ -11009,7 +11208,9 @@
     "maxMove": {
       "basePower": 140
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onModifyMove": true,
+    "onUseMoveMessage": true
   },
   "makeitrain": {
     "num": 874,
@@ -11100,7 +11301,8 @@
         "def": 1
       }
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTry": true
   },
   "matchagotcha": {
     "num": 902,
@@ -11229,7 +11431,9 @@
     "secondary": null,
     "target": "self",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "maxhailstorm": {
     "num": 763,
@@ -11460,7 +11664,8 @@
         "spd": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "meditate": {
     "num": 96,
@@ -11521,7 +11726,8 @@
         "spe": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "megadrain": {
     "num": 72,
@@ -11667,7 +11873,10 @@
     "secondary": null,
     "target": "scripted",
     "type": "Steel",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "damageCallback": true,
+    "onTry": true,
+    "onModifyTarget": true
   },
   "metalclaw": {
     "num": 232,
@@ -11763,7 +11972,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Rock"
+    "type": "Rock",
+    "onTryMove": true
   },
   "meteormash": {
     "num": 309,
@@ -11812,7 +12022,8 @@
     "secondary": null,
     "target": "self",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "mightycleave": {
     "num": 910,
@@ -11884,7 +12095,8 @@
         "accuracy": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "mindblown": {
     "num": 720,
@@ -11903,7 +12115,8 @@
     "secondary": null,
     "target": "allAdjacent",
     "type": "Fire",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onAfterMove": true
   },
   "mindreader": {
     "num": 170,
@@ -11927,7 +12140,9 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true,
+    "onHit": true
   },
   "minimize": {
     "num": 107,
@@ -11984,7 +12199,8 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "mirrorcoat": {
     "num": 243,
@@ -12007,7 +12223,10 @@
     "secondary": null,
     "target": "scripted",
     "type": "Psychic",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "damageCallback": true,
+    "beforeTurnCallback": true,
+    "onTry": true
   },
   "mirrormove": {
     "num": 119,
@@ -12035,7 +12254,8 @@
         "atk": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "mirrorshot": {
     "num": 429,
@@ -12127,7 +12347,8 @@
     "selfdestruct": "always",
     "secondary": null,
     "target": "allAdjacent",
-    "type": "Fairy"
+    "type": "Fairy",
+    "onBasePower": true
   },
   "mistyterrain": {
     "num": 581,
@@ -12219,7 +12440,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "morningsun": {
     "num": 234,
@@ -12240,7 +12462,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "mortalspin": {
     "num": 866,
@@ -12261,7 +12484,9 @@
       "status": "psn"
     },
     "target": "allAdjacentFoes",
-    "type": "Poison"
+    "type": "Poison",
+    "onAfterHit": true,
+    "onAfterSubDamage": true
   },
   "mountaingale": {
     "num": 836,
@@ -12432,7 +12657,8 @@
     "maxMove": {
       "basePower": 95
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onModifyType": true
   },
   "mysticalfire": {
     "num": 595,
@@ -12527,7 +12753,9 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onModifyType": true,
+    "onPrepareHit": true
   },
   "naturepower": {
     "num": 267,
@@ -12550,7 +12778,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onTryHit": true
   },
   "naturesmadness": {
     "num": 717,
@@ -12568,7 +12797,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Fairy",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "damageCallback": true
   },
   "needlearm": {
     "num": 302,
@@ -12777,7 +13007,8 @@
     },
     "secondary": null,
     "target": "self",
-    "type": "Fighting"
+    "type": "Fighting",
+    "onTry": true
   },
   "noxioustorque": {
     "num": 898,
@@ -12873,7 +13104,9 @@
     },
     "secondary": null,
     "target": "self",
-    "type": "Dark"
+    "type": "Dark",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "oceanicoperetta": {
     "num": 697,
@@ -12936,7 +13169,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Fighting"
+    "type": "Fighting",
+    "onTryImmunity": true
   },
   "odorsleuth": {
     "num": 316,
@@ -12964,7 +13198,8 @@
         "atk": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "ominouswind": {
     "num": 466,
@@ -13010,7 +13245,8 @@
     "secondary": null,
     "hasSheerForce": true,
     "target": "normal",
-    "type": "Dragon"
+    "type": "Dragon",
+    "onAfterMoveSecondarySelf": true
   },
   "originpulse": {
     "num": 618,
@@ -13115,7 +13351,8 @@
         "def": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "paraboliccharge": {
     "num": 570,
@@ -13163,7 +13400,8 @@
     "zMove": {
       "effect": "healreplacement"
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onHit": true
   },
   "payback": {
     "num": 371,
@@ -13182,7 +13420,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true
   },
   "payday": {
     "num": 6,
@@ -13246,7 +13485,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHitField": true
   },
   "petalblizzard": {
     "num": 572,
@@ -13316,7 +13556,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Ghost",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTryMove": true
   },
   "photongeyser": {
     "num": 722,
@@ -13334,7 +13575,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Psychic",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onModifyMove": true
   },
   "pikapapow": {
     "num": 732,
@@ -13352,7 +13594,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Electric",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "basePowerCallback": true
   },
   "pinmissile": {
     "num": 42,
@@ -13472,7 +13715,8 @@
     "secondary": null,
     "target": "any",
     "type": "Flying",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "poisonfang": {
     "num": 305,
@@ -13632,7 +13876,10 @@
     "secondary": null,
     "target": "normal",
     "type": "Bug",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true,
+    "onTryMove": true,
+    "onHit": true
   },
   "poltergeist": {
     "num": 809,
@@ -13649,7 +13896,9 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Ghost"
+    "type": "Ghost",
+    "onTry": true,
+    "onTryHit": true
   },
   "populationbomb": {
     "num": 860,
@@ -13823,7 +14072,8 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "powerswap": {
     "num": 384,
@@ -13848,7 +14098,8 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "powertrick": {
     "num": 379,
@@ -13897,7 +14148,8 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "basePowerCallback": true
   },
   "poweruppunch": {
     "num": 612,
@@ -13979,7 +14231,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onModifyMove": true
   },
   "prismaticlaser": {
     "num": 711,
@@ -14027,7 +14280,9 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "psybeam": {
     "num": 60,
@@ -14067,7 +14322,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Psychic"
+    "type": "Psychic",
+    "onBasePower": true
   },
   "psychic": {
     "num": 94,
@@ -14110,7 +14366,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Psychic",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "psychicnoise": {
     "num": 917,
@@ -14231,7 +14488,8 @@
         "spa": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true
   },
   "psychup": {
     "num": 244,
@@ -14252,7 +14510,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "psyshieldbash": {
     "num": 828,
@@ -14334,7 +14593,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Psychic",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "damageCallback": true
   },
   "pulverizingpancake": {
     "num": 701,
@@ -14378,7 +14638,8 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "basePowerCallback": true
   },
   "purify": {
     "num": 685,
@@ -14407,7 +14668,8 @@
         "spe": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "pursuit": {
     "num": 228,
@@ -14430,7 +14692,11 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "basePowerCallback": true,
+    "beforeTurnCallback": true,
+    "onModifyMove": true,
+    "onTryHit": true
   },
   "pyroball": {
     "num": 780,
@@ -14473,7 +14739,8 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "quickattack": {
     "num": 98,
@@ -14518,7 +14785,9 @@
         "def": 1
       }
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTry": true,
+    "onHitSide": true
   },
   "quiverdance": {
     "num": 483,
@@ -14588,7 +14857,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Ghost"
+    "type": "Ghost",
+    "basePowerCallback": true
   },
   "ragepowder": {
     "num": 476,
@@ -14614,7 +14884,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTry": true
   },
   "ragingbull": {
     "num": 873,
@@ -14631,7 +14902,9 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Normal"
+    "type": "Normal",
+    "onTryHit": true,
+    "onModifyType": true
   },
   "ragingfury": {
     "num": 833,
@@ -14698,7 +14971,9 @@
     },
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onAfterHit": true,
+    "onAfterSubDamage": true
   },
   "razorleaf": {
     "num": 75,
@@ -14766,7 +15041,8 @@
     "secondary": null,
     "target": "allAdjacentFoes",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTryMove": true
   },
   "recover": {
     "num": 105,
@@ -14813,7 +15089,8 @@
         "spe": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "reflect": {
     "num": 115,
@@ -14865,7 +15142,8 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "refresh": {
     "num": 287,
@@ -14886,7 +15164,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "relicsong": {
     "num": 547,
@@ -14908,7 +15187,9 @@
     },
     "target": "allAdjacentFoes",
     "type": "Normal",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true,
+    "onAfterMoveSecondarySelf": true
   },
   "rest": {
     "num": 156,
@@ -14929,7 +15210,9 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTry": true,
+    "onHit": true
   },
   "retaliate": {
     "num": 514,
@@ -14948,7 +15231,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onBasePower": true
   },
   "return": {
     "num": 216,
@@ -14974,7 +15258,8 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "basePowerCallback": true
   },
   "revelationdance": {
     "num": 686,
@@ -14993,7 +15278,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onModifyType": true
   },
   "revenge": {
     "num": 279,
@@ -15013,7 +15299,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Fighting",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true
   },
   "reversal": {
     "num": 179,
@@ -15035,7 +15322,8 @@
     "zMove": {
       "basePower": 160
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "basePowerCallback": true
   },
   "revivalblessing": {
     "num": 863,
@@ -15057,7 +15345,8 @@
     },
     "secondary": null,
     "target": "self",
-    "type": "Normal"
+    "type": "Normal",
+    "onTryHit": true
   },
   "risingvoltage": {
     "num": 804,
@@ -15077,7 +15366,8 @@
     "type": "Electric",
     "maxMove": {
       "basePower": 140
-    }
+    },
+    "basePowerCallback": true
   },
   "roar": {
     "num": 46,
@@ -15335,7 +15625,9 @@
         "spe": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true,
+    "onHit": true
   },
   "rollingkick": {
     "num": 27,
@@ -15383,7 +15675,10 @@
     "secondary": null,
     "target": "normal",
     "type": "Rock",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "basePowerCallback": true,
+    "onModifyMove": true,
+    "onAfterMove": true
   },
   "roost": {
     "num": 355,
@@ -15440,7 +15735,8 @@
         "atk": 1
       }
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onHitField": true
   },
   "round": {
     "num": 496,
@@ -15460,7 +15756,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "basePowerCallback": true,
+    "onTry": true
   },
   "ruination": {
     "num": 877,
@@ -15477,7 +15775,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "damageCallback": true
   },
   "sacredfire": {
     "num": 221,
@@ -15620,7 +15919,8 @@
       "status": "brn"
     },
     "target": "allAdjacentFoes",
-    "type": "Ground"
+    "type": "Ground",
+    "onModifyMove": true
   },
   "sandstorm": {
     "num": 201,
@@ -15681,7 +15981,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Grass",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "savagespinout": {
     "num": 634,
@@ -15916,7 +16217,8 @@
     },
     "target": "normal",
     "type": "Normal",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onModifyMove": true
   },
   "secretsword": {
     "num": 548,
@@ -16116,7 +16418,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Ghost",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTryMove": true
   },
   "shadowpunch": {
     "num": 325,
@@ -16216,7 +16519,9 @@
     "type": "Normal",
     "zMove": {
       "effect": "clearnegativeboost"
-    }
+    },
+    "onTryHit": true,
+    "onHit": true
   },
   "sheercold": {
     "num": 329,
@@ -16261,7 +16566,11 @@
       "status": "psn"
     },
     "target": "normal",
-    "type": "Poison"
+    "type": "Poison",
+    "onPrepareHit": true,
+    "onModifyMove": true,
+    "onHit": true,
+    "onAfterSubDamage": true
   },
   "shellsmash": {
     "num": 504,
@@ -16313,7 +16622,9 @@
     "secondary": null,
     "target": "allAdjacentFoes",
     "type": "Fire",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "priorityChargeCallback": true,
+    "onTryMove": true
   },
   "shelter": {
     "num": 842,
@@ -16395,7 +16706,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true
   },
   "signalbeam": {
     "num": 324,
@@ -16435,7 +16747,9 @@
       "onTryHitPriority": 3
     },
     "target": "self",
-    "type": "Bug"
+    "type": "Bug",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "silverwind": {
     "num": 318,
@@ -16490,7 +16804,9 @@
         "spa": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true,
+    "onHit": true
   },
   "sing": {
     "num": 47,
@@ -16590,7 +16906,8 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "skillswap": {
     "num": 285,
@@ -16615,7 +16932,9 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryHit": true,
+    "onHit": true
   },
   "skittersmack": {
     "num": 806,
@@ -16661,7 +16980,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onTryMove": true
   },
   "skyattack": {
     "num": 143,
@@ -16687,7 +17007,8 @@
     },
     "target": "any",
     "type": "Flying",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTryMove": true
   },
   "skydrop": {
     "num": 507,
@@ -16719,7 +17040,12 @@
     "secondary": null,
     "target": "any",
     "type": "Flying",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onModifyMove": true,
+    "onMoveFail": true,
+    "onTry": true,
+    "onTryHit": true,
+    "onHit": true
   },
   "skyuppercut": {
     "num": 327,
@@ -16858,7 +17184,9 @@
     "zMove": {
       "effect": "crit2"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTry": true,
+    "onHit": true
   },
   "sludge": {
     "num": 124,
@@ -16984,7 +17312,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true,
+    "onHit": true
   },
   "smog": {
     "num": 123,
@@ -17147,7 +17477,8 @@
     },
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTry": true
   },
   "snowscape": {
     "num": 883,
@@ -17186,7 +17517,8 @@
         "spa": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "softboiled": {
     "num": 135,
@@ -17232,7 +17564,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Grass",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTryMove": true,
+    "onBasePower": true
   },
   "solarblade": {
     "num": 669,
@@ -17255,7 +17589,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Grass",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTryMove": true,
+    "onBasePower": true
   },
   "sonicboom": {
     "num": 49,
@@ -17357,7 +17693,8 @@
     },
     "target": "allAdjacent",
     "type": "Water",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onAfterMove": true
   },
   "sparklyswirl": {
     "num": 740,
@@ -17422,7 +17759,8 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "spicyextract": {
     "num": 858,
@@ -17468,7 +17806,8 @@
         "def": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "spikecannon": {
     "num": 131,
@@ -17548,7 +17887,9 @@
         "def": 1
       }
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onPrepareHit": true,
+    "onHit": true
   },
   "spinout": {
     "num": 859,
@@ -17636,7 +17977,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onHit": true
   },
   "spitup": {
     "num": 255,
@@ -17653,7 +17995,10 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true,
+    "onTry": true,
+    "onAfterMove": true
   },
   "splash": {
     "num": 150,
@@ -17675,7 +18020,9 @@
         "atk": 3
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTry": true,
+    "onTryHit": true
   },
   "splinteredstormshards": {
     "num": 727,
@@ -17691,7 +18038,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Rock",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onHit": true,
+    "onAfterSubDamage": true
   },
   "splishysplash": {
     "num": 730,
@@ -17768,7 +18117,8 @@
         "spd": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true
   },
   "springtidestorm": {
     "num": 831,
@@ -17877,7 +18227,8 @@
     "mindBlownRecoil": true,
     "secondary": null,
     "target": "normal",
-    "type": "Steel"
+    "type": "Steel",
+    "onAfterMove": true
   },
   "steelroller": {
     "num": 798,
@@ -17895,7 +18246,10 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Steel"
+    "type": "Steel",
+    "onTry": true,
+    "onHit": true,
+    "onAfterSubDamage": true
   },
   "steelwing": {
     "num": 211,
@@ -17969,7 +18323,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onTry": true
   },
   "stokedsparksurfer": {
     "num": 700,
@@ -18030,7 +18385,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Ground",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true
   },
   "stoneaxe": {
     "num": 830,
@@ -18049,7 +18405,9 @@
     },
     "secondary": {},
     "target": "normal",
-    "type": "Rock"
+    "type": "Rock",
+    "onAfterHit": true,
+    "onAfterSubDamage": true
   },
   "stoneedge": {
     "num": 444,
@@ -18092,7 +18450,8 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "basePowerCallback": true
   },
   "stormthrow": {
     "num": 480,
@@ -18176,7 +18535,8 @@
         "def": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "stringshot": {
     "num": 81,
@@ -18230,7 +18590,8 @@
     "secondary": null,
     "target": "randomNormal",
     "type": "Normal",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onModifyMove": true
   },
   "strugglebug": {
     "num": 522,
@@ -18269,7 +18630,10 @@
     },
     "secondary": null,
     "target": "self",
-    "type": "Normal"
+    "type": "Normal",
+    "onDisableMove": true,
+    "onTry": true,
+    "onHit": true
   },
   "stunspore": {
     "num": 78,
@@ -18344,7 +18708,9 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true,
+    "onHit": true
   },
   "subzeroslammer": {
     "num": 650,
@@ -18379,7 +18745,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTry": true
   },
   "sunnyday": {
     "num": 241,
@@ -18439,7 +18806,8 @@
     "hasCrashDamage": true,
     "secondary": null,
     "target": "normal",
-    "type": "Electric"
+    "type": "Electric",
+    "onMoveFail": true
   },
   "superfang": {
     "num": 162,
@@ -18458,7 +18826,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "damageCallback": true
   },
   "superpower": {
     "num": 276,
@@ -18619,7 +18988,9 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onTry": true,
+    "onHit": true
   },
   "sweetkiss": {
     "num": 186,
@@ -18714,7 +19085,9 @@
         "spe": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryImmunity": true,
+    "onHit": true
   },
   "swordsdance": {
     "num": 14,
@@ -18757,7 +19130,8 @@
     "secondary": null,
     "target": "allAdjacent",
     "type": "Psychic",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryImmunity": true
   },
   "synthesis": {
     "num": 235,
@@ -18778,7 +19152,8 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "syrupbomb": {
     "num": 903,
@@ -18994,7 +19369,8 @@
     },
     "secondary": null,
     "target": "self",
-    "type": "Psychic"
+    "type": "Psychic",
+    "onHit": true
   },
   "tarshot": {
     "num": 749,
@@ -19093,7 +19469,8 @@
     },
     "secondary": null,
     "target": "all",
-    "type": "Normal"
+    "type": "Normal",
+    "onHitField": true
   },
   "technoblast": {
     "num": 546,
@@ -19111,7 +19488,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onModifyType": true
   },
   "tectonicrage": {
     "num": 630,
@@ -19185,7 +19563,8 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTry": true
   },
   "teleport": {
     "num": 100,
@@ -19205,7 +19584,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onTry": true
   },
   "temperflare": {
     "num": 915,
@@ -19223,7 +19603,8 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Fire"
+    "type": "Fire",
+    "basePowerCallback": true
   },
   "terablast": {
     "num": 851,
@@ -19241,7 +19622,11 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Normal"
+    "type": "Normal",
+    "basePowerCallback": true,
+    "onPrepareHit": true,
+    "onModifyType": true,
+    "onModifyMove": true
   },
   "terastarstorm": {
     "num": 906,
@@ -19261,7 +19646,9 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Normal"
+    "type": "Normal",
+    "onModifyType": true,
+    "onModifyMove": true
   },
   "terrainpulse": {
     "num": 805,
@@ -19285,7 +19672,9 @@
     },
     "maxMove": {
       "basePower": 130
-    }
+    },
+    "onModifyType": true,
+    "onModifyMove": true
   },
   "thief": {
     "num": 168,
@@ -19306,7 +19695,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Dark",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onAfterHit": true
   },
   "thousandarrows": {
     "num": 614,
@@ -19332,7 +19722,8 @@
     "zMove": {
       "basePower": 180
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onEffectiveness": true
   },
   "thousandwaves": {
     "num": 615,
@@ -19351,7 +19742,8 @@
     "secondary": null,
     "target": "allAdjacentFoes",
     "type": "Ground",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onHit": true
   },
   "thrash": {
     "num": 37,
@@ -19421,7 +19813,8 @@
     },
     "target": "normal",
     "type": "Electric",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "onModifyMove": true
   },
   "thunderbolt": {
     "num": 85,
@@ -19477,7 +19870,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Electric",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTry": true
   },
   "thunderfang": {
     "num": 422,
@@ -19640,7 +20034,8 @@
     "flags": {},
     "secondary": null,
     "target": "self",
-    "type": "Normal"
+    "type": "Normal",
+    "onHit": true
   },
   "topsyturvy": {
     "num": 576,
@@ -19665,7 +20060,8 @@
         "atk": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "torchsong": {
     "num": 871,
@@ -19849,7 +20245,8 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "triattack": {
     "num": 161,
@@ -19894,7 +20291,9 @@
         "spe": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryImmunity": true,
+    "onHit": true
   },
   "trickortreat": {
     "num": 567,
@@ -19924,7 +20323,8 @@
         "spe": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onHit": true
   },
   "trickroom": {
     "num": 433,
@@ -20007,7 +20407,8 @@
     },
     "maxMove": {
       "basePower": 140
-    }
+    },
+    "basePowerCallback": true
   },
   "tripledive": {
     "num": 865,
@@ -20053,7 +20454,8 @@
     "maxMove": {
       "basePower": 80
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "basePowerCallback": true
   },
   "tropkick": {
     "num": 688,
@@ -20104,7 +20506,8 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "basePowerCallback": true
   },
   "twinbeam": {
     "num": 888,
@@ -20207,7 +20610,8 @@
       "volatileStatus": "flinch"
     },
     "target": "normal",
-    "type": "Fighting"
+    "type": "Fighting",
+    "onTry": true
   },
   "uproar": {
     "num": 253,
@@ -20238,7 +20642,8 @@
     "secondary": null,
     "target": "randomNormal",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true
   },
   "uturn": {
     "num": 369,
@@ -20324,7 +20729,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "basePowerCallback": true
   },
   "venomdrench": {
     "num": 599,
@@ -20349,7 +20755,8 @@
         "def": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onHit": true
   },
   "venoshock": {
     "num": 474,
@@ -20367,7 +20774,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Poison",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onBasePower": true
   },
   "victorydance": {
     "num": 837,
@@ -20512,7 +20920,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Fighting",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true,
+    "onHit": true
   },
   "waterfall": {
     "num": 127,
@@ -20577,7 +20987,10 @@
     "secondary": null,
     "target": "normal",
     "type": "Water",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "basePowerCallback": true,
+    "onPrepareHit": true,
+    "onModifyMove": true
   },
   "waterpulse": {
     "num": 352,
@@ -20622,7 +21035,8 @@
     "secondary": null,
     "target": "normal",
     "type": "Water",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "basePowerCallback": true
   },
   "watersport": {
     "num": 346,
@@ -20670,7 +21084,8 @@
     "secondary": null,
     "target": "allAdjacentFoes",
     "type": "Water",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "basePowerCallback": true
   },
   "wavecrash": {
     "num": 834,
@@ -20717,7 +21132,9 @@
     "maxMove": {
       "basePower": 130
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onModifyType": true,
+    "onModifyMove": true
   },
   "whirlpool": {
     "num": 250,
@@ -20837,7 +21254,9 @@
         "def": 1
       }
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "onTry": true,
+    "onHitSide": true
   },
   "wildboltstorm": {
     "num": 847,
@@ -20858,7 +21277,8 @@
       "status": "par"
     },
     "target": "allAdjacentFoes",
-    "type": "Electric"
+    "type": "Electric",
+    "onModifyMove": true
   },
   "wildcharge": {
     "num": 528,
@@ -21080,7 +21500,10 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "onTryImmunity": true,
+    "onTryHit": true,
+    "onHit": true
   },
   "wrap": {
     "num": 35,
@@ -21126,7 +21549,8 @@
     "maxMove": {
       "basePower": 140
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "basePowerCallback": true
   },
   "xscissor": {
     "num": 404,
@@ -21176,7 +21600,8 @@
         "spe": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "onTryHit": true
   },
   "zapcannon": {
     "num": 192,
@@ -21338,6 +21763,8 @@
     },
     "target": "allAdjacentFoes",
     "type": "Fire",
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "onHit": true,
+    "onAfterMoveSecondarySelf": true
   }
 }
