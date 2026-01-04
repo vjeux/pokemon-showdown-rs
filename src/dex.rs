@@ -141,6 +141,10 @@ pub struct SpeciesData {
     /// JavaScript: baseStats: StatsTable
     #[serde(default)]
     pub base_stats: BaseStatsData,
+    /// Max HP override (e.g., Shedinja always has 1 HP)
+    /// JavaScript: maxHP?: number
+    #[serde(rename = "maxHP", default)]
+    pub max_hp: Option<i32>,
     /// Abilities
     /// JavaScript: abilities: { 0: string, 1?: string, H?: string, S?: string }
     #[serde(default)]

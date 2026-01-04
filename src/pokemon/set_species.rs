@@ -19,12 +19,13 @@ impl Pokemon {
         // For now, just use the species directly
 
         // Get species data from dex
-        let (types, weightkg, base_stats) = {
+        let (types, weightkg, base_stats, max_hp_override) = {
             if let Some(species_data) = battle.dex.species().get(species_id.as_str()) {
                 (
                     species_data.types.clone(),
                     species_data.weightkg,
                     species_data.base_stats.clone(),
+                    species_data.max_hp,
                 )
             } else {
                 // Species not found, return false
@@ -45,7 +46,12 @@ impl Pokemon {
         };
 
         // Calculate stats
-        let stats = battle.spread_modify(&StatsTable::from(base_stats), &pokemon_set);
+        let mut stats = battle.spread_modify(&StatsTable::from(base_stats), &pokemon_set);
+
+        // JS: if (this.species.maxHP) stats.hp = this.species.maxHP;
+        if let Some(max_hp) = max_hp_override {
+            stats.hp = max_hp;
+        }
 
         // Get current state for Gen 1 checks
         let (current_maxhp, current_status, gen) = {
@@ -70,9 +76,6 @@ impl Pokemon {
 
         // JS: this.weighthg = species.weighthg;
         pokemon.weight_hg = (weightkg as f64 * 10.0) as i32;
-
-        // JS: if (this.species.maxHP) stats.hp = this.species.maxHP;
-        // Note: species.maxHP override not implemented - would need species data field
 
         // JS: if (!this.maxhp) { ... }
         if current_maxhp == 0 {
@@ -180,12 +183,13 @@ impl Pokemon {
         // For now, just use the species directly
 
         // Get species data from dex
-        let (types, weightkg, base_stats) = {
+        let (types, weightkg, base_stats, max_hp_override) = {
             if let Some(species_data) = battle.dex.species().get(species_id.as_str()) {
                 (
                     species_data.types.clone(),
                     species_data.weightkg,
                     species_data.base_stats.clone(),
+                    species_data.max_hp,
                 )
             } else {
                 // Species not found, return false
@@ -224,10 +228,12 @@ impl Pokemon {
             }
         };
 
-        let stats = battle.spread_modify(&StatsTable::from(base_stats), &pokemon_set);
+        let mut stats = battle.spread_modify(&StatsTable::from(base_stats), &pokemon_set);
 
         // JS: if (this.species.maxHP) stats.hp = this.species.maxHP;
-        // Note: species.maxHP override not implemented - would need species data field
+        if let Some(max_hp) = max_hp_override {
+            stats.hp = max_hp;
+        }
 
         // JS: if (!this.maxhp) { ... }
         if self.maxhp == 0 {
