@@ -417,6 +417,46 @@ The extra PRNG calls were from gmaxterror (G-Max Terror move):
 
 ---
 
+### Issue 6: Minimum damage and Max move PRNG calls (IN PROGRESS 🔍)
+
+**Problem After Previous Fix:**
+After moving Max move check to after crit calculation and removing early return:
+- Turn 26: JavaScript makes 4 PRNG calls (113->117), Rust makes 6 calls (113->119)
+- Rust makes EXTRA crit+randomizer calls for gmaxterror
+- JavaScript Zacian: 196 HP (no damage from gmaxterror)
+- Rust Zacian: 194 HP (2 damage from gmaxterror - critical hit!)
+
+**Investigation:**
+1. Found minimum damage mechanic in JavaScript (line 1832 of battle-actions.ts):
+   ```typescript
+   if (this.battle.gen !== 5 && !baseDamage) return 1;
+   ```
+   This is already implemented in Rust's modify_damage.rs (lines 327-331)
+
+2. The issue: JavaScript doesn't make crit+randomizer calls for gmaxterror in turn 26
+   - JavaScript PRNG #113-117: secondaries, accuracy (gmaxterror), crit (zenheadbutt), randomizer (zenheadbutt), secondaries
+   - Rust PRNG #113-119: same + crit (gmaxterror), randomizer (gmaxterror)
+
+3. This means JavaScript's getDamage returns early BEFORE crit calculation for gmaxterror
+   - Only possible if basePower is 0 after basePowerCallback (line 1611 early return)
+   - OR if move fails immunity check
+
+4. Checked gmaxterror move definition:
+   - No basePowerCallback defined in moves.json or moves.ts
+   - basePower is 10, not 0
+   - No special immunity rules
+
+5. Hypothesis: JavaScript has a basePowerCallback OR BasePower event handler for ALL Max moves
+   that returns 0 when the Pokemon doesn't have dynamax volatile
+   - This would trigger the early return at line 1650 BEFORE crit calculation
+   - Need to find where this callback/event is defined
+
+**Current Status:**
+- Searching for global basePowerCallback or BasePower event handler for Max moves
+- May need to add detailed execution logging to compare JavaScript vs Rust step-by-step
+
+---
+
 ### Debugging Tool Improvement: PRNG Tracing (COMPLETED ✅)
 
 **Solution:**

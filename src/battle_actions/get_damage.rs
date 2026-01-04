@@ -251,89 +251,43 @@ pub fn get_damage(
         return Some(0); // No damage dealt, move continues
     }
 
-    // JavaScript: if (!source.volatiles["dynamax"] && move.isMax || move.isMax && this.dex.moves.get(move.baseMove).isMax) { basePower = 0; }
-    // CRITICAL: Max/G-Max moves used without dynamax deal 0 damage!
-    // This check MUST happen BEFORE the crit calculation to prevent PRNG calls for 0-damage moves
-    // JavaScript: basePower event runs, then if (!basePower) return 0, triggering early return
-    // The explicit Max move check in JavaScript happens later, but the BasePower event returns 0 first
-    if move_data.is_max.is_some() {
-        let has_dynamax_volatile = if let Some(side) = battle.sides.get(source_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-                pokemon.has_volatile(&ID::new("dynamax"))
-            } else {
-                false
-            }
-        } else {
-            false
-        };
-
-        // Check first condition: !source.volatiles["dynamax"] && move.isMax
-        if !has_dynamax_volatile {
-            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, returning Some(0)");
-            return Some(0); // Return early - 0 damage, no PRNG calls
-        } else if let Some(ref base_move_id) = move_data.base_move {
-            // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
-            // This checks if the base move (the original move before dynamax conversion) is also a Max move
-            if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
-                if base_move_data.is_max.is_some() {
-                    // Hacked Max Move: the base move is itself a Max move
-                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), returning Some(0)");
-                    return Some(0); // Return early - 0 damage, no PRNG calls
-                }
-            }
-        }
-    }
-
-    // Calculate critical hit only if we might deal damage
+    // Calculate critical hit
     // JavaScript: let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
     let mut crit_ratio = move_data.crit_ratio;
     let mut is_crit = false;
 
-    // Only calculate crit if basePower is non-zero
-    // This prevents PRNG calls for non-damaging moves AND for Max moves without dynamax
-    if base_power > 0 {
-        // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
-        if let Some(modified_crit) = battle.run_event(
-            "ModifyCritRatio",
-            Some(source_pos),
-            Some(target_pos),
-            Some(&move_data.id),
-            Some(crit_ratio),
-        ) {
-            crit_ratio = modified_crit;
-        }
+    // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
+    if let Some(modified_crit) = battle.run_event(
+        "ModifyCritRatio",
+        Some(source_pos),
+        Some(target_pos),
+        Some(&move_data.id),
+        Some(crit_ratio),
+    ) {
+        crit_ratio = modified_crit;
+    }
 
-        // Clamp crit ratio based on generation
-        let crit_mult = if battle.gen <= 5 {
-            crit_ratio = crit_ratio.clamp(0, 5);
-            [0, 16, 8, 4, 3, 2]
-        } else if battle.gen == 6 {
-            crit_ratio = crit_ratio.clamp(0, 4);
-            [0, 16, 8, 2, 1, 0] // Padded to size 6, last element never accessed
+    // Clamp crit ratio based on generation
+    let crit_mult = if battle.gen <= 5 {
+        crit_ratio = crit_ratio.clamp(0, 5);
+        [0, 16, 8, 4, 3, 2]
+    } else if battle.gen == 6 {
+        crit_ratio = crit_ratio.clamp(0, 4);
+        [0, 16, 8, 2, 1, 0] // Padded to size 6, last element never accessed
+    } else {
+        crit_ratio = crit_ratio.clamp(0, 4);
+        [0, 24, 8, 2, 1, 0] // Padded to size 6, last element never accessed
+    };
+
+    // Determine if this is a critical hit
+    // JavaScript: moveHit.crit = move.willCrit || false; if (move.willCrit === undefined && critRatio) moveHit.crit = this.battle.randomChance(1, critMult[critRatio]);
+
+    // Check if will_crit is explicitly set in active_move
+    if let Some(ref active_move) = battle.active_move {
+        if let Some(will_crit) = active_move.will_crit {
+            is_crit = will_crit;
         } else {
-            crit_ratio = crit_ratio.clamp(0, 4);
-            [0, 24, 8, 2, 1, 0] // Padded to size 6, last element never accessed
-        };
-
-        // Determine if this is a critical hit
-        // JavaScript: moveHit.crit = move.willCrit || false; if (move.willCrit === undefined && critRatio) moveHit.crit = this.battle.randomChance(1, critMult[critRatio]);
-
-        // Check if will_crit is explicitly set in active_move
-        if let Some(ref active_move) = battle.active_move {
-            if let Some(will_crit) = active_move.will_crit {
-                is_crit = will_crit;
-            } else {
-                // will_crit is None (undefined), so roll for crit
-                if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
-                    let crit_chance = crit_mult[crit_ratio as usize];
-                    if crit_chance > 0 {
-                        is_crit = battle.random_chance(1, crit_chance);
-                        eprintln!("[GET_DAMAGE CRIT] crit_ratio={}, crit_chance=1/{}, is_crit={}", crit_ratio, crit_chance, is_crit);
-                    }
-                }
-            }
-        } else {
-            // No active_move, roll normally if crit_ratio > 0
+            // will_crit is None (undefined), so roll for crit
             if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
                 let crit_chance = crit_mult[crit_ratio as usize];
                 if crit_chance > 0 {
@@ -342,15 +296,24 @@ pub fn get_damage(
                 }
             }
         }
-
-        // Trigger CriticalHit event to allow abilities to prevent/modify crit
-        // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
-        if is_crit {
-            eprintln!("[GET_DAMAGE CRIT] Critical hit confirmed before CriticalHit event");
-            is_crit =
-                battle.run_event_bool("CriticalHit", Some(target_pos), None, Some(&move_data.id));
-            eprintln!("[GET_DAMAGE CRIT] Critical hit after CriticalHit event: {}", is_crit);
+    } else {
+        // No active_move, roll normally if crit_ratio > 0
+        if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
+            let crit_chance = crit_mult[crit_ratio as usize];
+            if crit_chance > 0 {
+                is_crit = battle.random_chance(1, crit_chance);
+                eprintln!("[GET_DAMAGE CRIT] crit_ratio={}, crit_chance=1/{}, is_crit={}", crit_ratio, crit_chance, is_crit);
+            }
         }
+    }
+
+    // Trigger CriticalHit event to allow abilities to prevent/modify crit
+    // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
+    if is_crit {
+        eprintln!("[GET_DAMAGE CRIT] Critical hit confirmed before CriticalHit event");
+        is_crit =
+            battle.run_event_bool("CriticalHit", Some(target_pos), None, Some(&move_data.id));
+        eprintln!("[GET_DAMAGE CRIT] Critical hit after CriticalHit event: {}", is_crit);
     }
 
     // Trigger BasePower event to allow abilities/items/moves to modify base power
@@ -370,6 +333,49 @@ pub fn get_damage(
         eprintln!("[GET_DAMAGE] basePower AFTER BasePower event: {}", base_power);
     } else {
         eprintln!("[GET_DAMAGE] No BasePower event modification");
+    }
+
+    // JavaScript: if (!basePower) return 0;
+    // If basePower is 0 after the BasePower event, return 0 (this is different from the early return above)
+    if base_power == 0 {
+        eprintln!("[GET_DAMAGE] basePower is 0 after BasePower event, returning Some(0)");
+        return Some(0);
+    }
+
+    // JavaScript: basePower = this.battle.clampIntRange(basePower, 1);
+    base_power = base_power.max(1);
+    eprintln!("[GET_DAMAGE] basePower after clamp to min 1: {}", base_power);
+
+    // JavaScript: if ((!source.volatiles['dynamax'] && move.isMax) || (move.isMax && this.dex.moves.get(move.baseMove).isMax)) { basePower = 0; }
+    // CRITICAL: Max/G-Max moves used without dynamax have basePower set to 0 AFTER crit calculation!
+    // This happens AFTER the clamp above, so we can set basePower back to 0
+    // The damage calculation will continue with basePower=0, and modifyDamage will apply minimum damage check
+    if move_data.is_max.is_some() {
+        let has_dynamax_volatile = if let Some(side) = battle.sides.get(source_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+                pokemon.has_volatile(&ID::new("dynamax"))
+            } else {
+                false
+            }
+        } else {
+            false
+        };
+
+        // Check first condition: !source.volatiles["dynamax"] && move.isMax
+        if !has_dynamax_volatile {
+            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower=0");
+            base_power = 0; // Set to 0, don't return - let damage calc continue
+        } else if let Some(ref base_move_id) = move_data.base_move {
+            // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
+            // This checks if the base move (the original move before dynamax conversion) is also a Max move
+            if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
+                if base_move_data.is_max.is_some() {
+                    // Hacked Max Move: the base move is itself a Max move
+                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower=0");
+                    base_power = 0; // Set to 0, don't return - let damage calc continue
+                }
+            }
+        }
     }
 
     // Get attacker level
