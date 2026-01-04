@@ -5,10 +5,6 @@ impl Battle {
     /// Show open team sheets to players
     /// Equivalent to battle.ts showOpenTeamSheets() (battle.ts:3183-3221, 39 lines)
     ///
-    // NOTE: Simplified implementation
-    // Teams.pack() is implemented with basic fields (name/species/item/ability/moves/nature)
-    // Full implementation would include: EVs, IVs, shiny, level, happiness, hpType, pokeball, gigantamax, dynamaxLevel, teraType
-    //
     // Architectural difference:
     // - TypeScript Pokemon has `set` field storing original PokemonSet
     // - Rust Pokemon doesn't store original set, so we reconstruct from current fields
