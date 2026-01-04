@@ -103,7 +103,7 @@ impl Battle {
         let picked_team_size = self.rule_table.as_ref().and_then(|rt| rt.picked_team_size);
         if self
             .sides
-            .iter()
+            .iter_mut()
             .all(|side| side.is_choice_done(picked_team_size))
         {
             panic!("Choices are done immediately after a request");

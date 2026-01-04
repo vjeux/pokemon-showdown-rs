@@ -19,7 +19,7 @@ impl Side {
     // 		return this.choice.actions.length >= this.active.length;
     // 	}
     //
-    pub fn is_choice_done(&self, picked_team_size: Option<usize>) -> bool {
+    pub fn is_choice_done(&mut self, picked_team_size: Option<usize>) -> bool {
         // if (!this.requestState) return true;
         if matches!(self.request_state, RequestState::None) {
             return true;
@@ -38,9 +38,8 @@ impl Side {
             }
             RequestState::Move | RequestState::Switch => {
                 // this.getChoiceIndex(); // auto-pass
-                // TODO: Call getChoiceIndex() for auto-pass
-                // This would auto-add pass actions for fainted Pokemon
-                // For now, just check actions length
+                // Call getChoiceIndex() to auto-add pass actions for fainted Pokemon
+                self.get_choice_index(false);
 
                 // return this.choice.actions.length >= this.active.length;
                 self.choice.actions.len() >= self.active.len()
