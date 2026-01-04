@@ -285,34 +285,39 @@ pub fn hit_step_accuracy(
         }
         if accuracy != 0 && !battle.random_chance(accuracy, 100) {
             // Miss!
-            // if (move.smartTarget) {
+            // JavaScript: if (move.smartTarget) {
             //     move.smartTarget = false;
             // } else {
             //     if (!move.spreadHit) this.battle.attrLastMove('[miss]');
             //     this.battle.add('-miss', pokemon, target);
             // }
-            // if (!move.ohko && pokemon.hasItem('blunderpolicy') && pokemon.useItem()) {
-            //     this.battle.boost({ spe: 2 }, pokemon);
-            // }
 
-            // TODO: Need to modify ActiveMove.smart_target, but we only have a reference to move_data
-            // For now, just handle the miss messages
-            let spread_hit = battle.active_move.as_ref()
-                .map(|m| m.spread_hit)
-                .unwrap_or(false);
+            let (smart_target, spread_hit) = if let Some(ref mut active_move) = battle.active_move {
+                let was_smart = active_move.smart_target.unwrap_or(false);
+                if was_smart {
+                    // If smart_target was true, set it to false and don't show miss message
+                    active_move.smart_target = Some(false);
+                }
+                (was_smart, active_move.spread_hit)
+            } else {
+                (false, false)
+            };
 
-            if !spread_hit {
-                battle.attr_last_move(&["[miss]"]);
-            }
+            // Only show miss messages if it wasn't a smart target miss
+            if !smart_target {
+                if !spread_hit {
+                    battle.attr_last_move(&["[miss]"]);
+                }
 
-            if let Some(attacker_pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                let attacker_ident = format!("p{}a: {}", pokemon_pos.0 + 1, attacker_pokemon.set.species);
-                if let Some(target_pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
-                    let target_ident = format!("p{}a: {}", target_pos.0 + 1, target_pokemon.set.species);
-                    battle.add("-miss", &[
-                        crate::battle::Arg::String(attacker_ident),
-                        crate::battle::Arg::String(target_ident),
-                    ]);
+                if let Some(attacker_pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    let attacker_ident = format!("p{}a: {}", pokemon_pos.0 + 1, attacker_pokemon.set.species);
+                    if let Some(target_pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
+                        let target_ident = format!("p{}a: {}", target_pos.0 + 1, target_pokemon.set.species);
+                        battle.add("-miss", &[
+                            crate::battle::Arg::String(attacker_ident),
+                            crate::battle::Arg::String(target_ident),
+                        ]);
+                    }
                 }
             }
 
