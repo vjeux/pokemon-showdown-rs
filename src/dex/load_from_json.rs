@@ -220,6 +220,7 @@ impl Dex {
             compound_word_names,
             formats,
             gen: 9, // Default to gen 9
+            current_mod: None, // Default to no mod
         })
     }
 }

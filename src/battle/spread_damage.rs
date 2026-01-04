@@ -268,14 +268,16 @@ impl Battle {
             //         this.lastDamage = targetDamage;
             // }
             if self.gen <= 1 {
-                // TODO: Add gen1stadium check when currentMod is implemented
-                // For now, we implement the second condition only
+                let is_gen1stadium = self.dex.current_mod.as_deref() == Some("gen1stadium");
                 let effect_type = effect.map(|e| self.get_effect_type(e)).unwrap_or("");
-                if effect_id != "recoil"
+
+                // Check second condition: !['recoil', 'drain', 'leechseed'].includes(effect.id) && effect.effectType !== 'Status'
+                let second_condition = effect_id != "recoil"
                     && effect_id != "drain"
                     && effect_id != "leechseed"
-                    && effect_type != "Status"
-                {
+                    && effect_type != "Status";
+
+                if is_gen1stadium || second_condition {
                     self.last_damage = target_damage;
                 }
             }
@@ -486,13 +488,27 @@ impl Battle {
                 if let (Some((recoil_num, recoil_denom)), Some(source_pos)) = (recoil_data, source)
                 {
                     if self.gen <= 1 {
-                        let amount = ((target_damage as f64 * recoil_num as f64)
-                            / recoil_denom as f64)
-                            .floor() as i32;
-                        let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
+                        // JS: if (this.dex.currentMod !== 'gen1stadium' || target.hp > 0) {
+                        let is_gen1stadium = self.dex.current_mod.as_deref() == Some("gen1stadium");
+                        let target_hp = if let Some(side) = self.sides.get(target_pos.0) {
+                            if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+                                pokemon.hp
+                            } else {
+                                0
+                            }
+                        } else {
+                            0
+                        };
 
-                        let recoil_id = ID::new("recoil");
-                        self.damage(amount, Some(source_pos), Some(target_pos), Some(&recoil_id), false);
+                        if !is_gen1stadium || target_hp > 0 {
+                            let amount = ((target_damage as f64 * recoil_num as f64)
+                                / recoil_denom as f64)
+                                .floor() as i32;
+                            let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
+
+                            let recoil_id = ID::new("recoil");
+                            self.damage(amount, Some(source_pos), Some(target_pos), Some(&recoil_id), false);
+                        }
                     }
                 }
 

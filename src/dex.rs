@@ -1370,6 +1370,9 @@ pub struct Dex {
     /// Battle formats
     pub formats: Vec<FormatData>,
     pub gen: u8,
+    /// Current mod (e.g., "gen1stadium")
+    /// JavaScript: dex.ts - currentMod: string
+    pub current_mod: Option<String>,
 }
 
 /// Struct to hold JSON data for loading the Dex

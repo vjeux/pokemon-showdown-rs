@@ -19,6 +19,7 @@ impl Dex {
             compound_word_names: Vec::new(),
             formats: Vec::new(),
             gen,
+            current_mod: None,
         }
     }
 }
