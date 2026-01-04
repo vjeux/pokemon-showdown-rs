@@ -326,14 +326,21 @@ pub fn spread_move_hit(
 
     // 4. self drops
     // JS: if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
-    let has_self_effect = {
+    let (has_self_effect, self_dropped) = {
         let move_data_def = battle.dex.moves.get(move_data_id).expect("Move not found");
-        move_data_def.self_effect.is_some()
+        let has_self = move_data_def.self_effect.is_some();
+
+        let dropped = if let Some(ref active_move) = battle.active_move {
+            active_move.self_dropped
+        } else {
+            false
+        };
+
+        (has_self, dropped)
     };
 
-    // TODO: Check move.selfDropped field when it exists in MoveData
-    // For now, always call self_drops if self_effect exists
-    if has_self_effect {
+    // Only call self_drops if self_effect exists and selfDropped is false
+    if has_self_effect && !self_dropped {
         crate::battle_actions::self_drops(
             battle,
             &targets_mut,
