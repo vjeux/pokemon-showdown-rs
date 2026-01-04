@@ -405,10 +405,15 @@ The extra PRNG calls were from gmaxterror (G-Max Terror move):
 - ✅ Golem HP matches: 197/288 in both
 - ✅ gmaxterror deals 0 damage as expected
 
-**Next Divergence:**
-- Turn 27: JavaScript prng=117->123 (6 calls), Rust prng=117->121 (4 calls)
-- Zacian HP differs: JS=195, Rust=196
-- Need to investigate
+**Next Divergence - Turn 27 Investigation:**
+- JavaScript: prng=117->123 (6 calls), Zacian takes 1 damage
+- Rust: prng=117->121 (4 calls), Zacian takes 0 damage
+- Rust is missing 2 PRNG calls (crit + damage randomizer)
+- PRNG breakdown:
+  - JS: #117-120 (4 calls) + #121-123 (3 calls including crit+randomizer)
+  - Rust: #117-121 (5 calls), missing final damage randomizer
+- Hypothesis: gmaxterror might be dealing 1 damage in JS but 0 in Rust
+- Need to investigate if there's a minimum damage mechanic or different damage calculation
 
 ---
 
