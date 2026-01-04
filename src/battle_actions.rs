@@ -155,15 +155,17 @@ pub struct DamageCalcParams<'a> {
 }
 
 /// Damage calculation result
-/// Matches JavaScript return types: number | undefined | false | '' (NOT_FAIL)
-/// JavaScript functions return number (damage) | undefined (no effect) | false (failed) | '' (NOT_FAIL)
+/// Matches JavaScript return types: number | undefined | false | true | '' (NOT_FAIL) | HIT_SUBSTITUTE
+/// JavaScript functions return number (damage) | undefined (no effect) | false (failed) | true (success) | '' (NOT_FAIL)
 ///
 /// In JavaScript Pokemon Showdown:
 /// - number: Actual damage dealt
 /// - false: Move explicitly failed (shows "But it failed!" message)
+/// - true: Move succeeded without dealing damage
 /// - undefined: Move had no effect/immune (no failure message)
 /// - '' (NOT_FAIL): Move didn't fail but also didn't succeed normally (e.g., protected)
-#[derive(Debug, Clone, PartialEq)]
+/// - HIT_SUBSTITUTE: Substitute took the hit (treated as 0 damage)
+#[derive(Debug, Clone, Copy, Default, PartialEq)]
 pub enum DamageResult {
     /// Actual damage dealt (number in JS)
     /// JavaScript: return 123
@@ -174,16 +176,26 @@ pub enum DamageResult {
     /// JavaScript: return false
     Failed,
 
+    /// Move succeeded without damage (true in JS)
+    /// JavaScript: return true
+    Success,
+
     /// No effect/undefined (undefined in JS)
     /// Target immune, move had no effect, or similar
     /// Does NOT show a failure message
     /// JavaScript: return undefined
+    #[default]
     Undefined,
 
     /// NOT_FAIL - didn't fail but also didn't succeed normally ('' in JS)
     /// Used when move was blocked (e.g., by Protect) but shouldn't show failure message
     /// JavaScript: return this.battle.NOT_FAIL (which is '')
     NotFail,
+
+    /// Substitute took the hit (HIT_SUBSTITUTE constant in JS)
+    /// Treated as 0 damage - substitute absorbed the attack
+    /// JavaScript: return this.battle.HIT_SUBSTITUTE
+    HitSubstitute,
 }
 
 impl DamageResult {
@@ -207,22 +219,36 @@ impl DamageResult {
         matches!(self, DamageResult::Undefined)
     }
 
+    /// Check if the result is Success
+    pub fn is_success_flag(&self) -> bool {
+        matches!(self, DamageResult::Success)
+    }
+
+    /// Check if the result is HitSubstitute
+    pub fn is_hit_substitute(&self) -> bool {
+        matches!(self, DamageResult::HitSubstitute)
+    }
+
     /// Get the damage amount if present
     pub fn damage(&self) -> Option<i32> {
         match self {
             DamageResult::Damage(d) => Some(*d),
+            DamageResult::HitSubstitute => Some(0), // Substitute = 0 damage
             _ => None,
         }
     }
 
-    /// Check if move succeeded (damage dealt or NOT_FAIL or undefined)
+    /// Check if move succeeded (damage dealt or NOT_FAIL or undefined or success)
     /// In JavaScript: if (damage || damage === 0 || damage === undefined) moveResult = true
     pub fn is_success(&self) -> bool {
-        matches!(self, DamageResult::Damage(_) | DamageResult::NotFail | DamageResult::Undefined)
+        matches!(
+            self,
+            DamageResult::Damage(_) | DamageResult::NotFail | DamageResult::Undefined | DamageResult::Success | DamageResult::HitSubstitute
+        )
     }
 
     /// Convert to bool for simple success/failure checks
-    /// Returns true for Damage, NotFail, and Undefined
+    /// Returns true for Damage, NotFail, Undefined, Success, and HitSubstitute
     /// Returns false for Failed
     pub fn to_bool(&self) -> bool {
         !matches!(self, DamageResult::Failed)
@@ -1076,32 +1102,9 @@ pub struct UseMoveOptions {
     pub max_move: Option<String>,
 }
 
-/// Spread move damage result type
-/// Can be damage amount, false (failed), or true/undefined (success with no damage)
-/// Or HIT_SUBSTITUTE (0) when substitute blocks the hit
-/// TODO: Rust uses enum to represent JavaScript's number | false | true | undefined union type
-/// Spread move damage value - matches JavaScript return types
-/// JavaScript: number | false | true | undefined | '' (NOT_FAIL)
-#[derive(Debug, Clone, Copy, Default, PartialEq)]
-pub enum SpreadMoveDamageValue {
-    /// Actual damage dealt (number in JS)
-    Damage(i32),
-    /// Move failed (false in JS)
-    Failed,
-    /// Move succeeded without damage (true in JS)
-    Success,
-    /// No effect (undefined in JS)
-    #[default]
-    Undefined,
-    /// NOT_FAIL - didn't fail but also didn't succeed normally ('' in JS)
-    NotFail,
-    /// Substitute took the hit (HIT_SUBSTITUTE constant, treated as 0 damage)
-    HitSubstitute,
-}
-
 /// Result of spread move hit containing damage and target info
 /// JavaScript equivalent: SpreadMoveDamage (sim/global-types.ts)
-pub type SpreadMoveDamage = Vec<SpreadMoveDamageValue>;
+pub type SpreadMoveDamage = Vec<DamageResult>;
 
 /// Target info for spread moves (can be the Pokemon or null/false for failed)
 /// TODO: Rust uses enum to represent JavaScript's Pokemon | null | false union type

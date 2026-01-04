@@ -14,7 +14,7 @@
 
 use crate::*;
 use crate::battle_actions::spread_move_hit::spread_move_hit;
-use crate::battle_actions::{SpreadMoveDamageValue, DamageResult};
+use crate::battle_actions::DamageResult;
 
 /// Apply move hit to target(s)
 /// Equivalent to moveHit() in battle-actions.ts:1385
@@ -50,19 +50,19 @@ pub fn move_hit(
     let (damages, _targets) = spread_move_hit(battle, &spread_targets, pokemon_pos, move_id, move_data_id, is_secondary, is_self);
 
     let ret_val = match damages.get(0) {
-        Some(SpreadMoveDamageValue::Damage(n)) => DamageResult::Damage(*n),
-        Some(SpreadMoveDamageValue::Failed) => DamageResult::Failed,
-        Some(SpreadMoveDamageValue::Success) | None => DamageResult::Undefined,
-        Some(SpreadMoveDamageValue::NotFail) => DamageResult::NotFail,
-        Some(SpreadMoveDamageValue::Undefined) => DamageResult::Undefined,
-        Some(SpreadMoveDamageValue::HitSubstitute) => DamageResult::Damage(0),
+        Some(DamageResult::Damage(n)) => DamageResult::Damage(*n),
+        Some(DamageResult::Failed) => DamageResult::Failed,
+        Some(DamageResult::Success) | None => DamageResult::Undefined,
+        Some(DamageResult::NotFail) => DamageResult::NotFail,
+        Some(DamageResult::Undefined) => DamageResult::Undefined,
+        Some(DamageResult::HitSubstitute) => DamageResult::Damage(0),
     };
 
     // return retVal === true ? undefined : retVal;
-    // JavaScript converts true to undefined
+    // JavaScript converts true (Success) to undefined
     match ret_val {
-        DamageResult::Damage(_) | DamageResult::Failed | DamageResult::NotFail => ret_val,
-        DamageResult::Undefined => DamageResult::Undefined,
+        DamageResult::Success => DamageResult::Undefined,
+        other => other,
     }
 }
 

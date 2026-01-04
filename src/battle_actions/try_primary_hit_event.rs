@@ -15,7 +15,7 @@
 // 	}
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, SpreadMoveDamageValue, SpreadMoveTargets, SpreadMoveTarget};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget};
 
 /// Fire TryPrimaryHit event for all targets
 /// Equivalent to tryPrimaryHitEvent() in battle-actions.ts
@@ -50,13 +50,13 @@ pub fn try_primary_hit_event(
 
         // Convert event result to damage value
         // JavaScript runEvent returns number | boolean | undefined
-        // We need to map this to SpreadMoveDamageValue
+        // We need to map this to DamageResult
         // Special case: 0 = Battle.HIT_SUBSTITUTE (substitute blocked the hit)
         if let Some(value) = result {
             if value == Battle::HIT_SUBSTITUTE {
-                damage[i] = SpreadMoveDamageValue::HitSubstitute;
+                damage[i] = DamageResult::HitSubstitute;
             } else {
-                damage[i] = SpreadMoveDamageValue::Damage(value);
+                damage[i] = DamageResult::Damage(value);
             }
         }
         // If result is None, keep the existing damage value

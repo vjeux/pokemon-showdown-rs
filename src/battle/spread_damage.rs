@@ -135,7 +135,7 @@ impl Battle {
         effect: Option<&ID>,
         instafaint: bool,
     ) -> crate::battle_actions::SpreadMoveDamage {
-        use crate::battle_actions::{SpreadMoveDamageValue, SpreadMoveTarget};
+        use crate::battle_actions::{DamageResult, SpreadMoveTarget};
         let mut ret_vals: crate::battle_actions::SpreadMoveDamage = Vec::new();
 
         // Process damage for each target
@@ -145,17 +145,17 @@ impl Battle {
 
             // Handle undefined/failed damage
             let damage_value = match cur_damage {
-                SpreadMoveDamageValue::Damage(n) => *n,
-                SpreadMoveDamageValue::Failed | SpreadMoveDamageValue::Undefined | SpreadMoveDamageValue::NotFail => {
+                DamageResult::Damage(n) => *n,
+                DamageResult::Failed | DamageResult::Undefined | DamageResult::NotFail => {
                     ret_vals.push(*cur_damage);
                     continue;
                 }
-                SpreadMoveDamageValue::HitSubstitute => {
+                DamageResult::HitSubstitute => {
                     // HIT_SUBSTITUTE - substitute blocked the hit, pass through
-                    ret_vals.push(SpreadMoveDamageValue::HitSubstitute);
+                    ret_vals.push(DamageResult::HitSubstitute);
                     continue;
                 }
-                SpreadMoveDamageValue::Success => {
+                DamageResult::Success => {
                     // Success means "true" in JS, which should calculate max damage
                     // For now, treat as 0
                     0
@@ -166,7 +166,7 @@ impl Battle {
             let target_pos = match target {
                 SpreadMoveTarget::Target(pos) => *pos,
                 _ => {
-                    ret_vals.push(SpreadMoveDamageValue::Damage(0));
+                    ret_vals.push(DamageResult::Damage(0));
                     continue;
                 }
             };
@@ -185,12 +185,12 @@ impl Battle {
             };
 
             if !has_hp {
-                ret_vals.push(SpreadMoveDamageValue::Damage(0));
+                ret_vals.push(DamageResult::Damage(0));
                 continue;
             }
 
             if !is_active {
-                ret_vals.push(SpreadMoveDamageValue::Failed); // JavaScript returns false
+                ret_vals.push(DamageResult::Failed); // JavaScript returns false
                 continue;
             }
 
@@ -221,7 +221,7 @@ impl Battle {
                             side_idx, poke_idx, effect_id, is_immune);
                         if is_immune {
                             // Target is immune to this weather damage
-                            ret_vals.push(SpreadMoveDamageValue::Damage(0));
+                            ret_vals.push(DamageResult::Damage(0));
                             continue;
                         }
                     }
@@ -242,7 +242,7 @@ impl Battle {
                 } else {
                     // Event failed
                     self.debug("damage event failed");
-                    ret_vals.push(SpreadMoveDamageValue::Undefined);
+                    ret_vals.push(DamageResult::Undefined);
                     continue;
                 }
             }
@@ -297,7 +297,7 @@ impl Battle {
 
             target_damage = actual_damage;
 
-            ret_vals.push(SpreadMoveDamageValue::Damage(target_damage));
+            ret_vals.push(DamageResult::Damage(target_damage));
 
             // Set hurtThisTurn
             if target_damage != 0 {
@@ -523,7 +523,7 @@ impl Battle {
         if instafaint {
             for i in 0..targets.len() {
                 // Check if this target has valid damage (skip Failed/Undefined)
-                if matches!(ret_vals.get(i), Some(SpreadMoveDamageValue::Failed) | Some(SpreadMoveDamageValue::Undefined) | None) {
+                if matches!(ret_vals.get(i), Some(DamageResult::Failed) | Some(DamageResult::Undefined) | None) {
                     continue;
                 }
                 if let Some(SpreadMoveTarget::Target(target_pos)) = targets.get(i) {

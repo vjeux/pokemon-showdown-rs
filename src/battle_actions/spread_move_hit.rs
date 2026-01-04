@@ -4,7 +4,7 @@
 
 use crate::*;
 use crate::battle::SpreadMoveHitResult;
-use crate::battle_actions::{SpreadMoveDamage, SpreadMoveDamageValue, SpreadMoveTargets, SpreadMoveTarget};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget};
 
 /// Spread move hit - handles individual target hit processing
 /// Equivalent to spreadMoveHit() in battle-actions.ts:1043
@@ -132,7 +132,7 @@ pub fn spread_move_hit(
 ) -> SpreadMoveHitResult {
     // Initialize damage array with Success (true) for all targets
     // In JS: damage[i] = true for all targets
-    let mut damage: SpreadMoveDamage = vec![SpreadMoveDamageValue::Success; targets.len()];
+    let mut damage: SpreadMoveDamage = vec![DamageResult::Success; targets.len()];
 
     // Clone targets for modification
     // JS: targets is mutable in JavaScript
@@ -196,16 +196,16 @@ pub fn spread_move_hit(
             let pokemon_ident = {
                 let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
                     Some(p) => p,
-                    None => return (vec![SpreadMoveDamageValue::Failed], targets_mut),
+                    None => return (vec![DamageResult::Failed], targets_mut),
                 };
                 format!("p{}a: {}", source_pos.0 + 1, pokemon.set.species)
             };
             battle.add("|-fail|", &[crate::battle::Arg::String(pokemon_ident)]);
             battle.attr_last_move(&["[still]"]);
-            return (vec![SpreadMoveDamageValue::Failed], targets_mut);
+            return (vec![DamageResult::Failed], targets_mut);
         }
         event::EventResult::Null => {
-            return (vec![SpreadMoveDamageValue::Failed], targets_mut);
+            return (vec![DamageResult::Failed], targets_mut);
         }
         _ => {}
     }
@@ -233,8 +233,8 @@ pub fn spread_move_hit(
     for i in 0..targets_mut.len() {
         // Check for HIT_SUBSTITUTE - indicates substitute blocked the hit
         // JS: if (damage[i] === this.battle.HIT_SUBSTITUTE) { damage[i] = true; targets[i] = null; }
-        if matches!(damage[i], SpreadMoveDamageValue::HitSubstitute) {
-            damage[i] = SpreadMoveDamageValue::Success; // Convert to "true"
+        if matches!(damage[i], DamageResult::HitSubstitute) {
+            damage[i] = DamageResult::Success; // Convert to "true"
             targets_mut[i] = SpreadMoveTarget::None; // Remove target from processing
         }
 
@@ -245,12 +245,12 @@ pub fn spread_move_hit(
                 move_data.self_effect.is_some()
             };
             if !has_self {
-                damage[i] = SpreadMoveDamageValue::Success;
+                damage[i] = DamageResult::Success;
             }
         }
 
         // JS: if (!damage[i]) targets[i] = false;
-        if matches!(damage[i], SpreadMoveDamageValue::Failed | SpreadMoveDamageValue::Undefined) {
+        if matches!(damage[i], DamageResult::Failed | DamageResult::Undefined) {
             targets_mut[i] = SpreadMoveTarget::None;
         }
     }
@@ -269,7 +269,7 @@ pub fn spread_move_hit(
 
     // JS: for (const i of targets.keys()) { if (damage[i] === false) targets[i] = false; }
     for i in 0..targets_mut.len() {
-        if matches!(damage[i], SpreadMoveDamageValue::Failed) {
+        if matches!(damage[i], DamageResult::Failed) {
             targets_mut[i] = SpreadMoveTarget::None;
         }
     }
@@ -285,7 +285,7 @@ pub fn spread_move_hit(
     );
 
     for i in 0..targets_mut.len() {
-        if matches!(damage[i], SpreadMoveDamageValue::Failed) {
+        if matches!(damage[i], DamageResult::Failed) {
             targets_mut[i] = SpreadMoveTarget::None;
         }
     }
@@ -312,7 +312,7 @@ pub fn spread_move_hit(
     for i in 0..targets_mut.len() {
         // JS: if (!damage[i] && damage[i] !== 0) targets[i] = false;
         match damage[i] {
-            SpreadMoveDamageValue::Failed | SpreadMoveDamageValue::Undefined => {
+            DamageResult::Failed | DamageResult::Undefined => {
                 targets_mut[i] = SpreadMoveTarget::None;
             }
             _ => {}
@@ -389,7 +389,7 @@ pub fn spread_move_hit(
 
     for i in 0..targets_mut.len() {
         match damage[i] {
-            SpreadMoveDamageValue::Failed | SpreadMoveDamageValue::Undefined => {
+            DamageResult::Failed | DamageResult::Undefined => {
                 targets_mut[i] = SpreadMoveTarget::None;
             }
             _ => {}
@@ -402,7 +402,7 @@ pub fn spread_move_hit(
     let mut damaged_damage: Vec<i32> = Vec::new();
 
     for (i, target) in targets_mut.iter().enumerate() {
-        if let SpreadMoveDamageValue::Damage(dmg) = damage[i] {
+        if let DamageResult::Damage(dmg) = damage[i] {
             if let SpreadMoveTarget::Target(target_pos) = target {
                 damaged_targets.push(*target_pos);
                 damaged_damage.push(dmg);

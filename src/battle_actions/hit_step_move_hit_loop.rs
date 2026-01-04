@@ -3,7 +3,7 @@
 //! 1:1 port of hitStepMoveHitLoop from battle-actions.ts
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, SpreadMoveDamageValue, SpreadMoveTargets, SpreadMoveTarget, ActiveMove};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, ActiveMove};
 use crate::dex::Multihit;
 
 /// Main loop for handling multi-hit moves
@@ -29,7 +29,7 @@ pub fn hit_step_move_hit_loop(
     // for (const i of targets.keys()) {
     //     damage[i] = 0;
     // }
-    let mut damage: SpreadMoveDamage = vec![SpreadMoveDamageValue::Damage(0); targets.len()];
+    let mut damage: SpreadMoveDamage = vec![DamageResult::Damage(0); targets.len()];
 
     // move.totalDamage = 0;
     active_move.total_damage = 0;
@@ -116,7 +116,7 @@ pub fn hit_step_move_hit_loop(
     let mut hit = 1;
     while hit <= target_hits {
         // if (damage.includes(false)) break;
-        if damage.iter().any(|d| matches!(d, SpreadMoveDamageValue::Failed)) {
+        if damage.iter().any(|d| matches!(d, DamageResult::Failed)) {
             break;
         }
 
@@ -158,7 +158,7 @@ pub fn hit_step_move_hit_loop(
                 targets_copy = vec![targets[(hit as usize) - 1].clone()];
                 // Keep only the relevant damage entry
                 let relevant_damage = damage.get((hit as usize) - 1).cloned()
-                    .unwrap_or(SpreadMoveDamageValue::Damage(0));
+                    .unwrap_or(DamageResult::Damage(0));
                 damage = vec![relevant_damage];
             }
         } else {
@@ -365,7 +365,7 @@ pub fn hit_step_move_hit_loop(
         }
 
         // if (!moveDamage.some(val => val !== false)) break;
-        if !move_damage.iter().any(|d| !matches!(d, SpreadMoveDamageValue::Failed)) {
+        if !move_damage.iter().any(|d| !matches!(d, DamageResult::Failed)) {
             break;
         }
 
@@ -383,11 +383,11 @@ pub fn hit_step_move_hit_loop(
             }
             // Convert damage value
             let dmg = match md {
-                SpreadMoveDamageValue::Damage(d) => *d,
+                DamageResult::Damage(d) => *d,
                 _ => 0,
             };
             if i < damage.len() {
-                damage[i] = SpreadMoveDamageValue::Damage(dmg);
+                damage[i] = DamageResult::Damage(dmg);
             }
             active_move.total_damage += dmg;
         }
@@ -445,12 +445,12 @@ pub fn hit_step_move_hit_loop(
     // hit is 1 higher than the actual hit count
     // if (hit === 1) return damage.fill(false);
     if hit == 1 {
-        return vec![SpreadMoveDamageValue::Failed; damage.len()];
+        return vec![DamageResult::Failed; damage.len()];
     }
 
     // if (nullDamage) damage.fill(false);
     if null_damage {
-        damage = vec![SpreadMoveDamageValue::Failed; damage.len()];
+        damage = vec![DamageResult::Failed; damage.len()];
     }
 
     // this.battle.faintMessages(false, false, !pokemon.hp);
@@ -562,16 +562,16 @@ pub fn hit_step_move_hit_loop(
         if let SpreadMoveTarget::Target(target_pos) = target {
             if *target_pos != attacker_pos {
                 let damage_value = move_damage.get(i).cloned();
-                // Extract i32 damage from SpreadMoveDamageValue
+                // Extract i32 damage from DamageResult
                 let damage_int = match damage_value {
-                    Some(SpreadMoveDamageValue::Damage(d)) => d,
+                    Some(DamageResult::Damage(d)) => d,
                     _ => 0,
                 };
                 if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                     target_pokemon.got_attacked(active_move.id.clone(), damage_int, attacker_pos.0, attacker_pos.1);
                 }
 
-                if let Some(SpreadMoveDamageValue::Damage(_)) = damage_value {
+                if let Some(DamageResult::Damage(_)) = damage_value {
                     let times_to_add = if active_move.smart_target.unwrap_or(false) { 1 } else { hit - 1 };
                     if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                         target_pokemon.times_attacked += times_to_add;
@@ -594,7 +594,7 @@ pub fn hit_step_move_hit_loop(
     }
 
     // if (!damage.some(val => !!val || val === 0)) return damage;
-    if !damage.iter().any(|d| matches!(d, SpreadMoveDamageValue::Damage(_))) {
+    if !damage.iter().any(|d| matches!(d, DamageResult::Damage(_))) {
         return damage;
     }
 
@@ -633,7 +633,7 @@ pub fn hit_step_move_hit_loop(
                 active_move.total_damage
             } else {
                 match d {
-                    SpreadMoveDamageValue::Damage(dmg) => *dmg,
+                    DamageResult::Damage(dmg) => *dmg,
                     _ => 0,
                 }
             };

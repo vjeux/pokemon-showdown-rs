@@ -274,7 +274,7 @@ pub fn try_spread_move_hit(
                 // hitStepMoveHitLoop
                 // This returns SpreadMoveDamage instead of Vec<bool>
                 // We need to convert the damage results to boolean results
-                use crate::battle_actions::{SpreadMoveTarget, SpreadMoveTargets, SpreadMoveDamageValue};
+                use crate::battle_actions::{SpreadMoveTarget, SpreadMoveTargets, DamageResult};
                 let spread_targets: SpreadMoveTargets = target_list.iter().map(|&t| SpreadMoveTarget::Target(t)).collect();
 
                 // spread_move_hit returns (damage, targets) tuple
@@ -291,7 +291,7 @@ pub fn try_spread_move_hit(
                 // Convert SpreadMoveDamage to Vec<bool>
                 // Damage, Success, or HitSubstitute = true; Failed or Undefined = false
                 let bool_results: Vec<bool> = damage_results.iter().map(|dmg| {
-                    matches!(dmg, SpreadMoveDamageValue::Damage(_) | SpreadMoveDamageValue::Success | SpreadMoveDamageValue::HitSubstitute)
+                    matches!(dmg, DamageResult::Damage(_) | DamageResult::Success | DamageResult::HitSubstitute)
                 }).collect();
 
                 // Update target_list from updated_targets

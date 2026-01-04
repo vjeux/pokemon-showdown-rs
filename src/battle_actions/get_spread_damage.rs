@@ -3,7 +3,7 @@
 //! 1:1 port of getSpreadDamage from battle-actions.ts
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, SpreadMoveDamageValue, SpreadMoveTargets, SpreadMoveTarget};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget};
 
 /// Get damage for each target in a spread move
 /// Equivalent to getSpreadDamage() in battle-actions.ts:1163
@@ -70,7 +70,7 @@ pub fn get_spread_damage(
         battle.active_target = Some(target_pos);
 
         // damage[i] = undefined;
-        result_damages[i] = SpreadMoveDamageValue::Undefined;
+        result_damages[i] = DamageResult::Undefined;
 
         // const curDamage = this.getDamage(source, target, moveData);
         let cur_damage = crate::battle_actions::get_damage(battle, source_pos, target_pos, move_id);
@@ -89,7 +89,7 @@ pub fn get_spread_damage(
             //   this.battle.add('-fail', source);
             //   this.battle.attrLastMove('[still]');
             // }
-            if matches!(result_damages[i], SpreadMoveDamageValue::Failed) && !is_secondary && !is_self {
+            if matches!(result_damages[i], DamageResult::Failed) && !is_secondary && !is_self {
                 let source_slot = if let Some(side) = battle.sides.get(source_pos.0) {
                     if let Some(pokemon) = side.pokemon.get(source_pos.1) {
                         pokemon.get_slot()
@@ -108,14 +108,14 @@ pub fn get_spread_damage(
             eprintln!("[GET_SPREAD_DAMAGE] damage calculation interrupted for target {}", i);
 
             // damage[i] = false;
-            result_damages[i] = SpreadMoveDamageValue::Failed;
+            result_damages[i] = DamageResult::Failed;
 
             // continue;
             continue;
         }
 
         // damage[i] = curDamage;
-        result_damages[i] = SpreadMoveDamageValue::Damage(cur_damage.unwrap());
+        result_damages[i] = DamageResult::Damage(cur_damage.unwrap());
     }
 
     // return damage;

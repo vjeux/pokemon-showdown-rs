@@ -3,7 +3,7 @@
 //! 1:1 port of forceSwitch from battle-actions.ts
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, SpreadMoveDamageValue, SpreadMoveTargets, SpreadMoveTarget, ActiveMove};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, ActiveMove};
 
 /// Handle forced switching from moves like Dragon Tail, Roar
 /// Equivalent to battle-actions.ts forceSwitch()
@@ -92,7 +92,7 @@ pub fn force_switch(
                                 ]);
                                 battle.attr_last_move(&["[still]"]);
                                 if i < damage.len() {
-                                    damage[i] = SpreadMoveDamageValue::Failed;
+                                    damage[i] = DamageResult::Failed;
                                 }
                             }
                         }
