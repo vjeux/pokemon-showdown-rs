@@ -54,9 +54,11 @@ impl Battle {
             // JS: for (const handler of callback) {
             for handler in custom_handlers {
                 // JS: const state = (handler.target.effectType === 'Format') ? this.formatData : null;
-                // TODO: CustomEventHandler doesn't have target field
-                // JavaScript has target field but current Rust implementation doesn't
-                // For now, assume state is always None for custom handlers
+                let state = if handler.target_type == EffectType::Format {
+                    Some(self.format_data.clone())
+                } else {
+                    None
+                };
 
                 // JS: handlers.push({
                 // JS:     effect: handler.target,
@@ -70,13 +72,11 @@ impl Battle {
                 // JS: });
                 handlers.push(EventListener {
                     event_name: String::new(),
-                    // TODO: effect_id and effect_type should come from handler.target
-                    // But CustomEventHandler doesn't have target field in current Rust implementation
-                    effect_id: ID::from("customevent"),
-                    effect_type: EffectType::Format,
+                    effect_id: handler.target_id.clone(),
+                    effect_type: handler.target_type,
                     target: None,
                     index: None,
-                    state: None,
+                    state,
                     effect_holder: custom_holder,
                     order: if handler.order { Some(0) } else { None },
                     priority: handler.priority,

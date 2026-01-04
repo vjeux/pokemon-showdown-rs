@@ -1,5 +1,6 @@
 use crate::*;
-use crate::battle::EventContext;
+use crate::battle::{EventContext, EffectType};
+use crate::dex_data::ID;
 
 impl Battle {
     /// Register a custom event handler (for testing)
@@ -7,11 +8,13 @@ impl Battle {
     ///
     /// # Arguments
     /// * `event_id` - Event name (e.g., "Hit", "ModifyDamage")
+    /// * `target_id` - Target effect ID (usually the format ID)
+    /// * `target_type` - Target effect type (usually Format)
     /// * `callback` - Function to call when event fires
     ///
     /// # Example
     /// ```ignore
-    /// battle.on_event("Hit", |ctx| {
+    /// battle.on_event("Hit", format_id, EffectType::Format, |ctx| {
     ///     println!("Hit event on {:?}", ctx.target);
     ///     None // Return None for no value, Some(n) to return a value
     /// });
@@ -73,10 +76,16 @@ impl Battle {
     // 		}
     // 	}
     //
-    pub fn on_event<F>(&mut self, event_id: &str, callback: F)
+    pub fn on_event<F>(
+        &mut self,
+        event_id: &str,
+        target_id: ID,
+        target_type: EffectType,
+        callback: F,
+    )
     where
         F: Fn(&EventContext) -> Option<i32> + Send + Sync + 'static,
     {
-        self.on_event_priority(event_id, 0, callback);
+        self.on_event_priority(event_id, target_id, target_type, 0, callback);
     }
 }

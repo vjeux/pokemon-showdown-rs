@@ -280,12 +280,18 @@ pub type SpreadMoveHitResult = (crate::battle_actions::SpreadMoveDamage, crate::
 /// Custom event handler registered via onEvent (for testing)
 /// JavaScript: { callback, target, priority, order, subOrder }
 /// JavaScript equivalent: CustomEventHandler (sim/battle.ts)
-/// 4 fields in JavaScript
+/// 5 fields in JavaScript
 pub struct CustomEventHandler {
     /// The callback function - now receives EventContext instead of &mut Battle
     /// This eliminates the circular reference and unsafe code
     /// JavaScript: callback: (this: Battle, ...args: any[]) => any
     pub callback: EventCallback,
+    /// Target effect ID
+    /// JavaScript: target (Effect object ID)
+    pub target_id: ID,
+    /// Target effect type
+    /// JavaScript: target.effectType
+    pub target_type: EffectType,
     /// Priority for event ordering (higher = earlier)
     /// JavaScript: priority: number
     pub priority: i32,
@@ -300,6 +306,8 @@ pub struct CustomEventHandler {
 impl std::fmt::Debug for CustomEventHandler {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("CustomEventHandler")
+            .field("target_id", &self.target_id)
+            .field("target_type", &self.target_type)
             .field("priority", &self.priority)
             .field("order", &self.order)
             .field("sub_order", &self.sub_order)
