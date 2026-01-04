@@ -2262,8 +2262,59 @@ impl DexFormats {
             }
         }
 
-        // Assume it's a pokemon for now (simplified)
-        Ok(format!("pokemon:{}", id_str))
+        // Try to match against all possible types
+        // JavaScript: for (const matchType of ['pokemon', 'move', 'ability', 'item', 'nature'])
+        let mut matches: Vec<String> = Vec::new();
+        // Use Gen 9 dex for validation (latest generation has all Pokemon/moves/etc.)
+        let dex = crate::dex::Dex::new(9);
+
+        // Try pokemon
+        if let Some(_species) = dex.species().get(id_str) {
+            matches.push(format!("pokemon:{}", id_str));
+        } else if id_str.ends_with("base") {
+            // JavaScript: else if (matchType === 'pokemon' && id.endsWith('base'))
+            let base_id = &id_str[..id_str.len() - 4];
+            if dex.species().get(base_id).is_some() {
+                matches.push(format!("pokemon:{}", base_id));
+            }
+        }
+
+        // Try move
+        if dex.moves().get(id_str).is_some() {
+            matches.push(format!("move:{}", id_str));
+        }
+
+        // Try ability
+        if dex.abilities().get(id_str).is_some() {
+            matches.push(format!("ability:{}", id_str));
+        }
+
+        // Try item
+        if dex.items().get(id_str).is_some() {
+            matches.push(format!("item:{}", id_str));
+        }
+
+        // Try nature
+        if dex.natures().get(id_str).is_some() {
+            matches.push(format!("nature:{}", id_str));
+        }
+
+        // JavaScript: if (matches.length > 1) throw new Error(...)
+        if matches.len() > 1 {
+            return Err(format!(
+                "More than one thing matches \"{}\"; please specify one of: {}",
+                rule,
+                matches.join(", ")
+            ));
+        }
+
+        // JavaScript: if (matches.length < 1) throw new Error(...)
+        if matches.is_empty() {
+            return Err(format!("Nothing matches \"{}\"", rule));
+        }
+
+        // JavaScript: return matches[0];
+        Ok(matches[0].clone())
     }
 }
 
