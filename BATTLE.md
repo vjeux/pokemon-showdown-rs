@@ -657,3 +657,71 @@ if !has_dynamax_volatile {
 **Commit:** [next commit]
 
 ---
+
+## Seed 3 Investigation
+
+### Issue 10: enigmaberry on_hit callback not executing (FIXED ✅)
+
+**Problem:**
+- Seed 3 Turn 9: Dedenne takes 60 damage in Rust vs 54 damage in JavaScript
+- Same PRNG calls (25->32) but different HP outcomes
+- Dedenne has enigmaberry item and Cheek Pouch ability
+- Expected: Berry triggers on super-effective hit, Cheek Pouch heals on berry consumption
+- Actual: Berry callback never executed
+
+**Investigation:**
+1. Added logging to enigmaberry.rs on_hit callback → NO LOGS APPEARED
+2. Traced event system to verify event flow:
+   - ✅ run_event("Hit", ...) is called in spread_move_hit.rs
+   - ✅ find_pokemon_event_handlers finds enigmaberry handler (logging confirmed)
+   - ✅ Handler added to handlers list (logging confirmed)
+   - ✅ dispatch_single_event called with enigmaberry (logging confirmed)
+   - ✅ handle_item_event called for Hit event (logging confirmed)
+3. **ROOT CAUSE FOUND**: dispatch_on_hit in item_callbacks/mod.rs was just a STUB:
+   ```rust
+   pub fn dispatch_on_hit(
+       _battle: &mut Battle,
+       _item_id: &str,
+       _pokemon_pos: (usize, usize),
+   ) -> EventResult {
+       EventResult::Continue  // BUG: Just returns Continue without dispatching!
+   }
+   ```
+
+**Fix Applied:**
+1. Updated `dispatch_on_hit` function signature to accept source and move_id parameters
+2. Implemented match on item_id to call enigmaberry::on_hit
+3. Updated `handle_item_event.rs` Hit event case to pass source and move_id
+
+**Implementation:**
+```rust
+pub fn dispatch_on_hit(
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
+) -> EventResult {
+    use crate::dex_data::ID;
+    match ID::from(item_id).as_str() {
+        "enigmaberry" => enigmaberry::on_hit(battle, Some(pokemon_pos), source_pos, move_id),
+        _ => EventResult::Continue,
+    }
+}
+```
+
+**Result:**
+- ✅ enigmaberry on_hit now triggers when hit by super-effective move
+- ✅ Berry consumed, heals 1/4 max HP (52 HP)
+- ✅ Cheek Pouch ability triggers, heals 1/3 max HP (70 HP)
+- ✅ Seed 3 iterations #1-#15 now match JavaScript exactly (previously diverged at turn 9)
+- ❌ NEW DIVERGENCE at iteration #16 (turn 13):
+  - JavaScript: prng=47->54, Dedenne(107/210)
+  - Rust: prng=47->53, Dedenne(133/210)
+
+**Commit:** d681cbdf
+
+**Next Steps:**
+- Investigate turn 13 divergence (PRNG calls differ by 1, HP differs by 26)
+
+---
