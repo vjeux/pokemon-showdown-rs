@@ -122,6 +122,10 @@ pub struct EffectState {
     /// Duration remaining (turns)
     /// JavaScript: duration?: number
     pub duration: Option<i32>,
+    /// Turn when this effect was created
+    /// Rust-specific: Used to prevent decrementing duration on the same turn it was added
+    /// JavaScript implicitly handles this by not decrementing same-turn volatiles
+    pub created_turn: Option<i32>,
     /// Time (for sorting)
     /// JavaScript: time?: number
     pub time: Option<i32>,

@@ -233,6 +233,9 @@ impl Pokemon {
         // durationCallback overrides default duration
         let final_duration = callback_duration.or(default_duration);
 
+        // Capture current turn before mutable borrow
+        let current_turn = battle.turn;
+
         // Add the volatile
         let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
@@ -248,6 +251,7 @@ impl Pokemon {
         // Create effect state with duration
         let mut state = crate::event_system::EffectState::new(volatile_id.clone());
         state.duration = final_duration;
+        state.created_turn = Some(current_turn);
         // ✅ NOW IMPLEMENTED: target assignment (Session 24 Part 21)
         state.target = Some(target_pos);
         // ✅ NOW IMPLEMENTED: source, sourceSlot assignments (Session 24 Part 20)
