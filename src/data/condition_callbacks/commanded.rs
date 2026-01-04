@@ -6,55 +6,68 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::pokemon::TrappedState;
 
 /// onStart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// commanded: {
-///     onStart(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onStart(pokemon) {
+///     this.boost({ atk: 2, spa: 2, spe: 2, def: 2, spd: 2 }, pokemon);
 /// }
+/// ```
 pub fn on_start(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[COMMANDED_ON_START] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.boost({ atk: 2, spa: 2, spe: 2, def: 2, spd: 2 }, pokemon);
+    let boosts: &[(&str, i8)] = &[
+        ("atk", 2),
+        ("spa", 2),
+        ("spe", 2),
+        ("def", 2),
+        ("spd", 2),
+    ];
+
+    battle.boost(boosts, pokemon_pos, None, None, false, false);
+
     EventResult::Continue
 }
 
 /// onDragOut
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// commanded: {
-///     onDragOut(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onDragOutPriority: 2,
+/// onDragOut() {
+///     return false;
 /// }
+/// ```
 pub fn on_drag_out(
     _battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[COMMANDED_ON_DRAG_OUT] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
+    // return false;
+    EventResult::Boolean(false)
 }
 
 /// onTrapPokemon
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// commanded: {
-///     onTrapPokemon(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onTrapPokemonPriority: -11,
+/// onTrapPokemon(pokemon) {
+///     pokemon.trapped = true;
 /// }
+/// ```
 pub fn on_trap_pokemon(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[COMMANDED_ON_TRAP_POKEMON] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // pokemon.trapped = true;
+    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        Some(p) => p,
+        None => return EventResult::Continue,
+    };
+    pokemon.trapped = TrappedState::Visible;
+
     EventResult::Continue
 }
 
