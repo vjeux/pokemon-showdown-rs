@@ -1104,6 +1104,10 @@ pub struct ItemData {
     /// JavaScript: onPlate?: string
     #[serde(rename = "onPlate", default)]
     pub on_plate: Option<String>,
+    /// Type for Memory items (e.g., "Fire" for Fire Memory)
+    /// JavaScript: onMemory?: string
+    #[serde(rename = "onMemory", default)]
+    pub on_memory: Option<String>,
     /// Z-Move compatibility
     /// JavaScript: zMove?: string | true | ZMoveOptions
     /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses union type
