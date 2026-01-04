@@ -1274,13 +1274,20 @@ Found the extra PRNG call source:
 3. Both handlers tie in priority/speed → triggers shuffle_range → PRNG call (from=0, to=2)
 4. JavaScript only makes 1 PRNG call (rockthrow accuracy check), suggesting shuffle doesn't happen
 
-**Possible causes:**
-- JavaScript might not add stall volatile
-- JavaScript's shuffle might have special case for 2 items
-- JavaScript's residual handler collection might filter out stall (no onResidual callback)
-- Different timing of volatile addition/removal
+**Findings:**
+- Verified both JS and Rust use King's Shield in turn 2 (PP: 16→15)
+- Verified both should add kingsshield + stall volatiles (per move callbacks)
+- JavaScript logic for handler collection matches Rust: `callback !== undefined || (getKey && state[getKey])`
+- shuffle_range implementation matches JavaScript prng.shuffle
+- Both implementations should add stall to residual handlers despite no onResidual callback
 
-**Status:** Investigating why JavaScript doesn't shuffle 2 tied residual handlers 🔍
+**Hypothesis:**
+JavaScript may have subtle difference in:
+1. Handler collection timing (volatiles already expired?)
+2. Shuffle optimization (caching/deduplication?)
+3. Or this is a Rust-specific issue we introduced
+
+**Status:** Need to add more detailed logging to compare handler lists 🔍
 
 ### Seed 3: ❌ DIVERGES AT ITERATION #30 (59.5% passing)
 - Iterations #1-#28 match perfectly
