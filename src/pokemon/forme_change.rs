@@ -107,19 +107,15 @@ impl Pokemon {
         };
 
         // const species = this.setSpecies(rawSpecies, source);
-        let set_species_result = {
-            let pokemon = &mut battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1];
-            let species_id_ref = species_id.clone();
-            // Drop pokemon borrow before calling set_species
-            let result = {
-                // We need to call set_species through the Pokemon API
-                // For now, we'll assume success and set the species directly
-                // TODO: Implement proper set_species call when infrastructure allows
-                pokemon.species_id = species_id_ref.clone();
-                true
-            };
-            result
-        };
+        // JavaScript: const species = this.setSpecies(rawSpecies, source);
+        // Call position-based set_species
+        let set_species_result = Pokemon::set_species_pos(
+            battle,
+            pokemon_pos,
+            &species_id,
+            source_id.as_ref(),
+            false, // is_transform = false for forme changes
+        );
 
         // if (!species) return false;
         if !set_species_result {
