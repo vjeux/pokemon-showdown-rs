@@ -125,7 +125,9 @@ pub fn on_field_start(
 
     if is_ability {
         // if (this.gen <= 5) this.effectState.duration = 0;
-        // TODO: Handle gen <= 5 duration setting when we have effectState infrastructure
+        if battle.gen <= 5 {
+            battle.field.weather_state.duration = Some(0);
+        }
 
         // this.add('-weather', 'RainDance', '[from] ability: ' + effect.name, `[of] ${source}`);
         let ability_name = battle.effect.as_ref()
