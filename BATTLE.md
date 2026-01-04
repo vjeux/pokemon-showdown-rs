@@ -181,7 +181,7 @@ Rust's implementation didn't pass the move data to access the embedded condition
 
 ---
 
-### Issue 5: Turn 2 PRNG divergence (IN PROGRESS 🔍)
+### Issue 5: Turn 2 PRNG divergence - King's Shield onTryHit not called (IN PROGRESS 🔍)
 
 **Problem:**
 - Turn 1 matches perfectly after embedded condition fix
@@ -191,19 +191,33 @@ Rust's implementation didn't pass the move data to access the embedded condition
 - One extra PRNG call in Rust
 
 **Moves Used in Turn 2:**
-- Sandaconda uses King's Shield (status move, priority +4)
+- Sandaconda uses King's Shield (status move, priority +4, goes first)
 - Metang uses Rock Throw (damaging move, 90% accuracy)
 
-**Hypothesis:**
-Extra PRNG call could be from:
-1. King's Shield expiring (duration check)
-2. Stall volatile handling
-3. Some event callback making an unexpected PRNG call
-4. Accuracy check happening when it shouldn't
+**Root Cause Found:**
+Using improved PRNG stack trace logging, identified the divergence:
+
+JavaScript PRNG #6: shuffle <- speedSort <- fieldEvent (NO accuracy check for Rock Throw)
+Rust PRNG #6: random_chance <- hit_step_accuracy (accuracy check for Rock Throw)
+Rust PRNG #7: random_with_range <- shuffle_range <- speed_sort
+
+Rock Throw's accuracy is being checked in Rust but not in JavaScript. This is because:
+1. King's Shield executes first (correct priority)
+2. King's Shield adds `kingsshield` volatile to Sandaconda
+3. Rock Throw targets Sandaconda (has kingsshield volatile)
+4. **BUG**: King's Shield's onTryHit callback is NEVER CALLED
+5. Accuracy check proceeds (PRNG #6)
+6. Move is not blocked
+
+In JavaScript, the kingsshield onTryHit blocks the move BEFORE the accuracy check, so no PRNG call is made.
 
 **Next Steps:**
-- Add PRNG tracing to identify exactly where the extra call occurs
-- Compare JavaScript and Rust execution paths for turn 2
+- Investigate why onTryHit callback is not being found/called for kingsshield volatile
+- Check has_callback() or event handler registration for embedded condition callbacks
+
+**Debugging Improvements Made:**
+- Added compact stack trace logging to both JavaScript and Rust PRNG
+- TRACE_PRNG now shows full call chain making it easy to identify divergences
 
 ---
 

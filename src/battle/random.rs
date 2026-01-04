@@ -19,12 +19,14 @@ impl Battle {
     // - random(n) returns an integer in [0, n)
     // - random_with_range(m, n) returns an integer in [m, n)
     pub fn random(&mut self, n: i32) -> i32 {
+        eprintln!("[RANDOM] turn={}, n={}", self.turn, n);
         self.prng.random_int(n)
     }
 
     /// Random number in range [from, to)
     /// Equivalent to TypeScript random(from, to)
     pub fn random_with_range(&mut self, from: i32, to: i32) -> i32 {
+        eprintln!("[RANDOM_WITH_RANGE] turn={}, from={}, to={}", self.turn, from, to);
         self.prng.random_range(from, to)
     }
 }

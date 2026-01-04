@@ -408,12 +408,40 @@ impl PRNG {
             if should_trace {
                 let bt = std::backtrace::Backtrace::force_capture();
                 let bt_str = format!("{}", bt);
-                let caller = bt_str.lines()
-                    .filter(|line| !line.contains("prng.rs") && !line.contains("std::") && !line.contains("core::"))
-                    .take(8)
-                    .collect::<Vec<_>>()
-                    .join("\n  ");
-                eprintln!("\n[Rust PRNG #{}] value={}\n  {}\n", self.call_count, value, caller);
+
+                // Extract compact function names from backtrace
+                let frames: Vec<String> = bt_str.lines()
+                    .filter(|line| {
+                        // Filter out noise: prng module internals, std library, runtime
+                        let trimmed = line.trim();
+                        !trimmed.contains("prng::PRNG::next_raw") &&
+                        !trimmed.contains("prng::PRNG::random") &&
+                        !trimmed.contains("std::") &&
+                        !trimmed.contains("core::") &&
+                        !trimmed.contains("rustc") &&
+                        !trimmed.contains("alloc::") &&
+                        trimmed.chars().next().map_or(false, |c| c.is_digit(10))
+                    })
+                    .take(4)
+                    .filter_map(|line| {
+                        // Extract useful part: "10: pokemon_showdown::battle::random_chance<impl...>::random_chance"
+                        // Keep last 2-3 segments for readability
+                        if let Some(colon_pos) = line.find(':') {
+                            let func_part = &line[colon_pos + 1..].trim();
+                            let parts: Vec<&str> = func_part.split("::").collect();
+                            if parts.len() >= 2 {
+                                // Take last 2 parts or module::function
+                                let relevant = parts[parts.len().saturating_sub(2)..].join("::");
+                                return Some(relevant.split('<').next().unwrap_or(&relevant).to_string());
+                            }
+                        }
+                        None
+                    })
+                    .collect();
+
+                let compact = frames.join(" <- ");
+                eprintln!("[Rust PRNG #{}] raw={}", self.call_count, value);
+                eprintln!("  Stack: {}", compact);
             }
         }
 
