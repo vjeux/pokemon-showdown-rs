@@ -61,16 +61,35 @@
 - The refactoring should have been neutral but introduced a behavioral difference
 
 **Current Divergence:**
-- Iteration #33 (turn 27): Rust makes 2 fewer PRNG calls (4 vs 6)
-- Move: zenheadbutt (not multi-hit)
-- HP: Zacian 196 (Rust) vs 195 (JS) - 1 HP difference
-- Pattern: PRNG calls appear delayed, not missing
+- Iteration #33 (turn 27): Rust makes 2 FEWER PRNG calls (4 vs 6)
+  - JavaScript: prng=117->123 (6 calls during `make_choices()`)
+  - Rust: prng=117->121 (4 calls during `make_choices()`)
+- Moves executed: zenheadbutt (Zacian) and gmaxterror (Golem)
+- HP difference: Zacian 196 (Rust) vs 195 (JS) - 1 HP difference
+
+**Detailed Investigation:**
+- Rust PRNG sequence at turn 27:
+  - 117->121: 4 calls happen BEFORE zenheadbutt's USE_MOVE entry
+  - 121->122: zenheadbutt accuracy check
+  - 122->123: zenheadbutt crit check
+  - 123->124: zenheadbutt damage randomizer random(16)
+  - 124->125: zenheadbutt secondary chance random(100) for flinch
+  - 125->126: gmaxterror crit check
+  - 126->127: gmaxterror damage randomizer random(16)
+- The 117->121 calls occur within `make_choices()` but before move execution
+- Rust is missing 2 PRNG calls that JavaScript makes during this phase
+- NOT related to damage randomizer (both implementations call it correctly)
+- Likely related to the volatile addition refactoring in commit 16212962
+
+**Hypothesis:**
+The refactoring changed WHEN certain callbacks are invoked during the battle flow,
+causing PRNG calls to shift between iterations or be skipped entirely.
 
 **Next Steps:**
-1. Compare behavior of removed manual volatile code vs Pokemon::add_volatile()
-2. Identify why Pokemon::add_volatile() behaves differently
-3. Either fix Pokemon::add_volatile() OR revert the refactoring in 16212962
-4. Seed 1 team has "petaldance" which may be relevant (confusion-causing move)
+1. Add detailed PRNG tracing to both JavaScript and Rust for turn 27
+2. Identify exactly which 2 PRNG calls JavaScript makes that Rust skips
+3. Determine if this is callback timing, missing event handlers, or logic difference
+4. Fix the root cause to restore PRNG alignment
 
 ---
 

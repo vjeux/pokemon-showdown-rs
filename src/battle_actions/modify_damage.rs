@@ -140,8 +140,17 @@ pub fn modify_damage(
     }
 
     // baseDamage = this.battle.randomizer(baseDamage);
-    base_damage = battle.randomizer(base_damage);
-    eprintln!("[MODIFY_DAMAGE] After randomizer: base_damage={}", base_damage);
+    // JavaScript: if (!move.noDamageVariance) { baseDamage = this.battle.randomizer(baseDamage); }
+    // Check if the move has noDamageVariance set to true
+    let should_apply_variance = battle.active_move
+        .as_ref()
+        .and_then(|m| m.no_damage_variance)
+        .unwrap_or(false) == false; // Apply variance unless explicitly disabled
+
+    if should_apply_variance {
+        base_damage = battle.randomizer(base_damage);
+    }
+    eprintln!("[MODIFY_DAMAGE] After randomizer (applied={}): base_damage={}", should_apply_variance, base_damage);
 
     // Get source and target data for STAB and type effectiveness
     let (source_types, target_types, target_slot) = {

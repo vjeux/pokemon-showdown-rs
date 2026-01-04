@@ -390,6 +390,16 @@ pub fn spread_move_hit(
     //   }
     // Get secondaries from active_move (which normalizes secondary -> secondaries)
     // JS processes moveData.secondaries (plural) which is normalized from secondary (singular)
+
+    // DEBUG: Check active_move state
+    eprintln!("[SPREAD_MOVE_HIT T{}] Before secondaries check: active_move exists={}, move_id={}",
+        battle.turn, battle.active_move.is_some(), move_id);
+    if let Some(ref active_move) = battle.active_move {
+        eprintln!("[SPREAD_MOVE_HIT T{}] active_move.id={}, secondaries.len()={}, secondaries={:?}",
+            battle.turn, active_move.id, active_move.secondaries.len(),
+            active_move.secondaries.iter().map(|s| format!("{{chance:{:?}, volatileStatus:{:?}}}", s.chance, s.volatile_status)).collect::<Vec<_>>());
+    }
+
     let has_secondaries_to_process = battle.active_move
         .as_ref()
         .map(|m| !m.secondaries.is_empty())

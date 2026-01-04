@@ -19,8 +19,11 @@ impl Battle {
     // - random(n) returns an integer in [0, n)
     // - random_with_range(m, n) returns an integer in [m, n)
     pub fn random(&mut self, n: i32) -> i32 {
-        eprintln!("[RANDOM] turn={}, n={}", self.turn, n);
-        self.prng.random_int(n)
+        let before = self.prng.call_count;
+        let result = self.prng.random_int(n);
+        let after = self.prng.call_count;
+        eprintln!("[RANDOM] turn={}, n={}, result={}, PRNG: {}->{}",  self.turn, n, result, before, after);
+        result
     }
 
     /// Random number in range [from, to)
