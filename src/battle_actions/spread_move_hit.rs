@@ -123,7 +123,7 @@ use crate::battle_actions::{SpreadMoveDamage, SpreadMoveDamageValue, SpreadMoveT
 /// Returns (damages, targets) where damages[i] corresponds to targets[i]
 pub fn spread_move_hit(
     battle: &mut Battle,
-    targets: &[Option<(usize, usize)>],
+    targets: &SpreadMoveTargets,
     source_pos: (usize, usize),
     move_id: &ID,
     hit_effect_id: Option<&ID>,
@@ -134,11 +134,9 @@ pub fn spread_move_hit(
     // In JS: damage[i] = true for all targets
     let mut damage: SpreadMoveDamage = vec![SpreadMoveDamageValue::Success; targets.len()];
 
-    // Convert targets to SpreadMoveTargets
-    let mut targets_mut: SpreadMoveTargets = targets.iter().map(|&t| match t {
-        Some(pos) => SpreadMoveTarget::Target(pos),
-        None => SpreadMoveTarget::None,
-    }).collect();
+    // Clone targets for modification
+    // JS: targets is mutable in JavaScript
+    let mut targets_mut: SpreadMoveTargets = targets.clone();
 
     // Get moveData ID (defaults to move_id if hit_effect_id is None)
     // JS: let moveData = hitEffect as ActiveMove; if (!moveData) moveData = move;

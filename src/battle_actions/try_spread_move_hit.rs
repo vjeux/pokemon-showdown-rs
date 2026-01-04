@@ -377,7 +377,13 @@ pub fn try_spread_move_hit(
 
     let target_list: Vec<Option<(usize, usize)>> = remaining_targets.iter().map(|&t| Some(t)).collect();
     let mut total_damages: Vec<i32> = vec![0; target_list.len()];
-    let mut final_targets = target_list.clone();
+
+    // Convert to SpreadMoveTargets for spread_move_hit
+    use crate::battle_actions::{SpreadMoveTarget, SpreadMoveTargets};
+    let mut final_targets: SpreadMoveTargets = target_list.iter().map(|&t| match t {
+        Some(pos) => SpreadMoveTarget::Target(pos),
+        None => SpreadMoveTarget::None,
+    }).collect();
 
     // Execute each hit
     for hit_num in 0..num_hits {
@@ -399,12 +405,8 @@ pub fn try_spread_move_hit(
             }
         }
 
-        // Update targets for next hit - convert SpreadMoveTargets to Vec<Option<(usize, usize)>>
-        use crate::battle_actions::SpreadMoveTarget;
-        final_targets = targets.iter().map(|t| match t {
-            SpreadMoveTarget::Target(pos) => Some(*pos),
-            _ => None,
-        }).collect();
+        // Update targets for next hit
+        final_targets = targets;
     }
 
     // Convert to Option format
@@ -427,7 +429,7 @@ pub fn try_spread_move_hit(
     // Check if any target was hit
     for (i, damage) in damages.iter().enumerate() {
         if let Some(dmg) = damage {
-            if *dmg != 0 || final_targets.get(i).and_then(|t| *t).is_some() {
+            if *dmg != 0 || matches!(final_targets.get(i), Some(SpreadMoveTarget::Target(_))) {
                 return true;
             }
         }

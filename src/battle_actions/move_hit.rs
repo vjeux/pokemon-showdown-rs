@@ -40,7 +40,14 @@ pub fn move_hit(
     // (Already handled by caller passing slice)
 
     // const retVal = this.spreadMoveHit(targets, pokemon, moveOrMoveName, moveData, isSecondary, isSelf)[0][0];
-    let (damages, _targets) = spread_move_hit(battle, targets, pokemon_pos, move_id, move_data_id, is_secondary, is_self);
+    // Convert slice to SpreadMoveTargets
+    use crate::battle_actions::SpreadMoveTarget;
+    let spread_targets: crate::battle_actions::SpreadMoveTargets = targets.iter().map(|&t| match t {
+        Some(pos) => SpreadMoveTarget::Target(pos),
+        None => SpreadMoveTarget::None,
+    }).collect();
+
+    let (damages, _targets) = spread_move_hit(battle, &spread_targets, pokemon_pos, move_id, move_data_id, is_secondary, is_self);
 
     let ret_val = match damages.get(0) {
         Some(SpreadMoveDamageValue::Damage(n)) => Some(*n),
