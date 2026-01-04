@@ -142,56 +142,68 @@ map.insert(
    - Duration isn't set (volatile persists indefinitely)
    - Move isn't blocked (no onTryHit handler)
 
-**Proper Fix Being Implemented:**
-1. Modify `Pokemon::add_volatile` to accept optional `&ConditionData` parameter
-2. In `run_move_effects.rs`, pass `move_data.condition` when calling add_volatile
-3. When condition not found in dex, use the embedded condition data
-4. This matches JavaScript's behavior where addVolatile receives the move parameter
+### Issue 4: King's Shield condition not registered (FIXED ✅)
 
-**Implementation Plan:**
-- src/pokemon/add_volatile.rs: Add `embedded_condition: Option<&ConditionData>` parameter
-- src/battle_actions/run_move_effects.rs: Pass `move_data.condition.as_ref()` to add_volatile
-- When volatile not in dex.conditions, use embedded_condition for duration, priorities, etc.
-- This is 1-to-1 with JavaScript which accesses move.condition when adding volatiles
+**Problem:**
+- King's Shield was adding the "kingsshield" volatile
+- But the volatile condition was not registered in `conditions.rs`
+- `has_callback("kingsshield", "onTryHit")` returned false
+- Condition's `on_try_hit` handler never called
+- Moves were not blocked by King's Shield
+
+**Root Cause:**
+King's Shield has an embedded condition in moves.json:
+```json
+"volatileStatus": "kingsshield",
+"condition": { "duration": 1, "onTryHitPriority": 3 }
+```
+
+JavaScript's addVolatile receives the move parameter:
+```javascript
+target.addVolatile(moveData.volatileStatus, source, move)
+```
+
+Rust's implementation didn't pass the move data to access the embedded condition.
+
+**Proper Fix IMPLEMENTED:**
+1. Modified `Pokemon::add_volatile` to accept optional `&ConditionData` parameter
+2. In `run_move_effects.rs`, pass `move_data.condition.as_ref()` when calling add_volatile
+3. When condition not found in dex, use embedded_condition for duration, priorities, etc.
+4. This is 1-to-1 with JavaScript which accesses move.condition when adding volatiles
+
+**Commit:** 75809483
+
+**Results:**
+- ✅ Embedded conditions now accessible when adding volatiles
+- ✅ Duration and priorities correctly applied from embedded conditions
+- ✅ 120+ call sites updated to new signature
+- ❌ Turn 2 still diverges with PRNG issue (different from King's Shield blocking)
 
 ---
 
-### Issue 5: King's Shield blocking before accuracy check (BLOCKED by Issue 4)
+### Issue 5: Turn 2 PRNG divergence (IN PROGRESS 🔍)
 
 **Problem:**
-After fixing the condition registration, King's Shield blocks ALL moves without checking accuracy first.
+- Turn 1 matches perfectly after embedded condition fix
+- Turn 2 shows PRNG divergence:
+  - JavaScript: prng=5->6 (1 call)
+  - Rust: prng=5->7 (2 calls)
+- One extra PRNG call in Rust
 
-**JavaScript Behavior (Turn 2)**:
-```
-#2: turn=3, prng=5->6, P1=[Sandaconda(173/189)]
-```
-- Rock Throw checks accuracy (PRNG #6)
-- Misses accuracy check
-- No damage dealt
-
-**Rust Behavior (Turn 2)**:
-```
-#2: turn=3, prng=5->5, P1=[Sandaconda(173/189)]
-```
-- King's Shield blocks Rock Throw BEFORE accuracy check
-- No PRNG call
-- No damage dealt
+**Moves Used in Turn 2:**
+- Sandaconda uses King's Shield (status move, priority +4)
+- Metang uses Rock Throw (damaging move, 90% accuracy)
 
 **Hypothesis:**
-In `try_spread_move_hit.rs`, the step order is:
-1. TryHit (protect blocks here)
-2-3. Type immunity
-4. Accuracy check
-
-This seems correct, but JavaScript appears to check accuracy BEFORE blocking with protect moves. Possible explanations:
-1. Protect moves should only block moves that would HIT
-2. Accuracy check might need special ordering for protect scenarios
-3. The `on_try_hit` handler should allow accuracy to be checked first
+Extra PRNG call could be from:
+1. King's Shield expiring (duration check)
+2. Stall volatile handling
+3. Some event callback making an unexpected PRNG call
+4. Accuracy check happening when it shouldn't
 
 **Next Steps:**
-- Investigate JavaScript implementation to understand when accuracy is checked relative to protect moves
-- Check if there's a special case for protect moves in the hit step pipeline
-- Test with simpler protect scenarios (regular Protect move)
+- Add PRNG tracing to identify exactly where the extra call occurs
+- Compare JavaScript and Rust execution paths for turn 2
 
 ---
 
