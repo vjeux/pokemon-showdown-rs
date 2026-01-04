@@ -5,124 +5,341 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Arg;
 use crate::event::EventResult;
+use crate::dex_data::ID;
 
 /// onStart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// dynamax: {
-///     onStart(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// onStart(pokemon) {
+///     this.effectState.turns = 0;
+///     pokemon.removeVolatile('minimize');
+///     pokemon.removeVolatile('substitute');
+///     if (pokemon.volatiles['torment']) {
+///         delete pokemon.volatiles['torment'];
+///         this.add('-end', pokemon, 'Torment', '[silent]');
 ///     }
+///     if (['cramorantgulping', 'cramorantgorging'].includes(pokemon.species.id) && !pokemon.transformed) {
+///         pokemon.formeChange('cramorant');
+///     }
+///     this.add('-start', pokemon, 'Dynamax', pokemon.gigantamax ? 'Gmax' : '');
+///     if (pokemon.baseSpecies.name === 'Shedinja') return;
+///
+///     // Changes based on dynamax level, 2 is max (at LVL 10)
+///     const ratio = 1.5 + (pokemon.dynamaxLevel * 0.05);
+///
+///     pokemon.maxhp = Math.floor(pokemon.maxhp * ratio);
+///     pokemon.hp = Math.floor(pokemon.hp * ratio);
+///     this.add('-heal', pokemon, pokemon.getHealth, '[silent]');
 /// }
+/// ```
 pub fn on_start(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DYNAMAX_ON_START] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.effectState.turns = 0;
+    // Note: effectState is stored in the volatile's data field
+    let dynamax_id = ID::from("dynamax");
+    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        if let Some(volatile) = pokemon.volatiles.get_mut(&dynamax_id) {
+            volatile.data.insert("turns".to_string(), serde_json::json!(0));
+        }
+    }
+
+    // pokemon.removeVolatile('minimize');
+    crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("minimize"));
+
+    // pokemon.removeVolatile('substitute');
+    crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("substitute"));
+
+    // if (pokemon.volatiles['torment'])
+    let has_torment = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.volatiles.contains_key(&ID::from("torment"))
+    };
+
+    if has_torment {
+        // delete pokemon.volatiles['torment'];
+        let pokemon_ident = {
+            let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.volatiles.remove(&ID::from("torment"));
+            pokemon.get_slot()
+        };
+
+        // this.add('-end', pokemon, 'Torment', '[silent]');
+        battle.add("-end", &[Arg::String(pokemon_ident), Arg::Str("Torment"), Arg::Str("[silent]")]);
+    }
+
+    // if (['cramorantgulping', 'cramorantgorging'].includes(pokemon.species.id) && !pokemon.transformed)
+    let (is_cramorant_form, transformed) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let species_id = pokemon.species_id.as_str();
+        (species_id == "cramorantgulping" || species_id == "cramorantgorging", pokemon.transformed)
+    };
+
+    if is_cramorant_form && !transformed {
+        // pokemon.formeChange('cramorant');
+        crate::pokemon::Pokemon::forme_change(
+            battle,
+            pokemon_pos,
+            ID::from("cramorant"),
+            None,
+            false,
+            "0",
+            None,
+        );
+    }
+
+    // this.add('-start', pokemon, 'Dynamax', pokemon.gigantamax ? 'Gmax' : '');
+    let (pokemon_ident, gigantamax) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (pokemon.get_slot(), pokemon.gigantamax)
+    };
+
+    if gigantamax {
+        battle.add("-start", &[Arg::String(pokemon_ident.clone()), Arg::Str("Dynamax"), Arg::Str("Gmax")]);
+    } else {
+        battle.add("-start", &[Arg::String(pokemon_ident.clone()), Arg::Str("Dynamax")]);
+    }
+
+    // if (pokemon.baseSpecies.name === 'Shedinja') return;
+    let is_shedinja = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.base_species.as_str() == "shedinja"
+    };
+
+    if is_shedinja {
+        return EventResult::Continue;
+    }
+
+    // const ratio = 1.5 + (pokemon.dynamaxLevel * 0.05);
+    let (dynamax_level, old_maxhp, old_hp) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (pokemon.dynamax_level, pokemon.maxhp, pokemon.hp)
+    };
+
+    let ratio = 1.5 + (dynamax_level as f64 * 0.05);
+
+    // pokemon.maxhp = Math.floor(pokemon.maxhp * ratio);
+    // pokemon.hp = Math.floor(pokemon.hp * ratio);
+    let new_maxhp = (old_maxhp as f64 * ratio).floor() as i32;
+    let new_hp = (old_hp as f64 * ratio).floor() as i32;
+
+    let health_str = {
+        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.maxhp = new_maxhp;
+        pokemon.hp = new_hp;
+        pokemon.get_health()
+    };
+
+    // this.add('-heal', pokemon, pokemon.getHealth, '[silent]');
+    battle.add("-heal", &[Arg::String(pokemon_ident), Arg::String(health_str), Arg::Str("[silent]")]);
+
     EventResult::Continue
 }
 
 /// onTryAddVolatile
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// dynamax: {
-///     onTryAddVolatile(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onTryAddVolatile(status, pokemon) {
+///     if (status.id === 'flinch') return null;
 /// }
+/// ```
 pub fn on_try_add_volatile(
-    _battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DYNAMAX_ON_TRY_ADD_VOLATILE] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // if (status.id === 'flinch') return null;
+    if let Some(ref effect) = battle.effect {
+        if effect.as_str() == "flinch" {
+            return EventResult::Null;
+        }
+    }
+
     EventResult::Continue
 }
 
 /// onBeforeSwitchOut
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// dynamax: {
-///     onBeforeSwitchOut(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onBeforeSwitchOutPriority: -1,
+/// onBeforeSwitchOut(pokemon) {
+///     pokemon.removeVolatile('dynamax');
 /// }
+/// ```
 pub fn on_before_switch_out(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DYNAMAX_ON_BEFORE_SWITCH_OUT] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // pokemon.removeVolatile('dynamax');
+    crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("dynamax"));
+
     EventResult::Continue
 }
 
 /// onSourceModifyDamage
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// dynamax: {
-///     onSourceModifyDamage(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// onSourceModifyDamage(damage, source, target, move) {
+///     if (move.id === 'behemothbash' || move.id === 'behemothblade' || move.id === 'dynamaxcannon') {
+///         return this.chainModify(2);
 ///     }
 /// }
+/// ```
 pub fn on_source_modify_damage(
-    _battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DYNAMAX_ON_SOURCE_MODIFY_DAMAGE] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // if (move.id === 'behemothbash' || move.id === 'behemothblade' || move.id === 'dynamaxcannon')
+    if let Some(ref active_move) = battle.active_move {
+        let move_id = active_move.id.as_str();
+        if move_id == "behemothbash" || move_id == "behemothblade" || move_id == "dynamaxcannon" {
+            // return this.chainModify(2);
+            return EventResult::Number(battle.chain_modify(2.0));
+        }
+    }
+
     EventResult::Continue
 }
 
 /// onDragOut
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// dynamax: {
-///     onDragOut(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onDragOutPriority: 2,
+/// onDragOut(pokemon) {
+///     this.add('-block', pokemon, 'Dynamax');
+///     return null;
 /// }
+/// ```
 pub fn on_drag_out(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DYNAMAX_ON_DRAG_OUT] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
+    // this.add('-block', pokemon, 'Dynamax');
+    let pokemon_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add("-block", &[Arg::String(pokemon_ident), Arg::Str("Dynamax")]);
+
+    // return null;
+    EventResult::Null
 }
 
 /// onResidual
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// dynamax: {
-///     onResidual(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onResidualPriority: -100,
+/// onResidual() {
+///     this.effectState.turns++;
 /// }
+/// ```
 pub fn on_residual(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DYNAMAX_ON_RESIDUAL] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.effectState.turns++;
+    let dynamax_id = ID::from("dynamax");
+    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        if let Some(volatile) = pokemon.volatiles.get_mut(&dynamax_id) {
+            let turns = volatile.data.get("turns")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            volatile.data.insert("turns".to_string(), serde_json::json!(turns + 1));
+        }
+    }
+
     EventResult::Continue
 }
 
 /// onEnd
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// dynamax: {
-///     onEnd(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onEnd(pokemon) {
+///     this.add('-end', pokemon, 'Dynamax');
+///     if (pokemon.baseSpecies.name === 'Shedinja') return;
+///     pokemon.hp = pokemon.getUndynamaxedHP();
+///     pokemon.maxhp = pokemon.baseMaxhp;
+///     this.add('-heal', pokemon, pokemon.getHealth, '[silent]');
 /// }
+/// ```
 pub fn on_end(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[DYNAMAX_ON_END] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.add('-end', pokemon, 'Dynamax');
+    let pokemon_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add("-end", &[Arg::String(pokemon_ident.clone()), Arg::Str("Dynamax")]);
+
+    // if (pokemon.baseSpecies.name === 'Shedinja') return;
+    let is_shedinja = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.base_species.as_str() == "shedinja"
+    };
+
+    if is_shedinja {
+        return EventResult::Continue;
+    }
+
+    // pokemon.hp = pokemon.getUndynamaxedHP();
+    // pokemon.maxhp = pokemon.baseMaxhp;
+    let (undynamaxed_hp, base_maxhp) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        (pokemon.get_undynamaxed_hp(None), pokemon.base_maxhp)
+    };
+
+    let health_str = {
+        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.hp = undynamaxed_hp;
+        pokemon.maxhp = base_maxhp;
+        pokemon.get_health()
+    };
+
+    // this.add('-heal', pokemon, pokemon.getHealth, '[silent]');
+    battle.add("-heal", &[Arg::String(pokemon_ident), Arg::String(health_str), Arg::Str("[silent]")]);
+
     EventResult::Continue
 }
 
