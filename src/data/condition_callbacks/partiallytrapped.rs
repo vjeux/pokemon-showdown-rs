@@ -47,16 +47,73 @@ pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
+    // Get source and sourceEffect from effectState
+    let (source_pos, source_effect_name) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let trap_id = ID::from("partiallytrapped");
+        if let Some(state) = pokemon.volatiles.get(&trap_id) {
+            let source = state.source;
+            // Try to get sourceEffect name from data
+            let effect_name = state.data.get("sourceEffect")
+                .and_then(|v| v.get("fullname"))
+                .and_then(|v| v.as_str())
+                .unwrap_or("unknown");
+            (source, effect_name.to_string())
+        } else {
+            return EventResult::Continue;
+        }
+    };
+
     // this.add('-activate', pokemon, 'move: ' + this.effectState.sourceEffect, `[of] ${source}`);
-    // TODO: Need access to effectState.sourceEffect and source to build the message
-    // For now, just log that trap started
-    eprintln!("[PARTIALLYTRAPPED_ON_START] Partially trapped started");
+    if let Some(source) = source_pos {
+        let pokemon_ident = {
+            let p = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1).unwrap();
+            p.get_slot()
+        };
+        let source_ident = {
+            let s = battle.pokemon_at(source.0, source.1);
+            s.map(|p| p.get_slot()).unwrap_or_default()
+        };
+
+        battle.add("-activate", &[
+            pokemon_ident.into(),
+            format!("move: {}", source_effect_name).into(),
+            format!("[of] {}", source_ident).into(),
+        ]);
+    }
 
     // this.effectState.boundDivisor = source.hasItem('bindingband') ? 6 : 8;
-    // TODO: Need to store boundDivisor in volatile's effectState data
-    // TODO: Check if source has binding band item
-    // Default divisor is 8, with binding band it's 6
-    eprintln!("[PARTIALLYTRAPPED_ON_START] TODO: Set boundDivisor based on source's binding band");
+    // Check if source has binding band item
+    let bound_divisor = if let Some((source_side, source_poke)) = source_pos {
+        if let Some(source) = battle.pokemon_at(source_side, source_poke) {
+            if source.has_item(battle, &["bindingband"]) {
+                6
+            } else {
+                8
+            }
+        } else {
+            8 // Default if source doesn't exist
+        }
+    } else {
+        8 // Default if no source
+    };
+
+    // Store boundDivisor in effectState.data
+    {
+        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let trap_id = ID::from("partiallytrapped");
+        if let Some(state) = pokemon.volatiles.get_mut(&trap_id) {
+            state.data.insert("boundDivisor".to_string(), serde_json::json!(bound_divisor));
+        }
+    }
 
     EventResult::Continue
 }
