@@ -82,6 +82,81 @@ Extra PRNG call could be from:
 
 ---
 
+### Issue 4: King's Shield condition not registered (FIXED ✅)
+
+**Problem:**
+- King's Shield was adding the "kingsshield" volatile
+- But the volatile condition was not registered in `conditions.rs`
+- `has_callback("kingsshield", "onTryHit")` returned false
+- Condition's `on_try_hit` handler never called
+- Moves were not blocked by King's Shield
+
+**Root Cause:**
+In `src/data/conditions.rs`, the "kingsshield" condition was never added to the CONDITIONS registry, so `get_condition(ID::new("kingsshield"))` returned None.
+
+**Fix:**
+Added kingsshield condition definition in `src/data/conditions.rs` (lines 357-367):
+```rust
+map.insert(
+    ID::new("kingsshield"),
+    ConditionDef {
+        id: ID::new("kingsshield"),
+        name: "King's Shield".to_string(),
+        condition_type: ConditionType::Volatile,
+        duration: Some(1),
+        protection: true,
+        ..Default::default()
+    },
+);
+```
+
+**Results:**
+- ✅ `has_callback("kingsshield", "onTryHit")` now returns true
+- ✅ Condition's `on_try_hit` handler is now called
+- ✅ King's Shield now blocks moves
+- ❌ NEW ISSUE: King's Shield blocks moves BEFORE accuracy check (see Issue 5)
+
+---
+
+### Issue 5: King's Shield blocking before accuracy check (IN PROGRESS 🔍)
+
+**Problem:**
+After fixing the condition registration, King's Shield blocks ALL moves without checking accuracy first.
+
+**JavaScript Behavior (Turn 2)**:
+```
+#2: turn=3, prng=5->6, P1=[Sandaconda(173/189)]
+```
+- Rock Throw checks accuracy (PRNG #6)
+- Misses accuracy check
+- No damage dealt
+
+**Rust Behavior (Turn 2)**:
+```
+#2: turn=3, prng=5->5, P1=[Sandaconda(173/189)]
+```
+- King's Shield blocks Rock Throw BEFORE accuracy check
+- No PRNG call
+- No damage dealt
+
+**Hypothesis:**
+In `try_spread_move_hit.rs`, the step order is:
+1. TryHit (protect blocks here)
+2-3. Type immunity
+4. Accuracy check
+
+This seems correct, but JavaScript appears to check accuracy BEFORE blocking with protect moves. Possible explanations:
+1. Protect moves should only block moves that would HIT
+2. Accuracy check might need special ordering for protect scenarios
+3. The `on_try_hit` handler should allow accuracy to be checked first
+
+**Next Steps:**
+- Investigate JavaScript implementation to understand when accuracy is checked relative to protect moves
+- Check if there's a special case for protect moves in the hit step pipeline
+- Test with simpler protect scenarios (regular Protect move)
+
+---
+
 ## Debugging Tools Needed
 
 ### Current Status:

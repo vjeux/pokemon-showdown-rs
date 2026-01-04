@@ -31,6 +31,13 @@ impl Battle {
 
         // JS: const oldQueue = this.queue.list;
         let old_queue = self.queue.list.clone();
+        eprintln!("[COMMIT_CHOICES] Old queue has {} actions before clearing", old_queue.len());
+        for (i, action) in old_queue.iter().enumerate() {
+            if let crate::battle_queue::Action::Move(move_action) = action {
+                eprintln!("[COMMIT_CHOICES] old_queue[{}]: Move {} from ({}, {})",
+                    i, move_action.move_id.as_str(), move_action.side_index, move_action.pokemon_index);
+            }
+        }
 
         // JS: this.queue.clear();
         self.queue.clear();
@@ -58,7 +65,14 @@ impl Battle {
         let mut queue = std::mem::take(&mut self.queue);
         for side_idx in 0..self.sides.len() {
             let side_actions = self.sides[side_idx].choice.actions.clone();
-            for side_action in &side_actions {
+            eprintln!("[COMMIT_CHOICES] Side {} has {} actions", side_idx, side_actions.len());
+            for (action_idx, side_action) in side_actions.iter().enumerate() {
+                if let crate::side::ChoiceType::Move = side_action.choice {
+                    eprintln!("[COMMIT_CHOICES] Side {} action[{}]: Move {} targeting {:?}",
+                        side_idx, action_idx,
+                        side_action.move_id.as_ref().map(|m| m.as_str()).unwrap_or("none"),
+                        side_action.target_loc);
+                }
                 queue.add_choice(self, side_action, side_idx);
             }
         }

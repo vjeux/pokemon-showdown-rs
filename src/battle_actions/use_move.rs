@@ -43,6 +43,8 @@ pub fn use_move(
     z_move: Option<&str>,
     max_move: Option<&str>,
 ) -> bool {
+    eprintln!("[USE_MOVE] ENTRY: move={}, pokemon=({}, {}), turn={}, PRNG={}",
+        move_id.as_str(), pokemon_pos.0, pokemon_pos.1, battle.turn, battle.prng.call_count);
     // pokemon.moveThisTurnResult = undefined;
     let (side_idx, poke_idx) = pokemon_pos;
     battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result = None;
@@ -51,6 +53,7 @@ pub fn use_move(
     let old_move_result = battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result;
 
     // const moveResult = this.useMoveInner(move, pokemon, options);
+    eprintln!("[USE_MOVE] About to call use_move_inner, PRNG={}", battle.prng.call_count);
     let move_result = use_move_inner(
         battle,
         move_id,
@@ -60,6 +63,7 @@ pub fn use_move(
         z_move,
         max_move,
     );
+    eprintln!("[USE_MOVE] use_move_inner returned {}, PRNG={}", move_result, battle.prng.call_count);
 
     // if (oldMoveResult === pokemon.moveThisTurnResult) pokemon.moveThisTurnResult = moveResult;
     if old_move_result == battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result {

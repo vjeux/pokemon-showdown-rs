@@ -10,6 +10,10 @@ impl BattleQueue {
     /// This is a borrow-checker helper - use when you already have a resolved Action
     /// and don't need the resolution logic from addChoice()
     pub fn add_choice_raw(&mut self, action: Action) {
+        if let Action::Move(ref move_action) = action {
+            eprintln!("[QUEUE add_choice_raw] Adding Move {} from ({}, {}), queue size before: {}",
+                move_action.move_id.as_str(), move_action.side_index, move_action.pokemon_index, self.list.len());
+        }
         self.list.push(action);
     }
 }

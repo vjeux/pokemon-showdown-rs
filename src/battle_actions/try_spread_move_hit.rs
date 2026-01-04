@@ -171,6 +171,17 @@ pub fn try_spread_move_hit(
     // This must run BEFORE accuracy check so that Protect can block the move
     let mut try_hit_results = vec![true; targets_after_invuln.len()];
     for (i, &target) in targets_after_invuln.iter().enumerate() {
+        // Debug: Check if target has any volatiles
+        {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => continue,
+            };
+            eprintln!("[TRY_SPREAD_MOVE_HIT] Target {:?} has {} volatiles: {:?}",
+                target, target_pokemon.volatiles.len(),
+                target_pokemon.volatiles.keys().map(|k| k.as_str()).collect::<Vec<_>>());
+        }
+
         // JavaScript: hitResult = this.battle.runEvent('TryHit', targets, pokemon, move);
         // Use run_event (not single_event) to check target's volatiles like kingsshield
         let hit_result = battle.run_event(
@@ -265,7 +276,10 @@ pub fn try_spread_move_hit(
     }
 
     // Step 4: Check accuracy
+    eprintln!("[TRY_SPREAD_MOVE_HIT] About to check accuracy for move={}, targets={:?}, PRNG before={}",
+        move_id.as_str(), targets_after_immunity, battle.prng.call_count);
     let hit_results = crate::battle_actions::hit_step_accuracy(battle, &targets_after_immunity, pokemon_pos, move_id);
+    eprintln!("[TRY_SPREAD_MOVE_HIT] Accuracy check results: {:?}, PRNG after={}", hit_results, battle.prng.call_count);
 
     // Filter out targets that failed accuracy check
     let mut remaining_targets = Vec::new();

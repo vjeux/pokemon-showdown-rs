@@ -355,6 +355,18 @@ pub static CONDITIONS: Lazy<HashMap<ID, ConditionDef>> = Lazy::new(|| {
     );
 
     map.insert(
+        ID::new("kingsshield"),
+        ConditionDef {
+            id: ID::new("kingsshield"),
+            name: "King's Shield".to_string(),
+            condition_type: ConditionType::Volatile,
+            duration: Some(1),
+            protection: true,
+            ..Default::default()
+        },
+    );
+
+    map.insert(
         ID::new("leechseed"),
         ConditionDef {
             id: ID::new("leechseed"),

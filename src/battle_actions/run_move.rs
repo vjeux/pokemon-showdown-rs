@@ -26,6 +26,8 @@ pub fn run_move(
     max_move: Option<String>,
     _original_target: Option<(usize, usize)>,
 ) {
+    eprintln!("[RUN_MOVE] ENTRY: move={}, pokemon=({}, {}), target_loc={}, turn={}",
+        move_id.as_str(), pokemon_pos.0, pokemon_pos.1, target_loc, battle.turn);
     // Gen 4 compatibility: save old active move
     // if (this.battle.gen <= 4) oldActiveMove = this.battle.activeMove;
     let old_active_move = if battle.gen <= 4 {

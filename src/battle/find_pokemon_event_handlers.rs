@@ -114,12 +114,15 @@ impl Battle {
             // JS: callback = this.getCallback(pokemon, volatile, callbackName);
             // JS: if (callback !== undefined || (getKey && volatileState[getKey])) {
             let has_callback = self.has_callback(volatile_id, callback_name);
+            eprintln!("[FIND_POKEMON_EVENT_HANDLERS] Checking volatile '{}' for callback '{}': has_callback={}",
+                volatile_id.as_str(), callback_name, has_callback);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks volatileState[getKey], which means checking if duration exists
                 key == "duration" && volatile_state.duration.is_some()
             });
 
             if has_callback || has_get_key {
+                eprintln!("[FIND_POKEMON_EVENT_HANDLERS] Adding handler for volatile '{}'", volatile_id.as_str());
                 handlers.push(EventListener {
                     effect_id: volatile_id.clone(),
                     effect_type: EffectType::Condition,

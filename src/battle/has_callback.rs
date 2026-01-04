@@ -824,13 +824,16 @@ impl Battle {
             event_id
         };
 
+        eprintln!("[CONDITION_HAS_CALLBACK] condition_id='{}', event_id='{}', normalized='{}'",
+            condition_id, event_id, normalized);
+
         // Special case: conditions don't have onAnySwitchIn
         if normalized == "AnySwitchIn" {
             return false;
         }
 
         // Check dispatchers to see which conditions have which callbacks
-        match normalized {
+        let result = match normalized {
             "BeforeMove" => matches!(
                 condition_id,
                 "par" | "flinch"  // Paralysis has onBeforeMove (25% chance to prevent move), Flinch has onBeforeMove (100% chance to prevent move)
@@ -875,7 +878,11 @@ impl Battle {
                 // This can be expanded as more condition callbacks are implemented
                 false
             }
-        }
+        };
+
+        eprintln!("[CONDITION_HAS_CALLBACK] Returning {} for condition='{}', normalized='{}'",
+            result, condition_id, normalized);
+        result
     }
 
     /// Check if a species has a callback for an event

@@ -51,7 +51,16 @@ pub fn on_hit(
     eprintln!("[KINGSSHIELD::ON_HIT] Called with pokemon_pos={:?}", pokemon_pos);
 
     let pokemon = pokemon_pos;
+
+    // King's Shield adds two volatiles:
+    // 1. "kingsshield" - the protect effect that blocks moves
+    // 2. "stall" - tracks protect move success rate
+    let kingsshield_id = ID::from("kingsshield");
     let stall_id = ID::from("stall");
+
+    // Add the kingsshield volatile (the actual protect effect)
+    eprintln!("[KINGSSHIELD::ON_HIT] Adding 'kingsshield' volatile");
+    Pokemon::add_volatile(battle, pokemon, kingsshield_id.clone(), None, None, None);
 
     // JavaScript: pokemon.addVolatile('stall');
     // In JS, if volatile exists, it calls onRestart event

@@ -713,6 +713,7 @@ pub fn use_move_inner(
     );
     if matches!(try_move_result, crate::event::EventResult::Boolean(false)) {
         // move.mindBlownRecoil = false (this would be set in move state if we tracked it)
+        eprintln!("[USE_MOVE_INNER] Early return: TryMove event returned false");
         return false;
     }
 
@@ -724,6 +725,7 @@ pub fn use_move_inner(
         Some(move_or_move_name),
     );
     if !run_try_move_result {
+        eprintln!("[USE_MOVE_INNER] Early return: runEvent TryMove returned false");
         return false;
     }
 
