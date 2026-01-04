@@ -358,8 +358,10 @@ pub enum ConditionType {
 /// Fields match JavaScript data fields (not callback implementations)
 pub struct ConditionData {
     /// Condition name
-    /// JavaScript: name: string
-    pub name: String,
+    /// JavaScript: name?: string
+    /// Note: Optional because embedded conditions in moves don't always have names
+    #[serde(default)]
+    pub name: Option<String>,
     /// Effect type
     /// JavaScript: effectType?: 'Status' | 'Weather' | 'Terrain' | 'SideCondition' | 'SlotCondition' | 'PseudoWeather'
     #[serde(rename = "effectType", default)]

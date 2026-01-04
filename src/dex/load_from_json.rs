@@ -19,21 +19,65 @@ impl Dex {
     /// Load data from JSON strings
     pub fn load_from_json(json_data: DexJsonData) -> Result<Self, serde_json::Error> {
         let mut species_raw: HashMap<String, SpeciesData> =
-            serde_json::from_str(json_data.species_json)?;
-        let moves_raw: HashMap<String, MoveData> = serde_json::from_str(json_data.moves_json)?;
+            serde_json::from_str(json_data.species_json)
+                .map_err(|e| {
+                    eprintln!("Failed to parse species.json: {}", e);
+                    e
+                })?;
+        let moves_raw: HashMap<String, MoveData> = serde_json::from_str(json_data.moves_json)
+            .map_err(|e| {
+                eprintln!("Failed to parse moves.json: {}", e);
+                e
+            })?;
         let abilities_raw: HashMap<String, AbilityData> =
-            serde_json::from_str(json_data.abilities_json)?;
-        let items_raw: HashMap<String, ItemData> = serde_json::from_str(json_data.items_json)?;
-        let conditions_raw: HashMap<String, ConditionData> = serde_json::from_str(json_data.conditions_json)?;
-        let types: HashMap<String, TypeData> = serde_json::from_str(json_data.types_json)?;
+            serde_json::from_str(json_data.abilities_json)
+                .map_err(|e| {
+                    eprintln!("Failed to parse abilities.json: {}", e);
+                    e
+                })?;
+        let items_raw: HashMap<String, ItemData> = serde_json::from_str(json_data.items_json)
+            .map_err(|e| {
+                eprintln!("Failed to parse items.json: {}", e);
+                e
+            })?;
+        let conditions_raw: HashMap<String, ConditionData> = serde_json::from_str(json_data.conditions_json)
+            .map_err(|e| {
+                eprintln!("Failed to parse conditions.json: {}", e);
+                e
+            })?;
+        let types: HashMap<String, TypeData> = serde_json::from_str(json_data.types_json)
+            .map_err(|e| {
+                eprintln!("Failed to parse typechart.json: {}", e);
+                e
+            })?;
         let natures_raw: HashMap<String, NatureData> =
-            serde_json::from_str(json_data.natures_json)?;
+            serde_json::from_str(json_data.natures_json)
+                .map_err(|e| {
+                    eprintln!("Failed to parse natures.json: {}", e);
+                    e
+                })?;
         let rulesets_raw: HashMap<String, RulesetData> =
-            serde_json::from_str(json_data.rulesets_json)?;
-        let aliases_raw: HashMap<String, String> = serde_json::from_str(json_data.aliases_json)?;
+            serde_json::from_str(json_data.rulesets_json)
+                .map_err(|e| {
+                    eprintln!("Failed to parse rulesets.json: {}", e);
+                    e
+                })?;
+        let aliases_raw: HashMap<String, String> = serde_json::from_str(json_data.aliases_json)
+            .map_err(|e| {
+                eprintln!("Failed to parse aliases.json: {}", e);
+                e
+            })?;
         let compound_word_names: Vec<String> =
-            serde_json::from_str(json_data.compound_word_names_json)?;
-        let formats: Vec<FormatData> = serde_json::from_str(json_data.formats_json)?;
+            serde_json::from_str(json_data.compound_word_names_json)
+                .map_err(|e| {
+                    eprintln!("Failed to parse compoundwordnames.json: {}", e);
+                    e
+                })?;
+        let formats: Vec<FormatData> = serde_json::from_str(json_data.formats_json)
+            .map_err(|e| {
+                eprintln!("Failed to parse formats.json: {}", e);
+                e
+            })?;
 
         // Load formats data and merge into species
         #[derive(Deserialize)]

@@ -69,7 +69,8 @@ impl Battle {
         // Check conditions - get both type and name in one lookup
         // JavaScript: condition.fullname format varies by effectType
         if let Some(condition) = self.dex.conditions().get_by_id(effect_id) {
-            return format!("{}: {}", condition.effect_type().to_lowercase(), condition.name);
+            let name = condition.name.as_deref().unwrap_or(effect_str);
+            return format!("{}: {}", condition.effect_type().to_lowercase(), name);
         }
 
         // Fallback - unknown effect
