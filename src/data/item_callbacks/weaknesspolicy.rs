@@ -18,18 +18,27 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     //     target.useItem();
     // }
 
-    // Check if move has fixed damage (move.damage or move.damageCallback)
-    let has_fixed_damage = match &battle.active_move {
-        Some(_active_move) => {
-            // move.damage is a fixed damage value, move.damageCallback means custom damage calculation
-            // For now, we don't have these fields, so we assume no fixed damage
-            // This is a simplification but maintains the logic structure
-            false
+    // Check if move has fixed damage (move.damage) or custom damage calculation (move.damageCallback)
+    let has_custom_damage = match &battle.active_move {
+        Some(active_move) => {
+            // Check if move has fixed damage value (like Dragon Rage's 40 damage)
+            if active_move.damage.is_some() {
+                true
+            } else {
+                // Check if move has damage callback (like Counter, Seismic Toss)
+                // These are the moves registered in move_callbacks/mod.rs::dispatch_damage_callback
+                matches!(active_move.id.as_str(),
+                    "comeuppance" | "counter" | "endeavor" | "finalgambit" |
+                    "guardianofalola" | "metalburst" | "mirrorcoat" | "naturesmadness" |
+                    "psywave" | "ruination" | "superfang"
+                )
+            }
         },
         None => return EventResult::Continue,
     };
 
-    if has_fixed_damage {
+    // If move has custom damage, don't trigger Weakness Policy
+    if has_custom_damage {
         return EventResult::Continue;
     }
 
