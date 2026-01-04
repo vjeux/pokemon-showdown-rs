@@ -296,7 +296,7 @@ In JavaScript, the kingsshield onTryHit blocks the move BEFORE the accuracy chec
 ## Notes
 
 - Seed 1: ✅ PASSING (41 iterations match exactly - fixed flinch condition and Max move minimum damage!)
-- Seed 2: ❌ FAILING (turns 1-2 match, diverges at turn 4 with PRNG issue)
+- Seed 2: ❌ FAILING (AI divergence - Rust uses King's Shield in turn 2, JavaScript uses different move, causing stall counter mismatch)
 
 
 ---
