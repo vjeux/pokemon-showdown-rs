@@ -54,7 +54,7 @@ pub fn try_primary_hit_event(
         // Special case: 0 = Battle.HIT_SUBSTITUTE (substitute blocked the hit)
         if let Some(value) = result {
             if value == Battle::HIT_SUBSTITUTE {
-                damage[i] = SpreadMoveDamageValue::Blocked;
+                damage[i] = SpreadMoveDamageValue::HitSubstitute;
             } else {
                 damage[i] = SpreadMoveDamageValue::Damage(value);
             }

@@ -860,7 +860,7 @@ pub struct ZMoveOption {
 pub enum DamageValue {
     Damage(i32),
     Failed,
-    Blocked, // HIT_SUBSTITUTE
+    HitSubstitute, // HIT_SUBSTITUTE (substitute took the hit)
 }
 
 /// Switch copy flag type
@@ -1028,7 +1028,7 @@ pub enum SpreadMoveDamageValue {
     Success,
     #[default]
     Undefined,
-    Blocked, // HIT_SUBSTITUTE - substitute took the hit
+    HitSubstitute, // JavaScript: HIT_SUBSTITUTE (0) - substitute took the hit
 }
 
 /// Result of spread move hit containing damage and target info

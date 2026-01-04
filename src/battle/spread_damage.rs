@@ -150,9 +150,9 @@ impl Battle {
                     ret_vals.push(*cur_damage);
                     continue;
                 }
-                SpreadMoveDamageValue::Blocked => {
+                SpreadMoveDamageValue::HitSubstitute => {
                     // HIT_SUBSTITUTE - substitute blocked the hit, pass through
-                    ret_vals.push(SpreadMoveDamageValue::Blocked);
+                    ret_vals.push(SpreadMoveDamageValue::HitSubstitute);
                     continue;
                 }
                 SpreadMoveDamageValue::Success => {

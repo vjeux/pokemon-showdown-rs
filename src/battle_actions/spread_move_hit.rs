@@ -233,7 +233,7 @@ pub fn spread_move_hit(
     for i in 0..targets_mut.len() {
         // Check for HIT_SUBSTITUTE - indicates substitute blocked the hit
         // JS: if (damage[i] === this.battle.HIT_SUBSTITUTE) { damage[i] = true; targets[i] = null; }
-        if matches!(damage[i], SpreadMoveDamageValue::Blocked) {
+        if matches!(damage[i], SpreadMoveDamageValue::HitSubstitute) {
             damage[i] = SpreadMoveDamageValue::Success; // Convert to "true"
             targets_mut[i] = SpreadMoveTarget::None; // Remove target from processing
         }
