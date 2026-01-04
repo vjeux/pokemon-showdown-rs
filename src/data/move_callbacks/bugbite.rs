@@ -122,12 +122,30 @@ pub fn on_hit(
                 }
 
                 // if (item.onEat) source.ateBerry = true;
-                // Check if item has onEat callback (simplified: just set ateBerry for berries)
-                let source_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
+                // Check if item is a berry with onEat callback
+                // Berries with onEat: false (past berries, EV berries) don't trigger ateBerry
+                let has_on_eat = {
+                    let item = battle.dex.items().get(item_id.as_str());
+                    if let Some(item_data) = item {
+                        // List of berries with onEat: false from data/items.ts
+                        let berries_without_on_eat = [
+                            "belueberry", "blukberry", "cornnberry", "durinberry", "grepaberry",
+                            "hondewberry", "kelpsyberry", "magostberry", "nanabberry", "nomelberry",
+                            "pamtreberry", "pinapberry", "pomegberry", "qualotberry", "rabutaberry",
+                            "razzberry", "spelonberry", "tamatoberry", "watmelberry", "wepearberry"
+                        ];
+                        item_data.is_berry && !berries_without_on_eat.contains(&item_id.as_str())
+                    } else {
+                        false
+                    }
                 };
-                source_pokemon.ate_berry = true;
+                if has_on_eat {
+                    let source_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+                    source_pokemon.ate_berry = true;
+                }
             }
         }
     }
