@@ -5,6 +5,8 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Arg;
+use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// durationCallback
@@ -34,19 +36,28 @@ pub fn duration_callback(
 }
 
 /// onStart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// partiallytrapped: {
-///     onStart(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onStart(pokemon, source) {
+///     this.add('-activate', pokemon, 'move: ' + this.effectState.sourceEffect, `[of] ${source}`);
+///     this.effectState.boundDivisor = source.hasItem('bindingband') ? 6 : 8;
 /// }
+/// ```
 pub fn on_start(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[PARTIALLYTRAPPED_ON_START] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.add('-activate', pokemon, 'move: ' + this.effectState.sourceEffect, `[of] ${source}`);
+    // TODO: Need access to effectState.sourceEffect and source to build the message
+    // For now, just log that trap started
+    eprintln!("[PARTIALLYTRAPPED_ON_START] Partially trapped started");
+
+    // this.effectState.boundDivisor = source.hasItem('bindingband') ? 6 : 8;
+    // TODO: Need to store boundDivisor in volatile's effectState data
+    // TODO: Check if source has binding band item
+    // Default divisor is 8, with binding band it's 6
+    eprintln!("[PARTIALLYTRAPPED_ON_START] TODO: Set boundDivisor based on source's binding band");
+
     EventResult::Continue
 }
 
@@ -126,43 +137,82 @@ pub fn on_residual(
     // Deal damage
     // JavaScript: this.damage(pokemon.baseMaxhp / this.effectState.boundDivisor);
     // In Rust: battle.damage(damage, target, source, effect, instafaint)
-    use crate::dex_data::ID;
     battle.damage(damage, Some(pokemon_pos), source_pos, Some(&ID::from("partiallytrapped")), false);
 
     EventResult::Continue
 }
 
 /// onEnd
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// partiallytrapped: {
-///     onEnd(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onEnd(pokemon) {
+///     this.add('-end', pokemon, this.effectState.sourceEffect, '[partiallytrapped]');
 /// }
+/// ```
 pub fn on_end(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[PARTIALLYTRAPPED_ON_END] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.add('-end', pokemon, this.effectState.sourceEffect, '[partiallytrapped]');
+    let pokemon_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    // TODO: Get sourceEffect from effectState to build proper message
+    // For now, just add a simple end message
+    battle.add("-end", &[Arg::String(pokemon_ident), Arg::Str("[partiallytrapped]")]);
+
     EventResult::Continue
 }
 
 /// onTrapPokemon
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// partiallytrapped: {
-///     onTrapPokemon(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onTrapPokemon(pokemon) {
+///     const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
+///     if (this.effectState.source?.isActive || gmaxEffect) pokemon.tryTrap();
 /// }
+/// ```
 pub fn on_trap_pokemon(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[PARTIALLYTRAPPED_ON_TRAP_POKEMON] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
+    // TODO: Check for G-Max effects when effectState data is available
+
+    // if (this.effectState.source?.isActive || gmaxEffect) pokemon.tryTrap();
+    let trap_id = ID::from("partiallytrapped");
+    let source_active = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        if let Some(volatile) = pokemon.volatiles.get(&trap_id) {
+            if let Some((source_side, source_poke)) = volatile.source {
+                if let Some(source) = battle.pokemon_at(source_side, source_poke) {
+                    // Check if source is active
+                    !source.fainted && source.hp > 0
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+    };
+
+    if source_active {
+        // pokemon.tryTrap();
+        crate::pokemon::Pokemon::try_trap(battle, pokemon_pos, false);
+    }
+
     EventResult::Continue
 }
 
