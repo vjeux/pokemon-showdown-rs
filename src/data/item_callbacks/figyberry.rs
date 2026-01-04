@@ -89,7 +89,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.base_maxhp / 3, pokemon.nature.clone())
+        (pokemon.base_maxhp / 3, pokemon.get_nature().to_string())
     };
 
     // Phase 2: Heal

@@ -367,8 +367,6 @@ pub struct Pokemon {
     /// Pokemon gender
     /// JavaScript: gender: GenderName
     pub gender: Gender,
-    // TODO: DELETE - Not in JavaScript Pokemon (belongs in PokemonSet only)
-    pub nature: String,
     /// Happiness/Friendship value
     /// JavaScript: happiness: number
     pub happiness: u8,

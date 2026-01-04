@@ -237,7 +237,6 @@ impl Pokemon {
             species_state: EffectState::new(ID::empty()),
             level: set.level,
             gender: set.gender,
-            nature: set.nature.clone(),
             happiness: set.happiness,
             pokeball: ID::new(&set.pokeball),
             dynamax_level: set.dynamax_level,
