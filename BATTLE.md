@@ -853,7 +853,66 @@ pub fn duration_callback(
 - Issue 12: partiallytrapped duration_callback missing PRNG call (FIXED) → Iterations 1-28 match
 
 **Next Steps:**
-- Investigate iteration #28 Kirlia HP difference (24 HP)
+- Investigate iteration #30 Kirlia HP difference (24 HP)
 - This might be another residual damage issue or status damage
 
 ---
+
+### Issue 13: partiallytrapped volatile not expiring when source faints (FIXED ✅)
+
+**Problem:**
+- After fixing duration_callback, iteration #28 still had HP divergence
+  - JavaScript: Kirlia at 113/195 HP
+  - Rust: Kirlia at 89/195 HP (24 HP less)
+- PRNG calls matched, but HP outcome differed
+- The 24 HP difference is exactly one partiallytrapped residual damage (195/8 = 24)
+
+**Investigation:**
+Traced the battle flow:
+- Turn 21: Whirlpool hits Kirlia, adds partiallytrapped with duration=5
+- Turn 21 Residual: duration 5→4, deals 24 damage (both JS and Rust match)
+- Turn 22: Swirlix faints during the turn
+- Turn 22 Residual:
+  - JavaScript: Kirlia takes NO trap damage (113 HP)
+  - Rust: Kirlia takes trap damage (89 HP)
+
+**Root Cause:**
+JavaScript partiallytrapped condition has source validation in onResidual:
+```javascript
+onResidual(pokemon) {
+    const source = this.effectState.source;
+    const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
+    if (source && (!source.isActive || source.hp <= 0 || !source.activeTurns) && !gmaxEffect) {
+        delete pokemon.volatiles['partiallytrapped'];
+        this.add('-end', pokemon, this.effectState.sourceEffect, '[partiallytrapped]', '[silent]');
+        return;  // Exit WITHOUT dealing damage!
+    }
+    this.damage(pokemon.baseMaxhp / this.effectState.boundDivisor);
+}
+```
+
+When the source Pokemon faints (hp <= 0) or is no longer active, the trap is REMOVED without dealing damage. This prevents "phantom" trap damage after the trapping Pokemon is gone.
+
+Exception: G-Max traps (gmaxcentiferno, gmaxsandblast) continue even after source faints.
+
+**Fix Applied:**
+Updated `src/data/condition_callbacks/partiallytrapped.rs` on_residual:
+1. Get source Pokemon position from volatile's EffectState
+2. Check if source Pokemon exists and has hp > 0
+3. If source is invalid (fainted or doesn't exist):
+   - Remove partiallytrapped volatile
+   - Return early WITHOUT dealing damage
+4. Otherwise, deal normal residual damage
+5. Pass source_pos to battle.damage() for proper attribution
+
+**Result:**
+- ✅ Iteration #28 HP now matches: Kirlia at 113/195 in both
+- ✅ Trap correctly removed when Swirlix faints in turn 22
+- ✅ **Iterations #1-#29 now match perfectly!** (up from #1-#28)
+- ❌ NEW DIVERGENCE at iteration #30 (turn 23):
+  - JavaScript: Kirlia at 113/195 HP (alive)
+  - Rust: Kirlia at 0/195 HP (faints), prng=106->113 (7 calls vs 3)
+
+**Commit:** a5191a53
+
+**Next Steps:**
