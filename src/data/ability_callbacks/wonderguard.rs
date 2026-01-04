@@ -60,19 +60,28 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     // Note: debug logging not implemented yet
 
     // if (target.runEffectiveness(move) <= 0 || !target.runImmunity(move))
-    // Note: We need to check type effectiveness and immunity
-    // For now, we'll use a simplified version checking if the move would be not very effective or immune
-    let not_super_effective = {
-        // Check type effectiveness - rely on the move hit data if available
-        if let Some(hit_data) = battle.get_move_hit_data(target_pos) {
-            hit_data.type_mod <= 0
-        } else {
-            // Can't determine effectiveness without hit data
-            false
-        }
-    };
+    use crate::dex_data::ID;
+    use crate::Pokemon;
 
-    if not_super_effective {
+    let move_id_obj = ID::from(move_id);
+
+    // Check type effectiveness: runEffectiveness returns typeMod (0 = neutral, >0 = super effective, <0 = not very effective)
+    let type_effectiveness = Pokemon::run_effectiveness(battle, target_pos, &move_id_obj);
+
+    // Check immunity: runImmunity returns true if NOT immune, false if immune
+    let move_type = {
+        let move_data = match battle.dex.moves().get(move_id) {
+            Some(m) => m.move_type.clone(),
+            None => return EventResult::Continue,
+        };
+        move_data
+    };
+    let is_immune = !Pokemon::run_immunity(battle, target_pos, &move_type, false);
+
+    // Wonder Guard blocks if not super effective OR if immune
+    let should_block = type_effectiveness <= 0 || is_immune;
+
+    if should_block {
         // if (move.smartTarget) { move.smartTarget = false; }
         let should_show_immune = if let Some(active_move) = &mut battle.active_move {
             if active_move.smart_target.unwrap_or(false) {
