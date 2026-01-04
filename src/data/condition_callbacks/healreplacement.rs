@@ -25,9 +25,7 @@ pub fn on_start(
 ) -> EventResult {
     // this.effectState.sourceEffect = sourceEffect;
     // For slot conditions, the source effect should be stored in the slot condition's effect state
-    // Note: In the current simplified implementation, we don't have full access to source/sourceEffect
-    // The slot condition was added in use_move_inner.rs with add_slot_condition which doesn't pass sourceEffect
-    // However, we can access the active_move which triggered this
+    // Get the sourceEffect from active_move which triggered this
     if let Some(ref active_move) = battle.active_move {
         let source_effect = active_move.id.clone();
 
