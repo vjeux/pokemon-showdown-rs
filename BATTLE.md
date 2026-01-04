@@ -114,7 +114,16 @@ map.insert(
 - ✅ `has_callback("kingsshield", "onTryHit")` now returns true
 - ✅ Condition's `on_try_hit` handler is now called
 - ✅ King's Shield now blocks moves
+- ❌ NEW ISSUE: Hardcoded kingsshield in conditions.rs (should use moves.json embedded condition)
 - ❌ NEW ISSUE: King's Shield blocks moves BEFORE accuracy check (see Issue 5)
+
+**UPDATE:** Reverted hardcoded kingsshield from conditions.rs. The real issue is that King's Shield has an embedded condition in moves.json:
+```json
+"volatileStatus": "kingsshield",
+"condition": { "duration": 1, "onTryHitPriority": 3 }
+```
+
+Need to implement proper support for embedded move conditions instead of hardcoding in conditions.rs.
 
 ---
 
