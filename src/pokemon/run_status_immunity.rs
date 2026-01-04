@@ -63,23 +63,14 @@ impl Pokemon {
         // JS:     if (message) this.battle.add('-immune', this);
         // JS:     return false;
         // JS: }
-        // Note: battle.dex.getImmunity() is primarily for move type immunity (checks damage_taken)
-        // For status immunity, we use hardcoded type checks which match JavaScript behavior:
-        // - Fire types immune to burn, Electric to paralysis, Poison/Steel to poison, Ice to freeze
+        // Get Pokemon's types and check immunity via dex.getImmunity()
         let has_natural_immunity = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return false,
             };
-            match status {
-                "brn" => pokemon.has_type(battle, "Fire"),
-                "par" => pokemon.has_type(battle, "Electric"),
-                "psn" | "tox" => pokemon.has_type(battle, "Poison") || pokemon.has_type(battle, "Steel"),
-                "frz" => pokemon.has_type(battle, "Ice"),
-                "slp" => false, // No type immunity to sleep
-                "trapped" => false, // Trapped is a volatile, not a status - no type immunity
-                _ => false,
-            }
+            let pokemon_types = pokemon.get_types(battle, false); // JS: target.getTypes() (excludeAdded defaults to false)
+            !battle.dex.get_immunity(status, &pokemon_types)
         };
 
         if has_natural_immunity {

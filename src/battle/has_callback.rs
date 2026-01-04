@@ -22,14 +22,16 @@ impl Battle {
             return self.item_has_callback(effect_str, event_id);
         }
 
+        // Check conditions (status, volatile, weather, terrain) BEFORE moves
+        // This is important because some IDs like "sandstorm" exist as both moves and conditions
+        // The condition version should take priority for callback lookups
+        if crate::data::conditions::get_condition(effect_id).is_some() {
+            return self.condition_has_callback(effect_str, event_id);
+        }
+
         // Check moves
         if self.dex.moves().get(effect_str).is_some() {
             return self.move_has_callback(effect_str, event_id);
-        }
-
-        // Check conditions (status, volatile, weather, terrain)
-        if crate::data::conditions::get_condition(effect_id).is_some() {
-            return self.condition_has_callback(effect_str, event_id);
         }
 
         // Check species - species can have callbacks like onSwitchIn for form changes
@@ -857,6 +859,16 @@ impl Battle {
                 "banefulbunker" | "burningbulwark" | "craftyshield" | "kingsshield" |
                 "magiccoat" | "matblock" | "maxguard" | "obstruct" | "protect" |
                 "quickguard" | "silktrap" | "spikyshield" | "wideguard"
+            ),
+            "FieldResidual" => matches!(
+                condition_id,
+                // Weather conditions (from condition_callbacks.rs)
+                "sandstorm"
+            ),
+            "Weather" => matches!(
+                condition_id,
+                // Weather conditions that deal residual damage
+                "sandstorm"
             ),
             _ => {
                 // For other events, conservatively return false

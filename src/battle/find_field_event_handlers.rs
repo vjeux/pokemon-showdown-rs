@@ -93,14 +93,18 @@ impl Battle {
         // JS: callback = this.getCallback(field, weather, callbackName);
         // JS: if (callback !== undefined || (getKey && this.field.weatherState[getKey])) {
         let weather_handler = if !self.field.weather.is_empty() {
+            eprintln!("[FIND_FIELD_EVENT T{}] Checking weather '{}' for callback '{}'", self.turn, self.field.weather.as_str(), callback_name);
             let has_callback = self.has_callback(&self.field.weather, callback_name);
+            eprintln!("[FIND_FIELD_EVENT T{}] has_callback={}", self.turn, has_callback);
             let has_get_key = if let Some(key) = get_key {
                 // JavaScript checks weatherState[getKey], which in Rust means checking if the duration field exists
                 key == "duration" && self.field.weather_state.duration.is_some()
             } else {
                 false
             };
+            eprintln!("[FIND_FIELD_EVENT T{}] has_get_key={}", self.turn, has_get_key);
             if has_callback || has_get_key {
+                eprintln!("[FIND_FIELD_EVENT T{}] Adding weather handler for '{}'", self.turn, self.field.weather.as_str());
                 Some((self.field.weather.clone(), self.field.weather_state.clone()))
             } else {
                 None

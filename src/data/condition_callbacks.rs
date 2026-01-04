@@ -256,12 +256,31 @@ pub fn dispatch_on_field_end(
 }
 
 /// Dispatch onFieldResidual callbacks
+/// JavaScript source (conditions.ts):
+/// sandstorm: {
+///     onFieldResidual() {
+///         this.add('-weather', 'Sandstorm', '[upkeep]');
+///         if (this.field.isWeather('sandstorm')) this.eachEvent('Weather');
+///     },
+/// }
 pub fn dispatch_on_field_residual(
-    _battle: &mut Battle,
-    _condition_id: &str,
+    battle: &mut Battle,
+    condition_id: &str,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match condition_id {
+        "sandstorm" => {
+            // JS: this.add('-weather', 'Sandstorm', '[upkeep]');
+            battle.add("-weather", &["Sandstorm".into(), "[upkeep]".into()]);
+
+            // JS: if (this.field.isWeather('sandstorm')) this.eachEvent('Weather');
+            if battle.field.weather == ID::from("sandstorm") {
+                battle.each_event("Weather", None, None);
+            }
+            EventResult::Continue
+        }
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onFieldResidualOrder callbacks
@@ -711,12 +730,36 @@ pub fn dispatch_on_type_priority(
 }
 
 /// Dispatch onWeather callbacks
+/// JavaScript source (conditions.ts):
+/// sandstorm: {
+///     onWeather(target) {
+///         this.damage(target.baseMaxhp / 16);
+///     },
+/// }
 pub fn dispatch_on_weather(
-    _battle: &mut Battle,
-    _condition_id: &str,
-    _pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    EventResult::Continue
+    match condition_id {
+        "sandstorm" => {
+            // JS: this.damage(target.baseMaxhp / 16);
+            // Get max HP
+            let base_maxhp = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                pokemon.base_maxhp
+            };
+
+            // Deal 1/16 max HP damage
+            let damage = base_maxhp / 16;
+            battle.damage(damage, Some(pokemon_pos), None, None, false);
+            EventResult::Continue
+        }
+        _ => EventResult::Continue,
+    }
 }
 
 /// Dispatch onWeatherModifyDamage callbacks

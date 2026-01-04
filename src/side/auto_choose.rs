@@ -74,8 +74,8 @@ impl Side {
 
                             // NOTE: We need to reconstruct the Battle to get request data
                             // This is a workaround because auto_choose only has &mut self
-                            // We'll use move_slots directly but WITHOUT checking is_z
-                            // This matches JavaScript which iterates request.moves (no Z-moves there)
+                            // We iterate move_slots to match JavaScript which iterates request.moves
+                            // Z-moves that are in the moveset ARE included, matching JavaScript
 
                             let mut found_move = false;
                             for move_slot in &pokemon.move_slots {
@@ -87,12 +87,10 @@ impl Side {
                                 if move_slot.pp == 0 {
                                     continue;
                                 }
-                                // IMPORTANT: Do NOT select Z-moves during auto_choose
-                                // JavaScript's request.moves does not include Z-moves
-                                // Z-moves are in request.canZMove and only used with event='zmove'
-                                if move_slot.is_z {
-                                    continue;
-                                }
+                                // NOTE: Z-moves that are in the Pokemon's base moveset (like "tectonicrage")
+                                // SHOULD be selectable during auto_choose, matching JavaScript behavior.
+                                // The canZMove field is for converting regular moves to Z-moves,
+                                // not for Z-moves already in the moveset!
 
                                 let move_id = move_slot.id.clone();
                                 let _ = self.choose_move(move_id, None, false, None, None, None);
