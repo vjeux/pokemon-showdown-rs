@@ -18,7 +18,7 @@ impl Battle {
         // This is critical because some IDs like "stall" exist as both abilities AND conditions
         // When checking a volatile, we want to find the CONDITION, not the ability
         // In JavaScript, the volatile already has its callback attached, so there's no ambiguity
-        let condition_check = crate::data::conditions::get_condition(effect_id);
+        let condition_check = self.dex.conditions.get(effect_id);
         eprintln!("[HAS_CALLBACK] Checking conditions: found={}", condition_check.is_some());
         if condition_check.is_some() {
             eprintln!("[HAS_CALLBACK] Found as condition, calling condition_has_callback");

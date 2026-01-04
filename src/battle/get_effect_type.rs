@@ -34,39 +34,18 @@ impl Battle {
             return "Move";
         }
         // Check if it's a condition
-        if let Some(_condition) = crate::data::conditions::get_condition(effect_id) {
+        if let Some(condition) = self.dex.conditions.get(effect_id) {
             // Conditions can be Status, Volatile, Weather, Terrain, etc.
-            if crate::data::conditions::is_status_condition(effect_id) {
-                return "Status";
-            }
-            if crate::data::conditions::is_volatile_condition(effect_id) {
-                return "Volatile";
-            }
-            // Check for weather/terrain by ID
-            let id_str = effect_id.as_str();
-            if [
-                "sunnyday",
-                "raindance",
-                "sandstorm",
-                "hail",
-                "snow",
-                "harsh sunshine",
-                "heavy rain",
-                "strong winds",
-            ]
-            .contains(&id_str)
-            {
-                return "Weather";
-            }
-            if [
-                "electricterrain",
-                "grassyterrain",
-                "mistyterrain",
-                "psychicterrain",
-            ]
-            .contains(&id_str)
-            {
-                return "Terrain";
+            // JavaScript checks effectType field: if (effect.effectType === 'Status')
+            use crate::dex::ConditionType;
+            match condition.condition_type() {
+                ConditionType::Status => return "Status",
+                ConditionType::Volatile => return "Volatile",
+                ConditionType::Weather => return "Weather",
+                ConditionType::Terrain => return "Terrain",
+                ConditionType::SideCondition => return "Condition",
+                ConditionType::SlotCondition => return "Condition",
+                ConditionType::PseudoWeather => return "Condition",
             }
         }
         "Unknown"
@@ -104,7 +83,7 @@ impl Battle {
             }
             "Status" | "Volatile" | "Weather" | "Terrain" => {
                 // For conditions, get name from condition data if available
-                crate::data::conditions::get_condition(effect_id)
+                self.dex.conditions.get(effect_id)
                     .map(|c| c.name.clone())
                     .unwrap_or_else(|| effect_id.as_str().to_string())
             }

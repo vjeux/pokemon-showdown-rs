@@ -74,7 +74,7 @@ impl Battle {
         }
 
         // Handle condition events (status, volatile, weather, terrain)
-        if let Some(_condition) = crate::data::conditions::get_condition(effect_id) {
+        if let Some(_condition) = self.dex.conditions.get(effect_id) {
             return self.handle_condition_event(event_id, effect_str, target);
         }
 
