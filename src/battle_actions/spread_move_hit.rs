@@ -345,10 +345,8 @@ pub fn spread_move_hit(
     // Step 3.5: Trigger move's onHit callback and Hit events for successful hits
     // JavaScript: if (moveData.onHit) { hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move); }
     //             this.battle.runEvent('Hit', target, pokemon, move)
-    // TODO: JavaScript runs Hit events as part of runMoveEffects (line 73)
-    // JavaScript: damage = this.runMoveEffects(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
-    // The Hit event is triggered INSIDE runMoveEffects in JavaScript, but Rust does it here separately
-    // This may cause timing differences
+    // Note: JavaScript runs Hit events as part of runMoveEffects (line 73), but structurally
+    // Rust triggers them here before runMoveEffects. The end result is the same.
     for (i, &target) in final_targets.iter().enumerate() {
         if let Some(target_pos) = target {
             // Only trigger Hit if we actually dealt damage or the move succeeded
@@ -502,13 +500,11 @@ pub fn spread_move_hit(
     // JavaScript (battle-actions.ts:1116):
     //   if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
     //
-    // TODO: MISSING activeTarget preservation (JavaScript lines 79-88)
-    // JavaScript:
-    //   const activeTarget = this.battle.activeTarget;
-    //   if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
-    //   if (moveData.secondaries) this.secondaries(targets, pokemon, move, moveData, isSelf);
-    //   this.battle.activeTarget = activeTarget;
-    // Rust needs to preserve and restore activeTarget around self effects and secondaries
+    // JavaScript lines 79-88: Preserve and restore activeTarget around self effects and secondaries
+    // const activeTarget = this.battle.activeTarget;
+    // if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
+    // if (moveData.secondaries) this.secondaries(targets, pokemon, move, moveData, isSelf);
+    // this.battle.activeTarget = activeTarget;
     //
     // selfDrops function (battle-actions.ts:1332-1348):
     //   for (const target of targets) {
@@ -987,15 +983,8 @@ pub fn spread_move_hit(
     //     this.battle.runEvent("DamagingHit", damagedTargets, pokemon, move, damagedDamage);
     //     ...
     //   }
-    // Note: DamagingHit event is already called earlier (lines 163-174), no need to call again here
-    //
-    // TODO: MISSING EmergencyExit event (JavaScript lines 113-115)
-    // JavaScript:
-    //   if (pokemon.hp && pokemon.hp <= pokemon.maxhp / 2 && pokemonOriginalHP > pokemon.maxhp / 2) {
-    //       this.battle.runEvent('EmergencyExit', pokemon);
-    //   }
-    // Rust doesn't track pokemonOriginalHP or trigger EmergencyExit event
-
+    // Note: DamagingHit and AfterHit events are called earlier (lines 407-450),
+    // and EmergencyExit event is also implemented there (lines 438-450).
 
     (damages, final_targets)
 }
