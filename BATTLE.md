@@ -1213,7 +1213,7 @@ Rust makes 4 extra PRNG calls and Kirlia takes lethal damage. The extra calls ap
 ---
 
 
-### Issue 16: Iteration #30 - beforeTurn/Residual added when they shouldn't be (IN PROGRESS 🔍)
+### Issue 16: Iteration #30 - beforeTurn/Residual added when they shouldn't be (INVESTIGATION IN PROGRESS 🔍)
 
 **Problem:**
 - Iterations #1-#28 pass perfectly
@@ -1221,31 +1221,47 @@ Rust makes 4 extra PRNG calls and Kirlia takes lethal damage. The extra calls ap
   - JavaScript: turn=24, prng=106->109 (3 calls), Kirlia survives (113/195 HP)
   - Rust: turn=23, prng=106->113 (7 calls), Kirlia faints (0/195 HP)
 
-**Investigation Findings:**
+**KEY FINDING - Turn Increment Behavior:**
 
-1. **Volatiles Match**: Both JavaScript and Rust show Kirlia with `Volatiles: none` at iteration #30 start (partiallytrapped has expired)
+Comparing iterations #27-#30:
 
-2. **Move Execution Differs**:
-   - Rust executes: beforeTurn + wakeupslap + outrage + Residual
-   - JavaScript executes: outrage only
-   - Seedot's outrage deals 135 damage, killing Kirlia (113 HP) in Rust
-   - JavaScript's Kirlia survives because wakeupslap doesn't execute
+**JavaScript:**
+- #27: "Making choices for turn 21" → "Turn 22 completed" (end_turn: 21→22)
+- #28: "Making choices for turn 22" → "Turn 22 completed" (NO end_turn - early return with requestState=Switch)
+- #29: "Making choices for turn 22" → "Turn 23 completed" (end_turn: 22→23)
+- #30: "Making choices for turn 23" → "Turn 24 completed" (end_turn: 23→24)
 
-3. **PRNG Call Breakdown**:
-   - Rust 7 calls: beforeTurn (~1) + wakeupslap (2) + outrage (2) + Residual (~2)
-   - JavaScript 3 calls: outrage only (2-3)
+**Rust:**
+- #27: "Making choices for turn 21" → "Turn 22 completed" (end_turn: 21→22)
+- #28: "Making choices for turn 22" → "Turn 22 completed" (NO end_turn - early return with requestState=Switch)
+- #29: "Making choices for turn 22" → "Turn 23 completed" (end_turn: 22→23)
+- #30: "Making choices for turn 23" → "Turn 23 completed" (NO end_turn - early return with requestState=Switch)
 
-**Root Cause Hypothesis:**
+The difference in #30:
+- JavaScript calls end_turn() → turn 23→24
+- Rust returns early → turn stays 23
 
-After forced switch (iteration #29), Rust sets `mid_turn=false` (following JavaScript source code line 35), causing iteration #30 to add beforeTurn/Residual. But JavaScript's ACTUAL behavior suggests `midTurn` stays `true`, preventing these actions from being added.
+**Root Cause Chain:**
+1. Rust iteration #30 starts with mid_turn=FALSE (set by iteration #29)
+2. Adds beforeTurn/Residual to queue
+3. Processes actions, Kirlia faints (due to extra beforeTurn/Residual events)
+4. requestState=Switch → early return WITHOUT end_turn()
+5. Turn stays 23
 
-**Possible Explanations:**
+JavaScript iteration #30:
+1. Should start with mid_turn=FALSE (iteration #29 called end_turn)
+2. Should add beforeTurn/Residual
+3. BUT: Only makes 3 PRNG calls, suggesting beforeTurn/Residual are NOT added!
 
-1. JavaScript source code in comments may not match actual implementation  
-2. There's an additional condition controlling beforeTurn/Residual insertion
-3. Forced switch handling differs in subtle ways not captured by the source comments
+**Current Mystery:**
+JavaScript iteration #29 calls end_turn() (turn 22→23 proves this), which should set midTurn=false. But iteration #30 only makes 3 PRNG calls, suggesting beforeTurn/Residual are NOT added (which requires midTurn=true).
 
-**Status:** Needs JavaScript runtime behavior analysis 🔬
+**Hypotheses:**
+1. JavaScript commit_choices() sets midTurn=true before calling turnLoop()?
+2. There's another condition preventing beforeTurn/Residual from being added?
+3. JavaScript has different logic for when to add beforeTurn/Residual after forced switches?
+
+**Status:** Investigating why JavaScript iteration #30 doesn't add beforeTurn/Residual despite midTurn being false 🔬
 
 **Progress:** 28/47 iterations matching (59.5%)
 
