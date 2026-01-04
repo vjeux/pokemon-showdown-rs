@@ -476,14 +476,43 @@ impl PRNG {
     // 	}
     //
     pub fn random(&mut self, from: Option<i32>, to: Option<i32>) -> f64 {
+        // Log parameters before calling next_raw() for TRACE_PRNG
+        if let Ok(trace_spec) = std::env::var("TRACE_PRNG") {
+            // Check if we should trace the next call
+            let next_call = self.call_count + 1;
+            let should_trace = trace_spec.split(',').any(|part| {
+                if part.contains('-') {
+                    let parts: Vec<&str> = part.split('-').collect();
+                    if parts.len() == 2 {
+                        if let (Ok(start), Ok(end)) = (parts[0].parse::<usize>(), parts[1].parse::<usize>()) {
+                            return next_call >= start && next_call <= end;
+                        }
+                    }
+                    false
+                } else {
+                    part.parse::<usize>().ok() == Some(next_call)
+                }
+            });
+
+            if should_trace {
+                let from_val = match from {
+                    Some(f) => format!("{}", f),
+                    None => "None".to_string(),
+                };
+                let to_val = match to {
+                    Some(t) => format!("{}", t),
+                    None => "None".to_string(),
+                };
+                eprintln!("  [random(from={}, to={})]", from_val, to_val);
+            }
+        }
+
         let result = self.next_raw();
 
         let value = match (from, to) {
             (None, None) => (result as f64) / (2f64.powi(32)),
             (Some(n), None) => {
-                let val = ((result as f64) * (n as f64) / (2f64.powi(32))).floor();
-                eprintln!("[PRNG.random] raw_value={}, n={}, result={}", result, n, val);
-                val
+                ((result as f64) * (n as f64) / (2f64.powi(32))).floor()
             }
             (Some(m), Some(n)) => {
                 ((result as f64) * ((n - m) as f64) / (2f64.powi(32))).floor() + (m as f64)

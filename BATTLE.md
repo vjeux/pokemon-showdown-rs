@@ -297,3 +297,50 @@ In JavaScript, the kingsshield onTryHit blocks the move BEFORE the accuracy chec
 
 - Seed 1: ✅ PASSING (41 iterations match exactly - still passing after weather fixes!)
 - Seed 2: ❌ FAILING (turns 1-2 match, diverges at turn 4 with PRNG issue)
+
+
+---
+
+## Session 2026-01-03: Post-Refactor Fixes
+
+### Issue 1: ConditionData.name must be optional (FIXED ✅)
+
+**Problem:**
+- After refactoring conditions to use dex pattern, Rust battle panicked
+- Error: "missing field `name` at line 371" in moves.json
+- Couldnt deserialize move data
+
+**Root Cause:**
+- JavaScript allows embedded conditions in moves without a `name` field
+- Example: Move "Acupressure" has `condition: { duration: 2, counterMax: 729 }`
+- Rusts ConditionData required `name: String`, causing deserialization to fail
+- Embedded conditions in moves dont have names because the move itself provides the identifier
+
+**Fix:**
+1. Changed `ConditionData.name` from `String` to `Option<String>`
+2. Updated `get_effect_fullname()` to use `.unwrap_or(effect_str)` for missing names
+3. Added detailed error messages to `load_from_json()` to identify which JSON file fails
+
+**Commit:** 97baa728
+
+**Status:** ✅ Fixed - Rust battle now runs successfully
+
+**Results:**
+- Seed 1 now runs but diverges at turn 26 (PRNG: JS=113->117 vs Rust=113->119)
+- Rust makes 2 extra PRNG calls
+- Need to investigate whats causing the extra calls
+
+---
+
+### Current Issue: PRNG Divergence at Turn 26 (IN PROGRESS 🔍)
+
+**Observation:**
+- JavaScript: turn 26, PRNG 113->117 (4 calls)
+- Rust: turn 26, PRNG 113->119 (6 calls)
+- Rust makes 2 extra PRNG calls at this turn
+
+**Next Steps:**
+1. Check turn 26 logs to see what moves are being executed
+2. Identify which code path is calling PRNG extra times
+3. Compare JavaScript and Rust execution at that turn
+
