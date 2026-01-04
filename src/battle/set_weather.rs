@@ -70,17 +70,36 @@ impl Battle {
         &mut self,
         weather_id: ID,
         source_pos: Option<(usize, usize)>,
-        _source_effect: Option<ID>,
+        source_effect: Option<ID>,
     ) -> Option<bool> {
         // Get current weather for comparison
         let current_weather = self.field.weather.clone();
 
         // If weather is already active, check if we should skip
+        // JavaScript: if (this.weather === status.id) {...}
         if current_weather == weather_id {
-            // JavaScript: if (this.battle.gen > 2 || status.id === 'sandstorm') return false;
-            // For Gen 9 (current gen), always return false if weather is already active
-            // TODO: Add generation check and ability check for older gens
-            return Some(false);
+            // JavaScript: if (sourceEffect && sourceEffect.effectType === 'Ability') {
+            //     if (this.battle.gen > 5 || this.weatherState.duration === 0) {
+            //         return false;
+            //     }
+            // } else if (this.battle.gen > 2 || status.id === 'sandstorm') {
+            //     return false;
+            // }
+            if let Some(ref eff) = source_effect {
+                let effect_type = self.get_effect_type(eff);
+                if effect_type == "Ability" {
+                    // Ability weather - check gen or permanent duration
+                    if self.gen > 5 || self.field.weather_state.duration == Some(0) {
+                        return Some(false);
+                    }
+                } else if self.gen > 2 || weather_id.as_str() == "sandstorm" {
+                    // Non-ability weather - return false for gen 3+ or sandstorm
+                    return Some(false);
+                }
+            } else if self.gen > 2 || weather_id.as_str() == "sandstorm" {
+                // No source effect - return false for gen 3+ or sandstorm
+                return Some(false);
+            }
         }
 
         // Run 'SetWeather' event - can block the weather change
@@ -94,8 +113,74 @@ impl Battle {
 
             // If event returned false, weather change is blocked
             if !result {
-                // TODO: Add failure messages
-                // JavaScript adds '-fail' or '-ability' messages here
+                // JavaScript: if (result === false) {
+                //     if ((sourceEffect as Move)?.weather) {
+                //         this.battle.add('-fail', source, sourceEffect, '[from] ' + this.weather);
+                //     } else if (sourceEffect && sourceEffect.effectType === 'Ability') {
+                //         this.battle.add('-ability', source, sourceEffect, '[from] ' + this.weather, '[fail]');
+                //     }
+                // }
+
+                if let Some(ref eff) = source_effect {
+                    let effect_type = self.get_effect_type(eff);
+
+                    // Get source pokemon identifier for message
+                    let source_ident = if let Some(pos) = source_pos {
+                        if let Some(pokemon) = self.pokemon_at(pos.0, pos.1) {
+                            pokemon.get_slot()
+                        } else {
+                            String::new()
+                        }
+                    } else {
+                        String::new()
+                    };
+
+                    // Get source effect name
+                    let source_effect_name = if let Some(move_data) = self.dex.moves().get_by_id(eff) {
+                        move_data.name.clone()
+                    } else if let Some(ability_data) = self.dex.abilities().get_by_id(eff) {
+                        ability_data.name.clone()
+                    } else {
+                        eff.to_string()
+                    };
+
+                    // Check if sourceEffect is a move with weather property
+                    let is_weather_move = if let Some(move_data) = self.dex.moves().get_by_id(eff) {
+                        move_data.weather.is_some()
+                    } else {
+                        false
+                    };
+
+                    let current_weather_name = if !current_weather.is_empty() {
+                        if let Some(cond) = self.dex.conditions().get_by_id(&current_weather) {
+                            cond.name.clone().unwrap_or_else(|| current_weather.to_string())
+                        } else {
+                            current_weather.to_string()
+                        }
+                    } else {
+                        String::new()
+                    };
+
+                    if is_weather_move {
+                        // Move with weather property: add('-fail', source, sourceEffect, '[from] ' + this.weather)
+                        let from_str = format!("[from] {}", current_weather_name);
+                        self.add("-fail", &[
+                            source_ident.into(),
+                            source_effect_name.into(),
+                            from_str.into(),
+                        ]);
+                    } else if effect_type == "Ability" {
+                        // Ability: add('-ability', source, sourceEffect, '[from] ' + this.weather, '[fail]')
+                        let from_str = format!("[from] {}", current_weather_name);
+                        self.add("-ability", &[
+                            source_ident.into(),
+                            source_effect_name.into(),
+                            from_str.into(),
+                            "[fail]".into(),
+                        ]);
+                    }
+                }
+
                 return None;
             }
         }
@@ -115,9 +200,33 @@ impl Battle {
 
         // Set duration from condition data
         // JavaScript: if (status.duration) this.weatherState.duration = status.duration;
-        // TODO: Get duration from dex condition data and call durationCallback
-        // For now, hardcode duration=5 for all weather (standard Gen 9 duration)
-        self.field.weather_state.duration = Some(5);
+        // JavaScript: if (status.durationCallback) {
+        //     if (!source) throw new Error(`setting weather without a source`);
+        //     this.weatherState.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
+        // }
+        let weather_duration = {
+            if let Some(condition) = self.dex.conditions().get_by_id(&weather_id) {
+                condition.duration
+            } else {
+                Some(5) // Default to 5 turns if condition not found
+            }
+        };
+
+        self.field.weather_state.duration = weather_duration;
+
+        // Call durationCallback if it exists
+        if self.has_callback(&weather_id, "DurationCallback") {
+            let result = self.call_duration_callback(
+                &weather_id,
+                source_pos,
+                source_pos,
+                source_effect.as_ref().map(|id| id.as_str()),
+            );
+
+            if let EventResult::Number(duration) = result {
+                self.field.weather_state.duration = Some(duration);
+            }
+        }
 
         // Fire 'FieldStart' event on the weather
         // If it returns false, revert to previous weather
