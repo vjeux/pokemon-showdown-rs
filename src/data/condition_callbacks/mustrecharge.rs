@@ -5,39 +5,70 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Arg;
+use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// onBeforeMove
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// mustrecharge: {
-///     onBeforeMove(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onBeforeMovePriority: 11,
+/// onBeforeMove(pokemon) {
+///     this.add('cant', pokemon, 'recharge');
+///     pokemon.removeVolatile('mustrecharge');
+///     pokemon.removeVolatile('truant');
+///     return null;
 /// }
+/// ```
 pub fn on_before_move(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[MUSTRECHARGE_ON_BEFORE_MOVE] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
+    // this.add('cant', pokemon, 'recharge');
+    let pokemon_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add("cant", &[Arg::String(pokemon_ident), Arg::Str("recharge")]);
+
+    // pokemon.removeVolatile('mustrecharge');
+    let mustrecharge_id = ID::from("mustrecharge");
+    crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &mustrecharge_id);
+
+    // pokemon.removeVolatile('truant');
+    let truant_id = ID::from("truant");
+    crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &truant_id);
+
+    // return null;
+    EventResult::Null
 }
 
 /// onStart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// mustrecharge: {
-///     onStart(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onStart(pokemon) {
+///     this.add('-mustrecharge', pokemon);
 /// }
+/// ```
 pub fn on_start(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[MUSTRECHARGE_ON_START] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.add('-mustrecharge', pokemon);
+    let pokemon_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add("-mustrecharge", &[Arg::String(pokemon_ident)]);
+
     EventResult::Continue
 }
 
