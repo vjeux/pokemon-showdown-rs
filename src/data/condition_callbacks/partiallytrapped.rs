@@ -8,6 +8,23 @@ use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
+/// durationCallback
+/// TODO: Implement 1-to-1 from JavaScript
+/// JavaScript source (data/conditions.ts):
+/// partiallytrapped: {
+///     durationCallback(...) {
+///         // Extract implementation from conditions.ts
+///     }
+/// }
+pub fn duration_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Called for {:?}", pokemon_pos);
+    // TODO: Implement callback
+    EventResult::Continue
+}
+
 /// onStart
 /// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):

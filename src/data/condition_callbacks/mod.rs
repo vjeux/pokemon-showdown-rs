@@ -48,6 +48,23 @@ pub mod twoturnmove;
 // They return EventResult directly, with EventResult::Continue for no match.
 // =========================================================================
 
+/// Dispatch durationCallback callbacks
+pub fn dispatch_duration_callback(
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    match condition_id {
+        "hail" => hail::duration_callback(battle, pokemon_pos),
+        "partiallytrapped" => partiallytrapped::duration_callback(battle, pokemon_pos),
+        "raindance" => raindance::duration_callback(battle, pokemon_pos),
+        "sandstorm" => sandstorm::duration_callback(battle, pokemon_pos),
+        "snowscape" => snowscape::duration_callback(battle, pokemon_pos),
+        "sunnyday" => sunnyday::duration_callback(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
+}
+
 /// Dispatch onAfterMove callbacks
 pub fn dispatch_on_after_move(
     battle: &mut Battle,

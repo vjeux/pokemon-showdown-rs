@@ -43,15 +43,7 @@ function extractCallbacks(conditionId, conditionData) {
         // Skip if not own property
         if (!conditionData.hasOwnProperty(key)) continue;
 
-        // Skip non-callback properties
-        if (!key.startsWith('on')) continue;
-
-        // Skip priority/order/suborder metadata (they end with Priority, Order, or SubOrder)
-        if (key.endsWith('Priority') || key.endsWith('Order') || key.endsWith('SubOrder')) {
-            continue;
-        }
-
-        // Check if it's a function
+        // Check if it's a function - that's the only requirement for a callback
         if (typeof conditionData[key] === 'function') {
             callbacks.push(key);
         }

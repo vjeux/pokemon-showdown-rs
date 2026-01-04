@@ -561,19 +561,24 @@ impl Battle {
             }
         }
 
-        // Normalize event name to "onEventName" format for lookup
-        let normalized = if event_id.starts_with("on") {
-            event_id.to_string()
-        } else {
-            format!("on{}", event_id)
-        };
-
         // Look up the item in dex data and check its extra field for callback boolean
         if let Some(item_data) = self.dex.items().get(item_id) {
-            // Check if the callback key exists and is true
-            item_data.extra.get(&normalized)
+            // Check the exact event_id first, then try with "on" prefix for backward compatibility
+            let has_callback = item_data.extra.get(event_id)
                 .and_then(|v| v.as_bool())
-                .unwrap_or(false)
+                .unwrap_or(false);
+
+            if has_callback {
+                true
+            } else if !event_id.starts_with("on") {
+                // Try with "on" prefix for backward compatibility
+                let with_on = format!("on{}", event_id);
+                item_data.extra.get(&with_on)
+                    .and_then(|v| v.as_bool())
+                    .unwrap_or(false)
+            } else {
+                false
+            }
         } else {
             // If not found in dex, return false
             false
@@ -747,35 +752,40 @@ impl Battle {
     /// This prevents false positives where we'd add handlers for callbacks
     /// that don't exist, which would cause incorrect speed_sort shuffling.
     pub fn condition_has_callback(&self, condition_id: &str, event_id: &str) -> bool {
-        // Normalize event name to "onEventName" format for lookup
-        let normalized = if event_id.starts_with("on") {
-            event_id.to_string()
-        } else {
-            format!("on{}", event_id)
-        };
-
-        eprintln!("[CONDITION_HAS_CALLBACK] condition_id='{}', event_id='{}', normalized='{}'",
-            condition_id, event_id, normalized);
+        eprintln!("[CONDITION_HAS_CALLBACK] condition_id='{}', event_id='{}'",
+            condition_id, event_id);
 
         // Special case: conditions don't have onAnySwitchIn
-        if normalized == "onAnySwitchIn" {
+        if event_id == "onAnySwitchIn" || event_id == "AnySwitchIn" {
             return false;
         }
 
         // Look up the condition in dex data and check its extra field for callback boolean
         let id = ID::from(condition_id);
         let result = if let Some(condition_data) = self.dex.conditions.get(&id) {
-            // Check if the callback key exists and is true
-            condition_data.extra.get(&normalized)
+            // Check the exact event_id first, then try with "on" prefix for backward compatibility
+            let has_callback = condition_data.extra.get(event_id)
                 .and_then(|v| v.as_bool())
-                .unwrap_or(false)
+                .unwrap_or(false);
+
+            if has_callback {
+                true
+            } else if !event_id.starts_with("on") {
+                // Try with "on" prefix for backward compatibility
+                let with_on = format!("on{}", event_id);
+                condition_data.extra.get(&with_on)
+                    .and_then(|v| v.as_bool())
+                    .unwrap_or(false)
+            } else {
+                false
+            }
         } else {
             // If not found in dex, return false
             false
         };
 
-        eprintln!("[CONDITION_HAS_CALLBACK] Returning {} for condition='{}', normalized='{}'",
-            result, condition_id, normalized);
+        eprintln!("[CONDITION_HAS_CALLBACK] Returning {} for condition='{}', event_id='{}'",
+            result, condition_id, event_id);
         result
     }
 

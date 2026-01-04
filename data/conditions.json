@@ -77,7 +77,8 @@
     "onStart": true,
     "onResidual": true,
     "onEnd": true,
-    "onTrapPokemon": true
+    "onTrapPokemon": true,
+    "durationCallback": true
   },
   "lockedmove": {
     "name": "lockedmove",
@@ -146,7 +147,8 @@
     "onWeatherModifyDamage": true,
     "onFieldStart": true,
     "onFieldResidual": true,
-    "onFieldEnd": true
+    "onFieldEnd": true,
+    "durationCallback": true
   },
   "primordialsea": {
     "name": "PrimordialSea",
@@ -169,7 +171,8 @@
     "onFieldStart": true,
     "onImmunity": true,
     "onFieldResidual": true,
-    "onFieldEnd": true
+    "onFieldEnd": true,
+    "durationCallback": true
   },
   "desolateland": {
     "name": "DesolateLand",
@@ -194,7 +197,8 @@
     "onFieldStart": true,
     "onFieldResidual": true,
     "onWeather": true,
-    "onFieldEnd": true
+    "onFieldEnd": true,
+    "durationCallback": true
   },
   "hail": {
     "name": "Hail",
@@ -204,7 +208,8 @@
     "onFieldStart": true,
     "onFieldResidual": true,
     "onWeather": true,
-    "onFieldEnd": true
+    "onFieldEnd": true,
+    "durationCallback": true
   },
   "snowscape": {
     "name": "Snowscape",
@@ -215,7 +220,8 @@
     "onModifyDef": true,
     "onFieldStart": true,
     "onFieldResidual": true,
-    "onFieldEnd": true
+    "onFieldEnd": true,
+    "durationCallback": true
   },
   "deltastream": {
     "name": "DeltaStream",
