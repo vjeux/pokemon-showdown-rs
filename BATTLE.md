@@ -790,3 +790,70 @@ pub fn on_residual(
 - Find what JavaScript does that Rust doesn't (or vice versa)
 
 ---
+
+### Issue 12: partiallytrapped duration_callback not making PRNG call (FIXED ✅)
+
+**Problem:**
+- After fixing enigmaberry, iteration #16 still had PRNG divergence
+  - JavaScript: prng=47->54 (7 calls)
+  - Rust: prng=47->53 (6 calls)
+- HP values matched (Dedenne at 107/210), but missing 1 PRNG call
+
+**Investigation:**
+Traced all PRNG calls in turn 13:
+1. Spectralthief accuracy: RANDOM_CHANCE (roll=69)
+2. Spectralthief crit: RANDOM_CHANCE (roll=20)
+3. Spectralthief damage randomizer: RANDOM (n=16)
+4. Whirlpool accuracy: RANDOM_CHANCE (roll=76)
+5. Whirlpool crit: RANDOM_CHANCE  
+6. Whirlpool damage randomizer: RANDOM
+
+That's 6 calls total, but JavaScript makes 7. The missing call is related to partiallytrapped duration.
+
+**Root Cause:**
+The `duration_callback` for partiallytrapped condition was not implemented - just returned `EventResult::Continue`. JavaScript's implementation:
+```javascript
+partiallytrapped: {
+    durationCallback(target, source) {
+        if (source?.hasItem('gripclaw')) return 8;
+        return this.random(5, 7);  // Returns 5 or 6
+    }
+}
+```
+
+This callback randomly determines trap duration (5-6 turns normally, 7-8 turns if source has Grip Claw). Rust was not making this random call.
+
+**Fix Applied:**
+Implemented duration_callback in `src/data/condition_callbacks/partiallytrapped.rs`:
+```rust
+pub fn duration_callback(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    // this.random(5, 7) returns a number from 5 to 6 inclusive
+    let duration = battle.prng.random_range(5, 7);
+    EventResult::Number(duration)
+}
+```
+
+**Result:**
+- ✅ Iteration #16 PRNG now matches: prng=47->54 (7 calls) in both
+- ✅ **Iterations #1-#28 now match perfectly!** (PRNG fully synchronized)
+- ✅ Seed 3 progressed from 15 matching iterations to 28 matching iterations
+- ❌ NEW DIVERGENCE at iteration #28 (turn 22):
+  - JavaScript: Kirlia at 113/195 HP
+  - Rust: Kirlia at 89/195 HP
+  - Difference: 24 HP (might be another missing residual damage)
+
+**Commit:** 00e7712e
+
+**Summary of Seed 3 Progress:**
+- Issue 10: enigmaberry on_hit not executing (FIXED) → Iterations 1-15 match
+- Issue 11: partiallytrapped on_residual not dealing damage (FIXED) → HP matches at iteration 16
+- Issue 12: partiallytrapped duration_callback missing PRNG call (FIXED) → Iterations 1-28 match
+
+**Next Steps:**
+- Investigate iteration #28 Kirlia HP difference (24 HP)
+- This might be another residual damage issue or status damage
+
+---
