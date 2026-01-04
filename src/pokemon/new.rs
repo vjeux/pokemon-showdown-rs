@@ -214,13 +214,13 @@ impl Pokemon {
         let item_id = ID::new(&set.item);
 
         // Convert moves to move slots
-        // Note: is_z will be set to false initially, should be updated with Dex access
+        // PP will be calculated later by Dex based on move data
         let move_slots: Vec<MoveSlot> = set
             .moves
             .iter()
             .map(|m| {
                 let id = ID::new(m);
-                MoveSlot::new(id, m.clone(), 5, 5) // Default PP and is_z=false, will be set by Dex
+                MoveSlot::new(id, m.clone(), 5, 5) // Default PP, will be set by Dex
             })
             .collect();
 
