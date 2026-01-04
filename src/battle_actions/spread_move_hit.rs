@@ -436,16 +436,16 @@ pub fn spread_move_hit(
 
         // Check if moveData has onAfterHit
         // JS: if (moveData.onAfterHit) { for (const t of damagedTargets) { this.battle.singleEvent('AfterHit', moveData, {}, t, pokemon, move); } }
-        // Note: Callback-based events like onAfterHit are handled through the event system
-        // The callbacks will fire automatically when the AfterHit event is dispatched
-        for target_pos in &damaged_targets {
-            battle.single_event(
-                "AfterHit",
-                move_data_id,
-                Some(*target_pos),
-                Some(source_pos),
-                Some(move_id),
-            );
+        if battle.has_callback(move_data_id, "onAfterHit") {
+            for target_pos in &damaged_targets {
+                battle.single_event(
+                    "AfterHit",
+                    move_data_id,
+                    Some(*target_pos),
+                    Some(source_pos),
+                    Some(move_id),
+                );
+            }
         }
 
         // Emergency Exit check
