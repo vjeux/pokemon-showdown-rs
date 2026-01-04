@@ -5,39 +5,48 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Arg;
 use crate::event::EventResult;
 
 /// onTrapPokemon
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// trapped: {
-///     onTrapPokemon(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onTrapPokemon(pokemon) {
+///     pokemon.tryTrap();
 /// }
+/// ```
 pub fn on_trap_pokemon(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[TRAPPED_ON_TRAP_POKEMON] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // pokemon.tryTrap();
+    crate::pokemon::Pokemon::try_trap(battle, pokemon_pos, false);
+
     EventResult::Continue
 }
 
 /// onStart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// trapped: {
-///     onStart(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onStart(target) {
+///     this.add('-activate', target, 'trapped');
 /// }
+/// ```
 pub fn on_start(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[TRAPPED_ON_START] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.add('-activate', target, 'trapped');
+    let target_ident = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.get_slot()
+    };
+
+    battle.add("-activate", &[Arg::String(target_ident), Arg::Str("trapped")]);
+
     EventResult::Continue
 }
 
