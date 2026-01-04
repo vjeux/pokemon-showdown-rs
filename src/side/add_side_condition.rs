@@ -54,7 +54,7 @@ impl Side {
         battle: &mut Battle,
         status_id: ID,
         source_pos: Option<(usize, usize)>,
-        _source_effect: Option<ID>,
+        source_effect: Option<ID>,
     ) -> bool {
         // JavaScript: if (!source && this.battle.event?.target) source = this.battle.event.target;
         // JavaScript: if (source === 'debug') source = this.active[0];
@@ -93,15 +93,36 @@ impl Side {
         // JavaScript: if (status.durationCallback) { ... }
         // TODO: Implement durationCallback support when callback system is ready
 
+        // Store side index before borrowing battle mutably
+        let side_idx = self.n;
+
         // Store effect state before firing events
         self.side_conditions.insert(status_id.clone(), effect_state.clone());
 
         // JavaScript: if (!this.battle.singleEvent('SideStart', status, ...)) { delete; return false; }
-        // TODO: Implement singleEvent call when event system is ready
-        // For now, we assume SideStart succeeds
+        let side_start_result = battle.single_event_side(
+            "SideStart",
+            &status_id,
+            side_idx,
+            source_pos,
+            source_effect.as_ref(),
+        );
+
+        // Check if SideStart event failed
+        use crate::event::EventResult;
+        if matches!(side_start_result, EventResult::Stop | EventResult::Null) {
+            // delete this.sideConditions[status.id];
+            self.side_conditions.remove(&status_id);
+            return false;
+        }
 
         // JavaScript: this.battle.runEvent('SideConditionStart', this, source, status);
-        // TODO: Implement runEvent call when event system is ready
+        battle.run_event_side(
+            "SideConditionStart",
+            side_idx,
+            source_pos,
+            Some(&status_id),
+        );
 
         true
     }
