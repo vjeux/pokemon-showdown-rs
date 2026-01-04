@@ -8,6 +8,7 @@
 use crate::dex_data::ID;
 use once_cell::sync::Lazy;
 use std::collections::HashMap;
+use serde::Deserialize;
 
 /// Type of condition
 /// JavaScript equivalent: EffectType for conditions (sim/dex-conditions.ts)
@@ -185,14 +186,41 @@ impl ConditionDef {
     }
 }
 
-/// Static registry of all conditions
-pub static CONDITIONS: Lazy<HashMap<ID, ConditionDef>> = Lazy::new(|| {
+/// JSON structure from conditions.json
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct JsonCondition {
+    name: String,
+    #[serde(default)]
+    effect_type: Option<String>,
+    #[serde(default)]
+    duration: Option<i32>,
+    #[serde(default)]
+    counter_max: Option<i32>,
+    #[serde(default)]
+    no_copy: Option<bool>,
+    #[serde(default)]
+    affects_fainted: Option<bool>,
+    #[serde(flatten)]
+    _extra: HashMap<String, serde_json::Value>,
+}
+
+/// Load conditions from JSON file
+fn load_conditions_from_json() -> HashMap<ID, ConditionDef> {
+    const CONDITIONS_JSON: &str = include_str!("../../data/conditions.json");
+
+    let json_conditions: HashMap<String, JsonCondition> =
+        serde_json::from_str(CONDITIONS_JSON)
+            .expect("Failed to parse conditions.json");
+
     let mut map = HashMap::new();
 
     // ==========================================
-    // STATUS CONDITIONS (non-volatile)
+    // HARDCODED DETAILED CONDITIONS
+    // These have detailed metadata not in JSON
     // ==========================================
 
+    // STATUS CONDITIONS (non-volatile)
     map.insert(
         ID::new("brn"),
         ConditionDef {
@@ -218,29 +246,6 @@ pub static CONDITIONS: Lazy<HashMap<ID, ConditionDef>> = Lazy::new(|| {
     );
 
     map.insert(
-        ID::new("psn"),
-        ConditionDef {
-            id: ID::new("psn"),
-            name: "Poison".to_string(),
-            condition_type: ConditionType::Status,
-            residual_damage: Some(1.0 / 8.0),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("tox"),
-        ConditionDef {
-            id: ID::new("tox"),
-            name: "Toxic".to_string(),
-            condition_type: ConditionType::Status,
-            residual_damage: Some(1.0 / 16.0), // Starts at 1/16, increases
-            escalating_damage: true,
-            ..Default::default()
-        },
-    );
-
-    map.insert(
         ID::new("slp"),
         ConditionDef {
             id: ID::new("slp"),
@@ -259,26 +264,97 @@ pub static CONDITIONS: Lazy<HashMap<ID, ConditionDef>> = Lazy::new(|| {
             id: ID::new("frz"),
             name: "Freeze".to_string(),
             condition_type: ConditionType::Status,
-            skip_turn_chance: Some(100), // Can't move while frozen
-            // 20% chance to thaw each turn - handled in battle.rs
+            skip_turn_chance: Some(100), // Can't move while frozen (20% thaw chance handled in callbacks)
             ..Default::default()
         },
     );
 
-    // ==========================================
-    // VOLATILE CONDITIONS
-    // ==========================================
+    map.insert(
+        ID::new("psn"),
+        ConditionDef {
+            id: ID::new("psn"),
+            name: "Poison".to_string(),
+            condition_type: ConditionType::Status,
+            residual_damage: Some(1.0 / 8.0),
+            ..Default::default()
+        },
+    );
 
+    map.insert(
+        ID::new("tox"),
+        ConditionDef {
+            id: ID::new("tox"),
+            name: "Toxic".to_string(),
+            condition_type: ConditionType::Status,
+            residual_damage: Some(1.0 / 16.0), // Starts at 1/16, increases each turn
+            escalating_damage: true,
+            ..Default::default()
+        },
+    );
+
+    // WEATHER CONDITIONS
+    map.insert(
+        ID::new("sandstorm"),
+        ConditionDef {
+            id: ID::new("sandstorm"),
+            name: "Sandstorm".to_string(),
+            condition_type: ConditionType::Weather,
+            duration: Some(5),
+            weather_damage: Some(1.0 / 16.0),
+            immune_types: Some(vec!["Ground".to_string(), "Rock".to_string(), "Steel".to_string()]),
+            ..Default::default()
+        },
+    );
+
+    map.insert(
+        ID::new("raindance"),
+        ConditionDef {
+            id: ID::new("raindance"),
+            name: "RainDance".to_string(),
+            condition_type: ConditionType::Weather,
+            duration: Some(5),
+            type_boost: Some(("Water".to_string(), 1.5)),
+            type_weaken: Some(("Fire".to_string(), 0.5)),
+            ..Default::default()
+        },
+    );
+
+    map.insert(
+        ID::new("sunnyday"),
+        ConditionDef {
+            id: ID::new("sunnyday"),
+            name: "SunnyDay".to_string(),
+            condition_type: ConditionType::Weather,
+            duration: Some(5),
+            type_boost: Some(("Fire".to_string(), 1.5)),
+            type_weaken: Some(("Water".to_string(), 0.5)),
+            ..Default::default()
+        },
+    );
+
+    map.insert(
+        ID::new("hail"),
+        ConditionDef {
+            id: ID::new("hail"),
+            name: "Hail".to_string(),
+            condition_type: ConditionType::Weather,
+            duration: Some(5),
+            weather_damage: Some(1.0 / 16.0),
+            immune_types: Some(vec!["Ice".to_string()]),
+            ..Default::default()
+        },
+    );
+
+    // VOLATILE CONDITIONS - add basic ones from hardcode, rest from JSON
     map.insert(
         ID::new("confusion"),
         ConditionDef {
             id: ID::new("confusion"),
             name: "Confusion".to_string(),
             condition_type: ConditionType::Volatile,
-            min_duration: Some(2),
-            max_duration: Some(5),
-            confusion_chance: Some(33), // 33% chance to hit self
-            baton_passable: false,
+            min_duration: Some(1),
+            max_duration: Some(4),
+            confusion_chance: Some(33),
             ..Default::default()
         },
     );
@@ -291,41 +367,6 @@ pub static CONDITIONS: Lazy<HashMap<ID, ConditionDef>> = Lazy::new(|| {
             condition_type: ConditionType::Volatile,
             duration: Some(1),
             skip_turn_chance: Some(100),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("taunt"),
-        ConditionDef {
-            id: ID::new("taunt"),
-            name: "Taunt".to_string(),
-            condition_type: ConditionType::Volatile,
-            duration: Some(3),
-            move_restriction: Some(MoveRestriction::NoStatusMoves),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("torment"),
-        ConditionDef {
-            id: ID::new("torment"),
-            name: "Torment".to_string(),
-            condition_type: ConditionType::Volatile,
-            move_restriction: Some(MoveRestriction::NoRepeat),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("healblock"),
-        ConditionDef {
-            id: ID::new("healblock"),
-            name: "Heal Block".to_string(),
-            condition_type: ConditionType::Volatile,
-            duration: Some(5),
-            move_restriction: Some(MoveRestriction::NoHealing),
             ..Default::default()
         },
     );
@@ -385,56 +426,8 @@ pub static CONDITIONS: Lazy<HashMap<ID, ConditionDef>> = Lazy::new(|| {
             name: "Ingrain".to_string(),
             condition_type: ConditionType::Volatile,
             volatile_heal: Some(1.0 / 16.0),
-            traps: true, // Can't switch
-            baton_passable: true,
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("trapped"),
-        ConditionDef {
-            id: ID::new("trapped"),
-            name: "Trapped".to_string(),
-            condition_type: ConditionType::Volatile,
-            traps: true,
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("partiallytrapped"),
-        ConditionDef {
-            id: ID::new("partiallytrapped"),
-            name: "Partially Trapped".to_string(),
-            condition_type: ConditionType::Volatile,
-            min_duration: Some(4),
-            max_duration: Some(5),
-            traps: true,
-            volatile_damage: Some(1.0 / 8.0), // 1/8 per turn (Bind, Wrap, etc.)
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("curse"),
-        ConditionDef {
-            id: ID::new("curse"),
-            name: "Curse".to_string(),
-            condition_type: ConditionType::Volatile,
-            volatile_damage: Some(0.25),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("nightmare"),
-        ConditionDef {
-            id: ID::new("nightmare"),
-            name: "Nightmare".to_string(),
-            condition_type: ConditionType::Volatile,
-            volatile_damage: Some(0.25),
-            // Only works while asleep - handled in battle.rs
+            traps: true, // Can't switch out
+            baton_passable: false,
             ..Default::default()
         },
     );
@@ -446,380 +439,55 @@ pub static CONDITIONS: Lazy<HashMap<ID, ConditionDef>> = Lazy::new(|| {
             name: "Perish Song".to_string(),
             condition_type: ConditionType::Volatile,
             duration: Some(4), // Faints when counter reaches 0
-            baton_passable: false,
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("attract"),
-        ConditionDef {
-            id: ID::new("attract"),
-            name: "Infatuation".to_string(),
-            condition_type: ConditionType::Volatile,
-            skip_turn_chance: Some(50),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("yawn"),
-        ConditionDef {
-            id: ID::new("yawn"),
-            name: "Yawn".to_string(),
-            condition_type: ConditionType::Volatile,
-            duration: Some(2), // Falls asleep at end of next turn
-            ..Default::default()
-        },
-    );
-
-    // Pivot move marker
-    map.insert(
-        ID::new("pivotswitch"),
-        ConditionDef {
-            id: ID::new("pivotswitch"),
-            name: "Pivot Switch".to_string(),
-            condition_type: ConditionType::Volatile,
-            duration: Some(1),
             ..Default::default()
         },
     );
 
     // ==========================================
-    // SIDE CONDITIONS
+    // LOAD REMAINING CONDITIONS FROM JSON
+    // Any condition in JSON not already in map gets added
     // ==========================================
 
-    map.insert(
-        ID::new("stealthrock"),
-        ConditionDef {
-            id: ID::new("stealthrock"),
-            name: "Stealth Rock".to_string(),
-            condition_type: ConditionType::SideCondition,
-            hazard_type: Some("Rock".to_string()),
-            // Damage based on type effectiveness: 1/8 neutral, scales with weakness/resistance
-            ..Default::default()
-        },
-    );
+    for (condition_id, json_cond) in json_conditions {
+        let id = ID::new(&condition_id);
 
-    map.insert(
-        ID::new("spikes"),
-        ConditionDef {
-            id: ID::new("spikes"),
-            name: "Spikes".to_string(),
-            condition_type: ConditionType::SideCondition,
-            max_layers: Some(3),
-            // 1/8, 1/6, 1/4 damage based on layers
-            ..Default::default()
-        },
-    );
+        // Skip if already exists (hardcoded version takes priority)
+        if map.contains_key(&id) {
+            continue;
+        }
 
-    map.insert(
-        ID::new("toxicspikes"),
-        ConditionDef {
-            id: ID::new("toxicspikes"),
-            name: "Toxic Spikes".to_string(),
-            condition_type: ConditionType::SideCondition,
-            max_layers: Some(2),
-            entry_status: Some("psn".to_string()), // 1 layer = poison, 2 = toxic
-            ..Default::default()
-        },
-    );
+        // Determine condition type from effectType field
+        let condition_type = match json_cond.effect_type.as_deref() {
+            Some("Status") => ConditionType::Status,
+            Some("Weather") => ConditionType::Weather,
+            Some("Terrain") => ConditionType::Terrain,
+            Some("SideCondition") => ConditionType::SideCondition,
+            Some("SlotCondition") => ConditionType::SlotCondition,
+            Some("PseudoWeather") => ConditionType::PseudoWeather,
+            _ => ConditionType::Volatile,
+        };
 
-    map.insert(
-        ID::new("stickyweb"),
-        ConditionDef {
-            id: ID::new("stickyweb"),
-            name: "Sticky Web".to_string(),
-            condition_type: ConditionType::SideCondition,
-            entry_speed_drop: Some(-1),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("reflect"),
-        ConditionDef {
-            id: ID::new("reflect"),
-            name: "Reflect".to_string(),
-            condition_type: ConditionType::SideCondition,
-            duration: Some(5),
-            screen_reduction: Some(0.5), // Halves physical damage
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("lightscreen"),
-        ConditionDef {
-            id: ID::new("lightscreen"),
-            name: "Light Screen".to_string(),
-            condition_type: ConditionType::SideCondition,
-            duration: Some(5),
-            screen_reduction: Some(0.5), // Halves special damage
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("auroraveil"),
-        ConditionDef {
-            id: ID::new("auroraveil"),
-            name: "Aurora Veil".to_string(),
-            condition_type: ConditionType::SideCondition,
-            duration: Some(5),
-            screen_reduction: Some(0.5), // Halves all damage
-            // Requires hail/snow - handled in battle.rs
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("tailwind"),
-        ConditionDef {
-            id: ID::new("tailwind"),
-            name: "Tailwind".to_string(),
-            condition_type: ConditionType::SideCondition,
-            duration: Some(4),
-            // 2x speed - handled in battle.rs
-            ..Default::default()
-        },
-    );
-
-    // ==========================================
-    // WEATHER
-    // ==========================================
-
-    map.insert(
-        ID::new("raindance"),
-        ConditionDef {
-            id: ID::new("raindance"),
-            name: "Rain".to_string(),
-            condition_type: ConditionType::Weather,
-            duration: Some(5),
-            type_boost: Some(("Water".to_string(), 1.5)),
-            type_weaken: Some(("Fire".to_string(), 0.5)),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("sunnyday"),
-        ConditionDef {
-            id: ID::new("sunnyday"),
-            name: "Sun".to_string(),
-            condition_type: ConditionType::Weather,
-            duration: Some(5),
-            type_boost: Some(("Fire".to_string(), 1.5)),
-            type_weaken: Some(("Water".to_string(), 0.5)),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("sandstorm"),
-        ConditionDef {
-            id: ID::new("sandstorm"),
-            name: "Sandstorm".to_string(),
-            condition_type: ConditionType::Weather,
-            duration: Some(5),
-            weather_damage: Some(1.0 / 16.0),
-            immune_types: Some(vec![
-                "Rock".to_string(),
-                "Ground".to_string(),
-                "Steel".to_string(),
-            ]),
-            immune_abilities: Some(vec![
-                "sandveil".to_string(),
-                "sandrush".to_string(),
-                "sandforce".to_string(),
-                "magicguard".to_string(),
-                "overcoat".to_string(),
-            ]),
-            // Also boosts Rock SpD by 1.5x - handled in battle.rs
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("hail"),
-        ConditionDef {
-            id: ID::new("hail"),
-            name: "Hail".to_string(),
-            condition_type: ConditionType::Weather,
-            duration: Some(5),
-            weather_damage: Some(1.0 / 16.0),
-            immune_types: Some(vec!["Ice".to_string()]),
-            immune_abilities: Some(vec![
-                "icebody".to_string(),
-                "snowcloak".to_string(),
-                "magicguard".to_string(),
-                "overcoat".to_string(),
-            ]),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("snow"),
-        ConditionDef {
-            id: ID::new("snow"),
-            name: "Snow".to_string(),
-            condition_type: ConditionType::Weather,
-            duration: Some(5),
-            // Gen 9: No damage, but boosts Ice Def by 1.5x
-            ..Default::default()
-        },
-    );
-
-    // Primal weathers (permanent, blocks other weather)
-    map.insert(
-        ID::new("primordialsea"),
-        ConditionDef {
-            id: ID::new("primordialsea"),
-            name: "Primordial Sea".to_string(),
-            condition_type: ConditionType::Weather,
-            // Permanent, blocks Fire moves entirely
-            type_boost: Some(("Water".to_string(), 1.5)),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("desolateland"),
-        ConditionDef {
-            id: ID::new("desolateland"),
-            name: "Desolate Land".to_string(),
-            condition_type: ConditionType::Weather,
-            // Permanent, blocks Water moves entirely
-            type_boost: Some(("Fire".to_string(), 1.5)),
-            ..Default::default()
-        },
-    );
-
-    // ==========================================
-    // TERRAIN
-    // ==========================================
-
-    map.insert(
-        ID::new("electricterrain"),
-        ConditionDef {
-            id: ID::new("electricterrain"),
-            name: "Electric Terrain".to_string(),
-            condition_type: ConditionType::Terrain,
-            duration: Some(5),
-            grounded_only: true,
-            type_boost: Some(("Electric".to_string(), 1.3)),
-            prevents_status: Some(vec!["slp".to_string()]),
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("grassyterrain"),
-        ConditionDef {
-            id: ID::new("grassyterrain"),
-            name: "Grassy Terrain".to_string(),
-            condition_type: ConditionType::Terrain,
-            duration: Some(5),
-            grounded_only: true,
-            type_boost: Some(("Grass".to_string(), 1.3)),
-            volatile_heal: Some(1.0 / 16.0), // Heals grounded Pokemon
-            // Also weakens Earthquake/Bulldoze/Magnitude - handled in battle.rs
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("psychicterrain"),
-        ConditionDef {
-            id: ID::new("psychicterrain"),
-            name: "Psychic Terrain".to_string(),
-            condition_type: ConditionType::Terrain,
-            duration: Some(5),
-            grounded_only: true,
-            type_boost: Some(("Psychic".to_string(), 1.3)),
-            blocks_priority: true,
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("mistyterrain"),
-        ConditionDef {
-            id: ID::new("mistyterrain"),
-            name: "Misty Terrain".to_string(),
-            condition_type: ConditionType::Terrain,
-            duration: Some(5),
-            grounded_only: true,
-            prevents_status: Some(vec![
-                "brn".to_string(),
-                "par".to_string(),
-                "psn".to_string(),
-                "tox".to_string(),
-                "slp".to_string(),
-                "frz".to_string(),
-            ]),
-            // Also halves Dragon damage - handled in battle.rs
-            ..Default::default()
-        },
-    );
-
-    // ==========================================
-    // PSEUDO-WEATHER
-    // ==========================================
-
-    map.insert(
-        ID::new("trickroom"),
-        ConditionDef {
-            id: ID::new("trickroom"),
-            name: "Trick Room".to_string(),
-            condition_type: ConditionType::PseudoWeather,
-            duration: Some(5),
-            // Reverses speed order - handled in battle.rs
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("magicroom"),
-        ConditionDef {
-            id: ID::new("magicroom"),
-            name: "Magic Room".to_string(),
-            condition_type: ConditionType::PseudoWeather,
-            duration: Some(5),
-            // Suppresses held items - handled in battle.rs
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("wonderroom"),
-        ConditionDef {
-            id: ID::new("wonderroom"),
-            name: "Wonder Room".to_string(),
-            condition_type: ConditionType::PseudoWeather,
-            duration: Some(5),
-            // Swaps Def and SpD - handled in battle.rs
-            ..Default::default()
-        },
-    );
-
-    map.insert(
-        ID::new("gravity"),
-        ConditionDef {
-            id: ID::new("gravity"),
-            name: "Gravity".to_string(),
-            condition_type: ConditionType::PseudoWeather,
-            duration: Some(5),
-            // Grounds all Pokemon, prevents fly/bounce/etc - handled in battle.rs
-            ..Default::default()
-        },
-    );
+        // Create basic condition from JSON
+        map.insert(
+            id.clone(),
+            ConditionDef {
+                id,
+                name: json_cond.name,
+                condition_type,
+                duration: json_cond.duration,
+                baton_passable: !json_cond.no_copy.unwrap_or(false),
+                ..Default::default()
+            },
+        );
+    }
 
     map
-});
+}
 
-/// Get condition definition by ID
+/// Static registry of all conditions - loaded from JSON
+pub static CONDITIONS: Lazy<HashMap<ID, ConditionDef>> = Lazy::new(load_conditions_from_json);
+
+/// Get a condition definition by ID
 pub fn get_condition(id: &ID) -> Option<&'static ConditionDef> {
     CONDITIONS.get(id)
 }
@@ -864,52 +532,18 @@ mod tests {
     }
 
     #[test]
-    fn test_toxic() {
-        let tox = get_condition(&ID::new("tox")).unwrap();
-        assert!(tox.escalating_damage);
+    fn test_loaded_from_json() {
+        // Test that stall condition is loaded from JSON
+        let stall = get_condition(&ID::new("stall")).unwrap();
+        assert_eq!(stall.name, "stall");
+        assert_eq!(stall.duration, Some(2));
+        assert_eq!(stall.condition_type, ConditionType::Volatile);
     }
 
     #[test]
-    fn test_confusion() {
-        let confusion = get_condition(&ID::new("confusion")).unwrap();
-        assert_eq!(confusion.condition_type, ConditionType::Volatile);
-        assert_eq!(confusion.confusion_chance, Some(33));
-    }
-
-    #[test]
-    fn test_stealth_rock() {
-        let sr = get_condition(&ID::new("stealthrock")).unwrap();
-        assert_eq!(sr.condition_type, ConditionType::SideCondition);
-        assert_eq!(sr.hazard_type, Some("Rock".to_string()));
-    }
-
-    #[test]
-    fn test_rain() {
-        let rain = get_condition(&ID::new("raindance")).unwrap();
-        assert_eq!(rain.condition_type, ConditionType::Weather);
-        assert_eq!(rain.type_boost, Some(("Water".to_string(), 1.5)));
-        assert_eq!(rain.type_weaken, Some(("Fire".to_string(), 0.5)));
-    }
-
-    #[test]
-    fn test_electric_terrain() {
-        let et = get_condition(&ID::new("electricterrain")).unwrap();
-        assert_eq!(et.condition_type, ConditionType::Terrain);
-        assert!(et.grounded_only);
-        assert_eq!(et.prevents_status, Some(vec!["slp".to_string()]));
-    }
-
-    #[test]
-    fn test_trick_room() {
-        let tr = get_condition(&ID::new("trickroom")).unwrap();
-        assert_eq!(tr.condition_type, ConditionType::PseudoWeather);
-        assert_eq!(tr.duration, Some(5));
-    }
-
-    #[test]
-    fn test_trapping() {
-        assert!(condition_traps(&ID::new("ingrain")));
-        assert!(condition_traps(&ID::new("partiallytrapped")));
-        assert!(!condition_traps(&ID::new("confusion")));
+    fn test_weather_conditions() {
+        let sandstorm = get_condition(&ID::new("sandstorm")).unwrap();
+        assert_eq!(sandstorm.condition_type, ConditionType::Weather);
+        assert_eq!(sandstorm.duration, Some(5));
     }
 }

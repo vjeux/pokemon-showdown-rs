@@ -29,6 +29,18 @@ impl Battle {
             return self.condition_has_callback(effect_str, event_id);
         }
 
+        // Check if this is a move-embedded condition
+        // JavaScript's dex.conditions.getByID() checks moves for embedded conditions:
+        // } else if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).condition ...
+        //     condition = new Condition({ name: found.name || id, ...found.condition });
+        if let Some(move_data) = self.dex.moves().get(effect_str) {
+            if move_data.condition.is_some() {
+                // This is a move with an embedded condition (like King's Shield)
+                // Treat it as a condition for callback purposes
+                return self.condition_has_callback(effect_str, event_id);
+            }
+        }
+
         // Check moves
         if self.dex.moves().get(effect_str).is_some() {
             return self.move_has_callback(effect_str, event_id);
