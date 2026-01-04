@@ -1261,7 +1261,32 @@ JavaScript iteration #29 calls end_turn() (turn 22→23 proves this), which shou
 2. There's another condition preventing beforeTurn/Residual from being added?
 3. JavaScript has different logic for when to add beforeTurn/Residual after forced switches?
 
-**Status:** Investigating why JavaScript iteration #30 doesn't add beforeTurn/Residual despite midTurn being false 🔬
+**BREAKTHROUGH FINDING:**
+
+Added runtime logging to JavaScript battle.js and discovered:
+
+**JavaScript Iteration #30:**
+- Entry: turn=23, midTurn=FALSE
+- Sets midTurn=TRUE (DOES add beforeTurn/Residual!)
+- Sets midTurn=FALSE (completes normally)
+- Makes only 3 PRNG calls
+
+**Rust Iteration #30:**
+- Entry: turn=23, mid_turn=FALSE
+- Adds beforeTurn/Residual
+- Makes 7 PRNG calls
+
+**Key Insight:**
+BOTH implementations add beforeTurn/Residual! The issue is NOT about mid_turn management.
+
+The difference is in what executes:
+- Rust: BeforeTurn + wakeupslap (Kirlia) + outrage (Seedot) + Residual = 7 PRNG calls
+- JavaScript: Only ~3 PRNG calls = likely only outrage executes
+
+**Hypothesis:**
+Move execution order differs. If Seedot's outrage executes FIRST in JavaScript and deals enough damage, it may prevent Kirlia's wakeupslap from executing, reducing PRNG calls.
+
+**Status:** Need to investigate move execution order and priority sorting differences 🔬
 
 **Progress:** 28/47 iterations matching (59.5%)
 
