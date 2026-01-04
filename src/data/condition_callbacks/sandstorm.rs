@@ -5,57 +5,127 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Arg;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// durationCallback
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// sandstorm: {
-///     durationCallback(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// durationCallback(source, effect) {
+///     if (source?.hasItem('smoothrock')) {
+///         return 8;
 ///     }
+///     return 5;
 /// }
+/// ```
 pub fn duration_callback(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[SANDSTORM_DURATION_CALLBACK] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
-    EventResult::Continue
+    // if (source?.hasItem('smoothrock'))
+    let has_smoothrock = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.has_item(battle, &["smoothrock"])
+    };
+
+    if has_smoothrock {
+        // return 8;
+        return EventResult::Number(8);
+    }
+
+    // return 5;
+    EventResult::Number(5)
 }
 
 /// onModifySpD
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// sandstorm: {
-///     onModifySpD(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// onModifySpDPriority: 10,
+/// onModifySpD(spd, pokemon) {
+///     if (pokemon.hasType('Rock') && this.field.isWeather('sandstorm')) {
+///         return this.modify(spd, 1.5);
 ///     }
 /// }
+/// ```
 pub fn on_modify_sp_d(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[SANDSTORM_ON_MODIFY_SP_D] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // if (pokemon.hasType('Rock') && this.field.isWeather('sandstorm'))
+    let has_rock_type = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.has_type(battle, "rock")
+    };
+
+    let is_sandstorm = battle.field.weather == ID::from("sandstorm");
+
+    if has_rock_type && is_sandstorm {
+        // return this.modify(spd, 1.5);
+        return EventResult::Number(battle.chain_modify(1.5));
+    }
+
     EventResult::Continue
 }
 
 /// onFieldStart
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// sandstorm: {
-///     onFieldStart(...) {
-///         // Extract implementation from conditions.ts
+/// ```js
+/// onFieldStart(field, source, effect) {
+///     if (effect?.effectType === 'Ability') {
+///         if (this.gen <= 5) this.effectState.duration = 0;
+///         this.add('-weather', 'Sandstorm', '[from] ability: ' + effect.name, `[of] ${source}`);
+///     } else {
+///         this.add('-weather', 'Sandstorm');
 ///     }
 /// }
+/// ```
 pub fn on_field_start(
-    _battle: &mut Battle,
+    battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[SANDSTORM_ON_FIELD_START] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // if (effect?.effectType === 'Ability')
+    let is_ability = battle.effect.as_ref()
+        .and_then(|eff_id| battle.dex.abilities().get(eff_id.as_str()))
+        .is_some();
+
+    if is_ability {
+        // if (this.gen <= 5) this.effectState.duration = 0;
+        // TODO: Handle gen <= 5 duration setting when we have effectState infrastructure
+
+        // this.add('-weather', 'Sandstorm', '[from] ability: ' + effect.name, `[of] ${source}`);
+        let ability_name = battle.effect.as_ref()
+            .and_then(|eff_id| battle.dex.abilities().get(eff_id.as_str()))
+            .map(|ab| ab.name.clone())
+            .unwrap_or_else(|| "Unknown".to_string());
+
+        let source_ident = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_slot()
+        };
+
+        battle.add(
+            "-weather",
+            &[
+                Arg::Str("Sandstorm"),
+                Arg::String(format!("[from] ability: {}", ability_name)),
+                Arg::String(format!("[of] {}", source_ident)),
+            ],
+        );
+    } else {
+        // this.add('-weather', 'Sandstorm');
+        battle.add("-weather", &[Arg::Str("Sandstorm")]);
+    }
+
     EventResult::Continue
 }
 
@@ -136,19 +206,19 @@ pub fn on_weather(
 }
 
 /// onFieldEnd
-/// TODO: Implement 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
-/// sandstorm: {
-///     onFieldEnd(...) {
-///         // Extract implementation from conditions.ts
-///     }
+/// ```js
+/// onFieldEnd() {
+///     this.add('-weather', 'none');
 /// }
+/// ```
 pub fn on_field_end(
-    _battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    battle: &mut Battle,
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[SANDSTORM_ON_FIELD_END] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+    // this.add('-weather', 'none');
+    battle.add("-weather", &[Arg::Str("none")]);
+
     EventResult::Continue
 }
 
