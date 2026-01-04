@@ -16,6 +16,7 @@ impl BattleStream {
             no_catch: options.no_catch,
             replay: options.replay,
             keep_alive: options.keep_alive,
+            last_request: None,
         }
     }
 }

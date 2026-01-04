@@ -30,12 +30,16 @@ impl BattleStream {
 
         // JS: const [cmd, rest] = splitFirst(line.slice(1), '|');
         let line_without_prefix = &line[1..];
-        let (cmd, rest) = crate::battle_stream::split_first(line_without_prefix, "|", 1);
+        let parts = crate::battle_stream::split_first(line_without_prefix, "|", 1);
+        let cmd = parts.get(0).map(|s| s.as_str()).unwrap_or("");
+        let rest = parts.get(1).map(|s| s.as_str()).unwrap_or("");
 
         // JS: if (cmd === 'request') return this.receiveRequest(JSON.parse(rest));
         if cmd == "request" {
-            // TODO: Implement receiveRequest
-            // For now, just skip request handling
+            // Parse the JSON request and pass to receiveRequest
+            if let Ok(request) = serde_json::from_str(rest) {
+                self.receive_request(request);
+            }
             return;
         }
 

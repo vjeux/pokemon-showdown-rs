@@ -27,6 +27,10 @@ mod battle_mut;
 mod ended;
 mod winner;
 mod destroy;
+mod receive;
+mod receive_line;
+mod receive_error;
+mod receive_request;
 
 /// Protocol message types
 /// JavaScript equivalent: Protocol messages parsed from strings (sim/battle-stream.ts)
@@ -821,6 +825,10 @@ pub struct BattleStream {
     /// Keep alive (don't end stream on battle end)
     /// JavaScript: keepAlive: boolean
     pub keep_alive: bool,
+    /// Last request received from battle
+    /// JavaScript: Not stored in base class (abstract receiveRequest)
+    /// Rust stores it for potential use by concrete implementations
+    pub last_request: Option<serde_json::Value>,
 }
 
 /// Replay mode options

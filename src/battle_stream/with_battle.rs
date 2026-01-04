@@ -17,6 +17,7 @@ impl BattleStream {
             no_catch: false,
             replay: ReplayMode::Off,
             keep_alive: false,
+            last_request: None,
         }
     }
 }
