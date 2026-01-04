@@ -60,11 +60,13 @@ pub fn on_field_start(
 }
 
 /// onFieldResidual
-/// TODO: Implement 1-to-1 from JavaScript
+/// Implemented 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
 /// sandstorm: {
-///     onFieldResidual(...) {
-///         // Extract implementation from conditions.ts
+///     onFieldResidualOrder: 1,
+///     onFieldResidual() {
+///         this.add('-weather', 'Sandstorm', '[upkeep]');
+///         if (this.field.isWeather('sandstorm')) this.eachEvent('Weather');
 ///     }
 /// }
 pub fn on_field_residual(
@@ -72,16 +74,30 @@ pub fn on_field_residual(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+
+    // Add weather upkeep message
+    use crate::battle::Arg;
+    battle.add("weather", &[
+        Arg::from("-weather"),
+        Arg::from("Sandstorm"),
+        Arg::from("[upkeep]"),
+    ]);
+
+    // Check if weather is still sandstorm
+    if battle.field.weather == ID::from("sandstorm") {
+        eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] Calling eachEvent('Weather')");
+        battle.each_event("Weather", None, None);
+    }
+
     EventResult::Continue
 }
 
 /// onWeather
-/// TODO: Implement 1-to-1 from JavaScript
+/// Implemented 1-to-1 from JavaScript
 /// JavaScript source (data/conditions.ts):
 /// sandstorm: {
-///     onWeather(...) {
-///         // Extract implementation from conditions.ts
+///     onWeather(target) {
+///         this.damage(target.baseMaxhp / 16);
 ///     }
 /// }
 pub fn on_weather(
@@ -89,7 +105,33 @@ pub fn on_weather(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[SANDSTORM_ON_WEATHER] Called for {:?}", pokemon_pos);
-    // TODO: Implement callback
+
+    // Get target's base max HP
+    let base_maxhp = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.maxhp
+    };
+
+    // Calculate damage as 1/16 of max HP
+    let damage_amount = base_maxhp / 16;
+
+    eprintln!("[SANDSTORM_ON_WEATHER] Dealing {} damage (maxhp={}) to {:?}",
+        damage_amount, base_maxhp, pokemon_pos);
+
+    // Apply damage through the battle's damage function
+    // JavaScript doesn't pass effect explicitly - it comes from this.effect in the event context
+    // So we pass None to let it use current_event.effect
+    battle.damage(
+        damage_amount,
+        Some(pokemon_pos),
+        None, // no source
+        None, // effect comes from event context
+        false, // not instafaint
+    );
+
     EventResult::Continue
 }
 

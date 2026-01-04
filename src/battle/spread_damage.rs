@@ -191,9 +191,14 @@ impl Battle {
                 // Check weather immunity
                 // JavaScript: if (effect.effectType === 'Weather' && !target.runStatusImmunity(effect.id))
                 if let Some(eff) = effect {
-                    let effect_type = self.get_effect_type(eff);
-                    eprintln!("[WEATHER_IMMUNITY] effect_id={}, effect_type={}", effect_id, effect_type);
-                    if effect_type == "Weather" {
+                    // Check if this effect is a weather effect by comparing with field.weather
+                    // This is more reliable than get_effect_type which checks moves before conditions
+                    let is_weather = self.field.weather == *eff;
+
+                    eprintln!("[WEATHER_IMMUNITY] effect_id={}, is_weather={}, field.weather={:?}",
+                        effect_id, is_weather, self.field.weather);
+
+                    if is_weather {
                         // Check if target is immune to this weather effect
                         let is_immune = !Pokemon::run_status_immunity(self, (side_idx, poke_idx), effect_id, false);
                         eprintln!("[WEATHER_IMMUNITY] Pokemon ({}, {}) immunity check for {}: is_immune={}",
