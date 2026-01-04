@@ -435,7 +435,7 @@ JavaScript has an IMPLICIT basePowerCallback for ALL Max/G-Max moves that:
 This basePowerCallback is not explicitly defined in moves.json/moves.ts, but is part of the
 Max move system logic.
 
-**Fix (Commit 29690f19):**
+**Fix (Commit 47840e13):**
 1. Added Max move check at beginning of `dispatch_base_power_callback()` in move_callbacks/mod.rs
 2. Returns `EventResult::Number(0)` if move is Max/G-Max and Pokemon doesn't have dynamax volatile
 3. This triggers early return in get_damage.rs (line 247) BEFORE crit calculation
@@ -448,10 +448,71 @@ Max move system logic.
 - ✅ gmaxterror correctly doesn't make crit/randomizer PRNG calls
 
 **Next Issue - Turn 27:**
-- JavaScript: prng=117->123 (6 calls), Zacian=195/331
-- Rust: prng=117->121 (4 calls), Zacian=196/331
-- Rust missing 2 PRNG calls, Zacian HP differs by 1
-- Hypothesis: gmaxterror should deal 1 damage in turn 27 (minimum damage mechanic)
+- JavaScript: prng=117->123 (6 calls), Zacian=195/331 (takes 1 damage)
+- Rust: prng=117->121 (4 calls), Zacian=196/331 (takes 0 damage)
+- Rust missing 2 PRNG calls (crit + damage randomizer)
+- Hypothesis: gmaxterror should deal minimum damage (1 HP) in turn 27, not 0
+
+---
+
+### Issue 7: Turn 26-27 - AI move evaluation consuming PRNG (IN PROGRESS 🔍)
+
+**NEW DISCOVERY:**
+- Turn 26: Golem didn't use ANY move (PP unchanged for all moves)
+  - gmaxterror: 16/16 -> 16/16 (not used)
+  - kingsshield: 16/16 -> 16/16 (not used)
+  - All other moves unchanged
+- Turn 27: Golem used gmaxterror (PP decreased)
+  - gmaxterror: 16/16 -> 15/16 (USED)
+
+**Key Finding:**
+The gmaxterror getDamage logging appears in BOTH turns 26 and 27, but:
+- Turn 26: getDamage called during AI EVALUATION (move not used)
+- Turn 27: getDamage called during actual MOVE EXECUTION
+
+This means:
+1. JavaScript AI calls getDamage to evaluate potential moves
+2. getDamage makes PRNG calls (crit check, randomizer)
+3. These PRNG calls are counted in the turn's total
+4. The move might not be selected/used, but PRNG was still consumed
+
+**Problem:**
+- Turn 26: JavaScript makes 4 PRNG calls, Rust makes 6 calls
+- Turn 27: JavaScript makes 6 PRNG calls, Rust makes 4 calls
+
+**Hypothesis:**
+The difference in PRNG call counts is because:
+- JavaScript AI evaluates moves and consumes PRNG during evaluation
+- Rust AI might not evaluate moves the same way, or might not consume PRNG
+- Need to investigate how Rust AI (auto_choose) selects moves
+
+**Next Steps:**
+1. Check if Rust auto_choose() evaluates moves by calling getDamage
+2. If not, this is a fundamental difference in AI implementation
+3. Need to ensure 1-to-1 parity in how AI evaluates and selects moves
+
+---
+
+### Issue 7: Turn 27 - gmaxterror minimum damage (IN PROGRESS 🔍)
+
+**Problem:**
+- Turn 26 now matches perfectly after basePowerCallback fix
+- Turn 27 shows divergence:
+  - JavaScript: prng=117->123 (6 calls), Zacian takes 1 damage (196->195)
+  - Rust: prng=117->121 (4 calls), Zacian takes 0 damage (196->196)
+- Rust is missing 2 PRNG calls (crit + damage randomizer)
+- JavaScript makes crit and randomizer calls, suggesting basePower is NOT 0
+
+**Hypothesis:**
+In turn 27, gmaxterror might be:
+1. Used by a Pokemon WITH dynamax volatile (so basePowerCallback doesn't return 0)
+2. basePower goes through normal calculation
+3. Final damage is 0 but minimum damage check makes it 1
+
+Need to investigate:
+- Check JavaScript battle-actions.ts line 1832 for minimum damage mechanic
+- Check if turn 27 has different game state than turn 26
+- Verify which Pokemon uses gmaxterror in turn 27
 
 ---
 
@@ -474,3 +535,27 @@ Added from/to parameter logging to random() function before calling next_raw().
 - ✅ Easy to spot divergences in PRNG usage patterns
 
 
+
+### Issue 8: Turn 26 - gmaxterror getDamage called twice (IN PROGRESS 🔍)
+
+**Problem:**
+- Turn 26: JavaScript makes 4 PRNG calls (113->117), Rust makes 5 calls (113->118)
+- Zacian HP now matches (196) after fixing early return for Max moves without dynamax
+- But Rust makes 1 extra PRNG call
+
+**Root Cause Found:**
+getDamage is being called TWICE for gmaxterror in Rust:
+- PRNG #115: crit check, randomChance(1, 24), result=false
+- PRNG #118: crit check, randomChance(1, 24), result=true
+
+Both calls are from get_damage → random_chance, so getDamage is executing twice when it should only execute once.
+
+**Hypothesis:**
+gmaxterror might be hitting multiple targets (adjacentFoe), causing spread_move_hit to call getDamage for each target. But in a 1v1 battle, there should only be one target.
+
+**Next Steps:**
+1. Check how many targets gmaxterror is hitting in spread_move_hit
+2. Compare with JavaScript to see if it's also calling getDamage twice
+3. If Rust is calling it twice but JavaScript once, find why
+
+---
