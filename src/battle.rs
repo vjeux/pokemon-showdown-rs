@@ -563,6 +563,10 @@ pub struct PlayerOptions {
     /// Player rating
     /// JavaScript: rating?: number | string
     pub rating: Option<String>,
+    /// RNG seed for team generation
+    /// JavaScript: seed?: PRNGSeed
+    /// PRNGSeed is a string like "sodium,abc123" or "gen5,xyz" or "1234,abc"
+    pub seed: Option<String>,
 }
 
 /// Team format - either packed string or array of Pokemon sets

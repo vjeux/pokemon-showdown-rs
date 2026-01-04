@@ -50,7 +50,7 @@ impl Battle {
 
         // Team is empty or unpacking failed, need to generate random team
         // JS: if (!options.seed) { options.seed = PRNG.generateSeed(); }
-        // TODO: PlayerOptions needs seed field (currently missing)
+        // TODO: Use options.seed field for team generation
         // For now, use battle.prng seed
 
         // JS: if (!this.teamGenerator) {

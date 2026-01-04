@@ -33,6 +33,7 @@ impl Battle {
             },
             team: crate::battle::TeamFormat::Empty, // Team is handled separately in Rust
             rating: None,
+            seed: None,
         };
         self.set_player(slot, options);
 
