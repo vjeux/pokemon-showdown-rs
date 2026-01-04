@@ -48,18 +48,13 @@ pub fn try_primary_hit_event(
             None,
         );
 
-        // Convert event result to damage value
-        // JavaScript runEvent returns number | boolean | undefined
-        // We need to map this to DamageResult
-        // Special case: 0 = Battle.HIT_SUBSTITUTE (substitute blocked the hit)
-        if let Some(value) = result {
-            if value == Battle::HIT_SUBSTITUTE {
-                damage[i] = DamageResult::HitSubstitute;
-            } else {
-                damage[i] = DamageResult::Damage(value);
-            }
-        }
-        // If result is None, keep the existing damage value
+        // JavaScript: damage[i] = result
+        // Direct assignment - runEvent returns number | boolean | undefined in JS
+        // In Rust: Option<i32> maps to number | undefined
+        damage[i] = match result {
+            Some(val) => DamageResult::Damage(val),
+            None => DamageResult::Undefined,
+        };
     }
 
     // return damage;
