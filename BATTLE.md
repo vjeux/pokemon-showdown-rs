@@ -1025,6 +1025,36 @@ Tried keeping mid_turn=true if we entered with mid_turn=true. This prevented the
 
 **Status:** Need to understand JavaScript's midTurn management more precisely. The fix logic needs to be more nuanced than simply "keep mid_turn if we entered with it true". There must be a specific condition that determines when to reset mid_turn vs keep it. 🔧
 
+**BREAKTHROUGH - EXACT MECHANISM IDENTIFIED:**
+
+Added detailed queue logging and found the smoking gun:
+
+**Rust Iteration #30:**
+```
+[TURN_LOOP] Entry: turn=23, mid_turn=FALSE
+[TURN_LOOP] Queue BEFORE adding beforeTurn/residual:
+  [0] Move: wakeupslap
+  [1] Move: outrage
+[TURN_LOOP] Queue AFTER adding beforeTurn/residual:
+  [0] Field: BeforeTurn  <- EXTRA EVENT!
+  [1] Move: wakeupslap
+  [2] Move: outrage
+  [3] Field: Residual     <- EXTRA EVENT!
+```
+
+The beforeTurn and residual field events are what cause the 4 extra PRNG calls!
+
+**The Mystery:**
+Both JavaScript and Rust set `midTurn=false` at the end of turnLoop(). So why does iteration #30 see mid_turn=false in Rust but (presumably) mid_turn=true in JavaScript?
+
+**Hypotheses:**
+1. JavaScript has an extra turnLoop() call between iterations #29 and #30 that sets midTurn=true
+2. JavaScript's iteration #29 returns early without setting midTurn=false
+3. JavaScript's make_choices() or commit_choices() modifies midTurn before calling turnLoop()
+4. There's a subtle difference in when endTurn() is called
+
+**Status:** Root cause mechanism fully understood. Need to trace JavaScript source code to find the exact midTurn management pattern. 🔬
+
 ---
 
 ### Issue 13: partiallytrapped volatile not expiring when source faints (FIXED ✅)

@@ -59,6 +59,16 @@ impl Battle {
             // JS: this.queue.addChoice({ choice: "residual" });
             use crate::battle_queue::{Action, FieldAction, FieldActionType};
 
+            eprintln!("[TURN_LOOP] Queue BEFORE adding beforeTurn/residual:");
+            for (i, action) in self.queue.list.iter().enumerate() {
+                match action {
+                    Action::Move(m) => eprintln!("  [{}] Move: {}", i, m.move_id.as_str()),
+                    Action::Switch(s) => eprintln!("  [{}] Switch: pokemon {}", i, s.pokemon_index),
+                    Action::Field(f) => eprintln!("  [{}] Field: {:?}", i, f.choice),
+                    _ => eprintln!("  [{}] Other", i),
+                }
+            }
+
             // JS: this.queue.insertChoice({ choice: 'beforeTurn' });
             let before_turn_action = Action::Field(FieldAction {
                 choice: FieldActionType::BeforeTurn,
@@ -76,6 +86,16 @@ impl Battle {
                 effect_order: 0,
             });
             self.queue.list.push(residual_action);
+
+            eprintln!("[TURN_LOOP] Queue AFTER adding beforeTurn/residual:");
+            for (i, action) in self.queue.list.iter().enumerate() {
+                match action {
+                    Action::Move(m) => eprintln!("  [{}] Move: {}", i, m.move_id.as_str()),
+                    Action::Switch(s) => eprintln!("  [{}] Switch: pokemon {}", i, s.pokemon_index),
+                    Action::Field(f) => eprintln!("  [{}] Field: {:?}", i, f.choice),
+                    _ => eprintln!("  [{}] Other", i),
+                }
+            }
 
             self.mid_turn = true;
         } else {
