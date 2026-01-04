@@ -43,9 +43,8 @@ pub fn on_start(
 
     // if (this.effectState.endingTurn >= 254)
     if ending_turn >= 254 {
-        // this.hint(...)
-        // TODO: Implement battle.hint() method
-        eprintln!("[FUTUREMOVE] HINT: In Gen 8+, Future attacks will never resolve when used on the 255th turn or later.");
+        // this.hint(`In Gen 8+, Future attacks will never resolve when used on the 255th turn or later.`);
+        battle.hint("In Gen 8+, Future attacks will never resolve when used on the 255th turn or later.", false, None);
     }
 
     EventResult::Continue
