@@ -17,6 +17,8 @@ rand = "0.8"
 once_cell = "1.19"
 # Unicode normalization for ID conversion
 unicode-normalization = "0.1"
+# Regular expressions for message parsing
+regex = "1.10"
 
 [profile.release]
 lto = true

@@ -48,6 +48,7 @@ mod field_event_switch_in;
 mod get_move_target;
 mod faint_messages;
 mod debug;
+mod extract_channel_messages;
 mod get_debug_log;
 mod add;
 mod add_move;
