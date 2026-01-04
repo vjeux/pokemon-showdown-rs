@@ -389,7 +389,7 @@ pub fn try_spread_move_hit(
         }
 
         let (damages, targets) =
-            crate::battle_actions::spread_move_hit(battle, &final_targets, pokemon_pos, move_id, false, false);
+            crate::battle_actions::spread_move_hit(battle, &final_targets, pokemon_pos, move_id, None, false, false);
 
         // Accumulate damage
         for (i, damage_opt) in damages.iter().enumerate() {

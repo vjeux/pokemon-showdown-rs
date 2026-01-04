@@ -31,6 +31,7 @@ pub fn move_hit(
     targets: &[Option<(usize, usize)>],
     pokemon_pos: (usize, usize),
     move_id: &ID,
+    move_data_id: Option<&ID>,
     is_secondary: bool,
     is_self: bool,
 ) -> Option<i32> {
@@ -38,7 +39,7 @@ pub fn move_hit(
     // (Already handled by caller passing slice)
 
     // const retVal = this.spreadMoveHit(targets, pokemon, moveOrMoveName, moveData, isSecondary, isSelf)[0][0];
-    let (damages, _targets) = spread_move_hit(battle, targets, pokemon_pos, move_id, is_secondary, is_self);
+    let (damages, _targets) = spread_move_hit(battle, targets, pokemon_pos, move_id, move_data_id, is_secondary, is_self);
 
     let ret_val = damages.get(0).and_then(|&d| d);
 

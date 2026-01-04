@@ -7,6 +7,117 @@ use crate::battle::SpreadMoveHitResult;
 
 /// Spread move hit - handles individual target hit processing
 /// Equivalent to spreadMoveHit() in battle-actions.ts:1043
+// spreadMoveHit(
+//     targets: SpreadMoveTargets, pokemon: Pokemon, moveOrMoveName: ActiveMove,
+//     hitEffect?: Dex.HitEffect, isSecondary?: boolean, isSelf?: boolean
+// ): [SpreadMoveDamage, SpreadMoveTargets] {
+//     // Hardcoded for single-target purposes
+//     // (no spread moves have any kind of onTryHit handler)
+//     const target = targets[0];
+//     let damage: (number | boolean | undefined)[] = [];
+//     for (const i of targets.keys()) {
+//         damage[i] = true;
+//     }
+//     const move = this.dex.getActiveMove(moveOrMoveName);
+//     let hitResult: boolean | number | null = true;
+//     let moveData = hitEffect as ActiveMove;
+//     if (!moveData) moveData = move;
+//     if (!moveData.flags) moveData.flags = {};
+//     if (move.target === 'all' && !isSelf) {
+//         hitResult = this.battle.singleEvent('TryHitField', moveData, {}, target || null, pokemon, move);
+//     } else if ((move.target === 'foeSide' || move.target === 'allySide' || move.target === 'allyTeam') && !isSelf) {
+//         hitResult = this.battle.singleEvent('TryHitSide', moveData, {}, target || null, pokemon, move);
+//     } else if (target) {
+//         hitResult = this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
+//     }
+//     if (!hitResult) {
+//         if (hitResult === false) {
+//             this.battle.add('-fail', pokemon);
+//             this.battle.attrLastMove('[still]');
+//         }
+//         return [[false], targets]; // single-target only
+//     }
+//
+//     // 0. check for substitute
+//     if (!isSecondary && !isSelf) {
+//         if (move.target !== 'all' && move.target !== 'allyTeam' && move.target !== 'allySide' && move.target !== 'foeSide') {
+//             damage = this.tryPrimaryHitEvent(damage, targets, pokemon, move, moveData, isSecondary);
+//         }
+//     }
+//
+//     for (const i of targets.keys()) {
+//         if (damage[i] === this.battle.HIT_SUBSTITUTE) {
+//             damage[i] = true;
+//             targets[i] = null;
+//         }
+//         if (targets[i] && isSecondary && !moveData.self) {
+//             damage[i] = true;
+//         }
+//         if (!damage[i]) targets[i] = false;
+//     }
+//     // 1. call to this.battle.getDamage
+//     damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
+//
+//     for (const i of targets.keys()) {
+//         if (damage[i] === false) targets[i] = false;
+//     }
+//
+//     // 2. call to this.battle.spreadDamage
+//     damage = this.battle.spreadDamage(damage, targets, pokemon, move);
+//
+//     for (const i of targets.keys()) {
+//         if (damage[i] === false) targets[i] = false;
+//     }
+//
+//     // 3. onHit event happens here
+//     damage = this.runMoveEffects(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
+//
+//     for (const i of targets.keys()) {
+//         if (!damage[i] && damage[i] !== 0) targets[i] = false;
+//     }
+//
+//     // steps 4 and 5 can mess with this.battle.activeTarget, which needs to be preserved for Dancer
+//     const activeTarget = this.battle.activeTarget;
+//
+//     // 4. self drops (start checking for targets[i] === false here)
+//     if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
+//
+//     // 5. secondary effects
+//     if (moveData.secondaries) this.secondaries(targets, pokemon, move, moveData, isSelf);
+//
+//     this.battle.activeTarget = activeTarget;
+//
+//     // 6. force switch
+//     if (moveData.forceSwitch) damage = this.forceSwitch(damage, targets, pokemon, move);
+//
+//     for (const i of targets.keys()) {
+//         if (!damage[i] && damage[i] !== 0) targets[i] = false;
+//     }
+//
+//     const damagedTargets: Pokemon[] = [];
+//     const damagedDamage = [];
+//     for (const [i, t] of targets.entries()) {
+//         if (typeof damage[i] === 'number' && t) {
+//             damagedTargets.push(t);
+//             damagedDamage.push(damage[i]);
+//         }
+//     }
+//     const pokemonOriginalHP = pokemon.hp;
+//     if (damagedDamage.length && !isSecondary && !isSelf) {
+//         this.battle.runEvent('DamagingHit', damagedTargets, pokemon, move, damagedDamage);
+//         if (moveData.onAfterHit) {
+//             for (const t of damagedTargets) {
+//                 this.battle.singleEvent('AfterHit', moveData, {}, t, pokemon, move);
+//             }
+//         }
+//         if (pokemon.hp && pokemon.hp <= pokemon.maxhp / 2 && pokemonOriginalHP > pokemon.maxhp / 2) {
+//             this.battle.runEvent('EmergencyExit', pokemon);
+//         }
+//     }
+//
+//     return [damage, targets];
+// }
+//
 ///
 /// Returns (damages, targets) where damages[i] corresponds to targets[i]
 pub fn spread_move_hit(
@@ -14,20 +125,99 @@ pub fn spread_move_hit(
     targets: &[Option<(usize, usize)>],
     source_pos: (usize, usize),
     move_id: &ID,
+    hit_effect_id: Option<&ID>,
     is_secondary: bool,
     is_self: bool,
 ) -> SpreadMoveHitResult {
 
-    let mut damages: Vec<Option<i32>> = vec![Some(0); targets.len()];
+    // JavaScript initializes damage array to `true` for all targets (line 18-20)
+    // JavaScript: for (const i of targets.keys()) { damage[i] = true; }
+    // In Rust Option<i32>: Some(1) = true placeholder, Some(0) = 0 damage, None = false/failed
+    let mut damages: Vec<Option<i32>> = vec![Some(1); targets.len()];
     let mut final_targets = targets.to_vec();
 
     // Get move data
-    eprintln!("[SPREAD_MOVE_HIT] ENTRY: move={:?}, is_secondary={}, is_self={}", move_id, is_secondary, is_self);
+    eprintln!("[SPREAD_MOVE_HIT] ENTRY: move={:?}, hit_effect={:?}, is_secondary={}, is_self={}",
+        move_id, hit_effect_id, is_secondary, is_self);
 
-    let move_data = match battle.dex.moves().get(move_id.as_str()) {
+    // JavaScript lines 23-25: Get moveData from hitEffect or move
+    // JavaScript: let moveData = hitEffect as ActiveMove;
+    //             if (!moveData) moveData = move;
+    //             if (!moveData.flags) moveData.flags = {};
+    let move_data_id = hit_effect_id.unwrap_or(move_id);
+    let move_data = match battle.dex.moves().get(move_data_id.as_str()) {
         Some(m) => m.clone(),
         None => return (damages, final_targets),
     };
+
+    // JavaScript lines 26-38: TryHitField/TryHitSide/TryHit events
+    // These fire based on move.target to check if field/side/single-target moves can execute
+    let target_opt = targets.get(0).copied().flatten();
+
+    if !is_self {
+        let target_type = move_data.target.as_str();
+        let hit_result = if target_type == "all" {
+            // JavaScript: this.battle.singleEvent('TryHitField', moveData, {}, target || null, pokemon, move);
+            battle.single_event(
+                "TryHitField",
+                move_id,
+                target_opt,
+                Some(source_pos),
+                Some(move_id),
+            )
+        } else if target_type == "foeSide" || target_type == "allySide" || target_type == "allyTeam" {
+            // JavaScript: this.battle.singleEvent('TryHitSide', moveData, {}, target || null, pokemon, move);
+            battle.single_event(
+                "TryHitSide",
+                move_id,
+                target_opt,
+                Some(source_pos),
+                Some(move_id),
+            )
+        } else if target_opt.is_some() {
+            // JavaScript: this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
+            battle.single_event(
+                "TryHit",
+                move_id,
+                target_opt,
+                Some(source_pos),
+                Some(move_id),
+            )
+        } else {
+            use crate::event::EventResult;
+            EventResult::Number(1) // No event to fire, return true
+        };
+
+        // JavaScript lines 33-38: Check hitResult and fail if false
+        // if (!hitResult) {
+        //     if (hitResult === false) { this.battle.add('-fail', pokemon); this.battle.attrLastMove('[still]'); }
+        //     return [[false], targets];
+        // }
+        // EventResult interpretation:
+        //   - Boolean(false) or Number(0) -> hitResult === false, add fail message
+        //   - Null -> hitResult === null, return [[false], targets] without message
+        //   - Continue, Number(n>0), Boolean(true) -> success, continue
+        use crate::event::EventResult;
+        let should_fail = match hit_result {
+            EventResult::Boolean(false) | EventResult::Number(0) => {
+                // JavaScript: if (hitResult === false)
+                // TODO: battle.add('-fail', pokemon);
+                // TODO: battle.attrLastMove('[still]');
+                true
+            }
+            EventResult::Null => {
+                // JavaScript: hitResult === null, fail without message
+                true
+            }
+            _ => false, // Success, continue
+        };
+
+        if should_fail {
+            // Return all false damages
+            return (vec![None; targets.len()], targets.to_vec());
+        }
+    }
+
 
     // Step 0: check for substitute (JavaScript line 1074-1089)
     // JavaScript: damage = this.tryPrimaryHitEvent(damage, targets, pokemon, move, moveData, isSecondary);
@@ -64,6 +254,25 @@ pub fn spread_move_hit(
         }
     }
 
+    // JavaScript lines 53-56: Set damage to true for secondary effects and filter targets
+    // for (const i of targets.keys()) {
+    //     if (targets[i] && isSecondary && !moveData.self) {
+    //         damage[i] = true;
+    //     }
+    //     if (!damage[i]) targets[i] = false;
+    // }
+    for i in 0..targets.len() {
+        // if (targets[i] && isSecondary && !moveData.self) damage[i] = true;
+        if final_targets[i].is_some() && is_secondary && move_data.self_effect.is_none() {
+            damages[i] = Some(1); // true
+        }
+        // if (!damage[i]) targets[i] = false;
+        if damages[i].is_none() || damages[i] == Some(0) {
+            final_targets[i] = None;
+        }
+    }
+
+
     // Step 1: TryHit event - NOW HANDLED IN try_spread_move_hit BEFORE accuracy check
     // The TryHit event was moved to try_spread_move_hit.rs to run before the accuracy check
     // This ensures that Protect-like moves can block attacks without wasting a PRNG call on accuracy
@@ -80,6 +289,17 @@ pub fn spread_move_hit(
         is_secondary,
         is_self,
     );
+
+    // JavaScript lines 62-63: Filter targets after getSpreadDamage
+    // for (const i of targets.keys()) {
+    //     if (damage[i] === false) targets[i] = false;
+    // }
+    for i in 0..damages.len() {
+        if damages[i].is_none() {
+            final_targets[i] = None;
+        }
+    }
+
 
     // Step 3: Apply damage using spread_damage
     let damage_vals: Vec<Option<i32>> = damages.clone();
@@ -102,9 +322,24 @@ pub fn spread_move_hit(
         }
     }
 
+    // JavaScript lines 68-70: Filter targets after spreadDamage
+    // for (const i of targets.keys()) {
+    //     if (damage[i] === false) targets[i] = false;
+    // }
+    for i in 0..damages.len() {
+        if damages[i].is_none() {
+            final_targets[i] = None;
+        }
+    }
+
+
     // Step 3.5: Trigger move's onHit callback and Hit events for successful hits
     // JavaScript: if (moveData.onHit) { hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move); }
     //             this.battle.runEvent('Hit', target, pokemon, move)
+    // TODO: JavaScript runs Hit events as part of runMoveEffects (line 73)
+    // JavaScript: damage = this.runMoveEffects(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
+    // The Hit event is triggered INSIDE runMoveEffects in JavaScript, but Rust does it here separately
+    // This may cause timing differences
     for (i, &target) in final_targets.iter().enumerate() {
         if let Some(target_pos) = target {
             // Only trigger Hit if we actually dealt damage or the move succeeded
@@ -238,6 +473,14 @@ pub fn spread_move_hit(
     // JavaScript (battle-actions.ts:1116):
     //   if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
     //
+    // TODO: MISSING activeTarget preservation (JavaScript lines 79-88)
+    // JavaScript:
+    //   const activeTarget = this.battle.activeTarget;
+    //   if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
+    //   if (moveData.secondaries) this.secondaries(targets, pokemon, move, moveData, isSelf);
+    //   this.battle.activeTarget = activeTarget;
+    // Rust needs to preserve and restore activeTarget around self effects and secondaries
+    //
     // selfDrops function (battle-actions.ts:1332-1348):
     //   for (const target of targets) {
     //       if (target === false) continue;
@@ -253,11 +496,21 @@ pub fn spread_move_hit(
     //           }
     //       }
     //   }
+
+    // JavaScript lines 79-88: Save and restore activeTarget
+    // const activeTarget = this.battle.activeTarget;
+    let saved_active_target = battle.active_target;
+
     eprintln!("[SPREAD_MOVE_HIT] move_data.self_effect = {:?}", move_data.self_effect);
     if let Some(ref self_effect) = move_data.self_effect {
-        eprintln!("[SPREAD_MOVE_HIT] Processing self_effect for move {}", move_id);
-        // JS: for (const target of targets) { if (target === false) continue; ... }
-        // We need to loop through targets to match JavaScript behavior
+        // JavaScript line 83: Check !move.selfDropped before applying self effects
+        // JavaScript: if (moveData.self && !move.selfDropped) this.selfDrops(...)
+        let self_dropped = battle.active_move.as_ref().map_or(false, |m| m.self_dropped);
+
+        if !self_dropped {
+            eprintln!("[SPREAD_MOVE_HIT] Processing self_effect for move {} (selfDropped={:?})", move_id, self_dropped);
+            // JS: for (const target of targets) { if (target === false) continue; ... }
+            // We need to loop through targets to match JavaScript behavior
         // (even though we're applying to source, not target)
         // Use filtered_targets to match JavaScript filtering
         for &target in &filtered_targets {
@@ -367,6 +620,7 @@ pub fn spread_move_hit(
             // should only apply once. Break after first valid target.
             break;
         }
+        } // End of if !self_dropped
     }
 
     // Step 4.75: Apply move secondaries (boosts, status effects with chance)
@@ -597,6 +851,18 @@ pub fn spread_move_hit(
         }
     }
 
+    // JavaScript line 88: Restore activeTarget
+    // this.battle.activeTarget = activeTarget;
+    battle.active_target = saved_active_target;
+
+    // TODO: MISSING forceSwitch step (JavaScript line 91)
+    // JavaScript:
+    //   if (moveData.forceSwitch) damage = this.forceSwitch(damage, targets, pokemon, move);
+    //   for (const i of targets.keys()) {
+    //     if (!damage[i] && damage[i] !== 0) targets[i] = false;
+    //   }
+    // Rust doesn't handle forceSwitch moves at all
+
     // Step 5: Trigger DamagingHit event for abilities that activate on dealing damage
     // JavaScript (battle-actions.ts:961-971):
     //   const damagedTargets = [];
@@ -613,6 +879,14 @@ pub fn spread_move_hit(
     //     ...
     //   }
     // Note: DamagingHit event is already called earlier (lines 163-174), no need to call again here
+    //
+    // TODO: MISSING EmergencyExit event (JavaScript lines 113-115)
+    // JavaScript:
+    //   if (pokemon.hp && pokemon.hp <= pokemon.maxhp / 2 && pokemonOriginalHP > pokemon.maxhp / 2) {
+    //       this.battle.runEvent('EmergencyExit', pokemon);
+    //   }
+    // Rust doesn't track pokemonOriginalHP or trigger EmergencyExit event
+
 
     (damages, final_targets)
 }
