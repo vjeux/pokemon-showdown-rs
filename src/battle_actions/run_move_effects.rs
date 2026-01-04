@@ -3,7 +3,7 @@
 //! 1:1 port of runMoveEffects from battle-actions.ts:1201
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, SpreadMoveDamageValue, SpreadMoveTargets, SpreadMoveTarget};
+use crate::battle_actions::{SpreadMoveDamage, SpreadMoveTargets, SpreadMoveTarget};
 
 /// Run move effects (boosts, healing, status, etc.)
 /// Equivalent to runMoveEffects() in battle-actions.ts:1201

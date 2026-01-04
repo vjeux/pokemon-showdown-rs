@@ -153,7 +153,7 @@ pub fn modify_damage(
     eprintln!("[MODIFY_DAMAGE] After randomizer (applied={}): base_damage={}", should_apply_variance, base_damage);
 
     // Get source and target data for STAB and type effectiveness
-    let (source_types, target_types, target_slot) = {
+    let (source_types, _target_types, target_slot) = {
         let source_types = if let Some(side) = battle.sides.get(source_pos.0) {
             if let Some(pokemon) = side.pokemon.get(source_pos.1) {
                 pokemon.types.clone()

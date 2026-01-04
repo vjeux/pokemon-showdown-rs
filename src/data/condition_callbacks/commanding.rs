@@ -5,7 +5,6 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
-use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// onDragOut
@@ -17,7 +16,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_drag_out(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[COMMANDING_ON_DRAG_OUT] Called for {:?}", pokemon_pos);
@@ -34,7 +33,7 @@ pub fn on_drag_out(
 ///     }
 /// }
 pub fn on_trap_pokemon(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[COMMANDING_ON_TRAP_POKEMON] Called for {:?}", pokemon_pos);
@@ -51,7 +50,7 @@ pub fn on_trap_pokemon(
 ///     }
 /// }
 pub fn on_before_turn(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[COMMANDING_ON_BEFORE_TURN] Called for {:?}", pokemon_pos);

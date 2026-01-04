@@ -5,7 +5,6 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
-use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// onStart
@@ -17,7 +16,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_start(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[FUTUREMOVE_ON_START] Called for {:?}", pokemon_pos);
@@ -34,7 +33,7 @@ pub fn on_start(
 ///     }
 /// }
 pub fn on_residual(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[FUTUREMOVE_ON_RESIDUAL] Called for {:?}", pokemon_pos);
@@ -51,7 +50,7 @@ pub fn on_residual(
 ///     }
 /// }
 pub fn on_end(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[FUTUREMOVE_ON_END] Called for {:?}", pokemon_pos);

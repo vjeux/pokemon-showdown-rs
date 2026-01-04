@@ -4,7 +4,6 @@
 //! Each move with callbacks is in its own file.
 
 use crate::battle::Battle;
-use crate::dex_data::ID;
 use crate::event::EventResult;
 
 // Individual move modules

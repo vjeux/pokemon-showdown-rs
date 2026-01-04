@@ -82,7 +82,7 @@ pub fn on_start(
 ///     }
 /// }
 pub fn on_end(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[CONFUSION_ON_END] Called for {:?}", pokemon_pos);
@@ -99,7 +99,7 @@ pub fn on_end(
 ///     }
 /// }
 pub fn on_before_move(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[CONFUSION_ON_BEFORE_MOVE] Called for {:?}", pokemon_pos);

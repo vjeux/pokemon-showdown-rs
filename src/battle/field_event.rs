@@ -18,6 +18,7 @@ struct FieldEventHandler {
 impl Battle {
 
     /// Determine effect type from effect ID by checking dex
+    #[allow(dead_code)]
     fn determine_effect_type(&self, effect_id: &str) -> crate::battle::EffectType {
         // Check abilities
         if self.dex.abilities().get(effect_id).is_some() {

@@ -5,7 +5,6 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
-use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// onTryMove
@@ -17,7 +16,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_move(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DESOLATELAND_ON_TRY_MOVE] Called for {:?}", pokemon_pos);
@@ -34,7 +33,7 @@ pub fn on_try_move(
 ///     }
 /// }
 pub fn on_weather_modify_damage(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DESOLATELAND_ON_WEATHER_MODIFY_DAMAGE] Called for {:?}", pokemon_pos);
@@ -51,7 +50,7 @@ pub fn on_weather_modify_damage(
 ///     }
 /// }
 pub fn on_field_start(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DESOLATELAND_ON_FIELD_START] Called for {:?}", pokemon_pos);
@@ -68,7 +67,7 @@ pub fn on_field_start(
 ///     }
 /// }
 pub fn on_immunity(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DESOLATELAND_ON_IMMUNITY] Called for {:?}", pokemon_pos);
@@ -85,7 +84,7 @@ pub fn on_immunity(
 ///     }
 /// }
 pub fn on_field_residual(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DESOLATELAND_ON_FIELD_RESIDUAL] Called for {:?}", pokemon_pos);
@@ -102,7 +101,7 @@ pub fn on_field_residual(
 ///     }
 /// }
 pub fn on_field_end(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DESOLATELAND_ON_FIELD_END] Called for {:?}", pokemon_pos);

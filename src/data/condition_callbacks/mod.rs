@@ -5,7 +5,6 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::ID;
 
 // Individual condition modules
 pub mod arceus;

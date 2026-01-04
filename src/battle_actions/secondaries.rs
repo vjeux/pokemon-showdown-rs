@@ -66,7 +66,7 @@ pub fn secondaries(
         // Call ModifySecondaries event to allow abilities like Shield Dust to filter secondaries
         // The event can modify or filter the secondaries array
         let secondaries = if let Some(ref active_move) = battle.active_move {
-            let mut secs = active_move.secondaries.clone();
+            let secs = active_move.secondaries.clone();
 
             // Fire ModifySecondaries event for each secondary
             // In JavaScript, this returns a filtered/modified array

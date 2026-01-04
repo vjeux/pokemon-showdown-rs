@@ -5,7 +5,6 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
-use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// onStart
@@ -17,7 +16,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_start(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DYNAMAX_ON_START] Called for {:?}", pokemon_pos);
@@ -34,7 +33,7 @@ pub fn on_start(
 ///     }
 /// }
 pub fn on_try_add_volatile(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DYNAMAX_ON_TRY_ADD_VOLATILE] Called for {:?}", pokemon_pos);
@@ -51,7 +50,7 @@ pub fn on_try_add_volatile(
 ///     }
 /// }
 pub fn on_before_switch_out(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DYNAMAX_ON_BEFORE_SWITCH_OUT] Called for {:?}", pokemon_pos);
@@ -68,7 +67,7 @@ pub fn on_before_switch_out(
 ///     }
 /// }
 pub fn on_source_modify_damage(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DYNAMAX_ON_SOURCE_MODIFY_DAMAGE] Called for {:?}", pokemon_pos);
@@ -85,7 +84,7 @@ pub fn on_source_modify_damage(
 ///     }
 /// }
 pub fn on_drag_out(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DYNAMAX_ON_DRAG_OUT] Called for {:?}", pokemon_pos);
@@ -102,7 +101,7 @@ pub fn on_drag_out(
 ///     }
 /// }
 pub fn on_residual(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DYNAMAX_ON_RESIDUAL] Called for {:?}", pokemon_pos);
@@ -119,7 +118,7 @@ pub fn on_residual(
 ///     }
 /// }
 pub fn on_end(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[DYNAMAX_ON_END] Called for {:?}", pokemon_pos);

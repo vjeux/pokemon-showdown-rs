@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn duration_callback(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[SANDSTORM_DURATION_CALLBACK] Called for {:?}", pokemon_pos);
@@ -34,7 +34,7 @@ pub fn duration_callback(
 ///     }
 /// }
 pub fn on_modify_sp_d(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[SANDSTORM_ON_MODIFY_SP_D] Called for {:?}", pokemon_pos);
@@ -51,7 +51,7 @@ pub fn on_modify_sp_d(
 ///     }
 /// }
 pub fn on_field_start(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[SANDSTORM_ON_FIELD_START] Called for {:?}", pokemon_pos);
@@ -144,7 +144,7 @@ pub fn on_weather(
 ///     }
 /// }
 pub fn on_field_end(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     eprintln!("[SANDSTORM_ON_FIELD_END] Called for {:?}", pokemon_pos);
