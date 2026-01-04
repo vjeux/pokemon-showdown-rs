@@ -21,7 +21,11 @@ impl Battle {
         use crate::data::condition_callbacks;
         use crate::event::EventResult;
 
+        eprintln!("[HANDLE_CONDITION_EVENT] event_id={}, condition_id={}, target={:?}",
+            event_id, condition_id, target);
+
         let pokemon_pos = target.unwrap_or((0, 0));
+        eprintln!("[HANDLE_CONDITION_EVENT] pokemon_pos={:?}", pokemon_pos);
 
         // Normalize event name by removing "on" prefix if present
         let normalized_event = if event_id.starts_with("on") {

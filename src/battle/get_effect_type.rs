@@ -17,6 +17,18 @@ impl Battle {
         if self.dex.items().get(effect_id.as_str()).is_some() {
             return "Item";
         }
+
+        // IMPORTANT: Check if this effect is the active field weather/terrain BEFORE checking moves
+        // Some IDs like "sandstorm" exist as both moves and weather conditions
+        // When the weather is active, we should return "Weather", not "Move"
+        let effect_str = effect_id.as_str();
+        if !self.field.weather.is_empty() && self.field.weather.as_str() == effect_str {
+            return "Weather";
+        }
+        if !self.field.terrain.is_empty() && self.field.terrain.as_str() == effect_str {
+            return "Terrain";
+        }
+
         // Check if it's a move
         if self.dex.moves().get(effect_id.as_str()).is_some() {
             return "Move";

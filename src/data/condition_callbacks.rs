@@ -755,7 +755,8 @@ pub fn dispatch_on_weather(
 
             // Deal 1/16 max HP damage
             let damage = base_maxhp / 16;
-            battle.damage(damage, Some(pokemon_pos), None, None, false);
+            let sandstorm_id = ID::new("sandstorm");
+            battle.damage(damage, Some(pokemon_pos), None, Some(&sandstorm_id), false);
             EventResult::Continue
         }
         _ => EventResult::Continue,

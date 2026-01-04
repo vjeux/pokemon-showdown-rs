@@ -192,9 +192,13 @@ impl Battle {
                 // JavaScript: if (effect.effectType === 'Weather' && !target.runStatusImmunity(effect.id))
                 if let Some(eff) = effect {
                     let effect_type = self.get_effect_type(eff);
+                    eprintln!("[WEATHER_IMMUNITY] effect_id={}, effect_type={}", effect_id, effect_type);
                     if effect_type == "Weather" {
                         // Check if target is immune to this weather effect
-                        if !Pokemon::run_status_immunity(self, (side_idx, poke_idx), effect_id, false) {
+                        let is_immune = !Pokemon::run_status_immunity(self, (side_idx, poke_idx), effect_id, false);
+                        eprintln!("[WEATHER_IMMUNITY] Pokemon ({}, {}) immunity check for {}: is_immune={}",
+                            side_idx, poke_idx, effect_id, is_immune);
+                        if is_immune {
                             // Target is immune to this weather damage
                             ret_vals.push(Some(0));
                             continue;
@@ -247,11 +251,21 @@ impl Battle {
             }
 
             // Apply damage using Pokemon's damage method
+            // DEBUG: Log HP change
+            eprintln!("[HP_CHANGE] Applying {} damage to ({}, {}), effect={:?}, source={:?}, turn={}",
+                target_damage, side_idx, poke_idx,
+                effect.map(|e| e.as_str()),
+                source,
+                self.turn
+            );
             let actual_damage = {
                 let faint_queue = &mut self.faint_queue;
                 if let Some(side) = self.sides.get_mut(side_idx) {
                     if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
-                        pokemon.damage(target_damage, target_pos, source, effect, faint_queue)
+                        eprintln!("[HP_CHANGE] Before: {} HP={}/{}", pokemon.name, pokemon.hp, pokemon.maxhp);
+                        let dmg = pokemon.damage(target_damage, target_pos, source, effect, faint_queue);
+                        eprintln!("[HP_CHANGE] After: {} HP={}/{}, actual_damage={}", pokemon.name, pokemon.hp, pokemon.maxhp, dmg);
+                        dmg
                     } else {
                         0
                     }

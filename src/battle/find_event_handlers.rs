@@ -192,7 +192,15 @@ impl Battle {
         let prefixed_event = format!("on{}", event_name);
         let field_handlers = self.find_field_event_handlers(&prefixed_event, None, None);
         for handler in field_handlers {
-            handlers.push((event_name.to_string(), handler.effect_id, handler.effect_holder));
+            // For Weather/Update/BeforeTurn events, field effects (like sandstorm) should use the target Pokemon
+            // that was passed to this function, not None. The event is being run ON that Pokemon.
+            // JavaScript doesn't have this issue because it passes target directly to the callback.
+            let handler_target = if !prefixed_handlers && target.is_some() {
+                target
+            } else {
+                handler.effect_holder
+            };
+            handlers.push((event_name.to_string(), handler.effect_id, handler_target));
         }
 
         // JavaScript: handlers.push(...this.findBattleEventHandlers(`on${eventName}`));
