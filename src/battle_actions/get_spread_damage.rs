@@ -80,42 +80,22 @@ pub fn get_spread_damage(
         //   a number (Some(i32)):
         //     means that much damage is dealt (0 damage still counts as dealing
         //     damage for the purposes of things like Static)
-        //   None:
-        //     the move fails
+        //   None (undefined):
+        //     Status moves return undefined - no damage calculation performed
+        //     Move succeeds but doesn't trigger DamagingHit
         //
-        // if (curDamage === false || curDamage === null) {
-        if cur_damage.is_none() {
-            // if (damage[i] === false && !isSecondary && !isSelf) {
-            //   this.battle.add('-fail', source);
-            //   this.battle.attrLastMove('[still]');
-            // }
-            if matches!(result_damages[i], DamageResult::Failed) && !is_secondary && !is_self {
-                let source_slot = if let Some(side) = battle.sides.get(source_pos.0) {
-                    if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-                        pokemon.get_slot()
-                    } else {
-                        String::new()
-                    }
-                } else {
-                    String::new()
-                };
-
-                battle.add("-fail", &[battle::Arg::String(source_slot)]);
-                battle.attr_last_move(&["[still]"]);
+        // JavaScript: if (curDamage === false || curDamage === null) { damage[i] = false; }
+        // JavaScript: damage[i] = curDamage;  // This can be undefined or a number
+        match cur_damage {
+            None => {
+                // undefined - Status move, no damage dealt but move succeeds
+                result_damages[i] = DamageResult::Undefined;
             }
-
-            // this.battle.debug('damage calculation interrupted');
-            eprintln!("[GET_SPREAD_DAMAGE] damage calculation interrupted for target {}", i);
-
-            // damage[i] = false;
-            result_damages[i] = DamageResult::Failed;
-
-            // continue;
-            continue;
+            Some(dmg) => {
+                // Numeric damage value
+                result_damages[i] = DamageResult::Damage(dmg);
+            }
         }
-
-        // damage[i] = curDamage;
-        result_damages[i] = DamageResult::Damage(cur_damage.unwrap());
     }
 
     // return damage;

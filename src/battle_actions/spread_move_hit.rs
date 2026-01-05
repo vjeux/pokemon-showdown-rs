@@ -417,10 +417,13 @@ pub fn spread_move_hit(
 
     // Collect damaged targets
     // JS: for (const [i, t] of targets.entries()) { if (typeof damage[i] === 'number' && t) { damagedTargets.push(t); damagedDamage.push(damage[i]); } }
+    // CRITICAL: Only numeric damage values should be added, not undefined (Status moves)
     let mut damaged_targets: Vec<(usize, usize)> = Vec::new();
     let mut damaged_damage: Vec<i32> = Vec::new();
 
     for (i, target) in targets_mut.iter().enumerate() {
+        // JavaScript: typeof damage[i] === 'number'
+        // Only add if damage is a numeric value (not undefined/Success/Failed)
         if let DamageResult::Damage(dmg) = damage[i] {
             if let SpreadMoveTarget::Target(target_pos) = target {
                 damaged_targets.push(*target_pos);

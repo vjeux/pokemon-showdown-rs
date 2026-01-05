@@ -247,13 +247,11 @@ pub fn get_damage(
     }
 
     // JavaScript: if (!basePower) return basePower === 0 ? void 0 : basePower;
-    // CRITICAL: This check must happen BEFORE the crit check!
-    // If basePower is 0, return early (undefined for success, or the value for failure)
+    // If basePower is 0, return undefined (None)
+    // This is critical for Status moves - they should not trigger DamagingHit
     if base_power == 0 {
-        // For moves like Punishment, basePowerCallback would have set power from 0
-        // If it's still 0 after the callback, the move deals no damage
-        eprintln!("[GET_DAMAGE] basePower is still 0 after basePowerCallback, returning Some(0)");
-        return Some(0); // No damage dealt, move continues
+        eprintln!("[GET_DAMAGE] basePower is 0, returning None (undefined - Status move)");
+        return None; // undefined - Status move, no damage calculation
     }
 
     // Calculate critical hit
