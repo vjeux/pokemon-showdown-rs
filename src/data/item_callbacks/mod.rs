@@ -1004,6 +1004,7 @@ pub fn dispatch_on_residual(
         "ejectpack" => ejectpack::on_residual(battle, pokemon_pos),
         "leftovers" => leftovers::on_residual(battle, pokemon_pos),
         "mirrorherb" => mirrorherb::on_residual(battle, pokemon_pos),
+        "stickybarb" => stickybarb::on_residual(battle, pokemon_pos),
         "toxicorb" => toxicorb::on_residual(battle, pokemon_pos),
         "whiteherb" => whiteherb::on_residual(battle, pokemon_pos),
         _ => EventResult::Continue,
