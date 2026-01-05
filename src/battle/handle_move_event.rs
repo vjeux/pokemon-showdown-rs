@@ -52,7 +52,7 @@ impl Battle {
             let attacker = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
             let defender = self.event.as_ref().and_then(|e| e.source);
             (attacker, defender)
-        } else if event_id == "ModifyMove" || event_id == "ModifyType" || event_id == "TryMove" || event_id == "UseMoveMessage" || event_id == "AfterMoveSecondarySelf" {
+        } else if event_id == "Try" || event_id == "PrepareHit" || event_id == "ModifyMove" || event_id == "ModifyType" || event_id == "TryMove" || event_id == "UseMoveMessage" || event_id == "AfterMoveSecondarySelf" {
             // Pattern A: user is in current_event.target, target is in current_event.source
             let user = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
             let target_of_move = self.current_event.as_ref().and_then(|e| e.source);
@@ -77,7 +77,7 @@ impl Battle {
                 move_callbacks::dispatch_on_after_move(self, move_id, source_pos, target)
             }
             "AfterMoveSecondarySelf" => move_callbacks::dispatch_on_after_move_secondary_self(
-                self, move_id, source_pos, target,
+                self, move_id, source_pos, target_pos,
             ),
             "AfterSubDamage" => {
                 // Get damage from relay_var
@@ -149,18 +149,18 @@ impl Battle {
             "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, source_pos, target),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_id, source_pos),
             "ModifyMove" => {
-                move_callbacks::dispatch_on_modify_move(self, move_id, source_pos, target)
+                move_callbacks::dispatch_on_modify_move(self, move_id, source_pos, target_pos)
             }
             "ModifyPriority" => {
                 move_callbacks::dispatch_on_modify_priority(self, move_id, source_pos)
             }
             "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, move_id, source_pos),
-            "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, source_pos, target),
+            "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, source_pos, target_pos),
             "MoveFail" => move_callbacks::dispatch_on_move_fail(self, move_id, source_pos),
             "PrepareHit" => {
-                move_callbacks::dispatch_on_prepare_hit(self, move_id, source_pos, target)
+                move_callbacks::dispatch_on_prepare_hit(self, move_id, source_pos, target_pos)
             }
-            "Try" => move_callbacks::dispatch_on_try(self, move_id, source_pos, target),
+            "Try" => move_callbacks::dispatch_on_try(self, move_id, source_pos, target_pos),
             "TryHit" => {
                 if let Some(target_pos) = target {
                     move_callbacks::dispatch_on_try_hit(self, move_id, source_pos, target_pos)
@@ -175,7 +175,7 @@ impl Battle {
                     EventResult::Continue
                 }
             }
-            "TryMove" => move_callbacks::dispatch_on_try_move(self, move_id, source_pos, target),
+            "TryMove" => move_callbacks::dispatch_on_try_move(self, move_id, source_pos, target_pos),
             "UseMoveMessage" => {
                 move_callbacks::dispatch_on_use_move_message(self, move_id, source_pos)
             }
