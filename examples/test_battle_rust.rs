@@ -30,7 +30,7 @@ fn print_battle_state(battle: &Battle, iteration: usize, prng_calls: usize) {
     for (idx, active_idx) in battle.sides[0].active.iter().enumerate() {
         if let Some(poke_idx) = active_idx {
             if let Some(pokemon) = battle.sides[0].pokemon.get(*poke_idx) {
-                let display_name = pokemon.name.split('-').next().unwrap_or(&pokemon.name);
+                let display_name = &pokemon.name;
                 let hp_percent = (pokemon.hp as f32 / pokemon.maxhp as f32 * 100.0) as i32;
 
                 eprintln!("  Active[{}]: {} ({})", idx, display_name, pokemon.species_id.as_str());
@@ -90,7 +90,7 @@ fn print_battle_state(battle: &Battle, iteration: usize, prng_calls: usize) {
     for (idx, active_idx) in battle.sides[1].active.iter().enumerate() {
         if let Some(poke_idx) = active_idx {
             if let Some(pokemon) = battle.sides[1].pokemon.get(*poke_idx) {
-                let display_name = pokemon.name.split('-').next().unwrap_or(&pokemon.name);
+                let display_name = &pokemon.name;
                 let hp_percent = (pokemon.hp as f32 / pokemon.maxhp as f32 * 100.0) as i32;
 
                 eprintln!("  Active[{}]: {} ({})", idx, display_name, pokemon.species_id.as_str());
@@ -273,8 +273,7 @@ fn main() {
         for active_idx in &battle.sides[0].active {
             if let Some(poke_idx) = active_idx {
                 if let Some(pokemon) = battle.sides[0].pokemon.get(*poke_idx) {
-                    // Use base species name (strip forme suffix) to match JavaScript output
-                    let display_name = pokemon.name.split('-').next().unwrap_or(&pokemon.name);
+                    let display_name = &pokemon.name;
                     p1_active.push(format!("{}({}/{})", display_name, pokemon.hp, pokemon.maxhp));
                 }
             } else {
@@ -285,8 +284,7 @@ fn main() {
         for active_idx in &battle.sides[1].active {
             if let Some(poke_idx) = active_idx {
                 if let Some(pokemon) = battle.sides[1].pokemon.get(*poke_idx) {
-                    // Use base species name (strip forme suffix) to match JavaScript output
-                    let display_name = pokemon.name.split('-').next().unwrap_or(&pokemon.name);
+                    let display_name = &pokemon.name;
                     p2_active.push(format!("{}({}/{})", display_name, pokemon.hp, pokemon.maxhp));
                 }
             } else {
