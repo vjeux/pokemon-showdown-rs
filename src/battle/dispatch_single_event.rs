@@ -17,8 +17,10 @@ impl Battle {
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
-        eprintln!("[DISPATCH_SINGLE_EVENT] event_id={}, effect_id={}, target={:?}",
-            event_id, effect_id.as_str(), target);
+        if event_id.contains("Invulnerability") {
+            eprintln!("[DISPATCH_SINGLE_EVENT] event_id={}, effect_id={}, target={:?}",
+                event_id, effect_id.as_str(), target);
+        }
 
         let effect_str = effect_id.as_str();
 

@@ -106,11 +106,23 @@ pub fn hit_step_accuracy(
     for (i, &target_pos) in targets.iter().enumerate() {
         eprintln!("[HIT_STEP_ACCURACY] Processing target {} of {}: {:?}", i, targets.len(), target_pos);
         // Get base accuracy from move
-        let mut accuracy = match move_data.accuracy {
-            crate::dex::Accuracy::Percent(p) => p,
-            crate::dex::Accuracy::AlwaysHits => {
-                hit_results[i] = true;
-                continue;
+        // CRITICAL: In JavaScript, move.accuracy refers to the ActiveMove (which can be modified by onModifyMove)
+        // So we must check battle.active_move.accuracy first before falling back to move_data.accuracy
+        let mut accuracy = if let Some(ref active_move) = battle.active_move {
+            match active_move.accuracy {
+                crate::dex::Accuracy::Percent(p) => p,
+                crate::dex::Accuracy::AlwaysHits => {
+                    hit_results[i] = true;
+                    continue;
+                }
+            }
+        } else {
+            match move_data.accuracy {
+                crate::dex::Accuracy::Percent(p) => p,
+                crate::dex::Accuracy::AlwaysHits => {
+                    hit_results[i] = true;
+                    continue;
+                }
             }
         };
 
@@ -306,27 +318,6 @@ pub fn hit_step_accuracy(
                 false
             ) {
                 accuracy = modified_acc;
-            }
-        }
-
-        // Two-turn moves on turn 2 skip accuracy checks (already determined on turn 1)
-        // Check if pokemon has 'twoturnmove' volatile
-        {
-            use crate::dex_data::ID;
-            let has_twoturnmove = {
-                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => return vec![false],
-                };
-                let has_volatile = pokemon.volatiles.contains_key(&ID::from("twoturnmove"));
-                eprintln!("[HIT_STEP_ACCURACY] pokemon={:?} has twoturnmove volatile: {}", pokemon_pos, has_volatile);
-                has_volatile
-            };
-
-            if has_twoturnmove {
-                // Skip accuracy check for two-turn moves on turn 2
-                eprintln!("[HIT_STEP_ACCURACY] Skipping accuracy check for two-turn move");
-                accuracy = 0; // Set to 0 to represent boolean true
             }
         }
 

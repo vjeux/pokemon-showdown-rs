@@ -21,6 +21,11 @@ impl Battle {
         use crate::data::condition_callbacks;
         use crate::event::EventResult;
 
+        if event_id.contains("Invulnerability") {
+            eprintln!("[HANDLE_CONDITION_EVENT] event_id={}, condition_id={}, target={:?}",
+                event_id, condition_id, target);
+        }
+
         let pokemon_pos = target.unwrap_or((0, 0));
 
         // Normalize event name by removing "on" prefix if present
@@ -29,6 +34,10 @@ impl Battle {
         } else {
             event_id
         };
+
+        if event_id.contains("Invulnerability") {
+            eprintln!("[HANDLE_CONDITION_EVENT] normalized_event={}", normalized_event);
+        }
 
         // Try condition_callbacks first
         let result = match normalized_event {
@@ -148,6 +157,28 @@ impl Battle {
             match normalized_event {
                 "Start" => {
                     return move_callbacks::dispatch_condition_on_start(self, condition_id, pokemon_pos);
+                }
+                "AnyInvulnerability" | "Invulnerability" => {
+                    eprintln!("[HANDLE_CONDITION_EVENT] Calling move_callbacks dispatcher for condition_id={}, pokemon_pos={:?}", condition_id, pokemon_pos);
+                    // Get source position from current_event (the attacker checking if target is invulnerable)
+                    let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                    // Get the attacking move ID from current_event.effect
+                    // In JavaScript, the callback receives (target, source, move) where move is the attacking move
+                    // Extract as owned String to avoid borrow checker issues
+                    let attacking_move_id_string = self.current_event.as_ref()
+                        .and_then(|e| e.effect.as_ref())
+                        .map(|id| id.as_str().to_string())
+                        .unwrap_or_else(|| condition_id.to_string());  // Fall back to condition_id if no effect
+                    eprintln!("[HANDLE_CONDITION_EVENT] attacking_move_id={}", attacking_move_id_string);
+                    let dispatch_result = move_callbacks::dispatch_condition_on_any_invulnerability(
+                        self,
+                        condition_id,
+                        pokemon_pos,  // target_pos (Pokemon being checked for invulnerability)
+                        source_pos,   // source_pos (attacker)
+                        &attacking_move_id_string,  // move_id (attacking move that's trying to hit)
+                    );
+                    eprintln!("[HANDLE_CONDITION_EVENT] Dispatcher returned: {:?}", dispatch_result);
+                    return dispatch_result;
                 }
                 _ => {}
             }

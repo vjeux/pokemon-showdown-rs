@@ -341,12 +341,14 @@ pub fn try_spread_move_hit(
         // - 0 also passes (hitResults[i] === 0)
         // - false, undefined, "" fail
         // In Rust, we only have bool, so we filter by true
+        eprintln!("[TRY_SPREAD_MOVE_HIT] Before filtering: target_list={:?}, hit_results={:?}", target_list, hit_results);
         target_list = target_list
             .iter()
             .enumerate()
             .filter(|(i, _)| hit_results.get(*i).copied().unwrap_or(false))
             .map(|(_, &t)| t)
             .collect();
+        eprintln!("[TRY_SPREAD_MOVE_HIT] After filtering: target_list={:?}", target_list);
 
         // JS: atLeastOneFailure = atLeastOneFailure || hitResults.some(val => val === false);
         at_least_one_failure = at_least_one_failure || hit_results.iter().any(|&val| !val);

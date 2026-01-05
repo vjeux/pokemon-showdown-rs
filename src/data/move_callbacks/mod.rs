@@ -1416,15 +1416,25 @@ pub fn dispatch_condition_on_any_drag_out(
 /// Dispatch condition onAnyInvulnerability callbacks
 pub fn dispatch_condition_on_any_invulnerability(
     battle: &mut Battle,
-    move_id: &str,
+    condition_id: &str,
+    target_pos: (usize, usize),
     source_pos: (usize, usize),
+    attacking_move_id: &str,
 ) -> EventResult {
-    match move_id {
+    eprintln!("[DISPATCH_COND_ANY_INVULN] condition_id='{}', attacking_move_id='{}', target_pos={:?}, source_pos={:?}",
+        condition_id, attacking_move_id, target_pos, source_pos);
+    let result = match condition_id {
         "skydrop" => {
-            skydrop::condition::on_any_invulnerability(battle, None, Some(source_pos), move_id)
+            eprintln!("[DISPATCH_COND_ANY_INVULN] Matched skydrop, calling callback with attacking_move_id={}", attacking_move_id);
+            skydrop::condition::on_any_invulnerability(battle, Some(target_pos), Some(source_pos), attacking_move_id)
         }
-        _ => EventResult::Continue,
-    }
+        _ => {
+            eprintln!("[DISPATCH_COND_ANY_INVULN] No match, returning Continue");
+            EventResult::Continue
+        }
+    };
+    eprintln!("[DISPATCH_COND_ANY_INVULN] Returning {:?}", result);
+    result
 }
 
 /// Dispatch condition onAnyModifyDamage callbacks

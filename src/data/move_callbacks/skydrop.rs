@@ -32,15 +32,25 @@ pub fn on_modify_move(
     let source = pokemon_pos;
 
     // if (!source.volatiles['skydrop']) {
-    let has_skydrop = {
+    // On turn 1: no skydrop volatile → set accuracy to true
+    // On turn 2: has skydrop volatile BUT also has twoturnmove volatile
+    //   In JavaScript, onTryHit removes skydrop BEFORE onModifyMove on turn 2
+    //   So we need to check for twoturnmove to detect turn 2
+    let (has_skydrop, has_twoturnmove) = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.volatiles.contains_key(&ID::from("skydrop"))
+        (
+            source_pokemon.volatiles.contains_key(&ID::from("skydrop")),
+            source_pokemon.volatiles.contains_key(&ID::from("twoturnmove")),
+        )
     };
 
-    if !has_skydrop {
+    // Set accuracy to true if:
+    // - Turn 1: no skydrop volatile
+    // - Turn 2: has twoturnmove volatile (even if skydrop exists)
+    if !has_skydrop || has_twoturnmove {
         // move.accuracy = true;
         // delete move.flags['contact'];
         let active_move = match &mut battle.active_move {
@@ -279,7 +289,7 @@ pub fn on_try_hit(
             };
 
             battle.add("-immune", &[target_arg.into()]);
-            return EventResult::Stop;
+            return EventResult::Null;
         }
     } else {
         // if (target.volatiles['substitute'] || target.isAlly(source)) {
@@ -326,7 +336,7 @@ pub fn on_try_hit(
                 "-fail",
                 &[target_arg.into(), "move: Sky Drop".into(), "[heavy]".into()],
             );
-            return EventResult::Stop;
+            return EventResult::Null;
         }
 
         // this.add('-prepare', source, move.name, target);
@@ -359,7 +369,7 @@ pub fn on_try_hit(
         Pokemon::add_volatile(battle, source, ID::from("twoturnmove"), Some(target), Some(&move_id), None, None);
 
         // return null;
-        return EventResult::Stop;
+        return EventResult::Null;
     }
 
     EventResult::Continue
@@ -572,6 +582,8 @@ pub mod condition {
     ) -> EventResult {
         use crate::dex_data::ID;
 
+        eprintln!("[SKYDROP_ANY_INVULN] Called with target_pos={:?}, source_pos={:?}, move_id={}", target_pos, source_pos, move_id);
+
         // onAnyInvulnerability(target, source, move) {
         //     if (target !== this.effectState.target && target !== this.effectState.source) {
         //         return;
@@ -586,22 +598,43 @@ pub mod condition {
         // }
         let target = match target_pos {
             Some(pos) => pos,
-            None => return EventResult::Continue,
+            None => {
+                eprintln!("[SKYDROP_ANY_INVULN] No target_pos, returning Continue");
+                return EventResult::Continue;
+            }
         };
         let source = source_pos;
 
+        // Get the skydrop volatile's effect state from the target Pokemon
+        // In JavaScript, 'this.effectState' refers to the volatile's effect state
         let (effect_target, effect_source) = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
+            let pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => {
+                    eprintln!("[SKYDROP_ANY_INVULN] No Pokemon at target position, returning Continue");
+                    return EventResult::Continue;
+                }
             };
+
+            let skydrop_id = ID::from("skydrop");
+            let effect_state = match pokemon.volatiles.get(&skydrop_id) {
+                Some(es) => es,
+                None => {
+                    eprintln!("[SKYDROP_ANY_INVULN] No skydrop volatile on target Pokemon, returning Continue");
+                    return EventResult::Continue;
+                }
+            };
+
             (effect_state.target, effect_state.source)
         };
+
+        eprintln!("[SKYDROP_ANY_INVULN] target={:?}, source={:?}, effect_target={:?}, effect_source={:?}", target, source, effect_target, effect_source);
 
         // if (target !== this.effectState.target && target !== this.effectState.source) {
         //     return;
         // }
         if Some(target) != effect_target && Some(target) != effect_source {
+            eprintln!("[SKYDROP_ANY_INVULN] Target check failed: target not in effect_state, returning Continue");
             return EventResult::Continue;
         }
 
@@ -609,6 +642,7 @@ pub mod condition {
         //     return;
         // }
         if source == effect_target && Some(target) == effect_source {
+            eprintln!("[SKYDROP_ANY_INVULN] Source/target swap check failed, returning Continue");
             return EventResult::Continue;
         }
 
@@ -624,9 +658,11 @@ pub mod condition {
             || move_id == ID::from("smackdown")
             || move_id == ID::from("thousandarrows")
         {
+            eprintln!("[SKYDROP_ANY_INVULN] Move can hit Sky Drop user, returning Continue");
             return EventResult::Continue;
         }
 
+        eprintln!("[SKYDROP_ANY_INVULN] All checks passed, returning Boolean(false)");
         // return false;
         EventResult::Boolean(false)
     }

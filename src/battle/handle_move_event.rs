@@ -27,14 +27,24 @@ impl Battle {
         //   - Therefore: event.target = attacker, event.source = defender
         //   - IMPORTANT: run_event sets self.event (not self.current_event)
         //
-        // For events called via single_event (like AfterHit):
-        //   - We call: single_event("AfterHit", move_id, target_pos, source_pos, ...)
-        //   - Parameters are: single_event(eventid, effect_id, target, source, ...)
-        //   - So target_pos goes into "target", source_pos goes into "source"
-        //   - Therefore: current_event.target = defender, current_event.source = attacker
+        // For events called via single_event:
+        //   - TWO DIFFERENT PATTERNS:
+        //
+        //   Pattern A (ModifyMove, ModifyType, TryMove, UseMoveMessage, AfterMoveSecondarySelf):
+        //     JavaScript: singleEvent('ModifyMove', move, null, pokemon, target, ...)
+        //     - target param = pokemon (user), source param = target (target of move)
+        //     - current_event.target = pokemon (user), current_event.source = target
+        //     - User is in current_event.target
+        //
+        //   Pattern B (AfterHit, Hit, TryHit, PrepareHit, etc.):
+        //     JavaScript: singleEvent('AfterHit', move, target, source, ...)
+        //     - target param = target, source param = source (user)
+        //     - current_event.target = target, current_event.source = source (user)
+        //     - User is in current_event.source
         //
         // BasePower is called via run_event, so we need to extract from event.target
-        // Most other events are called via single_event, so we extract from current_event.source
+        // ModifyMove/ModifyType/TryMove/UseMoveMessage use Pattern A, extract from current_event.target
+        // Other events use Pattern B, extract from current_event.source
 
         let (source_pos, target_pos) = if event_id == "BasePower" {
             // For BasePower (run_event): attacker is in event.target, defender is in event.source
@@ -42,8 +52,13 @@ impl Battle {
             let attacker = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
             let defender = self.event.as_ref().and_then(|e| e.source);
             (attacker, defender)
+        } else if event_id == "ModifyMove" || event_id == "ModifyType" || event_id == "TryMove" || event_id == "UseMoveMessage" || event_id == "AfterMoveSecondarySelf" {
+            // Pattern A: user is in current_event.target, target is in current_event.source
+            let user = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+            let target_of_move = self.current_event.as_ref().and_then(|e| e.source);
+            (user, target_of_move)
         } else {
-            // For other events (single_event): attacker is in current_event.source, defender is in target param
+            // Pattern B: user is in current_event.source, target is in current_event.target
             let attacker = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
             (attacker, target)
         };
