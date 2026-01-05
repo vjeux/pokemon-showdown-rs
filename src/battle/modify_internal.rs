@@ -25,6 +25,9 @@ impl Battle {
         let adjusted = truncated_product + 2048 - 1;  // JavaScript uses + 2048 - 1, not + 2048
         let result = self.trunc(adjusted as f64 / 4096.0, None) as i32;
 
-        result.max(1)
+        // IMPORTANT: Do NOT clamp to .max(1) here!
+        // JavaScript doesn't clamp, and we need to preserve 0 for type effectiveness
+        // Minimum damage clamping happens elsewhere in the damage calculation pipeline
+        result
     }
 }

@@ -591,7 +591,13 @@ impl Battle {
         // Apply modifier to numeric relay variables
         if let EventResult::Number(num) = relay_var {
             if let Some(ref event) = self.event {
+                if event_id == "Effectiveness" {
+                    eprintln!("[RUN_EVENT] Effectiveness: Before modify - num={}, modifier={}", num, event.modifier);
+                }
                 let modified = self.modify_internal(num, event.modifier);
+                if event_id == "Effectiveness" {
+                    eprintln!("[RUN_EVENT] Effectiveness: After modify - modified={}", modified);
+                }
                 relay_var = EventResult::Number(modified);
             }
         }
