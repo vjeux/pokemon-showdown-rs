@@ -287,23 +287,12 @@ pub fn get_damage(
     // Determine if this is a critical hit
     // JavaScript: moveHit.crit = move.willCrit || false; if (move.willCrit === undefined && critRatio) moveHit.crit = this.battle.randomChance(1, critMult[critRatio]);
 
-    // Two-turn moves on turn 2 skip crit checks (already determined on turn 1)
-    // Check if pokemon has 'twoturnmove' volatile
-    let has_twoturnmove = {
-        use crate::dex_data::ID;
-        let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return Some(0),
-        };
-        pokemon.volatiles.contains_key(&ID::from("twoturnmove"))
-    };
-
     // Check if will_crit is explicitly set in active_move
     if let Some(ref active_move) = battle.active_move {
         if let Some(will_crit) = active_move.will_crit {
             is_crit = will_crit;
-        } else if !has_twoturnmove {
-            // will_crit is None (undefined) and not a two-turn move, so roll for crit
+        } else {
+            // will_crit is None (undefined), so roll for crit
             if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
                 let crit_chance = crit_mult[crit_ratio as usize];
                 if crit_chance > 0 {
@@ -312,8 +301,8 @@ pub fn get_damage(
                 }
             }
         }
-    } else if !has_twoturnmove {
-        // No active_move and not a two-turn move, roll normally if crit_ratio > 0
+    } else {
+        // No active_move, roll normally if crit_ratio > 0
         if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
             let crit_chance = crit_mult[crit_ratio as usize];
             if crit_chance > 0 {

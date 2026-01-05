@@ -32,25 +32,19 @@ pub fn on_modify_move(
     let source = pokemon_pos;
 
     // if (!source.volatiles['skydrop']) {
-    // On turn 1: no skydrop volatile → set accuracy to true
-    // On turn 2: has skydrop volatile BUT also has twoturnmove volatile
-    //   In JavaScript, onTryHit removes skydrop BEFORE onModifyMove on turn 2
-    //   So we need to check for twoturnmove to detect turn 2
-    let (has_skydrop, has_twoturnmove) = {
+    // JavaScript ONLY sets accuracy=true on turn 1 (charging turn) when no skydrop volatile exists
+    // On turn 2 (attack turn), skydrop volatile exists, so this does NOT set accuracy=true
+    // This allows the normal accuracy check to happen on turn 2
+    let has_skydrop = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (
-            source_pokemon.volatiles.contains_key(&ID::from("skydrop")),
-            source_pokemon.volatiles.contains_key(&ID::from("twoturnmove")),
-        )
+        source_pokemon.volatiles.contains_key(&ID::from("skydrop"))
     };
 
-    // Set accuracy to true if:
-    // - Turn 1: no skydrop volatile
-    // - Turn 2: has twoturnmove volatile (even if skydrop exists)
-    if !has_skydrop || has_twoturnmove {
+    // Set accuracy to true only on turn 1 (when no skydrop volatile exists)
+    if !has_skydrop {
         // move.accuracy = true;
         // delete move.flags['contact'];
         let active_move = match &mut battle.active_move {
