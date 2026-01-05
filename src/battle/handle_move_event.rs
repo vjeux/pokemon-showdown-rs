@@ -14,23 +14,25 @@ impl Battle {
     pub fn handle_move_event(
         &mut self,
         event_id: &str,
-        move_id: &str,
+        move_id: &ID,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
+        let move_str = move_id.as_str();
+
         match event_id {
             "AfterHit" => {
                 if let Some(tgt) = target_pos {
-                    move_callbacks::dispatch_on_after_hit(self, move_id, target_pos.unwrap_or((0,0)), tgt)
+                    move_callbacks::dispatch_on_after_hit(self, move_str, target_pos.unwrap_or((0,0)), tgt)
                 } else {
                     EventResult::Continue
                 }
             }
             "AfterMove" => {
-                move_callbacks::dispatch_on_after_move(self, move_id, target_pos.unwrap_or((0,0)), source_pos)
+                move_callbacks::dispatch_on_after_move(self, move_str, target_pos.unwrap_or((0,0)), source_pos)
             }
             "AfterMoveSecondarySelf" => move_callbacks::dispatch_on_after_move_secondary_self(
-                self, move_id, target_pos.unwrap_or((0,0)), source_pos,
+                self, move_str, target_pos.unwrap_or((0,0)), source_pos,
             ),
             "AfterSubDamage" => {
                 // Get damage from relay_var
@@ -40,7 +42,7 @@ impl Battle {
                     .and_then(|e| e.relay_var)
                     .unwrap_or(0);
 
-                move_callbacks::dispatch_on_after_sub_damage(self, move_id, target_pos.unwrap_or((0,0)), damage, source_pos)
+                move_callbacks::dispatch_on_after_sub_damage(self, move_str, target_pos.unwrap_or((0,0)), damage, source_pos)
             }
             "BasePower" => {
                 // Get base_power from relay_var
@@ -52,7 +54,7 @@ impl Battle {
 
                 // BasePower event is for abilities/items to modify base power
                 // Note: basePowerCallback is handled in getDamage, not here
-                let result = move_callbacks::dispatch_on_base_power(self, move_id, base_power, target_pos.unwrap_or((0,0)), source_pos);
+                let result = move_callbacks::dispatch_on_base_power(self, move_str, base_power, target_pos.unwrap_or((0,0)), source_pos);
                 result
             }
             "Damage" => {
@@ -76,7 +78,7 @@ impl Battle {
                 if let Some(tgt) = target_pos {
                     move_callbacks::dispatch_on_damage(
                         self,
-                        move_id,
+                        move_str,
                         damage,
                         tgt,
                         Some(target_pos.unwrap_or((0,0))),
@@ -86,47 +88,47 @@ impl Battle {
                     EventResult::Continue
                 }
             }
-            "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_id, target_pos.unwrap_or((0,0))),
-            "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_id, 0, "", target_pos.unwrap_or((0,0))),
+            "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_str, target_pos.unwrap_or((0,0))),
+            "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_str, 0, "", target_pos.unwrap_or((0,0))),
             "Hit" => {
                 if let Some(tgt) = target_pos {
-                    move_callbacks::dispatch_on_hit(self, move_id, target_pos.unwrap_or((0,0)), Some(tgt))
+                    move_callbacks::dispatch_on_hit(self, move_str, target_pos.unwrap_or((0,0)), Some(tgt))
                 } else {
                     EventResult::Continue
                 }
             }
-            "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, target_pos.unwrap_or((0,0)), source_pos),
-            "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_id, target_pos.unwrap_or((0,0))),
+            "HitField" => move_callbacks::dispatch_on_hit_field(self, move_str, target_pos.unwrap_or((0,0)), source_pos),
+            "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_str, target_pos.unwrap_or((0,0))),
             "ModifyMove" => {
-                move_callbacks::dispatch_on_modify_move(self, move_id, target_pos.unwrap_or((0,0)), source_pos)
+                move_callbacks::dispatch_on_modify_move(self, move_str, target_pos.unwrap_or((0,0)), source_pos)
             }
             "ModifyPriority" => {
-                move_callbacks::dispatch_on_modify_priority(self, move_id, target_pos.unwrap_or((0,0)))
+                move_callbacks::dispatch_on_modify_priority(self, move_str, target_pos.unwrap_or((0,0)))
             }
-            "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, move_id, target_pos.unwrap_or((0,0))),
-            "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_id, target_pos.unwrap_or((0,0)), source_pos),
-            "MoveFail" => move_callbacks::dispatch_on_move_fail(self, move_id, target_pos.unwrap_or((0,0))),
+            "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, move_str, target_pos.unwrap_or((0,0))),
+            "ModifyType" => move_callbacks::dispatch_on_modify_type(self, move_str, target_pos.unwrap_or((0,0)), source_pos),
+            "MoveFail" => move_callbacks::dispatch_on_move_fail(self, move_str, target_pos.unwrap_or((0,0))),
             "PrepareHit" => {
-                move_callbacks::dispatch_on_prepare_hit(self, move_id, target_pos.unwrap_or((0,0)), source_pos)
+                move_callbacks::dispatch_on_prepare_hit(self, move_str, target_pos.unwrap_or((0,0)), source_pos)
             }
-            "Try" => move_callbacks::dispatch_on_try(self, move_id, target_pos.unwrap_or((0,0)), source_pos),
+            "Try" => move_callbacks::dispatch_on_try(self, move_str, target_pos.unwrap_or((0,0)), source_pos),
             "TryHit" => {
                 if let Some(tgt) = target_pos {
-                    move_callbacks::dispatch_on_try_hit(self, move_id, target_pos.unwrap_or((0,0)), tgt)
+                    move_callbacks::dispatch_on_try_hit(self, move_str, target_pos.unwrap_or((0,0)), tgt)
                 } else {
                     EventResult::Continue
                 }
             }
             "TryImmunity" => {
                 if let Some(tgt) = target_pos {
-                    move_callbacks::dispatch_on_try_immunity(self, move_id, tgt)
+                    move_callbacks::dispatch_on_try_immunity(self, move_str, tgt)
                 } else {
                     EventResult::Continue
                 }
             }
-            "TryMove" => move_callbacks::dispatch_on_try_move(self, move_id, target_pos.unwrap_or((0,0)), source_pos),
+            "TryMove" => move_callbacks::dispatch_on_try_move(self, move_str, target_pos.unwrap_or((0,0)), source_pos),
             "UseMoveMessage" => {
-                move_callbacks::dispatch_on_use_move_message(self, move_id, target_pos.unwrap_or((0,0)))
+                move_callbacks::dispatch_on_use_move_message(self, move_str, target_pos.unwrap_or((0,0)))
             }
             _ => EventResult::Continue,
         }
