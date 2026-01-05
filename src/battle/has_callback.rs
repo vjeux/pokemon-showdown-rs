@@ -207,9 +207,12 @@ impl Battle {
                     // has this callback. For now, we'll conservatively return true for known events
                     // that move conditions typically handle.
                     // The dispatchers will return Continue if the callback doesn't exist.
+                    //
+                    // NOTE: onBeforeTurn and onBeforeMove are for Pokemon volatiles, not pseudoweather
+                    // Pseudoweather uses onFieldStart, onFieldRestart, onFieldResidual, onFieldEnd
                     match event_id {
                         "onStart" | "onTryHit" | "onTryPrimaryHit" | "onHit" | "onEnd" |
-                        "onBeforeTurn" | "onBeforeMove" | "onSourceModifyDamage" => {
+                        "onSourceModifyDamage" | "onDisableMove" => {
                             return true;
                         },
                         _ => {}
