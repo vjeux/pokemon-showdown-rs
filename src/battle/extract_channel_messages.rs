@@ -11,6 +11,7 @@ use regex::Regex;
 ///
 /// JavaScript:
 /// export type ChannelID = 0 | 1 | 2 | 3 | 4;
+#[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ChannelID {
     Omniscient = -1,
@@ -22,6 +23,7 @@ pub enum ChannelID {
 }
 
 impl ChannelID {
+    #[allow(dead_code)]
     pub fn from_i32(value: i32) -> Option<Self> {
         match value {
             -1 => Some(ChannelID::Omniscient),
@@ -34,6 +36,7 @@ impl ChannelID {
         }
     }
 
+    #[allow(dead_code)]
     pub fn to_i32(self) -> i32 {
         self as i32
     }

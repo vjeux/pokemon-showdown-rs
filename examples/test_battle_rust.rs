@@ -239,12 +239,14 @@ fn main() {
             team: TeamFormat::Sets(team1),
             avatar: None,
             rating: None,
+            seed: None,
         }),
         p2: Some(PlayerOptions {
             name: "Player 2".to_string(),
             team: TeamFormat::Sets(team2),
             avatar: None,
             rating: None,
+            seed: None,
         }),
         ..Default::default()
     });
