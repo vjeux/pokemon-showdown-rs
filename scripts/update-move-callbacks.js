@@ -94,6 +94,33 @@ for (const moveId in Moves) {
         movesJson[moveId][callback] = true;
     });
 
+    // Handle move.condition callbacks (like octolock)
+    if (moveData.condition && typeof moveData.condition === 'object') {
+        if (!movesJson[moveId].condition) {
+            movesJson[moveId].condition = {};
+        }
+
+        // Extract callbacks from the condition object
+        const conditionCallbacks = [];
+        for (const key in moveData.condition) {
+            if (moveData.condition.hasOwnProperty(key) && typeof moveData.condition[key] === 'function') {
+                conditionCallbacks.push(key);
+            }
+        }
+
+        // Add callback boolean flags to condition
+        conditionCallbacks.forEach(callback => {
+            movesJson[moveId].condition[callback] = true;
+        });
+
+        // Preserve *Order/*Priority/*SubOrder metadata in condition
+        for (const key in moveData.condition) {
+            if (key.endsWith('Priority') || key.endsWith('Order') || key.endsWith('SubOrder')) {
+                movesJson[moveId].condition[key] = moveData.condition[key];
+            }
+        }
+    }
+
     // Preserve existing metadata (name, num, type, category, etc.)
     if (moveData.name) {
         movesJson[moveId].name = moveData.name;

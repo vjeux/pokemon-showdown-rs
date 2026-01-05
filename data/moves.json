@@ -367,7 +367,9 @@
     },
     "condition": {
       "duration": 2,
-      "counterMax": 729
+      "counterMax": 729,
+      "onStart": true,
+      "onRestart": true
     },
     "secondary": null,
     "target": "self",
@@ -529,7 +531,9 @@
     },
     "volatileStatus": "aquaring",
     "condition": {
-      "onResidualOrder": 6
+      "onResidualOrder": 6,
+      "onStart": true,
+      "onResidual": true
     },
     "secondary": null,
     "target": "self",
@@ -798,7 +802,11 @@
     "volatileStatus": "attract",
     "condition": {
       "noCopy": true,
-      "onBeforeMovePriority": 2
+      "onBeforeMovePriority": 2,
+      "onStart": true,
+      "onUpdate": true,
+      "onBeforeMove": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "normal",
@@ -894,7 +902,11 @@
     "condition": {
       "duration": 5,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 10
+      "onSideResidualSubOrder": 10,
+      "durationCallback": true,
+      "onAnyModifyDamage": true,
+      "onSideStart": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "allySide",
@@ -1041,7 +1053,10 @@
     "volatileStatus": "banefulbunker",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onStart": true,
+      "onTryHit": true,
+      "onHit": true
     },
     "secondary": null,
     "target": "self",
@@ -1164,7 +1179,9 @@
       "bullet": 1
     },
     "condition": {
-      "duration": 1
+      "duration": 1,
+      "onStart": true,
+      "onHit": true
     },
     "secondary": null,
     "target": "normal",
@@ -1325,7 +1342,12 @@
     "condition": {
       "duration": 3,
       "onLockMove": "bide",
-      "onDamagePriority": -101
+      "onDamagePriority": -101,
+      "onStart": true,
+      "onDamage": true,
+      "onBeforeMove": true,
+      "onMoveAborted": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "self",
@@ -1833,7 +1855,9 @@
       "failinstruct": 1
     },
     "condition": {
-      "duration": 2
+      "duration": 2,
+      "onInvulnerability": true,
+      "onSourceBasePower": true
     },
     "secondary": {
       "chance": 30,
@@ -2212,7 +2236,10 @@
     "volatileStatus": "burningbulwark",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onStart": true,
+      "onTryHit": true,
+      "onHit": true
     },
     "secondary": null,
     "target": "self",
@@ -2443,7 +2470,13 @@
     },
     "volatileStatus": "charge",
     "condition": {
-      "onBasePowerPriority": 9
+      "onBasePowerPriority": 9,
+      "onStart": true,
+      "onRestart": true,
+      "onBasePower": true,
+      "onMoveAborted": true,
+      "onAfterMove": true,
+      "onEnd": true
     },
     "boosts": {
       "spd": 1
@@ -2576,7 +2609,8 @@
     "secondary": null,
     "condition": {
       "duration": 1,
-      "onBeforeMovePriority": 100
+      "onBeforeMovePriority": 100,
+      "onBeforeMove": true
     },
     "target": "all",
     "type": "Ice",
@@ -3274,7 +3308,10 @@
     "condition": {
       "duration": 1,
       "noCopy": true,
-      "onRedirectTargetPriority": -1
+      "onRedirectTargetPriority": -1,
+      "onStart": true,
+      "onRedirectTarget": true,
+      "onDamagingHit": true
     },
     "secondary": null,
     "target": "scripted",
@@ -3359,7 +3396,9 @@
     "sideCondition": "craftyshield",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onSideStart": true,
+      "onTryHit": true
     },
     "secondary": null,
     "target": "allySide",
@@ -3505,7 +3544,9 @@
     },
     "volatileStatus": "curse",
     "condition": {
-      "onResidualOrder": 12
+      "onResidualOrder": 12,
+      "onStart": true,
+      "onResidual": true
     },
     "secondary": null,
     "target": "normal",
@@ -3689,7 +3730,8 @@
     },
     "volatileStatus": "defensecurl",
     "condition": {
-      "noCopy": true
+      "noCopy": true,
+      "onRestart": true
     },
     "secondary": null,
     "target": "self",
@@ -3743,7 +3785,11 @@
     "volatileStatus": "destinybond",
     "condition": {
       "noCopy": true,
-      "onBeforeMovePriority": -1
+      "onBeforeMovePriority": -1,
+      "onStart": true,
+      "onFaint": true,
+      "onBeforeMove": true,
+      "onMoveAborted": true
     },
     "secondary": null,
     "target": "self",
@@ -3839,7 +3885,10 @@
       "failinstruct": 1
     },
     "condition": {
-      "duration": 2
+      "duration": 2,
+      "onImmunity": true,
+      "onInvulnerability": true,
+      "onSourceModifyDamage": true
     },
     "secondary": null,
     "target": "normal",
@@ -3887,7 +3936,11 @@
       "duration": 5,
       "noCopy": true,
       "onResidualOrder": 17,
-      "onBeforeMovePriority": 7
+      "onBeforeMovePriority": 7,
+      "onStart": true,
+      "onEnd": true,
+      "onBeforeMove": true,
+      "onDisableMove": true
     },
     "secondary": null,
     "target": "normal",
@@ -3960,7 +4013,10 @@
       "failinstruct": 1
     },
     "condition": {
-      "duration": 2
+      "duration": 2,
+      "onImmunity": true,
+      "onInvulnerability": true,
+      "onSourceModifyDamage": true
     },
     "secondary": null,
     "target": "normal",
@@ -4275,7 +4331,10 @@
       "metronome": 1
     },
     "volatileStatus": "dragoncheer",
-    "condition": {},
+    "condition": {
+      "onStart": true,
+      "onModifyCritRatio": true
+    },
     "secondary": null,
     "target": "adjacentAlly",
     "type": "Dragon"
@@ -4749,7 +4808,9 @@
       "metronome": 1
     },
     "condition": {
-      "duration": 2
+      "duration": 2,
+      "onFieldStart": true,
+      "onFieldRestart": true
     },
     "secondary": null,
     "target": "normal",
@@ -4844,7 +4905,13 @@
       "duration": 5,
       "onBasePowerPriority": 6,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 7
+      "onFieldResidualSubOrder": 7,
+      "durationCallback": true,
+      "onSetStatus": true,
+      "onTryAddVolatile": true,
+      "onBasePower": true,
+      "onFieldStart": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -4874,7 +4941,9 @@
     "volatileStatus": "electrify",
     "condition": {
       "duration": 1,
-      "onModifyTypePriority": -2
+      "onModifyTypePriority": -2,
+      "onStart": true,
+      "onModifyType": true
     },
     "secondary": null,
     "target": "normal",
@@ -4993,7 +5062,9 @@
     "volatileStatus": "embargo",
     "condition": {
       "duration": 5,
-      "onResidualOrder": 21
+      "onResidualOrder": 21,
+      "onStart": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "normal",
@@ -5046,7 +5117,12 @@
     "condition": {
       "duration": 3,
       "noCopy": true,
-      "onResidualOrder": 16
+      "onResidualOrder": 16,
+      "onStart": true,
+      "onOverrideAction": true,
+      "onResidual": true,
+      "onEnd": true,
+      "onDisableMove": true
     },
     "secondary": null,
     "target": "normal",
@@ -5102,7 +5178,9 @@
     "volatileStatus": "endure",
     "condition": {
       "duration": 1,
-      "onDamagePriority": -10
+      "onDamagePriority": -10,
+      "onStart": true,
+      "onDamage": true
     },
     "secondary": null,
     "target": "self",
@@ -5367,7 +5445,9 @@
     },
     "pseudoWeather": "fairylock",
     "condition": {
-      "duration": 2
+      "duration": 2,
+      "onFieldStart": true,
+      "onTrapPokemon": true
     },
     "secondary": null,
     "target": "all",
@@ -5778,7 +5858,10 @@
       "onResidualOrder": 5,
       "onResidualSubOrder": 1,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 8
+      "onSideResidualSubOrder": 8,
+      "onSideStart": true,
+      "onResidual": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "normal",
@@ -6158,7 +6241,9 @@
       "metronome": 1,
       "noparentalbond": 1
     },
-    "condition": {},
+    "condition": {
+      "onUpdate": true
+    },
     "secondary": null,
     "target": "normal",
     "type": "Dark",
@@ -6294,7 +6379,9 @@
       "failinstruct": 1
     },
     "condition": {
-      "duration": 2
+      "duration": 2,
+      "onInvulnerability": true,
+      "onSourceModifyDamage": true
     },
     "secondary": null,
     "target": "any",
@@ -6365,7 +6452,10 @@
       "metronome": 1
     },
     "volatileStatus": "focusenergy",
-    "condition": {},
+    "condition": {
+      "onStart": true,
+      "onModifyCritRatio": true
+    },
     "secondary": null,
     "target": "self",
     "type": "Normal",
@@ -6395,7 +6485,10 @@
       "failinstruct": 1
     },
     "condition": {
-      "duration": 1
+      "duration": 1,
+      "onStart": true,
+      "onHit": true,
+      "onTryAddVolatile": true
     },
     "secondary": null,
     "target": "normal",
@@ -6419,7 +6512,9 @@
     "volatileStatus": "followme",
     "condition": {
       "duration": 1,
-      "onFoeRedirectTargetPriority": 1
+      "onFoeRedirectTargetPriority": 1,
+      "onStart": true,
+      "onFoeRedirectTarget": true
     },
     "secondary": null,
     "target": "self",
@@ -6470,7 +6565,10 @@
     },
     "volatileStatus": "foresight",
     "condition": {
-      "noCopy": true
+      "noCopy": true,
+      "onStart": true,
+      "onNegateImmunity": true,
+      "onModifyBoost": true
     },
     "secondary": null,
     "target": "normal",
@@ -6723,7 +6821,9 @@
       "slicing": 1
     },
     "condition": {
-      "duration": 2
+      "duration": 2,
+      "onStart": true,
+      "onRestart": true
     },
     "secondary": null,
     "target": "normal",
@@ -6832,7 +6932,10 @@
       "metronome": 1
     },
     "volatileStatus": "gastroacid",
-    "condition": {},
+    "condition": {
+      "onStart": true,
+      "onCopy": true
+    },
     "secondary": null,
     "target": "normal",
     "type": "Poison",
@@ -7089,7 +7192,11 @@
     },
     "condition": {
       "noCopy": true,
-      "onBeforeMovePriority": 100
+      "onBeforeMovePriority": 100,
+      "onStart": true,
+      "onAccuracy": true,
+      "onSourceModifyDamage": true,
+      "onBeforeMove": true
     },
     "secondary": null,
     "target": "normal",
@@ -7174,7 +7281,10 @@
       "onResidualOrder": 5,
       "onResidualSubOrder": 1,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 11
+      "onSideResidualSubOrder": 11,
+      "onSideStart": true,
+      "onResidual": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "adjacentFoe",
@@ -7211,7 +7321,10 @@
     "isMax": "Machamp",
     "self": {},
     "condition": {
-      "noCopy": true
+      "noCopy": true,
+      "onStart": true,
+      "onRestart": true,
+      "onModifyCritRatio": true
     },
     "secondary": null,
     "target": "adjacentFoe",
@@ -7537,7 +7650,10 @@
     "flags": {},
     "isMax": "Copperajah",
     "self": {},
-    "condition": {},
+    "condition": {
+      "onSideStart": true,
+      "onSwitchIn": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Steel",
@@ -7645,7 +7761,10 @@
       "onResidualOrder": 5,
       "onResidualSubOrder": 1,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 11
+      "onSideResidualSubOrder": 11,
+      "onSideStart": true,
+      "onResidual": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "adjacentFoe",
@@ -7669,7 +7788,10 @@
       "onResidualOrder": 5,
       "onResidualSubOrder": 1,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 11
+      "onSideResidualSubOrder": 11,
+      "onSideStart": true,
+      "onResidual": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "adjacentFoe",
@@ -7710,7 +7832,10 @@
       "onResidualOrder": 5,
       "onResidualSubOrder": 1,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 11
+      "onSideResidualSubOrder": 11,
+      "onSideStart": true,
+      "onResidual": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "adjacentFoe",
@@ -7780,7 +7905,10 @@
     "condition": {
       "duration": 4,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 9
+      "onSideResidualSubOrder": 9,
+      "onSideStart": true,
+      "onSideEnd": true,
+      "onModifySpe": true
     },
     "secondary": null,
     "target": "normal",
@@ -7857,7 +7985,12 @@
       "onResidualOrder": 5,
       "onResidualSubOrder": 2,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 7
+      "onFieldResidualSubOrder": 7,
+      "durationCallback": true,
+      "onBasePower": true,
+      "onFieldStart": true,
+      "onResidual": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -7908,7 +8041,14 @@
       "duration": 5,
       "onBeforeMovePriority": 6,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 2
+      "onFieldResidualSubOrder": 2,
+      "durationCallback": true,
+      "onFieldStart": true,
+      "onModifyAccuracy": true,
+      "onDisableMove": true,
+      "onBeforeMove": true,
+      "onModifyMove": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -7991,7 +8131,10 @@
     },
     "volatileStatus": "grudge",
     "condition": {
-      "onBeforeMovePriority": 100
+      "onBeforeMovePriority": 100,
+      "onStart": true,
+      "onFaint": true,
+      "onBeforeMove": true
     },
     "secondary": null,
     "target": "self",
@@ -8437,7 +8580,15 @@
     "condition": {
       "duration": 5,
       "onBeforeMovePriority": 6,
-      "onResidualOrder": 20
+      "onResidualOrder": 20,
+      "durationCallback": true,
+      "onStart": true,
+      "onDisableMove": true,
+      "onBeforeMove": true,
+      "onModifyMove": true,
+      "onEnd": true,
+      "onTryHeal": true,
+      "onRestart": true
     },
     "secondary": null,
     "target": "allAdjacentFoes",
@@ -8464,7 +8615,10 @@
     },
     "selfdestruct": "ifHit",
     "slotCondition": "healingwish",
-    "condition": {},
+    "condition": {
+      "onSwitchIn": true,
+      "onSwap": true
+    },
     "secondary": null,
     "target": "self",
     "type": "Psychic",
@@ -8664,7 +8818,10 @@
     "volatileStatus": "helpinghand",
     "condition": {
       "duration": 1,
-      "onBasePowerPriority": 10
+      "onBasePowerPriority": 10,
+      "onStart": true,
+      "onRestart": true,
+      "onBasePower": true
     },
     "secondary": null,
     "target": "adjacentAlly",
@@ -9506,7 +9663,9 @@
     },
     "condition": {
       "duration": 1,
-      "onLockMove": "iceball"
+      "onLockMove": "iceball",
+      "onStart": true,
+      "onResidual": true
     },
     "secondary": null,
     "target": "normal",
@@ -9766,7 +9925,10 @@
     "volatileStatus": "imprison",
     "condition": {
       "noCopy": true,
-      "onFoeBeforeMovePriority": 4
+      "onFoeBeforeMovePriority": 4,
+      "onStart": true,
+      "onFoeDisableMove": true,
+      "onFoeBeforeMove": true
     },
     "secondary": null,
     "target": "self",
@@ -9890,7 +10052,11 @@
     },
     "volatileStatus": "ingrain",
     "condition": {
-      "onResidualOrder": 7
+      "onResidualOrder": 7,
+      "onStart": true,
+      "onResidual": true,
+      "onTrapPokemon": true,
+      "onDragOut": true
     },
     "secondary": null,
     "target": "self",
@@ -9942,7 +10108,9 @@
     "pseudoWeather": "iondeluge",
     "condition": {
       "duration": 1,
-      "onModifyTypePriority": -2
+      "onModifyTypePriority": -2,
+      "onFieldStart": true,
+      "onModifyType": true
     },
     "secondary": null,
     "target": "all",
@@ -10209,7 +10377,10 @@
     "volatileStatus": "kingsshield",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onStart": true,
+      "onTryHit": true,
+      "onHit": true
     },
     "secondary": null,
     "target": "self",
@@ -10299,7 +10470,11 @@
     },
     "volatileStatus": "laserfocus",
     "condition": {
-      "duration": 2
+      "duration": 2,
+      "onStart": true,
+      "onRestart": true,
+      "onModifyCritRatio": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "self",
@@ -10515,7 +10690,9 @@
     },
     "volatileStatus": "leechseed",
     "condition": {
-      "onResidualOrder": 8
+      "onResidualOrder": 8,
+      "onStart": true,
+      "onResidual": true
     },
     "secondary": null,
     "target": "normal",
@@ -10652,7 +10829,11 @@
     "condition": {
       "duration": 5,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 2
+      "onSideResidualSubOrder": 2,
+      "durationCallback": true,
+      "onAnyModifyDamage": true,
+      "onSideStart": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "allySide",
@@ -10722,7 +10903,9 @@
     "condition": {
       "noCopy": true,
       "duration": 2,
-      "onSourceInvulnerabilityPriority": 1
+      "onSourceInvulnerabilityPriority": 1,
+      "onSourceInvulnerability": true,
+      "onSourceAccuracy": true
     },
     "secondary": null,
     "target": "normal",
@@ -10828,7 +11011,9 @@
       "duration": 5,
       "onCriticalHit": false,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 6
+      "onSideResidualSubOrder": 6,
+      "onSideStart": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "allySide",
@@ -10896,7 +11081,10 @@
     },
     "selfdestruct": "ifHit",
     "slotCondition": "lunardance",
-    "condition": {},
+    "condition": {
+      "onSwitchIn": true,
+      "onSwap": true
+    },
     "secondary": null,
     "target": "self",
     "type": "Psychic",
@@ -11030,7 +11218,10 @@
     "volatileStatus": "magiccoat",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 2
+      "onTryHitPriority": 2,
+      "onStart": true,
+      "onTryHit": true,
+      "onAllyTryHitSide": true
     },
     "secondary": null,
     "target": "self",
@@ -11079,7 +11270,11 @@
     "condition": {
       "duration": 5,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 6
+      "onFieldResidualSubOrder": 6,
+      "durationCallback": true,
+      "onFieldStart": true,
+      "onFieldRestart": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -11171,7 +11366,10 @@
     "volatileStatus": "magnetrise",
     "condition": {
       "duration": 5,
-      "onResidualOrder": 18
+      "onResidualOrder": 18,
+      "onStart": true,
+      "onImmunity": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "self",
@@ -11291,7 +11489,9 @@
     "sideCondition": "matblock",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onSideStart": true,
+      "onTryHit": true
     },
     "secondary": null,
     "target": "allySide",
@@ -11426,7 +11626,9 @@
     "volatileStatus": "maxguard",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onStart": true,
+      "onTryHit": true
     },
     "secondary": null,
     "target": "self",
@@ -11715,7 +11917,8 @@
     },
     "condition": {
       "duration": 1,
-      "onBasePowerPriority": 12
+      "onBasePowerPriority": 12,
+      "onBasePower": true
     },
     "callsMove": true,
     "secondary": null,
@@ -12158,7 +12361,10 @@
     },
     "volatileStatus": "minimize",
     "condition": {
-      "noCopy": true
+      "noCopy": true,
+      "onRestart": true,
+      "onSourceModifyDamage": true,
+      "onAccuracy": true
     },
     "boosts": {
       "evasion": 2
@@ -12189,7 +12395,10 @@
     },
     "volatileStatus": "miracleeye",
     "condition": {
-      "noCopy": true
+      "noCopy": true,
+      "onStart": true,
+      "onNegateImmunity": true,
+      "onModifyBoost": true
     },
     "secondary": null,
     "target": "normal",
@@ -12218,7 +12427,10 @@
     "condition": {
       "duration": 1,
       "noCopy": true,
-      "onRedirectTargetPriority": -1
+      "onRedirectTargetPriority": -1,
+      "onStart": true,
+      "onRedirectTarget": true,
+      "onDamagingHit": true
     },
     "secondary": null,
     "target": "scripted",
@@ -12297,7 +12509,10 @@
     "condition": {
       "duration": 5,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 4
+      "onSideResidualSubOrder": 4,
+      "onTryBoost": true,
+      "onSideStart": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "allySide",
@@ -12368,7 +12583,13 @@
       "duration": 5,
       "onBasePowerPriority": 6,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 7
+      "onFieldResidualSubOrder": 7,
+      "durationCallback": true,
+      "onSetStatus": true,
+      "onTryAddVolatile": true,
+      "onBasePower": true,
+      "onFieldStart": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -12621,7 +12842,10 @@
       "duration": 5,
       "onBasePowerPriority": 1,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 4
+      "onFieldResidualSubOrder": 4,
+      "onFieldStart": true,
+      "onBasePower": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -12879,7 +13103,9 @@
     "volatileStatus": "nightmare",
     "condition": {
       "noCopy": true,
-      "onResidualOrder": 11
+      "onResidualOrder": 11,
+      "onStart": true,
+      "onResidual": true
     },
     "secondary": null,
     "target": "normal",
@@ -12997,7 +13223,10 @@
       "metronome": 1
     },
     "volatileStatus": "noretreat",
-    "condition": {},
+    "condition": {
+      "onStart": true,
+      "onTrapPokemon": true
+    },
     "boosts": {
       "atk": 1,
       "def": 1,
@@ -13100,7 +13329,10 @@
     "volatileStatus": "obstruct",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onStart": true,
+      "onTryHit": true,
+      "onHit": true
     },
     "secondary": null,
     "target": "self",
@@ -13165,7 +13397,10 @@
     },
     "volatileStatus": "octolock",
     "condition": {
-      "onResidualOrder": 14
+      "onResidualOrder": 14,
+      "onStart": true,
+      "onResidual": true,
+      "onTrapPokemon": true
     },
     "secondary": null,
     "target": "normal",
@@ -13477,7 +13712,9 @@
     },
     "condition": {
       "duration": 4,
-      "onResidualOrder": 24
+      "onResidualOrder": 24,
+      "onEnd": true,
+      "onResidual": true
     },
     "secondary": null,
     "target": "all",
@@ -13982,7 +14219,9 @@
     "volatileStatus": "powder",
     "condition": {
       "duration": 1,
-      "onTryMovePriority": -1
+      "onTryMovePriority": -1,
+      "onStart": true,
+      "onTryMove": true
     },
     "secondary": null,
     "target": "normal",
@@ -14046,7 +14285,12 @@
       "snatch": 1
     },
     "volatileStatus": "powershift",
-    "condition": {},
+    "condition": {
+      "onStart": true,
+      "onCopy": true,
+      "onEnd": true,
+      "onRestart": true
+    },
     "secondary": null,
     "target": "self",
     "type": "Normal"
@@ -14114,7 +14358,12 @@
       "metronome": 1
     },
     "volatileStatus": "powertrick",
-    "condition": {},
+    "condition": {
+      "onStart": true,
+      "onCopy": true,
+      "onEnd": true,
+      "onRestart": true
+    },
     "secondary": null,
     "target": "self",
     "type": "Psychic",
@@ -14272,7 +14521,9 @@
     "volatileStatus": "protect",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onStart": true,
+      "onTryHit": true
     },
     "secondary": null,
     "target": "self",
@@ -14410,7 +14661,12 @@
       "onTryHitPriority": 4,
       "onBasePowerPriority": 6,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 7
+      "onFieldResidualSubOrder": 7,
+      "durationCallback": true,
+      "onTryHit": true,
+      "onBasePower": true,
+      "onFieldStart": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -14687,7 +14943,8 @@
       "metronome": 1
     },
     "condition": {
-      "duration": 1
+      "duration": 1,
+      "onBeforeSwitchOut": true
     },
     "secondary": null,
     "target": "normal",
@@ -14775,7 +15032,9 @@
     "sideCondition": "quickguard",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 4
+      "onTryHitPriority": 4,
+      "onSideStart": true,
+      "onTryHit": true
     },
     "secondary": null,
     "target": "allySide",
@@ -14834,7 +15093,10 @@
       "volatileStatus": "rage"
     },
     "condition": {
-      "onBeforeMovePriority": 100
+      "onBeforeMovePriority": 100,
+      "onStart": true,
+      "onHit": true,
+      "onBeforeMove": true
     },
     "secondary": null,
     "target": "normal",
@@ -14876,7 +15138,9 @@
     "volatileStatus": "ragepowder",
     "condition": {
       "duration": 1,
-      "onFoeRedirectTargetPriority": 1
+      "onFoeRedirectTargetPriority": 1,
+      "onStart": true,
+      "onFoeRedirectTarget": true
     },
     "secondary": null,
     "target": "self",
@@ -15108,7 +15372,11 @@
     "condition": {
       "duration": 5,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 1
+      "onSideResidualSubOrder": 1,
+      "durationCallback": true,
+      "onAnyModifyDamage": true,
+      "onSideStart": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "allySide",
@@ -15670,7 +15938,9 @@
     },
     "condition": {
       "duration": 1,
-      "onLockMove": "rollout"
+      "onLockMove": "rollout",
+      "onStart": true,
+      "onResidual": true
     },
     "secondary": null,
     "target": "normal",
@@ -15703,7 +15973,9 @@
     "condition": {
       "duration": 1,
       "onResidualOrder": 25,
-      "onTypePriority": -1
+      "onTypePriority": -1,
+      "onStart": true,
+      "onType": true
     },
     "secondary": null,
     "target": "self",
@@ -15838,7 +16110,12 @@
     "condition": {
       "duration": 5,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 3
+      "onSideResidualSubOrder": 3,
+      "durationCallback": true,
+      "onSetStatus": true,
+      "onTryAddVolatile": true,
+      "onSideStart": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "allySide",
@@ -15864,7 +16141,10 @@
     },
     "condition": {
       "noCopy": true,
-      "onResidualOrder": 13
+      "onResidualOrder": 13,
+      "onStart": true,
+      "onResidual": true,
+      "onEnd": true
     },
     "secondary": {
       "chance": 100,
@@ -16617,7 +16897,9 @@
       "failinstruct": 1
     },
     "condition": {
-      "duration": 1
+      "duration": 1,
+      "onStart": true,
+      "onHit": true
     },
     "secondary": null,
     "target": "allAdjacentFoes",
@@ -16744,7 +17026,10 @@
     "volatileStatus": "silktrap",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onStart": true,
+      "onTryHit": true,
+      "onHit": true
     },
     "target": "self",
     "type": "Bug",
@@ -17035,7 +17320,14 @@
       "duration": 2,
       "onFoeTrapPokemonPriority": -15,
       "onFoeBeforeMovePriority": 12,
-      "onRedirectTargetPriority": 99
+      "onRedirectTargetPriority": 99,
+      "onAnyDragOut": true,
+      "onFoeTrapPokemon": true,
+      "onFoeBeforeMove": true,
+      "onRedirectTarget": true,
+      "onAnyInvulnerability": true,
+      "onAnyBasePower": true,
+      "onFaint": true
     },
     "secondary": null,
     "target": "any",
@@ -17268,7 +17560,9 @@
     },
     "volatileStatus": "smackdown",
     "condition": {
-      "noCopy": true
+      "noCopy": true,
+      "onStart": true,
+      "onRestart": true
     },
     "secondary": null,
     "target": "normal",
@@ -17425,7 +17719,9 @@
     "volatileStatus": "snatch",
     "condition": {
       "duration": 1,
-      "onAnyPrepareHitPriority": -1
+      "onAnyPrepareHitPriority": -1,
+      "onStart": true,
+      "onAnyPrepareHit": true
     },
     "secondary": null,
     "target": "self",
@@ -17850,7 +18146,11 @@
       "mustpressure": 1
     },
     "sideCondition": "spikes",
-    "condition": {},
+    "condition": {
+      "onSideStart": true,
+      "onSideRestart": true,
+      "onSwitchIn": true
+    },
     "secondary": null,
     "target": "foeSide",
     "type": "Ground",
@@ -17877,7 +18177,10 @@
     "volatileStatus": "spikyshield",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 3
+      "onTryHitPriority": 3,
+      "onStart": true,
+      "onTryHit": true,
+      "onHit": true
     },
     "secondary": null,
     "target": "self",
@@ -18107,7 +18410,9 @@
     "condition": {
       "duration": 1,
       "noCopy": true,
-      "onFoeRedirectTargetPriority": 2
+      "onFoeRedirectTargetPriority": 2,
+      "onStart": true,
+      "onFoeRedirectTarget": true
     },
     "secondary": null,
     "target": "normal",
@@ -18156,7 +18461,10 @@
       "mustpressure": 1
     },
     "sideCondition": "stealthrock",
-    "condition": {},
+    "condition": {
+      "onSideStart": true,
+      "onSwitchIn": true
+    },
     "secondary": null,
     "target": "foeSide",
     "type": "Rock",
@@ -18290,7 +18598,10 @@
       "metronome": 1
     },
     "sideCondition": "stickyweb",
-    "condition": {},
+    "condition": {
+      "onSideStart": true,
+      "onSwitchIn": true
+    },
     "secondary": null,
     "target": "foeSide",
     "type": "Bug",
@@ -18315,7 +18626,10 @@
     },
     "volatileStatus": "stockpile",
     "condition": {
-      "noCopy": true
+      "noCopy": true,
+      "onStart": true,
+      "onRestart": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "self",
@@ -18700,7 +19014,10 @@
     },
     "volatileStatus": "substitute",
     "condition": {
-      "onTryPrimaryHitPriority": -1
+      "onTryPrimaryHitPriority": -1,
+      "onStart": true,
+      "onTryPrimaryHit": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "self",
@@ -19172,7 +19489,11 @@
     "condition": {
       "noCopy": true,
       "duration": 4,
-      "onResidualOrder": 14
+      "onResidualOrder": 14,
+      "onStart": true,
+      "onUpdate": true,
+      "onResidual": true,
+      "onEnd": true
     },
     "secondary": {
       "chance": 100,
@@ -19322,7 +19643,11 @@
     "condition": {
       "duration": 4,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 5
+      "onSideResidualSubOrder": 5,
+      "durationCallback": true,
+      "onSideStart": true,
+      "onModifySpe": true,
+      "onSideEnd": true
     },
     "secondary": null,
     "target": "allySide",
@@ -19388,7 +19713,9 @@
     },
     "volatileStatus": "tarshot",
     "condition": {
-      "onEffectivenessPriority": -2
+      "onEffectivenessPriority": -2,
+      "onStart": true,
+      "onEffectiveness": true
     },
     "boosts": {
       "spe": -1
@@ -19416,7 +19743,11 @@
     "condition": {
       "duration": 3,
       "onResidualOrder": 15,
-      "onBeforeMovePriority": 5
+      "onBeforeMovePriority": 5,
+      "onStart": true,
+      "onEnd": true,
+      "onDisableMove": true,
+      "onBeforeMove": true
     },
     "secondary": null,
     "target": "normal",
@@ -19553,7 +19884,12 @@
     "condition": {
       "duration": 3,
       "onAccuracyPriority": -1,
-      "onResidualOrder": 19
+      "onResidualOrder": 19,
+      "onStart": true,
+      "onAccuracy": true,
+      "onImmunity": true,
+      "onUpdate": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "normal",
@@ -19785,7 +20121,12 @@
     "condition": {
       "duration": 2,
       "onBeforeMovePriority": 6,
-      "onResidualOrder": 22
+      "onResidualOrder": 22,
+      "onStart": true,
+      "onDisableMove": true,
+      "onBeforeMove": true,
+      "onModifyMove": true,
+      "onEnd": true
     },
     "secondary": {
       "chance": 100
@@ -20107,7 +20448,10 @@
     },
     "volatileStatus": "torment",
     "condition": {
-      "noCopy": true
+      "noCopy": true,
+      "onStart": true,
+      "onEnd": true,
+      "onDisableMove": true
     },
     "secondary": null,
     "target": "normal",
@@ -20159,7 +20503,11 @@
       "mustpressure": 1
     },
     "sideCondition": "toxicspikes",
-    "condition": {},
+    "condition": {
+      "onSideStart": true,
+      "onSideRestart": true,
+      "onSwitchIn": true
+    },
     "secondary": null,
     "target": "foeSide",
     "type": "Poison",
@@ -20342,7 +20690,11 @@
     "condition": {
       "duration": 5,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 1
+      "onFieldResidualSubOrder": 1,
+      "durationCallback": true,
+      "onFieldStart": true,
+      "onFieldRestart": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -20637,7 +20989,11 @@
       "duration": 3,
       "onResidualOrder": 28,
       "onResidualSubOrder": 1,
-      "onLockMove": "uproar"
+      "onLockMove": "uproar",
+      "onStart": true,
+      "onResidual": true,
+      "onEnd": true,
+      "onAnySetStatus": true
     },
     "secondary": null,
     "target": "randomNormal",
@@ -20982,7 +21338,10 @@
     "condition": {
       "duration": 4,
       "onSideResidualOrder": 26,
-      "onSideResidualSubOrder": 7
+      "onSideResidualSubOrder": 7,
+      "onSideStart": true,
+      "onSideEnd": true,
+      "onModifyMove": true
     },
     "secondary": null,
     "target": "normal",
@@ -21056,7 +21415,10 @@
       "duration": 5,
       "onBasePowerPriority": 1,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 3
+      "onFieldResidualSubOrder": 3,
+      "onFieldStart": true,
+      "onBasePower": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -21244,7 +21606,9 @@
     "sideCondition": "wideguard",
     "condition": {
       "duration": 1,
-      "onTryHitPriority": 4
+      "onTryHitPriority": 4,
+      "onSideStart": true,
+      "onTryHit": true
     },
     "secondary": null,
     "target": "allySide",
@@ -21363,7 +21727,10 @@
     },
     "slotCondition": "Wish",
     "condition": {
-      "onResidualOrder": 4
+      "onResidualOrder": 4,
+      "onStart": true,
+      "onResidual": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "self",
@@ -21416,7 +21783,12 @@
     "condition": {
       "duration": 5,
       "onFieldResidualOrder": 27,
-      "onFieldResidualSubOrder": 5
+      "onFieldResidualSubOrder": 5,
+      "durationCallback": true,
+      "onModifyMove": true,
+      "onFieldStart": true,
+      "onFieldRestart": true,
+      "onFieldEnd": true
     },
     "secondary": null,
     "target": "all",
@@ -21590,7 +21962,9 @@
     "condition": {
       "noCopy": true,
       "duration": 2,
-      "onResidualOrder": 23
+      "onResidualOrder": 23,
+      "onStart": true,
+      "onEnd": true
     },
     "secondary": null,
     "target": "normal",
