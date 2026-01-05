@@ -12,16 +12,12 @@ impl Battle {
     pub fn has_callback(&self, effect_id: &ID, event_id: &str) -> bool {
         let effect_str = effect_id.as_str();
 
-        eprintln!("[HAS_CALLBACK] effect_id='{}', event_id='{}'", effect_str, event_id);
-
         // IMPORTANT: Check conditions (status, volatile, weather, terrain) FIRST
         // This is critical because some IDs like "stall" exist as both abilities AND conditions
         // When checking a volatile, we want to find the CONDITION, not the ability
         // In JavaScript, the volatile already has its callback attached, so there's no ambiguity
         let condition_check = self.dex.conditions().get_by_id(effect_id);
-        eprintln!("[HAS_CALLBACK] Checking conditions: found={}", condition_check.is_some());
         if condition_check.is_some() {
-            eprintln!("[HAS_CALLBACK] Found as condition, calling condition_has_callback");
             return self.condition_has_callback(effect_str, event_id);
         }
 
@@ -33,36 +29,30 @@ impl Battle {
             if move_data.condition.is_some() {
                 // This is a move with an embedded condition (like King's Shield)
                 // Treat it as a condition for callback purposes
-                eprintln!("[HAS_CALLBACK] Found as move-embedded condition");
                 return self.condition_has_callback(effect_str, event_id);
             }
         }
 
         // Check abilities
         if self.dex.abilities().get(effect_str).is_some() {
-            eprintln!("[HAS_CALLBACK] Found as ability");
             return self.ability_has_callback(effect_str, event_id);
         }
 
         // Check items
         if self.dex.items().get(effect_str).is_some() {
-            eprintln!("[HAS_CALLBACK] Found as item");
             return self.item_has_callback(effect_str, event_id);
         }
 
         // Check moves
         if self.dex.moves().get(effect_str).is_some() {
-            eprintln!("[HAS_CALLBACK] Found as move");
             return self.move_has_callback(effect_str, event_id);
         }
 
         // Check species - species can have callbacks like onSwitchIn for form changes
         if self.dex.species().get(effect_str).is_some() {
-            eprintln!("[HAS_CALLBACK] Found as species");
             return self.species_has_callback(effect_str, event_id);
         }
 
-        eprintln!("[HAS_CALLBACK] Not found, returning false");
         false
     }
 
@@ -181,9 +171,6 @@ impl Battle {
     /// This prevents false positives where we'd add handlers for callbacks
     /// that don't exist, which would cause incorrect speed_sort shuffling.
     pub fn condition_has_callback(&self, condition_id: &str, event_id: &str) -> bool {
-        eprintln!("[CONDITION_HAS_CALLBACK] condition_id='{}', event_id='{}'",
-            condition_id, event_id);
-
         // Special case: conditions don't have onAnySwitchIn
         if event_id == "onAnySwitchIn" || event_id == "AnySwitchIn" {
             return false;
@@ -191,7 +178,7 @@ impl Battle {
 
         // Look up the condition in dex data and check its extra field for callback boolean
         let id = ID::from(condition_id);
-        let result = if let Some(condition_data) = self.dex.conditions().get_by_id(&id) {
+        if let Some(condition_data) = self.dex.conditions().get_by_id(&id) {
             // Check the exact event_id first, then try with "on" prefix for backward compatibility
             let has_callback = condition_data.extra.get(event_id)
                 .and_then(|v| v.as_bool())
@@ -212,12 +199,10 @@ impl Battle {
             // If not found in conditions dex, check if this is a move-embedded condition
             // Some moves like "kingsshield" create volatile conditions with their own callbacks
             // that are hardcoded in the move_callbacks dispatcher
-            eprintln!("[CONDITION_HAS_CALLBACK] Not found in conditions dex, checking if move-embedded");
 
             // Check if this is a move with an embedded condition
             if let Some(move_data) = self.dex.moves().get(condition_id) {
                 if move_data.condition.is_some() {
-                    eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition");
                     // For move-embedded conditions, we need to check if the move_callbacks dispatcher
                     // has this callback. For now, we'll conservatively return true for known events
                     // that move conditions typically handle.
@@ -225,22 +210,15 @@ impl Battle {
                     match event_id {
                         "onStart" | "onTryHit" | "onTryPrimaryHit" | "onHit" | "onEnd" |
                         "onBeforeTurn" | "onBeforeMove" | "onSourceModifyDamage" => {
-                            eprintln!("[CONDITION_HAS_CALLBACK] Event '{}' is commonly used by move conditions, returning true", event_id);
                             return true;
                         },
-                        _ => {
-                            eprintln!("[CONDITION_HAS_CALLBACK] Event '{}' not commonly used by move conditions", event_id);
-                        }
+                        _ => {}
                     }
                 }
             }
 
             false
-        };
-
-        eprintln!("[CONDITION_HAS_CALLBACK] Returning {} for condition='{}', event_id='{}'",
-            result, condition_id, event_id);
-        result
+        }
     }
 
     /// Check if a species has a callback for an event
