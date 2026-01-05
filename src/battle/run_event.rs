@@ -396,9 +396,19 @@ impl Battle {
             });
         } else {
             // Speed sort (default)
+            eprintln!("[RUN_EVENT] Sorting {} handlers for event '{}' using speed_sort", handlers.len(), event_id);
+            for (i, handler) in handlers.iter().enumerate() {
+                eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}",
+                    i, handler.effect_id, handler.priority, handler.order, handler.speed);
+            }
             self.speed_sort(&mut handlers, |listener| {
                 Self::event_listener_to_priority_item(listener)
             });
+            eprintln!("[RUN_EVENT] After sorting:");
+            for (i, handler) in handlers.iter().enumerate() {
+                eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}",
+                    i, handler.effect_id, handler.priority, handler.order, handler.speed);
+            }
         }
 
         // JavaScript: let hasRelayVar = 1; (lines 152-160)

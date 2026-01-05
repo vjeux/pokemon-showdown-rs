@@ -16,8 +16,8 @@ use crate::event::EventResult;
 pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Ice" || move_data.move_type == "Fire" {
-            let modified = battle.chain_modify(0.5);
-            return EventResult::Number(modified);
+            battle.chain_modify(0.5);
+            return EventResult::Continue; // JavaScript chainModify returns void, so we return Continue
         }
     }
     EventResult::Continue
@@ -30,11 +30,19 @@ pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
 ///     }
 /// }
 pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult {
+    eprintln!("[THICK FAT] onSourceModifySpA called! move_id={}", move_id);
     if let Some(move_data) = battle.dex.moves().get(move_id) {
+        eprintln!("[THICK FAT] move_type={}", move_data.move_type);
         if move_data.move_type == "Ice" || move_data.move_type == "Fire" {
-            let modified = battle.chain_modify(0.5);
-            return EventResult::Number(modified);
+            eprintln!("[THICK FAT] Halving SpA! (Fire/Ice move detected)");
+            battle.chain_modify(0.5);
+            eprintln!("[THICK FAT] chain_modify(0.5) called, returning Continue");
+            return EventResult::Continue; // JavaScript chainModify returns void, so we return Continue
+        } else {
+            eprintln!("[THICK FAT] Not a Fire/Ice move, skipping");
         }
+    } else {
+        eprintln!("[THICK FAT] No move data found for move_id={}", move_id);
     }
     EventResult::Continue
 }

@@ -530,9 +530,15 @@ pub fn get_damage(
             _ => {}
         }
     } else {
+        eprintln!("[GET_DAMAGE] BEFORE ModifySpA: attack={}", attack);
         match battle.run_event("ModifySpA", Some(source_pos), Some(target_pos), Some(&move_id), EventResult::Number(attack), false, false) {
-            EventResult::Number(n) => attack = n,
-            _ => {}
+            EventResult::Number(n) => {
+                eprintln!("[GET_DAMAGE] AFTER ModifySpA: attack changed from {} to {}", attack, n);
+                attack = n;
+            },
+            _ => {
+                eprintln!("[GET_DAMAGE] AFTER ModifySpA: no change, attack={}", attack);
+            }
         }
         match battle.run_event("ModifySpD", Some(target_pos), Some(source_pos), Some(&move_id), EventResult::Number(defense), false, false) {
             EventResult::Number(n) => defense = n,
