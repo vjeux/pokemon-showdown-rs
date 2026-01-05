@@ -122,6 +122,44 @@ impl Battle {
                 Action::Team(_) => "Team".to_string(),
             };
             eprintln!("[TURN_LOOP] Processing action #{}: {}, queue remaining: {}", action_count, action_desc, self.queue.list.len());
+
+            // IMPORTANT: Process forced switches (phazing) BEFORE Residual action
+            // This ensures Pokemon switched in by moves like Dragon Tail take residual damage
+            if matches!(action, Action::Field(ref f) if matches!(f.choice, crate::battle_queue::FieldActionType::Residual)) {
+                // JavaScript: phazing (Roar, etc) - battle.ts:2821-2833
+                // for (const side of this.sides) {
+                //     for (const pokemon of side.active) {
+                //         if (pokemon.forceSwitchFlag) {
+                //             if (pokemon.hp) this.actions.dragIn(pokemon.side, pokemon.position);
+                //             pokemon.forceSwitchFlag = false;
+                //         }
+                //     }
+                // }
+                for side_idx in 0..self.sides.len() {
+                    let active_count = self.sides[side_idx].active.len();
+                    for slot in 0..active_count {
+                        // Get the pokemon index from the active array
+                        let pokemon_idx = match self.sides[side_idx].active.get(slot).and_then(|&opt| opt) {
+                            Some(idx) => idx,
+                            None => continue,
+                        };
+
+                        let (should_drag_in, has_hp) = {
+                            let pokemon = &self.sides[side_idx].pokemon[pokemon_idx];
+                            (pokemon.force_switch_flag, pokemon.hp > 0)
+                        };
+
+                        if should_drag_in {
+                            if has_hp {
+                                crate::battle_actions::drag_in(self, side_idx, slot);
+                            }
+                            // Clear the flag
+                            self.sides[side_idx].pokemon[pokemon_idx].force_switch_flag = false;
+                        }
+                    }
+                }
+            }
+
             self.run_action(&action);
 
             if self.ended {
@@ -135,8 +173,8 @@ impl Battle {
             }
         }
 
-        eprintln!("[TURN_LOOP] Queue empty, processing forced switches (phazing)");
-
+        // Phazing is now processed BEFORE Residual action (see lines 126-159 above)
+        // This comment preserves the original JavaScript reference for documentation
         // JavaScript: phazing (Roar, etc) - battle.ts:2821-2833
         // for (const side of this.sides) {
         //     for (const pokemon of side.active) {
@@ -146,33 +184,6 @@ impl Battle {
         //         }
         //     }
         // }
-        for side_idx in 0..self.sides.len() {
-            let active_count = self.sides[side_idx].active.len();
-            for slot in 0..active_count {
-                let (should_drag_in, has_hp) = {
-                    if let Some(pokemon) = self.pokemon_at(side_idx, slot) {
-                        if pokemon.is_active {
-                            (pokemon.force_switch_flag, pokemon.hp > 0)
-                        } else {
-                            (false, false)
-                        }
-                    } else {
-                        (false, false)
-                    }
-                };
-
-                if should_drag_in {
-                    eprintln!("[TURN_LOOP] Processing force_switch_flag for side {} slot {}, has_hp={}", side_idx, slot, has_hp);
-                    if has_hp {
-                        crate::battle_actions::drag_in(self, side_idx, slot);
-                    }
-                    // Clear the flag
-                    if let Some(pokemon) = self.pokemon_at_mut(side_idx, slot) {
-                        pokemon.force_switch_flag = false;
-                    }
-                }
-            }
-        }
 
         // JavaScript: this.clearActiveMove();
         self.clear_active_move(false);
