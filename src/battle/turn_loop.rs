@@ -135,7 +135,49 @@ impl Battle {
             }
         }
 
-        eprintln!("[TURN_LOOP] Queue empty, calling end_turn()");
+        eprintln!("[TURN_LOOP] Queue empty, processing forced switches (phazing)");
+
+        // JavaScript: phazing (Roar, etc) - battle.ts:2821-2833
+        // for (const side of this.sides) {
+        //     for (const pokemon of side.active) {
+        //         if (pokemon.forceSwitchFlag) {
+        //             if (pokemon.hp) this.actions.dragIn(pokemon.side, pokemon.position);
+        //             pokemon.forceSwitchFlag = false;
+        //         }
+        //     }
+        // }
+        for side_idx in 0..self.sides.len() {
+            let active_count = self.sides[side_idx].active.len();
+            for slot in 0..active_count {
+                let (should_drag_in, has_hp) = {
+                    if let Some(pokemon) = self.pokemon_at(side_idx, slot) {
+                        if pokemon.is_active {
+                            (pokemon.force_switch_flag, pokemon.hp > 0)
+                        } else {
+                            (false, false)
+                        }
+                    } else {
+                        (false, false)
+                    }
+                };
+
+                if should_drag_in {
+                    eprintln!("[TURN_LOOP] Processing force_switch_flag for side {} slot {}, has_hp={}", side_idx, slot, has_hp);
+                    if has_hp {
+                        crate::battle_actions::drag_in(self, side_idx, slot);
+                    }
+                    // Clear the flag
+                    if let Some(pokemon) = self.pokemon_at_mut(side_idx, slot) {
+                        pokemon.force_switch_flag = false;
+                    }
+                }
+            }
+        }
+
+        // JavaScript: this.clearActiveMove();
+        self.clear_active_move(false);
+
+        eprintln!("[TURN_LOOP] After phazing, calling end_turn()");
         self.end_turn();
         eprintln!("[TURN_LOOP] After end_turn(), turn is now {}", self.turn);
 

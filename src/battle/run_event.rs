@@ -417,21 +417,31 @@ impl Battle {
         // JavaScript: const parentEvent = this.event; (lines 162-164)
         // Save parent event
         let parent_event = self.event.take();
+        let parent_current_event = self.current_event.take();
 
         // JavaScript: this.event = { id: eventid, target, source, effect: sourceEffect, modifier: 1 };
         // Create new event context
-        self.event = Some(EventInfo {
+        // Extract relay_var numeric value if present
+        let relay_var_int = match relay_var {
+            EventResult::Number(n) => Some(n),
+            _ => None,
+        };
+
+        let event_info = EventInfo {
             id: event_id.to_string(),
             target,
             source,
             effect: source_effect.cloned(),
             modifier: 4096, // 4096 = 1.0x in JavaScript
-            relay_var: None,
+            relay_var: relay_var_int,
             relay_var_float: None,
             relay_var_boost: None,
             relay_var_secondaries: None,
             relay_var_type: None,
-        });
+        };
+
+        self.event = Some(event_info.clone());
+        self.current_event = Some(event_info);
 
         // JavaScript: this.eventDepth++;
         self.event_depth += 1;
@@ -448,13 +458,19 @@ impl Battle {
 
             // JavaScript: if (effect.effectType === 'Status' && (effectHolder as Pokemon).status !== effect.id) continue;
             // Check if status has changed
+            // IMPORTANT: Only apply this check for Status-type conditions, not Weather/Terrain
             if let Some(handler_pos) = handler_target {
                 if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
                     // Check if this is a status effect and it's no longer active
-                    if let Some(_status_data) = self.dex.conditions().get_by_id(&effect_id) {
-                        if pokemon.status.as_str() != effect_id.as_str() && !pokemon.volatiles.contains_key(&effect_id) {
-                            // Status has changed, skip this handler
-                            continue;
+                    if let Some(status_data) = self.dex.conditions().get_by_id(&effect_id) {
+                        // Only check pokemon status/volatiles for Status-type conditions
+                        // Weather and Terrain are field conditions, not Pokemon conditions
+                        // ConditionData.effect_type is Option<String>, so compare to "Status"
+                        if status_data.effect_type.as_deref() == Some("Status") {
+                            if pokemon.status.as_str() != effect_id.as_str() && !pokemon.volatiles.contains_key(&effect_id) {
+                                // Status has changed, skip this handler
+                                continue;
+                            }
                         }
                     }
                 }
@@ -616,13 +632,7 @@ impl Battle {
             // Check if num is non-negative (matches JavaScript condition)
             if num >= 0 {
                 if let Some(ref event) = self.event {
-                    if event_id == "Effectiveness" {
-                        eprintln!("[RUN_EVENT] Effectiveness: Before modify - num={}, modifier={}", num, event.modifier);
-                    }
                     let modified = self.modify_internal(num, event.modifier);
-                    if event_id == "Effectiveness" {
-                        eprintln!("[RUN_EVENT] Effectiveness: After modify - modified={}", modified);
-                    }
                     relay_var = EventResult::Number(modified);
                 }
             }
@@ -632,6 +642,7 @@ impl Battle {
         // JavaScript: this.event = parentEvent;
         // Restore parent event
         self.event = parent_event;
+        self.current_event = parent_current_event;
 
         relay_var
     }

@@ -38,10 +38,11 @@ impl Battle {
         }
 
         // JS: if (!effect && this.effect) effect = this.effect;
-        // Extract current_effect before mutable operations
+        // Extract effect from self.event before mutable operations
         let effect_owned: Option<ID>;
         let effect = if effect.is_none() {
-            effect_owned = self.current_effect.clone();
+            // JavaScript's this.effect is stored in self.event.effect
+            effect_owned = self.event.as_ref().and_then(|e| e.effect.clone());
             effect_owned.as_ref()
         } else {
             effect

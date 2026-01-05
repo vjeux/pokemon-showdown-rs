@@ -375,14 +375,15 @@ impl Battle {
                 relay_var_int, pokemon_pos, None, None
             ),
             "DamagingHit" => {
-                // Get move_id and source from current event context
-                let (move_id, source_pos) = self.current_event.as_ref()
+                // Get move_id, source, and damage from current event context
+                let (move_id, source_pos, damage) = self.current_event.as_ref()
                     .map(|e| (
                         e.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new()),
-                        e.source
+                        e.source,
+                        e.relay_var.unwrap_or(0) // Extract damage from relay_var
                     ))
-                    .unwrap_or_else(|| (String::new(), None));
-                ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), 0, Some(pokemon_pos), source_pos, &move_id)
+                    .unwrap_or_else(|| (String::new(), None, 0));
+                ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), damage, Some(pokemon_pos), source_pos, &move_id)
             }
             "DamagingHitOrder" => {
                 // Get move_id and source from current event context

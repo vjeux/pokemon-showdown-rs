@@ -386,10 +386,12 @@ pub fn spread_move_hit(
     // JS: if (moveData.forceSwitch) damage = this.forceSwitch(damage, targets, pokemon, move);
     let has_force_switch = {
         let move_data = battle.dex.moves.get(move_data_id).expect("Move not found");
+        eprintln!("[SPREAD_MOVE_HIT] move={}, force_switch={}", move_data_id, move_data.force_switch);
         move_data.force_switch
     };
 
     if has_force_switch {
+        eprintln!("[SPREAD_MOVE_HIT] Calling force_switch for move={}", move_data_id);
         // force_switch needs ActiveMove - get pointer to avoid borrow issues
         let active_move_ptr = battle.active_move.as_ref().map(|am| am as *const _);
 
@@ -403,6 +405,9 @@ pub fn spread_move_hit(
                     &*ptr,
                 )
             };
+            eprintln!("[SPREAD_MOVE_HIT] force_switch completed");
+        } else {
+            eprintln!("[SPREAD_MOVE_HIT] No active_move ptr, skipping force_switch");
         }
     }
 
@@ -441,12 +446,15 @@ pub fn spread_move_hit(
 
     // DamagingHit and AfterHit events
     // JS: if (damagedDamage.length && !isSecondary && !isSelf) { ... }
-    eprintln!("[SPREAD_MOVE_HIT] damaged_damage={:?}, damaged_targets={:?}, is_secondary={}, is_self={}",
-        damaged_damage, damaged_targets, is_secondary, is_self);
     if !damaged_damage.is_empty() && !is_secondary && !is_self {
-        eprintln!("[SPREAD_MOVE_HIT] Firing DamagingHit event for move {}", move_id.as_str());
         // JS: this.battle.runEvent('DamagingHit', damagedTargets, pokemon, move, damagedDamage);
-        battle.run_event("DamagingHit", Some(source_pos), None, Some(move_id), EventResult::Continue, false, false);
+        // JavaScript's runEvent loops through each target when given an array
+        // In Rust, we need to explicitly loop through each damaged target
+        // And pass the corresponding damage amount as the relay variable
+        for (i, target_pos) in damaged_targets.iter().enumerate() {
+            let damage_amount = damaged_damage[i];
+            battle.run_event("DamagingHit", Some(*target_pos), Some(source_pos), Some(move_id), EventResult::Number(damage_amount), false, false);
+        }
 
         // Check if moveData has onAfterHit
         // JS: if (moveData.onAfterHit) { for (const t of damagedTargets) { this.battle.singleEvent('AfterHit', moveData, {}, t, pokemon, move); } }

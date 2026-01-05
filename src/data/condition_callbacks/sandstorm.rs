@@ -143,10 +143,8 @@ pub fn on_field_start(
 /// }
 pub fn on_field_residual(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] Called for {:?}", pokemon_pos);
-
     // Add weather upkeep message
     use crate::battle::Arg;
     battle.add("weather", &[
@@ -157,8 +155,9 @@ pub fn on_field_residual(
 
     // Check if weather is still sandstorm
     if battle.field.weather == ID::from("sandstorm") {
-        eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] Calling eachEvent('Weather')");
-        battle.each_event("Weather", None, None);
+        // Pass sandstorm as the effect so Weather event knows which weather condition to use
+        // In JavaScript: this.eachEvent('Weather') uses this.effect which is the sandstorm condition
+        battle.each_event("Weather", Some(&ID::from("sandstorm")), None);
     }
 
     EventResult::Continue
@@ -176,8 +175,6 @@ pub fn on_weather(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[SANDSTORM_ON_WEATHER] Called for {:?}", pokemon_pos);
-
     // Get target's base max HP
     let base_maxhp = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -189,9 +186,6 @@ pub fn on_weather(
 
     // Calculate damage as 1/16 of max HP
     let damage_amount = base_maxhp / 16;
-
-    eprintln!("[SANDSTORM_ON_WEATHER] Dealing {} damage (maxhp={}) to {:?}",
-        damage_amount, base_maxhp, pokemon_pos);
 
     // Apply damage through the battle's damage function
     // JavaScript doesn't pass effect explicitly - it comes from this.effect in the event context

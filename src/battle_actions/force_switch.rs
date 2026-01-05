@@ -33,6 +33,7 @@ pub fn force_switch(
     source_pos: (usize, usize),
     active_move: &ActiveMove,
 ) -> SpreadMoveDamage {
+    eprintln!("[FORCE_SWITCH] Entry: move={}, source={:?}, targets.len()={}", active_move.id, source_pos, targets.len());
     // for (const [i, target] of targets.entries()) {
     for (i, target) in targets.iter().enumerate() {
         // if (target && target.hp > 0 && source.hp > 0 && this.battle.canSwitch(target.side)) {
@@ -67,10 +68,13 @@ pub fn force_switch(
                         //         this.battle.attrLastMove('[still]');
                         //         damage[i] = false;
                         //     }
+                        eprintln!("[FORCE_SWITCH] hit_result={:?}", hit_result);
                         if !matches!(hit_result, EventResult::Null | EventResult::Continue) && !matches!(hit_result, EventResult::Number(0)) {
                             // hitResult is truthy (not None, not 0)
+                            eprintln!("[FORCE_SWITCH] Setting force_switch_flag=true for target {:?}", target_pos);
                             if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                                 target_pokemon.force_switch_flag = true;
+                                eprintln!("[FORCE_SWITCH] Successfully set force_switch_flag");
                             }
                         } else if matches!(hit_result, EventResult::Number(0)) && active_move.category == "Status" {
                             // hitResult is false (0)
