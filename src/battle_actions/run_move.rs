@@ -149,19 +149,38 @@ pub fn run_move(
         // lockedMove = this.battle.runEvent('LockMove', pokemon);
         // JavaScript: if (lockedMove === true) lockedMove = false;
         // JavaScript: if (!lockedMove) { ... deduct PP ... }
-        let _locked_move = battle.run_event("LockMove", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+        let locked_move_result = battle.run_event("LockMove", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
 
-        // Deduct PP
-        // if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle'))
-        let gen = battle.gen;
-        let pp_deducted = if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            pokemon.deduct_pp(gen, move_id, Some(1))
-        } else {
-            0
+        // In JavaScript, LockMove can return:
+        // - undefined/false/Continue: not locked
+        // - true: locked but treat as false (choice lock edge case)
+        // - move ID string: locked (two-turn moves, choice lock, etc.)
+        // JavaScript: if (lockedMove === true) lockedMove = false;
+        let is_locked = match &locked_move_result {
+            EventResult::Continue | EventResult::Boolean(false) => false,
+            EventResult::Boolean(true) => false, // JavaScript: if (lockedMove === true) lockedMove = false;
+            _ => true, // Any other result (move ID, etc.) means locked
         };
-        // Note: JavaScript code has incomplete condition - just checking but no action taken
-        // This matches the JavaScript pattern exactly
-        let _pp_check = pp_deducted == 0 && move_id.as_str() != "struggle";
+
+        // Deduct PP only if NOT locked
+        // if (!lockedMove) {
+        //     if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle'))
+        // }
+        let gen = battle.gen;
+        if !is_locked {
+            let pp_deducted = if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                pokemon.deduct_pp(gen, move_id, Some(1))
+            } else {
+                0
+            };
+            // Note: JavaScript code has incomplete condition - just checking but no action taken
+            // This matches the JavaScript pattern exactly
+            let _pp_check = pp_deducted == 0 && move_id.as_str() != "struggle";
+        } else {
+            // Move is locked - don't deduct PP
+            // JavaScript: } else { sourceEffect = this.dex.conditions.get('lockedmove'); }
+            // Note: sourceEffect setting is handled elsewhere in the code
+        }
 
         // pokemon.moveUsed(move, targetLoc);
         // Note: Need to extract gen before calling move_used to avoid borrow checker issues
