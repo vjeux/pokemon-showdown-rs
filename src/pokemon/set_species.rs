@@ -35,10 +35,11 @@ impl Pokemon {
 
         // Get pokemon's set for stat calculation
         let pokemon_set = {
-            let pokemon = &battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1];
-            // Find this pokemon's set from the side's team
-            if pokemon.position < battle.sides[pokemon.side_index].team.len() {
-                battle.sides[pokemon.side_index].team[pokemon.position].clone()
+            // In Rust, pokemon don't physically move in the array when they switch in
+            // (unlike JavaScript which swaps them). So we use the pokemon's array index
+            // (pokemon_pos.1) instead of pokemon.position to look up the team entry.
+            if pokemon_pos.1 < battle.sides[pokemon_pos.0].team.len() {
+                battle.sides[pokemon_pos.0].team[pokemon_pos.1].clone()
             } else {
                 // No set found, use defaults
                 PokemonSet::default()

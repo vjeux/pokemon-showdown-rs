@@ -103,7 +103,7 @@ impl Battle {
                 unsafe {
                     let pokemon = &mut self.sides[slot_num].pokemon[poke_idx] as *mut Pokemon;
                     let battle = self as *mut Battle;
-                    (*pokemon).clear_volatile(&mut *battle, true);
+                    (*pokemon).clear_volatile(&mut *battle, (slot_num, poke_idx), true);
                 }
             }
         } else {

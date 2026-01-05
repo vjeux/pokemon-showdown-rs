@@ -514,14 +514,14 @@ impl Battle {
 
                             // JS: const species = pokemon.setSpecies(rawSpecies);
                             // JS: if (!species) continue;
-                            let success = {
-                                let pokemon = &mut self.sides[side_idx].pokemon[poke_idx];
-                                unsafe {
-                                    let p = pokemon as *mut Pokemon;
-                                    let b = self as *mut Battle;
-                                    (*p).set_species(&mut *b, &new_species, None, false)
-                                }
-                            };
+                            // Use set_species_pos instead of set_species to ensure correct team lookup
+                            let success = Pokemon::set_species_pos(
+                                self,
+                                (side_idx, poke_idx),
+                                &new_species,
+                                None,
+                                false
+                            );
 
                             if !success {
                                 continue;

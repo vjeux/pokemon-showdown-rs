@@ -69,7 +69,7 @@ use crate::dex_data::BoostsTable;
 impl Pokemon {
     /// Clear volatile conditions and reset to switch-in state
     /// Equivalent to pokemon.ts clearVolatile()
-    pub fn clear_volatile(&mut self, battle: &mut Battle, include_switch_flags: bool) {
+    pub fn clear_volatile(&mut self, battle: &mut Battle, pokemon_pos: (usize, usize), include_switch_flags: bool) {
         // JS: this.boosts = { atk: 0, def: 0, spa: 0, spd: 0, spe: 0, accuracy: 0, evasion: 0 };
         self.boosts = BoostsTable::default();
 
@@ -215,7 +215,8 @@ impl Pokemon {
         // Note: EffectState in Rust doesn't have a started field, so nothing to delete
 
         // JS: this.setSpecies(this.baseSpecies);
+        // Use set_species_pos to ensure correct team lookup based on pokemon's array index
         let base_species = self.base_species.clone();
-        self.set_species(battle, &base_species, None, false);
+        Pokemon::set_species_pos(battle, pokemon_pos, &base_species, None, false);
     }
 }
