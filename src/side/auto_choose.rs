@@ -38,17 +38,32 @@ impl Side {
             RequestState::Switch => {
                 let mut iterations = 0;
                 while !self.is_choice_done(None) && iterations < 10 {
-                    // Find first available switch target
-                    for i in self.active.len()..self.pokemon.len() {
+                    // JavaScript iterates through pokemon array starting at active.length.
+                    // Since JavaScript physically reorders the array when switching,
+                    // we need to iterate in position order to match.
+
+                    // Collect Pokemon indices, sorted by position
+                    let mut indices: Vec<usize> = (0..self.pokemon.len()).collect();
+                    indices.sort_by_key(|&i| self.pokemon[i].position);
+
+                    // Find first available switch target starting from active.length
+                    let mut found = false;
+                    for &i in indices.iter().skip(self.active.len()) {
                         if !self.choice.switch_ins.contains(&i) {
                             if let Some(pokemon) = self.pokemon.get(i) {
                                 if !pokemon.is_fainted() {
                                     let _ = self.choose_switch(i);
+                                    found = true;
                                     break;
                                 }
                             }
                         }
                     }
+
+                    if !found {
+                        break; // No valid switch found
+                    }
+
                     iterations += 1;
                 }
             }

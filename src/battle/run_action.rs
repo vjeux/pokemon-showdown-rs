@@ -771,6 +771,51 @@ impl Battle {
             }
         }
 
+        // JS: // phazing (Roar, etc) - battle.ts:2820-2828
+        // JS: // This happens AFTER each action is processed
+        // JS: for (const side of this.sides) {
+        // JS:     for (const pokemon of side.active) {
+        // JS:         if (pokemon.forceSwitchFlag) {
+        // JS:             if (pokemon.hp) this.actions.dragIn(pokemon.side, pokemon.position);
+        // JS:             pokemon.forceSwitchFlag = false;
+        // JS:         }
+        // JS:     }
+        // JS: }
+        for side_idx in 0..self.sides.len() {
+            let active_count = self.sides[side_idx].active.len();
+            for slot in 0..active_count {
+                // Get the pokemon index from the active array
+                let pokemon_idx = match self.sides[side_idx].active.get(slot).and_then(|&opt| opt) {
+                    Some(idx) => idx,
+                    None => continue,
+                };
+
+                let (should_drag_in, has_hp) = {
+                    let pokemon = &self.sides[side_idx].pokemon[pokemon_idx];
+                    (pokemon.force_switch_flag, pokemon.hp > 0)
+                };
+
+                if should_drag_in {
+                    if has_hp {
+                        crate::battle_actions::drag_in(self, side_idx, slot);
+                    }
+                    // Clear the flag
+                    self.sides[side_idx].pokemon[pokemon_idx].force_switch_flag = false;
+                }
+            }
+        }
+
+        // JS: this.clearActiveMove();
+        self.clear_active_move(false);
+
+        // JS: // fainting
+        // JS: this.faintMessages();
+        // JS: if (this.ended) return true;
+        self.faint_messages(false, false, true);
+        if self.ended {
+            return;
+        }
+
         // JS: if (this.gen >= 5 && action.choice !== "start") { this.eachEvent("Update"); }
         // Call Update event for all actions except "start" in Gen 5+
         let is_start_action = matches!(action, Action::Field(f) if matches!(f.choice, FieldActionType::Start));

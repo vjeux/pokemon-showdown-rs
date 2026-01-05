@@ -123,43 +123,6 @@ impl Battle {
             };
             eprintln!("[TURN_LOOP] Processing action #{}: {}, queue remaining: {}", action_count, action_desc, self.queue.list.len());
 
-            // IMPORTANT: Process forced switches (phazing) BEFORE Residual action
-            // This ensures Pokemon switched in by moves like Dragon Tail take residual damage
-            if matches!(action, Action::Field(ref f) if matches!(f.choice, crate::battle_queue::FieldActionType::Residual)) {
-                // JavaScript: phazing (Roar, etc) - battle.ts:2821-2833
-                // for (const side of this.sides) {
-                //     for (const pokemon of side.active) {
-                //         if (pokemon.forceSwitchFlag) {
-                //             if (pokemon.hp) this.actions.dragIn(pokemon.side, pokemon.position);
-                //             pokemon.forceSwitchFlag = false;
-                //         }
-                //     }
-                // }
-                for side_idx in 0..self.sides.len() {
-                    let active_count = self.sides[side_idx].active.len();
-                    for slot in 0..active_count {
-                        // Get the pokemon index from the active array
-                        let pokemon_idx = match self.sides[side_idx].active.get(slot).and_then(|&opt| opt) {
-                            Some(idx) => idx,
-                            None => continue,
-                        };
-
-                        let (should_drag_in, has_hp) = {
-                            let pokemon = &self.sides[side_idx].pokemon[pokemon_idx];
-                            (pokemon.force_switch_flag, pokemon.hp > 0)
-                        };
-
-                        if should_drag_in {
-                            if has_hp {
-                                crate::battle_actions::drag_in(self, side_idx, slot);
-                            }
-                            // Clear the flag
-                            self.sides[side_idx].pokemon[pokemon_idx].force_switch_flag = false;
-                        }
-                    }
-                }
-            }
-
             self.run_action(&action);
 
             if self.ended {
@@ -173,22 +136,11 @@ impl Battle {
             }
         }
 
-        // Phazing is now processed BEFORE Residual action (see lines 126-159 above)
-        // This comment preserves the original JavaScript reference for documentation
-        // JavaScript: phazing (Roar, etc) - battle.ts:2821-2833
-        // for (const side of this.sides) {
-        //     for (const pokemon of side.active) {
-        //         if (pokemon.forceSwitchFlag) {
-        //             if (pokemon.hp) this.actions.dragIn(pokemon.side, pokemon.position);
-        //             pokemon.forceSwitchFlag = false;
-        //         }
-        //     }
-        // }
+        // Note: Phazing (Roar, Dragon Tail, etc.) now happens inside run_action()
+        // after EACH action is processed, not here after all actions.
+        // See run_action.rs for the implementation matching battle.ts:2820-2828
 
-        // JavaScript: this.clearActiveMove();
-        self.clear_active_move(false);
-
-        eprintln!("[TURN_LOOP] After phazing, calling end_turn()");
+        eprintln!("[TURN_LOOP] All actions processed, calling end_turn()");
         self.end_turn();
         eprintln!("[TURN_LOOP] After end_turn(), turn is now {}", self.turn);
 

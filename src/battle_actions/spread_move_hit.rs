@@ -446,6 +446,8 @@ pub fn spread_move_hit(
 
     // DamagingHit and AfterHit events
     // JS: if (damagedDamage.length && !isSecondary && !isSelf) { ... }
+    eprintln!("[SPREAD_MOVE_HIT] DamagingHit check: move_id={}, damaged_damage.len()={}, is_secondary={}, is_self={}",
+        move_id.as_str(), damaged_damage.len(), is_secondary, is_self);
     if !damaged_damage.is_empty() && !is_secondary && !is_self {
         // JS: this.battle.runEvent('DamagingHit', damagedTargets, pokemon, move, damagedDamage);
         // JavaScript's runEvent loops through each target when given an array

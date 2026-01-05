@@ -145,6 +145,8 @@ pub fn on_field_residual(
     battle: &mut Battle,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
+    eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] Called, weather={}, field.weather.as_str()={}",
+        battle.field.weather.as_str(), battle.field.weather.as_str());
     // Add weather upkeep message
     use crate::battle::Arg;
     battle.add("weather", &[
@@ -154,10 +156,14 @@ pub fn on_field_residual(
     ]);
 
     // Check if weather is still sandstorm
+    eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] About to check if weather is sandstorm: battle.field.weather={}", battle.field.weather.as_str());
     if battle.field.weather == ID::from("sandstorm") {
+        eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] Weather IS sandstorm, calling each_event");
         // Pass sandstorm as the effect so Weather event knows which weather condition to use
         // In JavaScript: this.eachEvent('Weather') uses this.effect which is the sandstorm condition
         battle.each_event("Weather", Some(&ID::from("sandstorm")), None);
+    } else {
+        eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] Weather is NOT sandstorm, skipping each_event");
     }
 
     EventResult::Continue
