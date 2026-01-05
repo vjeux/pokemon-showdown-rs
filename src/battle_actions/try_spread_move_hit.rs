@@ -141,7 +141,8 @@ pub fn try_spread_move_hit(
     );
 
     // Check if try_result is truthy (in JS, falsy = false, null, undefined, 0, "", NaN)
-    let try_truthy = !matches!(try_result, event::EventResult::Boolean(false) | event::EventResult::Null);
+    // NotFail also means the move should fail (it's a signal that onTry returned false)
+    let try_truthy = !matches!(try_result, event::EventResult::Boolean(false) | event::EventResult::Null | event::EventResult::NotFail);
 
     eprintln!("[TRY_SPREAD_MOVE_HIT] try_result={:?}, try_truthy={}", try_result, try_truthy);
 
@@ -162,7 +163,7 @@ pub fn try_spread_move_hit(
     };
 
     // Check if prepare_hit_1 is truthy
-    let prepare_hit_1_truthy = !matches!(prepare_hit_1, event::EventResult::Boolean(false) | event::EventResult::Null);
+    let prepare_hit_1_truthy = !matches!(prepare_hit_1, event::EventResult::Boolean(false) | event::EventResult::Null | event::EventResult::NotFail);
 
     // Phase 3: Only call PrepareHit event if PrepareHit(move) succeeded (short-circuit AND)
     let prepare_hit_2 = if prepare_hit_1_truthy {
@@ -175,7 +176,7 @@ pub fn try_spread_move_hit(
     };
 
     // Final result check (same as before)
-    let hit_result = !matches!(prepare_hit_2, EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null);
+    let hit_result = !matches!(prepare_hit_2, EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null | EventResult::NotFail);
 
     eprintln!("[TRY_SPREAD_MOVE_HIT] hit_result={}", hit_result);
 
