@@ -131,6 +131,8 @@ pub fn spread_move_hit(
     is_secondary: bool,
     is_self: bool,
 ) -> SpreadMoveHitResult {
+    eprintln!("[SPREAD_MOVE_HIT] ENTRY: move_id={}, targets.len()={}, is_secondary={}, is_self={}",
+        move_id, targets.len(), is_secondary, is_self);
     // Initialize damage array with Success (true) for all targets
     // In JS: damage[i] = true for all targets
     let mut damage: SpreadMoveDamage = vec![DamageResult::Success; targets.len()];
@@ -192,8 +194,10 @@ pub fn spread_move_hit(
 
     // Check if hit failed
     // JS: if (!hitResult) { if (hitResult === false) { ... } return [[false], targets]; }
+    eprintln!("[SPREAD_MOVE_HIT] After TryHit events: hit_result={:?}", hit_result);
     match hit_result {
         event::EventResult::Boolean(false) => {
+            eprintln!("[SPREAD_MOVE_HIT] TryHit returned false, returning Failed");
             let pokemon_ident = {
                 let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
                     Some(p) => p,
@@ -218,6 +222,7 @@ pub fn spread_move_hit(
            move_target != "allyTeam" &&
            move_target != "allySide" &&
            move_target != "foeSide" {
+            eprintln!("[SPREAD_MOVE_HIT] Before try_primary_hit_event: damage={:?}", damage);
             damage = crate::battle_actions::try_primary_hit_event(
                 battle,
                 damage,
@@ -226,6 +231,7 @@ pub fn spread_move_hit(
                 move_data_id,
                 is_secondary,
             );
+            eprintln!("[SPREAD_MOVE_HIT] After try_primary_hit_event: damage={:?}", damage);
         }
     }
 
@@ -255,9 +261,11 @@ pub fn spread_move_hit(
             targets_mut[i] = SpreadMoveTarget::None;
         }
     }
+    eprintln!("[SPREAD_MOVE_HIT] After damage loop: damage={:?}, targets={:?}", damage, targets_mut);
 
     // 1. call to getDamage
     // JS: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
+    eprintln!("[SPREAD_MOVE_HIT] About to call get_spread_damage");
     damage = crate::battle_actions::get_spread_damage(
         battle,
         damage,

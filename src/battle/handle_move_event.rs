@@ -24,7 +24,8 @@ impl Battle {
         //   - But runEvent signature is: runEvent(eventid, target, source, ...)
         //   - So source (attacker) goes into "target" parameter
         //   - And target (defender) goes into "source" parameter
-        //   - Therefore: current_event.target = attacker, current_event.source = defender
+        //   - Therefore: event.target = attacker, event.source = defender
+        //   - IMPORTANT: run_event sets self.event (not self.current_event)
         //
         // For events called via single_event (like AfterHit):
         //   - We call: single_event("AfterHit", move_id, target_pos, source_pos, ...)
@@ -32,13 +33,14 @@ impl Battle {
         //   - So target_pos goes into "target", source_pos goes into "source"
         //   - Therefore: current_event.target = defender, current_event.source = attacker
         //
-        // BasePower is called via run_event, so we need to extract from current_event.target
+        // BasePower is called via run_event, so we need to extract from event.target
         // Most other events are called via single_event, so we extract from current_event.source
 
         let (source_pos, target_pos) = if event_id == "BasePower" {
-            // For BasePower (run_event): attacker is in current_event.target, defender is in current_event.source
-            let attacker = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
-            let defender = self.current_event.as_ref().and_then(|e| e.source);
+            // For BasePower (run_event): attacker is in event.target, defender is in event.source
+            // IMPORTANT: BasePower is called via run_event, which sets self.event (not self.current_event)
+            let attacker = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+            let defender = self.event.as_ref().and_then(|e| e.source);
             (attacker, defender)
         } else {
             // For other events (single_event): attacker is in current_event.source, defender is in target param

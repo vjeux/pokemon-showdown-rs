@@ -190,6 +190,7 @@ pub fn try_spread_move_hit(
     let mut active_move = battle.active_move.take().expect("active_move must be set");
 
     for &step_idx in &step_order {
+        eprintln!("[TRY_SPREAD_MOVE_HIT] Executing step {} for move={}, targets.len()={}", step_idx, move_id, target_list.len());
         // Call the appropriate step function
         // JS: const hitResults: (number | boolean | "" | undefined)[] | undefined = step.call(this, targets, pokemon, move);
         let hit_results: Option<Vec<bool>> = match step_idx {

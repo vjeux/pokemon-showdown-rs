@@ -19,9 +19,12 @@ impl Battle {
     /// Chain modify the event modifier using a simple multiplier
     /// Most common usage: battle.chain_modify(2.0) to double the value
     pub fn chain_modify(&mut self, multiplier: f32) -> i32 {
+        eprintln!("[CHAIN_MODIFY] Input multiplier: {}", multiplier);
         // Convert multiplier to numerator/denominator (e.g., 2.0 -> 2/1, 1.5 -> 3/2)
         let numerator = (multiplier * 4096.0) as i32;
         let denominator = 4096;
-        self.chain_modify_fraction(numerator, denominator)
+        let result = self.chain_modify_fraction(numerator, denominator);
+        eprintln!("[CHAIN_MODIFY] Result modifier: {}", result);
+        result
     }
 }

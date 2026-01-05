@@ -222,6 +222,10 @@ pub fn get_damage(
     // Moves like Present modify active_move.base_power in their onModifyMove callback
     // JavaScript passes the same move object around, but in Rust we have separate move_data and active_move
     // So we must check active_move first to get modifications from onModifyMove events
+    eprintln!("[GET_DAMAGE] move_id={}, move_data.base_power={}, active_move.base_power={:?}",
+        move_data.id,
+        move_data.base_power,
+        battle.active_move.as_ref().map(|m| m.base_power));
     let mut base_power = if let Some(ref active_move) = battle.active_move {
         active_move.base_power
     } else {
