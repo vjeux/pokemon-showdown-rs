@@ -334,17 +334,21 @@ pub fn spread_move_hit(
 
     // 4. self drops
     // JS: if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
-    let (has_self_effect, self_dropped) = {
+    // Extract both self_effect and secondaries info before calling any functions
+    let (has_self_effect, self_dropped, has_secondaries) = {
         let move_data_def = battle.dex.moves.get(move_data_id).expect("Move not found");
         let has_self = move_data_def.self_effect.is_some();
 
-        let dropped = if let Some(ref active_move) = battle.active_move {
-            active_move.self_dropped
+        let (dropped, has_secs) = if let Some(ref active_move) = battle.active_move {
+            eprintln!("[SPREAD_MOVE_HIT] Extracting secondaries info: move_id={}, secondaries.len()={}",
+                active_move.id, active_move.secondaries.len());
+            (active_move.self_dropped, !active_move.secondaries.is_empty())
         } else {
-            false
+            eprintln!("[SPREAD_MOVE_HIT] No active_move when extracting info!");
+            (false, false)
         };
 
-        (has_self, dropped)
+        (has_self, dropped, has_secs)
     };
 
     // Only call self_drops if self_effect exists and selfDropped is false
@@ -358,14 +362,13 @@ pub fn spread_move_hit(
         );
     }
 
+    eprintln!("[SPREAD_MOVE_HIT] Reached secondaries section for move_id={}", move_id);
+
     // 5. secondary effects
     // JS: if (moveData.secondaries) this.secondaries(targets, pokemon, move, moveData, isSelf);
-    let has_secondaries = {
-        let move_data = battle.dex.moves.get(move_data_id).expect("Move not found");
-        move_data.secondaries.as_ref().map_or(false, |s| !s.is_empty())
-    };
-
+    // Use the has_secondaries flag we extracted earlier (from ActiveMove.secondaries)
     if has_secondaries {
+        eprintln!("[SPREAD_MOVE_HIT] Calling secondaries for move_id={}", move_id);
         crate::battle_actions::secondaries(
             battle,
             &targets_mut,

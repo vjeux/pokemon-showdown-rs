@@ -71,10 +71,19 @@ impl Dex {
             steals_boosts: false,
             struggle_recoil: false,
             secondary: None,
-            secondaries: if let Some(ref sec) = move_data.secondary {
-                vec![Self::convert_secondary(sec)]
-            } else {
-                Vec::new()
+            secondaries: {
+                let mut secs = Vec::new();
+                // Add singular secondary if it exists
+                if let Some(ref sec) = move_data.secondary {
+                    secs.push(Self::convert_secondary(sec));
+                }
+                // Add plural secondaries if they exist
+                if let Some(ref sec_vec) = move_data.secondaries {
+                    for sec in sec_vec {
+                        secs.push(Self::convert_secondary(sec));
+                    }
+                }
+                secs
             },
             self_effect: None,
             has_sheer_force: false,

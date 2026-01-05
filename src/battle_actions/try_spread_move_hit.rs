@@ -273,6 +273,10 @@ pub fn try_spread_move_hit(
                 use crate::battle_actions::{SpreadMoveTarget, SpreadMoveTargets, DamageResult};
                 let spread_targets: SpreadMoveTargets = target_list.iter().map(|&t| SpreadMoveTarget::Target(t)).collect();
 
+                // IMPORTANT: spread_move_hit needs battle.active_move to be set
+                // Temporarily restore it before calling spread_move_hit
+                battle.active_move = Some(active_move.clone());
+
                 // spread_move_hit returns (damage, targets) tuple
                 let (damage_results, updated_targets) = crate::battle_actions::spread_move_hit(
                     battle,
@@ -283,6 +287,9 @@ pub fn try_spread_move_hit(
                     false, // is_secondary
                     false, // is_self
                 );
+
+                // Take back the active_move from battle for continued use in the loop
+                active_move = battle.active_move.take().expect("active_move should be set");
 
                 // Convert SpreadMoveDamage to Vec<bool>
                 // Damage, Success, or HitSubstitute = true; Failed or Undefined = false
