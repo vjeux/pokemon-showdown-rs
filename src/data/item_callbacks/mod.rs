@@ -336,6 +336,7 @@ pub mod zygardite;
 
 
 // =========================================================================
+// =========================================================================
 // DISPATCH FUNCTIONS
 //
 // These functions route item events to specific item implementations.
@@ -349,8 +350,7 @@ pub fn dispatch_on_after_boost(
     target_pos: (usize, usize),
     boost: &crate::dex_data::BoostsTable,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "adrenalineorb" => adrenalineorb::on_after_boost(battle, target_pos, boost),
         "ejectpack" => ejectpack::on_after_boost(battle, target_pos, boost),
         _ => EventResult::Continue,
@@ -365,8 +365,7 @@ pub fn dispatch_on_after_move_secondary(
     source_pos: Option<(usize, usize)>,
     move_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "ejectbutton" => ejectbutton::on_after_move_secondary(battle, target_pos, source_pos, move_id),
         "keeberry" => keeberry::on_after_move_secondary(battle, target_pos, source_pos, move_id),
         "marangaberry" => marangaberry::on_after_move_secondary(battle, target_pos, source_pos, move_id),
@@ -383,8 +382,7 @@ pub fn dispatch_on_after_move_secondary_self(
     target_pos: Option<(usize, usize)>,
     move_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "lifeorb" => lifeorb::on_after_move_secondary_self(battle, source_pos, target_pos, move_id),
         "shellbell" => shellbell::on_after_move_secondary_self(battle, source_pos, target_pos, move_id),
         "throatspray" => throatspray::on_after_move_secondary_self(battle, source_pos, target_pos, move_id),
@@ -398,8 +396,7 @@ pub fn dispatch_on_after_set_status(
     item_id: &str,
     target_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "lumberry" => lumberry::on_after_set_status(battle, target_pos),
         _ => EventResult::Continue,
     }
@@ -414,8 +411,7 @@ pub fn dispatch_on_after_sub_damage(
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "airballoon" => airballoon::on_after_sub_damage(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
@@ -426,8 +422,7 @@ pub fn dispatch_on_any_after_mega(
     battle: &mut Battle,
     item_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "ejectpack" => ejectpack::on_any_after_mega(battle),
         "mirrorherb" => mirrorherb::on_any_after_mega(battle),
         "whiteherb" => whiteherb::on_any_after_mega(battle),
@@ -440,8 +435,7 @@ pub fn dispatch_on_any_after_move(
     battle: &mut Battle,
     item_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "ejectpack" => ejectpack::on_any_after_move(battle),
         "mirrorherb" => mirrorherb::on_any_after_move(battle),
         "whiteherb" => whiteherb::on_any_after_move(battle),
@@ -454,8 +448,7 @@ pub fn dispatch_on_any_after_terastallization(
     battle: &mut Battle,
     item_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "mirrorherb" => mirrorherb::on_any_after_terastallization(battle),
         _ => EventResult::Continue,
     }
@@ -466,8 +459,7 @@ pub fn dispatch_on_any_pseudo_weather_change(
     battle: &mut Battle,
     item_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "roomservice" => roomservice::on_any_pseudo_weather_change(battle),
         _ => EventResult::Continue,
     }
@@ -478,8 +470,7 @@ pub fn dispatch_on_any_switch_in(
     battle: &mut Battle,
     item_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "ejectpack" => ejectpack::on_any_switch_in(battle),
         "mirrorherb" => mirrorherb::on_any_switch_in(battle),
         "whiteherb" => whiteherb::on_any_switch_in(battle),
@@ -494,8 +485,7 @@ pub fn dispatch_on_attract(
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "destinyknot" => destinyknot::on_attract(battle, target_pos, source_pos),
         _ => EventResult::Continue,
     }
@@ -509,8 +499,7 @@ pub fn dispatch_on_base_power(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "adamantcrystal" => adamantcrystal::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "adamantorb" => adamantorb::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "blackbelt" => blackbelt::on_base_power(battle, base_power, pokemon_pos, target_pos),
@@ -579,8 +568,7 @@ pub fn dispatch_on_charge_move(
     target_pos: Option<(usize, usize)>,
     move_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "powerherb" => powerherb::on_charge_move(battle, pokemon_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
@@ -595,8 +583,7 @@ pub fn dispatch_on_damage(
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "focusband" => focusband::on_damage(battle, damage, target_pos, source_pos, effect_id),
         "focussash" => focussash::on_damage(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
@@ -611,8 +598,7 @@ pub fn dispatch_on_damaging_hit(
     target_pos: (usize, usize),
     source_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "absorbbulb" => absorbbulb::on_damaging_hit(battle, damage, target_pos, source_pos),
         "airballoon" => airballoon::on_damaging_hit(battle, damage, target_pos, source_pos),
         "cellbattery" => cellbattery::on_damaging_hit(battle, damage, target_pos, source_pos),
@@ -632,8 +618,7 @@ pub fn dispatch_on_disable_move(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "assaultvest" => assaultvest::on_disable_move(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
@@ -645,8 +630,7 @@ pub fn dispatch_on_eat(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "aguavberry" => aguavberry::on_eat(battle, pokemon_pos),
         "apicotberry" => apicotberry::on_eat(battle, pokemon_pos),
         "aspearberry" => aspearberry::on_eat(battle, pokemon_pos),
@@ -714,8 +698,7 @@ pub fn dispatch_on_effectiveness(
     item_id: &str,
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "ironball" => ironball::on_effectiveness(battle, target_pos),
         _ => EventResult::Continue,
     }
@@ -727,8 +710,7 @@ pub fn dispatch_on_end(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "ejectpack" => ejectpack::on_end(battle, pokemon_pos),
         "mirrorherb" => mirrorherb::on_end(battle, pokemon_pos),
         "utilityumbrella" => utilityumbrella::on_end(battle, pokemon_pos),
@@ -745,8 +727,7 @@ pub fn dispatch_on_foe_after_boost(
     effect_id: Option<&str>,
     boost: &crate::dex_data::BoostsTable,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "mirrorherb" => mirrorherb::on_foe_after_boost(battle, target_pos, source_pos, effect_id, boost),
         _ => EventResult::Continue,
     }
@@ -759,8 +740,7 @@ pub fn dispatch_on_fractional_priority(
     pokemon_pos: (usize, usize),
     priority: f64,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "custapberry" => custapberry::on_fractional_priority(battle, pokemon_pos, priority),
         "quickclaw" => quickclaw::on_fractional_priority(battle, pokemon_pos, priority),
         _ => EventResult::Continue,
@@ -775,8 +755,7 @@ pub fn dispatch_on_hit(
     source_pos: Option<(usize, usize)>,
     move_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "enigmaberry" => enigmaberry::on_hit(battle, target_pos, source_pos, move_id),
         "stickybarb" => stickybarb::on_hit(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
@@ -790,8 +769,7 @@ pub fn dispatch_on_immunity(
     pokemon_pos: (usize, usize),
     immunity_type: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "safetygoggles" => safetygoggles::on_immunity(battle, pokemon_pos, immunity_type),
         _ => EventResult::Continue,
     }
@@ -803,8 +781,7 @@ pub fn dispatch_on_maybe_trap_pokemon(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "shedshell" => shedshell::on_maybe_trap_pokemon(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
@@ -815,8 +792,7 @@ pub fn dispatch_on_modify_accuracy(
     battle: &mut Battle,
     item_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "brightpowder" => brightpowder::on_modify_accuracy(battle),
         "laxincense" => laxincense::on_modify_accuracy(battle),
         _ => EventResult::Continue,
@@ -829,8 +805,7 @@ pub fn dispatch_on_modify_atk(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "choiceband" => choiceband::on_modify_atk(battle, pokemon_pos),
         "lightball" => lightball::on_modify_atk(battle, pokemon_pos),
         "thickclub" => thickclub::on_modify_atk(battle, pokemon_pos),
@@ -845,8 +820,7 @@ pub fn dispatch_on_modify_crit_ratio(
     pokemon_pos: (usize, usize),
     crit_ratio: i32,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "leek" => leek::on_modify_crit_ratio(battle, pokemon_pos, crit_ratio),
         "luckypunch" => luckypunch::on_modify_crit_ratio(battle, pokemon_pos, crit_ratio),
         "razorclaw" => razorclaw::on_modify_crit_ratio(battle, pokemon_pos, crit_ratio),
@@ -864,8 +838,7 @@ pub fn dispatch_on_modify_damage(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "expertbelt" => expertbelt::on_modify_damage(battle, damage, pokemon_pos, target_pos),
         "lifeorb" => lifeorb::on_modify_damage(battle, damage, pokemon_pos, target_pos),
         _ => EventResult::Continue,
@@ -878,8 +851,7 @@ pub fn dispatch_on_modify_def(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "eviolite" => eviolite::on_modify_def(battle, pokemon_pos),
         "metalpowder" => metalpowder::on_modify_def(battle, pokemon_pos),
         _ => EventResult::Continue,
@@ -893,8 +865,7 @@ pub fn dispatch_on_modify_move(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "choiceband" => choiceband::on_modify_move(battle, pokemon_pos, target_pos),
         "choicescarf" => choicescarf::on_modify_move(battle, pokemon_pos, target_pos),
         "choicespecs" => choicespecs::on_modify_move(battle, pokemon_pos, target_pos),
@@ -913,8 +884,7 @@ pub fn dispatch_on_modify_secondaries(
     pokemon_pos: (usize, usize),
     secondaries: &mut Vec<crate::battle_actions::SecondaryEffect>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "covertcloak" => covertcloak::on_modify_secondaries(battle, pokemon_pos, secondaries),
         _ => EventResult::Continue,
     }
@@ -926,8 +896,7 @@ pub fn dispatch_on_modify_sp_a(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "choicespecs" => choicespecs::on_modify_sp_a(battle, pokemon_pos),
         "deepseatooth" => deepseatooth::on_modify_sp_a(battle, pokemon_pos),
         "lightball" => lightball::on_modify_sp_a(battle, pokemon_pos),
@@ -941,8 +910,7 @@ pub fn dispatch_on_modify_sp_d(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "assaultvest" => assaultvest::on_modify_sp_d(battle, pokemon_pos),
         "deepseascale" => deepseascale::on_modify_sp_d(battle, pokemon_pos),
         "eviolite" => eviolite::on_modify_sp_d(battle, pokemon_pos),
@@ -956,8 +924,7 @@ pub fn dispatch_on_modify_spe(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "choicescarf" => choicescarf::on_modify_spe(battle, pokemon_pos),
         "ironball" => ironball::on_modify_spe(battle, pokemon_pos),
         "machobrace" => machobrace::on_modify_spe(battle, pokemon_pos),
@@ -978,8 +945,7 @@ pub fn dispatch_on_modify_weight(
     item_id: &str,
     weighthg: i32,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "floatstone" => floatstone::on_modify_weight(battle, weighthg),
         _ => EventResult::Continue,
     }
@@ -991,8 +957,7 @@ pub fn dispatch_on_residual(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "berry" => berry::on_residual(battle, pokemon_pos),
         "blacksludge" => blacksludge::on_residual(battle, pokemon_pos),
         "ejectpack" => ejectpack::on_residual(battle, pokemon_pos),
@@ -1016,8 +981,7 @@ pub fn dispatch_on_set_ability(
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "abilityshield" => abilityshield::on_set_ability(battle, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
@@ -1030,8 +994,7 @@ pub fn dispatch_on_source_modify_accuracy(
     accuracy: i32,
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "widelens" => widelens::on_source_modify_accuracy(battle, accuracy, target_pos),
         "zoomlens" => zoomlens::on_source_modify_accuracy(battle, accuracy, target_pos),
         _ => EventResult::Continue,
@@ -1046,8 +1009,7 @@ pub fn dispatch_on_source_modify_damage(
     source_pos: (usize, usize),
     target_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "babiriberry" => babiriberry::on_source_modify_damage(battle, damage, source_pos, target_pos),
         "chartiberry" => chartiberry::on_source_modify_damage(battle, damage, source_pos, target_pos),
         "chilanberry" => chilanberry::on_source_modify_damage(battle, damage, source_pos, target_pos),
@@ -1078,8 +1040,7 @@ pub fn dispatch_on_source_try_primary_hit(
     source_pos: Option<(usize, usize)>,
     move_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "buggem" => buggem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
         "darkgem" => darkgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
         "dragongem" => dragongem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
@@ -1108,8 +1069,7 @@ pub fn dispatch_on_start(
     item_id: &str,
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "airballoon" => airballoon::on_start(battle, target_pos),
         "boosterenergy" => boosterenergy::on_start(battle, target_pos),
         "choiceband" => choiceband::on_start(battle, target_pos),
@@ -1133,8 +1093,7 @@ pub fn dispatch_on_switch_in(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "blueorb" => blueorb::on_switch_in(battle, pokemon_pos),
         "redorb" => redorb::on_switch_in(battle, pokemon_pos),
         _ => EventResult::Continue,
@@ -1149,8 +1108,7 @@ pub fn dispatch_on_take_item(
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "abomasite" => abomasite::on_take_item(battle, item_pos, pokemon_pos, source_pos),
         "absolite" => absolite::on_take_item(battle, item_pos, pokemon_pos, source_pos),
         "absolitez" => absolitez::on_take_item(battle, item_pos, pokemon_pos, source_pos),
@@ -1305,8 +1263,7 @@ pub fn dispatch_on_terrain_change(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "electricseed" => electricseed::on_terrain_change(battle, pokemon_pos),
         "grassyseed" => grassyseed::on_terrain_change(battle, pokemon_pos),
         "mistyseed" => mistyseed::on_terrain_change(battle, pokemon_pos),
@@ -1321,8 +1278,7 @@ pub fn dispatch_on_trap_pokemon(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "shedshell" => shedshell::on_trap_pokemon(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
@@ -1335,8 +1291,7 @@ pub fn dispatch_on_try_boost(
     target_pos: (usize, usize),
     boost: &mut crate::dex_data::BoostsTable,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "clearamulet" => clearamulet::on_try_boost(battle, target_pos, boost),
         _ => EventResult::Continue,
     }
@@ -1349,8 +1304,7 @@ pub fn dispatch_on_try_eat_item(
     item: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "aguavberry" => aguavberry::on_try_eat_item(battle, item, pokemon_pos),
         "berry" => berry::on_try_eat_item(battle, item, pokemon_pos),
         "enigmaberry" => enigmaberry::on_try_eat_item(battle, item, pokemon_pos),
@@ -1374,8 +1328,7 @@ pub fn dispatch_on_try_heal(
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "bigroot" => bigroot::on_try_heal(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
@@ -1388,8 +1341,7 @@ pub fn dispatch_on_try_hit(
     target_pos: (usize, usize),
     source_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "safetygoggles" => safetygoggles::on_try_hit(battle, target_pos, source_pos),
         _ => EventResult::Continue,
     }
@@ -1401,8 +1353,7 @@ pub fn dispatch_on_update(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "aguavberry" => aguavberry::on_update(battle, pokemon_pos),
         "apicotberry" => apicotberry::on_update(battle, pokemon_pos),
         "aspearberry" => aspearberry::on_update(battle, pokemon_pos),
@@ -1448,8 +1399,7 @@ pub fn dispatch_on_use(
     item_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "ejectpack" => ejectpack::on_use(battle, pokemon_pos),
         "mirrorherb" => mirrorherb::on_use(battle, pokemon_pos),
         "whiteherb" => whiteherb::on_use(battle, pokemon_pos),
@@ -1464,8 +1414,7 @@ pub fn dispatch_on_use_item(
     item: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-    match ID::from(item_id).as_str() {
+    match item_id {
         "ejectpack" => ejectpack::on_use_item(battle, item, pokemon_pos),
         _ => EventResult::Continue,
     }

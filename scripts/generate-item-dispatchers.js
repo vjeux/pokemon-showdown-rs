@@ -361,8 +361,7 @@ function generateDispatcher(callback, itemList) {
     code += `pub fn dispatch_${funcName}(\n`;
     code += signature + '\n';
     code += `) -> EventResult {\n`;
-    code += `    use crate::dex_data::ID;\n`;
-    code += `    match ID::from(item_id).as_str() {\n`;
+    code += `    match item_id {\n`;
 
     // Sort items for consistent output
     itemList.sort().forEach(item => {
