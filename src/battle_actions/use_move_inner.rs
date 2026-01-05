@@ -330,6 +330,7 @@ pub fn use_move_inner(
     //     target = pokemon;
     // }
     if active_move.target == "self" || active_move.target == "allies" {
+        eprintln!("[USE_MOVE_INNER] Setting target to self for move {}, target={:?}", active_move.id, active_move.target);
         target_pos = Some(pokemon_pos);
     }
 
@@ -380,8 +381,11 @@ pub fn use_move_inner(
     // if (baseTarget !== move.target) {
     //     target = this.battle.getRandomTarget(pokemon, move);
     // }
+    eprintln!("[USE_MOVE_INNER] After ModifyMove: base_target={}, active_move.target={}, target_pos={:?}", base_target, active_move.target, target_pos);
     if base_target != active_move.target {
+        eprintln!("[USE_MOVE_INNER] Target changed! Getting new random target");
         target_pos = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &active_move.target);
+        eprintln!("[USE_MOVE_INNER] New target_pos={:?}", target_pos);
     }
 
     // move = this.battle.runEvent('ModifyType', pokemon, target, move, move);
@@ -398,8 +402,11 @@ pub fn use_move_inner(
     // if (baseTarget !== move.target) {
     //     target = this.battle.getRandomTarget(pokemon, move);
     // }
+    eprintln!("[USE_MOVE_INNER] After ModifyMove: base_target={}, active_move.target={}, target_pos={:?}", base_target, active_move.target, target_pos);
     if base_target != active_move.target {
+        eprintln!("[USE_MOVE_INNER] Target changed! Getting new random target");
         target_pos = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &active_move.target);
+        eprintln!("[USE_MOVE_INNER] New target_pos={:?}", target_pos);
     }
 
     // if (!move || pokemon.fainted) {

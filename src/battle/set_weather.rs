@@ -206,16 +206,21 @@ impl Battle {
         // }
         let weather_duration = {
             if let Some(condition) = self.dex.conditions().get_by_id(&weather_id) {
+                eprintln!("[SET_WEATHER] Found condition for '{}', duration={:?}", weather_id.as_str(), condition.duration);
                 condition.duration
             } else {
+                eprintln!("[SET_WEATHER] No condition found for '{}', defaulting to Some(5)", weather_id.as_str());
                 Some(5) // Default to 5 turns if condition not found
             }
         };
 
+        eprintln!("[SET_WEATHER] Setting weather_state.duration to {:?}", weather_duration);
         self.field.weather_state.duration = weather_duration;
 
         // Call durationCallback if it exists
+        eprintln!("[SET_WEATHER] Checking if has_callback for DurationCallback");
         if self.has_callback(&weather_id, "DurationCallback") {
+            eprintln!("[SET_WEATHER] Calling duration callback for '{}'", weather_id.as_str());
             let result = self.call_duration_callback(
                 &weather_id,
                 source_pos,
@@ -223,9 +228,13 @@ impl Battle {
                 source_effect.as_ref().map(|id| id.as_str()),
             );
 
+            eprintln!("[SET_WEATHER] Duration callback returned: {:?}", result);
             if let EventResult::Number(duration) = result {
+                eprintln!("[SET_WEATHER] Setting duration from callback: {}", duration);
                 self.field.weather_state.duration = Some(duration);
             }
+        } else {
+            eprintln!("[SET_WEATHER] No duration callback found for '{}'", weather_id.as_str());
         }
 
         // Fire 'FieldStart' event on the weather

@@ -169,7 +169,9 @@ pub fn run_move_effects(
 
         // Call singleEvent('Hit', moveData, ...) to trigger move's onHit callback
         // This is what makes King's Shield add the 'stall' volatile
+        eprintln!("[RUN_MOVE_EFFECTS] Calling single_event Hit for move_id={}, target={:?}, source={:?}", move_id, target_pos, _source_pos);
         battle.single_event("Hit", &move_id, Some(target_pos), Some(_source_pos), Some(&move_id));
+        eprintln!("[RUN_MOVE_EFFECTS] Returned from single_event Hit");
 
         // Call runEvent('Hit', ...) to trigger general Hit event handlers
         if !_is_self && !_is_secondary {

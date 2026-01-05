@@ -552,8 +552,27 @@ impl Battle {
             }
 
             // JavaScript: Execute handler (lines 252-266)
-            // Dispatch to the appropriate handler
-            let return_val = self.dispatch_single_event(&event_variant, &effect_id, handler_target, source);
+            // Call handler directly based on effect_type from the handler
+            // This avoids ambiguity when an effect name exists as both a move and a volatile
+            // In JavaScript, runEvent has Effect objects with effectType, so it knows which handler to call
+            let return_val = match handler.effect_type {
+                EffectType::Move => {
+                    self.handle_move_event(&event_variant, effect_id.as_str(), handler_target)
+                }
+                EffectType::Ability => {
+                    self.handle_ability_event(&event_variant, &effect_id, handler_target)
+                }
+                EffectType::Item => {
+                    self.handle_item_event(&event_variant, &effect_id, handler_target)
+                }
+                EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain => {
+                    self.handle_condition_event(&event_variant, effect_id.as_str(), handler_target)
+                }
+                _ => {
+                    // Fall back to dispatch_single_event for other types
+                    self.dispatch_single_event(&event_variant, &effect_id, handler_target, source)
+                }
+            };
 
             // JavaScript: if (returnVal !== undefined) { ... } (lines 268-281)
             // Update relay variable if handler returned a value

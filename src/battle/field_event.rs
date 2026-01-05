@@ -322,14 +322,22 @@ impl Battle {
             //     }
 
             // Handle field effects (weather, terrain, pseudo-weather)
+            eprintln!("[FIELD_EVENT HANDLER] event={}, effect_id={}, is_field={}, is_side={}",
+                event_id, handler.effect_id.as_str(), handler.is_field, handler.is_side);
             if event_id == "Residual" && handler.is_field {
+                eprintln!("[FIELD_EVENT RESIDUAL FIELD] effect_id={}, weather={}, terrain={}",
+                    handler.effect_id.as_str(), self.field.weather.as_str(), self.field.terrain.as_str());
                 let should_clear = {
                     // Check weather
                     if self.field.weather == handler.effect_id {
+                        eprintln!("[WEATHER DURATION] Checking sandstorm duration, current={:?}", self.field.weather_state.duration);
                         if let Some(duration) = self.field.weather_state.duration.as_mut() {
+                            eprintln!("[WEATHER DURATION] BEFORE decrement: duration={}", *duration);
                             *duration -= 1;
+                            eprintln!("[WEATHER DURATION] AFTER decrement: duration={}", *duration);
                             *duration == 0
                         } else {
+                            eprintln!("[WEATHER DURATION] No duration set (permanent weather)");
                             false
                         }
                     }

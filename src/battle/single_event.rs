@@ -122,6 +122,9 @@ impl Battle {
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
+        eprintln!("[SINGLE_EVENT] event_id={}, effect_id={}, target={:?}, depth={}",
+            event_id, effect_id.as_str(), target, self.event_depth);
+
         // JavaScript: if (this.eventDepth >= 8) throw Error
         if self.event_depth >= 8 {
             self.add("message", &["STACK LIMIT EXCEEDED".into()]);
@@ -237,7 +240,9 @@ impl Battle {
         self.event_depth += 1;
 
         // Dispatch based on effect type
+        eprintln!("[SINGLE_EVENT] BEFORE dispatch_single_event: event_id={}, effect_id={}", event_id, effect_id.as_str());
         let result = self.dispatch_single_event(event_id, effect_id, target, source);
+        eprintln!("[SINGLE_EVENT] AFTER dispatch_single_event: event_id={}, effect_id={}, result={:?}", event_id, effect_id.as_str(), result);
 
         // Restore parent context
         self.event_depth -= 1;

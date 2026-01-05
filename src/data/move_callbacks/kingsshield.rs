@@ -56,6 +56,7 @@ pub fn on_hit(
     use crate::pokemon::Pokemon;
 
     eprintln!("[KINGSSHIELD::ON_HIT] Called with pokemon_pos={:?}", pokemon_pos);
+    eprintln!("[KINGSSHIELD::ON_HIT] Backtrace:\n{}", std::backtrace::Backtrace::force_capture());
 
     let pokemon = pokemon_pos;
     let stall_id = ID::from("stall");
@@ -84,28 +85,9 @@ pub fn on_hit(
     } else {
         eprintln!("[KINGSSHIELD::ON_HIT] Adding new 'stall' volatile");
         // pokemon.addVolatile('stall');
-        // Use battle.add_volatile_to_pokemon to properly set duration from dex.conditions
+        // Pokemon::add_volatile already calls the Start event and initializes the counter
         Pokemon::add_volatile(battle, pokemon, stall_id.clone(), None, None, None, None);
-        eprintln!("[KINGSSHIELD::ON_HIT] Added 'stall' volatile via battle.add_volatile_to_pokemon");
-
-        // Initialize counter for new stall volatile (duration is set by add_volatile_to_pokemon)
-        // JavaScript onStart: this.effectState.counter = 3;
-        {
-            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-
-            if let Some(volatile) = pokemon_mut.volatiles.get_mut(&stall_id) {
-                // Duration is already set by add_volatile_to_pokemon, just set counter
-                volatile.data.insert("counter".to_string(), serde_json::Value::from(3)); // onStart sets counter to 3
-                eprintln!("[KINGSSHIELD::ON_HIT] Initialized stall counter=3");
-            }
-        }
-
-        // Call Start event
-        // JavaScript: this.battle.singleEvent('Start', status, this.volatiles[status.id], this, source, sourceEffect);
-        battle.handle_condition_event("Start", "stall", Some(pokemon));
+        eprintln!("[KINGSSHIELD::ON_HIT] Added 'stall' volatile");
     }
 
     EventResult::Continue
@@ -301,6 +283,8 @@ pub mod condition {
         target_pos: Option<(usize, usize)>,
     ) -> EventResult {
         use crate::dex_data::ID;
+
+        eprintln!("[KINGSSHIELD::CONDITION::ON_HIT] Called with pokemon_pos={:?}, target_pos={:?}", pokemon_pos, target_pos);
 
         let target = pokemon_pos;
         let source = match target_pos {
