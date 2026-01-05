@@ -349,10 +349,10 @@ pub fn switch_in(
     }
     battle.sides[side_index].pokemon[pokemon_index].previously_switched_in += 1;
 
-    // TODO: Hazards should be applied via side condition onSwitchIn callbacks
+    // Note: Hazards are applied via side condition onSwitchIn callbacks
     // (triggered by field_event_switch_in in run_switch), not directly here.
     // TypeScript: fieldEvent('SwitchIn') → stealthrock.onSwitchIn(), spikes.onSwitchIn(), etc.
-    // Rust: field_event_switch_in() should trigger condition_callbacks for hazards
+    // Rust: field_event_switch_in() triggers condition_callbacks for hazards
 
     // Run switch or queue it
     if is_drag && battle.gen >= 5 {
