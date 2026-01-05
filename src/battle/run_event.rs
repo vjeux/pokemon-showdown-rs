@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::{EventInfo, EventListener, PriorityItem};
+use crate::battle::{EffectType, EventInfo, EventListener, PriorityItem};
 use crate::event::EventResult;
 
 impl Battle {
@@ -318,11 +318,65 @@ impl Battle {
         // Find all event handlers for this event
         let mut handlers = self.find_event_handlers(event_id, target, source);
 
-        // TODO: Implement onEffect handler insertion (JavaScript lines 134-143)
-        // This requires more infrastructure for handling effect callbacks
-        if on_effect && source_effect.is_some() {
-            // For now, skip onEffect handling as it's not commonly used
-            // Will need to implement when encounter a case that needs it
+        // JavaScript: if (onEffect) { ... } (lines 134-143)
+        // Insert the sourceEffect's own handler at the front of the handlers list
+        // This allows moves like Knock Off to modify their own base power via onBasePower
+        if on_effect {
+            // JavaScript: if (!sourceEffect) throw new Error("onEffect passed without an effect");
+            let source_effect_id = source_effect.ok_or_else(|| {
+                panic!("onEffect passed without an effect");
+            }).unwrap();
+
+            // JavaScript: const callback = (sourceEffect as any)[`on${eventid}`];
+            // JavaScript: if (callback !== undefined) { ... }
+            // In Rust, we use static dispatch, so we don't check if callback exists
+            // Instead, we create an EventListener and let dispatch_single_event handle it
+            // If the move doesn't have a handler, it will return EventResult::Continue
+
+            // JavaScript: if (Array.isArray(target)) throw new Error("");
+            // We don't support array targets in this path
+
+            // JavaScript: handlers.unshift(this.resolvePriority({
+            // JavaScript:     effect: sourceEffect, callback, state: this.initEffectState({}), end: null, effectHolder: target,
+            // JavaScript: }, `on${eventid}`));
+
+            // Determine effect type (move, item, ability, condition)
+            let effect_type = if self.dex.moves().get(source_effect_id.as_str()).is_some() {
+                EffectType::Move
+            } else if self.dex.abilities().get(source_effect_id.as_str()).is_some() {
+                EffectType::Ability
+            } else if self.dex.items().get(source_effect_id.as_str()).is_some() {
+                EffectType::Item
+            } else if self.dex.conditions().get(source_effect_id.as_str()).is_some() {
+                EffectType::Condition
+            } else {
+                // Unknown effect type, skip
+                EffectType::Move // Default
+            };
+
+            // Create EventListener for the sourceEffect
+            let mut source_handler = EventListener {
+                event_name: event_id.to_string(),
+                effect_id: source_effect_id.clone(),
+                effect_type,
+                target: None,
+                index: None,
+                state: None, // JavaScript: state: this.initEffectState({})
+                effect_holder: target, // JavaScript: effectHolder: target
+                order: None,
+                priority: 0,
+                sub_order: 0,
+                effect_order: None,
+                speed: None,
+            };
+
+            // JavaScript: handlers.unshift(this.resolvePriority(handler, `on${eventid}`));
+            // Call resolve_priority to enrich the handler with priority/order/subOrder
+            let callback_name = format!("on{}", event_id);
+            self.resolve_priority(&mut source_handler, &callback_name);
+
+            // Insert at the front of handlers (JavaScript unshift)
+            handlers.insert(0, source_handler);
         }
 
         // JavaScript: Sort handlers based on event type (lines 145-151)
