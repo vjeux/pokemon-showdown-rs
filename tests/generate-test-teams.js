@@ -75,7 +75,7 @@ function generateRandomTeam(prng) {
 
         // Select random ability from species' abilities
         // For cosmetic formes, inherit from baseSpecies
-        let ability = 'No Ability';
+        let ability = '';
         if (species.abilities && species.abilities['0']) {
             ability = species.abilities['0'];
         } else if (species.baseSpecies) {

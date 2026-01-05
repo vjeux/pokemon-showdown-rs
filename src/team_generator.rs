@@ -13,8 +13,9 @@ pub fn generate_random_team(prng: &mut PRNG, dex: &Dex) -> Vec<PokemonSet> {
     let mut team = Vec::new();
 
     // Get all available species as a Vec for sampling (sorted by name for determinism across languages)
+    // Use case-insensitive sort to match JavaScript's localeCompare() behavior
     let mut all_species: Vec<_> = dex.species.values().collect();
-    all_species.sort_by_key(|s| &s.name);
+    all_species.sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
     if all_species.is_empty() {
         return team;
     }
@@ -60,12 +61,12 @@ pub fn generate_random_team(prng: &mut PRNG, dex: &Dex) -> Vec<PokemonSet> {
         } else if let Some(ref base_species_name) = species.base_species {
             // Cosmetic forme - get ability from base species
             if let Some(base_species) = dex.species().get(base_species_name) {
-                base_species.abilities.slot0.clone().unwrap_or_else(|| "No Ability".to_string())
+                base_species.abilities.slot0.clone().unwrap_or_else(|| "".to_string())
             } else {
-                "No Ability".to_string()
+                "".to_string()
             }
         } else {
-            "No Ability".to_string()
+            "".to_string()
         };
 
         // Select random item (avoid duplicates, allow empty string for multiple Pokemon)
