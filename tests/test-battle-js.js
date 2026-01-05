@@ -33,6 +33,22 @@ const teams = JSON.parse(fs.readFileSync(teamsFile, 'utf8'));
 const battle = new Battle({formatid: 'gen9randombattle'});
 battle.prng = new PRNG([0, 0, 0, seedNum]);
 
+// Wrap PRNG to count calls BEFORE setPlayer so we count initialization PRNG calls
+let totalPrngCalls = 0;
+const originalNext = battle.prng.rng.next.bind(battle.prng.rng);
+battle.prng.rng.next = function() {
+    totalPrngCalls++;
+    const result = originalNext();
+    // Log PRNG calls on turn 1 to debug handler divergence
+    if (battle.turn === 1 && totalPrngCalls >= 1 && totalPrngCalls <= 10) {
+        const stack = new Error().stack;
+        const lines = stack.split('\n').slice(1, 10); // Get first 10 frames
+        console.error(`[PRNG_JS] call #${totalPrngCalls}, result=${result}`);
+        lines.forEach((line, i) => console.error(`  Frame ${i}: ${line.trim()}`));
+    }
+    return result;
+};
+
 battle.setPlayer('p1', {
     name: 'Player 1',
     team: teams.p1.map(p => ({
@@ -64,22 +80,6 @@ battle.setPlayer('p2', {
         ivs: p.ivs,
     })),
 });
-
-// Wrap PRNG to count calls
-let totalPrngCalls = 0;
-const originalNext = battle.prng.rng.next.bind(battle.prng.rng);
-battle.prng.rng.next = function() {
-    totalPrngCalls++;
-    const result = originalNext();
-    // Log PRNG calls on turn 1 to debug handler divergence
-    if (battle.turn === 1 && totalPrngCalls >= 1 && totalPrngCalls <= 10) {
-        const stack = new Error().stack;
-        const lines = stack.split('\n').slice(1, 10); // Get first 10 frames
-        console.error(`[PRNG_JS] call #${totalPrngCalls}, result=${result}`);
-        lines.forEach((line, i) => console.error(`  Frame ${i}: ${line.trim()}`));
-    }
-    return result;
-};
 
 // Instrument findPokemonEventHandlers to log what volatiles are checked
 const originalFindPokemonEventHandlers = battle.findPokemonEventHandlers.bind(battle);
