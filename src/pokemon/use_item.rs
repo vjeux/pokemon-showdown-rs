@@ -156,46 +156,44 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 49): item.boosts handling
         // Check if item has boosts and apply them
         if let Some(item_data) = battle.dex.items().get_by_id(&item_id) {
-            if let Some(boosts_value) = item_data.extra.get("boosts") {
-                if let Some(boosts_obj) = boosts_value.as_object() {
-                    // Convert JSON boosts to array of tuples for battle.boost()
-                    let mut boosts_array: Vec<(&str, i8)> = Vec::new();
+            if let Some(boosts_map) = &item_data.boosts {
+                // Convert HashMap boosts to array of tuples for battle.boost()
+                let mut boosts_array: Vec<(&str, i8)> = Vec::new();
 
-                    if let Some(atk) = boosts_obj.get("atk").and_then(|v| v.as_i64()) {
-                        boosts_array.push(("atk", atk as i8));
-                    }
-                    if let Some(def) = boosts_obj.get("def").and_then(|v| v.as_i64()) {
-                        boosts_array.push(("def", def as i8));
-                    }
-                    if let Some(spa) = boosts_obj.get("spa").and_then(|v| v.as_i64()) {
-                        boosts_array.push(("spa", spa as i8));
-                    }
-                    if let Some(spd) = boosts_obj.get("spd").and_then(|v| v.as_i64()) {
-                        boosts_array.push(("spd", spd as i8));
-                    }
-                    if let Some(spe) = boosts_obj.get("spe").and_then(|v| v.as_i64()) {
-                        boosts_array.push(("spe", spe as i8));
-                    }
-                    if let Some(accuracy) = boosts_obj.get("accuracy").and_then(|v| v.as_i64()) {
-                        boosts_array.push(("accuracy", accuracy as i8));
-                    }
-                    if let Some(evasion) = boosts_obj.get("evasion").and_then(|v| v.as_i64()) {
-                        boosts_array.push(("evasion", evasion as i8));
-                    }
+                if let Some(&atk) = boosts_map.get("atk") {
+                    boosts_array.push(("atk", atk as i8));
+                }
+                if let Some(&def) = boosts_map.get("def") {
+                    boosts_array.push(("def", def as i8));
+                }
+                if let Some(&spa) = boosts_map.get("spa") {
+                    boosts_array.push(("spa", spa as i8));
+                }
+                if let Some(&spd) = boosts_map.get("spd") {
+                    boosts_array.push(("spd", spd as i8));
+                }
+                if let Some(&spe) = boosts_map.get("spe") {
+                    boosts_array.push(("spe", spe as i8));
+                }
+                if let Some(&accuracy) = boosts_map.get("accuracy") {
+                    boosts_array.push(("accuracy", accuracy as i8));
+                }
+                if let Some(&evasion) = boosts_map.get("evasion") {
+                    boosts_array.push(("evasion", evasion as i8));
+                }
 
-                    // Apply boosts if any were found
-                    // JS: this.battle.boost(item.boosts, this, source, item);
-                    // battle.boost signature: (boosts, target, source, effect, is_secondary, is_self)
-                    if !boosts_array.is_empty() {
-                        battle.boost(
-                            &boosts_array,
-                            pokemon_pos,
-                            _source_pos,
-                            Some(item_id.as_str()),
-                            false,  // is_secondary
-                            false,  // is_self
-                        );
-                    }
+                // Apply boosts if any were found
+                // JS: this.battle.boost(item.boosts, this, source, item);
+                // battle.boost signature: (boosts, target, source, effect, is_secondary, is_self)
+                if !boosts_array.is_empty() {
+                    battle.boost(
+                        &boosts_array,
+                        pokemon_pos,
+                        _source_pos,
+                        Some(item_id.as_str()),
+                        false,  // is_secondary
+                        false,  // is_self
+                    );
                 }
             }
         }
