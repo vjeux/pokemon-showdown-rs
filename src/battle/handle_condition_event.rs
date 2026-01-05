@@ -72,6 +72,9 @@ impl Battle {
             "FieldStart" => {
                 condition_callbacks::dispatch_on_field_start(self, condition_id, pokemon_pos)
             }
+            "FieldRestart" => {
+                condition_callbacks::dispatch_on_field_restart(self, condition_id, pokemon_pos)
+            }
             "Immunity" => {
                 condition_callbacks::dispatch_on_immunity(self, condition_id, pokemon_pos)
             }

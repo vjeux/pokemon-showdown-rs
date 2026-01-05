@@ -60,6 +60,7 @@ mod try_primary_hit_event;
 mod self_drops;
 mod secondaries;
 mod hit_step_move_hit_loop;
+mod add_pseudoweather;
 pub use can_mega_evo::can_mega_evo;
 pub use can_ultra_burst::can_ultra_burst;
 pub use can_terastallize::can_terastallize;

@@ -124,11 +124,20 @@ impl Battle {
         // Construct the property name: e.g., "onBeforeMovePriority"
         let property_name = format!("on{}Priority", event);
 
+        eprintln!("[GET_CALLBACK_PRIORITY] effect_type={:?}, effect_id={}, callback_name={}, property_name={}",
+            effect_type, effect_id, callback_name, property_name);
+
         match effect_type {
             EffectType::Ability => {
                 if let Some(ability_data) = self.dex.abilities().get(effect_id) {
+                    eprintln!("[GET_CALLBACK_PRIORITY] Found ability '{}' in dex", effect_id);
+                    eprintln!("[GET_CALLBACK_PRIORITY] ability_data.extra keys: {:?}", ability_data.extra.keys().collect::<Vec<_>>());
                     if let Some(value) = ability_data.extra.get(&property_name) {
-                        return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                        let priority = value.as_i64().map(|v| v as i32).unwrap_or(0);
+                        eprintln!("[GET_CALLBACK_PRIORITY] Found {}={} for ability '{}'", property_name, priority, effect_id);
+                        return priority;
+                    } else {
+                        eprintln!("[GET_CALLBACK_PRIORITY] Property '{}' not found in ability '{}' extra data", property_name, effect_id);
                     }
                 }
                 0

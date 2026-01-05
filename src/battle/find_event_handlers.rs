@@ -101,7 +101,7 @@ impl Battle {
             // JavaScript: handlers = this.findPokemonEventHandlers(target, `on${eventName}`);
             let prefixed_event = format!("on{}", event_name);
             let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos, None);
-            // Add event name to each handler
+            // Add event name to each handler and resolve priority
             for handler in &mut pokemon_handlers {
                 handler.event_name = event_name.to_string();
             }
@@ -208,6 +208,15 @@ impl Battle {
             handler.event_name = event_name.to_string();
         }
         handlers.extend(battle_handlers);
+
+        // JavaScript: In findPokemonEventHandlers, each handler is passed through resolvePriority before being added:
+        // handlers.push(this.resolvePriority({ effect, callback, state, end, effectHolder }, callbackName));
+        // In Rust, we collect all handlers first, then call resolve_priority on each one
+        for handler in &mut handlers {
+            // Use the full callback name (e.g., "onSourceModifySpA" not just "ModifySpA")
+            let full_callback_name = format!("on{}", handler.event_name);
+            self.resolve_priority(handler, &full_callback_name);
+        }
 
         handlers
     }

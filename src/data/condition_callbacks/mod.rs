@@ -252,17 +252,34 @@ pub fn dispatch_on_field_residual(
 pub fn dispatch_on_field_start(
     battle: &mut Battle,
     condition_id: &str,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
+    use crate::data::move_callbacks;
+
     match condition_id {
-        "deltastream" => deltastream::on_field_start(battle, pokemon_pos),
-        "desolateland" => desolateland::on_field_start(battle, pokemon_pos),
-        "hail" => hail::on_field_start(battle, pokemon_pos),
-        "primordialsea" => primordialsea::on_field_start(battle, pokemon_pos),
-        "raindance" => raindance::on_field_start(battle, pokemon_pos),
-        "sandstorm" => sandstorm::on_field_start(battle, pokemon_pos),
-        "snowscape" => snowscape::on_field_start(battle, pokemon_pos),
-        "sunnyday" => sunnyday::on_field_start(battle, pokemon_pos),
+        "deltastream" => deltastream::on_field_start(battle, _pokemon_pos),
+        "desolateland" => desolateland::on_field_start(battle, _pokemon_pos),
+        "echoedvoice" => move_callbacks::echoedvoice::condition::on_field_start(battle),
+        "hail" => hail::on_field_start(battle, _pokemon_pos),
+        "primordialsea" => primordialsea::on_field_start(battle, _pokemon_pos),
+        "raindance" => raindance::on_field_start(battle, _pokemon_pos),
+        "sandstorm" => sandstorm::on_field_start(battle, _pokemon_pos),
+        "snowscape" => snowscape::on_field_start(battle, _pokemon_pos),
+        "sunnyday" => sunnyday::on_field_start(battle, _pokemon_pos),
+        _ => EventResult::Continue,
+    }
+}
+
+/// Dispatch onFieldRestart callbacks
+pub fn dispatch_on_field_restart(
+    battle: &mut Battle,
+    condition_id: &str,
+    _pokemon_pos: (usize, usize),
+) -> EventResult {
+    use crate::data::move_callbacks;
+
+    match condition_id {
+        "echoedvoice" => move_callbacks::echoedvoice::condition::on_field_restart(battle),
         _ => EventResult::Continue,
     }
 }
