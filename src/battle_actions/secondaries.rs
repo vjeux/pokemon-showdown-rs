@@ -161,7 +161,7 @@ pub fn secondaries(
                 // }
                 if let Some(status_name) = &secondary.status {
                     let status_id = crate::dex_data::ID::new(status_name);
-                    let _applied = Pokemon::set_status(battle, target_pos, status_id, None, None, false);
+                    let _applied = Pokemon::set_status(battle, target_pos, status_id, Some(source_pos), Some(move_id), false);
                 }
 
                 // Apply volatile status from secondary effect

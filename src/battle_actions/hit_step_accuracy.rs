@@ -311,12 +311,8 @@ pub fn hit_step_accuracy(
 
         // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
         // In Rust, accuracy=0 represents true (boolean true from alwaysHit or Accuracy event)
-        // JavaScript DOES call randomChance for accuracy=100 (the number 100, not true)
-        // So we only skip if accuracy is 0 (representing boolean true)
-        if battle.prng.call_count >= 137 && battle.prng.call_count <= 150 {
-            eprintln!("[HIT_STEP_ACCURACY] About to check accuracy: accuracy={}, will call random_chance: {}, move={:?}",
-                accuracy, accuracy != 0, move_id);
-        }
+        // We skip randomChance ONLY if accuracy is 0 (representing boolean true)
+        // For numeric accuracy values like 100, we MUST call randomChance (because 100 !== true in JavaScript)
         if accuracy != 0 && !battle.random_chance(accuracy, 100) {
             // Miss!
             // JavaScript: if (move.smartTarget) {

@@ -29,7 +29,11 @@ impl Battle {
     /// Random number in range [from, to)
     /// Equivalent to TypeScript random(from, to)
     pub fn random_with_range(&mut self, from: i32, to: i32) -> i32 {
-        eprintln!("[RANDOM_WITH_RANGE] turn={}, from={}, to={}", self.turn, from, to);
-        self.prng.random_range(from, to)
+        let before = self.prng.call_count;
+        let result = self.prng.random_range(from, to);
+        let after = self.prng.call_count;
+        eprintln!("[RANDOM_WITH_RANGE] turn={}, from={}, to={}, result={}, PRNG: {}->{}",
+                  self.turn, from, to, result, before, after);
+        result
     }
 }

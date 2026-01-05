@@ -294,7 +294,7 @@ fn main() {
             }
         }
 
-        eprintln!("#{}: turn={}, prng={}->{}, P1=[{}], P2=[{}]",
+        println!("#{}: turn={}, prng={}->{}, P1=[{}], P2=[{}]",
             i, battle.turn, prng_before, prng_after,
             p1_active.join(", "), p2_active.join(", "));
         eprintln!(">>> Turn {} completed. PRNG: {}->{} (+{} calls)",

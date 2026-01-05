@@ -751,11 +751,19 @@ impl Battle {
                 ability_id.as_str(),
                 pokemon_pos
             ),
-            "TryAddVolatile" => ability_callbacks::dispatch_on_try_add_volatile(
-                self,
-                ability_id.as_str(),
-                "", pokemon_pos, None, None
-            ),
+            "TryAddVolatile" => {
+                // Extract status_id from relay_var_type (e.g., "confusion")
+                let status_id = if let Some(ref event) = self.current_event {
+                    event.relay_var_type.clone().unwrap_or_default()
+                } else {
+                    String::new()
+                };
+                ability_callbacks::dispatch_on_try_add_volatile(
+                    self,
+                    ability_id.as_str(),
+                    &status_id, pokemon_pos, None, None
+                )
+            }
             "TryBoost" => {
                 // Temporarily take boost out of current_event to get mutable access
                 let mut boost = self.current_event.as_mut().and_then(|e| e.relay_var_boost.take());

@@ -150,8 +150,11 @@ impl Pokemon {
         //       Passing None for now - handlers can check target pokemon's status field after it's set
         if !status.as_str().is_empty() {
             let set_status_result = battle.run_event("SetStatus", Some(pokemon_pos), source_pos, source_effect, EventResult::Continue, false, false);
-            // runEvent returns Option<i32>, None or Some(0) means failure
-            if matches!(set_status_result, EventResult::Number(0)) || matches!(set_status_result, EventResult::Null) {
+            // Check if event returned a falsy value (Number(0), Boolean(false), or Null)
+            let is_blocked = matches!(set_status_result,
+                EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null
+            );
+            if is_blocked {
                 return false;
             }
         }
