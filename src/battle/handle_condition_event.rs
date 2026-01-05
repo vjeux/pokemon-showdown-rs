@@ -158,6 +158,9 @@ impl Battle {
         if matches!(result, EventResult::Continue) {
             use crate::data::move_callbacks;
             match normalized_event {
+                "Residual" => {
+                    return move_callbacks::dispatch_condition_on_residual(self, condition_id, pokemon_pos);
+                }
                 "Start" => {
                     return move_callbacks::dispatch_condition_on_start(self, condition_id, pokemon_pos);
                 }

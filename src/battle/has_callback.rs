@@ -215,7 +215,7 @@ impl Battle {
                         // Check if this is a known event for move-embedded conditions
                         match event_id {
                             "onStart" | "onTryHit" | "onTryPrimaryHit" | "onHit" | "onEnd" |
-                            "onSourceModifyDamage" | "onDisableMove" |
+                            "onSourceModifyDamage" | "onDisableMove" | "onResidual" |
                             "onAnyInvulnerability" | "onInvulnerability" | "Invulnerability" => {
                                 eprintln!("[CONDITION_HAS_CALLBACK] Returning true for known move-condition event (from dex branch)");
                                 return true;
@@ -246,7 +246,7 @@ impl Battle {
                     // Pseudoweather uses onFieldStart, onFieldRestart, onFieldResidual, onFieldEnd
                     match event_id {
                         "onStart" | "onTryHit" | "onTryPrimaryHit" | "onHit" | "onEnd" |
-                        "onSourceModifyDamage" | "onDisableMove" |
+                        "onSourceModifyDamage" | "onDisableMove" | "onResidual" |
                         "onAnyInvulnerability" | "onInvulnerability" | "Invulnerability" => {
                             eprintln!("[CONDITION_HAS_CALLBACK] Returning true for known move-condition event");
                             return true;

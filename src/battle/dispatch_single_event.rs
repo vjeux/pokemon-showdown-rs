@@ -42,7 +42,18 @@ impl Battle {
                 // Check if effect is in target's volatiles
                 if pokemon.volatiles.contains_key(effect_id) {
                     eprintln!("[DISPATCH_SINGLE_EVENT] Found effect '{}' in target volatiles, routing to handle_condition_event", effect_str);
-                    return self.handle_condition_event(event_id, effect_str, target);
+
+                    // Set current_effect_state from the volatile's state (like JS does with this.effectState)
+                    let volatile_state = pokemon.volatiles.get(effect_id).cloned();
+                    let previous_effect_state = self.current_effect_state.take();
+                    self.current_effect_state = volatile_state;
+
+                    let result = self.handle_condition_event(event_id, effect_str, target);
+
+                    // Restore previous effect state
+                    self.current_effect_state = previous_effect_state;
+
+                    return result;
                 }
                 // Check if effect is target's status
                 if !pokemon.status.is_empty() && pokemon.status.as_str() == effect_str {
