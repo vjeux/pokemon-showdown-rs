@@ -438,7 +438,10 @@ pub fn spread_move_hit(
 
     // DamagingHit and AfterHit events
     // JS: if (damagedDamage.length && !isSecondary && !isSelf) { ... }
+    eprintln!("[SPREAD_MOVE_HIT] damaged_damage={:?}, damaged_targets={:?}, is_secondary={}, is_self={}",
+        damaged_damage, damaged_targets, is_secondary, is_self);
     if !damaged_damage.is_empty() && !is_secondary && !is_self {
+        eprintln!("[SPREAD_MOVE_HIT] Firing DamagingHit event for move {}", move_id.as_str());
         // JS: this.battle.runEvent('DamagingHit', damagedTargets, pokemon, move, damagedDamage);
         battle.run_event("DamagingHit", Some(source_pos), None, Some(move_id), EventResult::Continue, false, false);
 

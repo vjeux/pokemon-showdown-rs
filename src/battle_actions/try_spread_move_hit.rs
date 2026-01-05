@@ -126,10 +126,12 @@ pub fn try_spread_move_hit(
     // JS: targets[0]
     let target_0 = targets.first().copied();
 
-    // Run Try, PrepareHit, and PrepareHit events
+    // Run Try, PrepareHit, and PrepareHit events with short-circuit AND evaluation
     // JS: const hitResult = this.battle.singleEvent('Try', move, null, pokemon, targets[0], move) &&
     //     this.battle.singleEvent('PrepareHit', move, {}, targets[0], pokemon, move) &&
     //     this.battle.runEvent('PrepareHit', pokemon, targets[0], move);
+
+    // Phase 1: Call Try event
     let try_result = battle.single_event(
         "Try",
         move_id,
@@ -137,20 +139,45 @@ pub fn try_spread_move_hit(
         target_0,
         Some(move_id),
     );
-    let prepare_hit_1 = battle.single_event(
-        "PrepareHit",
-        move_id,
-        target_0,
-        Some(pokemon_pos),
-        Some(move_id),
-    );
-    let prepare_hit_2 = battle.run_event("PrepareHit", Some(pokemon_pos), target_0, Some(move_id), EventResult::Continue, false, false);
 
-    // Check if all three events succeeded
-    // In JS, truthy values pass, falsy values (false, null, undefined) fail
-    let hit_result = !matches!(try_result, event::EventResult::Boolean(false) | event::EventResult::Null)
-        && !matches!(prepare_hit_1, event::EventResult::Boolean(false) | event::EventResult::Null)
-        && !matches!(prepare_hit_2, EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null);
+    // Check if try_result is truthy (in JS, falsy = false, null, undefined, 0, "", NaN)
+    let try_truthy = !matches!(try_result, event::EventResult::Boolean(false) | event::EventResult::Null);
+
+    eprintln!("[TRY_SPREAD_MOVE_HIT] try_result={:?}, try_truthy={}", try_result, try_truthy);
+
+    // Phase 2: Only call PrepareHit(move) if Try succeeded (short-circuit AND)
+    let prepare_hit_1 = if try_truthy {
+        let result = battle.single_event(
+            "PrepareHit",
+            move_id,
+            target_0,
+            Some(pokemon_pos),
+            Some(move_id),
+        );
+        eprintln!("[TRY_SPREAD_MOVE_HIT] prepare_hit_1={:?}", result);
+        result
+    } else {
+        eprintln!("[TRY_SPREAD_MOVE_HIT] Skipping prepare_hit_1 (try_result was falsy)");
+        try_result.clone() // Propagate the falsy result
+    };
+
+    // Check if prepare_hit_1 is truthy
+    let prepare_hit_1_truthy = !matches!(prepare_hit_1, event::EventResult::Boolean(false) | event::EventResult::Null);
+
+    // Phase 3: Only call PrepareHit event if PrepareHit(move) succeeded (short-circuit AND)
+    let prepare_hit_2 = if prepare_hit_1_truthy {
+        let result = battle.run_event("PrepareHit", Some(pokemon_pos), target_0, Some(move_id), EventResult::Continue, false, false);
+        eprintln!("[TRY_SPREAD_MOVE_HIT] prepare_hit_2={:?}", result);
+        result
+    } else {
+        eprintln!("[TRY_SPREAD_MOVE_HIT] Skipping prepare_hit_2 (prepare_hit_1 was falsy)");
+        prepare_hit_1.clone() // Propagate the falsy result
+    };
+
+    // Final result check (same as before)
+    let hit_result = !matches!(prepare_hit_2, EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null);
+
+    eprintln!("[TRY_SPREAD_MOVE_HIT] hit_result={}", hit_result);
 
     // JS: if (!hitResult) { ... }
     if !hit_result {

@@ -10,9 +10,10 @@ use crate::event::EventResult;
 /// onDamagingHit(damage, target, source, move) {
 ///     this.field.setWeather('sandstorm');
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // Set weather to Sandstorm when hit by a damaging move
-    battle.field.set_weather(crate::ID::from("sandstorm"), None);
+    // Use battle.set_weather() instead of battle.field.set_weather() to get proper duration handling
+    battle.set_weather(crate::ID::from("sandstorm"), target_pos, Some(crate::ID::from("sandspit")));
     EventResult::Continue
 }
 
