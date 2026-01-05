@@ -120,8 +120,8 @@ impl Battle {
                 key == "duration" && volatile_state.duration.is_some()
             });
 
-            if self.turn == 17 && callback_name == "onResidual" {
-                eprintln!("[FIND_POKEMON_HANDLERS] turn=17, volatile_id={}, has_callback={}, has_get_key={}, duration={:?}",
+            if self.turn == 1 && callback_name == "onResidual" {
+                eprintln!("[FIND_POKEMON_HANDLERS] turn=1, volatile_id={}, has_callback={}, has_get_key={}, duration={:?}",
                     volatile_id.as_str(), has_callback, has_get_key, volatile_state.duration);
             }
 

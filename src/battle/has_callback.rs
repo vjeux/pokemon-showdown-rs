@@ -210,21 +210,15 @@ impl Battle {
                 // Before returning false, check if this is a move-embedded condition
                 // Even though the condition exists in the dex, the callback might be in the move dispatcher
                 if let Some(move_data) = self.dex.moves().get(condition_id) {
-                    if move_data.condition.is_some() {
-                        eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition (from dex branch)");
-                        // Check if this is a known event for move-embedded conditions
-                        match event_id {
-                            // Note: onAfterMove, onBasePower, onImmunity omitted - need special parameters
-                            "onBeforeMove" | "onBeforeSwitchOut" |
-                            "onDamagingHit" | "onDisableMove" | "onDragOut" | "onEnd" | "onHit" |
-                            "onModifyMove" | "onResidual" | "onRestart" | "onStart" |
-                            "onTrapPokemon" | "onTryAddVolatile" | "onTryHit" | "onTryMove" |
-                            "onTryPrimaryHit" | "onType" | "onSourceModifyDamage" |
-                            "onAnyInvulnerability" | "onInvulnerability" | "Invulnerability" => {
-                                eprintln!("[CONDITION_HAS_CALLBACK] Returning true for known move-condition event (from dex branch)");
+                    if let Some(ref condition_data) = move_data.condition {
+                        eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition (from dex branch), checking condition callbacks");
+                        // Check the actual callback boolean flags in the condition data
+                        // This was populated by scripts/update-move-callbacks.js
+                        if let Some(callback_val) = condition_data.extra.get(event_id) {
+                            if let Some(true) = callback_val.as_bool() {
+                                eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
                                 return true;
-                            },
-                            _ => {}
+                            }
                         }
                     }
                 }
@@ -239,27 +233,15 @@ impl Battle {
 
             // Check if this is a move with an embedded condition
             if let Some(move_data) = self.dex.moves().get(condition_id) {
-                if move_data.condition.is_some() {
-                    eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition");
-                    // For move-embedded conditions, we need to check if the move_callbacks dispatcher
-                    // has this callback. For now, we'll conservatively return true for known events
-                    // that move conditions typically handle.
-                    // The dispatchers will return Continue if the callback doesn't exist.
-                    //
-                    // NOTE: onBeforeTurn and onBeforeMove are for Pokemon volatiles, not pseudoweather
-                    // Pseudoweather uses onFieldStart, onFieldRestart, onFieldResidual, onFieldEnd
-                    match event_id {
-                        // Note: onAfterMove, onBasePower, onImmunity omitted - need special parameters
-                        "onBeforeMove" | "onBeforeSwitchOut" |
-                        "onDamagingHit" | "onDisableMove" | "onDragOut" | "onEnd" | "onHit" |
-                        "onModifyMove" | "onResidual" | "onRestart" | "onStart" |
-                        "onTrapPokemon" | "onTryAddVolatile" | "onTryHit" | "onTryMove" |
-                        "onTryPrimaryHit" | "onType" | "onSourceModifyDamage" |
-                        "onAnyInvulnerability" | "onInvulnerability" | "Invulnerability" => {
-                            eprintln!("[CONDITION_HAS_CALLBACK] Returning true for known move-condition event");
+                if let Some(ref condition_data) = move_data.condition {
+                    eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition, checking condition callbacks");
+                    // Check the actual callback boolean flags in the condition data
+                    // This was populated by scripts/update-move-callbacks.js
+                    if let Some(callback_val) = condition_data.extra.get(event_id) {
+                        if let Some(true) = callback_val.as_bool() {
+                            eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
                             return true;
-                        },
-                        _ => {}
+                        }
                     }
                 }
             }

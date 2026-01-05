@@ -71,12 +71,70 @@ const originalNext = battle.prng.rng.next.bind(battle.prng.rng);
 battle.prng.rng.next = function() {
     totalPrngCalls++;
     const result = originalNext();
-    // Log PRNG calls on turn 17 to debug the missing call
-    if (battle.turn === 17 && totalPrngCalls >= 86 && totalPrngCalls <= 91) {
+    // Log PRNG calls on turn 1 to debug handler divergence
+    if (battle.turn === 1 && totalPrngCalls >= 1 && totalPrngCalls <= 10) {
         const stack = new Error().stack;
         const lines = stack.split('\n').slice(1, 10); // Get first 10 frames
         console.error(`[PRNG_JS] call #${totalPrngCalls}, result=${result}`);
         lines.forEach((line, i) => console.error(`  Frame ${i}: ${line.trim()}`));
+    }
+    return result;
+};
+
+// Instrument findPokemonEventHandlers to log what volatiles are checked
+const originalFindPokemonEventHandlers = battle.findPokemonEventHandlers.bind(battle);
+battle.findPokemonEventHandlers = function(pokemon, callbackName, getKey) {
+    if (battle.turn === 1 && callbackName === 'onResidual') {
+        console.error(`[FIND_HANDLERS_JS] turn=1, pokemon=${pokemon.name}, callbackName=${callbackName}, getKey=${getKey}`);
+        console.error(`[FIND_HANDLERS_JS] volatiles: ${Object.keys(pokemon.volatiles).join(', ')}`);
+        for (const id in pokemon.volatiles) {
+            const volatileState = pokemon.volatiles[id];
+            const volatile = battle.dex.conditions.getByID(id);
+            const callback = battle.getCallback(pokemon, volatile, callbackName);
+            const hasDuration = volatileState.duration !== undefined;
+            console.error(`[FIND_HANDLERS_JS]   volatile='${id}', callback=${callback !== undefined}, duration=${volatileState.duration}, will_add=${callback !== undefined || (getKey && hasDuration)}`);
+        }
+    }
+    const handlers = originalFindPokemonEventHandlers(pokemon, callbackName, getKey);
+    if (battle.turn === 1 && callbackName === 'onResidual') {
+        console.error(`[FIND_HANDLERS_JS] returned ${handlers.length} handlers for ${pokemon.name}`);
+        handlers.forEach((h, i) => {
+            console.error(`[FIND_HANDLERS_JS]   [${i}] effect=${h.effect.id}, callback=${h.callback !== undefined}, priority=${h.priority}, subOrder=${h.subOrder}`);
+        });
+    }
+    return handlers;
+};
+
+// Instrument speedSort to log shuffles
+const originalSpeedSort = battle.speedSort.bind(battle);
+battle.speedSort = function(list, comparator) {
+    if (battle.turn === 1 && list.length > 0 && list[0].effect) {
+        console.error(`[SPEED_SORT_JS] turn=1, sorting ${list.length} handlers`);
+        list.forEach((h, i) => {
+            console.error(`[SPEED_SORT_JS]   [${i}] effect=${h.effect.id}, priority=${h.priority}, order=${h.order}, subOrder=${h.subOrder}, speed=${h.speed}`);
+        });
+    }
+    const originalShuffle = battle.prng.shuffle.bind(battle.prng);
+    battle.prng.shuffle = function(arr, start, end) {
+        if (battle.turn === 1) {
+            console.error(`[SHUFFLE_JS] turn=1, shuffling range [${start}, ${end}), arr.length=${arr.length}`);
+            if (arr[start] && arr[start].effect) {
+                const items = [];
+                for (let i = start; i < end && i < arr.length; i++) {
+                    items.push(arr[i].effect.id);
+                }
+                console.error(`[SHUFFLE_JS] items: ${items.join(', ')}`);
+            }
+        }
+        return originalShuffle(arr, start, end);
+    };
+    const result = originalSpeedSort(list, comparator);
+    battle.prng.shuffle = originalShuffle;
+    if (battle.turn === 1 && list.length > 0 && list[0].effect) {
+        console.error(`[SPEED_SORT_JS] after sort:`);
+        list.forEach((h, i) => {
+            console.error(`[SPEED_SORT_JS]   [${i}] effect=${h.effect.id}`);
+        });
     }
     return result;
 };
