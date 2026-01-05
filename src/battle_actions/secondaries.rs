@@ -65,24 +65,30 @@ pub fn secondaries(
         // const secondaries: Dex.SecondaryEffect[] =
         //     this.battle.runEvent('ModifySecondaries', target, source, moveData, moveData.secondaries.slice());
         // Call ModifySecondaries event to allow abilities like Shield Dust to filter secondaries
-        // The event can modify or filter the secondaries array
-        let secondaries = if let Some(ref active_move) = battle.active_move {
-            let secs = active_move.secondaries.clone();
-
-            // Fire ModifySecondaries event for each secondary
-            // In JavaScript, this returns a filtered/modified array
-            // In Rust, we check the event result to see if we should skip this secondary
+        // The event can modify or filter the secondaries array IN-PLACE
+        let secondaries = if battle.active_move.is_some() {
+            // Fire ModifySecondaries event
+            // In JavaScript, this event handler can modify the secondaries array and return it
+            // In Rust, Shield Dust modifies battle.active_move.secondaries in-place using retain()
             let modify_result = battle.run_event("ModifySecondaries", Some(target_pos), Some(source_pos), Some(move_id), EventResult::Continue, false, false);
 
+            // IMPORTANT: Clone AFTER the event, so we get the MODIFIED secondaries
+            // Shield Dust's retain() has already filtered the array
+            let secs = if let Some(ref active_move) = battle.active_move {
+                active_move.secondaries.clone()
+            } else {
+                Vec::new()
+            };
+
             // If ModifySecondaries event returns a falsy value (like EventResult::Null or EventResult::Boolean(false)),
-            // it means the secondaries should be blocked (e.g., by Shield Dust)
+            // it means the secondaries should be blocked entirely
             match modify_result {
-                EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null | EventResult::Continue => {
+                EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null => {
                     // Event returned falsy value, skip all secondaries for this target
                     Vec::new()
                 }
                 _ => {
-                    // Event returned truthy value or didn't interfere, proceed with secondaries
+                    // Event returned truthy value or didn't interfere, use the modified secondaries
                     secs
                 }
             }
