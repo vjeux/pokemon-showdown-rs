@@ -589,17 +589,25 @@ impl Battle {
         //     relayVar = this.modify(relayVar, this.event.modifier);
         // }
         // Apply modifier to numeric relay variables
+        // CRITICAL: Only apply modify to non-negative integers!
+        // The condition relayVar === Math.abs(Math.floor(relayVar)) means:
+        // - The number must be >= 0 (otherwise it won't equal its absolute value)
+        // - The number must be an integer (floor doesn't change it)
         if let EventResult::Number(num) = relay_var {
-            if let Some(ref event) = self.event {
-                if event_id == "Effectiveness" {
-                    eprintln!("[RUN_EVENT] Effectiveness: Before modify - num={}, modifier={}", num, event.modifier);
+            // Check if num is non-negative (matches JavaScript condition)
+            if num >= 0 {
+                if let Some(ref event) = self.event {
+                    if event_id == "Effectiveness" {
+                        eprintln!("[RUN_EVENT] Effectiveness: Before modify - num={}, modifier={}", num, event.modifier);
+                    }
+                    let modified = self.modify_internal(num, event.modifier);
+                    if event_id == "Effectiveness" {
+                        eprintln!("[RUN_EVENT] Effectiveness: After modify - modified={}", modified);
+                    }
+                    relay_var = EventResult::Number(modified);
                 }
-                let modified = self.modify_internal(num, event.modifier);
-                if event_id == "Effectiveness" {
-                    eprintln!("[RUN_EVENT] Effectiveness: After modify - modified={}", modified);
-                }
-                relay_var = EventResult::Number(modified);
             }
+            // Negative numbers (like -1 for type effectiveness) are passed through unchanged
         }
 
         // JavaScript: this.event = parentEvent;

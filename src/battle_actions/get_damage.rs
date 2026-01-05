@@ -413,12 +413,18 @@ pub fn get_damage(
                 let boost = pokemon.boosts.atk;
                 let base_stat = pokemon.stored_stats.atk;
                 let (num, denom) = BattleActions::get_boost_modifier(boost);
-                (base_stat * num / denom).max(1)
+                let result = (base_stat * num / denom).max(1);
+                eprintln!("[GET_DAMAGE] Physical attack calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), attack={}",
+                    pokemon.name, base_stat, boost, num, denom, result);
+                result
             } else {
                 let boost = pokemon.boosts.spa;
                 let base_stat = pokemon.stored_stats.spa;
                 let (num, denom) = BattleActions::get_boost_modifier(boost);
-                (base_stat * num / denom).max(1)
+                let result = (base_stat * num / denom).max(1);
+                eprintln!("[GET_DAMAGE] Special attack calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), attack={}",
+                    pokemon.name, base_stat, boost, num, denom, result);
+                result
             }
         } else {
             return None;
@@ -434,12 +440,18 @@ pub fn get_damage(
                 let boost = pokemon.boosts.def;
                 let base_stat = pokemon.stored_stats.def;
                 let (num, denom) = BattleActions::get_boost_modifier(boost);
-                (base_stat * num / denom).max(1)
+                let result = (base_stat * num / denom).max(1);
+                eprintln!("[GET_DAMAGE] Physical defense calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
+                    pokemon.name, base_stat, boost, num, denom, result);
+                result
             } else {
                 let boost = pokemon.boosts.spd;
                 let base_stat = pokemon.stored_stats.spd;
                 let (num, denom) = BattleActions::get_boost_modifier(boost);
-                (base_stat * num / denom).max(1)
+                let result = (base_stat * num / denom).max(1);
+                eprintln!("[GET_DAMAGE] Special defense calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
+                    pokemon.name, base_stat, boost, num, denom, result);
+                result
             }
         } else {
             return None;
