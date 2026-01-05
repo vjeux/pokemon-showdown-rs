@@ -61,15 +61,10 @@ impl Battle {
         let (base_stat, boost) = {
             let pokemon = match self.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
-                None => {
-                    eprintln!("[GET_POKEMON_STAT] pokemon_at({}, {}) returned None!", pokemon_pos.0, pokemon_pos.1);
-                    return 0;
-                }
+                None => return 0,
             };
 
             let base_stat = pokemon.stored_stats.get(stat);
-            eprintln!("[GET_POKEMON_STAT] side={}, poke={}, stat={:?}, stored_stats value={}, unboosted={}",
-                pokemon_pos.0, pokemon_pos.1, stat, base_stat, unboosted);
             if unboosted {
                 return base_stat;
             }
@@ -99,7 +94,6 @@ impl Battle {
         } else {
             ((base_stat as f64) / boost_table[(-clamped_boost) as usize]).floor() as i32
         };
-        eprintln!("[GET_POKEMON_STAT] After boost apply: stat_value={}, boost={}", stat_value, boost);
 
         // JS: if (!unmodified) {
         //         const statTable: { [s in StatIDExceptHP]: string } = { atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe' };
@@ -116,14 +110,8 @@ impl Battle {
             };
 
             // Run the Modify* event (e.g., ModifySpe for Slow Start)
-            eprintln!("[GET_POKEMON_STAT] Before {} event: stat_value={}", event_name, stat_value);
-            let event_result = self.run_event(event_name, Some(pokemon_pos), None, None, EventResult::Number(stat_value), false, false);
-            eprintln!("[GET_POKEMON_STAT] {} event returned: {:?}", event_name, event_result);
-            if let EventResult::Number(modified_stat) = event_result {
+            if let EventResult::Number(modified_stat) = self.run_event(event_name, Some(pokemon_pos), None, None, EventResult::Number(stat_value), false, false) {
                 stat_value = modified_stat;
-                eprintln!("[GET_POKEMON_STAT] After {} event: stat_value={}", event_name, stat_value);
-            } else {
-                eprintln!("[GET_POKEMON_STAT] {} event returned non-Number result", event_name);
             }
         }
 
@@ -132,7 +120,6 @@ impl Battle {
             stat_value = 10000;
         }
 
-        eprintln!("[GET_POKEMON_STAT] Returning stat_value={}", stat_value);
         stat_value
     }
 }
