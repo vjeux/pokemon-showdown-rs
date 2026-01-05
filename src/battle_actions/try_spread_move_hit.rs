@@ -299,28 +299,15 @@ pub fn try_spread_move_hit(
                 // This returns SpreadMoveDamage instead of Vec<bool>
                 // We need to convert the damage results to boolean results
                 use crate::battle_actions::{SpreadMoveTarget, SpreadMoveTargets, DamageResult};
-                let spread_targets: SpreadMoveTargets = target_list.iter().map(|&t| SpreadMoveTarget::Target(t)).collect();
+                let mut spread_targets: SpreadMoveTargets = target_list.iter().map(|&t| SpreadMoveTarget::Target(t)).collect();
 
-                // IMPORTANT: spread_move_hit needs battle.active_move to be set
-                // Temporarily restore it before calling spread_move_hit
-                battle.active_move = Some(active_move.clone());
-
-                // spread_move_hit returns (damage, targets) tuple
-                let (damage_results, updated_targets) = crate::battle_actions::spread_move_hit(
+                // Call hit_step_move_hit_loop (handles multi-hit moves like Double Kick)
+                let damage_results = crate::battle_actions::hit_step_move_hit_loop(
                     battle,
-                    &spread_targets,
+                    &mut spread_targets,
                     pokemon_pos,
-                    move_id,
-                    None, // hit_effect_id
-                    false, // is_secondary
-                    false, // is_self
+                    &mut active_move,
                 );
-
-                // If spread_move_hit modified active_move, use the new version
-                // Otherwise continue with our cloned version
-                if let Some(new_active_move) = battle.active_move.take() {
-                    active_move = new_active_move;
-                }
 
                 // Convert SpreadMoveDamage to Vec<bool>
                 // Damage, Success, or HitSubstitute = true; Failed or Undefined = false
@@ -328,8 +315,8 @@ pub fn try_spread_move_hit(
                     matches!(dmg, DamageResult::Damage(_) | DamageResult::Success | DamageResult::HitSubstitute)
                 }).collect();
 
-                // Update target_list from updated_targets
-                target_list = updated_targets.iter().filter_map(|t| {
+                // Update target_list from spread_targets
+                target_list = spread_targets.iter().filter_map(|t| {
                     match t {
                         SpreadMoveTarget::Target(pos) => Some(*pos),
                         _ => None,

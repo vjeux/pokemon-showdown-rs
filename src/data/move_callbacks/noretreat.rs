@@ -29,12 +29,16 @@ pub fn on_try(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon
+        let has_it = source_pokemon
             .volatiles
-            .contains_key(&ID::from("noretreat"))
+            .contains_key(&ID::from("noretreat"));
+        eprintln!("[NORETREAT_ON_TRY] turn={}, pokemon={}, has_noretreat={}",
+            battle.turn, source_pokemon.name, has_it);
+        has_it
     };
 
     if has_noretreat {
+        eprintln!("[NORETREAT_ON_TRY] Blocking No Retreat - already used!");
         return EventResult::Boolean(false);
     }
 

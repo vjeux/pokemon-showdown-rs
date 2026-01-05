@@ -700,6 +700,8 @@ pub fn use_move_inner(
     // }
     if active_move.target == "all" || active_move.target == "foeSide" ||
        active_move.target == "allySide" || active_move.target == "allyTeam" {
+        eprintln!("[USE_MOVE_INNER] turn={}, move={}, taking tryMoveHit branch (target={})",
+            battle.turn, active_move.id, active_move.target);
         // damage = this.tryMoveHit(targets, pokemon, move);
         let hit_result = crate::battle_actions::try_move_hit(
             battle,
@@ -722,6 +724,8 @@ pub fn use_move_inner(
         // Move succeeds if it dealt damage, or if it's NOT_FAIL or undefined
         move_result = hit_result;
     } else {
+        eprintln!("[USE_MOVE_INNER] turn={}, move={}, taking trySpreadMoveHit branch (target={})",
+            battle.turn, active_move.id, active_move.target);
         // if (!targets.length) {
         //     this.battle.attrLastMove('[notarget]');
         //     this.battle.add(this.battle.gen >= 5 ? '-fail' : '-notarget', pokemon);

@@ -22,11 +22,12 @@ impl Battle {
 
         let effect_str = effect_id.as_str();
 
-        // IMPORTANT: For PrepareHit and Hit events, check if effect is a MOVE first
-        // This ensures that when single_event("Hit", "kingsshield", ...) is called,
-        // it routes to the MOVE's onHit handler
+        // IMPORTANT: For Try, PrepareHit and Hit events, check if effect is a MOVE first
+        // This ensures that when single_event("Try", "noretreat", ...) is called,
+        // it routes to the MOVE's onTry handler, not the volatile's handler
+        // Same for PrepareHit and Hit events
         // Note: run_event() now calls handlers directly based on effect_type, so this only affects single_event calls
-        if event_id == "PrepareHit" || event_id == "Hit" {
+        if event_id == "Try" || event_id == "PrepareHit" || event_id == "Hit" {
             if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
                 return self.handle_move_event(event_id, effect_str, target);
             }

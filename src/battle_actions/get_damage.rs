@@ -404,24 +404,78 @@ pub fn get_damage(
     // Determine attack and defense stats
     let is_physical = move_data.category == "Physical";
 
-    // Get attack stat with boosts
+    // Get attacker and defender boosts before we potentially modify them for crits
+    // JavaScript: let atkBoosts = attacker.boosts[attackStat];
+    // JavaScript: let defBoosts = defender.boosts[defenseStat];
+    let mut atk_boost = if let Some(side) = battle.sides.get(source_pos.0) {
+        if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+            if is_physical { pokemon.boosts.atk } else { pokemon.boosts.spa }
+        } else { 0 }
+    } else { 0 };
+
+    let mut def_boost = if let Some(side) = battle.sides.get(target_pos.0) {
+        if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+            if is_physical { pokemon.boosts.def } else { pokemon.boosts.spd }
+        } else { 0 }
+    } else { 0 };
+
+    // JavaScript: let ignoreNegativeOffensive = !!move.ignoreNegativeOffensive;
+    // JavaScript: let ignorePositiveDefensive = !!move.ignorePositiveDefensive;
+    // JavaScript: if (moveHit.crit) {
+    // JavaScript:     ignoreNegativeOffensive = true;
+    // JavaScript:     ignorePositiveDefensive = true;
+    // JavaScript: }
+    // TODO: Add ignore_negative_offensive and ignore_positive_defensive fields to MoveData
+    // For now, hardcode to false since only used by specific moves like Chip Away
+    let mut ignore_negative_offensive = false;
+    let mut ignore_positive_defensive = false;
+
+    if is_crit {
+        ignore_negative_offensive = true;
+        ignore_positive_defensive = true;
+    }
+
+    // JavaScript: const ignoreOffensive = !!(move.ignoreOffensive || (ignoreNegativeOffensive && atkBoosts < 0));
+    // JavaScript: const ignoreDefensive = !!(move.ignoreDefensive || (ignorePositiveDefensive && defBoosts > 0));
+    // TODO: Add ignore_offensive and ignore_defensive fields to MoveData
+    // For now, hardcode to false since only used by specific moves like Sacred Sword
+    let ignore_offensive = false || (ignore_negative_offensive && atk_boost < 0);
+    let ignore_defensive = false || (ignore_positive_defensive && def_boost > 0);
+
+    // JavaScript: if (ignoreOffensive) {
+    // JavaScript:     this.battle.debug('Negating (sp)atk boost/penalty.');
+    // JavaScript:     atkBoosts = 0;
+    // JavaScript: }
+    if ignore_offensive {
+        eprintln!("[GET_DAMAGE] Negating (sp)atk boost/penalty. (was {})", atk_boost);
+        atk_boost = 0;
+    }
+
+    // JavaScript: if (ignoreDefensive) {
+    // JavaScript:     this.battle.debug('Negating (sp)def boost/penalty.');
+    // JavaScript:     defBoosts = 0;
+    // JavaScript: }
+    if ignore_defensive {
+        eprintln!("[GET_DAMAGE] Negating (sp)def boost/penalty. (was {})", def_boost);
+        def_boost = 0;
+    }
+
+    // Get attack stat with boosts (now potentially modified for crits)
     let mut attack = if let Some(side) = battle.sides.get(source_pos.0) {
         if let Some(pokemon) = side.pokemon.get(source_pos.1) {
             if is_physical {
-                let boost = pokemon.boosts.atk;
                 let base_stat = pokemon.stored_stats.atk;
-                let (num, denom) = BattleActions::get_boost_modifier(boost);
+                let (num, denom) = BattleActions::get_boost_modifier(atk_boost);
                 let result = (base_stat * num / denom).max(1);
                 eprintln!("[GET_DAMAGE] Physical attack calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), attack={}",
-                    pokemon.name, base_stat, boost, num, denom, result);
+                    pokemon.name, base_stat, atk_boost, num, denom, result);
                 result
             } else {
-                let boost = pokemon.boosts.spa;
                 let base_stat = pokemon.stored_stats.spa;
-                let (num, denom) = BattleActions::get_boost_modifier(boost);
+                let (num, denom) = BattleActions::get_boost_modifier(atk_boost);
                 let result = (base_stat * num / denom).max(1);
                 eprintln!("[GET_DAMAGE] Special attack calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), attack={}",
-                    pokemon.name, base_stat, boost, num, denom, result);
+                    pokemon.name, base_stat, atk_boost, num, denom, result);
                 result
             }
         } else {
@@ -431,24 +485,22 @@ pub fn get_damage(
         return None;
     };
 
-    // Get defense stat with boosts
+    // Get defense stat with boosts (now potentially modified for crits)
     let mut defense = if let Some(side) = battle.sides.get(target_pos.0) {
         if let Some(pokemon) = side.pokemon.get(target_pos.1) {
             if is_physical {
-                let boost = pokemon.boosts.def;
                 let base_stat = pokemon.stored_stats.def;
-                let (num, denom) = BattleActions::get_boost_modifier(boost);
+                let (num, denom) = BattleActions::get_boost_modifier(def_boost);
                 let result = (base_stat * num / denom).max(1);
                 eprintln!("[GET_DAMAGE] Physical defense calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
-                    pokemon.name, base_stat, boost, num, denom, result);
+                    pokemon.name, base_stat, def_boost, num, denom, result);
                 result
             } else {
-                let boost = pokemon.boosts.spd;
                 let base_stat = pokemon.stored_stats.spd;
-                let (num, denom) = BattleActions::get_boost_modifier(boost);
+                let (num, denom) = BattleActions::get_boost_modifier(def_boost);
                 let result = (base_stat * num / denom).max(1);
                 eprintln!("[GET_DAMAGE] Special defense calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
-                    pokemon.name, base_stat, boost, num, denom, result);
+                    pokemon.name, base_stat, def_boost, num, denom, result);
                 result
             }
         } else {
