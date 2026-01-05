@@ -309,6 +309,27 @@ pub fn hit_step_accuracy(
             }
         }
 
+        // Two-turn moves on turn 2 skip accuracy checks (already determined on turn 1)
+        // Check if pokemon has 'twoturnmove' volatile
+        {
+            use crate::dex_data::ID;
+            let has_twoturnmove = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return vec![false],
+                };
+                let has_volatile = pokemon.volatiles.contains_key(&ID::from("twoturnmove"));
+                eprintln!("[HIT_STEP_ACCURACY] pokemon={:?} has twoturnmove volatile: {}", pokemon_pos, has_volatile);
+                has_volatile
+            };
+
+            if has_twoturnmove {
+                // Skip accuracy check for two-turn moves on turn 2
+                eprintln!("[HIT_STEP_ACCURACY] Skipping accuracy check for two-turn move");
+                accuracy = 0; // Set to 0 to represent boolean true
+            }
+        }
+
         // JavaScript: if (accuracy !== true && !this.battle.randomChance(accuracy, 100))
         // In Rust, accuracy=0 represents true (boolean true from alwaysHit or Accuracy event)
         // We skip randomChance ONLY if accuracy is 0 (representing boolean true)
