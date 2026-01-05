@@ -22,11 +22,7 @@ impl Battle {
 
         match event_id {
             "AfterHit" => {
-                if let Some(tgt) = target_pos {
-                    move_callbacks::dispatch_on_after_hit(self, move_str, target_pos.unwrap_or((0,0)), tgt)
-                } else {
-                    EventResult::Continue
-                }
+                move_callbacks::dispatch_on_after_hit(self, move_str, target_pos.unwrap_or((0,0)), source_pos.unwrap_or((0,0)))
             }
             "AfterMove" => {
                 move_callbacks::dispatch_on_after_move(self, move_str, target_pos.unwrap_or((0,0)), source_pos)
@@ -75,27 +71,19 @@ impl Battle {
                     (damage, effect_id)
                 };
 
-                if let Some(tgt) = target_pos {
-                    move_callbacks::dispatch_on_damage(
-                        self,
-                        move_str,
-                        damage,
-                        tgt,
-                        Some(target_pos.unwrap_or((0,0))),
-                        effect_id.as_deref(),
-                    )
-                } else {
-                    EventResult::Continue
-                }
+                move_callbacks::dispatch_on_damage(
+                    self,
+                    move_str,
+                    damage,
+                    target_pos.unwrap_or((0,0)),
+                    source_pos,
+                    effect_id.as_deref(),
+                )
             }
             "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_str, target_pos.unwrap_or((0,0))),
             "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_str, 0, "", target_pos.unwrap_or((0,0))),
             "Hit" => {
-                if let Some(tgt) = target_pos {
-                    move_callbacks::dispatch_on_hit(self, move_str, target_pos.unwrap_or((0,0)), Some(tgt))
-                } else {
-                    EventResult::Continue
-                }
+                move_callbacks::dispatch_on_hit(self, move_str, target_pos.unwrap_or((0,0)), source_pos)
             }
             "HitField" => move_callbacks::dispatch_on_hit_field(self, move_str, target_pos.unwrap_or((0,0)), source_pos),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_str, target_pos.unwrap_or((0,0))),
@@ -113,11 +101,7 @@ impl Battle {
             }
             "Try" => move_callbacks::dispatch_on_try(self, move_str, target_pos.unwrap_or((0,0)), source_pos),
             "TryHit" => {
-                if let Some(tgt) = target_pos {
-                    move_callbacks::dispatch_on_try_hit(self, move_str, target_pos.unwrap_or((0,0)), tgt)
-                } else {
-                    EventResult::Continue
-                }
+                move_callbacks::dispatch_on_try_hit(self, move_str, target_pos.unwrap_or((0,0)), source_pos.unwrap_or((0,0)))
             }
             "TryImmunity" => {
                 if let Some(tgt) = target_pos {
