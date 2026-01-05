@@ -424,6 +424,7 @@ impl Battle {
             Action::Field(field_action) => {
                 match field_action.choice {
                     FieldActionType::Residual => {
+                        eprintln!("[RUN_ACTION] Executing RESIDUAL action, turn={}", self.turn);
                         // JS: case 'residual':
                         // JS:     this.add('');
                         // JS:     this.clearActiveMove(true);
@@ -449,7 +450,9 @@ impl Battle {
                         // JS: this.fieldEvent('Residual');
                         // NOTE: JavaScript ONLY calls fieldEvent, NOT eachEvent!
                         // fieldEvent handles all residual effects including items/abilities
+                        eprintln!("[RUN_ACTION] About to call field_event('Residual'), turn={}", self.turn);
                         self.field_event("Residual", None);
+                        eprintln!("[RUN_ACTION] Returned from field_event('Residual'), turn={}", self.turn);
 
                         // JS: if (!this.ended) this.add('upkeep');
                         if !self.ended {

@@ -80,7 +80,10 @@ impl Battle {
             // If there were ties, shuffle them randomly
             if next_indexes.len() > 1 {
                 let end = sorted + next_indexes.len();
+                eprintln!("[SPEED_SORT] Found {} tied items at sorted={}, shuffling range [{}, {})",
+                    next_indexes.len(), sorted, sorted, end);
                 self.shuffle_range(list, sorted, end);
+                eprintln!("[SPEED_SORT] Shuffle complete");
             }
 
             sorted += next_indexes.len();

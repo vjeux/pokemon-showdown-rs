@@ -39,11 +39,15 @@ pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
+    eprintln!("[TWOTURNMOVE_ONSTART] turn={}, pokemon=({},{})", battle.turn, pokemon_pos.0, pokemon_pos.1);
+
     // this.effectState.move = effect.id;
     // Get the move ID from battle.current_event.effect
     let move_id = battle.current_event.as_ref()
         .and_then(|e| e.effect.as_ref())
         .map(|id| id.clone());
+
+    eprintln!("[TWOTURNMOVE_ONSTART] move_id={:?}", move_id.as_ref().map(|id| id.as_str()));
 
     if let Some(ref move_id_val) = move_id {
         // Store move ID in twoturnmove volatile's effectState.data
@@ -59,7 +63,9 @@ pub fn on_start(
 
         // attacker.addVolatile(effect.id);
         // Add a volatile for the specific move (e.g., "dig", "fly", "solarbeam")
+        eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}'", move_id_val.as_str());
         crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), None, None, None, None);
+        eprintln!("[TWOTURNMOVE_ONSTART] Returned from add_volatile");
 
         // JavaScript: let moveTargetLoc: number = attacker.lastMoveTargetLoc!;
         let mut move_target_loc = {

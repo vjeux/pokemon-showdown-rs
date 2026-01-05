@@ -82,6 +82,11 @@ impl Pokemon {
             "Unknown".to_string()
         };
 
+        if battle.turn == 17 && volatile_id.as_str() == "skydrop" {
+            eprintln!("[ADD_VOLATILE_DEBUG] turn=17, adding skydrop to {}, source_effect={:?}",
+                pokemon_name, source_effect.map(|s| s.as_str()));
+        }
+
         crate::trace_volatile!("turn={}, ADD volatile='{}' to {}, source_effect={:?}, embedded_condition={}",
             battle.turn, volatile_id.as_str(), pokemon_name, source_effect.map(|s| s.as_str()), embedded_condition.is_some());
 
@@ -214,6 +219,14 @@ impl Pokemon {
         let default_duration = battle.dex.conditions().get_by_id(&volatile_id)
             .and_then(|cond| cond.duration)
             .or_else(|| embedded_condition.and_then(|cond| cond.duration));
+
+        if battle.turn == 17 && volatile_id.as_str() == "skydrop" {
+            let from_dex = battle.dex.conditions().get_by_id(&volatile_id)
+                .and_then(|cond| cond.duration);
+            let from_embedded = embedded_condition.and_then(|cond| cond.duration);
+            eprintln!("[ADD_VOLATILE_DURATION] turn=17, volatile='skydrop', from_dex={:?}, from_embedded={:?}, final={:?}",
+                from_dex, from_embedded, default_duration);
+        }
 
         // Check if condition has a durationCallback
         // JS: if (status.durationCallback) {

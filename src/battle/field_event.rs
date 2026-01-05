@@ -152,6 +152,7 @@ impl Battle {
     // 	}
     //
     pub fn field_event(&mut self, event_id: &str, targets: Option<&[(usize, usize)]>) {
+        eprintln!("[FIELD_EVENT ENTRY] event_id='{}', turn={}", event_id, self.turn);
         let callback_name = format!("on{}", event_id);
         // JS: if (eventid === 'Residual') { getKey = 'duration'; }
         let get_key = if event_id == "Residual" {
@@ -276,7 +277,7 @@ impl Battle {
 
         // JS: this.speedSort(handlers);
         // Sort handlers by Pokemon speed
-        eprintln!("[FIELD_EVENT] event='{}', turn={}, handlers.len()={}, handler IDs: {:?}",
+        eprintln!("[FIELD_EVENT] event='{}', turn={}, BEFORE speed_sort, handlers.len()={}, handler IDs: {:?}",
             event_id, self.turn, handlers.len(),
             handlers.iter().map(|h| h.effect_id.as_str()).collect::<Vec<_>>());
         for (i, h) in handlers.iter().enumerate() {
