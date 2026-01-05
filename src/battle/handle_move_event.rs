@@ -168,7 +168,13 @@ impl Battle {
                     EventResult::Continue
                 }
             }
-            "TryImmunity" => move_callbacks::dispatch_on_try_immunity(self, move_id, source_pos),
+            "TryImmunity" => {
+                if let Some(target_pos) = target {
+                    move_callbacks::dispatch_on_try_immunity(self, move_id, target_pos)
+                } else {
+                    EventResult::Continue
+                }
+            }
             "TryMove" => move_callbacks::dispatch_on_try_move(self, move_id, source_pos, target),
             "UseMoveMessage" => {
                 move_callbacks::dispatch_on_use_move_message(self, move_id, source_pos)
