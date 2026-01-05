@@ -1,4 +1,6 @@
 use crate::side::*;
+use crate::Battle;
+use crate::Pokemon;
 
 impl Side {
 
@@ -286,6 +288,7 @@ impl Side {
     //
     pub fn choose_move(
         &mut self,
+        battle: &mut Battle,
         move_id: ID,
         target_loc: Option<i8>,
         mega: bool,
@@ -305,6 +308,62 @@ impl Side {
             ));
         }
 
+        // CRITICAL: Check for locked moves BEFORE processing the choice
+        // JS: const lockedMove = pokemon.getLockedMove();
+        // JS: if (lockedMove) { ... queue locked move and return true ... }
+        //
+        // This is essential for two-turn moves like Sky Drop, Outrage, etc.
+        // When a Pokemon is locked into a move, we must queue that locked move
+        // instead of the requested move, to match JavaScript behavior exactly.
+        //
+        // Without this check, we would queue the requested move (like rockslide),
+        // it would fail due to invulnerability, but PP would already be deducted.
+        // JavaScript never even tries to execute the requested move - it immediately
+        // queues the locked move instead.
+        //
+        // Get the pokemon position for the locked move check
+        let pokemon_index_opt = self.active.get(index).copied();
+        if let Some(Some(pokemon_index)) = pokemon_index_opt {
+            let pokemon_pos = (self.n, pokemon_index);
+
+            // Check for locked move using Battle
+            let locked_move = Pokemon::get_locked_move(battle, pokemon_pos);
+
+            if let Some(locked_move_id) = locked_move {
+                // Pokemon is locked into a move - queue that move instead
+                // JS: let lockedMoveTargetLoc = pokemon.lastMoveTargetLoc || 0;
+                // JS: const lockedMoveID = toID(lockedMove);
+                // JS: if (pokemon.volatiles[lockedMoveID]?.targetLoc) {
+                // JS:   lockedMoveTargetLoc = pokemon.volatiles[lockedMoveID].targetLoc;
+                // JS: }
+                //
+                // For now, use targetLoc=0 as default (we can enhance this later
+                // to read from volatile state if needed)
+                let locked_target_loc = Some(0);
+
+                // Queue the locked move
+                self.choice.actions.push(ChosenAction {
+                    choice: ChoiceType::Move,
+                    pokemon_index: index,
+                    target_loc: locked_target_loc,
+                    move_id: Some(locked_move_id),
+                    move_action: None,
+                    switch_index: None,
+                    mega: false, // Locked moves don't allow mega/zmove/etc
+                    megax: None,
+                    megay: None,
+                    zmove: None,
+                    max_move: None,
+                    terastallize: None,
+                    priority: None,
+                });
+
+                // Return success - locked move queued
+                return Ok(());
+            }
+        }
+
+        // No locked move - proceed with normal move choice processing
         // Check mega/dynamax/tera restrictions
         if mega && self.choice.mega {
             return Err("You can only mega evolve once per battle".to_string());

@@ -1,4 +1,5 @@
 use crate::side::*;
+use crate::Battle;
 
 impl Side {
 
@@ -26,7 +27,7 @@ impl Side {
     // 		return true;
     // 	}
     //
-    pub fn auto_choose(&mut self) -> bool {
+    pub fn auto_choose(&mut self, battle: &mut Battle) -> bool {
 
         match self.request_state {
             RequestState::TeamPreview => {
@@ -108,13 +109,14 @@ impl Side {
                                 // not for Z-moves already in the moveset!
 
                                 let move_id = move_slot.id.clone();
-                                let _ = self.choose_move(move_id, None, false, None, None, None);
+                                let _ = self.choose_move(battle, move_id, None, false, None, None, None);
                                 found_move = true;
                                 break;
                             }
                             if !found_move {
                                 // All moves disabled, use Struggle
                                 let _ = self.choose_move(
+                                    battle,
                                     ID::new("struggle"),
                                     None,
                                     false,

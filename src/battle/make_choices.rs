@@ -1,4 +1,5 @@
 use crate::*;
+use crate::side::Side;
 
 impl Battle {
 
@@ -30,15 +31,26 @@ impl Battle {
             // JS: }
             for (i, input) in inputs.iter().enumerate() {
                 if !input.is_empty() && i < self.sides.len() {
-                    let _ = self.sides[i].choose(input);
+                    // Need to pass battle to choose, use raw pointers to bypass borrow checker
+                    unsafe {
+                        let side_ptr = &mut self.sides[i] as *mut Side;
+                        let battle_ptr = self as *mut Battle;
+                        let _ = (*side_ptr).choose(&mut *battle_ptr, input);
+                    }
                 }
             }
         } else {
             // JS: for (const side of this.sides) {
             // JS:     side.autoChoose();
             // JS: }
+            // Note: We need to split the borrow to pass Battle to auto_choose
+            // Use raw pointers to bypass the borrow checker
             for i in 0..self.sides.len() {
-                self.sides[i].auto_choose();
+                unsafe {
+                    let side_ptr = &mut self.sides[i] as *mut Side;
+                    let battle_ptr = self as *mut Battle;
+                    (*side_ptr).auto_choose(&mut *battle_ptr);
+                }
             }
         }
 

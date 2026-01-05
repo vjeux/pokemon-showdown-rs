@@ -1,4 +1,5 @@
 use crate::side::*;
+use crate::Battle;
 
 impl Side {
 
@@ -123,7 +124,7 @@ impl Side {
     // 		return !this.choice.error;
     // 	}
     //
-    pub fn choose(&mut self, input: &str) -> Result<bool, String> {
+    pub fn choose(&mut self, battle: &mut Battle, input: &str) -> Result<bool, String> {
         // Parse and execute choice commands
         let parts: Vec<&str> = input.split_whitespace().collect();
         if parts.is_empty() {
@@ -136,7 +137,7 @@ impl Side {
                 // JS: case 'default':
                 // JS:     this.autoChoose();
                 // JS:     break;
-                self.auto_choose();
+                self.auto_choose(battle);
                 Ok(true)
             }
             "pass" | "skip" => {
@@ -175,7 +176,7 @@ impl Side {
                 if let Some(Some(poke_idx)) = self.active.get(index) {
                     if let Some(slot) = self.pokemon[*poke_idx].move_slots.get(move_idx - 1) {
                         let move_id = slot.id.clone();
-                        self.choose_move(move_id, None, false, None, None, None)?;
+                        self.choose_move(battle, move_id, None, false, None, None, None)?;
                         Ok(true)
                     } else {
                         Err("Invalid move index".to_string())

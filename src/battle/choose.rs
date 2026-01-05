@@ -1,4 +1,5 @@
 use crate::*;
+use crate::side::Side;
 
 impl Battle {
 
@@ -29,9 +30,13 @@ impl Battle {
         let side_idx = side_id.index();
 
         // JS: if (!side.choose(input))
-        let choose_result = match self.sides[side_idx].choose(input) {
-            Ok(success) => success,
-            Err(_) => false,
+        let choose_result = unsafe {
+            let side_ptr = &mut self.sides[side_idx] as *mut Side;
+            let battle_ptr = self as *mut Battle;
+            match (*side_ptr).choose(&mut *battle_ptr, input) {
+                Ok(success) => success,
+                Err(_) => false,
+            }
         };
 
         if !choose_result {
