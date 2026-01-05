@@ -649,7 +649,8 @@ pub fn use_move_inner(
     );
 
     let try_move_success = !matches!(try_move_single, crate::event::EventResult::Boolean(false) |
-                                                       crate::event::EventResult::Null) && try_move_run;
+                                                       crate::event::EventResult::Null |
+                                                       crate::event::EventResult::Stop) && try_move_run;
 
     if !try_move_success {
         if let Some(ref mut am) = battle.active_move {
