@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([4915, 4096]);
 ///     }
 /// }
-pub fn on_source_modify_accuracy(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_source_modify_accuracy(battle: &mut Battle, _accuracy: i32, target_pos: Option<(usize, usize)>) -> EventResult {
     // if (typeof accuracy === 'number' && !this.queue.willMove(target)) {
     //     this.debug('Zoom Lens boosting accuracy');
     //     return this.chainModify([4915, 4096]);

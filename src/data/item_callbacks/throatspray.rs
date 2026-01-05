@@ -13,7 +13,7 @@ use crate::Pokemon;
 ///         target.useItem();
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // if (move.flags['sound']) {
     //     target.useItem();
     // }

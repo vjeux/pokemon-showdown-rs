@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onModifySpD(spd) {
 ///     return this.chainModify(1.5);
 /// }
-pub fn on_modify_sp_d(battle: &mut Battle) -> EventResult {
+pub fn on_modify_sp_d(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // return this.chainModify(1.5);
     battle.chain_modify(1.5);
     EventResult::Continue

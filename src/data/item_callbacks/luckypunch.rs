@@ -12,13 +12,7 @@ use crate::event::EventResult;
 ///         return critRatio + 2;
 ///     }
 /// }
-pub fn on_modify_crit_ratio(battle: &mut Battle, crit_ratio: i32) -> EventResult {
-    // Get user from current event target
-    let pokemon_pos = match battle.current_event.as_ref().and_then(|e| e.target) {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
-
+pub fn on_modify_crit_ratio(battle: &mut Battle, pokemon_pos: (usize, usize), crit_ratio: i32) -> EventResult {
     // if (user.baseSpecies.name === 'Chansey')
     let is_chansey = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

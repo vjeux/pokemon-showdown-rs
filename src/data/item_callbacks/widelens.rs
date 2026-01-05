@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([4505, 4096]);
 ///     }
 /// }
-pub fn on_source_modify_accuracy(battle: &mut Battle) -> EventResult {
+pub fn on_source_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (typeof accuracy === 'number') {
     //     return this.chainModify([4505, 4096]);
     // }

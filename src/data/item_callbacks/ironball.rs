@@ -62,7 +62,8 @@ pub fn on_effectiveness(battle: &mut Battle, target_pos: Option<(usize, usize)>)
 /// onModifySpe(spe) {
 ///     return this.chainModify(0.5);
 /// }
-pub fn on_modify_spe(battle: &mut Battle) -> EventResult {
+/// TypeScript signature: onModifySpe(pokemon:Pokemon)
+pub fn on_modify_spe(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // return this.chainModify(0.5);
     battle.chain_modify(0.5);
     EventResult::Continue
