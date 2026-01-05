@@ -32,7 +32,14 @@ pub fn on_prepare_hit(
     let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, EventResult::Continue, false, false);
     eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] StallMove result: {:?}", stall_result);
 
-    let result = will_act && match stall_result { EventResult::Number(n) => n, _ => 0 } != 0;
+    // JavaScript: return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
+    // StallMove returns a boolean, not a number
+    let stall_succeeded = match stall_result {
+        EventResult::Boolean(b) => b,
+        EventResult::Continue => true,
+        _ => false,
+    };
+    let result = will_act && stall_succeeded;
     eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Returning {}", result);
     EventResult::Boolean(result)
 }

@@ -22,16 +22,17 @@ impl Battle {
 
         let effect_str = effect_id.as_str();
 
-        // IMPORTANT: For PrepareHit, check if effect is a move FIRST before checking volatiles
-        // PrepareHit should call the MOVE's handler (e.g., King's Shield's onPrepareHit),
-        // not a volatile's handler (even if the Pokemon has a kingsshield volatile)
-        if event_id == "PrepareHit" {
+        // IMPORTANT: For PrepareHit and Hit events, check if effect is a MOVE first
+        // This ensures that when single_event("Hit", "kingsshield", ...) is called,
+        // it routes to the MOVE's onHit handler, not the kingsshield volatile's onHit
+        // After the move's onHit adds the volatile, the volatile's onHit can be called separately
+        if event_id == "PrepareHit" || event_id == "Hit" {
             if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
                 return self.handle_move_event(event_id, effect_str, target);
             }
         }
 
-        // IMPORTANT: Check if effect is a condition (volatile, status, etc.) on the target Pokemon FIRST
+        // IMPORTANT: Check if effect is a condition (volatile, status, etc.) on the target Pokemon
         // This prevents "substitute" volatile from being dispatched as "substitute" move
         // In JavaScript, the event handler is attached to pokemon.volatiles['substitute'], so it knows it's the volatile
         // In Rust, we need to check target.volatiles to determine if it's a volatile vs a move

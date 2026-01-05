@@ -186,8 +186,9 @@ pub fn try_spread_move_hit(
     let mut at_least_one_failure = false;
 
     // JS: for (const step of moveSteps) { ... }
-    // Extract active_move to avoid borrowing conflicts
-    let mut active_move = battle.active_move.take().expect("active_move must be set");
+    // Clone active_move to avoid borrowing conflicts, but keep battle.active_move set
+    // so that event handlers (like King's Shield's onTryHit) can access it
+    let mut active_move = battle.active_move.as_ref().expect("active_move must be set").clone();
 
     for &step_idx in &step_order {
         eprintln!("[TRY_SPREAD_MOVE_HIT] Executing step {} for move={}, targets.len()={}", step_idx, move_id, target_list.len());
@@ -288,8 +289,11 @@ pub fn try_spread_move_hit(
                     false, // is_self
                 );
 
-                // Take back the active_move from battle for continued use in the loop
-                active_move = battle.active_move.take().expect("active_move should be set");
+                // If spread_move_hit modified active_move, use the new version
+                // Otherwise continue with our cloned version
+                if let Some(new_active_move) = battle.active_move.take() {
+                    active_move = new_active_move;
+                }
 
                 // Convert SpreadMoveDamage to Vec<bool>
                 // Damage, Success, or HitSubstitute = true; Failed or Undefined = false

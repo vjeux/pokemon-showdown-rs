@@ -34,7 +34,8 @@ impl Battle {
             event_id
         };
 
-        match normalized_event {
+        // Try condition_callbacks first
+        let result = match normalized_event {
             "AfterMove" => {
                 condition_callbacks::dispatch_on_after_move(self, condition_id, pokemon_pos)
             }
@@ -136,6 +137,20 @@ impl Battle {
                 pokemon_pos,
             ),
             _ => EventResult::Continue,
+        };
+
+        // If condition_callbacks returned Continue, try move-defined condition callbacks
+        // This handles moves like King's Shield that define their own condition with callbacks
+        if matches!(result, EventResult::Continue) {
+            use crate::data::move_callbacks;
+            match normalized_event {
+                "Start" => {
+                    return move_callbacks::dispatch_condition_on_start(self, condition_id, pokemon_pos);
+                }
+                _ => {}
+            }
         }
+
+        result
     }
 }

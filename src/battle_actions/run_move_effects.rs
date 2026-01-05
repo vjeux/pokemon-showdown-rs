@@ -4,6 +4,7 @@
 
 use crate::*;
 use crate::battle_actions::{SpreadMoveDamage, SpreadMoveTargets, SpreadMoveTarget};
+use crate::event::EventResult;
 
 /// Run move effects (boosts, healing, status, etc.)
 /// Equivalent to runMoveEffects() in battle-actions.ts:1201
@@ -151,6 +152,28 @@ pub fn run_move_effects(
         if let Some(ref pseudo_weather) = move_data.pseudo_weather {
             let pseudo_id = crate::dex_data::ID::new(pseudo_weather);
             battle.field.add_pseudo_weather(pseudo_id, None);
+        }
+
+        // Hit events
+        // JavaScript (battle-actions.ts:1293-1299):
+        // if (moveData.onHit) {
+        //     hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
+        //     didSomething = this.combineResults(didSomething, hitResult);
+        // }
+        // if (!isSelf && !isSecondary) {
+        //     this.battle.runEvent('Hit', target, source, move);
+        // }
+
+        // Get the move ID for event dispatch
+        let move_id = battle.active_move.as_ref().map(|m| m.id.clone()).unwrap_or_else(|| move_data.id.clone());
+
+        // Call singleEvent('Hit', moveData, ...) to trigger move's onHit callback
+        // This is what makes King's Shield add the 'stall' volatile
+        battle.single_event("Hit", &move_id, Some(target_pos), Some(_source_pos), Some(&move_id));
+
+        // Call runEvent('Hit', ...) to trigger general Hit event handlers
+        if !_is_self && !_is_secondary {
+            battle.run_event("Hit", Some(target_pos), Some(_source_pos), None, EventResult::Continue, false, false);
         }
 
         // Keep damage result
