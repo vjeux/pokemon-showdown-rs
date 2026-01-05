@@ -390,27 +390,23 @@ impl Battle {
                             // Check if this is a volatile with duration
                             if let Some(volatile_state) = pokemon.volatiles.get_mut(&handler.effect_id) {
                                 if let Some(duration) = volatile_state.duration.as_mut() {
-                                    // JavaScript doesn't decrement volatiles on the same turn they're added
-                                    // Check if this volatile was created this turn
-                                    let skip_decrement = volatile_state.created_turn == Some(self.turn);
-
-                                    if skip_decrement {
-                                        eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}', pokemon=({},{}), SKIP decrement (created this turn)",
-                                            self.turn, handler.effect_id.as_str(), side_idx, poke_idx);
-                                        false
+                                    // JavaScript: Always decrement duration during Residual events
+                                    // JavaScript code (battle.ts:515-522):
+                                    // if (eventid === 'Residual' && handler.end && handler.state?.duration) {
+                                    //     handler.state.duration--;
+                                    //     if (!handler.state.duration) { /* remove volatile */ }
+                                    // }
+                                    eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}', pokemon=({},{}), duration BEFORE decrement={}",
+                                        self.turn, handler.effect_id.as_str(), side_idx, poke_idx, *duration);
+                                    *duration -= 1;
+                                    eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}', pokemon=({},{}), duration AFTER decrement={}",
+                                        self.turn, handler.effect_id.as_str(), side_idx, poke_idx, *duration);
+                                    if *duration == 0 {
+                                        eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' EXPIRED, removing and skipping handler",
+                                            self.turn, handler.effect_id.as_str());
+                                        true
                                     } else {
-                                        eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}', pokemon=({},{}), duration BEFORE decrement={}",
-                                            self.turn, handler.effect_id.as_str(), side_idx, poke_idx, *duration);
-                                        *duration -= 1;
-                                        eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}', pokemon=({},{}), duration AFTER decrement={}",
-                                            self.turn, handler.effect_id.as_str(), side_idx, poke_idx, *duration);
-                                        if *duration == 0 {
-                                            eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' EXPIRED, removing and skipping handler",
-                                                self.turn, handler.effect_id.as_str());
-                                            true
-                                        } else {
-                                            false
-                                        }
+                                        false
                                     }
                                 } else {
                                     false
