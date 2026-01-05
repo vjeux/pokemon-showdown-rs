@@ -16,18 +16,26 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str) -> EventResult {
+    eprintln!("[WATERABSORB_TRYHIT] target={:?}, source={:?}, move={}", target_pos, source_pos, move_id);
+
     // Immune to Water-type moves and heal 1/4 max HP
     if target_pos != source_pos {
+        eprintln!("[WATERABSORB_TRYHIT] target != source, checking move type");
         // Check if the move is Water-type
         let is_water = {
             let move_data = match battle.dex.moves().get(move_id) {
                 Some(m) => m,
-                None => return EventResult::Continue,
+                None => {
+                    eprintln!("[WATERABSORB_TRYHIT] Move not found in dex, returning Continue");
+                    return EventResult::Continue;
+                }
             };
             move_data.move_type == "Water"
         };
+        eprintln!("[WATERABSORB_TRYHIT] is_water={}", is_water);
 
         if is_water {
+            eprintln!("[WATERABSORB_TRYHIT] Water move detected, healing and returning Null");
             // Heal 1/4 max HP
             let heal_amount = {
                 let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
@@ -40,7 +48,10 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
             // Return Null to prevent the move from hitting
             return EventResult::Null;
         }
+    } else {
+        eprintln!("[WATERABSORB_TRYHIT] target == source, returning Continue");
     }
+    eprintln!("[WATERABSORB_TRYHIT] Returning Continue");
     EventResult::Continue
 }
 

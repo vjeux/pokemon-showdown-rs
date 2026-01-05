@@ -21,6 +21,7 @@ use crate::dex_data::{BoostsTable, ID};
 mod new;
 mod get_boost_modifier;
 mod calc_recoil_damage;
+mod combine_results;
 mod target_type_choices;
 mod can_mega_evo;
 mod can_ultra_burst;
@@ -63,6 +64,7 @@ mod hit_step_move_hit_loop;
 mod add_pseudoweather;
 pub use can_mega_evo::can_mega_evo;
 pub use can_ultra_burst::can_ultra_burst;
+pub use combine_results::combine_results;
 pub use can_terastallize::can_terastallize;
 pub use run_mega_evo::run_mega_evo;
 pub use terastallize::terastallize;
@@ -1106,6 +1108,21 @@ pub struct UseMoveOptions {
 /// Result of spread move hit containing damage and target info
 /// JavaScript equivalent: SpreadMoveDamage (sim/global-types.ts)
 pub type SpreadMoveDamage = Vec<DamageResult>;
+
+/// Extension trait for SpreadMoveDamage to provide reduce functionality
+pub trait SpreadMoveDamageExt {
+    /// Reduce a damage array using combine_results
+    /// JavaScript: damage.reduce(this.combineResults)
+    fn reduce(&self) -> DamageResult;
+}
+
+impl SpreadMoveDamageExt for SpreadMoveDamage {
+    fn reduce(&self) -> DamageResult {
+        self.iter()
+            .fold(DamageResult::Undefined, |acc, &d| combine_results(acc, d))
+    }
+}
+
 
 /// Target info for spread moves (can be the Pokemon or null/false for failed)
 /// TODO: Rust uses enum to represent JavaScript's Pokemon | null | false union type

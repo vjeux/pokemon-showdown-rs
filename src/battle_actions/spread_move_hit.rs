@@ -301,17 +301,28 @@ pub fn spread_move_hit(
 
     // 3. onHit event happens here
     // JS: damage = this.runMoveEffects(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
-    // Need to get MoveData separately to avoid borrow issues
-    let move_data_ptr = {
-        let move_data = battle.dex.moves.get(move_data_id).expect("Move not found");
-        move_data as *const _
+    // JavaScript: runMoveEffects(damage, targets, source, move: ActiveMove, moveData: ActiveMove, isSecondary?, isSelf?)
+    // Both move and moveData are ActiveMove - typically the same unless dealing with secondary effects
+
+    // Get active_move pointer (for 'move' parameter)
+    let active_move_ptr = {
+        match &battle.active_move {
+            Some(am) => am as *const _,
+            None => panic!("active_move must be set when calling run_move_effects"),
+        }
     };
+
+    // For moveData, use active_move unless hit_effect provides a different one
+    // Currently we only have move_data_id, so we'll use active_move for both until hit_effect is properly threaded through
+    let move_data_ptr = active_move_ptr; // TODO: Should use hit_effect if provided
+
     damage = unsafe {
         crate::battle_actions::run_move_effects(
             battle,
             damage,
             &targets_mut,
             source_pos,
+            &*active_move_ptr,
             &*move_data_ptr,
             is_secondary,
             is_self,

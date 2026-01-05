@@ -56,11 +56,14 @@ impl Pokemon {
         // NOTE: JavaScript NEGATES the result!
         // If runEvent returns truthy → negateImmunity = false
         // If runEvent returns falsy/undefined → negateImmunity = true
-        let negate_immunity = match battle.run_event("NegateImmunity", Some(pokemon_pos), None, None, EventResult::Continue, false, false) {
+        let negate_immunity_result = battle.run_event("NegateImmunity", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+        eprintln!("[RUN_IMMUNITY] pokemon={:?}, move_type={}, NegateImmunity result={:?}", pokemon_pos, move_type, negate_immunity_result);
+        let negate_immunity = match negate_immunity_result {
             EventResult::Number(val) if val != 0 => false,  // Event returned truthy → DON'T negate (negateImmunity=false)
             EventResult::Boolean(true) => false,  // Event returned true → DON'T negate
             _ => true,  // Event returned falsy/Continue/Null → DO negate (negateImmunity=true)
         };
+        eprintln!("[RUN_IMMUNITY] negate_immunity={}", negate_immunity);
 
         // JS: const notImmune = type === 'Ground' ?
         // JS:     this.isGrounded(negateImmunity) :
@@ -77,6 +80,7 @@ impl Pokemon {
         } else {
             // For other types, check type immunity via Dex
             if negate_immunity {
+                eprintln!("[RUN_IMMUNITY] negate_immunity=true, returning true (not immune)");
                 true
             } else {
                 let pokemon_types = {
@@ -86,7 +90,10 @@ impl Pokemon {
                     };
                     pokemon.get_types(battle, false)
                 };
-                battle.dex.get_immunity(move_type, &pokemon_types)
+                eprintln!("[RUN_IMMUNITY] pokemon_types={:?}", pokemon_types);
+                let immunity_result = battle.dex.get_immunity(move_type, &pokemon_types);
+                eprintln!("[RUN_IMMUNITY] get_immunity({}, {:?}) = {}", move_type, pokemon_types, immunity_result);
+                immunity_result
             }
         };
 

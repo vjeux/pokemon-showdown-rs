@@ -222,6 +222,7 @@ pub fn try_spread_move_hit(
                     pokemon_pos,
                     &mut active_move,
                 );
+                eprintln!("[TRY_SPREAD] Step 0 (Invuln): results={:?}, target_list.len()={}", results, target_list.len());
                 Some(results)
             }
             1 => {
@@ -326,6 +327,7 @@ pub fn try_spread_move_hit(
         }
 
         let hit_results = hit_results.unwrap();
+        eprintln!("[TRY_SPREAD] Step {}: Before filter: target_list.len()={}, hit_results={:?}", step_idx, target_list.len(), hit_results);
 
         // JS: targets = targets.filter((val, i) => hitResults[i] || hitResults[i] === 0);
         // In JavaScript, hitResults[i] can be number | boolean | "" | undefined
@@ -339,6 +341,7 @@ pub fn try_spread_move_hit(
             .filter(|(i, _)| hit_results.get(*i).copied().unwrap_or(false))
             .map(|(_, &t)| t)
             .collect();
+        eprintln!("[TRY_SPREAD] After filter: target_list.len()={}", target_list.len());
 
         // JS: atLeastOneFailure = atLeastOneFailure || hitResults.some(val => val === false);
         at_least_one_failure = at_least_one_failure || hit_results.iter().any(|&val| !val);

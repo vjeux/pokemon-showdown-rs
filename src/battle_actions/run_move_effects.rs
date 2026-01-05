@@ -3,185 +3,564 @@
 //! 1:1 port of runMoveEffects from battle-actions.ts:1201
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, SpreadMoveTargets, SpreadMoveTarget};
-use crate::event::EventResult;
+use crate::battle_actions::{SpreadMoveDamage, SpreadMoveTargets, SpreadMoveTarget, DamageResult, combine_results, SpreadMoveDamageExt};
 
 /// Run move effects (boosts, healing, status, etc.)
 /// Equivalent to runMoveEffects() in battle-actions.ts:1201
+// runMoveEffects(
+//     damage: SpreadMoveDamage, targets: SpreadMoveTargets, source: Pokemon,
+//     move: ActiveMove, moveData: ActiveMove, isSecondary?: boolean, isSelf?: boolean
+// ) {
+//     let didAnything: number | boolean | null | undefined = damage.reduce(this.combineResults);
+//     for (const [i, target] of targets.entries()) {
+//         if (target === false) continue;
+//         let hitResult;
+//         let didSomething: number | boolean | null | undefined = undefined;
+//
+//         if (target) {
+//             if (moveData.boosts && !target.fainted) {
+//                 hitResult = this.battle.boost(moveData.boosts, target, source, move, isSecondary, isSelf);
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             if (moveData.heal && !target.fainted) {
+//                 if (target.hp >= target.maxhp) {
+//                     this.battle.add('-fail', target, 'heal');
+//                     this.battle.attrLastMove('[still]');
+//                     damage[i] = this.combineResults(damage[i], false);
+//                     didAnything = this.combineResults(didAnything, null);
+//                     continue;
+//                 }
+//                 const amount = target.baseMaxhp * moveData.heal[0] / moveData.heal[1];
+//                 const d = this.battle.heal((this.battle.gen < 5 ? Math.floor : Math.round)(amount), target, source, move);
+//                 if (!d && d !== 0) {
+//                     if (d !== null) {
+//                         this.battle.add('-fail', source);
+//                         this.battle.attrLastMove('[still]');
+//                     }
+//                     this.battle.debug('heal interrupted');
+//                     damage[i] = this.combineResults(damage[i], false);
+//                     didAnything = this.combineResults(didAnything, null);
+//                     continue;
+//                 }
+//                 didSomething = true;
+//             }
+//             if (moveData.status) {
+//                 hitResult = target.trySetStatus(moveData.status, source, moveData.ability ? moveData.ability : move);
+//                 if (!hitResult && move.status) {
+//                     damage[i] = this.combineResults(damage[i], false);
+//                     didAnything = this.combineResults(didAnything, null);
+//                     continue;
+//                 }
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             if (moveData.forceStatus) {
+//                 hitResult = target.setStatus(moveData.forceStatus, source, move);
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             if (moveData.volatileStatus) {
+//                 hitResult = target.addVolatile(moveData.volatileStatus, source, move);
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             if (moveData.sideCondition) {
+//                 hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             if (moveData.slotCondition) {
+//                 hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             if (moveData.weather) {
+//                 hitResult = this.battle.field.setWeather(moveData.weather, source, move);
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             if (moveData.terrain) {
+//                 hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             if (moveData.pseudoWeather) {
+//                 hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             if (moveData.forceSwitch) {
+//                 hitResult = !!this.battle.canSwitch(target.side);
+//                 didSomething = this.combineResults(didSomething, hitResult);
+//             }
+//             // Hit events
+//             //   These are like the TryHit events, except we don't need a FieldHit event.
+//             //   Scroll up for the TryHit event documentation, and just ignore the "Try" part. ;)
+//             if (move.target === 'all' && !isSelf) {
+//                 if (moveData.onHitField) {
+//                     hitResult = this.battle.singleEvent('HitField', moveData, {}, target, source, move);
+//                     didSomething = this.combineResults(didSomething, hitResult);
+//                 }
+//             } else if ((move.target === 'foeSide' || move.target === 'allySide') && !isSelf) {
+//                 if (moveData.onHitSide) {
+//                     hitResult = this.battle.singleEvent('HitSide', moveData, {}, target.side, source, move);
+//                     didSomething = this.combineResults(didSomething, hitResult);
+//                 }
+//             } else {
+//                 if (moveData.onHit) {
+//                     hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
+//                     didSomething = this.combineResults(didSomething, hitResult);
+//                 }
+//                 if (!isSelf && !isSecondary) {
+//                     this.battle.runEvent('Hit', target, source, move);
+//                 }
+//             }
+//         }
+//         if (moveData.selfdestruct === 'ifHit' && damage[i] !== false) {
+//             this.battle.faint(source, source, move);
+//         }
+//         if (moveData.selfSwitch) {
+//             if (this.battle.canSwitch(source.side) && !source.volatiles['commanded']) {
+//                 didSomething = true;
+//             } else {
+//                 didSomething = this.combineResults(didSomething, false);
+//             }
+//         }
+//         // Move didn't fail because it didn't try to do anything
+//         if (didSomething === undefined) didSomething = true;
+//         damage[i] = this.combineResults(damage[i], didSomething === null ? false : didSomething);
+//         didAnything = this.combineResults(didAnything, didSomething);
+//     }
+//
+//     if (!didAnything && didAnything !== 0 && !moveData.self && !moveData.selfdestruct) {
+//         if (!isSelf && !isSecondary) {
+//             if (didAnything === false) {
+//                 this.battle.add('-fail', source);
+//                 this.battle.attrLastMove('[still]');
+//             }
+//         }
+//         this.battle.debug('move failed because it did nothing');
+//     } else if (move.selfSwitch && source.hp && !source.volatiles['commanded']) {
+//         source.switchFlag = move.id;
+//     }
+//
+//     return damage;
+// }
 pub fn run_move_effects(
     battle: &mut Battle,
-    damages: SpreadMoveDamage,
+    mut damages: SpreadMoveDamage,
     targets: &SpreadMoveTargets,
-    _source_pos: (usize, usize),
-    move_data: &crate::dex::MoveData,
-    _is_secondary: bool,
-    _is_self: bool,
+    source_pos: (usize, usize),
+    active_move: &crate::battle_actions::ActiveMove,
+    move_data: &crate::battle_actions::ActiveMove,
+    is_secondary: bool,
+    is_self: bool,
 ) -> SpreadMoveDamage {
-    eprintln!("[RUN_MOVE_EFFECTS] Called for move: {:?}, has status: {:?}", move_data.id, move_data.status);
-    let result_damages = damages;
+    // JavaScript signature: runMoveEffects(damage, targets, source, move, moveData, isSecondary?, isSelf?)
+    // Both move and moveData are ActiveMove types in JavaScript
+    // In many cases they're the same, but moveData can differ for secondary effects
 
-    for target in targets.iter() {
-        let target_pos = match target {
-            SpreadMoveTarget::Target(pos) => *pos,
-            _ => continue,
-        };
+    // let didAnything: number | boolean | null | undefined = damage.reduce(this.combineResults);
+    let mut did_anything = damages.reduce();
 
-        // Apply boosts
-        if let Some(ref boosts_map) = move_data.boosts {
-            // Convert HashMap<String, i32> to boost array for battle.boost()
-            let mut boost_array = Vec::new();
-            for (stat_name, &value) in boosts_map.iter() {
-                if value != 0 {
-                    boost_array.push((stat_name.as_str(), value as i8));
-                }
-            }
-
-            // Use battle.boost() to apply boosts (fires events, handles boost limits, etc.)
-            // JavaScript: this.boost(moveData.boosts, target, source, move);
-            if !boost_array.is_empty() {
-                battle.boost(&boost_array, target_pos, Some(_source_pos), None, _is_secondary, _is_self);
-            }
+    // for (const [i, target] of targets.entries()) {
+    for (i, target) in targets.iter().enumerate() {
+        // if (target === false) continue;
+        if matches!(target, SpreadMoveTarget::Failed) {
+            continue;
         }
 
-        // Apply healing
-        // CRITICAL: Check active_move.heal first!
-        // Moves like Present modify active_move.heal in their onModifyMove callback
-        // JavaScript passes the same move object around, but in Rust we have separate move_data and active_move
-        let heal_tuple = if let Some(ref active_move) = battle.active_move {
-            active_move.heal.or(move_data.heal)
-        } else {
-            move_data.heal
-        };
+        let mut did_something = DamageResult::Undefined;
 
-        if let Some((heal_num, heal_denom)) = heal_tuple {
-            let target_maxhp = if let Some(side) = battle.sides.get(target_pos.0) {
-                if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-                    pokemon.maxhp
-                } else {
-                    0
-                }
-            } else {
-                0
+        // if (target) {
+        if matches!(target, SpreadMoveTarget::Target(_)) {
+            let target_pos = match target {
+                SpreadMoveTarget::Target(pos) => *pos,
+                _ => continue,
             };
 
-            if target_maxhp > 0 {
-                let heal_amount = target_maxhp * heal_num / heal_denom;
-                // Apply healing
-                let (current_hp, max_hp) = if let Some(side) = battle.sides.get_mut(target_pos.0)
-                {
-                    if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
-                        let old_hp = pokemon.hp;
-                        pokemon.hp = (pokemon.hp + heal_amount).min(pokemon.maxhp);
-                        let healed = pokemon.hp - old_hp;
-                        if healed > 0 {
-                            (pokemon.hp, pokemon.maxhp)
-                        } else {
-                            (0, 0) // No healing occurred
-                        }
-                    } else {
-                        (0, 0)
-                    }
-                } else {
-                    (0, 0)
+            // if (moveData.boosts && !target.fainted) {
+            //     hitResult = this.battle.boost(moveData.boosts, target, source, move, isSecondary, isSelf);
+            //     didSomething = this.combineResults(didSomething, hitResult);
+            // }
+            if let Some(ref boosts) = move_data.boosts {
+                // Check !target.fainted
+                let target_fainted = {
+                    let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    pokemon.fainted
                 };
 
-                // Log healing after releasing mutable borrow
-                if current_hp > 0 {
-                    battle.add(
-                        "-heal",
-                        &[
-                            format!("p{}a", target_pos.0 + 1).into(),
-                            format!("{}/{}", current_hp, max_hp).into(),
-                        ],
+                if !target_fainted {
+                    // Convert BoostsTable to Vec<(&str, i8)> - only include non-zero boosts
+                    let mut boosts_vec: Vec<(&str, i8)> = Vec::new();
+                    if boosts.atk != 0 { boosts_vec.push(("atk", boosts.atk)); }
+                    if boosts.def != 0 { boosts_vec.push(("def", boosts.def)); }
+                    if boosts.spa != 0 { boosts_vec.push(("spa", boosts.spa)); }
+                    if boosts.spd != 0 { boosts_vec.push(("spd", boosts.spd)); }
+                    if boosts.spe != 0 { boosts_vec.push(("spe", boosts.spe)); }
+                    if boosts.accuracy != 0 { boosts_vec.push(("accuracy", boosts.accuracy)); }
+                    if boosts.evasion != 0 { boosts_vec.push(("evasion", boosts.evasion)); }
+
+                    let hit_result = battle.boost(
+                        &boosts_vec,
+                        target_pos,
+                        Some(source_pos),
+                        Some(active_move.id.as_str()),
+                        is_secondary,
+                        is_self,
                     );
+
+                    // Convert bool to DamageResult
+                    let hit_result_dr = if hit_result {
+                        DamageResult::Success
+                    } else {
+                        DamageResult::Failed
+                    };
+                    did_something = combine_results(did_something, hit_result_dr);
                 }
+            }
+
+            // if (moveData.heal && !target.fainted) {
+            if let Some(heal_fraction) = move_data.heal {
+                // Check !target.fainted and get hp/maxhp
+                let (target_fainted, target_hp, target_maxhp, target_base_maxhp) = {
+                    let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    (pokemon.fainted, pokemon.hp, pokemon.maxhp, pokemon.base_maxhp)
+                };
+
+                if !target_fainted {
+                    // if (target.hp >= target.maxhp) {
+                    if target_hp >= target_maxhp {
+                        //     this.battle.add('-fail', target, 'heal');
+                        //     this.battle.attrLastMove('[still]');
+                        let target_ident = {
+                            let pokemon = battle.pokemon_at(target_pos.0, target_pos.1).unwrap();
+                            format!("p{}a: {}", target_pos.0 + 1, pokemon.set.species)
+                        };
+                        battle.add("|-fail|", &[
+                            crate::battle::Arg::String(target_ident),
+                            crate::battle::Arg::String("heal".to_string()),
+                        ]);
+                        battle.attr_last_move(&["[still]"]);
+                        //     damage[i] = this.combineResults(damage[i], false);
+                        damages[i] = combine_results(damages[i], DamageResult::Failed);
+                        //     didAnything = this.combineResults(didAnything, null);
+                        // Note: JavaScript null is tricky - setting to Undefined
+                        did_anything = combine_results(did_anything, DamageResult::Undefined);
+                        //     continue;
+                        continue;
+                    }
+                    // const amount = target.baseMaxhp * moveData.heal[0] / moveData.heal[1];
+                    let amount = target_base_maxhp * heal_fraction.0 / heal_fraction.1;
+                    // const d = this.battle.heal((this.battle.gen < 5 ? Math.floor : Math.round)(amount), target, source, move);
+                    let amount_rounded = if battle.gen < 5 {
+                        amount // floor (already an integer after division)
+                    } else {
+                        // Round: add 0.5 before truncating. In Rust integer division truncates.
+                        // For proper rounding with integer math: (numerator + denominator/2) / denominator
+                        (target_base_maxhp * heal_fraction.0 + heal_fraction.1 / 2) / heal_fraction.1
+                    };
+                    let d = battle.heal(
+                        amount_rounded,
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(&active_move.id),
+                    );
+                    // if (!d && d !== 0) {
+                    match d {
+                        None | Some(0) if d != Some(0) => {
+                            //     if (d !== null) {
+                            if d.is_some() {
+                                //         this.battle.add('-fail', source);
+                                let source_ident = {
+                                    let pokemon = battle.pokemon_at(source_pos.0, source_pos.1).unwrap();
+                                    format!("p{}a: {}", source_pos.0 + 1, pokemon.set.species)
+                                };
+                                battle.add("|-fail|", &[crate::battle::Arg::String(source_ident)]);
+                                //         this.battle.attrLastMove('[still]');
+                                battle.attr_last_move(&["[still]"]);
+                            }
+                            //     this.battle.debug('heal interrupted');
+                            battle.debug("heal interrupted");
+                            //     damage[i] = this.combineResults(damage[i], false);
+                            damages[i] = combine_results(damages[i], DamageResult::Failed);
+                            //     didAnything = this.combineResults(didAnything, null);
+                            did_anything = combine_results(did_anything, DamageResult::Undefined);
+                            //     continue;
+                            continue;
+                        }
+                        _ => {}
+                    }
+                    //     didSomething = true;
+                    did_something = DamageResult::Success;
+                }
+            }
+
+            // if (moveData.status) {
+            if let Some(ref status) = move_data.status {
+                //     hitResult = target.trySetStatus(moveData.status, source, moveData.ability ? moveData.ability : move);
+                let status_id = ID::new(status);
+                let hit_result = Pokemon::try_set_status(
+                    battle,
+                    target_pos,
+                    status_id,
+                    None, // source_effect - using active_move effect instead
+                );
+                //     if (!hitResult && move.status) {
+                // Check if active_move also has status (primary status move)
+                let move_has_status = active_move.status.is_some();
+                if !hit_result && move_has_status {
+                    //         damage[i] = this.combineResults(damage[i], false);
+                    damages[i] = combine_results(damages[i], DamageResult::Failed);
+                    //         didAnything = this.combineResults(didAnything, null);
+                    did_anything = combine_results(did_anything, DamageResult::Undefined);
+                    //         continue;
+                    continue;
+                }
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                let hit_result_dr = if hit_result {
+                    DamageResult::Success
+                } else {
+                    DamageResult::Failed
+                };
+                did_something = combine_results(did_something, hit_result_dr);
+            }
+
+            // if (moveData.forceStatus) {
+            // TODO: ActiveMove doesn't have forceStatus field yet
+            // Need to add this field to ActiveMove struct
+
+            // if (moveData.volatileStatus) {
+            if let Some(ref volatile_status) = move_data.volatile_status {
+                //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
+                let volatile_id = ID::new(volatile_status);
+                let hit_result = Pokemon::add_volatile(
+                    battle,
+                    target_pos,
+                    volatile_id,
+                    Some(source_pos),
+                    Some(&active_move.id),
+                    None, // linked_status
+                    None, // embedded_condition
+                );
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                let hit_result_dr = if hit_result {
+                    DamageResult::Success
+                } else {
+                    DamageResult::Failed
+                };
+                did_something = combine_results(did_something, hit_result_dr);
+            }
+
+            // if (moveData.sideCondition) {
+            if let Some(ref side_condition) = move_data.side_condition {
+                //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
+                let condition_id = ID::new(side_condition);
+                let hit_result = {
+                    let side = &mut battle.sides[target_pos.0];
+                    side.add_side_condition(condition_id, None) // duration
+                };
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                let hit_result_dr = if hit_result {
+                    DamageResult::Success
+                } else {
+                    DamageResult::Failed
+                };
+                did_something = combine_results(did_something, hit_result_dr);
+            }
+
+            // if (moveData.slotCondition) {
+            if let Some(ref slot_condition) = move_data.slot_condition {
+                //     hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
+                let condition_id = ID::new(slot_condition);
+                let hit_result = {
+                    let side = &mut battle.sides[target_pos.0];
+                    side.add_slot_condition(target_pos.1, condition_id, None) // slot, condition_id, duration
+                };
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                let hit_result_dr = if hit_result {
+                    DamageResult::Success
+                } else {
+                    DamageResult::Failed
+                };
+                did_something = combine_results(did_something, hit_result_dr);
+            }
+
+            // if (moveData.weather) {
+            if let Some(ref weather) = move_data.weather {
+                //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
+                let weather_id = ID::new(weather);
+                let hit_result = battle.field.set_weather(weather_id, None); // duration
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                let hit_result_dr = if hit_result {
+                    DamageResult::Success
+                } else {
+                    DamageResult::Failed
+                };
+                did_something = combine_results(did_something, hit_result_dr);
+            }
+
+            // if (moveData.terrain) {
+            if let Some(ref terrain) = move_data.terrain {
+                //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
+                let terrain_id = ID::new(terrain);
+                let hit_result = battle.field.set_terrain(terrain_id, None); // duration
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                let hit_result_dr = if hit_result {
+                    DamageResult::Success
+                } else {
+                    DamageResult::Failed
+                };
+                did_something = combine_results(did_something, hit_result_dr);
+            }
+
+            // if (moveData.pseudoWeather) {
+            if let Some(ref pseudo_weather) = move_data.pseudo_weather {
+                //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
+                let pseudo_weather_id = ID::new(pseudo_weather);
+                let hit_result = battle.field.add_pseudo_weather(pseudo_weather_id, None); // duration
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                let hit_result_dr = if hit_result {
+                    DamageResult::Success
+                } else {
+                    DamageResult::Failed
+                };
+                did_something = combine_results(did_something, hit_result_dr);
+            }
+
+            // if (moveData.forceSwitch) {
+            if move_data.force_switch {
+                //     hitResult = !!this.battle.canSwitch(target.side);
+                let can_switch_count = battle.can_switch(target_pos.0);
+                let hit_result = can_switch_count > 0; // !! converts to boolean
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                let hit_result_dr = if hit_result {
+                    DamageResult::Success
+                } else {
+                    DamageResult::Failed
+                };
+                did_something = combine_results(did_something, hit_result_dr);
+            }
+
+            // Hit events - onHitField, onHitSide, onHit
+            // TODO: ActiveMove doesn't have onHitField, onHitSide, onHit event callbacks yet
+            // TODO: Need to add these fields to ActiveMove or use event system
+            // TODO: Implement battle.singleEvent() and battle.runEvent()
+
+            // if (move.target === 'all' && !isSelf) {
+            if active_move.target == "all" && !is_self {
+                // if (moveData.onHitField) {
+                //     hitResult = this.battle.singleEvent('HitField', moveData, {}, target, source, move);
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                // }
+            }
+            // } else if ((move.target === 'foeSide' || move.target === 'allySide') && !isSelf) {
+            else if (active_move.target == "foeSide" || active_move.target == "allySide") && !is_self {
+                // if (moveData.onHitSide) {
+                //     hitResult = this.battle.singleEvent('HitSide', moveData, {}, target.side, source, move);
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                // }
+            } else {
+                // if (moveData.onHit) {
+                //     hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
+                //     didSomething = this.combineResults(didSomething, hitResult);
+                // }
+                // if (!isSelf && !isSecondary) {
+                //     this.battle.runEvent('Hit', target, source, move);
+                // }
             }
         }
 
-        // Apply status
-        // JavaScript: if (moveData.status) { target.setStatus(moveData.status, source, move); }
-        if let Some(ref status) = move_data.status {
-            eprintln!("[RUN_MOVE_EFFECTS] Applying status '{}' to target {:?}", status, target_pos);
-            let status_id = crate::dex_data::ID::new(status);
-            let _applied = Pokemon::set_status(battle, target_pos, status_id, Some(_source_pos), None, false);
+        // if (moveData.selfdestruct === 'ifHit' && damage[i] !== false) {
+        if let Some(ref selfdestruct) = move_data.self_destruct {
+            if selfdestruct == "ifHit" && !matches!(damages[i], DamageResult::Failed) {
+                //     this.battle.faint(source, source, move);
+                battle.faint(source_pos, Some(source_pos), Some(active_move.id.as_str()));
+            }
         }
 
-        // Apply volatile status
-        // JavaScript (battle-actions.ts): if (moveData.volatileStatus) { target.addVolatile(moveData.volatileStatus, source, move); }
-        if let Some(ref volatile_status) = move_data.volatile_status {
-            eprintln!("[RUN_MOVE_EFFECTS] Applying volatile status '{}' to target {:?}", volatile_status, target_pos);
-            let volatile_id = crate::dex_data::ID::new(volatile_status);
-            Pokemon::add_volatile(battle, target_pos, volatile_id, Some(_source_pos), None, None, move_data.condition.as_ref());
+        // if (moveData.selfSwitch) {
+        if move_data.self_switch.is_some() {
+            //     if (this.battle.canSwitch(source.side) && !source.volatiles['commanded']) {
+            let can_switch_count = battle.can_switch(source_pos.0);
+            let has_commanded = {
+                match battle.pokemon_at(source_pos.0, source_pos.1) {
+                    Some(p) => p.volatiles.contains_key(&ID::new("commanded")),
+                    None => false,
+                }
+            };
+
+            if can_switch_count > 0 && !has_commanded {
+                //         didSomething = true;
+                did_something = DamageResult::Success;
+            } else {
+                //         didSomething = this.combineResults(didSomething, false);
+                did_something = combine_results(did_something, DamageResult::Failed);
+            }
         }
 
-        // Apply side condition
-        // JavaScript (battle-actions.ts:1257): if (moveData.sideCondition) {
-        //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
-        //     didSomething = this.combineResults(didSomething, hitResult);
-        // }
-        if let Some(ref side_condition) = move_data.side_condition {
-            let condition_id = crate::dex_data::ID::new(side_condition);
-            battle.add_side_condition(target_pos.0, condition_id, Some(_source_pos), None);
+        // Move didn't fail because it didn't try to do anything
+        // if (didSomething === undefined) didSomething = true;
+        if matches!(did_something, DamageResult::Undefined) {
+            did_something = DamageResult::Success;
         }
 
-        // Apply weather
-        // JavaScript (battle-actions.ts:1263): if (moveData.weather) {
-        //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
-        //     didSomething = this.combineResults(didSomething, hitResult);
-        // }
-        if let Some(ref weather_id) = move_data.weather {
-            let weather = crate::dex_data::ID::new(weather_id);
-            battle.set_weather(weather, Some(_source_pos), None);
-        }
+        // damage[i] = this.combineResults(damage[i], didSomething === null ? false : didSomething);
+        // Note: JavaScript null doesn't have a direct DamageResult equivalent
+        // Assuming "null" would be represented as Undefined in our context
+        damages[i] = combine_results(damages[i], did_something);
 
-        // Apply terrain
-        // JavaScript (battle-actions.ts:1266): if (moveData.terrain) {
-        //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
-        //     didSomething = this.combineResults(didSomething, hitResult);
-        // }
-        if let Some(ref terrain_id) = move_data.terrain {
-            let terrain = crate::dex_data::ID::new(terrain_id);
-            battle.field.set_terrain(terrain, None);
-        }
-
-        // Apply pseudo-weather
-        // JavaScript (battle-actions.ts:1269): if (moveData.pseudoWeather) {
-        //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
-        //     didSomething = this.combineResults(didSomething, hitResult);
-        // }
-        if let Some(ref pseudo_weather) = move_data.pseudo_weather {
-            let pseudo_id = crate::dex_data::ID::new(pseudo_weather);
-            battle.field.add_pseudo_weather(pseudo_id, None);
-        }
-
-        // Hit events
-        // JavaScript (battle-actions.ts:1293-1299):
-        // if (moveData.onHit) {
-        //     hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
-        //     didSomething = this.combineResults(didSomething, hitResult);
-        // }
-        // if (!isSelf && !isSecondary) {
-        //     this.battle.runEvent('Hit', target, source, move);
-        // }
-
-        // Get the move ID for event dispatch
-        let move_id = battle.active_move.as_ref().map(|m| m.id.clone()).unwrap_or_else(|| move_data.id.clone());
-
-        // Call singleEvent('Hit', moveData, ...) to trigger move's onHit callback
-        // This is what makes King's Shield add the 'stall' volatile
-        eprintln!("[RUN_MOVE_EFFECTS] Calling single_event Hit for move_id={}, target={:?}, source={:?}", move_id, target_pos, _source_pos);
-        battle.single_event("Hit", &move_id, Some(target_pos), Some(_source_pos), Some(&move_id));
-        eprintln!("[RUN_MOVE_EFFECTS] Returned from single_event Hit");
-
-        // Call runEvent('Hit', ...) to trigger general Hit event handlers
-        if !_is_self && !_is_secondary {
-            battle.run_event("Hit", Some(target_pos), Some(_source_pos), None, EventResult::Continue, false, false);
-        }
-
-        // Keep damage result
-        // In the real implementation, we'd check if any effects failed
-        // and update result_damages[i] accordingly
+        // didAnything = this.combineResults(didAnything, didSomething);
+        did_anything = combine_results(did_anything, did_something);
     }
 
-    result_damages
+    // if (!didAnything && didAnything !== 0 && !moveData.self && !moveData.selfdestruct) {
+    let did_anything_is_zero = matches!(did_anything, DamageResult::Damage(0) | DamageResult::HitSubstitute);
+    let did_anything_is_falsy = matches!(did_anything, DamageResult::Failed | DamageResult::Undefined);
+
+    if did_anything_is_falsy && !did_anything_is_zero
+        && move_data.self_effect.is_none()
+        && move_data.self_destruct.is_none() {
+
+        if !is_self && !is_secondary {
+            // if (didAnything === false) {
+            if matches!(did_anything, DamageResult::Failed) {
+                //     this.battle.add('-fail', source);
+                let source_ident = {
+                    let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                        Some(p) => p,
+                        None => return damages,
+                    };
+                    format!("p{}a: {}", source_pos.0 + 1, pokemon.set.species)
+                };
+                battle.add("|-fail|", &[crate::battle::Arg::String(source_ident)]);
+                //     this.battle.attrLastMove('[still]');
+                battle.attr_last_move(&["[still]"]);
+            }
+        }
+        //     this.battle.debug('move failed because it did nothing');
+        battle.debug("move failed because it did nothing");
+    }
+    // else if (move.selfSwitch && source.hp && !source.volatiles['commanded']) {
+    else if active_move.self_switch.is_some() {
+        //     source.switchFlag = move.id;
+        // Check source.hp and source.volatiles['commanded']
+        let (source_hp, has_commanded) = {
+            let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => return damages,
+            };
+            (pokemon.hp, pokemon.volatiles.contains_key(&ID::new("commanded")))
+        };
+
+        if source_hp > 0 && !has_commanded {
+            // Set switch flag
+            let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => return damages,
+            };
+            pokemon.switch_flag = Some(active_move.id.to_string());
+        }
+    }
+
+    // return damage;
+    damages
 }
