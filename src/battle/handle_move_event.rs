@@ -86,10 +86,6 @@ impl Battle {
                     EventResult::Continue
                 }
             }
-            "DamagePriority" => {
-                // No moves implement DamagePriority event
-                EventResult::Continue
-            }
             "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_id, target_pos.unwrap_or((0,0))),
             "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_id, 0, "", target_pos.unwrap_or((0,0))),
             "Hit" => {
