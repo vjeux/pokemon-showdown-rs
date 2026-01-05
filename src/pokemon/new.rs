@@ -204,7 +204,7 @@ impl Pokemon {
     //     this.clearVolatile();
     //     this.hp = this.maxhp;
     // }
-    pub fn new(set: &PokemonSet, side_index: usize, position: usize) -> Self {
+    pub fn new(set: &PokemonSet, side_index: usize, position: usize, dex: &crate::dex::Dex) -> Self {
         // Note: This is a Rust-specific constructor - JavaScript uses a class constructor
         // Note: Rust implementation is simplified and delegates some initialization to Battle
         // Note: JavaScript constructor is much more complex with Dex access, script loading, etc.
@@ -212,6 +212,35 @@ impl Pokemon {
         let species_id = ID::new(&set.species);
         let ability_id = ID::new(&set.ability);
         let item_id = ID::new(&set.item);
+
+        // JavaScript logic for Pokemon name:
+        // if (set.name === set.species || !set.name) {
+        //     set.name = this.baseSpecies.baseSpecies;
+        // }
+        // this.name = set.name.substr(0, 20);
+        let pokemon_name = if set.name == set.species || set.name.is_empty() {
+            // Get baseSpecies.baseSpecies
+            if let Some(species_data) = dex.species().get(&set.species) {
+                let base_species_name = species_data.base_species.as_ref().unwrap_or(&species_data.name);
+                if let Some(base_species_data) = dex.species().get(base_species_name) {
+                    base_species_data.base_species.as_ref()
+                        .unwrap_or(&base_species_data.name)
+                        .clone()
+                } else {
+                    set.species.clone()
+                }
+            } else {
+                set.species.clone()
+            }
+        } else {
+            set.name.clone()
+        };
+        // Truncate to 20 chars
+        let name = if pokemon_name.len() > 20 {
+            pokemon_name.chars().take(20).collect()
+        } else {
+            pokemon_name
+        };
 
         // Convert moves to move slots
         // PP will be calculated later by Dex based on move data
@@ -226,11 +255,7 @@ impl Pokemon {
 
         Self {
             set: set.clone(),
-            name: if set.name.is_empty() {
-                set.species.clone()
-            } else {
-                set.name.clone()
-            },
+            name,
             fullname: String::new(), // Will be set by fullname() method
             species_id: species_id.clone(),
             base_species: species_id.clone(),

@@ -10,11 +10,12 @@ impl Side {
         name: String,
         team: Vec<PokemonSet>,
         active_count: usize,
+        dex: &crate::dex::Dex,
     ) -> Self {
         let pokemon: Vec<Pokemon> = team
             .iter()
             .enumerate()
-            .map(|(i, set)| Pokemon::new(set, n, i))
+            .map(|(i, set)| Pokemon::new(set, n, i, dex))
             .collect();
 
         let pokemon_left = pokemon.len();

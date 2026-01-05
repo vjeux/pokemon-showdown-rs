@@ -60,6 +60,7 @@ impl Battle {
                 String::new(),
                 Vec::new(),
                 self.active_per_half,
+                &self.dex,
             ));
         }
 
@@ -78,7 +79,7 @@ impl Battle {
                 format!("Player {}", slot_num + 1)
             };
 
-            let mut side = Side::new(side_id, slot_num, name, team, self.active_per_half);
+            let mut side = Side::new(side_id, slot_num, name, team, self.active_per_half, &self.dex);
             if let Some(avatar) = &options.avatar {
                 side.avatar = avatar.clone();
             }

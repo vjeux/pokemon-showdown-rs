@@ -13,12 +13,12 @@ impl Side {
     // 		return newPokemon;
     // 	}
     //
-    pub fn add_pokemon(&mut self, set: PokemonSet) -> Option<usize> {
+    pub fn add_pokemon(&mut self, set: PokemonSet, dex: &crate::dex::Dex) -> Option<usize> {
         if self.pokemon.len() >= 24 {
             return None;
         }
         let pos = self.pokemon.len();
-        let pokemon = Pokemon::new(&set, self.n, pos);
+        let pokemon = Pokemon::new(&set, self.n, pos, dex);
         self.pokemon.push(pokemon);
         self.team.push(set);
         self.pokemon_left += 1;
