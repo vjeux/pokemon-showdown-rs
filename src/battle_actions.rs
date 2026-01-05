@@ -201,6 +201,22 @@ pub enum DamageResult {
     HitSubstitute,
 }
 
+/// Convert EventResult to DamageResult for move effect handling
+impl From<crate::event::EventResult> for DamageResult {
+    fn from(event_result: crate::event::EventResult) -> Self {
+        use crate::event::EventResult;
+        match event_result {
+            EventResult::Number(n) => DamageResult::Damage(n),
+            EventResult::Boolean(true) | EventResult::Stop => DamageResult::Success,
+            EventResult::Boolean(false) => DamageResult::Failed,
+            EventResult::NotFail => DamageResult::NotFail,
+            EventResult::Null => DamageResult::Undefined,
+            EventResult::Continue => DamageResult::Success,
+            _ => DamageResult::Undefined,
+        }
+    }
+}
+
 impl DamageResult {
     /// Check if the result represents actual damage
     pub fn is_damage(&self) -> bool {

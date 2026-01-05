@@ -441,31 +441,67 @@ pub fn run_move_effects(
             }
 
             // Hit events - onHitField, onHitSide, onHit
-            // TODO: ActiveMove doesn't have onHitField, onHitSide, onHit event callbacks yet
-            // TODO: Need to add these fields to ActiveMove or use event system
-            // TODO: Implement battle.singleEvent() and battle.runEvent()
+            //   These are like the TryHit events, except we don't need a FieldHit event.
+            //   Scroll up for the TryHit event documentation, and just ignore the "Try" part. ;)
 
             // if (move.target === 'all' && !isSelf) {
             if active_move.target == "all" && !is_self {
-                // if (moveData.onHitField) {
-                //     hitResult = this.battle.singleEvent('HitField', moveData, {}, target, source, move);
-                //     didSomething = this.combineResults(didSomething, hitResult);
-                // }
+                //     if (moveData.onHitField) {
+                if battle.has_callback(&move_data.id, "HitField") {
+                    //         hitResult = this.battle.singleEvent('HitField', moveData, {}, target, source, move);
+                    let hit_result = battle.single_event(
+                        "HitField",
+                        &move_data.id,
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(&active_move.id),
+                    );
+                    //         didSomething = this.combineResults(didSomething, hitResult);
+                    did_something = combine_results(did_something, hit_result.into());
+                }
             }
             // } else if ((move.target === 'foeSide' || move.target === 'allySide') && !isSelf) {
             else if (active_move.target == "foeSide" || active_move.target == "allySide") && !is_self {
-                // if (moveData.onHitSide) {
-                //     hitResult = this.battle.singleEvent('HitSide', moveData, {}, target.side, source, move);
-                //     didSomething = this.combineResults(didSomething, hitResult);
-                // }
+                //     if (moveData.onHitSide) {
+                if battle.has_callback(&move_data.id, "HitSide") {
+                    //         hitResult = this.battle.singleEvent('HitSide', moveData, {}, target.side, source, move);
+                    let hit_result = battle.single_event(
+                        "HitSide",
+                        &move_data.id,
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(&active_move.id),
+                    );
+                    //         didSomething = this.combineResults(didSomething, hitResult);
+                    did_something = combine_results(did_something, hit_result.into());
+                }
             } else {
-                // if (moveData.onHit) {
-                //     hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
-                //     didSomething = this.combineResults(didSomething, hitResult);
-                // }
-                // if (!isSelf && !isSecondary) {
-                //     this.battle.runEvent('Hit', target, source, move);
-                // }
+                //     if (moveData.onHit) {
+                if battle.has_callback(&move_data.id, "Hit") {
+                    //         hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
+                    let hit_result = battle.single_event(
+                        "Hit",
+                        &move_data.id,
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(&active_move.id),
+                    );
+                    //         didSomething = this.combineResults(didSomething, hitResult);
+                    did_something = combine_results(did_something, hit_result.into());
+                }
+                //     if (!isSelf && !isSecondary) {
+                if !is_self && !is_secondary {
+                    //         this.battle.runEvent('Hit', target, source, move);
+                    battle.run_event(
+                        "Hit",
+                        Some(target_pos),
+                        Some(source_pos),
+                        Some(&active_move.id),
+                        crate::event::EventResult::Continue,
+                        false,
+                        false,
+                    );
+                }
             }
         }
 
