@@ -388,12 +388,17 @@ pub fn run_move_effects(
             if let Some(ref weather) = move_data.weather {
                 //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
                 let weather_id = ID::new(weather);
-                let hit_result = battle.field.set_weather(weather_id, None); // duration
+                let hit_result = battle.set_weather(
+                    weather_id,
+                    Some(source_pos),
+                    Some(active_move.id.clone()),
+                );
                 //     didSomething = this.combineResults(didSomething, hitResult);
-                let hit_result_dr = if hit_result {
-                    DamageResult::Success
-                } else {
-                    DamageResult::Failed
+                // JavaScript returns true/false/null, convert to DamageResult
+                let hit_result_dr = match hit_result {
+                    Some(true) => DamageResult::Success,
+                    Some(false) => DamageResult::Failed,
+                    None => DamageResult::Undefined,
                 };
                 did_something = combine_results(did_something, hit_result_dr);
             }
@@ -402,6 +407,8 @@ pub fn run_move_effects(
             if let Some(ref terrain) = move_data.terrain {
                 //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
                 let terrain_id = ID::new(terrain);
+                // TODO: field.set_terrain should be a Battle-level method that handles events
+                // For now, using the simple field implementation
                 let hit_result = battle.field.set_terrain(terrain_id, None); // duration
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
@@ -416,6 +423,8 @@ pub fn run_move_effects(
             if let Some(ref pseudo_weather) = move_data.pseudo_weather {
                 //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
                 let pseudo_weather_id = ID::new(pseudo_weather);
+                // TODO: field.add_pseudo_weather should be a Battle-level method that handles events
+                // For now, using the simple field implementation
                 let hit_result = battle.field.add_pseudo_weather(pseudo_weather_id, None); // duration
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
