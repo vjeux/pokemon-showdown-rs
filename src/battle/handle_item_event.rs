@@ -60,14 +60,6 @@ impl Battle {
                 )
             }
 
-            "AfterMoveSecondaryPriority" => {
-                item_callbacks::dispatch_on_after_move_secondary_priority(
-                    self,
-                    item_id.as_str(),
-                    pokemon_pos,
-                )
-            }
-
             // TypeScript: onAfterMoveSecondarySelf(source:Pokemon, target:Pokemon?, move:Move)
             "AfterMoveSecondarySelf" => {
                 if let Some(source_pos) = target {
@@ -89,24 +81,10 @@ impl Battle {
                 }
             }
 
-            "AfterMoveSecondarySelfPriority" => {
-                item_callbacks::dispatch_on_after_move_secondary_self_priority(
-                    self,
-                    item_id.as_str(),
-                    pokemon_pos,
-                )
-            }
-
             // TypeScript: onAfterSetStatus(target:Pokemon)
             "AfterSetStatus" => {
                 item_callbacks::dispatch_on_after_set_status(self, item_id.as_str(), pokemon_pos)
             }
-
-            "AfterSetStatusPriority" => item_callbacks::dispatch_on_after_set_status_priority(
-                self,
-                item_id.as_str(),
-                pokemon_pos,
-            ),
 
             // TypeScript: onAfterSubDamage(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "AfterSubDamage" => {
@@ -148,19 +126,9 @@ impl Battle {
                 item_callbacks::dispatch_on_any_switch_in(self, item_id.as_str())
             }
 
-            "AnySwitchInPriority" => item_callbacks::dispatch_on_any_switch_in_priority(
-                self,
-                item_id.as_str(),
-                pokemon_pos,
-            ),
-
             // TypeScript: onAttract(target:Pokemon?, source:Pokemon?)
             "Attract" => {
                 item_callbacks::dispatch_on_attract(self, item_id.as_str(), target, source)
-            }
-
-            "AttractPriority" => {
-                item_callbacks::dispatch_on_attract_priority(self, item_id.as_str(), pokemon_pos)
             }
 
             // TypeScript: onBasePower(basePower:number, pokemon:Pokemon, target:Pokemon?)
@@ -178,10 +146,6 @@ impl Battle {
                     pokemon_pos,
                     target_pos,
                 )
-            }
-
-            "BasePowerPriority" => {
-                item_callbacks::dispatch_on_base_power_priority(self, item_id.as_str(), pokemon_pos)
             }
 
             // TypeScript: onChargeMove(pokemon:Pokemon, target:Pokemon?, move:Move)
@@ -216,10 +180,6 @@ impl Battle {
                 )
             }
 
-            "DamagePriority" => {
-                item_callbacks::dispatch_on_damage_priority(self, item_id.as_str(), pokemon_pos)
-            }
-
             // TypeScript: onDamagingHit(damage:number, target:Pokemon, source:Pokemon)
             "DamagingHit" => {
                 let damage = relay_var.unwrap_or(0);
@@ -233,16 +193,10 @@ impl Battle {
                 )
             }
 
-            "DamagingHitOrder" => {
-                item_callbacks::dispatch_on_damaging_hit_order(self, item_id.as_str(), pokemon_pos)
-            }
-
             // TypeScript: onDisableMove(pokemon:Pokemon)
             "DisableMove" => {
                 item_callbacks::dispatch_on_disable_move(self, item_id.as_str(), pokemon_pos)
             }
-
-            "Drive" => item_callbacks::dispatch_on_drive(self, item_id.as_str(), pokemon_pos),
 
             // TypeScript: onEat(pokemon:Pokemon)
             "Eat" => item_callbacks::dispatch_on_eat(self, item_id.as_str(), pokemon_pos),
@@ -284,14 +238,6 @@ impl Battle {
                 )
             }
 
-            "FractionalPriorityPriority" => {
-                item_callbacks::dispatch_on_fractional_priority_priority(
-                    self,
-                    item_id.as_str(),
-                    pokemon_pos,
-                )
-            }
-
             // TypeScript: onHit(target:Pokemon?, source:Pokemon?, move:Move)
             "Hit" => {
                 let move_id_str = if let Some(ref active_move) = self.active_move {
@@ -324,32 +270,14 @@ impl Battle {
                 item_callbacks::dispatch_on_maybe_trap_pokemon(self, item_id.as_str(), pokemon_pos)
             }
 
-            "MaybeTrapPokemonPriority" => item_callbacks::dispatch_on_maybe_trap_pokemon_priority(
-                self,
-                item_id.as_str(),
-                pokemon_pos,
-            ),
-
-            "Memory" => item_callbacks::dispatch_on_memory(self, item_id.as_str(), pokemon_pos),
-
             // TypeScript: onModifyAccuracy() - no params
             "ModifyAccuracy" => {
                 item_callbacks::dispatch_on_modify_accuracy(self, item_id.as_str())
             }
 
-            "ModifyAccuracyPriority" => item_callbacks::dispatch_on_modify_accuracy_priority(
-                self,
-                item_id.as_str(),
-                pokemon_pos,
-            ),
-
             // TypeScript: onModifyAtk(pokemon:Pokemon)
             "ModifyAtk" => {
                 item_callbacks::dispatch_on_modify_atk(self, item_id.as_str(), pokemon_pos)
-            }
-
-            "ModifyAtkPriority" => {
-                item_callbacks::dispatch_on_modify_atk_priority(self, item_id.as_str(), pokemon_pos)
             }
 
             // TypeScript: onModifyCritRatio(pokemon:Pokemon, critRatio:number)
@@ -381,10 +309,6 @@ impl Battle {
                 item_callbacks::dispatch_on_modify_def(self, item_id.as_str(), pokemon_pos)
             }
 
-            "ModifyDefPriority" => {
-                item_callbacks::dispatch_on_modify_def_priority(self, item_id.as_str(), pokemon_pos)
-            }
-
             // TypeScript: onModifyMove(pokemon:Pokemon, target:Pokemon?)
             "ModifyMove" => {
                 let target_pos = self.current_event.as_ref().and_then(|e| e.target);
@@ -395,12 +319,6 @@ impl Battle {
                     target_pos,
                 )
             }
-
-            "ModifyMovePriority" => item_callbacks::dispatch_on_modify_move_priority(
-                self,
-                item_id.as_str(),
-                pokemon_pos,
-            ),
 
             // TypeScript: onModifySecondaries(pokemon:Pokemon, secondaries:any)
             "ModifySecondaries" => {
@@ -428,22 +346,10 @@ impl Battle {
                 item_callbacks::dispatch_on_modify_sp_a(self, item_id.as_str(), pokemon_pos)
             }
 
-            "ModifySpAPriority" => item_callbacks::dispatch_on_modify_sp_a_priority(
-                self,
-                item_id.as_str(),
-                pokemon_pos,
-            ),
-
             // TypeScript: onModifySpD() - no params
             "ModifySpD" => {
                 item_callbacks::dispatch_on_modify_sp_d(self, item_id.as_str(), pokemon_pos)
             }
-
-            "ModifySpDPriority" => item_callbacks::dispatch_on_modify_sp_d_priority(
-                self,
-                item_id.as_str(),
-                pokemon_pos,
-            ),
 
             // TypeScript: onModifySpe(pokemon:Pokemon)
             "ModifySpe" => {
@@ -460,22 +366,8 @@ impl Battle {
                 )
             }
 
-            "NegateImmunity" => {
-                item_callbacks::dispatch_on_negate_immunity(self, item_id.as_str(), pokemon_pos)
-            }
-
-            "Plate" => item_callbacks::dispatch_on_plate(self, item_id.as_str(), pokemon_pos),
-
             // TypeScript: onResidual(pokemon:Pokemon)
             "Residual" => item_callbacks::dispatch_on_residual(self, item_id.as_str(), pokemon_pos),
-
-            "ResidualOrder" => {
-                item_callbacks::dispatch_on_residual_order(self, item_id.as_str(), pokemon_pos)
-            }
-
-            "ResidualSubOrder" => {
-                item_callbacks::dispatch_on_residual_sub_order(self, item_id.as_str(), pokemon_pos)
-            }
 
             // TypeScript: onSetAbility(target:Pokemon?, source:Pokemon?, effect:Effect?)
             "SetAbility" => {
@@ -495,14 +387,6 @@ impl Battle {
                 let accuracy = relay_var.unwrap_or(0);
                 let target_pos = self.current_event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_source_modify_accuracy(self, item_id.as_str(), accuracy, target_pos)
-            }
-
-            "SourceModifyAccuracyPriority" => {
-                item_callbacks::dispatch_on_source_modify_accuracy_priority(
-                    self,
-                    item_id.as_str(),
-                    pokemon_pos,
-                )
             }
 
             // TypeScript: onSourceModifyDamage(damage:number, source:Pokemon, target:Pokemon)
@@ -552,10 +436,6 @@ impl Battle {
                 item_callbacks::dispatch_on_switch_in(self, item_id.as_str(), pokemon_pos)
             }
 
-            "SwitchInPriority" => {
-                item_callbacks::dispatch_on_switch_in_priority(self, item_id.as_str(), pokemon_pos)
-            }
-
             // TypeScript: onTakeItem(item:Pokemon?, pokemon:Pokemon, source:Pokemon?)
             "TakeItem" => {
                 // item_pos is the position of the item holder being taken from
@@ -580,12 +460,6 @@ impl Battle {
                 item_callbacks::dispatch_on_trap_pokemon(self, item_id.as_str(), pokemon_pos)
             }
 
-            "TrapPokemonPriority" => item_callbacks::dispatch_on_trap_pokemon_priority(
-                self,
-                item_id.as_str(),
-                pokemon_pos,
-            ),
-
             // TypeScript: onTryBoost(target:Pokemon, boost:BoostsTable)
             "TryBoost" => {
                 // Temporarily take boost out of current_event to get mutable access
@@ -605,10 +479,6 @@ impl Battle {
                     event.relay_var_boost = boost;
                 }
                 result
-            }
-
-            "TryBoostPriority" => {
-                item_callbacks::dispatch_on_try_boost_priority(self, item_id.as_str(), pokemon_pos)
             }
 
             // TypeScript: onTryEatItem(item:string, pokemon:Pokemon)
@@ -636,10 +506,6 @@ impl Battle {
                     source,
                     effect_id_str,
                 )
-            }
-
-            "TryHealPriority" => {
-                item_callbacks::dispatch_on_try_heal_priority(self, item_id.as_str(), pokemon_pos)
             }
 
             // TypeScript: onTryHit(target:Pokemon, source:Pokemon)
