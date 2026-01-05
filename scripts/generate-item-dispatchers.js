@@ -412,34 +412,19 @@ sortedCallbacks.forEach(callback => {
 });
 
 // Generate stub dispatchers for priority/order callbacks that have no implementations yet
+// NOTE: All priority/order properties that are numbers (not functions) in items.ts
+// should NOT have dispatchers. Examples:
+// - onTrapPokemonPriority: -10  (number, not function)
+// - onBasePowerPriority: 15  (number, not function)
+// - onPlate: 'Bug'  (string, not function)
+// - onMemory: 'Fire'  (string, not function)
+// - onNegateImmunity: false  (boolean, not function)
+//
+// These are metadata values, not callbacks, so they don't need dispatchers.
+// If a callback truly has no implementations yet but IS a function in TypeScript,
+// it can be added here as a stub.
 const stubCallbacks = [
-    'onAfterMoveSecondaryPriority',
-    'onAfterMoveSecondarySelfPriority',
-    'onAfterSetStatusPriority',
-    'onAnySwitchInPriority',
-    'onAttractPriority',
-    'onBasePowerPriority',
-    'onDamagePriority',
-    'onDamagingHitOrder',
-    'onDrive',
-    'onFractionalPriorityPriority',
-    'onMaybeTrapPokemonPriority',
-    'onMemory',
-    'onModifyAccuracyPriority',
-    'onModifyAtkPriority',
-    'onModifyDefPriority',
-    'onModifyMovePriority',
-    'onModifySpAPriority',
-    'onModifySpDPriority',
-    'onNegateImmunity',
-    'onPlate',
-    'onResidualOrder',
-    'onResidualSubOrder',
-    'onSourceModifyAccuracyPriority',
-    'onSwitchInPriority',
-    'onTrapPokemonPriority',
-    'onTryBoostPriority',
-    'onTryHealPriority',
+    // Currently no stubs needed - all TypeScript callbacks have been mapped
 ];
 
 stubCallbacks.forEach(callback => {
