@@ -583,7 +583,7 @@ impl Battle {
             // In JavaScript, runEvent has Effect objects with effectType, so it knows which handler to call
             let return_val = match handler.effect_type {
                 EffectType::Move => {
-                    self.handle_move_event(&event_variant, effect_id.as_str(), handler_target)
+                    self.handle_move_event(&event_variant, effect_id.as_str(), handler_target, source)
                 }
                 EffectType::Ability => {
                     self.handle_ability_event(&event_variant, &effect_id, handler_target)

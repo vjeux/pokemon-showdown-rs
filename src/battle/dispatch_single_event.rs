@@ -13,7 +13,7 @@ impl Battle {
         event_id: &str,
         effect_id: &ID,
         target: Option<(usize, usize)>,
-        _source: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
@@ -31,7 +31,7 @@ impl Battle {
         // Note: run_event() now calls handlers directly based on effect_type, so this only affects single_event calls
         if event_id == "Try" || event_id == "PrepareHit" || event_id == "Hit" {
             if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
-                return self.handle_move_event(event_id, effect_str, target);
+                return self.handle_move_event(event_id, effect_str, target, source);
             }
         }
 
@@ -88,7 +88,7 @@ impl Battle {
 
         // Handle move events
         if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
-            return self.handle_move_event(event_id, effect_str, target);
+            return self.handle_move_event(event_id, effect_str, target, source);
         }
 
         // Handle condition events (status, volatile, weather, terrain)

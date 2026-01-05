@@ -144,8 +144,6 @@ pub fn try_spread_move_hit(
     // NotFail also means the move should fail (it's a signal that onTry returned false)
     let try_truthy = !matches!(try_result, event::EventResult::Boolean(false) | event::EventResult::Null | event::EventResult::NotFail);
 
-    eprintln!("[TRY_SPREAD_MOVE_HIT] try_result={:?}, try_truthy={}", try_result, try_truthy);
-
     // Phase 2: Only call PrepareHit(move) if Try succeeded (short-circuit AND)
     let prepare_hit_1 = if try_truthy {
         let result = battle.single_event(
@@ -155,10 +153,8 @@ pub fn try_spread_move_hit(
             Some(pokemon_pos),
             Some(move_id),
         );
-        eprintln!("[TRY_SPREAD_MOVE_HIT] prepare_hit_1={:?}", result);
         result
     } else {
-        eprintln!("[TRY_SPREAD_MOVE_HIT] Skipping prepare_hit_1 (try_result was falsy)");
         try_result.clone() // Propagate the falsy result
     };
 
@@ -168,17 +164,13 @@ pub fn try_spread_move_hit(
     // Phase 3: Only call PrepareHit event if PrepareHit(move) succeeded (short-circuit AND)
     let prepare_hit_2 = if prepare_hit_1_truthy {
         let result = battle.run_event("PrepareHit", Some(pokemon_pos), target_0, Some(move_id), EventResult::Continue, false, false);
-        eprintln!("[TRY_SPREAD_MOVE_HIT] prepare_hit_2={:?}", result);
         result
     } else {
-        eprintln!("[TRY_SPREAD_MOVE_HIT] Skipping prepare_hit_2 (prepare_hit_1 was falsy)");
         prepare_hit_1.clone() // Propagate the falsy result
     };
 
     // Final result check (same as before)
     let hit_result = !matches!(prepare_hit_2, EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null | EventResult::NotFail);
-
-    eprintln!("[TRY_SPREAD_MOVE_HIT] hit_result={}", hit_result);
 
     // JS: if (!hitResult) { ... }
     if !hit_result {
@@ -219,7 +211,6 @@ pub fn try_spread_move_hit(
     let mut active_move = battle.active_move.as_ref().expect("active_move must be set").clone();
 
     for &step_idx in &step_order {
-        eprintln!("[TRY_SPREAD_MOVE_HIT] Executing step {} for move={}, targets.len()={}", step_idx, move_id, target_list.len());
         // Call the appropriate step function
         // JS: const hitResults: (number | boolean | "" | undefined)[] | undefined = step.call(this, targets, pokemon, move);
         let hit_results: Option<Vec<bool>> = match step_idx {
@@ -342,14 +333,12 @@ pub fn try_spread_move_hit(
         // - 0 also passes (hitResults[i] === 0)
         // - false, undefined, "" fail
         // In Rust, we only have bool, so we filter by true
-        eprintln!("[TRY_SPREAD_MOVE_HIT] Before filtering: target_list={:?}, hit_results={:?}", target_list, hit_results);
         target_list = target_list
             .iter()
             .enumerate()
             .filter(|(i, _)| hit_results.get(*i).copied().unwrap_or(false))
             .map(|(_, &t)| t)
             .collect();
-        eprintln!("[TRY_SPREAD_MOVE_HIT] After filtering: target_list={:?}", target_list);
 
         // JS: atLeastOneFailure = atLeastOneFailure || hitResults.some(val => val === false);
         at_least_one_failure = at_least_one_failure || hit_results.iter().any(|&val| !val);

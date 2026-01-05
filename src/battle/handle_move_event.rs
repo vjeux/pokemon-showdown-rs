@@ -7,74 +7,38 @@ impl Battle {
     /// Handle move events
     /// Rust helper method - JavaScript's singleEvent() directly invokes move[`on${eventId}`] callbacks
     /// This method dispatches to move_callbacks module based on event name
-    /// Routes to move-specific handlers for all event types (AfterHit, BasePower, Damage, etc.)
+    ///
+    /// JavaScript singleEvent calls callbacks with: [target, source, sourceEffect]
+    /// So the move callback receives:
+    ///   - first param (often named "source" in JS): target from singleEvent
+    ///   - second param (often named "target" in JS): source from singleEvent
+    ///
+    /// In Rust, we pass target and source directly from singleEvent to the move callbacks.
     pub fn handle_move_event(
         &mut self,
         event_id: &str,
         move_id: &str,
         target: Option<(usize, usize)>,
+        source: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::data::move_callbacks;
         use crate::event::EventResult;
 
-        // IMPORTANT: run_event and single_event have OPPOSITE parameter semantics!
-        //
-        // For events called via run_event (like BasePower):
-        //   - JavaScript calls: runEvent('BasePower', source, target, move, basePower)
-        //   - But runEvent signature is: runEvent(eventid, target, source, ...)
-        //   - So source (attacker) goes into "target" parameter
-        //   - And target (defender) goes into "source" parameter
-        //   - Therefore: event.target = attacker, event.source = defender
-        //   - IMPORTANT: run_event sets self.event (not self.current_event)
-        //
-        // For events called via single_event:
-        //   - TWO DIFFERENT PATTERNS:
-        //
-        //   Pattern A (ModifyMove, ModifyType, TryMove, UseMoveMessage, AfterMoveSecondarySelf):
-        //     JavaScript: singleEvent('ModifyMove', move, null, pokemon, target, ...)
-        //     - target param = pokemon (user), source param = target (target of move)
-        //     - current_event.target = pokemon (user), current_event.source = target
-        //     - User is in current_event.target
-        //
-        //   Pattern B (AfterHit, Hit, TryHit, PrepareHit, etc.):
-        //     JavaScript: singleEvent('AfterHit', move, target, source, ...)
-        //     - target param = target, source param = source (user)
-        //     - current_event.target = target, current_event.source = source (user)
-        //     - User is in current_event.source
-        //
-        // BasePower is called via run_event, so we need to extract from event.target
-        // ModifyMove/ModifyType/TryMove/UseMoveMessage use Pattern A, extract from current_event.target
-        // Other events use Pattern B, extract from current_event.source
-
-        let (source_pos, target_pos) = if event_id == "BasePower" {
-            // For BasePower (run_event): attacker is in event.target, defender is in event.source
-            // IMPORTANT: BasePower is called via run_event, which sets self.event (not self.current_event)
-            let attacker = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
-            let defender = self.event.as_ref().and_then(|e| e.source);
-            (attacker, defender)
-        } else if event_id == "Try" || event_id == "PrepareHit" || event_id == "ModifyMove" || event_id == "ModifyType" || event_id == "TryMove" || event_id == "UseMoveMessage" || event_id == "AfterMoveSecondarySelf" {
-            // Pattern A: user is in current_event.target, target is in current_event.source
-            let user = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
-            let target_of_move = self.current_event.as_ref().and_then(|e| e.source);
-            (user, target_of_move)
-        } else {
-            // Pattern B: user is in current_event.source, target is in current_event.target
-            let attacker = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
-            (attacker, target)
-        };
-
-        let _target_pos = target.unwrap_or((0, 0));
+        // For most events, callbacks receive (target, source) from singleEvent
+        // Some events like BasePower are called via run_event and need special handling
+        let source_pos = target.unwrap_or((0, 0));
+        let target_pos = source;
 
         match event_id {
             "AfterHit" => {
-                if let Some(target_pos) = target {
-                    move_callbacks::dispatch_on_after_hit(self, move_id, source_pos, target_pos)
+                if let Some(tgt) = target_pos {
+                    move_callbacks::dispatch_on_after_hit(self, move_id, source_pos, tgt)
                 } else {
                     EventResult::Continue
                 }
             }
             "AfterMove" => {
-                move_callbacks::dispatch_on_after_move(self, move_id, source_pos, target)
+                move_callbacks::dispatch_on_after_move(self, move_id, source_pos, target_pos)
             }
             "AfterMoveSecondarySelf" => move_callbacks::dispatch_on_after_move_secondary_self(
                 self, move_id, source_pos, target_pos,
@@ -87,7 +51,7 @@ impl Battle {
                     .and_then(|e| e.relay_var)
                     .unwrap_or(0);
 
-                move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos, damage, target)
+                move_callbacks::dispatch_on_after_sub_damage(self, move_id, source_pos, damage, target_pos)
             }
             "BasePower" => {
                 // Get base_power from relay_var
@@ -120,12 +84,12 @@ impl Battle {
                     (damage, effect_id)
                 };
 
-                if let Some(target_pos) = target {
+                if let Some(tgt) = target_pos {
                     move_callbacks::dispatch_on_damage(
                         self,
                         move_id,
                         damage,
-                        target_pos,
+                        tgt,
                         Some(source_pos),
                         effect_id.as_deref(),
                     )
@@ -140,13 +104,13 @@ impl Battle {
             "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_id, source_pos),
             "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_id, 0, "", source_pos),
             "Hit" => {
-                if let Some(target_pos) = target {
-                    move_callbacks::dispatch_on_hit(self, move_id, source_pos, Some(target_pos))
+                if let Some(tgt) = target_pos {
+                    move_callbacks::dispatch_on_hit(self, move_id, source_pos, Some(tgt))
                 } else {
                     EventResult::Continue
                 }
             }
-            "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, source_pos, target),
+            "HitField" => move_callbacks::dispatch_on_hit_field(self, move_id, source_pos, target_pos),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_id, source_pos),
             "ModifyMove" => {
                 move_callbacks::dispatch_on_modify_move(self, move_id, source_pos, target_pos)
@@ -162,15 +126,15 @@ impl Battle {
             }
             "Try" => move_callbacks::dispatch_on_try(self, move_id, source_pos, target_pos),
             "TryHit" => {
-                if let Some(target_pos) = target {
-                    move_callbacks::dispatch_on_try_hit(self, move_id, source_pos, target_pos)
+                if let Some(tgt) = target_pos {
+                    move_callbacks::dispatch_on_try_hit(self, move_id, source_pos, tgt)
                 } else {
                     EventResult::Continue
                 }
             }
             "TryImmunity" => {
-                if let Some(target_pos) = target {
-                    move_callbacks::dispatch_on_try_immunity(self, move_id, target_pos)
+                if let Some(tgt) = target_pos {
+                    move_callbacks::dispatch_on_try_immunity(self, move_id, tgt)
                 } else {
                     EventResult::Continue
                 }
