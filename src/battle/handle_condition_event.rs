@@ -147,6 +147,9 @@ impl Battle {
                 condition_id,
                 pokemon_pos,
             ),
+            "AnyInvulnerability" | "Invulnerability" => {
+                condition_callbacks::dispatch_on_any_invulnerability(self, condition_id, pokemon_pos)
+            }
             _ => EventResult::Continue,
         };
 

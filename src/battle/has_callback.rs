@@ -206,7 +206,25 @@ impl Battle {
                 eprintln!("[CONDITION_HAS_CALLBACK] Tried with 'on' prefix: {}={}", with_on, result);
                 result
             } else {
-                eprintln!("[CONDITION_HAS_CALLBACK] No match found");
+                eprintln!("[CONDITION_HAS_CALLBACK] No match found in condition data, checking if move-embedded");
+                // Before returning false, check if this is a move-embedded condition
+                // Even though the condition exists in the dex, the callback might be in the move dispatcher
+                if let Some(move_data) = self.dex.moves().get(condition_id) {
+                    if move_data.condition.is_some() {
+                        eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition (from dex branch)");
+                        // Check if this is a known event for move-embedded conditions
+                        match event_id {
+                            "onStart" | "onTryHit" | "onTryPrimaryHit" | "onHit" | "onEnd" |
+                            "onSourceModifyDamage" | "onDisableMove" |
+                            "onAnyInvulnerability" | "onInvulnerability" | "Invulnerability" => {
+                                eprintln!("[CONDITION_HAS_CALLBACK] Returning true for known move-condition event (from dex branch)");
+                                return true;
+                            },
+                            _ => {}
+                        }
+                    }
+                }
+                eprintln!("[CONDITION_HAS_CALLBACK] Returning false - not found");
                 false
             }
         } else {
@@ -228,7 +246,8 @@ impl Battle {
                     // Pseudoweather uses onFieldStart, onFieldRestart, onFieldResidual, onFieldEnd
                     match event_id {
                         "onStart" | "onTryHit" | "onTryPrimaryHit" | "onHit" | "onEnd" |
-                        "onSourceModifyDamage" | "onDisableMove" | "onAnyInvulnerability" | "Invulnerability" => {
+                        "onSourceModifyDamage" | "onDisableMove" |
+                        "onAnyInvulnerability" | "onInvulnerability" | "Invulnerability" => {
                             eprintln!("[CONDITION_HAS_CALLBACK] Returning true for known move-condition event");
                             return true;
                         },

@@ -32,6 +32,7 @@ pub mod raindance;
 pub mod rolloutstorage;
 pub mod sandstorm;
 pub mod silvally;
+pub mod skydrop;
 pub mod slp;
 pub mod snowscape;
 pub mod stall;
@@ -295,6 +296,29 @@ pub fn dispatch_on_immunity(
         "sunnyday" => sunnyday::on_immunity(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
+}
+
+/// Dispatch onAnyInvulnerability callbacks
+pub fn dispatch_on_any_invulnerability(
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    println!("[DISPATCH_INVULN] Called with condition_id='{}', pokemon_pos={:?}", condition_id, pokemon_pos);
+
+    let result = match condition_id {
+        "skydrop" => {
+            println!("[DISPATCH_INVULN] Routing to skydrop callback");
+            skydrop::on_any_invulnerability(battle, pokemon_pos)
+        },
+        _ => {
+            println!("[DISPATCH_INVULN] No match for '{}', returning Continue", condition_id);
+            EventResult::Continue
+        },
+    };
+
+    println!("[DISPATCH_INVULN] Returning {:?}", result);
+    result
 }
 
 /// Dispatch onLockMove callbacks

@@ -70,7 +70,15 @@ let totalPrngCalls = 0;
 const originalNext = battle.prng.rng.next.bind(battle.prng.rng);
 battle.prng.rng.next = function() {
     totalPrngCalls++;
-    return originalNext();
+    const result = originalNext();
+    // Log PRNG calls on turn 17 to debug the missing call
+    if (battle.turn === 17 && totalPrngCalls >= 86 && totalPrngCalls <= 91) {
+        const stack = new Error().stack;
+        const lines = stack.split('\n').slice(1, 10); // Get first 10 frames
+        console.error(`[PRNG_JS] call #${totalPrngCalls}, result=${result}`);
+        lines.forEach((line, i) => console.error(`  Frame ${i}: ${line.trim()}`));
+    }
+    return result;
 };
 
 console.log(`# JavaScript Battle Test - Seed ${seedNum}`);
