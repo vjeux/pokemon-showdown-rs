@@ -214,8 +214,12 @@ impl Battle {
                         eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition (from dex branch)");
                         // Check if this is a known event for move-embedded conditions
                         match event_id {
-                            "onStart" | "onTryHit" | "onTryPrimaryHit" | "onHit" | "onEnd" |
-                            "onSourceModifyDamage" | "onDisableMove" | "onResidual" |
+                            // Note: onAfterMove, onBasePower, onImmunity omitted - need special parameters
+                            "onBeforeMove" | "onBeforeSwitchOut" |
+                            "onDamagingHit" | "onDisableMove" | "onDragOut" | "onEnd" | "onHit" |
+                            "onModifyMove" | "onResidual" | "onRestart" | "onStart" |
+                            "onTrapPokemon" | "onTryAddVolatile" | "onTryHit" | "onTryMove" |
+                            "onTryPrimaryHit" | "onType" | "onSourceModifyDamage" |
                             "onAnyInvulnerability" | "onInvulnerability" | "Invulnerability" => {
                                 eprintln!("[CONDITION_HAS_CALLBACK] Returning true for known move-condition event (from dex branch)");
                                 return true;
@@ -245,8 +249,12 @@ impl Battle {
                     // NOTE: onBeforeTurn and onBeforeMove are for Pokemon volatiles, not pseudoweather
                     // Pseudoweather uses onFieldStart, onFieldRestart, onFieldResidual, onFieldEnd
                     match event_id {
-                        "onStart" | "onTryHit" | "onTryPrimaryHit" | "onHit" | "onEnd" |
-                        "onSourceModifyDamage" | "onDisableMove" | "onResidual" |
+                        // Note: onAfterMove, onBasePower, onImmunity omitted - need special parameters
+                        "onBeforeMove" | "onBeforeSwitchOut" |
+                        "onDamagingHit" | "onDisableMove" | "onDragOut" | "onEnd" | "onHit" |
+                        "onModifyMove" | "onResidual" | "onRestart" | "onStart" |
+                        "onTrapPokemon" | "onTryAddVolatile" | "onTryHit" | "onTryMove" |
+                        "onTryPrimaryHit" | "onType" | "onSourceModifyDamage" |
                         "onAnyInvulnerability" | "onInvulnerability" | "Invulnerability" => {
                             eprintln!("[CONDITION_HAS_CALLBACK] Returning true for known move-condition event");
                             return true;

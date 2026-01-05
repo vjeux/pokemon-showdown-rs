@@ -158,11 +158,53 @@ impl Battle {
         if matches!(result, EventResult::Continue) {
             use crate::data::move_callbacks;
             match normalized_event {
+                // Note: AfterMove, BasePower, and Immunity need special parameters and are omitted for now
+                "BeforeMove" => {
+                    return move_callbacks::dispatch_condition_on_before_move(self, condition_id, pokemon_pos);
+                }
+                "BeforeSwitchOut" => {
+                    return move_callbacks::dispatch_condition_on_before_switch_out(self, condition_id, pokemon_pos);
+                }
+                "DamagingHit" => {
+                    return move_callbacks::dispatch_condition_on_damaging_hit(self, condition_id, pokemon_pos);
+                }
+                "DisableMove" => {
+                    return move_callbacks::dispatch_condition_on_disable_move(self, condition_id, pokemon_pos);
+                }
+                "DragOut" => {
+                    return move_callbacks::dispatch_condition_on_drag_out(self, condition_id, pokemon_pos);
+                }
+                "End" => {
+                    return move_callbacks::dispatch_condition_on_end(self, condition_id, pokemon_pos);
+                }
+                "ModifyMove" => {
+                    return move_callbacks::dispatch_condition_on_modify_move(self, condition_id, pokemon_pos);
+                }
                 "Residual" => {
                     return move_callbacks::dispatch_condition_on_residual(self, condition_id, pokemon_pos);
                 }
+                "Restart" => {
+                    return move_callbacks::dispatch_condition_on_restart(self, condition_id, pokemon_pos);
+                }
                 "Start" => {
                     return move_callbacks::dispatch_condition_on_start(self, condition_id, pokemon_pos);
+                }
+                "TrapPokemon" => {
+                    return move_callbacks::dispatch_condition_on_trap_pokemon(self, condition_id, pokemon_pos);
+                }
+                "TryAddVolatile" => {
+                    return move_callbacks::dispatch_condition_on_try_add_volatile(self, condition_id, pokemon_pos);
+                }
+                "TryHit" => {
+                    // TryHit needs both source and target positions
+                    let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                    return move_callbacks::dispatch_condition_on_try_hit(self, condition_id, source_pos, pokemon_pos);
+                }
+                "TryMove" => {
+                    return move_callbacks::dispatch_condition_on_try_move(self, condition_id, pokemon_pos);
+                }
+                "Type" => {
+                    return move_callbacks::dispatch_condition_on_type(self, condition_id, pokemon_pos);
                 }
                 "AnyInvulnerability" | "Invulnerability" => {
                     eprintln!("[HANDLE_CONDITION_EVENT] Calling move_callbacks dispatcher for condition_id={}, pokemon_pos={:?}", condition_id, pokemon_pos);
