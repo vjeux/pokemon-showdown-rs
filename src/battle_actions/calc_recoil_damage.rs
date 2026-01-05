@@ -24,7 +24,8 @@ impl<'a> BattleActions<'a> {
         }
         // JS: return this.battle.clampIntRange(Math.round(damageDealt * move.recoil![0] / move.recoil![1]), 1);
         if let Some((num, denom)) = recoil {
-            let recoil_damage = (damage_dealt * num / denom).max(1);
+            // Use floating point math and round to match JavaScript's Math.round()
+            let recoil_damage = ((damage_dealt as f64 * num as f64 / denom as f64).round() as i32).max(1);
             return recoil_damage;
         }
         0
