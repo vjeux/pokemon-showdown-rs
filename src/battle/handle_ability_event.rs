@@ -193,7 +193,7 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 Some(pokemon_pos),
-                None,
+                event_source_pos,
                 move_id,
             ),
             "AnyAccuracy" => ability_callbacks::dispatch_on_any_accuracy(

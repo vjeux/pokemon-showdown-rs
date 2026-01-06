@@ -500,11 +500,6 @@ pub fn dispatch_on_ally_try_boost(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAllyTryHitSide()
-//   onAllyTryHitSide(target, source, move)
-
 /// Dispatch onAllyTryHitSide callbacks
 pub fn dispatch_on_ally_try_hit_side(
     battle: &mut Battle,
