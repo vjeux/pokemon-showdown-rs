@@ -52,18 +52,6 @@ impl Battle {
 
         // JS: for (const id in side.sideConditions) {
         for (sc_id, sc_state) in &side.side_conditions {
-            // Skip side conditions added this turn for Residual events
-            // JavaScript implicitly handles this - conditions don't trigger residuals on the turn they're added
-            if callback_name == "onSideResidual" {
-                if let Some(created_turn) = sc_state.created_turn {
-                    if created_turn == self.turn {
-                        eprintln!("[FIND_SIDE_HANDLERS]   Skipping {} - added this turn (turn {})",
-                            sc_id.as_str(), self.turn);
-                        continue;
-                    }
-                }
-            }
-
             // JS: const sideConditionData = side.sideConditions[id];
             // JS: const sideCondition = this.dex.conditions.getByID(id as ID);
             // JS: const callback = this.getCallback(side, sideCondition, callbackName);
