@@ -63,7 +63,7 @@ impl Dex {
             heal: move_data.heal,
             drain: None,
             force_switch: false,
-            self_switch: None,
+            self_switch: move_data.self_switch.as_ref().and_then(|v| v.as_str().map(|s| s.to_string())),
             self_boost: None,
             self_destruct: move_data.selfdestruct.clone(),
             breaks_protect: false,
