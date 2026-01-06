@@ -102,6 +102,21 @@ impl Battle {
         crate::trace_boost!("turn={}, target={}, boosts=[{}], effect={:?}",
             self.turn, pokemon_name, boost_str.join(", "), effect);
 
+        // Create a BoostsTable from the input boosts for the AfterBoost event
+        let mut boost_table = crate::dex_data::BoostsTable::new();
+        for (stat, value) in boosts.iter() {
+            match *stat {
+                "atk" => boost_table.atk = *value,
+                "def" => boost_table.def = *value,
+                "spa" => boost_table.spa = *value,
+                "spd" => boost_table.spd = *value,
+                "spe" => boost_table.spe = *value,
+                "accuracy" => boost_table.accuracy = *value,
+                "evasion" => boost_table.evasion = *value,
+                _ => {}
+            }
+        }
+
         // JS: if (!target?.hp) return 0;
         // JS: if (!target.isActive) return false;
         {
@@ -333,7 +348,8 @@ impl Battle {
         }
 
         // JS: this.runEvent('AfterBoost', target, source, effect, boost);
-        self.run_event("AfterBoost", Some(crate::event::EventTarget::Pokemon(target)), source, None, EventResult::Continue, false, false);
+        let effect_id = effect.map(|e| ID::new(e));
+        self.run_event("AfterBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_id.as_ref(), EventResult::Boost(boost_table), false, false);
 
         // JS: if (Object.values(boost).some(x => x > 0)) target.statsRaisedThisTurn = true;
         // JS: if (Object.values(boost).some(x => x < 0)) target.statsLoweredThisTurn = true;

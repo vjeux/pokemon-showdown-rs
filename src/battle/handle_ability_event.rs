@@ -48,7 +48,7 @@ impl Battle {
         let move_id = move_id_owned.as_str();
 
         // Extract relay variables from current_event
-        let (relay_var_int, _relay_var_float) = if let Some(ref event) = self.current_event {
+        let (relay_var_int, _relay_var_float, relay_var_boost) = if let Some(ref event) = self.current_event {
             let relay_int = match &event.relay_var {
                 Some(EventResult::Number(n)) => *n,
                 _ => 0,
@@ -57,14 +57,20 @@ impl Battle {
                 Some(EventResult::Float(f)) => *f,
                 _ => 0.0,
             };
-            (relay_int, relay_float)
+            let relay_boost = match &event.relay_var {
+                Some(EventResult::Boost(b)) => Some(b.clone()),
+                _ => None,
+            };
+            (relay_int, relay_float, relay_boost)
         } else {
-            (0, 0.0)
+            (0, 0.0, None)
         };
 
         let result = match event_id {
             "AfterBoost" => {
-                ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), Some(pokemon_pos), None, None)
+                let default_boost = crate::dex_data::BoostsTable::new();
+                let boost = relay_var_boost.as_ref().unwrap_or(&default_boost);
+                ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), boost, Some(pokemon_pos), None, None)
             }
             "AfterEachBoost" => ability_callbacks::dispatch_on_after_each_boost(
                 self,

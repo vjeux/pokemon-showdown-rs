@@ -309,18 +309,15 @@ pub mod zenmode;
 pub mod zerotohero;
 
 // Dispatch functions
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAfterBoost(boost, pokemon)
-//   onAfterBoost(boost, target, source, effect)
 /// Dispatch onAfterBoost callbacks
 pub fn dispatch_on_after_boost(
     battle: &mut Battle,
     ability_id: &str,
+    boost: &crate::dex_data::BoostsTable,
     target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "rattled" => rattled::on_after_boost(battle, target_pos, source_pos, effect_id),
+        "rattled" => rattled::on_after_boost(battle, boost, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -2435,9 +2432,10 @@ pub fn dispatch_on_weather_change(
 pub fn dispatch_on_after_boost_priority(
     battle: &mut Battle,
     ability_id: &str,
+    boost: &crate::dex_data::BoostsTable,
     target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
+    dispatch_on_after_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2446,9 +2444,10 @@ pub fn dispatch_on_after_boost_priority(
 pub fn dispatch_on_after_boost_order(
     battle: &mut Battle,
     ability_id: &str,
+    boost: &crate::dex_data::BoostsTable,
     target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
+    dispatch_on_after_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2457,9 +2456,10 @@ pub fn dispatch_on_after_boost_order(
 pub fn dispatch_on_after_boost_sub_order(
     battle: &mut Battle,
     ability_id: &str,
+    boost: &crate::dex_data::BoostsTable,
     target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
+    dispatch_on_after_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

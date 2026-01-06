@@ -41,31 +41,21 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 ///         this.boost({ spe: 1 });
 ///     }
 /// }
-pub fn on_after_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_after_boost(battle: &mut Battle, boost: &crate::dex_data::BoostsTable, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
     // if (effect?.name === 'Intimidate')
-    let is_intimidate = battle.current_event.as_ref()
-        .and_then(|e| e.effect.as_ref())
-        .map(|id| id.as_str() == "intimidate")
-        .unwrap_or(false);
+    let is_intimidate = effect_id.map(|id| id == "intimidate").unwrap_or(false);
 
     if !is_intimidate {
         return EventResult::Continue;
     }
 
     // Check if atk boost exists (boost.atk is present)
-    // The boost parameter contains the boosts that were just applied
-    // In JS, we check if boost.atk exists. In Rust, we need to check the relay_var_boost
-    let has_atk_boost = battle.current_event.as_ref()
-        .and_then(|e| match &e.relay_var { Some(crate::event::EventResult::Boost(b)) => Some(b), _ => None })
-        .map(|b| b.atk != 0)
-        .unwrap_or(false);
-
-    if has_atk_boost {
+    if boost.atk != 0 {
         // this.boost({ spe: 1 });
         battle.boost(
             &[("spe", 1)],
