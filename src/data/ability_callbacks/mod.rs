@@ -589,10 +589,6 @@ pub fn dispatch_on_any_before_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyDamage(damage, target, source, effect)
-
 /// Dispatch onAnyDamage callbacks
 pub fn dispatch_on_any_damage(
     battle: &mut Battle,
@@ -604,10 +600,6 @@ pub fn dispatch_on_any_damage(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyFaint()
-
 /// Dispatch onAnyFaint callbacks
 pub fn dispatch_on_any_faint(
     battle: &mut Battle,

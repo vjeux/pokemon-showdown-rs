@@ -247,7 +247,14 @@ impl Battle {
                 ability_id.as_str(),
             ),
             "AnyDamage" => {
-                ability_callbacks::dispatch_on_any_damage(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), None, None)
+                ability_callbacks::dispatch_on_any_damage(
+                    self,
+                    ability_id.as_str(),
+                    relay_var_int,
+                    Some(pokemon_pos),
+                    event_source_pos,
+                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                )
             }
             "AnyFaint" => {
                 ability_callbacks::dispatch_on_any_faint(self, ability_id.as_str())
