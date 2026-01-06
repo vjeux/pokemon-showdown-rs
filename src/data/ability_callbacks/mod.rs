@@ -309,6 +309,10 @@ pub mod zenmode;
 pub mod zerotohero;
 
 // Dispatch functions
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterBoost(boost, pokemon)
+//   onAfterBoost(boost, target, source, effect)
 /// Dispatch onAfterBoost callbacks
 pub fn dispatch_on_after_boost(
     battle: &mut Battle,
@@ -320,6 +324,9 @@ pub fn dispatch_on_after_boost(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterEachBoost(boost, target, source, effect)
 
 /// Dispatch onAfterEachBoost callbacks
 pub fn dispatch_on_after_each_boost(
@@ -333,6 +340,11 @@ pub fn dispatch_on_after_each_boost(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterMoveSecondary()
+//   onAfterMoveSecondary(target)
+//   onAfterMoveSecondary(target, source, move)
 
 /// Dispatch onAfterMoveSecondary callbacks
 pub fn dispatch_on_after_move_secondary(
@@ -348,6 +360,14 @@ pub fn dispatch_on_after_move_secondary(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterMoveSecondarySelf()
+//   onAfterMoveSecondarySelf(pokemon, source, move)
+//   onAfterMoveSecondarySelf(pokemon, target, move)
+//   onAfterMoveSecondarySelf(source)
+//   onAfterMoveSecondarySelf(source, target, move)
+//   onAfterMoveSecondarySelf(target, source, move)
 
 /// Dispatch onAfterMoveSecondarySelf callbacks
 pub fn dispatch_on_after_move_secondary_self(
@@ -360,6 +380,10 @@ pub fn dispatch_on_after_move_secondary_self(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterSetStatus(status, pokemon)
+//   onAfterSetStatus(status, target, source, effect)
 
 /// Dispatch onAfterSetStatus callbacks
 pub fn dispatch_on_after_set_status(
@@ -372,6 +396,9 @@ pub fn dispatch_on_after_set_status(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterTerastallization(pokemon)
 
 /// Dispatch onAfterTerastallization callbacks
 pub fn dispatch_on_after_terastallization(
@@ -384,6 +411,9 @@ pub fn dispatch_on_after_terastallization(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterUseItem(item, pokemon)
 
 /// Dispatch onAfterUseItem callbacks
 pub fn dispatch_on_after_use_item(
@@ -396,6 +426,9 @@ pub fn dispatch_on_after_use_item(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAllyAfterUseItem(item, pokemon)
 
 /// Dispatch onAllyAfterUseItem callbacks
 pub fn dispatch_on_ally_after_use_item(
@@ -408,6 +441,9 @@ pub fn dispatch_on_ally_after_use_item(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAllyBasePower(basePower, attacker, defender, move)
 
 /// Dispatch onAllyBasePower callbacks
 pub fn dispatch_on_ally_base_power(
@@ -422,6 +458,10 @@ pub fn dispatch_on_ally_base_power(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAllyFaint(ally)
+//   onAllyFaint(target)
 
 /// Dispatch onAllyFaint callbacks
 pub fn dispatch_on_ally_faint(
@@ -435,6 +475,10 @@ pub fn dispatch_on_ally_faint(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAllyModifyAtk(atk)
+//   onAllyModifyAtk(atk, pokemon)
 
 /// Dispatch onAllyModifyAtk callbacks
 pub fn dispatch_on_ally_modify_atk(
@@ -447,6 +491,10 @@ pub fn dispatch_on_ally_modify_atk(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAllyModifySpD(spd)
+//   onAllyModifySpD(spd, pokemon)
 
 /// Dispatch onAllyModifySpD callbacks
 pub fn dispatch_on_ally_modify_sp_d(
@@ -459,6 +507,9 @@ pub fn dispatch_on_ally_modify_sp_d(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAllySetStatus(status, target, source, effect)
 
 /// Dispatch onAllySetStatus callbacks
 pub fn dispatch_on_ally_set_status(
@@ -473,6 +524,11 @@ pub fn dispatch_on_ally_set_status(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAllyTryAddVolatile(status, target)
+//   onAllyTryAddVolatile(status, target, source)
+//   onAllyTryAddVolatile(status, target, source, effect)
 
 /// Dispatch onAllyTryAddVolatile callbacks
 pub fn dispatch_on_ally_try_add_volatile(
@@ -487,6 +543,9 @@ pub fn dispatch_on_ally_try_add_volatile(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAllyTryBoost(boost, target, source, effect)
 
 /// Dispatch onAllyTryBoost callbacks
 pub fn dispatch_on_ally_try_boost(
@@ -499,6 +558,10 @@ pub fn dispatch_on_ally_try_boost(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAllyTryHitSide()
+//   onAllyTryHitSide(target, source, move)
 
 /// Dispatch onAllyTryHitSide callbacks
 pub fn dispatch_on_ally_try_hit_side(
@@ -514,6 +577,9 @@ pub fn dispatch_on_ally_try_hit_side(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyAccuracy(accuracy, target, source, move)
 
 /// Dispatch onAnyAccuracy callbacks
 pub fn dispatch_on_any_accuracy(
@@ -526,6 +592,9 @@ pub fn dispatch_on_any_accuracy(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyAfterMega()
 
 /// Dispatch onAnyAfterMega callbacks
 pub fn dispatch_on_any_after_mega(
@@ -537,6 +606,9 @@ pub fn dispatch_on_any_after_mega(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyAfterMove()
 
 /// Dispatch onAnyAfterMove callbacks
 pub fn dispatch_on_any_after_move(
@@ -549,6 +621,9 @@ pub fn dispatch_on_any_after_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyAfterSetStatus(status, target, source, effect)
 
 /// Dispatch onAnyAfterSetStatus callbacks
 pub fn dispatch_on_any_after_set_status(
@@ -561,6 +636,9 @@ pub fn dispatch_on_any_after_set_status(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyAfterTerastallization()
 
 /// Dispatch onAnyAfterTerastallization callbacks
 pub fn dispatch_on_any_after_terastallization(
@@ -572,6 +650,11 @@ pub fn dispatch_on_any_after_terastallization(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyBasePower(basePower, source, target, move)
+//   onAnyBasePower(basePower, target, source, move)
+//   onAnyBasePower(basePower, user, target, move)
 
 /// Dispatch onAnyBasePower callbacks
 pub fn dispatch_on_any_base_power(
@@ -585,6 +668,9 @@ pub fn dispatch_on_any_base_power(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyBeforeMove()
 
 /// Dispatch onAnyBeforeMove callbacks
 pub fn dispatch_on_any_before_move(
@@ -596,6 +682,9 @@ pub fn dispatch_on_any_before_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyDamage(damage, target, source, effect)
 
 /// Dispatch onAnyDamage callbacks
 pub fn dispatch_on_any_damage(
@@ -608,6 +697,9 @@ pub fn dispatch_on_any_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyFaint()
 
 /// Dispatch onAnyFaint callbacks
 pub fn dispatch_on_any_faint(
@@ -619,6 +711,9 @@ pub fn dispatch_on_any_faint(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyInvulnerability(target, source, move)
 
 /// Dispatch onAnyInvulnerability callbacks
 pub fn dispatch_on_any_invulnerability(
@@ -631,6 +726,9 @@ pub fn dispatch_on_any_invulnerability(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyModifyAccuracy(accuracy, target, source)
 
 /// Dispatch onAnyModifyAccuracy callbacks
 pub fn dispatch_on_any_modify_accuracy(
@@ -643,6 +741,10 @@ pub fn dispatch_on_any_modify_accuracy(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyModifyAtk(atk, source, target, move)
+//   onAnyModifyAtk(atk, target, source, move)
 
 /// Dispatch onAnyModifyAtk callbacks
 pub fn dispatch_on_any_modify_atk(
@@ -655,6 +757,9 @@ pub fn dispatch_on_any_modify_atk(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyModifyBoost(boosts, pokemon)
 
 /// Dispatch onAnyModifyBoost callbacks
 pub fn dispatch_on_any_modify_boost(
@@ -667,6 +772,9 @@ pub fn dispatch_on_any_modify_boost(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyModifyDamage(damage, source, target, move)
 
 /// Dispatch onAnyModifyDamage callbacks
 pub fn dispatch_on_any_modify_damage(
@@ -679,6 +787,10 @@ pub fn dispatch_on_any_modify_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyModifyDef(def, target)
+//   onAnyModifyDef(def, target, source, move)
 
 /// Dispatch onAnyModifyDef callbacks
 pub fn dispatch_on_any_modify_def(
@@ -691,6 +803,9 @@ pub fn dispatch_on_any_modify_def(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyModifySpA(spa, source, target, move)
 
 /// Dispatch onAnyModifySpA callbacks
 pub fn dispatch_on_any_modify_sp_a(
@@ -703,6 +818,9 @@ pub fn dispatch_on_any_modify_sp_a(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyModifySpD(spd, target, source, move)
 
 /// Dispatch onAnyModifySpD callbacks
 pub fn dispatch_on_any_modify_sp_d(
@@ -715,6 +833,9 @@ pub fn dispatch_on_any_modify_sp_d(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyRedirectTarget(target, source, source2, move)
 
 /// Dispatch onAnyRedirectTarget callbacks
 pub fn dispatch_on_any_redirect_target(
@@ -728,6 +849,9 @@ pub fn dispatch_on_any_redirect_target(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnySetWeather(target, source, weather)
 
 /// Dispatch onAnySetWeather callbacks
 pub fn dispatch_on_any_set_weather(
@@ -742,6 +866,10 @@ pub fn dispatch_on_any_set_weather(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnySwitchIn()
+//   onAnySwitchIn(pokemon)
 
 /// Dispatch onAnySwitchIn callbacks
 pub fn dispatch_on_any_switch_in(
@@ -755,6 +883,9 @@ pub fn dispatch_on_any_switch_in(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyTryMove(target, source, effect)
 
 /// Dispatch onAnyTryMove callbacks
 pub fn dispatch_on_any_try_move(
@@ -767,6 +898,9 @@ pub fn dispatch_on_any_try_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAnyTryPrimaryHit(target, source, move)
 
 /// Dispatch onAnyTryPrimaryHit callbacks
 pub fn dispatch_on_any_try_primary_hit(
@@ -779,6 +913,20 @@ pub fn dispatch_on_any_try_primary_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onBasePower()
+//   onBasePower(basePower)
+//   onBasePower(basePower, attacker, defender, move)
+//   onBasePower(basePower, pokemon)
+//   onBasePower(basePower, pokemon, target)
+//   onBasePower(basePower, pokemon, target, move)
+//   onBasePower(basePower, source)
+//   onBasePower(basePower, source, target)
+//   onBasePower(basePower, source, target, move)
+//   onBasePower(basePower, user, target)
+//   onBasePower(basePower, user, target, move)
+//   onBasePower(relayVar, source, target, move)
 
 /// Dispatch onBasePower callbacks
 pub fn dispatch_on_base_power(
@@ -810,6 +958,15 @@ pub fn dispatch_on_base_power(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onBeforeMove()
+//   onBeforeMove(attacker, defender, move)
+//   onBeforeMove(pokemon)
+//   onBeforeMove(pokemon, t, move)
+//   onBeforeMove(pokemon, target)
+//   onBeforeMove(pokemon, target, move)
+//   onBeforeMove(source, target, move)
 
 /// Dispatch onBeforeMove callbacks
 pub fn dispatch_on_before_move(
@@ -823,6 +980,9 @@ pub fn dispatch_on_before_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onBeforeSwitchIn(pokemon)
 
 /// Dispatch onBeforeSwitchIn callbacks
 pub fn dispatch_on_before_switch_in(
@@ -835,6 +995,9 @@ pub fn dispatch_on_before_switch_in(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onChangeBoost(boost, target, source, effect)
 
 /// Dispatch onChangeBoost callbacks
 pub fn dispatch_on_change_boost(
@@ -849,6 +1012,9 @@ pub fn dispatch_on_change_boost(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onCheckShow(pokemon)
 
 /// Dispatch onCheckShow callbacks
 pub fn dispatch_on_check_show(
@@ -861,6 +1027,10 @@ pub fn dispatch_on_check_show(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onCriticalHit(target, source, move)
+//   onCriticalHit(target, type, move)
 
 /// Dispatch onCriticalHit callbacks
 pub fn dispatch_on_critical_hit(
@@ -874,6 +1044,13 @@ pub fn dispatch_on_critical_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onDamage()
+//   onDamage(damage, pokemon, source, effect)
+//   onDamage(damage, target, source, effect)
+//   onDamage(damage, target, source, move)
+//   onDamage(item, pokemon)
 
 /// Dispatch onDamage callbacks
 pub fn dispatch_on_damage(
@@ -896,6 +1073,11 @@ pub fn dispatch_on_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onDamagingHit()
+//   onDamagingHit(damage, target, source, effect)
+//   onDamagingHit(damage, target, source, move)
 
 /// Dispatch onDamagingHit callbacks
 pub fn dispatch_on_damaging_hit(
@@ -938,6 +1120,10 @@ pub fn dispatch_on_damaging_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onDeductPP(pokemon)
+//   onDeductPP(target, source)
 
 /// Dispatch onDeductPP callbacks
 pub fn dispatch_on_deduct_p_p(
@@ -950,6 +1136,10 @@ pub fn dispatch_on_deduct_p_p(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onDisableMove(pokemon)
+//   onDisableMove(target)
 
 /// Dispatch onDisableMove callbacks
 pub fn dispatch_on_disable_move(
@@ -962,6 +1152,11 @@ pub fn dispatch_on_disable_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onDragOut()
+//   onDragOut(pokemon)
+//   onDragOut(pokemon, source, move)
 
 /// Dispatch onDragOut callbacks
 pub fn dispatch_on_drag_out(
@@ -975,6 +1170,10 @@ pub fn dispatch_on_drag_out(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onEatItem(item, pokemon)
+//   onEatItem(item, pokemon, source, effect)
 
 /// Dispatch onEatItem callbacks
 pub fn dispatch_on_eat_item(
@@ -989,6 +1188,11 @@ pub fn dispatch_on_eat_item(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onEffectiveness()
+//   onEffectiveness(typeMod, target, type)
+//   onEffectiveness(typeMod, target, type, move)
 
 /// Dispatch onEffectiveness callbacks
 pub fn dispatch_on_effectiveness(
@@ -1002,6 +1206,9 @@ pub fn dispatch_on_effectiveness(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onEmergencyExit(target)
 
 /// Dispatch onEmergencyExit callbacks
 pub fn dispatch_on_emergency_exit(
@@ -1015,6 +1222,12 @@ pub fn dispatch_on_emergency_exit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onEnd()
+//   onEnd(pokemon)
+//   onEnd(source)
+//   onEnd(target)
 
 /// Dispatch onEnd callbacks
 pub fn dispatch_on_end(
@@ -1044,6 +1257,12 @@ pub fn dispatch_on_end(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onFaint()
+//   onFaint(pokemon)
+//   onFaint(target)
+//   onFaint(target, source, effect)
 
 /// Dispatch onFaint callbacks
 pub fn dispatch_on_faint(
@@ -1056,6 +1275,9 @@ pub fn dispatch_on_faint(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onFlinch(pokemon)
 
 /// Dispatch onFlinch callbacks
 pub fn dispatch_on_flinch(
@@ -1068,6 +1290,9 @@ pub fn dispatch_on_flinch(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onFoeAfterBoost(boost, target, source, effect)
 
 /// Dispatch onFoeAfterBoost callbacks
 pub fn dispatch_on_foe_after_boost(
@@ -1080,6 +1305,10 @@ pub fn dispatch_on_foe_after_boost(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onFoeMaybeTrapPokemon()
+//   onFoeMaybeTrapPokemon(pokemon, source)
 
 /// Dispatch onFoeMaybeTrapPokemon callbacks
 pub fn dispatch_on_foe_maybe_trap_pokemon(
@@ -1094,6 +1323,11 @@ pub fn dispatch_on_foe_maybe_trap_pokemon(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onFoeTrapPokemon()
+//   onFoeTrapPokemon(defender)
+//   onFoeTrapPokemon(pokemon)
 
 /// Dispatch onFoeTrapPokemon callbacks
 pub fn dispatch_on_foe_trap_pokemon(
@@ -1108,6 +1342,9 @@ pub fn dispatch_on_foe_trap_pokemon(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onFoeTryEatItem()
 
 /// Dispatch onFoeTryEatItem callbacks
 pub fn dispatch_on_foe_try_eat_item(
@@ -1121,6 +1358,9 @@ pub fn dispatch_on_foe_try_eat_item(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onFoeTryMove(target, source, move)
 
 /// Dispatch onFoeTryMove callbacks
 pub fn dispatch_on_foe_try_move(
@@ -1135,6 +1375,11 @@ pub fn dispatch_on_foe_try_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onFractionalPriority()
+//   onFractionalPriority(priority, pokemon)
+//   onFractionalPriority(priority, pokemon, target, move)
 
 /// Dispatch onFractionalPriority callbacks
 pub fn dispatch_on_fractional_priority(
@@ -1148,6 +1393,23 @@ pub fn dispatch_on_fractional_priority(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onHit()
+//   onHit(pokemon)
+//   onHit(pokemon, qwerty, move)
+//   onHit(pokemon, source)
+//   onHit(pokemon, source, move)
+//   onHit(source)
+//   onHit(source, target, effect)
+//   onHit(t, source, m)
+//   onHit(target)
+//   onHit(target, pokemon)
+//   onHit(target, pokemon, move)
+//   onHit(target, source)
+//   onHit(target, source, effect)
+//   onHit(target, source, m)
+//   onHit(target, source, move)
 
 /// Dispatch onHit callbacks
 pub fn dispatch_on_hit(
@@ -1161,6 +1423,10 @@ pub fn dispatch_on_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onImmunity(type)
+//   onImmunity(type, pokemon)
 
 /// Dispatch onImmunity callbacks
 pub fn dispatch_on_immunity(
@@ -1180,6 +1446,12 @@ pub fn dispatch_on_immunity(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyAccuracy(accuracy)
+//   onModifyAccuracy(accuracy, target)
+//   onModifyAccuracy(accuracy, target, source)
+//   onModifyAccuracy(accuracy, target, source, move)
 
 /// Dispatch onModifyAccuracy callbacks
 pub fn dispatch_on_modify_accuracy(
@@ -1195,6 +1467,17 @@ pub fn dispatch_on_modify_accuracy(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyAtk()
+//   onModifyAtk(atk)
+//   onModifyAtk(atk, attacker, defender)
+//   onModifyAtk(atk, attacker, defender, move)
+//   onModifyAtk(atk, pokemon)
+//   onModifyAtk(atk, pokemon, defender, move)
+//   onModifyAtk(atk, pokemon, target, move)
+//   onModifyAtk(atk, source, target, move)
+//   onModifyAtk(atk, user, target, move)
 
 /// Dispatch onModifyAtk callbacks
 pub fn dispatch_on_modify_atk(
@@ -1224,6 +1507,13 @@ pub fn dispatch_on_modify_atk(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyCritRatio(critRatio)
+//   onModifyCritRatio(critRatio, source)
+//   onModifyCritRatio(critRatio, source, target)
+//   onModifyCritRatio(critRatio, source, target, move)
+//   onModifyCritRatio(critRatio, user)
 
 /// Dispatch onModifyCritRatio callbacks
 pub fn dispatch_on_modify_crit_ratio(
@@ -1237,6 +1527,10 @@ pub fn dispatch_on_modify_crit_ratio(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyDamage()
+//   onModifyDamage(damage, source, target, move)
 
 /// Dispatch onModifyDamage callbacks
 pub fn dispatch_on_modify_damage(
@@ -1251,6 +1545,13 @@ pub fn dispatch_on_modify_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyDef()
+//   onModifyDef(def)
+//   onModifyDef(def, pokemon)
+//   onModifyDef(def, target, source, move)
+//   onModifyDef(pokemon)
 
 /// Dispatch onModifyDef callbacks
 pub fn dispatch_on_modify_def(
@@ -1265,6 +1566,16 @@ pub fn dispatch_on_modify_def(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyMove()
+//   onModifyMove(move)
+//   onModifyMove(move, attacker)
+//   onModifyMove(move, attacker, defender)
+//   onModifyMove(move, pokemon)
+//   onModifyMove(move, pokemon, target)
+//   onModifyMove(move, source)
+//   onModifyMove(move, source, target)
 
 /// Dispatch onModifyMove callbacks
 pub fn dispatch_on_modify_move(
@@ -1296,6 +1607,14 @@ pub fn dispatch_on_modify_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyPriority(priority, pokemon)
+//   onModifyPriority(priority, pokemon, target)
+//   onModifyPriority(priority, pokemon, target, move)
+//   onModifyPriority(priority, source)
+//   onModifyPriority(priority, source, target, move)
+//   onModifyPriority(relayVar, source, target, move)
 
 /// Dispatch onModifyPriority callbacks
 pub fn dispatch_on_modify_priority(
@@ -1310,6 +1629,9 @@ pub fn dispatch_on_modify_priority(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifySTAB(stab, source, target, move)
 
 /// Dispatch onModifySTAB callbacks
 pub fn dispatch_on_modify_s_t_a_b(
@@ -1323,6 +1645,9 @@ pub fn dispatch_on_modify_s_t_a_b(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifySecondaries(secondaries)
 
 /// Dispatch onModifySecondaries callbacks
 pub fn dispatch_on_modify_secondaries(
@@ -1334,6 +1659,20 @@ pub fn dispatch_on_modify_secondaries(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifySpA()
+//   onModifySpA(atk, attacker, defender)
+//   onModifySpA(atk, attacker, defender, move)
+//   onModifySpA(atk, pokemon)
+//   onModifySpA(atk, pokemon, defender, move)
+//   onModifySpA(atk, pokemon, target, move)
+//   onModifySpA(relayVar, source, target, move)
+//   onModifySpA(spa)
+//   onModifySpA(spa, attacker, defender, move)
+//   onModifySpA(spa, pokemon)
+//   onModifySpA(spa, pokemon, target, move)
+//   onModifySpA(spa, user, target, move)
 
 /// Dispatch onModifySpA callbacks
 pub fn dispatch_on_modify_sp_a(
@@ -1360,6 +1699,11 @@ pub fn dispatch_on_modify_sp_a(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifySpe(spe)
+//   onModifySpe(spe, pokemon)
+//   onModifySpe(this, spe, pokemon)
 
 /// Dispatch onModifySpe callbacks
 pub fn dispatch_on_modify_spe(
@@ -1378,6 +1722,11 @@ pub fn dispatch_on_modify_spe(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyType(move)
+//   onModifyType(move, pokemon)
+//   onModifyType(move, pokemon, target)
 
 /// Dispatch onModifyType callbacks
 pub fn dispatch_on_modify_type(
@@ -1395,6 +1744,10 @@ pub fn dispatch_on_modify_type(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyWeight(weighthg)
+//   onModifyWeight(weighthg, pokemon)
 
 /// Dispatch onModifyWeight callbacks
 pub fn dispatch_on_modify_weight(
@@ -1408,6 +1761,17 @@ pub fn dispatch_on_modify_weight(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onPrepareHit()
+//   onPrepareHit(pokemon)
+//   onPrepareHit(pokemon, source)
+//   onPrepareHit(source, target)
+//   onPrepareHit(source, target, move)
+//   onPrepareHit(t, s, m)
+//   onPrepareHit(target, pokemon, move)
+//   onPrepareHit(target, source)
+//   onPrepareHit(target, source, move)
 
 /// Dispatch onPrepareHit callbacks
 pub fn dispatch_on_prepare_hit(
@@ -1422,6 +1786,17 @@ pub fn dispatch_on_prepare_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onResidual()
+//   onResidual(pokemon)
+//   onResidual(pokemon, s, effect)
+//   onResidual(pokemon, source)
+//   onResidual(pokemon, source, effect)
+//   onResidual(source)
+//   onResidual(source, target, effect)
+//   onResidual(target)
+//   onResidual(target, source, effect)
 
 /// Dispatch onResidual callbacks
 pub fn dispatch_on_residual(
@@ -1449,6 +1824,10 @@ pub fn dispatch_on_residual(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSetStatus(status, target, source)
+//   onSetStatus(status, target, source, effect)
 
 /// Dispatch onSetStatus callbacks
 pub fn dispatch_on_set_status(
@@ -1472,6 +1851,10 @@ pub fn dispatch_on_set_status(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSideConditionStart(side, source, sideCondition)
+//   onSideConditionStart(target, source, sideCondition)
 
 /// Dispatch onSideConditionStart callbacks
 /// First param: pokemon_pos = Pokemon with the ability (this.effectState.target in JS)
@@ -1490,6 +1873,10 @@ pub fn dispatch_on_side_condition_start(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceAfterFaint()
+//   onSourceAfterFaint(length, target, source, effect)
 
 /// Dispatch onSourceAfterFaint callbacks
 pub fn dispatch_on_source_after_faint(
@@ -1508,6 +1895,10 @@ pub fn dispatch_on_source_after_faint(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceBasePower(basePower, attacker, defender, move)
+//   onSourceBasePower(basePower, target, source, move)
 
 /// Dispatch onSourceBasePower callbacks
 pub fn dispatch_on_source_base_power(
@@ -1520,6 +1911,9 @@ pub fn dispatch_on_source_base_power(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceDamagingHit(damage, target, source, move)
 
 /// Dispatch onSourceDamagingHit callbacks
 pub fn dispatch_on_source_damaging_hit(
@@ -1533,6 +1927,12 @@ pub fn dispatch_on_source_damaging_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceModifyAccuracy(accuracy)
+//   onSourceModifyAccuracy(accuracy, target)
+//   onSourceModifyAccuracy(accuracy, target, source)
+//   onSourceModifyAccuracy(accuracy, target, source, move)
 
 /// Dispatch onSourceModifyAccuracy callbacks
 pub fn dispatch_on_source_modify_accuracy(
@@ -1546,6 +1946,10 @@ pub fn dispatch_on_source_modify_accuracy(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceModifyAtk()
+//   onSourceModifyAtk(atk, attacker, defender, move)
 
 /// Dispatch onSourceModifyAtk callbacks
 pub fn dispatch_on_source_modify_atk(
@@ -1561,6 +1965,10 @@ pub fn dispatch_on_source_modify_atk(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceModifyDamage()
+//   onSourceModifyDamage(damage, source, target, move)
 
 /// Dispatch onSourceModifyDamage callbacks
 pub fn dispatch_on_source_modify_damage(
@@ -1581,6 +1989,9 @@ pub fn dispatch_on_source_modify_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceModifySecondaries(secondaries, target, source, move)
 
 /// Dispatch onSourceModifySecondaries callbacks
 pub fn dispatch_on_source_modify_secondaries(
@@ -1593,6 +2004,11 @@ pub fn dispatch_on_source_modify_secondaries(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceModifySpA()
+//   onSourceModifySpA(atk, attacker, defender, move)
+//   onSourceModifySpA(spa, attacker, defender, move)
 
 /// Dispatch onSourceModifySpA callbacks
 pub fn dispatch_on_source_modify_sp_a(
@@ -1608,6 +2024,9 @@ pub fn dispatch_on_source_modify_sp_a(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceTryHeal(damage, target, source, effect)
 
 /// Dispatch onSourceTryHeal callbacks
 pub fn dispatch_on_source_try_heal(
@@ -1620,6 +2039,10 @@ pub fn dispatch_on_source_try_heal(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSourceTryPrimaryHit(target, source, effect)
+//   onSourceTryPrimaryHit(target, source, move)
 
 /// Dispatch onSourceTryPrimaryHit callbacks
 pub fn dispatch_on_source_try_primary_hit(
@@ -1632,6 +2055,23 @@ pub fn dispatch_on_source_try_primary_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onStart()
+//   onStart(attacker, defender, effect)
+//   onStart(pokemon)
+//   onStart(pokemon, source)
+//   onStart(pokemon, source, effect)
+//   onStart(pokemon, source, sourceEffect)
+//   onStart(side, source, sideCondition)
+//   onStart(source)
+//   onStart(target)
+//   onStart(target, source)
+//   onStart(target, source, effect)
+//   onStart(target, source, move)
+//   onStart(target, source, sideCondition)
+//   onStart(target, source, sourceEffect)
+//   onStart(this, pokemon)
 
 /// Dispatch onStart callbacks
 pub fn dispatch_on_start(
@@ -1707,6 +2147,11 @@ pub fn dispatch_on_start(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSwitchIn()
+//   onSwitchIn(pokemon)
+//   onSwitchIn(target)
 
 /// Dispatch onSwitchIn callbacks
 pub fn dispatch_on_switch_in(
@@ -1724,6 +2169,10 @@ pub fn dispatch_on_switch_in(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onSwitchOut()
+//   onSwitchOut(pokemon)
 
 /// Dispatch onSwitchOut callbacks
 pub fn dispatch_on_switch_out(
@@ -1738,6 +2187,12 @@ pub fn dispatch_on_switch_out(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTakeItem(item)
+//   onTakeItem(item, pokemon)
+//   onTakeItem(item, pokemon, source)
+//   onTakeItem(item, source)
 
 /// Dispatch onTakeItem callbacks
 pub fn dispatch_on_take_item(
@@ -1751,6 +2206,10 @@ pub fn dispatch_on_take_item(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTerrainChange(pokemon)
+//   onTerrainChange(target, source, sourceEffect)
 
 /// Dispatch onTerrainChange callbacks
 pub fn dispatch_on_terrain_change(
@@ -1764,6 +2223,11 @@ pub fn dispatch_on_terrain_change(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTryAddVolatile(status, pokemon)
+//   onTryAddVolatile(status, target)
+//   onTryAddVolatile(status, target, source, effect)
 
 /// Dispatch onTryAddVolatile callbacks
 pub fn dispatch_on_try_add_volatile(
@@ -1782,6 +2246,10 @@ pub fn dispatch_on_try_add_volatile(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTryBoost()
+//   onTryBoost(boost, target, source, effect)
 
 /// Dispatch onTryBoost callbacks
 pub fn dispatch_on_try_boost(
@@ -1808,6 +2276,10 @@ pub fn dispatch_on_try_boost(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTryEatItem(item)
+//   onTryEatItem(item, pokemon)
 
 /// Dispatch onTryEatItem callbacks
 pub fn dispatch_on_try_eat_item(
@@ -1821,6 +2293,10 @@ pub fn dispatch_on_try_eat_item(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTryHeal(damage, pokemon, source, effect)
+//   onTryHeal(damage, target, source, effect)
 
 /// Dispatch onTryHeal callbacks
 pub fn dispatch_on_try_heal(
@@ -1833,6 +2309,21 @@ pub fn dispatch_on_try_heal(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTryHit()
+//   onTryHit(pokemon)
+//   onTryHit(pokemon, source, move)
+//   onTryHit(pokemon, target, move)
+//   onTryHit(source)
+//   onTryHit(source, target)
+//   onTryHit(source, target, move)
+//   onTryHit(target)
+//   onTryHit(target, pokemon)
+//   onTryHit(target, pokemon, move)
+//   onTryHit(target, source)
+//   onTryHit(target, source, effect)
+//   onTryHit(target, source, move)
 
 /// Dispatch onTryHit callbacks
 pub fn dispatch_on_try_hit(
@@ -1866,6 +2357,10 @@ pub fn dispatch_on_try_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onUpdate()
+//   onUpdate(pokemon)
 
 /// Dispatch onUpdate callbacks
 pub fn dispatch_on_update(
@@ -1892,6 +2387,11 @@ pub fn dispatch_on_update(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onWeather()
+//   onWeather(target)
+//   onWeather(target, source, effect)
 
 /// Dispatch onWeather callbacks
 pub fn dispatch_on_weather(
@@ -1907,6 +2407,11 @@ pub fn dispatch_on_weather(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onWeatherChange(pokemon)
+//   onWeatherChange(pokemon, source, sourceEffect)
+//   onWeatherChange(target, source, sourceEffect)
 
 /// Dispatch onWeatherChange callbacks
 pub fn dispatch_on_weather_change(
@@ -1924,6 +2429,8 @@ pub fn dispatch_on_weather_change(
 }
 
 // Priority/Order/SubOrder variant dispatchers (aliases)
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 /// Dispatch onAfterBoostPriority callbacks (alias for onAfterBoost)
 pub fn dispatch_on_after_boost_priority(
     battle: &mut Battle,
@@ -1932,6 +2439,8 @@ pub fn dispatch_on_after_boost_priority(
 ) -> EventResult {
     dispatch_on_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterBoostOrder callbacks (alias for onAfterBoost)
 pub fn dispatch_on_after_boost_order(
@@ -1941,6 +2450,8 @@ pub fn dispatch_on_after_boost_order(
 ) -> EventResult {
     dispatch_on_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterBoostSubOrder callbacks (alias for onAfterBoost)
 pub fn dispatch_on_after_boost_sub_order(
@@ -1950,6 +2461,8 @@ pub fn dispatch_on_after_boost_sub_order(
 ) -> EventResult {
     dispatch_on_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterEachBoostPriority callbacks (alias for onAfterEachBoost)
 pub fn dispatch_on_after_each_boost_priority(
@@ -1959,6 +2472,8 @@ pub fn dispatch_on_after_each_boost_priority(
 ) -> EventResult {
     dispatch_on_after_each_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterEachBoostOrder callbacks (alias for onAfterEachBoost)
 pub fn dispatch_on_after_each_boost_order(
@@ -1968,6 +2483,8 @@ pub fn dispatch_on_after_each_boost_order(
 ) -> EventResult {
     dispatch_on_after_each_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterEachBoostSubOrder callbacks (alias for onAfterEachBoost)
 pub fn dispatch_on_after_each_boost_sub_order(
@@ -1977,6 +2494,8 @@ pub fn dispatch_on_after_each_boost_sub_order(
 ) -> EventResult {
     dispatch_on_after_each_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterMoveSecondaryPriority callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_priority(
@@ -1986,6 +2505,8 @@ pub fn dispatch_on_after_move_secondary_priority(
 ) -> EventResult {
     dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterMoveSecondaryOrder callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_order(
@@ -1995,6 +2516,8 @@ pub fn dispatch_on_after_move_secondary_order(
 ) -> EventResult {
     dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterMoveSecondarySubOrder callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_sub_order(
@@ -2004,6 +2527,8 @@ pub fn dispatch_on_after_move_secondary_sub_order(
 ) -> EventResult {
     dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterMoveSecondarySelfPriority callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_priority(
@@ -2013,6 +2538,8 @@ pub fn dispatch_on_after_move_secondary_self_priority(
 ) -> EventResult {
     dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterMoveSecondarySelfOrder callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_order(
@@ -2022,6 +2549,8 @@ pub fn dispatch_on_after_move_secondary_self_order(
 ) -> EventResult {
     dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterMoveSecondarySelfSubOrder callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_sub_order(
@@ -2031,6 +2560,8 @@ pub fn dispatch_on_after_move_secondary_self_sub_order(
 ) -> EventResult {
     dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterSetStatusPriority callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_priority(
@@ -2040,6 +2571,8 @@ pub fn dispatch_on_after_set_status_priority(
 ) -> EventResult {
     dispatch_on_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterSetStatusOrder callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_order(
@@ -2049,6 +2582,8 @@ pub fn dispatch_on_after_set_status_order(
 ) -> EventResult {
     dispatch_on_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterSetStatusSubOrder callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_sub_order(
@@ -2058,6 +2593,8 @@ pub fn dispatch_on_after_set_status_sub_order(
 ) -> EventResult {
     dispatch_on_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterTerastallizationPriority callbacks (alias for onAfterTerastallization)
 pub fn dispatch_on_after_terastallization_priority(
@@ -2067,6 +2604,8 @@ pub fn dispatch_on_after_terastallization_priority(
 ) -> EventResult {
     dispatch_on_after_terastallization(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterTerastallizationOrder callbacks (alias for onAfterTerastallization)
 pub fn dispatch_on_after_terastallization_order(
@@ -2076,6 +2615,8 @@ pub fn dispatch_on_after_terastallization_order(
 ) -> EventResult {
     dispatch_on_after_terastallization(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterTerastallizationSubOrder callbacks (alias for onAfterTerastallization)
 pub fn dispatch_on_after_terastallization_sub_order(
@@ -2085,6 +2626,8 @@ pub fn dispatch_on_after_terastallization_sub_order(
 ) -> EventResult {
     dispatch_on_after_terastallization(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterUseItemPriority callbacks (alias for onAfterUseItem)
 pub fn dispatch_on_after_use_item_priority(
@@ -2094,6 +2637,8 @@ pub fn dispatch_on_after_use_item_priority(
 ) -> EventResult {
     dispatch_on_after_use_item(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterUseItemOrder callbacks (alias for onAfterUseItem)
 pub fn dispatch_on_after_use_item_order(
@@ -2103,6 +2648,8 @@ pub fn dispatch_on_after_use_item_order(
 ) -> EventResult {
     dispatch_on_after_use_item(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAfterUseItemSubOrder callbacks (alias for onAfterUseItem)
 pub fn dispatch_on_after_use_item_sub_order(
@@ -2112,6 +2659,8 @@ pub fn dispatch_on_after_use_item_sub_order(
 ) -> EventResult {
     dispatch_on_after_use_item(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyAfterUseItemPriority callbacks (alias for onAllyAfterUseItem)
 pub fn dispatch_on_ally_after_use_item_priority(
@@ -2121,6 +2670,8 @@ pub fn dispatch_on_ally_after_use_item_priority(
 ) -> EventResult {
     dispatch_on_ally_after_use_item(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyAfterUseItemOrder callbacks (alias for onAllyAfterUseItem)
 pub fn dispatch_on_ally_after_use_item_order(
@@ -2130,6 +2681,8 @@ pub fn dispatch_on_ally_after_use_item_order(
 ) -> EventResult {
     dispatch_on_ally_after_use_item(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyAfterUseItemSubOrder callbacks (alias for onAllyAfterUseItem)
 pub fn dispatch_on_ally_after_use_item_sub_order(
@@ -2139,6 +2692,8 @@ pub fn dispatch_on_ally_after_use_item_sub_order(
 ) -> EventResult {
     dispatch_on_ally_after_use_item(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyBasePowerPriority callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_priority(
@@ -2148,6 +2703,8 @@ pub fn dispatch_on_ally_base_power_priority(
 ) -> EventResult {
     dispatch_on_ally_base_power(battle, ability_id, base_power, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyBasePowerOrder callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_order(
@@ -2157,6 +2714,8 @@ pub fn dispatch_on_ally_base_power_order(
 ) -> EventResult {
     dispatch_on_ally_base_power(battle, ability_id, base_power, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyBasePowerSubOrder callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_sub_order(
@@ -2166,6 +2725,8 @@ pub fn dispatch_on_ally_base_power_sub_order(
 ) -> EventResult {
     dispatch_on_ally_base_power(battle, ability_id, base_power, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyFaintPriority callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_priority(
@@ -2175,6 +2736,8 @@ pub fn dispatch_on_ally_faint_priority(
 ) -> EventResult {
     dispatch_on_ally_faint(battle, ability_id, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyFaintOrder callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_order(
@@ -2184,6 +2747,8 @@ pub fn dispatch_on_ally_faint_order(
 ) -> EventResult {
     dispatch_on_ally_faint(battle, ability_id, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyFaintSubOrder callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_sub_order(
@@ -2193,6 +2758,8 @@ pub fn dispatch_on_ally_faint_sub_order(
 ) -> EventResult {
     dispatch_on_ally_faint(battle, ability_id, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyModifyAtkPriority callbacks (alias for onAllyModifyAtk)
 pub fn dispatch_on_ally_modify_atk_priority(
@@ -2202,6 +2769,8 @@ pub fn dispatch_on_ally_modify_atk_priority(
 ) -> EventResult {
     dispatch_on_ally_modify_atk(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyModifyAtkOrder callbacks (alias for onAllyModifyAtk)
 pub fn dispatch_on_ally_modify_atk_order(
@@ -2211,6 +2780,8 @@ pub fn dispatch_on_ally_modify_atk_order(
 ) -> EventResult {
     dispatch_on_ally_modify_atk(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyModifyAtkSubOrder callbacks (alias for onAllyModifyAtk)
 pub fn dispatch_on_ally_modify_atk_sub_order(
@@ -2220,6 +2791,8 @@ pub fn dispatch_on_ally_modify_atk_sub_order(
 ) -> EventResult {
     dispatch_on_ally_modify_atk(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyModifySpDPriority callbacks (alias for onAllyModifySpD)
 pub fn dispatch_on_ally_modify_sp_d_priority(
@@ -2229,6 +2802,8 @@ pub fn dispatch_on_ally_modify_sp_d_priority(
 ) -> EventResult {
     dispatch_on_ally_modify_sp_d(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyModifySpDOrder callbacks (alias for onAllyModifySpD)
 pub fn dispatch_on_ally_modify_sp_d_order(
@@ -2238,6 +2813,8 @@ pub fn dispatch_on_ally_modify_sp_d_order(
 ) -> EventResult {
     dispatch_on_ally_modify_sp_d(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyModifySpDSubOrder callbacks (alias for onAllyModifySpD)
 pub fn dispatch_on_ally_modify_sp_d_sub_order(
@@ -2247,6 +2824,8 @@ pub fn dispatch_on_ally_modify_sp_d_sub_order(
 ) -> EventResult {
     dispatch_on_ally_modify_sp_d(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllySetStatusPriority callbacks (alias for onAllySetStatus)
 pub fn dispatch_on_ally_set_status_priority(
@@ -2256,6 +2835,8 @@ pub fn dispatch_on_ally_set_status_priority(
 ) -> EventResult {
     dispatch_on_ally_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllySetStatusOrder callbacks (alias for onAllySetStatus)
 pub fn dispatch_on_ally_set_status_order(
@@ -2265,6 +2846,8 @@ pub fn dispatch_on_ally_set_status_order(
 ) -> EventResult {
     dispatch_on_ally_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllySetStatusSubOrder callbacks (alias for onAllySetStatus)
 pub fn dispatch_on_ally_set_status_sub_order(
@@ -2274,6 +2857,8 @@ pub fn dispatch_on_ally_set_status_sub_order(
 ) -> EventResult {
     dispatch_on_ally_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyTryAddVolatilePriority callbacks (alias for onAllyTryAddVolatile)
 pub fn dispatch_on_ally_try_add_volatile_priority(
@@ -2283,6 +2868,8 @@ pub fn dispatch_on_ally_try_add_volatile_priority(
 ) -> EventResult {
     dispatch_on_ally_try_add_volatile(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyTryAddVolatileOrder callbacks (alias for onAllyTryAddVolatile)
 pub fn dispatch_on_ally_try_add_volatile_order(
@@ -2292,6 +2879,8 @@ pub fn dispatch_on_ally_try_add_volatile_order(
 ) -> EventResult {
     dispatch_on_ally_try_add_volatile(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyTryAddVolatileSubOrder callbacks (alias for onAllyTryAddVolatile)
 pub fn dispatch_on_ally_try_add_volatile_sub_order(
@@ -2301,6 +2890,8 @@ pub fn dispatch_on_ally_try_add_volatile_sub_order(
 ) -> EventResult {
     dispatch_on_ally_try_add_volatile(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyTryBoostPriority callbacks (alias for onAllyTryBoost)
 pub fn dispatch_on_ally_try_boost_priority(
@@ -2310,6 +2901,8 @@ pub fn dispatch_on_ally_try_boost_priority(
 ) -> EventResult {
     dispatch_on_ally_try_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyTryBoostOrder callbacks (alias for onAllyTryBoost)
 pub fn dispatch_on_ally_try_boost_order(
@@ -2319,6 +2912,8 @@ pub fn dispatch_on_ally_try_boost_order(
 ) -> EventResult {
     dispatch_on_ally_try_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyTryBoostSubOrder callbacks (alias for onAllyTryBoost)
 pub fn dispatch_on_ally_try_boost_sub_order(
@@ -2328,6 +2923,8 @@ pub fn dispatch_on_ally_try_boost_sub_order(
 ) -> EventResult {
     dispatch_on_ally_try_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyTryHitSidePriority callbacks (alias for onAllyTryHitSide)
 pub fn dispatch_on_ally_try_hit_side_priority(
@@ -2337,6 +2934,8 @@ pub fn dispatch_on_ally_try_hit_side_priority(
 ) -> EventResult {
     dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyTryHitSideOrder callbacks (alias for onAllyTryHitSide)
 pub fn dispatch_on_ally_try_hit_side_order(
@@ -2346,6 +2945,8 @@ pub fn dispatch_on_ally_try_hit_side_order(
 ) -> EventResult {
     dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAllyTryHitSideSubOrder callbacks (alias for onAllyTryHitSide)
 pub fn dispatch_on_ally_try_hit_side_sub_order(
@@ -2355,6 +2956,8 @@ pub fn dispatch_on_ally_try_hit_side_sub_order(
 ) -> EventResult {
     dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAccuracyPriority callbacks (alias for onAnyAccuracy)
 pub fn dispatch_on_any_accuracy_priority(
@@ -2364,6 +2967,8 @@ pub fn dispatch_on_any_accuracy_priority(
 ) -> EventResult {
     dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAccuracyOrder callbacks (alias for onAnyAccuracy)
 pub fn dispatch_on_any_accuracy_order(
@@ -2373,6 +2978,8 @@ pub fn dispatch_on_any_accuracy_order(
 ) -> EventResult {
     dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAccuracySubOrder callbacks (alias for onAnyAccuracy)
 pub fn dispatch_on_any_accuracy_sub_order(
@@ -2382,6 +2989,8 @@ pub fn dispatch_on_any_accuracy_sub_order(
 ) -> EventResult {
     dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterMegaPriority callbacks (alias for onAnyAfterMega)
 pub fn dispatch_on_any_after_mega_priority(
@@ -2390,6 +2999,8 @@ pub fn dispatch_on_any_after_mega_priority(
 ) -> EventResult {
     dispatch_on_any_after_mega(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterMegaOrder callbacks (alias for onAnyAfterMega)
 pub fn dispatch_on_any_after_mega_order(
@@ -2398,6 +3009,8 @@ pub fn dispatch_on_any_after_mega_order(
 ) -> EventResult {
     dispatch_on_any_after_mega(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterMegaSubOrder callbacks (alias for onAnyAfterMega)
 pub fn dispatch_on_any_after_mega_sub_order(
@@ -2406,6 +3019,8 @@ pub fn dispatch_on_any_after_mega_sub_order(
 ) -> EventResult {
     dispatch_on_any_after_mega(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterMovePriority callbacks (alias for onAnyAfterMove)
 pub fn dispatch_on_any_after_move_priority(
@@ -2414,6 +3029,8 @@ pub fn dispatch_on_any_after_move_priority(
 ) -> EventResult {
     dispatch_on_any_after_move(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterMoveOrder callbacks (alias for onAnyAfterMove)
 pub fn dispatch_on_any_after_move_order(
@@ -2422,6 +3039,8 @@ pub fn dispatch_on_any_after_move_order(
 ) -> EventResult {
     dispatch_on_any_after_move(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterMoveSubOrder callbacks (alias for onAnyAfterMove)
 pub fn dispatch_on_any_after_move_sub_order(
@@ -2430,6 +3049,8 @@ pub fn dispatch_on_any_after_move_sub_order(
 ) -> EventResult {
     dispatch_on_any_after_move(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterSetStatusPriority callbacks (alias for onAnyAfterSetStatus)
 pub fn dispatch_on_any_after_set_status_priority(
@@ -2439,6 +3060,8 @@ pub fn dispatch_on_any_after_set_status_priority(
 ) -> EventResult {
     dispatch_on_any_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterSetStatusOrder callbacks (alias for onAnyAfterSetStatus)
 pub fn dispatch_on_any_after_set_status_order(
@@ -2448,6 +3071,8 @@ pub fn dispatch_on_any_after_set_status_order(
 ) -> EventResult {
     dispatch_on_any_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterSetStatusSubOrder callbacks (alias for onAnyAfterSetStatus)
 pub fn dispatch_on_any_after_set_status_sub_order(
@@ -2457,6 +3082,8 @@ pub fn dispatch_on_any_after_set_status_sub_order(
 ) -> EventResult {
     dispatch_on_any_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterTerastallizationPriority callbacks (alias for onAnyAfterTerastallization)
 pub fn dispatch_on_any_after_terastallization_priority(
@@ -2465,6 +3092,8 @@ pub fn dispatch_on_any_after_terastallization_priority(
 ) -> EventResult {
     dispatch_on_any_after_terastallization(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterTerastallizationOrder callbacks (alias for onAnyAfterTerastallization)
 pub fn dispatch_on_any_after_terastallization_order(
@@ -2473,6 +3102,8 @@ pub fn dispatch_on_any_after_terastallization_order(
 ) -> EventResult {
     dispatch_on_any_after_terastallization(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyAfterTerastallizationSubOrder callbacks (alias for onAnyAfterTerastallization)
 pub fn dispatch_on_any_after_terastallization_sub_order(
@@ -2481,6 +3112,8 @@ pub fn dispatch_on_any_after_terastallization_sub_order(
 ) -> EventResult {
     dispatch_on_any_after_terastallization(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyBasePowerPriority callbacks (alias for onAnyBasePower)
 pub fn dispatch_on_any_base_power_priority(
@@ -2490,6 +3123,8 @@ pub fn dispatch_on_any_base_power_priority(
 ) -> EventResult {
     dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyBasePowerOrder callbacks (alias for onAnyBasePower)
 pub fn dispatch_on_any_base_power_order(
@@ -2499,6 +3134,8 @@ pub fn dispatch_on_any_base_power_order(
 ) -> EventResult {
     dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyBasePowerSubOrder callbacks (alias for onAnyBasePower)
 pub fn dispatch_on_any_base_power_sub_order(
@@ -2508,6 +3145,8 @@ pub fn dispatch_on_any_base_power_sub_order(
 ) -> EventResult {
     dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyBeforeMovePriority callbacks (alias for onAnyBeforeMove)
 pub fn dispatch_on_any_before_move_priority(
@@ -2516,6 +3155,8 @@ pub fn dispatch_on_any_before_move_priority(
 ) -> EventResult {
     dispatch_on_any_before_move(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyBeforeMoveOrder callbacks (alias for onAnyBeforeMove)
 pub fn dispatch_on_any_before_move_order(
@@ -2524,6 +3165,8 @@ pub fn dispatch_on_any_before_move_order(
 ) -> EventResult {
     dispatch_on_any_before_move(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyBeforeMoveSubOrder callbacks (alias for onAnyBeforeMove)
 pub fn dispatch_on_any_before_move_sub_order(
@@ -2532,6 +3175,8 @@ pub fn dispatch_on_any_before_move_sub_order(
 ) -> EventResult {
     dispatch_on_any_before_move(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyDamagePriority callbacks (alias for onAnyDamage)
 pub fn dispatch_on_any_damage_priority(
@@ -2541,6 +3186,8 @@ pub fn dispatch_on_any_damage_priority(
 ) -> EventResult {
     dispatch_on_any_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyDamageOrder callbacks (alias for onAnyDamage)
 pub fn dispatch_on_any_damage_order(
@@ -2550,6 +3197,8 @@ pub fn dispatch_on_any_damage_order(
 ) -> EventResult {
     dispatch_on_any_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyDamageSubOrder callbacks (alias for onAnyDamage)
 pub fn dispatch_on_any_damage_sub_order(
@@ -2559,6 +3208,8 @@ pub fn dispatch_on_any_damage_sub_order(
 ) -> EventResult {
     dispatch_on_any_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyFaintPriority callbacks (alias for onAnyFaint)
 pub fn dispatch_on_any_faint_priority(
@@ -2567,6 +3218,8 @@ pub fn dispatch_on_any_faint_priority(
 ) -> EventResult {
     dispatch_on_any_faint(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyFaintOrder callbacks (alias for onAnyFaint)
 pub fn dispatch_on_any_faint_order(
@@ -2575,6 +3228,8 @@ pub fn dispatch_on_any_faint_order(
 ) -> EventResult {
     dispatch_on_any_faint(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyFaintSubOrder callbacks (alias for onAnyFaint)
 pub fn dispatch_on_any_faint_sub_order(
@@ -2583,6 +3238,8 @@ pub fn dispatch_on_any_faint_sub_order(
 ) -> EventResult {
     dispatch_on_any_faint(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyInvulnerabilityPriority callbacks (alias for onAnyInvulnerability)
 pub fn dispatch_on_any_invulnerability_priority(
@@ -2592,6 +3249,8 @@ pub fn dispatch_on_any_invulnerability_priority(
 ) -> EventResult {
     dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyInvulnerabilityOrder callbacks (alias for onAnyInvulnerability)
 pub fn dispatch_on_any_invulnerability_order(
@@ -2601,6 +3260,8 @@ pub fn dispatch_on_any_invulnerability_order(
 ) -> EventResult {
     dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyInvulnerabilitySubOrder callbacks (alias for onAnyInvulnerability)
 pub fn dispatch_on_any_invulnerability_sub_order(
@@ -2610,6 +3271,8 @@ pub fn dispatch_on_any_invulnerability_sub_order(
 ) -> EventResult {
     dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyAccuracyPriority callbacks (alias for onAnyModifyAccuracy)
 pub fn dispatch_on_any_modify_accuracy_priority(
@@ -2619,6 +3282,8 @@ pub fn dispatch_on_any_modify_accuracy_priority(
 ) -> EventResult {
     dispatch_on_any_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyAccuracyOrder callbacks (alias for onAnyModifyAccuracy)
 pub fn dispatch_on_any_modify_accuracy_order(
@@ -2628,6 +3293,8 @@ pub fn dispatch_on_any_modify_accuracy_order(
 ) -> EventResult {
     dispatch_on_any_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyAccuracySubOrder callbacks (alias for onAnyModifyAccuracy)
 pub fn dispatch_on_any_modify_accuracy_sub_order(
@@ -2637,6 +3304,8 @@ pub fn dispatch_on_any_modify_accuracy_sub_order(
 ) -> EventResult {
     dispatch_on_any_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyAtkPriority callbacks (alias for onAnyModifyAtk)
 pub fn dispatch_on_any_modify_atk_priority(
@@ -2646,6 +3315,8 @@ pub fn dispatch_on_any_modify_atk_priority(
 ) -> EventResult {
     dispatch_on_any_modify_atk(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyAtkOrder callbacks (alias for onAnyModifyAtk)
 pub fn dispatch_on_any_modify_atk_order(
@@ -2655,6 +3326,8 @@ pub fn dispatch_on_any_modify_atk_order(
 ) -> EventResult {
     dispatch_on_any_modify_atk(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyAtkSubOrder callbacks (alias for onAnyModifyAtk)
 pub fn dispatch_on_any_modify_atk_sub_order(
@@ -2664,6 +3337,8 @@ pub fn dispatch_on_any_modify_atk_sub_order(
 ) -> EventResult {
     dispatch_on_any_modify_atk(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyBoostPriority callbacks (alias for onAnyModifyBoost)
 pub fn dispatch_on_any_modify_boost_priority(
@@ -2673,6 +3348,8 @@ pub fn dispatch_on_any_modify_boost_priority(
 ) -> EventResult {
     dispatch_on_any_modify_boost(battle, ability_id, boosts, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyBoostOrder callbacks (alias for onAnyModifyBoost)
 pub fn dispatch_on_any_modify_boost_order(
@@ -2682,6 +3359,8 @@ pub fn dispatch_on_any_modify_boost_order(
 ) -> EventResult {
     dispatch_on_any_modify_boost(battle, ability_id, boosts, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyBoostSubOrder callbacks (alias for onAnyModifyBoost)
 pub fn dispatch_on_any_modify_boost_sub_order(
@@ -2691,6 +3370,8 @@ pub fn dispatch_on_any_modify_boost_sub_order(
 ) -> EventResult {
     dispatch_on_any_modify_boost(battle, ability_id, boosts, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyDamagePriority callbacks (alias for onAnyModifyDamage)
 pub fn dispatch_on_any_modify_damage_priority(
@@ -2700,6 +3381,8 @@ pub fn dispatch_on_any_modify_damage_priority(
 ) -> EventResult {
     dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyDamageOrder callbacks (alias for onAnyModifyDamage)
 pub fn dispatch_on_any_modify_damage_order(
@@ -2709,6 +3392,8 @@ pub fn dispatch_on_any_modify_damage_order(
 ) -> EventResult {
     dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyDamageSubOrder callbacks (alias for onAnyModifyDamage)
 pub fn dispatch_on_any_modify_damage_sub_order(
@@ -2718,6 +3403,8 @@ pub fn dispatch_on_any_modify_damage_sub_order(
 ) -> EventResult {
     dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyDefPriority callbacks (alias for onAnyModifyDef)
 pub fn dispatch_on_any_modify_def_priority(
@@ -2727,6 +3414,8 @@ pub fn dispatch_on_any_modify_def_priority(
 ) -> EventResult {
     dispatch_on_any_modify_def(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyDefOrder callbacks (alias for onAnyModifyDef)
 pub fn dispatch_on_any_modify_def_order(
@@ -2736,6 +3425,8 @@ pub fn dispatch_on_any_modify_def_order(
 ) -> EventResult {
     dispatch_on_any_modify_def(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifyDefSubOrder callbacks (alias for onAnyModifyDef)
 pub fn dispatch_on_any_modify_def_sub_order(
@@ -2745,6 +3436,8 @@ pub fn dispatch_on_any_modify_def_sub_order(
 ) -> EventResult {
     dispatch_on_any_modify_def(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifySpAPriority callbacks (alias for onAnyModifySpA)
 pub fn dispatch_on_any_modify_sp_a_priority(
@@ -2754,6 +3447,8 @@ pub fn dispatch_on_any_modify_sp_a_priority(
 ) -> EventResult {
     dispatch_on_any_modify_sp_a(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifySpAOrder callbacks (alias for onAnyModifySpA)
 pub fn dispatch_on_any_modify_sp_a_order(
@@ -2763,6 +3458,8 @@ pub fn dispatch_on_any_modify_sp_a_order(
 ) -> EventResult {
     dispatch_on_any_modify_sp_a(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifySpASubOrder callbacks (alias for onAnyModifySpA)
 pub fn dispatch_on_any_modify_sp_a_sub_order(
@@ -2772,6 +3469,8 @@ pub fn dispatch_on_any_modify_sp_a_sub_order(
 ) -> EventResult {
     dispatch_on_any_modify_sp_a(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifySpDPriority callbacks (alias for onAnyModifySpD)
 pub fn dispatch_on_any_modify_sp_d_priority(
@@ -2781,6 +3480,8 @@ pub fn dispatch_on_any_modify_sp_d_priority(
 ) -> EventResult {
     dispatch_on_any_modify_sp_d(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifySpDOrder callbacks (alias for onAnyModifySpD)
 pub fn dispatch_on_any_modify_sp_d_order(
@@ -2790,6 +3491,8 @@ pub fn dispatch_on_any_modify_sp_d_order(
 ) -> EventResult {
     dispatch_on_any_modify_sp_d(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyModifySpDSubOrder callbacks (alias for onAnyModifySpD)
 pub fn dispatch_on_any_modify_sp_d_sub_order(
@@ -2799,6 +3502,8 @@ pub fn dispatch_on_any_modify_sp_d_sub_order(
 ) -> EventResult {
     dispatch_on_any_modify_sp_d(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyRedirectTargetPriority callbacks (alias for onAnyRedirectTarget)
 pub fn dispatch_on_any_redirect_target_priority(
@@ -2808,6 +3513,8 @@ pub fn dispatch_on_any_redirect_target_priority(
 ) -> EventResult {
     dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyRedirectTargetOrder callbacks (alias for onAnyRedirectTarget)
 pub fn dispatch_on_any_redirect_target_order(
@@ -2817,6 +3524,8 @@ pub fn dispatch_on_any_redirect_target_order(
 ) -> EventResult {
     dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyRedirectTargetSubOrder callbacks (alias for onAnyRedirectTarget)
 pub fn dispatch_on_any_redirect_target_sub_order(
@@ -2826,6 +3535,8 @@ pub fn dispatch_on_any_redirect_target_sub_order(
 ) -> EventResult {
     dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnySetWeatherPriority callbacks (alias for onAnySetWeather)
 pub fn dispatch_on_any_set_weather_priority(
@@ -2835,6 +3546,8 @@ pub fn dispatch_on_any_set_weather_priority(
 ) -> EventResult {
     dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnySetWeatherOrder callbacks (alias for onAnySetWeather)
 pub fn dispatch_on_any_set_weather_order(
@@ -2844,6 +3557,8 @@ pub fn dispatch_on_any_set_weather_order(
 ) -> EventResult {
     dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnySetWeatherSubOrder callbacks (alias for onAnySetWeather)
 pub fn dispatch_on_any_set_weather_sub_order(
@@ -2853,6 +3568,8 @@ pub fn dispatch_on_any_set_weather_sub_order(
 ) -> EventResult {
     dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnySwitchInPriority callbacks (alias for onAnySwitchIn)
 pub fn dispatch_on_any_switch_in_priority(
@@ -2861,6 +3578,8 @@ pub fn dispatch_on_any_switch_in_priority(
 ) -> EventResult {
     dispatch_on_any_switch_in(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnySwitchInOrder callbacks (alias for onAnySwitchIn)
 pub fn dispatch_on_any_switch_in_order(
@@ -2869,6 +3588,8 @@ pub fn dispatch_on_any_switch_in_order(
 ) -> EventResult {
     dispatch_on_any_switch_in(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnySwitchInSubOrder callbacks (alias for onAnySwitchIn)
 pub fn dispatch_on_any_switch_in_sub_order(
@@ -2877,6 +3598,8 @@ pub fn dispatch_on_any_switch_in_sub_order(
 ) -> EventResult {
     dispatch_on_any_switch_in(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyTryMovePriority callbacks (alias for onAnyTryMove)
 pub fn dispatch_on_any_try_move_priority(
@@ -2886,6 +3609,8 @@ pub fn dispatch_on_any_try_move_priority(
 ) -> EventResult {
     dispatch_on_any_try_move(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyTryMoveOrder callbacks (alias for onAnyTryMove)
 pub fn dispatch_on_any_try_move_order(
@@ -2895,6 +3620,8 @@ pub fn dispatch_on_any_try_move_order(
 ) -> EventResult {
     dispatch_on_any_try_move(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyTryMoveSubOrder callbacks (alias for onAnyTryMove)
 pub fn dispatch_on_any_try_move_sub_order(
@@ -2904,6 +3631,8 @@ pub fn dispatch_on_any_try_move_sub_order(
 ) -> EventResult {
     dispatch_on_any_try_move(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyTryPrimaryHitPriority callbacks (alias for onAnyTryPrimaryHit)
 pub fn dispatch_on_any_try_primary_hit_priority(
@@ -2913,6 +3642,8 @@ pub fn dispatch_on_any_try_primary_hit_priority(
 ) -> EventResult {
     dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyTryPrimaryHitOrder callbacks (alias for onAnyTryPrimaryHit)
 pub fn dispatch_on_any_try_primary_hit_order(
@@ -2922,6 +3653,8 @@ pub fn dispatch_on_any_try_primary_hit_order(
 ) -> EventResult {
     dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onAnyTryPrimaryHitSubOrder callbacks (alias for onAnyTryPrimaryHit)
 pub fn dispatch_on_any_try_primary_hit_sub_order(
@@ -2931,6 +3664,8 @@ pub fn dispatch_on_any_try_primary_hit_sub_order(
 ) -> EventResult {
     dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onBasePowerPriority callbacks (alias for onBasePower)
 pub fn dispatch_on_base_power_priority(
@@ -2940,6 +3675,8 @@ pub fn dispatch_on_base_power_priority(
 ) -> EventResult {
     dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onBasePowerOrder callbacks (alias for onBasePower)
 pub fn dispatch_on_base_power_order(
@@ -2949,6 +3686,8 @@ pub fn dispatch_on_base_power_order(
 ) -> EventResult {
     dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onBasePowerSubOrder callbacks (alias for onBasePower)
 pub fn dispatch_on_base_power_sub_order(
@@ -2958,6 +3697,8 @@ pub fn dispatch_on_base_power_sub_order(
 ) -> EventResult {
     dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onBeforeMovePriority callbacks (alias for onBeforeMove)
 pub fn dispatch_on_before_move_priority(
@@ -2967,6 +3708,8 @@ pub fn dispatch_on_before_move_priority(
 ) -> EventResult {
     dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onBeforeMoveOrder callbacks (alias for onBeforeMove)
 pub fn dispatch_on_before_move_order(
@@ -2976,6 +3719,8 @@ pub fn dispatch_on_before_move_order(
 ) -> EventResult {
     dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onBeforeMoveSubOrder callbacks (alias for onBeforeMove)
 pub fn dispatch_on_before_move_sub_order(
@@ -2985,6 +3730,8 @@ pub fn dispatch_on_before_move_sub_order(
 ) -> EventResult {
     dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onBeforeSwitchInPriority callbacks (alias for onBeforeSwitchIn)
 pub fn dispatch_on_before_switch_in_priority(
@@ -2994,6 +3741,8 @@ pub fn dispatch_on_before_switch_in_priority(
 ) -> EventResult {
     dispatch_on_before_switch_in(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onBeforeSwitchInOrder callbacks (alias for onBeforeSwitchIn)
 pub fn dispatch_on_before_switch_in_order(
@@ -3003,6 +3752,8 @@ pub fn dispatch_on_before_switch_in_order(
 ) -> EventResult {
     dispatch_on_before_switch_in(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onBeforeSwitchInSubOrder callbacks (alias for onBeforeSwitchIn)
 pub fn dispatch_on_before_switch_in_sub_order(
@@ -3012,6 +3763,8 @@ pub fn dispatch_on_before_switch_in_sub_order(
 ) -> EventResult {
     dispatch_on_before_switch_in(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onChangeBoostPriority callbacks (alias for onChangeBoost)
 pub fn dispatch_on_change_boost_priority(
@@ -3021,6 +3774,8 @@ pub fn dispatch_on_change_boost_priority(
 ) -> EventResult {
     dispatch_on_change_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onChangeBoostOrder callbacks (alias for onChangeBoost)
 pub fn dispatch_on_change_boost_order(
@@ -3030,6 +3785,8 @@ pub fn dispatch_on_change_boost_order(
 ) -> EventResult {
     dispatch_on_change_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onChangeBoostSubOrder callbacks (alias for onChangeBoost)
 pub fn dispatch_on_change_boost_sub_order(
@@ -3039,6 +3796,8 @@ pub fn dispatch_on_change_boost_sub_order(
 ) -> EventResult {
     dispatch_on_change_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onCheckShowPriority callbacks (alias for onCheckShow)
 pub fn dispatch_on_check_show_priority(
@@ -3048,6 +3807,8 @@ pub fn dispatch_on_check_show_priority(
 ) -> EventResult {
     dispatch_on_check_show(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onCheckShowOrder callbacks (alias for onCheckShow)
 pub fn dispatch_on_check_show_order(
@@ -3057,6 +3818,8 @@ pub fn dispatch_on_check_show_order(
 ) -> EventResult {
     dispatch_on_check_show(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onCheckShowSubOrder callbacks (alias for onCheckShow)
 pub fn dispatch_on_check_show_sub_order(
@@ -3066,6 +3829,8 @@ pub fn dispatch_on_check_show_sub_order(
 ) -> EventResult {
     dispatch_on_check_show(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onCriticalHitPriority callbacks (alias for onCriticalHit)
 pub fn dispatch_on_critical_hit_priority(
@@ -3075,6 +3840,8 @@ pub fn dispatch_on_critical_hit_priority(
 ) -> EventResult {
     dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onCriticalHitOrder callbacks (alias for onCriticalHit)
 pub fn dispatch_on_critical_hit_order(
@@ -3084,6 +3851,8 @@ pub fn dispatch_on_critical_hit_order(
 ) -> EventResult {
     dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onCriticalHitSubOrder callbacks (alias for onCriticalHit)
 pub fn dispatch_on_critical_hit_sub_order(
@@ -3093,6 +3862,8 @@ pub fn dispatch_on_critical_hit_sub_order(
 ) -> EventResult {
     dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDamagePriority callbacks (alias for onDamage)
 pub fn dispatch_on_damage_priority(
@@ -3102,6 +3873,8 @@ pub fn dispatch_on_damage_priority(
 ) -> EventResult {
     dispatch_on_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDamageOrder callbacks (alias for onDamage)
 pub fn dispatch_on_damage_order(
@@ -3111,6 +3884,8 @@ pub fn dispatch_on_damage_order(
 ) -> EventResult {
     dispatch_on_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDamageSubOrder callbacks (alias for onDamage)
 pub fn dispatch_on_damage_sub_order(
@@ -3120,6 +3895,8 @@ pub fn dispatch_on_damage_sub_order(
 ) -> EventResult {
     dispatch_on_damage(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDamagingHitPriority callbacks (alias for onDamagingHit)
 pub fn dispatch_on_damaging_hit_priority(
@@ -3129,6 +3906,8 @@ pub fn dispatch_on_damaging_hit_priority(
 ) -> EventResult {
     dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDamagingHitOrder callbacks (alias for onDamagingHit)
 pub fn dispatch_on_damaging_hit_order(
@@ -3138,6 +3917,8 @@ pub fn dispatch_on_damaging_hit_order(
 ) -> EventResult {
     dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDamagingHitSubOrder callbacks (alias for onDamagingHit)
 pub fn dispatch_on_damaging_hit_sub_order(
@@ -3147,6 +3928,8 @@ pub fn dispatch_on_damaging_hit_sub_order(
 ) -> EventResult {
     dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDeductPPPriority callbacks (alias for onDeductPP)
 pub fn dispatch_on_deduct_p_p_priority(
@@ -3156,6 +3939,8 @@ pub fn dispatch_on_deduct_p_p_priority(
 ) -> EventResult {
     dispatch_on_deduct_p_p(battle, ability_id, target_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDeductPPOrder callbacks (alias for onDeductPP)
 pub fn dispatch_on_deduct_p_p_order(
@@ -3165,6 +3950,8 @@ pub fn dispatch_on_deduct_p_p_order(
 ) -> EventResult {
     dispatch_on_deduct_p_p(battle, ability_id, target_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDeductPPSubOrder callbacks (alias for onDeductPP)
 pub fn dispatch_on_deduct_p_p_sub_order(
@@ -3174,6 +3961,8 @@ pub fn dispatch_on_deduct_p_p_sub_order(
 ) -> EventResult {
     dispatch_on_deduct_p_p(battle, ability_id, target_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDisableMovePriority callbacks (alias for onDisableMove)
 pub fn dispatch_on_disable_move_priority(
@@ -3183,6 +3972,8 @@ pub fn dispatch_on_disable_move_priority(
 ) -> EventResult {
     dispatch_on_disable_move(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDisableMoveOrder callbacks (alias for onDisableMove)
 pub fn dispatch_on_disable_move_order(
@@ -3192,6 +3983,8 @@ pub fn dispatch_on_disable_move_order(
 ) -> EventResult {
     dispatch_on_disable_move(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDisableMoveSubOrder callbacks (alias for onDisableMove)
 pub fn dispatch_on_disable_move_sub_order(
@@ -3201,6 +3994,8 @@ pub fn dispatch_on_disable_move_sub_order(
 ) -> EventResult {
     dispatch_on_disable_move(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDragOutPriority callbacks (alias for onDragOut)
 pub fn dispatch_on_drag_out_priority(
@@ -3210,6 +4005,8 @@ pub fn dispatch_on_drag_out_priority(
 ) -> EventResult {
     dispatch_on_drag_out(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDragOutOrder callbacks (alias for onDragOut)
 pub fn dispatch_on_drag_out_order(
@@ -3219,6 +4016,8 @@ pub fn dispatch_on_drag_out_order(
 ) -> EventResult {
     dispatch_on_drag_out(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onDragOutSubOrder callbacks (alias for onDragOut)
 pub fn dispatch_on_drag_out_sub_order(
@@ -3228,6 +4027,8 @@ pub fn dispatch_on_drag_out_sub_order(
 ) -> EventResult {
     dispatch_on_drag_out(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEatItemPriority callbacks (alias for onEatItem)
 pub fn dispatch_on_eat_item_priority(
@@ -3237,6 +4038,8 @@ pub fn dispatch_on_eat_item_priority(
 ) -> EventResult {
     dispatch_on_eat_item(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEatItemOrder callbacks (alias for onEatItem)
 pub fn dispatch_on_eat_item_order(
@@ -3246,6 +4049,8 @@ pub fn dispatch_on_eat_item_order(
 ) -> EventResult {
     dispatch_on_eat_item(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEatItemSubOrder callbacks (alias for onEatItem)
 pub fn dispatch_on_eat_item_sub_order(
@@ -3255,6 +4060,8 @@ pub fn dispatch_on_eat_item_sub_order(
 ) -> EventResult {
     dispatch_on_eat_item(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEffectivenessPriority callbacks (alias for onEffectiveness)
 pub fn dispatch_on_effectiveness_priority(
@@ -3264,6 +4071,8 @@ pub fn dispatch_on_effectiveness_priority(
 ) -> EventResult {
     dispatch_on_effectiveness(battle, ability_id, damage, target_pos, type_str, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEffectivenessOrder callbacks (alias for onEffectiveness)
 pub fn dispatch_on_effectiveness_order(
@@ -3273,6 +4082,8 @@ pub fn dispatch_on_effectiveness_order(
 ) -> EventResult {
     dispatch_on_effectiveness(battle, ability_id, damage, target_pos, type_str, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEffectivenessSubOrder callbacks (alias for onEffectiveness)
 pub fn dispatch_on_effectiveness_sub_order(
@@ -3282,6 +4093,8 @@ pub fn dispatch_on_effectiveness_sub_order(
 ) -> EventResult {
     dispatch_on_effectiveness(battle, ability_id, damage, target_pos, type_str, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEmergencyExitPriority callbacks (alias for onEmergencyExit)
 pub fn dispatch_on_emergency_exit_priority(
@@ -3291,6 +4104,8 @@ pub fn dispatch_on_emergency_exit_priority(
 ) -> EventResult {
     dispatch_on_emergency_exit(battle, ability_id, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEmergencyExitOrder callbacks (alias for onEmergencyExit)
 pub fn dispatch_on_emergency_exit_order(
@@ -3300,6 +4115,8 @@ pub fn dispatch_on_emergency_exit_order(
 ) -> EventResult {
     dispatch_on_emergency_exit(battle, ability_id, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEmergencyExitSubOrder callbacks (alias for onEmergencyExit)
 pub fn dispatch_on_emergency_exit_sub_order(
@@ -3309,6 +4126,8 @@ pub fn dispatch_on_emergency_exit_sub_order(
 ) -> EventResult {
     dispatch_on_emergency_exit(battle, ability_id, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEndPriority callbacks (alias for onEnd)
 pub fn dispatch_on_end_priority(
@@ -3318,6 +4137,8 @@ pub fn dispatch_on_end_priority(
 ) -> EventResult {
     dispatch_on_end(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEndOrder callbacks (alias for onEnd)
 pub fn dispatch_on_end_order(
@@ -3327,6 +4148,8 @@ pub fn dispatch_on_end_order(
 ) -> EventResult {
     dispatch_on_end(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onEndSubOrder callbacks (alias for onEnd)
 pub fn dispatch_on_end_sub_order(
@@ -3336,6 +4159,8 @@ pub fn dispatch_on_end_sub_order(
 ) -> EventResult {
     dispatch_on_end(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFaintPriority callbacks (alias for onFaint)
 pub fn dispatch_on_faint_priority(
@@ -3345,6 +4170,8 @@ pub fn dispatch_on_faint_priority(
 ) -> EventResult {
     dispatch_on_faint(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFaintOrder callbacks (alias for onFaint)
 pub fn dispatch_on_faint_order(
@@ -3354,6 +4181,8 @@ pub fn dispatch_on_faint_order(
 ) -> EventResult {
     dispatch_on_faint(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFaintSubOrder callbacks (alias for onFaint)
 pub fn dispatch_on_faint_sub_order(
@@ -3363,6 +4192,8 @@ pub fn dispatch_on_faint_sub_order(
 ) -> EventResult {
     dispatch_on_faint(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFlinchPriority callbacks (alias for onFlinch)
 pub fn dispatch_on_flinch_priority(
@@ -3372,6 +4203,8 @@ pub fn dispatch_on_flinch_priority(
 ) -> EventResult {
     dispatch_on_flinch(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFlinchOrder callbacks (alias for onFlinch)
 pub fn dispatch_on_flinch_order(
@@ -3381,6 +4214,8 @@ pub fn dispatch_on_flinch_order(
 ) -> EventResult {
     dispatch_on_flinch(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFlinchSubOrder callbacks (alias for onFlinch)
 pub fn dispatch_on_flinch_sub_order(
@@ -3390,6 +4225,8 @@ pub fn dispatch_on_flinch_sub_order(
 ) -> EventResult {
     dispatch_on_flinch(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeAfterBoostPriority callbacks (alias for onFoeAfterBoost)
 pub fn dispatch_on_foe_after_boost_priority(
@@ -3399,6 +4236,8 @@ pub fn dispatch_on_foe_after_boost_priority(
 ) -> EventResult {
     dispatch_on_foe_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeAfterBoostOrder callbacks (alias for onFoeAfterBoost)
 pub fn dispatch_on_foe_after_boost_order(
@@ -3408,6 +4247,8 @@ pub fn dispatch_on_foe_after_boost_order(
 ) -> EventResult {
     dispatch_on_foe_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeAfterBoostSubOrder callbacks (alias for onFoeAfterBoost)
 pub fn dispatch_on_foe_after_boost_sub_order(
@@ -3417,6 +4258,8 @@ pub fn dispatch_on_foe_after_boost_sub_order(
 ) -> EventResult {
     dispatch_on_foe_after_boost(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeMaybeTrapPokemonPriority callbacks (alias for onFoeMaybeTrapPokemon)
 pub fn dispatch_on_foe_maybe_trap_pokemon_priority(
@@ -3426,6 +4269,8 @@ pub fn dispatch_on_foe_maybe_trap_pokemon_priority(
 ) -> EventResult {
     dispatch_on_foe_maybe_trap_pokemon(battle, ability_id, pokemon_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeMaybeTrapPokemonOrder callbacks (alias for onFoeMaybeTrapPokemon)
 pub fn dispatch_on_foe_maybe_trap_pokemon_order(
@@ -3435,6 +4280,8 @@ pub fn dispatch_on_foe_maybe_trap_pokemon_order(
 ) -> EventResult {
     dispatch_on_foe_maybe_trap_pokemon(battle, ability_id, pokemon_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeMaybeTrapPokemonSubOrder callbacks (alias for onFoeMaybeTrapPokemon)
 pub fn dispatch_on_foe_maybe_trap_pokemon_sub_order(
@@ -3444,6 +4291,8 @@ pub fn dispatch_on_foe_maybe_trap_pokemon_sub_order(
 ) -> EventResult {
     dispatch_on_foe_maybe_trap_pokemon(battle, ability_id, pokemon_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeTrapPokemonPriority callbacks (alias for onFoeTrapPokemon)
 pub fn dispatch_on_foe_trap_pokemon_priority(
@@ -3453,6 +4302,8 @@ pub fn dispatch_on_foe_trap_pokemon_priority(
 ) -> EventResult {
     dispatch_on_foe_trap_pokemon(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeTrapPokemonOrder callbacks (alias for onFoeTrapPokemon)
 pub fn dispatch_on_foe_trap_pokemon_order(
@@ -3462,6 +4313,8 @@ pub fn dispatch_on_foe_trap_pokemon_order(
 ) -> EventResult {
     dispatch_on_foe_trap_pokemon(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeTrapPokemonSubOrder callbacks (alias for onFoeTrapPokemon)
 pub fn dispatch_on_foe_trap_pokemon_sub_order(
@@ -3471,6 +4324,8 @@ pub fn dispatch_on_foe_trap_pokemon_sub_order(
 ) -> EventResult {
     dispatch_on_foe_trap_pokemon(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeTryEatItemPriority callbacks (alias for onFoeTryEatItem)
 pub fn dispatch_on_foe_try_eat_item_priority(
@@ -3479,6 +4334,8 @@ pub fn dispatch_on_foe_try_eat_item_priority(
 ) -> EventResult {
     dispatch_on_foe_try_eat_item(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeTryEatItemOrder callbacks (alias for onFoeTryEatItem)
 pub fn dispatch_on_foe_try_eat_item_order(
@@ -3487,6 +4344,8 @@ pub fn dispatch_on_foe_try_eat_item_order(
 ) -> EventResult {
     dispatch_on_foe_try_eat_item(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeTryEatItemSubOrder callbacks (alias for onFoeTryEatItem)
 pub fn dispatch_on_foe_try_eat_item_sub_order(
@@ -3495,6 +4354,8 @@ pub fn dispatch_on_foe_try_eat_item_sub_order(
 ) -> EventResult {
     dispatch_on_foe_try_eat_item(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeTryMovePriority callbacks (alias for onFoeTryMove)
 pub fn dispatch_on_foe_try_move_priority(
@@ -3504,6 +4365,8 @@ pub fn dispatch_on_foe_try_move_priority(
 ) -> EventResult {
     dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeTryMoveOrder callbacks (alias for onFoeTryMove)
 pub fn dispatch_on_foe_try_move_order(
@@ -3513,6 +4376,8 @@ pub fn dispatch_on_foe_try_move_order(
 ) -> EventResult {
     dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFoeTryMoveSubOrder callbacks (alias for onFoeTryMove)
 pub fn dispatch_on_foe_try_move_sub_order(
@@ -3522,6 +4387,8 @@ pub fn dispatch_on_foe_try_move_sub_order(
 ) -> EventResult {
     dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFractionalPriorityPriority callbacks (alias for onFractionalPriority)
 pub fn dispatch_on_fractional_priority_priority(
@@ -3531,6 +4398,8 @@ pub fn dispatch_on_fractional_priority_priority(
 ) -> EventResult {
     dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFractionalPriorityOrder callbacks (alias for onFractionalPriority)
 pub fn dispatch_on_fractional_priority_order(
@@ -3540,6 +4409,8 @@ pub fn dispatch_on_fractional_priority_order(
 ) -> EventResult {
     dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onFractionalPrioritySubOrder callbacks (alias for onFractionalPriority)
 pub fn dispatch_on_fractional_priority_sub_order(
@@ -3549,6 +4420,8 @@ pub fn dispatch_on_fractional_priority_sub_order(
 ) -> EventResult {
     dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onHitPriority callbacks (alias for onHit)
 pub fn dispatch_on_hit_priority(
@@ -3558,6 +4431,8 @@ pub fn dispatch_on_hit_priority(
 ) -> EventResult {
     dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onHitOrder callbacks (alias for onHit)
 pub fn dispatch_on_hit_order(
@@ -3567,6 +4442,8 @@ pub fn dispatch_on_hit_order(
 ) -> EventResult {
     dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onHitSubOrder callbacks (alias for onHit)
 pub fn dispatch_on_hit_sub_order(
@@ -3576,6 +4453,8 @@ pub fn dispatch_on_hit_sub_order(
 ) -> EventResult {
     dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onImmunityPriority callbacks (alias for onImmunity)
 pub fn dispatch_on_immunity_priority(
@@ -3585,6 +4464,8 @@ pub fn dispatch_on_immunity_priority(
 ) -> EventResult {
     dispatch_on_immunity(battle, ability_id, type_or_status, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onImmunityOrder callbacks (alias for onImmunity)
 pub fn dispatch_on_immunity_order(
@@ -3594,6 +4475,8 @@ pub fn dispatch_on_immunity_order(
 ) -> EventResult {
     dispatch_on_immunity(battle, ability_id, type_or_status, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onImmunitySubOrder callbacks (alias for onImmunity)
 pub fn dispatch_on_immunity_sub_order(
@@ -3603,6 +4486,8 @@ pub fn dispatch_on_immunity_sub_order(
 ) -> EventResult {
     dispatch_on_immunity(battle, ability_id, type_or_status, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyAccuracyPriority callbacks (alias for onModifyAccuracy)
 pub fn dispatch_on_modify_accuracy_priority(
@@ -3612,6 +4497,8 @@ pub fn dispatch_on_modify_accuracy_priority(
 ) -> EventResult {
     dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyAccuracyOrder callbacks (alias for onModifyAccuracy)
 pub fn dispatch_on_modify_accuracy_order(
@@ -3621,6 +4508,8 @@ pub fn dispatch_on_modify_accuracy_order(
 ) -> EventResult {
     dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyAccuracySubOrder callbacks (alias for onModifyAccuracy)
 pub fn dispatch_on_modify_accuracy_sub_order(
@@ -3630,6 +4519,8 @@ pub fn dispatch_on_modify_accuracy_sub_order(
 ) -> EventResult {
     dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyAtkPriority callbacks (alias for onModifyAtk)
 pub fn dispatch_on_modify_atk_priority(
@@ -3639,6 +4530,8 @@ pub fn dispatch_on_modify_atk_priority(
 ) -> EventResult {
     dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyAtkOrder callbacks (alias for onModifyAtk)
 pub fn dispatch_on_modify_atk_order(
@@ -3648,6 +4541,8 @@ pub fn dispatch_on_modify_atk_order(
 ) -> EventResult {
     dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyAtkSubOrder callbacks (alias for onModifyAtk)
 pub fn dispatch_on_modify_atk_sub_order(
@@ -3657,6 +4552,8 @@ pub fn dispatch_on_modify_atk_sub_order(
 ) -> EventResult {
     dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyCritRatioPriority callbacks (alias for onModifyCritRatio)
 pub fn dispatch_on_modify_crit_ratio_priority(
@@ -3666,6 +4563,8 @@ pub fn dispatch_on_modify_crit_ratio_priority(
 ) -> EventResult {
     dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyCritRatioOrder callbacks (alias for onModifyCritRatio)
 pub fn dispatch_on_modify_crit_ratio_order(
@@ -3675,6 +4574,8 @@ pub fn dispatch_on_modify_crit_ratio_order(
 ) -> EventResult {
     dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyCritRatioSubOrder callbacks (alias for onModifyCritRatio)
 pub fn dispatch_on_modify_crit_ratio_sub_order(
@@ -3684,6 +4585,8 @@ pub fn dispatch_on_modify_crit_ratio_sub_order(
 ) -> EventResult {
     dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyDamagePriority callbacks (alias for onModifyDamage)
 pub fn dispatch_on_modify_damage_priority(
@@ -3693,6 +4596,8 @@ pub fn dispatch_on_modify_damage_priority(
 ) -> EventResult {
     dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyDamageOrder callbacks (alias for onModifyDamage)
 pub fn dispatch_on_modify_damage_order(
@@ -3702,6 +4607,8 @@ pub fn dispatch_on_modify_damage_order(
 ) -> EventResult {
     dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyDamageSubOrder callbacks (alias for onModifyDamage)
 pub fn dispatch_on_modify_damage_sub_order(
@@ -3711,6 +4618,8 @@ pub fn dispatch_on_modify_damage_sub_order(
 ) -> EventResult {
     dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyDefPriority callbacks (alias for onModifyDef)
 pub fn dispatch_on_modify_def_priority(
@@ -3720,6 +4629,8 @@ pub fn dispatch_on_modify_def_priority(
 ) -> EventResult {
     dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyDefOrder callbacks (alias for onModifyDef)
 pub fn dispatch_on_modify_def_order(
@@ -3729,6 +4640,8 @@ pub fn dispatch_on_modify_def_order(
 ) -> EventResult {
     dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyDefSubOrder callbacks (alias for onModifyDef)
 pub fn dispatch_on_modify_def_sub_order(
@@ -3738,6 +4651,8 @@ pub fn dispatch_on_modify_def_sub_order(
 ) -> EventResult {
     dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyMovePriority callbacks (alias for onModifyMove)
 pub fn dispatch_on_modify_move_priority(
@@ -3747,6 +4662,8 @@ pub fn dispatch_on_modify_move_priority(
 ) -> EventResult {
     dispatch_on_modify_move(battle, ability_id, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyMoveOrder callbacks (alias for onModifyMove)
 pub fn dispatch_on_modify_move_order(
@@ -3756,6 +4673,8 @@ pub fn dispatch_on_modify_move_order(
 ) -> EventResult {
     dispatch_on_modify_move(battle, ability_id, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyMoveSubOrder callbacks (alias for onModifyMove)
 pub fn dispatch_on_modify_move_sub_order(
@@ -3765,6 +4684,8 @@ pub fn dispatch_on_modify_move_sub_order(
 ) -> EventResult {
     dispatch_on_modify_move(battle, ability_id, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyPriorityPriority callbacks (alias for onModifyPriority)
 pub fn dispatch_on_modify_priority_priority(
@@ -3774,6 +4695,8 @@ pub fn dispatch_on_modify_priority_priority(
 ) -> EventResult {
     dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyPriorityOrder callbacks (alias for onModifyPriority)
 pub fn dispatch_on_modify_priority_order(
@@ -3783,6 +4706,8 @@ pub fn dispatch_on_modify_priority_order(
 ) -> EventResult {
     dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyPrioritySubOrder callbacks (alias for onModifyPriority)
 pub fn dispatch_on_modify_priority_sub_order(
@@ -3792,6 +4717,8 @@ pub fn dispatch_on_modify_priority_sub_order(
 ) -> EventResult {
     dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySTABPriority callbacks (alias for onModifySTAB)
 pub fn dispatch_on_modify_s_t_a_b_priority(
@@ -3802,6 +4729,8 @@ pub fn dispatch_on_modify_s_t_a_b_priority(
 ) -> EventResult {
     dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySTABOrder callbacks (alias for onModifySTAB)
 pub fn dispatch_on_modify_s_t_a_b_order(
@@ -3812,6 +4741,8 @@ pub fn dispatch_on_modify_s_t_a_b_order(
 ) -> EventResult {
     dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySTABSubOrder callbacks (alias for onModifySTAB)
 pub fn dispatch_on_modify_s_t_a_b_sub_order(
@@ -3822,6 +4753,8 @@ pub fn dispatch_on_modify_s_t_a_b_sub_order(
 ) -> EventResult {
     dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySecondariesPriority callbacks (alias for onModifySecondaries)
 pub fn dispatch_on_modify_secondaries_priority(
@@ -3830,6 +4763,8 @@ pub fn dispatch_on_modify_secondaries_priority(
 ) -> EventResult {
     dispatch_on_modify_secondaries(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySecondariesOrder callbacks (alias for onModifySecondaries)
 pub fn dispatch_on_modify_secondaries_order(
@@ -3838,6 +4773,8 @@ pub fn dispatch_on_modify_secondaries_order(
 ) -> EventResult {
     dispatch_on_modify_secondaries(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySecondariesSubOrder callbacks (alias for onModifySecondaries)
 pub fn dispatch_on_modify_secondaries_sub_order(
@@ -3846,6 +4783,8 @@ pub fn dispatch_on_modify_secondaries_sub_order(
 ) -> EventResult {
     dispatch_on_modify_secondaries(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySpAPriority callbacks (alias for onModifySpA)
 pub fn dispatch_on_modify_sp_a_priority(
@@ -3855,6 +4794,8 @@ pub fn dispatch_on_modify_sp_a_priority(
 ) -> EventResult {
     dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySpAOrder callbacks (alias for onModifySpA)
 pub fn dispatch_on_modify_sp_a_order(
@@ -3864,6 +4805,8 @@ pub fn dispatch_on_modify_sp_a_order(
 ) -> EventResult {
     dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySpASubOrder callbacks (alias for onModifySpA)
 pub fn dispatch_on_modify_sp_a_sub_order(
@@ -3873,6 +4816,8 @@ pub fn dispatch_on_modify_sp_a_sub_order(
 ) -> EventResult {
     dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySpePriority callbacks (alias for onModifySpe)
 pub fn dispatch_on_modify_spe_priority(
@@ -3882,6 +4827,8 @@ pub fn dispatch_on_modify_spe_priority(
 ) -> EventResult {
     dispatch_on_modify_spe(battle, ability_id, spe, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySpeOrder callbacks (alias for onModifySpe)
 pub fn dispatch_on_modify_spe_order(
@@ -3891,6 +4838,8 @@ pub fn dispatch_on_modify_spe_order(
 ) -> EventResult {
     dispatch_on_modify_spe(battle, ability_id, spe, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifySpeSubOrder callbacks (alias for onModifySpe)
 pub fn dispatch_on_modify_spe_sub_order(
@@ -3900,6 +4849,8 @@ pub fn dispatch_on_modify_spe_sub_order(
 ) -> EventResult {
     dispatch_on_modify_spe(battle, ability_id, spe, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyTypePriority callbacks (alias for onModifyType)
 pub fn dispatch_on_modify_type_priority(
@@ -3909,6 +4860,8 @@ pub fn dispatch_on_modify_type_priority(
 ) -> EventResult {
     dispatch_on_modify_type(battle, ability_id, move_id, pokemon_pos, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyTypeOrder callbacks (alias for onModifyType)
 pub fn dispatch_on_modify_type_order(
@@ -3918,6 +4871,8 @@ pub fn dispatch_on_modify_type_order(
 ) -> EventResult {
     dispatch_on_modify_type(battle, ability_id, move_id, pokemon_pos, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyTypeSubOrder callbacks (alias for onModifyType)
 pub fn dispatch_on_modify_type_sub_order(
@@ -3927,6 +4882,8 @@ pub fn dispatch_on_modify_type_sub_order(
 ) -> EventResult {
     dispatch_on_modify_type(battle, ability_id, move_id, pokemon_pos, target_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyWeightPriority callbacks (alias for onModifyWeight)
 pub fn dispatch_on_modify_weight_priority(
@@ -3936,6 +4893,8 @@ pub fn dispatch_on_modify_weight_priority(
 ) -> EventResult {
     dispatch_on_modify_weight(battle, ability_id, weight, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyWeightOrder callbacks (alias for onModifyWeight)
 pub fn dispatch_on_modify_weight_order(
@@ -3945,6 +4904,8 @@ pub fn dispatch_on_modify_weight_order(
 ) -> EventResult {
     dispatch_on_modify_weight(battle, ability_id, weight, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onModifyWeightSubOrder callbacks (alias for onModifyWeight)
 pub fn dispatch_on_modify_weight_sub_order(
@@ -3954,6 +4915,8 @@ pub fn dispatch_on_modify_weight_sub_order(
 ) -> EventResult {
     dispatch_on_modify_weight(battle, ability_id, weight, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onPrepareHitPriority callbacks (alias for onPrepareHit)
 pub fn dispatch_on_prepare_hit_priority(
@@ -3963,6 +4926,8 @@ pub fn dispatch_on_prepare_hit_priority(
 ) -> EventResult {
     dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onPrepareHitOrder callbacks (alias for onPrepareHit)
 pub fn dispatch_on_prepare_hit_order(
@@ -3972,6 +4937,8 @@ pub fn dispatch_on_prepare_hit_order(
 ) -> EventResult {
     dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onPrepareHitSubOrder callbacks (alias for onPrepareHit)
 pub fn dispatch_on_prepare_hit_sub_order(
@@ -3981,6 +4948,8 @@ pub fn dispatch_on_prepare_hit_sub_order(
 ) -> EventResult {
     dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onResidualPriority callbacks (alias for onResidual)
 pub fn dispatch_on_residual_priority(
@@ -3990,6 +4959,8 @@ pub fn dispatch_on_residual_priority(
 ) -> EventResult {
     dispatch_on_residual(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onResidualOrder callbacks (alias for onResidual)
 pub fn dispatch_on_residual_order(
@@ -3999,6 +4970,8 @@ pub fn dispatch_on_residual_order(
 ) -> EventResult {
     dispatch_on_residual(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onResidualSubOrder callbacks (alias for onResidual)
 pub fn dispatch_on_residual_sub_order(
@@ -4008,6 +4981,8 @@ pub fn dispatch_on_residual_sub_order(
 ) -> EventResult {
     dispatch_on_residual(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSetStatusPriority callbacks (alias for onSetStatus)
 pub fn dispatch_on_set_status_priority(
@@ -4017,6 +4992,8 @@ pub fn dispatch_on_set_status_priority(
 ) -> EventResult {
     dispatch_on_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSetStatusOrder callbacks (alias for onSetStatus)
 pub fn dispatch_on_set_status_order(
@@ -4026,6 +5003,8 @@ pub fn dispatch_on_set_status_order(
 ) -> EventResult {
     dispatch_on_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSetStatusSubOrder callbacks (alias for onSetStatus)
 pub fn dispatch_on_set_status_sub_order(
@@ -4035,6 +5014,8 @@ pub fn dispatch_on_set_status_sub_order(
 ) -> EventResult {
     dispatch_on_set_status(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSideConditionStartPriority callbacks (alias for onSideConditionStart)
 pub fn dispatch_on_side_condition_start_priority(
@@ -4047,6 +5028,8 @@ pub fn dispatch_on_side_condition_start_priority(
 ) -> EventResult {
     dispatch_on_side_condition_start(battle, ability_id, pokemon_pos, side_idx, side_condition_id, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSideConditionStartOrder callbacks (alias for onSideConditionStart)
 pub fn dispatch_on_side_condition_start_order(
@@ -4059,6 +5042,8 @@ pub fn dispatch_on_side_condition_start_order(
 ) -> EventResult {
     dispatch_on_side_condition_start(battle, ability_id, pokemon_pos, side_idx, side_condition_id, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSideConditionStartSubOrder callbacks (alias for onSideConditionStart)
 pub fn dispatch_on_side_condition_start_sub_order(
@@ -4071,6 +5056,8 @@ pub fn dispatch_on_side_condition_start_sub_order(
 ) -> EventResult {
     dispatch_on_side_condition_start(battle, ability_id, pokemon_pos, side_idx, side_condition_id, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceAfterFaintPriority callbacks (alias for onSourceAfterFaint)
 pub fn dispatch_on_source_after_faint_priority(
@@ -4080,6 +5067,8 @@ pub fn dispatch_on_source_after_faint_priority(
 ) -> EventResult {
     dispatch_on_source_after_faint(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceAfterFaintOrder callbacks (alias for onSourceAfterFaint)
 pub fn dispatch_on_source_after_faint_order(
@@ -4089,6 +5078,8 @@ pub fn dispatch_on_source_after_faint_order(
 ) -> EventResult {
     dispatch_on_source_after_faint(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceAfterFaintSubOrder callbacks (alias for onSourceAfterFaint)
 pub fn dispatch_on_source_after_faint_sub_order(
@@ -4098,6 +5089,8 @@ pub fn dispatch_on_source_after_faint_sub_order(
 ) -> EventResult {
     dispatch_on_source_after_faint(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceBasePowerPriority callbacks (alias for onSourceBasePower)
 pub fn dispatch_on_source_base_power_priority(
@@ -4107,6 +5100,8 @@ pub fn dispatch_on_source_base_power_priority(
 ) -> EventResult {
     dispatch_on_source_base_power(battle, ability_id, base_power, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceBasePowerOrder callbacks (alias for onSourceBasePower)
 pub fn dispatch_on_source_base_power_order(
@@ -4116,6 +5111,8 @@ pub fn dispatch_on_source_base_power_order(
 ) -> EventResult {
     dispatch_on_source_base_power(battle, ability_id, base_power, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceBasePowerSubOrder callbacks (alias for onSourceBasePower)
 pub fn dispatch_on_source_base_power_sub_order(
@@ -4125,6 +5122,8 @@ pub fn dispatch_on_source_base_power_sub_order(
 ) -> EventResult {
     dispatch_on_source_base_power(battle, ability_id, base_power, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceDamagingHitPriority callbacks (alias for onSourceDamagingHit)
 pub fn dispatch_on_source_damaging_hit_priority(
@@ -4134,6 +5133,8 @@ pub fn dispatch_on_source_damaging_hit_priority(
 ) -> EventResult {
     dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceDamagingHitOrder callbacks (alias for onSourceDamagingHit)
 pub fn dispatch_on_source_damaging_hit_order(
@@ -4143,6 +5144,8 @@ pub fn dispatch_on_source_damaging_hit_order(
 ) -> EventResult {
     dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceDamagingHitSubOrder callbacks (alias for onSourceDamagingHit)
 pub fn dispatch_on_source_damaging_hit_sub_order(
@@ -4152,6 +5155,8 @@ pub fn dispatch_on_source_damaging_hit_sub_order(
 ) -> EventResult {
     dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifyAccuracyPriority callbacks (alias for onSourceModifyAccuracy)
 pub fn dispatch_on_source_modify_accuracy_priority(
@@ -4161,6 +5166,8 @@ pub fn dispatch_on_source_modify_accuracy_priority(
 ) -> EventResult {
     dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifyAccuracyOrder callbacks (alias for onSourceModifyAccuracy)
 pub fn dispatch_on_source_modify_accuracy_order(
@@ -4170,6 +5177,8 @@ pub fn dispatch_on_source_modify_accuracy_order(
 ) -> EventResult {
     dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifyAccuracySubOrder callbacks (alias for onSourceModifyAccuracy)
 pub fn dispatch_on_source_modify_accuracy_sub_order(
@@ -4179,6 +5188,8 @@ pub fn dispatch_on_source_modify_accuracy_sub_order(
 ) -> EventResult {
     dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifyAtkPriority callbacks (alias for onSourceModifyAtk)
 pub fn dispatch_on_source_modify_atk_priority(
@@ -4188,6 +5199,8 @@ pub fn dispatch_on_source_modify_atk_priority(
 ) -> EventResult {
     dispatch_on_source_modify_atk(battle, ability_id, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifyAtkOrder callbacks (alias for onSourceModifyAtk)
 pub fn dispatch_on_source_modify_atk_order(
@@ -4197,6 +5210,8 @@ pub fn dispatch_on_source_modify_atk_order(
 ) -> EventResult {
     dispatch_on_source_modify_atk(battle, ability_id, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifyAtkSubOrder callbacks (alias for onSourceModifyAtk)
 pub fn dispatch_on_source_modify_atk_sub_order(
@@ -4206,6 +5221,8 @@ pub fn dispatch_on_source_modify_atk_sub_order(
 ) -> EventResult {
     dispatch_on_source_modify_atk(battle, ability_id, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifyDamagePriority callbacks (alias for onSourceModifyDamage)
 pub fn dispatch_on_source_modify_damage_priority(
@@ -4215,6 +5232,8 @@ pub fn dispatch_on_source_modify_damage_priority(
 ) -> EventResult {
     dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifyDamageOrder callbacks (alias for onSourceModifyDamage)
 pub fn dispatch_on_source_modify_damage_order(
@@ -4224,6 +5243,8 @@ pub fn dispatch_on_source_modify_damage_order(
 ) -> EventResult {
     dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifyDamageSubOrder callbacks (alias for onSourceModifyDamage)
 pub fn dispatch_on_source_modify_damage_sub_order(
@@ -4233,6 +5254,8 @@ pub fn dispatch_on_source_modify_damage_sub_order(
 ) -> EventResult {
     dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifySecondariesPriority callbacks (alias for onSourceModifySecondaries)
 pub fn dispatch_on_source_modify_secondaries_priority(
@@ -4242,6 +5265,8 @@ pub fn dispatch_on_source_modify_secondaries_priority(
 ) -> EventResult {
     dispatch_on_source_modify_secondaries(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifySecondariesOrder callbacks (alias for onSourceModifySecondaries)
 pub fn dispatch_on_source_modify_secondaries_order(
@@ -4251,6 +5276,8 @@ pub fn dispatch_on_source_modify_secondaries_order(
 ) -> EventResult {
     dispatch_on_source_modify_secondaries(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifySecondariesSubOrder callbacks (alias for onSourceModifySecondaries)
 pub fn dispatch_on_source_modify_secondaries_sub_order(
@@ -4260,6 +5287,8 @@ pub fn dispatch_on_source_modify_secondaries_sub_order(
 ) -> EventResult {
     dispatch_on_source_modify_secondaries(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifySpAPriority callbacks (alias for onSourceModifySpA)
 pub fn dispatch_on_source_modify_sp_a_priority(
@@ -4269,6 +5298,8 @@ pub fn dispatch_on_source_modify_sp_a_priority(
 ) -> EventResult {
     dispatch_on_source_modify_sp_a(battle, ability_id, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifySpAOrder callbacks (alias for onSourceModifySpA)
 pub fn dispatch_on_source_modify_sp_a_order(
@@ -4278,6 +5309,8 @@ pub fn dispatch_on_source_modify_sp_a_order(
 ) -> EventResult {
     dispatch_on_source_modify_sp_a(battle, ability_id, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceModifySpASubOrder callbacks (alias for onSourceModifySpA)
 pub fn dispatch_on_source_modify_sp_a_sub_order(
@@ -4287,6 +5320,8 @@ pub fn dispatch_on_source_modify_sp_a_sub_order(
 ) -> EventResult {
     dispatch_on_source_modify_sp_a(battle, ability_id, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceTryHealPriority callbacks (alias for onSourceTryHeal)
 pub fn dispatch_on_source_try_heal_priority(
@@ -4296,6 +5331,8 @@ pub fn dispatch_on_source_try_heal_priority(
 ) -> EventResult {
     dispatch_on_source_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceTryHealOrder callbacks (alias for onSourceTryHeal)
 pub fn dispatch_on_source_try_heal_order(
@@ -4305,6 +5342,8 @@ pub fn dispatch_on_source_try_heal_order(
 ) -> EventResult {
     dispatch_on_source_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceTryHealSubOrder callbacks (alias for onSourceTryHeal)
 pub fn dispatch_on_source_try_heal_sub_order(
@@ -4314,6 +5353,8 @@ pub fn dispatch_on_source_try_heal_sub_order(
 ) -> EventResult {
     dispatch_on_source_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceTryPrimaryHitPriority callbacks (alias for onSourceTryPrimaryHit)
 pub fn dispatch_on_source_try_primary_hit_priority(
@@ -4323,6 +5364,8 @@ pub fn dispatch_on_source_try_primary_hit_priority(
 ) -> EventResult {
     dispatch_on_source_try_primary_hit(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceTryPrimaryHitOrder callbacks (alias for onSourceTryPrimaryHit)
 pub fn dispatch_on_source_try_primary_hit_order(
@@ -4332,6 +5375,8 @@ pub fn dispatch_on_source_try_primary_hit_order(
 ) -> EventResult {
     dispatch_on_source_try_primary_hit(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSourceTryPrimaryHitSubOrder callbacks (alias for onSourceTryPrimaryHit)
 pub fn dispatch_on_source_try_primary_hit_sub_order(
@@ -4341,6 +5386,8 @@ pub fn dispatch_on_source_try_primary_hit_sub_order(
 ) -> EventResult {
     dispatch_on_source_try_primary_hit(battle, ability_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onStartPriority callbacks (alias for onStart)
 pub fn dispatch_on_start_priority(
@@ -4350,6 +5397,8 @@ pub fn dispatch_on_start_priority(
 ) -> EventResult {
     dispatch_on_start(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onStartOrder callbacks (alias for onStart)
 pub fn dispatch_on_start_order(
@@ -4359,6 +5408,8 @@ pub fn dispatch_on_start_order(
 ) -> EventResult {
     dispatch_on_start(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onStartSubOrder callbacks (alias for onStart)
 pub fn dispatch_on_start_sub_order(
@@ -4368,6 +5419,8 @@ pub fn dispatch_on_start_sub_order(
 ) -> EventResult {
     dispatch_on_start(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSwitchInPriority callbacks (alias for onSwitchIn)
 pub fn dispatch_on_switch_in_priority(
@@ -4377,6 +5430,8 @@ pub fn dispatch_on_switch_in_priority(
 ) -> EventResult {
     dispatch_on_switch_in(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSwitchInOrder callbacks (alias for onSwitchIn)
 pub fn dispatch_on_switch_in_order(
@@ -4386,6 +5441,8 @@ pub fn dispatch_on_switch_in_order(
 ) -> EventResult {
     dispatch_on_switch_in(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSwitchInSubOrder callbacks (alias for onSwitchIn)
 pub fn dispatch_on_switch_in_sub_order(
@@ -4395,6 +5452,8 @@ pub fn dispatch_on_switch_in_sub_order(
 ) -> EventResult {
     dispatch_on_switch_in(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSwitchOutPriority callbacks (alias for onSwitchOut)
 pub fn dispatch_on_switch_out_priority(
@@ -4404,6 +5463,8 @@ pub fn dispatch_on_switch_out_priority(
 ) -> EventResult {
     dispatch_on_switch_out(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSwitchOutOrder callbacks (alias for onSwitchOut)
 pub fn dispatch_on_switch_out_order(
@@ -4413,6 +5474,8 @@ pub fn dispatch_on_switch_out_order(
 ) -> EventResult {
     dispatch_on_switch_out(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onSwitchOutSubOrder callbacks (alias for onSwitchOut)
 pub fn dispatch_on_switch_out_sub_order(
@@ -4422,6 +5485,8 @@ pub fn dispatch_on_switch_out_sub_order(
 ) -> EventResult {
     dispatch_on_switch_out(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTakeItemPriority callbacks (alias for onTakeItem)
 pub fn dispatch_on_take_item_priority(
@@ -4431,6 +5496,8 @@ pub fn dispatch_on_take_item_priority(
 ) -> EventResult {
     dispatch_on_take_item(battle, ability_id, pokemon_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTakeItemOrder callbacks (alias for onTakeItem)
 pub fn dispatch_on_take_item_order(
@@ -4440,6 +5507,8 @@ pub fn dispatch_on_take_item_order(
 ) -> EventResult {
     dispatch_on_take_item(battle, ability_id, pokemon_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTakeItemSubOrder callbacks (alias for onTakeItem)
 pub fn dispatch_on_take_item_sub_order(
@@ -4449,6 +5518,8 @@ pub fn dispatch_on_take_item_sub_order(
 ) -> EventResult {
     dispatch_on_take_item(battle, ability_id, pokemon_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTerrainChangePriority callbacks (alias for onTerrainChange)
 pub fn dispatch_on_terrain_change_priority(
@@ -4458,6 +5529,8 @@ pub fn dispatch_on_terrain_change_priority(
 ) -> EventResult {
     dispatch_on_terrain_change(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTerrainChangeOrder callbacks (alias for onTerrainChange)
 pub fn dispatch_on_terrain_change_order(
@@ -4467,6 +5540,8 @@ pub fn dispatch_on_terrain_change_order(
 ) -> EventResult {
     dispatch_on_terrain_change(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTerrainChangeSubOrder callbacks (alias for onTerrainChange)
 pub fn dispatch_on_terrain_change_sub_order(
@@ -4476,6 +5551,8 @@ pub fn dispatch_on_terrain_change_sub_order(
 ) -> EventResult {
     dispatch_on_terrain_change(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryAddVolatilePriority callbacks (alias for onTryAddVolatile)
 pub fn dispatch_on_try_add_volatile_priority(
@@ -4485,6 +5562,8 @@ pub fn dispatch_on_try_add_volatile_priority(
 ) -> EventResult {
     dispatch_on_try_add_volatile(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryAddVolatileOrder callbacks (alias for onTryAddVolatile)
 pub fn dispatch_on_try_add_volatile_order(
@@ -4494,6 +5573,8 @@ pub fn dispatch_on_try_add_volatile_order(
 ) -> EventResult {
     dispatch_on_try_add_volatile(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryAddVolatileSubOrder callbacks (alias for onTryAddVolatile)
 pub fn dispatch_on_try_add_volatile_sub_order(
@@ -4503,6 +5584,8 @@ pub fn dispatch_on_try_add_volatile_sub_order(
 ) -> EventResult {
     dispatch_on_try_add_volatile(battle, ability_id, status_id, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryBoostPriority callbacks (alias for onTryBoost)
 pub fn dispatch_on_try_boost_priority(
@@ -4513,6 +5596,8 @@ pub fn dispatch_on_try_boost_priority(
 ) -> EventResult {
     dispatch_on_try_boost(battle, ability_id, target_pos, boost)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryBoostOrder callbacks (alias for onTryBoost)
 pub fn dispatch_on_try_boost_order(
@@ -4523,6 +5608,8 @@ pub fn dispatch_on_try_boost_order(
 ) -> EventResult {
     dispatch_on_try_boost(battle, ability_id, target_pos, boost)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryBoostSubOrder callbacks (alias for onTryBoost)
 pub fn dispatch_on_try_boost_sub_order(
@@ -4533,6 +5620,8 @@ pub fn dispatch_on_try_boost_sub_order(
 ) -> EventResult {
     dispatch_on_try_boost(battle, ability_id, target_pos, boost)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryEatItemPriority callbacks (alias for onTryEatItem)
 pub fn dispatch_on_try_eat_item_priority(
@@ -4541,6 +5630,8 @@ pub fn dispatch_on_try_eat_item_priority(
 ) -> EventResult {
     dispatch_on_try_eat_item(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryEatItemOrder callbacks (alias for onTryEatItem)
 pub fn dispatch_on_try_eat_item_order(
@@ -4549,6 +5640,8 @@ pub fn dispatch_on_try_eat_item_order(
 ) -> EventResult {
     dispatch_on_try_eat_item(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryEatItemSubOrder callbacks (alias for onTryEatItem)
 pub fn dispatch_on_try_eat_item_sub_order(
@@ -4557,6 +5650,8 @@ pub fn dispatch_on_try_eat_item_sub_order(
 ) -> EventResult {
     dispatch_on_try_eat_item(battle, ability_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryHealPriority callbacks (alias for onTryHeal)
 pub fn dispatch_on_try_heal_priority(
@@ -4566,6 +5661,8 @@ pub fn dispatch_on_try_heal_priority(
 ) -> EventResult {
     dispatch_on_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryHealOrder callbacks (alias for onTryHeal)
 pub fn dispatch_on_try_heal_order(
@@ -4575,6 +5672,8 @@ pub fn dispatch_on_try_heal_order(
 ) -> EventResult {
     dispatch_on_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryHealSubOrder callbacks (alias for onTryHeal)
 pub fn dispatch_on_try_heal_sub_order(
@@ -4584,6 +5683,8 @@ pub fn dispatch_on_try_heal_sub_order(
 ) -> EventResult {
     dispatch_on_try_heal(battle, ability_id, damage, target_pos, source_pos, effect_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryHitPriority callbacks (alias for onTryHit)
 pub fn dispatch_on_try_hit_priority(
@@ -4593,6 +5694,8 @@ pub fn dispatch_on_try_hit_priority(
 ) -> EventResult {
     dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryHitOrder callbacks (alias for onTryHit)
 pub fn dispatch_on_try_hit_order(
@@ -4602,6 +5705,8 @@ pub fn dispatch_on_try_hit_order(
 ) -> EventResult {
     dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onTryHitSubOrder callbacks (alias for onTryHit)
 pub fn dispatch_on_try_hit_sub_order(
@@ -4611,6 +5716,8 @@ pub fn dispatch_on_try_hit_sub_order(
 ) -> EventResult {
     dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, move_id)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onUpdatePriority callbacks (alias for onUpdate)
 pub fn dispatch_on_update_priority(
@@ -4620,6 +5727,8 @@ pub fn dispatch_on_update_priority(
 ) -> EventResult {
     dispatch_on_update(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onUpdateOrder callbacks (alias for onUpdate)
 pub fn dispatch_on_update_order(
@@ -4629,6 +5738,8 @@ pub fn dispatch_on_update_order(
 ) -> EventResult {
     dispatch_on_update(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onUpdateSubOrder callbacks (alias for onUpdate)
 pub fn dispatch_on_update_sub_order(
@@ -4638,6 +5749,8 @@ pub fn dispatch_on_update_sub_order(
 ) -> EventResult {
     dispatch_on_update(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onWeatherPriority callbacks (alias for onWeather)
 pub fn dispatch_on_weather_priority(
@@ -4647,6 +5760,8 @@ pub fn dispatch_on_weather_priority(
 ) -> EventResult {
     dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onWeatherOrder callbacks (alias for onWeather)
 pub fn dispatch_on_weather_order(
@@ -4656,6 +5771,8 @@ pub fn dispatch_on_weather_order(
 ) -> EventResult {
     dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onWeatherSubOrder callbacks (alias for onWeather)
 pub fn dispatch_on_weather_sub_order(
@@ -4665,6 +5782,8 @@ pub fn dispatch_on_weather_sub_order(
 ) -> EventResult {
     dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onWeatherChangePriority callbacks (alias for onWeatherChange)
 pub fn dispatch_on_weather_change_priority(
@@ -4674,6 +5793,8 @@ pub fn dispatch_on_weather_change_priority(
 ) -> EventResult {
     dispatch_on_weather_change(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onWeatherChangeOrder callbacks (alias for onWeatherChange)
 pub fn dispatch_on_weather_change_order(
@@ -4683,6 +5804,8 @@ pub fn dispatch_on_weather_change_order(
 ) -> EventResult {
     dispatch_on_weather_change(battle, ability_id, pokemon_pos)
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch onWeatherChangeSubOrder callbacks (alias for onWeatherChange)
 pub fn dispatch_on_weather_change_sub_order(
@@ -4694,6 +5817,8 @@ pub fn dispatch_on_weather_change_sub_order(
 }
 
 // Condition dispatch functions
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 /// Dispatch condition onEnd callbacks
 pub fn dispatch_condition_on_end(
     battle: &mut Battle,
@@ -4708,6 +5833,8 @@ pub fn dispatch_condition_on_end(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifyAtk callbacks
 pub fn dispatch_condition_on_modify_atk(
@@ -4722,6 +5849,8 @@ pub fn dispatch_condition_on_modify_atk(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifyDef callbacks
 pub fn dispatch_condition_on_modify_def(
@@ -4735,6 +5864,8 @@ pub fn dispatch_condition_on_modify_def(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifySpA callbacks
 pub fn dispatch_condition_on_modify_sp_a(
@@ -4749,6 +5880,8 @@ pub fn dispatch_condition_on_modify_sp_a(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifySpD callbacks
 pub fn dispatch_condition_on_modify_sp_d(
@@ -4762,6 +5895,8 @@ pub fn dispatch_condition_on_modify_sp_d(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifySpe callbacks
 pub fn dispatch_condition_on_modify_spe(
@@ -4776,6 +5911,8 @@ pub fn dispatch_condition_on_modify_spe(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onStart callbacks
 pub fn dispatch_condition_on_start(

@@ -428,6 +428,14 @@ pub mod wringout;
 pub mod yawn;
 
 // Dispatch functions
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   basePowerCallback()
+//   basePowerCallback(pokemon)
+//   basePowerCallback(pokemon, target)
+//   basePowerCallback(pokemon, target, move)
+//   basePowerCallback(source, target, move)
+//   basePowerCallback(target, source, move)
 /// Dispatch basePowerCallback callbacks
 pub fn dispatch_base_power_callback(
     battle: &mut Battle,
@@ -492,6 +500,11 @@ pub fn dispatch_base_power_callback(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   beforeMoveCallback()
+//   beforeMoveCallback(pokemon)
+//   beforeMoveCallback(source, target, move)
 
 /// Dispatch beforeMoveCallback callbacks
 pub fn dispatch_before_move_callback(
@@ -505,6 +518,12 @@ pub fn dispatch_before_move_callback(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   beforeTurnCallback()
+//   beforeTurnCallback(pokemon)
+//   beforeTurnCallback(pokemon, target)
+//   beforeTurnCallback(source, target)
 
 /// Dispatch beforeTurnCallback callbacks
 pub fn dispatch_before_turn_callback(
@@ -519,6 +538,10 @@ pub fn dispatch_before_turn_callback(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   damageCallback(pokemon)
+//   damageCallback(pokemon, target)
 
 /// Dispatch damageCallback callbacks
 pub fn dispatch_damage_callback(
@@ -542,6 +565,13 @@ pub fn dispatch_damage_callback(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterHit()
+//   onAfterHit(target, pokemon)
+//   onAfterHit(target, pokemon, move)
+//   onAfterHit(target, source)
+//   onAfterHit(target, source, move)
 
 /// Dispatch onAfterHit callbacks
 pub fn dispatch_on_after_hit(
@@ -562,6 +592,14 @@ pub fn dispatch_on_after_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterMove()
+//   onAfterMove(pokemon)
+//   onAfterMove(pokemon, attacker, move)
+//   onAfterMove(pokemon, target, move)
+//   onAfterMove(source)
+//   onAfterMove(source, target, move)
 
 /// Dispatch onAfterMove callbacks
 pub fn dispatch_on_after_move(
@@ -581,6 +619,14 @@ pub fn dispatch_on_after_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterMoveSecondarySelf()
+//   onAfterMoveSecondarySelf(pokemon, source, move)
+//   onAfterMoveSecondarySelf(pokemon, target, move)
+//   onAfterMoveSecondarySelf(source)
+//   onAfterMoveSecondarySelf(source, target, move)
+//   onAfterMoveSecondarySelf(target, source, move)
 
 /// Dispatch onAfterMoveSecondarySelf callbacks
 pub fn dispatch_on_after_move_secondary_self(
@@ -605,6 +651,15 @@ pub fn dispatch_on_after_move_secondary_self(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onAfterSubDamage()
+//   onAfterSubDamage(damage, target)
+//   onAfterSubDamage(damage, target, pokemon)
+//   onAfterSubDamage(damage, target, pokemon, move)
+//   onAfterSubDamage(damage, target, source)
+//   onAfterSubDamage(damage, target, source, effect)
+//   onAfterSubDamage(damage, target, source, move)
 
 /// Dispatch onAfterSubDamage callbacks
 pub fn dispatch_on_after_sub_damage(
@@ -655,6 +710,20 @@ pub fn dispatch_on_after_sub_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onBasePower()
+//   onBasePower(basePower)
+//   onBasePower(basePower, attacker, defender, move)
+//   onBasePower(basePower, pokemon)
+//   onBasePower(basePower, pokemon, target)
+//   onBasePower(basePower, pokemon, target, move)
+//   onBasePower(basePower, source)
+//   onBasePower(basePower, source, target)
+//   onBasePower(basePower, source, target, move)
+//   onBasePower(basePower, user, target)
+//   onBasePower(basePower, user, target, move)
+//   onBasePower(relayVar, source, target, move)
 
 /// Dispatch onBasePower callbacks
 /// JavaScript: onBasePower(basePower, attacker, defender, move) - ATTACKER=SOURCE, DEFENDER=TARGET
@@ -693,6 +762,13 @@ pub fn dispatch_on_base_power(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onDamage()
+//   onDamage(damage, pokemon, source, effect)
+//   onDamage(damage, target, source, effect)
+//   onDamage(damage, target, source, move)
+//   onDamage(item, pokemon)
 
 /// Dispatch onDamage callbacks
 pub fn dispatch_on_damage(
@@ -709,6 +785,10 @@ pub fn dispatch_on_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onDisableMove(pokemon)
+//   onDisableMove(target)
 
 /// Dispatch onDisableMove callbacks
 pub fn dispatch_on_disable_move(
@@ -722,6 +802,11 @@ pub fn dispatch_on_disable_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onEffectiveness()
+//   onEffectiveness(typeMod, target, type)
+//   onEffectiveness(typeMod, target, type, move)
 
 /// Dispatch onEffectiveness callbacks
 pub fn dispatch_on_effectiveness(
@@ -740,6 +825,8 @@ pub fn dispatch_on_effectiveness(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch self.onHit callbacks
 /// JavaScript: self.onHit(source) - SELF-TARGETING, source is the move user
@@ -804,6 +891,23 @@ pub fn dispatch_self_on_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onHit()
+//   onHit(pokemon)
+//   onHit(pokemon, qwerty, move)
+//   onHit(pokemon, source)
+//   onHit(pokemon, source, move)
+//   onHit(source)
+//   onHit(source, target, effect)
+//   onHit(t, source, m)
+//   onHit(target)
+//   onHit(target, pokemon)
+//   onHit(target, pokemon, move)
+//   onHit(target, source)
+//   onHit(target, source, effect)
+//   onHit(target, source, m)
+//   onHit(target, source, move)
 
 /// Dispatch onHit callbacks
 /// JavaScript: onHit(target, source, move) - TARGET FIRST
@@ -929,6 +1033,12 @@ pub fn dispatch_on_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onHitField()
+//   onHitField(t, source, move)
+//   onHitField(target, source)
+//   onHitField(target, source, move)
 
 /// Dispatch onHitField callbacks
 pub fn dispatch_on_hit_field(
@@ -947,6 +1057,10 @@ pub fn dispatch_on_hit_field(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onHitSide(side, source)
+//   onHitSide(side, source, move)
 
 /// Dispatch onHitSide callbacks
 pub fn dispatch_on_hit_side(
@@ -962,6 +1076,16 @@ pub fn dispatch_on_hit_side(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyMove()
+//   onModifyMove(move)
+//   onModifyMove(move, attacker)
+//   onModifyMove(move, attacker, defender)
+//   onModifyMove(move, pokemon)
+//   onModifyMove(move, pokemon, target)
+//   onModifyMove(move, source)
+//   onModifyMove(move, source, target)
 
 /// Dispatch onModifyMove callbacks
 pub fn dispatch_on_modify_move(
@@ -1004,6 +1128,14 @@ pub fn dispatch_on_modify_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyPriority(priority, pokemon)
+//   onModifyPriority(priority, pokemon, target)
+//   onModifyPriority(priority, pokemon, target, move)
+//   onModifyPriority(priority, source)
+//   onModifyPriority(priority, source, target, move)
+//   onModifyPriority(relayVar, source, target, move)
 
 /// Dispatch onModifyPriority callbacks
 pub fn dispatch_on_modify_priority(
@@ -1016,6 +1148,9 @@ pub fn dispatch_on_modify_priority(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyTarget(targetRelayVar, source, target, move)
 
 /// Dispatch onModifyTarget callbacks
 pub fn dispatch_on_modify_target(
@@ -1029,6 +1164,11 @@ pub fn dispatch_on_modify_target(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onModifyType(move)
+//   onModifyType(move, pokemon)
+//   onModifyType(move, pokemon, target)
 
 /// Dispatch onModifyType callbacks
 pub fn dispatch_on_modify_type(
@@ -1054,6 +1194,11 @@ pub fn dispatch_on_modify_type(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onMoveFail()
+//   onMoveFail(target, source)
+//   onMoveFail(target, source, move)
 
 /// Dispatch onMoveFail callbacks
 pub fn dispatch_on_move_fail(
@@ -1070,6 +1215,17 @@ pub fn dispatch_on_move_fail(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onPrepareHit()
+//   onPrepareHit(pokemon)
+//   onPrepareHit(pokemon, source)
+//   onPrepareHit(source, target)
+//   onPrepareHit(source, target, move)
+//   onPrepareHit(t, s, m)
+//   onPrepareHit(target, pokemon, move)
+//   onPrepareHit(target, source)
+//   onPrepareHit(target, source, move)
 
 /// Dispatch onPrepareHit callbacks
 pub fn dispatch_on_prepare_hit(
@@ -1102,6 +1258,15 @@ pub fn dispatch_on_prepare_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTry()
+//   onTry(pokemon)
+//   onTry(pokemon, target)
+//   onTry(pokemon, target, move)
+//   onTry(source)
+//   onTry(source, target)
+//   onTry(source, target, move)
 
 /// Dispatch onTry callbacks
 /// Dispatch onTry callbacks
@@ -1156,6 +1321,21 @@ pub fn dispatch_on_try(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTryHit()
+//   onTryHit(pokemon)
+//   onTryHit(pokemon, source, move)
+//   onTryHit(pokemon, target, move)
+//   onTryHit(source)
+//   onTryHit(source, target)
+//   onTryHit(source, target, move)
+//   onTryHit(target)
+//   onTryHit(target, pokemon)
+//   onTryHit(target, pokemon, move)
+//   onTryHit(target, source)
+//   onTryHit(target, source, effect)
+//   onTryHit(target, source, move)
 
 /// Dispatch onTryHit callbacks
 /// JavaScript: onTryHit(target, source, move) - TARGET FIRST
@@ -1213,6 +1393,12 @@ pub fn dispatch_on_try_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTryImmunity(pokemon, source)
+//   onTryImmunity(target)
+//   onTryImmunity(target, pokemon)
+//   onTryImmunity(target, source)
 
 /// Dispatch onTryImmunity callbacks
 pub fn dispatch_on_try_immunity(
@@ -1234,6 +1420,15 @@ pub fn dispatch_on_try_immunity(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onTryMove()
+//   onTryMove(attacker, defender, move)
+//   onTryMove(pokemon)
+//   onTryMove(pokemon, target, move)
+//   onTryMove(source, target)
+//   onTryMove(source, target, move)
+//   onTryMove(target, source, move)
 
 /// Dispatch onTryMove callbacks
 pub fn dispatch_on_try_move(
@@ -1267,6 +1462,9 @@ pub fn dispatch_on_try_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   onUseMoveMessage(pokemon, target, move)
 
 /// Dispatch onUseMoveMessage callbacks
 pub fn dispatch_on_use_move_message(
@@ -1279,6 +1477,11 @@ pub fn dispatch_on_use_move_message(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures:
+//   priorityChargeCallback()
+//   priorityChargeCallback(pokemon)
+//   priorityChargeCallback(source)
 
 /// Dispatch priorityChargeCallback callbacks
 pub fn dispatch_priority_charge_callback(
@@ -1306,6 +1509,8 @@ pub fn has_priority_charge_callback(move_id: &str) -> bool {
 }
 
 // Condition dispatch functions
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 /// Dispatch condition durationCallback callbacks
 pub fn dispatch_condition_duration_callback(
     battle: &mut Battle,
@@ -1370,6 +1575,8 @@ pub fn dispatch_condition_duration_callback(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onAccuracy callbacks
 pub fn dispatch_condition_on_accuracy(
@@ -1392,6 +1599,8 @@ pub fn dispatch_condition_on_accuracy(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onAfterMove callbacks
 pub fn dispatch_condition_on_after_move(
@@ -1405,6 +1614,8 @@ pub fn dispatch_condition_on_after_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onAllyTryHitSide callbacks
 pub fn dispatch_condition_on_ally_try_hit_side(
@@ -1419,6 +1630,8 @@ pub fn dispatch_condition_on_ally_try_hit_side(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onAnyBasePower callbacks
 pub fn dispatch_condition_on_any_base_power(
@@ -1433,6 +1646,8 @@ pub fn dispatch_condition_on_any_base_power(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onAnyDragOut callbacks
 pub fn dispatch_condition_on_any_drag_out(
@@ -1445,6 +1660,8 @@ pub fn dispatch_condition_on_any_drag_out(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onAnyInvulnerability callbacks
 pub fn dispatch_condition_on_any_invulnerability(
@@ -1469,6 +1686,8 @@ pub fn dispatch_condition_on_any_invulnerability(
     eprintln!("[DISPATCH_COND_ANY_INVULN] Returning {:?}", result);
     result
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onAnyModifyDamage callbacks
 pub fn dispatch_condition_on_any_modify_damage(
@@ -1502,6 +1721,8 @@ pub fn dispatch_condition_on_any_modify_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onAnyPrepareHit callbacks
 pub fn dispatch_condition_on_any_prepare_hit(
@@ -1514,6 +1735,8 @@ pub fn dispatch_condition_on_any_prepare_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onAnySetStatus callbacks
 pub fn dispatch_condition_on_any_set_status(
@@ -1526,6 +1749,8 @@ pub fn dispatch_condition_on_any_set_status(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onBasePower callbacks
 pub fn dispatch_condition_on_base_power(
@@ -1553,6 +1778,8 @@ pub fn dispatch_condition_on_base_power(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onBeforeMove callbacks
 pub fn dispatch_condition_on_before_move(
@@ -1578,6 +1805,8 @@ pub fn dispatch_condition_on_before_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onBeforeSwitchOut callbacks
 pub fn dispatch_condition_on_before_switch_out(
@@ -1590,6 +1819,8 @@ pub fn dispatch_condition_on_before_switch_out(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onCopy callbacks
 pub fn dispatch_condition_on_copy(
@@ -1604,6 +1835,8 @@ pub fn dispatch_condition_on_copy(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onDamage callbacks
 pub fn dispatch_condition_on_damage(
@@ -1618,6 +1851,8 @@ pub fn dispatch_condition_on_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onDamagingHit callbacks
 pub fn dispatch_condition_on_damaging_hit(
@@ -1635,6 +1870,8 @@ pub fn dispatch_condition_on_damaging_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onDisableMove callbacks
 pub fn dispatch_condition_on_disable_move(
@@ -1653,6 +1890,8 @@ pub fn dispatch_condition_on_disable_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onDragOut callbacks
 pub fn dispatch_condition_on_drag_out(
@@ -1665,6 +1904,8 @@ pub fn dispatch_condition_on_drag_out(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onEffectiveness callbacks
 pub fn dispatch_condition_on_effectiveness(
@@ -1679,6 +1920,8 @@ pub fn dispatch_condition_on_effectiveness(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onEnd callbacks
 pub fn dispatch_condition_on_end(
@@ -1713,6 +1956,8 @@ pub fn dispatch_condition_on_end(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onFaint callbacks (with target, source, effect)
 pub fn dispatch_condition_on_faint(
@@ -1729,6 +1974,8 @@ pub fn dispatch_condition_on_faint(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onFieldEnd callbacks
 pub fn dispatch_condition_on_field_end(
@@ -1750,6 +1997,8 @@ pub fn dispatch_condition_on_field_end(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onFieldRestart callbacks
 pub fn dispatch_condition_on_field_restart(
@@ -1765,6 +2014,8 @@ pub fn dispatch_condition_on_field_restart(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onFieldStart callbacks
 pub fn dispatch_condition_on_field_start(
@@ -1797,6 +2048,8 @@ pub fn dispatch_condition_on_field_start(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onFoeBeforeMove callbacks
 pub fn dispatch_condition_on_foe_before_move(
@@ -1810,6 +2063,8 @@ pub fn dispatch_condition_on_foe_before_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onFoeDisableMove callbacks
 pub fn dispatch_condition_on_foe_disable_move(
@@ -1822,6 +2077,8 @@ pub fn dispatch_condition_on_foe_disable_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onFoeRedirectTarget callbacks
 pub fn dispatch_condition_on_foe_redirect_target(
@@ -1842,6 +2099,8 @@ pub fn dispatch_condition_on_foe_redirect_target(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onFoeTrapPokemon callbacks
 pub fn dispatch_condition_on_foe_trap_pokemon(
@@ -1854,6 +2113,8 @@ pub fn dispatch_condition_on_foe_trap_pokemon(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onHit callbacks
 pub fn dispatch_condition_on_hit(
@@ -1876,6 +2137,8 @@ pub fn dispatch_condition_on_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onImmunity callbacks
 pub fn dispatch_condition_on_immunity(
@@ -1892,6 +2155,8 @@ pub fn dispatch_condition_on_immunity(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onInvulnerability callbacks
 pub fn dispatch_condition_on_invulnerability(
@@ -1907,6 +2172,8 @@ pub fn dispatch_condition_on_invulnerability(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifyAccuracy callbacks
 pub fn dispatch_condition_on_modify_accuracy(
@@ -1919,6 +2186,8 @@ pub fn dispatch_condition_on_modify_accuracy(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifyBoost callbacks
 pub fn dispatch_condition_on_modify_boost(
@@ -1932,6 +2201,8 @@ pub fn dispatch_condition_on_modify_boost(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifyCritRatio callbacks
 pub fn dispatch_condition_on_modify_crit_ratio(
@@ -1950,6 +2221,8 @@ pub fn dispatch_condition_on_modify_crit_ratio(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifyMove callbacks
 pub fn dispatch_condition_on_modify_move(
@@ -1966,6 +2239,8 @@ pub fn dispatch_condition_on_modify_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifySpe callbacks
 pub fn dispatch_condition_on_modify_spe(
@@ -1980,6 +2255,8 @@ pub fn dispatch_condition_on_modify_spe(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onModifyType callbacks
 pub fn dispatch_condition_on_modify_type(
@@ -1993,6 +2270,8 @@ pub fn dispatch_condition_on_modify_type(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onMoveAborted callbacks
 pub fn dispatch_condition_on_move_aborted(
@@ -2007,6 +2286,8 @@ pub fn dispatch_condition_on_move_aborted(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onNegateImmunity callbacks
 pub fn dispatch_condition_on_negate_immunity(
@@ -2020,6 +2301,8 @@ pub fn dispatch_condition_on_negate_immunity(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onOverrideAction callbacks
 pub fn dispatch_condition_on_override_action(
@@ -2032,6 +2315,8 @@ pub fn dispatch_condition_on_override_action(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onRedirectTarget callbacks
 pub fn dispatch_condition_on_redirect_target(
@@ -2050,6 +2335,8 @@ pub fn dispatch_condition_on_redirect_target(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onResidual callbacks
 pub fn dispatch_condition_on_residual(
@@ -2081,6 +2368,8 @@ pub fn dispatch_condition_on_residual(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onRestart callbacks
 pub fn dispatch_condition_on_restart(
@@ -2107,6 +2396,8 @@ pub fn dispatch_condition_on_restart(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSetStatus callbacks
 pub fn dispatch_condition_on_set_status(
@@ -2127,6 +2418,8 @@ pub fn dispatch_condition_on_set_status(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSideEnd callbacks
 pub fn dispatch_condition_on_side_end(
@@ -2152,6 +2445,8 @@ pub fn dispatch_condition_on_side_end(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSideRestart callbacks
 pub fn dispatch_condition_on_side_restart(
@@ -2165,6 +2460,8 @@ pub fn dispatch_condition_on_side_restart(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSideStart callbacks
 pub fn dispatch_condition_on_side_start(
@@ -2199,6 +2496,8 @@ pub fn dispatch_condition_on_side_start(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSourceAccuracy callbacks
 pub fn dispatch_condition_on_source_accuracy(
@@ -2213,6 +2512,8 @@ pub fn dispatch_condition_on_source_accuracy(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSourceBasePower callbacks
 pub fn dispatch_condition_on_source_base_power(
@@ -2227,6 +2528,8 @@ pub fn dispatch_condition_on_source_base_power(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSourceInvulnerability callbacks
 pub fn dispatch_condition_on_source_invulnerability(
@@ -2241,6 +2544,8 @@ pub fn dispatch_condition_on_source_invulnerability(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSourceModifyDamage callbacks
 pub fn dispatch_condition_on_source_modify_damage(
@@ -2282,6 +2587,8 @@ pub fn dispatch_condition_on_source_modify_damage(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onStart callbacks
 pub fn dispatch_condition_on_start(
@@ -2364,6 +2671,8 @@ pub fn dispatch_condition_on_start(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSwap callbacks
 pub fn dispatch_condition_on_swap(
@@ -2377,6 +2686,8 @@ pub fn dispatch_condition_on_swap(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onSwitchIn callbacks
 pub fn dispatch_condition_on_switch_in(
@@ -2395,6 +2706,8 @@ pub fn dispatch_condition_on_switch_in(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onTrapPokemon callbacks
 pub fn dispatch_condition_on_trap_pokemon(
@@ -2410,6 +2723,8 @@ pub fn dispatch_condition_on_trap_pokemon(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onTryAddVolatile callbacks
 pub fn dispatch_condition_on_try_add_volatile(
@@ -2434,6 +2749,8 @@ pub fn dispatch_condition_on_try_add_volatile(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onTryBoost callbacks
 pub fn dispatch_condition_on_try_boost(
@@ -2446,6 +2763,8 @@ pub fn dispatch_condition_on_try_boost(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onTryHeal callbacks
 pub fn dispatch_condition_on_try_heal(
@@ -2458,6 +2777,8 @@ pub fn dispatch_condition_on_try_heal(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onTryHit callbacks
 pub fn dispatch_condition_on_try_hit(
@@ -2484,6 +2805,8 @@ pub fn dispatch_condition_on_try_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onTryMove callbacks
 pub fn dispatch_condition_on_try_move(
@@ -2496,6 +2819,8 @@ pub fn dispatch_condition_on_try_move(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onTryPrimaryHit callbacks
 pub fn dispatch_condition_on_try_primary_hit(
@@ -2520,6 +2845,8 @@ pub fn dispatch_condition_on_try_primary_hit(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onType callbacks
 pub fn dispatch_condition_on_type(
@@ -2532,6 +2859,8 @@ pub fn dispatch_condition_on_type(
         _ => EventResult::Continue,
     }
 }
+// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+// JavaScript signatures: NONE FOUND
 
 /// Dispatch condition onUpdate callbacks
 pub fn dispatch_condition_on_update(
