@@ -42,7 +42,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 ///         pokemon.addVolatile('charge');
 ///     }
 /// }
-pub fn on_side_condition_start(battle: &mut Battle, pokemon_pos: (usize, usize), side_condition_id: &str, _source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_side_condition_start(battle: &mut Battle, pokemon_pos: (usize, usize), _side_idx: usize, side_condition_id: &str, _source_pos: Option<(usize, usize)>) -> EventResult {
     use crate::Pokemon;
 
     // if (sideCondition.id === 'tailwind')

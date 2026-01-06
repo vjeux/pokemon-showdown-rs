@@ -17,8 +17,9 @@ impl Battle {
         use crate::data::ability_callbacks;
         use crate::event::EventResult;
 
-        // Extract pokemon position from EventTarget
+        // Extract pokemon position or side index from EventTarget
         let pokemon_pos = target.and_then(|t| t.as_pokemon()).unwrap_or((0, 0));
+        let side_idx = target.and_then(|t| t.as_side());
 
         // Get Pokemon name for logging
         let pokemon_name = if let Some(pokemon) = self.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -631,10 +632,19 @@ impl Battle {
                     .and_then(|e| e.effect.as_ref())
                     .map(|id| id.as_str().to_string());
                 let side_condition_id = side_condition_id_string.as_ref().map(|s| s.as_str()).unwrap_or("");
+
+                // For side events, target in handle_ability_event is the Pokemon with the ability (effect_holder)
+                // but we also need the side_idx from the original event target stored in current_event
+                let side_index = side_idx.unwrap_or_else(|| {
+                    // If target wasn't a Side, pokemon is on side 0 by default
+                    pokemon_pos.0
+                });
+
                 ability_callbacks::dispatch_on_side_condition_start(
                     self,
                     ability_id.as_str(),
                     pokemon_pos,
+                    side_index,
                     side_condition_id,
                     None
                 )

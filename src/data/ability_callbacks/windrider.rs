@@ -85,7 +85,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///         this.boost({ atk: 1 }, pokemon, pokemon);
 ///     }
 /// }
-pub fn on_side_condition_start(battle: &mut Battle, pokemon_pos: (usize, usize), side_condition_id: &str, _source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_side_condition_start(battle: &mut Battle, pokemon_pos: (usize, usize), _side_idx: usize, side_condition_id: &str, _source_pos: Option<(usize, usize)>) -> EventResult {
     // if (sideCondition.id === 'tailwind')
     if side_condition_id == "tailwind" {
         // this.boost({ atk: 1 }, pokemon, pokemon);
