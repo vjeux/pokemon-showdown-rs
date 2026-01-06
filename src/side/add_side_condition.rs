@@ -145,11 +145,14 @@ impl Side {
         }
 
         // JavaScript: this.battle.runEvent('SideConditionStart', this, source, status);
-        battle.run_event_side(
+        battle.run_event(
             "SideConditionStart",
-            side_idx,
+            Some(crate::event::EventTarget::Side(side_idx)),
             source_pos,
             Some(&status_id),
+            crate::event::EventResult::Continue,
+            false,
+            false,
         );
 
         true

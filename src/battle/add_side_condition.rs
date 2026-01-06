@@ -132,7 +132,15 @@ impl Battle {
         }
 
         // this.battle.runEvent('SideConditionStart', this, source, status);
-        self.run_event_side("SideConditionStart", side_idx, source_pos, Some(&condition_id));
+        self.run_event(
+            "SideConditionStart",
+            Some(crate::event::EventTarget::Side(side_idx)),
+            source_pos,
+            Some(&condition_id),
+            crate::event::EventResult::Continue,
+            false,
+            false,
+        );
 
         true
     }

@@ -124,7 +124,6 @@ mod handle_item_event;
 mod handle_move_event;
 mod handle_condition_event;
 mod run_event;
-mod run_event_side;
 mod find_event_handlers;
 mod priority_event;
 mod get_event_modifier;
