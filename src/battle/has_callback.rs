@@ -18,26 +18,52 @@ impl Battle {
         // This is critical because some IDs like "stall" exist as both abilities AND conditions
         // When checking a volatile, we want to find the CONDITION, not the ability
         // In JavaScript, the volatile already has its callback attached, so there's no ambiguity
+        //
+        // HOWEVER: If the condition is a move-embedded condition (like gmaxvolcalith),
+        // we need to check BOTH condition callbacks AND move callbacks!
+        // Example: gmaxvolcalith has condition.onSideStart AND self.onHit
         let condition_check = self.dex.conditions().get_by_id(effect_id);
+        let is_also_move = self.dex.moves().get(effect_str).is_some();
+
         if condition_check.is_some() {
-            let result = self.condition_has_callback(effect_str, event_id);
-            eprintln!("[HAS_CALLBACK] Found as condition, has_callback={}", result);
-            return result;
+            let has_condition_callback = self.condition_has_callback(effect_str, event_id);
+            eprintln!("[HAS_CALLBACK] Found as condition, has_callback={}, is_also_move={}", has_condition_callback, is_also_move);
+
+            // If it's ONLY a condition (not also a move), return the condition result
+            if !is_also_move {
+                return has_condition_callback;
+            }
+
+            // If it's BOTH a condition and a move, check move callbacks too
+            // Fall through to check move callbacks below, but remember condition result
+            let has_move_callback = self.move_has_callback(effect_str, event_id);
+            let has_self_callback = self.move_has_self_callback(effect_str, event_id);
+            eprintln!("[HAS_CALLBACK] Also a move: condition={}, move={}, self={}",
+                has_condition_callback, has_move_callback, has_self_callback);
+            return has_condition_callback || has_move_callback || has_self_callback;
         }
 
         // Check if this is a move-embedded condition
         // JavaScript's dex.conditions.getByID() checks moves for embedded conditions:
         // } else if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).condition ...
         //     condition = new Condition({ name: found.name || id, ...found.condition });
-        if let Some(move_data) = self.dex.moves().get(effect_str) {
+        // IMPORTANT: Don't return early! A move with an embedded condition can have BOTH
+        // condition callbacks (onSideStart, onResidual, etc.) AND move callbacks (onHit, etc.)
+        // Example: gmaxvolcalith has condition.onSideStart AND self.onHit
+        let has_embedded_condition = if let Some(move_data) = self.dex.moves().get(effect_str) {
             if move_data.condition.is_some() {
-                // This is a move with an embedded condition (like King's Shield)
-                // Treat it as a condition for callback purposes
-                let result = self.condition_has_callback(effect_str, event_id);
-                eprintln!("[HAS_CALLBACK] Found as move-embedded condition, has_callback={}", result);
-                return result;
+                // This is a move with an embedded condition (like King's Shield, gmaxvolcalith)
+                // Check if the condition has the callback
+                eprintln!("[HAS_CALLBACK] Found as move-embedded condition, checking condition_has_callback");
+                let has_condition_callback = self.condition_has_callback(effect_str, event_id);
+                eprintln!("[HAS_CALLBACK] Embedded condition has_callback={}", has_condition_callback);
+                has_condition_callback
+            } else {
+                false
             }
-        }
+        } else {
+            false
+        };
 
         // Check abilities
         if self.dex.abilities().get(effect_str).is_some() {
@@ -51,9 +77,15 @@ impl Battle {
 
         // Check moves (both regular and self callbacks)
         if self.dex.moves().get(effect_str).is_some() {
-            // A move has a callback if either the regular callback OR the self callback exists
-            return self.move_has_callback(effect_str, event_id)
-                || self.move_has_self_callback(effect_str, event_id);
+            // A move has a callback if:
+            // 1. The embedded condition has the callback (already checked above)
+            // 2. The move itself has the callback
+            // 3. The move's self effect has the callback
+            let has_move_callback = self.move_has_callback(effect_str, event_id);
+            let has_self_callback = self.move_has_self_callback(effect_str, event_id);
+            eprintln!("[HAS_CALLBACK] Move check: embedded={}, move={}, self={}",
+                has_embedded_condition, has_move_callback, has_self_callback);
+            return has_embedded_condition || has_move_callback || has_self_callback;
         }
 
         // Check species - species can have callbacks like onSwitchIn for form changes
@@ -178,6 +210,7 @@ impl Battle {
     /// Check if a move has a SELF callback for an event
     /// Self callbacks are in the self: { } object and target the move user, not the target
     pub fn move_has_self_callback(&self, move_id: &str, event_id: &str) -> bool {
+        eprintln!("[MOVE_HAS_SELF_CALLBACK] move_id={}, event_id={}", move_id, event_id);
         // Look up the move in dex data and check its extra field for callback boolean
         if let Some(move_data) = self.dex.moves().get(move_id) {
             // Check move.self callbacks (like gmaxmalodor)
@@ -190,10 +223,14 @@ impl Battle {
                 format!("self.on{}", event_id)
             };
 
+            eprintln!("[MOVE_HAS_SELF_CALLBACK] Checking for key: {}", self_key);
             if let Some(has_self_callback) = move_data.extra.get(&self_key).and_then(|v| v.as_bool()) {
+                eprintln!("[MOVE_HAS_SELF_CALLBACK] Found! value={}", has_self_callback);
                 if has_self_callback {
                     return true;
                 }
+            } else {
+                eprintln!("[MOVE_HAS_SELF_CALLBACK] Not found in extra fields");
             }
 
             // Also try without "on" prefix if event_id doesn't have it
