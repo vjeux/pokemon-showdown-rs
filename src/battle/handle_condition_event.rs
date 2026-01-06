@@ -131,7 +131,11 @@ impl Battle {
                 condition_callbacks::dispatch_on_field_restart(self, condition_id, pokemon_pos)
             }
             "Immunity" => {
-                condition_callbacks::dispatch_on_immunity(self, condition_id, pokemon_pos)
+                // Extract immunity type from event type_param
+                let immunity_type = self.current_event.as_ref()
+                    .and_then(|e| e.type_param.clone())
+                    .unwrap_or_default();
+                condition_callbacks::dispatch_on_immunity(self, condition_id, &immunity_type, pokemon_pos)
             }
             "LockMove" => {
                 condition_callbacks::dispatch_on_lock_move(self, condition_id, pokemon_pos)
@@ -165,11 +169,17 @@ impl Battle {
                 condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos)
             }
             "Restart" => condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos),
-            "SourceModifyDamage" => condition_callbacks::dispatch_on_source_modify_damage(
-                self,
-                condition_id,
-                pokemon_pos,
-            ),
+            "SourceModifyDamage" => {
+                // SourceModifyDamage needs both source and target positions
+                // pokemon_pos is the source, extract target from current_event
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+                condition_callbacks::dispatch_on_source_modify_damage(
+                    self,
+                    condition_id,
+                    pokemon_pos,  // source_pos
+                    target_pos,
+                )
+            }
             "StallMove" => {
                 condition_callbacks::dispatch_on_stall_move(self, condition_id, pokemon_pos)
             }
@@ -203,7 +213,18 @@ impl Battle {
                 pokemon_pos,
             ),
             "AnyInvulnerability" | "Invulnerability" => {
-                condition_callbacks::dispatch_on_any_invulnerability(self, condition_id, pokemon_pos)
+                // Extract source_pos and attacking_move_id from current_event
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                let attacking_move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
+                condition_callbacks::dispatch_on_any_invulnerability(
+                    self,
+                    condition_id,
+                    pokemon_pos,  // target_pos
+                    source_pos,
+                    &attacking_move_id
+                )
             }
             _ => EventResult::Continue,
         };

@@ -161,6 +161,7 @@ pub fn on_field_start(
 /// ```
 pub fn on_immunity(
     battle: &mut Battle,
+    immunity_type: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     // if (pokemon.hasItem('utilityumbrella')) return;
@@ -177,10 +178,8 @@ pub fn on_immunity(
     }
 
     // if (type === 'frz') return false;
-    if let Some(ref effect) = battle.effect {
-        if effect.as_str() == "frz" {
-            return EventResult::Boolean(false);
-        }
+    if immunity_type == "frz" {
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

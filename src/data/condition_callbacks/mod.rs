@@ -385,12 +385,16 @@ pub fn dispatch_on_field_restart(
 pub fn dispatch_on_immunity(
     battle: &mut Battle,
     condition_id: &str,
+    immunity_type: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match condition_id {
-        "desolateland" => desolateland::on_immunity(battle, pokemon_pos),
-        "sunnyday" => sunnyday::on_immunity(battle, pokemon_pos),
-        _ => EventResult::Continue,
+        "desolateland" => desolateland::on_immunity(battle, immunity_type, pokemon_pos),
+        "sunnyday" => sunnyday::on_immunity(battle, immunity_type, pokemon_pos),
+        _ => {
+            // Fallback to move-embedded condition callbacks
+            move_callbacks::dispatch_condition_on_immunity(battle, condition_id, immunity_type, pokemon_pos)
+        }
     }
 }
 
@@ -398,18 +402,22 @@ pub fn dispatch_on_immunity(
 pub fn dispatch_on_any_invulnerability(
     battle: &mut Battle,
     condition_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: (usize, usize),
+    source_pos: (usize, usize),
+    attacking_move_id: &str,
 ) -> EventResult {
-    println!("[DISPATCH_INVULN] Called with condition_id='{}', pokemon_pos={:?}", condition_id, pokemon_pos);
+    println!("[DISPATCH_INVULN] Called with condition_id='{}', target_pos={:?}, source_pos={:?}, attacking_move_id='{}'",
+        condition_id, target_pos, source_pos, attacking_move_id);
 
     let result = match condition_id {
         "skydrop" => {
             println!("[DISPATCH_INVULN] Routing to skydrop callback");
-            skydrop::on_any_invulnerability(battle, pokemon_pos)
+            skydrop::on_any_invulnerability(battle, target_pos, source_pos, attacking_move_id)
         },
         _ => {
-            println!("[DISPATCH_INVULN] No match for '{}', returning Continue", condition_id);
-            EventResult::Continue
+            println!("[DISPATCH_INVULN] No match for '{}', trying fallback", condition_id);
+            // Fallback to move-embedded condition callbacks
+            move_callbacks::dispatch_condition_on_any_invulnerability(battle, condition_id, target_pos, source_pos, attacking_move_id)
         },
     };
 
@@ -480,8 +488,8 @@ pub fn dispatch_on_modify_spe(
         "par" => par::on_modify_spe(battle, spe, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            // dispatch_condition_on_modify_spe takes (battle, move_id, source_pos)
-            move_callbacks::dispatch_condition_on_modify_spe(battle, condition_id, pokemon_pos)
+            // dispatch_condition_on_modify_spe takes (battle, move_id, spe, source_pos)
+            move_callbacks::dispatch_condition_on_modify_spe(battle, condition_id, spe, pokemon_pos)
         }
     }
 }
@@ -562,11 +570,15 @@ pub fn dispatch_on_restart(
 pub fn dispatch_on_source_modify_damage(
     battle: &mut Battle,
     condition_id: &str,
-    pokemon_pos: (usize, usize),
+    source_pos: (usize, usize),
+    target_pos: (usize, usize),
 ) -> EventResult {
     match condition_id {
-        "dynamax" => dynamax::on_source_modify_damage(battle, pokemon_pos),
-        _ => EventResult::Continue,
+        "dynamax" => dynamax::on_source_modify_damage(battle, source_pos, target_pos),
+        _ => {
+            // Fallback to move-embedded condition callbacks
+            move_callbacks::dispatch_condition_on_source_modify_damage(battle, condition_id, source_pos, target_pos)
+        }
     }
 }
 

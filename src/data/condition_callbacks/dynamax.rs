@@ -210,7 +210,8 @@ pub fn on_before_switch_out(
 /// ```
 pub fn on_source_modify_damage(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    _source_pos: (usize, usize),
+    _target_pos: (usize, usize),
 ) -> EventResult {
     // if (move.id === 'behemothbash' || move.id === 'behemothblade' || move.id === 'dynamaxcannon')
     if let Some(ref active_move) = battle.active_move {

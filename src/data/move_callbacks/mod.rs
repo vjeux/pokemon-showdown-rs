@@ -1971,6 +1971,7 @@ pub fn dispatch_condition_on_modify_move(
 pub fn dispatch_condition_on_modify_spe(
     battle: &mut Battle,
     move_id: &str,
+    _spe: i32,
     source_pos: (usize, usize),
 ) -> EventResult {
     match move_id {

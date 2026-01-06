@@ -26,31 +26,21 @@ use crate::event::EventResult;
 /// ```
 pub fn on_any_invulnerability(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    target_pos: (usize, usize),
+    source_pos: (usize, usize),
+    attacking_move_id: &str,
 ) -> EventResult {
-    println!("[SKYDROP_INVULN] Called for pokemon at {:?}", pokemon_pos);
+    println!("[SKYDROP_INVULN] Called for target={:?}, source={:?}, move='{}'", target_pos, source_pos, attacking_move_id);
 
-    // Get attacking move ID from current event's effect field
-    let attacking_move_id = battle.current_event.as_ref()
-        .and_then(|e| e.effect.as_ref())
-        .map(|id| id.as_str());
-
-    println!("[SKYDROP_INVULN] Attacking move: {:?}", attacking_move_id);
-
-    // Get target and source from invulnerability event
-    let invuln_target_pos = battle.current_event.as_ref()
-        .and_then(|e| e.target);
-    let invuln_source_pos = battle.current_event.as_ref()
-        .and_then(|e| e.source);
-
-    println!("[SKYDROP_INVULN] Event target: {:?}, source: {:?}", invuln_target_pos, invuln_source_pos);
-
-    // Get skydrop effectState target and source
+    // Get the Pokemon that has the skydrop volatile (could be target_pos from the event)
+    // We need to find which Pokemon has the skydrop condition to get effectState
+    // This is typically the pokemon_pos passed to the condition callback
+    // For now, check the target_pos for the skydrop volatile
     let (effectstate_target, effectstate_source) = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => {
-                println!("[SKYDROP_INVULN] Pokemon not found at {:?}, returning Continue", pokemon_pos);
+                println!("[SKYDROP_INVULN] Pokemon not found at {:?}, returning Continue", target_pos);
                 return EventResult::Continue;
             }
         };
@@ -70,33 +60,31 @@ pub fn on_any_invulnerability(
     println!("[SKYDROP_INVULN] EffectState target: {:?}, source: {:?}", effectstate_target, effectstate_source);
 
     // JavaScript: if (target !== this.effectState.target && target !== this.effectState.source) return;
-    if invuln_target_pos != effectstate_target && invuln_target_pos != effectstate_source {
+    if Some(target_pos) != effectstate_target && Some(target_pos) != effectstate_source {
         println!("[SKYDROP_INVULN] Target not relevant, returning Continue");
         return EventResult::Continue;
     }
 
     // JavaScript: if (source === this.effectState.target && target === this.effectState.source) return;
-    if invuln_source_pos == effectstate_target && invuln_target_pos == effectstate_source {
+    if Some(source_pos) == effectstate_target && Some(target_pos) == effectstate_source {
         println!("[SKYDROP_INVULN] Source is target and target is source, returning Continue");
         return EventResult::Continue;
     }
 
     // JavaScript: if (["gust", "twister", "skyuppercut", "thunder", "hurricane", "smackdown", "thousandarrows"].includes(move.id)) return;
-    if let Some(move_id) = attacking_move_id {
-        const HITS_SKYDROP: &[&str] = &[
-            "gust",
-            "twister",
-            "skyuppercut",
-            "thunder",
-            "hurricane",
-            "smackdown",
-            "thousandarrows",
-        ];
+    const HITS_SKYDROP: &[&str] = &[
+        "gust",
+        "twister",
+        "skyuppercut",
+        "thunder",
+        "hurricane",
+        "smackdown",
+        "thousandarrows",
+    ];
 
-        if HITS_SKYDROP.contains(&move_id) {
-            println!("[SKYDROP_INVULN] Move {} can hit through skydrop, returning Continue", move_id);
-            return EventResult::Continue;
-        }
+    if HITS_SKYDROP.contains(&attacking_move_id) {
+        println!("[SKYDROP_INVULN] Move {} can hit through skydrop, returning Continue", attacking_move_id);
+        return EventResult::Continue;
     }
 
     // JavaScript: return false; (means invulnerable)
