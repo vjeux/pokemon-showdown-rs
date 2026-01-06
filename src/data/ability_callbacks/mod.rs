@@ -567,12 +567,6 @@ pub fn dispatch_on_any_after_terastallization(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyBasePower(basePower, source, target, move)
-//   onAnyBasePower(basePower, target, source, move)
-//   onAnyBasePower(basePower, user, target, move)
-
 /// Dispatch onAnyBasePower callbacks
 pub fn dispatch_on_any_base_power(
     battle: &mut Battle,
@@ -585,10 +579,6 @@ pub fn dispatch_on_any_base_power(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyBeforeMove()
-
 /// Dispatch onAnyBeforeMove callbacks
 pub fn dispatch_on_any_before_move(
     battle: &mut Battle,
