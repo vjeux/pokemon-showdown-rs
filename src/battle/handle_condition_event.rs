@@ -56,6 +56,15 @@ impl Battle {
             "BeforeMove" => {
                 condition_callbacks::dispatch_on_before_move(self, condition_id, pokemon_pos)
             }
+            "FoeBeforeMove" => {
+                condition_callbacks::dispatch_on_foe_before_move(self, condition_id, pokemon_pos)
+            }
+            "AllyBeforeMove" => {
+                condition_callbacks::dispatch_on_ally_before_move(self, condition_id, pokemon_pos)
+            }
+            "SourceBeforeMove" => {
+                condition_callbacks::dispatch_on_source_before_move(self, condition_id, pokemon_pos)
+            }
             "BeforeSwitchOut" => {
                 condition_callbacks::dispatch_on_before_switch_out(self, condition_id, pokemon_pos)
             }
@@ -73,6 +82,25 @@ impl Battle {
                 condition_callbacks::dispatch_on_effectiveness(self, condition_id, pokemon_pos)
             }
             "End" => condition_callbacks::dispatch_on_end(self, condition_id, pokemon_pos),
+            "Faint" => {
+                // Faint needs target, source, and effect from current_event
+                // target_pos is the pokemon that fainted (pokemon_pos)
+                // source_pos is the pokemon that caused the faint (from current_event)
+                // effect_id is the move/ability/item that caused the faint (from current_event)
+                // Extract values first to avoid borrow checker issues
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.current_event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|id| id.to_string());
+
+                condition_callbacks::dispatch_on_faint(
+                    self,
+                    condition_id,
+                    Some(pokemon_pos),
+                    source_pos,
+                    effect_id_owned.as_deref(),
+                )
+            }
             "FieldEnd" => {
                 condition_callbacks::dispatch_on_field_end(self, condition_id, pokemon_pos)
             }

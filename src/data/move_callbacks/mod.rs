@@ -1714,16 +1714,18 @@ pub fn dispatch_condition_on_end(
     }
 }
 
-/// Dispatch condition onFaint callbacks
+/// Dispatch condition onFaint callbacks (with target, source, effect)
 pub fn dispatch_condition_on_faint(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match move_id {
-        "destinybond" => destinybond::condition::on_faint(battle, None, Some(source_pos), None),
-        "grudge" => grudge::condition::on_faint(battle, None, Some(source_pos), None),
-        "skydrop" => skydrop::condition::on_faint(battle, Some(source_pos)),
+        "destinybond" => destinybond::condition::on_faint(battle, target_pos, source_pos, effect_id),
+        "grudge" => grudge::condition::on_faint(battle, target_pos, source_pos, effect_id),
+        "skydrop" => skydrop::condition::on_faint(battle, target_pos),
         _ => EventResult::Continue,
     }
 }

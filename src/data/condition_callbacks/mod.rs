@@ -4,6 +4,7 @@
 //! Individual condition implementations are in separate files.
 
 use crate::battle::Battle;
+use crate::data::move_callbacks;
 use crate::event::EventResult;
 
 // Individual condition modules
@@ -120,6 +121,40 @@ pub fn dispatch_on_before_move(
     }
 }
 
+/// Dispatch onFoeBeforeMove callbacks
+pub fn dispatch_on_foe_before_move(
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    match condition_id {
+        "skydrop" => skydrop::on_foe_before_move(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
+}
+
+/// Dispatch onAllyBeforeMove callbacks
+pub fn dispatch_on_ally_before_move(
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    match condition_id {
+        _ => EventResult::Continue,
+    }
+}
+
+/// Dispatch onSourceBeforeMove callbacks
+pub fn dispatch_on_source_before_move(
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    match condition_id {
+        _ => EventResult::Continue,
+    }
+}
+
 /// Dispatch onBeforeSwitchOut callbacks
 pub fn dispatch_on_before_switch_out(
     battle: &mut Battle,
@@ -209,6 +244,19 @@ pub fn dispatch_on_end(
         "twoturnmove" => twoturnmove::on_end(battle, pokemon_pos),
         _ => EventResult::Continue,
     }
+}
+
+/// Dispatch onFaint callbacks (with target, source, effect)
+pub fn dispatch_on_faint(
+    battle: &mut Battle,
+    condition_id: &str,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
+) -> EventResult {
+    // Route to actual implementation in move_callbacks
+    use crate::data::move_callbacks;
+    move_callbacks::dispatch_condition_on_faint(battle, condition_id, target_pos, source_pos, effect_id)
 }
 
 /// Dispatch onFieldEnd callbacks
@@ -402,13 +450,33 @@ pub fn dispatch_on_residual(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match condition_id {
+        "aquaring" => move_callbacks::aquaring::condition::on_residual(battle, pokemon_pos),
         "brn" => brn::on_residual(battle, pokemon_pos),
+        "curse" => move_callbacks::curse::condition::on_residual(battle, pokemon_pos),
         "dynamax" => dynamax::on_residual(battle, pokemon_pos),
+        "encore" => move_callbacks::encore::condition::on_residual(battle, Some(pokemon_pos)),
+        "firepledge" => move_callbacks::firepledge::condition::on_residual(battle, pokemon_pos),
         "futuremove" => futuremove::on_residual(battle, pokemon_pos),
+        "gmaxcannonade" => move_callbacks::gmaxcannonade::condition::on_residual(battle, Some(pokemon_pos)),
+        "gmaxvinelash" => move_callbacks::gmaxvinelash::condition::on_residual(battle, Some(pokemon_pos)),
+        "gmaxvolcalith" => move_callbacks::gmaxvolcalith::condition::on_residual(battle, Some(pokemon_pos)),
+        "gmaxwildfire" => move_callbacks::gmaxwildfire::condition::on_residual(battle, Some(pokemon_pos)),
+        "grassyterrain" => move_callbacks::grassyterrain::condition::on_residual(battle, pokemon_pos),
+        "iceball" => move_callbacks::iceball::condition::on_residual(battle, Some(pokemon_pos)),
+        "ingrain" => move_callbacks::ingrain::condition::on_residual(battle, pokemon_pos),
+        "leechseed" => move_callbacks::leechseed::condition::on_residual(battle, pokemon_pos),
         "lockedmove" => lockedmove::on_residual(battle, pokemon_pos),
+        "nightmare" => move_callbacks::nightmare::condition::on_residual(battle, pokemon_pos),
+        "octolock" => move_callbacks::octolock::condition::on_residual(battle, pokemon_pos),
         "partiallytrapped" => partiallytrapped::on_residual(battle, pokemon_pos),
+        "perishsong" => move_callbacks::perishsong::condition::on_residual(battle, pokemon_pos),
         "psn" => psn::on_residual(battle, pokemon_pos),
+        "rollout" => move_callbacks::rollout::condition::on_residual(battle, Some(pokemon_pos)),
+        "saltcure" => move_callbacks::saltcure::condition::on_residual(battle, pokemon_pos),
+        "syrupbomb" => move_callbacks::syrupbomb::condition::on_residual(battle, pokemon_pos),
         "tox" => tox::on_residual(battle, pokemon_pos),
+        "uproar" => move_callbacks::uproar::condition::on_residual(battle, Some(pokemon_pos)),
+        "wish" => move_callbacks::wish::condition::on_residual(battle),
         _ => EventResult::Continue,
     }
 }
