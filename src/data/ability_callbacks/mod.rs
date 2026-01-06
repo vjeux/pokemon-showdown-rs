@@ -397,18 +397,15 @@ pub fn dispatch_on_after_use_item(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAllyAfterUseItem(item, pokemon)
 
 /// Dispatch onAllyAfterUseItem callbacks
 pub fn dispatch_on_ally_after_use_item(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    item_id: Option<&str>, pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "symbiosis" => symbiosis::on_ally_after_use_item(battle, pokemon_pos),
+        "symbiosis" => symbiosis::on_ally_after_use_item(battle, item_id, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -2643,9 +2640,9 @@ pub fn dispatch_on_after_use_item_sub_order(
 pub fn dispatch_on_ally_after_use_item_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    item_id: Option<&str>, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_ally_after_use_item(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_after_use_item(battle, ability_id, item_id, pokemon_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2654,9 +2651,9 @@ pub fn dispatch_on_ally_after_use_item_priority(
 pub fn dispatch_on_ally_after_use_item_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    item_id: Option<&str>, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_ally_after_use_item(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_after_use_item(battle, ability_id, item_id, pokemon_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2665,9 +2662,9 @@ pub fn dispatch_on_ally_after_use_item_order(
 pub fn dispatch_on_ally_after_use_item_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    item_id: Option<&str>, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_ally_after_use_item(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_after_use_item(battle, ability_id, item_id, pokemon_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

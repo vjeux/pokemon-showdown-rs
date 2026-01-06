@@ -120,6 +120,7 @@ impl Battle {
             "AllyAfterUseItem" => ability_callbacks::dispatch_on_ally_after_use_item(
                 self,
                 ability_id.as_str(),
+                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
                 pokemon_pos,
             ),
             "AllyBasePower" => ability_callbacks::dispatch_on_ally_base_power(

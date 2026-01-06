@@ -22,7 +22,7 @@ use crate::pokemon::Pokemon;
 ///     }
 ///     this.add('-activate', source, 'ability: Symbiosis', myItem, `[of] ${pokemon}`);
 /// }
-pub fn on_ally_after_use_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_ally_after_use_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize)) -> EventResult {
     // if (pokemon.switchFlag) return;
     let switch_flag = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
