@@ -32,8 +32,8 @@ use crate::Pokemon;
 /// ```
 pub fn on_after_hit(
     battle: &mut Battle,
+    target_pos: (usize, usize),  // JavaScript: onAfterHit(target, source) - target first
     source_pos: (usize, usize),
-    target_pos: (usize, usize),
 ) -> EventResult {
     // if (source.item || source.volatiles['gem']) {
     //     return;

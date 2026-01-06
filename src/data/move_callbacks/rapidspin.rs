@@ -26,8 +26,8 @@ use crate::Pokemon;
 /// }
 pub fn on_after_hit(
     battle: &mut Battle,
+    _target_pos: (usize, usize),  // JavaScript: onAfterHit(target, source) - target first
     source_pos: (usize, usize),
-    _target_pos: (usize, usize),
 ) -> EventResult {
     use crate::dex_data::ID;
 

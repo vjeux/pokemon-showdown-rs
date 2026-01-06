@@ -17,8 +17,8 @@ use crate::event::EventResult;
 /// }
 pub fn on_after_hit(
     battle: &mut Battle,
+    _target_pos: (usize, usize),  // JavaScript: onAfterHit(target, source, move) - target first
     source_pos: (usize, usize),
-    _target_pos: (usize, usize),
 ) -> EventResult {
     // if (!move.hasSheerForce && source.hp) {
     let has_sheer_force = battle

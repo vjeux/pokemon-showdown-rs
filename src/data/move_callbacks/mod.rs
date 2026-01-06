@@ -546,18 +546,18 @@ pub fn dispatch_damage_callback(
 pub fn dispatch_on_after_hit(
     battle: &mut Battle,
     move_id: &str,
+    target_pos: (usize, usize),  // JavaScript: onAfterHit(target, source) - target first
     source_pos: (usize, usize),
-    target_pos: (usize, usize),
 ) -> EventResult {
     match move_id {
-        "ceaselessedge" => ceaselessedge::on_after_hit(battle, source_pos, target_pos),
-        "covet" => covet::on_after_hit(battle, source_pos, target_pos),
-        "icespinner" => icespinner::on_after_hit(battle, source_pos, target_pos),
-        "knockoff" => knockoff::on_after_hit(battle, source_pos, target_pos),
-        "mortalspin" => mortalspin::on_after_hit(battle, source_pos, target_pos),
-        "rapidspin" => rapidspin::on_after_hit(battle, source_pos, target_pos),
-        "stoneaxe" => stoneaxe::on_after_hit(battle, source_pos, target_pos),
-        "thief" => thief::on_after_hit(battle, source_pos, target_pos),
+        "ceaselessedge" => ceaselessedge::on_after_hit(battle, target_pos, source_pos),
+        "covet" => covet::on_after_hit(battle, target_pos, source_pos),
+        "icespinner" => icespinner::on_after_hit(battle, target_pos, source_pos),
+        "knockoff" => knockoff::on_after_hit(battle, target_pos, source_pos),
+        "mortalspin" => mortalspin::on_after_hit(battle, target_pos, source_pos),
+        "rapidspin" => rapidspin::on_after_hit(battle, target_pos, source_pos),
+        "stoneaxe" => stoneaxe::on_after_hit(battle, target_pos, source_pos),
+        "thief" => thief::on_after_hit(battle, target_pos, source_pos),
         _ => EventResult::Continue,
     }
 }
