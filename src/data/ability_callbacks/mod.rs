@@ -361,10 +361,6 @@ pub fn dispatch_on_after_move_secondary_self(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAfterSetStatus(status, pokemon)
-//   onAfterSetStatus(status, target, source, effect)
 
 /// Dispatch onAfterSetStatus callbacks
 pub fn dispatch_on_after_set_status(
