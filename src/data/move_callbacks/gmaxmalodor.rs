@@ -28,14 +28,9 @@ pub mod self_callbacks {
     /// ```
     pub fn on_hit(
         battle: &mut Battle,
-        _target_pos: (usize, usize),
-        source_pos: Option<(usize, usize)>,
+        source_pos: (usize, usize),
+        _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        let source_pos = match source_pos {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        };
-
         // for (const pokemon of source.foes()) {
         //     pokemon.trySetStatus('psn', source);
         // }
