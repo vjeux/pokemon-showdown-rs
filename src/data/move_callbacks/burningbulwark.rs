@@ -24,8 +24,15 @@ pub fn on_prepare_hit(
     }
 
     let stall_move_result = battle.run_event("StallMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
-    // Convert Option<i32> to bool
-    EventResult::Boolean(match stall_move_result { EventResult::Number(n) => n, _ => 0 } != 0)
+
+    // Convert stall_result to boolean: Boolean(true/false) or Number(!=0) means success
+    let stall_success = match stall_move_result {
+        EventResult::Boolean(b) => b,
+        EventResult::Number(n) => n != 0,
+        _ => false,
+    };
+
+    EventResult::Boolean(will_act && stall_success)
 }
 
 /// onHit(pokemon) {
