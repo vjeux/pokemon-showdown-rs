@@ -119,7 +119,9 @@ impl Pokemon {
         // JS:     return false;
         // JS: }
         // Note: Has basic check but missing different failure messages
-        if !prev_status.is_empty() {
+        // FIXED: Changed from !prev_status.is_empty() to match JavaScript logic
+        // JavaScript only prevents setting the SAME status, not ANY status change
+        if prev_status == status {
             return false;
         }
 
