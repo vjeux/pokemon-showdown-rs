@@ -9,6 +9,7 @@ struct FieldEventHandler {
     holder: Option<(usize, usize)>,
     is_field: bool,
     is_side: bool,
+    side_idx: Option<usize>, // For side conditions, which side this handler is for
     speed: i32,
     order: Option<i32>,
     priority: i32,
@@ -25,6 +26,7 @@ impl Battle {
         holder: Option<(usize, usize)>,
         is_field: bool,
         is_side: bool,
+        side_idx: Option<usize>, // For side conditions, which side this handler is for
         callback_name: &str,
         event_id: &str,
     ) -> FieldEventHandler {
@@ -83,6 +85,7 @@ impl Battle {
             holder,
             is_field,
             is_side,
+            side_idx,
             speed,
             order,
             priority,
@@ -177,6 +180,7 @@ impl Battle {
                 holder,
                 true,
                 false,
+                None, // Field handlers are not side-specific
                 &callback_name,
                 event_id,
             );
@@ -202,6 +206,7 @@ impl Battle {
                         holder,
                         false,
                         true,
+                        Some(side_idx), // Side handlers are for this specific side
                         &callback_name,
                         event_id,
                     );
@@ -236,6 +241,7 @@ impl Battle {
                             holder,
                             false,
                             false,
+                            None, // Any event handlers are not side-specific
                             &any_event,
                             event_id,
                         );
@@ -263,6 +269,7 @@ impl Battle {
                         holder,
                         false,
                         false,
+                        None, // Pokemon handlers are not side-specific
                         &callback_name,
                         event_id,
                     );
@@ -458,14 +465,47 @@ impl Battle {
             // JS: if (handler.callback) {
             //         this.singleEvent(handlerEventid, effect, handler.state, handler.effectHolder, null, null, undefined, handler.callback);
             //     }
-            self.single_event(&handler_event_id, &handler.effect_id, handler.holder, None, None, None);
+            // Special handling for side condition Residual events
+            // These callbacks take a Pokemon as target and should be called for each active Pokemon on the side
+            if handler.is_side && event_id == "Residual" {
+                // Only process the specific side this handler is for (not all sides with the condition)
+                if let Some(side_idx) = handler.side_idx {
+                    if self.sides[side_idx].side_conditions.contains_key(&handler.effect_id) {
+                        // Get active Pokemon positions on this side
+                        let active_positions: Vec<usize> = self.sides[side_idx].active
+                            .iter()
+                            .flatten()
+                            .copied()
+                            .collect();
 
-            // JS: this.faintMessages();
-            self.faint_messages(false, false, true);
+                        // Call the callback for each active Pokemon on this side
+                        for poke_idx in active_positions {
+                            let target_pos = (side_idx, poke_idx);
+                            eprintln!("[FIELD_EVENT] Calling side condition {} Residual for Pokemon {:?}",
+                                handler.effect_id.as_str(), target_pos);
+                            self.single_event(&handler_event_id, &handler.effect_id, Some(target_pos), None, None, None);
 
-            // JS: if (this.ended) return;
-            if self.ended {
-                return;
+                            // JS: this.faintMessages();
+                            self.faint_messages(false, false, true);
+
+                            // JS: if (this.ended) return;
+                            if self.ended {
+                                return;
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Normal handling for non-side-Residual events
+                self.single_event(&handler_event_id, &handler.effect_id, handler.holder, None, None, None);
+
+                // JS: this.faintMessages();
+                self.faint_messages(false, false, true);
+
+                // JS: if (this.ended) return;
+                if self.ended {
+                    return;
+                }
             }
         }
     }

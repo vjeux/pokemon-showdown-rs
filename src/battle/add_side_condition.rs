@@ -65,6 +65,7 @@ impl Battle {
         // Create effect state with source tracking
         let mut state = EffectState::new(condition_id.clone());
         state.source = source_pos;
+        state.created_turn = Some(self.turn); // Track when condition was added
 
         // If source exists, add source_slot field
         if let Some(source) = source_pos {

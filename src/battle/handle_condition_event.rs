@@ -141,6 +141,12 @@ impl Battle {
             "Residual" => {
                 condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos)
             }
+            "SideResidual" => {
+                // Some side conditions use onResidual callback for SideResidual events
+                // Example: gmaxvolcalith has condition.onResidual
+                // This matches JavaScript behavior where the callback signature is compatible
+                condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos)
+            }
             "Restart" => condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos),
             "SourceModifyDamage" => condition_callbacks::dispatch_on_source_modify_damage(
                 self,

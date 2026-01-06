@@ -289,6 +289,19 @@ impl Battle {
                 result
             } else {
                 eprintln!("[CONDITION_HAS_CALLBACK] No match found in condition data, checking if move-embedded");
+                // Special case: Some side conditions use "onResidual" instead of "onSideResidual"
+                // Example: gmaxvolcalith has condition.onResidual that should match onSideResidual requests
+                // JavaScript allows this because the callback signature matches (both take target)
+                if event_id == "onSideResidual" {
+                    let fallback_result = condition_data.extra.get("onResidual")
+                        .and_then(|v| v.as_bool())
+                        .unwrap_or(false);
+                    if fallback_result {
+                        eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual for onSideResidual request");
+                        return true;
+                    }
+                }
+
                 // Before returning false, check if this is a move-embedded condition
                 // Even though the condition exists in the dex, the callback might be in the move dispatcher
                 if let Some(move_data) = self.dex.moves().get(condition_id) {
@@ -300,6 +313,16 @@ impl Battle {
                             if let Some(true) = callback_val.as_bool() {
                                 eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
                                 return true;
+                            }
+                        }
+
+                        // Also check for onResidual fallback in embedded condition
+                        if event_id == "onSideResidual" {
+                            if let Some(callback_val) = condition_data.extra.get("onResidual") {
+                                if let Some(true) = callback_val.as_bool() {
+                                    eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual in embedded condition for onSideResidual request");
+                                    return true;
+                                }
                             }
                         }
                     }

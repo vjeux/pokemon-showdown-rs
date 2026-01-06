@@ -83,7 +83,17 @@ impl Battle {
         }
 
         // Handle move events
-        if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
+        // EXCEPTION: For side condition events (SideResidual, SideStart, SideEnd, SideRestart),
+        // check if the move has an embedded condition and route to condition handler
+        // Example: gmaxvolcalith is a move with condition.onResidual
+        if let Some(move_def) = self.dex.moves().get(effect_id.as_str()) {
+            // Check if this is a side condition event and the move has an embedded condition
+            if (event_id == "SideResidual" || event_id == "SideStart" || event_id == "SideEnd" || event_id == "SideRestart")
+                && move_def.condition.is_some() {
+                // Route to condition handler for the embedded condition
+                return self.handle_condition_event(event_id, effect_str, target);
+            }
+            // Normal move events
             return self.handle_move_event(event_id, effect_id, target, source);
         }
 

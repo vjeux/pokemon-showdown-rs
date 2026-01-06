@@ -19,8 +19,10 @@ impl Pokemon {
     pub fn has_type(&self, battle: &Battle, type_name: &str) -> bool {
         // JS: const thisTypes = this.getTypes();
         // JS: return thisTypes.includes(type);
+        // Note: Type comparison should be case-insensitive
+        let type_name_lower = type_name.to_lowercase();
         self.get_types(battle, false)
             .iter()
-            .any(|t| t == type_name)
+            .any(|t| t.to_lowercase() == type_name_lower)
     }
 }
