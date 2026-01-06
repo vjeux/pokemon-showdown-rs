@@ -423,10 +423,6 @@ pub fn dispatch_on_ally_base_power(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAllyFaint(ally)
-//   onAllyFaint(target)
 
 /// Dispatch onAllyFaint callbacks
 pub fn dispatch_on_ally_faint(
