@@ -460,10 +460,6 @@ pub fn dispatch_on_ally_modify_sp_d(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAllySetStatus(status, target, source, effect)
-
 /// Dispatch onAllySetStatus callbacks
 pub fn dispatch_on_ally_set_status(
     battle: &mut Battle,

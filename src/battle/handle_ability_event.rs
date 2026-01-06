@@ -171,8 +171,8 @@ impl Battle {
                 ability_id.as_str(),
                 event_status_id.as_str(),
                 pokemon_pos,
-                None,
-                None,
+                event_source_pos,
+                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
             ),
             "AllyTryAddVolatile" => ability_callbacks::dispatch_on_ally_try_add_volatile(
                 self,
