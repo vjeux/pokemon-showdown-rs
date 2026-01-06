@@ -525,10 +525,6 @@ pub fn dispatch_on_any_accuracy(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyAfterMega()
-
 /// Dispatch onAnyAfterMega callbacks
 pub fn dispatch_on_any_after_mega(
     battle: &mut Battle,
@@ -539,10 +535,6 @@ pub fn dispatch_on_any_after_mega(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyAfterMove()
-
 /// Dispatch onAnyAfterMove callbacks
 pub fn dispatch_on_any_after_move(
     battle: &mut Battle,
