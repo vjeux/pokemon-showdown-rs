@@ -62,7 +62,10 @@ pub fn dispatch_duration_callback(
         "sandstorm" => sandstorm::duration_callback(battle, pokemon_pos),
         "snowscape" => snowscape::duration_callback(battle, pokemon_pos),
         "sunnyday" => sunnyday::duration_callback(battle, pokemon_pos),
-        _ => EventResult::Continue,
+        _ => {
+            // Fallback to move-embedded condition callbacks
+            move_callbacks::dispatch_condition_duration_callback(battle, condition_id, pokemon_pos)
+        }
     }
 }
 
@@ -236,7 +239,10 @@ pub fn dispatch_on_drag_out(
         "commanded" => commanded::on_drag_out(battle, pokemon_pos),
         "commanding" => commanding::on_drag_out(battle, pokemon_pos),
         "dynamax" => dynamax::on_drag_out(battle, pokemon_pos),
-        _ => EventResult::Continue,
+        _ => {
+            // Fallback to move-embedded condition callbacks
+            move_callbacks::dispatch_condition_on_drag_out(battle, condition_id, pokemon_pos)
+        }
     }
 }
 
@@ -281,7 +287,10 @@ pub fn dispatch_on_end(
         "lockedmove" => lockedmove::on_end(battle, pokemon_pos),
         "partiallytrapped" => partiallytrapped::on_end(battle, pokemon_pos),
         "twoturnmove" => twoturnmove::on_end(battle, pokemon_pos),
-        _ => EventResult::Continue,
+        _ => {
+            // Fallback to move-embedded condition callbacks
+            move_callbacks::dispatch_condition_on_end(battle, condition_id, pokemon_pos)
+        }
     }
 }
 
@@ -350,7 +359,6 @@ pub fn dispatch_on_field_start(
     match condition_id {
         "deltastream" => deltastream::on_field_start(battle, _pokemon_pos),
         "desolateland" => desolateland::on_field_start(battle, _pokemon_pos),
-        "echoedvoice" => move_callbacks::echoedvoice::condition::on_field_start(battle),
         "hail" => hail::on_field_start(battle, _pokemon_pos),
         "primordialsea" => primordialsea::on_field_start(battle, _pokemon_pos),
         "raindance" => raindance::on_field_start(battle, _pokemon_pos),
@@ -373,7 +381,6 @@ pub fn dispatch_on_field_restart(
     use crate::data::move_callbacks;
 
     match condition_id {
-        "echoedvoice" => move_callbacks::echoedvoice::condition::on_field_restart(battle),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_field_restart(battle, condition_id, _pokemon_pos)
@@ -516,33 +523,13 @@ pub fn dispatch_on_residual(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     match condition_id {
-        "aquaring" => move_callbacks::aquaring::condition::on_residual(battle, pokemon_pos),
         "brn" => brn::on_residual(battle, pokemon_pos),
-        "curse" => move_callbacks::curse::condition::on_residual(battle, pokemon_pos),
         "dynamax" => dynamax::on_residual(battle, pokemon_pos),
-        "encore" => move_callbacks::encore::condition::on_residual(battle, Some(pokemon_pos)),
-        "firepledge" => move_callbacks::firepledge::condition::on_residual(battle, pokemon_pos),
         "futuremove" => futuremove::on_residual(battle, pokemon_pos),
-        "gmaxcannonade" => move_callbacks::gmaxcannonade::condition::on_residual(battle, Some(pokemon_pos)),
-        "gmaxvinelash" => move_callbacks::gmaxvinelash::condition::on_residual(battle, Some(pokemon_pos)),
-        "gmaxvolcalith" => move_callbacks::gmaxvolcalith::condition::on_residual(battle, Some(pokemon_pos)),
-        "gmaxwildfire" => move_callbacks::gmaxwildfire::condition::on_residual(battle, Some(pokemon_pos)),
-        "grassyterrain" => move_callbacks::grassyterrain::condition::on_residual(battle, pokemon_pos),
-        "iceball" => move_callbacks::iceball::condition::on_residual(battle, Some(pokemon_pos)),
-        "ingrain" => move_callbacks::ingrain::condition::on_residual(battle, pokemon_pos),
-        "leechseed" => move_callbacks::leechseed::condition::on_residual(battle, pokemon_pos),
         "lockedmove" => lockedmove::on_residual(battle, pokemon_pos),
-        "nightmare" => move_callbacks::nightmare::condition::on_residual(battle, pokemon_pos),
-        "octolock" => move_callbacks::octolock::condition::on_residual(battle, pokemon_pos),
         "partiallytrapped" => partiallytrapped::on_residual(battle, pokemon_pos),
-        "perishsong" => move_callbacks::perishsong::condition::on_residual(battle, pokemon_pos),
         "psn" => psn::on_residual(battle, pokemon_pos),
-        "rollout" => move_callbacks::rollout::condition::on_residual(battle, Some(pokemon_pos)),
-        "saltcure" => move_callbacks::saltcure::condition::on_residual(battle, pokemon_pos),
-        "syrupbomb" => move_callbacks::syrupbomb::condition::on_residual(battle, pokemon_pos),
         "tox" => tox::on_residual(battle, pokemon_pos),
-        "uproar" => move_callbacks::uproar::condition::on_residual(battle, Some(pokemon_pos)),
-        "wish" => move_callbacks::wish::condition::on_residual(battle),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_residual(battle, condition_id, pokemon_pos)
@@ -669,37 +656,6 @@ pub fn dispatch_on_try_add_volatile(
 ) -> EventResult {
     match condition_id {
         "dynamax" => dynamax::on_try_add_volatile(battle, pokemon_pos),
-        "safeguard" => {
-            // Safeguard is a side condition, so its callbacks need more info
-            // Clone event data to avoid borrow conflicts
-            let (status, target_pos, source_pos, effect_id) = {
-                let event = battle.current_event.as_ref();
-                let status = event
-                    .and_then(|e| e.relay_var.as_ref())
-                    .and_then(|rv| match rv {
-                        EventResult::String(s) => Some(s.clone()),
-                        _ => None,
-                    });
-                // Get the REAL target from the event, not the side's pokemon_pos
-                let target_pos = event.and_then(|e| e.target);
-                let source_pos = event.and_then(|e| e.source);
-                let effect_id = event
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|id| id.clone());
-                (status, target_pos, source_pos, effect_id)
-            };
-
-            let status_ref = status.as_deref();
-            let effect_ref = effect_id.as_ref().map(|id| id.as_str());
-
-            move_callbacks::safeguard::condition::on_try_add_volatile(
-                battle,
-                status_ref,
-                target_pos,
-                source_pos,
-                effect_ref
-            )
-        }
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_try_add_volatile(battle, condition_id, pokemon_pos)
