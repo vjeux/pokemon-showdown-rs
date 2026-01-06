@@ -211,7 +211,7 @@ pub fn on_ally_set_status(battle: &mut Battle, _status_id: &str, target_pos: (us
 ///         return null;
 ///     }
 /// }
-pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::battle::Arg;
 
     // if (target.hasType('Grass') && status.id === 'yawn') {

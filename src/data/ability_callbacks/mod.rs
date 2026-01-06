@@ -473,12 +473,6 @@ pub fn dispatch_on_ally_set_status(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAllyTryAddVolatile(status, target)
-//   onAllyTryAddVolatile(status, target, source)
-//   onAllyTryAddVolatile(status, target, source, effect)
-
 /// Dispatch onAllyTryAddVolatile callbacks
 pub fn dispatch_on_ally_try_add_volatile(
     battle: &mut Battle,
@@ -487,8 +481,8 @@ pub fn dispatch_on_ally_try_add_volatile(
 ) -> EventResult {
     match ability_id {
         "aromaveil" => aromaveil::on_ally_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
-        "flowerveil" => flowerveil::on_ally_try_add_volatile(battle, status, target_pos),
-        "sweetveil" => sweetveil::on_ally_try_add_volatile(battle, status, target_pos),
+        "flowerveil" => flowerveil::on_ally_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
+        "sweetveil" => sweetveil::on_ally_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
