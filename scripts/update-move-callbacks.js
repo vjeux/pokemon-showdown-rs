@@ -42,6 +42,24 @@ function extractCallbacks(moveId, moveData) {
         }
     }
 
+    // Also check self object for callbacks (like gmaxmalodor)
+    if (moveData.self && typeof moveData.self === 'object') {
+        for (const key in moveData.self) {
+            if (moveData.self.hasOwnProperty(key) && typeof moveData.self[key] === 'function') {
+                callbacks.push(`self.${key}`);
+            }
+        }
+    }
+
+    // Also check condition object for callbacks (like kingsshield)
+    if (moveData.condition && typeof moveData.condition === 'object') {
+        for (const key in moveData.condition) {
+            if (moveData.condition.hasOwnProperty(key) && typeof moveData.condition[key] === 'function') {
+                callbacks.push(`condition.${key}`);
+            }
+        }
+    }
+
     return callbacks;
 }
 
@@ -93,6 +111,33 @@ for (const moveId in Moves) {
     callbacks.forEach(callback => {
         movesJson[moveId][callback] = true;
     });
+
+    // Handle move.self callbacks (like gmaxmalodor)
+    if (moveData.self && typeof moveData.self === 'object') {
+        if (!movesJson[moveId].self) {
+            movesJson[moveId].self = {};
+        }
+
+        // Extract callbacks from the self object
+        const selfCallbacks = [];
+        for (const key in moveData.self) {
+            if (moveData.self.hasOwnProperty(key) && typeof moveData.self[key] === 'function') {
+                selfCallbacks.push(key);
+            }
+        }
+
+        // Add callback boolean flags to self
+        selfCallbacks.forEach(callback => {
+            movesJson[moveId].self[callback] = true;
+        });
+
+        // Preserve *Order/*Priority/*SubOrder metadata in self
+        for (const key in moveData.self) {
+            if (key.endsWith('Priority') || key.endsWith('Order') || key.endsWith('SubOrder')) {
+                movesJson[moveId].self[key] = moveData.self[key];
+            }
+        }
+    }
 
     // Handle move.condition callbacks (like octolock)
     if (moveData.condition && typeof moveData.condition === 'object') {

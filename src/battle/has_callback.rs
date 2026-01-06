@@ -146,22 +146,53 @@ impl Battle {
     pub fn move_has_callback(&self, move_id: &str, event_id: &str) -> bool {
         // Look up the move in dex data and check its extra field for callback boolean
         if let Some(move_data) = self.dex.moves().get(move_id) {
-            // Check the exact event_id first, then try with "on" prefix for backward compatibility
+            // First check the move's direct callbacks
             let has_callback = move_data.extra.get(event_id)
                 .and_then(|v| v.as_bool())
                 .unwrap_or(false);
 
             if has_callback {
-                true
-            } else if !event_id.starts_with("on") {
-                // Try with "on" prefix for backward compatibility
-                let with_on = format!("on{}", event_id);
-                move_data.extra.get(&with_on)
-                    .and_then(|v| v.as_bool())
-                    .unwrap_or(false)
-            } else {
-                false
+                return true;
             }
+
+            // Try with "on" prefix for backward compatibility
+            if !event_id.starts_with("on") {
+                let with_on = format!("on{}", event_id);
+                let has_callback_with_on = move_data.extra.get(&with_on)
+                    .and_then(|v| v.as_bool())
+                    .unwrap_or(false);
+                if has_callback_with_on {
+                    return true;
+                }
+            }
+
+            // Check move.self callbacks (like gmaxmalodor)
+            // In JavaScript, these are callbacks in the self: { ... } object
+            // They're triggered on the move user, not the target
+            // The JSON is flattened, so we check for "self.onHit" style keys
+            let self_key = if event_id.starts_with("on") {
+                format!("self.{}", event_id)
+            } else {
+                format!("self.on{}", event_id)
+            };
+
+            if let Some(has_self_callback) = move_data.extra.get(&self_key).and_then(|v| v.as_bool()) {
+                if has_self_callback {
+                    return true;
+                }
+            }
+
+            // Also try without "on" prefix if event_id doesn't have it
+            if !event_id.starts_with("on") {
+                let self_key_no_on = format!("self.{}", event_id);
+                if let Some(has_self_callback) = move_data.extra.get(&self_key_no_on).and_then(|v| v.as_bool()) {
+                    if has_self_callback {
+                        return true;
+                    }
+                }
+            }
+
+            false
         } else {
             // If not found in dex, return false
             false

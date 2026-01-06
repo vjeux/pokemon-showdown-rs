@@ -21,11 +21,18 @@ use crate::Pokemon;
 ///
 /// 		}
 /// ```
+/// NOTE: JavaScript onHit(source) means this is a self-targeting move
+/// but our dispatcher passes (target, source), so source is in second param
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    let source_pos = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     // for (const pokemon of source.foes()) {
     //     pokemon.trySetStatus('psn', source);
     // }

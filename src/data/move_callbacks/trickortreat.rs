@@ -24,13 +24,10 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),  // JavaScript: onHit(target) - target is first param
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    let target = target_pos;
 
     // if (target.hasType('Ghost')) return false;
     let already_has_ghost = {

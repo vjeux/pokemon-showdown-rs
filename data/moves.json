@@ -381,7 +381,9 @@
     },
     "contestType": "Clever",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onRestart": true
   },
   "amnesia": {
     "num": 133,
@@ -543,7 +545,9 @@
         "def": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "condition.onStart": true,
+    "condition.onResidual": true
   },
   "aquastep": {
     "num": 872,
@@ -815,7 +819,11 @@
       "effect": "clearnegativeboost"
     },
     "contestType": "Cute",
-    "onTryImmunity": true
+    "onTryImmunity": true,
+    "condition.onStart": true,
+    "condition.onUpdate": true,
+    "condition.onBeforeMove": true,
+    "condition.onEnd": true
   },
   "aurasphere": {
     "num": 396,
@@ -917,7 +925,11 @@
       }
     },
     "contestType": "Beautiful",
-    "onTry": true
+    "onTry": true,
+    "condition.durationCallback": true,
+    "condition.onAnyModifyDamage": true,
+    "condition.onSideStart": true,
+    "condition.onSideEnd": true
   },
   "autotomize": {
     "num": 475,
@@ -1068,7 +1080,10 @@
     },
     "contestType": "Tough",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onTryHit": true,
+    "condition.onHit": true
   },
   "barbbarrage": {
     "num": 839,
@@ -1150,7 +1165,9 @@
     "flags": {
       "metronome": 1
     },
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "selfSwitch": "copyvolatile",
     "secondary": null,
     "target": "self",
@@ -1159,7 +1176,8 @@
       "effect": "clearnegativeboost"
     },
     "contestType": "Cute",
-    "onHit": true
+    "onHit": true,
+    "self.onHit": true
   },
   "beakblast": {
     "num": 690,
@@ -1188,7 +1206,9 @@
     "type": "Flying",
     "contestType": "Tough",
     "priorityChargeCallback": true,
-    "onAfterMove": true
+    "onAfterMove": true,
+    "condition.onStart": true,
+    "condition.onHit": true
   },
   "beatup": {
     "num": 251,
@@ -1353,7 +1373,12 @@
     "target": "self",
     "type": "Normal",
     "contestType": "Tough",
-    "beforeMoveCallback": true
+    "beforeMoveCallback": true,
+    "condition.onStart": true,
+    "condition.onDamage": true,
+    "condition.onBeforeMove": true,
+    "condition.onMoveAborted": true,
+    "condition.onEnd": true
   },
   "bind": {
     "num": 20,
@@ -1866,7 +1891,9 @@
     "target": "any",
     "type": "Flying",
     "contestType": "Cute",
-    "onTryMove": true
+    "onTryMove": true,
+    "condition.onInvulnerability": true,
+    "condition.onSourceBasePower": true
   },
   "bouncybubble": {
     "num": 733,
@@ -2245,7 +2272,10 @@
     "target": "self",
     "type": "Fire",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onTryHit": true,
+    "condition.onHit": true
   },
   "burningjealousy": {
     "num": 807,
@@ -2282,12 +2312,15 @@
       "defrost": 1,
       "metronome": 1
     },
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "normal",
     "type": "Fire",
     "contestType": "Clever",
-    "onTryMove": true
+    "onTryMove": true,
+    "self.onHit": true
   },
   "buzzybuzz": {
     "num": 734,
@@ -2489,7 +2522,13 @@
         "spd": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onRestart": true,
+    "condition.onBasePower": true,
+    "condition.onMoveAborted": true,
+    "condition.onAfterMove": true,
+    "condition.onEnd": true
   },
   "chargebeam": {
     "num": 451,
@@ -2614,7 +2653,8 @@
     },
     "target": "all",
     "type": "Ice",
-    "priorityChargeCallback": true
+    "priorityChargeCallback": true,
+    "condition.onBeforeMove": true
   },
   "chipaway": {
     "num": 498,
@@ -3322,7 +3362,10 @@
     "contestType": "Tough",
     "damageCallback": true,
     "beforeTurnCallback": true,
-    "onTry": true
+    "onTry": true,
+    "condition.onStart": true,
+    "condition.onRedirectTarget": true,
+    "condition.onDamagingHit": true
   },
   "courtchange": {
     "num": 756,
@@ -3409,7 +3452,9 @@
       }
     },
     "contestType": "Clever",
-    "onTry": true
+    "onTry": true,
+    "condition.onSideStart": true,
+    "condition.onTryHit": true
   },
   "crosschop": {
     "num": 238,
@@ -3558,7 +3603,9 @@
     "contestType": "Tough",
     "onModifyMove": true,
     "onTryHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onResidual": true
   },
   "cut": {
     "num": 15,
@@ -3741,7 +3788,8 @@
         "accuracy": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "condition.onRestart": true
   },
   "defog": {
     "num": 432,
@@ -3798,7 +3846,11 @@
       "effect": "redirect"
     },
     "contestType": "Clever",
-    "onPrepareHit": true
+    "onPrepareHit": true,
+    "condition.onStart": true,
+    "condition.onFaint": true,
+    "condition.onBeforeMove": true,
+    "condition.onMoveAborted": true
   },
   "detect": {
     "num": 197,
@@ -3894,7 +3946,10 @@
     "target": "normal",
     "type": "Ground",
     "contestType": "Tough",
-    "onTryMove": true
+    "onTryMove": true,
+    "condition.onImmunity": true,
+    "condition.onInvulnerability": true,
+    "condition.onSourceModifyDamage": true
   },
   "direclaw": {
     "num": 827,
@@ -3949,7 +4004,11 @@
       "effect": "clearnegativeboost"
     },
     "contestType": "Clever",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onStart": true,
+    "condition.onEnd": true,
+    "condition.onBeforeMove": true,
+    "condition.onDisableMove": true
   },
   "disarmingvoice": {
     "num": 574,
@@ -4022,7 +4081,10 @@
     "target": "normal",
     "type": "Water",
     "contestType": "Beautiful",
-    "onTryMove": true
+    "onTryMove": true,
+    "condition.onImmunity": true,
+    "condition.onInvulnerability": true,
+    "condition.onSourceModifyDamage": true
   },
   "dizzypunch": {
     "num": 146,
@@ -4195,12 +4257,15 @@
       "protect": 1,
       "mirror": 1
     },
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "normal",
     "type": "Electric",
     "contestType": "Clever",
-    "onTryMove": true
+    "onTryMove": true,
+    "self.onHit": true
   },
   "doubleslap": {
     "num": 3,
@@ -4337,7 +4402,9 @@
     },
     "secondary": null,
     "target": "adjacentAlly",
-    "type": "Dragon"
+    "type": "Dragon",
+    "condition.onStart": true,
+    "condition.onModifyCritRatio": true
   },
   "dragonclaw": {
     "num": 337,
@@ -4817,7 +4884,9 @@
     "type": "Normal",
     "contestType": "Beautiful",
     "basePowerCallback": true,
-    "onTryMove": true
+    "onTryMove": true,
+    "condition.onFieldStart": true,
+    "condition.onFieldRestart": true
   },
   "eerieimpulse": {
     "num": 598,
@@ -4921,7 +4990,13 @@
         "spe": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.durationCallback": true,
+    "condition.onSetStatus": true,
+    "condition.onTryAddVolatile": true,
+    "condition.onBasePower": true,
+    "condition.onFieldStart": true,
+    "condition.onFieldEnd": true
   },
   "electrify": {
     "num": 582,
@@ -4954,7 +5029,9 @@
       }
     },
     "contestType": "Clever",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onStart": true,
+    "condition.onModifyType": true
   },
   "electroball": {
     "num": 486,
@@ -5074,7 +5151,9 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onEnd": true
   },
   "ember": {
     "num": 52,
@@ -5132,7 +5211,12 @@
         "spe": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "condition.onStart": true,
+    "condition.onOverrideAction": true,
+    "condition.onResidual": true,
+    "condition.onEnd": true,
+    "condition.onDisableMove": true
   },
   "endeavor": {
     "num": 283,
@@ -5190,7 +5274,9 @@
     },
     "contestType": "Tough",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onDamage": true
   },
   "energyball": {
     "num": 412,
@@ -5457,7 +5543,9 @@
         "def": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onFieldStart": true,
+    "condition.onTrapPokemon": true
   },
   "fairywind": {
     "num": 584,
@@ -5869,7 +5957,10 @@
     "contestType": "Beautiful",
     "basePowerCallback": true,
     "onPrepareHit": true,
-    "onModifyMove": true
+    "onModifyMove": true,
+    "condition.onSideStart": true,
+    "condition.onResidual": true,
+    "condition.onSideEnd": true
   },
   "firepunch": {
     "num": 7,
@@ -6248,7 +6339,8 @@
     "target": "normal",
     "type": "Dark",
     "contestType": "Cute",
-    "onPrepareHit": true
+    "onPrepareHit": true,
+    "condition.onUpdate": true
   },
   "flipturn": {
     "num": 812,
@@ -6387,7 +6479,9 @@
     "target": "any",
     "type": "Flying",
     "contestType": "Clever",
-    "onTryMove": true
+    "onTryMove": true,
+    "condition.onInvulnerability": true,
+    "condition.onSourceModifyDamage": true
   },
   "flyingpress": {
     "num": 560,
@@ -6464,7 +6558,9 @@
         "accuracy": 1
       }
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "condition.onStart": true,
+    "condition.onModifyCritRatio": true
   },
   "focuspunch": {
     "num": 264,
@@ -6495,7 +6591,10 @@
     "type": "Fighting",
     "contestType": "Tough",
     "priorityChargeCallback": true,
-    "beforeMoveCallback": true
+    "beforeMoveCallback": true,
+    "condition.onStart": true,
+    "condition.onHit": true,
+    "condition.onTryAddVolatile": true
   },
   "followme": {
     "num": 266,
@@ -6523,7 +6622,9 @@
       "effect": "clearnegativeboost"
     },
     "contestType": "Cute",
-    "onTry": true
+    "onTry": true,
+    "condition.onStart": true,
+    "condition.onFoeRedirectTarget": true
   },
   "forcepalm": {
     "num": 395,
@@ -6577,7 +6678,10 @@
       "effect": "crit2"
     },
     "contestType": "Clever",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onStart": true,
+    "condition.onNegateImmunity": true,
+    "condition.onModifyBoost": true
   },
   "forestscurse": {
     "num": 571,
@@ -6829,7 +6933,9 @@
     "target": "normal",
     "type": "Bug",
     "contestType": "Cool",
-    "basePowerCallback": true
+    "basePowerCallback": true,
+    "condition.onStart": true,
+    "condition.onRestart": true
   },
   "furyswipes": {
     "num": 154,
@@ -6945,7 +7051,9 @@
       }
     },
     "contestType": "Tough",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onStart": true,
+    "condition.onCopy": true
   },
   "geargrind": {
     "num": 544,
@@ -7200,7 +7308,11 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Dragon"
+    "type": "Dragon",
+    "condition.onStart": true,
+    "condition.onAccuracy": true,
+    "condition.onSourceModifyDamage": true,
+    "condition.onBeforeMove": true
   },
   "glare": {
     "num": 137,
@@ -7259,10 +7371,13 @@
     "priority": 0,
     "flags": {},
     "isMax": "Butterfree",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Bug",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxcannonade": {
     "num": 1000,
@@ -7275,7 +7390,9 @@
     "priority": 0,
     "flags": {},
     "isMax": "Blastoise",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "condition": {
       "duration": 4,
       "onResidualOrder": 5,
@@ -7289,7 +7406,11 @@
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Water",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true,
+    "condition.onSideStart": true,
+    "condition.onResidual": true,
+    "condition.onSideEnd": true
   },
   "gmaxcentiferno": {
     "num": 1000,
@@ -7302,11 +7423,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Centiskorch",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Fire",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxchistrike": {
     "num": 1000,
@@ -7319,7 +7443,9 @@
     "priority": 0,
     "flags": {},
     "isMax": "Machamp",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "condition": {
       "noCopy": true,
       "onStart": true,
@@ -7329,7 +7455,11 @@
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Fighting",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true,
+    "condition.onStart": true,
+    "condition.onRestart": true,
+    "condition.onModifyCritRatio": true
   },
   "gmaxcuddle": {
     "num": 1000,
@@ -7342,11 +7472,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Eevee",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxdepletion": {
     "num": 1000,
@@ -7359,11 +7492,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Duraludon",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Dragon",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxdrumsolo": {
     "num": 1000,
@@ -7393,11 +7529,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Alcremie",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Fairy",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxfireball": {
     "num": 1000,
@@ -7427,11 +7566,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Kingler",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Water",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxgoldrush": {
     "num": 1000,
@@ -7444,11 +7586,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Meowth",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxgravitas": {
     "num": 1000,
@@ -7496,10 +7641,13 @@
     "priority": 0,
     "flags": {},
     "isMax": "Garbodor",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Poison",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxmeltdown": {
     "num": 1000,
@@ -7512,11 +7660,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Melmetal",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Steel",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxoneblow": {
     "num": 1000,
@@ -7561,11 +7712,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Snorlax",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxresonance": {
     "num": 1000,
@@ -7597,11 +7751,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Sandaconda",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Ground",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxsmite": {
     "num": 1000,
@@ -7614,11 +7771,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Hatterene",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Fairy",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxsnooze": {
     "num": 1000,
@@ -7649,7 +7809,9 @@
     "priority": 0,
     "flags": {},
     "isMax": "Copperajah",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "condition": {
       "onSideStart": true,
       "onSwitchIn": true
@@ -7657,7 +7819,10 @@
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Steel",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true,
+    "condition.onSideStart": true,
+    "condition.onSwitchIn": true
   },
   "gmaxstonesurge": {
     "num": 1000,
@@ -7670,11 +7835,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Drednaw",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Water",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxstunshock": {
     "num": 1000,
@@ -7687,11 +7855,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Toxtricity",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Electric",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxsweetness": {
     "num": 1000,
@@ -7704,11 +7875,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Appletun",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Grass",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxtartness": {
     "num": 1000,
@@ -7721,11 +7895,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Flapple",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Grass",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxterror": {
     "num": 1000,
@@ -7738,11 +7915,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Gengar",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Ghost",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxvinelash": {
     "num": 1000,
@@ -7755,7 +7935,9 @@
     "priority": 0,
     "flags": {},
     "isMax": "Venusaur",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "condition": {
       "duration": 4,
       "onResidualOrder": 5,
@@ -7769,7 +7951,11 @@
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Grass",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true,
+    "condition.onSideStart": true,
+    "condition.onResidual": true,
+    "condition.onSideEnd": true
   },
   "gmaxvolcalith": {
     "num": 1000,
@@ -7782,7 +7968,9 @@
     "priority": 0,
     "flags": {},
     "isMax": "Coalossal",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "condition": {
       "duration": 4,
       "onResidualOrder": 5,
@@ -7796,7 +7984,11 @@
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Rock",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true,
+    "condition.onSideStart": true,
+    "condition.onResidual": true,
+    "condition.onSideEnd": true
   },
   "gmaxvoltcrash": {
     "num": 1000,
@@ -7809,11 +8001,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Pikachu",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Electric",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "gmaxwildfire": {
     "num": 1000,
@@ -7826,7 +8021,9 @@
     "priority": 0,
     "flags": {},
     "isMax": "Charizard",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "condition": {
       "duration": 4,
       "onResidualOrder": 5,
@@ -7840,7 +8037,11 @@
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Fire",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true,
+    "condition.onSideStart": true,
+    "condition.onResidual": true,
+    "condition.onSideEnd": true
   },
   "gmaxwindrage": {
     "num": 1000,
@@ -7853,11 +8054,14 @@
     "priority": 0,
     "flags": {},
     "isMax": "Corviknight",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "adjacentFoe",
     "type": "Flying",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "grassknot": {
     "num": 447,
@@ -7916,7 +8120,10 @@
     "contestType": "Beautiful",
     "basePowerCallback": true,
     "onPrepareHit": true,
-    "onModifyMove": true
+    "onModifyMove": true,
+    "condition.onSideStart": true,
+    "condition.onSideEnd": true,
+    "condition.onModifySpe": true
   },
   "grasswhistle": {
     "num": 320,
@@ -8000,7 +8207,12 @@
         "def": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "condition.durationCallback": true,
+    "condition.onBasePower": true,
+    "condition.onFieldStart": true,
+    "condition.onResidual": true,
+    "condition.onFieldEnd": true
   },
   "gravapple": {
     "num": 788,
@@ -8058,7 +8270,14 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.durationCallback": true,
+    "condition.onFieldStart": true,
+    "condition.onModifyAccuracy": true,
+    "condition.onDisableMove": true,
+    "condition.onBeforeMove": true,
+    "condition.onModifyMove": true,
+    "condition.onFieldEnd": true
   },
   "growl": {
     "num": 45,
@@ -8142,7 +8361,10 @@
     "zMove": {
       "effect": "redirect"
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "condition.onStart": true,
+    "condition.onFaint": true,
+    "condition.onBeforeMove": true
   },
   "guardianofalola": {
     "num": 698,
@@ -8598,7 +8820,15 @@
         "spa": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.durationCallback": true,
+    "condition.onStart": true,
+    "condition.onDisableMove": true,
+    "condition.onBeforeMove": true,
+    "condition.onModifyMove": true,
+    "condition.onEnd": true,
+    "condition.onTryHeal": true,
+    "condition.onRestart": true
   },
   "healingwish": {
     "num": 361,
@@ -8623,7 +8853,9 @@
     "target": "self",
     "type": "Psychic",
     "contestType": "Beautiful",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onSwitchIn": true,
+    "condition.onSwap": true
   },
   "healorder": {
     "num": 456,
@@ -8830,7 +9062,10 @@
       "effect": "clearnegativeboost"
     },
     "contestType": "Clever",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onStart": true,
+    "condition.onRestart": true,
+    "condition.onBasePower": true
   },
   "hex": {
     "num": 506,
@@ -9673,7 +9908,9 @@
     "contestType": "Beautiful",
     "basePowerCallback": true,
     "onModifyMove": true,
-    "onAfterMove": true
+    "onAfterMove": true,
+    "condition.onStart": true,
+    "condition.onResidual": true
   },
   "icebeam": {
     "num": 58,
@@ -9938,7 +10175,10 @@
         "spd": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onFoeDisableMove": true,
+    "condition.onFoeBeforeMove": true
   },
   "incinerate": {
     "num": 510,
@@ -10066,7 +10306,11 @@
         "spd": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onResidual": true,
+    "condition.onTrapPokemon": true,
+    "condition.onDragOut": true
   },
   "instruct": {
     "num": 689,
@@ -10120,7 +10364,9 @@
         "spa": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "condition.onFieldStart": true,
+    "condition.onModifyType": true
   },
   "irondefense": {
     "num": 334,
@@ -10390,7 +10636,10 @@
     },
     "contestType": "Cool",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onTryHit": true,
+    "condition.onHit": true
   },
   "knockoff": {
     "num": 282,
@@ -10484,7 +10733,11 @@
         "atk": 1
       }
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "condition.onStart": true,
+    "condition.onRestart": true,
+    "condition.onModifyCritRatio": true,
+    "condition.onEnd": true
   },
   "lashout": {
     "num": 808,
@@ -10701,7 +10954,9 @@
       "effect": "clearnegativeboost"
     },
     "contestType": "Clever",
-    "onTryImmunity": true
+    "onTryImmunity": true,
+    "condition.onStart": true,
+    "condition.onResidual": true
   },
   "leer": {
     "num": 43,
@@ -10843,7 +11098,11 @@
         "spd": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "condition.durationCallback": true,
+    "condition.onAnyModifyDamage": true,
+    "condition.onSideStart": true,
+    "condition.onSideEnd": true
   },
   "lightthatburnsthesky": {
     "num": 723,
@@ -10917,7 +11176,9 @@
     },
     "contestType": "Clever",
     "onTryHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onSourceInvulnerability": true,
+    "condition.onSourceAccuracy": true
   },
   "lovelykiss": {
     "num": 142,
@@ -11023,7 +11284,9 @@
         "evasion": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "condition.onSideStart": true,
+    "condition.onSideEnd": true
   },
   "luminacrash": {
     "num": 855,
@@ -11089,7 +11352,9 @@
     "target": "self",
     "type": "Psychic",
     "contestType": "Beautiful",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onSwitchIn": true,
+    "condition.onSwap": true
   },
   "lunge": {
     "num": 679,
@@ -11231,7 +11496,10 @@
         "spd": 2
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "condition.onStart": true,
+    "condition.onTryHit": true,
+    "condition.onAllyTryHitSide": true
   },
   "magicpowder": {
     "num": 750,
@@ -11284,7 +11552,11 @@
         "spd": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.durationCallback": true,
+    "condition.onFieldStart": true,
+    "condition.onFieldRestart": true,
+    "condition.onFieldEnd": true
   },
   "magmastorm": {
     "num": 463,
@@ -11380,7 +11652,10 @@
       }
     },
     "contestType": "Clever",
-    "onTry": true
+    "onTry": true,
+    "condition.onStart": true,
+    "condition.onImmunity": true,
+    "condition.onEnd": true
   },
   "magnitude": {
     "num": 222,
@@ -11502,7 +11777,9 @@
       }
     },
     "contestType": "Cool",
-    "onTry": true
+    "onTry": true,
+    "condition.onSideStart": true,
+    "condition.onTryHit": true
   },
   "matchagotcha": {
     "num": 902,
@@ -11542,10 +11819,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Flying",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxdarkness": {
     "num": 772,
@@ -11558,10 +11838,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Dark",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxflare": {
     "num": 757,
@@ -11574,10 +11857,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Fire",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxflutterby": {
     "num": 758,
@@ -11590,10 +11876,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Bug",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxgeyser": {
     "num": 765,
@@ -11606,10 +11895,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Water",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxguard": {
     "num": 743,
@@ -11635,7 +11927,9 @@
     "type": "Normal",
     "contestType": "Cool",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onTryHit": true
   },
   "maxhailstorm": {
     "num": 763,
@@ -11648,10 +11942,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Ice",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxknuckle": {
     "num": 761,
@@ -11664,10 +11961,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Fighting",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxlightning": {
     "num": 759,
@@ -11680,10 +11980,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Electric",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxmindstorm": {
     "num": 769,
@@ -11696,10 +11999,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Psychic",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxooze": {
     "num": 764,
@@ -11712,10 +12018,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Poison",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxovergrowth": {
     "num": 773,
@@ -11728,10 +12037,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Grass",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxphantasm": {
     "num": 762,
@@ -11744,10 +12056,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Ghost",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxquake": {
     "num": 771,
@@ -11760,10 +12075,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Ground",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxrockfall": {
     "num": 770,
@@ -11776,10 +12094,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Rock",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxstarfall": {
     "num": 767,
@@ -11792,10 +12113,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Fairy",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxsteelspike": {
     "num": 774,
@@ -11808,10 +12132,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Steel",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxstrike": {
     "num": 760,
@@ -11824,10 +12151,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Normal",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "maxwyrmwind": {
     "num": 768,
@@ -11840,10 +12170,13 @@
     "priority": 0,
     "flags": {},
     "isMax": true,
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "target": "adjacentFoe",
     "type": "Dragon",
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "self.onHit": true
   },
   "meanlook": {
     "num": 212,
@@ -11930,7 +12263,8 @@
       }
     },
     "contestType": "Clever",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onBasePower": true
   },
   "megadrain": {
     "num": 72,
@@ -12375,7 +12709,10 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "condition.onRestart": true,
+    "condition.onSourceModifyDamage": true,
+    "condition.onAccuracy": true
   },
   "miracleeye": {
     "num": 357,
@@ -12409,7 +12746,10 @@
       }
     },
     "contestType": "Clever",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onStart": true,
+    "condition.onNegateImmunity": true,
+    "condition.onModifyBoost": true
   },
   "mirrorcoat": {
     "num": 243,
@@ -12438,7 +12778,10 @@
     "contestType": "Beautiful",
     "damageCallback": true,
     "beforeTurnCallback": true,
-    "onTry": true
+    "onTry": true,
+    "condition.onStart": true,
+    "condition.onRedirectTarget": true,
+    "condition.onDamagingHit": true
   },
   "mirrormove": {
     "num": 119,
@@ -12520,7 +12863,10 @@
     "zMove": {
       "effect": "heal"
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "condition.onTryBoost": true,
+    "condition.onSideStart": true,
+    "condition.onSideEnd": true
   },
   "mistball": {
     "num": 296,
@@ -12599,7 +12945,13 @@
         "spd": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "condition.durationCallback": true,
+    "condition.onSetStatus": true,
+    "condition.onTryAddVolatile": true,
+    "condition.onBasePower": true,
+    "condition.onFieldStart": true,
+    "condition.onFieldEnd": true
   },
   "moonblast": {
     "num": 585,
@@ -12855,7 +13207,10 @@
         "spd": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "condition.onFieldStart": true,
+    "condition.onBasePower": true,
+    "condition.onFieldEnd": true
   },
   "multiattack": {
     "num": 718,
@@ -13115,7 +13470,9 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onResidual": true
   },
   "nightshade": {
     "num": 101,
@@ -13237,7 +13594,9 @@
     "secondary": null,
     "target": "self",
     "type": "Fighting",
-    "onTry": true
+    "onTry": true,
+    "condition.onStart": true,
+    "condition.onTrapPokemon": true
   },
   "noxioustorque": {
     "num": 898,
@@ -13338,7 +13697,10 @@
     "target": "self",
     "type": "Dark",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onTryHit": true,
+    "condition.onHit": true
   },
   "oceanicoperetta": {
     "num": 697,
@@ -13405,7 +13767,10 @@
     "secondary": null,
     "target": "normal",
     "type": "Fighting",
-    "onTryImmunity": true
+    "onTryImmunity": true,
+    "condition.onStart": true,
+    "condition.onResidual": true,
+    "condition.onTrapPokemon": true
   },
   "odorsleuth": {
     "num": 316,
@@ -13723,7 +14088,9 @@
       "effect": "clearnegativeboost"
     },
     "contestType": "Beautiful",
-    "onHitField": true
+    "onHitField": true,
+    "condition.onEnd": true,
+    "condition.onResidual": true
   },
   "petalblizzard": {
     "num": 572,
@@ -14231,7 +14598,9 @@
         "spd": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onTryMove": true
   },
   "powdersnow": {
     "num": 181,
@@ -14293,7 +14662,11 @@
     },
     "secondary": null,
     "target": "self",
-    "type": "Normal"
+    "type": "Normal",
+    "condition.onStart": true,
+    "condition.onCopy": true,
+    "condition.onEnd": true,
+    "condition.onRestart": true
   },
   "powersplit": {
     "num": 471,
@@ -14372,7 +14745,11 @@
         "atk": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onCopy": true,
+    "condition.onEnd": true,
+    "condition.onRestart": true
   },
   "powertrip": {
     "num": 681,
@@ -14533,7 +14910,9 @@
     },
     "contestType": "Cute",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onTryHit": true
   },
   "psybeam": {
     "num": 60,
@@ -14676,7 +15055,12 @@
         "spa": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.durationCallback": true,
+    "condition.onTryHit": true,
+    "condition.onBasePower": true,
+    "condition.onFieldStart": true,
+    "condition.onFieldEnd": true
   },
   "psychoboost": {
     "num": 354,
@@ -14735,7 +15119,9 @@
       "mirror": 1,
       "metronome": 1
     },
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "normal",
     "type": "Psychic",
@@ -14745,7 +15131,8 @@
       }
     },
     "contestType": "Clever",
-    "onTryHit": true
+    "onTryHit": true,
+    "self.onHit": true
   },
   "psychup": {
     "num": 244,
@@ -14953,7 +15340,8 @@
     "basePowerCallback": true,
     "beforeTurnCallback": true,
     "onModifyMove": true,
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onBeforeSwitchOut": true
   },
   "pyroball": {
     "num": 780,
@@ -15046,7 +15434,9 @@
     },
     "contestType": "Cool",
     "onTry": true,
-    "onHitSide": true
+    "onHitSide": true,
+    "condition.onSideStart": true,
+    "condition.onTryHit": true
   },
   "quiverdance": {
     "num": 483,
@@ -15101,7 +15491,10 @@
     "secondary": null,
     "target": "normal",
     "type": "Normal",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "condition.onStart": true,
+    "condition.onHit": true,
+    "condition.onBeforeMove": true
   },
   "ragefist": {
     "num": 889,
@@ -15149,7 +15542,9 @@
       "effect": "clearnegativeboost"
     },
     "contestType": "Clever",
-    "onTry": true
+    "onTry": true,
+    "condition.onStart": true,
+    "condition.onFoeRedirectTarget": true
   },
   "ragingbull": {
     "num": 873,
@@ -15386,7 +15781,11 @@
         "def": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.durationCallback": true,
+    "condition.onAnyModifyDamage": true,
+    "condition.onSideStart": true,
+    "condition.onSideEnd": true
   },
   "reflecttype": {
     "num": 513,
@@ -15948,7 +16347,9 @@
     "contestType": "Cute",
     "basePowerCallback": true,
     "onModifyMove": true,
-    "onAfterMove": true
+    "onAfterMove": true,
+    "condition.onStart": true,
+    "condition.onResidual": true
   },
   "roost": {
     "num": 355,
@@ -15983,7 +16384,9 @@
     "zMove": {
       "effect": "clearnegativeboost"
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onType": true
   },
   "rototiller": {
     "num": 563,
@@ -16125,7 +16528,12 @@
         "spe": 1
       }
     },
-    "contestType": "Beautiful"
+    "contestType": "Beautiful",
+    "condition.durationCallback": true,
+    "condition.onSetStatus": true,
+    "condition.onTryAddVolatile": true,
+    "condition.onSideStart": true,
+    "condition.onSideEnd": true
   },
   "saltcure": {
     "num": 864,
@@ -16151,7 +16559,10 @@
       "volatileStatus": "saltcure"
     },
     "target": "normal",
-    "type": "Rock"
+    "type": "Rock",
+    "condition.onStart": true,
+    "condition.onResidual": true,
+    "condition.onEnd": true
   },
   "sandattack": {
     "num": 28,
@@ -16792,7 +17203,9 @@
     "priority": 0,
     "flags": {},
     "volatileStatus": "substitute",
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "selfSwitch": "shedtail",
     "secondary": null,
     "target": "self",
@@ -16801,7 +17214,8 @@
       "effect": "clearnegativeboost"
     },
     "onTryHit": true,
-    "onHit": true
+    "onHit": true,
+    "self.onHit": true
   },
   "sheercold": {
     "num": 329,
@@ -16906,7 +17320,9 @@
     "type": "Fire",
     "contestType": "Tough",
     "priorityChargeCallback": true,
-    "onTryMove": true
+    "onTryMove": true,
+    "condition.onStart": true,
+    "condition.onHit": true
   },
   "shelter": {
     "num": 842,
@@ -17034,7 +17450,10 @@
     "target": "self",
     "type": "Bug",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onTryHit": true,
+    "condition.onHit": true
   },
   "silverwind": {
     "num": 318,
@@ -17337,7 +17756,14 @@
     "onMoveFail": true,
     "onTry": true,
     "onTryHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onAnyDragOut": true,
+    "condition.onFoeTrapPokemon": true,
+    "condition.onFoeBeforeMove": true,
+    "condition.onRedirectTarget": true,
+    "condition.onAnyInvulnerability": true,
+    "condition.onAnyBasePower": true,
+    "condition.onFaint": true
   },
   "skyuppercut": {
     "num": 327,
@@ -17567,7 +17993,9 @@
     "secondary": null,
     "target": "normal",
     "type": "Rock",
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "condition.onStart": true,
+    "condition.onRestart": true
   },
   "smartstrike": {
     "num": 684,
@@ -17731,7 +18159,9 @@
         "spe": 2
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onAnyPrepareHit": true
   },
   "snipeshot": {
     "num": 745,
@@ -18005,11 +18435,14 @@
       "protect": 1,
       "mirror": 1
     },
-    "self": {},
+    "self": {
+      "onHit": true
+    },
     "secondary": null,
     "target": "normal",
     "type": "Fairy",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "self.onHit": true
   },
   "spectralthief": {
     "num": 712,
@@ -18159,7 +18592,10 @@
         "def": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onSideStart": true,
+    "condition.onSideRestart": true,
+    "condition.onSwitchIn": true
   },
   "spikyshield": {
     "num": 596,
@@ -18192,7 +18628,10 @@
     },
     "contestType": "Tough",
     "onPrepareHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onTryHit": true,
+    "condition.onHit": true
   },
   "spinout": {
     "num": 859,
@@ -18423,7 +18862,9 @@
       }
     },
     "contestType": "Cute",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onStart": true,
+    "condition.onFoeRedirectTarget": true
   },
   "springtidestorm": {
     "num": 831,
@@ -18473,7 +18914,9 @@
         "def": 1
       }
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "condition.onSideStart": true,
+    "condition.onSwitchIn": true
   },
   "steameruption": {
     "num": 592,
@@ -18610,7 +19053,9 @@
         "spe": 1
       }
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "condition.onSideStart": true,
+    "condition.onSwitchIn": true
   },
   "stockpile": {
     "num": 254,
@@ -18638,7 +19083,10 @@
       "effect": "heal"
     },
     "contestType": "Tough",
-    "onTry": true
+    "onTry": true,
+    "condition.onStart": true,
+    "condition.onRestart": true,
+    "condition.onEnd": true
   },
   "stokedsparksurfer": {
     "num": 700,
@@ -19027,7 +19475,10 @@
     },
     "contestType": "Cute",
     "onTryHit": true,
-    "onHit": true
+    "onHit": true,
+    "condition.onStart": true,
+    "condition.onTryPrimaryHit": true,
+    "condition.onEnd": true
   },
   "subzeroslammer": {
     "num": 650,
@@ -19500,7 +19951,11 @@
       "volatileStatus": "syrupbomb"
     },
     "target": "normal",
-    "type": "Grass"
+    "type": "Grass",
+    "condition.onStart": true,
+    "condition.onUpdate": true,
+    "condition.onResidual": true,
+    "condition.onEnd": true
   },
   "tachyoncutter": {
     "num": 911,
@@ -19655,7 +20110,11 @@
     "zMove": {
       "effect": "crit2"
     },
-    "contestType": "Cool"
+    "contestType": "Cool",
+    "condition.durationCallback": true,
+    "condition.onSideStart": true,
+    "condition.onModifySpe": true,
+    "condition.onSideEnd": true
   },
   "takedown": {
     "num": 36,
@@ -19722,7 +20181,9 @@
     },
     "secondary": null,
     "target": "normal",
-    "type": "Rock"
+    "type": "Rock",
+    "condition.onStart": true,
+    "condition.onEffectiveness": true
   },
   "taunt": {
     "num": 269,
@@ -19757,7 +20218,11 @@
         "atk": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onEnd": true,
+    "condition.onDisableMove": true,
+    "condition.onBeforeMove": true
   },
   "tearfullook": {
     "num": 715,
@@ -19900,7 +20365,12 @@
       }
     },
     "contestType": "Clever",
-    "onTry": true
+    "onTry": true,
+    "condition.onStart": true,
+    "condition.onAccuracy": true,
+    "condition.onImmunity": true,
+    "condition.onUpdate": true,
+    "condition.onEnd": true
   },
   "teleport": {
     "num": 100,
@@ -20133,7 +20603,12 @@
     },
     "target": "normal",
     "type": "Dark",
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onStart": true,
+    "condition.onDisableMove": true,
+    "condition.onBeforeMove": true,
+    "condition.onModifyMove": true,
+    "condition.onEnd": true
   },
   "thunder": {
     "num": 87,
@@ -20461,7 +20936,10 @@
         "def": 1
       }
     },
-    "contestType": "Tough"
+    "contestType": "Tough",
+    "condition.onStart": true,
+    "condition.onEnd": true,
+    "condition.onDisableMove": true
   },
   "toxic": {
     "num": 92,
@@ -20516,7 +20994,10 @@
         "def": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.onSideStart": true,
+    "condition.onSideRestart": true,
+    "condition.onSwitchIn": true
   },
   "toxicthread": {
     "num": 672,
@@ -20704,7 +21185,11 @@
         "accuracy": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.durationCallback": true,
+    "condition.onFieldStart": true,
+    "condition.onFieldRestart": true,
+    "condition.onFieldEnd": true
   },
   "triplearrows": {
     "num": 843,
@@ -20999,7 +21484,11 @@
     "target": "randomNormal",
     "type": "Normal",
     "contestType": "Cute",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onStart": true,
+    "condition.onResidual": true,
+    "condition.onEnd": true,
+    "condition.onAnySetStatus": true
   },
   "uturn": {
     "num": 369,
@@ -21349,7 +21838,10 @@
     "contestType": "Beautiful",
     "basePowerCallback": true,
     "onPrepareHit": true,
-    "onModifyMove": true
+    "onModifyMove": true,
+    "condition.onSideStart": true,
+    "condition.onSideEnd": true,
+    "condition.onModifyMove": true
   },
   "waterpulse": {
     "num": 352,
@@ -21428,7 +21920,10 @@
         "spd": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "condition.onFieldStart": true,
+    "condition.onBasePower": true,
+    "condition.onFieldEnd": true
   },
   "waterspout": {
     "num": 323,
@@ -21620,7 +22115,9 @@
     },
     "contestType": "Tough",
     "onTry": true,
-    "onHitSide": true
+    "onHitSide": true,
+    "condition.onSideStart": true,
+    "condition.onTryHit": true
   },
   "wildboltstorm": {
     "num": 847,
@@ -21740,7 +22237,10 @@
         "spd": 1
       }
     },
-    "contestType": "Cute"
+    "contestType": "Cute",
+    "condition.onStart": true,
+    "condition.onResidual": true,
+    "condition.onEnd": true
   },
   "withdraw": {
     "num": 110,
@@ -21798,7 +22298,12 @@
         "spd": 1
       }
     },
-    "contestType": "Clever"
+    "contestType": "Clever",
+    "condition.durationCallback": true,
+    "condition.onModifyMove": true,
+    "condition.onFieldStart": true,
+    "condition.onFieldRestart": true,
+    "condition.onFieldEnd": true
   },
   "woodhammer": {
     "num": 452,
@@ -21975,7 +22480,9 @@
       }
     },
     "contestType": "Cute",
-    "onTryHit": true
+    "onTryHit": true,
+    "condition.onStart": true,
+    "condition.onEnd": true
   },
   "zapcannon": {
     "num": 192,
