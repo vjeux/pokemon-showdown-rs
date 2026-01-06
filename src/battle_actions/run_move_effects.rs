@@ -351,13 +351,16 @@ pub fn run_move_effects(
             }
 
             // if (moveData.sideCondition) {
+            eprintln!("[SIDE_CONDITION] move_id={}, has side_condition={}", active_move.id.as_str(), move_data.side_condition.is_some());
             if let Some(ref side_condition) = move_data.side_condition {
+                eprintln!("[SIDE_CONDITION] Applying side condition '{}' to side {}", side_condition, target_pos.0);
                 //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
                 let condition_id = ID::new(side_condition);
                 let hit_result = {
                     let side = &mut battle.sides[target_pos.0];
                     side.add_side_condition(condition_id, None) // duration
                 };
+                eprintln!("[SIDE_CONDITION] add_side_condition returned: {}", hit_result);
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
                     DamageResult::Success

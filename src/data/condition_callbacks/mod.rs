@@ -632,6 +632,37 @@ pub fn dispatch_on_try_add_volatile(
 ) -> EventResult {
     match condition_id {
         "dynamax" => dynamax::on_try_add_volatile(battle, pokemon_pos),
+        "safeguard" => {
+            // Safeguard is a side condition, so its callbacks need more info
+            // Clone event data to avoid borrow conflicts
+            let (status, target_pos, source_pos, effect_id) = {
+                let event = battle.current_event.as_ref();
+                let status = event
+                    .and_then(|e| e.relay_var.as_ref())
+                    .and_then(|rv| match rv {
+                        EventResult::String(s) => Some(s.clone()),
+                        _ => None,
+                    });
+                // Get the REAL target from the event, not the side's pokemon_pos
+                let target_pos = event.and_then(|e| e.target);
+                let source_pos = event.and_then(|e| e.source);
+                let effect_id = event
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|id| id.clone());
+                (status, target_pos, source_pos, effect_id)
+            };
+
+            let status_ref = status.as_deref();
+            let effect_ref = effect_id.as_ref().map(|id| id.as_str());
+
+            move_callbacks::safeguard::condition::on_try_add_volatile(
+                battle,
+                status_ref,
+                target_pos,
+                source_pos,
+                effect_ref
+            )
+        }
         _ => EventResult::Continue,
     }
 }

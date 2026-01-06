@@ -196,6 +196,69 @@ impl Battle {
             }
         }
 
+        // JavaScript (lines 56-77):
+        // After Pokemon handlers, target becomes target.side
+        // Then for each side in battle, find side event handlers
+        // if (target instanceof Side) {
+        //     for (const side of this.sides) {
+        //         // ... shouldBubbleDown logic (not implemented yet) ...
+        //         if (side.n < 2 || !side.allySide) {
+        //             if (side === target || side === target.allySide) {
+        //                 handlers.push(...this.findSideEventHandlers(side, `on${eventName}`));
+        //             } else if (prefixedHandlers) {
+        //                 handlers.push(...this.findSideEventHandlers(side, `onFoe${eventName}`));
+        //             }
+        //             if (prefixedHandlers) handlers.push(...this.findSideEventHandlers(side, `onAny${eventName}`));
+        //         }
+        //     }
+        // }
+
+        // When target is a Pokemon, convert to its side for side event handlers
+        let target_side_idx = target.map(|(side, _)| side);
+
+        eprintln!("[FIND_EVENT_HANDLERS] About to check side handlers, target_side_idx={:?}, event_name={}", target_side_idx, event_name);
+
+        // Loop through all sides to find side event handlers
+        for side_idx in 0..self.sides.len() {
+            // JavaScript: if (side.n < 2 || !side.allySide)
+            // In Rust, we don't have allySide yet, so we just check all sides
+
+            if let Some(target_side) = target_side_idx {
+                eprintln!("[FIND_EVENT_HANDLERS] Checking side {} (target_side={})", side_idx, target_side);
+                // JavaScript: if (side === target || side === target.allySide)
+                if side_idx == target_side {
+                    // Find handlers for on${eventName}
+                    let prefixed_event = format!("on{}", event_name);
+                    eprintln!("[FIND_EVENT_HANDLERS] Calling find_side_event_handlers for side {}, callback={}", side_idx, prefixed_event);
+                    let mut side_handlers = self.find_side_event_handlers(&prefixed_event, side_idx, None, None);
+                    eprintln!("[FIND_EVENT_HANDLERS] Found {} side handlers for {}", side_handlers.len(), prefixed_event);
+                    for handler in &mut side_handlers {
+                        handler.event_name = event_name.to_string();
+                    }
+                    handlers.extend(side_handlers);
+                } else if prefixed_handlers {
+                    // JavaScript: else if (prefixedHandlers)
+                    //     handlers.push(...this.findSideEventHandlers(side, `onFoe${eventName}`));
+                    let foe_event = format!("onFoe{}", event_name);
+                    let mut foe_side_handlers = self.find_side_event_handlers(&foe_event, side_idx, None, None);
+                    for handler in &mut foe_side_handlers {
+                        handler.event_name = format!("Foe{}", event_name);
+                    }
+                    handlers.extend(foe_side_handlers);
+                }
+
+                // JavaScript: if (prefixedHandlers) handlers.push(...this.findSideEventHandlers(side, `onAny${eventName}`));
+                if prefixed_handlers {
+                    let any_event = format!("onAny{}", event_name);
+                    let mut any_side_handlers = self.find_side_event_handlers(&any_event, side_idx, None, None);
+                    for handler in &mut any_side_handlers {
+                        handler.event_name = format!("Any{}", event_name);
+                    }
+                    handlers.extend(any_side_handlers);
+                }
+            }
+        }
+
         // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
         let prefixed_event = format!("on{}", event_name);
         let mut field_handlers = self.find_field_event_handlers(&prefixed_event, None, None);

@@ -593,7 +593,8 @@ impl Battle {
                 EffectType::Item => {
                     self.handle_item_event(&event_variant, &effect_id, handler_target_event.as_ref())
                 }
-                EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain => {
+                EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain
+                | EffectType::SideCondition | EffectType::SlotCondition => {
                     self.handle_condition_event(&event_variant, effect_id.as_str(), handler_target_event.as_ref())
                 }
                 _ => {

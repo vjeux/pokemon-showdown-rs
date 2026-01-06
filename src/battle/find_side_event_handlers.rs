@@ -37,8 +37,18 @@ impl Battle {
         // Get side reference
         let side = match self.sides.get(side_idx) {
             Some(s) => s,
-            None => return handlers,
+            None => {
+                eprintln!("[FIND_SIDE_HANDLERS] Side {} not found", side_idx);
+                return handlers;
+            }
         };
+
+        eprintln!("[FIND_SIDE_HANDLERS] side_idx={}, callback_name={}, side_conditions count={}",
+            side_idx, callback_name, side.side_conditions.len());
+
+        for (sc_id, _) in &side.side_conditions {
+            eprintln!("[FIND_SIDE_HANDLERS]   side condition: {}", sc_id.as_str());
+        }
 
         // JS: for (const id in side.sideConditions) {
         for (sc_id, sc_state) in &side.side_conditions {
@@ -46,6 +56,8 @@ impl Battle {
             // JS: const sideCondition = this.dex.conditions.getByID(id as ID);
             // JS: const callback = this.getCallback(side, sideCondition, callbackName);
             let has_callback = self.has_callback(sc_id, callback_name);
+            eprintln!("[FIND_SIDE_HANDLERS]   Checking {}, has_callback({})={}",
+                sc_id.as_str(), callback_name, has_callback);
 
             // JS: if (callback !== undefined || (getKey && sideConditionData[getKey])) {
             let has_get_key = get_key.is_some_and(|key| {

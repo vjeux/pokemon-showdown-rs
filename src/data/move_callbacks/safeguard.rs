@@ -158,7 +158,7 @@ pub mod condition {
             }
 
             // return null;
-            return EventResult::Stop;
+            return EventResult::Null;
         }
 
         EventResult::Continue
@@ -181,8 +181,12 @@ pub mod condition {
     ) -> EventResult {
         use crate::dex_data::ID;
 
+        eprintln!("[SAFEGUARD_TRY_ADD] status={:?}, target={:?}, source={:?}, effect={:?}",
+            status, target_pos, source_pos, effect_id);
+
         // if (!effect || !source) return;
         if effect_id.is_none() || source_pos.is_none() {
+            eprintln!("[SAFEGUARD_TRY_ADD] Missing effect or source, returning Continue");
             return EventResult::Continue;
         }
 
@@ -190,11 +194,17 @@ pub mod condition {
         let source = source_pos.unwrap();
         let target = match target_pos {
             Some(pos) => pos,
-            None => return EventResult::Continue,
+            None => {
+                eprintln!("[SAFEGUARD_TRY_ADD] Missing target, returning Continue");
+                return EventResult::Continue;
+            }
         };
         let status = match status {
             Some(s) => s,
-            None => return EventResult::Continue,
+            None => {
+                eprintln!("[SAFEGUARD_TRY_ADD] Missing status, returning Continue");
+                return EventResult::Continue;
+            }
         };
 
         // if (effect.effectType === 'Move' && effect.infiltrates && !target.isAlly(source)) return;
@@ -219,7 +229,9 @@ pub mod condition {
         }
 
         // if ((status.id === 'confusion' || status.id === 'yawn') && target !== source) {
+        eprintln!("[SAFEGUARD_TRY_ADD] Checking: status='{}', target={:?}, source={:?}", status, target, source);
         if (status == "confusion" || status == "yawn") && target != source {
+            eprintln!("[SAFEGUARD_TRY_ADD] BLOCKING '{}' - safeguard protects from this!", status);
             // if (effect.effectType === 'Move' && !effect.secondaries) this.add('-activate', target, 'move: Safeguard');
             // Check if should activate - if it's a move without secondaries
             let should_activate = {
@@ -248,7 +260,7 @@ pub mod condition {
             }
 
             // return null;
-            return EventResult::Stop;
+            return EventResult::Null;
         }
 
         EventResult::Continue

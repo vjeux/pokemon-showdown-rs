@@ -130,10 +130,10 @@ impl Dex {
                 .map(Self::convert_boosts_hash_to_table),
             status: move_data.status.clone(),
             volatile_status: move_data.volatile_status.clone(),
-            side_condition: None,
-            slot_condition: None,
-            pseudo_weather: None,
-            terrain: None,
+            side_condition: move_data.side_condition.clone(),
+            slot_condition: move_data.slot_condition.clone(),
+            pseudo_weather: move_data.pseudo_weather.clone(),
+            terrain: move_data.terrain.clone(),
             weather: move_data.weather.clone(),
 
             // ActiveMove-specific
