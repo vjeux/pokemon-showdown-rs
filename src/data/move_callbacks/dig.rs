@@ -93,9 +93,12 @@ pub mod condition {
     ///     if (type === 'sandstorm' || type === 'hail') return false;
     /// }
     pub fn on_immunity(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-        // Get the immunity type from the event's relay_var_type
+        // Get the immunity type from the event's relay_var
         let immunity_type = match &battle.current_event {
-            Some(event) => event.relay_var_type.clone(),
+            Some(event) => match &event.relay_var {
+                Some(EventResult::String(s)) => Some(s.clone()),
+                _ => None,
+            },
             None => return EventResult::Continue,
         };
 

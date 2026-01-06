@@ -51,7 +51,11 @@ impl Battle {
                 Some(EventResult::Number(n)) => *n,
                 _ => 0,
             };
-            (relay_int, event.relay_var_float.unwrap_or(0.0))
+            let relay_float = match &event.relay_var {
+                Some(EventResult::Float(f)) => *f,
+                _ => 0.0,
+            };
+            (relay_int, relay_float)
         } else {
             (0, 0.0)
         };
@@ -544,8 +548,12 @@ impl Battle {
             ),
             "ModifySTAB" => {
                 let (stab, source_pos, target_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                    let stab_value = match &event.relay_var {
+                        Some(EventResult::Float(f)) => *f,
+                        _ => 1.0,
+                    };
                     (
-                        event.relay_var_float.unwrap_or(1.0),
+                        stab_value,
                         event.source,
                         event.target,
                         event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
@@ -759,9 +767,12 @@ impl Battle {
                 pokemon_pos
             ),
             "TryAddVolatile" => {
-                // Extract status_id from relay_var_type (e.g., "confusion")
+                // Extract status_id from relay_var (e.g., "confusion")
                 let status_id = if let Some(ref event) = self.current_event {
-                    event.relay_var_type.clone().unwrap_or_default()
+                    match &event.relay_var {
+                        Some(EventResult::String(s)) => s.clone(),
+                        _ => String::new(),
+                    }
                 } else {
                     String::new()
                 };
@@ -773,7 +784,17 @@ impl Battle {
             }
             "TryBoost" => {
                 // Temporarily take boost out of current_event to get mutable access
-                let mut boost = self.current_event.as_mut().and_then(|e| e.relay_var_boost.take());
+                let mut boost = self.current_event.as_mut().and_then(|e| {
+                    let relay_var = e.relay_var.take();
+                    match relay_var {
+                        Some(EventResult::Boost(b)) => Some(b),
+                        _ => {
+                            // Put it back if it wasn't a Boost
+                            e.relay_var = relay_var;
+                            None
+                        }
+                    }
+                });
                 let result = ability_callbacks::dispatch_on_try_boost(
                     self,
                     ability_id.as_str(),
@@ -783,14 +804,24 @@ impl Battle {
                 // Put it back
                 if let Some(b) = boost {
                     if let Some(ref mut event) = self.current_event {
-                        event.relay_var_boost = Some(b);
+                        event.relay_var = Some(EventResult::Boost(b));
                     }
                 }
                 result
             }
             "TryBoostPriority" => {
                 // Temporarily take boost out of current_event to get mutable access
-                let mut boost = self.current_event.as_mut().and_then(|e| e.relay_var_boost.take());
+                let mut boost = self.current_event.as_mut().and_then(|e| {
+                    let relay_var = e.relay_var.take();
+                    match relay_var {
+                        Some(EventResult::Boost(b)) => Some(b),
+                        _ => {
+                            // Put it back if it wasn't a Boost
+                            e.relay_var = relay_var;
+                            None
+                        }
+                    }
+                });
                 let result = ability_callbacks::dispatch_on_try_boost_priority(
                     self,
                     ability_id.as_str(),
@@ -800,7 +831,7 @@ impl Battle {
                 // Put it back
                 if let Some(b) = boost {
                     if let Some(ref mut event) = self.current_event {
-                        event.relay_var_boost = Some(b);
+                        event.relay_var = Some(EventResult::Boost(b));
                     }
                 }
                 result

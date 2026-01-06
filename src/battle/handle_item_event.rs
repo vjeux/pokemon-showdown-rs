@@ -24,17 +24,14 @@ impl Battle {
 
         let source = self.current_event.as_ref().and_then(|e| e.source);
         let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var.clone());
-        let relay_var_float = self.current_event.as_ref().and_then(|e| e.relay_var_float);
-        let relay_var_boost = self.current_event.as_ref().and_then(|e| e.relay_var_boost.clone());
-        let relay_var_type = self.current_event.as_ref().and_then(|e| e.relay_var_type.clone());
         let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
             // TypeScript: onAfterBoost(target:Pokemon, boost:BoostsTable)
             "AfterBoost" => {
-                let boost = match relay_var_boost.as_ref() {
-                    Some(b) => b,
-                    None => return EventResult::Continue,
+                let boost = match &relay_var {
+                    Some(EventResult::Boost(b)) => b,
+                    _ => return EventResult::Continue,
                 };
                 item_callbacks::dispatch_on_after_boost(
                     self,
@@ -211,9 +208,9 @@ impl Battle {
 
             // TypeScript: onFoeAfterBoost(target:Pokemon?, source:Pokemon?, effect:Effect?, boost:BoostsTable)
             "FoeAfterBoost" => {
-                let boost = match relay_var_boost.as_ref() {
-                    Some(b) => b,
-                    None => return EventResult::Continue,
+                let boost = match &relay_var {
+                    Some(EventResult::Boost(b)) => b,
+                    _ => return EventResult::Continue,
                 };
                 let effect_id_clone = self.current_effect.clone();
                 let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
@@ -229,7 +226,10 @@ impl Battle {
 
             // TypeScript: onFractionalPriority(pokemon:Pokemon, priority:number)
             "FractionalPriority" => {
-                let priority = relay_var_float.unwrap_or(0.0);
+                let priority = match &relay_var {
+                    Some(EventResult::Float(f)) => *f,
+                    _ => 0.0,
+                };
                 item_callbacks::dispatch_on_fractional_priority(
                     self,
                     item_id.as_str(),
@@ -256,7 +256,10 @@ impl Battle {
 
             // TypeScript: onImmunity(pokemon:Pokemon, type:string)
             "Immunity" => {
-                let immunity_type = relay_var_type.as_deref().unwrap_or("");
+                let immunity_type = match &relay_var {
+                    Some(EventResult::String(s)) => s.as_str(),
+                    _ => "",
+                };
                 item_callbacks::dispatch_on_immunity(
                     self,
                     item_id.as_str(),
@@ -323,7 +326,17 @@ impl Battle {
             // TypeScript: onModifySecondaries(pokemon:Pokemon, secondaries:any)
             "ModifySecondaries" => {
                 // Temporarily take secondaries out of current_event to get mutable access
-                let mut secondaries = self.current_event.as_mut().and_then(|e| e.relay_var_secondaries.take());
+                let mut secondaries = self.current_event.as_mut().and_then(|e| {
+                    let relay_var = e.relay_var.take();
+                    match relay_var {
+                        Some(EventResult::Secondaries(s)) => Some(s),
+                        _ => {
+                            // Put it back if it wasn't Secondaries
+                            e.relay_var = relay_var;
+                            None
+                        }
+                    }
+                });
                 let result = if let Some(ref mut sec) = secondaries {
                     item_callbacks::dispatch_on_modify_secondaries(
                         self,
@@ -335,8 +348,10 @@ impl Battle {
                     EventResult::Continue
                 };
                 // Put secondaries back into current_event
-                if let Some(ref mut event) = self.current_event {
-                    event.relay_var_secondaries = secondaries;
+                if let Some(sec) = secondaries {
+                    if let Some(ref mut event) = self.current_event {
+                        event.relay_var = Some(EventResult::Secondaries(sec));
+                    }
                 }
                 result
             }
@@ -463,7 +478,17 @@ impl Battle {
             // TypeScript: onTryBoost(target:Pokemon, boost:BoostsTable)
             "TryBoost" => {
                 // Temporarily take boost out of current_event to get mutable access
-                let mut boost = self.current_event.as_mut().and_then(|e| e.relay_var_boost.take());
+                let mut boost = self.current_event.as_mut().and_then(|e| {
+                    let relay_var = e.relay_var.take();
+                    match relay_var {
+                        Some(EventResult::Boost(b)) => Some(b),
+                        _ => {
+                            // Put it back if it wasn't a Boost
+                            e.relay_var = relay_var;
+                            None
+                        }
+                    }
+                });
                 let result = if let Some(ref mut b) = boost {
                     item_callbacks::dispatch_on_try_boost(
                         self,
@@ -475,16 +500,21 @@ impl Battle {
                     EventResult::Continue
                 };
                 // Put boost back into current_event
-                if let Some(ref mut event) = self.current_event {
-                    event.relay_var_boost = boost;
+                if let Some(b) = boost {
+                    if let Some(ref mut event) = self.current_event {
+                        event.relay_var = Some(EventResult::Boost(b));
+                    }
                 }
                 result
             }
 
             // TypeScript: onTryEatItem(item:string, pokemon:Pokemon)
             "TryEatItem" => {
-                // Get the item being eaten from relay_var_type or active_move
-                let item_being_eaten = relay_var_type.as_deref().unwrap_or("");
+                // Get the item being eaten from relay_var
+                let item_being_eaten = match &relay_var {
+                    Some(EventResult::String(s)) => s.as_str(),
+                    _ => "",
+                };
                 item_callbacks::dispatch_on_try_eat_item(
                     self,
                     item_id.as_str(),
@@ -530,8 +560,11 @@ impl Battle {
 
             // TypeScript: onUseItem(item:string, pokemon:Pokemon)
             "UseItem" => {
-                // Get the item being used from relay_var_type
-                let item_being_used = relay_var_type.as_deref().unwrap_or("");
+                // Get the item being used from relay_var
+                let item_being_used = match &relay_var {
+                    Some(EventResult::String(s)) => s.as_str(),
+                    _ => "",
+                };
                 item_callbacks::dispatch_on_use_item(
                     self,
                     item_id.as_str(),

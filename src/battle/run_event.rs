@@ -429,14 +429,6 @@ impl Battle {
         let parent_event = self.event.take();
         let parent_current_event = self.current_event.take();
 
-        // Extract boost table if relay_var contains it
-        // This allows handlers to access boosts via relay_var_boost field
-        let boost_table = if let EventResult::Boost(b) = &relay_var {
-            Some(*b)
-        } else {
-            None
-        };
-
         // JavaScript: this.event = { id: eventid, target, source, effect: sourceEffect, modifier: 1 };
         // Create new event context
         let event_info = EventInfo {
@@ -446,10 +438,6 @@ impl Battle {
             effect: source_effect.cloned(),
             modifier: 4096, // 4096 = 1.0x in JavaScript
             relay_var: Some(relay_var.clone()),
-            relay_var_float: None,
-            relay_var_boost: boost_table,
-            relay_var_secondaries: None,
-            relay_var_type: None,
         };
 
         self.event = Some(event_info.clone());
@@ -649,15 +637,6 @@ impl Battle {
                 }
             }
             // Negative numbers (like -1 for type effectiveness) are passed through unchanged
-        }
-
-        // If we started with a Boost variant, wrap the modified boost table back
-        if boost_table.is_some() {
-            if let Some(ref event) = self.current_event {
-                if let Some(modified_boost) = event.relay_var_boost {
-                    relay_var = EventResult::Boost(modified_boost);
-                }
-            }
         }
 
         // JavaScript: this.event = parentEvent;

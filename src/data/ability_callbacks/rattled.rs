@@ -61,7 +61,7 @@ pub fn on_after_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, _
     // The boost parameter contains the boosts that were just applied
     // In JS, we check if boost.atk exists. In Rust, we need to check the relay_var_boost
     let has_atk_boost = battle.current_event.as_ref()
-        .and_then(|e| e.relay_var_boost.as_ref())
+        .and_then(|e| match &e.relay_var { Some(crate::event::EventResult::Boost(b)) => Some(b), _ => None })
         .map(|b| b.atk != 0)
         .unwrap_or(false);
 

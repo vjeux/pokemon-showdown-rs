@@ -215,10 +215,6 @@ impl Battle {
             effect: source_effect.cloned(),
             modifier: 4096,
             relay_var: relay_var.clone(),
-            relay_var_float: None,
-            relay_var_boost: None,
-            relay_var_secondaries: None,
-            relay_var_type: None,
         });
         self.current_effect = Some(effect_id.clone());
         self.event_depth += 1;

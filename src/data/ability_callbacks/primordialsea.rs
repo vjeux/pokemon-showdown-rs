@@ -32,7 +32,7 @@ pub fn on_any_set_weather(battle: &mut Battle, _target_pos: Option<(usize, usize
 
     // Get the incoming weather from the event (relay_var_type contains the weather ID)
     let incoming_weather = if let Some(ref event) = battle.current_event {
-        if let Some(ref weather_id) = event.relay_var_type {
+        if let Some(ref weather_id) = match &event.relay_var { Some(crate::event::EventResult::String(ref s)) => Some(s), _ => None } {
             weather_id.as_str()
         } else {
             return EventResult::Continue;

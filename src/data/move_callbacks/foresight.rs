@@ -65,9 +65,12 @@ pub mod condition {
     ///     if (pokemon.hasType('Ghost') && ['Normal', 'Fighting'].includes(type)) return false;
     /// }
     pub fn on_negate_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-        // Get the type parameter from the event's relay_var_type
+        // Get the type parameter from the event's relay_var
         let immunity_type = match &battle.current_event {
-            Some(event) => event.relay_var_type.clone(),
+            Some(event) => match &event.relay_var {
+                Some(EventResult::String(s)) => Some(s.clone()),
+                _ => None,
+            },
             None => return EventResult::Continue,
         };
 
@@ -101,7 +104,7 @@ pub mod condition {
         //     boosts.evasion = 0;
         // }
         if let Some(ref mut event) = battle.current_event {
-            if let Some(ref mut boosts) = event.relay_var_boost {
+            if let Some(EventResult::Boost(ref mut boosts)) = event.relay_var {
                 if boosts.evasion > 0 {
                     boosts.evasion = 0;
                 }

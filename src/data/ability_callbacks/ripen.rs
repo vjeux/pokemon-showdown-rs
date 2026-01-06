@@ -66,9 +66,9 @@ pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>,
         if let Some(item_data) = battle.dex.items().get(effect_id) {
             if item_data.is_berry {
                 // for (b in boost) { boost[b]! *= 2; }
-                // The boost table is in battle.current_event.relay_var_boost
+                // The boost table is in battle.current_event.relay_var
                 if let Some(ref mut event) = battle.current_event {
-                    if let Some(ref mut boost_table) = event.relay_var_boost {
+                    if let Some(EventResult::Boost(ref mut boost_table)) = event.relay_var {
                         // Double all boosts
                         boost_table.atk *= 2;
                         boost_table.def *= 2;

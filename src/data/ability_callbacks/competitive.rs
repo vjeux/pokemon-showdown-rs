@@ -41,7 +41,10 @@ pub fn on_after_each_boost(battle: &mut Battle, target_pos: Option<(usize, usize
     // Check if any stats were lowered
     // The boost parameter contains the boosts that were just applied
     let stats_lowered = battle.current_event.as_ref()
-        .and_then(|e| e.relay_var_boost.as_ref())
+        .and_then(|e| match &e.relay_var {
+            Some(EventResult::Boost(b)) => Some(b),
+            _ => None,
+        })
         .map(|b| {
             b.atk < 0 || b.def < 0 || b.spa < 0 || b.spd < 0 || b.spe < 0 || b.accuracy < 0 || b.evasion < 0
         })

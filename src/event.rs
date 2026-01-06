@@ -157,6 +157,8 @@ pub enum EventResult {
     HitSubstitute,
     /// Return a boost table (stat stages)
     Boost(crate::dex_data::BoostsTable),
+    /// Return secondary effects
+    Secondaries(Vec<crate::battle_actions::SecondaryEffect>),
 }
 
 impl EventResult {

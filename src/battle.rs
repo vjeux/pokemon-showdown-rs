@@ -389,21 +389,17 @@ pub struct EventInfo {
     /// Modifier accumulated during event processing (4096 = 1.0x)
     /// JavaScript: event.modifier (number)
     pub modifier: i32,
-    /// Relay variable for events that modify numeric values (crit ratio, weight, etc.)
+    /// Relay variable for event callbacks
     /// JavaScript: relayVar parameter in event callbacks
+    /// Can hold various types via EventResult variants:
+    /// - Number(i32) for numeric values (damage, crit ratio, etc.)
+    /// - Float(f64) for fractional values (priority, etc.)
+    /// - Boost(BoostsTable) for stat modifications
+    /// - String for type strings (immunity, etc.)
+    /// - Secondaries(Vec<SecondaryEffect>) for move secondary effects
+    /// - Boolean for true/false checks
+    /// - etc.
     pub relay_var: Option<crate::event::EventResult>,
-    /// Relay variable for events that use float values (fractional priority, etc.)
-    /// JavaScript: relayVar parameter in event callbacks (number)
-    pub relay_var_float: Option<f64>,
-    /// Relay variable for boost events (onTryBoost, onAfterBoost, etc.)
-    /// JavaScript: relayVar parameter in boost events (BoostsTable)
-    pub relay_var_boost: Option<crate::dex_data::BoostsTable>,
-    /// Relay variable for secondary effects (onModifySecondaries, etc.)
-    /// JavaScript: relayVar parameter in secondary events (SecondaryEffect[])
-    pub relay_var_secondaries: Option<Vec<crate::battle_actions::SecondaryEffect>>,
-    /// Relay variable for type strings (onImmunity, etc.)
-    /// JavaScript: relayVar parameter in type events (string)
-    pub relay_var_type: Option<String>,
 }
 
 impl EventInfo {
@@ -415,10 +411,6 @@ impl EventInfo {
             effect: None,
             modifier: 4096,
             relay_var: None,
-            relay_var_float: None,
-            relay_var_boost: None,
-            relay_var_secondaries: None,
-            relay_var_type: None,
         }
     }
 }
@@ -432,10 +424,6 @@ impl Default for EventInfo {
             effect: None,
             modifier: 4096,
             relay_var: None,
-            relay_var_float: None,
-            relay_var_boost: None,
-            relay_var_secondaries: None,
-            relay_var_type: None,
         }
     }
 }

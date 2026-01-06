@@ -35,11 +35,7 @@ impl Battle {
             source,
             effect: source_effect.cloned(),
             modifier: 4096,
-            relay_var: None,
-            relay_var_float: None,
-            relay_var_boost: None,
-            relay_var_secondaries: None,
-            relay_var_type: Some(default_value.clone()),
+            relay_var: Some(EventResult::String(default_value.clone())),
         });
 
         let mut result = default_value;

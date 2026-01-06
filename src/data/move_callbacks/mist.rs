@@ -64,7 +64,7 @@ pub mod condition {
             // }
             let mut show_msg = false;
             if let Some(ref mut event) = battle.current_event {
-                if let Some(ref mut boosts) = event.relay_var_boost {
+                if let Some(EventResult::Boost(ref mut boosts)) = event.relay_var {
                     if boosts.atk < 0 { boosts.atk = 0; show_msg = true; }
                     if boosts.def < 0 { boosts.def = 0; show_msg = true; }
                     if boosts.spa < 0 { boosts.spa = 0; show_msg = true; }

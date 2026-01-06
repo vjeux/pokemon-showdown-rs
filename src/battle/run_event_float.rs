@@ -34,11 +34,7 @@ impl Battle {
             source,
             effect: source_effect.cloned(),
             modifier: 4096,
-            relay_var: None,
-            relay_var_float: relay_var,
-            relay_var_boost: None,
-            relay_var_secondaries: None,
-            relay_var_type: None,
+            relay_var: relay_var.map(EventResult::Float),
         });
 
         let mut result = relay_var;

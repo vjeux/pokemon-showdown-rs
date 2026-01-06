@@ -40,7 +40,7 @@ pub fn on_any_modify_boost(battle: &mut Battle, _boosts: &str, pokemon_pos: (usi
 
     // Access boosts from current event (similar to Contrary)
     if let Some(ref mut event) = battle.current_event {
-        if let Some(ref mut boosts) = event.relay_var_boost {
+        if let Some(EventResult::Boost(ref mut boosts)) = event.relay_var {
             // if (unawareUser === this.activePokemon && pokemon === this.activeTarget)
             if Some(unaware_user) == active_pokemon && Some(pokemon_pos) == active_target {
                 // boosts['def'] = 0; boosts['spd'] = 0; boosts['evasion'] = 0;
