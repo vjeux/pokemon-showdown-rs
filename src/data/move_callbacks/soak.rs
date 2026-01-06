@@ -19,14 +19,9 @@ use crate::Pokemon;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let target_pos = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
-
     // if (target.getTypes().join() === 'Water' || !target.setType('Water')) {
     //     // Soak should animate even when it fails.
     //     // Returning false would suppress the animation.
