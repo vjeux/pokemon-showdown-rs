@@ -287,6 +287,46 @@ pub fn self_drops(
                         }
                     }
                 }
+
+                //  INFRASTRUCTURE FIX: Call run_move_effects with self effect data
+                // JavaScript calls: this.moveHit(source, source, move, moveData.self, isSecondary, true);
+                // moveHit internally calls runMoveEffects which triggers onHit callbacks
+                // We need to do the same in Rust to trigger self.onHit callbacks like gmaxvolcalith
+                eprintln!("[SELF_DROPS] Checking if should call run_move_effects for self callbacks");
+                if let Some(ref active_move) = battle.active_move.clone() {
+                    eprintln!("[SELF_DROPS] active_move.id={}", active_move.id.as_str());
+                    if let Some(ref self_data) = active_move.self_effect {
+                        eprintln!("[SELF_DROPS] Calling run_move_effects for self.onHit callback, move_id={}", active_move.id.as_str());
+                        // Create a temporary ActiveMove from self_effect data for runMoveEffects
+                        // This allows self effect callbacks (like onHit) to be triggered
+                        let mut self_active_move = active_move.clone();
+                        // Override fields with self effect data where applicable
+                        self_active_move.boosts = self_data.boosts.clone();
+                        self_active_move.status = self_data.status.clone();
+                        self_active_move.volatile_status = self_data.volatile_status.clone();
+                        self_active_move.side_condition = self_data.side_condition.clone();
+                        self_active_move.slot_condition = self_data.slot_condition.clone();
+                        self_active_move.pseudo_weather = self_data.pseudo_weather.clone();
+                        self_active_move.terrain = self_data.terrain.clone();
+                        self_active_move.weather = self_data.weather.clone();
+
+                        // Create targets array with source as the target (self-targeting)
+                        let self_targets = vec![crate::battle_actions::SpreadMoveTarget::Target(source_pos)];
+                        let mut self_damages = vec![crate::battle_actions::DamageResult::Undefined];
+
+                        // Call run_move_effects with isSelf=true
+                        let _result = crate::battle_actions::run_move_effects(
+                            battle,
+                            self_damages,
+                            &self_targets,
+                            source_pos,
+                            &active_move,  // Original move as active_move
+                            &self_active_move,  // Self effect data as move_data
+                            is_secondary,
+                            true,  // isSelf=true
+                        );
+                    }
+                }
             }
         }
     }

@@ -40,7 +40,8 @@ impl Dex {
             source_effect_name: None,
 
             // From MoveData
-            condition: None,
+            // Embedded conditions (like gmaxvolcalith) don't have names, store None
+            condition: move_data.condition.as_ref().and_then(|c| c.name.clone()),
             base_power: move_data.base_power,
             accuracy: move_data.accuracy.clone(),
             pp: move_data.pp as u8,

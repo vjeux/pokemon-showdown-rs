@@ -356,10 +356,12 @@ pub fn run_move_effects(
                 eprintln!("[SIDE_CONDITION] Applying side condition '{}' to side {}", side_condition, target_pos.0);
                 //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
                 let condition_id = ID::new(side_condition);
-                let hit_result = {
-                    let side = &mut battle.sides[target_pos.0];
-                    side.add_side_condition(condition_id, None) // duration
-                };
+                let hit_result = battle.add_side_condition(
+                    target_pos.0,
+                    condition_id,
+                    Some(source_pos),
+                    Some(&active_move.id),
+                );
                 eprintln!("[SIDE_CONDITION] add_side_condition returned: {}", hit_result);
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
@@ -368,6 +370,37 @@ pub fn run_move_effects(
                     DamageResult::Failed
                 };
                 did_something = combine_results(did_something, hit_result_dr);
+            }
+
+            // INFRASTRUCTURE FIX: Handle moves with embedded conditions that have onSideStart
+            // E.g., gmaxvolcalith has a "condition" with onSideStart, onResidual, onSideEnd
+            // In this case, the move itself becomes a side condition
+            if move_data.side_condition.is_none() {
+                // Look up the move data from dex to check for embedded condition with onSideStart
+                if let Some(original_move_data) = battle.dex.moves().get(active_move.id.as_str()) {
+                    // Check if move has embedded condition with onSideStart
+                    if let Some(ref condition_data) = original_move_data.condition {
+                        if condition_data.extra.get("onSideStart").is_some() {
+                            eprintln!("[SIDE_CONDITION_EMBEDDED] move_id={} has embedded condition with onSideStart, applying as side condition to side {}",
+                                active_move.id.as_str(), target_pos.0);
+                            // Apply the move itself as a side condition (use move ID, not condition ID)
+                            let side_condition_id = active_move.id.clone();
+                            let hit_result = battle.add_side_condition(
+                                target_pos.0,
+                                side_condition_id,
+                                Some(source_pos),
+                                Some(&active_move.id),
+                            );
+                            eprintln!("[SIDE_CONDITION_EMBEDDED] add_side_condition returned: {}", hit_result);
+                            let hit_result_dr = if hit_result {
+                                DamageResult::Success
+                            } else {
+                                DamageResult::Failed
+                            };
+                            did_something = combine_results(did_something, hit_result_dr);
+                        }
+                    }
+                }
             }
 
             // if (moveData.slotCondition) {

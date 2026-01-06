@@ -101,9 +101,33 @@ pub mod self_callbacks {
     pub fn on_hit(
         battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // for (const side of source.side.foeSidesWithConditions()) {
+        //     side.addSideCondition("gmaxvolcalith");
+        // }
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let source_side_idx = source.0;
+
+        // Get foe sides (in singles, just the opposite side)
+        for side_idx in 0..battle.sides.len() {
+            if side_idx != source_side_idx {
+                // This is a foe side, add the condition
+                let condition_id = crate::dex_data::ID::new("gmaxvolcalith");
+                battle.add_side_condition(
+                    side_idx,
+                    condition_id,
+                    Some(source),
+                    None,
+                );
+            }
+        }
+
         EventResult::Continue
     }
 }
