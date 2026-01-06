@@ -1,5 +1,6 @@
 use crate::*;
 use crate::battle::EventInfo;
+use crate::event::EventResult;
 
 impl Battle {
 
@@ -103,10 +104,8 @@ impl Battle {
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
         source_effect: Option<&ID>,
-        relay_var: Option<i32>,
-    ) -> crate::event::EventResult {
-        use crate::event::EventResult;
-
+        relay_var: Option<EventResult>,
+    ) -> EventResult {
         eprintln!("[SINGLE_EVENT] event_id={}, effect_id={}, target={:?}, depth={}",
             event_id, effect_id.as_str(), target, self.event_depth);
 
@@ -215,7 +214,7 @@ impl Battle {
             source,
             effect: source_effect.cloned(),
             modifier: 4096,
-            relay_var,
+            relay_var: relay_var.clone(),
             relay_var_float: None,
             relay_var_boost: None,
             relay_var_secondaries: None,
@@ -240,11 +239,7 @@ impl Battle {
         // Otherwise return the handler's result
         match result {
             EventResult::Continue => {
-                if let Some(rv) = relay_var {
-                    EventResult::Number(rv)
-                } else {
-                    EventResult::Continue
-                }
+                relay_var.unwrap_or(EventResult::Continue)
             }
             _ => result,
         }

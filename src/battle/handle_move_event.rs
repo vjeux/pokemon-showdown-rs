@@ -35,7 +35,7 @@ impl Battle {
                 let damage = self
                     .current_event
                     .as_ref()
-                    .and_then(|e| e.relay_var)
+                    .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
                     .unwrap_or(0);
 
                 move_callbacks::dispatch_on_after_sub_damage(self, move_str, target_pos.unwrap_or((0,0)), damage, source_pos)
@@ -45,7 +45,7 @@ impl Battle {
                 let base_power = self
                     .current_event
                     .as_ref()
-                    .and_then(|e| e.relay_var)
+                    .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
                     .unwrap_or(0);
 
                 // BasePower event is for abilities/items to modify base power
@@ -59,7 +59,7 @@ impl Battle {
                     let damage = self
                         .current_event
                         .as_ref()
-                        .and_then(|e| e.relay_var)
+                        .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
                         .unwrap_or(0);
 
                     let effect_id = self

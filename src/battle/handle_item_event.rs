@@ -23,7 +23,7 @@ impl Battle {
             event_id, item_id.as_str(), target);
 
         let source = self.current_event.as_ref().and_then(|e| e.source);
-        let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var);
+        let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var.clone());
         let relay_var_float = self.current_event.as_ref().and_then(|e| e.relay_var_float);
         let relay_var_boost = self.current_event.as_ref().and_then(|e| e.relay_var_boost.clone());
         let relay_var_type = self.current_event.as_ref().and_then(|e| e.relay_var_type.clone());
@@ -88,7 +88,7 @@ impl Battle {
 
             // TypeScript: onAfterSubDamage(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "AfterSubDamage" => {
-                let damage = relay_var.unwrap_or(0);
+                let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 let effect_id_clone = self.current_effect.clone();
                 let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
                 item_callbacks::dispatch_on_after_sub_damage(
@@ -167,7 +167,7 @@ impl Battle {
 
             // TypeScript: onDamage(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "Damage" => {
-                let damage = relay_var.unwrap_or(0);
+                let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 let effect_id_clone = self.current_effect.clone();
                 let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
                 item_callbacks::dispatch_on_damage(
@@ -182,7 +182,7 @@ impl Battle {
 
             // TypeScript: onDamagingHit(damage:number, target:Pokemon, source:Pokemon)
             "DamagingHit" => {
-                let damage = relay_var.unwrap_or(0);
+                let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 let source_pos = source.unwrap_or(pokemon_pos);
                 item_callbacks::dispatch_on_damaging_hit(
                     self,
@@ -282,7 +282,7 @@ impl Battle {
 
             // TypeScript: onModifyCritRatio(pokemon:Pokemon, critRatio:number)
             "ModifyCritRatio" => {
-                let crit_ratio = relay_var.unwrap_or(0);
+                let crit_ratio = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 item_callbacks::dispatch_on_modify_crit_ratio(
                     self,
                     item_id.as_str(),
@@ -293,7 +293,7 @@ impl Battle {
 
             // TypeScript: onModifyDamage(damage:number, pokemon:Pokemon, target:Pokemon?)
             "ModifyDamage" => {
-                let damage = relay_var.unwrap_or(0);
+                let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 let target_pos = self.current_event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_modify_damage(
                     self,
@@ -358,7 +358,7 @@ impl Battle {
 
             // TypeScript: onModifyWeight(weighthg:number)
             "ModifyWeight" => {
-                let weighthg = relay_var.unwrap_or(0);
+                let weighthg = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 item_callbacks::dispatch_on_modify_weight(
                     self,
                     item_id.as_str(),
@@ -384,14 +384,14 @@ impl Battle {
 
             // TypeScript: onSourceModifyAccuracy() - no params
             "SourceModifyAccuracy" => {
-                let accuracy = relay_var.unwrap_or(0);
+                let accuracy = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 let target_pos = self.current_event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_source_modify_accuracy(self, item_id.as_str(), accuracy, target_pos)
             }
 
             // TypeScript: onSourceModifyDamage(damage:number, source:Pokemon, target:Pokemon)
             "SourceModifyDamage" => {
-                let damage = relay_var.unwrap_or(0);
+                let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 let source_pos = pokemon_pos;
                 let target_pos = target.unwrap_or(pokemon_pos);
                 item_callbacks::dispatch_on_source_modify_damage(
@@ -495,7 +495,7 @@ impl Battle {
 
             // TypeScript: onTryHeal(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "TryHeal" => {
-                let damage = relay_var.unwrap_or(0);
+                let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 let effect_id_clone = self.current_effect.clone();
                 let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
                 item_callbacks::dispatch_on_try_heal(

@@ -393,7 +393,7 @@ pub struct EventInfo {
     pub modifier: i32,
     /// Relay variable for events that modify numeric values (crit ratio, weight, etc.)
     /// JavaScript: relayVar parameter in event callbacks
-    pub relay_var: Option<i32>,
+    pub relay_var: Option<crate::event::EventResult>,
     /// Relay variable for events that use float values (fractional priority, etc.)
     /// JavaScript: relayVar parameter in event callbacks (number)
     pub relay_var_float: Option<f64>,

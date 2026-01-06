@@ -81,7 +81,7 @@ impl Pokemon {
                     Some(pokemon_pos),
                     None,
                     None,
-                    Some(type_mod),
+                    Some(EventResult::Number(type_mod)),
                 );
 
                 // Extract modified type_mod from event result

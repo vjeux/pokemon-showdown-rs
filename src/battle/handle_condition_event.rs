@@ -100,7 +100,10 @@ impl Battle {
                 condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, pokemon_pos)
             }
             "ModifySpe" => {
-                let spe = self.event.as_ref().and_then(|e| e.relay_var).unwrap_or(0);
+                let spe = self.event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
                 condition_callbacks::dispatch_on_modify_spe(self, condition_id, spe, pokemon_pos)
             }
             "MoveAborted" => {

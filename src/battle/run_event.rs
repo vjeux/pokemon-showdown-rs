@@ -431,19 +431,13 @@ impl Battle {
 
         // JavaScript: this.event = { id: eventid, target, source, effect: sourceEffect, modifier: 1 };
         // Create new event context
-        // Extract relay_var numeric value if present
-        let relay_var_int = match relay_var {
-            EventResult::Number(n) => Some(n),
-            _ => None,
-        };
-
         let event_info = EventInfo {
             id: event_id.to_string(),
             target,
             source,
             effect: source_effect.cloned(),
             modifier: 4096, // 4096 = 1.0x in JavaScript
-            relay_var: relay_var_int,
+            relay_var: Some(relay_var.clone()),
             relay_var_float: None,
             relay_var_boost: None,
             relay_var_secondaries: None,

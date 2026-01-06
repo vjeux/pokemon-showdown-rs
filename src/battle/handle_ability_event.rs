@@ -47,7 +47,11 @@ impl Battle {
 
         // Extract relay variables from current_event
         let (relay_var_int, _relay_var_float) = if let Some(ref event) = self.current_event {
-            (event.relay_var.unwrap_or(0), event.relay_var_float.unwrap_or(0.0))
+            let relay_int = match &event.relay_var {
+                Some(EventResult::Number(n)) => *n,
+                _ => 0,
+            };
+            (relay_int, event.relay_var_float.unwrap_or(0.0))
         } else {
             (0, 0.0)
         };
@@ -318,7 +322,10 @@ impl Battle {
                 let defender_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
 
                 // Get base_power from relay_var
-                let base_power = self.current_event.as_ref().and_then(|e| e.relay_var).unwrap_or(0);
+                let base_power = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
 
                 // Get move_id from active_move (extract to owned String to avoid borrow issues)
                 let move_id_owned = self.active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
@@ -380,7 +387,7 @@ impl Battle {
                     .map(|e| (
                         e.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new()),
                         e.source,
-                        e.relay_var.unwrap_or(0) // Extract damage from relay_var
+                        match &e.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 } // Extract damage from relay_var
                     ))
                     .unwrap_or_else(|| (String::new(), None, 0));
                 ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), damage, Some(pokemon_pos), source_pos, &move_id)
@@ -489,7 +496,7 @@ impl Battle {
             "ModifyAtk" => {
                 let (atk, defender_pos, move_id_str) = if let Some(ref event) = self.current_event {
                     (
-                        event.relay_var.unwrap_or(0),
+                        match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
                         event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
                     )
@@ -511,7 +518,7 @@ impl Battle {
             "ModifyDef" => {
                 let (def, attacker_pos, move_id_str) = if let Some(ref event) = self.current_event {
                     (
-                        event.relay_var.unwrap_or(0),
+                        match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.source.unwrap_or((0, 0)),
                         event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
                     )
@@ -552,7 +559,7 @@ impl Battle {
             "ModifySpA" => {
                 let (spa, defender_pos, move_id_str) = if let Some(ref event) = self.current_event {
                     (
-                        event.relay_var.unwrap_or(0),
+                        match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
                         event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
                     )
@@ -670,7 +677,7 @@ impl Battle {
                 // Extract parameters from current_event
                 let (damage, source_pos, move_id_str) = if let Some(ref event) = self.current_event {
                     (
-                        event.relay_var.unwrap_or(0), // damage value
+                        match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 }, // damage value
                         event.target.unwrap_or((0, 0)), // attacker position
                         event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default() // move id
                     )

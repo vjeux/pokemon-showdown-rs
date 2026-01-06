@@ -128,7 +128,7 @@ pub enum EffectType {
 /// Result from an event handler
 /// TODO: Not in JavaScript - Rust-specific enum for event handler return values
 /// JavaScript event handlers return various types directly (undefined, null, number, string, boolean, etc.)
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 pub enum EventResult {
     /// Continue to next handler, no modification
     #[default]
