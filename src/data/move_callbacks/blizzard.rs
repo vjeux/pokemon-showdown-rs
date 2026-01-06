@@ -16,7 +16,8 @@ pub fn on_modify_move(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // if (this.field.isWeather(['hail', 'snowscape'])) move.accuracy = true;
-    if battle.field.is_weather_any(&["hail", "snowscape"]) {
+    // JavaScript isWeather accepts array - check each weather
+    if battle.is_weather("hail") || battle.is_weather("snowscape") {
         // move.accuracy = true;
         // Store accuracy override in current effect state
         if let Some(ref mut effect_state) = battle.current_effect_state {

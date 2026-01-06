@@ -12,7 +12,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_start(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // Set weather to Snowscape
-    battle.field.set_weather(crate::ID::from("snowscape"), None);
+    battle.set_weather(crate::ID::from("snowscape"), None, None);
     EventResult::Continue
 }
 

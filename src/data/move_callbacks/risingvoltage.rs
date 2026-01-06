@@ -26,7 +26,7 @@ pub fn base_power_callback(
     };
 
     // if (this.field.isTerrain('electricterrain') && target.isGrounded()) {
-    let is_electric_terrain = battle.field.is_terrain("electricterrain");
+    let is_electric_terrain = battle.is_terrain("electricterrain");
     let target_is_grounded = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,

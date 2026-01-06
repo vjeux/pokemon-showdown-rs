@@ -34,7 +34,7 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
     }
 
     // this.field.setTerrain('electricterrain');
-    battle.field.set_terrain(ID::from("electricterrain"), None);
+    battle.set_terrain(ID::from("electricterrain"), None);
 
     EventResult::Continue
 }

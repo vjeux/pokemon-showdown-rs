@@ -198,7 +198,7 @@ pub fn secondaries(
                 // }
                 if let Some(pseudo_weather_name) = &secondary.pseudo_weather {
                     let pseudo_weather_id = crate::dex_data::ID::new(pseudo_weather_name);
-                    let _applied = battle.field.add_pseudo_weather(pseudo_weather_id, None);
+                    let _applied = battle.add_pseudo_weather(pseudo_weather_id, None);
                 }
 
                 // Apply terrain from secondary effect
@@ -207,7 +207,7 @@ pub fn secondaries(
                 // }
                 if let Some(terrain_name) = &secondary.terrain {
                     let terrain_id = crate::dex_data::ID::new(terrain_name);
-                    let _applied = battle.field.set_terrain(terrain_id, None);
+                    let _applied = battle.set_terrain(terrain_id, None);
                 }
 
                 // Apply weather from secondary effect
@@ -216,7 +216,7 @@ pub fn secondaries(
                 // }
                 if let Some(weather_name) = &secondary.weather {
                     let weather_id = crate::dex_data::ID::new(weather_name);
-                    let _applied = battle.field.set_weather(weather_id, None);
+                    let _applied = battle.set_weather(weather_id, None, None);
                 }
             }
         }

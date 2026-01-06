@@ -99,7 +99,8 @@ pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Ev
     };
 
     // Check if terrain is active
-    let terrain_active = battle.field.is_terrain_active();
+    // In JavaScript: if (this.field.terrain || pokemon.transformed)
+    let terrain_active = !battle.field.terrain.is_empty();
 
     // if (this.field.terrain || pokemon.transformed)
     if terrain_active || transformed {

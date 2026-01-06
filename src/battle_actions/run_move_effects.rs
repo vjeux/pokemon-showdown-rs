@@ -409,7 +409,7 @@ pub fn run_move_effects(
                 let terrain_id = ID::new(terrain);
                 // TODO: field.set_terrain should be a Battle-level method that handles events
                 // For now, using the simple field implementation
-                let hit_result = battle.field.set_terrain(terrain_id, None); // duration
+                let hit_result = battle.set_terrain(terrain_id, None); // duration
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
                     DamageResult::Success
@@ -425,7 +425,7 @@ pub fn run_move_effects(
                 let pseudo_weather_id = ID::new(pseudo_weather);
                 // TODO: field.add_pseudo_weather should be a Battle-level method that handles events
                 // For now, using the simple field implementation
-                let hit_result = battle.field.add_pseudo_weather(pseudo_weather_id, None); // duration
+                let hit_result = battle.add_pseudo_weather(pseudo_weather_id, None); // duration
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
                     DamageResult::Success

@@ -21,7 +21,7 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // this.field.setTerrain('psychicterrain');
-    battle.field.set_terrain(ID::from("psychicterrain"), None);
+    battle.set_terrain(ID::from("psychicterrain"), None);
 
     EventResult::Continue
 }

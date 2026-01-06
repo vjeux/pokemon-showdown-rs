@@ -29,7 +29,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
     let current_weather = battle.field.weather.clone();
 
     // Try to set weather to sunny day
-    if battle.field.set_weather(ID::new("sunnyday"), None) {
+    if battle.set_weather(ID::new("sunnyday"), None, None) == Some(true) {
         battle.add(
             "-weather",
             &["SunnyDay".into(), "[from] ability: Orichalcum Pulse".into(), format!("[of] {}", pokemon_ident).into()]

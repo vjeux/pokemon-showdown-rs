@@ -74,7 +74,7 @@ impl Battle {
             && event_id != "FieldResidual"
             && event_id != "FieldEnd"
         {
-            if self.field.suppressing_weather() {
+            if self.suppressing_weather() {
                 self.debug(&format!("{} handler suppressed by Air Lock", event_id));
                 return EventResult::Continue;
             }

@@ -151,7 +151,7 @@ pub fn self_drops(
                             // }
                             if let Some(ref pseudo_weather_name) = self_data.pseudo_weather {
                                 let pseudo_weather_id = crate::dex_data::ID::new(pseudo_weather_name);
-                                let _applied = battle.field.add_pseudo_weather(pseudo_weather_id, None);
+                                let _applied = battle.add_pseudo_weather(pseudo_weather_id, None);
                             }
 
                             // Apply terrain from self effect
@@ -160,7 +160,7 @@ pub fn self_drops(
                             // }
                             if let Some(ref terrain_name) = self_data.terrain {
                                 let terrain_id = crate::dex_data::ID::new(terrain_name);
-                                let _applied = battle.field.set_terrain(terrain_id, None);
+                                let _applied = battle.set_terrain(terrain_id, None);
                             }
 
                             // Apply weather from self effect
@@ -169,7 +169,7 @@ pub fn self_drops(
                             // }
                             if let Some(ref weather_name) = self_data.weather {
                                 let weather_id = crate::dex_data::ID::new(weather_name);
-                                let _applied = battle.field.set_weather(weather_id, None);
+                                let _applied = battle.set_weather(weather_id, None, None);
                             }
                         }
                     }
@@ -257,7 +257,7 @@ pub fn self_drops(
                         // }
                         if let Some(ref pseudo_weather_name) = self_data.pseudo_weather {
                             let pseudo_weather_id = crate::dex_data::ID::new(pseudo_weather_name);
-                            let _applied = battle.field.add_pseudo_weather(pseudo_weather_id, None);
+                            let _applied = battle.add_pseudo_weather(pseudo_weather_id, None);
                         }
 
                         // Apply terrain from self effect
@@ -266,7 +266,7 @@ pub fn self_drops(
                         // }
                         if let Some(ref terrain_name) = self_data.terrain {
                             let terrain_id = crate::dex_data::ID::new(terrain_name);
-                            let _applied = battle.field.set_terrain(terrain_id, None);
+                            let _applied = battle.set_terrain(terrain_id, None);
                         }
 
                         // Apply weather from self effect
@@ -275,7 +275,7 @@ pub fn self_drops(
                         // }
                         if let Some(ref weather_name) = self_data.weather {
                             let weather_id = crate::dex_data::ID::new(weather_name);
-                            let _applied = battle.field.set_weather(weather_id, None);
+                            let _applied = battle.set_weather(weather_id, None, None);
                         }
                     }
                 }

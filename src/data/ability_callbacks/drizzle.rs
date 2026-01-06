@@ -26,7 +26,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
     }
 
     // Set weather to Rain Dance
-    battle.field.set_weather(crate::ID::from("raindance"), None);
+    battle.set_weather(crate::ID::from("raindance"), None, None);
     EventResult::Continue
 }
 

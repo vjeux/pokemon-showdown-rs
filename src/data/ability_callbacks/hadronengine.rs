@@ -18,10 +18,10 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
     // }
 
     // Try to set electric terrain (returns false if already set)
-    let terrain_set = battle.field.set_terrain(crate::dex_data::ID::new("electricterrain"), None);
+    let terrain_set = battle.set_terrain(crate::dex_data::ID::new("electricterrain"), None);
 
     // If terrain was already electric terrain (setTerrain returned false) and is still electric terrain
-    if !terrain_set && battle.field.is_terrain("electricterrain") {
+    if !terrain_set && battle.is_terrain("electricterrain") {
         // Get Pokemon identifier string before the mutable borrow
         let pokemon_id = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -60,7 +60,7 @@ pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usi
     //     return this.chainModify([5461, 4096]);
     // }
 
-    if battle.field.is_terrain("electricterrain") {
+    if battle.is_terrain("electricterrain") {
         eprintln!("Hadron Engine boost");
         return EventResult::Number(battle.chain_modify_fraction(5461, 4096));
     }

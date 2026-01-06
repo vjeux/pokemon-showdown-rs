@@ -34,7 +34,7 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
     }
 
     // this.field.setWeather('sunnyday');
-    battle.field.set_weather(ID::from("sunnyday"), None);
+    battle.set_weather(ID::from("sunnyday"), None, None);
 
     EventResult::Continue
 }

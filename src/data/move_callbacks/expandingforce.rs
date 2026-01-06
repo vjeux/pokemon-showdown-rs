@@ -22,7 +22,7 @@ pub fn on_base_power(
     let source = pokemon_pos;
 
     // if (this.field.isTerrain('psychicterrain') && source.isGrounded()) {
-    let is_psychic_terrain = battle.field.is_terrain("psychicterrain");
+    let is_psychic_terrain = battle.is_terrain("psychicterrain");
 
     if is_psychic_terrain {
         let is_grounded = {
@@ -60,7 +60,7 @@ pub fn on_modify_move(
     // if (this.field.isTerrain('psychicterrain') && source.isGrounded()) {
     //     move.target = 'allAdjacentFoes';
     // }
-    let is_psychic_terrain = battle.field.is_terrain("psychicterrain");
+    let is_psychic_terrain = battle.is_terrain("psychicterrain");
 
     if is_psychic_terrain {
         let is_grounded = {

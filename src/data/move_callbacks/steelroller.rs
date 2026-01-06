@@ -17,7 +17,7 @@ pub fn on_try(
 ) -> EventResult {
     // return !this.field.isTerrain('');
     // Returns true if there is a terrain active (not empty)
-    let has_terrain = !battle.field.is_terrain("");
+    let has_terrain = !battle.is_terrain("");
 
     if !has_terrain {
         return EventResult::NotFail;
@@ -35,7 +35,7 @@ pub fn on_hit(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // this.field.clearTerrain();
-    battle.field.clear_terrain();
+    battle.clear_terrain();
 
     EventResult::Continue
 }
@@ -45,7 +45,7 @@ pub fn on_hit(
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle) -> EventResult {
     // this.field.clearTerrain();
-    battle.field.clear_terrain();
+    battle.clear_terrain();
 
     EventResult::Continue
 }

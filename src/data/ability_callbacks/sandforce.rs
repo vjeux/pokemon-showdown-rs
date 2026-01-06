@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), move_id: &str) -> EventResult {
-    if battle.field.is_weather("sandstorm") {
+    if battle.is_weather("sandstorm") {
         if let Some(active_move) = battle.dex.get_active_move(move_id) {
             let move_type = active_move.move_type.as_str();
             if move_type == "Rock" || move_type == "Ground" || move_type == "Steel" {

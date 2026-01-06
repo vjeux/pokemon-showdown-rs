@@ -48,13 +48,13 @@ pub fn on_hit(
     // } else if (this.field.isTerrain('psychicterrain')) {
     //     newType = 'Psychic';
     // }
-    if battle.field.is_terrain("electricterrain") {
+    if battle.is_terrain("electricterrain") {
         new_type = String::from("Electric");
-    } else if battle.field.is_terrain("grassyterrain") {
+    } else if battle.is_terrain("grassyterrain") {
         new_type = String::from("Grass");
-    } else if battle.field.is_terrain("mistyterrain") {
+    } else if battle.is_terrain("mistyterrain") {
         new_type = String::from("Fairy");
-    } else if battle.field.is_terrain("psychicterrain") {
+    } else if battle.is_terrain("psychicterrain") {
         new_type = String::from("Psychic");
     }
 

@@ -26,7 +26,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
     }
 
     // Set weather to Sunny Day
-    battle.field.set_weather(crate::ID::from("sunnyday"), None);
+    battle.set_weather(crate::ID::from("sunnyday"), None, None);
     EventResult::Continue
 }
 

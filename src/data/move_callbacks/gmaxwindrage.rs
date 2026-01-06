@@ -161,7 +161,7 @@ pub fn on_hit(
     }
 
     // this.field.clearTerrain();
-    battle.field.clear_terrain();
+    battle.clear_terrain();
 
     // return success;
     EventResult::Boolean(success)

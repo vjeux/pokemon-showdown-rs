@@ -1131,6 +1131,10 @@ pub struct AbilityData {
     /// TODO: Rust uses Option<String>, JavaScript uses Nonstandard union type
     #[serde(rename = "isNonstandard", default)]
     pub is_nonstandard: Option<String>,
+    /// Whether this ability suppresses weather
+    /// JavaScript: suppressWeather?: boolean
+    #[serde(rename = "suppressWeather", default)]
+    pub suppress_weather: Option<bool>,
     /// Extra fields (like onResidualOrder, onResidualSubOrder, etc.)
     /// JavaScript: handler.order = (handler.effect as any)[`${callbackName}Order`]
     /// Note: JavaScript has many callback methods (onStart, onEnd, etc.) that cannot be stored in data

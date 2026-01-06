@@ -61,7 +61,7 @@ pub fn on_modify_def(
         pokemon.has_type(battle, "Ice")
     };
 
-    let is_snowscape = battle.field.is_weather("snowscape");
+    let is_snowscape = battle.is_weather("snowscape");
 
     if has_ice_type && is_snowscape {
         // return this.modify(def, 1.5);
@@ -143,7 +143,7 @@ pub fn on_field_residual(
     battle.add("-weather", &[Arg::Str("Snowscape"), Arg::Str("[upkeep]")]);
 
     // if (this.field.isWeather('snowscape')) this.eachEvent('Weather');
-    if battle.field.is_weather("snowscape") {
+    if battle.is_weather("snowscape") {
         battle.each_event("Weather", None, None);
     }
 

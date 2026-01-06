@@ -171,7 +171,7 @@ pub mod condition {
     ) -> EventResult {
         // this.field.removePseudoWeather('wonderroom');
         use crate::dex_data::ID;
-        battle.field.remove_pseudo_weather(&ID::from("wonderroom"));
+        battle.remove_pseudo_weather(&ID::from("wonderroom"));
 
         EventResult::Continue
     }

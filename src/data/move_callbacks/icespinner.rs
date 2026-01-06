@@ -31,7 +31,7 @@ pub fn on_after_hit(
     };
 
     if source_has_hp {
-        battle.field.clear_terrain();
+        battle.clear_terrain();
     }
 
     EventResult::Continue
@@ -65,7 +65,7 @@ pub fn on_after_sub_damage(
     };
 
     if source_has_hp {
-        battle.field.clear_terrain();
+        battle.clear_terrain();
     }
 
     EventResult::Continue

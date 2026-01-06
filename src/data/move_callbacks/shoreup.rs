@@ -42,7 +42,7 @@ pub fn on_hit(
     // if (this.field.isWeather('sandstorm')) {
     //     factor = 0.667;
     // }
-    let is_sandstorm = battle.field.is_weather("sandstorm");
+    let is_sandstorm = battle.is_weather("sandstorm");
     let factor = if is_sandstorm { 0.667 } else { 0.5 };
 
     // const success = !!this.heal(this.modify(pokemon.maxhp, factor));

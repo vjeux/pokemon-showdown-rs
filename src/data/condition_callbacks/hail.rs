@@ -116,7 +116,7 @@ pub fn on_field_residual(
     battle.add("-weather", &[Arg::Str("Hail"), Arg::Str("[upkeep]")]);
 
     // if (this.field.isWeather('hail')) this.eachEvent('Weather');
-    if battle.field.is_weather("hail") {
+    if battle.is_weather("hail") {
         battle.each_event("Weather", None, None);
     }
 

@@ -570,7 +570,7 @@ impl Battle {
             if event_id != "Residual" && event_id != "End" {
                 // Check if this is a weather effect
                 if !self.field.weather.is_empty() && self.field.weather.as_str() == effect_id.as_str() {
-                    if self.field.suppressing_weather() {
+                    if self.suppressing_weather() {
                         self.debug(&format!("{} handler suppressed by Air Lock", event_id));
                         continue;
                     }

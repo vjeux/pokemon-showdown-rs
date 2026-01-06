@@ -34,7 +34,7 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
     }
 
     // this.field.setTerrain('mistyterrain');
-    battle.field.set_terrain(ID::from("mistyterrain"), None);
+    battle.set_terrain(ID::from("mistyterrain"), None);
 
     EventResult::Continue
 }

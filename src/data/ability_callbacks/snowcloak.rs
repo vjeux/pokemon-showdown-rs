@@ -25,7 +25,10 @@ pub fn on_immunity(_battle: &mut Battle, type_or_status: &str, _pokemon_pos: (us
 ///     }
 /// }
 pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
-    if battle.field.is_weather_any(&["hail", "snowscape"]) {
+    // if (this.field.isWeather(['hail', 'snowscape'])) {
+    // JavaScript isWeather accepts array - check each weather
+    if battle.is_weather("hail") || battle.is_weather("snowscape") {
+        // return this.chainModify([3277, 4096]);
         return EventResult::Number(battle.chain_modify_fraction(3277, 4096));
     }
     EventResult::Continue

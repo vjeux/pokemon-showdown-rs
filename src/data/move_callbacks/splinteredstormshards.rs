@@ -20,7 +20,7 @@ pub fn on_hit(
     // }
 
     // this.field.clearTerrain();
-    battle.field.clear_terrain();
+    battle.clear_terrain();
 
     EventResult::Continue
 }
@@ -34,7 +34,7 @@ pub fn on_after_sub_damage(battle: &mut Battle) -> EventResult {
     // }
 
     // this.field.clearTerrain();
-    battle.field.clear_terrain();
+    battle.clear_terrain();
 
     EventResult::Continue
 }

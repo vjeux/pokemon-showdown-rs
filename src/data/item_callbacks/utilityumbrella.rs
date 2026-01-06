@@ -33,7 +33,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
     }
 
     // if (['sunnyday', 'raindance', 'desolateland', 'primordialsea'].includes(this.field.effectiveWeather()))
-    let weather = battle.field.effective_weather();
+    let weather = battle.effective_weather();
     let weather_str = weather.as_str();
 
     if weather_str == "sunnyday"
@@ -82,7 +82,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     }
 
     // if (['sunnyday', 'raindance', 'desolateland', 'primordialsea'].includes(this.field.effectiveWeather()))
-    let weather = battle.field.effective_weather();
+    let weather = battle.effective_weather();
     let weather_str = weather.as_str();
 
     if weather_str == "sunnyday"
@@ -106,7 +106,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// }
 pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // if (['sunnyday', 'raindance', 'desolateland', 'primordialsea'].includes(this.field.effectiveWeather()))
-    let weather = battle.field.effective_weather();
+    let weather = battle.effective_weather();
     let weather_str = weather.as_str();
 
     if weather_str == "sunnyday"

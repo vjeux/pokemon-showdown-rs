@@ -77,7 +77,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
     if has_protosynthesis {
         use crate::dex_data::ID;
-        let is_sunny = battle.field.is_weather("sunnyday");
+        let is_sunny = battle.is_weather("sunnyday");
 
         if !is_sunny {
             let used_item = {
@@ -107,7 +107,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
     if has_quarkdrive {
         use crate::dex_data::ID;
-        let is_electric_terrain = battle.field.is_terrain("electricterrain");
+        let is_electric_terrain = battle.is_terrain("electricterrain");
 
         if !is_electric_terrain {
             let used_item = {

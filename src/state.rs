@@ -720,11 +720,16 @@ pub fn serialize_field(field: &crate::field::Field) -> serde_json::Value {
 // 	}
 //
 pub fn deserialize_field(state: &serde_json::Value, field: &mut crate::field::Field) {
+    // Directly set field properties during deserialization (no events)
     if let Some(weather) = state.get("weather").and_then(|v| v.as_str()) {
-        field.set_weather(ID::new(weather), None);
+        let weather_id = ID::new(weather);
+        field.weather = weather_id.clone();
+        field.weather_state = EffectState::new(weather_id);
     }
     if let Some(terrain) = state.get("terrain").and_then(|v| v.as_str()) {
-        field.set_terrain(ID::new(terrain), None);
+        let terrain_id = ID::new(terrain);
+        field.terrain = terrain_id.clone();
+        field.terrain_state = EffectState::new(terrain_id);
     }
 }
 

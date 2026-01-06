@@ -14,7 +14,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
     // Get field weather
-    let field_weather = battle.field.effective_weather();
+    let field_weather = battle.effective_weather();
 
     // Get pokemon and check effective weather
     let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {

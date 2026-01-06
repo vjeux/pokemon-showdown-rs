@@ -31,7 +31,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 /// }
 pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // Check if it's sunny day
-    let is_sunny = battle.field.is_weather("sunnyday");
+    let is_sunny = battle.is_weather("sunnyday");
     eprintln!("[PROTOSYNTHESIS] on_weather_change called, is_sunny={}", is_sunny);
 
     if is_sunny {

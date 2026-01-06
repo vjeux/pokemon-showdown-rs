@@ -50,10 +50,10 @@ pub fn on_after_terastallization(battle: &mut Battle, pokemon_pos: (usize, usize
         ]);
 
         // this.field.clearWeather();
-        battle.field.clear_weather();
+        battle.clear_weather();
 
         // this.field.clearTerrain();
-        battle.field.clear_terrain();
+        battle.clear_terrain();
     }
 
     EventResult::Continue

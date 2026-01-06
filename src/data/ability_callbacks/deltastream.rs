@@ -14,7 +14,7 @@ pub fn on_start(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResul
     use crate::dex_data::ID;
 
     // this.field.setWeather('deltastream');
-    battle.field.set_weather(ID::from("deltastream"), None);
+    battle.set_weather(ID::from("deltastream"), None, None);
 
     EventResult::Continue
 }
@@ -64,8 +64,8 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     // if (this.field.weatherState.source !== pokemon) return;
-    let weather_source = battle.field.get_weather_state().source;
-    if weather_source != Some(pokemon_pos) {
+    let weather_source = &battle.field.weather_state.source;
+    if weather_source != &Some(pokemon_pos) {
         return EventResult::Continue;
     }
 
@@ -89,13 +89,13 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
         if has_delta_stream {
             // this.field.weatherState.source = target;
-            battle.field.get_weather_state_mut().source = Some(active_pos);
+            battle.field.weather_state.source = Some(active_pos);
             return EventResult::Continue;
         }
     }
 
     // this.field.clearWeather();
-    battle.field.clear_weather();
+    battle.clear_weather();
 
     EventResult::Continue
 }

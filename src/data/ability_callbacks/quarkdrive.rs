@@ -30,7 +30,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 /// }
 pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // Check if it's electric terrain
-    let is_electric_terrain = battle.field.is_terrain("electricterrain");
+    let is_electric_terrain = battle.is_terrain("electricterrain");
 
     if is_electric_terrain {
         // Add quarkdrive volatile

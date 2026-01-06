@@ -25,7 +25,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
             None => return EventResult::Continue,
         };
 
-        let is_snowy = battle.field.is_weather("hail") || battle.field.is_weather("snowscape");
+        let is_snowy = battle.is_weather("hail") || battle.is_weather("snowscape");
         (is_snowy, pokemon.species_id.clone())
     };
 
@@ -337,7 +337,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
             None => return EventResult::Continue,
         };
 
-        let is_snowy = battle.field.is_weather("hail") || battle.field.is_weather("snowscape");
+        let is_snowy = battle.is_weather("hail") || battle.is_weather("snowscape");
         (pokemon.hp, is_snowy, pokemon.species_id.clone())
     };
 

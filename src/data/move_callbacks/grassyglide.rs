@@ -24,7 +24,7 @@ pub fn on_modify_priority(
     };
 
     // if (this.field.isTerrain('grassyterrain') && source.isGrounded()) {
-    let is_grassy_terrain = battle.field.is_terrain("grassyterrain");
+    let is_grassy_terrain = battle.is_terrain("grassyterrain");
 
     let is_grounded = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
