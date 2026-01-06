@@ -232,13 +232,15 @@ pub fn hit_step_accuracy(
                 };
 
                 // Run ModifyBoost event - returns modified boosts table
-                let modified_boosts = battle.run_event_boost(
+                let modified_boosts = battle.run_event(
                     "ModifyBoost",
                     Some(pokemon_pos),
                     None,
                     None,
-                    boosts_table,
-                );
+                    crate::event::EventResult::Boost(boosts_table),
+                    false,
+                    false,
+                ).boost().unwrap_or(boosts_table);
 
                 // Extract accuracy boost and clamp to [-6, 6]
                 boost = modified_boosts.accuracy.max(-6).min(6);
@@ -259,13 +261,15 @@ pub fn hit_step_accuracy(
                 };
 
                 // Run ModifyBoost event - returns modified boosts table
-                let modified_boosts = battle.run_event_boost(
+                let modified_boosts = battle.run_event(
                     "ModifyBoost",
                     Some(target_pos),
                     None,
                     None,
-                    boosts_table,
-                );
+                    crate::event::EventResult::Boost(boosts_table),
+                    false,
+                    false,
+                ).boost().unwrap_or(boosts_table);
 
                 // Extract evasion boost, subtract from accuracy boost, and clamp to [-6, 6]
                 boost = (boost - modified_boosts.evasion).max(-6).min(6);

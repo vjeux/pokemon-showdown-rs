@@ -155,6 +155,8 @@ pub enum EventResult {
     Types(Vec<String>),
     /// Hit substitute - indicates damage was blocked by substitute (equivalent to TypeScript's HIT_SUBSTITUTE)
     HitSubstitute,
+    /// Return a boost table (stat stages)
+    Boost(crate::dex_data::BoostsTable),
 }
 
 impl EventResult {
@@ -212,6 +214,14 @@ impl EventResult {
     pub fn types(&self) -> Option<&Vec<String>> {
         match self {
             EventResult::Types(types) => Some(types),
+            _ => None,
+        }
+    }
+
+    /// Get the boost table if present
+    pub fn boost(&self) -> Option<crate::dex_data::BoostsTable> {
+        match self {
+            EventResult::Boost(b) => Some(*b),
             _ => None,
         }
     }
