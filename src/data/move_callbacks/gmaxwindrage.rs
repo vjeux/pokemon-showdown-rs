@@ -167,3 +167,47 @@ pub fn on_hit(
     EventResult::Boolean(success)
 }
 
+
+/// Self-targeting callbacks
+/// These callbacks target the move user (source), not the move target
+pub mod self_callbacks {
+    use super::*;
+
+    /// self.onHit(source)
+    ///
+    /// ```text
+    /// JS Source (data/moves.ts):
+    /// self: {
+    ///     onHit(source) {
+    ///         onHit(source) {
+    ///                 let success = false;
+    ///                 const removeAll = ["spikes", "toxicspikes", "stealthrock", "stickyweb", "gmaxsteelsurge"];
+    ///                 const removeTarget = ["reflect", "lightscreen", "auroraveil", "safeguard", "mist", ...removeAll];
+    ///                 for (const targetCondition of removeTarget) {
+    ///                   if (source.side.foe.removeSideCondition(targetCondition)) {
+    ///                     if (!removeAll.includes(targetCondition)) continue;
+    ///                     this.add("-sideend", source.side.foe, this.dex.conditions.get(targetCondition).name, "[from] move: G-Max Wind Rage", `[of] ${source}`);
+    ///                     success = true;
+    ///                   }
+    ///                 }
+    ///                 for (const sideCondition of removeAll) {
+    ///                   if (source.side.removeSideCondition(sideCondition)) {
+    ///                     this.add("-sideend", source.side, this.dex.conditions.get(sideCondition).name, "[from] move: G-Max Wind Rage", `[of] ${source}`);
+    ///                     success = true;
+    ///                   }
+    ///                 }
+    ///                 this.field.clearTerrain();
+    ///                 return success;
+    ///               }
+    ///     },
+    /// }
+    /// ```
+    pub fn on_hit(
+        battle: &mut Battle,
+        _target_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
+        // TODO: Implement 1-to-1 from JS
+        EventResult::Continue
+    }
+}

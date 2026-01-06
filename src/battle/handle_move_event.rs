@@ -86,7 +86,17 @@ impl Battle {
             "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_str, target_pos.unwrap_or((0,0))),
             "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_str, 0, "", target_pos.unwrap_or((0,0))),
             "Hit" => {
-                move_callbacks::dispatch_on_hit(self, move_str, target_pos.unwrap_or((0,0)), source_pos)
+                // Call both regular onHit and self.onHit callbacks
+                // Regular onHit targets the move target, self.onHit targets the move user
+                let result = move_callbacks::dispatch_on_hit(self, move_str, target_pos.unwrap_or((0,0)), source_pos);
+                let self_result = move_callbacks::dispatch_self_on_hit(self, move_str, target_pos.unwrap_or((0,0)), source_pos);
+
+                // If either returns a non-Continue result, use that; otherwise Continue
+                match (result, self_result) {
+                    (EventResult::Continue, EventResult::Continue) => EventResult::Continue,
+                    (EventResult::Continue, other) => other,
+                    (other, _) => other,
+                }
             }
             "HitField" => move_callbacks::dispatch_on_hit_field(self, move_str, target_pos.unwrap_or((0,0)), source_pos),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, move_str, target_pos.unwrap_or((0,0))),

@@ -44,3 +44,32 @@ pub fn on_hit(
     EventResult::Continue
 }
 
+
+/// Self-targeting callbacks
+/// These callbacks target the move user (source), not the move target
+pub mod self_callbacks {
+    use super::*;
+
+    /// self.onHit(source)
+    ///
+    /// ```text
+    /// JS Source (data/moves.ts):
+    /// self: {
+    ///     onHit(source) {
+    ///         onHit(source) {
+    ///                 for (const pokemon of source.foes()) {
+    ///                   pokemon.addVolatile("confusion");
+    ///                 }
+    ///               }
+    ///     },
+    /// }
+    /// ```
+    pub fn on_hit(
+        battle: &mut Battle,
+        _target_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
+        // TODO: Implement 1-to-1 from JS
+        EventResult::Continue
+    }
+}

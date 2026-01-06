@@ -120,3 +120,39 @@ pub fn on_hit(
 
     EventResult::Continue
 }
+
+/// Self-targeting callbacks
+/// These callbacks target the move user (source), not the move target
+pub mod self_callbacks {
+    use super::*;
+
+    /// self.onHit(source)
+    ///
+    /// ```text
+    /// JS Source (data/moves.ts):
+    /// self: {
+    ///     onHit(source) {
+    ///         onHit(source) {
+    ///                 if (this.randomChance(1, 2)) return;
+    ///                 for (const pokemon of source.alliesAndSelf()) {
+    ///                   if (pokemon.item) continue;
+    ///                   if (pokemon.lastItem && this.dex.items.get(pokemon.lastItem).isBerry) {
+    ///                     const item = pokemon.lastItem;
+    ///                     pokemon.lastItem = "";
+    ///                     this.add("-item", pokemon, this.dex.items.get(item), "[from] move: G-Max Replenish");
+    ///                     pokemon.setItem(item);
+    ///                   }
+    ///                 }
+    ///               }
+    ///     },
+    /// }
+    /// ```
+    pub fn on_hit(
+        battle: &mut Battle,
+        _target_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
+        // TODO: Implement 1-to-1 from JS
+        EventResult::Continue
+    }
+}

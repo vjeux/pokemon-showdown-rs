@@ -49,9 +49,11 @@ impl Battle {
             return self.item_has_callback(effect_str, event_id);
         }
 
-        // Check moves
+        // Check moves (both regular and self callbacks)
         if self.dex.moves().get(effect_str).is_some() {
-            return self.move_has_callback(effect_str, event_id);
+            // A move has a callback if either the regular callback OR the self callback exists
+            return self.move_has_callback(effect_str, event_id)
+                || self.move_has_self_callback(effect_str, event_id);
         }
 
         // Check species - species can have callbacks like onSwitchIn for form changes
@@ -142,11 +144,11 @@ impl Battle {
         }
     }
 
-    /// Check if a a move has a callback for an event
+    /// Check if a move has a callback for an event
     pub fn move_has_callback(&self, move_id: &str, event_id: &str) -> bool {
         // Look up the move in dex data and check its extra field for callback boolean
         if let Some(move_data) = self.dex.moves().get(move_id) {
-            // First check the move's direct callbacks
+            // Check the move's direct callbacks (not self callbacks)
             let has_callback = move_data.extra.get(event_id)
                 .and_then(|v| v.as_bool())
                 .unwrap_or(false);
@@ -166,6 +168,18 @@ impl Battle {
                 }
             }
 
+            false
+        } else {
+            // If not found in dex, return false
+            false
+        }
+    }
+
+    /// Check if a move has a SELF callback for an event
+    /// Self callbacks are in the self: { } object and target the move user, not the target
+    pub fn move_has_self_callback(&self, move_id: &str, event_id: &str) -> bool {
+        // Look up the move in dex data and check its extra field for callback boolean
+        if let Some(move_data) = self.dex.moves().get(move_id) {
             // Check move.self callbacks (like gmaxmalodor)
             // In JavaScript, these are callbacks in the self: { ... } object
             // They're triggered on the move user, not the target

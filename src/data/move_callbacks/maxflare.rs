@@ -40,3 +40,31 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 }
 
 
+
+/// Self-targeting callbacks
+/// These callbacks target the move user (source), not the move target
+pub mod self_callbacks {
+    use super::*;
+
+    /// self.onHit(source)
+    ///
+    /// ```text
+    /// JS Source (data/moves.ts):
+    /// self: {
+    ///     onHit(source) {
+    ///         onHit(source) {
+    ///                 if (!source.volatiles["dynamax"]) return;
+    ///                 this.field.setWeather("sunnyday");
+    ///               }
+    ///     },
+    /// }
+    /// ```
+    pub fn on_hit(
+        battle: &mut Battle,
+        _target_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+    ) -> EventResult {
+        // TODO: Implement 1-to-1 from JS
+        EventResult::Continue
+    }
+}

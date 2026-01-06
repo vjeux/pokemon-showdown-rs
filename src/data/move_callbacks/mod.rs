@@ -355,6 +355,7 @@ pub mod spikes;
 pub mod spikyshield;
 pub mod spite;
 pub mod spitup;
+pub mod sparklyswirl;
 pub mod splash;
 pub mod splinteredstormshards;
 pub mod spotlight;
@@ -740,6 +741,70 @@ pub fn dispatch_on_effectiveness(
     }
 }
 
+/// Dispatch self.onHit callbacks
+/// JavaScript: self.onHit(source) - SELF-TARGETING, source is the move user
+/// In JavaScript, self callbacks are in the self: { } object
+/// They target the move user, not the move target
+pub fn dispatch_self_on_hit(
+    battle: &mut Battle,
+    move_id: &str,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
+    match move_id {
+        "batonpass" => batonpass::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "burnup" => burnup::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "doubleshock" => doubleshock::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxbefuddle" => gmaxbefuddle::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxcannonade" => gmaxcannonade::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxcentiferno" => gmaxcentiferno::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxchistrike" => gmaxchistrike::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxcuddle" => gmaxcuddle::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxdepletion" => gmaxdepletion::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxfinale" => gmaxfinale::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxfoamburst" => gmaxfoamburst::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxgoldrush" => gmaxgoldrush::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxmalodor" => gmaxmalodor::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxmeltdown" => gmaxmeltdown::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxreplenish" => gmaxreplenish::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxsandblast" => gmaxsandblast::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxsmite" => gmaxsmite::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxsteelsurge" => gmaxsteelsurge::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxstonesurge" => gmaxstonesurge::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxstunshock" => gmaxstunshock::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxsweetness" => gmaxsweetness::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxtartness" => gmaxtartness::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxterror" => gmaxterror::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxvinelash" => gmaxvinelash::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxvolcalith" => gmaxvolcalith::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxvoltcrash" => gmaxvoltcrash::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxwildfire" => gmaxwildfire::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "gmaxwindrage" => gmaxwindrage::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxairstream" => maxairstream::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxdarkness" => maxdarkness::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxflare" => maxflare::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxflutterby" => maxflutterby::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxgeyser" => maxgeyser::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxhailstorm" => maxhailstorm::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxknuckle" => maxknuckle::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxlightning" => maxlightning::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxmindstorm" => maxmindstorm::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxooze" => maxooze::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxovergrowth" => maxovergrowth::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxphantasm" => maxphantasm::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxquake" => maxquake::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxrockfall" => maxrockfall::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxstarfall" => maxstarfall::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxsteelspike" => maxsteelspike::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxstrike" => maxstrike::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "maxwyrmwind" => maxwyrmwind::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "psychoshift" => psychoshift::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "shedtail" => shedtail::self_callbacks::on_hit(battle, target_pos, source_pos),
+        "sparklyswirl" => sparklyswirl::self_callbacks::on_hit(battle, target_pos, source_pos),
+        _ => EventResult::Continue,
+    }
+}
+
 /// Dispatch onHit callbacks
 /// JavaScript: onHit(target, source, move) - TARGET FIRST
 pub fn dispatch_on_hit(
@@ -787,26 +852,7 @@ pub fn dispatch_on_hit(
         "forestscurse" => forestscurse::on_hit(battle, target_pos, source_pos),
         "freezyfrost" => freezyfrost::on_hit(battle, target_pos, source_pos),
         "genesissupernova" => genesissupernova::on_hit(battle, target_pos, source_pos),
-        "gmaxbefuddle" => gmaxbefuddle::on_hit(battle, target_pos, source_pos),
-        "gmaxcentiferno" => gmaxcentiferno::on_hit(battle, target_pos, source_pos),
-        "gmaxcuddle" => gmaxcuddle::on_hit(battle, target_pos, source_pos),
-        "gmaxdepletion" => gmaxdepletion::on_hit(battle, target_pos, source_pos),
-        "gmaxfinale" => gmaxfinale::on_hit(battle, target_pos, source_pos),
-        "gmaxfoamburst" => gmaxfoamburst::on_hit(battle, target_pos, source_pos),
-        "gmaxgoldrush" => gmaxgoldrush::on_hit(battle, target_pos, source_pos),
-        "gmaxmalodor" => gmaxmalodor::on_hit(battle, target_pos, source_pos),
-        "gmaxmeltdown" => gmaxmeltdown::on_hit(battle, target_pos, source_pos),
-        "gmaxreplenish" => gmaxreplenish::on_hit(battle, target_pos, source_pos),
-        "gmaxsandblast" => gmaxsandblast::on_hit(battle, target_pos, source_pos),
-        "gmaxsmite" => gmaxsmite::on_hit(battle, target_pos, source_pos),
         "gmaxsnooze" => gmaxsnooze::on_hit(battle, target_pos, source_pos),
-        "gmaxstonesurge" => gmaxstonesurge::on_hit(battle, target_pos, source_pos),
-        "gmaxstunshock" => gmaxstunshock::on_hit(battle, target_pos, source_pos),
-        "gmaxtartness" => gmaxtartness::on_hit(battle, target_pos, source_pos),
-        "gmaxsweetness" => gmaxsweetness::on_hit(battle, target_pos, source_pos),
-        "gmaxterror" => gmaxterror::on_hit(battle, target_pos, source_pos),
-        "gmaxvoltcrash" => gmaxvoltcrash::on_hit(battle, target_pos, source_pos),
-        "gmaxwindrage" => gmaxwindrage::on_hit(battle, target_pos, source_pos),
         "guardsplit" => guardsplit::on_hit(battle, target_pos, source_pos),
         "guardswap" => guardswap::on_hit(battle, target_pos, source_pos),
         "healbell" => healbell::on_hit(battle, target_pos, source_pos),
@@ -821,24 +867,6 @@ pub fn dispatch_on_hit(
         "lunarblessing" => lunarblessing::on_hit(battle, target_pos, source_pos),
         "magicpowder" => magicpowder::on_hit(battle, target_pos, source_pos),
         "maxguard" => maxguard::on_hit(battle, target_pos, source_pos),
-        "maxairstream" => maxairstream::on_hit(battle, target_pos, source_pos),
-        "maxdarkness" => maxdarkness::on_hit(battle, target_pos, source_pos),
-        "maxflare" => maxflare::on_hit(battle, target_pos, source_pos),
-        "maxflutterby" => maxflutterby::on_hit(battle, target_pos, source_pos),
-        "maxgeyser" => maxgeyser::on_hit(battle, target_pos, source_pos),
-        "maxhailstorm" => maxhailstorm::on_hit(battle, target_pos, source_pos),
-        "maxknuckle" => maxknuckle::on_hit(battle, target_pos, source_pos),
-        "maxlightning" => maxlightning::on_hit(battle, target_pos, source_pos),
-        "maxmindstorm" => maxmindstorm::on_hit(battle, target_pos, source_pos),
-        "maxooze" => maxooze::on_hit(battle, target_pos, source_pos),
-        "maxovergrowth" => maxovergrowth::on_hit(battle, target_pos, source_pos),
-        "maxphantasm" => maxphantasm::on_hit(battle, target_pos, source_pos),
-        "maxquake" => maxquake::on_hit(battle, target_pos, source_pos),
-        "maxrockfall" => maxrockfall::on_hit(battle, target_pos, source_pos),
-        "maxsteelspike" => maxsteelspike::on_hit(battle, target_pos, source_pos),
-        "maxstarfall" => maxstarfall::on_hit(battle, target_pos, source_pos),
-        "maxstrike" => maxstrike::on_hit(battle, target_pos, source_pos),
-        "maxwyrmwind" => maxwyrmwind::on_hit(battle, target_pos, source_pos),
         "meanlook" => meanlook::on_hit(battle, target_pos, source_pos),
         "metronome" => metronome::on_hit(battle, target_pos, source_pos),
         "mimic" => mimic::on_hit(battle, target_pos, source_pos),
