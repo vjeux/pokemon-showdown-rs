@@ -546,10 +546,6 @@ pub fn dispatch_on_any_after_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyAfterSetStatus(status, target, source, effect)
-
 /// Dispatch onAnyAfterSetStatus callbacks
 pub fn dispatch_on_any_after_set_status(
     battle: &mut Battle,
@@ -561,10 +557,6 @@ pub fn dispatch_on_any_after_set_status(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyAfterTerastallization()
-
 /// Dispatch onAnyAfterTerastallization callbacks
 pub fn dispatch_on_any_after_terastallization(
     battle: &mut Battle,

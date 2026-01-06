@@ -217,8 +217,8 @@ impl Battle {
                 ability_id.as_str(),
                 Some(event_status_id.as_str()),
                 Some(pokemon_pos),
-                None,
-                None,
+                event_source_pos,
+                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
             ),
             "AnyAfterTerastallization" => {
                 ability_callbacks::dispatch_on_any_after_terastallization(
