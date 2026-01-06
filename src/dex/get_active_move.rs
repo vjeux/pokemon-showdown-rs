@@ -134,7 +134,7 @@ impl Dex {
             slot_condition: None,
             pseudo_weather: None,
             terrain: None,
-            weather: None,
+            weather: move_data.weather.clone(),
 
             // ActiveMove-specific
             hit: 0,
