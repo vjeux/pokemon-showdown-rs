@@ -159,5 +159,7 @@ pub fn on_try(
     );
 
     // return this.NOT_FAIL;
-    EventResult::Boolean(true)
+    // NOT_FAIL means the move succeeded but shouldn't execute normal damage/effects
+    // The future move is queued to execute later
+    EventResult::NotFail
 }
