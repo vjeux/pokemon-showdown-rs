@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::dex_data::ID;
 
 pub mod condition {
     use super::*;
@@ -103,12 +104,41 @@ pub mod self_callbacks {
     ///     },
     /// }
     /// ```
+    ///
+    /// NOTE: For self callbacks, the FIRST parameter receives the move USER (source),
+    /// and the SECOND parameter receives the move TARGET (or None).
+    /// The naming convention in dispatch_self_on_hit is misleading - it names them
+    /// target_pos and source_pos, but actually passes source as first, target as second.
     pub fn on_hit(
-        _battle: &mut Battle,
-        _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        battle: &mut Battle,
+        source_pos: (usize, usize),      // ACTUAL SOURCE (move user)
+        _target_pos: Option<(usize, usize)>, // ACTUAL TARGET (move target)
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // self.onHit(source)
+        // for (const side of source.side.foeSidesWithConditions()) {
+        //     side.addSideCondition("gmaxcannonade");
+        // }
+
+        // Get source's side index
+        let source_side_idx = source_pos.0;
+
+        // Loop through foe sides (opponent sides)
+        for foe_side_idx in 0..battle.sides.len() {
+            // Skip source's own side
+            if foe_side_idx == source_side_idx {
+                continue;
+            }
+
+            // Add gmaxcannonade side condition to foe side
+            let side_condition_id = ID::new("gmaxcannonade");
+            battle.add_side_condition(
+                foe_side_idx,
+                side_condition_id,
+                Some(source_pos),
+                None, // No move needed since we're already in the move's self effect
+            );
+        }
+
         EventResult::Continue
     }
 }
