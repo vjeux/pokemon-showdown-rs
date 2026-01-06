@@ -56,11 +56,18 @@ impl Battle {
         // });
         let mut state = EffectState::new(pseudo_weather_id.clone());
         state.source = source_pos;
-        // TODO: Look up duration from dex
+
+        // ✅ IMPLEMENTED: Look up duration from dex
+        // JavaScript: duration: status.duration
+        if let Some(condition_data) = self.dex.conditions().get_by_id(&pseudo_weather_id) {
+            state.duration = condition_data.duration;
+        }
+
         // if (status.durationCallback) {
         //     if (!source) throw new Error(`setting fieldcond without a source`);
         //     state.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
         // }
+        // TODO: Implement durationCallback if needed
 
         // if (!this.battle.singleEvent('FieldStart', status, state, this, source, sourceEffect)) {
         //     delete this.pseudoWeather[status.id];
