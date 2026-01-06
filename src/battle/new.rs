@@ -83,6 +83,7 @@ impl Battle {
             last_damage: 0,
             quick_claw_roll: false,
             active_move: None,
+            executing_future_move: false,
             active_pokemon: None,
             active_target: None,
             effect_order: 0,

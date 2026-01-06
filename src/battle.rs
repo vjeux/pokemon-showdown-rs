@@ -731,6 +731,12 @@ pub struct Battle {
     /// Currently active move being executed
     /// JavaScript: activeMove: ActiveMove | null
     pub active_move: Option<crate::battle_actions::ActiveMove>,
+
+    /// Flag to indicate we're executing a queued future move (doomdesire, futuresight)
+    /// This is used to prevent future move callbacks from queuing another future move
+    /// when they should be dealing damage instead
+    pub executing_future_move: bool,
+
     /// Pokemon currently using a move
     /// JavaScript: activePokemon: Pokemon | null
     /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership

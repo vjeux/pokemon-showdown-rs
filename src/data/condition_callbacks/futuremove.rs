@@ -98,39 +98,62 @@ pub fn on_residual(
         (ending_turn, position, side_index)
     };
 
-    eprintln!("[FUTUREMOVE::ON_RESIDUAL] ending_turn={}, battle.turn={}, should_execute={}",
-        ending_turn, battle.turn, battle.turn >= ending_turn as i32);
+    eprintln!("[FUTUREMOVE::ON_RESIDUAL] ending_turn={}, battle.turn={}, overflowed_turn={}, should_execute={}",
+        ending_turn, battle.turn, battle.turn - 1, (battle.turn - 1) >= ending_turn as i32);
 
     // Check if it's time to execute the future move
     // In JavaScript: if (this.getOverflowedTurnCount() < this.effectState.endingTurn) return;
-    // getOverflowedTurnCount() returns battle.turn
-    if battle.turn < ending_turn as i32 {
+    // getOverflowedTurnCount() returns (this.turn - 1) for gen 8+
+    if (battle.turn - 1) < ending_turn as i32 {
         eprintln!("[FUTUREMOVE::ON_RESIDUAL] Returning early, not time yet");
         return EventResult::Continue;
     }
 
-    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Time to execute! Removing slot condition...");
+    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Time to execute! Extracting data before removing condition...");
 
-    // Manually call on_end before removing since remove_slot_condition doesn't fire End event
-    // JavaScript: this.battle.singleEvent('End', status, this.slotConditions[target][status.id], this.active[target]);
-    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Manually calling on_end before removing condition");
-    on_end(battle, pokemon_pos);
+    // Extract the move data FIRST before removing the condition
+    let (move_id_str, source_pos_data) = {
+        if let Some(side) = battle.sides.get(target_side_index) {
+            if let Some(slot_conditions) = side.slot_conditions.get(target_position) {
+                if let Some(condition) = slot_conditions.get(&ID::from("futuremove")) {
+                    let move_id = condition.data.get("move")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("")
+                        .to_string();
+                    let source = condition.data.get("source").cloned();
+                    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Extracted move='{}', source={:?}", move_id, source);
+                    (move_id, source)
+                } else {
+                    (String::new(), None)
+                }
+            } else {
+                (String::new(), None)
+            }
+        } else {
+            (String::new(), None)
+        }
+    };
 
-    // time's up! Remove the slot condition which will trigger onEnd
-    // target.side.removeSlotCondition(this.getAtSlot(this.effectState.targetSlot), 'futuremove');
+    // Remove the condition BEFORE executing on_end
+    // This ensures that when the future move's onTry is called, the condition doesn't exist
     if let Some(side) = battle.sides.get_mut(target_side_index) {
-        eprintln!("[FUTUREMOVE::ON_RESIDUAL] Calling remove_slot_condition");
+        eprintln!("[FUTUREMOVE::ON_RESIDUAL] Removing slot condition before calling on_end");
         side.remove_slot_condition(target_position, &ID::from("futuremove"));
         eprintln!("[FUTUREMOVE::ON_RESIDUAL] remove_slot_condition returned");
     } else {
         eprintln!("[FUTUREMOVE::ON_RESIDUAL] Failed to get side {}", target_side_index);
     }
 
+    // Now call on_end to execute the future move
+    // The condition is removed, so onTry won't fail due to condition already existing
+    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Calling on_end to execute future move");
+    on_end_with_data(battle, pokemon_pos, &move_id_str, source_pos_data);
+
     eprintln!("[FUTUREMOVE::ON_RESIDUAL] Returning Continue");
     EventResult::Continue
 }
 
-/// onEnd
+/// onEnd (with pre-extracted data)
 /// JavaScript source (data/conditions.ts):
 /// ```js
 /// onEnd(target) {
@@ -163,42 +186,27 @@ pub fn on_residual(
 ///     this.checkWin();
 /// }
 /// ```
-pub fn on_end(
+pub fn on_end_with_data(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    move_id_str: &str,
+    source_pos_data: Option<serde_json::Value>,
 ) -> EventResult {
-    eprintln!("[FUTUREMOVE::ON_END] ENTRY: pokemon_pos={:?}, turn={}", pokemon_pos, battle.turn);
+    eprintln!("[FUTUREMOVE::ON_END] ENTRY: pokemon_pos={:?}, turn={}, move={}, source={:?}",
+        pokemon_pos, battle.turn, move_id_str, source_pos_data);
 
     // const data = this.effectState;
-    // Get the future move data from the condition that's being removed
-    // Since we're in onEnd, the condition is being removed, so we need to get the data
-    // from the side's slot_conditions before it's fully cleaned up
-    let (move_id, source_pos, target_fainted) = {
+    // Data has been pre-extracted and passed as parameters
+    let move_id = ID::from(move_id_str);
+    let source_pos: Option<(usize, usize)> = source_pos_data
+        .and_then(|v| serde_json::from_value(v).ok());
+
+    let target_fainted = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-
-        let side_index = pokemon_pos.0;
-        let position = pokemon.position;
-        let fainted = pokemon.fainted;
-
-        // Get move data from the slot condition
-        let move_id = battle.sides.get(side_index)
-            .and_then(|side| side.slot_conditions.get(position))
-            .and_then(|slot_conditions| slot_conditions.get(&ID::from("futuremove")))
-            .and_then(|condition| condition.data.get("move"))
-            .and_then(|v| v.as_str())
-            .map(|s| ID::from(s))
-            .unwrap_or_else(|| ID::from(""));
-
-        let source_pos: Option<(usize, usize)> = battle.sides.get(side_index)
-            .and_then(|side| side.slot_conditions.get(position))
-            .and_then(|slot_conditions| slot_conditions.get(&ID::from("futuremove")))
-            .and_then(|condition| condition.data.get("source"))
-            .and_then(|v| serde_json::from_value(v.clone()).ok());
-
-        (move_id, source_pos, fainted)
+        pokemon.fainted
     };
 
     // if (target.fainted || target === data.source)
@@ -241,15 +249,27 @@ pub fn on_end(
 
     // Execute the future move hit
     // this.actions.trySpreadMoveHit([target], data.source, hitMove, true);
-    // TODO: Need to create the move object from stored moveData and call trySpreadMoveHit
-    // For now, use use_move to execute the attack
+    // JavaScript creates a new Move object from stored moveData and calls trySpreadMoveHit directly
+    // For now, call trySpreadMoveHit with the move_id and not_active=true
     eprintln!("[FUTUREMOVE::ON_END] About to execute move: move_id={:?}, source_pos={:?}, target_pos={:?}",
         move_id, source_pos, pokemon_pos);
     if let Some(src) = source_pos {
-        // Use the move on the target
-        eprintln!("[FUTUREMOVE::ON_END] Calling use_move");
-        battle.use_move(&move_id, src, Some(pokemon_pos), None, None, None);
-        eprintln!("[FUTUREMOVE::ON_END] use_move returned");
+        eprintln!("[FUTUREMOVE::ON_END] Calling try_spread_move_hit");
+        // Set flag to indicate we're executing a future move
+        // This prevents the move's onTry from queuing another future move
+        battle.executing_future_move = true;
+        // Call trySpreadMoveHit directly, not use_move
+        let targets = vec![pokemon_pos];
+        let _result = crate::battle_actions::try_spread_move_hit(
+            battle,
+            &targets,
+            src,
+            &move_id,
+            true, // notActive=true means it will call setActiveMove
+        );
+        // Clear the flag
+        battle.executing_future_move = false;
+        eprintln!("[FUTUREMOVE::ON_END] try_spread_move_hit returned");
     } else {
         eprintln!("[FUTUREMOVE::ON_END] No source position, cannot execute move");
     }
@@ -260,4 +280,45 @@ pub fn on_end(
     // TODO: this.checkWin();
 
     EventResult::Continue
+}
+
+/// onEnd wrapper for the dispatcher
+/// This is called when remove_slot_condition is called elsewhere
+/// It extracts data and delegates to on_end_with_data
+pub fn on_end(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    eprintln!("[FUTUREMOVE::ON_END_WRAPPER] Extracting data from condition");
+
+    // Extract data from the condition before it's removed
+    let (move_id_str, source_pos_data) = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let side_index = pokemon_pos.0;
+        let position = pokemon.position;
+
+        if let Some(side) = battle.sides.get(side_index) {
+            if let Some(slot_conditions) = side.slot_conditions.get(position) {
+                if let Some(condition) = slot_conditions.get(&ID::from("futuremove")) {
+                    let move_id = condition.data.get("move")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("")
+                        .to_string();
+                    let source = condition.data.get("source").cloned();
+                    (move_id, source)
+                } else {
+                    (String::new(), None)
+                }
+            } else {
+                (String::new(), None)
+            }
+        } else {
+            (String::new(), None)
+        }
+    };
+
+    on_end_with_data(battle, pokemon_pos, &move_id_str, source_pos_data)
 }

@@ -42,7 +42,16 @@ pub fn on_try(
         None => return EventResult::Continue,
     };
 
+    // Check if we're executing a queued future move (not queuing a new one)
+    // The futuremove::on_end_with_data sets this flag before executing the move
+    // In that case, just return Continue to let the move deal damage normally
+    if battle.executing_future_move {
+        eprintln!("[FUTURESIGHT::ON_TRY] executing_future_move is true, this is a future move execution - returning Continue to deal damage");
+        return EventResult::Continue;
+    }
+
     // if (!target.side.addSlotCondition(target, 'futuremove')) return false;
+    // Try to add the futuremove condition
     let added = {
         let target_side_index = target.0;
         let target_position = {
@@ -61,6 +70,7 @@ pub fn on_try(
     };
 
     if !added {
+        // addSlotCondition returned false - condition already exists, can't queue another
         return EventResult::Boolean(false);
     }
 
