@@ -66,7 +66,7 @@ pub fn on_try_move(
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     let charge_result =
-        battle.run_event("ChargeMove", Some(attacker), defender, Some(&move_id), EventResult::Continue, false, false);
+        battle.run_event("ChargeMove", Some(crate::event::EventTarget::Pokemon(attacker)), defender, Some(&move_id), EventResult::Continue, false, false);
 
     if matches!(charge_result, EventResult::Number(0)) {
         // return;

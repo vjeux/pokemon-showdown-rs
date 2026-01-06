@@ -245,7 +245,7 @@ pub fn on_hit(
 
         if eat_result.boolean() != Some(false) {
             // this.runEvent('EatItem', target, source, move, item);
-            battle.run_event("EatItem", Some(target), Some(source), Some(&item_id), EventResult::Continue, false, false);
+            battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&item_id), EventResult::Continue, false, false);
 
             // if (item.id === 'leppaberry') target.staleness = 'external';
             if item_id.as_str() == "leppaberry" {
@@ -340,7 +340,7 @@ pub mod condition {
         );
 
         // this.runEvent('AfterUseItem', pokemon, null, null, item);
-        battle.run_event("AfterUseItem", Some(pokemon), None, Some(&item_id), EventResult::Continue, false, false);
+        battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(pokemon)), None, Some(&item_id), EventResult::Continue, false, false);
 
         // pokemon.removeVolatile('fling');
         Pokemon::remove_volatile(battle, pokemon, &ID::from("fling"));

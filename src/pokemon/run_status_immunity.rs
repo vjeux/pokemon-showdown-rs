@@ -103,7 +103,7 @@ impl Pokemon {
         // Pass status type as EventResult::String so immunity callbacks can check it
         let immunity_result = battle.run_event(
             "Immunity",
-            Some(pokemon_pos),
+            Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
             None,
             None,
             crate::event::EventResult::String(status.to_string()),

@@ -24,7 +24,7 @@ pub fn on_prepare_hit(
         return EventResult::Boolean(false);
     }
 
-    let stall_move_result = battle.run_event("StallMove", Some(pokemon), None, None, EventResult::Continue, false, false);
+    let stall_move_result = battle.run_event("StallMove", Some(crate::event::EventTarget::Pokemon(pokemon)), None, None, EventResult::Continue, false, false);
     // Convert Option<i32> to bool
     EventResult::Boolean(match stall_move_result { EventResult::Number(n) => n, _ => 0 } != 0)
 }

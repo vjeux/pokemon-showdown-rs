@@ -29,7 +29,7 @@ pub fn on_prepare_hit(
     }
 
     eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Calling run_event StallMove");
-    let stall_result = battle.run_event("StallMove", Some(pokemon), None, None, EventResult::Continue, false, false);
+    let stall_result = battle.run_event("StallMove", Some(crate::event::EventTarget::Pokemon(pokemon)), None, None, EventResult::Continue, false, false);
     eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] StallMove result: {:?}", stall_result);
 
     // JavaScript: return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);

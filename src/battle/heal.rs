@@ -95,7 +95,7 @@ impl Battle {
         // Fire TryHeal event
         // JavaScript: damage = this.runEvent('TryHeal', target, source, effect, damage);
         let event_result =
-            self.run_event("TryHeal", Some(target_pos), source, effect, EventResult::Number(damage), false, false);
+            self.run_event("TryHeal", Some(crate::event::EventTarget::Pokemon(target_pos)), source, effect, EventResult::Number(damage), false, false);
         damage = match event_result {
             EventResult::Number(val) => val,
             EventResult::Boolean(false) | EventResult::Null => return Some(0),
@@ -215,7 +215,7 @@ impl Battle {
 
         // Fire Heal event
         // JavaScript: this.runEvent('Heal', target, source, effect, finalDamage);
-        self.run_event("Heal", Some(target_pos), source, effect, EventResult::Number(final_damage), false, false);
+        self.run_event("Heal", Some(crate::event::EventTarget::Pokemon(target_pos)), source, effect, EventResult::Number(final_damage), false, false);
 
         Some(final_damage)
     }

@@ -110,7 +110,7 @@ pub fn on_hit(
                 if matches!(eat_result, EventResult::Boolean(true))
                     || matches!(eat_result, EventResult::Continue)
                 {
-                    battle.run_event("EatItem", Some(pokemon_pos), Some(pokemon_pos), None, EventResult::Continue, false, false);
+                    battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), None, EventResult::Continue, false, false);
 
                     // if (item.id === 'leppaberry') target.staleness = 'external';
                     if item_id.as_str() == "leppaberry" {

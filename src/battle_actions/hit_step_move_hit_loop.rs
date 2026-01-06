@@ -421,7 +421,7 @@ pub fn hit_step_move_hit_loop(
                 .map(|p| p.hp)
                 .unwrap_or(0);
             if hp_after <= maxhp / 2 && hp_before_recoil > maxhp / 2 {
-                battle.run_event("EmergencyExit", Some(attacker_pos), Some(attacker_pos), None, EventResult::Continue, false, false);
+                battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(attacker_pos)), Some(attacker_pos), None, EventResult::Continue, false, false);
             }
         }
 
@@ -503,7 +503,7 @@ pub fn hit_step_move_hit_loop(
                 .map(|p| p.hp)
                 .unwrap_or(0);
             if hp_after <= max_hp / 2 && hp_before_recoil > max_hp / 2 {
-                battle.run_event("EmergencyExit", Some(attacker_pos), Some(attacker_pos), None, EventResult::Continue, false, false);
+                battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(attacker_pos)), Some(attacker_pos), None, EventResult::Continue, false, false);
             }
         }
     }
@@ -539,7 +539,7 @@ pub fn hit_step_move_hit_loop(
             .map(|p| p.hp)
             .unwrap_or(0);
         if hp_after <= max_hp / 2 && hp_before_recoil > max_hp / 2 {
-            battle.run_event("EmergencyExit", Some(attacker_pos), Some(attacker_pos), None, EventResult::Continue, false, false);
+            battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(attacker_pos)), Some(attacker_pos), None, EventResult::Continue, false, false);
         }
     }
 
@@ -652,7 +652,7 @@ pub fn hit_step_move_hit_loop(
                     if target_hp > 0 {
                         let target_hp_before_damage = hurt_this_turn.unwrap_or(0) + cur_damage;
                         if target_hp <= target_max_hp / 2 && target_hp_before_damage > target_max_hp / 2 {
-                            battle.run_event("EmergencyExit", Some(*target_pos), Some(attacker_pos), None, EventResult::Continue, false, false);
+                            battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(*target_pos)), Some(attacker_pos), None, EventResult::Continue, false, false);
                         }
                     }
                 }

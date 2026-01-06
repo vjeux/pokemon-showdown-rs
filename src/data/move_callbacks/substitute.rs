@@ -449,7 +449,7 @@ pub mod condition {
         battle.single_event("AfterSubDamage", &move_id, Some(target), Some(source), Some(&move_id), Some(EventResult::Number(actual_damage)));
 
         // this.runEvent('AfterSubDamage', target, source, move, damage);
-        battle.run_event("AfterSubDamage", Some(target), Some(source), Some(&move_id), EventResult::Number(actual_damage), false, false);
+        battle.run_event("AfterSubDamage", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&move_id), EventResult::Number(actual_damage), false, false);
 
         // return this.HIT_SUBSTITUTE;
         EventResult::HitSubstitute

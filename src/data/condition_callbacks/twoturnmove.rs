@@ -150,7 +150,7 @@ pub fn on_start(
     let defender_pos = battle.current_event.as_ref().and_then(|e| e.source);
     battle.run_event(
         "PrepareHit",
-        Some(pokemon_pos),
+        Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         defender_pos,
         move_id.as_ref(),
         EventResult::Continue,

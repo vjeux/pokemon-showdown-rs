@@ -125,8 +125,8 @@ impl Battle {
             if !already_fainted {
                 // Run BeforeFaint event - can be cancelled by returning false
                 let before_faint_result = self.run_event(
-                    "BeforeFaint",
-                    Some((side_idx, poke_idx)),
+                "BeforeFaint",
+                Some(crate::event::EventTarget::Pokemon((side_idx, poke_idx))),
                     faint_data.source,
                     faint_data.effect.as_ref(),
                     crate::event::EventResult::Number(1),
@@ -159,8 +159,8 @@ impl Battle {
 
                 // JS: this.runEvent('Faint', pokemon, faintData.source, faintData.effect);
                 self.run_event(
-                    "Faint",
-                    Some((side_idx, poke_idx)),
+                "Faint",
+                Some(crate::event::EventTarget::Pokemon((side_idx, poke_idx))),
                     faint_data.source,
                     faint_data.effect.as_ref(),
                     EventResult::Continue,
@@ -391,8 +391,8 @@ impl Battle {
         if let Some(ref faint_data) = last_faint_data {
             if length > 0 {
                 self.run_event(
-                    "AfterFaint",
-                    Some(faint_data.target),
+                "AfterFaint",
+                Some(crate::event::EventTarget::Pokemon(faint_data.target)),
                     faint_data.source,
                     faint_data.effect.as_ref(),
                     EventResult::Continue,

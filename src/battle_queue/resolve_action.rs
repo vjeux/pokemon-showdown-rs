@@ -208,8 +208,8 @@ impl BattleQueue {
                         let fractional_priority = {
                             let move_id = move_action.move_id.clone();
                             let result = battle.run_event(
-                                "FractionalPriority",
-                                Some(pokemon_pos),
+                "FractionalPriority",
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                                 None,
                                 Some(&move_id),
                                 crate::event::EventResult::Float(0.0),

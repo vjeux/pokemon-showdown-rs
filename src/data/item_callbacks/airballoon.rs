@@ -91,7 +91,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     }
 
     // this.runEvent('AfterUseItem', target, null, null, this.dex.items.get('airballoon'));
-    battle.run_event("AfterUseItem", Some(target_pos), None, Some(&ID::from("airballoon")), EventResult::Continue, false, false);
+    battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(target_pos)), None, Some(&ID::from("airballoon")), EventResult::Continue, false, false);
 
     EventResult::Continue
 }
@@ -159,7 +159,7 @@ pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option
         }
 
         // this.runEvent('AfterUseItem', target, null, null, this.dex.items.get('airballoon'));
-        battle.run_event("AfterUseItem", Some(target_pos), None, Some(&ID::from("airballoon")), EventResult::Continue, false, false);
+        battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(target_pos)), None, Some(&ID::from("airballoon")), EventResult::Continue, false, false);
     }
 
     EventResult::Continue

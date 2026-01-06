@@ -98,7 +98,7 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
         // if (this.runEvent('DragOut', source, target, move))
         if battle.run_event(
             "DragOut",
-            Some(source_pos),
+            Some(crate::event::EventTarget::Pokemon(source_pos)),
             Some(target_pos),
             None,
             crate::event::EventResult::Number(1),

@@ -69,7 +69,7 @@ pub fn on_hit_field(
             // this.runEvent('TryHit', pokemon, source, move)
             battle.run_event(
                 "TryHit",
-                Some(pokemon_pos),
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                 source,
                 Some(&ID::from(move_id)),
                 crate::event::EventResult::Number(1),

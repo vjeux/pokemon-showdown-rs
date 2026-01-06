@@ -45,7 +45,7 @@ pub fn on_before_move(
     // Run Flinch event
     battle.run_event(
         "Flinch",
-        Some(pokemon_pos),
+        Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         None,
         None,
         crate::event::EventResult::Number(1),

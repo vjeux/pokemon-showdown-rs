@@ -505,8 +505,8 @@ pub fn run_move_effects(
                 if !is_self && !is_secondary {
                     //         this.battle.runEvent('Hit', target, source, move);
                     battle.run_event(
-                        "Hit",
-                        Some(target_pos),
+                "Hit",
+                Some(crate::event::EventTarget::Pokemon(target_pos)),
                         Some(source_pos),
                         Some(&active_move.id),
                         crate::event::EventResult::Continue,

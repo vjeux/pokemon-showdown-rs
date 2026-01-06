@@ -89,8 +89,8 @@ pub fn drag_in(battle: &mut Battle, side_idx: usize, slot: usize) -> bool {
     // }
     eprintln!("[DRAG_IN] Calling runEvent DragOut for old pokemon");
     if !battle.run_event(
-        "DragOut",
-        Some((side_idx, old_poke_idx)),
+                "DragOut",
+                Some(crate::event::EventTarget::Pokemon((side_idx, old_poke_idx))),
         None,
         None,
         crate::event::EventResult::Number(1),

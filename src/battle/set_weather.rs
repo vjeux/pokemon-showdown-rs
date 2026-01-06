@@ -106,7 +106,7 @@ impl Battle {
         if source_pos.is_some() {
             let result = self.run_event(
                 "SetWeather",
-                source_pos,
+                crate::event::EventTarget::from_pokemon(source_pos),
                 source_pos,
                 Some(&weather_id),
                 crate::event::EventResult::Number(1),

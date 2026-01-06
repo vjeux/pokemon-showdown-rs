@@ -235,5 +235,5 @@ pub fn terastallize(
     }
 
     // this.battle.runEvent('AfterTerastallization', pokemon);
-    battle.run_event("AfterTerastallization", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+    battle.run_event("AfterTerastallization", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
 }

@@ -87,8 +87,8 @@ pub fn try_move_hit(
     );
 
     let prepare_hit_run = battle.run_event(
-        "PrepareHit",
-        Some(pokemon_pos),
+                "PrepareHit",
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         Some(target),
         Some(move_id),
         crate::event::EventResult::Number(1),
@@ -140,8 +140,8 @@ pub fn try_move_hit(
     // }
     hit_result = if move_target == "all" {
         battle.run_event(
-            "TryHitField",
-            Some(target),
+                "TryHitField",
+                Some(crate::event::EventTarget::Pokemon(target)),
             Some(pokemon_pos),
             Some(move_id),
             crate::event::EventResult::Number(1),
@@ -156,7 +156,7 @@ pub fn try_move_hit(
         for &target_pos in targets {
             let result = battle.run_event(
                 "TryHitSide",
-                Some(target_pos),
+                Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
                 Some(move_id),
                 crate::event::EventResult::Number(1),
@@ -174,8 +174,8 @@ pub fn try_move_hit(
         true
     } else {
         battle.run_event(
-            "TryHitSide",
-            Some(target),
+                "TryHitSide",
+                Some(crate::event::EventTarget::Pokemon(target)),
             Some(pokemon_pos),
             Some(move_id),
             crate::event::EventResult::Number(1),

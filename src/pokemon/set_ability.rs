@@ -111,7 +111,7 @@ impl Pokemon {
         // Note: JavaScript passes ability as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's ability field after it's set
         if !_is_from_forme_change && !is_transform {
-            let set_ability_result = battle.run_event("SetAbility", Some(pokemon_pos), source_pos, source_effect, EventResult::Continue, false, false);
+            let set_ability_result = battle.run_event("SetAbility", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, source_effect, EventResult::Continue, false, false);
             // runEvent returns Option<i32>, None or Some(0) means failure
             if matches!(set_ability_result, EventResult::Number(0)) || matches!(set_ability_result, EventResult::Null) {
                 return ID::default();

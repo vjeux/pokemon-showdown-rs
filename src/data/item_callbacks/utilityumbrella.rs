@@ -43,7 +43,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
     {
         // this.runEvent('WeatherChange', pokemon, pokemon, this.effect);
         let effect = battle.current_effect.clone();
-        battle.run_event("WeatherChange", Some(pokemon_pos), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
+        battle.run_event("WeatherChange", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
     }
 
     EventResult::Continue
@@ -92,7 +92,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     {
         // this.runEvent('WeatherChange', pokemon, pokemon, this.effect);
         let effect = battle.current_effect.clone();
-        battle.run_event("WeatherChange", Some(pokemon_pos), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
+        battle.run_event("WeatherChange", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
     }
 
     EventResult::Continue
@@ -116,7 +116,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     {
         // this.runEvent('WeatherChange', pokemon, pokemon, this.effect);
         let effect = battle.current_effect.clone();
-        battle.run_event("WeatherChange", Some(pokemon_pos), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
+        battle.run_event("WeatherChange", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
     }
 
     // this.effectState.inactive = true;

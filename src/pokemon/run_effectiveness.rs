@@ -93,7 +93,7 @@ impl Pokemon {
                 // runEvent returns modified effectiveness or None if event fails
                 let event_result = battle.run_event(
                     "Effectiveness",
-                    Some(pokemon_pos),
+                    Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                     None,
                     Some(move_id),
                     EventResult::Number(type_mod),

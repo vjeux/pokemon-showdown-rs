@@ -200,7 +200,7 @@ pub fn hit_step_accuracy(
             // JavaScript: else { accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy); }
             if let EventResult::Number(modified_acc) = battle.run_event(
                 "ModifyAccuracy",
-                Some(target_pos),
+                Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
                 Some(&move_id),
                 EventResult::Number(accuracy),
@@ -233,8 +233,8 @@ pub fn hit_step_accuracy(
 
                 // Run ModifyBoost event - returns modified boosts table
                 let modified_boosts = battle.run_event(
-                    "ModifyBoost",
-                    Some(pokemon_pos),
+                "ModifyBoost",
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                     None,
                     None,
                     crate::event::EventResult::Boost(boosts_table),
@@ -262,8 +262,8 @@ pub fn hit_step_accuracy(
 
                 // Run ModifyBoost event - returns modified boosts table
                 let modified_boosts = battle.run_event(
-                    "ModifyBoost",
-                    Some(target_pos),
+                "ModifyBoost",
+                Some(crate::event::EventTarget::Pokemon(target_pos)),
                     None,
                     None,
                     crate::event::EventResult::Boost(boosts_table),
@@ -314,7 +314,7 @@ pub fn hit_step_accuracy(
             // accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
             if let EventResult::Number(modified_acc) = battle.run_event(
                 "Accuracy",
-                Some(target_pos),
+                Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
                 Some(&move_id),
                 EventResult::Number(accuracy),

@@ -132,7 +132,7 @@ impl Battle {
             // First event: Swap on target (source=pokemon)
             self.run_event(
                 "Swap",
-                Some((side_idx, target_idx)),
+                Some(crate::event::EventTarget::Pokemon((side_idx, target_idx))),
                 Some((side_idx, poke_idx)),
                 None,
                 EventResult::Continue,
@@ -142,7 +142,7 @@ impl Battle {
             // Second event: Swap on pokemon (source=target)
             self.run_event(
                 "Swap",
-                Some((side_idx, poke_idx)),
+                Some(crate::event::EventTarget::Pokemon((side_idx, poke_idx))),
                 Some((side_idx, target_idx)),
                 None,
                 EventResult::Continue,

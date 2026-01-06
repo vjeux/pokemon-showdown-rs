@@ -261,8 +261,8 @@ pub fn get_damage(
 
     // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
     if let EventResult::Number(modified_crit) = battle.run_event(
-        "ModifyCritRatio",
-        Some(source_pos),
+                "ModifyCritRatio",
+                Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
         Some(&move_data.id),
         EventResult::Number(crit_ratio),
@@ -317,8 +317,8 @@ pub fn get_damage(
     if is_crit {
         eprintln!("[GET_DAMAGE CRIT] Critical hit confirmed before CriticalHit event");
         is_crit = battle.run_event(
-            "CriticalHit",
-            Some(target_pos),
+                "CriticalHit",
+                Some(crate::event::EventTarget::Pokemon(target_pos)),
             None,
             Some(&move_data.id),
             crate::event::EventResult::Number(1),
@@ -335,8 +335,8 @@ pub fn get_damage(
     // When on_effect is true, the move's onBasePower handler is called (e.g., Knock Off's 1.5x boost)
     eprintln!("[GET_DAMAGE] basePower BEFORE BasePower event: {}", base_power);
     if let EventResult::Number(modified_bp) = battle.run_event(
-        "BasePower",
-        Some(source_pos),
+                "BasePower",
+                Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
         Some(&move_data.id),
         EventResult::Number(base_power),
@@ -527,18 +527,18 @@ pub fn get_damage(
                 pokemon.name, pokemon.ability, attack);
         }
         eprintln!("[GET_DAMAGE] BEFORE ModifyAtk: attack={}", attack);
-        match battle.run_event("ModifyAtk", Some(source_pos), Some(target_pos), Some(&move_id), EventResult::Number(attack), false, false) {
+        match battle.run_event("ModifyAtk", Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&move_id), EventResult::Number(attack), false, false) {
             EventResult::Number(n) => attack = n,
             _ => {}
         }
         eprintln!("[GET_DAMAGE] AFTER ModifyAtk: attack={}", attack);
-        match battle.run_event("ModifyDef", Some(target_pos), Some(source_pos), Some(&move_id), EventResult::Number(defense), false, false) {
+        match battle.run_event("ModifyDef", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&move_id), EventResult::Number(defense), false, false) {
             EventResult::Number(n) => defense = n,
             _ => {}
         }
     } else {
         eprintln!("[GET_DAMAGE] BEFORE ModifySpA: attack={}", attack);
-        match battle.run_event("ModifySpA", Some(source_pos), Some(target_pos), Some(&move_id), EventResult::Number(attack), false, false) {
+        match battle.run_event("ModifySpA", Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&move_id), EventResult::Number(attack), false, false) {
             EventResult::Number(n) => {
                 eprintln!("[GET_DAMAGE] AFTER ModifySpA: attack changed from {} to {}", attack, n);
                 attack = n;
@@ -547,7 +547,7 @@ pub fn get_damage(
                 eprintln!("[GET_DAMAGE] AFTER ModifySpA: no change, attack={}", attack);
             }
         }
-        match battle.run_event("ModifySpD", Some(target_pos), Some(source_pos), Some(&move_id), EventResult::Number(defense), false, false) {
+        match battle.run_event("ModifySpD", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&move_id), EventResult::Number(defense), false, false) {
             EventResult::Number(n) => defense = n,
             _ => {}
         }

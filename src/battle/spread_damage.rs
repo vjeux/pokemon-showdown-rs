@@ -231,8 +231,8 @@ impl Battle {
                 // Fire Damage event
                 // JavaScript: targetDamage = this.runEvent('Damage', target, source, effect, targetDamage, true);
                 let event_result = self.run_event(
-                    "Damage",
-                    Some(target_pos),
+                "Damage",
+                Some(crate::event::EventTarget::Pokemon(target_pos)),
                     source,
                     effect,
                     EventResult::Number(target_damage),

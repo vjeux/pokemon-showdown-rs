@@ -56,7 +56,7 @@ impl Pokemon {
         // NOTE: JavaScript NEGATES the result!
         // If runEvent returns truthy → negateImmunity = false
         // If runEvent returns falsy/undefined → negateImmunity = true
-        let negate_immunity_result = battle.run_event("NegateImmunity", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+        let negate_immunity_result = battle.run_event("NegateImmunity", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
         eprintln!("[RUN_IMMUNITY] pokemon={:?}, move_type={}, NegateImmunity result={:?}", pokemon_pos, move_type, negate_immunity_result);
         let negate_immunity = match negate_immunity_result {
             EventResult::Number(val) if val != 0 => false,  // Event returned truthy → DON'T negate (negateImmunity=false)

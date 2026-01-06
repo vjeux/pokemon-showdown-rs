@@ -117,8 +117,8 @@ impl Battle {
                 // Allows ability/item-based priority modification (e.g., Prankster, Quick Claw)
                 let effect_id = move_action.move_id.clone();
                 let relay_result = self.run_event(
-                    "ModifyPriority",
-                    Some(pokemon_pos),
+                "ModifyPriority",
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                     None,
                     Some(&effect_id),
                     EventResult::Number(priority as i32),

@@ -44,8 +44,8 @@ pub fn on_hit_field(
     for pokemon_pos in all_active {
         // if (this.runEvent('Invulnerability', pokemon, source, move) === false)
         let invuln_result = battle.run_event(
-            "Invulnerability",
-            Some(pokemon_pos),
+                "Invulnerability",
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
             source,
             None,
             crate::event::EventResult::Number(1),
@@ -80,7 +80,7 @@ pub fn on_hit_field(
             // else if (this.runEvent('TryHit', pokemon, source, move) && pokemon.getItem().isBerry)
             let try_hit_result = battle.run_event(
                 "TryHit",
-                Some(pokemon_pos),
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                 source,
                 None,
                 crate::event::EventResult::Number(1),

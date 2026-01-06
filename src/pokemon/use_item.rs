@@ -99,7 +99,7 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 82): runEvent('UseItem')
         // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's item field
-        let use_item_result = battle.run_event("UseItem", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+        let use_item_result = battle.run_event("UseItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
         // runEvent returns Option<i32>, None or Some(0) means failure
         if matches!(use_item_result, EventResult::Number(0)) || matches!(use_item_result, EventResult::Null) {
             return None; // false in JavaScript
@@ -224,7 +224,7 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 82): runEvent('AfterUseItem')
         // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's item field which is now empty
-        battle.run_event("AfterUseItem", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+        battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
 
         // JS: return true;
         Some(item_id)

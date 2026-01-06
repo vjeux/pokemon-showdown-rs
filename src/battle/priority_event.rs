@@ -35,6 +35,14 @@ impl Battle {
         relay_var: EventResult,
     ) -> EventResult {
         // For priority events, we use fastExit behavior (fast_exit = true)
-        self.run_event(event_id, target, source, effect, relay_var, false, true)
+        self.run_event(
+            event_id,
+            crate::event::EventTarget::from_pokemon(target),
+            source,
+            effect,
+            relay_var,
+            false,
+            true
+        )
     }
 }

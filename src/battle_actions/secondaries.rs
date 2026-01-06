@@ -70,7 +70,7 @@ pub fn secondaries(
             // Fire ModifySecondaries event
             // In JavaScript, this event handler can modify the secondaries array and return it
             // In Rust, Shield Dust modifies battle.active_move.secondaries in-place using retain()
-            let modify_result = battle.run_event("ModifySecondaries", Some(target_pos), Some(source_pos), Some(move_id), EventResult::Continue, false, false);
+            let modify_result = battle.run_event("ModifySecondaries", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(move_id), EventResult::Continue, false, false);
 
             // IMPORTANT: Clone AFTER the event, so we get the MODIFIED secondaries
             // Shield Dust's retain() has already filtered the array

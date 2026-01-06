@@ -274,7 +274,7 @@ pub fn use_move_inner(
             None,
         );
 
-        battle.run_event("ModifyType", Some(pokemon_pos), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
+        battle.run_event("ModifyType", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
 
         if let Some(ref modified_move) = battle.active_move {
             active_move = modified_move.clone();
@@ -316,7 +316,7 @@ pub fn use_move_inner(
     // let targetRelayVar = { target };
     // targetRelayVar = this.battle.runEvent('ModifyTarget', pokemon, target, move, targetRelayVar, true);
     // if (targetRelayVar.target !== undefined) target = targetRelayVar.target;
-    let modify_target_result = battle.run_event("ModifyTarget", Some(pokemon_pos), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
+    let modify_target_result = battle.run_event("ModifyTarget", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
 
     // Extract the new target if ModifyTarget returned a position
     if let EventResult::Position(new_target) = modify_target_result {
@@ -393,10 +393,10 @@ pub fn use_move_inner(
     }
 
     // move = this.battle.runEvent('ModifyType', pokemon, target, move, move);
-    battle.run_event("ModifyType", Some(pokemon_pos), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
+    battle.run_event("ModifyType", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
 
     // move = this.battle.runEvent('ModifyMove', pokemon, target, move, move);
-    battle.run_event("ModifyMove", Some(pokemon_pos), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
+    battle.run_event("ModifyMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
 
     // Get potentially modified move again
     if let Some(ref modified) = battle.active_move {
@@ -610,7 +610,7 @@ pub fn use_move_inner(
             // Run DeductPP event to check for Pressure ability
             let pp_drop_result = battle.run_event(
                 "DeductPP",
-                Some(pressure_target_pos),
+                Some(crate::event::EventTarget::Pokemon(pressure_target_pos)),
                 Some(pokemon_pos),
                 Some(&active_move.id),
                 EventResult::Number(1), // Default PP drop is 1
@@ -647,8 +647,8 @@ pub fn use_move_inner(
     );
 
     let try_move_run = battle.run_event(
-        "TryMove",
-        Some(pokemon_pos),
+                "TryMove",
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         Some(final_target),
         Some(&active_move.id),
         crate::event::EventResult::Number(1),
@@ -844,14 +844,14 @@ pub fn use_move_inner(
             None,
         );
 
-        battle.run_event("AfterMoveSecondarySelf", Some(pokemon_pos), Some(final_target), Some(&active_move.id), EventResult::Continue, false, false);
+        battle.run_event("AfterMoveSecondarySelf", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(final_target), Some(&active_move.id), EventResult::Continue, false, false);
 
         let current_hp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].hp;
         let max_hp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;
 
         if pokemon_pos != final_target && active_move.category != "Status" {
             if current_hp <= max_hp / 2 && original_hp > max_hp / 2 {
-                battle.run_event("EmergencyExit", Some(pokemon_pos), Some(pokemon_pos), None, EventResult::Continue, false, false);
+                battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), None, EventResult::Continue, false, false);
             }
         }
     }

@@ -176,8 +176,8 @@ pub fn switch_in(
                 battle.sides[side_index].pokemon[old_idx].skip_before_switch_out_event_flag;
             if !skip_event && !is_drag {
                 battle.run_event(
-                    "BeforeSwitchOut",
-                    Some((side_index, old_idx)),
+                "BeforeSwitchOut",
+                Some(crate::event::EventTarget::Pokemon((side_index, old_idx))),
                     None,
                     None,
                     EventResult::Continue,
@@ -195,7 +195,7 @@ pub fn switch_in(
             // Run SwitchOut event
             if !battle.run_event(
                 "SwitchOut",
-                Some((side_index, old_idx)),
+                Some(crate::event::EventTarget::Pokemon((side_index, old_idx))),
                 None,
                 None,
                 crate::event::EventResult::Number(1),
@@ -313,8 +313,8 @@ pub fn switch_in(
 
     // Run BeforeSwitchIn event
     battle.run_event(
-        "BeforeSwitchIn",
-        Some((side_index, pokemon_index)),
+                "BeforeSwitchIn",
+                Some(crate::event::EventTarget::Pokemon((side_index, pokemon_index))),
         None,
         None,
         EventResult::Continue,

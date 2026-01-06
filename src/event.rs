@@ -9,6 +9,36 @@
 use crate::dex_data::ID;
 use serde::{Deserialize, Serialize};
 
+/// Target for runEvent - mirrors JavaScript's overloaded target parameter
+/// JavaScript: target?: Pokemon | Pokemon[] | Side | Battle | null
+#[derive(Debug, Clone)]
+pub enum EventTarget {
+    /// Single Pokemon target
+    Pokemon((usize, usize)),
+    // TODO: Add these variants as needed:
+    // /// Multiple Pokemon targets
+    // Pokemons(Vec<(usize, usize)>),
+    // /// Side target
+    // Side(usize),
+    // /// Battle target
+    // Battle,
+}
+
+impl EventTarget {
+    /// Convert from Option<(usize, usize)> for backwards compatibility
+    pub fn from_pokemon(pos: Option<(usize, usize)>) -> Option<Self> {
+        pos.map(EventTarget::Pokemon)
+    }
+
+    /// Get the pokemon position if this is a Pokemon target
+    pub fn as_pokemon(&self) -> Option<(usize, usize)> {
+        match self {
+            EventTarget::Pokemon(pos) => Some(*pos),
+            // _ => None,
+        }
+    }
+}
+
 /// Event types that can be dispatched
 /// TODO: Not in JavaScript - Rust-specific enum for event type constants
 /// JavaScript uses string literals for event names

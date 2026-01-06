@@ -933,7 +933,7 @@ impl Battle {
                         self.sides[i].pokemon[poke_idx].skip_before_switch_out_event_flag = true;
 
                         // Run BeforeSwitchOut event
-                        self.run_event("BeforeSwitchOut", Some((i, poke_idx)), None, None, EventResult::Continue, false, false);
+                        self.run_event("BeforeSwitchOut", Some(crate::event::EventTarget::Pokemon((i, poke_idx))), None, None, EventResult::Continue, false, false);
 
                         // Check faint messages
                         self.faint_messages(false, false, true);

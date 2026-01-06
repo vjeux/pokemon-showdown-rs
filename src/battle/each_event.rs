@@ -82,7 +82,7 @@ impl Battle {
         for (side_idx, poke_idx, _speed) in actives {
             self.run_event(
                 event_id,
-                Some((side_idx, poke_idx)),
+                Some(crate::event::EventTarget::Pokemon((side_idx, poke_idx))),
                 None,
                 effect,
                 relay_var_result.clone(),

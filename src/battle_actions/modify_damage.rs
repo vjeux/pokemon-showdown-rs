@@ -122,8 +122,8 @@ pub fn modify_damage(
     // baseDamage = this.battle.runEvent("WeatherModifyDamage", pokemon, target, move, baseDamage);
     eprintln!("[MODIFY_DAMAGE] Before WeatherModifyDamage event: base_damage={}", base_damage);
     if let EventResult::Number(modified) = battle.run_event(
-        "WeatherModifyDamage",
-        Some(source_pos),
+                "WeatherModifyDamage",
+                Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
         Some(&move_data.id),
         EventResult::Number(base_damage),
@@ -300,8 +300,8 @@ pub fn modify_damage(
     // baseDamage = this.battle.runEvent("ModifyDamage", pokemon, target, move, baseDamage);
     eprintln!("[MODIFY_DAMAGE] Before ModifyDamage event: base_damage={}", base_damage);
     if let EventResult::Number(modified) = battle.run_event(
-        "ModifyDamage",
-        Some(source_pos),
+                "ModifyDamage",
+                Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
         Some(&move_data.id),
         EventResult::Number(base_damage),

@@ -92,7 +92,7 @@ pub fn run_mega_evo(
     }
 
     // this.battle.runEvent('AfterMega', pokemon);
-    battle.run_event("AfterMega", Some((side_index, pokemon_index)), None, None, EventResult::Continue, false, false);
+    battle.run_event("AfterMega", Some(crate::event::EventTarget::Pokemon((side_index, pokemon_index))), None, None, EventResult::Continue, false, false);
 
     // return true;
     true

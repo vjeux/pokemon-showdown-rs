@@ -295,13 +295,17 @@ impl Battle {
     pub fn run_event(
         &mut self,
         event_id: &str,
-        target: Option<(usize, usize)>,
+        target: Option<crate::event::EventTarget>,
         source: Option<(usize, usize)>,
         source_effect: Option<&ID>,
         mut relay_var: EventResult,
         on_effect: bool,
         fast_exit: bool,
     ) -> EventResult {
+        // Convert EventTarget to Option<(usize, usize)> for now
+        // Later when we support multiple target types, this conversion will change
+        let target_pos = target.as_ref().and_then(|t| t.as_pokemon());
+
         // JavaScript: if (this.eventDepth >= 8) { ... }
         // Stack overflow protection
         if self.event_depth >= 8 {
@@ -316,7 +320,7 @@ impl Battle {
 
         // JavaScript: const handlers = this.findEventHandlers(target, eventid, effectSource);
         // Find all event handlers for this event
-        let mut handlers = self.find_event_handlers(event_id, target, source);
+        let mut handlers = self.find_event_handlers(event_id, target_pos, source);
 
         // JavaScript: if (onEffect) { ... } (lines 134-143)
         // Insert the sourceEffect's own handler at the front of the handlers list
@@ -362,7 +366,7 @@ impl Battle {
                 target: None,
                 index: None,
                 state: None, // JavaScript: state: this.initEffectState({})
-                effect_holder: target, // JavaScript: effectHolder: target
+                effect_holder: target_pos, // JavaScript: effectHolder: target
                 order: None,
                 priority: 0,
                 sub_order: 0,
@@ -433,7 +437,7 @@ impl Battle {
         // Create new event context
         let event_info = EventInfo {
             id: event_id.to_string(),
-            target,
+            target: target_pos,
             source,
             effect: source_effect.cloned(),
             modifier: 4096, // 4096 = 1.0x in JavaScript

@@ -19,7 +19,7 @@ pub fn on_prepare_hit(
 ) -> EventResult {
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     let will_act = battle.queue.will_act().is_some();
-    let stall_move_result = battle.run_event("StallMove", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+    let stall_move_result = battle.run_event("StallMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
 
     // Convert Option<i32> to bool: Some(x) where x != 0 is true
     let stall_move_ok = match stall_move_result { EventResult::Number(n) => n, _ => 0 } != 0;

@@ -28,7 +28,7 @@ impl Pokemon {
         // JS: const lockedMove = this.battle.runEvent('LockMove', this);
         // ✅ NOW IMPLEMENTED: battle.run_event('LockMove') call
         // The event handlers return the locked move ID from volatile effectState
-        let event_result = battle.run_event("LockMove", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+        let event_result = battle.run_event("LockMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
 
         // JS: return (lockedMove === true) ? null : lockedMove;
         // ✅ NOW IMPLEMENTED: If runEvent returns true, return None

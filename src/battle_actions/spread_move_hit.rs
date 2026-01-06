@@ -469,7 +469,7 @@ pub fn spread_move_hit(
         // And pass the corresponding damage amount as the relay variable
         for (i, target_pos) in damaged_targets.iter().enumerate() {
             let damage_amount = damaged_damage[i];
-            battle.run_event("DamagingHit", Some(*target_pos), Some(source_pos), Some(move_id), EventResult::Number(damage_amount), false, false);
+            battle.run_event("DamagingHit", Some(crate::event::EventTarget::Pokemon(*target_pos)), Some(source_pos), Some(move_id), EventResult::Number(damage_amount), false, false);
         }
 
         // Check if moveData has onAfterHit
@@ -495,7 +495,7 @@ pub fn spread_move_hit(
         };
 
         if pokemon_hp > 0 && pokemon_hp <= pokemon_maxhp / 2 && pokemon_original_hp > pokemon_maxhp / 2 {
-            battle.run_event("EmergencyExit", Some(source_pos), None, None, EventResult::Continue, false, false);
+            battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(source_pos)), None, None, EventResult::Continue, false, false);
         }
     }
 

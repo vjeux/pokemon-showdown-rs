@@ -36,7 +36,7 @@ pub fn on_modify_type(
     let source_effect = battle.active_move.as_ref().map(|m| m.id.clone());
     let move_type = match battle.run_event(
         "Drive",
-        Some(pokemon),
+        Some(crate::event::EventTarget::Pokemon(pokemon)),
         None,
         source_effect.as_ref(),
         EventResult::String("Normal".to_string()),

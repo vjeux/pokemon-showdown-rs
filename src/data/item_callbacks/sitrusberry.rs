@@ -49,7 +49,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize,
         pokemon.base_maxhp / 4
     };
 
-    let result = battle.run_event("TryHeal", Some(pokemon_pos), None, None, EventResult::Number(heal_amount), false, false);
+    let result = battle.run_event("TryHeal", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Number(heal_amount), false, false);
 
     if matches!(result, EventResult::Null | EventResult::Continue) {
         return EventResult::Boolean(false);

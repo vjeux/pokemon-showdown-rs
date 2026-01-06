@@ -209,8 +209,8 @@ impl Pokemon {
         // The status object is passed as 5th parameter (relayVar)
         // Rust: Use run_event to pass volatile_id as EventResult::String
         let try_add_result = battle.run_event(
-            "TryAddVolatile",
-            Some(target_pos),
+                "TryAddVolatile",
+                Some(crate::event::EventTarget::Pokemon(target_pos)),
             source_pos,
             source_effect,
             crate::event::EventResult::String(volatile_id.as_str().to_string()),

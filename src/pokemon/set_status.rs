@@ -149,7 +149,7 @@ impl Pokemon {
         // Note: JavaScript passes status as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check target pokemon's status field after it's set
         if !status.as_str().is_empty() {
-            let set_status_result = battle.run_event("SetStatus", Some(pokemon_pos), source_pos, source_effect, EventResult::Continue, false, false);
+            let set_status_result = battle.run_event("SetStatus", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, source_effect, EventResult::Continue, false, false);
             // Check if event returned a falsy value (Number(0), Boolean(false), or Null)
             let is_blocked = matches!(set_status_result,
                 EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null
@@ -215,7 +215,7 @@ impl Pokemon {
         // Note: JavaScript passes status as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check target pokemon's status field which has been set
         if !status.as_str().is_empty() {
-            let after_result = battle.run_event("AfterSetStatus", Some(pokemon_pos), source_pos, source_effect, EventResult::Continue, false, false);
+            let after_result = battle.run_event("AfterSetStatus", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, source_effect, EventResult::Continue, false, false);
             // runEvent returns Option<i32>, None or Some(0) means failure
             if matches!(after_result, EventResult::Number(0)) || matches!(after_result, EventResult::Null) {
                 return false;

@@ -69,7 +69,7 @@ pub fn run_move(
         // const changedMove = this.battle.runEvent('OverrideAction', pokemon, target, baseMove);
         // JavaScript: if (changedMove && changedMove.id !== move.id) { ... }
         // For now, just run the event - full implementation would require changing the move
-        battle.run_event("OverrideAction", Some(pokemon_pos), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
+        battle.run_event("OverrideAction", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
     }
 
     // Set active move
@@ -79,8 +79,8 @@ pub fn run_move(
     // Run BeforeMove event
     // const willTryMove = this.battle.runEvent('BeforeMove', pokemon, target, move);
     let will_try_move = battle.run_event(
-        "BeforeMove",
-        Some(pokemon_pos),
+                "BeforeMove",
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         Some(target_pos),
         Some(move_id),
         crate::event::EventResult::Number(1),
@@ -90,7 +90,7 @@ pub fn run_move(
 
     if !will_try_move {
         // this.battle.runEvent('MoveAborted', pokemon, target, move);
-        battle.run_event("MoveAborted", Some(pokemon_pos), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
+        battle.run_event("MoveAborted", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
 
         // this.battle.clearActiveMove(true);
         battle.clear_active_move(true);
@@ -152,7 +152,7 @@ pub fn run_move(
         // lockedMove = this.battle.runEvent('LockMove', pokemon);
         // JavaScript: if (lockedMove === true) lockedMove = false;
         // JavaScript: if (!lockedMove) { ... deduct PP ... }
-        let locked_move_result = battle.run_event("LockMove", Some(pokemon_pos), None, None, EventResult::Continue, false, false);
+        let locked_move_result = battle.run_event("LockMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
 
         // In JavaScript, LockMove can return:
         // - undefined/false/Continue: not locked
@@ -260,7 +260,7 @@ pub fn run_move(
     battle.single_event("AfterMove", move_id, Some(pokemon_pos), Some(target_pos), Some(move_id), None);
 
     // this.battle.runEvent('AfterMove', pokemon, target, move);
-    battle.run_event("AfterMove", Some(pokemon_pos), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
+    battle.run_event("AfterMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
 
     // Handle 'cantusetwice' hint
     // if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id))

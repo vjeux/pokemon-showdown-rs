@@ -73,7 +73,7 @@ pub fn on_hit_side(
         let should_add = if has_maxguard {
             battle.run_event(
                 "TryHit",
-                Some(pokemon_pos),
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                 source,
                 Some(&ID::from(move_id)),
                 crate::event::EventResult::Number(1),
