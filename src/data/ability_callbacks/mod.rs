@@ -349,14 +349,6 @@ pub fn dispatch_on_after_move_secondary(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAfterMoveSecondarySelf()
-//   onAfterMoveSecondarySelf(pokemon, source, move)
-//   onAfterMoveSecondarySelf(pokemon, target, move)
-//   onAfterMoveSecondarySelf(source)
-//   onAfterMoveSecondarySelf(source, target, move)
-//   onAfterMoveSecondarySelf(target, source, move)
 
 /// Dispatch onAfterMoveSecondarySelf callbacks
 pub fn dispatch_on_after_move_secondary_self(
