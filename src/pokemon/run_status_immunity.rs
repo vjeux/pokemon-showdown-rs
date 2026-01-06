@@ -100,27 +100,34 @@ impl Pokemon {
         // JS:     return false;
         // JS: }
         // ✅ NOW IMPLEMENTED: runEvent('Immunity') call for ability-based immunity
-        // Pass status type as relay_var_type so immunity callbacks can check it
-        let immunity_result = battle.run_event_with_type("Immunity", Some(pokemon_pos), None, None, status);
+        // Pass status type as EventResult::String so immunity callbacks can check it
+        let immunity_result = battle.run_event(
+            "Immunity",
+            Some(pokemon_pos),
+            None,
+            None,
+            crate::event::EventResult::String(status.to_string()),
+            false,
+            false,
+        );
 
-        if let Some(val) = immunity_result {
-            if val == 0 {
-                // ✅ NOW IMPLEMENTED: battle.debug() call
-                battle.debug("artificial status immunity");
+        // Check if result is falsy (Boolean(false), Number(0), Null)
+        if !immunity_result.is_truthy() {
+            // ✅ NOW IMPLEMENTED: battle.debug() call
+            battle.debug("artificial status immunity");
 
-                // ✅ NOW IMPLEMENTED: battle.add('-immune') message (only if immunity !== null)
-                if with_message {
-                    let pokemon_ident = {
-                        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                            Some(p) => p,
-                            None => return false,
-                        };
-                        pokemon.get_slot()
+            // ✅ NOW IMPLEMENTED: battle.add('-immune') message (only if immunity !== null)
+            if with_message {
+                let pokemon_ident = {
+                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return false,
                     };
-                    battle.add("-immune", &[pokemon_ident.as_str().into()]);
-                }
-                return false;
+                    pokemon.get_slot()
+                };
+                battle.add("-immune", &[pokemon_ident.as_str().into()]);
             }
+            return false;
         }
 
         // JS: return true;
