@@ -201,7 +201,7 @@ impl Battle {
                 ability_id.as_str(),
                 relay_var_int,
                 Some(pokemon_pos),
-                None,
+                event_source_pos,
                 move_id,
             ),
             "AnyAfterMega" => ability_callbacks::dispatch_on_any_after_mega(

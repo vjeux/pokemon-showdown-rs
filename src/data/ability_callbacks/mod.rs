@@ -514,10 +514,6 @@ pub fn dispatch_on_ally_try_hit_side(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyAccuracy(accuracy, target, source, move)
-
 /// Dispatch onAnyAccuracy callbacks
 pub fn dispatch_on_any_accuracy(
     battle: &mut Battle,
