@@ -213,7 +213,10 @@ impl Battle {
                 pokemon_pos,
             ),
             "AnyInvulnerability" | "Invulnerability" => {
-                // Extract source_pos and attacking_move_id from current_event
+                // For AnyInvulnerability, we need the ORIGINAL target/source from the run_event call,
+                // NOT the Pokemon that has the volatile. The volatile may be on a different Pokemon
+                // than the target of the attack (e.g., Sky Drop volatile is on the user, not the target).
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
                 let attacking_move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
@@ -221,7 +224,7 @@ impl Battle {
                 condition_callbacks::dispatch_on_any_invulnerability(
                     self,
                     condition_id,
-                    pokemon_pos,  // target_pos
+                    target_pos,  // Use original target from current_event, not pokemon_pos
                     source_pos,
                     &attacking_move_id
                 )
