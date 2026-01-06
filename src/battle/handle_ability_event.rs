@@ -157,11 +157,13 @@ impl Battle {
             "AllyModifySpD" => ability_callbacks::dispatch_on_ally_modify_sp_d(
                 self,
                 ability_id.as_str(),
+                relay_var_int,
                 pokemon_pos,
             ),
             "AllyModifySpDPriority" => ability_callbacks::dispatch_on_ally_modify_sp_d_priority(
                 self,
                 ability_id.as_str(),
+                relay_var_int,
                 pokemon_pos,
             ),
             "AllySetStatus" => ability_callbacks::dispatch_on_ally_set_status(

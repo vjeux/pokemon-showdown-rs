@@ -448,19 +448,15 @@ pub fn dispatch_on_ally_modify_atk(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAllyModifySpD(spd)
-//   onAllyModifySpD(spd, pokemon)
 
 /// Dispatch onAllyModifySpD callbacks
 pub fn dispatch_on_ally_modify_sp_d(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spd: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "flowergift" => flowergift::on_ally_modify_sp_d(battle, pokemon_pos),
+        "flowergift" => flowergift::on_ally_modify_sp_d(battle, spd, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -2761,9 +2757,9 @@ pub fn dispatch_on_ally_modify_atk_sub_order(
 pub fn dispatch_on_ally_modify_sp_d_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spd: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_ally_modify_sp_d(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_modify_sp_d(battle, ability_id, spd, pokemon_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2772,9 +2768,9 @@ pub fn dispatch_on_ally_modify_sp_d_priority(
 pub fn dispatch_on_ally_modify_sp_d_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spd: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_ally_modify_sp_d(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_modify_sp_d(battle, ability_id, spd, pokemon_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2783,9 +2779,9 @@ pub fn dispatch_on_ally_modify_sp_d_order(
 pub fn dispatch_on_ally_modify_sp_d_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    spd: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_ally_modify_sp_d(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_modify_sp_d(battle, ability_id, spd, pokemon_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

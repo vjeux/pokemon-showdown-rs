@@ -184,7 +184,7 @@ pub fn on_ally_modify_atk(battle: &mut Battle, _atk: i32, _pokemon_pos: (usize, 
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_ally_modify_sp_d(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_ally_modify_sp_d(battle: &mut Battle, _spd: i32, _pokemon_pos: (usize, usize)) -> EventResult {
     // if (this.effectState.target.baseSpecies.baseSpecies !== 'Cherrim') return;
     let ability_holder_is_cherrim = {
         let ability_holder_pos = match battle.effect_state.target {
