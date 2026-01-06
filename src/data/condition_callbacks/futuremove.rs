@@ -105,15 +105,28 @@ pub fn on_residual(
     // In JavaScript: if (this.getOverflowedTurnCount() < this.effectState.endingTurn) return;
     // getOverflowedTurnCount() returns battle.turn
     if battle.turn < ending_turn as i32 {
+        eprintln!("[FUTUREMOVE::ON_RESIDUAL] Returning early, not time yet");
         return EventResult::Continue;
     }
+
+    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Time to execute! Removing slot condition...");
+
+    // Manually call on_end before removing since remove_slot_condition doesn't fire End event
+    // JavaScript: this.battle.singleEvent('End', status, this.slotConditions[target][status.id], this.active[target]);
+    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Manually calling on_end before removing condition");
+    on_end(battle, pokemon_pos);
 
     // time's up! Remove the slot condition which will trigger onEnd
     // target.side.removeSlotCondition(this.getAtSlot(this.effectState.targetSlot), 'futuremove');
     if let Some(side) = battle.sides.get_mut(target_side_index) {
+        eprintln!("[FUTUREMOVE::ON_RESIDUAL] Calling remove_slot_condition");
         side.remove_slot_condition(target_position, &ID::from("futuremove"));
+        eprintln!("[FUTUREMOVE::ON_RESIDUAL] remove_slot_condition returned");
+    } else {
+        eprintln!("[FUTUREMOVE::ON_RESIDUAL] Failed to get side {}", target_side_index);
     }
 
+    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Returning Continue");
     EventResult::Continue
 }
 
@@ -154,6 +167,8 @@ pub fn on_end(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
+    eprintln!("[FUTUREMOVE::ON_END] ENTRY: pokemon_pos={:?}, turn={}", pokemon_pos, battle.turn);
+
     // const data = this.effectState;
     // Get the future move data from the condition that's being removed
     // Since we're in onEnd, the condition is being removed, so we need to get the data
@@ -228,10 +243,18 @@ pub fn on_end(
     // this.actions.trySpreadMoveHit([target], data.source, hitMove, true);
     // TODO: Need to create the move object from stored moveData and call trySpreadMoveHit
     // For now, use use_move to execute the attack
+    eprintln!("[FUTUREMOVE::ON_END] About to execute move: move_id={:?}, source_pos={:?}, target_pos={:?}",
+        move_id, source_pos, pokemon_pos);
     if let Some(src) = source_pos {
         // Use the move on the target
+        eprintln!("[FUTUREMOVE::ON_END] Calling use_move");
         battle.use_move(&move_id, src, Some(pokemon_pos), None, None, None);
+        eprintln!("[FUTUREMOVE::ON_END] use_move returned");
+    } else {
+        eprintln!("[FUTUREMOVE::ON_END] No source position, cannot execute move");
     }
+
+    eprintln!("[FUTUREMOVE::ON_END] Returning Continue");
 
     // TODO: Handle Life Orb damage
     // TODO: this.checkWin();
