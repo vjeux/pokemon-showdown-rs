@@ -150,12 +150,18 @@ impl Battle {
                 // Get all active Pokemon on opposing side(s) (foes)
                 for (side_idx, side) in self.sides.iter().enumerate() {
                     if side_idx != target_side {
+                        eprintln!("[FIND_EVENT_HANDLERS] Looking for onFoe{} handlers, target_side={}, checking opposing side={}",
+                            event_name, target_side, side_idx);
+                        eprintln!("[FIND_EVENT_HANDLERS] Opposing side.active = {:?}", side.active);
                         for poke_idx in side.active.iter().flatten() {
                             let foe_pos = (side_idx, *poke_idx);
+                            eprintln!("[FIND_EVENT_HANDLERS] Checking foe at position {:?} for onFoe{}", foe_pos, event_name);
                             // onFoe handlers
                             let foe_event = format!("onFoe{}", event_name);
                             let mut foe_handlers =
                                 self.find_pokemon_event_handlers(&foe_event, foe_pos, None);
+                            eprintln!("[FIND_EVENT_HANDLERS] Found {} onFoe{} handlers from position {:?}",
+                                foe_handlers.len(), event_name, foe_pos);
                             for handler in &mut foe_handlers {
                                 handler.event_name = format!("Foe{}", event_name);
                             }

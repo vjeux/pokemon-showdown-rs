@@ -103,3 +103,44 @@ pub fn on_any_invulnerability(
     println!("[SKYDROP_INVULN] Making pokemon invulnerable, returning Boolean(false)");
     EventResult::Boolean(false)
 }
+
+/// onFoeBeforeMove
+///
+/// JavaScript source (data/moves.ts):
+/// ```js
+/// onFoeBeforeMove(target, source, move) {
+///     if (source === this.effectState.target && target === this.effectState.source) {
+///         target.removeMove(move.id);
+///         this.debug('Sky drop nullifying.');
+///         return null;
+///     }
+/// },
+/// ```
+pub fn on_foe_before_move(
+    battle: &mut Battle,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    // Get effectState.source from the skydrop volatile
+    let effect_source = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        let skydrop_id = crate::dex_data::ID::from("skydrop");
+        let state = match pokemon.volatiles.get(&skydrop_id) {
+            Some(s) => s,
+            None => return EventResult::Continue,
+        };
+
+        state.source
+    };
+
+    if let Some(source) = effect_source {
+        battle.decrement_active_move_actions(source);
+        battle.debug("Sky drop nullifying.");
+        return EventResult::Null;
+    }
+
+    EventResult::Continue
+}

@@ -7,14 +7,31 @@ impl Dex {
 
     /// Convert MoveSecondary to SecondaryEffect
     pub fn convert_secondary(secondary: &MoveSecondary) -> crate::battle_actions::SecondaryEffect {
+        // If there's a self_secondary field, use it for the effect and mark as self-targeting
+        // Otherwise, use the top-level fields for target-effect
+        let (boosts, status, volatile_status, self_effect) = if let Some(ref self_sec) = secondary.self_secondary {
+            // Self-targeting effect: use boosts/status from self field
+            (
+                self_sec.boosts.as_ref().map(Self::convert_boosts_hash_to_table),
+                self_sec.status.clone(),
+                self_sec.volatile_status_secondary.clone(),
+                true,  // This is a self-effect
+            )
+        } else {
+            // Target effect: use top-level boosts/status
+            (
+                secondary.boosts.as_ref().map(Self::convert_boosts_hash_to_table),
+                secondary.status.clone(),
+                secondary.volatile_status_secondary.clone(),
+                false,  // This is a target effect
+            )
+        };
+
         crate::battle_actions::SecondaryEffect {
             chance: secondary.chance,
-            boosts: secondary
-                .boosts
-                .as_ref()
-                .map(Self::convert_boosts_hash_to_table),
-            status: secondary.status.clone(),
-            volatile_status: secondary.volatile_status_secondary.clone(),
+            boosts,
+            status,
+            volatile_status,
             side_condition: None,
             slot_condition: None,
             pseudo_weather: None,
@@ -22,7 +39,7 @@ impl Dex {
             weather: None,
             ability: None,
             kingsrock: None,
-            self_effect: false,
+            self_effect,
         }
     }
 }

@@ -290,10 +290,16 @@ pub fn switch_in(
     // Set up new active Pokemon
     {
         let side = &mut battle.sides[side_index];
+        eprintln!("[SWITCH_IN] Before update: side_index={}, pos={}, pokemon_index={}, side.active={:?}",
+            side_index, pos, pokemon_index, side.active);
+
         let pokemon = &mut side.pokemon[pokemon_index];
 
         pokemon.is_active = true;
         side.active[pos] = Some(pokemon_index);
+
+        eprintln!("[SWITCH_IN] After update: side.active={:?}", side.active);
+
         pokemon.active_turns = 0;
         pokemon.active_move_actions = 0;
 

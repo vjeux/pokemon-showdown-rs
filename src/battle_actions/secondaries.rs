@@ -127,6 +127,13 @@ pub fn secondaries(
                 // this.moveHit(target, source, move, secondary, true, isSelf);
                 // Implement all secondary effects from moveHit
 
+                // Determine who receives the effect based on self_effect flag
+                let effect_target = if secondary.self_effect {
+                    source_pos  // Apply to source (user)
+                } else {
+                    target_pos  // Apply to target (opponent)
+                };
+
                 // Apply stat boosts
                 if let Some(ref boosts) = secondary.boosts {
                     let mut boost_array = Vec::new();
@@ -152,7 +159,7 @@ pub fn secondaries(
                         boost_array.push(("evasion", boosts.evasion));
                     }
 
-                    battle.boost(&boost_array, target_pos, Some(source_pos), None, true, false);
+                    battle.boost(&boost_array, effect_target, Some(source_pos), None, true, false);
                 }
 
                 // Apply status from secondary effect
@@ -161,7 +168,7 @@ pub fn secondaries(
                 // }
                 if let Some(status_name) = &secondary.status {
                     let status_id = crate::dex_data::ID::new(status_name);
-                    let _applied = Pokemon::set_status(battle, target_pos, status_id, Some(source_pos), Some(move_id), false);
+                    let _applied = Pokemon::set_status(battle, effect_target, status_id, Some(source_pos), Some(move_id), false);
                 }
 
                 // Apply volatile status from secondary effect
@@ -169,9 +176,9 @@ pub fn secondaries(
                 //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                 // }
                 if let Some(volatile_status_name) = &secondary.volatile_status {
-                    eprintln!("[SECONDARIES] Applying volatile_status='{}' to target={:?}", volatile_status_name, target_pos);
+                    eprintln!("[SECONDARIES] Applying volatile_status='{}' to effect_target={:?}", volatile_status_name, effect_target);
                     let volatile_id = crate::dex_data::ID::new(volatile_status_name);
-                    Pokemon::add_volatile(battle, target_pos, volatile_id, Some(source_pos), Some(move_id), None, None);
+                    Pokemon::add_volatile(battle, effect_target, volatile_id, Some(source_pos), Some(move_id), None, None);
                 }
 
                 // Apply side condition from secondary effect

@@ -34,11 +34,17 @@ impl Pokemon {
             None => return 0,
         };
 
+        // Debug logging
+        let old_pp = self.move_slots[slot_index].pp;
+        eprintln!("[DEDUCT_PP] Pokemon={}, move={}, old_pp={}, amount={:?}",
+            self.species_id.as_str(), move_id.as_str(), old_pp, amount);
+
         // JS: ppData.used = true;
         self.move_slots[slot_index].used = true;
 
         // JS: if (!ppData.pp && gen > 1) return 0;
         if self.move_slots[slot_index].pp == 0 && gen > 1 {
+            eprintln!("[DEDUCT_PP] PP already 0, not deducting");
             return 0;
         }
 
@@ -60,6 +66,8 @@ impl Pokemon {
             amount = current_pp; // Actual amount deducted is just current_pp
             self.move_slots[slot_index].pp = 0;
         }
+
+        eprintln!("[DEDUCT_PP] new_pp={}, actual_amount={}", self.move_slots[slot_index].pp, amount);
 
         // JS: return amount;
         amount

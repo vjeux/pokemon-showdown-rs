@@ -201,8 +201,8 @@ pub fn on_try(
 /// ```
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
     use crate::dex_data::ID;
 
@@ -228,8 +228,8 @@ pub fn on_try_hit(
     //         return null;
     //     }
     // }
-    let source = source_pos;
     let target = target_pos;
+    let source = source_pos;
 
     let move_id = {
         let active_move = match &battle.active_move {
@@ -496,7 +496,8 @@ pub mod condition {
             // attacker.activeMoveActions--;
             battle.decrement_active_move_actions(source);
             battle.debug("Sky drop nullifying.");
-            return EventResult::Stop;
+            // JavaScript returns null, which is falsy and prevents the move
+            return EventResult::Null;
         }
 
         EventResult::Continue

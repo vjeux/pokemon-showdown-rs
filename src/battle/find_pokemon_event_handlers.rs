@@ -109,16 +109,21 @@ impl Battle {
         }
 
         // JS: for (const id in pokemon.volatiles) {
+        eprintln!("[FIND_POKEMON_HANDLERS] Checking volatiles for callback_name={}, pokemon has {} volatiles",
+            callback_name, pokemon.volatiles.len());
         for (volatile_id, volatile_state) in &pokemon.volatiles {
             // JS: const volatileState = pokemon.volatiles[id];
             // JS: const volatile = this.dex.conditions.getByID(id as ID);
             // JS: callback = this.getCallback(pokemon, volatile, callbackName);
             // JS: if (callback !== undefined || (getKey && volatileState[getKey])) {
+            eprintln!("[FIND_POKEMON_HANDLERS] Checking volatile_id={} for callback={}", volatile_id.as_str(), callback_name);
             let has_callback = self.has_callback(volatile_id, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks volatileState[getKey], which means checking if duration exists
                 key == "duration" && volatile_state.duration.is_some()
             });
+            eprintln!("[FIND_POKEMON_HANDLERS] volatile_id={}, has_callback={}, has_get_key={}",
+                volatile_id.as_str(), has_callback, has_get_key);
 
             if self.turn == 1 && callback_name == "onResidual" {
                 eprintln!("[FIND_POKEMON_HANDLERS] turn=1, volatile_id={}, has_callback={}, has_get_key={}, duration={:?}",

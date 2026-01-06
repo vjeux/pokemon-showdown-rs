@@ -63,8 +63,18 @@ pub fn on_start(
 
         // attacker.addVolatile(effect.id);
         // Add a volatile for the specific move (e.g., "dig", "fly", "solarbeam")
-        eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}'", move_id_val.as_str());
-        crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), None, None, None, None);
+        // Need to copy the source from the twoturnmove volatile so that onFoeBeforeMove can access it
+        let twoturnmove_source = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            let twoturnmove_id = ID::from("twoturnmove");
+            pokemon.volatiles.get(&twoturnmove_id)
+                .and_then(|v| v.source)
+        };
+        eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}', source={:?}", move_id_val.as_str(), twoturnmove_source);
+        crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), twoturnmove_source, None, None, None);
         eprintln!("[TWOTURNMOVE_ONSTART] Returned from add_volatile");
 
         // JavaScript: let moveTargetLoc: number = attacker.lastMoveTargetLoc!;

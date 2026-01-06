@@ -336,6 +336,10 @@ pub struct MoveSecondary {
     /// JavaScript: weather?: string
     #[serde(default)]
     pub weather: Option<String>,
+    /// Self-targeted secondary effect (applied to user instead of target)
+    /// JavaScript: self?: SecondaryEffect
+    #[serde(rename = "self", default)]
+    pub self_secondary: Option<Box<MoveSecondary>>,
 }
 
 /// Type of condition
