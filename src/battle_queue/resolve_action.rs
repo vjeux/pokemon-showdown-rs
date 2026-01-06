@@ -207,14 +207,19 @@ impl BattleQueue {
                         // action.fractionalPriority = this.battle.runEvent('FractionalPriority', action.pokemon, null, action.move, 0);
                         let fractional_priority = {
                             let move_id = move_action.move_id.clone();
-                            let result = battle.run_event_float(
+                            let result = battle.run_event(
                                 "FractionalPriority",
                                 Some(pokemon_pos),
                                 None,
                                 Some(&move_id),
-                                Some(0.0),
+                                crate::event::EventResult::Float(0.0),
+                                false,
+                                false,
                             );
-                            match result { Some(f) => f, None => 0.0 }
+                            match result {
+                                crate::event::EventResult::Float(f) => f,
+                                _ => 0.0,
+                            }
                         };
 
                         // Update the main action's fractional priority (it's now at the end of the actions list)
