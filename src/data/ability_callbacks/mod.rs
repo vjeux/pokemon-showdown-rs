@@ -436,19 +436,15 @@ pub fn dispatch_on_ally_faint(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAllyModifyAtk(atk)
-//   onAllyModifyAtk(atk, pokemon)
 
 /// Dispatch onAllyModifyAtk callbacks
 pub fn dispatch_on_ally_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    atk: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
     match ability_id {
-        "flowergift" => flowergift::on_ally_modify_atk(battle, pokemon_pos),
+        "flowergift" => flowergift::on_ally_modify_atk(battle, atk, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -2732,9 +2728,9 @@ pub fn dispatch_on_ally_faint_sub_order(
 pub fn dispatch_on_ally_modify_atk_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    atk: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_ally_modify_atk(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_modify_atk(battle, ability_id, atk, pokemon_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2743,9 +2739,9 @@ pub fn dispatch_on_ally_modify_atk_priority(
 pub fn dispatch_on_ally_modify_atk_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    atk: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_ally_modify_atk(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_modify_atk(battle, ability_id, atk, pokemon_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2754,9 +2750,9 @@ pub fn dispatch_on_ally_modify_atk_order(
 pub fn dispatch_on_ally_modify_atk_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    atk: i32, pokemon_pos: (usize, usize),
 ) -> EventResult {
-    dispatch_on_ally_modify_atk(battle, ability_id, pokemon_pos)
+    dispatch_on_ally_modify_atk(battle, ability_id, atk, pokemon_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
