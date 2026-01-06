@@ -632,19 +632,14 @@ pub fn dispatch_on_any_modify_accuracy(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyModifyAtk(atk, source, target, move)
-//   onAnyModifyAtk(atk, target, source, move)
-
 /// Dispatch onAnyModifyAtk callbacks
 pub fn dispatch_on_any_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "tabletsofruin" => tabletsofruin::on_any_modify_atk(battle, source_pos, target_pos, move_id),
+        "tabletsofruin" => tabletsofruin::on_any_modify_atk(battle, atk, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -3208,9 +3203,9 @@ pub fn dispatch_on_any_modify_accuracy_sub_order(
 pub fn dispatch_on_any_modify_atk_priority(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_atk(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_atk(battle, ability_id, atk, source_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3219,9 +3214,9 @@ pub fn dispatch_on_any_modify_atk_priority(
 pub fn dispatch_on_any_modify_atk_order(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_atk(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_atk(battle, ability_id, atk, source_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3230,9 +3225,9 @@ pub fn dispatch_on_any_modify_atk_order(
 pub fn dispatch_on_any_modify_atk_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_atk(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_atk(battle, ability_id, atk, source_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

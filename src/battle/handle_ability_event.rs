@@ -292,6 +292,7 @@ impl Battle {
             "AnyModifyAtk" => ability_callbacks::dispatch_on_any_modify_atk(
                 self,
                 ability_id.as_str(),
+                relay_var_int,
                 event_source_pos,
                 Some(pokemon_pos),
                 move_id,
