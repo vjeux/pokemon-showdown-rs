@@ -91,6 +91,14 @@ impl Pokemon {
 
                 // JS: totalTypeMod += this.battle.runEvent('Effectiveness', this, type, move, typeMod);
                 // runEvent returns modified effectiveness or None if event fails
+                // Set type_param for Effectiveness event so condition callbacks (like tarshot) can access the defender type
+                // Ensure battle.event exists before setting type_param
+                if battle.event.is_none() {
+                    battle.event = Some(crate::battle::EventInfo::new("temp"));
+                }
+                if let Some(ref mut event) = battle.event {
+                    event.type_param = Some(defender_type.clone());
+                }
                 let event_result = battle.run_event(
                     "Effectiveness",
                     Some(crate::event::EventTarget::Pokemon(pokemon_pos)),

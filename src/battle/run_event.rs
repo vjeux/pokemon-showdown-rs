@@ -433,6 +433,10 @@ impl Battle {
         let parent_event = self.event.take();
         let parent_current_event = self.current_event.take();
 
+        // Extract type_param from parent event to preserve it for Effectiveness events
+        // JavaScript passes defender type as extra parameter: runEvent('Effectiveness', this, type, move, typeMod)
+        let preserved_type_param = parent_event.as_ref().and_then(|e| e.type_param.clone());
+
         // JavaScript: this.event = { id: eventid, target, source, effect: sourceEffect, modifier: 1 };
         // Create new event context
         let event_info = EventInfo {
@@ -442,6 +446,7 @@ impl Battle {
             effect: source_effect.cloned(),
             modifier: 4096, // 4096 = 1.0x in JavaScript
             relay_var: Some(relay_var.clone()),
+            type_param: preserved_type_param,
         };
 
         self.event = Some(event_info.clone());

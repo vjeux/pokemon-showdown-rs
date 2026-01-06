@@ -396,6 +396,10 @@ pub struct EventInfo {
     /// - Boolean for true/false checks
     /// - etc.
     pub relay_var: Option<crate::event::EventResult>,
+    /// Type parameter for Effectiveness events
+    /// JavaScript: type parameter in runEvent('Effectiveness', this, type, move, typeMod)
+    /// Used to pass the defender type being checked for type effectiveness
+    pub type_param: Option<String>,
 }
 
 impl EventInfo {
@@ -407,6 +411,7 @@ impl EventInfo {
             effect: None,
             modifier: 4096,
             relay_var: None,
+            type_param: None,
         }
     }
 }
@@ -420,6 +425,7 @@ impl Default for EventInfo {
             effect: None,
             modifier: 4096,
             relay_var: None,
+            type_param: None,
         }
     }
 }

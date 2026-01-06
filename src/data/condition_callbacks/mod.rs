@@ -223,8 +223,53 @@ pub fn dispatch_on_effectiveness(
     condition_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
+    eprintln!("[DISPATCH_ON_EFFECTIVENESS] condition_id={}, pokemon_pos={:?}", condition_id, pokemon_pos);
+
     match condition_id {
         "deltastream" => deltastream::on_effectiveness(battle, pokemon_pos),
+        "tarshot" => {
+            eprintln!("[DISPATCH_ON_EFFECTIVENESS] Handling tarshot");
+            // tarshot needs type_mod and target_type from event context
+            // Extract type_mod from relay_var
+            let type_mod = if let Some(ref event) = battle.event {
+                eprintln!("[DISPATCH_ON_EFFECTIVENESS] event.relay_var={:?}", event.relay_var);
+                if let Some(EventResult::Number(n)) = &event.relay_var {
+                    eprintln!("[DISPATCH_ON_EFFECTIVENESS] Extracted type_mod={}", n);
+                    *n
+                } else {
+                    eprintln!("[DISPATCH_ON_EFFECTIVENESS] relay_var is not Number, returning Continue");
+                    return EventResult::Continue;
+                }
+            } else {
+                eprintln!("[DISPATCH_ON_EFFECTIVENESS] No event context, returning Continue");
+                return EventResult::Continue;
+            };
+
+            // Extract target_type from type_param
+            let target_type = if let Some(ref event) = battle.event {
+                eprintln!("[DISPATCH_ON_EFFECTIVENESS] event.type_param={:?}", event.type_param);
+                if let Some(ref t) = event.type_param {
+                    eprintln!("[DISPATCH_ON_EFFECTIVENESS] Extracted target_type={}", t);
+                    t.clone()
+                } else {
+                    eprintln!("[DISPATCH_ON_EFFECTIVENESS] type_param is None, returning Continue");
+                    return EventResult::Continue;
+                }
+            } else {
+                eprintln!("[DISPATCH_ON_EFFECTIVENESS] No event context for type_param, returning Continue");
+                return EventResult::Continue;
+            };
+
+            // Call tarshot's onEffectiveness through move_callbacks dispatcher
+            eprintln!("[DISPATCH_ON_EFFECTIVENESS] Calling tarshot callback with type_mod={}, target_type={}", type_mod, target_type);
+            crate::data::move_callbacks::dispatch_condition_on_effectiveness(
+                battle,
+                "tarshot",
+                type_mod,
+                &target_type,
+                pokemon_pos,
+            )
+        }
         _ => EventResult::Continue,
     }
 }
