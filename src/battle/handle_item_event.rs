@@ -14,17 +14,20 @@ impl Battle {
         &mut self,
         event_id: &str,
         item_id: &ID,
-        target: Option<(usize, usize)>,
+        target: Option<&crate::event::EventTarget>,
     ) -> crate::event::EventResult {
         use crate::data::item_callbacks;
         use crate::event::EventResult;
 
+        // Extract pokemon position from EventTarget
+        let pokemon_pos = target.and_then(|t| t.as_pokemon()).unwrap_or((0, 0));
+        let target_opt = Some(pokemon_pos);
+
         eprintln!("[HANDLE_ITEM_EVENT] event_id={}, item_id={}, target={:?}",
-            event_id, item_id.as_str(), target);
+            event_id, item_id.as_str(), target_opt);
 
         let source = self.current_event.as_ref().and_then(|e| e.source);
         let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var.clone());
-        let pokemon_pos = target.unwrap_or((0, 0));
 
         match event_id {
             // TypeScript: onAfterBoost(target:Pokemon, boost:BoostsTable)
@@ -51,7 +54,7 @@ impl Battle {
                 item_callbacks::dispatch_on_after_move_secondary(
                     self,
                     item_id.as_str(),
-                    target,
+                    target_opt,
                     source,
                     &move_id_str,
                 )
@@ -59,7 +62,7 @@ impl Battle {
 
             // TypeScript: onAfterMoveSecondarySelf(source:Pokemon, target:Pokemon?, move:Move)
             "AfterMoveSecondarySelf" => {
-                if let Some(source_pos) = target {
+                if let Some(source_pos) = target_opt {
                     let target_pos = source;
                     let move_id_str = if let Some(ref active_move) = self.active_move {
                         active_move.id.to_string()
@@ -92,7 +95,7 @@ impl Battle {
                     self,
                     item_id.as_str(),
                     damage,
-                    target,
+                    target_opt,
                     source,
                     effect_id_str,
                 )
@@ -125,7 +128,7 @@ impl Battle {
 
             // TypeScript: onAttract(target:Pokemon?, source:Pokemon?)
             "Attract" => {
-                item_callbacks::dispatch_on_attract(self, item_id.as_str(), target, source)
+                item_callbacks::dispatch_on_attract(self, item_id.as_str(), target_opt, source)
             }
 
             // TypeScript: onBasePower(basePower:number, pokemon:Pokemon, target:Pokemon?)
@@ -171,7 +174,7 @@ impl Battle {
                     self,
                     item_id.as_str(),
                     damage,
-                    target,
+                    target_opt,
                     source,
                     effect_id_str,
                 )
@@ -200,7 +203,7 @@ impl Battle {
 
             // TypeScript: onEffectiveness(target:Pokemon?)
             "Effectiveness" => {
-                item_callbacks::dispatch_on_effectiveness(self, item_id.as_str(), target)
+                item_callbacks::dispatch_on_effectiveness(self, item_id.as_str(), target_opt)
             }
 
             // TypeScript: onEnd(pokemon:Pokemon)
@@ -217,7 +220,7 @@ impl Battle {
                 item_callbacks::dispatch_on_foe_after_boost(
                     self,
                     item_id.as_str(),
-                    target,
+                    target_opt,
                     source,
                     effect_id_str,
                     boost,
@@ -248,7 +251,7 @@ impl Battle {
                 item_callbacks::dispatch_on_hit(
                     self,
                     item_id.as_str(),
-                    target,
+                    target_opt,
                     source,
                     &move_id_str,
                 )
@@ -391,7 +394,7 @@ impl Battle {
                 item_callbacks::dispatch_on_set_ability(
                     self,
                     item_id.as_str(),
-                    target,
+                    target_opt,
                     source,
                     effect_id_str,
                 )
@@ -408,7 +411,7 @@ impl Battle {
             "SourceModifyDamage" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 let source_pos = pokemon_pos;
-                let target_pos = target.unwrap_or(pokemon_pos);
+                let target_pos = target_opt.unwrap_or(pokemon_pos);
                 item_callbacks::dispatch_on_source_modify_damage(
                     self,
                     item_id.as_str(),
@@ -428,14 +431,14 @@ impl Battle {
                 item_callbacks::dispatch_on_source_try_primary_hit(
                     self,
                     item_id.as_str(),
-                    target,
+                    target_opt,
                     source,
                     &move_id_str,
                 )
             }
 
             // TypeScript: onStart(target:Pokemon?)
-            "Start" => item_callbacks::dispatch_on_start(self, item_id.as_str(), target),
+            "Start" => item_callbacks::dispatch_on_start(self, item_id.as_str(), target_opt),
 
             // JavaScript getCallback() special logic:
             // In gen >= 5, items use onStart callback during SwitchIn event
@@ -443,7 +446,7 @@ impl Battle {
             // TypeScript: onSwitchIn(pokemon:Pokemon)
             "SwitchIn" => {
                 if self.gen >= 5 {
-                    let result = item_callbacks::dispatch_on_start(self, item_id.as_str(), target);
+                    let result = item_callbacks::dispatch_on_start(self, item_id.as_str(), target_opt);
                     if !matches!(result, EventResult::Continue) {
                         return result;
                     }
@@ -532,7 +535,7 @@ impl Battle {
                     self,
                     item_id.as_str(),
                     damage,
-                    target,
+                    target_opt,
                     source,
                     effect_id_str,
                 )

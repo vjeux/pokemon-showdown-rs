@@ -12,12 +12,13 @@ impl Battle {
         &mut self,
         event_id: &str,
         ability_id: &ID,
-        target: Option<(usize, usize)>,
+        target: Option<&crate::event::EventTarget>,
     ) -> crate::event::EventResult {
         use crate::data::ability_callbacks;
         use crate::event::EventResult;
 
-        let pokemon_pos = target.unwrap_or((0, 0));
+        // Extract pokemon position from EventTarget
+        let pokemon_pos = target.and_then(|t| t.as_pokemon()).unwrap_or((0, 0));
 
         // Get Pokemon name for logging
         let pokemon_name = if let Some(pokemon) = self.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

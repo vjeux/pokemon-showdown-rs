@@ -460,6 +460,9 @@ impl Battle {
             // JavaScript: const effect = handler.effect;
             // JavaScript: const effectHolder = handler.effectHolder;
 
+            // Convert handler_target to EventTarget for passing to handle_*_event functions
+            let handler_target_event = handler_target.map(crate::event::EventTarget::Pokemon);
+
             // JavaScript: if (effect.effectType === 'Status' && (effectHolder as Pokemon).status !== effect.id) continue;
             // Check if status has changed
             // IMPORTANT: Only apply this check for Status-type conditions, not Weather/Terrain
@@ -577,20 +580,20 @@ impl Battle {
             // In JavaScript, runEvent has Effect objects with effectType, so it knows which handler to call
             let return_val = match handler.effect_type {
                 EffectType::Move => {
-                    self.handle_move_event(&event_variant, &effect_id, handler_target, source)
+                    self.handle_move_event(&event_variant, &effect_id, handler_target_event.as_ref(), source)
                 }
                 EffectType::Ability => {
-                    self.handle_ability_event(&event_variant, &effect_id, handler_target)
+                    self.handle_ability_event(&event_variant, &effect_id, handler_target_event.as_ref())
                 }
                 EffectType::Item => {
-                    self.handle_item_event(&event_variant, &effect_id, handler_target)
+                    self.handle_item_event(&event_variant, &effect_id, handler_target_event.as_ref())
                 }
                 EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain => {
-                    self.handle_condition_event(&event_variant, effect_id.as_str(), handler_target)
+                    self.handle_condition_event(&event_variant, effect_id.as_str(), handler_target_event.as_ref())
                 }
                 _ => {
                     // Fall back to dispatch_single_event for other types
-                    self.dispatch_single_event(&event_variant, &effect_id, handler_target, source)
+                    self.dispatch_single_event(&event_variant, &effect_id, handler_target_event.as_ref(), source)
                 }
             };
 

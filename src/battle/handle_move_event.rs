@@ -15,9 +15,12 @@ impl Battle {
         &mut self,
         event_id: &str,
         move_id: &ID,
-        target_pos: Option<(usize, usize)>,
+        target: Option<&crate::event::EventTarget>,
         source_pos: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
+        // Extract pokemon position from EventTarget
+        let target_pos = target.and_then(|t| t.as_pokemon());
+
         let move_str = move_id.as_str();
 
         match event_id {

@@ -12,14 +12,17 @@ impl Battle {
         &mut self,
         event_id: &str,
         effect_id: &ID,
-        target: Option<(usize, usize)>,
+        target: Option<&crate::event::EventTarget>,
         source: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
+        // Extract pokemon position from EventTarget for pokemon checks
+        let target_pos = target.and_then(|t| t.as_pokemon());
+
         if event_id.contains("Invulnerability") {
             eprintln!("[DISPATCH_SINGLE_EVENT] event_id={}, effect_id={}, target={:?}",
-                event_id, effect_id.as_str(), target);
+                event_id, effect_id.as_str(), target_pos);
         }
 
         let effect_str = effect_id.as_str();
@@ -37,8 +40,8 @@ impl Battle {
 
         // Check if effect is a condition (volatile, status, etc.) on the target Pokemon
         // This handles cases where a volatile needs to be checked before other effect types
-        if let Some(target_pos) = target {
-            if let Some(pokemon) = self.pokemon_at(target_pos.0, target_pos.1) {
+        if let Some(target_pokemon_pos) = target_pos {
+            if let Some(pokemon) = self.pokemon_at(target_pokemon_pos.0, target_pokemon_pos.1) {
                 // Check if effect is in target's volatiles
                 if pokemon.volatiles.contains_key(effect_id) {
                     eprintln!("[DISPATCH_SINGLE_EVENT] Found effect '{}' in target volatiles, routing to handle_condition_event", effect_str);

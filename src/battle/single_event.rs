@@ -220,8 +220,9 @@ impl Battle {
         self.event_depth += 1;
 
         // Dispatch based on effect type
+        let target_event = target.map(crate::event::EventTarget::Pokemon);
         eprintln!("[SINGLE_EVENT] BEFORE dispatch_single_event: event_id={}, effect_id={}", event_id, effect_id.as_str());
-        let result = self.dispatch_single_event(event_id, effect_id, target, source);
+        let result = self.dispatch_single_event(event_id, effect_id, target_event.as_ref(), source);
         eprintln!("[SINGLE_EVENT] AFTER dispatch_single_event: event_id={}, effect_id={}, result={:?}", event_id, effect_id.as_str(), result);
 
         // Restore parent context

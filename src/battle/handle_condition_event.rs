@@ -16,17 +16,18 @@ impl Battle {
         &mut self,
         event_id: &str,
         condition_id: &str,
-        target: Option<(usize, usize)>,
+        target: Option<&crate::event::EventTarget>,
     ) -> crate::event::EventResult {
         use crate::data::condition_callbacks;
         use crate::event::EventResult;
 
+        // Extract pokemon position from EventTarget
+        let pokemon_pos = target.and_then(|t| t.as_pokemon()).unwrap_or((0, 0));
+
         if event_id.contains("Invulnerability") {
             eprintln!("[HANDLE_CONDITION_EVENT] event_id={}, condition_id={}, target={:?}",
-                event_id, condition_id, target);
+                event_id, condition_id, Some(pokemon_pos));
         }
-
-        let pokemon_pos = target.unwrap_or((0, 0));
 
         // Normalize event name by removing "on" prefix if present
         let normalized_event = if event_id.starts_with("on") {

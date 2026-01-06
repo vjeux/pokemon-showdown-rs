@@ -81,7 +81,8 @@ pub fn on_hit(
     if stall_exists {
         eprintln!("[KINGSSHIELD::ON_HIT] Stall volatile already exists, calling Restart event");
         // Call Restart event on the stall condition
-        battle.handle_condition_event("Restart", "stall", Some(pokemon));
+        let target_event = crate::event::EventTarget::Pokemon(pokemon);
+        battle.handle_condition_event("Restart", "stall", Some(&target_event));
     } else {
         eprintln!("[KINGSSHIELD::ON_HIT] Adding new 'stall' volatile");
         // pokemon.addVolatile('stall');
