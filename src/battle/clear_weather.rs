@@ -32,6 +32,7 @@ impl Battle {
             None,  // field as target
             None,
             None,
+            None,
         );
 
         // this.weather = '';

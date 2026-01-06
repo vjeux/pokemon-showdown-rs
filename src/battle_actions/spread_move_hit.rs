@@ -167,6 +167,7 @@ pub fn spread_move_hit(
             target_pos,
             Some(source_pos),
             Some(move_id),
+            None,
         )
     } else if (move_target == "foeSide" ||
                 move_target == "allySide" ||
@@ -178,6 +179,7 @@ pub fn spread_move_hit(
             target_pos,
             Some(source_pos),
             Some(move_id),
+            None,
         )
     } else if target_pos.is_some() {
         // JS: hitResult = this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
@@ -187,6 +189,7 @@ pub fn spread_move_hit(
             target_pos,
             Some(source_pos),
             Some(move_id),
+            None,
         )
     } else {
         event::EventResult::Boolean(true)
@@ -479,6 +482,7 @@ pub fn spread_move_hit(
                     Some(*target_pos),
                     Some(source_pos),
                     Some(move_id),
+                    None,
                 );
             }
         }

@@ -102,21 +102,6 @@ impl Battle {
         effect_id: &ID,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
-        _source_effect: Option<&ID>,
-    ) -> crate::event::EventResult {
-        self.single_event_with_relay_var(event_id, effect_id, target, source, _source_effect, None)
-    }
-
-    /// Single event with relay_var support
-    /// JavaScript: singleEvent(eventid, effect, state, target, source, sourceEffect, relayVar)
-    /// The relayVar parameter allows passing a value through the event system that can be modified by handlers
-    /// For example, effectiveness modifiers (Freeze-Dry making Water weak) use this
-    pub fn single_event_with_relay_var(
-        &mut self,
-        event_id: &str,
-        effect_id: &ID,
-        target: Option<(usize, usize)>,
-        source: Option<(usize, usize)>,
         source_effect: Option<&ID>,
         relay_var: Option<i32>,
     ) -> crate::event::EventResult {

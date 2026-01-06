@@ -105,6 +105,7 @@ pub fn on_hit(
                     Some(pokemon_pos),
                     Some(pokemon_pos),
                     None,
+                    None,
                 );
                 if matches!(eat_result, EventResult::Boolean(true))
                     || matches!(eat_result, EventResult::Continue)

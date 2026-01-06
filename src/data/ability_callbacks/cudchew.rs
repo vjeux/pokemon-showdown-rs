@@ -171,6 +171,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
         Some(pokemon_pos),
         None,
         None,
+        None,
     );
 
     if eat_result.is_not_fail() {

@@ -72,6 +72,7 @@ impl Battle {
             None,  // field as target
             source_pos,
             None,
+            None,
         );
 
         // Check if event returned false (event system returns Boolean(false) on failure)

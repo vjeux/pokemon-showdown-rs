@@ -53,8 +53,8 @@ pub fn get_spread_damage(
     targets: &SpreadMoveTargets,
     source_pos: (usize, usize),
     move_id: &ID,
-    is_secondary: bool,
-    is_self: bool,
+    _is_secondary: bool,
+    _is_self: bool,
 ) -> SpreadMoveDamage {
     let mut result_damages = damages;
 

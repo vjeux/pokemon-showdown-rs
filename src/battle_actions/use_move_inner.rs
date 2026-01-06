@@ -227,6 +227,7 @@ pub fn use_move_inner(
             Some(pokemon_pos),
             target_pos,
             Some(&active_move.id),
+            None,
         );
 
         // Get the potentially modified move back
@@ -270,6 +271,7 @@ pub fn use_move_inner(
             Some(pokemon_pos),
             target_pos,
             Some(&active_move.id),
+            None,
         );
 
         battle.run_event("ModifyType", Some(pokemon_pos), target_pos, Some(&active_move.id), EventResult::Continue, false, false);
@@ -362,6 +364,7 @@ pub fn use_move_inner(
         Some(pokemon_pos),
         target_pos,
         Some(&active_move.id),
+        None,
     );
 
     // this.battle.singleEvent('ModifyMove', move, null, pokemon, target, move, move);
@@ -371,6 +374,7 @@ pub fn use_move_inner(
         Some(pokemon_pos),
         target_pos,
         Some(&active_move.id),
+        None,
     );
 
     // Get potentially modified move
@@ -639,6 +643,7 @@ pub fn use_move_inner(
         Some(pokemon_pos),
         Some(final_target),
         Some(&active_move.id),
+        None,
     );
 
     let try_move_run = battle.run_event_bool(
@@ -667,6 +672,7 @@ pub fn use_move_inner(
         Some(pokemon_pos),
         Some(final_target),
         Some(&active_move.id),
+        None,
     );
 
     // if (move.ignoreImmunity === undefined) {
@@ -802,6 +808,7 @@ pub fn use_move_inner(
             Some(final_target),
             Some(pokemon_pos),
             Some(&active_move.id),
+            None,
         );
         eprintln!("[USE_MOVE_INNER] Move failed, returning false");
         return false;
@@ -831,6 +838,7 @@ pub fn use_move_inner(
             Some(pokemon_pos),
             Some(final_target),
             Some(&active_move.id),
+            None,
         );
 
         battle.run_event("AfterMoveSecondarySelf", Some(pokemon_pos), Some(final_target), Some(&active_move.id), EventResult::Continue, false, false);

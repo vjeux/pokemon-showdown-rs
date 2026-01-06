@@ -288,6 +288,7 @@ impl Pokemon {
             Some(target_pos),
             source_pos,
             source_effect,
+            None,
         );
 
         // JavaScript: if (!result) { delete this.volatiles[status.id]; return result; }

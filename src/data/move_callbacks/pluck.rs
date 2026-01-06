@@ -119,6 +119,7 @@ pub fn on_hit(
         Some(source),
         Some(source),
         Some(&ID::from("pluck")),
+        None,
     );
 
     if !matches!(eat_result, EventResult::Boolean(false)) {

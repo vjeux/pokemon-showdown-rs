@@ -17,7 +17,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
     // Trigger TerrainChange event to check if Quark Drive should activate
     // Pass the ability ID as the effect
     let ability_id = ID::from("quarkdrive");
-    battle.single_event("TerrainChange", &ability_id, Some(pokemon_pos), None, None);
+    battle.single_event("TerrainChange", &ability_id, Some(pokemon_pos), None, None, None);
     EventResult::Continue
 }
 

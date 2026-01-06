@@ -98,6 +98,7 @@ fn self_check_try_immunity(
         Some(target_pos),
         Some(attacker_pos),
         None,
+        None,
     );
 
     if matches!(try_immunity_result, EventResult::Boolean(false)) {

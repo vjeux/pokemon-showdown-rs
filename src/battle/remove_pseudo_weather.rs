@@ -29,6 +29,7 @@ impl Battle {
             None,  // field as target
             None,
             None,
+            None,
         );
 
         // delete this.pseudoWeather[status.id];

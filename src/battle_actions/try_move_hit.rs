@@ -74,6 +74,7 @@ pub fn try_move_hit(
         Some(pokemon_pos),
         Some(target),
         Some(move_id),
+        None,
     );
 
     let prepare_hit_single = battle.single_event(
@@ -82,6 +83,7 @@ pub fn try_move_hit(
         Some(target),
         Some(pokemon_pos),
         Some(move_id),
+        None,
     );
 
     let prepare_hit_run = battle.run_event_bool(

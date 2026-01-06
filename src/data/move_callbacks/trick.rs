@@ -125,6 +125,7 @@ pub fn on_hit(
             Some(source_pos),
             Some(target),
             None,
+            None,
         );
         !matches!(result, EventResult::Null | EventResult::Boolean(false))
     } else {
@@ -137,6 +138,7 @@ pub fn on_hit(
             your_item_id,
             Some(target),
             Some(source_pos),
+            None,
             None,
         );
         !matches!(result, EventResult::Null | EventResult::Boolean(false))

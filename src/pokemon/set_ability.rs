@@ -121,7 +121,7 @@ impl Pokemon {
         // JS: this.battle.singleEvent('End', oldAbility, this.abilityState, this, source);
         // ✅ NOW IMPLEMENTED (Session 24 Part 76): singleEvent('End') for old ability
         if !old_ability_id.as_str().is_empty() {
-            battle.single_event("End", &old_ability_id, Some(pokemon_pos), source_pos, None);
+            battle.single_event("End", &old_ability_id, Some(pokemon_pos), source_pos, None, None);
         }
 
         // Phase 2: Mutate pokemon to set new ability
@@ -214,7 +214,7 @@ impl Pokemon {
         if !ability_id.as_str().is_empty() && battle.gen > 3 {
             // JS: (!isTransform || oldAbility.id !== ability.id || this.battle.gen <= 4)
             if !is_transform || old_ability_id != ability_id || battle.gen <= 4 {
-                battle.single_event("Start", &ability_id, Some(pokemon_pos), source_pos, source_effect);
+                battle.single_event("Start", &ability_id, Some(pokemon_pos), source_pos, source_effect, None);
             }
         }
 

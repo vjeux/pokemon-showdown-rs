@@ -270,6 +270,7 @@ impl Pokemon {
                 Some(target_pos),
                 None,
                 None,
+                None,
             );
         }
     }

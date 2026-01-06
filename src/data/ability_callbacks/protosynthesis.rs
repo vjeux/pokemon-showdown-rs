@@ -17,7 +17,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
     // Trigger WeatherChange event to check if Protosynthesis should activate
     // Pass the ability ID as the effect
     let ability_id = ID::from("protosynthesis");
-    battle.single_event("WeatherChange", &ability_id, Some(pokemon_pos), None, None);
+    battle.single_event("WeatherChange", &ability_id, Some(pokemon_pos), None, None, None);
     EventResult::Continue
 }
 

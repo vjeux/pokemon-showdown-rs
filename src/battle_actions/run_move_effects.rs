@@ -464,6 +464,7 @@ pub fn run_move_effects(
                         Some(target_pos),
                         Some(source_pos),
                         Some(&active_move.id),
+                        None,
                     );
                     //         didSomething = this.combineResults(didSomething, hitResult);
                     did_something = combine_results(did_something, hit_result.into());
@@ -480,6 +481,7 @@ pub fn run_move_effects(
                         Some(target_pos),
                         Some(source_pos),
                         Some(&active_move.id),
+                        None,
                     );
                     //         didSomething = this.combineResults(didSomething, hitResult);
                     did_something = combine_results(did_something, hit_result.into());
@@ -494,6 +496,7 @@ pub fn run_move_effects(
                         Some(target_pos),
                         Some(source_pos),
                         Some(&active_move.id),
+                        None,
                     );
                     //         didSomething = this.combineResults(didSomething, hitResult);
                     did_something = combine_results(did_something, hit_result.into());

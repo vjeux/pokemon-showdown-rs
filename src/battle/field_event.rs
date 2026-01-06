@@ -458,7 +458,7 @@ impl Battle {
             // JS: if (handler.callback) {
             //         this.singleEvent(handlerEventid, effect, handler.state, handler.effectHolder, null, null, undefined, handler.callback);
             //     }
-            self.single_event(&handler_event_id, &handler.effect_id, handler.holder, None, None);
+            self.single_event(&handler_event_id, &handler.effect_id, handler.holder, None, None, None);
 
             // JS: this.faintMessages();
             self.faint_messages(false, false, true);

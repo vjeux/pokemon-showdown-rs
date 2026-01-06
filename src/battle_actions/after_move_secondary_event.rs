@@ -43,6 +43,7 @@ pub fn after_move_secondary_event(
                 Some(first_target),
                 Some(attacker_pos),
                 None,
+                None,
             );
         }
 

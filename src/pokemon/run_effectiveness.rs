@@ -75,7 +75,7 @@ impl Pokemon {
                 // JS: typeMod = this.battle.singleEvent('Effectiveness', move, null, this, type, move, typeMod);
                 // ✅ NOW IMPLEMENTED (Session 24 Part 92): singleEvent with relay_var support
                 // Call singleEvent on the move to allow move-specific effectiveness modifiers (e.g., Freeze-Dry)
-                let single_event_result = battle.single_event_with_relay_var(
+                let single_event_result = battle.single_event(
                     "Effectiveness",
                     move_id,
                     Some(pokemon_pos),

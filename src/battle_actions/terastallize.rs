@@ -110,6 +110,7 @@ pub fn terastallize(
                 Some(pokemon_pos),
                 None,
                 None,
+                None,
             );
         }
     }

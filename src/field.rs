@@ -9,7 +9,6 @@ use std::collections::HashMap;
 
 use crate::dex_data::ID;
 use crate::event_system::EffectState;
-use crate::Battle;
 
 /// The battle field - contains weather, terrain, and field-wide effects
 #[derive(Debug, Clone, Serialize, Deserialize)]

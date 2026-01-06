@@ -77,6 +77,7 @@ pub fn on_after_hit(
         Some(source_pos),
         Some(target_pos),
         Some(&your_item_id),
+        None,
     );
 
     let can_take_item = !matches!(take_item_result, EventResult::Boolean(false));

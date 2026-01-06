@@ -75,6 +75,7 @@ pub fn on_prepare_hit(
         Some(pokemon),
         Some(pokemon),
         Some(&item_id),
+        None,
     );
     if take_item_result.boolean() == Some(false) {
         return EventResult::Boolean(false);
@@ -149,6 +150,7 @@ pub fn on_prepare_hit(
                 Some(pokemon),
                 Some(pokemon),
                 Some(&item_id),
+                None,
             );
         }
 
@@ -238,6 +240,7 @@ pub fn on_hit(
             Some(target),
             Some(source),
             Some(&item_id),
+            None,
         );
 
         if eat_result.boolean() != Some(false) {

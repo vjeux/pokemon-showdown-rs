@@ -57,6 +57,7 @@ pub fn on_ally_after_use_item(battle: &mut Battle, pokemon_pos: (usize, usize)) 
         Some(pokemon_pos),
         Some(source_pos),
         None,
+        None,
     );
 
     // Check if TakeItem event blocked the transfer (returns Null/false)

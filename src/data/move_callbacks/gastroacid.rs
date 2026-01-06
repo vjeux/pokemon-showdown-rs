@@ -123,6 +123,7 @@ pub mod condition {
             Some(pokemon),
             Some(pokemon),
             Some(&ID::from("gastroacid")),
+            None,
         );
 
         EventResult::Continue

@@ -245,6 +245,7 @@ impl Battle {
             None, // field as target - we don't pass this in current arch
             source_pos,
             None,
+            None,
         );
 
         // Check if the event returned false (using the EventResult enum)

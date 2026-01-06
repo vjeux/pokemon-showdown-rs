@@ -138,6 +138,7 @@ pub fn try_spread_move_hit(
         Some(pokemon_pos),
         target_0,
         Some(move_id),
+        None,
     );
 
     // Check if try_result is truthy (in JS, falsy = false, null, undefined, 0, "", NaN)
@@ -152,6 +153,7 @@ pub fn try_spread_move_hit(
             target_0,
             Some(pokemon_pos),
             Some(move_id),
+            None,
         );
         result
     } else {

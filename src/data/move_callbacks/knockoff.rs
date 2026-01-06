@@ -55,7 +55,7 @@ pub fn on_base_power(
     }
 
     // if (!this.singleEvent('TakeItem', item, target.itemState, target, target, move, item)) return;
-    let result = battle.single_event("TakeItem", &item_id, Some(target), Some(target), None);
+    let result = battle.single_event("TakeItem", &item_id, Some(target), Some(target), None, None);
     if let EventResult::Boolean(false) = result {
         eprintln!("KNOCKOFF BasePower: TakeItem returned false");
         return EventResult::Continue;
