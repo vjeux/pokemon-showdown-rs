@@ -486,11 +486,10 @@ pub fn dispatch_on_ally_try_add_volatile(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAllyTryBoost(boost, target, source, effect)
-
 /// Dispatch onAllyTryBoost callbacks
+/// Note: JavaScript signature is onAllyTryBoost(boost, target, source, effect)
+/// In Rust, the boost parameter is accessed through battle.current_event.relay_var
+/// due to borrow checker limitations (callback needs &mut Battle)
 pub fn dispatch_on_ally_try_boost(
     battle: &mut Battle,
     ability_id: &str,

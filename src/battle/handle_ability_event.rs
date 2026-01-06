@@ -186,8 +186,8 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 Some(pokemon_pos),
-                None,
-                None,
+                event_source_pos,
+                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
             ),
             "AllyTryHitSide" => ability_callbacks::dispatch_on_ally_try_hit_side(
                 self,
