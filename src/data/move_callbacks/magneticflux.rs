@@ -70,7 +70,9 @@ pub fn on_hit_side(
         if has_maxguard {
             let try_hit_result =
                 battle.run_event("TryHit", Some(crate::event::EventTarget::Pokemon(ally_pos)), Some(source), None, EventResult::Continue, false, false);
-            if match try_hit_result { EventResult::Number(n) => n, _ => 0 } == 0 {
+            // JavaScript: if (!result) continue;
+            // This checks if result is FALSY, not if it equals 0
+            if !try_hit_result.is_truthy() {
                 continue;
             }
         }

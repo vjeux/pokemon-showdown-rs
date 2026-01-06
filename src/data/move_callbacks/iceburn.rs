@@ -63,7 +63,9 @@ pub fn on_try_move(
     //     return;
     // }
     let charge_result = battle.run_event("ChargeMove", Some(crate::event::EventTarget::Pokemon(attacker)), defender, None, EventResult::Continue, false, false);
-    if match charge_result { EventResult::Number(n) => n, _ => 0 } == 0 {
+    // JavaScript: if (!result) return;
+    // This checks if result is FALSY, not if it equals 0
+    if !charge_result.is_truthy() {
         return EventResult::Continue;
     }
 

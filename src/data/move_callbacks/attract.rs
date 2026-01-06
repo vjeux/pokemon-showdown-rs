@@ -114,7 +114,9 @@ pub mod condition {
         //     return false;
         // }
         let event_result = battle.run_event("Attract", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(source), None, EventResult::Continue, false, false);
-        if match event_result { EventResult::Number(n) => n, _ => 0 } == 0 {
+        // JavaScript: if (!result) return false;
+        // This checks if result is FALSY, not if it equals 0
+        if !event_result.is_truthy() {
             battle.debug("Attract event failed");
             return EventResult::Boolean(false);
         }

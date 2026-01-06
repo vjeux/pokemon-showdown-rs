@@ -70,7 +70,7 @@ pub fn on_try_move(
     //     return;
     // }
     let charge_result = battle.run_event("ChargeMove", Some(crate::event::EventTarget::Pokemon(attacker)), defender, None, EventResult::Continue, false, false);
-    if match charge_result { EventResult::Number(n) => n, _ => 0 } == 0 {
+    if !charge_result.is_truthy() {
         // return;
         return EventResult::Continue;
     }
