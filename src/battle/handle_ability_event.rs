@@ -32,7 +32,7 @@ impl Battle {
             self.turn, ability_id.as_str(), pokemon_name, event_id);
 
         // Extract context from current_event for parameter wiring
-        let (event_source_pos, event_target_pos, _event_effect_id, event_status_id) = if let Some(ref event) = self.current_event {
+        let (event_source_pos, event_target_pos, event_effect_id, event_status_id) = if let Some(ref event) = self.current_event {
             let effect_str = event.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new());
             (event.source, event.target, effect_str.clone(), effect_str)
         } else {
@@ -72,13 +72,18 @@ impl Battle {
                 let boost = relay_var_boost.as_ref().unwrap_or(&default_boost);
                 ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), boost, Some(pokemon_pos), None, None)
             }
-            "AfterEachBoost" => ability_callbacks::dispatch_on_after_each_boost(
-                self,
-                ability_id.as_str(),
-                Some(pokemon_pos),
-                None,
-                None,
-            ),
+            "AfterEachBoost" => {
+                let default_boost = crate::dex_data::BoostsTable::new();
+                let boost = relay_var_boost.as_ref().unwrap_or(&default_boost);
+                ability_callbacks::dispatch_on_after_each_boost(
+                    self,
+                    ability_id.as_str(),
+                    boost,
+                    Some(pokemon_pos),
+                    event_source_pos,
+                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                )
+            }
             "AfterMoveSecondary" => ability_callbacks::dispatch_on_after_move_secondary(
                 self,
                 ability_id.as_str(),

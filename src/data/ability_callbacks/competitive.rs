@@ -22,7 +22,7 @@ use crate::event::EventResult;
 ///         this.boost({ spa: 2 }, target, target, null, false, true);
 ///     }
 /// }
-pub fn on_after_each_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_after_each_boost(battle: &mut Battle, boost: &crate::dex_data::BoostsTable, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -39,16 +39,7 @@ pub fn on_after_each_boost(battle: &mut Battle, target_pos: Option<(usize, usize
     }
 
     // Check if any stats were lowered
-    // The boost parameter contains the boosts that were just applied
-    let stats_lowered = battle.current_event.as_ref()
-        .and_then(|e| match &e.relay_var {
-            Some(EventResult::Boost(b)) => Some(b),
-            _ => None,
-        })
-        .map(|b| {
-            b.atk < 0 || b.def < 0 || b.spa < 0 || b.spd < 0 || b.spe < 0 || b.accuracy < 0 || b.evasion < 0
-        })
-        .unwrap_or(false);
+    let stats_lowered = boost.atk < 0 || boost.def < 0 || boost.spa < 0 || boost.spd < 0 || boost.spe < 0 || boost.accuracy < 0 || boost.evasion < 0;
 
     if stats_lowered {
         // this.boost({ spa: 2 }, target, target, null, false, true);

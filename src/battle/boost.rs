@@ -308,7 +308,20 @@ impl Battle {
                         }
 
                         // JS: this.runEvent('AfterEachBoost', target, source, effect, currentBoost);
-                        self.run_event("AfterEachBoost", Some(crate::event::EventTarget::Pokemon(target)), source, None, EventResult::Continue, false, false);
+                        // Create a BoostsTable for the current single boost
+                        let mut current_boost = crate::dex_data::BoostsTable::new();
+                        match *stat {
+                            "atk" => current_boost.atk = *amount,
+                            "def" => current_boost.def = *amount,
+                            "spa" => current_boost.spa = *amount,
+                            "spd" => current_boost.spd = *amount,
+                            "spe" => current_boost.spe = *amount,
+                            "accuracy" => current_boost.accuracy = *amount,
+                            "evasion" => current_boost.evasion = *amount,
+                            _ => {}
+                        }
+                        let effect_id = effect.map(|e| ID::new(e));
+                        self.run_event("AfterEachBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_id.as_ref(), EventResult::Boost(current_boost), false, false);
                     } else {
                         // JS: } else if (effect?.effectType === 'Ability') {
                         //       if (isSecondary || isSelf) this.add(msg, target, boostName, boostBy);
