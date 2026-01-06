@@ -91,14 +91,22 @@ impl Battle {
 
         // Handle move events
         if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
+            eprintln!("[DISPATCH_SINGLE_EVENT] {} found as MOVE, routing to handle_move_event", effect_id.as_str());
             return self.handle_move_event(event_id, effect_id, target, source);
+        } else {
+            eprintln!("[DISPATCH_SINGLE_EVENT] {} is NOT a move in dex", effect_id.as_str());
         }
 
         // Handle condition events (status, volatile, weather, terrain)
+        eprintln!("[DISPATCH_SINGLE_EVENT] Checking if {} is a condition...", effect_id.as_str());
         if let Some(_condition) = self.dex.conditions().get_by_id(effect_id) {
+            eprintln!("[DISPATCH_SINGLE_EVENT] {} found as CONDITION, routing to handle_condition_event", effect_id.as_str());
             return self.handle_condition_event(event_id, effect_str, target);
+        } else {
+            eprintln!("[DISPATCH_SINGLE_EVENT] {} is NOT a condition in dex", effect_id.as_str());
         }
 
+        eprintln!("[DISPATCH_SINGLE_EVENT] {} not found in any category, returning Continue", effect_id.as_str());
         EventResult::Continue
     }
 }

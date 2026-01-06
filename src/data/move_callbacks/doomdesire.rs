@@ -63,6 +63,13 @@ pub fn on_try(
         return EventResult::Boolean(false);
     }
 
+    // Manually call the condition's onStart since add_slot_condition doesn't do it
+    // JavaScript: this.battle.singleEvent('Start', status, conditionState, this.active[target], source, sourceEffect)
+    {
+        use crate::data::condition_callbacks;
+        condition_callbacks::futuremove::on_start(battle, target);
+    }
+
     // Object.assign(target.side.slotConditions[target.position]['futuremove'], {
     //     move: 'doomdesire',
     //     source,

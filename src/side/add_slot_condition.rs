@@ -46,7 +46,12 @@ impl Side {
         }
         let mut state = EffectState::new(id.clone());
         state.duration = duration;
-        self.slot_conditions[slot].insert(id, state);
+        self.slot_conditions[slot].insert(id.clone(), state);
+
+        // NOTE: This is incomplete - should call singleEvent('Start', ...) like JavaScript does
+        // JavaScript: if (!this.battle.singleEvent('Start', status, conditionState, this.active[target], source, sourceEffect))
+        // For now, just return true, but this means onStart callbacks won't fire
+        // TODO: Need battle reference to call single_event
         true
     }
 }
