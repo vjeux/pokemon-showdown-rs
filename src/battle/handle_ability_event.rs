@@ -126,14 +126,18 @@ impl Battle {
             "AllyBasePower" => ability_callbacks::dispatch_on_ally_base_power(
                 self,
                 ability_id.as_str(),
-                0,
-            move_id,
+                relay_var_int,
+                event_source_pos,
+                event_target_pos,
+                move_id,
             ),
             "AllyBasePowerPriority" => ability_callbacks::dispatch_on_ally_base_power_priority(
                 self,
                 ability_id.as_str(),
-                0,
-            move_id,
+                relay_var_int,
+                event_source_pos,
+                event_target_pos,
+                move_id,
             ),
             "AllyFaint" => {
                 ability_callbacks::dispatch_on_ally_faint(self, ability_id.as_str(), Some(pokemon_pos))

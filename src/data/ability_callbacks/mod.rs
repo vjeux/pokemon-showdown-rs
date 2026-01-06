@@ -409,20 +409,17 @@ pub fn dispatch_on_ally_after_use_item(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAllyBasePower(basePower, attacker, defender, move)
 
 /// Dispatch onAllyBasePower callbacks
 pub fn dispatch_on_ally_base_power(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, move_id: &str,
+    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "battery" => battery::on_ally_base_power(battle, base_power, move_id),
-        "powerspot" => powerspot::on_ally_base_power(battle, base_power, move_id),
-        "steelyspirit" => steelyspirit::on_ally_base_power(battle, base_power, move_id),
+        "battery" => battery::on_ally_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "powerspot" => powerspot::on_ally_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "steelyspirit" => steelyspirit::on_ally_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -2673,9 +2670,9 @@ pub fn dispatch_on_ally_after_use_item_sub_order(
 pub fn dispatch_on_ally_base_power_priority(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, move_id: &str,
+    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_ally_base_power(battle, ability_id, base_power, move_id)
+    dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2684,9 +2681,9 @@ pub fn dispatch_on_ally_base_power_priority(
 pub fn dispatch_on_ally_base_power_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, move_id: &str,
+    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_ally_base_power(battle, ability_id, base_power, move_id)
+    dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -2695,9 +2692,9 @@ pub fn dispatch_on_ally_base_power_order(
 pub fn dispatch_on_ally_base_power_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, move_id: &str,
+    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_ally_base_power(battle, ability_id, base_power, move_id)
+    dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

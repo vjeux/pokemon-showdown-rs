@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([5325, 4096]);
 ///     }
 /// }
-pub fn on_ally_base_power(battle: &mut Battle, _base_power: i32, _move_id: &str) -> EventResult {
+pub fn on_ally_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: Option<(usize, usize)>, _defender_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // Get the ability holder (Power Spot user)
     let ability_holder = match battle.effect_state.target {
         Some(pos) => pos,
