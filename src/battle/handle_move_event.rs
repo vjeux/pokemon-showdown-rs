@@ -109,10 +109,17 @@ impl Battle {
                 // Regular onHit targets the move target, self.onHit targets the move user
                 let result = move_callbacks::dispatch_on_hit(self, move_str, target_pos.unwrap_or((0,0)), source_pos);
 
-                // For self callbacks, the first parameter is the source (move user), not the target
-                let self_result = match source_pos {
-                    Some(src) => move_callbacks::dispatch_self_on_hit(self, move_str, src, target_pos),
-                    None => EventResult::Continue,
+                // For self callbacks, only call dispatch_self_on_hit if target != source.
+                // If target == source, we're in self_drops calling moveHit for self effects,
+                // and we don't want to recursively call self.onHit again.
+                let self_result = match (source_pos, target_pos) {
+                    (Some(src), Some(tgt)) if src != tgt => {
+                        move_callbacks::dispatch_self_on_hit(self, move_str, src, target_pos)
+                    }
+                    (Some(src), None) => {
+                        move_callbacks::dispatch_self_on_hit(self, move_str, src, target_pos)
+                    }
+                    _ => EventResult::Continue,
                 };
 
                 // If either returns a non-Continue result, use that; otherwise Continue
