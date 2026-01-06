@@ -275,7 +275,7 @@ pub enum EffectType {
 }
 
 /// Type alias for event callback functions
-pub type EventCallback = Box<dyn Fn(&EventContext) -> Option<i32> + Send + Sync>;
+pub type EventCallback = Box<dyn Fn(&EventInfo) -> Option<i32> + Send + Sync>;
 
 /// Type alias for spread move hit result (damages, targets)
 pub type SpreadMoveHitResult = (crate::battle_actions::SpreadMoveDamage, crate::battle_actions::SpreadMoveTargets);
@@ -285,8 +285,7 @@ pub type SpreadMoveHitResult = (crate::battle_actions::SpreadMoveDamage, crate::
 /// JavaScript equivalent: CustomEventHandler (sim/battle.ts)
 /// 5 fields in JavaScript
 pub struct CustomEventHandler {
-    /// The callback function - now receives EventContext instead of &mut Battle
-    /// This eliminates the circular reference and unsafe code
+    /// The callback function - receives EventInfo for event context
     /// JavaScript: callback: (this: Battle, ...args: any[]) => any
     pub callback: EventCallback,
     /// Target effect ID
@@ -426,64 +425,6 @@ impl Default for EventInfo {
             modifier: 4096,
             relay_var: None,
             type_param: None,
-        }
-    }
-}
-
-/// Context provided to custom event handlers
-/// Contains read-only event information that callbacks can access
-/// Equivalent to JavaScript's `this` context in event callbacks
-#[derive(Debug, Clone)]
-/// JavaScript equivalent: `this` in event callbacks (sim/battle.ts)
-/// JavaScript uses `this.event` context object with dynamic properties
-pub struct EventContext {
-    /// Event ID/name (e.g., "Hit", "ModifyDamage")
-    /// JavaScript: this.event (implicit event name)
-    pub event_id: String,
-    /// Target of the event (side_idx, poke_idx)
-    /// JavaScript: this.event.target (Pokemon reference)
-    /// TODO: Rust uses indices instead of Pokemon reference due to ownership
-    pub target: Option<(usize, usize)>,
-    /// Source of the event
-    /// JavaScript: this.event.source (Pokemon reference)
-    /// TODO: Rust uses indices instead of Pokemon reference due to ownership
-    pub source: Option<(usize, usize)>,
-    /// Effect that caused the event
-    /// JavaScript: this.event.effect (Effect object)
-    /// TODO: Rust uses ID instead of full Effect object
-    pub effect: Option<ID>,
-    /// Modifier accumulated during event processing (4096 = 1.0x)
-    /// In JavaScript: this.event.modifier
-    /// JavaScript: this.event.modifier: number
-    pub modifier: i32,
-    /// Relay variable passed to the event
-    /// This is the value being modified through the event chain
-    /// JavaScript: relayVar parameter (number or any type)
-    pub relay_var: Option<i32>,
-}
-
-impl EventContext {
-    /// Create EventContext from EventInfo and relay_var
-    fn from_event_info(event_id: &str, event_info: &EventInfo, relay_var: Option<i32>) -> Self {
-        Self {
-            event_id: event_id.to_string(),
-            target: event_info.target,
-            source: event_info.source,
-            effect: event_info.effect.clone(),
-            modifier: event_info.modifier,
-            relay_var,
-        }
-    }
-
-    /// Create minimal context for event without full EventInfo
-    fn minimal(event_id: &str) -> Self {
-        Self {
-            event_id: event_id.to_string(),
-            target: None,
-            source: None,
-            effect: None,
-            modifier: 4096,
-            relay_var: None,
         }
     }
 }

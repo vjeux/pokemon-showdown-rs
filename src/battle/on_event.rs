@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::{EventContext, EffectType};
+use crate::battle::{EventInfo, EffectType};
 use crate::dex_data::ID;
 
 impl Battle {
@@ -14,8 +14,8 @@ impl Battle {
     ///
     /// # Example
     /// ```ignore
-    /// battle.on_event("Hit", format_id, EffectType::Format, |ctx| {
-    ///     println!("Hit event on {:?}", ctx.target);
+    /// battle.on_event("Hit", format_id, EffectType::Format, |event_info| {
+    ///     println!("Hit event on {:?}", event_info.target);
     ///     None // Return None for no value, Some(n) to return a value
     /// });
     /// ```
@@ -84,7 +84,7 @@ impl Battle {
         callback: F,
     )
     where
-        F: Fn(&EventContext) -> Option<i32> + Send + Sync + 'static,
+        F: Fn(&EventInfo) -> Option<i32> + Send + Sync + 'static,
     {
         self.on_event_priority(event_id, target_id, target_type, 0, callback);
     }

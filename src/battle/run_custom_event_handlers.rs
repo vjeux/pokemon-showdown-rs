@@ -1,15 +1,13 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
 
 use crate::*;
-use crate::battle::EventContext;
 
 impl Battle {
 
     /// Call custom event handlers for a given event
     /// Returns the last non-None value returned by a handler, if any
     ///
-    /// This version is SAFE - no unsafe code needed because callbacks
-    /// receive EventContext instead of &mut Battle, breaking the circular reference
+    /// Callbacks receive EventInfo for event context
     pub fn run_custom_event_handlers(&mut self, event_name: &str) -> Option<i32> {
         let callback_name = format!("on{}", event_name);
 
@@ -30,19 +28,16 @@ impl Battle {
             indices
         };
 
-        // Create EventContext from current state
-        // We extract this before iterating to avoid borrow checker issues
-        let event_context = if let Some(ref event_info) = self.current_event {
-            EventContext::from_event_info(event_name, event_info, None)
+        // Use EventInfo from current state, or create minimal one
+        let event_info = if let Some(ref event) = self.current_event {
+            event.clone()
         } else {
-            EventContext::minimal(event_name)
+            crate::battle::EventInfo::new(event_name)
         };
 
         let mut last_result = None;
 
-        // SAFE: No unsafe code needed!
-        // We can borrow self.events immutably and call callbacks safely
-        // because callbacks don't receive &mut Battle anymore
+        // Get handlers immutably and call callbacks
         let handlers = self.events.get(&callback_name).unwrap();
 
         for &index in &sorted_indices {
@@ -50,9 +45,8 @@ impl Battle {
                 continue;
             }
 
-            // Call the callback with EventContext
-            // This is completely safe - no circular borrowing!
-            if let Some(result) = (handlers[index].callback)(&event_context) {
+            // Call the callback with EventInfo
+            if let Some(result) = (handlers[index].callback)(&event_info) {
                 last_result = Some(result);
             }
         }

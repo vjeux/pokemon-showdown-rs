@@ -1,8 +1,7 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
 
 use crate::*;
-use crate::battle::{CustomEventHandler, EffectType};
-use crate::battle::EventContext;
+use crate::battle::{CustomEventHandler, EffectType, EventInfo};
 use crate::dex_data::ID;
 
 impl Battle {
@@ -25,7 +24,7 @@ impl Battle {
         callback: F,
     )
     where
-        F: Fn(&EventContext) -> Option<i32> + Send + Sync + 'static,
+        F: Fn(&EventInfo) -> Option<i32> + Send + Sync + 'static,
     {
         if event_id.is_empty() {
             panic!("Event handlers must have an event to listen to");
