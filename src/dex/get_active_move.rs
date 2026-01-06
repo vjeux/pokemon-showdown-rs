@@ -85,7 +85,7 @@ impl Dex {
                 }
                 secs
             },
-            self_effect: None,
+            self_effect: move_data.self_effect.as_ref().map(|se| Self::convert_self_effect(se)),
             has_sheer_force: false,
             always_hit: matches!(move_data.accuracy, Accuracy::AlwaysHits),
             base_move_type: None,

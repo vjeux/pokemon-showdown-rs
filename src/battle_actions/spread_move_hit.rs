@@ -349,20 +349,18 @@ pub fn spread_move_hit(
     // 4. self drops
     // JS: if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
     // Extract both self_effect and secondaries info before calling any functions
+    // IMPORTANT: Check active_move.self_effect, not the base move definition
+    // JavaScript checks moveData.self which is from the ActiveMove parameter
     let (has_self_effect, self_dropped, has_secondaries) = {
-        let move_data_def = battle.dex.moves.get(move_data_id).expect("Move not found");
-        let has_self = move_data_def.self_effect.is_some();
-
-        let (dropped, has_secs) = if let Some(ref active_move) = battle.active_move {
-            eprintln!("[SPREAD_MOVE_HIT] Extracting secondaries info: move_id={}, secondaries.len()={}",
-                active_move.id, active_move.secondaries.len());
-            (active_move.self_dropped, !active_move.secondaries.is_empty())
+        if let Some(ref active_move) = battle.active_move {
+            let has_self = active_move.self_effect.is_some();
+            eprintln!("[SPREAD_MOVE_HIT] move_id={}, has_self_effect={}, self_dropped={}, secondaries.len()={}",
+                active_move.id, has_self, active_move.self_dropped, active_move.secondaries.len());
+            (has_self, active_move.self_dropped, !active_move.secondaries.is_empty())
         } else {
             eprintln!("[SPREAD_MOVE_HIT] No active_move when extracting info!");
-            (false, false)
-        };
-
-        (has_self, dropped, has_secs)
+            (false, false, false)
+        }
     };
 
     // Only call self_drops if self_effect exists and selfDropped is false

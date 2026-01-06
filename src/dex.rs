@@ -19,6 +19,7 @@ mod get_active_move;
 mod convert_move_flags;
 mod convert_boosts_hash_to_table;
 mod convert_secondary;
+mod convert_self_effect;
 mod items_helper;
 mod get_effectiveness;
 mod get_type_effectiveness;

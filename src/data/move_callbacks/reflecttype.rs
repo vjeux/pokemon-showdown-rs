@@ -28,10 +28,10 @@ use crate::Pokemon;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),           // FIXED: First positional param is target (the Pokemon being hit)
+    source_pos: Option<(usize, usize)>,   // FIXED: Second positional param is source (the user of the move)
 ) -> EventResult {
-    let target_pos = match target_pos {
+    let source_pos = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

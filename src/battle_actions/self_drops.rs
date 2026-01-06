@@ -38,6 +38,8 @@ pub fn self_drops(
     _move_id: &ID,
     is_secondary: bool,
 ) {
+    eprintln!("[SELF_DROPS] Called with source_pos={:?}, is_secondary={}", source_pos, is_secondary);
+
     // Get moveData.self from active_move
     let (has_self_data, has_boosts, self_chance, is_multihit, self_dropped) = {
         if let Some(ref active_move) = battle.active_move {
@@ -49,8 +51,11 @@ pub fn self_drops(
                 .and_then(|s| s.chance);
             let multihit = active_move.multi_hit.is_some();
             let dropped = active_move.self_dropped;
+            eprintln!("[SELF_DROPS] has_self={}, has_boosts={}, self_chance={:?}, is_multihit={}, self_dropped={}",
+                has_self, has_boosts, chance, multihit, dropped);
             (has_self, has_boosts, chance, multihit, dropped)
         } else {
+            eprintln!("[SELF_DROPS] No active_move!");
             return;
         }
     };
@@ -64,10 +69,13 @@ pub fn self_drops(
 
         // if (moveData.self && !move.selfDropped) {
         if has_self_data && !self_dropped {
+            eprintln!("[SELF_DROPS] Processing self effect");
             // if (!isSecondary && moveData.self.boosts) {
             if !is_secondary && has_boosts {
+                eprintln!("[SELF_DROPS] Making random(100) call for self effect with boosts");
                 // const secondaryRoll = this.battle.random(100);
                 let secondary_roll = battle.random(100);
+                eprintln!("[SELF_DROPS] secondary_roll={}", secondary_roll);
 
                 // if (typeof moveData.self.chance === 'undefined' || secondaryRoll < moveData.self.chance) {
                 let should_apply = match self_chance {
