@@ -191,7 +191,31 @@ impl Battle {
                 condition_callbacks::dispatch_on_trap_pokemon(self, condition_id, pokemon_pos)
             }
             "TryAddVolatile" => {
-                condition_callbacks::dispatch_on_try_add_volatile(self, condition_id, pokemon_pos)
+                // For TryAddVolatile, we need to pass the status (volatile) being added,
+                // the target, source, and effect. The status is in relay_var as EventResult::String.
+                // Extract owned strings to avoid borrow checker issues
+                let status_owned = self.current_event.as_ref()
+                    .and_then(|e| e.relay_var.as_ref())
+                    .and_then(|rv| match rv {
+                        EventResult::String(s) => Some(s.clone()),
+                        _ => None,
+                    });
+                // For TryAddVolatile, pokemon_pos is the Pokemon that has the handler (e.g., a Pokemon on the side with Safeguard),
+                // NOT the Pokemon having the volatile added. We need to get the actual target from current_event.
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.current_event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|id| id.to_string());
+
+                condition_callbacks::dispatch_on_try_add_volatile(
+                    self,
+                    condition_id,
+                    status_owned.as_deref(),
+                    target_pos,
+                    source_pos,
+                    effect_id_owned.as_deref()
+                )
             }
             "TryPrimaryHit" => {
                 condition_callbacks::dispatch_on_try_primary_hit(self, condition_id, pokemon_pos)

@@ -2415,18 +2415,21 @@ pub fn dispatch_condition_on_trap_pokemon(
 pub fn dispatch_condition_on_try_add_volatile(
     battle: &mut Battle,
     move_id: &str,
-    source_pos: (usize, usize),
+    status: Option<&str>,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match move_id {
         "electricterrain" => {
-            electricterrain::condition::on_try_add_volatile(battle, None, Some(source_pos))
+            electricterrain::condition::on_try_add_volatile(battle, status, target_pos)
         }
-        "focuspunch" => focuspunch::condition::on_try_add_volatile(battle, None, source_pos),
+        "focuspunch" => focuspunch::condition::on_try_add_volatile(battle, status, target_pos.unwrap_or((0,0))),
         "mistyterrain" => {
-            mistyterrain::condition::on_try_add_volatile(battle, None, Some(source_pos), None, None)
+            mistyterrain::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect_id)
         }
         "safeguard" => {
-            safeguard::condition::on_try_add_volatile(battle, None, Some(source_pos), None, None)
+            safeguard::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect_id)
         }
         _ => EventResult::Continue,
     }

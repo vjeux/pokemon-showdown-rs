@@ -652,13 +652,23 @@ pub fn dispatch_on_trap_pokemon(
 pub fn dispatch_on_try_add_volatile(
     battle: &mut Battle,
     condition_id: &str,
-    pokemon_pos: (usize, usize),
+    status: Option<&str>,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
-        "dynamax" => dynamax::on_try_add_volatile(battle, pokemon_pos),
+        "dynamax" => dynamax::on_try_add_volatile(battle, target_pos.unwrap_or((0,0))),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_try_add_volatile(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_try_add_volatile(
+                battle,
+                condition_id,
+                status,
+                target_pos,
+                source_pos,
+                effect_id
+            )
         }
     }
 }
