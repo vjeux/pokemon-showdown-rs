@@ -37,9 +37,14 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     // let success = false;
     let mut success = false;
 
@@ -57,7 +62,7 @@ pub fn on_hit(
     remove_target.extend_from_slice(&remove_all);
 
     // Get source side and foe side indices
-    let source_side_index = source_pos.0;
+    let source_side_index = source.0;
     let foe_side_index = 1 - source_side_index; // 0 -> 1, 1 -> 0
 
     // for (const targetCondition of removeTarget) {
@@ -83,7 +88,7 @@ pub fn on_hit(
 
             // this.add('-sideend', source.side.foe, this.dex.conditions.get(targetCondition).name, '[from] move: G-Max Wind Rage', `[of] ${source}`);
             let (foe_side_arg, source_ident, condition_name) = {
-                let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
                     None => continue,
                 };
@@ -130,7 +135,7 @@ pub fn on_hit(
         if removed {
             // this.add('-sideend', source.side, this.dex.conditions.get(sideCondition).name, '[from] move: G-Max Wind Rage', `[of] ${source}`);
             let (source_side_arg, source_ident, condition_name) = {
-                let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                     Some(p) => p,
                     None => continue,
                 };

@@ -21,34 +21,33 @@ use crate::pokemon::Pokemon;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // if (source.isActive) target.addVolatile('trapped', source, move, 'trapper');
 
-    let target = match target_pos {
+    let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
     // Check if source is active
     let source_is_active = {
-        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source.is_active
+        source_pokemon.is_active
     };
 
     if source_is_active {
         // target.addVolatile('trapped', source, move, 'trapper');
         // JavaScript: target.addVolatile('trapped', source, move, 'trapper')
-        // ✅ NOW PASSING: source_pos = Some(source_pos), source_effect = Some("anchorshot"), linked_status = Some("trapper")
         Pokemon::add_volatile(
             battle,
-            target,
+            target_pos,
             ID::from("trapped"),
-            Some(source_pos),
+            Some(source),
             Some(&ID::new("anchorshot")),
             Some(ID::from("trapper")),
             None,

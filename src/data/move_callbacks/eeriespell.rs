@@ -26,18 +26,13 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
 
     // if (!target.hp) return;
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
-
     let target_hp = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+        let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -51,7 +46,7 @@ pub fn on_hit(
     // let move: Move | ActiveMove | null = target.lastMove;
     // if (!move || move.isZ) return;
     let move_id = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+        let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -88,7 +83,7 @@ pub fn on_hit(
     // if (!ppDeducted) return;
     let pp_deducted = {
         let gen = battle.gen;
-        let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+        let target_pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -105,7 +100,7 @@ pub fn on_hit(
         .unwrap_or_else(|| actual_move_id.to_string());
 
     let target_slot = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+        let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

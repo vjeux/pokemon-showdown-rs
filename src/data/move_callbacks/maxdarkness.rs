@@ -23,16 +23,21 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     // if (!source.volatiles['dynamax']) return;
     let has_dynamax = {
-        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source.has_volatile(&ID::from("dynamax"))
+        source_pokemon.has_volatile(&ID::from("dynamax"))
     };
 
     if !has_dynamax {
@@ -44,7 +49,7 @@ pub fn on_hit(
     // }
     // Get all active pokemon and filter for foes (opposite side)
     let foe_positions = {
-        let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -52,7 +57,7 @@ pub fn on_hit(
     };
 
     for foe_pos in foe_positions {
-        battle.boost(&[("spd", -1)], foe_pos, Some(source_pos), None, false, false);
+        battle.boost(&[("spd", -1)], foe_pos, Some(source), None, false, false);
     }
 
     EventResult::Continue

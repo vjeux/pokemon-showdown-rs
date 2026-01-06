@@ -23,14 +23,20 @@ use crate::Pokemon;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // for (const pokemon of source.foes()) {
     //     pokemon.trySetStatus('par', source);
     // }
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     let foe_positions = {
-        let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

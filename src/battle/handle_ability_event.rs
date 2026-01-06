@@ -433,7 +433,24 @@ impl Battle {
                 ability_callbacks::dispatch_on_eat_item(self, ability_id.as_str(), pokemon_pos)
             }
             "Effectiveness" => {
-                ability_callbacks::dispatch_on_effectiveness(self, ability_id.as_str(), 0, pokemon_pos, "", move_id)
+                // Extract type_mod from relay_var and target_type from type_param
+                let (type_mod, target_type) = {
+                    let type_mod = self
+                        .current_event
+                        .as_ref()
+                        .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
+                        .unwrap_or(0);
+
+                    let target_type = self
+                        .current_event
+                        .as_ref()
+                        .and_then(|e| e.type_param.clone())
+                        .unwrap_or_default();
+
+                    (type_mod, target_type)
+                };
+
+                ability_callbacks::dispatch_on_effectiveness(self, ability_id.as_str(), type_mod, pokemon_pos, &target_type, move_id)
             }
             "EmergencyExit" => ability_callbacks::dispatch_on_emergency_exit(
                 self,

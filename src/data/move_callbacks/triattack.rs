@@ -28,8 +28,8 @@ use crate::Pokemon;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // const result = this.random(3);
     // if (result === 0) {
@@ -40,14 +40,9 @@ pub fn on_hit(
     //     target.trySetStatus('frz', source);
     // }
 
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
-
     let result = battle.random(3);
 
-    if let Some(target_pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+    if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
         if result == 0 {
             target_pokemon.try_set_status(ID::from("brn"), None);
         } else if result == 1 {

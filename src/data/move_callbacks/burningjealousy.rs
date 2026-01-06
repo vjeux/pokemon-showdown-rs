@@ -23,20 +23,15 @@ use crate::Pokemon;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // if (target?.statsRaisedThisTurn) {
     //     target.trySetStatus('brn', source, move);
     // }
 
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
-
     let stats_raised = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+        let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -44,11 +39,11 @@ pub fn on_hit(
     };
 
     if stats_raised {
-        let _target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
+        let _target_pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        Pokemon::try_set_status(battle, target, ID::from("brn"), Some("move: Burning Jealousy"));
+        Pokemon::try_set_status(battle, target_pos, ID::from("brn"), Some("move: Burning Jealousy"));
     }
 
     EventResult::Continue

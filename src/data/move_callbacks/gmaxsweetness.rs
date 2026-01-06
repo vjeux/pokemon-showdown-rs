@@ -22,13 +22,19 @@ use crate::Pokemon;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // for (const ally of source.side.pokemon) {
     //     ally.cureStatus();
     // }
-    let source_side = source_pos.0;
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source_side = source.0;
 
     // Get the number of pokemon on the source's side
     let pokemon_count = battle.sides[source_side].pokemon.len();

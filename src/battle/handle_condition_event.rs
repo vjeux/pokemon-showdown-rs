@@ -79,7 +79,24 @@ impl Battle {
             }
             "DragOut" => condition_callbacks::dispatch_on_drag_out(self, condition_id, pokemon_pos),
             "Effectiveness" => {
-                condition_callbacks::dispatch_on_effectiveness(self, condition_id, pokemon_pos)
+                // Effectiveness needs type_mod, target_type, and move_id
+                // Extract type_mod from relay_var (type effectiveness modifier as number)
+                let type_mod = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+
+                // Extract target_type from type_param (the type being checked)
+                let target_type = self.current_event.as_ref()
+                    .and_then(|e| e.type_param.clone())
+                    .unwrap_or_default();
+
+                // Extract move_id from active_move
+                let move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
+
+                condition_callbacks::dispatch_on_effectiveness(self, condition_id, type_mod, &target_type, pokemon_pos, &move_id)
             }
             "End" => condition_callbacks::dispatch_on_end(self, condition_id, pokemon_pos),
             "Faint" => {

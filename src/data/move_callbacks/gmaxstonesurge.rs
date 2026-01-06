@@ -21,16 +21,21 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     use crate::dex_data::ID;
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
 
     // for (const side of source.side.foeSidesWithConditions()) {
     //     side.addSideCondition('stealthrock');
     // }
 
-    let source_side_index = source_pos.0;
+    let source_side_index = source.0;
 
     // Add stealth rock to all foe sides (sides that are not the source's side)
     for (side_idx, side) in battle.sides.iter_mut().enumerate() {

@@ -21,19 +21,19 @@ use crate::event::EventResult;
 /// ```
 pub fn on_effectiveness(
     battle: &mut Battle,
+    type_mod: i32,
+    target_type: &str,
     _pokemon_pos: (usize, usize),
+    _move_id: &str,
 ) -> EventResult {
-    // Get move from active_move
-    let (is_move, category, move_type) = match &battle.active_move {
-        Some(m) => (true, m.category.clone(), m.move_type.as_str()),
+    // Get move category from active_move
+    // if (move && move.effectType === 'Move' && move.category !== 'Status' && type === 'Flying' && typeMod > 0)
+    let category = match &battle.active_move {
+        Some(m) => &m.category,
         None => return EventResult::Continue,
     };
 
-    // Get type from event context - this would be passed as a parameter in a full implementation
-    // For now, we check if move type is flying
-    // if (move && move.effectType === 'Move' && move.category !== 'Status' && type === 'Flying' && typeMod > 0)
-    if is_move && category != "status" && move_type == "flying" {
-        // Note: typeMod > 0 check would need to be done in the caller context
+    if category != "Status" && target_type == "Flying" && type_mod > 0 {
         // this.add('-fieldactivate', 'Delta Stream');
         battle.add("-fieldactivate", &[Arg::Str("Delta Stream")]);
 

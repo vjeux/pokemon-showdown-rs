@@ -22,13 +22,19 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // for (const pokemon of source.alliesAndSelf()) {
     //     this.heal(pokemon.maxhp / 6, pokemon, source, move);
     // }
-    let source_side = source_pos.0;
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    let source_side = source.0;
 
     // Get all allies and self on the same side
     let ally_positions: Vec<(usize, usize)> = battle
@@ -51,7 +57,7 @@ pub fn on_hit(
 
         // Heal 1/6 of max HP
         let heal_amount = max_hp / 6;
-        battle.heal(heal_amount, Some(ally_pos), Some(source_pos), Some(&move_id));
+        battle.heal(heal_amount, Some(ally_pos), Some(source), Some(&move_id));
     }
 
     EventResult::Continue

@@ -23,14 +23,20 @@ use crate::pokemon::Pokemon;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // for (const pokemon of source.foes()) {
     //     pokemon.addVolatile('partiallytrapped', source, this.dex.getActiveMove('G-Max Centiferno'));
     // }
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     let foe_positions = {
-        let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -38,7 +44,7 @@ pub fn on_hit(
     };
 
     for foe_pos in foe_positions {
-        Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source_pos), None, None, None);
+        Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source), None, None, None);
     }
 
     EventResult::Continue

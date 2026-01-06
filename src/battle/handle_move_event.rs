@@ -84,7 +84,26 @@ impl Battle {
                 )
             }
             "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_str, target_pos.unwrap_or((0,0))),
-            "Effectiveness" => move_callbacks::dispatch_on_effectiveness(self, move_str, 0, "", target_pos.unwrap_or((0,0))),
+            "Effectiveness" => {
+                // Extract type_mod from relay_var and target_type from type_param
+                let (type_mod, target_type) = {
+                    let type_mod = self
+                        .current_event
+                        .as_ref()
+                        .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
+                        .unwrap_or(0);
+
+                    let target_type = self
+                        .current_event
+                        .as_ref()
+                        .and_then(|e| e.type_param.clone())
+                        .unwrap_or_default();
+
+                    (type_mod, target_type)
+                };
+
+                move_callbacks::dispatch_on_effectiveness(self, move_str, type_mod, &target_type, target_pos.unwrap_or((0,0)))
+            }
             "Hit" => {
                 // Call both regular onHit and self.onHit callbacks
                 // Regular onHit targets the move target, self.onHit targets the move user

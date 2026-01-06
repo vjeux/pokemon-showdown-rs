@@ -27,12 +27,17 @@ use crate::Pokemon;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     // this.add('-activate', source, 'move: Aromatherapy');
     let source_ident = {
-        let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -44,7 +49,7 @@ pub fn on_hit(
     );
 
     // for (const ally of source.side.pokemon) {
-    let source_side_idx = source_pos.0;
+    let source_side_idx = source.0;
     let num_pokemon = battle.sides[source_side_idx].pokemon.len();
 
     for ally_idx in 0..num_pokemon {
@@ -53,7 +58,7 @@ pub fn on_hit(
         // if (ally !== source && (ally.volatiles['substitute'] && !move.infiltrates)) {
         //     continue;
         // }
-        if ally_pos != source_pos {
+        if ally_pos != source {
             let has_substitute = {
                 let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
                     Some(p) => p,

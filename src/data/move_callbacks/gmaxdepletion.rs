@@ -30,13 +30,18 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
 
     // for (const pokemon of source.foes()) {
     let all_active = battle.get_all_active(false);
-    let source_side = source_pos.0;
+    let source_side = source.0;
 
     for pokemon_pos in all_active {
         // Only process foes (pokemon on different side than source)

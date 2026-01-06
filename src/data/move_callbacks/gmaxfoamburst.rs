@@ -21,14 +21,20 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // for (const pokemon of source.foes()) {
     //     this.boost({ spe: -2 }, pokemon);
     // }
+
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     let foe_positions = {
-        let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -36,7 +42,7 @@ pub fn on_hit(
     };
 
     for foe_pos in foe_positions {
-        battle.boost(&[("spe", -2)], foe_pos, Some(source_pos), None, false, false);
+        battle.boost(&[("spe", -2)], foe_pos, Some(source), None, false, false);
     }
 
     EventResult::Continue

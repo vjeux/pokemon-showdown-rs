@@ -14,18 +14,19 @@ use crate::event::EventResult;
 /// }
 pub fn on_prepare_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // if (!source.isAlly(target)) {
     //     this.attrLastMove('[anim] Shell Side Arm ' + move.category);
     // }
-    let target_pos = match target_pos {
+
+    let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
-    let is_ally = battle.is_ally(source_pos, target_pos);
+    let is_ally = battle.is_ally(source, target_pos);
 
     if !is_ally {
         let category = battle
@@ -108,16 +109,17 @@ pub fn on_modify_move(
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
-    let target_pos = match target_pos {
+
+    let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
-    let is_ally = battle.is_ally(source_pos, target_pos);
+    let is_ally = battle.is_ally(source, target_pos);
 
     if !is_ally {
         let category = battle
