@@ -22,14 +22,16 @@ impl Battle {
 
         let effect_str = effect_id.as_str();
 
-        // IMPORTANT: For Try, TryMove, PrepareHit and Hit events, check if effect is a MOVE first
+        // IMPORTANT: For Try, TryMove, PrepareHit, Hit and ModifyType events, check if effect is a MOVE first
         // This ensures that when single_event("Try", "noretreat", ...) is called,
         // it routes to the MOVE's onTry handler, not the volatile's handler
-        // Same for TryMove, PrepareHit and Hit events
+        // Same for TryMove, PrepareHit, Hit and ModifyType events
         // For two-turn moves like Meteor Beam, the move is also added as a volatile,
         // so we need to prioritize the MOVE handler for TryMove events
+        // For moves like Ivy Cudgel that change type based on the user's species,
+        // we need to prioritize the MOVE handler for ModifyType events
         // Note: run_event() now calls handlers directly based on effect_type, so this only affects single_event calls
-        if event_id == "Try" || event_id == "TryMove" || event_id == "PrepareHit" || event_id == "Hit" {
+        if event_id == "Try" || event_id == "TryMove" || event_id == "PrepareHit" || event_id == "Hit" || event_id == "ModifyType" {
             if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
                 return self.handle_move_event(event_id, effect_id, target, source);
             }

@@ -56,7 +56,9 @@ pub fn on_modify_type(
     let species_name = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
-            None => return EventResult::Continue,
+            None => {
+                return EventResult::Continue;
+            }
         };
         pokemon_pokemon.species_id.as_str()
     };
@@ -71,9 +73,9 @@ pub fn on_modify_type(
     //     move.type = 'Rock';
     //     break;
     let new_type = match species_name {
-        "Ogerpon-Wellspring" | "Ogerpon-Wellspring-Tera" => Some("Water"),
-        "Ogerpon-Hearthflame" | "Ogerpon-Hearthflame-Tera" => Some("Fire"),
-        "Ogerpon-Cornerstone" | "Ogerpon-Cornerstone-Tera" => Some("Rock"),
+        "ogerpenwellspring" | "ogerponwellspringtera" => Some("Water"),
+        "ogerponhearthflame" | "ogerponhearthflamtera" => Some("Fire"),
+        "ogerponcornerstone" | "ogerponcornerstontera" => Some("Rock"),
         _ => None,
     };
 
