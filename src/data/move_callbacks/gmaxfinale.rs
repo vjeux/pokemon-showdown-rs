@@ -84,7 +84,7 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        battle: &mut Battle,
+        _battle: &mut Battle,
         _target_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
     ) -> EventResult {

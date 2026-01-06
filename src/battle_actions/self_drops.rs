@@ -312,7 +312,7 @@ pub fn self_drops(
 
                         // Create targets array with source as the target (self-targeting)
                         let self_targets = vec![crate::battle_actions::SpreadMoveTarget::Target(source_pos)];
-                        let mut self_damages = vec![crate::battle_actions::DamageResult::Undefined];
+                        let self_damages = vec![crate::battle_actions::DamageResult::Undefined];
 
                         // Call run_move_effects with isSelf=true
                         let _result = crate::battle_actions::run_move_effects(

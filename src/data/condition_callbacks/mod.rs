@@ -149,9 +149,9 @@ pub fn dispatch_on_foe_before_move(
 
 /// Dispatch onAllyBeforeMove callbacks
 pub fn dispatch_on_ally_before_move(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     condition_id: &str,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
     match condition_id {
         _ => EventResult::Continue,
@@ -160,9 +160,9 @@ pub fn dispatch_on_ally_before_move(
 
 /// Dispatch onSourceBeforeMove callbacks
 pub fn dispatch_on_source_before_move(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     condition_id: &str,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
     match condition_id {
         _ => EventResult::Continue,
