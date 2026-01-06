@@ -267,7 +267,7 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 Some(pokemon_pos),
-                None,
+                event_source_pos,
                 move_id,
             ),
             "AnyInvulnerabilityPriority" => {
@@ -279,7 +279,13 @@ impl Battle {
                     move_id,
                 )
             }
-            "AnyModifyAccuracy" => ability_callbacks::dispatch_on_any_modify_accuracy(self, ability_id.as_str(), 0, Some(pokemon_pos), None),
+            "AnyModifyAccuracy" => ability_callbacks::dispatch_on_any_modify_accuracy(
+                self,
+                ability_id.as_str(),
+                relay_var_int,
+                Some(pokemon_pos),
+                event_source_pos,
+            ),
             "AnyModifyAccuracyPriority" => {
                 ability_callbacks::dispatch_on_any_modify_accuracy_priority(self, ability_id.as_str(), 0, Some(pokemon_pos), None)
             }

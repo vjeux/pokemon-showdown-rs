@@ -610,10 +610,6 @@ pub fn dispatch_on_any_faint(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyInvulnerability(target, source, move)
-
 /// Dispatch onAnyInvulnerability callbacks
 pub fn dispatch_on_any_invulnerability(
     battle: &mut Battle,
@@ -625,10 +621,6 @@ pub fn dispatch_on_any_invulnerability(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyModifyAccuracy(accuracy, target, source)
-
 /// Dispatch onAnyModifyAccuracy callbacks
 pub fn dispatch_on_any_modify_accuracy(
     battle: &mut Battle,
