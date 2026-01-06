@@ -334,11 +334,6 @@ pub fn dispatch_on_after_each_boost(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAfterMoveSecondary()
-//   onAfterMoveSecondary(target)
-//   onAfterMoveSecondary(target, source, move)
 
 /// Dispatch onAfterMoveSecondary callbacks
 pub fn dispatch_on_after_move_secondary(
