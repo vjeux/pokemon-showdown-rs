@@ -43,7 +43,15 @@ pub fn on_before_move(
 
     // JavaScript: this.runEvent('Flinch', pokemon);
     // Run Flinch event
-    battle.run_event_bool("Flinch", Some(pokemon_pos), None, None);
+    battle.run_event(
+        "Flinch",
+        Some(pokemon_pos),
+        None,
+        None,
+        crate::event::EventResult::Number(1),
+        false,
+        false,
+    );
 
     // JavaScript: return false;
     // Return false to prevent the move from executing

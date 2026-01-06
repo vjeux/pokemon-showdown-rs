@@ -78,12 +78,15 @@ pub fn run_move(
 
     // Run BeforeMove event
     // const willTryMove = this.battle.runEvent('BeforeMove', pokemon, target, move);
-    let will_try_move = battle.run_event_bool(
+    let will_try_move = battle.run_event(
         "BeforeMove",
         Some(pokemon_pos),
         Some(target_pos),
         Some(move_id),
-    );
+        crate::event::EventResult::Number(1),
+        false,
+        false,
+    ).is_truthy();
 
     if !will_try_move {
         // this.battle.runEvent('MoveAborted', pokemon, target, move);

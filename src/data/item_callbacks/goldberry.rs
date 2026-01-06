@@ -34,12 +34,15 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 /// }
 pub fn on_try_eat_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.runEvent('TryHeal', pokemon, null, this.effect, 30)) return false;
-    let result = battle.run_event_bool(
+    let result = battle.run_event(
         "TryHeal",
         Some(pokemon_pos),
         None,
         Some(&item_id.into()),
-    );
+        crate::event::EventResult::Number(1),
+        false,
+        false,
+    ).is_truthy();
 
     if !result {
         return EventResult::Boolean(false);

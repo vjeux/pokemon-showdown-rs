@@ -646,12 +646,15 @@ pub fn use_move_inner(
         None,
     );
 
-    let try_move_run = battle.run_event_bool(
+    let try_move_run = battle.run_event(
         "TryMove",
         Some(pokemon_pos),
         Some(final_target),
         Some(&active_move.id),
-    );
+        crate::event::EventResult::Number(1),
+        false,
+        false,
+    ).is_truthy();
 
     let try_move_success = !matches!(try_move_single, crate::event::EventResult::Boolean(false) |
                                                        crate::event::EventResult::Null |

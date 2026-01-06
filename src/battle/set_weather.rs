@@ -104,12 +104,15 @@ impl Battle {
 
         // Run 'SetWeather' event - can block the weather change
         if source_pos.is_some() {
-            let result = self.run_event_bool(
+            let result = self.run_event(
                 "SetWeather",
                 source_pos,
                 source_pos,
                 Some(&weather_id),
-            );
+                crate::event::EventResult::Number(1),
+                false,
+                false,
+            ).is_truthy();
 
             // If event returned false, weather change is blocked
             if !result {

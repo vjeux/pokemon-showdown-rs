@@ -86,12 +86,15 @@ pub fn try_move_hit(
         None,
     );
 
-    let prepare_hit_run = battle.run_event_bool(
+    let prepare_hit_run = battle.run_event(
         "PrepareHit",
         Some(pokemon_pos),
         Some(target),
         Some(move_id),
-    );
+        crate::event::EventResult::Number(1),
+        false,
+        false,
+    ).is_truthy();
 
     // JavaScript uses && operator which short-circuits on false
     let mut hit_result = !matches!(try_result, EventResult::Boolean(false) | EventResult::NotFail | EventResult::Null);
@@ -136,14 +139,30 @@ pub fn try_move_hit(
     //     hitResult = this.battle.runEvent('TryHitSide', target, pokemon, move);
     // }
     hit_result = if move_target == "all" {
-        battle.run_event_bool("TryHitField", Some(target), Some(pokemon_pos), Some(move_id))
+        battle.run_event(
+            "TryHitField",
+            Some(target),
+            Some(pokemon_pos),
+            Some(move_id),
+            crate::event::EventResult::Number(1),
+            false,
+            false,
+        ).is_truthy()
     } else if is_ffa_hazard {
         // For FFA hazards, check all targets
         // JavaScript: hitResults.some(result => !result)
         // If any target fails, return false
         let mut all_success = true;
         for &target_pos in targets {
-            let result = battle.run_event_bool("TryHitSide", Some(target_pos), Some(pokemon_pos), Some(move_id));
+            let result = battle.run_event(
+                "TryHitSide",
+                Some(target_pos),
+                Some(pokemon_pos),
+                Some(move_id),
+                crate::event::EventResult::Number(1),
+                false,
+                false,
+            ).is_truthy();
             if !result {
                 all_success = false;
                 break;
@@ -154,7 +173,15 @@ pub fn try_move_hit(
         }
         true
     } else {
-        battle.run_event_bool("TryHitSide", Some(target), Some(pokemon_pos), Some(move_id))
+        battle.run_event(
+            "TryHitSide",
+            Some(target),
+            Some(pokemon_pos),
+            Some(move_id),
+            crate::event::EventResult::Number(1),
+            false,
+            false,
+        ).is_truthy()
     };
 
     // if (!hitResult) {

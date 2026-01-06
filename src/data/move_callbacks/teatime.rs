@@ -43,12 +43,15 @@ pub fn on_hit_field(
 
     for pokemon_pos in all_active {
         // if (this.runEvent('Invulnerability', pokemon, source, move) === false)
-        let invuln_result = battle.run_event_bool(
+        let invuln_result = battle.run_event(
             "Invulnerability",
             Some(pokemon_pos),
             source,
             None,
-        );
+            crate::event::EventResult::Number(1),
+            false,
+            false,
+        ).is_truthy();
 
         if !invuln_result {
             // this.add('-miss', source, pokemon);
@@ -75,12 +78,15 @@ pub fn on_hit_field(
             }
         } else {
             // else if (this.runEvent('TryHit', pokemon, source, move) && pokemon.getItem().isBerry)
-            let try_hit_result = battle.run_event_bool(
+            let try_hit_result = battle.run_event(
                 "TryHit",
                 Some(pokemon_pos),
                 source,
                 None,
-            );
+                crate::event::EventResult::Number(1),
+                false,
+                false,
+            ).is_truthy();
 
             let has_berry = {
                 let pokemon_ref = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

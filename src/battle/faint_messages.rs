@@ -124,12 +124,15 @@ impl Battle {
             // JS: if (!pokemon.fainted && this.runEvent('BeforeFaint', pokemon, faintData.source, faintData.effect))
             if !already_fainted {
                 // Run BeforeFaint event - can be cancelled by returning false
-                let before_faint_result = self.run_event_bool(
+                let before_faint_result = self.run_event(
                     "BeforeFaint",
                     Some((side_idx, poke_idx)),
                     faint_data.source,
                     faint_data.effect.as_ref(),
-                );
+                    crate::event::EventResult::Number(1),
+                    false,
+                    false,
+                ).is_truthy();
 
                 if !before_faint_result {
                     // BeforeFaint was cancelled, skip this faint

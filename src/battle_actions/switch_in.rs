@@ -193,7 +193,15 @@ pub fn switch_in(
             battle.sides[side_index].pokemon[old_idx].skip_before_switch_out_event_flag = false;
 
             // Run SwitchOut event
-            if !battle.run_event_bool("SwitchOut", Some((side_index, old_idx)), None, None) {
+            if !battle.run_event(
+                "SwitchOut",
+                Some((side_index, old_idx)),
+                None,
+                None,
+                crate::event::EventResult::Number(1),
+                false,
+                false,
+            ).is_truthy() {
                 return SwitchResult::Failed;
             }
 

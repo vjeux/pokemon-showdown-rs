@@ -88,7 +88,15 @@ pub fn drag_in(battle: &mut Battle, side_idx: usize, slot: usize) -> bool {
     //   return false;
     // }
     eprintln!("[DRAG_IN] Calling runEvent DragOut for old pokemon");
-    if !battle.run_event_bool("DragOut", Some((side_idx, old_poke_idx)), None, None) {
+    if !battle.run_event(
+        "DragOut",
+        Some((side_idx, old_poke_idx)),
+        None,
+        None,
+        crate::event::EventResult::Number(1),
+        false,
+        false,
+    ).is_truthy() {
         eprintln!("[DRAG_IN] DragOut event returned false, returning false");
         return false;
     }

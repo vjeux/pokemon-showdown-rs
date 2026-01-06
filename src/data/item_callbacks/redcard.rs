@@ -96,7 +96,15 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
 
     if item_used.is_some() {
         // if (this.runEvent('DragOut', source, target, move))
-        if battle.run_event_bool("DragOut", Some(source_pos), Some(target_pos), None) {
+        if battle.run_event(
+            "DragOut",
+            Some(source_pos),
+            Some(target_pos),
+            None,
+            crate::event::EventResult::Number(1),
+            false,
+            false,
+        ).is_truthy() {
             // source.forceSwitchFlag = true;
             if let Some(source_mut) = battle.pokemon_at_mut(source_pos.0, source_pos.1) {
                 source_mut.force_switch_flag = true;

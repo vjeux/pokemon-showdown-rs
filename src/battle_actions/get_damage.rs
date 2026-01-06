@@ -316,8 +316,15 @@ pub fn get_damage(
     // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
     if is_crit {
         eprintln!("[GET_DAMAGE CRIT] Critical hit confirmed before CriticalHit event");
-        is_crit =
-            battle.run_event_bool("CriticalHit", Some(target_pos), None, Some(&move_data.id));
+        is_crit = battle.run_event(
+            "CriticalHit",
+            Some(target_pos),
+            None,
+            Some(&move_data.id),
+            crate::event::EventResult::Number(1),
+            false,
+            false,
+        ).is_truthy();
         eprintln!("[GET_DAMAGE CRIT] Critical hit after CriticalHit event: {}", is_crit);
     }
 
