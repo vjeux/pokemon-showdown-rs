@@ -1813,11 +1813,6 @@ pub fn dispatch_on_try_hit(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onUpdate()
-//   onUpdate(pokemon)
-
 /// Dispatch onUpdate callbacks
 pub fn dispatch_on_update(
     battle: &mut Battle,
