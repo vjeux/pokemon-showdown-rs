@@ -99,11 +99,44 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // for (const side of source.side.foeSidesWithConditions()) {
+        //     side.addSideCondition("gmaxwildfire");
+        // }
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let source_side = source.0;
+
+        // foeSidesWithConditions() returns sides that have active pokemon
+        // In most cases, this is just the opponent's side
+        for side_idx in 0..battle.sides.len() {
+            if side_idx == source_side {
+                continue;
+            }
+
+            // Check if this side has any active pokemon
+            let has_active = battle
+                .get_all_active(false)
+                .into_iter()
+                .any(|(s, _)| s == side_idx);
+
+            if has_active {
+                battle.add_side_condition(
+                    side_idx,
+                    crate::dex_data::ID::from("gmaxwildfire"),
+                    Some(source),
+                    None,
+                );
+            }
+        }
+
         EventResult::Continue
     }
 }
