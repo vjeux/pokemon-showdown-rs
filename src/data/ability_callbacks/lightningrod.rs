@@ -48,7 +48,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///         return this.effectState.target;
 ///     }
 /// }
-pub fn on_any_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_any_redirect_target(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _source2_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // onAnyRedirectTarget(target, source, source2, move) {
     //     if (move.type !== 'Electric' || move.flags['pledgecombo']) return;
     //     const redirectTarget = ['randomNormal', 'adjacentFoe'].includes(move.target) ? 'normal' : move.target;

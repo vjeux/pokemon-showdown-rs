@@ -340,6 +340,7 @@ impl Battle {
                 ability_id.as_str(),
                 Some(pokemon_pos),
                 event_source_pos,
+                event_target_pos,
                 move_id,
             ),
             "AnySetWeather" => ability_callbacks::dispatch_on_any_set_weather(self, ability_id.as_str(), Some(pokemon_pos), None),

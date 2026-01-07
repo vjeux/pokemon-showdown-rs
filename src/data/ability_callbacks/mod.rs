@@ -700,19 +700,16 @@ pub fn dispatch_on_any_modify_sp_d(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyRedirectTarget(target, source, source2, move)
 
 /// Dispatch onAnyRedirectTarget callbacks
 pub fn dispatch_on_any_redirect_target(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "lightningrod" => lightningrod::on_any_redirect_target(battle, target_pos, source_pos, move_id),
-        "stormdrain" => stormdrain::on_any_redirect_target(battle, target_pos, source_pos, move_id),
+        "lightningrod" => lightningrod::on_any_redirect_target(battle, target_pos, source_pos, source2_pos, move_id),
+        "stormdrain" => stormdrain::on_any_redirect_target(battle, target_pos, source_pos, source2_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -3382,9 +3379,9 @@ pub fn dispatch_on_any_modify_sp_d_sub_order(
 pub fn dispatch_on_any_redirect_target_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, source2_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3393,9 +3390,9 @@ pub fn dispatch_on_any_redirect_target_priority(
 pub fn dispatch_on_any_redirect_target_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, source2_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3404,9 +3401,9 @@ pub fn dispatch_on_any_redirect_target_order(
 pub fn dispatch_on_any_redirect_target_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, source2_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
