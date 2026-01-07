@@ -54,7 +54,11 @@ pub fn duration_callback(
 /// ```
 pub fn on_modify_def(
     battle: &mut Battle,
+    _def: i32,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _source_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // if (pokemon.hasType('Ice') && this.field.isWeather('snowscape'))
     let has_ice_type = {

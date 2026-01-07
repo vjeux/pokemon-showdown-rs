@@ -442,22 +442,18 @@ pub fn dispatch_on_lock_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyDef()
-//   onModifyDef(def)
-//   onModifyDef(def, pokemon)
-//   onModifyDef(def, target, source, move)
-//   onModifyDef(pokemon)
-
 /// Dispatch onModifyDef callbacks
 pub fn dispatch_on_modify_def(
     battle: &mut Battle,
     condition_id: &str,
+    _def: i32,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _source_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "snowscape" => snowscape::on_modify_def(battle, pokemon_pos),
+        "snowscape" => snowscape::on_modify_def(battle, _def, pokemon_pos, _target_pos, _source_pos, _move_id),
         _ => EventResult::Continue,
     }
 }
