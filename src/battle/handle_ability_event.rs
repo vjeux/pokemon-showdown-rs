@@ -610,7 +610,7 @@ impl Battle {
                 0, pokemon_pos, pokemon_pos,
             move_id,
             ),
-            "ModifyCritRatio" => ability_callbacks::dispatch_on_modify_crit_ratio(self, ability_id.as_str(), 0, pokemon_pos, None),
+            "ModifyCritRatio" => ability_callbacks::dispatch_on_modify_crit_ratio(self, ability_id.as_str(), relay_var_int, pokemon_pos, None, move_id),
             "ModifyDamage" => {
                 ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), relay_var_int, pokemon_pos, event_source_pos.unwrap_or((0, 0)), move_id)
             }

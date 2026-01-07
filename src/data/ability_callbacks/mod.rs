@@ -1201,23 +1201,15 @@ pub fn dispatch_on_modify_atk(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyCritRatio(critRatio)
-//   onModifyCritRatio(critRatio, source)
-//   onModifyCritRatio(critRatio, source, target)
-//   onModifyCritRatio(critRatio, source, target, move)
-//   onModifyCritRatio(critRatio, user)
-
 /// Dispatch onModifyCritRatio callbacks
 pub fn dispatch_on_modify_crit_ratio(
     battle: &mut Battle,
     ability_id: &str,
-    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "merciless" => merciless::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos),
-        "superluck" => superluck::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos),
+        "merciless" => merciless::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos, move_id),
+        "superluck" => superluck::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -4268,9 +4260,9 @@ pub fn dispatch_on_modify_atk_sub_order(
 pub fn dispatch_on_modify_crit_ratio_priority(
     battle: &mut Battle,
     ability_id: &str,
-    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos)
+    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4279,9 +4271,9 @@ pub fn dispatch_on_modify_crit_ratio_priority(
 pub fn dispatch_on_modify_crit_ratio_order(
     battle: &mut Battle,
     ability_id: &str,
-    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos)
+    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4290,9 +4282,9 @@ pub fn dispatch_on_modify_crit_ratio_order(
 pub fn dispatch_on_modify_crit_ratio_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos)
+    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
