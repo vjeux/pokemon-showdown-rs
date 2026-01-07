@@ -211,7 +211,7 @@ impl Battle {
         // JavaScript: const parentEffectState = this.effectState;
         // JavaScript: const parentEvent = this.event;
         let parent_event = self.event.take();
-        let parent_context = self.effect.take();
+        let parent_effect = self.effect.take();
         let parent_effect_state = std::mem::take(&mut self.effect_state);
 
         // Set up current effect state
@@ -261,7 +261,7 @@ impl Battle {
         // JavaScript: this.event = parentEvent;
         self.event_depth -= 1;
         self.event = parent_event;
-        self.effect = parent_context;
+        self.effect = parent_effect;
         self.effect_state = parent_effect_state;
 
         // JavaScript: return returnVal === undefined ? relayVar : returnVal;

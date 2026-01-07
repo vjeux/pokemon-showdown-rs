@@ -587,7 +587,7 @@ impl Battle {
                 | EffectType::SideCondition | EffectType::SlotCondition => {
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
                     // Set up effect so callbacks can use with_effect_state
-                    let parent_context = self.set_effect_context(crate::Effect {
+                    let parent_effect = self.set_effect_context(crate::Effect {
                         id: effect_id.clone(),
                         effect_type: handler.effect_type,
                         effect_holder: handler.effect_holder,
@@ -598,7 +598,7 @@ impl Battle {
                     let result = self.handle_condition_event(&event_variant, effect_id.as_str(), handler_target_event.as_ref());
 
                     // Restore parent effect context
-                    self.restore_effect_context(parent_context);
+                    self.restore_effect_context(parent_effect);
 
                     result
                 }

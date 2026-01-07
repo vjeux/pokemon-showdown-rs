@@ -87,7 +87,7 @@ impl Battle {
         }
 
         // Save parent state
-        let parent_context = self.effect.clone();
+        let parent_effect = self.effect.clone();
         let parent_event = self.event.clone();
 
         // Set current event context with SideCondition effect type
@@ -115,7 +115,7 @@ impl Battle {
 
         // Restore parent state
         self.event_depth -= 1;
-        self.effect = parent_context;
+        self.effect = parent_effect;
         self.event = parent_event;
 
         result
