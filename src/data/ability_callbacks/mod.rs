@@ -961,21 +961,17 @@ pub fn dispatch_on_drag_out(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onEatItem(item, pokemon)
-//   onEatItem(item, pokemon, source, effect)
 
 /// Dispatch onEatItem callbacks
 pub fn dispatch_on_eat_item(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    item_id: Option<&str>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "cheekpouch" => cheekpouch::on_eat_item(battle, pokemon_pos),
-        "cudchew" => cudchew::on_eat_item(battle, pokemon_pos, None, None),
-        "ripen" => ripen::on_eat_item(battle, pokemon_pos),
+        "cheekpouch" => cheekpouch::on_eat_item(battle, item_id, pokemon_pos, source_pos, effect_id),
+        "cudchew" => cudchew::on_eat_item(battle, item_id, pokemon_pos, source_pos, effect_id),
+        "ripen" => ripen::on_eat_item(battle, item_id, pokemon_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -3831,9 +3827,9 @@ pub fn dispatch_on_drag_out_sub_order(
 pub fn dispatch_on_eat_item_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    item_id: Option<&str>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_eat_item(battle, ability_id, pokemon_pos)
+    dispatch_on_eat_item(battle, ability_id, item_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3842,9 +3838,9 @@ pub fn dispatch_on_eat_item_priority(
 pub fn dispatch_on_eat_item_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    item_id: Option<&str>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_eat_item(battle, ability_id, pokemon_pos)
+    dispatch_on_eat_item(battle, ability_id, item_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3853,9 +3849,9 @@ pub fn dispatch_on_eat_item_order(
 pub fn dispatch_on_eat_item_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    item_id: Option<&str>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_eat_item(battle, ability_id, pokemon_pos)
+    dispatch_on_eat_item(battle, ability_id, item_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

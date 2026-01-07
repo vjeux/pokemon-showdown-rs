@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         if (!this.queue.peek()) this.effectState.counter--;
 ///     }
 /// }
-pub fn on_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     
 
     // Get the item from battle.current_event.effect

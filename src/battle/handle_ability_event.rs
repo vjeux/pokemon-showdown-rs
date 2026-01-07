@@ -497,7 +497,14 @@ impl Battle {
                 move_id,
             ),
             "EatItem" => {
-                ability_callbacks::dispatch_on_eat_item(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_eat_item(
+                    self,
+                    ability_id.as_str(),
+                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                    pokemon_pos,
+                    event_source_pos,
+                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                )
             }
             "Effectiveness" => {
                 // Extract type_mod from relay_var and target_type from type_param
