@@ -5,7 +5,6 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
-use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
 
@@ -37,7 +36,7 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _
     let should_return = if let Some(ref active_move) = battle.active_move {
         active_move.has_bounced
             || active_move.flags.future_move
-            || active_move.source_effect == Some(ID::from("snatch"))
+            || active_move.source_effect.as_ref().map(|e| e.as_str()) == Some("snatch")
             || active_move.calls_move.is_some()
     } else {
         return EventResult::Continue;

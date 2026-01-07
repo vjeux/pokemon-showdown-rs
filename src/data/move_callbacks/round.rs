@@ -19,8 +19,6 @@ pub fn base_power_callback(
     _pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     // if (move.sourceEffect === 'round') {
     //     this.debug('BP doubled');
     //     return move.basePower * 2;
@@ -35,7 +33,7 @@ pub fn base_power_callback(
     let is_round_source = active_move
         .source_effect
         .as_ref()
-        .map(|se| se == &ID::from("round"))
+        .map(|se| se.as_str() == "round")
         .unwrap_or(false);
 
     if is_round_source {

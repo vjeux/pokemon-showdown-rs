@@ -90,11 +90,11 @@ pub mod condition {
                 active_move.is_z,
                 active_move.is_max,
                 active_move.flags.snatch,
-                active_move.source_effect.clone(),
+                active_move.source_effect.as_ref().map(|e| e.as_str().to_string()),
             )
         };
 
-        if is_z || is_max || !has_snatch_flag || source_effect == Some(ID::from("snatch")) {
+        if is_z || is_max || !has_snatch_flag || source_effect.as_deref() == Some("snatch") {
             return EventResult::Continue;
         }
 

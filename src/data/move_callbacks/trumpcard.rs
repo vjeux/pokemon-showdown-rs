@@ -56,14 +56,17 @@ pub fn base_power_callback(
     };
 
     // Determine which move to look up: sourceEffect || move.id
-    let caller_move_id = active_move.source_effect.as_ref().unwrap_or(&active_move.id);
+    // If sourceEffect is set, use its ID, otherwise use move.id
+    let caller_move_id_str = active_move.source_effect.as_ref()
+        .map(|e| e.id.clone())
+        .unwrap_or_else(|| active_move.id.clone());
 
     // Determine which move slot to check
     // If caller is 'instruct', use move.id, otherwise use caller_move_id
-    let move_slot_id = if caller_move_id.as_str() == "instruct" {
+    let move_slot_id = if caller_move_id_str.as_str() == "instruct" {
         &active_move.id
     } else {
-        caller_move_id
+        &caller_move_id_str
     };
 
     // Find the move slot

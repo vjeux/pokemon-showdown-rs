@@ -348,6 +348,11 @@ impl Effect {
     pub fn field_condition(id: impl Into<ID>) -> Self {
         Self::new(id.into(), EffectType::FieldCondition)
     }
+
+    /// Get the ID as a string reference
+    pub fn as_str(&self) -> &str {
+        self.id.as_str()
+    }
 }
 
 /// Type alias for event callback functions

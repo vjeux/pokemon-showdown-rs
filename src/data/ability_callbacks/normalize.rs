@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onModifyType(move, pokemon) {
@@ -19,8 +19,6 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::dex_data::ID;
-
     // const noModifyType = [...]
     let no_modify_type = [
         "hiddenpower",
@@ -55,7 +53,7 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
             // move.type = 'Normal';
             active_move.move_type = "Normal".to_string();
             // move.typeChangerBoosted = this.effect;
-            active_move.type_changer_boosted = Some(ID::from("normalize"));
+            active_move.type_changer_boosted = Some(Effect::ability("normalize"));
         }
     }
 
@@ -66,11 +64,9 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
 ///     if (move.typeChangerBoosted === this.effect) return this.chainModify([4915, 4096]);
 /// }
 pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-    use crate::dex_data::ID;
-
     // if (move.typeChangerBoosted === this.effect)
     let is_boosted = if let Some(ref active_move) = battle.active_move {
-        active_move.type_changer_boosted == Some(ID::from("normalize"))
+        active_move.type_changer_boosted.as_ref().map(|e| e.as_str()) == Some("normalize")
     } else {
         false
     };

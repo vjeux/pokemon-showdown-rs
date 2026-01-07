@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// basePowerCallback(target, source, move) {
@@ -19,16 +20,14 @@ pub fn base_power_callback(
     _pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     // if (['waterpledge', 'firepledge'].includes(move.sourceEffect)) {
     let source_effect = battle
         .active_move
         .as_ref()
         .and_then(|m| m.source_effect.clone());
 
-    if let Some(ref effect_id) = source_effect {
-        if effect_id == &ID::from("waterpledge") || effect_id == &ID::from("firepledge") {
+    if let Some(ref effect) = source_effect {
+        if effect.as_str() == "waterpledge" || effect.as_str() == "firepledge" {
             // this.add('-combine');
             battle.add("-combine", &[]);
 
@@ -65,8 +64,6 @@ pub fn on_prepare_hit(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = pokemon_pos;
 
     // for (const action of this.queue.list as MoveAction[]) {
@@ -178,16 +175,14 @@ pub fn on_modify_move(
     _pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     // if (move.sourceEffect === 'waterpledge') {
     let source_effect = battle
         .active_move
         .as_ref()
         .and_then(|m| m.source_effect.clone());
 
-    if let Some(ref effect_id) = source_effect {
-        if effect_id == &ID::from("waterpledge") {
+    if let Some(ref effect) = source_effect {
+        if effect.as_str() == "waterpledge" {
             // move.type = 'Grass';
             // move.forceSTAB = true;
             // move.sideCondition = 'grasspledge';
@@ -199,7 +194,7 @@ pub fn on_modify_move(
         }
 
         // if (move.sourceEffect === 'firepledge') {
-        if effect_id == &ID::from("firepledge") {
+        if effect.as_str() == "firepledge" {
             // move.type = 'Fire';
             // move.forceSTAB = true;
             // move.sideCondition = 'firepledge';

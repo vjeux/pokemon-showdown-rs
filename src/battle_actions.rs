@@ -12,6 +12,7 @@ use once_cell::sync::Lazy;
 
 use crate::dex::{Dex, Multihit};
 use crate::dex_data::{BoostsTable, ID};
+use crate::battle::Effect;
 
 /// Choosable target types for moves
 
@@ -636,8 +637,8 @@ pub struct ActiveMove {
     /// JavaScript: hasBounced: boolean
     pub has_bounced: bool,
     /// Source effect that triggered this move (Dancer, Instruct, etc.)
-    /// JavaScript: sourceEffect?: ID
-    pub source_effect: Option<ID>,
+    /// JavaScript: sourceEffect?: Effect
+    pub source_effect: Option<Effect>,
     /// Aura Break ability is active
     /// JavaScript: hasAuraBreak?: boolean
     pub has_aura_break: Option<bool>,
@@ -656,8 +657,7 @@ pub struct ActiveMove {
     /// Effect ID that changed this move's type (e.g., "pixilate", "aerilate")
     /// Used to boost power after type change
     /// JavaScript: typeChangerBoosted?: Effect
-    /// TODO: Rust uses Option<ID>, JavaScript uses full Effect object
-    pub type_changer_boosted: Option<ID>,
+    pub type_changer_boosted: Option<Effect>,
     /// Magnitude value for Magnitude move
     /// JavaScript: magnitude?: number
     pub magnitude: Option<i32>,
@@ -1086,7 +1086,7 @@ pub struct MoveEffects {
 pub struct RunMoveOptions {
     /// Source effect that caused this move
     /// JavaScript: sourceEffect?: Effect
-    pub source_effect: Option<ID>,
+    pub source_effect: Option<Effect>,
     /// Z-move override
     /// JavaScript: zMove?: string
     pub z_move: Option<String>,
@@ -1112,7 +1112,7 @@ pub struct UseMoveOptions {
     pub target: Option<usize>,
     /// Source effect
     /// JavaScript: sourceEffect?: Effect
-    pub source_effect: Option<ID>,
+    pub source_effect: Option<Effect>,
     /// Z-move override
     /// JavaScript: zMove?: string
     pub z_move: Option<String>,

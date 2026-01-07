@@ -4,9 +4,8 @@
 //!
 //! Converts Normal-type moves to Fairy-type and boosts their power by 1.2x (Gen 8+)
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
-use crate::ID;
 
 /// onModifyType(move, pokemon) {
 ///     const noModifyType = [
@@ -67,7 +66,7 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
     // Convert to Fairy type and mark as boosted
     if let Some(ref mut active_move) = battle.active_move {
         active_move.move_type = "Fairy".to_string();
-        active_move.type_changer_boosted = Some(ID::new("pixilate"));
+        active_move.type_changer_boosted = Some(Effect::ability("pixilate"));
         eprintln!("[PIXILATE] Changed {} from Normal to Fairy", active_move.name);
     }
 
