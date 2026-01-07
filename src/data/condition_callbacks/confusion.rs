@@ -154,6 +154,7 @@ pub fn on_before_move(
     _move_id: &str,
 ) -> EventResult {
     // pokemon.volatiles['confusion'].time--;
+    let current_turn = battle.turn;
     {
         let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -164,7 +165,9 @@ pub fn on_before_move(
         if let Some(volatile) = pokemon.volatiles.get_mut(&confusion_id) {
             if let Some(time_val) = volatile.data.get_mut("time") {
                 if let Some(time) = time_val.as_i64() {
+                    eprintln!("[CONFUSION_BEFORE_TIME_DEC] turn={}, pokemon={:?}, time_before={}", current_turn, pokemon_pos, time);
                     *time_val = serde_json::Value::Number(serde_json::Number::from(time - 1));
+                    eprintln!("[CONFUSION_AFTER_TIME_DEC] turn={}, pokemon={:?}, time_after={}", current_turn, pokemon_pos, time - 1);
                 }
             }
         }

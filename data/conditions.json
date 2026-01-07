@@ -110,7 +110,8 @@
     "duration": 2,
     "onBeforeMovePriority": 11,
     "onBeforeMove": true,
-    "onStart": true
+    "onStart": true,
+    "onLockMove": "recharge"
   },
   "futuremove": {
     "name": "futuremove",
@@ -136,6 +137,7 @@
     "name": "gem",
     "duration": 1,
     "affectsFainted": true,
+    "onBasePowerPriority": 14,
     "onBasePower": true
   },
   "raindance": {
@@ -154,6 +156,7 @@
     "effectType": "Weather",
     "duration": 0,
     "onFieldResidualOrder": 1,
+    "onTryMovePriority": 1,
     "onTryMove": true,
     "onWeatherModifyDamage": true,
     "onFieldStart": true,
@@ -177,6 +180,7 @@
     "effectType": "Weather",
     "duration": 0,
     "onFieldResidualOrder": 1,
+    "onTryMovePriority": 1,
     "onTryMove": true,
     "onWeatherModifyDamage": true,
     "onFieldStart": true,
@@ -214,6 +218,7 @@
     "duration": 5,
     "onFieldResidualOrder": 1,
     "durationCallback": true,
+    "onModifyDefPriority": 10,
     "onModifyDef": true,
     "onFieldStart": true,
     "onFieldResidual": true,
@@ -224,6 +229,7 @@
     "effectType": "Weather",
     "duration": 0,
     "onFieldResidualOrder": 1,
+    "onEffectivenessPriority": -1,
     "onEffectiveness": true,
     "onFieldStart": true,
     "onFieldResidual": true,
@@ -234,9 +240,12 @@
     "noCopy": true,
     "onStart": true,
     "onTryAddVolatile": true,
+    "onBeforeSwitchOutPriority": -1,
     "onBeforeSwitchOut": true,
     "onSourceModifyDamage": true,
+    "onDragOutPriority": 2,
     "onDragOut": true,
+    "onResidualPriority": -100,
     "onResidual": true,
     "onEnd": true
   },
@@ -244,22 +253,29 @@
     "name": "Commanded",
     "noCopy": true,
     "onStart": true,
+    "onDragOutPriority": 2,
     "onDragOut": true,
+    "onTrapPokemonPriority": -11,
     "onTrapPokemon": true
   },
   "commanding": {
     "name": "Commanding",
     "noCopy": true,
+    "onDragOutPriority": 2,
     "onDragOut": true,
+    "onTrapPokemonPriority": -11,
     "onTrapPokemon": true,
+    "onInvulnerability": false,
     "onBeforeTurn": true
   },
   "arceus": {
     "name": "Arceus",
+    "onTypePriority": 1,
     "onType": true
   },
   "silvally": {
     "name": "Silvally",
+    "onTypePriority": 1,
     "onType": true
   },
   "rolloutstorage": {

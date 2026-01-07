@@ -51,9 +51,17 @@ function extractMetadata(conditionId, conditionData) {
     const callbacks = [];
     for (const key in conditionData) {
         if (!conditionData.hasOwnProperty(key)) continue;
-        if (typeof conditionData[key] === 'function') {
+        const value = conditionData[key];
+        // Export callbacks as true if they're functions OR if they're already boolean/static values
+        // JavaScript conditions can have static callback values (like onInvulnerability: false for phantomforce)
+        if (typeof value === 'function') {
             callbacks.push(key);
             metadata[key] = true;
+        } else if (key.startsWith('on') && (typeof value === 'boolean' || typeof value === 'number' || typeof value === 'string')) {
+            // Also export static callback values (booleans, numbers, strings)
+            // These create handlers that return the static value
+            callbacks.push(key);
+            metadata[key] = value;
         }
     }
 
