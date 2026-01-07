@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_atk(battle: &mut Battle, move_id: &str) -> EventResult {
+pub fn on_source_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), move_id: &str) -> EventResult {
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Fire" {
             let modified = battle.chain_modify(0.5);

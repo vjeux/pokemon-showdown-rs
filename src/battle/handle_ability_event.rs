@@ -788,11 +788,13 @@ impl Battle {
             "SourceModifyAtk" => ability_callbacks::dispatch_on_source_modify_atk(
                 self,
                 ability_id.as_str(),
+                relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
             move_id,
             ),
             "SourceModifyAtkPriority" => ability_callbacks::dispatch_on_source_modify_atk_priority(
                 self,
                 ability_id.as_str(),
+                relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
             move_id,
             ),
             "SourceModifyDamage" => {

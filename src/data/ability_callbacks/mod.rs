@@ -1509,22 +1509,17 @@ pub fn dispatch_on_source_modify_accuracy(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSourceModifyAtk()
-//   onSourceModifyAtk(atk, attacker, defender, move)
-
 /// Dispatch onSourceModifyAtk callbacks
 pub fn dispatch_on_source_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "heatproof" => heatproof::on_source_modify_atk(battle, move_id),
-        "purifyingsalt" => purifyingsalt::on_source_modify_atk(battle, move_id),
-        "thickfat" => thickfat::on_source_modify_atk(battle, move_id),
-        "waterbubble" => waterbubble::on_source_modify_atk(battle, move_id),
+        "heatproof" => heatproof::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "purifyingsalt" => purifyingsalt::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "thickfat" => thickfat::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "waterbubble" => waterbubble::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -4788,9 +4783,9 @@ pub fn dispatch_on_source_modify_accuracy_sub_order(
 pub fn dispatch_on_source_modify_atk_priority(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_atk(battle, ability_id, move_id)
+    dispatch_on_source_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4799,9 +4794,9 @@ pub fn dispatch_on_source_modify_atk_priority(
 pub fn dispatch_on_source_modify_atk_order(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_atk(battle, ability_id, move_id)
+    dispatch_on_source_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4810,9 +4805,9 @@ pub fn dispatch_on_source_modify_atk_order(
 pub fn dispatch_on_source_modify_atk_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_atk(battle, ability_id, move_id)
+    dispatch_on_source_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
