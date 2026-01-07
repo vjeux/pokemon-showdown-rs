@@ -497,6 +497,8 @@ impl Battle {
                 }
             } else {
                 // Normal handling for non-side-Residual events
+                eprintln!("[FIELD_EVENT] Calling single_event for event='{}', effect='{}', turn={}",
+                    handler_event_id, handler.effect_id.as_str(), self.turn);
                 self.single_event(&handler_event_id, &handler.effect_id, handler.holder, None, None, None);
 
                 // JS: this.faintMessages();

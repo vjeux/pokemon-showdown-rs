@@ -19,13 +19,16 @@ impl Battle {
     ///     }
     ///   }
     pub fn shuffle_range<T>(&mut self, list: &mut [T], mut start: usize, end: usize) {
+        eprintln!("[SHUFFLE_RANGE] Called with start={}, end={}, turn={}", start, end, self.turn);
         while start < end - 1 {
             let next_index = self.random_with_range(start as i32, end as i32) as usize;
+            eprintln!("[SHUFFLE_RANGE] PRNG call: random_with_range({}, {}) = {}", start, end, next_index);
 
             if start != next_index {
                 list.swap(start, next_index);
             }
             start += 1;
         }
+        eprintln!("[SHUFFLE_RANGE] Complete, turn={}", self.turn);
     }
 }

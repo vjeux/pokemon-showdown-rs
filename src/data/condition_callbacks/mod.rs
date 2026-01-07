@@ -527,6 +527,8 @@ pub fn dispatch_on_residual(
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
+    eprintln!("[DISPATCH_ON_RESIDUAL] condition_id='{}', pokemon_pos={:?}, turn={}",
+        condition_id, pokemon_pos, battle.turn);
     match condition_id {
         "brn" => brn::on_residual(battle, pokemon_pos, source_pos, effect_id),
         "dynamax" => dynamax::on_residual(battle, pokemon_pos, source_pos, effect_id),
