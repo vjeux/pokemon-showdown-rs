@@ -492,6 +492,11 @@ mod tests {
 
     #[test]
     fn test_queue_sorting() {
+        // Create a minimal battle for sorting
+        use crate::Dex;
+        let dex = Dex::new();
+        let mut battle = Battle::new("gen9randombattle", dex);
+
         let mut queue = BattleQueue::new();
 
         // Add actions with different priorities and speeds
@@ -558,7 +563,8 @@ mod tests {
             move_priority_modified: None,
         }));
 
-        queue.sort();
+        // Sort using the battle reference
+        queue.sort(&mut battle);
 
         // Quick Attack (priority 1) should be first
         let first = queue.shift().unwrap();
