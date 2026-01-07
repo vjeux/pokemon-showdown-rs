@@ -42,7 +42,6 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 /// }
 pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::dex_data::ID;
-    
 
     // if (pokemon.baseSpecies.baseSpecies !== 'Castform' || pokemon.transformed) return;
     let (is_active, base_species_base_species, transformed, species_id, effective_weather) = {
@@ -124,22 +123,17 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
                 let battle_ref1 = &mut *battle_ptr;
                 let battle_ref2 = &mut *battle_ptr;
 
-                // Get pokemon directly from sides array
-                let side = &mut battle_ref1.sides[pokemon_pos.0];
-                let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-                if let Some(pokemon_index) = active_slot {
-                    if pokemon_index < side.pokemon.len() {
-                        crate::pokemon::Pokemon::forme_change(
-                            battle_ref2,
-                            (pokemon_pos.0, pokemon_index),
-                            ID::from(forme_id),
-                            Some(ID::from("forecast")),
-                            false,
-                            "0",
-                            Some("[msg]")
-                        );
-                    }
-                }
+                // pokemon_pos is (side_idx, pokemon_idx) where pokemon_idx is the index in sides[side_idx].pokemon
+                // We need to use pokemon_idx directly, not the active slot
+                crate::pokemon::Pokemon::forme_change(
+                    battle_ref2,
+                    pokemon_pos,  // Use pokemon_pos directly, not active_slot lookup
+                    ID::from(forme_id),
+                    Some(ID::from("forecast")),
+                    false,
+                    "0",
+                    Some("[msg]")
+                );
             }
         }
     }

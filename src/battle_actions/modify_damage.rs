@@ -184,10 +184,14 @@ pub fn modify_damage(
         .and_then(|m| m.no_damage_variance)
         .unwrap_or(false) == false; // Apply variance unless explicitly disabled
 
+    eprintln!("[MODIFY_DAMAGE] turn={}, BEFORE randomizer: base_damage={}, should_apply={}",
+        battle.turn, base_damage, should_apply_variance);
+
     if should_apply_variance {
         base_damage = battle.randomizer(base_damage);
     }
-    eprintln!("[MODIFY_DAMAGE] After randomizer (applied={}): base_damage={}", should_apply_variance, base_damage);
+    eprintln!("[MODIFY_DAMAGE] turn={}, AFTER randomizer (applied={}): base_damage={}",
+        battle.turn, should_apply_variance, base_damage);
 
     // Get source and target data for STAB and type effectiveness
     let (source_types, _target_types, target_slot) = {
@@ -253,15 +257,22 @@ pub fn modify_damage(
         eprintln!("[MODIFY_DAMAGE] move_type={}, source_types={:?}", move_type, source_types);
     }
 
+    eprintln!("[MODIFY_DAMAGE] turn={}, About to check STAB: move_type={}, source_types={:?}",
+        battle.turn, move_type, source_types);
+
     if &move_type != "???" {
         let has_stab = source_types.iter().any(|t| t == &move_type);
         if battle.turn >= 64 && battle.turn <= 66 {
             eprintln!("[MODIFY_DAMAGE] Checking STAB: has_stab={}", has_stab);
         }
+        eprintln!("[MODIFY_DAMAGE] turn={}, STAB check: has_stab={}, base_damage_before={}",
+            battle.turn, has_stab, base_damage);
         if has_stab {
             base_damage = battle.modify(base_damage, 3, 2);
-            eprintln!("[MODIFY_DAMAGE] After STAB: base_damage={}", base_damage);
+            eprintln!("[MODIFY_DAMAGE] turn={}, After STAB: base_damage={}", battle.turn, base_damage);
         }
+    } else {
+        eprintln!("[MODIFY_DAMAGE] turn={}, Skipping STAB because move_type is ???", battle.turn);
     }
 
     // let typeMod = target.runEffectiveness(move);
