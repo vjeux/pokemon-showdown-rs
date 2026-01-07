@@ -60,11 +60,31 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // if (!source.volatiles["dynamax"]) return;
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let has_dynamax = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.has_volatile(&ID::from("dynamax"))
+        };
+
+        if !has_dynamax {
+            return EventResult::Continue;
+        }
+
+        // this.field.setTerrain("grassyterrain");
+        battle.set_terrain(ID::from("grassyterrain"), None);
+
         EventResult::Continue
     }
 }
