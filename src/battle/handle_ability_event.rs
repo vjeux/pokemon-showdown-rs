@@ -680,7 +680,7 @@ impl Battle {
             move_id,
             ),
             "ModifySpe" => {
-                ability_callbacks::dispatch_on_modify_spe(self, ability_id.as_str(), 0, pokemon_pos)
+                ability_callbacks::dispatch_on_modify_spe(self, ability_id.as_str(), relay_var_int, pokemon_pos)
             }
             "ModifyType" => {
                 ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), move_id, pokemon_pos, event_target_pos)
