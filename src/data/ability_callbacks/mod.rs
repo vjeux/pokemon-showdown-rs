@@ -2090,9 +2090,6 @@ pub fn dispatch_on_ally_base_power_sub_order(
 ) -> EventResult {
     dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyFaintPriority callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_priority(
     battle: &mut Battle,
@@ -2101,9 +2098,6 @@ pub fn dispatch_on_ally_faint_priority(
 ) -> EventResult {
     dispatch_on_ally_faint(battle, ability_id, target_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyFaintOrder callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_order(
     battle: &mut Battle,
@@ -2112,9 +2106,6 @@ pub fn dispatch_on_ally_faint_order(
 ) -> EventResult {
     dispatch_on_ally_faint(battle, ability_id, target_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyFaintSubOrder callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_sub_order(
     battle: &mut Battle,
@@ -2123,9 +2114,6 @@ pub fn dispatch_on_ally_faint_sub_order(
 ) -> EventResult {
     dispatch_on_ally_faint(battle, ability_id, target_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyModifyAtkPriority callbacks (alias for onAllyModifyAtk)
 pub fn dispatch_on_ally_modify_atk_priority(
     battle: &mut Battle,
@@ -2134,9 +2122,6 @@ pub fn dispatch_on_ally_modify_atk_priority(
 ) -> EventResult {
     dispatch_on_ally_modify_atk(battle, ability_id, atk, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyModifyAtkOrder callbacks (alias for onAllyModifyAtk)
 pub fn dispatch_on_ally_modify_atk_order(
     battle: &mut Battle,
@@ -2145,9 +2130,6 @@ pub fn dispatch_on_ally_modify_atk_order(
 ) -> EventResult {
     dispatch_on_ally_modify_atk(battle, ability_id, atk, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyModifyAtkSubOrder callbacks (alias for onAllyModifyAtk)
 pub fn dispatch_on_ally_modify_atk_sub_order(
     battle: &mut Battle,
@@ -2156,9 +2138,6 @@ pub fn dispatch_on_ally_modify_atk_sub_order(
 ) -> EventResult {
     dispatch_on_ally_modify_atk(battle, ability_id, atk, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyModifySpDPriority callbacks (alias for onAllyModifySpD)
 pub fn dispatch_on_ally_modify_sp_d_priority(
     battle: &mut Battle,
@@ -2167,9 +2146,6 @@ pub fn dispatch_on_ally_modify_sp_d_priority(
 ) -> EventResult {
     dispatch_on_ally_modify_sp_d(battle, ability_id, spd, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyModifySpDOrder callbacks (alias for onAllyModifySpD)
 pub fn dispatch_on_ally_modify_sp_d_order(
     battle: &mut Battle,
@@ -2178,9 +2154,6 @@ pub fn dispatch_on_ally_modify_sp_d_order(
 ) -> EventResult {
     dispatch_on_ally_modify_sp_d(battle, ability_id, spd, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyModifySpDSubOrder callbacks (alias for onAllyModifySpD)
 pub fn dispatch_on_ally_modify_sp_d_sub_order(
     battle: &mut Battle,
