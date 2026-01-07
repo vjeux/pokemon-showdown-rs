@@ -23,8 +23,13 @@ impl Battle {
     pub fn check_win(&mut self, faint_data: Option<FaintData>) -> bool {
         // JavaScript: checkWin(faintData?: Battle['faintQueue'][0])
 
+        eprintln!("[CHECK_WIN] Called at turn={}, faint_data={:?}", self.turn, faint_data.is_some());
+        eprintln!("[CHECK_WIN] Side 0 pokemon_left={}, Side 1 pokemon_left={}",
+            self.sides[0].pokemon_left, self.sides[1].pokemon_left);
+
         // Check if all sides have no Pokemon left - tie/draw scenario
         if self.sides.iter().all(|side| side.pokemon_left == 0) {
+            eprintln!("[CHECK_WIN] All sides have 0 Pokemon left - tie/draw");
             // JS: this.win(faintData && this.gen > 4 ? faintData.target.side : null);
             // In Gen 5+, the side that fainted last wins
             let winner = if let Some(faint_data) = faint_data {
@@ -83,14 +88,18 @@ impl Battle {
                 continue;
             };
 
+            eprintln!("[CHECK_WIN] Side {} foe_pokemon_left={}", side_idx, foe_pokemon_left);
+
             // JS: if (!side.foePokemonLeft())
             if foe_pokemon_left == 0 {
+                eprintln!("[CHECK_WIN] Side {} has won! (foe has 0 Pokemon left)", side_idx);
                 // JS: this.win(side);
                 self.win(Some(self.sides[side_idx].id));
                 return true;
             }
         }
 
+        eprintln!("[CHECK_WIN] No winner yet");
         false
     }
 }

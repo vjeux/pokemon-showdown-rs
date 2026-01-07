@@ -694,7 +694,10 @@ pub fn use_move_inner(
     // }
     if battle.gen != 4 {
         if let Some(ref am) = battle.active_move {
+            eprintln!("[SELFDESTRUCT] Checking selfdestruct for move={}, self_destruct={:?}",
+                am.id, am.self_destruct);
             if am.self_destruct.as_deref() == Some("always") {
+                eprintln!("[SELFDESTRUCT] Calling battle.faint() for pokemon_pos={:?}", pokemon_pos);
                 battle.faint(pokemon_pos, Some(pokemon_pos), Some(active_move.id.as_str()));
             }
         }

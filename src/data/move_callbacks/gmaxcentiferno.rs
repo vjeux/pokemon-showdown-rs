@@ -43,8 +43,12 @@ pub fn on_hit(
         source_pokemon.foes(battle, false)
     };
 
+    // JavaScript: this.dex.getActiveMove('G-Max Centiferno')
+    // Pass the move ID as source_effect so partiallytrapped knows this is a G-Max effect
+    let move_id = ID::from("gmaxcentiferno");
+
     for foe_pos in foe_positions {
-        Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source), None, None, None);
+        Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source), Some(&move_id), None, None);
     }
 
     EventResult::Continue
@@ -91,8 +95,12 @@ pub mod self_callbacks {
             source_pokemon.foes(battle, false)
         };
 
+        // JavaScript: this.dex.getActiveMove("G-Max Centiferno")
+        // Pass the move ID as source_effect so partiallytrapped knows this is a G-Max effect
+        let move_id = ID::from("gmaxcentiferno");
+
         for foe_pos in foe_positions {
-            Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source_pos), None, None, None);
+            Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source_pos), Some(&move_id), None, None);
         }
 
         EventResult::Continue

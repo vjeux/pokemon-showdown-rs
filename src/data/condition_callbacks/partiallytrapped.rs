@@ -71,12 +71,13 @@ pub fn on_start(
         let trap_id = ID::from("partiallytrapped");
         if let Some(state) = pokemon.volatiles.get(&trap_id) {
             let source = state.source;
-            // Try to get sourceEffect name from data
-            let effect_name = state.data.get("sourceEffect")
-                .and_then(|v| v.get("fullname"))
-                .and_then(|v| v.as_str())
-                .unwrap_or("unknown");
-            (source, effect_name.to_string())
+            // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
+            // Use the ID as the name - the battle formatter will convert it to display name
+            let effect_name = state.source_effect
+                .as_ref()
+                .map(|id| format!("move: {}", id.as_str()))
+                .unwrap_or_else(|| "unknown".to_string());
+            (source, effect_name)
         } else {
             return EventResult::Continue;
         }
@@ -176,11 +177,15 @@ pub fn on_residual(
 
         // JavaScript: const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
         // G-Max Centiferno and G-Max Sandblast continue even after the user leaves the field
+        // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
         let gmax = pokemon.volatiles.get(&trap_id)
-            .and_then(|state| state.data.get("sourceEffect"))
-            .and_then(|v| v.get("id"))
-            .and_then(|v| v.as_str())
-            .map(|id| id == "gmaxcentiferno" || id == "gmaxsandblast")
+            .and_then(|state| state.source_effect.as_ref())
+            .map(|id| {
+                let id_str = id.as_str();
+                let is_gmax = id_str == "gmaxcentiferno" || id_str == "gmaxsandblast";
+                eprintln!("[PARTIALLYTRAPPED_DEBUG] source_effect='{}', is_gmax={}", id_str, is_gmax);
+                is_gmax
+            })
             .unwrap_or(false);
 
         (source, pokemon.base_maxhp, divisor, gmax)
@@ -206,15 +211,14 @@ pub fn on_residual(
             eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Source Pokemon fainted/inactive, removing trap without damage");
 
             // Get sourceEffect for battle log message
+            // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
             let source_effect_name = {
                 let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1).unwrap();
                 let trap_id = ID::from("partiallytrapped");
                 pokemon.volatiles.get(&trap_id)
-                    .and_then(|state| state.data.get("sourceEffect"))
-                    .and_then(|v| v.get("fullname"))
-                    .and_then(|v| v.as_str())
-                    .unwrap_or("[partiallytrapped]")
-                    .to_string()
+                    .and_then(|state| state.source_effect.as_ref())
+                    .map(|id| id.as_str().to_string())
+                    .unwrap_or_else(|| "[partiallytrapped]".to_string())
             };
 
             // Remove the volatile
@@ -272,13 +276,13 @@ pub fn on_end(
         };
 
         let trap_id = ID::from("partiallytrapped");
+        // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
         let effect_name = pokemon.volatiles.get(&trap_id)
-            .and_then(|state| state.data.get("sourceEffect"))
-            .and_then(|v| v.get("fullname"))
-            .and_then(|v| v.as_str())
-            .unwrap_or("[partiallytrapped]");
+            .and_then(|state| state.source_effect.as_ref())
+            .map(|id| id.as_str().to_string())
+            .unwrap_or_else(|| "[partiallytrapped]".to_string());
 
-        (pokemon.get_slot(), effect_name.to_string())
+        (pokemon.get_slot(), effect_name)
     };
 
     battle.add("-end", &[
@@ -325,10 +329,12 @@ pub fn on_trap_pokemon(
             };
 
             // Check for G-Max effects (gmaxcentiferno, gmaxsandblast)
-            let gmax = volatile.data.get("sourceEffect")
-                .and_then(|v| v.get("id"))
-                .and_then(|v| v.as_str())
-                .map(|id| id == "gmaxcentiferno" || id == "gmaxsandblast")
+            // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
+            let gmax = volatile.source_effect.as_ref()
+                .map(|id| {
+                    let id_str = id.as_str();
+                    id_str == "gmaxcentiferno" || id_str == "gmaxsandblast"
+                })
                 .unwrap_or(false);
 
             (active, gmax)

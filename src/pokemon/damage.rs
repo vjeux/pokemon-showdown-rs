@@ -47,12 +47,17 @@ impl Pokemon {
             amount += self.hp; // self.hp is negative, so this subtracts from amount
             self.hp = 0;
 
+            eprintln!("[DAMAGE] Pokemon {} fainted! Adding to faint_queue. pokemon_pos={:?}, source={:?}",
+                self.name, pokemon_pos, source);
+
             // JS equivalent: this.faint(source, effect) -> adds to faintQueue
             faint_queue.push(FaintData {
                 target: pokemon_pos,
                 source,
                 effect: effect.cloned(),
             });
+
+            eprintln!("[DAMAGE] faint_queue now has {} entries", faint_queue.len());
         }
 
         // JS: return d;

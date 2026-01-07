@@ -899,7 +899,19 @@ impl Battle {
         for i in 0..self.sides.len() {
             // JS: if (switches[i] && !this.canSwitch(this.sides[i])) {
             // Note: canSwitch returns number of possible switches, 0 is falsy in JS
+            eprintln!("[RUN_ACTION] Side {}: switches[i]={}, can_switch={}",
+                i, switches[i], self.can_switch(i));
             if switches[i] && self.can_switch(i) == 0 {
+                eprintln!("[RUN_ACTION] Side {} has fainted Pokemon but no switches - checking win", i);
+                // When a side has fainted Pokemon but no Pokemon to switch to,
+                // we need to check if the battle should end
+                // JavaScript handles this through faintMessages() which calls checkWin()
+                if self.check_win(None) {
+                    eprintln!("[RUN_ACTION] check_win returned true, battle ended");
+                    return;
+                }
+                eprintln!("[RUN_ACTION] check_win returned false, continuing");
+
                 // JS: for (const pokemon of this.sides[i].active) { pokemon.switchFlag = false; }
                 for poke_idx in self.sides[i].pokemon.iter_mut() {
                     poke_idx.switch_flag = None;
