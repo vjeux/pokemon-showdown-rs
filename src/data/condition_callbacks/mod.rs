@@ -233,22 +233,18 @@ pub fn dispatch_on_disable_move(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onDragOut()
-//   onDragOut(pokemon)
-//   onDragOut(pokemon, source, move)
-
 /// Dispatch onDragOut callbacks
 pub fn dispatch_on_drag_out(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "commanded" => commanded::on_drag_out(battle, pokemon_pos),
-        "commanding" => commanding::on_drag_out(battle, pokemon_pos),
-        "dynamax" => dynamax::on_drag_out(battle, pokemon_pos),
+        "commanded" => commanded::on_drag_out(battle, pokemon_pos, source_pos, move_id),
+        "commanding" => commanding::on_drag_out(battle, pokemon_pos, source_pos, move_id),
+        "dynamax" => dynamax::on_drag_out(battle, pokemon_pos, source_pos, move_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_drag_out(battle, condition_id, pokemon_pos)

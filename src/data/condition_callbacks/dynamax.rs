@@ -237,6 +237,8 @@ pub fn on_source_modify_damage(
 pub fn on_drag_out(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // this.add('-block', pokemon, 'Dynamax');
     let pokemon_ident = {

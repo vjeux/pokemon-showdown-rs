@@ -44,6 +44,8 @@ pub fn on_start(
 pub fn on_drag_out(
     _battle: &mut Battle,
     _pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // return false;
     EventResult::Boolean(false)
