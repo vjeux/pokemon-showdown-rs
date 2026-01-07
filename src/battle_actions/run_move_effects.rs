@@ -549,6 +549,31 @@ pub fn run_move_effects(
                         false,
                         false,
                     );
+
+                    // Call onHit callbacks for each of the target's volatile conditions
+                    // In JavaScript, this happens automatically through runEvent's effect iteration
+                    // In Rust, we need to explicitly dispatch to volatile condition callbacks
+                    let target_volatile_ids: Vec<String> = {
+                        match battle.pokemon_at(target_pos.0, target_pos.1) {
+                            Some(target_pokemon) => {
+                                target_pokemon.volatiles.keys()
+                                    .map(|id| id.as_str().to_string())
+                                    .collect()
+                            }
+                            None => vec![],
+                        }
+                    };
+
+                    for volatile_id in target_volatile_ids {
+                        // Call the volatile's onHit callback if it has one
+                        // Pass target_pos as the Pokemon with the volatile, and source_pos as the attacker
+                        crate::data::move_callbacks::dispatch_condition_on_hit(
+                            battle,
+                            &volatile_id,
+                            target_pos,  // Pokemon with the volatile
+                            source_pos,  // Pokemon using the move
+                        );
+                    }
                 }
             }
         }
