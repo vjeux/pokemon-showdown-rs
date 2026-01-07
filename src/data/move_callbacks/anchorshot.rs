@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -48,7 +48,7 @@ pub fn on_hit(
             target_pos,
             ID::from("trapped"),
             Some(source),
-            Some(&ID::new("anchorshot")),
+            Some(&Effect::move_(ID::new("anchorshot"))),
             Some(ID::from("trapper")),
             None,
         );

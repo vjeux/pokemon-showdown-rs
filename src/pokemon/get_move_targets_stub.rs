@@ -4,6 +4,7 @@ use crate::*;
 use crate::event::EventResult;
 use crate::pokemon::GetMoveTargetsResult;
 use crate::dex_data::ID;
+use crate::battle::Effect;
 
 impl Pokemon {
 
@@ -224,7 +225,7 @@ impl Pokemon {
                                     "RedirectTarget",
                                     Some(user_pos),
                                     Some(user_pos),
-                                    Some(move_id),
+                                    Some(&Effect::move_(move_id.clone())),
                                     EventResult::Number(encoded_target),
                                 );
 

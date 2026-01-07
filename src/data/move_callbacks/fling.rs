@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
@@ -74,7 +74,7 @@ pub fn on_prepare_hit(
         &crate::battle::Effect::item(item_id.clone()),
         Some(pokemon),
         Some(pokemon),
-        Some(&item_id),
+        Some(&Effect::move_(ID::new("fling"))),
         None,
     );
     if take_item_result.boolean() == Some(false) {
@@ -149,7 +149,7 @@ pub fn on_prepare_hit(
                 &crate::battle::Effect::ability(ability_id),
                 Some(pokemon),
                 Some(pokemon),
-                Some(&item_id),
+                Some(&Effect::item(item_id.clone())),
                 None,
             );
         }
@@ -239,13 +239,13 @@ pub fn on_hit(
             &crate::battle::Effect::item(item_id.clone()),
             Some(target),
             Some(source),
-            Some(&item_id),
+            Some(&Effect::item(item_id.clone())),
             None,
         );
 
         if eat_result.boolean() != Some(false) {
             // this.runEvent('EatItem', target, source, move, item);
-            battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&item_id), EventResult::Continue, false, false);
+            battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&Effect::item(item_id.clone())), EventResult::Continue, false, false);
 
             // if (item.id === 'leppaberry') target.staleness = 'external';
             if item_id.as_str() == "leppaberry" {
@@ -340,7 +340,7 @@ pub mod condition {
         );
 
         // this.runEvent('AfterUseItem', pokemon, null, null, item);
-        battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(pokemon)), None, Some(&item_id), EventResult::Continue, false, false);
+        battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(pokemon)), None, Some(&Effect::item(item_id.clone())), EventResult::Continue, false, false);
 
         // pokemon.removeVolatile('fling');
         Pokemon::remove_volatile(battle, pokemon, &ID::from("fling"));

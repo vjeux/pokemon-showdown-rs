@@ -169,7 +169,8 @@ pub fn on_field_residual(
         eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] Weather IS sandstorm, calling each_event");
         // Pass sandstorm as the effect so Weather event knows which weather condition to use
         // In JavaScript: this.eachEvent('Weather') uses this.effect which is the sandstorm condition
-        battle.each_event("Weather", Some(&ID::from("sandstorm")), None);
+        use crate::battle::Effect;
+        battle.each_event("Weather", Some(&Effect::weather(ID::from("sandstorm"))), None);
     } else {
         eprintln!("[SANDSTORM_ON_FIELD_RESIDUAL] Weather is NOT sandstorm, skipping each_event");
     }

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -43,7 +43,7 @@ pub fn on_hit(
         .filter(|(side_idx, _)| *side_idx == source_side)
         .collect();
 
-    let move_id = ID::from("gmaxfinale");
+    let move_effect = Effect::move_(ID::from("gmaxfinale"));
 
     for ally_pos in ally_positions {
         // Get max HP for this pokemon
@@ -57,7 +57,7 @@ pub fn on_hit(
 
         // Heal 1/6 of max HP
         let heal_amount = max_hp / 6;
-        battle.heal(heal_amount, Some(ally_pos), Some(source), Some(&move_id));
+        battle.heal(heal_amount, Some(ally_pos), Some(source), Some(&move_effect));
     }
 
     EventResult::Continue
@@ -105,7 +105,7 @@ pub mod self_callbacks {
             source_pokemon.allies_and_self(battle, false)
         };
 
-        let move_id = ID::from("gmaxfinale");
+        let move_effect = Effect::move_(ID::from("gmaxfinale"));
 
         for ally_pos in ally_positions {
             // Get max HP for this pokemon
@@ -119,7 +119,7 @@ pub mod self_callbacks {
 
             // Heal 1/6 of max HP
             let heal_amount = max_hp / 6;
-            battle.heal(heal_amount, Some(ally_pos), Some(source), Some(&move_id));
+            battle.heal(heal_amount, Some(ally_pos), Some(source), Some(&move_effect));
         }
 
         EventResult::Continue

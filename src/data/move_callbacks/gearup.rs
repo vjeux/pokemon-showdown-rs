@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onHitSide(side, source, move) {
@@ -75,7 +75,7 @@ pub fn on_hit_side(
                 "TryHit",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                 source,
-                Some(&ID::from(move_id)),
+                Some(&Effect::move_(ID::from(move_id))),
                 crate::event::EventResult::Number(1),
                 false,
                 false,

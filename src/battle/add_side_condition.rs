@@ -7,6 +7,7 @@
 
 use crate::*;
 use crate::event_system::EffectState;
+use crate::battle::Effect;
 
 impl Battle {
     /// Add a side condition to a specific side with source tracking
@@ -137,7 +138,7 @@ impl Battle {
             "SideConditionStart",
             Some(crate::event::EventTarget::Side(side_idx)),
             source_pos,
-            Some(&condition_id),
+            Some(&Effect::side_condition(condition_id.clone())),
             crate::event::EventResult::Continue,
             false,
             false,

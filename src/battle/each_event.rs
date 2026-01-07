@@ -1,5 +1,6 @@
 use crate::*;
 use crate::battle::PriorityItem;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 impl Battle {
@@ -23,7 +24,7 @@ impl Battle {
     // 		}
     // 	}
     //
-    pub fn each_event(&mut self, event_id: &str, effect: Option<&ID>, relay_var: Option<bool>) {
+    pub fn each_event(&mut self, event_id: &str, effect: Option<&Effect>, relay_var: Option<bool>) {
         if event_id == "Weather" {
             eprintln!("[EACH_EVENT] Called for Weather event, turn={}", self.turn);
         }
@@ -50,7 +51,7 @@ impl Battle {
 
         // JS: if (!effect && this.effect) effect = this.effect;
         // Extract effect from self.event before mutable operations
-        let effect_owned: Option<ID>;
+        let effect_owned: Option<Effect>;
         let effect = if effect.is_none() {
             // JavaScript's this.effect is stored in self.event.effect
             effect_owned = self.event.as_ref().and_then(|e| e.effect.clone());

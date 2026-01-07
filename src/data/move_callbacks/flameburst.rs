@@ -4,7 +4,8 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
+use crate::dex_data::ID;
 use crate::event::EventResult;
 
 /// onHit(target, source, move) {
@@ -17,8 +18,6 @@ pub fn on_hit(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = pokemon_pos;
     let target = match target_pos {
         Some(pos) => pos,
@@ -34,6 +33,8 @@ pub fn on_hit(
         target_pokemon.adjacent_allies(battle)
     };
 
+    let effect = Effect::condition(ID::from("flameburst"));
+
     for ally_pos in adjacent_allies {
         // this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
         let base_max_hp = {
@@ -48,7 +49,7 @@ pub fn on_hit(
             base_max_hp / 16,
             Some(ally_pos),
             Some(source),
-            Some(&ID::from("flameburst")),
+            Some(&effect),
             false,
         );
     }
@@ -68,8 +69,6 @@ pub fn on_after_sub_damage(
     source_pos: Option<(usize, usize)>,
     _move_id: &str,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -89,6 +88,8 @@ pub fn on_after_sub_damage(
         target_pokemon.adjacent_allies(battle)
     };
 
+    let effect = Effect::condition(ID::from("flameburst"));
+
     for ally_pos in adjacent_allies {
         // this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
         let base_max_hp = {
@@ -103,7 +104,7 @@ pub fn on_after_sub_damage(
             base_max_hp / 16,
             Some(ally_pos),
             Some(source),
-            Some(&ID::from("flameburst")),
+            Some(&effect),
             false,
         );
     }

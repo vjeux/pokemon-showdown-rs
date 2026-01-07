@@ -78,6 +78,7 @@
 
 use crate::*;
 use crate::event::EventResult;
+use crate::battle::Effect;
 
 /// Try to hit targets with a spread move
 /// Equivalent to trySpreadMoveHit() in battle-actions.ts:545
@@ -167,7 +168,7 @@ pub fn try_spread_move_hit(
         &crate::battle::Effect::move_(move_id.clone()),
         Some(pokemon_pos),
         target_0,
-        Some(move_id),
+        Some(&Effect::move_(move_id.clone())),
         None,
     );
 
@@ -182,7 +183,7 @@ pub fn try_spread_move_hit(
             &crate::battle::Effect::move_(move_id.clone()),
             target_0,
             Some(pokemon_pos),
-            Some(move_id),
+            Some(&Effect::move_(move_id.clone())),
             None,
         );
         result
@@ -195,7 +196,7 @@ pub fn try_spread_move_hit(
 
     // Phase 3: Only call PrepareHit event if PrepareHit(move) succeeded (short-circuit AND)
     let prepare_hit_2 = if prepare_hit_1_truthy {
-        let result = battle.run_event("PrepareHit", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_0, Some(move_id), EventResult::Continue, false, false);
+        let result = battle.run_event("PrepareHit", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_0, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
         result
     } else {
         prepare_hit_1.clone() // Propagate the falsy result

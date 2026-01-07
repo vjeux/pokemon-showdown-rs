@@ -1,6 +1,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::event_system::EffectState;
+use crate::battle::Effect;
 
 impl Pokemon {
 
@@ -47,7 +48,7 @@ impl Pokemon {
         pokemon_pos: (usize, usize),
         ability_id: ID,
         source_pos: Option<(usize, usize)>,
-        source_effect: Option<&ID>,
+        source_effect: Option<&Effect>,
         _is_from_forme_change: bool,
         is_transform: bool,
     ) -> ID {
@@ -141,7 +142,7 @@ impl Pokemon {
             pokemon_mut.ability_state.source_slot = Some(src_pos.1);
         }
         if let Some(src_effect) = source_effect {
-            pokemon_mut.ability_state.source_effect = Some(src_effect.clone());
+            pokemon_mut.ability_state.source_effect = Some(src_effect.id.clone());
         }
 
         // JS: if (sourceEffect && !isFromFormeChange && !isTransform) {
@@ -170,7 +171,7 @@ impl Pokemon {
                     .unwrap_or_else(|| old_ability_id.as_str().to_string());
 
                 // Get sourceEffect fullname (e.g., "ability: Mold Breaker", "item: Life Orb")
-                let source_effect_fullname = battle.get_effect_fullname(src_effect);
+                let source_effect_fullname = battle.get_effect_fullname(&src_effect.id);
 
                 let pokemon_ident = {
                     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::FaintData;
+use crate::battle::{Effect, FaintData};
 
 impl Pokemon {
 
@@ -23,7 +23,7 @@ impl Pokemon {
         mut amount: i32,
         pokemon_pos: (usize, usize),
         source: Option<(usize, usize)>,
-        effect: Option<&ID>,
+        effect: Option<&Effect>,
         faint_queue: &mut Vec<FaintData>,
     ) -> i32 {
         // JS: if (!this.hp || isNaN(d) || d <= 0) return 0;

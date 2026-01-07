@@ -33,7 +33,7 @@ impl Battle {
 
         // Extract context from current_event for parameter wiring
         let (event_source_pos, event_target_pos, event_effect_id, event_status_id) = if let Some(ref event) = self.current_event {
-            let effect_str = event.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new());
+            let effect_str = event.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new());
             (event.source, event.target, effect_str.clone(), effect_str)
         } else {
             (None, None, String::new(), String::new())
@@ -45,7 +45,7 @@ impl Battle {
             active_move.id.to_string()
         } else if let Some(ref event) = self.current_event {
             // If no active_move, try to get move from event.effect
-            event.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new())
+            event.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new())
         } else {
             String::new()
         };
@@ -424,7 +424,7 @@ impl Battle {
                     (
                         event.target,
                         event.source,
-                        event.effect.as_ref().map(|id| id.as_str().to_string())
+                        event.effect.as_ref().map(|eff| eff.id.as_str().to_string())
                     )
                 } else {
                     (Some(pokemon_pos), None, None)
@@ -460,7 +460,7 @@ impl Battle {
                 // Get move_id, source, and damage from current event context
                 let (move_id, source_pos, damage) = self.current_event.as_ref()
                     .map(|e| (
-                        e.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new()),
+                        e.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new()),
                         e.source,
                         match &e.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 } // Extract damage from relay_var
                     ))
@@ -471,7 +471,7 @@ impl Battle {
                 // Get move_id and source from current event context
                 let (move_id, source_pos) = self.current_event.as_ref()
                     .map(|e| (
-                        e.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new()),
+                        e.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new()),
                         e.source
                     ))
                     .unwrap_or_else(|| (String::new(), None));
@@ -601,7 +601,7 @@ impl Battle {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
-                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                        event.effect.as_ref().map(|eff| eff.id.as_str().to_string()).unwrap_or_default()
                     )
                 } else {
                     (0, (0, 0), String::new())
@@ -623,7 +623,7 @@ impl Battle {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.source.unwrap_or((0, 0)),
-                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                        event.effect.as_ref().map(|eff| eff.id.as_str().to_string()).unwrap_or_default()
                     )
                 } else {
                     (0, (0, 0), String::new())
@@ -657,7 +657,7 @@ impl Battle {
                         stab_value,
                         event.source,
                         event.target,
-                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                        event.effect.as_ref().map(|eff| eff.id.as_str().to_string()).unwrap_or_default()
                     )
                 } else {
                     (1.0, None, Some(pokemon_pos), String::new())
@@ -670,7 +670,7 @@ impl Battle {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
-                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                        event.effect.as_ref().map(|eff| eff.id.as_str().to_string()).unwrap_or_default()
                     )
                 } else {
                     (0, (0, 0), String::new())
@@ -733,7 +733,7 @@ impl Battle {
             "SideConditionStart" => {
                 let side_condition_id_string = self.current_event.as_ref()
                     .and_then(|e| e.effect.as_ref())
-                    .map(|id| id.as_str().to_string());
+                    .map(|eff| eff.id.as_str().to_string());
                 let side_condition_id = side_condition_id_string.as_ref().map(|s| s.as_str()).unwrap_or("");
 
                 // For side events, target in handle_ability_event is the Pokemon with the ability (effect_holder)
@@ -807,7 +807,7 @@ impl Battle {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 }, // damage value
                         event.target.unwrap_or((0, 0)), // attacker position
-                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default() // move id
+                        event.effect.as_ref().map(|eff| eff.id.as_str().to_string()).unwrap_or_default() // move id
                     )
                 } else {
                     (0, (0, 0), String::new())
@@ -827,7 +827,7 @@ impl Battle {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
-                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                        event.effect.as_ref().map(|eff| eff.id.as_str().to_string()).unwrap_or_default()
                     )
                 } else {
                     (0, (0, 0), String::new())

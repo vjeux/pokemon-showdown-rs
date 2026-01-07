@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle::{Effect, EffectType};
 use crate::event::EventResult;
 
 impl Battle {
@@ -58,7 +59,7 @@ impl Battle {
         mut damage: i32,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
-        effect: Option<&ID>,
+        effect: Option<&Effect>,
     ) -> Option<i32> {
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
@@ -71,7 +72,7 @@ impl Battle {
 
         let target = target.or(event_target);
         let source = source.or(event_source);
-        let effect_owned: Option<ID>;
+        let effect_owned: Option<Effect>;
         let effect = if effect.is_none() {
             effect_owned = event_effect;
             effect_owned.as_ref()
@@ -169,7 +170,7 @@ impl Battle {
             };
 
             let target_str = format!("p{}a", side_idx + 1);
-            let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+            let effect_id = effect.map(|e| e.id.as_str()).unwrap_or("");
 
             // Special case handling
             match effect_id {
@@ -200,7 +201,7 @@ impl Battle {
                 _ => {
                     // Default heal log
                     // Check if effect type is Move
-                    let is_move = effect.is_some_and(|e| self.get_effect_type(e) == "Move");
+                    let is_move = effect.is_some_and(|e| e.effect_type == EffectType::Move);
 
                     if is_move {
                         // Move effects: just show heal without [from] tag

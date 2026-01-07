@@ -1,5 +1,6 @@
 use crate::*;
 use crate::event::EventResult;
+use crate::battle::Effect;
 
 impl Battle {
 
@@ -120,7 +121,7 @@ impl Battle {
                 "ModifyPriority",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                     None,
-                    Some(&effect_id),
+                    Some(&Effect::move_(effect_id)),
                     EventResult::Number(priority as i32),
                     false,
                     false,

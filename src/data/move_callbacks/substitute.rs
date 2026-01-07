@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -425,23 +425,21 @@ pub mod condition {
             let recoil_damage =
                 BattleActions::calc_recoil_damage(actual_damage, move_id.as_str(), recoil, source_max_hp);
 
-            let recoil_id = ID::from("recoil");
-            battle.damage(recoil_damage, Some(source), Some(target), Some(&recoil_id), false);
+            battle.damage(recoil_damage, Some(source), Some(target), Some(&Effect::move_(ID::from("recoil"))), false);
         }
 
         // if (move.drain)
         if let Some((drain_num, drain_denom)) = drain {
             // this.heal(Math.ceil(damage * move.drain[0] / move.drain[1]), source, target, 'drain');
             let heal_amount = ((actual_damage * drain_num + drain_denom - 1) / drain_denom).max(1);
-            let drain_id = ID::from("drain");
-            battle.heal(heal_amount, Some(source), Some(target), Some(&drain_id));
+            battle.heal(heal_amount, Some(source), Some(target), Some(&Effect::move_(ID::from("drain"))));
         }
 
         // this.singleEvent('AfterSubDamage', move, null, target, source, move, damage);
-        battle.single_event("AfterSubDamage", &crate::battle::Effect::move_(move_id.clone()), Some(target), Some(source), Some(&move_id), Some(EventResult::Number(actual_damage)));
+        battle.single_event("AfterSubDamage", &crate::battle::Effect::move_(move_id.clone()), Some(target), Some(source), Some(&Effect::move_(move_id.clone())), Some(EventResult::Number(actual_damage)));
 
         // this.runEvent('AfterSubDamage', target, source, move, damage);
-        battle.run_event("AfterSubDamage", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&move_id), EventResult::Number(actual_damage), false, false);
+        battle.run_event("AfterSubDamage", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&Effect::move_(move_id.clone())), EventResult::Number(actual_damage), false, false);
 
         // return this.HIT_SUBSTITUTE;
         EventResult::HitSubstitute

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -62,8 +62,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
         // this.heal(target.baseMaxhp / 4);
         let heal_amount = target_base_maxhp / 4;
         eprintln!("[ENIGMABERRY] Turn {}: Berry eaten! Healing {} HP", battle.turn, heal_amount);
-        use crate::dex_data::ID;
-        battle.heal(heal_amount, Some(target_pos), source_pos, Some(&ID::from("enigmaberry")));
+        battle.heal(heal_amount, Some(target_pos), source_pos, Some(&Effect::item(crate::dex_data::ID::from("enigmaberry"))));
     } else {
         eprintln!("[ENIGMABERRY] Turn {}: Berry NOT eaten", battle.turn);
     }
@@ -86,7 +85,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize,
 
     use crate::dex_data::ID;
     // Run TryHeal event to check if healing would succeed
-    let event_result = battle.run_event("TryHeal", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, Some(&ID::from("enigmaberry")), EventResult::Number(heal_amount), false, false);
+    let event_result = battle.run_event("TryHeal", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, Some(&Effect::item(ID::from("enigmaberry"))), EventResult::Number(heal_amount), false, false);
 
     match event_result {
         EventResult::Number(amount) if amount > 0 => EventResult::Continue,

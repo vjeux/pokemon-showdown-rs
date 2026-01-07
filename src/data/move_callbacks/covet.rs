@@ -76,7 +76,7 @@ pub fn on_after_hit(
         &crate::battle::Effect::item(your_item_id.clone()),
         Some(source_pos),
         Some(target_pos),
-        Some(&your_item_id),
+        Some(&crate::battle::Effect::move_(ID::new("covet"))),
         None,
     );
 

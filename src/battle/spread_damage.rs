@@ -1,6 +1,7 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
 
 use crate::*;
+use crate::battle::{Effect, EffectType};
 use crate::event::EventResult;
 
 impl Battle {
@@ -133,7 +134,7 @@ impl Battle {
         damages: crate::battle_actions::SpreadMoveDamage,
         targets: &crate::battle_actions::SpreadMoveTargets,
         source: Option<(usize, usize)>,
-        effect: Option<&ID>,
+        effect: Option<&Effect>,
         instafaint: bool,
     ) -> crate::battle_actions::SpreadMoveDamage {
         use crate::battle_actions::{DamageResult, SpreadMoveTarget};
@@ -203,14 +204,14 @@ impl Battle {
             }
 
             // JavaScript: if (effect.id !== 'struggle-recoil')
-            let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+            let effect_id = effect.map(|e| e.id.as_str()).unwrap_or("");
             if effect_id != "strugglerecoil" {
                 // Check weather immunity
                 // JavaScript: if (effect.effectType === 'Weather' && !target.runStatusImmunity(effect.id))
                 if let Some(eff) = effect {
                     // Check if this effect is a weather effect by comparing with field.weather
                     // This is more reliable than get_effect_type which checks moves before conditions
-                    let is_weather = self.field.weather == *eff;
+                    let is_weather = self.field.weather == eff.id;
 
                     eprintln!("[WEATHER_IMMUNITY] effect_id={}, is_weather={}, field.weather={:?}",
                         effect_id, is_weather, self.field.weather);
@@ -269,13 +270,13 @@ impl Battle {
             // }
             if self.gen <= 1 {
                 let is_gen1stadium = self.dex.current_mod.as_deref() == Some("gen1stadium");
-                let effect_type = effect.map(|e| self.get_effect_type(e)).unwrap_or("");
+                let is_status_effect = effect.map(|e| e.effect_type == EffectType::Status).unwrap_or(false);
 
                 // Check second condition: !['recoil', 'drain', 'leechseed'].includes(effect.id) && effect.effectType !== 'Status'
                 let second_condition = effect_id != "recoil"
                     && effect_id != "drain"
                     && effect_id != "leechseed"
-                    && effect_type != "Status";
+                    && !is_status_effect;
 
                 if is_gen1stadium || second_condition {
                     self.last_damage = target_damage;
@@ -286,7 +287,7 @@ impl Battle {
             // DEBUG: Log HP change
             eprintln!("[HP_CHANGE] Applying {} damage to ({}, {}), effect={:?}, source={:?}, turn={}",
                 target_damage, side_idx, poke_idx,
-                effect.map(|e| e.as_str()),
+                effect.map(|e| e.id.as_str()),
                 source,
                 self.turn
             );
@@ -321,7 +322,7 @@ impl Battle {
 
             // Set source.lastDamage for moves
             // JS: if (source && effect.effectType === 'Move') source.lastDamage = targetDamage;
-            if source.is_some() && effect.is_some_and(|e| self.get_effect_type(e) == "Move") {
+            if source.is_some() && effect.is_some_and(|e| e.effect_type == EffectType::Move) {
                 if let Some((src_side, src_idx)) = source {
                     if let Some(side) = self.sides.get_mut(src_side) {
                         if let Some(pokemon) = side.pokemon.get_mut(src_idx) {
@@ -348,12 +349,12 @@ impl Battle {
                 };
 
                 let target_str = format!("p{}a", side_idx + 1);
-                let effect_id_str = effect.map(|e| e.as_str()).unwrap_or("");
+                let effect_id_str = effect.map(|e| e.id.as_str()).unwrap_or("");
 
                 // Get effect name for logging
                 // JavaScript: const name = effect.fullname === 'tox' ? 'psn' : effect.fullname;
                 let effect_name = if let Some(eff) = effect {
-                    let id_str = eff.as_str();
+                    let id_str = eff.id.as_str();
                     // Handle special case: tox -> psn
                     if id_str == "tox" {
                         "psn".to_string()
@@ -375,7 +376,9 @@ impl Battle {
                 };
 
                 // Get effect type for conditional logic
-                let effect_type = effect.map(|e| self.get_effect_type(e)).unwrap_or("");
+                let effect_type = effect.map(|e| e.effect_type);
+                let is_move_effect = effect_type == Some(EffectType::Move);
+                let is_ability_effect = effect_type == Some(EffectType::Ability);
 
                 // Special case handling (matches JavaScript switch statement)
                 match effect_id_str {
@@ -428,13 +431,13 @@ impl Battle {
                         //     this.add('-damage', target, target.getHealth, `[from] ${name}`);
                         // }
 
-                        if effect_type == "Move" || effect_name.is_empty() {
+                        if is_move_effect || effect_name.is_empty() {
                             // Move damage or no effect name: log without [from]
                             self.add("-damage", &[target_str.as_str().into(), health_str.as_str().into()]);
                         } else if let Some(src) = source {
                             // Check if source != target OR effectType is Ability
                             let source_is_different = src != target_pos;
-                            if source_is_different || effect_type == "Ability" {
+                            if source_is_different || is_ability_effect {
                                 let src_str = format!("p{}a", src.0 + 1);
                                 let from_str = format!("[from] {}", effect_name);
                                 let of_str = format!("[of] {}", src_str);
@@ -472,10 +475,10 @@ impl Battle {
             // JS: 					this.heal(amount, source, target, 'drain');
             // JS: 				}
             // JS: 			}
-            if target_damage > 0 && effect.is_some_and(|e| self.get_effect_type(e) == "Move") {
+            if target_damage > 0 && effect.is_some_and(|e| e.effect_type == EffectType::Move) {
                 // Get move data to check for recoil and drain (extract data first to avoid borrow issues)
                 let (recoil_data, drain_data) = if let Some(eff) = effect {
-                    if let Some(move_data) = self.dex.moves().get(eff.as_str()) {
+                    if let Some(move_data) = self.dex.moves().get(eff.id.as_str()) {
                         (move_data.recoil, move_data.drain)
                     } else {
                         (None, None)
@@ -506,8 +509,8 @@ impl Battle {
                                 .floor() as i32;
                             let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
 
-                            let recoil_id = ID::new("recoil");
-                            self.damage(amount, Some(source_pos), Some(target_pos), Some(&recoil_id), false);
+                            let recoil_effect = Effect::condition("recoil");
+                            self.damage(amount, Some(source_pos), Some(target_pos), Some(&recoil_effect), false);
                         }
                     }
                 }
@@ -525,8 +528,8 @@ impl Battle {
                             self.last_damage = amount;
                         }
 
-                        let drain_id = ID::new("drain");
-                        self.heal(amount, Some(source_pos), Some(target_pos), Some(&drain_id));
+                        let drain_effect = Effect::condition("drain");
+                        self.heal(amount, Some(source_pos), Some(target_pos), Some(&drain_effect));
                     }
                 }
 
@@ -537,8 +540,8 @@ impl Battle {
                             / drain_denom as f64)
                             .round() as i32;
 
-                        let drain_id = ID::new("drain");
-                        self.heal(amount, Some(source_pos), Some(target_pos), Some(&drain_id));
+                        let drain_effect = Effect::condition("drain");
+                        self.heal(amount, Some(source_pos), Some(target_pos), Some(&drain_effect));
                     }
                 }
             }

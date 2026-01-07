@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Arg;
@@ -17,7 +17,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
     // Trigger TerrainChange event to check if Quark Drive should activate
     // Pass the ability ID as the effect
     let ability_id = ID::from("quarkdrive");
-    battle.single_event("TerrainChange", &crate::battle::Effect::ability(ability_id), Some(pokemon_pos), None, None, None);
+    battle.single_event("TerrainChange", &Effect::ability(ability_id), Some(pokemon_pos), None, None, None);
     EventResult::Continue
 }
 
@@ -116,7 +116,7 @@ pub mod condition {
         // Check if effect is Booster Energy
         let is_booster_energy = battle.current_event.as_ref()
             .and_then(|e| e.effect.as_ref())
-            .map(|eff| eff.as_str() == "boosterenergy")
+            .map(|eff| eff.id.as_str() == "boosterenergy")
             .unwrap_or(false);
 
         if is_booster_energy {

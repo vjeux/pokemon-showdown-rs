@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onHit(target, source, move) {
@@ -42,7 +42,7 @@ pub fn on_hit(
             target,
             ID::from("trapped"),
             Some(source),
-            Some(&ID::new("thousandwaves")),
+            Some(&Effect::move_(ID::new("thousandwaves"))),
             Some(ID::from("trapper")),
             None,
         );

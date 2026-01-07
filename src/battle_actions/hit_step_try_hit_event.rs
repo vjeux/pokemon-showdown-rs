@@ -5,6 +5,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle_actions::ActiveMove;
+use crate::battle::Effect;
 
 /// Fire TryHit event and handle failures
 /// Equivalent to battle-actions.ts hitStepTryHitEvent()
@@ -29,7 +30,7 @@ pub fn hit_step_try_hit_event(
     // const hitResults = this.battle.runEvent('TryHit', targets, pokemon, move);
     let mut hit_results = Vec::new();
     for &target_pos in targets {
-        let result = battle.run_event("TryHit", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(attacker_pos), Some(&active_move.id), EventResult::Continue, false, false);
+        let result = battle.run_event("TryHit", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(attacker_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
         hit_results.push(result);
     }
 

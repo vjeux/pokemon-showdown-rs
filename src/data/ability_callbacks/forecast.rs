@@ -120,7 +120,6 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
                 // SAFETY: We're creating two mutable references to battle.
                 // This is safe because we're accessing different parts of the battle structure.
                 let battle_ptr = battle as *mut Battle;
-                let battle_ref1 = &mut *battle_ptr;
                 let battle_ref2 = &mut *battle_ptr;
 
                 // pokemon_pos is (side_idx, pokemon_idx) where pokemon_idx is the index in sides[side_idx].pokemon

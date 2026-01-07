@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onEatItem(item, pokemon, source, effect) {
@@ -21,7 +21,7 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
     // Get the item from battle.current_event.effect
     let item_id = match &battle.current_event {
         Some(event) => match &event.effect {
-            Some(id) => id.clone(),
+            Some(effect) => effect.id.clone(),
             None => return EventResult::Continue,
         },
         None => return EventResult::Continue,
@@ -176,7 +176,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
 
     if eat_result.is_not_fail() {
         // this.runEvent('EatItem', pokemon, null, null, item);
-        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, Some(&berry_id), EventResult::Continue, false, false);
+        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, Some(&Effect::item(berry_id.clone())), EventResult::Continue, false, false);
     }
 
     // if (item.onEat) pokemon.ateBerry = true;

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -354,7 +354,7 @@ pub fn on_try_hit(
         );
 
         // source.addVolatile('twoturnmove', target);
-        Pokemon::add_volatile(battle, source, ID::from("twoturnmove"), Some(target), Some(&move_id), None, None);
+        Pokemon::add_volatile(battle, source, ID::from("twoturnmove"), Some(target), Some(&Effect::move_(move_id)), None, None);
 
         // return null;
         return EventResult::Null;

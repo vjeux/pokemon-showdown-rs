@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onSwitchIn(pokemon) {
@@ -54,7 +54,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
     }
 
     // this.eachEvent('WeatherChange', this.effect);
-    battle.each_event("WeatherChange", Some(&ID::from("airlock")), None);
+    battle.each_event("WeatherChange", Some(&Effect::ability(ID::from("airlock"))), None);
 
     EventResult::Continue
 }
@@ -79,7 +79,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     }
 
     // this.eachEvent('WeatherChange', this.effect);
-    battle.each_event("WeatherChange", Some(&ID::from("airlock")), None);
+    battle.each_event("WeatherChange", Some(&Effect::ability(ID::from("airlock"))), None);
 
     EventResult::Continue
 }

@@ -44,7 +44,7 @@ pub fn on_after_boost(
     //     target.useItem();
     // }
     let effect_name = battle.current_event.as_ref().and_then(|e| {
-        e.effect.as_ref().map(|id| id.as_str().to_string())
+        e.effect.as_ref().map(|eff| eff.id.as_str().to_string())
     });
 
     if let Some(name) = effect_name {

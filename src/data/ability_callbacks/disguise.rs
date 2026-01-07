@@ -285,8 +285,10 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     }
 
     // this.damage(pokemon.baseMaxhp / 8, pokemon, pokemon, this.dex.species.get(speciesid));
+    // In JS, species.get returns an Effect, but we don't have a Species effect type in Rust
+    // Pass None for the effect parameter as it's likely only used for logging
     let damage_amount = base_maxhp / 8;
-    battle.damage(damage_amount, Some(pokemon_pos), Some(pokemon_pos), Some(&ID::from(new_species_id)), false);
+    battle.damage(damage_amount, Some(pokemon_pos), Some(pokemon_pos), None, false);
 
     EventResult::Continue
 }

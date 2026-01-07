@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -50,7 +50,7 @@ pub fn on_hit_field(
                 "Invulnerability",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
             source,
-            Some(&ID::from(move_id)),
+            Some(&Effect::move_(ID::from(move_id))),
             EventResult::Continue,
             false,
             false
@@ -86,7 +86,7 @@ pub fn on_hit_field(
                 "TryHit",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                 source,
-                Some(&ID::from(move_id)),
+                Some(&Effect::move_(ID::from(move_id))),
                 EventResult::Continue,
                 false,
                 false

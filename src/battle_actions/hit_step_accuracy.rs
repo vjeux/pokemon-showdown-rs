@@ -72,6 +72,7 @@
 
 use crate::*;
 use crate::event::EventResult;
+use crate::battle::Effect;
 
 /// Check accuracy for each target
 /// Equivalent to hitStepAccuracy() in battle-actions.ts:580
@@ -202,7 +203,7 @@ pub fn hit_step_accuracy(
                 "ModifyAccuracy",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
-                Some(&move_id),
+                Some(&Effect::move_(move_id.clone())),
                 EventResult::Number(accuracy),
                 false,
                 false
@@ -316,7 +317,7 @@ pub fn hit_step_accuracy(
                 "Accuracy",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
-                Some(&move_id),
+                Some(&Effect::move_(move_id.clone())),
                 EventResult::Number(accuracy),
                 false,
                 false

@@ -122,7 +122,7 @@ pub mod condition {
             &crate::battle::Effect::ability(ability_id),
             Some(pokemon),
             Some(pokemon),
-            Some(&ID::from("gastroacid")),
+            Some(&crate::battle::Effect::move_(ID::from("gastroacid"))),
             None,
         );
 

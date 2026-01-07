@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
@@ -42,7 +42,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
         || weather_str == "primordialsea"
     {
         // this.runEvent('WeatherChange', pokemon, pokemon, this.effect);
-        let effect = battle.current_effect_id().cloned();
+        let effect = battle.current_effect_id().cloned().map(|id| Effect::item(id));
         battle.run_event("WeatherChange", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
     }
 
@@ -87,7 +87,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         || weather_str == "primordialsea"
     {
         // this.runEvent('WeatherChange', pokemon, pokemon, this.effect);
-        let effect = battle.current_effect_id().cloned();
+        let effect = battle.current_effect_id().cloned().map(|id| Effect::item(id));
         battle.run_event("WeatherChange", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
     }
 
@@ -111,7 +111,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         || weather_str == "primordialsea"
     {
         // this.runEvent('WeatherChange', pokemon, pokemon, this.effect);
-        let effect = battle.current_effect_id().cloned();
+        let effect = battle.current_effect_id().cloned().map(|id| Effect::item(id));
         battle.run_event("WeatherChange", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
     }
 

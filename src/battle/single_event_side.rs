@@ -98,10 +98,28 @@ impl Battle {
             prankster_boosted: false,
         });
 
+        // Convert source_effect ID to Effect by looking up its type
+        let source_effect_obj = source_effect.map(|id| {
+            let effect_type_str = self.get_effect_type(id);
+            let effect_type = match effect_type_str {
+                "Ability" => crate::battle::EffectType::Ability,
+                "Item" => crate::battle::EffectType::Item,
+                "Move" => crate::battle::EffectType::Move,
+                "Status" => crate::battle::EffectType::Status,
+                "Weather" => crate::battle::EffectType::Weather,
+                "Terrain" => crate::battle::EffectType::Terrain,
+                "SideCondition" => crate::battle::EffectType::SideCondition,
+                "SlotCondition" => crate::battle::EffectType::SlotCondition,
+                "FieldCondition" => crate::battle::EffectType::FieldCondition,
+                _ => crate::battle::EffectType::Condition,
+            };
+            crate::battle::Effect::new(id.clone(), effect_type)
+        });
+
         let mut event_info = EventInfo::new(event_id);
         event_info.target = None; // Side events don't have a Pokemon target
         event_info.source = source;
-        event_info.effect = source_effect.cloned();
+        event_info.effect = source_effect_obj;
         self.current_event = Some(event_info);
 
         self.event_depth += 1;

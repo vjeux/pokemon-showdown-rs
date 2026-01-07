@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onMoveFail(target, source, move) {
@@ -36,7 +36,7 @@ pub fn on_move_fail(
         damage_amount,
         Some(source),
         Some(source),
-        Some(&ID::from("supercellslam")),
+        Some(&Effect::move_(ID::from("supercellslam"))),
         false,
     );
 

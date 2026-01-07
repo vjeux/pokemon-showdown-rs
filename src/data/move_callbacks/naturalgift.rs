@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onModifyType(move, pokemon) {
@@ -154,7 +154,7 @@ pub fn on_prepare_hit(
     }
 
     // this.runEvent('AfterUseItem', pokemon, null, null, item);
-    battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(pokemon)), None, Some(&item_id), EventResult::Continue, false, false);
+    battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(pokemon)), None, Some(&Effect::item(item_id.clone())), EventResult::Continue, false, false);
 
     EventResult::Continue
 }

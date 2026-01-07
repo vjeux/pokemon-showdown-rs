@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -140,8 +140,7 @@ pub mod condition {
 
             // source.faint();
             // Source faints due to destiny bond from target
-            let destinybond_id = ID::from("destinybond");
-            Pokemon::faint(battle, source, Some(target), Some(&destinybond_id));
+            Pokemon::faint(battle, source, Some(target), Some(&Effect::move_(ID::from("destinybond"))));
         }
 
         EventResult::Continue

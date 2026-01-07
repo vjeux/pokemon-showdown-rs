@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle::Effect;
 
 impl Battle {
 
@@ -26,18 +27,18 @@ impl Battle {
         damage: i32,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
-        effect: Option<&ID>,
+        effect: Option<&Effect>,
         instafaint: bool,
     ) -> Option<i32> {
         eprintln!("[BATTLE_DAMAGE] Called with damage={}, target={:?}, source={:?}, effect={:?}",
-            damage, target, source, effect.map(|e| e.as_str()));
+            damage, target, source, effect.map(|e| e.id.as_str()));
 
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
         let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event
         {
             eprintln!("[BATTLE_DAMAGE] current_event exists: target={:?}, source={:?}, effect={:?}",
-                event.target, event.source, event.effect.as_ref().map(|e| e.as_str()));
+                event.target, event.source, event.effect.as_ref().map(|e| e.id.as_str()));
             (event.target, event.source, event.effect.clone())
         } else {
             (None, None, None)
@@ -46,7 +47,7 @@ impl Battle {
         let target = target.or(event_target);
         let source = source.or(event_source);
         eprintln!("[BATTLE_DAMAGE] After merging with event: target={:?}, source={:?}", target, source);
-        let effect_owned: Option<ID>;
+        let effect_owned: Option<Effect>;
         let effect = if effect.is_none() {
             effect_owned = event_effect;
             effect_owned.as_ref()

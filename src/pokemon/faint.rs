@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::FaintData;
+use crate::battle::{Effect, FaintData};
 
 impl Pokemon {
 
@@ -35,7 +35,7 @@ impl Pokemon {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
-        effect: Option<&ID>
+        effect: Option<&Effect>
     ) -> i32 {
         // Phase 1: Check if already fainted/queued and get HP
         let damage = {

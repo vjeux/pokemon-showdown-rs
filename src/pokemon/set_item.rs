@@ -1,3 +1,4 @@
+use crate::battle::Effect;
 use crate::*;
 use crate::event_system::EffectState;
 
@@ -51,7 +52,7 @@ impl Pokemon {
         pokemon_pos: (usize, usize),
         item_id: ID,
         source_pos: Option<(usize, usize)>,
-        source_effect: Option<&ID>,
+        source_effect: Option<&Effect>,
     ) -> bool {
         // Phase 1: Extract pokemon data to check conditions
         let (hp, is_active, pokemon_side_idx) = {
@@ -83,7 +84,7 @@ impl Pokemon {
         if is_restorative_berry(item_id.as_str()) {
             // Check if effect is 'trick' or 'switcheroo'
             let is_inflicted = source_effect
-                .map(|e| e.as_str() == "trick" || e.as_str() == "switcheroo")
+                .map(|e| e.id.as_str() == "trick" || e.id.as_str() == "switcheroo")
                 .unwrap_or(false);
 
             // Check if source exists and is not an ally

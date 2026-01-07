@@ -211,7 +211,7 @@ impl BattleQueue {
                 "FractionalPriority",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                                 None,
-                                Some(&move_id),
+                                Some(&crate::battle::Effect::move_(move_id)),
                                 crate::event::EventResult::Float(0.0),
                                 false,
                                 false,

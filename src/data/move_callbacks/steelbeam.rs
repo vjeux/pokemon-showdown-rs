@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onAfterMove(pokemon, target, move) {
@@ -58,7 +58,7 @@ pub fn on_after_move(
             damage_amount,
             Some(pokemon),
             Some(pokemon),
-            Some(&ID::from("steelbeam")),
+            Some(&Effect::move_(ID::from("steelbeam"))),
             true, // ignoreability
         );
 

@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::{EffectType, EventInfo, EventListener, PriorityItem};
+use crate::battle::{Effect, EffectType, EventInfo, EventListener, PriorityItem};
 use crate::event::EventResult;
 
 impl Battle {
@@ -297,7 +297,7 @@ impl Battle {
         event_id: &str,
         target: Option<crate::event::EventTarget>,
         source: Option<(usize, usize)>,
-        source_effect: Option<&ID>,
+        source_effect: Option<&Effect>,
         mut relay_var: EventResult,
         on_effect: bool,
         fast_exit: bool,
@@ -327,7 +327,7 @@ impl Battle {
         // This allows moves like Knock Off to modify their own base power via onBasePower
         if on_effect {
             // JavaScript: if (!sourceEffect) throw new Error("onEffect passed without an effect");
-            let source_effect_id = source_effect.ok_or_else(|| {
+            let source_eff = source_effect.ok_or_else(|| {
                 panic!("onEffect passed without an effect");
             }).unwrap();
 
@@ -344,25 +344,11 @@ impl Battle {
             // JavaScript:     effect: sourceEffect, callback, state: this.initEffectState({}), end: null, effectHolder: target,
             // JavaScript: }, `on${eventid}`));
 
-            // Determine effect type (move, item, ability, condition)
-            let effect_type = if self.dex.moves().get(source_effect_id.as_str()).is_some() {
-                EffectType::Move
-            } else if self.dex.abilities().get(source_effect_id.as_str()).is_some() {
-                EffectType::Ability
-            } else if self.dex.items().get(source_effect_id.as_str()).is_some() {
-                EffectType::Item
-            } else if self.dex.conditions().get(source_effect_id.as_str()).is_some() {
-                EffectType::Condition
-            } else {
-                // Unknown effect type, skip
-                EffectType::Move // Default
-            };
-
             // Create EventListener for the sourceEffect
             let mut source_handler = EventListener {
                 event_name: event_id.to_string(),
-                effect_id: source_effect_id.clone(),
-                effect_type,
+                effect_id: source_eff.id.clone(),
+                effect_type: source_eff.effect_type,
                 target: None,
                 index: None,
                 state: None, // JavaScript: state: this.initEffectState({})
@@ -527,7 +513,7 @@ impl Battle {
                             // JavaScript: else if (eventid === 'Damage' && sourceEffect && sourceEffect.effectType === 'Move')
                             if event_id == "Damage" {
                                 if let Some(source_eff) = source_effect {
-                                    if self.get_effect_type(source_eff) == "Move" {
+                                    if source_eff.effect_type == EffectType::Move {
                                         self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
                                         continue;
                                     }

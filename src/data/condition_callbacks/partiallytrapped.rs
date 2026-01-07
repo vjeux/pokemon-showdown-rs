@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::battle::Arg;
+use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -230,7 +231,7 @@ pub fn on_residual(
         damage, base_maxhp, bound_divisor);
 
     // Deal damage
-    battle.damage(damage, Some(pokemon_pos), source_pos, Some(&ID::from("partiallytrapped")), false);
+    battle.damage(damage, Some(pokemon_pos), source_pos, Some(&Effect::condition("partiallytrapped")), false);
 
     EventResult::Continue
 }

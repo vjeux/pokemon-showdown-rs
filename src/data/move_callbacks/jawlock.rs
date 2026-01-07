@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -32,7 +32,7 @@ pub fn on_hit(
             source,
             ID::from("trapped"),
             Some(target),
-            Some(&ID::new("jawlock")),
+            Some(&Effect::move_(ID::new("jawlock"))),
             Some(ID::from("trapper")),
             None,
         );
@@ -45,7 +45,7 @@ pub fn on_hit(
             target,
             ID::from("trapped"),
             Some(source),
-            Some(&ID::new("jawlock")),
+            Some(&Effect::move_(ID::new("jawlock"))),
             Some(ID::from("trapper")),
             None,
         );

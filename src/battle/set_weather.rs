@@ -57,6 +57,7 @@
 use crate::Battle;
 use crate::event::EventResult;
 use crate::dex_data::ID;
+use crate::battle::Effect;
 
 impl Battle {
     /// Set the weather
@@ -108,7 +109,7 @@ impl Battle {
                 "SetWeather",
                 crate::event::EventTarget::from_pokemon(source_pos),
                 source_pos,
-                Some(&weather_id),
+                Some(&Effect::weather(weather_id.clone())),
                 crate::event::EventResult::Number(1),
                 false,
                 false,

@@ -66,7 +66,7 @@ pub fn secondaries(
             // Fire ModifySecondaries event
             // In JavaScript, this event handler can modify the secondaries array and return it
             // In Rust, Shield Dust modifies battle.active_move.secondaries in-place using retain()
-            let modify_result = battle.run_event("ModifySecondaries", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(move_id), EventResult::Continue, false, false);
+            let modify_result = battle.run_event("ModifySecondaries", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
 
             // IMPORTANT: Clone AFTER the event, so we get the MODIFIED secondaries
             // Shield Dust's retain() has already filtered the array
@@ -164,7 +164,7 @@ pub fn secondaries(
                 // }
                 if let Some(status_name) = &secondary.status {
                     let status_id = crate::dex_data::ID::new(status_name);
-                    let _applied = Pokemon::set_status(battle, effect_target, status_id, Some(source_pos), Some(move_id), false);
+                    let _applied = Pokemon::set_status(battle, effect_target, status_id, Some(source_pos), Some(&crate::battle::Effect::move_(move_id.clone())), false);
                 }
 
                 // Apply volatile status from secondary effect
@@ -174,7 +174,7 @@ pub fn secondaries(
                 if let Some(volatile_status_name) = &secondary.volatile_status {
                     eprintln!("[SECONDARIES] Applying volatile_status='{}' to effect_target={:?}", volatile_status_name, effect_target);
                     let volatile_id = crate::dex_data::ID::new(volatile_status_name);
-                    Pokemon::add_volatile(battle, effect_target, volatile_id, Some(source_pos), Some(move_id), None, None);
+                    Pokemon::add_volatile(battle, effect_target, volatile_id, Some(source_pos), Some(&crate::battle::Effect::move_(move_id.clone())), None, None);
                 }
 
                 // Apply side condition from secondary effect

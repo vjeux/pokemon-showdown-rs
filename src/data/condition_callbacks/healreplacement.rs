@@ -113,8 +113,8 @@ pub fn on_switch_in(
 
     // target.heal(target.maxhp);
     let maxhp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;
-    let zpower_id = ID::from("zpower");
-    battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&zpower_id));
+    use crate::battle::Effect;
+    battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&Effect::condition(ID::from("zpower"))));
 
     // this.add('-heal', target, target.getHealth, '[from] move: ' + this.effectState.sourceEffect, '[zeffect]');
     // Note: The heal method already adds the -heal message, but we need to add the [from] and [zeffect] attributes

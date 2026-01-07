@@ -181,7 +181,7 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
     // Get the item from battle.current_event.effect
     let item_id = match &battle.current_event {
         Some(event) => match &event.effect {
-            Some(id) => id.as_str(),
+            Some(id) => id.id.as_str(),
             None => return EventResult::Continue,
         },
         None => return EventResult::Continue,

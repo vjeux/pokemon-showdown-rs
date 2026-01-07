@@ -1,7 +1,30 @@
 use crate::*;
 use crate::event::EventResult;
+use crate::battle::{Effect, EffectType};
 
 impl Battle {
+
+    /// Helper to create an Effect from an effect string
+    /// Determines the effect type by looking it up in the dex
+    fn create_effect_from_str(&self, effect_str: &str) -> Effect {
+        let id = ID::new(effect_str);
+        let effect_type_str = self.get_effect_type(&id);
+
+        let effect_type = match effect_type_str {
+            "Ability" => EffectType::Ability,
+            "Item" => EffectType::Item,
+            "Move" => EffectType::Move,
+            "Status" => EffectType::Status,
+            "Weather" => EffectType::Weather,
+            "Terrain" => EffectType::Terrain,
+            "SideCondition" => EffectType::SideCondition,
+            "SlotCondition" => EffectType::SlotCondition,
+            "FieldCondition" => EffectType::FieldCondition,
+            _ => EffectType::Condition, // Default to Condition for unknown types
+        };
+
+        Effect::new(id, effect_type)
+    }
 
     /// Apply stat boosts to a Pokemon
     /// Equivalent to battle.ts boost() (battle.ts:1974-2043)
@@ -148,12 +171,12 @@ impl Battle {
         // This event allows abilities/items to modify boost amounts before they're applied
         // Note: Full boost modification would require infrastructure changes to return modified boosts
         // For now, we call the event so abilities can react, even if they can't modify the boost amounts
-        let effect_id = effect.map(ID::new);
+        let effect_obj = effect.map(|e| self.create_effect_from_str(e));
         self.run_event(
                 "ChangeBoost",
                 Some(crate::event::EventTarget::Pokemon(target)),
             source,
-            effect_id.as_ref(),
+            effect_obj.as_ref(),
             EventResult::Continue,
             false,
             false
@@ -166,7 +189,7 @@ impl Battle {
         // This event can prevent boosts from being applied (e.g., Clear Body ability)
         // If the event handler needs to cancel boosts, it should set a flag or modify Pokemon state
         // Note: JavaScript can return null to cancel all boosts - we call the event for side effects
-        self.run_event("TryBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_id.as_ref(), EventResult::Continue, false, false);
+        self.run_event("TryBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_obj.as_ref(), EventResult::Continue, false, false);
 
         let mut success = false;
         let mut stats_raised = false;
@@ -320,8 +343,8 @@ impl Battle {
                             "evasion" => current_boost.evasion = *amount,
                             _ => {}
                         }
-                        let effect_id = effect.map(|e| ID::new(e));
-                        self.run_event("AfterEachBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_id.as_ref(), EventResult::Boost(current_boost), false, false);
+                        // Reuse effect_obj from earlier
+                        self.run_event("AfterEachBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_obj.as_ref(), EventResult::Boost(current_boost), false, false);
                     } else {
                         // JS: } else if (effect?.effectType === 'Ability') {
                         //       if (isSecondary || isSelf) this.add(msg, target, boostName, boostBy);
@@ -361,8 +384,8 @@ impl Battle {
         }
 
         // JS: this.runEvent('AfterBoost', target, source, effect, boost);
-        let effect_id = effect.map(|e| ID::new(e));
-        self.run_event("AfterBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_id.as_ref(), EventResult::Boost(boost_table), false, false);
+        // Reuse effect_obj from earlier
+        self.run_event("AfterBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_obj.as_ref(), EventResult::Boost(boost_table), false, false);
 
         // JS: if (Object.values(boost).some(x => x > 0)) target.statsRaisedThisTurn = true;
         // JS: if (Object.values(boost).some(x => x < 0)) target.statsLoweredThisTurn = true;

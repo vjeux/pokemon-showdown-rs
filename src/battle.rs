@@ -294,6 +294,11 @@ impl Effect {
         Self { id, effect_type }
     }
 
+    /// Get the Effect's ID
+    pub fn get_id(&self) -> &ID {
+        &self.id
+    }
+
     /// Create an Ability effect
     pub fn ability(id: impl Into<ID>) -> Self {
         Self::new(id.into(), EffectType::Ability)
@@ -468,8 +473,7 @@ pub struct EventInfo {
     pub source: Option<(usize, usize)>,
     /// Effect that caused the event
     /// JavaScript: event.effect (Effect object)
-    /// TODO: Rust uses ID instead of full Effect object
-    pub effect: Option<ID>,
+    pub effect: Option<Effect>,
     /// Modifier accumulated during event processing (4096 = 1.0x)
     /// JavaScript: event.modifier (number)
     pub modifier: i32,
@@ -533,8 +537,7 @@ pub struct FaintData {
     pub source: Option<(usize, usize)>,
     /// Effect that caused the faint
     /// JavaScript: effect (Effect object or null)
-    /// TODO: Rust uses ID instead of full Effect object
-    pub effect: Option<ID>,
+    pub effect: Option<Effect>,
 }
 
 /// Battle creation options

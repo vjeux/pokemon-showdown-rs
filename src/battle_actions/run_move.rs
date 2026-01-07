@@ -7,6 +7,7 @@
 
 use crate::*;
 use crate::event::EventResult;
+use crate::battle::Effect;
 
 /// Execute a move with full pipeline
 /// Equivalent to BattleActions.runMove() in battle-actions.ts
@@ -21,7 +22,7 @@ pub fn run_move(
     move_id: &ID,
     pokemon_pos: (usize, usize),
     target_loc: i8,
-    source_effect: Option<&ID>,
+    source_effect: Option<&Effect>,
     z_move: Option<String>,
     external_move: bool,
     max_move: Option<String>,
@@ -75,7 +76,7 @@ pub fn run_move(
         // const changedMove = this.battle.runEvent('OverrideAction', pokemon, target, baseMove);
         // JavaScript: if (changedMove && changedMove.id !== move.id) { ... }
         // For now, just run the event - full implementation would require changing the move
-        battle.run_event("OverrideAction", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
+        battle.run_event("OverrideAction", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
     }
 
     // Set active move
@@ -88,7 +89,7 @@ pub fn run_move(
                 "BeforeMove",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         Some(target_pos),
-        Some(move_id),
+        Some(&crate::battle::Effect::move_(move_id.clone())),
         crate::event::EventResult::Number(1),
         false,
         false,
@@ -96,7 +97,7 @@ pub fn run_move(
 
     if !will_try_move {
         // this.battle.runEvent('MoveAborted', pokemon, target, move);
-        battle.run_event("MoveAborted", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
+        battle.run_event("MoveAborted", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
 
         // this.battle.clearActiveMove(true);
         battle.clear_active_move(true);
@@ -256,7 +257,7 @@ pub fn run_move(
         move_id,
         pokemon_pos,
         Some(target_pos),
-        source_effect,
+        source_effect.map(|e| &e.id),
         z_move.as_deref(),
         max_move.as_deref(),
     );
@@ -270,10 +271,10 @@ pub fn run_move(
 
     // AfterMove events
     // this.battle.singleEvent('AfterMove', move, null, pokemon, target, move);
-    battle.single_event("AfterMove", &crate::battle::Effect::move_(move_id.clone()), Some(pokemon_pos), Some(target_pos), Some(move_id), None);
+    battle.single_event("AfterMove", &crate::battle::Effect::move_(move_id.clone()), Some(pokemon_pos), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), None);
 
     // this.battle.runEvent('AfterMove', pokemon, target, move);
-    battle.run_event("AfterMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(move_id), EventResult::Continue, false, false);
+    battle.run_event("AfterMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
 
     // Handle 'cantusetwice' hint
     // if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id))
@@ -429,13 +430,13 @@ pub fn run_move(
             };
 
             // this.runMove(move.id, dancer, dancersTargetLoc, { sourceEffect: this.dex.abilities.get('dancer'), externalMove: true });
-            let dancer_ability_id = ID::new("dancer");
+            let dancer_ability = Effect::ability(ID::new("dancer"));
             run_move(
                 battle,
                 move_id,
                 dancer_pos,
                 dancers_target_loc,
-                Some(&dancer_ability_id),
+                Some(&dancer_ability),
                 None, // z_move
                 true, // external_move
                 None, // max_move

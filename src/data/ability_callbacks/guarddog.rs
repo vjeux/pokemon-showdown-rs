@@ -43,7 +43,7 @@ pub fn on_try_boost(
     // Check if effect is Intimidate
     let is_intimidate = battle.current_event.as_ref()
         .and_then(|e| e.effect.as_ref())
-        .map(|id| id.as_str() == "intimidate")
+        .map(|effect| effect.id.as_str() == "intimidate")
         .unwrap_or(false);
 
     if !is_intimidate {

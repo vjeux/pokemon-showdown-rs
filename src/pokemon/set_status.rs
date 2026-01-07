@@ -1,6 +1,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::event_system::EffectState;
+use crate::battle::Effect;
 
 impl Pokemon {
 
@@ -80,7 +81,7 @@ impl Pokemon {
         pokemon_pos: (usize, usize),
         status: ID,
         source_pos: Option<(usize, usize)>,
-        source_effect: Option<&ID>,
+        source_effect: Option<&Effect>,
         _ignore_immunities: bool,
     ) -> bool {
         // Phase 1: Extract HP and previous status info
@@ -183,7 +184,7 @@ impl Pokemon {
             pokemon_mut.status_state.source_slot = Some(src_pos.1);
         }
         if let Some(src_effect) = source_effect {
-            pokemon_mut.status_state.source_effect = Some(src_effect.clone());
+            pokemon_mut.status_state.source_effect = Some(src_effect.id.clone());
         }
         // Note: Missing duration and durationCallback logic (needs Battle/dex access)
 

@@ -41,7 +41,7 @@ pub fn try_primary_hit_event(
         };
 
         // damage[i] = this.battle.runEvent('TryPrimaryHit', target, pokemon, moveData);
-        let result = battle.run_event("TryPrimaryHit", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(pokemon_pos), Some(move_id), EventResult::Continue, false, false);
+        let result = battle.run_event("TryPrimaryHit", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(pokemon_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
 
         // JavaScript: damage[i] = result
         // Direct assignment - runEvent returns number | boolean | undefined in JS

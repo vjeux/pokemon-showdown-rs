@@ -158,7 +158,7 @@ impl Battle {
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source);
                 let effect_id_owned = self.current_event.as_ref()
                     .and_then(|e| e.effect.as_ref())
-                    .map(|id| id.to_string());
+                    .map(|eff| eff.id.to_string());
 
                 condition_callbacks::dispatch_on_faint(
                     self,
@@ -244,7 +244,7 @@ impl Battle {
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source);
                 let effect_id_owned = self.current_event.as_ref()
                     .and_then(|e| e.effect.as_ref())
-                    .map(|id| id.to_string());
+                    .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
             }
             "SideResidual" => {
@@ -255,7 +255,7 @@ impl Battle {
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source);
                 let effect_id_owned = self.current_event.as_ref()
                     .and_then(|e| e.effect.as_ref())
-                    .map(|id| id.to_string());
+                    .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
             }
             "Restart" => {
@@ -263,7 +263,7 @@ impl Battle {
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source);
                 let effect_id_owned = self.current_event.as_ref()
                     .and_then(|e| e.effect.as_ref())
-                    .map(|id| id.to_string());
+                    .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
             }
             "SourceModifyDamage" => {
@@ -294,7 +294,7 @@ impl Battle {
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source);
                 let effect_id_owned = self.current_event.as_ref()
                     .and_then(|e| e.effect.as_ref())
-                    .map(|id| id.to_string());
+                    .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
             }
             "SwitchIn" => {
@@ -319,7 +319,7 @@ impl Battle {
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source);
                 let effect_id_owned = self.current_event.as_ref()
                     .and_then(|e| e.effect.as_ref())
-                    .map(|id| id.to_string());
+                    .map(|eff| eff.id.to_string());
 
                 condition_callbacks::dispatch_on_try_add_volatile(
                     self,
@@ -379,7 +379,7 @@ impl Battle {
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source);
                 let effect_id_owned = self.current_event.as_ref()
                     .and_then(|e| e.effect.as_ref())
-                    .map(|id| id.to_string());
+                    .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_weather(
                     self,
                     condition_id,

@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 impl Pokemon {
@@ -103,7 +104,7 @@ impl Pokemon {
                     "Effectiveness",
                     Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                     None,
-                    Some(move_id),
+                    Some(&Effect::move_(move_id.clone())),
                     EventResult::Number(type_mod),
                     false,
                     false

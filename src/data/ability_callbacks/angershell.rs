@@ -84,7 +84,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
 
     // Get the item being eaten from current event
     let item_id = if let Some(ref event) = battle.current_event {
-        event.effect.clone()
+        event.effect.as_ref().map(|e| e.id.clone())
     } else {
         None
     };

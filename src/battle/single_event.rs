@@ -107,7 +107,7 @@ impl Battle {
         effect: &Effect,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
-        source_effect: Option<&ID>,
+        source_effect: Option<&Effect>,
         relay_var: Option<EventResult>,
     ) -> EventResult {
         let effect_id = &effect.id;
@@ -220,11 +220,15 @@ impl Battle {
         // Set up current event
         // JavaScript: this.event = { id: eventid, target, source, effect: sourceEffect };
         // JavaScript: if (hasRelayVar) args.unshift(relayVar); // relayVar becomes first argument to handler
+
+        // Use source_effect directly (it's already an Effect)
+        let source_effect_obj = source_effect.cloned();
+
         self.current_event = Some(EventInfo {
             id: event_id.to_string(),
             target,
             source,
-            effect: source_effect.cloned(),
+            effect: source_effect_obj,
             modifier: 4096,
             relay_var: relay_var.clone(),
             type_param: None,

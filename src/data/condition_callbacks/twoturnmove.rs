@@ -5,6 +5,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
@@ -47,7 +48,7 @@ pub fn on_start(
     // Get the move ID from battle.current_event.effect
     let move_id = battle.current_event.as_ref()
         .and_then(|e| e.effect.as_ref())
-        .map(|id| id.clone());
+        .map(|eff| eff.id.clone());
 
     eprintln!("[TWOTURNMOVE_ONSTART] move_id={:?}", move_id.as_ref().map(|id| id.as_str()));
 
@@ -160,7 +161,7 @@ pub fn on_start(
         "PrepareHit",
         Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         defender_pos,
-        move_id.as_ref(),
+        move_id.as_ref().map(|id| Effect::move_(id.clone())).as_ref(),
         EventResult::Continue,
         false,
         false,

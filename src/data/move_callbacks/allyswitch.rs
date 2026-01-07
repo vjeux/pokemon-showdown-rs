@@ -137,7 +137,7 @@ pub mod condition {
     /// onStart() {
     ///     this.effectState.counter = 3;
     /// }
-    pub fn on_start(battle: &mut Battle, source_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(battle: &mut Battle, _source_pos: (usize, usize)) -> EventResult {
         // this.effectState.counter = 3;
         // JavaScript: this.effectState.counter = 3
         battle.with_effect_state(|state| {

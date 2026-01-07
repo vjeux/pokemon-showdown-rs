@@ -69,7 +69,7 @@ impl Battle {
                         .current_event
                         .as_ref()
                         .and_then(|e| e.effect.as_ref())
-                        .map(|id| id.to_string());
+                        .map(|eff| eff.id.to_string());
 
                     (damage, effect_id)
                 };

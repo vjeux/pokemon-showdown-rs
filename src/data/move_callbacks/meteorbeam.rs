@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
@@ -104,7 +104,7 @@ pub fn on_try_move(
 
     // attacker.addVolatile('twoturnmove', defender);
     eprintln!("[METEORBEAM_ON_TRY_MOVE] About to add twoturnmove volatile");
-    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&move_id), None, None);
+    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&Effect::move_(move_id)), None, None);
     eprintln!("[METEORBEAM_ON_TRY_MOVE] Added twoturnmove volatile, returning Stop (charge turn)");
 
     // return null;

@@ -35,6 +35,7 @@
 
 use crate::side::*;
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::dex_data::ID;
 
 impl Side {
@@ -149,7 +150,7 @@ impl Side {
             "SideConditionStart",
             Some(crate::event::EventTarget::Side(side_idx)),
             source_pos,
-            Some(&status_id),
+            Some(&Effect::side_condition(status_id.clone())),
             crate::event::EventResult::Continue,
             false,
             false,

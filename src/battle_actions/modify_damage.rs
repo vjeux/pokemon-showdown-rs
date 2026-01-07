@@ -143,7 +143,7 @@ pub fn modify_damage(
         "WeatherModifyDamage",
         Some(crate::event::EventTarget::Pokemon(target_pos)),  // target = defender
         Some(source_pos),                                       // source = attacker
-        Some(&move_data.id),
+        Some(&crate::battle::Effect::move_(move_data.id.clone())),
         EventResult::Number(base_damage),
         false,
         false
@@ -359,7 +359,7 @@ pub fn modify_damage(
                 "ModifyDamage",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),  // target = defender
                 Some(source_pos),                                       // source = attacker
-                Some(&move_data.id),
+                Some(&crate::battle::Effect::move_(move_data.id.clone())),
                 EventResult::Number(base_damage),
                 false,
                 false

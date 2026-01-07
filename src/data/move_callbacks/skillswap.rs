@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onTryHit(target, source) {
@@ -95,7 +95,7 @@ pub fn on_try_hit(
                 "SetAbility",
                 Some(crate::event::EventTarget::Pokemon(source)),
         Some(source),
-        Some(&target_ability_id),
+        Some(&Effect::ability(target_ability_id.clone())),
         crate::event::EventResult::Number(1),
         false,
         false,
@@ -110,7 +110,7 @@ pub fn on_try_hit(
                 "SetAbility",
                 Some(crate::event::EventTarget::Pokemon(target)),
         Some(source),
-        Some(&source_ability_id),
+        Some(&Effect::ability(source_ability_id.clone())),
         crate::event::EventResult::Number(1),
         false,
         false,

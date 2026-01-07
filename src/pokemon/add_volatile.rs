@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 impl Pokemon {
@@ -71,7 +72,7 @@ impl Pokemon {
         target_pos: (usize, usize),
         volatile_id: ID,
         source_pos: Option<(usize, usize)>,
-        source_effect: Option<&ID>,
+        source_effect: Option<&Effect>,
         linked_status: Option<ID>,
         embedded_condition: Option<&crate::dex::ConditionData>,
     ) -> bool {
@@ -84,11 +85,11 @@ impl Pokemon {
 
         if battle.turn == 17 && volatile_id.as_str() == "skydrop" {
             eprintln!("[ADD_VOLATILE_DEBUG] turn=17, adding skydrop to {}, source_effect={:?}",
-                pokemon_name, source_effect.map(|s| s.as_str()));
+                pokemon_name, source_effect.map(|s| s.id.as_str()));
         }
 
         crate::trace_volatile!("turn={}, ADD volatile='{}' to {}, source_effect={:?}, embedded_condition={}",
-            battle.turn, volatile_id.as_str(), pokemon_name, source_effect.map(|s| s.as_str()), embedded_condition.is_some());
+            battle.turn, volatile_id.as_str(), pokemon_name, source_effect.map(|s| s.id.as_str()), embedded_condition.is_some());
 
         // JS: status = this.battle.dex.conditions.get(status);
         // JS: if (!this.hp && !status.affectsFainted) return false;
@@ -187,7 +188,7 @@ impl Pokemon {
             // ✅ NOW IMPLEMENTED (Session 24 Part 37): sourceEffect.status check for -immune message
             if let Some(src_effect) = source_effect {
                 // Check if sourceEffect is a Move with a status property
-                if let Some(move_data) = battle.dex.moves().get_by_id(src_effect) {
+                if let Some(move_data) = battle.dex.moves().get_by_id(&src_effect.id) {
                     if move_data.secondary.is_some() || move_data.status.is_some() {
                         // Add -immune message
                         let target_arg = {
@@ -251,7 +252,7 @@ impl Pokemon {
                 volatile_id.as_str(),
                 target_pos,
                 source_pos,
-                source_effect.map(|id| id.as_str()),
+                source_effect.map(|eff| eff.id.as_str()),
             );
             match result {
                 crate::event::EventResult::Number(n) => Some(n),
@@ -284,7 +285,7 @@ impl Pokemon {
         }
         // ✅ NOW IMPLEMENTED: sourceEffect assignment (Session 24 Part 27)
         if let Some(src_effect) = source_effect {
-            state.source_effect = Some(src_effect.clone());
+            state.source_effect = Some(src_effect.id.clone());
         }
 
         // JavaScript: this.volatiles[status.id] = this.battle.initEffectState(this.volatiles[status.id]);

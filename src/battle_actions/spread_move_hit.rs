@@ -6,6 +6,7 @@ use crate::*;
 use crate::event::EventResult;
 use crate::battle::SpreadMoveHitResult;
 use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget};
+use crate::battle::Effect;
 
 /// Spread move hit - handles individual target hit processing
 /// Equivalent to spreadMoveHit() in battle-actions.ts:1043
@@ -166,7 +167,7 @@ pub fn spread_move_hit(
             &crate::battle::Effect::move_(move_data_id.clone()),
             target_pos,
             Some(source_pos),
-            Some(move_id),
+            Some(&Effect::move_(move_id.clone())),
             None,
         )
     } else if (move_target == "foeSide" ||
@@ -178,7 +179,7 @@ pub fn spread_move_hit(
             &crate::battle::Effect::move_(move_data_id.clone()),
             target_pos,
             Some(source_pos),
-            Some(move_id),
+            Some(&Effect::move_(move_id.clone())),
             None,
         )
     } else if target_pos.is_some() {
@@ -188,7 +189,7 @@ pub fn spread_move_hit(
             &crate::battle::Effect::move_(move_data_id.clone()),
             target_pos,
             Some(source_pos),
-            Some(move_id),
+            Some(&Effect::move_(move_id.clone())),
             None,
         )
     } else {
@@ -292,7 +293,7 @@ pub fn spread_move_hit(
         damage,
         &targets_mut,
         Some(source_pos),
-        Some(move_id),
+        Some(&crate::battle::Effect::move_(move_id.clone())),
         false, // instafaint
     );
 
@@ -467,7 +468,7 @@ pub fn spread_move_hit(
         // And pass the corresponding damage amount as the relay variable
         for (i, target_pos) in damaged_targets.iter().enumerate() {
             let damage_amount = damaged_damage[i];
-            battle.run_event("DamagingHit", Some(crate::event::EventTarget::Pokemon(*target_pos)), Some(source_pos), Some(move_id), EventResult::Number(damage_amount), false, false);
+            battle.run_event("DamagingHit", Some(crate::event::EventTarget::Pokemon(*target_pos)), Some(source_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Number(damage_amount), false, false);
         }
 
         // Check if moveData has onAfterHit
@@ -479,7 +480,7 @@ pub fn spread_move_hit(
                     &crate::battle::Effect::move_(move_data_id.clone()),
                     Some(*target_pos),
                     Some(source_pos),
-                    Some(move_id),
+                    Some(&Effect::move_(move_id.clone())),
                     None,
                 );
             }

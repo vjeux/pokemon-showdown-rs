@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -31,13 +31,12 @@ pub fn on_move_fail(
 
     // this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('High Jump Kick'));
     let damage_amount = source_pokemon.base_maxhp / 2;
-    let highjumpkick_id = ID::from("highjumpkick");
 
     battle.damage(
         damage_amount,
         Some(source),
         Some(source),
-        Some(&highjumpkick_id),
+        Some(&Effect::move_(ID::from("highjumpkick"))),
         false,
     );
 

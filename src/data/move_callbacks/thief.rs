@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
@@ -77,7 +77,7 @@ pub fn on_after_hit(
         &crate::battle::Effect::item(your_item_id.clone()),
         Some(source_pos),
         Some(target_pos),
-        Some(&your_item_id),
+        Some(&Effect::item(your_item_id.clone())),
         None,
     );
 

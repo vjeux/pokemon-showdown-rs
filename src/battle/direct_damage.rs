@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle::Effect;
 
 impl Battle {
 
@@ -65,7 +66,7 @@ impl Battle {
         mut damage: i32,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
-        effect: Option<&ID>,
+        effect: Option<&Effect>,
     ) -> i32 {
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
@@ -78,7 +79,7 @@ impl Battle {
 
         let target = target.or(event_target);
         let _source = source.or(event_source); // Not used in current implementation but matches JS signature
-        let effect_owned: Option<ID>;
+        let effect_owned: Option<Effect>;
         let effect = if effect.is_none() {
             effect_owned = event_effect;
             effect_owned.as_ref()
@@ -113,7 +114,7 @@ impl Battle {
         // Clamp damage to at least 1
         damage = damage.max(1);
 
-        let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+        let effect_id = effect.map(|e| e.id.as_str()).unwrap_or("");
 
         // Gen 1 special case: Substitute takes confusion and HJK recoil damage
         // JavaScript: if (this.gen <= 1 && this.dex.currentMod !== 'gen1stadium' && ...)
@@ -287,7 +288,7 @@ impl Battle {
                 return actual_damage;
             };
 
-            let effect_id = effect.map(|e| e.as_str()).unwrap_or("");
+            let effect_id = effect.map(|e| e.id.as_str()).unwrap_or("");
 
             // Special case handling
             // JS: this.add('-damage', target, target.getHealth, '[from] recoil/confusion')
@@ -309,7 +310,7 @@ impl Battle {
             if let Some(pokemon) = side.pokemon.get(target_pos.1) {
                 if pokemon.hp == 0 {
                     // JS: if (pokemon.hp <= 0) pokemon.faint(source, effect);
-                    let effect_str = effect.map(|e| e.as_str());
+                    let effect_str = effect.map(|e| e.id.as_str());
                     self.faint(target_pos, source, effect_str);
                 }
             }

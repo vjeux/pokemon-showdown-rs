@@ -59,7 +59,7 @@ pub fn force_switch(
 
                     if can_switch {
                         //     const hitResult = this.battle.runEvent('DragOut', target, source, move);
-                        let hit_result = battle.run_event("DragOut", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&active_move.id), EventResult::Continue, false, false);
+                        let hit_result = battle.run_event("DragOut", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&crate::battle::Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
 
                         //     if (hitResult) {
                         //         target.forceSwitchFlag = true;

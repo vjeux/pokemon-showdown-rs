@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -66,7 +66,7 @@ pub fn on_try_move(
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
     let charge_result =
-        battle.run_event("ChargeMove", Some(crate::event::EventTarget::Pokemon(attacker)), defender, Some(&move_id), EventResult::Continue, false, false);
+        battle.run_event("ChargeMove", Some(crate::event::EventTarget::Pokemon(attacker)), defender, Some(&Effect::move_(move_id.clone())), EventResult::Continue, false, false);
 
     if matches!(charge_result, EventResult::Number(0)) {
         // return;
@@ -74,7 +74,7 @@ pub fn on_try_move(
     }
 
     // attacker.addVolatile('twoturnmove', defender);
-    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&move_id), None, None);
+    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&Effect::move_(move_id.clone())), None, None);
 
     // return null;
     EventResult::Stop

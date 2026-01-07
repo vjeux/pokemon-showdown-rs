@@ -73,7 +73,7 @@ pub fn try_move_hit(
         &crate::battle::Effect::move_(move_id.clone()),
         Some(pokemon_pos),
         Some(target),
-        Some(move_id),
+        Some(&crate::battle::Effect::move_(move_id.clone())),
         None,
     );
 
@@ -82,7 +82,7 @@ pub fn try_move_hit(
         &crate::battle::Effect::move_(move_id.clone()),
         Some(target),
         Some(pokemon_pos),
-        Some(move_id),
+        Some(&crate::battle::Effect::move_(move_id.clone())),
         None,
     );
 
@@ -90,7 +90,7 @@ pub fn try_move_hit(
                 "PrepareHit",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         Some(target),
-        Some(move_id),
+        Some(&crate::battle::Effect::move_(move_id.clone())),
         crate::event::EventResult::Number(1),
         false,
         false,
@@ -146,7 +146,7 @@ pub fn try_move_hit(
                 "TryHitField",
                 Some(crate::event::EventTarget::Pokemon(target)),
             Some(pokemon_pos),
-            Some(move_id),
+            Some(&crate::battle::Effect::move_(move_id.clone())),
             crate::event::EventResult::Number(1),
             false,
             false,
@@ -161,7 +161,7 @@ pub fn try_move_hit(
                 "TryHitSide",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
-                Some(move_id),
+                Some(&crate::battle::Effect::move_(move_id.clone())),
                 crate::event::EventResult::Number(1),
                 false,
                 false,
@@ -180,7 +180,7 @@ pub fn try_move_hit(
                 "TryHitSide",
                 Some(crate::event::EventTarget::Pokemon(target)),
             Some(pokemon_pos),
-            Some(move_id),
+            Some(&crate::battle::Effect::move_(move_id.clone())),
             crate::event::EventResult::Number(1),
             false,
             false,

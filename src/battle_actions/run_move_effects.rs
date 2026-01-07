@@ -4,6 +4,7 @@
 
 use crate::*;
 use crate::battle_actions::{SpreadMoveDamage, SpreadMoveTargets, SpreadMoveTarget, DamageResult, combine_results, SpreadMoveDamageExt};
+use crate::battle::Effect;
 
 /// Run move effects (boosts, healing, status, etc.)
 /// Equivalent to runMoveEffects() in battle-actions.ts:1201
@@ -262,7 +263,7 @@ pub fn run_move_effects(
                         amount_rounded,
                         Some(target_pos),
                         Some(source_pos),
-                        Some(&active_move.id),
+                        Some(&crate::battle::Effect::move_(active_move.id.clone())),
                     );
                     // if (!d && d !== 0) {
                     match d {
@@ -337,7 +338,7 @@ pub fn run_move_effects(
                     target_pos,
                     volatile_id,
                     Some(source_pos),
-                    Some(&active_move.id),
+                    Some(&crate::battle::Effect::move_(active_move.id.clone())),
                     None, // linked_status
                     None, // embedded_condition
                 );
@@ -499,7 +500,7 @@ pub fn run_move_effects(
                         &crate::battle::Effect::move_(move_data.id.clone()),
                         Some(target_pos),
                         Some(source_pos),
-                        Some(&active_move.id),
+                        Some(&Effect::move_(active_move.id.clone())),
                         None,
                     );
                     //         didSomething = this.combineResults(didSomething, hitResult);
@@ -516,7 +517,7 @@ pub fn run_move_effects(
                         &crate::battle::Effect::move_(move_data.id.clone()),
                         Some(target_pos),
                         Some(source_pos),
-                        Some(&active_move.id),
+                        Some(&Effect::move_(active_move.id.clone())),
                         None,
                     );
                     //         didSomething = this.combineResults(didSomething, hitResult);
@@ -531,7 +532,7 @@ pub fn run_move_effects(
                         &crate::battle::Effect::move_(move_data.id.clone()),
                         Some(target_pos),
                         Some(source_pos),
-                        Some(&active_move.id),
+                        Some(&Effect::move_(active_move.id.clone())),
                         None,
                     );
                     //         didSomething = this.combineResults(didSomething, hitResult);
@@ -544,7 +545,7 @@ pub fn run_move_effects(
                         "Hit",
                         Some(crate::event::EventTarget::Pokemon(target_pos)),
                         Some(source_pos),
-                        Some(&active_move.id),
+                        Some(&crate::battle::Effect::move_(active_move.id.clone())),
                         crate::event::EventResult::Continue,
                         false,
                         false,
