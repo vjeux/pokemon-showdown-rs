@@ -575,11 +575,6 @@ pub fn dispatch_on_source_modify_damage(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onStallMove()
-//   onStallMove(pokemon)
-
 /// Dispatch onStallMove callbacks
 pub fn dispatch_on_stall_move(
     battle: &mut Battle,
