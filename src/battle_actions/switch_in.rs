@@ -192,6 +192,10 @@ pub fn switch_in(
 
             battle.sides[side_index].pokemon[old_idx].skip_before_switch_out_event_flag = false;
 
+            // Clear switch_flag since we're now handling the switch
+            // In JavaScript, switchFlag is cleared when processing the switch action
+            battle.sides[side_index].pokemon[old_idx].switch_flag = None;
+
             // Run SwitchOut event
             if !battle.run_event(
                 "SwitchOut",
