@@ -2050,9 +2050,6 @@ pub fn dispatch_on_ally_after_use_item_priority(
 ) -> EventResult {
     dispatch_on_ally_after_use_item(battle, ability_id, item_id, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyAfterUseItemOrder callbacks (alias for onAllyAfterUseItem)
 pub fn dispatch_on_ally_after_use_item_order(
     battle: &mut Battle,
@@ -2061,9 +2058,6 @@ pub fn dispatch_on_ally_after_use_item_order(
 ) -> EventResult {
     dispatch_on_ally_after_use_item(battle, ability_id, item_id, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyAfterUseItemSubOrder callbacks (alias for onAllyAfterUseItem)
 pub fn dispatch_on_ally_after_use_item_sub_order(
     battle: &mut Battle,
@@ -2072,9 +2066,6 @@ pub fn dispatch_on_ally_after_use_item_sub_order(
 ) -> EventResult {
     dispatch_on_ally_after_use_item(battle, ability_id, item_id, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyBasePowerPriority callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_priority(
     battle: &mut Battle,
@@ -2083,9 +2074,6 @@ pub fn dispatch_on_ally_base_power_priority(
 ) -> EventResult {
     dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyBasePowerOrder callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_order(
     battle: &mut Battle,
@@ -2094,9 +2082,6 @@ pub fn dispatch_on_ally_base_power_order(
 ) -> EventResult {
     dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyBasePowerSubOrder callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_sub_order(
     battle: &mut Battle,
