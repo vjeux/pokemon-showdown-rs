@@ -727,10 +727,6 @@ pub fn dispatch_on_any_set_weather(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnySwitchIn()
-//   onAnySwitchIn(pokemon)
 
 /// Dispatch onAnySwitchIn callbacks
 pub fn dispatch_on_any_switch_in(
