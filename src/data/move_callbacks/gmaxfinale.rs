@@ -84,11 +84,44 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // for (const pokemon of source.alliesAndSelf()) {
+        //     this.heal(pokemon.maxhp / 6, pokemon, source, move);
+        // }
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let ally_positions = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.allies_and_self(battle, false)
+        };
+
+        let move_id = ID::from("gmaxfinale");
+
+        for ally_pos in ally_positions {
+            // Get max HP for this pokemon
+            let max_hp = {
+                let ally = match battle.pokemon_at(ally_pos.0, ally_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                ally.maxhp
+            };
+
+            // Heal 1/6 of max HP
+            let heal_amount = max_hp / 6;
+            battle.heal(heal_amount, Some(ally_pos), Some(source), Some(&move_id));
+        }
+
         EventResult::Continue
     }
 }
