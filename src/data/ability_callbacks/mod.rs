@@ -1685,11 +1685,6 @@ pub fn dispatch_on_switch_in(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSwitchOut()
-//   onSwitchOut(pokemon)
-
 /// Dispatch onSwitchOut callbacks
 pub fn dispatch_on_switch_out(
     battle: &mut Battle,
