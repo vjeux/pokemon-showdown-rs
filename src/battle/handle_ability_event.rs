@@ -556,7 +556,7 @@ impl Battle {
                 ability_id.as_str()
             ),
             "FoeTryMove" => {
-                ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), Some(pokemon_pos), None, move_id)
+                ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos, move_id)
             }
             "FractionalPriority" => ability_callbacks::dispatch_on_fractional_priority(
                 self,

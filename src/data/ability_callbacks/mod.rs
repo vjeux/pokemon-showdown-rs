@@ -1103,10 +1103,6 @@ pub fn dispatch_on_foe_try_eat_item(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFoeTryMove(target, source, move)
-
 /// Dispatch onFoeTryMove callbacks
 pub fn dispatch_on_foe_try_move(
     battle: &mut Battle,
