@@ -39,11 +39,7 @@ pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
         };
 
         if let Some(volatile_state) = pokemon_ref.volatiles.get(&ID::from("focuspunch")) {
-            volatile_state
-                .data
-                .get("lostFocus")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false)
+            volatile_state.lost_focus.unwrap_or(false)
         } else {
             false
         }
@@ -123,10 +119,7 @@ pub mod condition {
         if move_category != "Status" {
             // this.effectState.lostFocus = true;
             battle.with_effect_state(|state| {
-                state.data.insert(
-                    "lostFocus".to_string(),
-                    serde_json::to_value(true).unwrap_or(serde_json::Value::Null),
-                );
+                state.lost_focus = Some(true);
             });
         }
 

@@ -43,11 +43,7 @@ pub fn on_base_power(
 
         let rolloutstorage_id = ID::from("rolloutstorage");
         match pokemon.volatiles.get(&rolloutstorage_id) {
-            Some(volatile) => {
-                volatile.data.get("contactHitCount")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0) as i32
-            }
+            Some(volatile) => volatile.contact_hit_count.unwrap_or(0),
             None => return EventResult::Continue,
         }
     };

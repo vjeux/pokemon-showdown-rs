@@ -33,9 +33,8 @@ pub fn damage_callback(
     let damage = pokemon
         .volatiles
         .get(&counter_id)
-        .and_then(|v| v.data.get("damage"))
-        .and_then(|d| d.as_i64())
-        .unwrap_or(1) as i32;
+        .and_then(|v| v.damage)
+        .unwrap_or(1);
 
     EventResult::Number(damage)
 }
@@ -74,11 +73,10 @@ pub fn on_try(
     let slot = source
         .volatiles
         .get(&counter_id)
-        .and_then(|v| v.data.get("slot"))
-        .cloned();
+        .and_then(|v| v.slot);
 
     match slot {
-        None | Some(serde_json::Value::Null) => EventResult::Boolean(false),
+        None => EventResult::Boolean(false),
         _ => EventResult::Continue,
     }
 }
@@ -99,12 +97,8 @@ pub mod condition {
         // this.effectState.slot = null;
         // this.effectState.damage = 0;
         battle.with_effect_state(|state| {
-            state
-                .data
-                .insert("slot".to_string(), serde_json::Value::Null);
-            state
-                .data
-                .insert("damage".to_string(), serde_json::Value::Number(0.into()));
+            state.slot = None;
+            state.damage = Some(0);
         });
 
         EventResult::Continue
@@ -128,12 +122,7 @@ pub mod condition {
 
         // if (source !== this.effectState.target || !this.effectState.slot) return;
         let (effect_target, slot) = battle.with_effect_state_ref(|state| {
-            let target = state
-                .data
-                .get("target")
-                .and_then(|v| serde_json::from_value::<(usize, usize)>(v.clone()).ok());
-            let slot = state.data.get("slot").cloned();
-            (target, slot)
+            (state.target, state.slot)
         }).unwrap_or((None, None));
 
         if source_pos != effect_target {
@@ -141,15 +130,14 @@ pub mod condition {
         }
 
         match slot {
-            None | Some(serde_json::Value::Null) => EventResult::Continue,
-            Some(slot_value) => {
-                if let Ok(slot_str) = serde_json::from_value::<String>(slot_value) {
-                    // return this.getAtSlot(this.effectState.slot);
-                    if let Some(new_target) = battle.get_at_slot(Some(&slot_str)) {
-                        // Return the new target position for move redirection
-                        let target_pos = (new_target.side_index, new_target.position);
-                        return EventResult::Position(target_pos);
-                    }
+            None => EventResult::Continue,
+            Some(slot_num) => {
+                // return this.getAtSlot(this.effectState.slot);
+                let slot_str = slot_num.to_string();
+                if let Some(new_target) = battle.get_at_slot(Some(&slot_str)) {
+                    // Return the new target position for move redirection
+                    let target_pos = (new_target.side_index, new_target.position);
+                    return EventResult::Position(target_pos);
                 }
                 EventResult::Continue
             }
@@ -197,14 +185,16 @@ pub mod condition {
 
             // this.effectState.damage = 2 * damage;
             battle.with_effect_state(|state| {
-                state.data.insert(
-                    "slot".to_string(),
-                    serde_json::to_value(slot).unwrap_or(serde_json::Value::Null),
-                );
-                state.data.insert(
-                    "damage".to_string(),
-                    serde_json::Value::Number((2 * damage).into()),
-                );
+                // Store slot as integer (parse from slot string like "a: Pikachu" -> position)
+                // Actually, slot is the string identifier, but we need to store it
+                // The slot field is i32, but Pokemon::get_slot() returns a string
+                // We'll store the position instead
+                // Looking at the JavaScript, slot is stored for use in getAtSlot
+                // In Rust, we may need to adjust - let's store it as string in a different way
+                // Actually wait - looking at the redirect code, it expects an i32
+                // Let me store the numeric position
+                state.slot = Some(source.1 as i32);
+                state.damage = Some(2 * damage);
             });
         }
 

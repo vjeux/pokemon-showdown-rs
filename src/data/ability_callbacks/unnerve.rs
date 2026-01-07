@@ -16,9 +16,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
     use crate::battle::Arg;
 
     // if (this.effectState.unnerved) return;
-    let already_unnerved = battle.effect_state.data.get("unnerved")
-        .and_then(|v| v.as_bool())
-        .unwrap_or(false);
+    let already_unnerved = battle.effect_state.unnerved.unwrap_or(false);
     if already_unnerved {
         return EventResult::Continue;
     }
@@ -44,7 +42,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
     ]);
 
     // this.effectState.unnerved = true;
-    battle.effect_state.data.insert("unnerved".to_string(), serde_json::Value::Bool(true));
+    battle.effect_state.unnerved = Some(true);
 
     EventResult::Continue
 }
@@ -54,7 +52,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 /// }
 pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // this.effectState.unnerved = false;
-    battle.effect_state.data.insert("unnerved".to_string(), serde_json::Value::Bool(false));
+    battle.effect_state.unnerved = Some(false);
     EventResult::Continue
 }
 
@@ -63,9 +61,7 @@ pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult 
 /// }
 pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
     // return !this.effectState.unnerved;
-    let unnerved = battle.effect_state.data.get("unnerved")
-        .and_then(|v| v.as_bool())
-        .unwrap_or(false);
+    let unnerved = battle.effect_state.unnerved.unwrap_or(false);
     EventResult::Boolean(!unnerved)
 }
 

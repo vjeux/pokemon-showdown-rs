@@ -106,40 +106,32 @@ impl EffectData {
 /// Stores state for temporary effects (volatiles, side conditions, etc.)
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
 /// JavaScript equivalent: EffectState (sim/global-types.ts)
-/// Dynamic fields in JavaScript (properties can be added at runtime)
+/// JavaScript uses dynamic properties [k: string]: any, Rust uses typed fields
 pub struct EffectState {
     /// Effect ID
     /// JavaScript: id: ID
     pub id: ID,
     /// Target of the effect
     /// JavaScript: target?: Pokemon
-    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub target: Option<(usize, usize)>,
     /// Source of the effect
     /// JavaScript: source?: Pokemon
-    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub source: Option<(usize, usize)>,
     /// Duration remaining (turns)
     /// JavaScript: duration?: number
     pub duration: Option<i32>,
     /// Turn when this effect was created
-    /// Rust-specific: Used to prevent decrementing duration on the same turn it was added
-    /// JavaScript implicitly handles this by not decrementing same-turn volatiles
     pub created_turn: Option<i32>,
-    /// Time (for sorting)
+    /// Time (for sleep/confusion duration countdown)
     /// JavaScript: time?: number
     pub time: Option<i32>,
     /// Effect order (for sorting multiple effects)
-    /// Rust-specific: JavaScript uses implicit sorting based on effect timing
-    /// Rust needs explicit ordering for deterministic priority resolution
     pub effect_order: i32,
     /// Side index (for side conditions)
     /// JavaScript: side?: Side
-    /// TODO: Rust uses index instead of Side reference due to ownership
     pub side: Option<usize>,
     /// Target side index (for side conditions)
     /// JavaScript: targetSide?: Side
-    /// TODO: Rust uses index instead of Side reference due to ownership
     pub target_side: Option<usize>,
     /// Source effect that caused this effect
     /// JavaScript: sourceEffect?: Effect
@@ -156,10 +148,184 @@ pub struct EffectState {
     /// Prankster boosted flag (for priority moves affected by Prankster)
     /// JavaScript: pranksterBoosted?: boolean
     pub prankster_boosted: bool,
-    /// Custom data storage (for effect-specific state)
-    /// JavaScript: [key: string]: any (dynamic properties)
-    /// TODO: Rust uses HashMap for dynamic properties that JavaScript adds at runtime
-    pub data: std::collections::HashMap<String, serde_json::Value>,
+
+    // ========== Condition/Volatile state fields ==========
+
+    /// Move ID for locked moves (choicelock, lockedmove, twoturnmove, futuremove)
+    /// JavaScript: move?: ID
+    #[serde(rename = "move")]
+    pub move_id: Option<String>,
+    /// Target location for two-turn moves
+    /// JavaScript: targetLoc?: number
+    pub target_loc: Option<i32>,
+    /// Stall counter (protect, detect, etc.)
+    /// JavaScript: counter?: number
+    pub counter: Option<i32>,
+    /// Dynamax turns counter
+    /// JavaScript: turns?: number
+    pub turns: Option<i32>,
+    /// True duration for locked moves (separate from duration)
+    /// JavaScript: trueDuration?: number
+    pub true_duration: Option<i32>,
+    /// Start time for sleep
+    /// JavaScript: startTime?: number
+    pub start_time: Option<i32>,
+    /// Bound divisor for partially trapped
+    /// JavaScript: boundDivisor?: number
+    pub bound_divisor: Option<i32>,
+    /// Toxic stage counter
+    /// JavaScript: stage?: number
+    pub stage: Option<i32>,
+    /// Layers count (spikes, toxic spikes, stockpile, g-max chi strike, dragon cheer)
+    /// JavaScript: layers?: number
+    pub layers: Option<i32>,
+    /// Has dragon type flag (dragon cheer)
+    /// JavaScript: hasDragonType?: boolean
+    pub has_dragon_type: Option<bool>,
+    /// Got hit flag (shell trap)
+    /// JavaScript: gotHit?: boolean
+    pub got_hit: Option<bool>,
+    /// Accuracy override flag (blizzard, bleakwind storm in weather)
+    /// JavaScript: accuracy?: boolean
+    pub accuracy: Option<bool>,
+    /// Source slot for counter/mirror coat
+    /// JavaScript: slot?: number
+    pub slot: Option<i32>,
+    /// Damage stored for counter/mirror coat/bide
+    /// JavaScript: damage?: number
+    pub damage: Option<i32>,
+    /// Linked Pokemon positions (for linked volatiles like psychic noise)
+    /// JavaScript: linkedPokemon?: Pokemon[]
+    pub linked_pokemon: Option<Vec<(usize, usize)>>,
+    /// Linked status ID (for linked volatiles)
+    /// JavaScript: linkedStatus?: ID
+    pub linked_status: Option<String>,
+    /// Ending turn for future moves
+    /// JavaScript: endingTurn?: number
+    pub ending_turn: Option<i32>,
+    /// Counterpart position (for fake out)
+    /// JavaScript: counterpart?: Pokemon
+    pub counterpart: Option<(usize, usize)>,
+    /// Locked move flag (for disable end)
+    /// JavaScript: locked?: boolean
+    pub locked: Option<bool>,
+    /// Locked target Pokemon position (for partialtrappinglock)
+    /// JavaScript: locked?: Pokemon (overloaded meaning)
+    pub locked_target: Option<(usize, usize)>,
+    /// Fury cutter multiplier
+    /// JavaScript: multiplier?: number
+    pub multiplier: Option<i32>,
+    /// HP value (for wish)
+    /// JavaScript: hp?: number
+    pub hp: Option<i32>,
+    /// Starting turn (for wish)
+    /// JavaScript: startingTurn?: number
+    pub starting_turn: Option<i32>,
+    /// Lost focus flag (for focus punch)
+    /// JavaScript: lostFocus?: boolean
+    pub lost_focus: Option<bool>,
+    /// Move slot index (for leppa berry)
+    /// JavaScript: move_slot_index?: number
+    pub move_slot_index: Option<usize>,
+    /// Defense boost tracking (for stockpile)
+    /// JavaScript: def?: number
+    pub def: Option<i32>,
+    /// Special Defense boost tracking (for stockpile)
+    /// JavaScript: spd?: number
+    pub spd: Option<i32>,
+
+    // ========== Ability state fields ==========
+
+    /// Berry ID for cud chew
+    /// JavaScript: berry?: ID
+    pub berry: Option<String>,
+    /// Choice lock move for gorilla tactics
+    /// JavaScript: choiceLock?: ID
+    pub choice_lock: Option<String>,
+    /// Syrup triggered flag (super sweet syrup)
+    /// JavaScript: syrupTriggered?: boolean
+    pub syrup_triggered: Option<bool>,
+    /// Unnerved flag (as one, unnerve)
+    /// JavaScript: unnerved?: boolean
+    pub unnerved: Option<bool>,
+    /// Embodied flag (embody aspect abilities)
+    /// JavaScript: embodied?: boolean
+    pub embodied: Option<bool>,
+    /// Fallen count (supreme overlord)
+    /// JavaScript: fallen?: number
+    pub fallen: Option<i32>,
+    /// Gluttony active flag
+    /// JavaScript: gluttony?: boolean
+    pub gluttony: Option<bool>,
+    /// Ending flag (neutralizing gas)
+    /// JavaScript: ending?: boolean
+    pub ending: Option<bool>,
+    /// Shield boost flag (dauntless shield)
+    /// JavaScript: shieldBoost?: boolean
+    pub shield_boost: Option<bool>,
+    /// From booster flag (protosynthesis/quark drive)
+    /// JavaScript: fromBooster?: boolean
+    pub from_booster: Option<bool>,
+    /// Best stat (protosynthesis/quark drive)
+    /// JavaScript: bestStat?: string
+    pub best_stat: Option<String>,
+    /// Libero triggered flag
+    /// JavaScript: libero?: boolean
+    pub libero: Option<bool>,
+    /// Seek flag (trace)
+    /// JavaScript: seek?: boolean
+    pub seek: Option<bool>,
+    /// Resisted flag (tera shell)
+    /// JavaScript: resisted?: boolean
+    pub resisted: Option<bool>,
+    /// Checked anger shell flag (anger shell ability)
+    /// JavaScript: checkedAngerShell?: boolean
+    pub checked_anger_shell: Option<bool>,
+    /// Checked berserk flag (berserk ability)
+    /// JavaScript: checkedBerserk?: boolean
+    pub checked_berserk: Option<bool>,
+    /// Busted flag (disguise/iceface abilities)
+    /// JavaScript: busted?: boolean
+    pub busted: Option<bool>,
+    /// Berry weaken flag (ripen ability)
+    /// JavaScript: berryWeaken?: boolean
+    pub berry_weaken: Option<bool>,
+
+    // ========== Item/boost state fields ==========
+
+    /// Accumulated boosts (opportunist, mirror herb, white herb)
+    /// JavaScript: boosts?: BoostsTable
+    pub boosts: Option<crate::dex_data::BoostsTable>,
+    /// Ready flag (mirror herb)
+    /// JavaScript: ready?: boolean
+    pub ready: Option<bool>,
+    /// Eject flag (eject pack)
+    /// JavaScript: eject?: boolean
+    pub eject: Option<bool>,
+    /// Started flag (booster energy)
+    /// JavaScript: started?: boolean
+    pub started: Option<bool>,
+    /// Weather suppressed flag (utility umbrella)
+    /// JavaScript: weatherSuppress?: boolean
+    pub weather_suppress: Option<bool>,
+    /// Inactive flag (utility umbrella)
+    /// JavaScript: inactive?: boolean
+    pub inactive: Option<bool>,
+
+    // ========== Move-specific fields ==========
+
+    /// Allies list for beat up
+    /// JavaScript: allies?: Pokemon[]
+    pub allies: Option<Vec<(usize, usize)>>,
+    /// Sources list for pursuit side condition
+    /// JavaScript: sources?: Pokemon[]
+    pub sources: Option<Vec<(usize, usize)>>,
+    /// Magnitude value for Magnitude move
+    /// JavaScript: magnitude?: number
+    pub magnitude: Option<i32>,
+    /// Move data for future moves (Doom Desire, Future Sight)
+    /// JavaScript: moveData?: object
+    pub move_data: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 impl EffectState {
@@ -171,124 +337,64 @@ impl EffectState {
         }
     }
 
-    /// Get a boolean field from custom data
-    /// Equivalent to volatile.fieldName or effectState.fieldName in TypeScript
-    pub fn get_bool(&self, key: &str) -> Option<bool> {
-        self.data.get(key).and_then(|v| v.as_bool())
-    }
-
-    /// Set a boolean field in custom data
-    pub fn set_bool(&mut self, key: &str, value: bool) {
-        self.data
-            .insert(key.to_string(), serde_json::Value::Bool(value));
-    }
-
-    /// Get an integer field from custom data
-    /// Equivalent to volatile.fieldName or effectState.fieldName in TypeScript
-    pub fn get_i32(&self, key: &str) -> Option<i32> {
-        self.data
-            .get(key)
-            .and_then(|v| v.as_i64())
-            .map(|n| n as i32)
-    }
-
-    /// Set an integer field in custom data
-    pub fn set_i32(&mut self, key: &str, value: i32) {
-        self.data
-            .insert(key.to_string(), serde_json::Value::Number(value.into()));
-    }
-
-    /// Get a usize field from custom data (for slot indices)
-    pub fn get_usize(&self, key: &str) -> Option<usize> {
-        self.data
-            .get(key)
-            .and_then(|v| v.as_u64())
-            .map(|n| n as usize)
-    }
-
-    /// Set a usize field in custom data
-    pub fn set_usize(&mut self, key: &str, value: usize) {
-        self.data.insert(
-            key.to_string(),
-            serde_json::Value::Number((value as u64).into()),
-        );
-    }
-
-    /// Get source slot from custom data
-    /// Equivalent to volatile.sourceSlot or effectState.sourceSlot in TypeScript
-    pub fn get_source_slot(&self) -> Option<usize> {
-        self.get_usize("sourceSlot")
-    }
-
-    /// Set source slot in custom data
-    pub fn set_source_slot(&mut self, slot: usize) {
-        self.set_usize("sourceSlot", slot);
-    }
-
-    /// Check if lostFocus flag is set
-    /// Equivalent to effectState.lostFocus in TypeScript (focuspunch)
-    pub fn get_lost_focus(&self) -> bool {
-        self.get_bool("lostFocus").unwrap_or(false)
-    }
-
-    /// Set lostFocus flag
-    pub fn set_lost_focus(&mut self, value: bool) {
-        self.set_bool("lostFocus", value);
-    }
-
-    /// Get layers count
-    /// Equivalent to volatile.layers in TypeScript (gmaxchistrike, psychup)
+    /// Get layers count (now uses typed field)
     pub fn get_layers(&self) -> i32 {
-        self.get_i32("layers").unwrap_or(0)
+        self.layers.unwrap_or(0)
     }
 
-    /// Set layers count
+    /// Set layers count (now uses typed field)
     pub fn set_layers(&mut self, layers: i32) {
-        self.set_i32("layers", layers);
+        self.layers = Some(layers);
     }
 
-    /// Get hasDragonType flag
-    /// Equivalent to volatile.hasDragonType in TypeScript (dragoncheer)
+    /// Get hasDragonType flag (now uses typed field)
     pub fn get_has_dragon_type(&self) -> bool {
-        self.get_bool("hasDragonType").unwrap_or(false)
+        self.has_dragon_type.unwrap_or(false)
     }
 
-    /// Set hasDragonType flag
+    /// Set hasDragonType flag (now uses typed field)
     pub fn set_has_dragon_type(&mut self, value: bool) {
-        self.set_bool("hasDragonType", value);
+        self.has_dragon_type = Some(value);
     }
 
-    /// Get hp value
-    /// Equivalent to effectState.hp in TypeScript (wish)
+    /// Get hp value (now uses typed field)
     pub fn get_hp(&self) -> Option<i32> {
-        self.get_i32("hp")
+        self.hp
     }
 
-    /// Set hp value
+    /// Set hp value (now uses typed field)
     pub fn set_hp(&mut self, hp: i32) {
-        self.set_i32("hp", hp);
+        self.hp = Some(hp);
     }
 
-    /// Get starting turn
-    /// Equivalent to effectState.startingTurn in TypeScript (wish)
+    /// Get starting turn (now uses typed field)
     pub fn get_starting_turn(&self) -> Option<i32> {
-        self.get_i32("startingTurn")
+        self.starting_turn
     }
 
-    /// Set starting turn
+    /// Set starting turn (now uses typed field)
     pub fn set_starting_turn(&mut self, turn: i32) {
-        self.set_i32("startingTurn", turn);
+        self.starting_turn = Some(turn);
     }
 
-    /// Get pranksterBoosted flag
-    /// Equivalent to effectState.pranksterBoosted in TypeScript (magiccoat)
-    pub fn get_prankster_boosted(&self) -> bool {
-        self.get_bool("pranksterBoosted").unwrap_or(false)
+    /// Get lost focus flag (now uses typed field)
+    pub fn get_lost_focus(&self) -> bool {
+        self.lost_focus.unwrap_or(false)
     }
 
-    /// Set pranksterBoosted flag
-    pub fn set_prankster_boosted(&mut self, value: bool) {
-        self.set_bool("pranksterBoosted", value);
+    /// Set lost focus flag (now uses typed field)
+    pub fn set_lost_focus(&mut self, value: bool) {
+        self.lost_focus = Some(value);
+    }
+
+    /// Get source slot (now uses typed field)
+    pub fn get_source_slot(&self) -> Option<usize> {
+        self.source_slot
+    }
+
+    /// Set source slot (now uses typed field)
+    pub fn set_source_slot(&mut self, slot: usize) {
+        self.source_slot = Some(slot);
     }
 }
 

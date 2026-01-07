@@ -22,7 +22,7 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _
     use serde_json::Value;
 
     // if (this.effectState.libero) return;
-    if let Some(Value::Bool(true)) = battle.effect_state.data.get("libero") {
+    if let Some(true) = battle.effect_state.libero {
         return EventResult::Continue;
     }
 
@@ -78,7 +78,7 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _
     }
 
     // this.effectState.libero = true;
-    battle.effect_state.data.insert("libero".to_string(), Value::Bool(true));
+    battle.effect_state.libero = Some(true);
 
     // Get source slot for message
     let source_slot = {

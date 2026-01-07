@@ -38,25 +38,23 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
         };
 
         use crate::dex_data::BoostID;
-        let mut boosts_to_clear = std::collections::HashMap::new();
+        let mut boosts_to_clear = crate::dex_data::BoostsTable::default();
         let mut ready = false;
 
         for boost_id in BoostID::all() {
             let boost_value = pokemon.boosts.get(*boost_id);
             if boost_value < 0 {
                 ready = true;
-                boosts_to_clear.insert(format!("{:?}", boost_id).to_lowercase(), 0i8);
+                boosts_to_clear.set(*boost_id, 0);
             }
         }
 
         (boosts_to_clear, ready)
     };
 
-    // Store boosts in effectState.data
+    // Store boosts in effectState
     battle.with_effect_state(|state| {
-        state
-            .data
-            .insert("boosts".to_string(), serde_json::json!(boosts_to_clear));
+        state.boosts = Some(boosts_to_clear);
     });
 
     // if (ready) (this.effectState.target as Pokemon).useItem();
@@ -70,7 +68,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 
     // delete this.effectState.boosts;
     battle.with_effect_state(|state| {
-        state.data.remove("boosts");
+        state.boosts = None;
     });
 
     EventResult::Continue
@@ -123,25 +121,11 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 /// }
 pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.setBoost(this.effectState.boosts);
-    let boosts_map = battle.with_effect_state_ref(|state| {
-        if let Some(boosts_value) = state.data.get("boosts") {
-            if let Some(obj) = boosts_value.as_object() {
-                let mut map = std::collections::HashMap::new();
-                for (key, value) in obj {
-                    if let Some(num) = value.as_i64() {
-                        map.insert(key.clone(), num as i8);
-                    }
-                }
-                Some(map)
-            } else {
-                None
-            }
-        } else {
-            None
-        }
+    let boosts_opt = battle.with_effect_state_ref(|state| {
+        state.boosts
     }).flatten();
 
-    if let Some(boosts) = boosts_map {
+    if let Some(boosts) = boosts_opt {
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
@@ -149,18 +133,11 @@ pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
         use crate::dex_data::BoostID;
         let mut boost_map = std::collections::HashMap::new();
-        for (boost_name, boost_value) in boosts {
-            let boost_id = match boost_name.to_lowercase().as_str() {
-                "atk" => BoostID::Atk,
-                "def" => BoostID::Def,
-                "spa" => BoostID::SpA,
-                "spd" => BoostID::SpD,
-                "spe" => BoostID::Spe,
-                "accuracy" => BoostID::Accuracy,
-                "evasion" => BoostID::Evasion,
-                _ => continue,
-            };
-            boost_map.insert(boost_id, boost_value);
+        for boost_id in BoostID::all() {
+            let value = boosts.get(*boost_id);
+            if value != 0 {
+                boost_map.insert(*boost_id, value);
+            }
         }
         pokemon_mut.set_boost(boost_map);
     }

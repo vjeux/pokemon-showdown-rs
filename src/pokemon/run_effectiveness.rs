@@ -137,12 +137,7 @@ impl Pokemon {
             // Check species_id for Terapagos-Terastal
             let is_terapagos_terastal = pokemon.species_id.as_str() == "terapagosterastal";
             let has_tera_shell = pokemon.has_ability(battle, &["Tera Shell"]);
-            let ability_state_resisted = pokemon
-                .ability_state
-                .data
-                .get("resisted")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false);
+            let ability_state_resisted = pokemon.ability_state.resisted.unwrap_or(false);
 
             // Check if ability is suppressed
             let is_suppressed = battle.suppressing_ability(Some(pokemon_pos));
@@ -212,10 +207,7 @@ impl Pokemon {
 
             // JS: this.abilityState.resisted = true;
             if let Some(pokemon_mut) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                pokemon_mut.ability_state.data.insert(
-                    "resisted".to_string(),
-                    serde_json::json!(true),
-                );
+                pokemon_mut.ability_state.resisted = Some(true);
             }
 
             // JS: return -1;

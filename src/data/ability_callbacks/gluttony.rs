@@ -16,7 +16,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         None => return EventResult::Continue,
     };
 
-    pokemon_mut.ability_state.set_bool("gluttony", true);
+    pokemon_mut.ability_state.gluttony = Some(true);
 
     EventResult::Continue
 }
@@ -30,7 +30,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
         None => return EventResult::Continue,
     };
 
-    pokemon_mut.ability_state.set_bool("gluttony", true);
+    pokemon_mut.ability_state.gluttony = Some(true);
 
     EventResult::Continue
 }

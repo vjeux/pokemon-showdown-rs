@@ -22,7 +22,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.get("unnerved").and_then(|v| v.as_bool()).unwrap_or(false)
+        pokemon.ability_state.unnerved.unwrap_or(false)
     };
 
     if already_unnerved {
@@ -55,7 +55,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.insert("unnerved".to_string(), serde_json::json!(true));
+        pokemon.ability_state.unnerved = Some(true);
     }
 
     EventResult::Continue
@@ -70,7 +70,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon.ability_state.data.insert("unnerved".to_string(), serde_json::json!(false));
+    pokemon.ability_state.unnerved = Some(false);
 
     EventResult::Continue
 }
@@ -91,7 +91,7 @@ pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.get("unnerved").and_then(|v| v.as_bool()).unwrap_or(false)
+        pokemon.ability_state.unnerved.unwrap_or(false)
     };
 
     // return !this.effectState.unnerved;

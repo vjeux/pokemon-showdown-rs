@@ -99,10 +99,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.ability_state.data
-            .get("berryWeaken")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        target.ability_state.berry_weaken.unwrap_or(false)
     };
 
     if berry_weaken {
@@ -112,10 +109,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target.ability_state.data.insert(
-                "berryWeaken".to_string(),
-                serde_json::Value::Bool(false),
-            );
+            target.ability_state.berry_weaken = Some(false);
         }
 
         // return this.chainModify(0.5);
@@ -195,10 +189,7 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
         None => return EventResult::Continue,
     };
 
-    pokemon.ability_state.data.insert(
-        "berryWeaken".to_string(),
-        serde_json::Value::Bool(berry_weaken),
-    );
+    pokemon.ability_state.berry_weaken = Some(berry_weaken);
 
     EventResult::Continue
 }

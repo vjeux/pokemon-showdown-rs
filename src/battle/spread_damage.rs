@@ -389,12 +389,9 @@ impl Battle {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 let trap_id = ID::new("partiallytrapped");
                                 if let Some(trap_state) = pokemon.volatiles.get(&trap_id) {
-                                    // Extract sourceEffect.fullname from data HashMap
-                                    if let Some(source_effect) = trap_state.data.get("sourceEffect") {
-                                        source_effect
-                                            .get("fullname")
-                                            .and_then(|v| v.as_str())
-                                            .unwrap_or("partiallytrapped")
+                                    // Use the typed source_effect field from EffectState
+                                    if let Some(ref source_eff) = trap_state.source_effect {
+                                        source_eff.id.as_str()
                                     } else {
                                         "partiallytrapped"
                                     }
@@ -603,19 +600,12 @@ impl Battle {
                                         if let Some(bide_state) =
                                             pokemon.volatiles.get_mut(&bide_id)
                                         {
-                                            // Check if the bide state has a damage field
-                                            if let Some(damage_value) =
-                                                bide_state.data.get("damage")
-                                            {
-                                                if let Some(damage) = damage_value.as_i64() {
-                                                    if damage > 0 {
-                                                        // Clear Bide damage
-                                                        bide_state.data.insert(
-                                                            "damage".to_string(),
-                                                            serde_json::json!(0),
-                                                        );
-                                                        bide_cleared = true;
-                                                    }
+                                            // Check if the bide state has damage > 0
+                                            if let Some(damage) = bide_state.damage {
+                                                if damage > 0 {
+                                                    // Clear Bide damage
+                                                    bide_state.damage = Some(0);
+                                                    bide_cleared = true;
                                                 }
                                             }
                                         }

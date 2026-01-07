@@ -49,10 +49,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
     };
 
     // this.effectState.checkedAngerShell = !should_check;
-    battle.effect_state.data.insert(
-        "checkedAngerShell".to_string(),
-        serde_json::Value::Bool(!should_check),
-    );
+    battle.effect_state.checked_anger_shell = Some(!should_check);
 
     EventResult::Continue
 }
@@ -93,10 +90,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
     if let Some(item_id) = item_id {
         if healing_items.contains(&item_id) {
             // return this.effectState.checkedAngerShell;
-            let checked_anger_shell = battle.effect_state.data
-                .get("checkedAngerShell")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(true);
+            let checked_anger_shell = battle.effect_state.checked_anger_shell.unwrap_or(true);
             return EventResult::Boolean(checked_anger_shell);
         }
     }
@@ -117,10 +111,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
 /// }
 pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), _move_id: &str) -> EventResult {
     // this.effectState.checkedAngerShell = true;
-    battle.effect_state.data.insert(
-        "checkedAngerShell".to_string(),
-        serde_json::Value::Bool(true),
-    );
+    battle.effect_state.checked_anger_shell = Some(true);
 
     // if (!source || source === target || !target.hp || !move.totalDamage) return;
     if source_pos == target_pos {

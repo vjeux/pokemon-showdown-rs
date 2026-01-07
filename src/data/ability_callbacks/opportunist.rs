@@ -40,70 +40,34 @@ pub fn on_foe_after_boost(battle: &mut Battle, _target_pos: Option<(usize, usize
     };
 
     // if (!this.effectState.boosts) this.effectState.boosts = {} as SparseBoostsTable;
-    // Get or create the boosts object in effect_state.data
-    let accumulated_boosts: Vec<(&str, i8)> = if let Some(Value::Object(map)) = battle.effect_state.data.get("boosts") {
-        vec![
-            ("atk", map.get("atk").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("def", map.get("def").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("spa", map.get("spa").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("spd", map.get("spd").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("spe", map.get("spe").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("accuracy", map.get("accuracy").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("evasion", map.get("evasion").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-        ]
-    } else {
-        vec![("atk", 0), ("def", 0), ("spa", 0), ("spd", 0), ("spe", 0), ("accuracy", 0), ("evasion", 0)]
-    };
+    // Get or create the boosts object in effect_state
+    let mut accumulated_boosts = battle.effect_state.boosts.unwrap_or_default();
 
     // for (i in boost) { if (boost[i]! > 0) { boostPlus[i] = (boostPlus[i] || 0) + boost[i]!; } }
-    let mut new_boosts = serde_json::Map::new();
-
     if boosts.atk > 0 {
-        new_boosts.insert("atk".to_string(), Value::Number((accumulated_boosts[0].1 + boosts.atk).into()));
-    } else if accumulated_boosts[0].1 != 0 {
-        new_boosts.insert("atk".to_string(), Value::Number(accumulated_boosts[0].1.into()));
+        accumulated_boosts.atk += boosts.atk;
     }
-
     if boosts.def > 0 {
-        new_boosts.insert("def".to_string(), Value::Number((accumulated_boosts[1].1 + boosts.def).into()));
-    } else if accumulated_boosts[1].1 != 0 {
-        new_boosts.insert("def".to_string(), Value::Number(accumulated_boosts[1].1.into()));
+        accumulated_boosts.def += boosts.def;
     }
-
     if boosts.spa > 0 {
-        new_boosts.insert("spa".to_string(), Value::Number((accumulated_boosts[2].1 + boosts.spa).into()));
-    } else if accumulated_boosts[2].1 != 0 {
-        new_boosts.insert("spa".to_string(), Value::Number(accumulated_boosts[2].1.into()));
+        accumulated_boosts.spa += boosts.spa;
     }
-
     if boosts.spd > 0 {
-        new_boosts.insert("spd".to_string(), Value::Number((accumulated_boosts[3].1 + boosts.spd).into()));
-    } else if accumulated_boosts[3].1 != 0 {
-        new_boosts.insert("spd".to_string(), Value::Number(accumulated_boosts[3].1.into()));
+        accumulated_boosts.spd += boosts.spd;
     }
-
     if boosts.spe > 0 {
-        new_boosts.insert("spe".to_string(), Value::Number((accumulated_boosts[4].1 + boosts.spe).into()));
-    } else if accumulated_boosts[4].1 != 0 {
-        new_boosts.insert("spe".to_string(), Value::Number(accumulated_boosts[4].1.into()));
+        accumulated_boosts.spe += boosts.spe;
     }
-
     if boosts.accuracy > 0 {
-        new_boosts.insert("accuracy".to_string(), Value::Number((accumulated_boosts[5].1 + boosts.accuracy).into()));
-    } else if accumulated_boosts[5].1 != 0 {
-        new_boosts.insert("accuracy".to_string(), Value::Number(accumulated_boosts[5].1.into()));
+        accumulated_boosts.accuracy += boosts.accuracy;
     }
-
     if boosts.evasion > 0 {
-        new_boosts.insert("evasion".to_string(), Value::Number((accumulated_boosts[6].1 + boosts.evasion).into()));
-    } else if accumulated_boosts[6].1 != 0 {
-        new_boosts.insert("evasion".to_string(), Value::Number(accumulated_boosts[6].1.into()));
+        accumulated_boosts.evasion += boosts.evasion;
     }
 
     // Store the accumulated boosts
-    if !new_boosts.is_empty() {
-        battle.effect_state.data.insert("boosts".to_string(), Value::Object(new_boosts));
-    }
+    battle.effect_state.boosts = Some(accumulated_boosts);
 
     EventResult::Continue
 }
@@ -163,31 +127,22 @@ pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize), _source_po
 /// }
 pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // delete this.effectState.boosts;
-    battle.effect_state.data.remove("boosts");
+    battle.effect_state.boosts = None;
     EventResult::Continue
 }
 
 // Helper function to apply accumulated boosts
 fn apply_accumulated_boosts(battle: &mut Battle) {
-    use serde_json::Value;
-
     // if (!this.effectState.boosts) return;
-    let boosts_to_apply: Vec<(&str, i8)> = if let Some(Value::Object(map)) = battle.effect_state.data.get("boosts") {
-        vec![
-            ("atk", map.get("atk").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("def", map.get("def").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("spa", map.get("spa").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("spd", map.get("spd").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("spe", map.get("spe").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("accuracy", map.get("accuracy").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-            ("evasion", map.get("evasion").and_then(|v| v.as_i64()).unwrap_or(0) as i8),
-        ]
-    } else {
-        return; // No boosts to apply
+    let boosts_to_apply = match battle.effect_state.boosts {
+        Some(ref boosts) => boosts.clone(),
+        None => return,
     };
 
     // Check if there are any non-zero boosts
-    if !boosts_to_apply.iter().any(|(_, val)| *val != 0) {
+    if boosts_to_apply.atk == 0 && boosts_to_apply.def == 0 && boosts_to_apply.spa == 0
+        && boosts_to_apply.spd == 0 && boosts_to_apply.spe == 0
+        && boosts_to_apply.accuracy == 0 && boosts_to_apply.evasion == 0 {
         return;
     }
 
@@ -198,7 +153,15 @@ fn apply_accumulated_boosts(battle: &mut Battle) {
     };
 
     // Build the boosts array filtering out zero values
-    let boosts: Vec<(&str, i8)> = boosts_to_apply.into_iter()
+    let boosts: Vec<(&str, i8)> = vec![
+        ("atk", boosts_to_apply.atk),
+        ("def", boosts_to_apply.def),
+        ("spa", boosts_to_apply.spa),
+        ("spd", boosts_to_apply.spd),
+        ("spe", boosts_to_apply.spe),
+        ("accuracy", boosts_to_apply.accuracy),
+        ("evasion", boosts_to_apply.evasion),
+    ].into_iter()
         .filter(|(_, val)| *val != 0)
         .collect();
 
@@ -207,6 +170,6 @@ fn apply_accumulated_boosts(battle: &mut Battle) {
     }
 
     // delete this.effectState.boosts;
-    battle.effect_state.data.remove("boosts");
+    battle.effect_state.boosts = None;
 }
 

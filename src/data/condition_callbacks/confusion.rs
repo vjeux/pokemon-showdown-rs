@@ -89,7 +89,7 @@ pub fn on_start(
     // Set time in effect state using with_effect_state
     // In JavaScript: this.effectState.time = value
     battle.with_effect_state(|state| {
-        state.data.insert("time".to_string(), serde_json::json!(time));
+        state.time = Some(time);
     });
 
     EventResult::Continue
@@ -151,20 +151,15 @@ pub fn on_before_move(
     // pokemon.volatiles['confusion'].time--;
     // JavaScript: this.effectState.time-- (decrement time)
     battle.with_effect_state(|state| {
-        if let Some(time_val) = state.data.get_mut("time") {
-            if let Some(time) = time_val.as_i64() {
-                *time_val = serde_json::json!(time - 1);
-            }
+        if let Some(time) = state.time {
+            state.time = Some(time - 1);
         }
     });
 
     // if (!pokemon.volatiles['confusion'].time)
     // JavaScript: this.effectState.time == 0
     let time_is_zero = battle.with_effect_state_ref(|state| {
-        state.data.get("time")
-            .and_then(|t| t.as_i64())
-            .map(|t| t == 0)
-            .unwrap_or(false)
+        state.time.map(|t| t == 0).unwrap_or(false)
     }).unwrap_or(false);
 
     if time_is_zero {

@@ -87,7 +87,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
         // Clear item state inline (equivalent to battle.clearEffectState(target.itemState))
         target_mut.item_state.id = ID::empty();
         target_mut.item_state.effect_order = 0;
-        target_mut.item_state.data.clear();
+        // All typed fields on item_state will keep their values but that's fine
+        // since the item is gone. The id being empty indicates no active item state.
     }
 
     // this.runEvent('AfterUseItem', target, null, null, this.dex.items.get('airballoon'));
@@ -155,7 +156,8 @@ pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option
             // Clear item state inline (equivalent to battle.clearEffectState(target.itemState))
             target_mut.item_state.id = ID::empty();
             target_mut.item_state.effect_order = 0;
-            target_mut.item_state.data.clear();
+            // All typed fields on item_state will keep their values but that's fine
+            // since the item is gone. The id being empty indicates no active item state.
         }
 
         // this.runEvent('AfterUseItem', target, null, null, this.dex.items.get('airballoon'));

@@ -47,10 +47,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.insert(
-            "ending".to_string(),
-            serde_json::Value::Bool(false),
-        );
+        pokemon.ability_state.ending = Some(false);
     }
 
     // this.eachEvent('WeatherChange', this.effect);
@@ -72,10 +69,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.insert(
-            "ending".to_string(),
-            serde_json::Value::Bool(true),
-        );
+        pokemon.ability_state.ending = Some(true);
     }
 
     // this.eachEvent('WeatherChange', this.effect);

@@ -141,7 +141,7 @@ pub mod condition {
         // this.effectState.counter = 3;
         // JavaScript: this.effectState.counter = 3
         battle.with_effect_state(|state| {
-            state.set_i32("counter", 3);
+            state.counter = Some(3);
         });
 
         EventResult::Continue
@@ -173,14 +173,14 @@ pub mod condition {
 
             // const counter = this.effectState.counter || 1;
             if let Some(volatile) = pokemon.volatiles.get(&allyswitch_id) {
-                volatile.get_i32("counter").unwrap_or(1)
+                volatile.counter.unwrap_or(1)
             } else {
                 return EventResult::Continue;
             }
         };
 
         // this.debug(`Ally Switch success chance: ${Math.round(100 / counter)}%`);
-        let success_percent = (100.0 / counter as f64).round() as i32;
+        let success_percent = (100.0_f64 / counter as f64).round() as i32;
         battle.debug(&format!("Ally Switch success chance: {}%", success_percent));
 
         // const success = this.randomChance(1, counter);
@@ -214,7 +214,7 @@ pub mod condition {
         // Update the counter and duration
         // JavaScript: this.effectState.counter *= 3, this.effectState.duration = 2
         battle.with_effect_state(|state| {
-            state.set_i32("counter", new_counter);
+            state.counter = Some(new_counter);
             state.duration = Some(2);
         });
 

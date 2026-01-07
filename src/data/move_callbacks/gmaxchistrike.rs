@@ -24,9 +24,7 @@ pub mod condition {
     ) -> EventResult {
         // this.effectState.layers = 1;
         battle.with_effect_state(|state| {
-            state
-                .data
-                .insert("layers".to_string(), serde_json::Value::Number(1.into()));
+            state.layers = Some(1);
         });
 
         // if (!['costar', 'imposter', 'psychup', 'transform'].includes(effect?.id)) {
@@ -73,11 +71,7 @@ pub mod condition {
     ) -> EventResult {
         // if (this.effectState.layers >= 3) return false;
         let layers = battle
-            .with_effect_state_ref(|state| {
-                state.data.get("layers")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(1) as i32
-            })
+            .with_effect_state_ref(|state| state.layers.unwrap_or(1))
             .unwrap_or(1);
 
         if layers >= 3 {
@@ -87,10 +81,7 @@ pub mod condition {
         // this.effectState.layers++;
         let new_layers = layers + 1;
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "layers".to_string(),
-                serde_json::Value::Number(new_layers.into()),
-            );
+            state.layers = Some(new_layers);
         });
 
         // if (!['costar', 'imposter', 'psychup', 'transform'].includes(effect?.id)) {
@@ -128,11 +119,7 @@ pub mod condition {
     pub fn on_modify_crit_ratio(battle: &mut Battle) -> EventResult {
         // return critRatio + this.effectState.layers;
         let layers = battle
-            .with_effect_state_ref(|state| {
-                state.data.get("layers")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(1) as i32
-            })
+            .with_effect_state_ref(|state| state.layers.unwrap_or(1))
             .unwrap_or(1);
 
         EventResult::Number(layers)

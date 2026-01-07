@@ -44,7 +44,7 @@ pub fn on_start(
     let move_id = active_move.id.to_string();
 
     battle.with_effect_state(|state| {
-        state.data.insert("move".to_string(), serde_json::Value::String(move_id));
+        state.move_id = Some(move_id);
     });
 
     EventResult::Continue
@@ -106,9 +106,7 @@ pub fn on_before_move(
 
         let choicelock_id = ID::from("choicelock");
         let locked_move = pokemon.volatiles.get(&choicelock_id)
-            .and_then(|v| v.data.get("move"))
-            .and_then(|m| m.as_str())
-            .map(|s| s.to_string())
+            .and_then(|v| v.move_id.clone())
             .unwrap_or_default();
 
         (active_move_id, locked_move)
@@ -197,9 +195,7 @@ pub fn on_disable_move(
 
         let choicelock_id = ID::from("choicelock");
         let locked_move = pokemon.volatiles.get(&choicelock_id)
-            .and_then(|v| v.data.get("move"))
-            .and_then(|m| m.as_str())
-            .map(|s| s.to_string())
+            .and_then(|v| v.move_id.clone())
             .unwrap_or_default();
 
         let has_move = pokemon.has_move(&locked_move);

@@ -57,9 +57,9 @@ pub fn on_start(
         // JavaScript: this.effectState.move = effect.id;
         // In Rust, current_effect_state is the volatile's state (set by dispatch_single_event)
         // We must modify current_effect_state, which will be copied back to the volatile
-        eprintln!("[TWOTURNMOVE_ONSTART] Storing move_id={} in effect_state.data", move_id_val.as_str());
+        eprintln!("[TWOTURNMOVE_ONSTART] Storing move_id={} in effect_state", move_id_val.as_str());
         battle.with_effect_state(|state| {
-            state.data.insert("move".to_string(), serde_json::json!(move_id_val.as_str()));
+            state.move_id = Some(move_id_val.to_string());
             eprintln!("[TWOTURNMOVE_ONSTART] Stored successfully");
         }).unwrap_or_else(|| {
             eprintln!("[TWOTURNMOVE_ONSTART] WARNING: current_effect_state is None!");
@@ -147,7 +147,7 @@ pub fn on_start(
         };
 
         if let Some(state) = pokemon_mut.volatiles.get_mut(move_id_val) {
-            state.data.insert("targetLoc".to_string(), serde_json::json!(move_target_loc));
+            state.target_loc = Some(move_target_loc as i32);
         }
     }
 
@@ -185,9 +185,7 @@ pub fn on_end(
     // Get the move ID from effectState using with_effect_state_ref
     // JavaScript: this.effectState.move
     let move_id = battle.with_effect_state_ref(|state| {
-        state.data.get("move")
-            .and_then(|m| m.as_str())
-            .map(|s| ID::from(s))
+        state.move_id.as_ref().map(|s| ID::from(s.as_str()))
     }).flatten();
 
     // Remove the volatile for the specific move (e.g., "dig", "fly", "solarbeam")
@@ -216,11 +214,9 @@ pub fn on_lock_move(
     // JavaScript: this.effectState.move
     let move_id = battle.with_effect_state_ref(|state| {
         eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Found effect state!");
-        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] State data keys: {:?}", state.data.keys().collect::<Vec<_>>());
+        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] State move_id: {:?}", state.move_id);
         eprintln!("[TWOTURNMOVE_ONLOCKMOVE] State duration: {:?}", state.duration);
-        state.data.get("move")
-            .and_then(|m| m.as_str())
-            .map(|s| s.to_string())
+        state.move_id.clone()
     }).flatten();
 
     eprintln!("[TWOTURNMOVE_ONLOCKMOVE] move_id={:?}", move_id);

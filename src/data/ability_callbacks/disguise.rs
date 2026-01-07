@@ -59,10 +59,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
     ]);
 
     // this.effectState.busted = true;
-    battle.effect_state.data.insert(
-        "busted".to_string(),
-        serde_json::Value::Bool(true),
-    );
+    battle.effect_state.busted = Some(true);
 
     // return 0;
     EventResult::Number(0)
@@ -228,12 +225,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     use crate::dex_data::ID;
 
     // Check this.effectState.busted
-    let busted = battle
-        .effect_state
-        .data
-        .get("busted")
-        .and_then(|v| v.as_bool())
-        .unwrap_or(false);
+    let busted = battle.effect_state.busted.unwrap_or(false);
 
     if !busted {
         return EventResult::Continue;

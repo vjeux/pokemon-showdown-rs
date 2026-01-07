@@ -29,7 +29,7 @@ pub fn on_start(
     // For slot conditions, the source effect should be stored in the slot condition's effect state
     // Get the sourceEffect from active_move which triggered this
     if let Some(ref active_move) = battle.active_move {
-        let source_effect = active_move.id.clone();
+        let source_effect = crate::battle::Effect::move_(active_move.id.clone());
 
         // Store sourceEffect in the slot condition's effect state
         let pokemon_position = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].position;
@@ -40,10 +40,7 @@ pub fn on_start(
             .get_mut(pokemon_position)
             .and_then(|slot_conds| slot_conds.get_mut(&healreplacement_id))
         {
-            condition_state.data.insert(
-                "sourceEffect".to_string(),
-                serde_json::Value::String(source_effect.to_string()),
-            );
+            condition_state.source_effect = Some(source_effect);
         }
     }
 
@@ -106,10 +103,9 @@ pub fn on_switch_in(
         .slot_conditions
         .get(pokemon_position)
         .and_then(|slot_conds| slot_conds.get(&healreplacement_id))
-        .and_then(|state| state.data.get("sourceEffect"))
-        .and_then(|v| v.as_str())
-        .unwrap_or("Z-Move")
-        .to_string();
+        .and_then(|state| state.source_effect.as_ref())
+        .map(|eff| eff.as_str().to_string())
+        .unwrap_or_else(|| "Z-Move".to_string());
 
     // target.heal(target.maxhp);
     let maxhp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;

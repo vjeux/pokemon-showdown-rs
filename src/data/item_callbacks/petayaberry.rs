@@ -27,9 +27,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             } else if pokemon.hp <= half_hp {
                 // (pokemon.hp <= pokemon.maxhp / 2 && pokemon.hasAbility('gluttony') && pokemon.abilityState.gluttony)
                 let has_gluttony = pokemon.has_ability(battle, &["gluttony"]);
-                let gluttony_active = pokemon.ability_state.data.get("gluttony")
-                    .and_then(|v| v.as_bool())
-                    .unwrap_or(false);
+                let gluttony_active = pokemon.ability_state.gluttony.unwrap_or(false);
                 has_gluttony && gluttony_active
             } else {
                 false

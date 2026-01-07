@@ -102,8 +102,8 @@ pub fn on_start(
     // Set status state time using with_effect_state
     // JavaScript: this.effectState.startTime, this.effectState.time
     battle.with_effect_state(|state| {
-        state.data.insert("startTime".to_string(), serde_json::json!(start_time));
-        state.data.insert("time".to_string(), serde_json::json!(start_time));
+        state.start_time = Some(start_time);
+        state.time = Some(start_time);
     });
 
     // if (target.removeVolatile('nightmare'))
@@ -157,10 +157,8 @@ pub fn on_before_move(
         // pokemon.statusState.time--;
         // JavaScript: this.effectState.time-- (extra decrement for Early Bird)
         battle.with_effect_state(|state| {
-            if let Some(time_val) = state.data.get_mut("time") {
-                if let Some(time) = time_val.as_i64() {
-                    *time_val = serde_json::json!(time - 1);
-                }
+            if let Some(time) = state.time {
+                state.time = Some(time - 1);
             }
         });
     }
@@ -168,20 +166,15 @@ pub fn on_before_move(
     // pokemon.statusState.time--;
     // JavaScript: this.effectState.time--
     battle.with_effect_state(|state| {
-        if let Some(time_val) = state.data.get_mut("time") {
-            if let Some(time) = time_val.as_i64() {
-                *time_val = serde_json::json!(time - 1);
-            }
+        if let Some(time) = state.time {
+            state.time = Some(time - 1);
         }
     });
 
     // if (pokemon.statusState.time <= 0)
     // JavaScript: this.effectState.time <= 0
     let time_expired = battle.with_effect_state_ref(|state| {
-        state.data.get("time")
-            .and_then(|v| v.as_i64())
-            .map(|t| t <= 0)
-            .unwrap_or(false)
+        state.time.map(|t| t <= 0).unwrap_or(false)
     }).unwrap_or(false);
 
     if time_expired {

@@ -71,11 +71,7 @@ pub fn on_hit(
         };
 
         if let Some(stockpile_volatile) = pokemon_pokemon.volatiles.get(&ID::from("stockpile")) {
-            stockpile_volatile
-                .data
-                .get("layers")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(1) as i32
+            stockpile_volatile.layers.unwrap_or(1)
         } else {
             1
         }

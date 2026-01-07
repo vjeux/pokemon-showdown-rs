@@ -34,24 +34,10 @@ pub fn on_foe_after_boost(
         }
     }
 
-    // Get current boosts from effectState or create empty HashMap
-    let mut boosts_map = battle.with_effect_state_ref(|state| {
-        if let Some(boosts_value) = state.data.get("boosts") {
-            if let Some(obj) = boosts_value.as_object() {
-                let mut map = std::collections::HashMap::new();
-                for (key, value) in obj {
-                    if let Some(num) = value.as_i64() {
-                        map.insert(key.clone(), num as i8);
-                    }
-                }
-                map
-            } else {
-                std::collections::HashMap::new()
-            }
-        } else {
-            std::collections::HashMap::new()
-        }
-    }).unwrap_or_else(|| std::collections::HashMap::new());
+    // Get current boosts from effectState or create empty BoostsTable
+    let mut current_boosts = battle.with_effect_state_ref(|state| {
+        state.boosts.unwrap_or_default()
+    }).unwrap_or_default();
 
     // for (i in boost) { if (boost[i]! > 0) { boostPlus[i] = (boostPlus[i] || 0) + boost[i]!; this.effectState.ready = true; } }
     use crate::dex_data::BoostID;
@@ -59,22 +45,17 @@ pub fn on_foe_after_boost(
     for boost_id in BoostID::all() {
         let boost_value = boost.get(*boost_id);
         if boost_value > 0 {
-            let boost_name = format!("{:?}", boost_id).to_lowercase();
-            let current = boosts_map.get(&boost_name).copied().unwrap_or(0);
-            boosts_map.insert(boost_name, current + boost_value);
+            let current = current_boosts.get(*boost_id);
+            current_boosts.set(*boost_id, current.saturating_add(boost_value));
             ready = true;
         }
     }
 
     // Store updated boosts and ready in effectState
     battle.with_effect_state(|state| {
-        state
-            .data
-            .insert("boosts".to_string(), serde_json::json!(boosts_map));
+        state.boosts = Some(current_boosts);
         if ready {
-            state
-                .data
-                .insert("ready".to_string(), serde_json::json!(true));
+            state.ready = Some(true);
         }
     });
 
@@ -88,11 +69,7 @@ pub fn on_foe_after_boost(
 pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.ready) return;
     let ready = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("ready")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.ready.unwrap_or(false)
     }).unwrap_or(false);
 
     if !ready {
@@ -116,11 +93,7 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
 pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.ready) return;
     let ready = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("ready")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.ready.unwrap_or(false)
     }).unwrap_or(false);
 
     if !ready {
@@ -144,11 +117,7 @@ pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
 pub fn on_any_after_terastallization(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.ready) return;
     let ready = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("ready")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.ready.unwrap_or(false)
     }).unwrap_or(false);
 
     if !ready {
@@ -172,11 +141,7 @@ pub fn on_any_after_terastallization(battle: &mut Battle) -> EventResult {
 pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.ready) return;
     let ready = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("ready")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.ready.unwrap_or(false)
     }).unwrap_or(false);
 
     if !ready {
@@ -200,11 +165,7 @@ pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
 pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.effectState.ready) return;
     let ready = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("ready")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.ready.unwrap_or(false)
     }).unwrap_or(false);
 
     if !ready {
@@ -226,30 +187,30 @@ pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventRe
 /// }
 pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // this.boost(this.effectState.boosts, pokemon);
-    let boosts_map = battle.with_effect_state_ref(|state| {
-        if let Some(boosts_value) = state.data.get("boosts") {
-            if let Some(obj) = boosts_value.as_object() {
-                let mut map = std::collections::HashMap::new();
-                for (key, value) in obj {
-                    if let Some(num) = value.as_i64() {
-                        map.insert(key.clone(), num as i8);
-                    }
-                }
-                Some(map)
-            } else {
-                None
-            }
-        } else {
-            None
-        }
+    let boosts_opt = battle.with_effect_state_ref(|state| {
+        state.boosts
     }).flatten();
 
-    if let Some(boosts) = boosts_map {
-        // Convert HashMap to Vec of (&str, i8) tuples for battle.boost()
-        let boost_pairs: Vec<(&str, i8)> = boosts
-            .iter()
-            .map(|(k, v)| (k.as_str(), *v))
-            .collect();
+    if let Some(boosts) = boosts_opt {
+        // Convert BoostsTable to Vec of (&str, i8) tuples for battle.boost()
+        let mut boost_pairs: Vec<(&str, i8)> = Vec::new();
+
+        use crate::dex_data::BoostID;
+        for boost_id in BoostID::all() {
+            let value = boosts.get(*boost_id);
+            if value != 0 {
+                let name = match boost_id {
+                    BoostID::Atk => "atk",
+                    BoostID::Def => "def",
+                    BoostID::SpA => "spa",
+                    BoostID::SpD => "spd",
+                    BoostID::Spe => "spe",
+                    BoostID::Accuracy => "accuracy",
+                    BoostID::Evasion => "evasion",
+                };
+                boost_pairs.push((name, value));
+            }
+        }
 
         battle.boost(&boost_pairs, pokemon_pos, None, None, false, false);
     }
@@ -265,8 +226,8 @@ pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult 
     // delete this.effectState.boosts;
     // delete this.effectState.ready;
     battle.with_effect_state(|state| {
-        state.data.remove("boosts");
-        state.data.remove("ready");
+        state.boosts = None;
+        state.ready = None;
     });
 
     EventResult::Continue

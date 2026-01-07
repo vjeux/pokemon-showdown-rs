@@ -41,14 +41,8 @@ pub fn on_modify_move(
 
     // Store allies and multihit in current effect state
     battle.with_effect_state(|state| {
-        state.data.insert(
-            "allies".to_string(),
-            serde_json::to_value(&allies).unwrap_or(serde_json::Value::Null),
-        );
-        state.data.insert(
-            "multihit".to_string(),
-            serde_json::to_value(multihit).unwrap_or(serde_json::Value::Null),
-        );
+        state.allies = Some(allies);
+        // Note: multihit is not stored in EffectState, it's derived from allies.len()
     });
 
     EventResult::Continue
@@ -67,16 +61,10 @@ pub fn base_power_callback(
 ) -> EventResult {
     // Get allies from current effect state
     let ally_pos = battle.with_effect_state(|state| {
-        if let Some(allies_value) = state.data.get_mut("allies") {
+        if let Some(allies) = state.allies.as_mut() {
             // move.allies!.shift()
-            if let Some(allies_array) = allies_value.as_array_mut() {
-                if !allies_array.is_empty() {
-                    let first_ally = allies_array.remove(0);
-                    // Deserialize the ally position
-                    serde_json::from_value::<(usize, usize)>(first_ally).ok()
-                } else {
-                    None
-                }
+            if !allies.is_empty() {
+                Some(allies.remove(0))
             } else {
                 None
             }

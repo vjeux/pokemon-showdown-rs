@@ -346,17 +346,14 @@ impl Pokemon {
                     if let Some(volatile_state) = target.volatiles.get(volatile_id) {
                         // Extract layers for gmaxchistrike
                         let layers = if volatile_id.as_str() == "gmaxchistrike" {
-                            volatile_state.data.get("layers")
-                                .and_then(|v| v.as_i64())
-                                .map(|v| v as i32)
+                            volatile_state.layers
                         } else {
                             None
                         };
 
                         // Extract hasDragonType for dragoncheer
                         let has_dragon = if volatile_id.as_str() == "dragoncheer" {
-                            volatile_state.data.get("hasDragonType")
-                                .and_then(|v| v.as_bool())
+                            volatile_state.has_dragon_type
                         } else {
                             None
                         };
@@ -378,7 +375,7 @@ impl Pokemon {
                             None => return false,
                         };
                         if let Some(volatile_state) = self_pokemon.volatiles.get_mut(volatile_id) {
-                            volatile_state.data.insert("layers".to_string(), serde_json::json!(layers));
+                            volatile_state.layers = Some(layers);
                         }
                     }
 
@@ -388,7 +385,7 @@ impl Pokemon {
                             None => return false,
                         };
                         if let Some(volatile_state) = self_pokemon.volatiles.get_mut(volatile_id) {
-                            volatile_state.data.insert("hasDragonType".to_string(), serde_json::json!(has_dragon));
+                            volatile_state.has_dragon_type = Some(has_dragon);
                         }
                     }
                 }

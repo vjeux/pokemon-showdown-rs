@@ -158,28 +158,17 @@ impl Pokemon {
                 .iter()
                 .filter_map(|(volatile_id, state)| {
                     // Check if this volatile has linkedPokemon
-                    let linked_pokemon = state.data.get("linkedPokemon")?.as_array()?;
-                    let linked_status_id = state.data.get("linkedStatus")?.as_str()?;
+                    let linked_pokemon = state.linked_pokemon.as_ref()?;
+                    let linked_status_id = state.linked_status.as_ref()?;
 
-                    // Parse linkedPokemon array: [[side, slot], ...]
-                    let linked_positions: Vec<(usize, usize)> = linked_pokemon
-                        .iter()
-                        .filter_map(|entry| {
-                            let arr = entry.as_array()?;
-                            let side = arr.get(0)?.as_u64()? as usize;
-                            let slot = arr.get(1)?.as_u64()? as usize;
-                            Some((side, slot))
-                        })
-                        .collect();
-
-                    if linked_positions.is_empty() {
+                    if linked_pokemon.is_empty() {
                         return None;
                     }
 
                     Some((
                         volatile_id.clone(),
-                        ID::from(linked_status_id),
-                        linked_positions,
+                        ID::from(linked_status_id.as_str()),
+                        linked_pokemon.clone(),
                     ))
                 })
                 .collect()
@@ -211,21 +200,14 @@ impl Pokemon {
                 };
 
                 if let Some(linked_volatile_state) = linked_pokemon_mut.volatiles.get_mut(&linked_status_id) {
-                    if let Some(linked_poke_array) = linked_volatile_state.data.get_mut("linkedPokemon") {
-                        if let Some(array) = linked_poke_array.as_array_mut() {
-                            // Find and replace source_pos with target_pos
-                            // linkedPokeLinks[linkedPokeLinks.indexOf(pokemon)] = this;
-                            for entry in array.iter_mut() {
-                                if let Some(pos_array) = entry.as_array() {
-                                    if pos_array.len() == 2 {
-                                        let side = pos_array[0].as_u64().unwrap_or(0) as usize;
-                                        let slot = pos_array[1].as_u64().unwrap_or(0) as usize;
-                                        if (side, slot) == source_pos {
-                                            // Replace with target_pos
-                                            *entry = serde_json::json!([target_pos.0, target_pos.1]);
-                                        }
-                                    }
-                                }
+                    // Update the linkedPokemon Vec directly
+                    if let Some(linked_poke_vec) = &mut linked_volatile_state.linked_pokemon {
+                        // Find and replace source_pos with target_pos
+                        // linkedPokeLinks[linkedPokeLinks.indexOf(pokemon)] = this;
+                        for pos in linked_poke_vec.iter_mut() {
+                            if *pos == source_pos {
+                                // Replace with target_pos
+                                *pos = target_pos;
                             }
                         }
                     }

@@ -57,7 +57,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_mut.ability_state.data.insert("fallen".to_string(), serde_json::json!(fallen));
+    pokemon_mut.ability_state.fallen = Some(fallen as i32);
 
     EventResult::Continue
 }
@@ -74,9 +74,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.get("fallen")
-            .and_then(|v| v.as_u64())
-            .unwrap_or(0)
+        pokemon.ability_state.fallen.unwrap_or(0)
     };
 
     if fallen == 0 {
@@ -115,9 +113,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.get("fallen")
-            .and_then(|v| v.as_u64())
-            .unwrap_or(0) as usize
+        pokemon.ability_state.fallen.unwrap_or(0) as usize
     };
 
     if fallen == 0 {

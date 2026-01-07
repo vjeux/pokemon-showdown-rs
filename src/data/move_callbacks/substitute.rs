@@ -190,9 +190,7 @@ pub mod condition {
         };
 
         battle.with_effect_state(|state| {
-            state
-                .data
-                .insert("hp".to_string(), serde_json::to_value(sub_hp).unwrap());
+            state.hp = Some(sub_hp);
         });
 
         // if (target.volatiles['partiallytrapped'])
@@ -341,12 +339,7 @@ pub mod condition {
 
         // Get substitute HP from effect state
         let sub_hp = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("hp")
-                .and_then(|v| v.as_i64())
-                .map(|v| v as i32)
-                .unwrap_or(0)
+            state.hp.unwrap_or(0)
         }).unwrap_or(0);
 
         // if (damage > target.volatiles['substitute'].hp)
@@ -359,9 +352,7 @@ pub mod condition {
         // target.volatiles['substitute'].hp -= damage;
         battle.with_effect_state(|state| {
             let new_hp = sub_hp - actual_damage;
-            state
-                .data
-                .insert("hp".to_string(), serde_json::to_value(new_hp).unwrap());
+            state.hp = Some(new_hp);
         });
 
         // source.lastDamage = damage;
@@ -375,12 +366,7 @@ pub mod condition {
 
         // if (target.volatiles['substitute'].hp <= 0)
         let new_sub_hp = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("hp")
-                .and_then(|v| v.as_i64())
-                .map(|v| v as i32)
-                .unwrap_or(0)
+            state.hp.unwrap_or(0)
         }).unwrap_or(0);
 
         if new_sub_hp <= 0 {

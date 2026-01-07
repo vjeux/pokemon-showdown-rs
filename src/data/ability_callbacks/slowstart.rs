@@ -47,7 +47,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         None => return EventResult::Continue,
     };
 
-    pokemon.ability_state.set_i32("counter", 5);
+    pokemon.ability_state.counter = Some(5);
 
     EventResult::Continue
 }
@@ -67,7 +67,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
             None => return EventResult::Continue,
         };
 
-        (pokemon.active_turns, pokemon.ability_state.get_i32("counter"))
+        (pokemon.active_turns, pokemon.ability_state.counter)
     };
 
     if active_turns > 0 {
@@ -82,9 +82,9 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
 
                 if new_counter == 0 {
                     // Counter reached 0, remove it (equivalent to delete)
-                    pokemon_mut.ability_state.data.remove("counter");
+                    pokemon_mut.ability_state.counter = None;
                 } else {
-                    pokemon_mut.ability_state.set_i32("counter", new_counter);
+                    pokemon_mut.ability_state.counter = Some(new_counter);
                 }
             }
         }
@@ -103,7 +103,7 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize
         None => return EventResult::Continue,
     };
 
-    if let Some(counter) = pokemon.ability_state.get_i32("counter") {
+    if let Some(counter) = pokemon.ability_state.counter {
         if counter > 0 {
             let modified = battle.chain_modify(0.5);
             return EventResult::Number(modified);
@@ -123,7 +123,7 @@ pub fn on_modify_spe(battle: &mut Battle, _spe: i32, pokemon_pos: (usize, usize)
         None => return EventResult::Continue,
     };
 
-    if let Some(counter) = pokemon.ability_state.get_i32("counter") {
+    if let Some(counter) = pokemon.ability_state.counter {
         if counter > 0 {
             eprintln!("[SLOW START onModifySpe] counter={}, applying 0.5x modifier", counter);
             let modified = battle.chain_modify(0.5);

@@ -117,10 +117,7 @@ pub mod condition {
 
         // this.effectState.move = move.id;
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "move".to_string(),
-                serde_json::to_value(actual_move_id.to_string()).unwrap(),
-            );
+            state.move_id = Some(actual_move_id.to_string());
         });
 
         // this.add('-start', target, 'Encore');
@@ -162,11 +159,7 @@ pub mod condition {
 
         // if (move.id !== this.effectState.move) return this.effectState.move;
         let encore_move_id = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("move")
-                .and_then(|v| v.as_str())
-                .map(ID::from)
+            state.move_id.clone().map(ID::from)
         }).flatten();
 
         if let Some(encore_id) = encore_move_id {
@@ -199,11 +192,7 @@ pub mod condition {
         //     target.removeVolatile('encore');
         // }
         let encore_move_id = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("move")
-                .and_then(|v| v.as_str())
-                .map(ID::from)
+            state.move_id.clone().map(ID::from)
         }).flatten();
 
         if let Some(encore_id) = encore_move_id {
@@ -270,11 +259,7 @@ pub mod condition {
         //     return;
         // }
         let encore_move_id = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("move")
-                .and_then(|v| v.as_str())
-                .map(ID::from)
+            state.move_id.clone().map(ID::from)
         }).flatten();
 
         let encore_id = match encore_move_id {

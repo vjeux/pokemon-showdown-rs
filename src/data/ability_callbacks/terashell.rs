@@ -12,7 +12,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_any_before_move(battle: &mut Battle) -> EventResult {
     // delete this.effectState.resisted;
-    battle.effect_state.data.remove("resisted");
+    battle.effect_state.resisted = None;
 
     EventResult::Continue
 }
@@ -22,7 +22,7 @@ pub fn on_any_before_move(battle: &mut Battle) -> EventResult {
 /// }
 pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
     // delete this.effectState.resisted;
-    battle.effect_state.data.remove("resisted");
+    battle.effect_state.resisted = None;
 
     EventResult::Continue
 }

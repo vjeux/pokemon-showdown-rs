@@ -38,11 +38,7 @@ pub fn base_power_callback(
     eprintln!("[ECHOED_VOICE] Checking for echoedvoice pseudoweather. pseudo_weather map size: {}", battle.field.pseudo_weather.len());
     if let Some(echoedvoice_condition) = battle.field.pseudo_weather.get(&ID::from("echoedvoice")) {
         // Get multiplier from effect state
-        let multiplier = echoedvoice_condition
-            .data
-            .get("multiplier")
-            .and_then(|v| v.as_i64())
-            .unwrap_or(1) as i32;
+        let multiplier = echoedvoice_condition.multiplier.unwrap_or(1);
 
         eprintln!("[ECHOED_VOICE] Found echoedvoice pseudoweather! multiplier={}", multiplier);
         bp = base_power * multiplier;
@@ -88,10 +84,7 @@ pub mod condition {
         // this.effectState.multiplier = 1;
         battle.with_effect_state(|state| {
             eprintln!("[ECHOED_VOICE] Found current_effect_state, setting multiplier to 1");
-            state.data.insert(
-                "multiplier".to_string(),
-                serde_json::Value::Number(1.into()),
-            );
+            state.multiplier = Some(1);
         }).unwrap_or_else(|| {
             eprintln!("[ECHOED_VOICE] WARNING: current_effect_state is None!");
         });
@@ -128,18 +121,11 @@ pub mod condition {
                 // if (this.effectState.multiplier < 5) {
                 //     this.effectState.multiplier++;
                 // }
-                let current_multiplier = state
-                    .data
-                    .get("multiplier")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(1);
+                let current_multiplier = state.multiplier.unwrap_or(1);
                 eprintln!("[ECHOED_VOICE] Current multiplier: {}", current_multiplier);
 
                 if current_multiplier < 5 {
-                    state.data.insert(
-                        "multiplier".to_string(),
-                        serde_json::Value::Number((current_multiplier + 1).into()),
-                    );
+                    state.multiplier = Some(current_multiplier + 1);
                     eprintln!("[ECHOED_VOICE] Incremented multiplier to {}", current_multiplier + 1);
                 } else {
                     eprintln!("[ECHOED_VOICE] Multiplier already at max (5)");

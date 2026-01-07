@@ -187,10 +187,7 @@ pub fn on_hit(
         None => return EventResult::Continue,
     };
     target_pokemon.status_state.time = Some(3);
-    target_pokemon
-        .status_state
-        .data
-        .insert("startTime".to_string(), serde_json::json!(3));
+    target_pokemon.status_state.start_time = Some(3);
 
     // this.heal(target.maxhp); // Aesthetic only as the healing happens after you fall asleep in-game
     let maxhp = target_pokemon.maxhp;

@@ -59,11 +59,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.effectState.inactive) return;
     let is_inactive = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("inactive")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.inactive.unwrap_or(false)
     }).unwrap_or(false);
 
     if !is_inactive {
@@ -72,9 +68,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
     // this.effectState.inactive = false;
     battle.with_effect_state(|state| {
-        state
-            .data
-            .insert("inactive".to_string(), serde_json::json!(false));
+        state.inactive = Some(false);
     });
 
     // if (['sunnyday', 'raindance', 'desolateland', 'primordialsea'].includes(this.field.effectiveWeather()))
@@ -117,9 +111,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
     // this.effectState.inactive = true;
     battle.with_effect_state(|state| {
-        state
-            .data
-            .insert("inactive".to_string(), serde_json::json!(true));
+        state.inactive = Some(true);
     });
 
     EventResult::Continue

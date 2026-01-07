@@ -53,8 +53,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
             // Check if fromBooster is set
             let from_booster = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 pokemon.volatiles.get(&id)
-                    .and_then(|v| v.data.get("fromBooster"))
-                    .and_then(|v| v.as_bool())
+                    .and_then(|v| v.from_booster)
                     .unwrap_or(false)
             } else {
                 false
@@ -127,10 +126,7 @@ pub mod condition {
             // Set fromBooster flag in volatile's data using with_effect_state
             // JavaScript: this.effectState.fromBooster = true
             battle.with_effect_state(|state| {
-                state.data.insert(
-                    "fromBooster".to_string(),
-                    serde_json::Value::Bool(true),
-                );
+                state.from_booster = Some(true);
             });
 
             battle.add("-activate", &[
@@ -176,10 +172,7 @@ pub mod condition {
         };
 
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "bestStat".to_string(),
-                serde_json::Value::String(stat_name.to_string()),
-            );
+            state.best_stat = Some(stat_name.to_string());
         });
 
         // Add start message with best stat
@@ -209,9 +202,7 @@ pub mod condition {
         // Get bestStat from volatile's data using with_effect_state_ref
         // JavaScript: this.effectState.bestStat
         let best_stat = battle.with_effect_state_ref(|state| {
-            state.data.get("bestStat")
-                .and_then(|v| v.as_str())
-                .map(|s| s.to_string())
+            state.best_stat.clone()
         }).flatten().unwrap_or_default();
 
         if best_stat != "atk" {
@@ -243,9 +234,7 @@ pub mod condition {
         // Get bestStat from volatile's data using with_effect_state_ref
         // JavaScript: this.effectState.bestStat
         let best_stat = battle.with_effect_state_ref(|state| {
-            state.data.get("bestStat")
-                .and_then(|v| v.as_str())
-                .map(|s| s.to_string())
+            state.best_stat.clone()
         }).flatten().unwrap_or_default();
 
         if best_stat != "def" {
@@ -277,9 +266,7 @@ pub mod condition {
         // Get bestStat from volatile's data using with_effect_state_ref
         // JavaScript: this.effectState.bestStat
         let best_stat = battle.with_effect_state_ref(|state| {
-            state.data.get("bestStat")
-                .and_then(|v| v.as_str())
-                .map(|s| s.to_string())
+            state.best_stat.clone()
         }).flatten().unwrap_or_default();
 
         if best_stat != "spa" {
@@ -311,9 +298,7 @@ pub mod condition {
         // Get bestStat from volatile's data using with_effect_state_ref
         // JavaScript: this.effectState.bestStat
         let best_stat = battle.with_effect_state_ref(|state| {
-            state.data.get("bestStat")
-                .and_then(|v| v.as_str())
-                .map(|s| s.to_string())
+            state.best_stat.clone()
         }).flatten().unwrap_or_default();
 
         if best_stat != "spd" {
@@ -345,9 +330,7 @@ pub mod condition {
         // Get bestStat from volatile's data using with_effect_state_ref
         // JavaScript: this.effectState.bestStat
         let best_stat = battle.with_effect_state_ref(|state| {
-            state.data.get("bestStat")
-                .and_then(|v| v.as_str())
-                .map(|s| s.to_string())
+            state.best_stat.clone()
         }).flatten().unwrap_or_default();
 
         if best_stat != "spe" {

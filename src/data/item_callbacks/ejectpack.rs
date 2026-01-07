@@ -25,11 +25,7 @@ pub fn on_after_boost(
 ) -> EventResult {
     // if (this.effectState.eject || this.activeMove?.id === 'partingshot') return;
     let eject_already_set = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("eject")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.eject.unwrap_or(false)
     }).unwrap_or(false);
 
     let active_move_is_parting_shot = battle
@@ -55,9 +51,7 @@ pub fn on_after_boost(
     // this.effectState.eject = true;
     if has_negative_boost {
         battle.with_effect_state(|state| {
-            state
-                .data
-                .insert("eject".to_string(), serde_json::json!(true));
+            state.eject = Some(true);
         });
     }
 
@@ -71,11 +65,7 @@ pub fn on_after_boost(
 pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.eject) return;
     let eject_set = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("eject")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.eject.unwrap_or(false)
     }).unwrap_or(false);
 
     if !eject_set {
@@ -99,11 +89,7 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
 pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.eject) return;
     let eject_set = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("eject")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.eject.unwrap_or(false)
     }).unwrap_or(false);
 
     if !eject_set {
@@ -127,11 +113,7 @@ pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
 pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.eject) return;
     let eject_set = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("eject")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.eject.unwrap_or(false)
     }).unwrap_or(false);
 
     if !eject_set {
@@ -155,11 +137,7 @@ pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
 pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.effectState.eject) return;
     let eject_set = battle.with_effect_state_ref(|state| {
-        state
-            .data
-            .get("eject")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        state.eject.unwrap_or(false)
     }).unwrap_or(false);
 
     if !eject_set {
@@ -244,7 +222,7 @@ pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // delete this.effectState.eject;
     battle.with_effect_state(|state| {
-        state.data.remove("eject");
+        state.eject = None;
     });
 
     EventResult::Continue

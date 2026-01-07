@@ -52,11 +52,7 @@ pub fn on_try_move(
         };
 
         if let Some(volatile) = pokemon_pokemon.volatiles.get(&ID::from("shelltrap")) {
-            volatile
-                .data
-                .get("gotHit")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false)
+            volatile.got_hit.unwrap_or(false)
         } else {
             false
         }
@@ -157,7 +153,7 @@ pub mod condition {
         if !is_ally && is_physical {
             // this.effectState.gotHit = true;
             battle.with_effect_state(|state| {
-                state.data.insert("gotHit".to_string(), serde_json::json!(true));
+                state.got_hit = Some(true);
             });
 
             // const action = this.queue.willMove(pokemon);

@@ -52,16 +52,8 @@ pub fn base_power_callback(
             None => return EventResult::Continue,
         };
         if let Some(iceball_volatile) = pokemon_pokemon.volatiles.get(&ID::from("iceball")) {
-            let hit_count = iceball_volatile
-                .data
-                .get("hitCount")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
-            let contact_hit_count = iceball_volatile
-                .data
-                .get("contactHitCount")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
+            let hit_count = iceball_volatile.hit_count.unwrap_or(0);
+            let contact_hit_count = iceball_volatile.contact_hit_count.unwrap_or(0);
             (hit_count > 0, contact_hit_count as u32)
         } else {
             (false, 0)
@@ -232,16 +224,8 @@ pub fn on_after_move(
             None => return EventResult::Continue,
         };
         if let Some(iceball_volatile) = source_pokemon.volatiles.get(&ID::from("iceball")) {
-            let hit_count = iceball_volatile
-                .data
-                .get("hitCount")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
-            let contact_hit_count = iceball_volatile
-                .data
-                .get("contactHitCount")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
+            let hit_count = iceball_volatile.hit_count.unwrap_or(0);
+            let contact_hit_count = iceball_volatile.contact_hit_count.unwrap_or(0);
             (true, hit_count == 5, contact_hit_count)
         } else {
             (false, false, 0)
@@ -262,10 +246,7 @@ pub fn on_after_move(
             .volatiles
             .get_mut(&ID::from("rolloutstorage"))
         {
-            rollout_volatile.data.insert(
-                "contactHitCount".to_string(),
-                serde_json::json!(contact_hit_count),
-            );
+            rollout_volatile.contact_hit_count = Some(contact_hit_count);
         }
     }
 
@@ -283,8 +264,8 @@ pub mod condition {
         // this.effectState.hitCount = 0;
         // this.effectState.contactHitCount = 0;
         battle.with_effect_state(|state| {
-            state.data.insert("hitCount".to_string(), serde_json::json!(0));
-            state.data.insert("contactHitCount".to_string(), serde_json::json!(0));
+            state.hit_count = Some(0);
+            state.contact_hit_count = Some(0);
         });
 
         EventResult::Continue

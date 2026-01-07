@@ -46,12 +46,10 @@ pub fn on_residual(
 
     // this.effectState.trueDuration--;
     battle.with_effect_state(|state| {
-        if let Some(true_duration_val) = state.data.get_mut("trueDuration") {
-            if let Some(true_duration) = true_duration_val.as_i64() {
-                let new_duration = true_duration - 1;
-                eprintln!("[LOCKEDMOVE_RESIDUAL] trueDuration {} -> {}", true_duration, new_duration);
-                *true_duration_val = serde_json::json!(new_duration);
-            }
+        if let Some(true_duration) = state.true_duration {
+            let new_duration = true_duration - 1;
+            eprintln!("[LOCKEDMOVE_RESIDUAL] trueDuration {} -> {}", true_duration, new_duration);
+            state.true_duration = Some(new_duration);
         }
     });
 
@@ -95,8 +93,8 @@ pub fn on_start(
 
     // Set volatile state data
     battle.with_effect_state(|state| {
-        state.data.insert("trueDuration".to_string(), serde_json::json!(true_duration));
-        state.data.insert("move".to_string(), serde_json::Value::String(move_id));
+        state.true_duration = Some(true_duration);
+        state.move_id = Some(move_id);
         eprintln!("[LOCKEDMOVE_START] Set trueDuration={} and move", true_duration);
     });
 
@@ -120,8 +118,7 @@ pub fn on_restart(
 ) -> EventResult {
     // if (this.effectState.trueDuration >= 2) { this.effectState.duration = 2; }
     battle.with_effect_state(|state| {
-        let true_duration_ge_2 = state.data.get("trueDuration")
-            .and_then(|d| d.as_i64())
+        let true_duration_ge_2 = state.true_duration
             .map(|d| d >= 2)
             .unwrap_or(false);
 
@@ -183,9 +180,7 @@ pub fn on_end(
     // if (this.effectState.trueDuration > 1) return;
     // JavaScript: this.effectState.trueDuration
     let true_duration = battle.with_effect_state_ref(|state| {
-        state.data.get("trueDuration")
-            .and_then(|d| d.as_i64())
-            .unwrap_or(0)
+        state.true_duration.unwrap_or(0)
     }).unwrap_or(0);
 
     eprintln!("[LOCKEDMOVE_END] turn={}, pokemon=({}, {}), trueDuration={}",
@@ -233,9 +228,7 @@ pub fn on_lock_move(
     // return this.effectState.move;
     // JavaScript: this.effectState.move
     let move_id = battle.with_effect_state_ref(|state| {
-        state.data.get("move")
-            .and_then(|m| m.as_str())
-            .map(|s| s.to_string())
+        state.move_id.clone()
     }).flatten();
 
     match move_id {

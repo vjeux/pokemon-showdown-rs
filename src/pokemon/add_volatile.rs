@@ -362,15 +362,9 @@ impl Pokemon {
                         // JS: source.volatiles[linkedStatus.toString()].linkedPokemon = [this];
                         if let Some(source_pokemon) = battle.pokemon_at_mut(src_pos.0, src_pos.1) {
                             if let Some(state) = source_pokemon.volatiles.get_mut(&linked_status_id) {
-                                state.data.insert(
-                                    "linkedPokemon".to_string(),
-                                    serde_json::json!([[target_pos.0, target_pos.1]]),
-                                );
+                                state.linked_pokemon = Some(vec![target_pos]);
                                 // JS: source.volatiles[linkedStatus.toString()].linkedStatus = status;
-                                state.data.insert(
-                                    "linkedStatus".to_string(),
-                                    serde_json::json!(volatile_id.as_str()),
-                                );
+                                state.linked_status = Some(volatile_id.as_str().to_string());
                             }
                         }
                     } else {
@@ -378,16 +372,11 @@ impl Pokemon {
                         // JS: source.volatiles[linkedStatus.toString()].linkedPokemon.push(this);
                         if let Some(source_pokemon) = battle.pokemon_at_mut(src_pos.0, src_pos.1) {
                             if let Some(state) = source_pokemon.volatiles.get_mut(&linked_status_id) {
-                                if let Some(linked_pokemon) = state.data.get_mut("linkedPokemon") {
-                                    if let Some(array) = linked_pokemon.as_array_mut() {
-                                        array.push(serde_json::json!([target_pos.0, target_pos.1]));
-                                    }
+                                if let Some(ref mut linked_vec) = state.linked_pokemon {
+                                    linked_vec.push(target_pos);
                                 } else {
                                     // Initialize if missing
-                                    state.data.insert(
-                                        "linkedPokemon".to_string(),
-                                        serde_json::json!([[target_pos.0, target_pos.1]]),
-                                    );
+                                    state.linked_pokemon = Some(vec![target_pos]);
                                 }
                             }
                         }
@@ -398,14 +387,8 @@ impl Pokemon {
                     // JS: this.volatiles[status.toString()].linkedStatus = linkedStatus;
                     if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                         if let Some(state) = target_pokemon.volatiles.get_mut(&volatile_id) {
-                            state.data.insert(
-                                "linkedPokemon".to_string(),
-                                serde_json::json!([[src_pos.0, src_pos.1]]),
-                            );
-                            state.data.insert(
-                                "linkedStatus".to_string(),
-                                serde_json::json!(linked_status_id.as_str()),
-                            );
+                            state.linked_pokemon = Some(vec![src_pos]);
+                            state.linked_status = Some(linked_status_id.as_str().to_string());
                         }
                     }
                 }

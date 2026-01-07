@@ -63,14 +63,10 @@ pub fn base_power_callback(
 pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     let pokemon = pokemon_pos;
 
-    // Get pokemon slot before we start modifying side conditions
-    let pokemon_slot = {
-        let p = match battle.pokemon_at(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        p.get_slot()
-    };
+    // Validate pokemon exists
+    if battle.pokemon_at(pokemon.0, pokemon.1).is_none() {
+        return EventResult::Continue;
+    }
 
     // for (const side of this.sides) {
     for side_idx in 0..battle.sides.len() {
@@ -89,16 +85,10 @@ pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
         //     data.sources = [];
         // }
         // data.sources.push(pokemon);
-        if let Some(data) = battle.get_side_condition_data_mut(side_idx, &pursuit_id) {
-            // Get or create sources array
-            let sources = data.entry("sources".to_string()).or_insert_with(|| {
-                serde_json::Value::Array(vec![])
-            });
-
-            // Add pokemon position to sources array
-            if let Some(sources_array) = sources.as_array_mut() {
-                sources_array.push(serde_json::to_value(&pokemon_slot).unwrap());
-            }
+        if let Some(state) = battle.get_side_condition_data_mut(side_idx, &pursuit_id) {
+            // Get or create sources array and add pokemon position
+            let sources = state.sources.get_or_insert_with(Vec::new);
+            sources.push(pokemon);
         }
     }
 
@@ -214,23 +204,9 @@ pub mod condition {
             let pursuit_id = ID::from("pursuit");
             let side_idx = pokemon_pos.0;
 
-            if let Some(data) = battle.get_side_condition_data_mut(side_idx, &pursuit_id) {
-                // Get sources array
-                if let Some(sources_value) = data.get("sources") {
-                    if let Some(sources_array) = sources_value.as_array() {
-                        // Extract source positions from JSON
-                        sources_array.iter().filter_map(|v| {
-                            // Sources are stored as PokemonSlot {side: usize, position: usize}
-                            let side = v.get("side")?.as_u64()? as usize;
-                            let position = v.get("position")?.as_u64()? as usize;
-                            Some((side, position))
-                        }).collect::<Vec<_>>()
-                    } else {
-                        Vec::new()
-                    }
-                } else {
-                    Vec::new()
-                }
+            if let Some(state) = battle.get_side_condition_data_mut(side_idx, &pursuit_id) {
+                // Get sources - clone to avoid borrow issues
+                state.sources.clone().unwrap_or_default()
             } else {
                 Vec::new()
             }

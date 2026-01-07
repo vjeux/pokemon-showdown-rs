@@ -99,9 +99,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                         None => continue,
                     };
                     ally.volatiles.get(volatile_id)
-                        .and_then(|v| v.data.get("layers"))
-                        .and_then(|v| v.as_i64())
-                        .map(|v| v as i32)
+                        .and_then(|v| v.layers)
                 };
 
                 if let Some(layers) = ally_layers {
@@ -110,7 +108,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                         None => continue,
                     };
                     if let Some(volatile) = pokemon.volatiles.get_mut(volatile_id) {
-                        volatile.data.insert("layers".to_string(), serde_json::Value::Number(layers.into()));
+                        volatile.layers = Some(layers);
                     }
                 }
             }
@@ -123,8 +121,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                         None => continue,
                     };
                     ally.volatiles.get(volatile_id)
-                        .and_then(|v| v.data.get("hasDragonType"))
-                        .and_then(|v| v.as_bool())
+                        .and_then(|v| v.has_dragon_type)
                 };
 
                 if let Some(has_dragon_type) = ally_has_dragon_type {
@@ -133,7 +130,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                         None => continue,
                     };
                     if let Some(volatile) = pokemon.volatiles.get_mut(volatile_id) {
-                        volatile.data.insert("hasDragonType".to_string(), serde_json::Value::Bool(has_dragon_type));
+                        volatile.has_dragon_type = Some(has_dragon_type);
                     }
                 }
             }

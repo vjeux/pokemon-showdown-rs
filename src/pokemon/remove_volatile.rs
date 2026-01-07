@@ -53,29 +53,10 @@ impl Pokemon {
 
             // JS: const { linkedPokemon, linkedStatus } = this.volatiles[status.id];
             let linked_pokemon = pokemon.volatiles.get(volatile_id)
-                .and_then(|state| state.data.get("linkedPokemon"))
-                .and_then(|v| v.as_array())
-                .map(|arr| {
-                    arr.iter()
-                        .filter_map(|v| {
-                            v.as_array().and_then(|pos| {
-                                if pos.len() == 2 {
-                                    Some((
-                                        pos[0].as_u64().unwrap() as usize,
-                                        pos[1].as_u64().unwrap() as usize,
-                                    ))
-                                } else {
-                                    None
-                                }
-                            })
-                        })
-                        .collect::<Vec<(usize, usize)>>()
-                });
+                .and_then(|state| state.linked_pokemon.clone());
 
             let linked_status = pokemon.volatiles.get(volatile_id)
-                .and_then(|state| state.data.get("linkedStatus"))
-                .and_then(|v| v.as_str())
-                .map(|s| ID::from(s));
+                .and_then(|state| state.linked_status.as_ref().map(|s| ID::from(s.as_str())));
 
             (pokemon.hp, has_volatile, linked_pokemon, linked_status)
         };

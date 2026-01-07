@@ -184,13 +184,8 @@ impl Battle {
                             .and_then(|s| s.pokemon.get_mut(foe_poke_idx))
                         {
                             if let Some(sub_state) = foe_pokemon.volatiles.get_mut(&substitute_id) {
-                                // Get current HP from volatile data
-                                let current_hp = sub_state
-                                    .data
-                                    .get("hp")
-                                    .and_then(|v| v.as_i64())
-                                    .unwrap_or(0)
-                                    as i32;
+                                // Get current HP from volatile state
+                                let current_hp = sub_state.hp.unwrap_or(0);
 
                                 let new_hp = current_hp - damage;
 
@@ -199,9 +194,7 @@ impl Battle {
                                     sub_destroyed = true;
                                 } else {
                                     // Update HP
-                                    sub_state
-                                        .data
-                                        .insert("hp".to_string(), serde_json::json!(new_hp));
+                                    sub_state.hp = Some(new_hp);
                                 }
                             }
                         }

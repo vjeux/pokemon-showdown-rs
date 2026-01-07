@@ -19,7 +19,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.contains_key("shieldBoost")
+        pokemon.ability_state.shield_boost.unwrap_or(false)
     };
 
     if already_boosted {
@@ -32,7 +32,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.insert("shieldBoost".to_string(), serde_json::Value::Bool(true));
+        pokemon.ability_state.shield_boost = Some(true);
     }
 
     // this.boost({ def: 1 }, pokemon);

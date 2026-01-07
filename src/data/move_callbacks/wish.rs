@@ -34,19 +34,14 @@ pub mod condition {
         };
 
         battle.with_effect_state(|state| {
-            state
-                .data
-                .insert("hp".to_string(), serde_json::to_value(hp).unwrap());
+            state.hp = Some(hp);
         });
 
         // this.effectState.startingTurn = this.getOverflowedTurnCount();
         let starting_turn = battle.get_overflowed_turn_count();
 
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "startingTurn".to_string(),
-                serde_json::to_value(starting_turn).unwrap(),
-            );
+            state.starting_turn = Some(starting_turn);
         });
 
         // if (this.effectState.startingTurn === 255)
@@ -73,12 +68,7 @@ pub mod condition {
 
         // if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
         let (starting_turn, target_pos, source_slot) = battle.with_effect_state_ref(|state| {
-            let starting_turn = state
-                .data
-                .get("startingTurn")
-                .and_then(|v| v.as_i64())
-                .map(|v| v as i32)
-                .unwrap_or(0);
+            let starting_turn = state.starting_turn.unwrap_or(0);
 
             (starting_turn, state.target, state.source_slot)
         }).unwrap_or((0, None, None));
@@ -132,12 +122,7 @@ pub mod condition {
         if !is_fainted {
             // const damage = this.heal(this.effectState.hp, target, target);
             let hp_to_heal = battle.with_effect_state_ref(|state| {
-                state
-                    .data
-                    .get("hp")
-                    .and_then(|v| v.as_i64())
-                    .map(|v| v as i32)
-                    .unwrap_or(0)
+                state.hp.unwrap_or(0)
             }).unwrap_or(0);
 
             if hp_to_heal > 0 {

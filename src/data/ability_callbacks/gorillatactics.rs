@@ -16,7 +16,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_mut.ability_state.data.insert("choiceLock".to_string(), serde_json::json!(""));
+    pokemon_mut.ability_state.choice_lock = Some(String::new());
 
     EventResult::Continue
 }
@@ -56,9 +56,7 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.get("choiceLock")
-            .and_then(|v| v.as_str())
-            .map(|s| s.to_string())
+        pokemon.ability_state.choice_lock.clone()
     };
 
     if let Some(ref lock) = choice_lock {
@@ -110,9 +108,7 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.get("choiceLock")
-            .and_then(|v| v.as_str())
-            .map(|s| s.to_string())
+        pokemon.ability_state.choice_lock.clone()
     };
 
     // If already locked, return
@@ -142,7 +138,7 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_mut.ability_state.data.insert("choiceLock".to_string(), serde_json::json!(move_id));
+    pokemon_mut.ability_state.choice_lock = Some(move_id.to_string());
 
     EventResult::Continue
 }
@@ -192,9 +188,7 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.get("choiceLock")
-            .and_then(|v| v.as_str())
-            .map(|s| s.to_string())
+        pokemon.ability_state.choice_lock.clone()
     };
 
     let lock = match choice_lock {
@@ -251,8 +245,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_mut.ability_state.data.insert("choiceLock".to_string(), serde_json::json!(""));
+    pokemon_mut.ability_state.choice_lock = Some(String::new());
 
     EventResult::Continue
 }
-

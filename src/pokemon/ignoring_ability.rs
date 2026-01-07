@@ -82,7 +82,7 @@ impl Pokemon {
                 if pokemon.ability.as_str() == "neutralizinggas"
                     && !pokemon.has_volatile(&ID::new("gastroacid"))
                     && !pokemon.transformed
-                    && !pokemon.ability_state.data.get("ending").and_then(|v| v.as_bool()).unwrap_or(false)
+                    && !pokemon.ability_state.ending.unwrap_or(false)
                     && !self.has_volatile(&ID::new("commanding"))
                 {
                     return true;

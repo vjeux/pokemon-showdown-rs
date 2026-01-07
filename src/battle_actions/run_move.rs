@@ -360,12 +360,10 @@ pub fn run_move(
             // Tie-breaker: abilityState.effectOrder (lower is earlier)
             // JavaScript: b.abilityState.effectOrder - a.abilityState.effectOrder
             let a_effect_order = battle.pokemon_at(a_pos.0, a_pos.1)
-                .and_then(|p| p.ability_state.data.get("effectOrder"))
-                .and_then(|v| v.as_i64())
+                .map(|p| p.ability_state.effect_order)
                 .unwrap_or(0);
             let b_effect_order = battle.pokemon_at(b_pos.0, b_pos.1)
-                .and_then(|p| p.ability_state.data.get("effectOrder"))
-                .and_then(|v| v.as_i64())
+                .map(|p| p.ability_state.effect_order)
                 .unwrap_or(0);
 
             a_effect_order.cmp(&b_effect_order)

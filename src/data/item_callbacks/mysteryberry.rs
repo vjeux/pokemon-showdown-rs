@@ -59,11 +59,8 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         };
 
         if let Some(volatile) = pokemon_mut.get_volatile_mut(&ID::from("leppaberry")) {
-            // Store the move slot index in the volatile's data field
-            volatile.data.insert(
-                "move_slot_index".to_string(),
-                serde_json::json!(move_slot_idx.unwrap_or(0))
-            );
+            // Store the move slot index in the volatile's move_slot_index field
+            volatile.move_slot_index = move_slot_idx;
         }
 
         // pokemon.eatItem();
@@ -106,10 +103,8 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         };
 
         let move_slot_idx = if let Some(volatile) = pokemon.get_volatile(&ID::from("leppaberry")) {
-            // Retrieve move slot index from volatile data
-            volatile.data.get("move_slot_index")
-                .and_then(|v| v.as_u64())
-                .map(|v| v as usize)
+            // Retrieve move slot index from volatile move_slot_index field
+            volatile.move_slot_index
         } else {
             // Find move with lowest PP
             let mut min_pp = 99;

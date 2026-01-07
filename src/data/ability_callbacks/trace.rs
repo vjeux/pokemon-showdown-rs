@@ -27,7 +27,7 @@ use serde_json::Value;
 /// }
 pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // this.effectState.seek = true;
-    battle.effect_state.data.insert("seek".to_string(), Value::Bool(true));
+    battle.effect_state.seek = Some(true);
 
     // if (pokemon.adjacentFoes().some(foeActive => foeActive.ability === 'noability'))
     let has_no_ability_foe = {
@@ -49,7 +49,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 
     if has_no_ability_foe {
         // this.effectState.seek = false;
-        battle.effect_state.data.insert("seek".to_string(), Value::Bool(false));
+        battle.effect_state.seek = Some(false);
     }
 
     // if (pokemon.hasItem('Ability Shield'))
@@ -77,13 +77,11 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         ]);
 
         // this.effectState.seek = false;
-        battle.effect_state.data.insert("seek".to_string(), Value::Bool(false));
+        battle.effect_state.seek = Some(false);
     }
 
     // if (this.effectState.seek)
-    let should_seek = battle.effect_state.data.get("seek")
-        .and_then(|v: &Value| v.as_bool())
-        .unwrap_or(false);
+    let should_seek = battle.effect_state.seek.unwrap_or(false);
 
     if should_seek {
         // this.singleEvent('Update', this.effect, this.effectState, pokemon);
@@ -116,9 +114,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 /// }
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.effectState.seek) return;
-    let should_seek = battle.effect_state.data.get("seek")
-        .and_then(|v: &Value| v.as_bool())
-        .unwrap_or(false);
+    let should_seek = battle.effect_state.seek.unwrap_or(false);
 
     if !should_seek {
         return EventResult::Continue;

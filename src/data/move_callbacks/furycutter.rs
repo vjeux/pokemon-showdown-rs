@@ -64,8 +64,7 @@ pub fn base_power_callback(
         let multiplier = pokemon_ref
             .volatiles
             .get(&furycutter_id)
-            .and_then(|v| v.data.get("multiplier"))
-            .and_then(|m| m.as_i64())
+            .and_then(|v| v.multiplier)
             .unwrap_or(1);
 
         (base_power, multiplier)
@@ -89,10 +88,7 @@ pub mod condition {
     pub fn on_start(battle: &mut Battle) -> EventResult {
         // this.effectState.multiplier = 1;
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "multiplier".to_string(),
-                serde_json::to_value(1).unwrap_or(serde_json::Value::Null),
-            );
+            state.multiplier = Some(1);
         });
 
         EventResult::Continue
@@ -110,20 +106,12 @@ pub mod condition {
         // }
         // this.effectState.duration = 2;
         battle.with_effect_state(|state| {
-            let current_multiplier = state
-                .data
-                .get("multiplier")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(1);
+            let current_multiplier = state.multiplier.unwrap_or(1);
 
             if current_multiplier < 4 {
                 // this.effectState.multiplier <<= 1;
                 let new_multiplier = current_multiplier << 1; // Left shift by 1 = multiply by 2
-
-                state.data.insert(
-                    "multiplier".to_string(),
-                    serde_json::to_value(new_multiplier).unwrap_or(serde_json::Value::Null),
-                );
+                state.multiplier = Some(new_multiplier);
             }
 
             // this.effectState.duration = 2;

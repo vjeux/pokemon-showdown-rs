@@ -21,7 +21,7 @@ pub fn on_modify_move(
         // move.accuracy = true;
         // Store accuracy override in current effect state
         battle.with_effect_state(|state| {
-            state.data.insert("accuracy".to_string(), serde_json::Value::Bool(true));
+            state.accuracy = Some(true);
         });
     }
 

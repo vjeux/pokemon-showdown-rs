@@ -27,11 +27,7 @@ pub fn on_try(
         };
 
         if let Some(stockpile_volatile) = source_pokemon.volatiles.get(&ID::from("stockpile")) {
-            stockpile_volatile
-                .data
-                .get("layers")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0) as i32
+            stockpile_volatile.layers.unwrap_or(0)
         } else {
             0
         }
@@ -67,18 +63,9 @@ pub mod condition {
         // this.effectState.def = 0;
         // this.effectState.spd = 0;
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "layers".to_string(),
-                serde_json::to_value(1).unwrap_or(serde_json::Value::Null),
-            );
-            state.data.insert(
-                "def".to_string(),
-                serde_json::to_value(0).unwrap_or(serde_json::Value::Null),
-            );
-            state.data.insert(
-                "spd".to_string(),
-                serde_json::to_value(0).unwrap_or(serde_json::Value::Null),
-            );
+            state.layers = Some(1);
+            state.def = Some(0);
+            state.spd = Some(0);
         });
 
         // this.add('-start', target, 'stockpile' + this.effectState.layers);
@@ -122,27 +109,13 @@ pub mod condition {
 
         battle.with_effect_state(|state| {
             if cur_def != new_def {
-                let current_def = state
-                    .data
-                    .get("def")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0);
-                state.data.insert(
-                    "def".to_string(),
-                    serde_json::to_value(current_def - 1).unwrap_or(serde_json::Value::Null),
-                );
+                let current_def = state.def.unwrap_or(0);
+                state.def = Some(current_def - 1);
             }
 
             if cur_spd != new_spd {
-                let current_spd = state
-                    .data
-                    .get("spd")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0);
-                state.data.insert(
-                    "spd".to_string(),
-                    serde_json::to_value(current_spd - 1).unwrap_or(serde_json::Value::Null),
-                );
+                let current_spd = state.spd.unwrap_or(0);
+                state.spd = Some(current_spd - 1);
             }
         });
 
@@ -167,11 +140,7 @@ pub mod condition {
 
         // if (this.effectState.layers >= 3) return false;
         let layers = battle
-            .with_effect_state_ref(|state| {
-                state.data.get("layers")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0) as i32
-            })
+            .with_effect_state_ref(|state| state.layers.unwrap_or(0))
             .unwrap_or(0);
 
         if layers >= 3 {
@@ -181,10 +150,7 @@ pub mod condition {
         // this.effectState.layers++;
         let new_layers = layers + 1;
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "layers".to_string(),
-                serde_json::to_value(new_layers).unwrap_or(serde_json::Value::Null),
-            );
+            state.layers = Some(new_layers);
         });
 
         // this.add('-start', target, 'stockpile' + this.effectState.layers);
@@ -229,27 +195,13 @@ pub mod condition {
 
         battle.with_effect_state(|state| {
             if cur_def != new_def {
-                let current_def = state
-                    .data
-                    .get("def")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0);
-                state.data.insert(
-                    "def".to_string(),
-                    serde_json::to_value(current_def - 1).unwrap_or(serde_json::Value::Null),
-                );
+                let current_def = state.def.unwrap_or(0);
+                state.def = Some(current_def - 1);
             }
 
             if cur_spd != new_spd {
-                let current_spd = state
-                    .data
-                    .get("spd")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0);
-                state.data.insert(
-                    "spd".to_string(),
-                    serde_json::to_value(current_spd - 1).unwrap_or(serde_json::Value::Null),
-                );
+                let current_spd = state.spd.unwrap_or(0);
+                state.spd = Some(current_spd - 1);
             }
         });
 
@@ -276,21 +228,9 @@ pub mod condition {
 
         // if (this.effectState.def || this.effectState.spd) {
         let (def_value, spd_value, layers) = battle.with_effect_state_ref(|state| {
-            let def = state
-                .data
-                .get("def")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
-            let spd = state
-                .data
-                .get("spd")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
-            let layers = state
-                .data
-                .get("layers")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
+            let def = state.def.unwrap_or(0) as i64;
+            let spd = state.spd.unwrap_or(0) as i64;
+            let layers = state.layers.unwrap_or(0) as i64;
             (def, spd, layers)
         }).unwrap_or((0, 0, 0));
 

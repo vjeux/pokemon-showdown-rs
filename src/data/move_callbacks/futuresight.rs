@@ -102,37 +102,32 @@ pub fn on_try(
                     slot_conditions.get_mut(&ID::from("futuremove"))
                 {
                     // Set move data
-                    future_move_condition.data.insert(
-                        "move".to_string(),
-                        serde_json::Value::String("futuresight".to_string()),
-                    );
-                    future_move_condition
-                        .data
-                        .insert("source".to_string(), serde_json::to_value(source).unwrap());
+                    future_move_condition.move_id = Some("futuresight".to_string());
+                    future_move_condition.source = Some(source);
 
                     // Set moveData object
-                    let mut move_data = serde_json::Map::new();
-                    move_data.insert(
+                    let mut move_data_map = std::collections::HashMap::new();
+                    move_data_map.insert(
                         "id".to_string(),
                         serde_json::Value::String("futuresight".to_string()),
                     );
-                    move_data.insert(
+                    move_data_map.insert(
                         "name".to_string(),
                         serde_json::Value::String("Future Sight".to_string()),
                     );
-                    move_data.insert(
+                    move_data_map.insert(
                         "accuracy".to_string(),
                         serde_json::Value::Number(100.into()),
                     );
-                    move_data.insert(
+                    move_data_map.insert(
                         "basePower".to_string(),
                         serde_json::Value::Number(120.into()),
                     );
-                    move_data.insert(
+                    move_data_map.insert(
                         "category".to_string(),
                         serde_json::Value::String("Special".to_string()),
                     );
-                    move_data.insert("priority".to_string(), serde_json::Value::Number(0.into()));
+                    move_data_map.insert("priority".to_string(), serde_json::Value::Number(0.into()));
 
                     let mut flags = serde_json::Map::new();
                     flags.insert("allyanim".to_string(), serde_json::Value::Number(1.into()));
@@ -141,21 +136,19 @@ pub fn on_try(
                         "futuremove".to_string(),
                         serde_json::Value::Number(1.into()),
                     );
-                    move_data.insert("flags".to_string(), serde_json::Value::Object(flags));
+                    move_data_map.insert("flags".to_string(), serde_json::Value::Object(flags));
 
-                    move_data.insert("ignoreImmunity".to_string(), serde_json::Value::Bool(false));
-                    move_data.insert(
+                    move_data_map.insert("ignoreImmunity".to_string(), serde_json::Value::Bool(false));
+                    move_data_map.insert(
                         "effectType".to_string(),
                         serde_json::Value::String("Move".to_string()),
                     );
-                    move_data.insert(
+                    move_data_map.insert(
                         "type".to_string(),
                         serde_json::Value::String("Psychic".to_string()),
                     );
 
-                    future_move_condition
-                        .data
-                        .insert("moveData".to_string(), serde_json::Value::Object(move_data));
+                    future_move_condition.move_data = Some(move_data_map);
                 }
             }
         }

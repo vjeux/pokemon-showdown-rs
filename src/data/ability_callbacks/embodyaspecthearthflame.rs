@@ -24,12 +24,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 
         let base_species_name = pokemon.get_base_species_name(&battle.dex);
         let is_terastallized = pokemon.terastallized.is_some();
-        let already_embodied = pokemon
-            .ability_state
-            .data
-            .get("embodied")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false);
+        let already_embodied = pokemon.ability_state.embodied.unwrap_or(false);
 
         (base_species_name, is_terastallized, already_embodied)
     };
@@ -44,7 +39,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_mut.ability_state.data.insert("embodied".to_string(), serde_json::json!(true));
+            pokemon_mut.ability_state.embodied = Some(true);
         }
 
         // this.boost({ atk: 1 }, pokemon);

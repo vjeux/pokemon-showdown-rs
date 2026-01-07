@@ -96,8 +96,7 @@ impl Side {
                                 let target_loc = {
                                     let pokemon = &self.pokemon[*pokemon_idx];
                                     pokemon.volatiles.get(&move_id)
-                                        .and_then(|v| v.data.get("targetLoc"))
-                                        .and_then(|t| t.as_i64())
+                                        .and_then(|v| v.target_loc)
                                         .map(|t| t as i8)
                                         .or_else(|| pokemon.last_move_target_loc)
                                 };

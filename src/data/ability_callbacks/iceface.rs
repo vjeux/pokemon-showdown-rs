@@ -49,10 +49,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 
     // this.effectState.busted = false;
     if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        pokemon.ability_state.data.insert(
-            "busted".to_string(),
-            serde_json::Value::Bool(false),
-        );
+        pokemon.ability_state.busted = Some(false);
     }
 
     // pokemon.formeChange('Eiscue', this.effect, true);
@@ -132,10 +129,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
 
     // this.effectState.busted = true;
     if let Some(pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-        pokemon.ability_state.data.insert(
-            "busted".to_string(),
-            serde_json::Value::Bool(true),
-        );
+        pokemon.ability_state.busted = Some(true);
     }
 
     // return 0;
@@ -281,10 +275,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
             None => return EventResult::Continue,
         };
 
-        let is_busted = pokemon.ability_state.data
-            .get("busted")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false);
+        let is_busted = pokemon.ability_state.busted.unwrap_or(false);
 
         (pokemon.species_id.clone(), is_busted)
     };
@@ -366,10 +357,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
 
     // this.effectState.busted = false;
     if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        pokemon.ability_state.data.insert(
-            "busted".to_string(),
-            serde_json::Value::Bool(false),
-        );
+        pokemon.ability_state.busted = Some(false);
     }
 
     // pokemon.formeChange('Eiscue', this.effect, true);

@@ -60,14 +60,8 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
         None => return EventResult::Continue,
     };
 
-    pokemon.ability_state.data.insert(
-        "berry".to_string(),
-        serde_json::Value::String(item_id.to_string()),
-    );
-    pokemon.ability_state.data.insert(
-        "counter".to_string(),
-        serde_json::json!(counter),
-    );
+    pokemon.ability_state.berry = Some(item_id.to_string());
+    pokemon.ability_state.counter = Some(counter);
 
     EventResult::Continue
 }
@@ -97,19 +91,13 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
             None => return EventResult::Continue,
         };
 
-        let berry_str = match pokemon.ability_state.data.get("berry") {
-            Some(v) => match v.as_str() {
-                Some(s) => s,
-                None => return EventResult::Continue,
-            },
+        let berry_str = match pokemon.ability_state.berry.as_ref() {
+            Some(s) => s.as_str(),
             None => return EventResult::Continue,
         };
 
-        let counter = match pokemon.ability_state.data.get("counter") {
-            Some(v) => match v.as_i64() {
-                Some(c) => c as i32,
-                None => return EventResult::Continue,
-            },
+        let counter = match pokemon.ability_state.counter {
+            Some(c) => c,
             None => return EventResult::Continue,
         };
 
@@ -129,10 +117,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.insert(
-            "counter".to_string(),
-            serde_json::json!(new_counter),
-        );
+        pokemon.ability_state.counter = Some(new_counter);
         return EventResult::Continue;
     }
 
@@ -195,8 +180,8 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
     // delete this.effectState.berry;
     // delete this.effectState.counter;
     if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        pokemon.ability_state.data.remove("berry");
-        pokemon.ability_state.data.remove("counter");
+        pokemon.ability_state.berry = None;
+        pokemon.ability_state.counter = None;
     }
 
     EventResult::Continue

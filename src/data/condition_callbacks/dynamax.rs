@@ -43,7 +43,7 @@ pub fn on_start(
     // this.effectState.turns = 0;
     // JavaScript: this.effectState.turns = 0
     battle.with_effect_state(|state| {
-        state.data.insert("turns".to_string(), serde_json::json!(0));
+        state.turns = Some(0);
     });
 
     // pokemon.removeVolatile('minimize');
@@ -273,10 +273,8 @@ pub fn on_residual(
     // this.effectState.turns++;
     // JavaScript: this.effectState.turns++
     battle.with_effect_state(|state| {
-        let turns = state.data.get("turns")
-            .and_then(|v| v.as_i64())
-            .unwrap_or(0);
-        state.data.insert("turns".to_string(), serde_json::json!(turns + 1));
+        let turns = state.turns.unwrap_or(0);
+        state.turns = Some(turns + 1);
     });
 
     EventResult::Continue

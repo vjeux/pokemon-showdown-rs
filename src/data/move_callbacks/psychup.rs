@@ -102,9 +102,8 @@ pub fn on_hit(
                     target_pokemon
                         .volatiles
                         .get(volatile)
-                        .and_then(|v| v.data.get("layers"))
-                        .and_then(|l| l.as_i64())
-                        .unwrap_or(0) as i32
+                        .and_then(|v| v.layers)
+                        .unwrap_or(0)
                 };
 
                 let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
@@ -112,9 +111,7 @@ pub fn on_hit(
                     None => return EventResult::Continue,
                 };
                 if let Some(volatile_effect) = source_pokemon.volatiles.get_mut(volatile) {
-                    volatile_effect
-                        .data
-                        .insert("layers".to_string(), serde_json::json!(layers));
+                    volatile_effect.layers = Some(layers);
                 }
             }
 
@@ -127,8 +124,7 @@ pub fn on_hit(
                     target_pokemon
                         .volatiles
                         .get(volatile)
-                        .and_then(|v| v.data.get("hasDragonType"))
-                        .and_then(|d| d.as_bool())
+                        .and_then(|v| v.has_dragon_type)
                         .unwrap_or(false)
                 };
 
@@ -137,10 +133,7 @@ pub fn on_hit(
                     None => return EventResult::Continue,
                 };
                 if let Some(volatile_effect) = source_pokemon.volatiles.get_mut(volatile) {
-                    volatile_effect.data.insert(
-                        "hasDragonType".to_string(),
-                        serde_json::json!(has_dragon_type),
-                    );
+                    volatile_effect.has_dragon_type = Some(has_dragon_type);
                 }
             }
         }

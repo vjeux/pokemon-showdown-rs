@@ -60,10 +60,7 @@ pub mod condition {
 
         // this.effectState.multiplier = 1.5;
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "multiplier".to_string(),
-                serde_json::to_value(1.5).unwrap_or(serde_json::Value::Null),
-            );
+            state.multiplier = Some((1.5 * 10.0) as i32); // Store as 15 (1.5 * 10) to avoid float
         });
 
         // this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
@@ -112,18 +109,9 @@ pub mod condition {
 
         // this.effectState.multiplier *= 1.5;
         battle.with_effect_state(|state| {
-            let current_multiplier = state
-                .data
-                .get("multiplier")
-                .and_then(|v| v.as_f64())
-                .unwrap_or(1.0);
-
-            let new_multiplier = current_multiplier * 1.5;
-
-            state.data.insert(
-                "multiplier".to_string(),
-                serde_json::to_value(new_multiplier).unwrap_or(serde_json::Value::Null),
-            );
+            let current_multiplier = state.multiplier.unwrap_or(10); // Default 1.0 = 10
+            let new_multiplier = (current_multiplier as f64 * 1.5) as i32;
+            state.multiplier = Some(new_multiplier);
         });
 
         // this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
@@ -163,11 +151,7 @@ pub mod condition {
     ) -> EventResult {
         // this.debug('Boosting from Helping Hand: ' + this.effectState.multiplier);
         let multiplier = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("multiplier")
-                .and_then(|v| v.as_f64())
-                .unwrap_or(1.0)
+            state.multiplier.unwrap_or(10) as f64 / 10.0
         }).unwrap_or(1.0);
 
         battle.debug(&format!("Boosting from Helping Hand: {}", multiplier));

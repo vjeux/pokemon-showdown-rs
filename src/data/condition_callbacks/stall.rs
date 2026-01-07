@@ -21,7 +21,7 @@ pub fn on_start(
     // Set counter to 3 when stall is first added
     // In JavaScript: this.effectState.counter = 3
     battle.with_effect_state(|state| {
-        state.data.insert("counter".to_string(), serde_json::Value::from(3));
+        state.counter = Some(3);
     });
 
     EventResult::Continue
@@ -41,10 +41,7 @@ pub fn on_stall_move(
     // Get counter from effect state
     // JavaScript: this.effectState.counter || 1
     let counter = battle.with_effect_state_ref(|state| {
-        state.data.get("counter")
-            .and_then(|v| v.as_i64())
-            .map(|v| v as i32)
-            .unwrap_or(1)
+        state.counter.unwrap_or(1)
     }).unwrap_or(1);
 
     // Call randomChance(1, counter)
@@ -78,10 +75,7 @@ pub fn on_restart(
 
     // Get current counter and update it
     battle.with_effect_state(|state| {
-        let current_counter = state.data.get("counter")
-            .and_then(|v| v.as_i64())
-            .map(|v| v as i32)
-            .unwrap_or(3);
+        let current_counter = state.counter.unwrap_or(3);
 
         // if (this.effectState.counter < this.effect.counterMax) {
         //     this.effectState.counter *= 3;
@@ -92,7 +86,7 @@ pub fn on_restart(
             current_counter
         };
 
-        state.data.insert("counter".to_string(), serde_json::Value::from(new_counter));
+        state.counter = Some(new_counter);
         state.duration = Some(2);
     });
 

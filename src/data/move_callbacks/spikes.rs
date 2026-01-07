@@ -31,9 +31,7 @@ pub mod condition {
 
         // this.effectState.layers = 1;
         battle.with_effect_state(|state| {
-            state
-                .data
-                .insert("layers".to_string(), serde_json::json!(1));
+            state.layers = Some(1);
         });
 
         EventResult::Continue
@@ -53,11 +51,7 @@ pub mod condition {
 
         // if (this.effectState.layers >= 3) return false;
         let layers = battle
-            .with_effect_state_ref(|state| {
-                state.data.get("layers")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0) as i32
-            })
+            .with_effect_state_ref(|state| state.layers.unwrap_or(0))
             .unwrap_or(0);
 
         if layers >= 3 {
@@ -75,9 +69,7 @@ pub mod condition {
 
         // this.effectState.layers++;
         battle.with_effect_state(|state| {
-            state
-                .data
-                .insert("layers".to_string(), serde_json::json!(layers + 1));
+            state.layers = Some(layers + 1);
         });
 
         EventResult::Continue
@@ -119,11 +111,7 @@ pub mod condition {
         // const damageAmounts = [0, 3, 4, 6]; // 1/8, 1/6, 1/4
         // this.damage(damageAmounts[this.effectState.layers] * pokemon.maxhp / 24);
         let layers = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("layers")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(1) as i32
+            state.layers.unwrap_or(1)
         }).unwrap_or(1);
         let damage_amounts = [0, 3, 4, 6];
 

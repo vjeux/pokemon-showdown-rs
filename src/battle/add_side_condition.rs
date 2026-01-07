@@ -147,9 +147,9 @@ impl Battle {
         true
     }
 
-    /// Get mutable reference to side condition data HashMap
+    /// Get mutable reference to side condition EffectState
     ///
-    /// This allows modifying the data field of a side condition's EffectState,
+    /// This allows modifying the EffectState of a side condition,
     /// which is used by moves like Pursuit to track multiple sources.
     ///
     /// JavaScript equivalent:
@@ -162,7 +162,7 @@ impl Battle {
         &mut self,
         side_idx: usize,
         condition_id: &ID,
-    ) -> Option<&mut std::collections::HashMap<String, serde_json::Value>> {
+    ) -> Option<&mut EffectState> {
         if side_idx >= self.sides.len() {
             return None;
         }
@@ -170,6 +170,5 @@ impl Battle {
         self.sides[side_idx]
             .side_conditions
             .get_mut(condition_id)
-            .map(|state| &mut state.data)
     }
 }

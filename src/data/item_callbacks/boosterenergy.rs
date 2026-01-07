@@ -15,9 +15,7 @@ use crate::pokemon::Pokemon;
 pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
     // this.effectState.started = true;
     battle.with_effect_state(|state| {
-        state
-            .data
-            .insert("started".to_string(), serde_json::json!(true));
+        state.started = Some(true);
     });
 
     // ((this.effect as any).onUpdate as (p: Pokemon) => void).call(this, pokemon);
@@ -43,11 +41,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     // if (!this.effectState.started || pokemon.transformed) return;
     let (started, transformed) = {
         let started = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("started")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false)
+            state.started.unwrap_or(false)
         }).unwrap_or(false);
 
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

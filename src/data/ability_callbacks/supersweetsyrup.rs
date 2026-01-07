@@ -29,7 +29,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.get("syrupTriggered").map(|v| v.as_bool()).flatten().unwrap_or(false)
+        pokemon.ability_state.syrup_triggered.unwrap_or(false)
     };
 
     if already_triggered {
@@ -42,7 +42,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.insert("syrupTriggered".to_string(), serde_json::json!(true));
+        pokemon.ability_state.syrup_triggered = Some(true);
     }
 
     // this.add('-ability', pokemon, 'Supersweet Syrup');

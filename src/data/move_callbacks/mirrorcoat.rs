@@ -30,12 +30,7 @@ pub fn damage_callback(
         match pokemon_pokemon.volatiles.get(&ID::from("mirrorcoat")) {
             Some(volatile) => {
                 // return pokemon.volatiles['mirrorcoat'].damage || 1;
-                volatile
-                    .data
-                    .get("damage")
-                    .and_then(|v| v.as_i64())
-                    .map(|d| d as i32)
-                    .unwrap_or(1)
+                volatile.damage.unwrap_or(1)
             }
             None => {
                 // return 0;
@@ -82,8 +77,8 @@ pub fn on_try(
     };
 
     // if (source.volatiles['mirrorcoat'].slot === null) return false;
-    let slot = volatile.data.get("slot");
-    if slot.is_none() || slot == Some(&serde_json::Value::Null) {
+    let slot = volatile.slot;
+    if slot.is_none() {
         return EventResult::Boolean(false);
     }
 
@@ -106,8 +101,8 @@ pub mod condition {
         // this.effectState.slot = null;
         // this.effectState.damage = 0;
         battle.with_effect_state(|state| {
-            state.data.insert("slot".to_string(), serde_json::Value::Null);
-            state.data.insert("damage".to_string(), serde_json::to_value(0).unwrap());
+            state.slot = None;
+            state.damage = Some(0);
         });
 
         EventResult::Continue
@@ -131,28 +126,23 @@ pub mod condition {
 
         // if (source !== this.effectState.target || !this.effectState.slot) return;
         let (effect_target, effect_slot) = match battle.with_effect_state_ref(|state| {
-            (state.target, state.data.get("slot").cloned())
+            (state.target, state.slot)
         }) {
             Some((target, slot)) => (target, slot),
             None => return EventResult::Continue,
         };
 
-        if source_pos != effect_target
-            || effect_slot.is_none()
-            || effect_slot == Some(serde_json::Value::Null)
-        {
+        if source_pos != effect_target || effect_slot.is_none() {
             return EventResult::Continue;
         }
 
         // return this.getAtSlot(this.effectState.slot);
-        if let Some(serde_json::Value::Number(slot_num)) = effect_slot {
-            if let Some(slot_val) = slot_num.as_u64() {
-                let new_target = battle.get_at_slot(Some(&slot_val.to_string()));
-                if let Some(target) = new_target {
-                    // Return the new target position for move redirection
-                    let target_pos = (target.side_index, target.position);
-                    return EventResult::Position(target_pos);
-                }
+        if let Some(slot_num) = effect_slot {
+            let new_target = battle.get_at_slot(Some(&slot_num.to_string()));
+            if let Some(target) = new_target {
+                // Return the new target position for move redirection
+                let target_pos = (target.side_index, target.position);
+                return EventResult::Position(target_pos);
             }
         }
 
@@ -209,8 +199,8 @@ pub mod condition {
         };
 
         battle.with_effect_state(|state| {
-            state.data.insert("slot".to_string(), serde_json::to_value(slot).unwrap());
-            state.data.insert("damage".to_string(), serde_json::to_value(2 * damage).unwrap());
+            state.slot = Some(source.1 as i32);
+            state.damage = Some(2 * damage);
         });
 
         EventResult::Continue

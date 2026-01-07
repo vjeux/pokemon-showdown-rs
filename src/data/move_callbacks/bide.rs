@@ -36,10 +36,7 @@ pub mod condition {
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // this.effectState.totalDamage = 0;
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "totalDamage".to_string(),
-                serde_json::Value::Number(0.into()),
-            );
+            state.damage = Some(0);
         });
 
         // this.add('-start', pokemon, 'move: Bide');
@@ -83,18 +80,15 @@ pub mod condition {
         // this.effectState.lastDamageSource = source;
         // JavaScript: this.effectState.totalDamage, this.effectState.lastDamageSource
         battle.with_effect_state(|state| {
-            let current_damage = state.data
-                .get("totalDamage")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0) as i32;
-            state.data.insert(
-                "totalDamage".to_string(),
-                serde_json::Value::Number((current_damage + damage).into()),
-            );
-            state.data.insert(
-                "lastDamageSource".to_string(),
-                serde_json::to_value(source_pos).unwrap_or(serde_json::Value::Null),
-            );
+            let current_damage = state.damage.unwrap_or(0);
+            state.damage = Some(current_damage + damage);
+            // Store source position - we'll use source field which already exists
+            // Note: JavaScript stores lastDamageSource, but we can reuse source field
+        });
+
+        // We also need to update the source on the effect state
+        battle.with_effect_state(|state| {
+            state.source = Some(source_pos);
         });
 
         EventResult::Continue
@@ -144,13 +138,8 @@ pub mod condition {
         // JavaScript: this.effectState.duration, this.effectState.totalDamage, this.effectState.lastDamageSource
         let (duration, total_damage, last_damage_source) = match battle.with_effect_state_ref(|state| {
             let duration = state.duration.unwrap_or(0);
-            let total_damage = state.data
-                .get("totalDamage")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0) as i32;
-            let last_damage_source = state.data
-                .get("lastDamageSource")
-                .and_then(|v| serde_json::from_value::<(usize, usize)>(v.clone()).ok());
+            let total_damage = state.damage.unwrap_or(0);
+            let last_damage_source = state.source;
 
             (duration, total_damage, last_damage_source)
         }) {

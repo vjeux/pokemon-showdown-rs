@@ -48,30 +48,13 @@ impl Pokemon {
                 };
 
                 // JS: volatileData.linkedPokemon.splice(volatileData.linkedPokemon.indexOf(this), 1);
-                // Access data["linkedPokemon"] as array, remove this_pokemon
-                if let Some(linked_pokemon_value) = volatile_data.data.get_mut("linkedPokemon") {
-                    if let Some(linked_array) = linked_pokemon_value.as_array_mut() {
-                        // Find and remove this_pokemon from the array
-                        // linkedPokemon is stored as [[side, slot], ...]
-                        linked_array.retain(|value| {
-                            if let Some(arr) = value.as_array() {
-                                if arr.len() == 2 {
-                                    let side = arr[0].as_u64().unwrap_or(999) as usize;
-                                    let slot = arr[1].as_u64().unwrap_or(999) as usize;
-                                    (side, slot) != this_pokemon
-                                } else {
-                                    true // Keep malformed entries
-                                }
-                            } else {
-                                true // Keep non-array entries
-                            }
-                        });
+                // Access linkedPokemon as typed field, remove this_pokemon
+                if let Some(linked_pokemon_vec) = volatile_data.linked_pokemon.as_mut() {
+                    // Find and remove this_pokemon from the Vec
+                    linked_pokemon_vec.retain(|&pos| pos != this_pokemon);
 
-                        // JS: if (volatileData.linkedPokemon.length === 0) {
-                        linked_array.is_empty()
-                    } else {
-                        false
-                    }
+                    // JS: if (volatileData.linkedPokemon.length === 0) {
+                    linked_pokemon_vec.is_empty()
                 } else {
                     false
                 }

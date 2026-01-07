@@ -214,11 +214,7 @@ impl Battle {
                     if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
                         // Check if Pokemon has dynamax volatile with turns === 3
                         if let Some(dynamax_state) = pokemon.volatiles.get(&dynamax_id) {
-                            let turns = dynamax_state
-                                .data
-                                .get("turns")
-                                .and_then(|v| v.as_i64())
-                                .unwrap_or(0);
+                            let turns = dynamax_state.turns.unwrap_or(0);
                             if turns == 3 {
                                 dynamax_ending.push((side_idx, *poke_idx));
                             }
@@ -287,32 +283,26 @@ impl Battle {
                             if let Some(lock_state) = pokemon.volatiles.get(&partialtrappinglock_id)
                             {
                                 // JS: const target = pokemon.volatiles['partialtrappinglock'].locked;
-                                // The locked target is stored in the volatile's data
+                                // The locked target is stored in the volatile's locked_target field
+                                // Note: In JS, `locked` refers to the Pokemon object
+                                // In Rust, we use locked_target to store the Pokemon position
                                 let should_remove =
-                                    if let Some(locked_data) = lock_state.data.get("locked") {
-                                        // Extract target position (stored as side_idx * 10 + poke_idx)
-                                        if let Some(locked_val) = locked_data.as_i64() {
-                                            let target_side = (locked_val / 10) as usize;
-                                            let target_poke = (locked_val % 10) as usize;
-
-                                            // JS: if (target.hp <= 0 || !target.volatiles['partiallytrapped'])
-                                            if let Some(target) = self
-                                                .sides
-                                                .get(target_side)
-                                                .and_then(|s| s.pokemon.get(target_poke))
-                                            {
-                                                target.hp <= 0
-                                                    || !target
-                                                        .volatiles
-                                                        .contains_key(&partiallytrapped_id)
-                                            } else {
-                                                true // Target doesn't exist, remove
-                                            }
+                                    if let Some(target_pos) = lock_state.locked_target {
+                                        // JS: if (target.hp <= 0 || !target.volatiles['partiallytrapped'])
+                                        if let Some(target) = self
+                                            .sides
+                                            .get(target_pos.0)
+                                            .and_then(|s| s.pokemon.get(target_pos.1))
+                                        {
+                                            target.hp <= 0
+                                                || !target
+                                                    .volatiles
+                                                    .contains_key(&partiallytrapped_id)
                                         } else {
-                                            true // Invalid data, remove
+                                            true // Target doesn't exist, remove
                                         }
                                     } else {
-                                        true // No locked data, remove
+                                        true // No locked target, remove
                                     };
 
                                 if should_remove {
@@ -324,32 +314,24 @@ impl Battle {
                             if let Some(trapped_state) = pokemon.volatiles.get(&partiallytrapped_id)
                             {
                                 // JS: const source = pokemon.volatiles['partiallytrapped'].source;
-                                let should_remove =
-                                    if let Some(source_data) = trapped_state.data.get("source") {
-                                        // Extract source position
-                                        if let Some(source_val) = source_data.as_i64() {
-                                            let source_side = (source_val / 10) as usize;
-                                            let source_poke = (source_val % 10) as usize;
-
-                                            // JS: if (source.hp <= 0 || !source.volatiles['partialtrappinglock'])
-                                            if let Some(source) = self
-                                                .sides
-                                                .get(source_side)
-                                                .and_then(|s| s.pokemon.get(source_poke))
-                                            {
-                                                source.hp <= 0
-                                                    || !source
-                                                        .volatiles
-                                                        .contains_key(&partialtrappinglock_id)
-                                            } else {
-                                                true // Source doesn't exist, remove
-                                            }
-                                        } else {
-                                            true // Invalid data, remove
-                                        }
+                                // Use the typed source field from EffectState
+                                let should_remove = if let Some((source_side, source_poke)) = trapped_state.source {
+                                    // JS: if (source.hp <= 0 || !source.volatiles['partialtrappinglock'])
+                                    if let Some(source) = self
+                                        .sides
+                                        .get(source_side)
+                                        .and_then(|s| s.pokemon.get(source_poke))
+                                    {
+                                        source.hp <= 0
+                                            || !source
+                                                .volatiles
+                                                .contains_key(&partialtrappinglock_id)
                                     } else {
-                                        true // No source data, remove
-                                    };
+                                        true // Source doesn't exist, remove
+                                    }
+                                } else {
+                                    true // No source data, remove
+                                };
 
                                 if should_remove {
                                     volatiles_to_remove.push((pos, partiallytrapped_id.clone()));
@@ -361,29 +343,20 @@ impl Battle {
                                 pokemon.volatiles.get(&fakepartiallytrapped_id)
                             {
                                 // JS: const counterpart = pokemon.volatiles['fakepartiallytrapped'].counterpart;
-                                let should_remove = if let Some(counterpart_data) =
-                                    fake_state.data.get("counterpart")
-                                {
-                                    // Extract counterpart position
-                                    if let Some(counterpart_val) = counterpart_data.as_i64() {
-                                        let counterpart_side = (counterpart_val / 10) as usize;
-                                        let counterpart_poke = (counterpart_val % 10) as usize;
-
-                                        // JS: if (counterpart.hp <= 0 || !counterpart.volatiles['fakepartiallytrapped'])
-                                        if let Some(counterpart) = self
-                                            .sides
-                                            .get(counterpart_side)
-                                            .and_then(|s| s.pokemon.get(counterpart_poke))
-                                        {
-                                            counterpart.hp <= 0
-                                                || !counterpart
-                                                    .volatiles
-                                                    .contains_key(&fakepartiallytrapped_id)
-                                        } else {
-                                            true // Counterpart doesn't exist, remove
-                                        }
+                                // Use the typed counterpart field from EffectState
+                                let should_remove = if let Some((counterpart_side, counterpart_poke)) = fake_state.counterpart {
+                                    // JS: if (counterpart.hp <= 0 || !counterpart.volatiles['fakepartiallytrapped'])
+                                    if let Some(counterpart) = self
+                                        .sides
+                                        .get(counterpart_side)
+                                        .and_then(|s| s.pokemon.get(counterpart_poke))
+                                    {
+                                        counterpart.hp <= 0
+                                            || !counterpart
+                                                .volatiles
+                                                .contains_key(&fakepartiallytrapped_id)
                                     } else {
-                                        true // Invalid data, remove
+                                        true // Counterpart doesn't exist, remove
                                     }
                                 } else {
                                     true // No counterpart data, remove

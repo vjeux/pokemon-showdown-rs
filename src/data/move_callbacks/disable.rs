@@ -248,10 +248,7 @@ pub mod condition {
 
         // this.effectState.move = pokemon.lastMove.id;
         battle.with_effect_state(|state| {
-            state.data.insert(
-                "move".to_string(),
-                serde_json::to_value(last_move_id.to_string()).unwrap(),
-            );
+            state.move_id = Some(last_move_id.to_string());
         });
 
         EventResult::Continue
@@ -291,11 +288,7 @@ pub mod condition {
 
         // Get the disabled move from effect state
         let disabled_move_id = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("move")
-                .and_then(|v| v.as_str())
-                .map(|s| s.to_string())
+            state.move_id.clone()
         }).flatten();
 
         if let Some(disabled_id) = disabled_move_id {
@@ -343,11 +336,7 @@ pub mod condition {
 
         // Get the disabled move from effect state
         let disabled_move_id = battle.with_effect_state_ref(|state| {
-            state
-                .data
-                .get("move")
-                .and_then(|v| v.as_str())
-                .map(ID::from)
+            state.move_id.clone().map(ID::from)
         }).flatten();
 
         if let Some(disabled_id) = disabled_move_id {

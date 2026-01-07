@@ -28,12 +28,12 @@ pub fn on_start(
     eprintln!("[FUTUREMOVE::ON_START] ENTRY: pokemon_pos={:?}, turn={}", pokemon_pos, battle.turn);
 
     // this.effectState.targetSlot = target.getSlot();
-    let (target_slot, target_position, target_side_index) = {
+    let (target_position, target_side_index) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.get_slot(), pokemon.position, pokemon_pos.0)
+        (pokemon.position, pokemon_pos.0)
     };
 
     // this.effectState.endingTurn = (this.turn - 1) + 2;
@@ -43,14 +43,9 @@ pub fn on_start(
     if let Some(side) = battle.sides.get_mut(target_side_index) {
         if let Some(slot_conditions) = side.slot_conditions.get_mut(target_position) {
             if let Some(condition) = slot_conditions.get_mut(&ID::from("futuremove")) {
-                condition.data.insert(
-                    "targetSlot".to_string(),
-                    serde_json::Value::String(target_slot),
-                );
-                condition.data.insert(
-                    "endingTurn".to_string(),
-                    serde_json::Value::Number(ending_turn.into()),
-                );
+                // Note: targetSlot is not stored as it's not used and there's no typed field for it
+                // The target position is already tracked via the slot condition's position
+                condition.ending_turn = Some(ending_turn);
             }
         }
     }
@@ -95,8 +90,7 @@ pub fn on_residual(
         let ending_turn = battle.sides.get(side_index)
             .and_then(|side| side.slot_conditions.get(position))
             .and_then(|slot_conditions| slot_conditions.get(&ID::from("futuremove")))
-            .and_then(|condition| condition.data.get("endingTurn"))
-            .and_then(|v| v.as_i64())
+            .and_then(|condition| condition.ending_turn)
             .unwrap_or(0) as usize;
 
         (ending_turn, position, side_index)
@@ -120,11 +114,8 @@ pub fn on_residual(
         if let Some(side) = battle.sides.get(target_side_index) {
             if let Some(slot_conditions) = side.slot_conditions.get(target_position) {
                 if let Some(condition) = slot_conditions.get(&ID::from("futuremove")) {
-                    let move_id = condition.data.get("move")
-                        .and_then(|v| v.as_str())
-                        .unwrap_or("")
-                        .to_string();
-                    let source = condition.data.get("source").cloned();
+                    let move_id = condition.move_id.clone().unwrap_or_default();
+                    let source = condition.source;
                     eprintln!("[FUTUREMOVE::ON_RESIDUAL] Extracted move='{}', source={:?}", move_id, source);
                     (move_id, source)
                 } else {
@@ -194,7 +185,7 @@ pub fn on_end_with_data(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     move_id_str: &str,
-    source_pos_data: Option<serde_json::Value>,
+    source_pos_data: Option<(usize, usize)>,
 ) -> EventResult {
     eprintln!("[FUTUREMOVE::ON_END] ENTRY: pokemon_pos={:?}, turn={}, move={}, source={:?}",
         pokemon_pos, battle.turn, move_id_str, source_pos_data);
@@ -202,8 +193,7 @@ pub fn on_end_with_data(
     // const data = this.effectState;
     // Data has been pre-extracted and passed as parameters
     let move_id = ID::from(move_id_str);
-    let source_pos: Option<(usize, usize)> = source_pos_data
-        .and_then(|v| serde_json::from_value(v).ok());
+    let source_pos = source_pos_data;
 
     let target_fainted = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -307,11 +297,8 @@ pub fn on_end(
         if let Some(side) = battle.sides.get(side_index) {
             if let Some(slot_conditions) = side.slot_conditions.get(position) {
                 if let Some(condition) = slot_conditions.get(&ID::from("futuremove")) {
-                    let move_id = condition.data.get("move")
-                        .and_then(|v| v.as_str())
-                        .unwrap_or("")
-                        .to_string();
-                    let source = condition.data.get("source").cloned();
+                    let move_id = condition.move_id.clone().unwrap_or_default();
+                    let source = condition.source;
                     (move_id, source)
                 } else {
                     (String::new(), None)

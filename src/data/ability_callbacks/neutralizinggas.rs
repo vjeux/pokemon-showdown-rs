@@ -52,7 +52,7 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.insert("ending".to_string(), serde_json::json!(false));
+        pokemon.ability_state.ending = Some(false);
     }
 
     // const strongWeathers = ['desolateland', 'primordialsea', 'deltastream'];
@@ -239,9 +239,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.get("ending")
-            .and_then(|v| v.as_bool())
-            .unwrap_or(false)
+        pokemon.ability_state.ending.unwrap_or(false)
     };
 
     if is_ending {
@@ -254,7 +252,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.data.insert("ending".to_string(), serde_json::json!(true));
+        pokemon.ability_state.ending = Some(true);
     }
 
     // const sortedActive = this.getAllActive();
@@ -355,7 +353,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
                 Some(p) => p,
                 None => continue,
             };
-            target.ability_state.data.insert("gluttony".to_string(), serde_json::json!(false));
+            target.ability_state.gluttony = Some(false);
         }
     }
 

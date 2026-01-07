@@ -37,9 +37,17 @@ impl Battle {
         if self.active_move.is_some() {
             // Store custom properties in current_effect_state
             // This is used for custom properties that don't have dedicated fields in ActiveMove
-            self.with_effect_state(|state| {
-                state.data.insert(property.to_string(), value);
-            });
+            match property {
+                "magnitude" => {
+                    self.with_effect_state(|state| {
+                        state.magnitude = value.as_i64().map(|v| v as i32);
+                    });
+                }
+                _ => {
+                    // Unknown property - log warning
+                    self.debug(&format!("Unknown active move property: {}", property));
+                }
+            }
         }
     }
 
@@ -49,6 +57,11 @@ impl Battle {
     /// JavaScript (used in Magnitude onUseMoveMessage):
     ///   const magnitude = move.magnitude;
     pub fn get_active_move_property(&self, property: &str) -> Option<serde_json::Value> {
-        self.with_effect_state_ref(|state| state.data.get(property).cloned()).flatten()
+        match property {
+            "magnitude" => self
+                .with_effect_state_ref(|state| state.magnitude.map(|v| serde_json::json!(v)))
+                .flatten(),
+            _ => None,
+        }
     }
 }

@@ -17,7 +17,7 @@ impl Battle {
     /// # Example
     /// ```ignore
     /// battle.with_effect_state(|state| {
-    ///     state.data.insert("lostFocus".to_string(), serde_json::json!(true));
+    ///     state.lost_focus = Some(true);
     /// });
     /// ```
     pub fn with_effect_state<F, R>(&mut self, f: F) -> Option<R>

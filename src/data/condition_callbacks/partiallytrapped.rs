@@ -110,10 +110,10 @@ pub fn on_start(
         8 // Default if no source
     };
 
-    // Store boundDivisor in effectState.data
+    // Store boundDivisor in effectState
     // JavaScript: this.effectState.boundDivisor = ...
     battle.with_effect_state(|state| {
-        state.data.insert("boundDivisor".to_string(), serde_json::json!(bound_divisor));
+        state.bound_divisor = Some(bound_divisor);
     });
 
     EventResult::Continue
@@ -149,9 +149,7 @@ pub fn on_residual(
         let source = state.source;
 
         // JavaScript: this.damage(pokemon.baseMaxhp / this.effectState.boundDivisor);
-        let divisor = state.data.get("boundDivisor")
-            .and_then(|v| v.as_i64())
-            .unwrap_or(8) as i32;
+        let divisor = state.bound_divisor.unwrap_or(8);
 
         // JavaScript: const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
         let gmax = state.source_effect.as_ref()

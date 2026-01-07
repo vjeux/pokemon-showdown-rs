@@ -126,35 +126,18 @@ impl Pokemon {
         let this_pokemon = (self.side_index, self.position);
         for (_volatile_id, volatile_state) in &self.volatiles {
             // Check if this volatile has linkedStatus and linkedPokemon
-            if let Some(linked_status_value) = volatile_state.data.get("linkedStatus") {
-                if let Some(linked_pokemon_value) = volatile_state.data.get("linkedPokemon") {
-                    // Parse linkedStatus as ID
-                    if let Some(linked_status_str) = linked_status_value.as_str() {
-                        let linked_status_id = ID::from(linked_status_str);
+            if let (Some(ref linked_status_str), Some(ref linked_pokemon_vec)) =
+                (&volatile_state.linked_status, &volatile_state.linked_pokemon)
+            {
+                let linked_status_id = ID::from(linked_status_str.as_str());
 
-                        // Parse linkedPokemon as array of positions
-                        if let Some(linked_pokemon_array) = linked_pokemon_value.as_array() {
-                            let mut linked_pokemon_positions = Vec::new();
-                            for pos_value in linked_pokemon_array {
-                                if let Some(pos_arr) = pos_value.as_array() {
-                                    if pos_arr.len() == 2 {
-                                        if let (Some(side), Some(slot)) = (pos_arr[0].as_u64(), pos_arr[1].as_u64()) {
-                                            linked_pokemon_positions.push((side as usize, slot as usize));
-                                        }
-                                    }
-                                }
-                            }
-
-                            // Call remove_linked_volatiles
-                            Pokemon::remove_linked_volatiles(
-                                battle,
-                                this_pokemon,
-                                &linked_status_id,
-                                &linked_pokemon_positions,
-                            );
-                        }
-                    }
-                }
+                // Call remove_linked_volatiles
+                Pokemon::remove_linked_volatiles(
+                    battle,
+                    this_pokemon,
+                    &linked_status_id,
+                    linked_pokemon_vec,
+                );
             }
         }
 
