@@ -835,9 +835,6 @@ pub fn dispatch_on_change_boost(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onCheckShow(pokemon)
 
 /// Dispatch onCheckShow callbacks
 pub fn dispatch_on_check_show(
