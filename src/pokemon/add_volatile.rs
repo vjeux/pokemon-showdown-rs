@@ -265,12 +265,6 @@ impl Pokemon {
         // Capture current turn before mutable borrow
         let current_turn = battle.turn;
 
-        // Add the volatile
-        let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return false,
-        };
-
         // JS: this.volatiles[status.id] = this.battle.initEffectState({ id: status.id, name: status.name, target: this });
         // JS: if (source) {
         // JS:     this.volatiles[status.id].source = source;
@@ -293,6 +287,15 @@ impl Pokemon {
             state.source_effect = Some(src_effect.clone());
         }
 
+        // JavaScript: this.volatiles[status.id] = this.battle.initEffectState(this.volatiles[status.id]);
+        // Initialize effect_order (increments battle.effect_order counter)
+        let state = battle.init_effect_state(state, None);
+
+        // Add the volatile to pokemon
+        let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+            Some(p) => p,
+            None => return false,
+        };
         pokemon_mut.volatiles.insert(volatile_id.clone(), state);
 
         // JavaScript: result = this.battle.singleEvent("Start", status, this.volatiles[status.id], this, source, sourceEffect);

@@ -14,6 +14,7 @@ struct FieldEventHandler {
     order: Option<i32>,
     priority: i32,
     sub_order: i32,
+    effect_order: i32, // JavaScript: effectOrder (creation order for tie-breaking)
 }
 
 impl Battle {
@@ -29,6 +30,7 @@ impl Battle {
         side_idx: Option<usize>, // For side conditions, which side this handler is for
         callback_name: &str,
         event_id: &str,
+        effect_order: i32, // JavaScript: effectOrder from handler state
     ) -> FieldEventHandler {
 
         use std::sync::atomic::{AtomicUsize, Ordering};
@@ -90,6 +92,7 @@ impl Battle {
             order,
             priority,
             sub_order,
+            effect_order, // JavaScript: effectOrder for tie-breaking
         }
     }
 
@@ -174,6 +177,7 @@ impl Battle {
             let effect_id = handler.effect_id;
             let holder = handler.effect_holder;
             let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
+            let effect_order = handler.effect_order.unwrap_or(0); // JavaScript: effectOrder for tie-breaking
             let handler = self.create_field_handler(
                 effect_id,
                 effect_type,
@@ -183,6 +187,7 @@ impl Battle {
                 None, // Field handlers are not side-specific
                 &callback_name,
                 event_id,
+                effect_order,
             );
             handlers.push(handler);
         }
@@ -200,6 +205,7 @@ impl Battle {
                     let effect_id = handler.effect_id;
                     let holder = handler.effect_holder;
                     let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
+                    let effect_order = handler.effect_order.unwrap_or(0); // JavaScript: effectOrder for tie-breaking
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
@@ -209,6 +215,7 @@ impl Battle {
                         Some(side_idx), // Side handlers are for this specific side
                         &callback_name,
                         event_id,
+                        effect_order,
                     );
                     handlers.push(handler);
                 }
@@ -235,6 +242,7 @@ impl Battle {
                         let effect_id = handler.effect_id;
                         let holder = handler.effect_holder;
                         let effect_type = handler.effect_type;
+                        let effect_order = handler.effect_order.unwrap_or(0); // JavaScript: effectOrder for tie-breaking
                         let handler = self.create_field_handler(
                             effect_id,
                             effect_type,
@@ -244,6 +252,7 @@ impl Battle {
                             None, // Any event handlers are not side-specific
                             &any_event,
                             event_id,
+                            effect_order,
                         );
                         handlers.push(handler);
                     }
@@ -263,6 +272,7 @@ impl Battle {
                     let effect_id = handler.effect_id;
                     let holder = handler.effect_holder;
                     let effect_type = handler.effect_type;
+                    let effect_order = handler.effect_order.unwrap_or(0); // JavaScript: effectOrder for tie-breaking
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
@@ -272,6 +282,7 @@ impl Battle {
                         None, // Pokemon handlers are not side-specific
                         &callback_name,
                         event_id,
+                        effect_order,
                     );
                     handlers.push(handler);
                 }
@@ -288,8 +299,8 @@ impl Battle {
             event_id, self.turn, handlers.len(),
             handlers.iter().map(|h| h.effect_id.as_str()).collect::<Vec<_>>());
         for (i, h) in handlers.iter().enumerate() {
-            eprintln!("  [{}] id={}, order={:?}, priority={}, speed={}, sub_order={}",
-                i, h.effect_id.as_str(), h.order, h.priority, h.speed, h.sub_order);
+            eprintln!("  [{}] id={}, order={:?}, priority={}, speed={}, sub_order={}, effect_order={}",
+                i, h.effect_id.as_str(), h.order, h.priority, h.speed, h.sub_order, h.effect_order);
         }
         self.speed_sort(&mut handlers, |h| {
             PriorityItem {
@@ -297,7 +308,7 @@ impl Battle {
                 priority: h.priority,
                 speed: h.speed as f64,
                 sub_order: h.sub_order,
-                effect_order: 0,
+                effect_order: h.effect_order, // JavaScript: effectOrder for tie-breaking
                 index: 0,
             }
         });

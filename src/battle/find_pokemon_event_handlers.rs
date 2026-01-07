@@ -102,7 +102,7 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    effect_order: None,
+                    effect_order: Some(pokemon.status_state.effect_order),
                     speed: None,
                 });
             }
@@ -142,7 +142,7 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    effect_order: None,
+                    effect_order: Some(volatile_state.effect_order),
                     speed: None,
                 });
             }
@@ -170,7 +170,7 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    effect_order: None,
+                    effect_order: Some(pokemon.ability_state.effect_order),
                     speed: None,
                 });
             }
@@ -198,7 +198,7 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    effect_order: None,
+                    effect_order: Some(pokemon.item_state.effect_order),
                     speed: None,
                 });
             }
