@@ -198,6 +198,20 @@ pub mod condition {
     pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         let pokemon = pokemon_pos;
 
+        // Debug logging
+        let (pokemon_name, active_turns_val) = {
+            let p = match battle.pokemon_at(pokemon.0, pokemon.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            (p.name.clone(), p.active_turns)
+        };
+
+        if battle.turn >= 66 && pokemon_name.to_lowercase().contains("groudon") {
+            eprintln!("[GRASSY_TERRAIN_RESIDUAL] turn={}, pokemon={}, active_turns={}",
+                battle.turn, pokemon_name, active_turns_val);
+        }
+
         // if (pokemon.isGrounded() && !pokemon.isSemiInvulnerable()) {
         let is_grounded = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
@@ -209,6 +223,11 @@ pub mod condition {
 
         let is_semi_invuln = Pokemon::is_semi_invulnerable(battle, pokemon);
 
+        if battle.turn >= 66 && pokemon_name.to_lowercase().contains("groudon") {
+            eprintln!("[GRASSY_TERRAIN_RESIDUAL] groudon is_grounded={}, is_semi_invuln={}",
+                is_grounded, is_semi_invuln);
+        }
+
         if is_grounded && !is_semi_invuln {
             // this.heal(pokemon.baseMaxhp / 16, pokemon, pokemon);
             let heal_amount = {
@@ -218,6 +237,10 @@ pub mod condition {
                 };
                 pokemon_pokemon.base_maxhp / 16
             };
+
+            if battle.turn >= 66 && pokemon_name.to_lowercase().contains("groudon") {
+                eprintln!("[GRASSY_TERRAIN_RESIDUAL] HEALING groudon for {} HP", heal_amount);
+            }
 
             battle.heal(heal_amount, Some(pokemon), Some(pokemon), None);
         } else {
@@ -231,16 +254,24 @@ pub mod condition {
     /// onFieldResidual() - Iterate over all active Pokemon and heal them
     /// This is called once per turn for the field condition
     /// JavaScript calls condition.onResidual(pokemon) for each active Pokemon
+    /// IMPORTANT: Skip Pokemon that just switched in (active_turns == 0)
     pub fn on_field_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // Iterate over all active Pokemon and call onResidual for each
+        // Collect Pokemon positions AND their active_turns to determine eligibility
         let active_pokemon: Vec<(usize, usize)> = (0..battle.sides.len())
             .flat_map(|side_idx| {
                 battle.sides.get(side_idx)
                     .map(|side| {
                         side.active.iter()
                             .enumerate()
-                            .filter_map(|(slot_idx, &poke_idx)| {
-                                poke_idx.map(|idx| (side_idx, idx))
+                            .filter_map(|(_slot_idx, &poke_idx)| {
+                                poke_idx.and_then(|idx| {
+                                    // Check if Pokemon has been active for at least 1 turn
+                                    // Pokemon that just switched in have active_turns == 0
+                                    battle.pokemon_at(side_idx, idx)
+                                        .filter(|p| p.active_turns > 0)
+                                        .map(|_| (side_idx, idx))
+                                })
                             })
                             .collect::<Vec<_>>()
                     })

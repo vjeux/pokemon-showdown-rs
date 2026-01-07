@@ -57,10 +57,29 @@ impl Battle {
         // });
         let mut terrain_state = EffectState::new(terrain_id.clone());
         terrain_state.source = source_pos;
-        // TODO: Look up terrain duration from dex
+
+        // Set duration from condition data
+        // JavaScript: if (status.duration) this.terrainState.duration = status.duration;
+        if let Some(condition) = self.dex.conditions().get_by_id(&terrain_id) {
+            terrain_state.duration = condition.duration;
+        }
+
         // if (status.durationCallback) {
         //     this.terrainState.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
         // }
+        if self.has_callback(&terrain_id, "durationCallback") {
+            let duration_result = self.call_duration_callback(
+                &terrain_id,
+                None,  // target_pos
+                source_pos,  // source_pos
+                None,  // effect_id
+            );
+
+            if let crate::event::EventResult::Number(dur) = duration_result {
+                terrain_state.duration = Some(dur);
+            }
+        }
+
         self.field.terrain_state = terrain_state;
 
         // if (!this.battle.singleEvent('FieldStart', status, this.terrainState, this, source, sourceEffect)) {
