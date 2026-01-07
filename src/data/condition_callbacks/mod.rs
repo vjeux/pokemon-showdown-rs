@@ -157,9 +157,6 @@ pub fn dispatch_on_foe_before_move(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyBeforeMove callbacks
 pub fn dispatch_on_ally_before_move(
     _battle: &mut Battle,
@@ -170,9 +167,6 @@ pub fn dispatch_on_ally_before_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onSourceBeforeMove callbacks
 pub fn dispatch_on_source_before_move(
     _battle: &mut Battle,
