@@ -1698,22 +1698,15 @@ pub fn dispatch_on_switch_out(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onTakeItem(item)
-//   onTakeItem(item, pokemon)
-//   onTakeItem(item, pokemon, source)
-//   onTakeItem(item, source)
-
 /// Dispatch onTakeItem callbacks
 pub fn dispatch_on_take_item(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
+    item_id: Option<&str>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "stickyhold" => stickyhold::on_take_item(battle, pokemon_pos, source_pos),
-        "unburden" => unburden::on_take_item(battle, pokemon_pos, source_pos),
+        "stickyhold" => stickyhold::on_take_item(battle, item_id, pokemon_pos, source_pos),
+        "unburden" => unburden::on_take_item(battle, item_id, pokemon_pos, source_pos),
         _ => EventResult::Continue,
     }
 }
@@ -5033,9 +5026,9 @@ pub fn dispatch_on_switch_out_sub_order(
 pub fn dispatch_on_take_item_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
+    item_id: Option<&str>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_take_item(battle, ability_id, pokemon_pos, source_pos)
+    dispatch_on_take_item(battle, ability_id, item_id, pokemon_pos, source_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -5044,9 +5037,9 @@ pub fn dispatch_on_take_item_priority(
 pub fn dispatch_on_take_item_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
+    item_id: Option<&str>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_take_item(battle, ability_id, pokemon_pos, source_pos)
+    dispatch_on_take_item(battle, ability_id, item_id, pokemon_pos, source_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -5055,9 +5048,9 @@ pub fn dispatch_on_take_item_order(
 pub fn dispatch_on_take_item_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
+    item_id: Option<&str>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_take_item(battle, ability_id, pokemon_pos, source_pos)
+    dispatch_on_take_item(battle, ability_id, item_id, pokemon_pos, source_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

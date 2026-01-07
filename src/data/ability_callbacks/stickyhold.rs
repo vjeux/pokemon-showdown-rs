@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_take_item(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_take_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     use crate::battle::Arg;
 
     // if (!this.activeMove) throw new Error("Battle.activeMove is null");

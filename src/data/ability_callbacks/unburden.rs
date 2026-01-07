@@ -24,7 +24,7 @@ pub fn on_after_use_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_po
 /// onTakeItem(item, pokemon) {
 ///     pokemon.addVolatile('unburden');
 /// }
-pub fn on_take_item(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_take_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
     use crate::Pokemon;
 
     // pokemon.addVolatile('unburden');
