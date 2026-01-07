@@ -52,15 +52,15 @@ pub fn base_power_callback(
     // else if (targetWeight >= 250) { bp = 60; }
     // else if (targetWeight >= 100) { bp = 40; }
     // else { bp = 20; }
-    let bp = if target_weight >= 200 {
+    let bp = if target_weight >= 2000 {
         120
-    } else if target_weight >= 100 {
+    } else if target_weight >= 1000 {
         100
-    } else if target_weight >= 50 {
+    } else if target_weight >= 500 {
         80
-    } else if target_weight >= 25 {
+    } else if target_weight >= 250 {
         60
-    } else if target_weight >= 10 {
+    } else if target_weight >= 100 {
         40
     } else {
         20
