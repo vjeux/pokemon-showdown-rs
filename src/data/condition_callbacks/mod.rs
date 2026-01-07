@@ -635,10 +635,6 @@ pub fn dispatch_on_switch_in(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onTrapPokemon(pokemon)
-
 /// Dispatch onTrapPokemon callbacks
 pub fn dispatch_on_trap_pokemon(
     battle: &mut Battle,
