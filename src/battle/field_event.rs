@@ -346,7 +346,13 @@ impl Battle {
             if event_id == "Residual" && handler.is_field {
                 eprintln!("[FIELD_EVENT RESIDUAL FIELD] effect_id={}, weather={}, terrain={}",
                     handler.effect_id.as_str(), self.field.weather.as_str(), self.field.terrain.as_str());
-                let should_clear = {
+
+                // TEMPORARY: Disable early expiration for terrain to allow residual callbacks on last turn
+                // JavaScript behavior appears to call residual callbacks before expiring terrains
+                // TODO: Investigate the exact JavaScript handler.end mechanism
+                let is_terrain = self.field.terrain == handler.effect_id;
+
+                let should_clear = if !is_terrain {
                     // Check weather
                     if self.field.weather == handler.effect_id {
                         eprintln!("[WEATHER DURATION] Checking sandstorm duration, current={:?}", self.field.weather_state.duration);
@@ -380,6 +386,9 @@ impl Battle {
                     } else {
                         false
                     }
+                } else {
+                    // For terrains, don't do early expiration - let callback run first
+                    false
                 };
 
                 // Clear expired field effects
@@ -511,6 +520,27 @@ impl Battle {
                 eprintln!("[FIELD_EVENT] Calling single_event for event='{}', effect='{}', turn={}",
                     handler_event_id, handler.effect_id.as_str(), self.turn);
                 self.single_event(&handler_event_id, &handler.effect_id, handler.holder, None, None, None);
+
+                // AFTER calling the callback, decrement terrain duration and clear if expired
+                if event_id == "Residual" && handler.is_field && self.field.terrain == handler.effect_id {
+                    eprintln!("[FIELD_EVENT] AFTER callback, decrementing terrain duration");
+                    let should_clear_terrain = {
+                        if let Some(duration) = self.field.terrain_state.duration.as_mut() {
+                            eprintln!("[TERRAIN DURATION] BEFORE decrement: {}", *duration);
+                            *duration -= 1;
+                            eprintln!("[TERRAIN DURATION] AFTER decrement: {}", *duration);
+                            *duration == 0
+                        } else {
+                            false
+                        }
+                    };
+
+                    if should_clear_terrain {
+                        eprintln!("[TERRAIN DURATION] Clearing expired terrain");
+                        self.field.terrain = ID::new("");
+                        self.field.terrain_state = crate::event_system::EffectState::new(ID::new(""));
+                    }
+                }
 
                 // JS: this.faintMessages();
                 self.faint_messages(false, false, true);
