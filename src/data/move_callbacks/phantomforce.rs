@@ -26,8 +26,6 @@ pub fn on_try_move(
 ) -> EventResult {
     use crate::dex_data::ID;
 
-    eprintln!("[PHANTOMFORCE_ONTRYMOVE] turn={}, source={:?}, target={:?}", battle.turn, source_pos, target_pos);
-
     let attacker = source_pos;
     let defender = target_pos;
 
@@ -39,17 +37,12 @@ pub fn on_try_move(
         }
     };
 
-    eprintln!("[PHANTOMFORCE_ONTRYMOVE] move_id={}", move_id.as_str());
-
     let removed = {
         Pokemon::remove_volatile(battle, attacker, &move_id)
     };
 
-    eprintln!("[PHANTOMFORCE_ONTRYMOVE] removed={}", removed);
-
     if removed {
         // return;
-        eprintln!("[PHANTOMFORCE_ONTRYMOVE] Volatile was removed, this is turn 2 of the move");
         return EventResult::Continue;
     }
 
@@ -75,20 +68,14 @@ pub fn on_try_move(
     let charge_result =
         battle.run_event("ChargeMove", Some(crate::event::EventTarget::Pokemon(attacker)), defender, Some(&move_id), EventResult::Continue, false, false);
 
-    eprintln!("[PHANTOMFORCE_ONTRYMOVE] charge_result={:?}", charge_result);
-
     if matches!(charge_result, EventResult::Number(0)) {
         // return;
-        eprintln!("[PHANTOMFORCE_ONTRYMOVE] ChargeMove returned 0, aborting");
         return EventResult::Continue;
     }
 
     // attacker.addVolatile('twoturnmove', defender);
-    eprintln!("[PHANTOMFORCE_ONTRYMOVE] About to add twoturnmove volatile");
     Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&move_id), None, None);
-    eprintln!("[PHANTOMFORCE_ONTRYMOVE] Added twoturnmove volatile");
 
     // return null;
-    eprintln!("[PHANTOMFORCE_ONTRYMOVE] Returning Stop");
     EventResult::Stop
 }
