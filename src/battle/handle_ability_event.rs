@@ -640,7 +640,7 @@ impl Battle {
             "ModifyPriority" => ability_callbacks::dispatch_on_modify_priority(
                 self,
                 ability_id.as_str(),
-                0, pokemon_pos, None,
+                relay_var_int, pokemon_pos, event_target_pos,
             move_id,
             ),
             "ModifySTAB" => {

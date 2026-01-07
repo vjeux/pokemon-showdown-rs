@@ -1271,15 +1271,6 @@ pub fn dispatch_on_modify_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyPriority(priority, pokemon)
-//   onModifyPriority(priority, pokemon, target)
-//   onModifyPriority(priority, pokemon, target, move)
-//   onModifyPriority(priority, source)
-//   onModifyPriority(priority, source, target, move)
-//   onModifyPriority(relayVar, source, target, move)
-
 /// Dispatch onModifyPriority callbacks
 pub fn dispatch_on_modify_priority(
     battle: &mut Battle,
