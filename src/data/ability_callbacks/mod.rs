@@ -1417,11 +1417,6 @@ pub fn dispatch_on_residual(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSetStatus(status, target, source)
-//   onSetStatus(status, target, source, effect)
-
 /// Dispatch onSetStatus callbacks
 pub fn dispatch_on_set_status(
     battle: &mut Battle,

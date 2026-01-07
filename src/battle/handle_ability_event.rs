@@ -724,7 +724,7 @@ impl Battle {
                 if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
             ),
             "SetStatus" => {
-                ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), "", pokemon_pos, None, None)
+                ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), event_status_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
             }
             "SideConditionStart" => {
                 let side_condition_id_string = self.current_event.as_ref()
