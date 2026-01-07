@@ -7,7 +7,6 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
-use serde_json::Value;
 
 /// onStart(pokemon) {
 ///     this.effectState.seek = true;

@@ -36,13 +36,9 @@ pub fn on_modify_move(
         }
     }
 
-    // move.multihit = move.allies.length;
-    let multihit = allies.len() as i32;
-
-    // Store allies and multihit in current effect state
+    // Store allies in current effect state (multihit is derived from allies.len())
     battle.with_effect_state(|state| {
         state.allies = Some(allies);
-        // Note: multihit is not stored in EffectState, it's derived from allies.len()
     });
 
     EventResult::Continue

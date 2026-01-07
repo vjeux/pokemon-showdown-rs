@@ -19,8 +19,6 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_foe_after_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
-    use serde_json::Value;
-
     // if (effect?.name === 'Opportunist' || effect?.name === 'Mirror Herb') return;
     if let Some(effect) = effect_id {
         if effect == "opportunist" || effect == "mirrorherb" {

@@ -19,8 +19,6 @@ use crate::pokemon::Pokemon;
 ///     }
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
-    use serde_json::Value;
-
     // if (this.effectState.libero) return;
     if let Some(true) = battle.effect_state.libero {
         return EventResult::Continue;

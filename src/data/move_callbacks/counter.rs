@@ -181,7 +181,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let slot = source_pokemon.get_slot();
+            let _slot = source_pokemon.get_slot();
 
             // this.effectState.damage = 2 * damage;
             battle.with_effect_state(|state| {

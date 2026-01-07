@@ -190,7 +190,7 @@ pub mod condition {
 
         // this.effectState.slot = source.getSlot();
         // this.effectState.damage = 2 * damage;
-        let slot = {
+        let _slot = {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
