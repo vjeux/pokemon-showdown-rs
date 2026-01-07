@@ -118,30 +118,22 @@ pub fn dispatch_on_base_power(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onBeforeMove()
-//   onBeforeMove(attacker, defender, move)
-//   onBeforeMove(pokemon)
-//   onBeforeMove(pokemon, t, move)
-//   onBeforeMove(pokemon, target)
-//   onBeforeMove(pokemon, target, move)
-//   onBeforeMove(source, target, move)
-
 /// Dispatch onBeforeMove callbacks
 pub fn dispatch_on_before_move(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "choicelock" => choicelock::on_before_move(battle, pokemon_pos),
-        "confusion" => confusion::on_before_move(battle, pokemon_pos),
-        "flinch" => flinch::on_before_move(battle, pokemon_pos),
-        "frz" => frz::on_before_move(battle, pokemon_pos),
-        "mustrecharge" => mustrecharge::on_before_move(battle, pokemon_pos),
-        "par" => par::on_before_move(battle, pokemon_pos),
-        "slp" => slp::on_before_move(battle, pokemon_pos),
+        "choicelock" => choicelock::on_before_move(battle, pokemon_pos, target_pos, move_id),
+        "confusion" => confusion::on_before_move(battle, pokemon_pos, target_pos, move_id),
+        "flinch" => flinch::on_before_move(battle, pokemon_pos, target_pos, move_id),
+        "frz" => frz::on_before_move(battle, pokemon_pos, target_pos, move_id),
+        "mustrecharge" => mustrecharge::on_before_move(battle, pokemon_pos, target_pos, move_id),
+        "par" => par::on_before_move(battle, pokemon_pos, target_pos, move_id),
+        "slp" => slp::on_before_move(battle, pokemon_pos, target_pos, move_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_before_move(battle, condition_id, pokemon_pos)

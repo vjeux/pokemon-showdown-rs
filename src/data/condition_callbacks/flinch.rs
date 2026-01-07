@@ -22,6 +22,8 @@ use crate::event::EventResult;
 pub fn on_before_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // JavaScript: this.add('cant', pokemon, 'flinch');
     // Add "cant" message to battle log

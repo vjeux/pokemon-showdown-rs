@@ -77,7 +77,12 @@ impl Battle {
                 condition_callbacks::dispatch_on_base_power(self, condition_id, base_power, pokemon_pos, target_pos, &move_id)
             }
             "BeforeMove" => {
-                condition_callbacks::dispatch_on_before_move(self, condition_id, pokemon_pos)
+                // Extract target from current_event and move_id from active_move
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
+                condition_callbacks::dispatch_on_before_move(self, condition_id, pokemon_pos, target_pos, &move_id)
             }
             "FoeBeforeMove" => {
                 condition_callbacks::dispatch_on_foe_before_move(self, condition_id, pokemon_pos)

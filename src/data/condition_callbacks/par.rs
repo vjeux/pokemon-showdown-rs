@@ -120,6 +120,8 @@ pub fn on_modify_spe(
 pub fn on_before_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // if (this.randomChance(1, 4))
     if battle.random_chance(1, 4) {
