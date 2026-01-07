@@ -1787,22 +1787,6 @@ pub fn dispatch_on_try_heal(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onTryHit()
-//   onTryHit(pokemon)
-//   onTryHit(pokemon, source, move)
-//   onTryHit(pokemon, target, move)
-//   onTryHit(source)
-//   onTryHit(source, target)
-//   onTryHit(source, target, move)
-//   onTryHit(target)
-//   onTryHit(target, pokemon)
-//   onTryHit(target, pokemon, move)
-//   onTryHit(target, source)
-//   onTryHit(target, source, effect)
-//   onTryHit(target, source, move)
-
 /// Dispatch onTryHit callbacks
 pub fn dispatch_on_try_hit(
     battle: &mut Battle,
