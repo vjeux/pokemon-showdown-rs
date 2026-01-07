@@ -58,6 +58,8 @@ pub fn duration_callback(
 pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // Get source and sourceEffect from effectState
     let (source_pos, source_effect_name) = {

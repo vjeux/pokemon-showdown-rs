@@ -289,7 +289,14 @@ impl Battle {
             "StallMove" => {
                 condition_callbacks::dispatch_on_stall_move(self, condition_id, pokemon_pos)
             }
-            "Start" => condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos),
+            "Start" => {
+                // Extract source and effect from current_event
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.current_event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|id| id.to_string());
+                condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
+            }
             "SwitchIn" => {
                 condition_callbacks::dispatch_on_switch_in(self, condition_id, pokemon_pos)
             }

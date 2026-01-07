@@ -18,6 +18,8 @@ use crate::pokemon::TrappedState;
 pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // this.boost({ atk: 2, spa: 2, spe: 2, def: 2, spd: 2 }, pokemon);
     let boosts: &[(&str, i8)] = &[

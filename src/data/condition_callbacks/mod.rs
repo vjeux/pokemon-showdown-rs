@@ -586,49 +586,33 @@ pub fn dispatch_on_stall_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onStart()
-//   onStart(attacker, defender, effect)
-//   onStart(pokemon)
-//   onStart(pokemon, source)
-//   onStart(pokemon, source, effect)
-//   onStart(pokemon, source, sourceEffect)
-//   onStart(side, source, sideCondition)
-//   onStart(source)
-//   onStart(target)
-//   onStart(target, source)
-//   onStart(target, source, effect)
-//   onStart(target, source, move)
-//   onStart(target, source, sideCondition)
-//   onStart(target, source, sourceEffect)
-//   onStart(this, pokemon)
-
 /// Dispatch onStart callbacks
 pub fn dispatch_on_start(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
-        "brn" => brn::on_start(battle, pokemon_pos),
-        "choicelock" => choicelock::on_start(battle, pokemon_pos),
-        "commanded" => commanded::on_start(battle, pokemon_pos),
-        "confusion" => confusion::on_start(battle, pokemon_pos),
-        "dynamax" => dynamax::on_start(battle, pokemon_pos),
-        "frz" => frz::on_start(battle, pokemon_pos),
-        "futuremove" => futuremove::on_start(battle, pokemon_pos),
-        "healreplacement" => healreplacement::on_start(battle, pokemon_pos),
-        "lockedmove" => lockedmove::on_start(battle, pokemon_pos),
-        "mustrecharge" => mustrecharge::on_start(battle, pokemon_pos),
-        "par" => par::on_start(battle, pokemon_pos),
-        "partiallytrapped" => partiallytrapped::on_start(battle, pokemon_pos),
-        "psn" => psn::on_start(battle, pokemon_pos),
-        "slp" => slp::on_start(battle, pokemon_pos),
-        "stall" => stall::on_start(battle, pokemon_pos),
-        "tox" => tox::on_start(battle, pokemon_pos),
-        "trapped" => trapped::on_start(battle, pokemon_pos),
-        "twoturnmove" => twoturnmove::on_start(battle, pokemon_pos),
+        "brn" => brn::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "choicelock" => choicelock::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "commanded" => commanded::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "confusion" => confusion::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "dynamax" => dynamax::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "frz" => frz::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "futuremove" => futuremove::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "healreplacement" => healreplacement::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "lockedmove" => lockedmove::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "mustrecharge" => mustrecharge::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "par" => par::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "partiallytrapped" => partiallytrapped::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "psn" => psn::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "slp" => slp::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "stall" => stall::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "tox" => tox::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "trapped" => trapped::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "twoturnmove" => twoturnmove::on_start(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Try move-embedded condition callbacks
             use crate::data::move_callbacks;

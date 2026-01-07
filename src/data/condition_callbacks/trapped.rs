@@ -35,6 +35,8 @@ pub fn on_trap_pokemon(
 pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // this.add('-activate', target, 'trapped');
     let target_ident = {

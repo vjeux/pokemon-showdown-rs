@@ -69,6 +69,8 @@ pub fn on_residual(
 pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // this.effectState.trueDuration = this.random(2, 4);
     let true_duration = battle.random_with_range(2, 4);
