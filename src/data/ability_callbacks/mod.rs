@@ -1895,9 +1895,6 @@ pub fn dispatch_on_after_boost_sub_order(
 ) -> EventResult {
     dispatch_on_after_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterEachBoostPriority callbacks (alias for onAfterEachBoost)
 pub fn dispatch_on_after_each_boost_priority(
     battle: &mut Battle,
@@ -1907,9 +1904,6 @@ pub fn dispatch_on_after_each_boost_priority(
 ) -> EventResult {
     dispatch_on_after_each_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterEachBoostOrder callbacks (alias for onAfterEachBoost)
 pub fn dispatch_on_after_each_boost_order(
     battle: &mut Battle,
@@ -1919,9 +1913,6 @@ pub fn dispatch_on_after_each_boost_order(
 ) -> EventResult {
     dispatch_on_after_each_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterEachBoostSubOrder callbacks (alias for onAfterEachBoost)
 pub fn dispatch_on_after_each_boost_sub_order(
     battle: &mut Battle,
