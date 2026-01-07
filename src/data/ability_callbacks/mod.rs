@@ -882,11 +882,6 @@ pub fn dispatch_on_damage(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onDamagingHit()
-//   onDamagingHit(damage, target, source, effect)
-//   onDamagingHit(damage, target, source, move)
 
 /// Dispatch onDamagingHit callbacks
 pub fn dispatch_on_damaging_hit(
