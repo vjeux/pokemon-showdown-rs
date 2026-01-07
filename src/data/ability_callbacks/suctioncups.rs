@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     this.add('-activate', pokemon, 'ability: Suction Cups');
 ///     return null;
 /// }
-pub fn on_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     let pokemon_ident = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,

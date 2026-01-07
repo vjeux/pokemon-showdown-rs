@@ -948,21 +948,16 @@ pub fn dispatch_on_disable_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onDragOut()
-//   onDragOut(pokemon)
-//   onDragOut(pokemon, source, move)
 
 /// Dispatch onDragOut callbacks
 pub fn dispatch_on_drag_out(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "guarddog" => guarddog::on_drag_out(battle, pokemon_pos),
-        "suctioncups" => suctioncups::on_drag_out(battle, pokemon_pos),
+        "guarddog" => guarddog::on_drag_out(battle, pokemon_pos, source_pos, move_id),
+        "suctioncups" => suctioncups::on_drag_out(battle, pokemon_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -3803,9 +3798,9 @@ pub fn dispatch_on_disable_move_sub_order(
 pub fn dispatch_on_drag_out_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_drag_out(battle, ability_id, pokemon_pos)
+    dispatch_on_drag_out(battle, ability_id, pokemon_pos, source_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3814,9 +3809,9 @@ pub fn dispatch_on_drag_out_priority(
 pub fn dispatch_on_drag_out_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_drag_out(battle, ability_id, pokemon_pos)
+    dispatch_on_drag_out(battle, ability_id, pokemon_pos, source_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3825,9 +3820,9 @@ pub fn dispatch_on_drag_out_order(
 pub fn dispatch_on_drag_out_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_drag_out(battle, ability_id, pokemon_pos)
+    dispatch_on_drag_out(battle, ability_id, pokemon_pos, source_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

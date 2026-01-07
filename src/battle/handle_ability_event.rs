@@ -487,12 +487,14 @@ impl Battle {
                 ability_callbacks::dispatch_on_disable_move(self, ability_id.as_str(), pokemon_pos)
             }
             "DragOut" => {
-                ability_callbacks::dispatch_on_drag_out(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_drag_out(self, ability_id.as_str(), pokemon_pos, event_source_pos, move_id)
             }
             "DragOutPriority" => ability_callbacks::dispatch_on_drag_out_priority(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
+                event_source_pos,
+                move_id,
             ),
             "EatItem" => {
                 ability_callbacks::dispatch_on_eat_item(self, ability_id.as_str(), pokemon_pos)
