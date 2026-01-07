@@ -1213,11 +1213,6 @@ pub fn dispatch_on_modify_crit_ratio(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyDamage()
-//   onModifyDamage(damage, source, target, move)
-
 /// Dispatch onModifyDamage callbacks
 pub fn dispatch_on_modify_damage(
     battle: &mut Battle,
