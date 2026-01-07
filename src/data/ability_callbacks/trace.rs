@@ -93,7 +93,10 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             pokemon.ability.clone()
         };
 
-        battle.single_event("Update", &crate::battle::Effect::ability(ability_id), None, Some(pokemon_pos), None, None, None);
+        // Clone effect_state to pass to single_event (JavaScript passes this.effectState)
+        let effect_state_clone = battle.effect_state.clone();
+
+        battle.single_event("Update", &crate::battle::Effect::ability(ability_id), Some(&effect_state_clone), Some(pokemon_pos), None, None, None);
     }
 
     EventResult::Continue
