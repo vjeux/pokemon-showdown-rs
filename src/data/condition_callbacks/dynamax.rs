@@ -266,6 +266,8 @@ pub fn on_drag_out(
 pub fn on_residual(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // this.effectState.turns++;
     let dynamax_id = ID::from("dynamax");

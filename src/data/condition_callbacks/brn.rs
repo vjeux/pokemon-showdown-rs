@@ -85,6 +85,8 @@ pub fn on_start(
 pub fn on_residual(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // this.damage(pokemon.baseMaxhp / 16);
     let base_maxhp = {

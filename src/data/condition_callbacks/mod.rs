@@ -519,32 +519,22 @@ pub fn dispatch_on_move_aborted(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onResidual()
-//   onResidual(pokemon)
-//   onResidual(pokemon, s, effect)
-//   onResidual(pokemon, source)
-//   onResidual(pokemon, source, effect)
-//   onResidual(source)
-//   onResidual(source, target, effect)
-//   onResidual(target)
-//   onResidual(target, source, effect)
-
 /// Dispatch onResidual callbacks
 pub fn dispatch_on_residual(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
-        "brn" => brn::on_residual(battle, pokemon_pos),
-        "dynamax" => dynamax::on_residual(battle, pokemon_pos),
-        "futuremove" => futuremove::on_residual(battle, pokemon_pos),
-        "lockedmove" => lockedmove::on_residual(battle, pokemon_pos),
-        "partiallytrapped" => partiallytrapped::on_residual(battle, pokemon_pos),
-        "psn" => psn::on_residual(battle, pokemon_pos),
-        "tox" => tox::on_residual(battle, pokemon_pos),
+        "brn" => brn::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "dynamax" => dynamax::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "futuremove" => futuremove::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "lockedmove" => lockedmove::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "partiallytrapped" => partiallytrapped::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "psn" => psn::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "tox" => tox::on_residual(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_residual(battle, condition_id, pokemon_pos)

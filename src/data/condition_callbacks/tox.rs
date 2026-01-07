@@ -120,6 +120,8 @@ pub fn on_switch_in(
 pub fn on_residual(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // if (this.effectState.stage < 15)
     let stage = {

@@ -22,6 +22,8 @@ use crate::event::EventResult;
 pub fn on_residual(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // if (target.status === 'slp')
     let is_asleep = {
