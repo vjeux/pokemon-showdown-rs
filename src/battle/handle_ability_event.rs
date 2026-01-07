@@ -745,7 +745,7 @@ impl Battle {
                     pokemon_pos,
                     side_index,
                     side_condition_id,
-                    None
+                    event_source_pos
                 )
             }
             "SourceAfterFaint" => ability_callbacks::dispatch_on_source_after_faint(self, ability_id.as_str(), Some(pokemon_pos), None, None),

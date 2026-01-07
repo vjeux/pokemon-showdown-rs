@@ -1439,11 +1439,6 @@ pub fn dispatch_on_set_status(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSideConditionStart(side, source, sideCondition)
-//   onSideConditionStart(target, source, sideCondition)
-
 /// Dispatch onSideConditionStart callbacks
 /// First param: pokemon_pos = Pokemon with the ability (this.effectState.target in JS)
 /// Second param: side_idx = Event target (the side parameter in JS)
