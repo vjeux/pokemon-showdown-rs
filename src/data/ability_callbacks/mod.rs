@@ -713,20 +713,17 @@ pub fn dispatch_on_any_redirect_target(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnySetWeather(target, source, weather)
 
 /// Dispatch onAnySetWeather callbacks
 pub fn dispatch_on_any_set_weather(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, weather_id: &str,
 ) -> EventResult {
     match ability_id {
-        "deltastream" => deltastream::on_any_set_weather(battle, target_pos, source_pos),
-        "desolateland" => desolateland::on_any_set_weather(battle, target_pos, source_pos),
-        "primordialsea" => primordialsea::on_any_set_weather(battle, target_pos, source_pos),
+        "deltastream" => deltastream::on_any_set_weather(battle, target_pos, source_pos, weather_id),
+        "desolateland" => desolateland::on_any_set_weather(battle, target_pos, source_pos, weather_id),
+        "primordialsea" => primordialsea::on_any_set_weather(battle, target_pos, source_pos, weather_id),
         _ => EventResult::Continue,
     }
 }
@@ -3412,9 +3409,9 @@ pub fn dispatch_on_any_redirect_target_sub_order(
 pub fn dispatch_on_any_set_weather_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, weather_id: &str,
 ) -> EventResult {
-    dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos)
+    dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos, weather_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3423,9 +3420,9 @@ pub fn dispatch_on_any_set_weather_priority(
 pub fn dispatch_on_any_set_weather_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, weather_id: &str,
 ) -> EventResult {
-    dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos)
+    dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos, weather_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3434,9 +3431,9 @@ pub fn dispatch_on_any_set_weather_order(
 pub fn dispatch_on_any_set_weather_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, weather_id: &str,
 ) -> EventResult {
-    dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos)
+    dispatch_on_any_set_weather(battle, ability_id, target_pos, source_pos, weather_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

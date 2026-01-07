@@ -48,7 +48,7 @@ impl Battle {
         let move_id = move_id_owned.as_str();
 
         // Extract relay variables from current_event
-        let (relay_var_int, _relay_var_float, relay_var_boost) = if let Some(ref event) = self.current_event {
+        let (relay_var_int, _relay_var_float, relay_var_boost, relay_var_string) = if let Some(ref event) = self.current_event {
             let relay_int = match &event.relay_var {
                 Some(EventResult::Number(n)) => *n,
                 _ => 0,
@@ -61,9 +61,13 @@ impl Battle {
                 Some(EventResult::Boost(b)) => Some(b.clone()),
                 _ => None,
             };
-            (relay_int, relay_float, relay_boost)
+            let relay_string = match &event.relay_var {
+                Some(EventResult::String(s)) => s.clone(),
+                _ => String::new(),
+            };
+            (relay_int, relay_float, relay_boost, relay_string)
         } else {
-            (0, 0.0, None)
+            (0, 0.0, None, String::new())
         };
 
         let result = match event_id {
@@ -343,7 +347,13 @@ impl Battle {
                 event_target_pos,
                 move_id,
             ),
-            "AnySetWeather" => ability_callbacks::dispatch_on_any_set_weather(self, ability_id.as_str(), Some(pokemon_pos), None),
+            "AnySetWeather" => ability_callbacks::dispatch_on_any_set_weather(
+                self,
+                ability_id.as_str(),
+                Some(pokemon_pos),
+                event_source_pos,
+                relay_var_string.as_str(),
+            ),
             "AnySwitchIn" => {
                 ability_callbacks::dispatch_on_any_switch_in(self, ability_id.as_str())
             }

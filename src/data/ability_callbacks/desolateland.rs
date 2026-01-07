@@ -23,26 +23,15 @@ pub fn on_start(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResul
 ///     const strongWeathers = ['desolateland', 'primordialsea', 'deltastream'];
 ///     if (this.field.getWeather().id === 'desolateland' && !strongWeathers.includes(weather.id)) return false;
 /// }
-pub fn on_any_set_weather(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_any_set_weather(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, weather_id: &str) -> EventResult {
     // const strongWeathers = ['desolateland', 'primordialsea', 'deltastream'];
     let strong_weathers = ["desolateland", "primordialsea", "deltastream"];
 
     // Get current weather
     let current_weather = battle.field.get_weather().as_str();
 
-    // Get the incoming weather from the event (relay_var_type contains the weather ID)
-    let incoming_weather = if let Some(ref event) = battle.current_event {
-        if let Some(ref weather_id) = match &event.relay_var { Some(crate::event::EventResult::String(ref s)) => Some(s), _ => None } {
-            weather_id.as_str()
-        } else {
-            return EventResult::Continue;
-        }
-    } else {
-        return EventResult::Continue;
-    };
-
     // if (this.field.getWeather().id === 'desolateland' && !strongWeathers.includes(weather.id)) return false;
-    if current_weather == "desolateland" && !strong_weathers.contains(&incoming_weather) {
+    if current_weather == "desolateland" && !strong_weathers.contains(&weather_id) {
         return EventResult::Boolean(false);
     }
 
