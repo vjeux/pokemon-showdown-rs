@@ -109,15 +109,18 @@ pub fn try_move_hit(
     //     return false;
     // }
     if !hit_result {
-        let pokemon_ident = {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return DamageResult::Failed,
+        // Only add fail message if the result was exactly false, not null
+        if matches!(try_result, EventResult::Boolean(false)) {
+            let pokemon_ident = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return DamageResult::Failed,
+                };
+                format!("p{}a: {}", pokemon_pos.0 + 1, pokemon.set.species)
             };
-            format!("p{}a: {}", pokemon_pos.0 + 1, pokemon.set.species)
-        };
-        battle.add("-fail", &[crate::battle::Arg::String(pokemon_ident)]);
-        battle.attr_last_move(&["[still]"]);
+            battle.add("-fail", &[crate::battle::Arg::String(pokemon_ident)]);
+            battle.attr_last_move(&["[still]"]);
+        }
         return DamageResult::Failed;
     }
 
@@ -192,15 +195,18 @@ pub fn try_move_hit(
     //     return false;
     // }
     if !hit_result {
-        let pokemon_ident = {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return DamageResult::Failed,
+        // Only add fail message if the result was exactly false, not null
+        if matches!(try_result, EventResult::Boolean(false)) {
+            let pokemon_ident = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return DamageResult::Failed,
+                };
+                format!("p{}a: {}", pokemon_pos.0 + 1, pokemon.set.species)
             };
-            format!("p{}a: {}", pokemon_pos.0 + 1, pokemon.set.species)
-        };
-        battle.add("-fail", &[crate::battle::Arg::String(pokemon_ident)]);
-        battle.attr_last_move(&["[still]"]);
+            battle.add("-fail", &[crate::battle::Arg::String(pokemon_ident)]);
+            battle.attr_last_move(&["[still]"]);
+        }
         return DamageResult::Failed;
     }
 

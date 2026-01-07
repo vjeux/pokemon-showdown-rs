@@ -20,8 +20,11 @@ pub fn on_try_hit(
     source_pos: (usize, usize),
     target_pos: (usize, usize),
 ) -> EventResult {
-    let pokemon = source_pos;
-    let target = target_pos;
+    // NOTE: The call in mod.rs passes (battle, target_pos, source_pos)
+    // But the parameters here are (source_pos, target_pos)
+    // So we need to swap them to get the correct values
+    let pokemon = target_pos;  // The user of Mirror Move
+    let target = source_pos;   // The target (foe who used the last move)
 
     // const move = target.lastMove;
     let last_move_id = {
@@ -59,5 +62,5 @@ pub fn on_try_hit(
     crate::battle_actions::use_move(battle, &move_id, pokemon, Some(target), None, None, None);
 
     // return null;
-    EventResult::Stop
+    EventResult::Null
 }
