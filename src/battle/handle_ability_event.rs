@@ -561,6 +561,7 @@ impl Battle {
             "FractionalPriority" => ability_callbacks::dispatch_on_fractional_priority(
                 self,
                 ability_id.as_str(),
+                relay_var_int,
                 pokemon_pos,
             None,
             move_id,
@@ -569,6 +570,7 @@ impl Battle {
                 ability_callbacks::dispatch_on_fractional_priority_priority(
                     self,
                     ability_id.as_str(),
+                    relay_var_int,
                     pokemon_pos,
                 None,
                 move_id,

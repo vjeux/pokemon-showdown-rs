@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return 0.1;
 ///     }
 /// }
-pub fn on_fractional_priority(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_fractional_priority(battle: &mut Battle, _priority: i32, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     use crate::battle::Arg;
 
     // if (move.category !== "Status" && this.randomChance(3, 10))

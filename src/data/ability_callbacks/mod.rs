@@ -1116,21 +1116,16 @@ pub fn dispatch_on_foe_try_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFractionalPriority()
-//   onFractionalPriority(priority, pokemon)
-//   onFractionalPriority(priority, pokemon, target, move)
-
 /// Dispatch onFractionalPriority callbacks
 pub fn dispatch_on_fractional_priority(
     battle: &mut Battle,
     ability_id: &str,
+    priority: i32,
     pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "myceliummight" => myceliummight::on_fractional_priority(battle, pokemon_pos, target_pos, move_id),
-        "quickdraw" => quickdraw::on_fractional_priority(battle, pokemon_pos, target_pos, move_id),
+        "myceliummight" => myceliummight::on_fractional_priority(battle, priority, pokemon_pos, target_pos, move_id),
+        "quickdraw" => quickdraw::on_fractional_priority(battle, priority, pokemon_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -4147,9 +4142,10 @@ pub fn dispatch_on_foe_try_move_sub_order(
 pub fn dispatch_on_fractional_priority_priority(
     battle: &mut Battle,
     ability_id: &str,
+    priority: i32,
     pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, target_pos, move_id)
+    dispatch_on_fractional_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4158,9 +4154,10 @@ pub fn dispatch_on_fractional_priority_priority(
 pub fn dispatch_on_fractional_priority_order(
     battle: &mut Battle,
     ability_id: &str,
+    priority: i32,
     pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, target_pos, move_id)
+    dispatch_on_fractional_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4169,9 +4166,10 @@ pub fn dispatch_on_fractional_priority_order(
 pub fn dispatch_on_fractional_priority_sub_order(
     battle: &mut Battle,
     ability_id: &str,
+    priority: i32,
     pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_fractional_priority(battle, ability_id, pokemon_pos, target_pos, move_id)
+    dispatch_on_fractional_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
