@@ -137,6 +137,8 @@ pub fn on_field_residual(
 pub fn on_weather(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // this.damage(target.baseMaxhp / 16);
     let base_maxhp = {

@@ -188,6 +188,8 @@ pub fn on_field_residual(
 pub fn on_weather(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // Get target's base max HP
     let base_maxhp = {

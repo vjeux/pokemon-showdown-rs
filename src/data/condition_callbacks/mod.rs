@@ -709,21 +709,17 @@ pub fn dispatch_on_type(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onWeather()
-//   onWeather(target)
-//   onWeather(target, source, effect)
-
 /// Dispatch onWeather callbacks
 pub fn dispatch_on_weather(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
-        "hail" => hail::on_weather(battle, pokemon_pos),
-        "sandstorm" => sandstorm::on_weather(battle, pokemon_pos),
+        "hail" => hail::on_weather(battle, pokemon_pos, source_pos, effect_id),
+        "sandstorm" => sandstorm::on_weather(battle, pokemon_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
