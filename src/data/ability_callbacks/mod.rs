@@ -1868,8 +1868,6 @@ pub fn dispatch_on_weather_change(
 }
 
 // Priority/Order/SubOrder variant dispatchers (aliases)
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
 /// Dispatch onAfterBoostPriority callbacks (alias for onAfterBoost)
 pub fn dispatch_on_after_boost_priority(
     battle: &mut Battle,
@@ -1879,9 +1877,6 @@ pub fn dispatch_on_after_boost_priority(
 ) -> EventResult {
     dispatch_on_after_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterBoostOrder callbacks (alias for onAfterBoost)
 pub fn dispatch_on_after_boost_order(
     battle: &mut Battle,
@@ -1891,9 +1886,6 @@ pub fn dispatch_on_after_boost_order(
 ) -> EventResult {
     dispatch_on_after_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterBoostSubOrder callbacks (alias for onAfterBoost)
 pub fn dispatch_on_after_boost_sub_order(
     battle: &mut Battle,
