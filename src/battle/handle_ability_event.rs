@@ -838,7 +838,7 @@ impl Battle {
             "SourceModifySecondaries" => ability_callbacks::dispatch_on_source_modify_secondaries(
                 self,
                 ability_id.as_str(),
-                Some(pokemon_pos), None,
+                relay_var_int, event_target_pos, Some(pokemon_pos),
             move_id,
             ),
             "SourceModifySpA" => ability_callbacks::dispatch_on_source_modify_sp_a(
