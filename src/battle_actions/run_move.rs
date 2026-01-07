@@ -27,6 +27,12 @@ pub fn run_move(
     max_move: Option<String>,
     _original_target: Option<(usize, usize)>,
 ) {
+    // Log on turns 15-17 for debugging
+    if battle.turn >= 15 && battle.turn <= 17 {
+        eprintln!("[RUN_MOVE] turn={}, move={}, pokemon={:?}, external_move={}",
+            battle.turn, move_id.as_str(), pokemon_pos, external_move);
+    }
+
     eprintln!("[RUN_MOVE] ENTRY: move={}, pokemon=({}, {}), target_loc={}, turn={}",
         move_id.as_str(), pokemon_pos.0, pokemon_pos.1, target_loc, battle.turn);
     // Gen 4 compatibility: save old active move

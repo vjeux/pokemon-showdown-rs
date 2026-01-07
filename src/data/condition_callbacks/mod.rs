@@ -27,6 +27,7 @@ pub mod lockedmove;
 pub mod mustrecharge;
 pub mod par;
 pub mod partiallytrapped;
+pub mod phantomforce;
 pub mod primordialsea;
 pub mod psn;
 pub mod raindance;
