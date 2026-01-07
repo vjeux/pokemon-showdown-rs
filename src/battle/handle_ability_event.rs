@@ -401,14 +401,14 @@ impl Battle {
             move_id,
             ),
             "BeforeMove" => {
-                ability_callbacks::dispatch_on_before_move(self, ability_id.as_str(), pokemon_pos, None, move_id)
+                ability_callbacks::dispatch_on_before_move(self, ability_id.as_str(), pokemon_pos, event_target_pos, move_id)
             }
             "BeforeMovePriority" => ability_callbacks::dispatch_on_before_move_priority(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
-            None,
-            move_id,
+                event_target_pos,
+                move_id,
             ),
             "BeforeSwitchIn" => ability_callbacks::dispatch_on_before_switch_in(
                 self,
