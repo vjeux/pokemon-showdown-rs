@@ -1043,10 +1043,6 @@ pub fn dispatch_on_faint(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFlinch(pokemon)
-
 /// Dispatch onFlinch callbacks
 pub fn dispatch_on_flinch(
     battle: &mut Battle,
