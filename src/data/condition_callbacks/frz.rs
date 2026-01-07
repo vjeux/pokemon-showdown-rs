@@ -173,6 +173,7 @@ pub fn on_before_move(
 pub fn on_modify_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // Get move info
     let (has_defrost, move_name) = match &battle.active_move {

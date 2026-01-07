@@ -207,7 +207,9 @@ impl Battle {
                 condition_callbacks::dispatch_on_modify_def(self, condition_id, def, pokemon_pos, target_pos, source_pos, &move_id)
             }
             "ModifyMove" => {
-                condition_callbacks::dispatch_on_modify_move(self, condition_id, pokemon_pos)
+                // Extract target from current_event
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                condition_callbacks::dispatch_on_modify_move(self, condition_id, pokemon_pos, target_pos)
             }
             "ModifySpD" => {
                 condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, pokemon_pos)

@@ -457,25 +457,15 @@ pub fn dispatch_on_modify_def(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyMove()
-//   onModifyMove(move)
-//   onModifyMove(move, attacker)
-//   onModifyMove(move, attacker, defender)
-//   onModifyMove(move, pokemon)
-//   onModifyMove(move, pokemon, target)
-//   onModifyMove(move, source)
-//   onModifyMove(move, source, target)
-
 /// Dispatch onModifyMove callbacks
 pub fn dispatch_on_modify_move(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match condition_id {
-        "frz" => frz::on_modify_move(battle, pokemon_pos),
+        "frz" => frz::on_modify_move(battle, pokemon_pos, target_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_modify_move(battle, condition_id, pokemon_pos)
