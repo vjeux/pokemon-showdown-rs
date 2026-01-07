@@ -132,7 +132,25 @@ impl Battle {
         }
 
         // Determine effect type for suppression checks
-        let effect_type = self.get_effect_type(effect_id).to_string();
+        // IMPORTANT: Check if effect_id is a volatile on the target Pokemon FIRST
+        // This is needed because some volatiles share names with abilities (e.g., "stall")
+        // If we use get_effect_type(), it finds the Stall ability before the stall volatile
+        // which causes with_effect_state() to look in ability_state instead of volatiles
+        let effect_type = if let Some((side_idx, poke_idx)) = target {
+            if let Some(pokemon) = self.pokemon_at(side_idx, poke_idx) {
+                if pokemon.volatiles.contains_key(effect_id) {
+                    "Condition".to_string()
+                } else if !pokemon.status.is_empty() && pokemon.status == *effect_id {
+                    "Status".to_string()
+                } else {
+                    self.get_effect_type(effect_id).to_string()
+                }
+            } else {
+                self.get_effect_type(effect_id).to_string()
+            }
+        } else {
+            self.get_effect_type(effect_id).to_string()
+        };
 
         // SUPPRESSION CHECKS (from JavaScript battle.ts:598-622)
 

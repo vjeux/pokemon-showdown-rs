@@ -55,40 +55,16 @@ pub fn on_hit(
     use crate::pokemon::Pokemon;
 
     eprintln!("[KINGSSHIELD::ON_HIT] Called with pokemon_pos={:?}", pokemon_pos);
-    eprintln!("[KINGSSHIELD::ON_HIT] Backtrace:\n{}", std::backtrace::Backtrace::force_capture());
 
     let pokemon = pokemon_pos;
     let stall_id = ID::from("stall");
 
     // JavaScript: pokemon.addVolatile('stall');
-    // In JS, if volatile exists, it calls onRestart event
-    // if (this.volatiles[status.id]) {
-    //     if (!status.onRestart) return false;
-    //     return this.battle.singleEvent('Restart', status, this.volatiles[status.id], this, source, sourceEffect);
-    // }
-    let stall_exists = {
-        let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => {
-                eprintln!("[KINGSSHIELD::ON_HIT] Pokemon not found!");
-                return EventResult::Continue;
-            }
-        };
-        pokemon.volatiles.contains_key(&stall_id)
-    };
-
-    if stall_exists {
-        eprintln!("[KINGSSHIELD::ON_HIT] Stall volatile already exists, calling Restart event");
-        // Call Restart event on the stall condition
-        let target_event = crate::event::EventTarget::Pokemon(pokemon);
-        battle.handle_condition_event("Restart", "stall", Some(&target_event));
-    } else {
-        eprintln!("[KINGSSHIELD::ON_HIT] Adding new 'stall' volatile");
-        // pokemon.addVolatile('stall');
-        // Pokemon::add_volatile already calls the Start event and initializes the counter
-        Pokemon::add_volatile(battle, pokemon, stall_id.clone(), None, None, None, None);
-        eprintln!("[KINGSSHIELD::ON_HIT] Added 'stall' volatile");
-    }
+    // NOTE: add_volatile handles both cases:
+    // - If volatile exists: calls on_restart
+    // - If volatile doesn't exist: adds volatile and calls on_start
+    // We should NOT manually check for stall existence here!
+    Pokemon::add_volatile(battle, pokemon, stall_id.clone(), None, None, None, None);
 
     EventResult::Continue
 }

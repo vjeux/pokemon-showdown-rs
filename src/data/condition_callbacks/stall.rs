@@ -14,17 +14,14 @@ use crate::event::EventResult;
 /// }
 pub fn on_start(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[STALL_START] Called for {:?}", pokemon_pos);
-
     // Set counter to 3 when stall is first added
     // In JavaScript: this.effectState.counter = 3
     battle.with_effect_state(|state| {
         state.data.insert("counter".to_string(), serde_json::Value::from(3));
-        eprintln!("[STALL_START] Set counter to 3");
     });
 
     EventResult::Continue
@@ -50,12 +47,8 @@ pub fn on_stall_move(
             .unwrap_or(1)
     }).unwrap_or(1);
 
-    eprintln!("[STALL_MOVE] turn={}, counter={}, Success chance: {}%", battle.turn, counter, 100 / counter);
-
     // Call randomChance(1, counter)
     let success = battle.random_chance(1, counter);
-
-    eprintln!("[STALL_MOVE] turn={}, randomChance(1, {}) = {}", battle.turn, counter, success);
 
     // If unsuccessful, remove the stall volatile
     if !success {
@@ -64,7 +57,6 @@ pub fn on_stall_move(
             None => return EventResult::Continue,
         };
         pokemon_mut.volatiles.remove(&ID::from("stall"));
-        eprintln!("[STALL] Removed stall volatile (failed)");
     }
 
     EventResult::Boolean(success)
@@ -78,12 +70,10 @@ pub fn on_stall_move(
 /// }
 pub fn on_restart(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[STALL_RESTART] Called for {:?}", pokemon_pos);
-
     const COUNTER_MAX: i32 = 729; // From conditions.json
 
     // Get current counter and update it
@@ -92,8 +82,6 @@ pub fn on_restart(
             .and_then(|v| v.as_i64())
             .map(|v| v as i32)
             .unwrap_or(3);
-
-        eprintln!("[STALL_RESTART] Current counter: {}", current_counter);
 
         // if (this.effectState.counter < this.effect.counterMax) {
         //     this.effectState.counter *= 3;
@@ -106,8 +94,6 @@ pub fn on_restart(
 
         state.data.insert("counter".to_string(), serde_json::Value::from(new_counter));
         state.duration = Some(2);
-
-        eprintln!("[STALL_RESTART] Updated counter to {}, duration to 2", new_counter);
     });
 
     EventResult::Continue
