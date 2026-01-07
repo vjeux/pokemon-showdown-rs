@@ -1226,14 +1226,6 @@ pub fn dispatch_on_modify_damage(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyDef()
-//   onModifyDef(def)
-//   onModifyDef(def, pokemon)
-//   onModifyDef(def, target, source, move)
-//   onModifyDef(pokemon)
-
 /// Dispatch onModifyDef callbacks
 pub fn dispatch_on_modify_def(
     battle: &mut Battle,
