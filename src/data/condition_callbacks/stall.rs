@@ -42,21 +42,13 @@ pub fn on_stall_move(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     // Get counter from effect state
-    // In JavaScript: this.effectState.counter || 1
+    // JavaScript: this.effectState.counter || 1
     let counter = battle.with_effect_state_ref(|state| {
         state.data.get("counter")
             .and_then(|v| v.as_i64())
             .map(|v| v as i32)
             .unwrap_or(1)
-    }).unwrap_or_else(|| {
-        // Fallback: try to read from pokemon.volatiles
-        battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
-            .and_then(|p| p.volatiles.get(&ID::from("stall")))
-            .and_then(|v| v.data.get("counter"))
-            .and_then(|v| v.as_i64())
-            .map(|v| v as i32)
-            .unwrap_or(1)
-    });
+    }).unwrap_or(1);
 
     eprintln!("[STALL_MOVE] turn={}, counter={}, Success chance: {}%", battle.turn, counter, 100 / counter);
 

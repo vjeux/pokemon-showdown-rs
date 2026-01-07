@@ -67,15 +67,10 @@ pub fn on_start(
         // attacker.addVolatile(effect.id);
         // Add a volatile for the specific move (e.g., "dig", "fly", "solarbeam")
         // Need to copy the source from the twoturnmove volatile so that onFoeBeforeMove can access it
-        let twoturnmove_source = {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            let twoturnmove_id = ID::from("twoturnmove");
-            pokemon.volatiles.get(&twoturnmove_id)
-                .and_then(|v| v.source)
-        };
+        // JavaScript: this.effectState.source
+        let twoturnmove_source = battle.with_effect_state_ref(|state| {
+            state.source
+        }).flatten();
         eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}', source={:?}", move_id_val.as_str(), twoturnmove_source);
         crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), twoturnmove_source, None, None, None);
         eprintln!("[TWOTURNMOVE_ONSTART] Returned from add_volatile");
@@ -186,19 +181,13 @@ pub fn on_end(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     // target.removeVolatile(this.effectState.move);
-    // Get the move ID from the twoturnmove volatile's effectState.data
-    let move_id = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        let twoturnmove_id = ID::from("twoturnmove");
-        pokemon.volatiles.get(&twoturnmove_id)
-            .and_then(|v| v.data.get("move"))
+    // Get the move ID from effectState using with_effect_state_ref
+    // JavaScript: this.effectState.move
+    let move_id = battle.with_effect_state_ref(|state| {
+        state.data.get("move")
             .and_then(|m| m.as_str())
             .map(|s| ID::from(s))
-    };
+    }).flatten();
 
     // Remove the volatile for the specific move (e.g., "dig", "fly", "solarbeam")
     if let Some(id) = move_id {
@@ -222,31 +211,16 @@ pub fn on_lock_move(
     eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Called for pokemon=({},{}), turn={}", pokemon_pos.0, pokemon_pos.1, battle.turn);
 
     // return this.effectState.move;
-    // Get the move ID from the twoturnmove volatile's effectState.data
-    let move_id = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => {
-                eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Pokemon not found!");
-                return EventResult::Continue;
-            }
-        };
-
-        let twoturnmove_id = ID::from("twoturnmove");
-        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Pokemon has {} volatiles: {:?}", pokemon.volatiles.len(), pokemon.volatiles.keys().map(|k| k.as_str()).collect::<Vec<_>>());
-
-        if let Some(volatile_state) = pokemon.volatiles.get(&twoturnmove_id) {
-            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Found twoturnmove volatile!");
-            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Volatile data keys: {:?}", volatile_state.data.keys().collect::<Vec<_>>());
-            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Volatile duration: {:?}", volatile_state.duration);
-            volatile_state.data.get("move")
-                .and_then(|m| m.as_str())
-                .map(|s| s.to_string())
-        } else {
-            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] twoturnmove volatile NOT FOUND");
-            None
-        }
-    };
+    // Get the move ID from effectState using with_effect_state_ref
+    // JavaScript: this.effectState.move
+    let move_id = battle.with_effect_state_ref(|state| {
+        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Found effect state!");
+        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] State data keys: {:?}", state.data.keys().collect::<Vec<_>>());
+        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] State duration: {:?}", state.duration);
+        state.data.get("move")
+            .and_then(|m| m.as_str())
+            .map(|s| s.to_string())
+    }).flatten();
 
     eprintln!("[TWOTURNMOVE_ONLOCKMOVE] move_id={:?}", move_id);
     match move_id {

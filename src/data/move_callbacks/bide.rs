@@ -67,7 +67,7 @@ pub mod condition {
     pub fn on_damage(
         battle: &mut Battle,
         damage: i32,
-        target_pos: (usize, usize),
+        _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
         effect_id: Option<&str>,
     ) -> EventResult {
@@ -79,31 +79,23 @@ pub mod condition {
 
         let source_pos = source_pos.unwrap();
 
-        // Get the volatile state for bide on the target pokemon
-        let bide_id = ID::from("bide");
-        let pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        if let Some(volatile) = pokemon.volatiles.get_mut(&bide_id) {
-            // this.effectState.totalDamage += damage;
-            let current_damage = volatile
-                .data
+        // this.effectState.totalDamage += damage;
+        // this.effectState.lastDamageSource = source;
+        // JavaScript: this.effectState.totalDamage, this.effectState.lastDamageSource
+        battle.with_effect_state(|state| {
+            let current_damage = state.data
                 .get("totalDamage")
                 .and_then(|v| v.as_i64())
                 .unwrap_or(0) as i32;
-            volatile.data.insert(
+            state.data.insert(
                 "totalDamage".to_string(),
                 serde_json::Value::Number((current_damage + damage).into()),
             );
-
-            // this.effectState.lastDamageSource = source;
-            volatile.data.insert(
+            state.data.insert(
                 "lastDamageSource".to_string(),
                 serde_json::to_value(source_pos).unwrap_or(serde_json::Value::Null),
             );
-        }
+        });
 
         EventResult::Continue
     }
@@ -148,31 +140,22 @@ pub mod condition {
         _target_pos: Option<(usize, usize)>,
         _move_id: &str,
     ) -> EventResult {
-        // Get the volatile state
-        let bide_id = ID::from("bide");
-        let (duration, total_damage, last_damage_source) = {
-            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-
-            let volatile = match pokemon.volatiles.get(&bide_id) {
-                Some(v) => v,
-                None => return EventResult::Continue,
-            };
-
-            let duration = volatile.duration.unwrap_or(0);
-            let total_damage = volatile
-                .data
+        // Get the volatile state using with_effect_state_ref
+        // JavaScript: this.effectState.duration, this.effectState.totalDamage, this.effectState.lastDamageSource
+        let (duration, total_damage, last_damage_source) = match battle.with_effect_state_ref(|state| {
+            let duration = state.duration.unwrap_or(0);
+            let total_damage = state.data
                 .get("totalDamage")
                 .and_then(|v| v.as_i64())
                 .unwrap_or(0) as i32;
-            let last_damage_source = volatile
-                .data
+            let last_damage_source = state.data
                 .get("lastDamageSource")
                 .and_then(|v| serde_json::from_value::<(usize, usize)>(v.clone()).ok());
 
             (duration, total_damage, last_damage_source)
+        }) {
+            Some(result) => result,
+            None => return EventResult::Continue,
         };
 
         // if (this.effectState.duration === 1) {
@@ -283,6 +266,7 @@ pub mod condition {
             try_move_hit(battle, &[final_target], pokemon_pos, &bide_id_for_hit);
 
             // pokemon.removeVolatile('bide');
+            let bide_id = ID::from("bide");
             Pokemon::remove_volatile(battle, pokemon_pos, &bide_id);
 
             // return false;

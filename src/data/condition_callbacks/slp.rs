@@ -99,16 +99,12 @@ pub fn on_start(
     // this.effectState.time = this.effectState.startTime;
     let start_time = battle.random_with_range(2, 5);
 
-    // Set status state time
-    {
-        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        pokemon.status_state.data.insert("startTime".to_string(), serde_json::Value::Number(serde_json::Number::from(start_time)));
-        pokemon.status_state.data.insert("time".to_string(), serde_json::Value::Number(serde_json::Number::from(start_time)));
-    }
+    // Set status state time using with_effect_state
+    // JavaScript: this.effectState.startTime, this.effectState.time
+    battle.with_effect_state(|state| {
+        state.data.insert("startTime".to_string(), serde_json::Value::Number(serde_json::Number::from(start_time)));
+        state.data.insert("time".to_string(), serde_json::Value::Number(serde_json::Number::from(start_time)));
+    });
 
     // if (target.removeVolatile('nightmare'))
     let nightmare_id = ID::from("nightmare");
@@ -159,44 +155,34 @@ pub fn on_before_move(
 
     if has_earlybird {
         // pokemon.statusState.time--;
-        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        if let Some(time_val) = pokemon.status_state.data.get_mut("time") {
-            if let Some(time) = time_val.as_i64() {
-                *time_val = serde_json::Value::Number(serde_json::Number::from(time - 1));
+        // JavaScript: this.effectState.time-- (extra decrement for Early Bird)
+        battle.with_effect_state(|state| {
+            if let Some(time_val) = state.data.get_mut("time") {
+                if let Some(time) = time_val.as_i64() {
+                    *time_val = serde_json::Value::Number(serde_json::Number::from(time - 1));
+                }
             }
-        }
+        });
     }
 
     // pokemon.statusState.time--;
-    {
-        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        if let Some(time_val) = pokemon.status_state.data.get_mut("time") {
+    // JavaScript: this.effectState.time--
+    battle.with_effect_state(|state| {
+        if let Some(time_val) = state.data.get_mut("time") {
             if let Some(time) = time_val.as_i64() {
                 *time_val = serde_json::Value::Number(serde_json::Number::from(time - 1));
             }
         }
-    }
+    });
 
     // if (pokemon.statusState.time <= 0)
-    let time_expired = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        pokemon.status_state.data.get("time")
+    // JavaScript: this.effectState.time <= 0
+    let time_expired = battle.with_effect_state_ref(|state| {
+        state.data.get("time")
             .and_then(|v| v.as_i64())
             .map(|t| t <= 0)
             .unwrap_or(false)
-    };
+    }).unwrap_or(false);
 
     if time_expired {
         // pokemon.cureStatus();

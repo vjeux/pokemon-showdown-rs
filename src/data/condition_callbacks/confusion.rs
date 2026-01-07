@@ -149,49 +149,23 @@ pub fn on_before_move(
     _move_id: &str,
 ) -> EventResult {
     // pokemon.volatiles['confusion'].time--;
-    let time_before = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        let confusion_id = ID::from("confusion");
-        pokemon.volatiles.get(&confusion_id)
-            .and_then(|v| v.data.get("time"))
-            .and_then(|t| t.as_i64())
-            .unwrap_or(0)
-    };
-
-    {
-        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        let confusion_id = ID::from("confusion");
-        if let Some(volatile) = pokemon.volatiles.get_mut(&confusion_id) {
-            if let Some(time_val) = volatile.data.get_mut("time") {
-                if let Some(time) = time_val.as_i64() {
-                    *time_val = serde_json::Value::Number(serde_json::Number::from(time - 1));
-                }
+    // JavaScript: this.effectState.time-- (decrement time)
+    battle.with_effect_state(|state| {
+        if let Some(time_val) = state.data.get_mut("time") {
+            if let Some(time) = time_val.as_i64() {
+                *time_val = serde_json::Value::Number(serde_json::Number::from(time - 1));
             }
         }
-    }
+    });
 
     // if (!pokemon.volatiles['confusion'].time)
-    let time_is_zero = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        let confusion_id = ID::from("confusion");
-        let time_after = pokemon.volatiles.get(&confusion_id)
-            .and_then(|v| v.data.get("time"))
+    // JavaScript: this.effectState.time == 0
+    let time_is_zero = battle.with_effect_state_ref(|state| {
+        state.data.get("time")
             .and_then(|t| t.as_i64())
-            .unwrap_or(-1);
-
-        time_after == 0
-    };
+            .map(|t| t == 0)
+            .unwrap_or(false)
+    }).unwrap_or(false);
 
     if time_is_zero {
         // pokemon.removeVolatile('confusion');

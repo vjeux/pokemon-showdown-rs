@@ -124,16 +124,14 @@ pub mod condition {
             .unwrap_or(false);
 
         if is_booster_energy {
-            // Set fromBooster flag in volatile's data
-            let volatile_id = ID::from("protosynthesis");
-            if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                if let Some(volatile) = pokemon.volatiles.get_mut(&volatile_id) {
-                    volatile.data.insert(
-                        "fromBooster".to_string(),
-                        serde_json::Value::Bool(true),
-                    );
-                }
-            }
+            // Set fromBooster flag in volatile's data using with_effect_state
+            // JavaScript: this.effectState.fromBooster = true
+            battle.with_effect_state(|state| {
+                state.data.insert(
+                    "fromBooster".to_string(),
+                    serde_json::Value::Bool(true),
+                );
+            });
 
             battle.add("-activate", &[
                 Arg::String(slot.clone()),
@@ -166,8 +164,8 @@ pub mod condition {
             }
         }
 
-        // Store bestStat in volatile's effectState data
-        let volatile_id = ID::from("protosynthesis");
+        // Store bestStat in volatile's effectState data using with_effect_state
+        // JavaScript: this.effectState.bestStat = ...
         let stat_name = match best_stat {
             StatID::Atk => "atk",
             StatID::Def => "def",
@@ -177,14 +175,12 @@ pub mod condition {
             _ => "atk", // Fallback
         };
 
-        if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            if let Some(volatile) = pokemon.volatiles.get_mut(&volatile_id) {
-                volatile.data.insert(
-                    "bestStat".to_string(),
-                    serde_json::Value::String(stat_name.to_string()),
-                );
-            }
-        }
+        battle.with_effect_state(|state| {
+            state.data.insert(
+                "bestStat".to_string(),
+                serde_json::Value::String(stat_name.to_string()),
+            );
+        });
 
         // Add start message with best stat
         let display_stat = match best_stat {
@@ -210,16 +206,13 @@ pub mod condition {
     ///     return this.chainModify([5325, 4096]);
     /// }
     pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // Get bestStat from volatile's data
-        let volatile_id = ID::from("protosynthesis");
-        let best_stat = if let Some(pokemon) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
-            pokemon.volatiles.get(&volatile_id)
-                .and_then(|v| v.data.get("bestStat"))
+        // Get bestStat from volatile's data using with_effect_state_ref
+        // JavaScript: this.effectState.bestStat
+        let best_stat = battle.with_effect_state_ref(|state| {
+            state.data.get("bestStat")
                 .and_then(|v| v.as_str())
-                .unwrap_or("")
-        } else {
-            return EventResult::Continue;
-        };
+                .map(|s| s.to_string())
+        }).flatten().unwrap_or_default();
 
         if best_stat != "atk" {
             return EventResult::Continue;
@@ -247,16 +240,13 @@ pub mod condition {
     ///     return this.chainModify([5325, 4096]);
     /// }
     pub fn on_modify_def(battle: &mut Battle, def: i32, defender_pos: (usize, usize), _attacker_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // Get bestStat from volatile's data
-        let volatile_id = ID::from("protosynthesis");
-        let best_stat = if let Some(pokemon) = battle.pokemon_at(defender_pos.0, defender_pos.1) {
-            pokemon.volatiles.get(&volatile_id)
-                .and_then(|v| v.data.get("bestStat"))
+        // Get bestStat from volatile's data using with_effect_state_ref
+        // JavaScript: this.effectState.bestStat
+        let best_stat = battle.with_effect_state_ref(|state| {
+            state.data.get("bestStat")
                 .and_then(|v| v.as_str())
-                .unwrap_or("")
-        } else {
-            return EventResult::Continue;
-        };
+                .map(|s| s.to_string())
+        }).flatten().unwrap_or_default();
 
         if best_stat != "def" {
             return EventResult::Continue;
@@ -284,16 +274,13 @@ pub mod condition {
     ///     return this.chainModify([5325, 4096]);
     /// }
     pub fn on_modify_sp_a(battle: &mut Battle, spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // Get bestStat from volatile's data
-        let volatile_id = ID::from("protosynthesis");
-        let best_stat = if let Some(pokemon) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
-            pokemon.volatiles.get(&volatile_id)
-                .and_then(|v| v.data.get("bestStat"))
+        // Get bestStat from volatile's data using with_effect_state_ref
+        // JavaScript: this.effectState.bestStat
+        let best_stat = battle.with_effect_state_ref(|state| {
+            state.data.get("bestStat")
                 .and_then(|v| v.as_str())
-                .unwrap_or("")
-        } else {
-            return EventResult::Continue;
-        };
+                .map(|s| s.to_string())
+        }).flatten().unwrap_or_default();
 
         if best_stat != "spa" {
             return EventResult::Continue;
@@ -321,16 +308,13 @@ pub mod condition {
     ///     return this.chainModify([5325, 4096]);
     /// }
     pub fn on_modify_sp_d(battle: &mut Battle, spd: i32, defender_pos: (usize, usize), _attacker_pos: (usize, usize), _move_id: &str) -> EventResult {
-        // Get bestStat from volatile's data
-        let volatile_id = ID::from("protosynthesis");
-        let best_stat = if let Some(pokemon) = battle.pokemon_at(defender_pos.0, defender_pos.1) {
-            pokemon.volatiles.get(&volatile_id)
-                .and_then(|v| v.data.get("bestStat"))
+        // Get bestStat from volatile's data using with_effect_state_ref
+        // JavaScript: this.effectState.bestStat
+        let best_stat = battle.with_effect_state_ref(|state| {
+            state.data.get("bestStat")
                 .and_then(|v| v.as_str())
-                .unwrap_or("")
-        } else {
-            return EventResult::Continue;
-        };
+                .map(|s| s.to_string())
+        }).flatten().unwrap_or_default();
 
         if best_stat != "spd" {
             return EventResult::Continue;
@@ -358,16 +342,13 @@ pub mod condition {
     ///     return this.chainModify(1.5);
     /// }
     pub fn on_modify_spe(battle: &mut Battle, spe: i32, pokemon_pos: (usize, usize)) -> EventResult {
-        // Get bestStat from volatile's data
-        let volatile_id = ID::from("protosynthesis");
-        let best_stat = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            pokemon.volatiles.get(&volatile_id)
-                .and_then(|v| v.data.get("bestStat"))
+        // Get bestStat from volatile's data using with_effect_state_ref
+        // JavaScript: this.effectState.bestStat
+        let best_stat = battle.with_effect_state_ref(|state| {
+            state.data.get("bestStat")
                 .and_then(|v| v.as_str())
-                .unwrap_or("")
-        } else {
-            return EventResult::Continue;
-        };
+                .map(|s| s.to_string())
+        }).flatten().unwrap_or_default();
 
         if best_stat != "spe" {
             return EventResult::Continue;

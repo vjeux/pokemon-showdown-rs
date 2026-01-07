@@ -149,22 +149,14 @@ pub fn on_after_move(
     _move_id: &str,
 ) -> EventResult {
     // if (this.effectState.duration === 1)
-    let duration_is_1 = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        let lockedmove_id = ID::from("lockedmove");
-        pokemon.volatiles.get(&lockedmove_id)
-            .and_then(|v| v.duration)
-            .map(|d| {
-                eprintln!("[LOCKEDMOVE_AFTERMOVE] turn={}, pokemon=({}, {}), duration={}, checking if == 1",
-                    battle.turn, pokemon_pos.0, pokemon_pos.1, d);
-                d == 1
-            })
-            .unwrap_or(false)
-    };
+    // JavaScript: this.effectState.duration
+    let duration_is_1 = battle.with_effect_state_ref(|state| {
+        state.duration.map(|d| {
+            eprintln!("[LOCKEDMOVE_AFTERMOVE] turn={}, pokemon=({}, {}), duration={}, checking if == 1",
+                battle.turn, pokemon_pos.0, pokemon_pos.1, d);
+            d == 1
+        }).unwrap_or(false)
+    }).unwrap_or(false);
 
     if duration_is_1 {
         eprintln!("[LOCKEDMOVE_AFTERMOVE] Removing lockedmove volatile, will trigger onEnd");
@@ -189,18 +181,12 @@ pub fn on_end(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     // if (this.effectState.trueDuration > 1) return;
+    // JavaScript: this.effectState.trueDuration
     let true_duration = battle.with_effect_state_ref(|state| {
         state.data.get("trueDuration")
             .and_then(|d| d.as_i64())
             .unwrap_or(0)
-    }).unwrap_or_else(|| {
-        // Fallback: try to read from pokemon.volatiles
-        battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
-            .and_then(|p| p.volatiles.get(&ID::from("lockedmove")))
-            .and_then(|v| v.data.get("trueDuration"))
-            .and_then(|d| d.as_i64())
-            .unwrap_or(0)
-    });
+    }).unwrap_or(0);
 
     eprintln!("[LOCKEDMOVE_END] turn={}, pokemon=({}, {}), trueDuration={}",
         battle.turn, pokemon_pos.0, pokemon_pos.1, true_duration);
@@ -245,19 +231,12 @@ pub fn on_lock_move(
     }
 
     // return this.effectState.move;
+    // JavaScript: this.effectState.move
     let move_id = battle.with_effect_state_ref(|state| {
         state.data.get("move")
             .and_then(|m| m.as_str())
             .map(|s| s.to_string())
-    }).flatten()
-        .or_else(|| {
-            // Fallback: try to read from pokemon.volatiles
-            battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
-                .and_then(|p| p.volatiles.get(&ID::from("lockedmove")))
-                .and_then(|v| v.data.get("move"))
-                .and_then(|m| m.as_str())
-                .map(|s| s.to_string())
-        });
+    }).flatten();
 
     match move_id {
         Some(m) => EventResult::ID(ID::from(m.as_str())),
