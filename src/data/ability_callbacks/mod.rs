@@ -820,11 +820,9 @@ pub fn dispatch_on_before_switch_in(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onChangeBoost(boost, target, source, effect)
 
 /// Dispatch onChangeBoost callbacks
+/// Note: boost parameter accessed via battle.current_event.relay_var (not passed as parameter)
 pub fn dispatch_on_change_boost(
     battle: &mut Battle,
     ability_id: &str,
