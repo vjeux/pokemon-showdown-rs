@@ -1296,10 +1296,6 @@ pub fn dispatch_on_modify_s_t_a_b(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifySecondaries(secondaries)
-
 /// Dispatch onModifySecondaries callbacks
 pub fn dispatch_on_modify_secondaries(
     battle: &mut Battle,
