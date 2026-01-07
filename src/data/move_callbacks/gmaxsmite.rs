@@ -71,11 +71,31 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // for (const pokemon of source.foes()) {
+        //     pokemon.addVolatile("confusion", source);
+        // }
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let foe_positions = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.foes(battle, false)
+        };
+
+        for foe_pos in foe_positions {
+            Pokemon::add_volatile(battle, foe_pos, ID::from("confusion"), Some(source), None, None, None);
+        }
+
         EventResult::Continue
     }
 }
