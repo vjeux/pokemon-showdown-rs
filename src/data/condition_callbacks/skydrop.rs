@@ -107,6 +107,9 @@ pub fn on_any_invulnerability(
 pub fn on_foe_before_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _source_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // Get effectState.source from the skydrop volatile
     let effect_source = {

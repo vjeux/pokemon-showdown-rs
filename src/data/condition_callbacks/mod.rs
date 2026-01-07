@@ -140,19 +140,17 @@ pub fn dispatch_on_before_move(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFoeBeforeMove(attacker, defender, move)
-//   onFoeBeforeMove(target, source, move)
-
 /// Dispatch onFoeBeforeMove callbacks
 pub fn dispatch_on_foe_before_move(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "skydrop" => skydrop::on_foe_before_move(battle, pokemon_pos),
+        "skydrop" => skydrop::on_foe_before_move(battle, pokemon_pos, target_pos, source_pos, move_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_foe_before_move(battle, condition_id, pokemon_pos)
