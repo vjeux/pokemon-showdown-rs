@@ -98,8 +98,10 @@ impl Battle {
 
         // JS: if (!length) { if (forceCheck && this.checkWin()) return true; return false; }
         if length == 0 {
-            if force_check && self.check_win(None) {
-                return true;
+            if force_check {
+                if self.check_win(None) {
+                    return true;
+                }
             }
             return false;
         }

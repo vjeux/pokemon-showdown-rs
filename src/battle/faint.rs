@@ -21,10 +21,12 @@ impl Battle {
         let effect_id = effect.map(ID::new);
         Pokemon::faint(self, target, source, effect_id.as_ref());
 
-        // JS: In JavaScript, pokemon.faint() also sets fainted=true immediately for some reason
-        // In Rust, we need to set it here as well for compatibility with JavaScript behavior
-        if let Some(pokemon) = self.pokemon_at_mut(target.0, target.1) {
-            pokemon.fainted = true;
-        }
+        // NOTE: pokemon.fainted is NOT set here!
+        // In JavaScript, pokemon.faint() only sets:
+        //   - hp = 0
+        //   - switchFlag = false
+        //   - faintQueued = true
+        // The fainted = true flag is set LATER in faintMessages() when the faint queue is processed.
+        // Setting it here would cause faintMessages() to skip processing the faint!
     }
 }

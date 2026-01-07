@@ -75,7 +75,6 @@ impl Pokemon {
         // JS:     source,
         // JS:     effect,
         // JS: });
-        // ✅ NOW IMPLEMENTED: battle.faint_queue.push() with source and effect parameters
         battle.faint_queue.push(FaintData {
             target: pokemon_pos,
             source: source_pos,
