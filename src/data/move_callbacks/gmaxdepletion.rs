@@ -155,11 +155,98 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // for (const pokemon of source.foes()) {
+        let foe_positions = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.foes(battle, false)
+        };
+
+        for pokemon_pos in foe_positions {
+            //     let move = pokemon.lastMove;
+            //     if (!move || move.isZ) continue;
+            let move_id = {
+                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+
+                match &pokemon.last_move {
+                    Some(move_id) => move_id.clone(),
+                    None => continue,
+                }
+            };
+
+            // Get move data to check if it's a Z-move or Max move
+            let move_data = match battle.dex.moves().get_by_id(&move_id) {
+                Some(m) => m,
+                None => continue,
+            };
+
+            // if (!move || move.isZ) continue;
+            if move_data.is_z.is_some() {
+                continue;
+            }
+
+            //     if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
+            let actual_move_id = if move_data.is_max.is_some() {
+                if let Some(ref base_move) = move_data.base_move {
+                    base_move.clone()
+                } else {
+                    move_id.clone()
+                }
+            } else {
+                move_id.clone()
+            };
+
+            //     const ppDeducted = pokemon.deductPP(move.id, 2);
+            let pp_deducted = {
+                let gen = battle.gen;
+                let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                pokemon.deduct_pp(gen, &actual_move_id, Some(2))
+            };
+
+            //     if (ppDeducted) {
+            //         this.add("-activate", pokemon, "move: G-Max Depletion", move.name, ppDeducted);
+            if pp_deducted > 0 {
+                let move_name = battle.dex.moves().get_by_id(&actual_move_id)
+                    .map(|m| m.name.clone())
+                    .unwrap_or_else(|| actual_move_id.to_string());
+
+                let pokemon_slot = {
+                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => continue,
+                    };
+                    pokemon.get_slot()
+                };
+
+                battle.add(
+                    "-activate",
+                    &[
+                        crate::battle::Arg::from(pokemon_slot),
+                        crate::battle::Arg::from("move: G-Max Depletion"),
+                        crate::battle::Arg::from(move_name),
+                        crate::battle::Arg::from("2"),
+                    ],
+                );
+            }
+        }
+
         EventResult::Continue
     }
 }
