@@ -1456,25 +1456,21 @@ pub fn dispatch_on_side_condition_start(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSourceAfterFaint()
-//   onSourceAfterFaint(length, target, source, effect)
-
 /// Dispatch onSourceAfterFaint callbacks
 pub fn dispatch_on_source_after_faint(
     battle: &mut Battle,
     ability_id: &str,
+    length: i32,
     target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "asoneglastrier" => asoneglastrier::on_source_after_faint(battle, target_pos, source_pos, effect_id),
-        "asonespectrier" => asonespectrier::on_source_after_faint(battle, target_pos, source_pos, effect_id),
-        "battlebond" => battlebond::on_source_after_faint(battle, target_pos, source_pos, effect_id),
-        "beastboost" => beastboost::on_source_after_faint(battle, target_pos, source_pos, effect_id),
-        "chillingneigh" => chillingneigh::on_source_after_faint(battle, target_pos, source_pos, effect_id),
-        "grimneigh" => grimneigh::on_source_after_faint(battle, target_pos, source_pos, effect_id),
-        "moxie" => moxie::on_source_after_faint(battle, target_pos, source_pos, effect_id),
+        "asoneglastrier" => asoneglastrier::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
+        "asonespectrier" => asonespectrier::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
+        "battlebond" => battlebond::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
+        "beastboost" => beastboost::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
+        "chillingneigh" => chillingneigh::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
+        "grimneigh" => grimneigh::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
+        "moxie" => moxie::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -4673,9 +4669,10 @@ pub fn dispatch_on_side_condition_start_sub_order(
 pub fn dispatch_on_source_after_faint_priority(
     battle: &mut Battle,
     ability_id: &str,
+    length: i32,
     target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_after_faint(battle, ability_id, target_pos, source_pos, effect_id)
+    dispatch_on_source_after_faint(battle, ability_id, length, target_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4684,9 +4681,10 @@ pub fn dispatch_on_source_after_faint_priority(
 pub fn dispatch_on_source_after_faint_order(
     battle: &mut Battle,
     ability_id: &str,
+    length: i32,
     target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_after_faint(battle, ability_id, target_pos, source_pos, effect_id)
+    dispatch_on_source_after_faint(battle, ability_id, length, target_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4695,9 +4693,10 @@ pub fn dispatch_on_source_after_faint_order(
 pub fn dispatch_on_source_after_faint_sub_order(
     battle: &mut Battle,
     ability_id: &str,
+    length: i32,
     target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_source_after_faint(battle, ability_id, target_pos, source_pos, effect_id)
+    dispatch_on_source_after_faint(battle, ability_id, length, target_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

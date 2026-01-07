@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         this.boost({ [bestStat]: length }, source);
 ///     }
 /// }
-pub fn on_source_after_faint(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_source_after_faint(battle: &mut Battle, _length: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // if (effect && effect.effectType === 'Move')
     if let Some(eff_id) = effect_id {
         if let Some(_move_data) = battle.dex.moves().get(eff_id) {

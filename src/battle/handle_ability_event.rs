@@ -748,7 +748,7 @@ impl Battle {
                     event_source_pos
                 )
             }
-            "SourceAfterFaint" => ability_callbacks::dispatch_on_source_after_faint(self, ability_id.as_str(), Some(pokemon_pos), None, None),
+            "SourceAfterFaint" => ability_callbacks::dispatch_on_source_after_faint(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }),
             "SourceBasePower" => ability_callbacks::dispatch_on_source_base_power(
                 self,
                 ability_id.as_str(),

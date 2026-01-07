@@ -103,7 +103,7 @@ pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
 ///         this.boost({ spa: length }, source, source, this.dex.abilities.get('grimneigh'));
 ///     }
 /// }
-pub fn on_source_after_faint(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_source_after_faint(battle: &mut Battle, _length: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     use crate::dex_data::ID;
 
     // if (effect && effect.effectType === 'Move')

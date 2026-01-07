@@ -17,7 +17,7 @@ use crate::dex::Multihit;
 ///         source.bondTriggered = true;
 ///     }
 /// }
-pub fn on_source_after_faint(_battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_source_after_faint(_battle: &mut Battle, _length: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
