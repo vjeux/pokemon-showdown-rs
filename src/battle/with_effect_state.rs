@@ -2,7 +2,7 @@
 // This provides a closure-based API that mirrors JavaScript's this.effectState
 
 use crate::event_system::EffectState;
-use crate::battle::{EffectType, EffectContext};
+use crate::battle::{EffectType, Effect};
 use crate::Battle;
 
 impl Battle {
@@ -12,7 +12,7 @@ impl Battle {
     /// JavaScript equivalent: this.effectState
     ///
     /// The closure receives a mutable reference to the EffectState,
-    /// which is looked up based on current_effect_context.
+    /// which is looked up based on effect.
     ///
     /// # Example
     /// ```ignore
@@ -24,14 +24,14 @@ impl Battle {
     where
         F: FnOnce(&mut EffectState) -> R,
     {
-        let ctx = self.current_effect_context.clone()?;
+        let ctx = self.effect.clone()?;
 
         match ctx.effect_type {
             EffectType::Condition => {
                 // Volatile condition on a Pokemon
                 let pos = ctx.effect_holder?;
                 let pokemon = self.pokemon_at_mut(pos.0, pos.1)?;
-                let state = pokemon.volatiles.get_mut(&ctx.effect_id)?;
+                let state = pokemon.volatiles.get_mut(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::Status => {
@@ -58,7 +58,7 @@ impl Battle {
                 if side_idx >= self.sides.len() {
                     return None;
                 }
-                let state = self.sides[side_idx].side_conditions.get_mut(&ctx.effect_id)?;
+                let state = self.sides[side_idx].side_conditions.get_mut(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::SlotCondition => {
@@ -67,7 +67,7 @@ impl Battle {
                 if pos.0 >= self.sides.len() {
                     return None;
                 }
-                let state = self.sides[pos.0].slot_conditions.get_mut(pos.1)?.get_mut(&ctx.effect_id)?;
+                let state = self.sides[pos.0].slot_conditions.get_mut(pos.1)?.get_mut(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::Weather => {
@@ -80,7 +80,7 @@ impl Battle {
             }
             EffectType::FieldCondition => {
                 // Pseudo-weather state on field
-                let state = self.field.pseudo_weather.get_mut(&ctx.effect_id)?;
+                let state = self.field.pseudo_weather.get_mut(&ctx.id)?;
                 Some(f(state))
             }
             _ => None,
@@ -92,13 +92,13 @@ impl Battle {
     where
         F: FnOnce(&EffectState) -> R,
     {
-        let ctx = self.current_effect_context.as_ref()?;
+        let ctx = self.effect.as_ref()?;
 
         match ctx.effect_type {
             EffectType::Condition => {
                 let pos = ctx.effect_holder?;
                 let pokemon = self.pokemon_at(pos.0, pos.1)?;
-                let state = pokemon.volatiles.get(&ctx.effect_id)?;
+                let state = pokemon.volatiles.get(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::Status => {
@@ -121,7 +121,7 @@ impl Battle {
                 if side_idx >= self.sides.len() {
                     return None;
                 }
-                let state = self.sides[side_idx].side_conditions.get(&ctx.effect_id)?;
+                let state = self.sides[side_idx].side_conditions.get(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::SlotCondition => {
@@ -129,7 +129,7 @@ impl Battle {
                 if pos.0 >= self.sides.len() {
                     return None;
                 }
-                let state = self.sides[pos.0].slot_conditions.get(pos.1)?.get(&ctx.effect_id)?;
+                let state = self.sides[pos.0].slot_conditions.get(pos.1)?.get(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::Weather => {
@@ -139,7 +139,7 @@ impl Battle {
                 Some(f(&self.field.terrain_state))
             }
             EffectType::FieldCondition => {
-                let state = self.field.pseudo_weather.get(&ctx.effect_id)?;
+                let state = self.field.pseudo_weather.get(&ctx.id)?;
                 Some(f(state))
             }
             _ => None,
@@ -148,37 +148,37 @@ impl Battle {
 
     /// Set the current effect context before calling a handler
     /// Used by run_event and similar functions
-    pub fn set_effect_context(&mut self, ctx: EffectContext) -> Option<EffectContext> {
-        std::mem::replace(&mut self.current_effect_context, Some(ctx))
+    pub fn set_effect_context(&mut self, ctx: Effect) -> Option<Effect> {
+        std::mem::replace(&mut self.effect, Some(ctx))
     }
 
     /// Clear the current effect context
-    pub fn clear_effect_context(&mut self) -> Option<EffectContext> {
-        self.current_effect_context.take()
+    pub fn clear_effect_context(&mut self) -> Option<Effect> {
+        self.effect.take()
     }
 
     /// Restore a previous effect context
-    pub fn restore_effect_context(&mut self, ctx: Option<EffectContext>) {
-        self.current_effect_context = ctx;
+    pub fn restore_effect_context(&mut self, ctx: Option<Effect>) {
+        self.effect = ctx;
     }
 
     /// Get the current effect ID (replaces current_effect field)
     pub fn current_effect_id(&self) -> Option<&crate::dex_data::ID> {
-        self.current_effect_context.as_ref().map(|ctx| &ctx.effect_id)
+        self.effect.as_ref().map(|ctx| &ctx.id)
     }
 
     /// Get the current effect type
     pub fn current_effect_type(&self) -> Option<EffectType> {
-        self.current_effect_context.as_ref().map(|ctx| ctx.effect_type)
+        self.effect.as_ref().map(|ctx| ctx.effect_type)
     }
 
     /// Check if the current effect is Prankster boosted
     pub fn is_prankster_boosted(&self) -> bool {
-        self.current_effect_context.as_ref().map(|ctx| ctx.prankster_boosted).unwrap_or(false)
+        self.effect.as_ref().map(|ctx| ctx.prankster_boosted).unwrap_or(false)
     }
 
     /// Get the current effect holder position
     pub fn current_effect_holder(&self) -> Option<(usize, usize)> {
-        self.current_effect_context.as_ref().and_then(|ctx| ctx.effect_holder)
+        self.effect.as_ref().and_then(|ctx| ctx.effect_holder)
     }
 }

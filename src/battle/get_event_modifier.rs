@@ -9,7 +9,7 @@ impl Battle {
     /// This method provides safe access to current event's modifier value
     /// Returns 4096 (1.0x) if no event is active
     pub fn get_event_modifier(&self) -> i32 {
-        self.current_event
+        self.event
             .as_ref()
             .map(|e| e.modifier)
             .unwrap_or(4096)

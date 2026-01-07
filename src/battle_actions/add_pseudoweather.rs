@@ -68,8 +68,8 @@ impl Battle {
 
             // JavaScript: return this.battle.singleEvent('FieldRestart', status, state, this, source, sourceEffect);
             // Set up effect context so callbacks can use with_effect_state to access/modify state
-            let prev_context = self.set_effect_context(crate::EffectContext {
-                effect_id: id.clone(),
+            let prev_context = self.set_effect_context(crate::Effect {
+                id: id.clone(),
                 effect_type: crate::battle::EffectType::FieldCondition,
                 effect_holder: None,
                 side_index: None,
@@ -113,8 +113,8 @@ impl Battle {
             self.field.pseudo_weather.insert(id.clone(), state);
 
             // Set up effect context so callbacks can use with_effect_state to access/modify state
-            let prev_context = self.set_effect_context(crate::EffectContext {
-                effect_id: id.clone(),
+            let prev_context = self.set_effect_context(crate::Effect {
+                id: id.clone(),
                 effect_type: crate::battle::EffectType::FieldCondition,
                 effect_holder: None,
                 side_index: None,

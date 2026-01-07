@@ -206,7 +206,7 @@ pub fn on_weather(
 
     // Apply damage through the battle's damage function
     // JavaScript doesn't pass effect explicitly - it comes from this.effect in the event context
-    // So we pass None to let it use current_event.effect
+    // So we pass None to let it use event.effect
     battle.damage(
         damage_amount,
         Some(pokemon_pos),

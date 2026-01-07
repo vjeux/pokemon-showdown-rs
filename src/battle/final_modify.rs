@@ -19,7 +19,7 @@ impl Battle {
         let result = self.modify_internal(value, modifier);
 
         // JS: this.event.modifier = 1;
-        if let Some(ref mut event) = self.current_event {
+        if let Some(ref mut event) = self.event {
             event.modifier = 4096;
         }
 

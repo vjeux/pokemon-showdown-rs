@@ -138,7 +138,7 @@ pub fn on_try_boost(
     battle: &mut Battle,
     boost: Option<&mut crate::dex_data::BoostsTable>, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>,
 ) -> EventResult {
-    let is_intimidate = battle.current_event.as_ref()
+    let is_intimidate = battle.event.as_ref()
         .and_then(|e| e.effect.as_ref())
         .map(|id| id.id.as_str() == "intimidate")
         .unwrap_or(false);

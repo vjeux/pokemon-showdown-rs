@@ -27,7 +27,7 @@ pub fn on_foe_after_boost(battle: &mut Battle, _target_pos: Option<(usize, usize
     }
 
     // Get boost information from current event
-    let boosts = if let Some(ref event) = battle.current_event {
+    let boosts = if let Some(ref event) = battle.event {
         if let Some(boost_table) = match &event.relay_var { Some(crate::event::EventResult::Boost(b)) => Some(*b), _ => None } {
             boost_table
         } else {

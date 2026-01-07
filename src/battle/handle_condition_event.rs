@@ -43,16 +43,16 @@ impl Battle {
         // Try condition_callbacks first
         let result = match normalized_event {
             "AfterMove" => {
-                // Extract target from current_event and move_id from active_move
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                // Extract target from event and move_id from active_move
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_after_move(self, condition_id, pokemon_pos, target_pos, &move_id)
             }
             "AfterMoveSecondary" => {
-                // Extract source from current_event and move_id from active_move
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                // Extract source from event and move_id from active_move
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
@@ -65,29 +65,29 @@ impl Battle {
                 )
             }
             "BasePower" => {
-                // Extract base_power from relay_var, target from current_event, and move_id from active_move
-                let base_power = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                // Extract base_power from relay_var, target from event, and move_id from active_move
+                let base_power = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n),
                     _ => None
                 }).unwrap_or(0);
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_base_power(self, condition_id, base_power, pokemon_pos, target_pos, &move_id)
             }
             "BeforeMove" => {
-                // Extract target from current_event and move_id from active_move
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                // Extract target from event and move_id from active_move
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_before_move(self, condition_id, pokemon_pos, target_pos, &move_id)
             }
             "FoeBeforeMove" => {
-                // Extract target from current_event, source, and move_id from active_move
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                // Extract target from event, source, and move_id from active_move
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
@@ -106,12 +106,12 @@ impl Battle {
                 condition_callbacks::dispatch_on_before_turn(self, condition_id, pokemon_pos)
             }
             "DamagingHit" => {
-                // Extract damage from relay_var, source from current_event, and move_id from active_move
-                let damage = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                // Extract damage from relay_var, source from event, and move_id from active_move
+                let damage = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n),
                     _ => None
                 }).unwrap_or(0);
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
@@ -121,8 +121,8 @@ impl Battle {
                 condition_callbacks::dispatch_on_disable_move(self, condition_id, pokemon_pos)
             }
             "DragOut" => {
-                // Extract source from current_event and move_id from active_move
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                // Extract source from event and move_id from active_move
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
@@ -131,13 +131,13 @@ impl Battle {
             "Effectiveness" => {
                 // Effectiveness needs type_mod, target_type, and move_id
                 // Extract type_mod from relay_var (type effectiveness modifier as number)
-                let type_mod = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                let type_mod = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n),
                     _ => None
                 }).unwrap_or(0);
 
                 // Extract target_type from type_param (the type being checked)
-                let target_type = self.current_event.as_ref()
+                let target_type = self.event.as_ref()
                     .and_then(|e| e.type_param.clone())
                     .unwrap_or_default();
 
@@ -150,13 +150,13 @@ impl Battle {
             }
             "End" => condition_callbacks::dispatch_on_end(self, condition_id, pokemon_pos),
             "Faint" => {
-                // Faint needs target, source, and effect from current_event
+                // Faint needs target, source, and effect from event
                 // target_pos is the pokemon that fainted (pokemon_pos)
-                // source_pos is the pokemon that caused the faint (from current_event)
-                // effect_id is the move/ability/item that caused the faint (from current_event)
+                // source_pos is the pokemon that caused the faint (from event)
+                // effect_id is the move/ability/item that caused the faint (from event)
                 // Extract values first to avoid borrow checker issues
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.current_event.as_ref()
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.to_string());
 
@@ -178,14 +178,14 @@ impl Battle {
                 condition_callbacks::dispatch_on_field_start(self, condition_id, pokemon_pos)
             }
             "FieldRestart" => {
-                // Extract target and source from current_event
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                // Extract target and source from event
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
                 condition_callbacks::dispatch_on_field_restart(self, condition_id, pokemon_pos, target_pos, source_pos)
             }
             "Immunity" => {
                 // Extract immunity type from event type_param
-                let immunity_type = self.current_event.as_ref()
+                let immunity_type = self.event.as_ref()
                     .and_then(|e| e.type_param.clone())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_immunity(self, condition_id, &immunity_type, pokemon_pos)
@@ -195,30 +195,30 @@ impl Battle {
             }
             "ModifyDef" => {
                 // Extract def from relay_var, target, source, and move_id
-                let def = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                let def = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n),
                     _ => None
                 }).unwrap_or(0);
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_modify_def(self, condition_id, def, pokemon_pos, target_pos, source_pos, &move_id)
             }
             "ModifyMove" => {
-                // Extract target from current_event
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                // Extract target from event
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 condition_callbacks::dispatch_on_modify_move(self, condition_id, pokemon_pos, target_pos)
             }
             "ModifySpD" => {
                 // Extract spd from relay_var, target, source, and move_id
-                let spd = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                let spd = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n),
                     _ => None
                 }).unwrap_or(0);
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
@@ -232,17 +232,17 @@ impl Battle {
                 condition_callbacks::dispatch_on_modify_spe(self, condition_id, spe, pokemon_pos)
             }
             "MoveAborted" => {
-                // Extract target from current_event and move_id from active_move
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                // Extract target from event and move_id from active_move
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_move_aborted(self, condition_id, pokemon_pos, target_pos, &move_id)
             }
             "Residual" => {
-                // Extract source and effect from current_event
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.current_event.as_ref()
+                // Extract source and effect from event
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
@@ -251,29 +251,29 @@ impl Battle {
                 // Some side conditions use onResidual callback for SideResidual events
                 // Example: gmaxvolcalith has condition.onResidual
                 // This matches JavaScript behavior where the callback signature is compatible
-                // Extract source and effect from current_event
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.current_event.as_ref()
+                // Extract source and effect from event
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
             }
             "Restart" => {
-                // Extract source and effect from current_event
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.current_event.as_ref()
+                // Extract source and effect from event
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
             }
             "SourceModifyDamage" => {
                 // SourceModifyDamage needs damage, source, target, and move
-                // pokemon_pos is the source, extract target and damage from current_event
-                let damage = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                // pokemon_pos is the source, extract target and damage from event
+                let damage = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n),
                     _ => None
                 }).unwrap_or(0);
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+                let target_pos = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
                 let move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
@@ -290,9 +290,9 @@ impl Battle {
                 condition_callbacks::dispatch_on_stall_move(self, condition_id, pokemon_pos)
             }
             "Start" => {
-                // Extract source and effect from current_event
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.current_event.as_ref()
+                // Extract source and effect from event
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
@@ -307,17 +307,17 @@ impl Battle {
                 // For TryAddVolatile, we need to pass the status (volatile) being added,
                 // the target, source, and effect. The status is in relay_var as EventResult::String.
                 // Extract owned strings to avoid borrow checker issues
-                let status_owned = self.current_event.as_ref()
+                let status_owned = self.event.as_ref()
                     .and_then(|e| e.relay_var.as_ref())
                     .and_then(|rv| match rv {
                         EventResult::String(s) => Some(s.clone()),
                         _ => None,
                     });
                 // For TryAddVolatile, pokemon_pos is the Pokemon that has the handler (e.g., a Pokemon on the side with Safeguard),
-                // NOT the Pokemon having the volatile added. We need to get the actual target from current_event.
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.current_event.as_ref()
+                // NOT the Pokemon having the volatile added. We need to get the actual target from event.
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.to_string());
 
@@ -331,8 +331,8 @@ impl Battle {
                 )
             }
             "TryPrimaryHit" => {
-                // Extract source from current_event and move_id from active_move
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                // Extract source from event and move_id from active_move
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let move_id_string = self.active_move.as_ref().map(|m| m.id.as_str().to_string());
                 condition_callbacks::dispatch_on_try_primary_hit(
                     self,
@@ -344,8 +344,8 @@ impl Battle {
             }
             "TryHit" => {
                 // TryHit needs both source and target positions
-                // Get source from current_event
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                // Get source from event
+                let source_pos = self.event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
                 let move_id_string = self.active_move.as_ref().map(|m| m.id.as_str().to_string());
                 condition_callbacks::dispatch_on_try_hit(
                     self,
@@ -356,8 +356,8 @@ impl Battle {
                 )
             }
             "TryMove" => {
-                // Extract target from current_event and move_id from active_move
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                // Extract target from event and move_id from active_move
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let move_id_string = self.active_move.as_ref().map(|m| m.id.as_str().to_string());
                 condition_callbacks::dispatch_on_try_move(
                     self,
@@ -375,9 +375,9 @@ impl Battle {
                 condition_callbacks::dispatch_on_type(self, condition_id, pokemon_pos, types_slice)
             }
             "Weather" => {
-                // Extract source and effect from current_event
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.current_event.as_ref()
+                // Extract source and effect from event
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.to_string());
                 condition_callbacks::dispatch_on_weather(
@@ -389,13 +389,13 @@ impl Battle {
                 )
             }
             "WeatherModifyDamage" => {
-                // Extract damage from relay_var, attacker/defender from current_event, and move_id from active_move
-                let damage = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                // Extract damage from relay_var, attacker/defender from event, and move_id from active_move
+                let damage = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n as i32),
                     _ => None,
                 }).unwrap_or(0);
-                let attacker_pos = self.current_event.as_ref().and_then(|e| e.source);
-                let defender_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let attacker_pos = self.event.as_ref().and_then(|e| e.source);
+                let defender_pos = self.event.as_ref().and_then(|e| e.target);
                 let move_id_string = self.active_move.as_ref().map(|m| m.id.as_str().to_string());
                 condition_callbacks::dispatch_on_weather_modify_damage(
                     self,
@@ -410,7 +410,7 @@ impl Battle {
                 // onHit callback for conditions (volatiles like focuspunch)
                 // pokemon_pos is the Pokemon with the volatile (target being hit)
                 // source_pos is the Pokemon doing the hitting (attacker)
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                let source_pos = self.event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
                 crate::data::move_callbacks::dispatch_condition_on_hit(
                     self,
                     condition_id,
@@ -422,34 +422,34 @@ impl Battle {
                 // For AnyInvulnerability, we need the ORIGINAL target/source from the run_event call,
                 // NOT the Pokemon that has the volatile. The volatile may be on a different Pokemon
                 // than the target of the attack (e.g., Sky Drop volatile is on the user, not the target).
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                let target_pos = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+                let source_pos = self.event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
                 let attacking_move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_any_invulnerability(
                     self,
                     condition_id,
-                    target_pos,  // Use original target from current_event, not pokemon_pos
+                    target_pos,  // Use original target from event, not pokemon_pos
                     source_pos,
                     &attacking_move_id
                 )
             }
             "AnyModifyDamage" | "ModifyDamage" => {
                 // For side conditions like Aurora Veil, Light Screen, and Reflect
-                // Extract damage from relay_var, source and target from current_event
+                // Extract damage from relay_var, source and target from event
                 // Side condition callbacks are in move_callbacks module (move-embedded conditions)
                 eprintln!("[HANDLE_CONDITION_EVENT] AnyModifyDamage case: condition_id={}, event.modifier BEFORE callback={}",
                     condition_id, self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
 
-                // Debug: print current_event details
-                if let Some(ref curr_ev) = self.current_event {
-                    eprintln!("[HANDLE_CONDITION_EVENT] current_event: source={:?}, target={:?}, effect={:?}",
+                // Debug: print event details
+                if let Some(ref curr_ev) = self.event {
+                    eprintln!("[HANDLE_CONDITION_EVENT] event: source={:?}, target={:?}, effect={:?}",
                         curr_ev.source, curr_ev.target, curr_ev.effect);
                 }
 
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
-                let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                let target_pos = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+                let source_pos = self.event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
 
                 // Extract the active move ID (the move being used, not the condition ID)
                 // This is critical: JavaScript callbacks receive the active move, not the condition

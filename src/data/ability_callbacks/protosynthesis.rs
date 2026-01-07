@@ -117,7 +117,7 @@ pub mod condition {
         };
 
         // Check if effect is Booster Energy
-        let is_booster_energy = battle.current_event.as_ref()
+        let is_booster_energy = battle.event.as_ref()
             .and_then(|e| e.effect.as_ref())
             .map(|eff| eff.id.as_str() == "boosterenergy")
             .unwrap_or(false);

@@ -18,7 +18,7 @@ pub fn on_modify_move(battle: &mut Battle, _move_id: &str, _source_pos: (usize, 
     
 
     // Get attacker position from current event
-    let attacker_pos = match &battle.current_event {
+    let attacker_pos = match &battle.event {
         Some(event) => match event.source {
             Some(pos) => pos,
             None => return EventResult::Continue,

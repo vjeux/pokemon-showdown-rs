@@ -123,7 +123,7 @@ impl Battle {
             self.add("message", &["STACK LIMIT EXCEEDED".into()]);
             self.add("message", &["PLEASE REPORT IN BUG THREAD".into()]);
             self.add("message", &[format!("Event: {}", event_id).into()]);
-            if let Some(ref evt) = self.current_event {
+            if let Some(ref evt) = self.event {
                 self.add("message", &[format!("Parent event: {}", evt.id).into()]);
             }
             return EventResult::Boolean(false);
@@ -134,7 +134,7 @@ impl Battle {
             self.add("message", &["LINE LIMIT EXCEEDED".into()]);
             self.add("message", &["PLEASE REPORT IN BUG THREAD".into()]);
             self.add("message", &[format!("Event: {}", event_id).into()]);
-            if let Some(ref evt) = self.current_event {
+            if let Some(ref evt) = self.event {
                 self.add("message", &[format!("Parent event: {}", evt.id).into()]);
             }
             return EventResult::Boolean(false);
@@ -210,8 +210,8 @@ impl Battle {
         // JavaScript: const parentEffect = this.effect;
         // JavaScript: const parentEffectState = this.effectState;
         // JavaScript: const parentEvent = this.event;
-        let parent_event = self.current_event.take();
-        let parent_context = self.current_effect_context.take();
+        let parent_event = self.event.take();
+        let parent_context = self.effect.take();
         let parent_effect_state = std::mem::take(&mut self.effect_state);
 
         // Set up current effect state
@@ -222,8 +222,8 @@ impl Battle {
         };
 
         // Set up current effect context
-        self.current_effect_context = Some(crate::EffectContext {
-            effect_id: effect_id.clone(),
+        self.effect = Some(crate::Effect {
+            id: effect_id.clone(),
             effect_type,
             effect_holder: target,
             side_index: target.map(|(side, _)| side),
@@ -237,7 +237,7 @@ impl Battle {
         // Use source_effect directly (it's already an Effect)
         let source_effect_obj = source_effect.cloned();
 
-        self.current_event = Some(EventInfo {
+        self.event = Some(EventInfo {
             id: event_id.to_string(),
             target,
             source,
@@ -260,8 +260,8 @@ impl Battle {
         // JavaScript: this.effectState = parentEffectState;
         // JavaScript: this.event = parentEvent;
         self.event_depth -= 1;
-        self.current_event = parent_event;
-        self.current_effect_context = parent_context;
+        self.event = parent_event;
+        self.effect = parent_context;
         self.effect_state = parent_effect_state;
 
         // JavaScript: return returnVal === undefined ? relayVar : returnVal;

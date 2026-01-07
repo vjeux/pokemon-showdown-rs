@@ -8,7 +8,7 @@ impl Battle {
     /// Rust accessor method - JavaScript directly accesses this.event.modifier field
     /// Used in event handlers to get the current relay variable modifier
     pub fn event_modifier(&self) -> i32 {
-        self.current_event
+        self.event
             .as_ref()
             .map(|e| e.modifier)
             .unwrap_or(4096)

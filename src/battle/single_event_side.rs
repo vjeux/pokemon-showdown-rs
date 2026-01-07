@@ -42,7 +42,7 @@ impl Battle {
             self.add("message", &["STACK LIMIT EXCEEDED".into()]);
             self.add("message", &["PLEASE REPORT IN BUG THREAD".into()]);
             self.add("message", &[format!("Event: {}", event_id).into()]);
-            if let Some(ref evt) = self.current_event {
+            if let Some(ref evt) = self.event {
                 self.add("message", &[format!("Parent event: {}", evt.id).into()]);
             }
             return EventResult::Boolean(false);
@@ -53,7 +53,7 @@ impl Battle {
             self.add("message", &["LINE LIMIT EXCEEDED".into()]);
             self.add("message", &["PLEASE REPORT IN BUG THREAD".into()]);
             self.add("message", &[format!("Event: {}", event_id).into()]);
-            if let Some(ref evt) = self.current_event {
+            if let Some(ref evt) = self.event {
                 self.add("message", &[format!("Parent event: {}", evt.id).into()]);
             }
             return EventResult::Boolean(false);
@@ -87,12 +87,12 @@ impl Battle {
         }
 
         // Save parent state
-        let parent_context = self.current_effect_context.clone();
-        let parent_event = self.current_event.clone();
+        let parent_context = self.effect.clone();
+        let parent_event = self.event.clone();
 
         // Set current event context with SideCondition effect type
-        self.current_effect_context = Some(crate::EffectContext {
-            effect_id: effect_id.clone(),
+        self.effect = Some(crate::Effect {
+            id: effect_id.clone(),
             effect_type: crate::battle::EffectType::SideCondition,
             effect_holder: None,
             side_index: Some(side_idx),
@@ -106,7 +106,7 @@ impl Battle {
         event_info.target = None; // Side events don't have a Pokemon target
         event_info.source = source;
         event_info.effect = source_effect_obj;
-        self.current_event = Some(event_info);
+        self.event = Some(event_info);
 
         self.event_depth += 1;
 
@@ -115,8 +115,8 @@ impl Battle {
 
         // Restore parent state
         self.event_depth -= 1;
-        self.current_effect_context = parent_context;
-        self.current_event = parent_event;
+        self.effect = parent_context;
+        self.event = parent_event;
 
         result
     }

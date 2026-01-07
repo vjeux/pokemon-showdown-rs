@@ -36,7 +36,7 @@ impl Battle {
             "AfterSubDamage" => {
                 // Get damage from relay_var
                 let damage = self
-                    .current_event
+                    .event
                     .as_ref()
                     .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
                     .unwrap_or(0);
@@ -46,7 +46,7 @@ impl Battle {
             "BasePower" => {
                 // Get base_power from relay_var
                 let base_power = self
-                    .current_event
+                    .event
                     .as_ref()
                     .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
                     .unwrap_or(0);
@@ -60,13 +60,13 @@ impl Battle {
                 // Extract all parameters immutably first
                 let (damage, effect_id) = {
                     let damage = self
-                        .current_event
+                        .event
                         .as_ref()
                         .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
                         .unwrap_or(0);
 
                     let effect_id = self
-                        .current_event
+                        .event
                         .as_ref()
                         .and_then(|e| e.effect.as_ref())
                         .map(|eff| eff.id.to_string());
@@ -88,13 +88,13 @@ impl Battle {
                 // Extract type_mod from relay_var and target_type from type_param
                 let (type_mod, target_type) = {
                     let type_mod = self
-                        .current_event
+                        .event
                         .as_ref()
                         .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
                         .unwrap_or(0);
 
                     let target_type = self
-                        .current_event
+                        .event
                         .as_ref()
                         .and_then(|e| e.type_param.clone())
                         .unwrap_or_default();

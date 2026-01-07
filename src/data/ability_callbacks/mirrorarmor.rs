@@ -44,7 +44,7 @@ pub fn on_try_boost(
     };
 
     // if (effect.name === 'Mirror Armor') return;
-    let is_mirror_armor = battle.current_event.as_ref()
+    let is_mirror_armor = battle.event.as_ref()
         .and_then(|e| e.effect.as_ref())
         .map(|effect| effect.id.as_str() == "mirrorarmor")
         .unwrap_or(false);

@@ -29,7 +29,7 @@ impl Battle {
         };
 
         // Use EventInfo from current state, or create minimal one
-        let event_info = if let Some(ref event) = self.current_event {
+        let event_info = if let Some(ref event) = self.event {
             event.clone()
         } else {
             crate::battle::EventInfo::new(event_name)

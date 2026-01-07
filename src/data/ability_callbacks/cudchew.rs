@@ -18,8 +18,8 @@ use crate::event::EventResult;
 pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     
 
-    // Get the item from battle.current_event.effect
-    let item_id = match &battle.current_event {
+    // Get the item from battle.event.effect
+    let item_id = match &battle.event {
         Some(event) => match &event.effect {
             Some(effect) => effect.id.clone(),
             None => return EventResult::Continue,

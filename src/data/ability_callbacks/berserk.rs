@@ -83,7 +83,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
     // In JavaScript, this is passed as the `item` parameter
     // In Rust, we need to extract it from the event system
     // The effect field contains the item ID when eating an item
-    let item_id = if let Some(ref event) = battle.current_event {
+    let item_id = if let Some(ref event) = battle.event {
         event.effect.as_ref().map(|e| e.id.clone())
     } else {
         None

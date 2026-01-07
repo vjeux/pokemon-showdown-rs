@@ -286,12 +286,24 @@ pub struct Effect {
     pub id: ID,
     /// Type of effect (Ability, Item, Move, Condition, etc.)
     pub effect_type: EffectType,
+    /// Pokemon that holds this effect (for volatiles, abilities, items, status)
+    pub effect_holder: Option<(usize, usize)>,
+    /// Side index (for side conditions)
+    pub side_index: Option<usize>,
+    /// Whether this effect was Prankster boosted
+    pub prankster_boosted: bool,
 }
 
 impl Effect {
     /// Create a new Effect with the given id and effect_type
     pub fn new(id: ID, effect_type: EffectType) -> Self {
-        Self { id, effect_type }
+        Self {
+            id,
+            effect_type,
+            effect_holder: None,
+            side_index: None,
+            prankster_boosted: false,
+        }
     }
 
     /// Get the Effect's ID
@@ -363,24 +375,6 @@ impl std::fmt::Display for Effect {
 
 /// Type alias for event callback functions
 pub type EventCallback = Box<dyn Fn(&EventInfo) -> Option<i32> + Send + Sync>;
-
-/// Context for the current effect being processed
-/// Used by with_effect_state to look up the correct state
-/// Rust-specific: JavaScript uses this.effectState which is a reference
-/// Consolidates: current_effect, current_effect_state, current_effect_data
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct EffectContext {
-    /// Effect ID (e.g., "focuspunch", "intimidate")
-    pub effect_id: ID,
-    /// Type of effect
-    pub effect_type: EffectType,
-    /// Pokemon that holds this effect (for volatiles, abilities, items, status)
-    pub effect_holder: Option<(usize, usize)>,
-    /// Side index (for side conditions)
-    pub side_index: Option<usize>,
-    /// Whether this effect was Prankster boosted
-    pub prankster_boosted: bool,
-}
 
 /// Type alias for spread move hit result (damages, targets)
 pub type SpreadMoveHitResult = (crate::battle_actions::SpreadMoveDamage, crate::battle_actions::SpreadMoveTargets);
@@ -801,28 +795,18 @@ pub struct Battle {
     pub effect_order: i32,
 
     /// Current effect (JavaScript: effect: Effect)
-    /// NOTE: Rust also has current_effect for internal use
     /// JavaScript: effect: Effect | null
     pub effect: Option<Effect>,
     /// Current effect state (JavaScript: effectState: EffectState)
-    /// NOTE: Rust also has current_effect_state for internal use
     /// JavaScript: effectState: EffectState
     pub effect_state: EffectState,
     /// Current event object (JavaScript: event: AnyObject)
-    /// NOTE: Rust also has current_event for internal use
     /// JavaScript: event: AnyObject
     pub event: Option<EventInfo>,
 
     // TODO: DELETE - Not in JavaScript Battle class
     /// Event depth for recursion tracking
     pub event_depth: u8,
-    // TODO: DELETE - Not in JavaScript Battle class (use `event` field instead)
-    /// Current event being processed (internal tracking)
-    pub current_event: Option<EventInfo>,
-    /// Current effect context for with_effect_state lookups
-    /// Rust-specific: Stores info needed to look up the current effect's state
-    /// Consolidates: current_effect, current_effect_state, current_effect_data
-    pub current_effect_context: Option<EffectContext>,
 
     /// Log position for sent messages
     /// JavaScript: sentLogPos: number

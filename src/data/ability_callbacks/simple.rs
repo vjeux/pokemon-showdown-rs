@@ -23,7 +23,7 @@ pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>,
     }
 
     // for (i in boost) { boost[i]! *= 2; }
-    if let Some(ref mut event) = battle.current_event {
+    if let Some(ref mut event) = battle.event {
         if let Some(EventResult::Boost(ref mut boosts)) = event.relay_var {
             boosts.atk *= 2;
             boosts.def *= 2;

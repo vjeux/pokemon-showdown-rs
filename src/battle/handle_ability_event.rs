@@ -31,19 +31,19 @@ impl Battle {
         crate::trace_ability!("turn={}, ability='{}' on {}, event='{}'",
             self.turn, ability_id.as_str(), pokemon_name, event_id);
 
-        // Extract context from current_event for parameter wiring
-        let (event_source_pos, event_target_pos, event_effect_id, event_status_id) = if let Some(ref event) = self.current_event {
+        // Extract context from event for parameter wiring
+        let (event_source_pos, event_target_pos, event_effect_id, event_status_id) = if let Some(ref event) = self.event {
             let effect_str = event.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new());
             (event.source, event.target, effect_str.clone(), effect_str)
         } else {
             (None, None, String::new(), String::new())
         };
 
-        // Extract move_id from active_move, or from current_event.effect if active_move is not set
+        // Extract move_id from active_move, or from event.effect if active_move is not set
         // This is needed for events like FractionalPriority which fire before the move becomes active
         let move_id_owned = if let Some(ref active_move) = self.active_move {
             active_move.id.to_string()
-        } else if let Some(ref event) = self.current_event {
+        } else if let Some(ref event) = self.event {
             // If no active_move, try to get move from event.effect
             event.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new())
         } else {
@@ -51,8 +51,8 @@ impl Battle {
         };
         let move_id = move_id_owned.as_str();
 
-        // Extract relay variables from current_event
-        let (relay_var_int, _relay_var_float, relay_var_boost, relay_var_string) = if let Some(ref event) = self.current_event {
+        // Extract relay variables from event
+        let (relay_var_int, _relay_var_float, relay_var_boost, relay_var_string) = if let Some(ref event) = self.event {
             let relay_int = match &event.relay_var {
                 Some(EventResult::Number(n)) => *n,
                 _ => 0,
@@ -308,7 +308,7 @@ impl Battle {
             "AnyModifyBoost" => ability_callbacks::dispatch_on_any_modify_boost(
                 self,
                 ability_id.as_str(),
-                "",  // Note: boosts handled via relay_var_boost in current_event
+                "",  // Note: boosts handled via relay_var_boost in event
                 pokemon_pos,
             ),
             "AnyModifyDamage" => ability_callbacks::dispatch_on_any_modify_damage(
@@ -382,12 +382,12 @@ impl Battle {
                 move_id,
             ),
             "BasePower" => {
-                // BasePower is called via run_event, so attacker is in current_event.target, defender is in current_event.source
-                let attacker_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
-                let defender_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                // BasePower is called via run_event, so attacker is in event.target, defender is in event.source
+                let attacker_pos = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+                let defender_pos = self.event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
 
                 // Get base_power from relay_var
-                let base_power = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                let base_power = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n),
                     _ => None
                 }).unwrap_or(0);
@@ -420,7 +420,7 @@ impl Battle {
                 pokemon_pos,
             ),
             "ChangeBoost" => {
-                let (target_pos, source_pos, effect_id_string) = if let Some(ref event) = self.current_event {
+                let (target_pos, source_pos, effect_id_string) = if let Some(ref event) = self.event {
                     (
                         event.target,
                         event.source,
@@ -458,7 +458,7 @@ impl Battle {
             ),
             "DamagingHit" => {
                 // Get move_id, source, and damage from current event context
-                let (move_id, source_pos, damage) = self.current_event.as_ref()
+                let (move_id, source_pos, damage) = self.event.as_ref()
                     .map(|e| (
                         e.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new()),
                         e.source,
@@ -469,7 +469,7 @@ impl Battle {
             }
             "DamagingHitOrder" => {
                 // Get move_id and source from current event context
-                let (move_id, source_pos) = self.current_event.as_ref()
+                let (move_id, source_pos) = self.event.as_ref()
                     .map(|e| (
                         e.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new()),
                         e.source
@@ -514,13 +514,13 @@ impl Battle {
                 // Extract type_mod from relay_var and target_type from type_param
                 let (type_mod, target_type) = {
                     let type_mod = self
-                        .current_event
+                        .event
                         .as_ref()
                         .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
                         .unwrap_or(0);
 
                     let target_type = self
-                        .current_event
+                        .event
                         .as_ref()
                         .and_then(|e| e.type_param.clone())
                         .unwrap_or_default();
@@ -597,7 +597,7 @@ impl Battle {
             move_id,
             ),
             "ModifyAtk" => {
-                let (atk, defender_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                let (atk, defender_pos, move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
@@ -619,7 +619,7 @@ impl Battle {
                 ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), relay_var_int, pokemon_pos, event_source_pos.unwrap_or((0, 0)), move_id)
             }
             "ModifyDef" => {
-                let (def, attacker_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                let (def, attacker_pos, move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.source.unwrap_or((0, 0)),
@@ -648,7 +648,7 @@ impl Battle {
             move_id,
             ),
             "ModifySTAB" => {
-                let (stab, source_pos, target_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                let (stab, source_pos, target_pos, move_id_str) = if let Some(ref event) = self.event {
                     let stab_value = match &event.relay_var {
                         Some(EventResult::Float(f)) => *f,
                         _ => 1.0,
@@ -666,7 +666,7 @@ impl Battle {
             }
             "ModifySecondaries" => ability_callbacks::dispatch_on_modify_secondaries(self, ability_id.as_str()),
             "ModifySpA" => {
-                let (spa, defender_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                let (spa, defender_pos, move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
@@ -731,13 +731,13 @@ impl Battle {
                 ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), event_status_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
             }
             "SideConditionStart" => {
-                let side_condition_id_string = self.current_event.as_ref()
+                let side_condition_id_string = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.as_str().to_string());
                 let side_condition_id = side_condition_id_string.as_ref().map(|s| s.as_str()).unwrap_or("");
 
                 // For side events, target in handle_ability_event is the Pokemon with the ability (effect_holder)
-                // but we also need the side_idx from the original event target stored in current_event
+                // but we also need the side_idx from the original event target stored in event
                 let side_index = side_idx.unwrap_or_else(|| {
                     // If target wasn't a Side, pokemon is on side 0 by default
                     pokemon_pos.0
@@ -802,8 +802,8 @@ impl Battle {
             move_id,
             ),
             "SourceModifyDamage" => {
-                // Extract parameters from current_event
-                let (damage, source_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                // Extract parameters from event
+                let (damage, source_pos, move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 }, // damage value
                         event.target.unwrap_or((0, 0)), // attacker position
@@ -822,8 +822,8 @@ impl Battle {
                 )
             }
             "SourceModifyDamagePriority" => {
-                // Extract parameters from current_event
-                let (damage, source_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                // Extract parameters from event
+                let (damage, source_pos, move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
@@ -900,7 +900,7 @@ impl Battle {
             ),
             "TryAddVolatile" => {
                 // Extract status_id from relay_var (e.g., "confusion")
-                let status_id = if let Some(ref event) = self.current_event {
+                let status_id = if let Some(ref event) = self.event {
                     match &event.relay_var {
                         Some(EventResult::String(s)) => s.clone(),
                         _ => String::new(),
@@ -915,8 +915,8 @@ impl Battle {
                 )
             }
             "TryBoost" => {
-                // Temporarily take boost out of current_event to get mutable access
-                let mut boost = self.current_event.as_mut().and_then(|e| {
+                // Temporarily take boost out of event to get mutable access
+                let mut boost = self.event.as_mut().and_then(|e| {
                     let relay_var = e.relay_var.take();
                     match relay_var {
                         Some(EventResult::Boost(b)) => Some(b),
@@ -934,15 +934,15 @@ impl Battle {
                 );
                 // Put it back
                 if let Some(b) = boost {
-                    if let Some(ref mut event) = self.current_event {
+                    if let Some(ref mut event) = self.event {
                         event.relay_var = Some(EventResult::Boost(b));
                     }
                 }
                 result
             }
             "TryBoostPriority" => {
-                // Temporarily take boost out of current_event to get mutable access
-                let mut boost = self.current_event.as_mut().and_then(|e| {
+                // Temporarily take boost out of event to get mutable access
+                let mut boost = self.event.as_mut().and_then(|e| {
                     let relay_var = e.relay_var.take();
                     match relay_var {
                         Some(EventResult::Boost(b)) => Some(b),
@@ -960,7 +960,7 @@ impl Battle {
                 );
                 // Put it back
                 if let Some(b) = boost {
-                    if let Some(ref mut event) = self.current_event {
+                    if let Some(ref mut event) = self.event {
                         event.relay_var = Some(EventResult::Boost(b));
                     }
                 }

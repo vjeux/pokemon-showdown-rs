@@ -488,7 +488,7 @@ pub fn dispatch_on_ally_try_add_volatile(
 }
 /// Dispatch onAllyTryBoost callbacks
 /// Note: JavaScript signature is onAllyTryBoost(boost, target, source, effect)
-/// In Rust, the boost parameter is accessed through battle.current_event.relay_var
+/// In Rust, the boost parameter is accessed through battle.event.relay_var
 /// due to borrow checker limitations (callback needs &mut Battle)
 pub fn dispatch_on_ally_try_boost(
     battle: &mut Battle,
@@ -645,7 +645,7 @@ pub fn dispatch_on_any_modify_atk(
 }
 /// Dispatch onAnyModifyBoost callbacks
 /// Note: JavaScript signature is onAnyModifyBoost(boosts, pokemon)
-/// In Rust, boosts are accessed through battle.current_event.relay_var
+/// In Rust, boosts are accessed through battle.event.relay_var
 pub fn dispatch_on_any_modify_boost(
     battle: &mut Battle,
     ability_id: &str,
@@ -822,7 +822,7 @@ pub fn dispatch_on_before_switch_in(
 }
 
 /// Dispatch onChangeBoost callbacks
-/// Note: boost parameter accessed via battle.current_event.relay_var (not passed as parameter)
+/// Note: boost parameter accessed via battle.event.relay_var (not passed as parameter)
 pub fn dispatch_on_change_boost(
     battle: &mut Battle,
     ability_id: &str,

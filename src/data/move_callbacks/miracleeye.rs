@@ -65,7 +65,7 @@ pub mod condition {
     /// }
     pub fn on_negate_immunity(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // Get the type parameter from the event's relay_var
-        let immunity_type = match &battle.current_event {
+        let immunity_type = match &battle.event {
             Some(event) => match &event.relay_var {
                 Some(EventResult::String(s)) => Some(s.clone()),
                 _ => None,
@@ -102,7 +102,7 @@ pub mod condition {
         // if (boosts.evasion && boosts.evasion > 0) {
         //     boosts.evasion = 0;
         // }
-        if let Some(ref mut event) = battle.current_event {
+        if let Some(ref mut event) = battle.event {
             if let Some(EventResult::Boost(ref mut boosts)) = event.relay_var {
                 if boosts.evasion > 0 {
                     boosts.evasion = 0;

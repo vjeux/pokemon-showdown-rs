@@ -45,8 +45,8 @@ pub fn on_start(
     eprintln!("[TWOTURNMOVE_ONSTART] turn={}, pokemon=({},{})", battle.turn, pokemon_pos.0, pokemon_pos.1);
 
     // this.effectState.move = effect.id;
-    // Get the move ID from battle.current_event.effect
-    let move_id = battle.current_event.as_ref()
+    // Get the move ID from battle.event.effect
+    let move_id = battle.event.as_ref()
         .and_then(|e| e.effect.as_ref())
         .map(|eff| eff.id.clone());
 
@@ -97,8 +97,8 @@ pub fn on_start(
                 .unwrap_or("");
 
             if move_target_type != "self" {
-                // Get defender position from battle.current_event.source
-                let mut defender_pos = battle.current_event.as_ref()
+                // Get defender position from battle.event.source
+                let mut defender_pos = battle.event.as_ref()
                     .and_then(|e| e.source);
 
                 // JavaScript: if (defender.fainted) { defender = this.sample(attacker.foes(true)); }
@@ -156,7 +156,7 @@ pub fn on_start(
 
     // JavaScript: this.runEvent('PrepareHit', attacker, defender, effect);
     // Run side-effects normally associated with hitting (e.g., Protean, Libero)
-    let defender_pos = battle.current_event.as_ref().and_then(|e| e.source);
+    let defender_pos = battle.event.as_ref().and_then(|e| e.source);
     battle.run_event(
         "PrepareHit",
         Some(crate::event::EventTarget::Pokemon(pokemon_pos)),

@@ -91,8 +91,6 @@ impl Battle {
             effect_state: crate::event_system::EffectState::default(),
             event: None,
             event_depth: 0,
-            current_event: None,
-            current_effect_context: None,
             sent_log_pos: 0,
             sent_end: false,
             team_generator: None,

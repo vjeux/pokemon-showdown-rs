@@ -70,7 +70,7 @@ impl Battle {
     ) -> i32 {
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
-        let (event_target, event_source, event_effect) = if let Some(ref event) = self.current_event
+        let (event_target, event_source, event_effect) = if let Some(ref event) = self.event
         {
             (event.target, event.source, event.effect.clone())
         } else {

@@ -59,7 +59,7 @@ pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>
     //     }
     // }
     let mut show_msg = false;
-    if let Some(ref mut event) = battle.current_event {
+    if let Some(ref mut event) = battle.event {
         if let Some(crate::event::EventResult::Boost(ref mut boosts)) = event.relay_var {
             if boosts.atk < 0 { boosts.atk = 0; show_msg = true; }
             if boosts.def < 0 { boosts.def = 0; show_msg = true; }

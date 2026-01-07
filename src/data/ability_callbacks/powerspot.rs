@@ -21,7 +21,7 @@ pub fn on_ally_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: 
     };
 
     // Get the attacker from current event
-    let attacker_pos = match &battle.current_event {
+    let attacker_pos = match &battle.event {
         Some(event) => event.source,
         None => return EventResult::Continue,
     };

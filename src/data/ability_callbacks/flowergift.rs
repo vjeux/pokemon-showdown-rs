@@ -153,7 +153,7 @@ pub fn on_ally_modify_atk(battle: &mut Battle, _atk: i32, _pokemon_pos: (usize, 
     }
 
     // if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather()))
-    let ally_pos = match &battle.current_event {
+    let ally_pos = match &battle.event {
         Some(event) => event.target.unwrap_or((0, 0)),
         None => return EventResult::Continue,
     };
@@ -205,7 +205,7 @@ pub fn on_ally_modify_sp_d(battle: &mut Battle, _spd: i32, _pokemon_pos: (usize,
     }
 
     // if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather()))
-    let ally_pos = match &battle.current_event {
+    let ally_pos = match &battle.event {
         Some(event) => event.target.unwrap_or((0, 0)),
         None => return EventResult::Continue,
     };

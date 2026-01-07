@@ -27,7 +27,7 @@ pub fn on_try_boost(
     boost: &mut crate::dex_data::BoostsTable,
 ) -> EventResult {
     // Get source from current event
-    let source_pos = battle.current_event.as_ref().and_then(|e| e.source);
+    let source_pos = battle.event.as_ref().and_then(|e| e.source);
 
     // if (source && target === source) return;
     if let Some(src) = source_pos {
@@ -83,7 +83,7 @@ pub fn on_try_boost(
             .map(|m| !m.secondaries.is_empty())
             .unwrap_or(false);
 
-        let is_octolock = battle.current_event.as_ref()
+        let is_octolock = battle.event.as_ref()
             .and_then(|e| e.effect.as_ref())
             .map(|eff| eff.id.as_str() == "octolock")
             .unwrap_or(false);

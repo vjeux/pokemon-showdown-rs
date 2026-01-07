@@ -43,7 +43,7 @@ pub fn on_after_boost(
     // if (effect.name === 'Intimidate') {
     //     target.useItem();
     // }
-    let effect_name = battle.current_event.as_ref().and_then(|e| {
+    let effect_name = battle.event.as_ref().and_then(|e| {
         e.effect.as_ref().map(|eff| eff.id.as_str().to_string())
     });
 

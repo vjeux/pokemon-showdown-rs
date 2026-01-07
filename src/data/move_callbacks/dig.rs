@@ -96,7 +96,7 @@ pub mod condition {
     /// }
     pub fn on_immunity(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // Get the immunity type from the event's relay_var
-        let immunity_type = match &battle.current_event {
+        let immunity_type = match &battle.event {
             Some(event) => match &event.relay_var {
                 Some(EventResult::String(s)) => Some(s.clone()),
                 _ => None,

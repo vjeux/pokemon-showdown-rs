@@ -26,8 +26,8 @@ impl Battle {
         eprintln!("[HANDLE_ITEM_EVENT] event_id={}, item_id={}, target={:?}",
             event_id, item_id.as_str(), target_opt);
 
-        let source = self.current_event.as_ref().and_then(|e| e.source);
-        let relay_var = self.current_event.as_ref().and_then(|e| e.relay_var.clone());
+        let source = self.event.as_ref().and_then(|e| e.source);
+        let relay_var = self.event.as_ref().and_then(|e| e.relay_var.clone());
 
         match event_id {
             // TypeScript: onAfterBoost(target:Pokemon, boost:BoostsTable)
@@ -138,7 +138,7 @@ impl Battle {
                 } else {
                     0
                 };
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_base_power(
                     self,
                     item_id.as_str(),
@@ -155,7 +155,7 @@ impl Battle {
                 } else {
                     String::new()
                 };
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_charge_move(
                     self,
                     item_id.as_str(),
@@ -300,7 +300,7 @@ impl Battle {
             // TypeScript: onModifyDamage(damage:number, pokemon:Pokemon, target:Pokemon?)
             "ModifyDamage" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_modify_damage(
                     self,
                     item_id.as_str(),
@@ -317,7 +317,7 @@ impl Battle {
 
             // TypeScript: onModifyMove(pokemon:Pokemon, target:Pokemon?)
             "ModifyMove" => {
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_modify_move(
                     self,
                     item_id.as_str(),
@@ -328,8 +328,8 @@ impl Battle {
 
             // TypeScript: onModifySecondaries(pokemon:Pokemon, secondaries:any)
             "ModifySecondaries" => {
-                // Temporarily take secondaries out of current_event to get mutable access
-                let mut secondaries = self.current_event.as_mut().and_then(|e| {
+                // Temporarily take secondaries out of event to get mutable access
+                let mut secondaries = self.event.as_mut().and_then(|e| {
                     let relay_var = e.relay_var.take();
                     match relay_var {
                         Some(EventResult::Secondaries(s)) => Some(s),
@@ -350,9 +350,9 @@ impl Battle {
                 } else {
                     EventResult::Continue
                 };
-                // Put secondaries back into current_event
+                // Put secondaries back into event
                 if let Some(sec) = secondaries {
-                    if let Some(ref mut event) = self.current_event {
+                    if let Some(ref mut event) = self.event {
                         event.relay_var = Some(EventResult::Secondaries(sec));
                     }
                 }
@@ -403,7 +403,7 @@ impl Battle {
             // TypeScript: onSourceModifyAccuracy() - no params
             "SourceModifyAccuracy" => {
                 let accuracy = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_source_modify_accuracy(self, item_id.as_str(), accuracy, target_pos)
             }
 
@@ -480,8 +480,8 @@ impl Battle {
 
             // TypeScript: onTryBoost(target:Pokemon, boost:BoostsTable)
             "TryBoost" => {
-                // Temporarily take boost out of current_event to get mutable access
-                let mut boost = self.current_event.as_mut().and_then(|e| {
+                // Temporarily take boost out of event to get mutable access
+                let mut boost = self.event.as_mut().and_then(|e| {
                     let relay_var = e.relay_var.take();
                     match relay_var {
                         Some(EventResult::Boost(b)) => Some(b),
@@ -502,9 +502,9 @@ impl Battle {
                 } else {
                     EventResult::Continue
                 };
-                // Put boost back into current_event
+                // Put boost back into event
                 if let Some(b) = boost {
-                    if let Some(ref mut event) = self.current_event {
+                    if let Some(ref mut event) = self.event {
                         event.relay_var = Some(EventResult::Boost(b));
                     }
                 }

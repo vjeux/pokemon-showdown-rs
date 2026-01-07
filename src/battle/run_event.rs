@@ -417,7 +417,6 @@ impl Battle {
         // JavaScript: const parentEvent = this.event; (lines 162-164)
         // Save parent event
         let parent_event = self.event.take();
-        let parent_current_event = self.current_event.take();
 
         // Extract type_param from parent event to preserve it for Effectiveness events
         // JavaScript passes defender type as extra parameter: runEvent('Effectiveness', this, type, move, typeMod)
@@ -436,7 +435,7 @@ impl Battle {
         };
 
         self.event = Some(event_info.clone());
-        self.current_event = Some(event_info);
+        self.event = Some(event_info);
 
         if event_id == "ModifyDamage" {
             eprintln!("[RUN_EVENT] ModifyDamage - Created event with modifier={}",
@@ -587,9 +586,9 @@ impl Battle {
                 EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain
                 | EffectType::SideCondition | EffectType::SlotCondition => {
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
-                    // Set up current_effect_context so callbacks can use with_effect_state
-                    let parent_context = self.set_effect_context(crate::EffectContext {
-                        effect_id: effect_id.clone(),
+                    // Set up effect so callbacks can use with_effect_state
+                    let parent_context = self.set_effect_context(crate::Effect {
+                        id: effect_id.clone(),
                         effect_type: handler.effect_type,
                         effect_holder: handler.effect_holder,
                         side_index: handler.effect_holder.map(|(side, _)| side),
@@ -672,7 +671,6 @@ impl Battle {
         // JavaScript: this.event = parentEvent;
         // Restore parent event
         self.event = parent_event;
-        self.current_event = parent_current_event;
 
         relay_var
     }

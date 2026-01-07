@@ -39,7 +39,7 @@ pub fn on_any_modify_boost(battle: &mut Battle, _boosts: &str, pokemon_pos: (usi
     let active_target = battle.active_target;
 
     // Access boosts from current event (similar to Contrary)
-    if let Some(ref mut event) = battle.current_event {
+    if let Some(ref mut event) = battle.event {
         if let Some(EventResult::Boost(ref mut boosts)) = event.relay_var {
             // if (unawareUser === this.activePokemon && pokemon === this.activeTarget)
             if Some(unaware_user) == active_pokemon && Some(pokemon_pos) == active_target {
