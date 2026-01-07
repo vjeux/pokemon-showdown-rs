@@ -172,14 +172,10 @@ pub mod condition {
         }
 
         // Store the source in the effect state
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        if let Some(volatile) = pokemon_mut.volatiles.get_mut(&ID::from("attract")) {
-            volatile.source = Some(source);
-        }
+        // JavaScript: this.effectState.source = ...
+        battle.with_effect_state(|state| {
+            state.source = Some(source);
+        });
 
         EventResult::Continue
     }

@@ -138,17 +138,11 @@ pub mod condition {
     ///     this.effectState.counter = 3;
     /// }
     pub fn on_start(battle: &mut Battle, source_pos: (usize, usize)) -> EventResult {
-        // Get the pokemon to access its volatile effect state
-        let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        // Get the allyswitch volatile effect state
-        if let Some(volatile) = pokemon.volatiles.get_mut(&ID::from("allyswitch")) {
-            // this.effectState.counter = 3;
-            volatile.set_i32("counter", 3);
-        }
+        // this.effectState.counter = 3;
+        // JavaScript: this.effectState.counter = 3
+        battle.with_effect_state(|state| {
+            state.set_i32("counter", 3);
+        });
 
         EventResult::Continue
     }
@@ -218,15 +212,11 @@ pub mod condition {
         }
 
         // Update the counter and duration
-        let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        if let Some(volatile) = pokemon.volatiles.get_mut(&allyswitch_id) {
-            volatile.set_i32("counter", new_counter);
-            // this.effectState.duration = 2;
-            volatile.duration = Some(2);
-        }
+        // JavaScript: this.effectState.counter *= 3, this.effectState.duration = 2
+        battle.with_effect_state(|state| {
+            state.set_i32("counter", new_counter);
+            state.duration = Some(2);
+        });
 
         EventResult::Continue
     }

@@ -79,18 +79,14 @@ pub fn base_power_callback(
         };
 
         if status != ID::from("slp") {
-            let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-
-            if let Some(data) = pokemon_pokemon.volatiles.get_mut(&ID::from("rollout")) {
-                data.hit_count = Some(data.hit_count.unwrap_or(0) + 1);
-                data.contact_hit_count = Some(data.contact_hit_count.unwrap_or(0) + 1);
-                if data.hit_count.unwrap_or(0) < 5 {
-                    data.duration = Some(2);
+            // JavaScript: this.effectState.hitCount++, this.effectState.contactHitCount++
+            battle.with_effect_state(|state| {
+                state.hit_count = Some(state.hit_count.unwrap_or(0) + 1);
+                state.contact_hit_count = Some(state.contact_hit_count.unwrap_or(0) + 1);
+                if state.hit_count.unwrap_or(0) < 5 {
+                    state.duration = Some(2);
                 }
-            }
+            });
         }
     }
 

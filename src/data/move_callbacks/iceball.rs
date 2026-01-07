@@ -96,34 +96,15 @@ pub fn base_power_callback(
     };
 
     if has_iceball && !is_sleeping {
-        let pokemon_pokemon = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        if let Some(iceball_volatile) = pokemon_pokemon.volatiles.get_mut(&ID::from("iceball")) {
-            let hit_count = iceball_volatile
-                .data
-                .get("hitCount")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
-            iceball_volatile
-                .data
-                .insert("hitCount".to_string(), serde_json::json!(hit_count + 1));
-
-            let contact_hit_count = iceball_volatile
-                .data
-                .get("contactHitCount")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
-            iceball_volatile.data.insert(
-                "contactHitCount".to_string(),
-                serde_json::json!(contact_hit_count + 1),
-            );
-
-            if hit_count + 1 < 5 {
-                iceball_volatile.duration = Some(2);
+        // JavaScript: this.effectState.hitCount++, this.effectState.contactHitCount++
+        battle.with_effect_state(|state| {
+            let hit_count = state.hit_count.unwrap_or(0) + 1;
+            state.hit_count = Some(hit_count);
+            state.contact_hit_count = Some(state.contact_hit_count.unwrap_or(0) + 1);
+            if hit_count < 5 {
+                state.duration = Some(2);
             }
-        }
+        });
     }
 
     // if (pokemon.volatiles['defensecurl']) {

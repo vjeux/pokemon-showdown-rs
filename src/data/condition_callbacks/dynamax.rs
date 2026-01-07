@@ -41,13 +41,10 @@ pub fn on_start(
     _effect_id: Option<&str>,
 ) -> EventResult {
     // this.effectState.turns = 0;
-    // Note: effectState is stored in the volatile's data field
-    let dynamax_id = ID::from("dynamax");
-    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        if let Some(volatile) = pokemon.volatiles.get_mut(&dynamax_id) {
-            volatile.data.insert("turns".to_string(), serde_json::json!(0));
-        }
-    }
+    // JavaScript: this.effectState.turns = 0
+    battle.with_effect_state(|state| {
+        state.data.insert("turns".to_string(), serde_json::json!(0));
+    });
 
     // pokemon.removeVolatile('minimize');
     crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("minimize"));
@@ -274,15 +271,13 @@ pub fn on_residual(
     _effect_id: Option<&str>,
 ) -> EventResult {
     // this.effectState.turns++;
-    let dynamax_id = ID::from("dynamax");
-    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        if let Some(volatile) = pokemon.volatiles.get_mut(&dynamax_id) {
-            let turns = volatile.data.get("turns")
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0);
-            volatile.data.insert("turns".to_string(), serde_json::json!(turns + 1));
-        }
-    }
+    // JavaScript: this.effectState.turns++
+    battle.with_effect_state(|state| {
+        let turns = state.data.get("turns")
+            .and_then(|v| v.as_i64())
+            .unwrap_or(0);
+        state.data.insert("turns".to_string(), serde_json::json!(turns + 1));
+    });
 
     EventResult::Continue
 }

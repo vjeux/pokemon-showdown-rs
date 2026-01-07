@@ -40,17 +40,12 @@ pub fn on_start(
     }
 
     // this.effectState.move = this.activeMove.id;
+    // JavaScript: this.effectState.move = ...
     let move_id = active_move.id.to_string();
 
-    let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    let choicelock_id = ID::from("choicelock");
-    if let Some(volatile) = pokemon.volatiles.get_mut(&choicelock_id) {
-        volatile.data.insert("move".to_string(), serde_json::Value::String(move_id));
-    }
+    battle.with_effect_state(|state| {
+        state.data.insert("move".to_string(), serde_json::Value::String(move_id));
+    });
 
     EventResult::Continue
 }
