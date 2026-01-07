@@ -1722,12 +1722,6 @@ pub fn dispatch_on_terrain_change(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onTryAddVolatile(status, pokemon)
-//   onTryAddVolatile(status, target)
-//   onTryAddVolatile(status, target, source, effect)
-
 /// Dispatch onTryAddVolatile callbacks
 pub fn dispatch_on_try_add_volatile(
     battle: &mut Battle,
