@@ -83,11 +83,43 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // if (!source.volatiles["dynamax"]) return;
+        let source_has_dynamax = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.has_volatile(&ID::from("dynamax"))
+        };
+
+        if !source_has_dynamax {
+            return EventResult::Continue;
+        }
+
+        // for (const pokemon of source.foes()) {
+        //     this.boost({ atk: -1 }, pokemon);
+        // }
+        let foe_positions = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.foes(battle, false)
+        };
+
+        for foe_pos in foe_positions {
+            battle.boost(&[("atk", -1)], foe_pos, Some(source), None, false, false);
+        }
+
         EventResult::Continue
     }
 }
