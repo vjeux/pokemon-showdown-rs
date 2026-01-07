@@ -1553,23 +1553,17 @@ pub fn dispatch_on_source_modify_secondaries(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSourceModifySpA()
-//   onSourceModifySpA(atk, attacker, defender, move)
-//   onSourceModifySpA(spa, attacker, defender, move)
-
 /// Dispatch onSourceModifySpA callbacks
 pub fn dispatch_on_source_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "heatproof" => heatproof::on_source_modify_sp_a(battle, move_id),
-        "purifyingsalt" => purifyingsalt::on_source_modify_sp_a(battle, move_id),
-        "thickfat" => thickfat::on_source_modify_sp_a(battle, move_id),
-        "waterbubble" => waterbubble::on_source_modify_sp_a(battle, move_id),
+        "heatproof" => heatproof::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "purifyingsalt" => purifyingsalt::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "thickfat" => thickfat::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "waterbubble" => waterbubble::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -4873,9 +4867,9 @@ pub fn dispatch_on_source_modify_secondaries_sub_order(
 pub fn dispatch_on_source_modify_sp_a_priority(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_sp_a(battle, ability_id, move_id)
+    dispatch_on_source_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4884,9 +4878,9 @@ pub fn dispatch_on_source_modify_sp_a_priority(
 pub fn dispatch_on_source_modify_sp_a_order(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_sp_a(battle, ability_id, move_id)
+    dispatch_on_source_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4895,9 +4889,9 @@ pub fn dispatch_on_source_modify_sp_a_order(
 pub fn dispatch_on_source_modify_sp_a_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
 ) -> EventResult {
-    dispatch_on_source_modify_sp_a(battle, ability_id, move_id)
+    dispatch_on_source_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

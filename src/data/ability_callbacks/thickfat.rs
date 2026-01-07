@@ -29,7 +29,7 @@ pub fn on_source_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usiz
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_sp_a(battle: &mut Battle, move_id: &str) -> EventResult {
+pub fn on_source_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), move_id: &str) -> EventResult {
     eprintln!("[THICK FAT] onSourceModifySpA called! move_id={}", move_id);
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         eprintln!("[THICK FAT] move_type={}", move_data.move_type);

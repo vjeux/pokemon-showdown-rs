@@ -844,12 +844,14 @@ impl Battle {
             "SourceModifySpA" => ability_callbacks::dispatch_on_source_modify_sp_a(
                 self,
                 ability_id.as_str(),
+                relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
             move_id,
             ),
             "SourceModifySpAPriority" => {
                 ability_callbacks::dispatch_on_source_modify_sp_a_priority(
                     self,
                     ability_id.as_str(),
+                    relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
                 move_id,
             )
             }
