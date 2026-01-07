@@ -76,11 +76,23 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // source.skipBeforeSwitchOutEventFlag = true;
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+
+        source_pokemon.skip_before_switch_out_event_flag = true;
+
         EventResult::Continue
     }
 }
