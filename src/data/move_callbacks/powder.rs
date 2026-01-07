@@ -45,6 +45,7 @@ pub mod condition {
         battle: &mut Battle,
         source_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
+        _move_id: Option<&str>,
     ) -> EventResult {
         let pokemon = source_pos;
 

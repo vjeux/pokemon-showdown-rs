@@ -652,12 +652,6 @@ pub fn dispatch_on_trap_pokemon(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onTryAddVolatile(status, pokemon)
-//   onTryAddVolatile(status, target)
-//   onTryAddVolatile(status, target, source, effect)
-
 /// Dispatch onTryAddVolatile callbacks
 pub fn dispatch_on_try_add_volatile(
     battle: &mut Battle,
@@ -668,7 +662,7 @@ pub fn dispatch_on_try_add_volatile(
     effect_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
-        "dynamax" => dynamax::on_try_add_volatile(battle, target_pos.unwrap_or((0,0))),
+        "dynamax" => dynamax::on_try_add_volatile(battle, status, target_pos.unwrap_or((0,0)), source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_try_add_volatile(
@@ -682,28 +676,20 @@ pub fn dispatch_on_try_add_volatile(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onTryMove()
-//   onTryMove(attacker, defender, move)
-//   onTryMove(pokemon)
-//   onTryMove(pokemon, target, move)
-//   onTryMove(source, target)
-//   onTryMove(source, target, move)
-//   onTryMove(target, source, move)
-
 /// Dispatch onTryMove callbacks
 pub fn dispatch_on_try_move(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    move_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
-        "desolateland" => desolateland::on_try_move(battle, pokemon_pos),
-        "primordialsea" => primordialsea::on_try_move(battle, pokemon_pos),
+        "desolateland" => desolateland::on_try_move(battle, pokemon_pos, target_pos, move_id),
+        "primordialsea" => primordialsea::on_try_move(battle, pokemon_pos, target_pos, move_id),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_try_move(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_try_move(battle, condition_id, pokemon_pos, target_pos, move_id)
         }
     }
 }

@@ -24,6 +24,8 @@ use crate::event::EventResult;
 pub fn on_try_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _move_id: Option<&str>,
 ) -> EventResult {
     // Get the active move
     let (move_type, move_category) = match &battle.active_move {

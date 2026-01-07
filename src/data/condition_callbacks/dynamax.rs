@@ -170,12 +170,15 @@ pub fn on_start(
 /// }
 /// ```
 pub fn on_try_add_volatile(
-    battle: &mut Battle,
+    _battle: &mut Battle,
+    status: Option<&str>,
     _pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // if (status.id === 'flinch') return null;
-    if let Some(ref effect) = battle.effect {
-        if effect.as_str() == "flinch" {
+    if let Some(status_id) = status {
+        if status_id == "flinch" {
             return EventResult::Null;
         }
     }

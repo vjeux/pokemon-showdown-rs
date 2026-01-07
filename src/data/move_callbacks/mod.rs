@@ -2627,9 +2627,11 @@ pub fn dispatch_condition_on_try_move(
     battle: &mut Battle,
     move_id: &str,
     source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    _move_id_param: Option<&str>,
 ) -> EventResult {
     match move_id {
-        "powder" => powder::condition::on_try_move(battle, source_pos, None),
+        "powder" => powder::condition::on_try_move(battle, source_pos, target_pos, _move_id_param),
         _ => EventResult::Continue,
     }
 }

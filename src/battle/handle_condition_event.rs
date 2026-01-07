@@ -339,7 +339,18 @@ impl Battle {
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
                 condition_callbacks::dispatch_on_try_hit(self, condition_id, source_pos, pokemon_pos)
             }
-            "TryMove" => condition_callbacks::dispatch_on_try_move(self, condition_id, pokemon_pos),
+            "TryMove" => {
+                // Extract target from current_event and move_id from active_move
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let move_id_string = self.active_move.as_ref().map(|m| m.id.as_str().to_string());
+                condition_callbacks::dispatch_on_try_move(
+                    self,
+                    condition_id,
+                    pokemon_pos,
+                    target_pos,
+                    move_id_string.as_deref(),
+                )
+            }
             "Type" => condition_callbacks::dispatch_on_type(self, condition_id, pokemon_pos),
             "Weather" => {
                 condition_callbacks::dispatch_on_weather(self, condition_id, pokemon_pos)
