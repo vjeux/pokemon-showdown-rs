@@ -44,8 +44,8 @@ pub fn on_hit(
     };
 
     // JavaScript: this.dex.getActiveMove('G-Max Sandblast')
-    // Pass the move ID as source_effect so partiallytrapped knows this is a G-Max effect
-    let move_id = ID::from("gmaxsandblast");
+    // ID::from normalizes to lowercase alphanumeric, so this becomes "gmaxsandblast"
+    let move_id = ID::from("G-Max Sandblast");
 
     for foe_pos in foe_positions {
         Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source), Some(&move_id), None, None);
@@ -96,8 +96,8 @@ pub mod self_callbacks {
         };
 
         // JavaScript: this.dex.getActiveMove("G-Max Sandblast")
-        // Pass the move ID as source_effect so partiallytrapped knows this is a G-Max effect
-        let move_id = ID::from("gmaxsandblast");
+        // ID::from normalizes to lowercase alphanumeric, so this becomes "gmaxsandblast"
+        let move_id = ID::from("G-Max Sandblast");
 
         for foe_pos in foe_positions {
             Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source), Some(&move_id), None, None);

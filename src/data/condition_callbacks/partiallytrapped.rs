@@ -61,26 +61,18 @@ pub fn on_start(
     _source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    // Get source and sourceEffect from effectState
-    let (source_pos, source_effect_name) = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        let trap_id = ID::from("partiallytrapped");
-        if let Some(state) = pokemon.volatiles.get(&trap_id) {
-            let source = state.source;
-            // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
-            // Use the ID as the name - the battle formatter will convert it to display name
-            let effect_name = state.source_effect
-                .as_ref()
-                .map(|id| format!("move: {}", id.as_str()))
-                .unwrap_or_else(|| "unknown".to_string());
-            (source, effect_name)
-        } else {
-            return EventResult::Continue;
-        }
+    // Get source and sourceEffect from effectState using with_effect_state_ref
+    // JavaScript: this.effectState.source, this.effectState.sourceEffect
+    let (source_pos, source_effect_name) = match battle.with_effect_state_ref(|state| {
+        let source = state.source;
+        let effect_name = state.source_effect
+            .as_ref()
+            .map(|id| id.as_str().to_string())
+            .unwrap_or_else(|| "unknown".to_string());
+        (source, effect_name)
+    }) {
+        Some(result) => result,
+        None => return EventResult::Continue,
     };
 
     // this.add('-activate', pokemon, 'move: ' + this.effectState.sourceEffect, `[of] ${source}`);
@@ -118,17 +110,10 @@ pub fn on_start(
     };
 
     // Store boundDivisor in effectState.data
-    {
-        let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        let trap_id = ID::from("partiallytrapped");
-        if let Some(state) = pokemon.volatiles.get_mut(&trap_id) {
-            state.data.insert("boundDivisor".to_string(), serde_json::json!(bound_divisor));
-        }
-    }
+    // JavaScript: this.effectState.boundDivisor = ...
+    battle.with_effect_state(|state| {
+        state.data.insert("boundDivisor".to_string(), serde_json::json!(bound_divisor));
+    });
 
     EventResult::Continue
 }
@@ -157,29 +142,18 @@ pub fn on_residual(
 ) -> EventResult {
     eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Called for {:?}", pokemon_pos);
 
-    // Get source and effect information from volatile state
-    let (source_pos, base_maxhp, bound_divisor, is_gmax_effect) = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        let trap_id = ID::from("partiallytrapped");
-        let source = pokemon.volatiles.get(&trap_id)
-            .and_then(|state| state.source);
+    // Get source, effect information, and boundDivisor from volatile state using with_effect_state_ref
+    // JavaScript: this.effectState.source, this.effectState.sourceEffect, this.effectState.boundDivisor
+    let (source_pos, bound_divisor, is_gmax_effect, source_effect_name) = match battle.with_effect_state_ref(|state| {
+        let source = state.source;
 
         // JavaScript: this.damage(pokemon.baseMaxhp / this.effectState.boundDivisor);
-        // Get boundDivisor from effectState (set in on_start: 6 for Binding Band, 8 otherwise)
-        let divisor = pokemon.volatiles.get(&trap_id)
-            .and_then(|state| state.data.get("boundDivisor"))
+        let divisor = state.data.get("boundDivisor")
             .and_then(|v| v.as_i64())
             .unwrap_or(8) as i32;
 
         // JavaScript: const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
-        // G-Max Centiferno and G-Max Sandblast continue even after the user leaves the field
-        // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
-        let gmax = pokemon.volatiles.get(&trap_id)
-            .and_then(|state| state.source_effect.as_ref())
+        let gmax = state.source_effect.as_ref()
             .map(|id| {
                 let id_str = id.as_str();
                 let is_gmax = id_str == "gmaxcentiferno" || id_str == "gmaxsandblast";
@@ -188,7 +162,24 @@ pub fn on_residual(
             })
             .unwrap_or(false);
 
-        (source, pokemon.base_maxhp, divisor, gmax)
+        let effect_name = state.source_effect
+            .as_ref()
+            .map(|id| id.as_str().to_string())
+            .unwrap_or_else(|| "[partiallytrapped]".to_string());
+
+        (source, divisor, gmax, effect_name)
+    }) {
+        Some(result) => result,
+        None => return EventResult::Continue,
+    };
+
+    // Get base_maxhp from pokemon
+    let base_maxhp = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.base_maxhp
     };
 
     // JavaScript: if (source && (!source.isActive || source.hp <= 0 || !source.activeTurns) && !gmaxEffect)
@@ -209,17 +200,6 @@ pub fn on_residual(
         if source_invalid && !is_gmax_effect {
             // Remove the trap volatile without dealing damage
             eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Source Pokemon fainted/inactive, removing trap without damage");
-
-            // Get sourceEffect for battle log message
-            // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
-            let source_effect_name = {
-                let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1).unwrap();
-                let trap_id = ID::from("partiallytrapped");
-                pokemon.volatiles.get(&trap_id)
-                    .and_then(|state| state.source_effect.as_ref())
-                    .map(|id| id.as_str().to_string())
-                    .unwrap_or_else(|| "[partiallytrapped]".to_string())
-            };
 
             // Remove the volatile
             if let Some(pokemon_mut) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -268,21 +248,21 @@ pub fn on_end(
 ) -> EventResult {
     // this.add('-end', pokemon, this.effectState.sourceEffect, '[partiallytrapped]');
 
-    // Get pokemon ident and sourceEffect from effectState
-    let (pokemon_ident, source_effect_name) = {
+    // Get sourceEffect from effectState using with_effect_state_ref
+    // JavaScript: this.effectState.sourceEffect
+    let source_effect_name = battle.with_effect_state_ref(|state| {
+        state.source_effect
+            .as_ref()
+            .map(|id| id.as_str().to_string())
+            .unwrap_or_else(|| "[partiallytrapped]".to_string())
+    }).unwrap_or_else(|| "[partiallytrapped]".to_string());
+
+    let pokemon_ident = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-
-        let trap_id = ID::from("partiallytrapped");
-        // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
-        let effect_name = pokemon.volatiles.get(&trap_id)
-            .and_then(|state| state.source_effect.as_ref())
-            .map(|id| id.as_str().to_string())
-            .unwrap_or_else(|| "[partiallytrapped]".to_string());
-
-        (pokemon.get_slot(), effect_name)
+        pokemon.get_slot()
     };
 
     battle.add("-end", &[
@@ -309,38 +289,35 @@ pub fn on_trap_pokemon(
     // JavaScript: const gmaxEffect = ['gmaxcentiferno', 'gmaxsandblast'].includes(this.effectState.sourceEffect.id);
     // JavaScript: if (this.effectState.source?.isActive || gmaxEffect) pokemon.tryTrap();
 
-    let trap_id = ID::from("partiallytrapped");
-    let (source_active, is_gmax_effect) = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
+    // Get source and is_gmax_effect from effectState using with_effect_state_ref
+    // JavaScript: this.effectState.source, this.effectState.sourceEffect
+    let (source_pos, is_gmax_effect) = match battle.with_effect_state_ref(|state| {
+        let source = state.source;
 
-        if let Some(volatile) = pokemon.volatiles.get(&trap_id) {
-            let active = if let Some((source_side, source_poke)) = volatile.source {
-                if let Some(source) = battle.pokemon_at(source_side, source_poke) {
-                    // Check if source is active
-                    !source.fainted && source.hp > 0
-                } else {
-                    false
-                }
-            } else {
-                false
-            };
+        // Check for G-Max effects (gmaxcentiferno, gmaxsandblast)
+        let gmax = state.source_effect.as_ref()
+            .map(|id| {
+                let id_str = id.as_str();
+                id_str == "gmaxcentiferno" || id_str == "gmaxsandblast"
+            })
+            .unwrap_or(false);
 
-            // Check for G-Max effects (gmaxcentiferno, gmaxsandblast)
-            // In Rust, sourceEffect is stored in state.source_effect (Option<ID>), not in state.data
-            let gmax = volatile.source_effect.as_ref()
-                .map(|id| {
-                    let id_str = id.as_str();
-                    id_str == "gmaxcentiferno" || id_str == "gmaxsandblast"
-                })
-                .unwrap_or(false);
+        (source, gmax)
+    }) {
+        Some(result) => result,
+        None => return EventResult::Continue,
+    };
 
-            (active, gmax)
+    // Check if source is active
+    let source_active = if let Some((source_side, source_poke)) = source_pos {
+        if let Some(source) = battle.pokemon_at(source_side, source_poke) {
+            // Check if source is active
+            !source.fainted && source.hp > 0
         } else {
-            (false, false)
+            false
         }
+    } else {
+        false
     };
 
     // Trap pokemon if source is active OR it's a G-Max effect
