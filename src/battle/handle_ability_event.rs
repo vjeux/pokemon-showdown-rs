@@ -544,7 +544,7 @@ impl Battle {
             "FoeMaybeTrapPokemon" => ability_callbacks::dispatch_on_foe_maybe_trap_pokemon(
                 self,
                 ability_id.as_str(),
-                pokemon_pos, None
+                pokemon_pos, event_source_pos
             ),
             "FoeTrapPokemon" => ability_callbacks::dispatch_on_foe_trap_pokemon(
                 self,
