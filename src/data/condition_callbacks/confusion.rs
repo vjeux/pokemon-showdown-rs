@@ -85,16 +85,12 @@ pub fn on_start(
 
     // this.effectState.time = this.random(min, 6);
     let time = battle.random_with_range(min, 6);
-    eprintln!("[CONFUSION] onStart: Generated time value = {}", time);
 
     // Set time in effect state (NOT in pokemon.volatiles!)
     // In JavaScript: this.effectState.time = value
     // In Rust: battle.current_effect_state is a reference to the volatile's state
     if let Some(ref mut effect_state) = battle.current_effect_state {
-        eprintln!("[CONFUSION] onStart: Setting time={} in current_effect_state.data", time);
         effect_state.data.insert("time".to_string(), serde_json::Value::Number(serde_json::Number::from(time)));
-    } else {
-        eprintln!("[CONFUSION] onStart: ERROR - current_effect_state is None!");
     }
 
     EventResult::Continue
@@ -195,15 +191,12 @@ pub fn on_before_move(
             .and_then(|t| t.as_i64())
             .unwrap_or(-1);
 
-        eprintln!("[CONFUSION] Turn {}: time before={}, time after={}", battle.turn, time_before, time_after);
-
         time_after == 0
     };
 
     if time_is_zero {
         // pokemon.removeVolatile('confusion');
         let confusion_id = ID::from("confusion");
-        eprintln!("[CONFUSION] Turn {}: time hit 0, removing confusion", battle.turn);
         crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &confusion_id);
         // return;
         return EventResult::Continue;
@@ -219,11 +212,9 @@ pub fn on_before_move(
     };
 
     battle.add("-activate", &[Arg::String(pokemon_ident.clone()), Arg::Str("confusion")]);
-    eprintln!("[CONFUSION] Turn {}: Added -activate for {}", battle.turn, pokemon_ident);
 
     // if (!this.randomChance(33, 100))
     let hit_self = battle.random_chance(33, 100);
-    eprintln!("[CONFUSION] Turn {}: random_chance(33, 100) = {}", battle.turn, hit_self);
     if !hit_self {
         // return;
         return EventResult::Continue;
