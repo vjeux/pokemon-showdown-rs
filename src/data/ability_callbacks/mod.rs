@@ -1239,44 +1239,35 @@ pub fn dispatch_on_modify_def(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyMove()
-//   onModifyMove(move)
-//   onModifyMove(move, attacker)
-//   onModifyMove(move, attacker, defender)
-//   onModifyMove(move, pokemon)
-//   onModifyMove(move, pokemon, target)
-//   onModifyMove(move, source)
-//   onModifyMove(move, source, target)
-
 /// Dispatch onModifyMove callbacks
 pub fn dispatch_on_modify_move(
     battle: &mut Battle,
     ability_id: &str,
     move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "battlebond" => battlebond::on_modify_move(battle, move_id),
-        "gorillatactics" => gorillatactics::on_modify_move(battle, move_id, (0, 0)),
-        "illuminate" => illuminate::on_modify_move(battle, move_id),
-        "infiltrator" => infiltrator::on_modify_move(battle, move_id),
-        "keeneye" => keeneye::on_modify_move(battle, move_id),
-        "longreach" => longreach::on_modify_move(battle, move_id),
-        "mindseye" => mindseye::on_modify_move(battle, move_id),
-        "moldbreaker" => moldbreaker::on_modify_move(battle, move_id),
-        "myceliummight" => myceliummight::on_modify_move(battle, move_id),
-        "propellertail" => propellertail::on_modify_move(battle, move_id),
-        "scrappy" => scrappy::on_modify_move(battle, move_id),
-        "serenegrace" => serenegrace::on_modify_move(battle, move_id),
-        "sheerforce" => sheerforce::on_modify_move(battle, move_id, (0, 0)),
-        "skilllink" => skilllink::on_modify_move(battle, move_id),
-        "stalwart" => stalwart::on_modify_move(battle, move_id),
-        "stancechange" => stancechange::on_modify_move(battle, move_id),
-        "stench" => stench::on_modify_move(battle, move_id),
-        "teravolt" => teravolt::on_modify_move(battle, move_id),
-        "turboblaze" => turboblaze::on_modify_move(battle, move_id),
-        "unseenfist" => unseenfist::on_modify_move(battle, move_id),
+        "battlebond" => battlebond::on_modify_move(battle, move_id, source_pos, target_pos),
+        "gorillatactics" => gorillatactics::on_modify_move(battle, move_id, source_pos, target_pos),
+        "illuminate" => illuminate::on_modify_move(battle, move_id, source_pos, target_pos),
+        "infiltrator" => infiltrator::on_modify_move(battle, move_id, source_pos, target_pos),
+        "keeneye" => keeneye::on_modify_move(battle, move_id, source_pos, target_pos),
+        "longreach" => longreach::on_modify_move(battle, move_id, source_pos, target_pos),
+        "mindseye" => mindseye::on_modify_move(battle, move_id, source_pos, target_pos),
+        "moldbreaker" => moldbreaker::on_modify_move(battle, move_id, source_pos, target_pos),
+        "myceliummight" => myceliummight::on_modify_move(battle, move_id, source_pos, target_pos),
+        "propellertail" => propellertail::on_modify_move(battle, move_id, source_pos, target_pos),
+        "scrappy" => scrappy::on_modify_move(battle, move_id, source_pos, target_pos),
+        "serenegrace" => serenegrace::on_modify_move(battle, move_id, source_pos, target_pos),
+        "sheerforce" => sheerforce::on_modify_move(battle, move_id, source_pos, target_pos),
+        "skilllink" => skilllink::on_modify_move(battle, move_id, source_pos, target_pos),
+        "stalwart" => stalwart::on_modify_move(battle, move_id, source_pos, target_pos),
+        "stancechange" => stancechange::on_modify_move(battle, move_id, source_pos, target_pos),
+        "stench" => stench::on_modify_move(battle, move_id, source_pos, target_pos),
+        "teravolt" => teravolt::on_modify_move(battle, move_id, source_pos, target_pos),
+        "turboblaze" => turboblaze::on_modify_move(battle, move_id, source_pos, target_pos),
+        "unseenfist" => unseenfist::on_modify_move(battle, move_id, source_pos, target_pos),
         _ => EventResult::Continue,
     }
 }
@@ -4347,8 +4338,10 @@ pub fn dispatch_on_modify_move_priority(
     battle: &mut Battle,
     ability_id: &str,
     move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_move(battle, ability_id, move_id)
+    dispatch_on_modify_move(battle, ability_id, move_id, source_pos, target_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4358,8 +4351,10 @@ pub fn dispatch_on_modify_move_order(
     battle: &mut Battle,
     ability_id: &str,
     move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_move(battle, ability_id, move_id)
+    dispatch_on_modify_move(battle, ability_id, move_id, source_pos, target_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4369,8 +4364,10 @@ pub fn dispatch_on_modify_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
     move_id: &str,
+    source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_move(battle, ability_id, move_id)
+    dispatch_on_modify_move(battle, ability_id, move_id, source_pos, target_pos)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

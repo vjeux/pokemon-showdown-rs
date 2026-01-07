@@ -114,16 +114,7 @@ pub fn on_source_after_faint(_battle: &mut Battle, _target_pos: Option<(usize, u
 ///         move.multihit = 3;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
-    // Get attacker position from current event
-    let attacker_pos = match &battle.current_event {
-        Some(event) => match event.source {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        },
-        None => return EventResult::Continue,
-    };
-
+pub fn on_modify_move(battle: &mut Battle, _move_id: &str, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // Check if move is watershuriken
     let is_water_shuriken = if let Some(ref active_move) = battle.active_move {
         active_move.id.as_str() == "watershuriken"
@@ -137,7 +128,7 @@ pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
 
     // if (attacker.species.name === 'Greninja-Ash' && !attacker.transformed)
     let (species_name, transformed) = {
-        let attacker = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+        let attacker = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

@@ -20,7 +20,7 @@ use crate::event::EventResult;
 ///         });
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, _move_id: &str, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::battle_actions::SecondaryEffect;
 
     // if (move.category !== "Status")

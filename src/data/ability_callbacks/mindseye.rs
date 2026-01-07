@@ -81,7 +81,7 @@ pub fn on_try_boost(
 ///         move.ignoreImmunity['Normal'] = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, _move_id: &str, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     if let Some(ref mut active_move) = battle.active_move {
         // move.ignoreEvasion = true;
         active_move.ignore_evasion = true;

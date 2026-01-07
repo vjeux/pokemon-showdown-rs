@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     const targetForme = (move.id === 'kingsshield' ? 'Aegislash' : 'Aegislash-Blade');
 ///     if (attacker.species.name !== targetForme) attacker.formeChange(targetForme);
 /// }
-pub fn on_modify_move(battle: &mut Battle, _move_id: &str) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, _move_id: &str, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
     
 

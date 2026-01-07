@@ -628,12 +628,14 @@ impl Battle {
             }
             "ModifyDefPriority" => ability_callbacks::dispatch_on_modify_def_priority(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), ""),
             "ModifyMove" => {
-                ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), move_id)
+                ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), move_id, pokemon_pos, event_target_pos)
             }
             "ModifyMovePriority" => ability_callbacks::dispatch_on_modify_move_priority(
                 self,
                 ability_id.as_str(),
             move_id,
+            pokemon_pos,
+            event_target_pos,
             ),
             "ModifyPriority" => ability_callbacks::dispatch_on_modify_priority(
                 self,

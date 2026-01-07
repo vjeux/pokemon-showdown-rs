@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///         move.hasSheerForce = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, _pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move.secondaries)
     if let Some(ref mut active_move) = battle.active_move {
         // Check if secondaries exist (not empty)

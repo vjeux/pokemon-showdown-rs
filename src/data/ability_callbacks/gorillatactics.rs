@@ -103,7 +103,7 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 ///     if (pokemon.abilityState.choiceLock || move.isZOrMaxPowered || move.id === 'struggle') return;
 ///     pokemon.abilityState.choiceLock = move.id;
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (pokemon.abilityState.choiceLock || move.isZOrMaxPowered || move.id === 'struggle') return;
     let choice_lock = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
