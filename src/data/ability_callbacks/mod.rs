@@ -1485,10 +1485,6 @@ pub fn dispatch_on_source_base_power(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSourceDamagingHit(damage, target, source, move)
-
 /// Dispatch onSourceDamagingHit callbacks
 pub fn dispatch_on_source_damaging_hit(
     battle: &mut Battle,

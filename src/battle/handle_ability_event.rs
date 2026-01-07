@@ -768,7 +768,7 @@ impl Battle {
             "SourceDamagingHit" => ability_callbacks::dispatch_on_source_damaging_hit(
                 self,
                 ability_id.as_str(),
-                0, Some(pokemon_pos), None,
+                relay_var_int, event_target_pos, Some(pokemon_pos),
             move_id,
             ),
             "SourceModifyAccuracy" => ability_callbacks::dispatch_on_source_modify_accuracy(
