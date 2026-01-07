@@ -50,11 +50,20 @@ impl Battle {
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_after_move(self, condition_id, pokemon_pos, target_pos, &move_id)
             }
-            "AfterMoveSecondary" => condition_callbacks::dispatch_on_after_move_secondary(
-                self,
-                condition_id,
-                pokemon_pos,
-            ),
+            "AfterMoveSecondary" => {
+                // Extract source from current_event and move_id from active_move
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
+                condition_callbacks::dispatch_on_after_move_secondary(
+                    self,
+                    condition_id,
+                    pokemon_pos,
+                    source_pos,
+                    &move_id
+                )
+            }
             "BasePower" => {
                 condition_callbacks::dispatch_on_base_power(self, condition_id, pokemon_pos)
             }

@@ -86,14 +86,16 @@ pub fn dispatch_on_after_move(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
+/// Dispatch onAfterMoveSecondary callbacks
 pub fn dispatch_on_after_move_secondary(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "frz" => frz::on_after_move_secondary(battle, pokemon_pos),
+        "frz" => frz::on_after_move_secondary(battle, pokemon_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }

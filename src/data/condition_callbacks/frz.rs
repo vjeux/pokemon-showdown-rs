@@ -217,6 +217,8 @@ pub fn on_modify_move(
 pub fn on_after_move_secondary(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // if (move.thawsTarget)
     let thaws_target = match &battle.active_move {
