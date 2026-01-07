@@ -23,7 +23,10 @@ use crate::event::EventResult;
 /// ```
 pub fn on_base_power(
     battle: &mut Battle,
+    _base_power: i32,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // let bp = Math.max(1, move.basePower);
     let base_power = match &battle.active_move {

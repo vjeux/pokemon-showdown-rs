@@ -65,7 +65,16 @@ impl Battle {
                 )
             }
             "BasePower" => {
-                condition_callbacks::dispatch_on_base_power(self, condition_id, pokemon_pos)
+                // Extract base_power from relay_var, target from current_event, and move_id from active_move
+                let base_power = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
+                condition_callbacks::dispatch_on_base_power(self, condition_id, base_power, pokemon_pos, target_pos, &move_id)
             }
             "BeforeMove" => {
                 condition_callbacks::dispatch_on_before_move(self, condition_id, pokemon_pos)

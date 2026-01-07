@@ -99,34 +99,22 @@ pub fn dispatch_on_after_move_secondary(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onBasePower()
-//   onBasePower(basePower)
-//   onBasePower(basePower, attacker, defender, move)
-//   onBasePower(basePower, pokemon)
-//   onBasePower(basePower, pokemon, target)
-//   onBasePower(basePower, pokemon, target, move)
-//   onBasePower(basePower, source)
-//   onBasePower(basePower, source, target)
-//   onBasePower(basePower, source, target, move)
-//   onBasePower(basePower, user, target)
-//   onBasePower(basePower, user, target, move)
-//   onBasePower(relayVar, source, target, move)
-
 /// Dispatch onBasePower callbacks
 pub fn dispatch_on_base_power(
     battle: &mut Battle,
     condition_id: &str,
+    base_power: i32,
     pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "gem" => gem::on_base_power(battle, pokemon_pos),
-        "rolloutstorage" => rolloutstorage::on_base_power(battle, pokemon_pos),
+        "gem" => gem::on_base_power(battle, base_power, pokemon_pos, target_pos, move_id),
+        "rolloutstorage" => rolloutstorage::on_base_power(battle, base_power, pokemon_pos, target_pos, move_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             // dispatch_condition_on_base_power takes (battle, move_id, source_pos, target_pos)
-            move_callbacks::dispatch_condition_on_base_power(battle, condition_id, pokemon_pos, None)
+            move_callbacks::dispatch_condition_on_base_power(battle, condition_id, pokemon_pos, target_pos)
         }
     }
 }
