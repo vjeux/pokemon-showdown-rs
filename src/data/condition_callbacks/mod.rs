@@ -345,7 +345,10 @@ pub fn dispatch_on_field_residual(
         "sandstorm" => sandstorm::on_field_residual(battle, pokemon_pos),
         "snowscape" => snowscape::on_field_residual(battle, pokemon_pos),
         "sunnyday" => sunnyday::on_field_residual(battle, pokemon_pos),
-        _ => EventResult::Continue,
+        _ => {
+            // Fallback to move-embedded condition callbacks
+            move_callbacks::dispatch_condition_on_field_residual(battle, condition_id, pokemon_pos)
+        }
     }
 }
 /// Dispatch onFieldStart callbacks

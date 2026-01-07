@@ -302,6 +302,19 @@ impl Battle {
                     }
                 }
 
+                // Special case: Some field conditions use "onResidual" instead of "onFieldResidual"
+                // Example: grassyterrain has condition.onResidual that should match onFieldResidual requests
+                // JavaScript allows this because the callback signature matches (both take target)
+                if event_id == "onFieldResidual" {
+                    let fallback_result = condition_data.extra.get("onResidual")
+                        .and_then(|v| v.as_bool())
+                        .unwrap_or(false);
+                    if fallback_result {
+                        eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual for onFieldResidual request");
+                        return true;
+                    }
+                }
+
                 // Before returning false, check if this is a move-embedded condition
                 // Even though the condition exists in the dex, the callback might be in the move dispatcher
                 if let Some(move_data) = self.dex.moves().get(condition_id) {

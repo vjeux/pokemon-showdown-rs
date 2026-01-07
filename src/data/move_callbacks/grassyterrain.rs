@@ -190,7 +190,7 @@ pub mod condition {
 
     /// onResidual(pokemon) {
     ///     if (pokemon.isGrounded() && !pokemon.isSemiInvulnerable()) {
-    ///         this.heal(pokemon.baseMaxhp / 16, pokemon, pokemon);
+        ///         this.heal(pokemon.baseMaxhp / 16, pokemon, pokemon);
     ///     } else {
     ///         this.debug(`Pokemon semi-invuln or not grounded; Grassy Terrain skipped`);
     ///     }
@@ -223,6 +223,33 @@ pub mod condition {
         } else {
             // this.debug(`Pokemon semi-invuln or not grounded; Grassy Terrain skipped`);
             battle.debug("Pokemon semi-invuln or not grounded; Grassy Terrain skipped");
+        }
+
+        EventResult::Continue
+    }
+
+    /// onFieldResidual() - Iterate over all active Pokemon and heal them
+    /// This is called once per turn for the field condition
+    /// JavaScript calls condition.onResidual(pokemon) for each active Pokemon
+    pub fn on_field_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+        // Iterate over all active Pokemon and call onResidual for each
+        let active_pokemon: Vec<(usize, usize)> = (0..battle.sides.len())
+            .flat_map(|side_idx| {
+                battle.sides.get(side_idx)
+                    .map(|side| {
+                        side.active.iter()
+                            .enumerate()
+                            .filter_map(|(slot_idx, &poke_idx)| {
+                                poke_idx.map(|idx| (side_idx, idx))
+                            })
+                            .collect::<Vec<_>>()
+                    })
+                    .unwrap_or_default()
+            })
+            .collect();
+
+        for pokemon_pos in active_pokemon {
+            on_residual(battle, pokemon_pos);
         }
 
         EventResult::Continue

@@ -2245,6 +2245,18 @@ pub fn dispatch_condition_on_restart(
     }
 }
 
+/// Dispatch condition onFieldResidual callbacks
+pub fn dispatch_condition_on_field_residual(
+    battle: &mut Battle,
+    move_id: &str,
+    source_pos: (usize, usize),
+) -> EventResult {
+    match move_id {
+        "grassyterrain" => grassyterrain::condition::on_field_residual(battle, source_pos),
+        _ => EventResult::Continue,
+    }
+}
+
 /// Dispatch condition onSetStatus callbacks
 pub fn dispatch_condition_on_set_status(
     battle: &mut Battle,
