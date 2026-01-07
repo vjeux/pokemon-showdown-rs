@@ -1129,24 +1129,6 @@ pub fn dispatch_on_fractional_priority(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onHit()
-//   onHit(pokemon)
-//   onHit(pokemon, qwerty, move)
-//   onHit(pokemon, source)
-//   onHit(pokemon, source, move)
-//   onHit(source)
-//   onHit(source, target, effect)
-//   onHit(t, source, m)
-//   onHit(target)
-//   onHit(target, pokemon)
-//   onHit(target, pokemon, move)
-//   onHit(target, source)
-//   onHit(target, source, effect)
-//   onHit(target, source, m)
-//   onHit(target, source, move)
-
 /// Dispatch onHit callbacks
 pub fn dispatch_on_hit(
     battle: &mut Battle,
