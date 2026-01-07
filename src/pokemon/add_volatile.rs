@@ -157,6 +157,8 @@ impl Pokemon {
                     battle,
                     volatile_id.as_str(),
                     target_pos,
+                    source_pos,
+                    source_effect.map(|id| id.as_str()),
                 );
 
                 // If onRestart returns false or Continue, return false (volatile not re-added)

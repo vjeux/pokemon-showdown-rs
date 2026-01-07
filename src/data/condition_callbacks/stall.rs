@@ -92,6 +92,8 @@ pub fn on_stall_move(
 pub fn on_restart(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     eprintln!("[STALL_RESTART] Called for {:?}", pokemon_pos);
 

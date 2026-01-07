@@ -258,7 +258,14 @@ impl Battle {
                     .map(|id| id.to_string());
                 condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
             }
-            "Restart" => condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos),
+            "Restart" => {
+                // Extract source and effect from current_event
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.current_event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|id| id.to_string());
+                condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
+            }
             "SourceModifyDamage" => {
                 // SourceModifyDamage needs both source and target positions
                 // pokemon_pos is the source, extract target from current_event

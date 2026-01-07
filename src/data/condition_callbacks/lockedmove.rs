@@ -106,6 +106,8 @@ pub fn on_start(
 pub fn on_restart(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // if (this.effectState.trueDuration >= 2)
     let true_duration_ge_2 = {

@@ -541,25 +541,17 @@ pub fn dispatch_on_residual(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onRestart()
-//   onRestart(pokemon)
-//   onRestart(pokemon, source, effect)
-//   onRestart(target)
-//   onRestart(target, source)
-//   onRestart(target, source, effect)
-//   onRestart(target, source, sourceEffect)
-
 /// Dispatch onRestart callbacks
 pub fn dispatch_on_restart(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
-        "lockedmove" => lockedmove::on_restart(battle, pokemon_pos),
-        "stall" => stall::on_restart(battle, pokemon_pos),
+        "lockedmove" => lockedmove::on_restart(battle, pokemon_pos, source_pos, effect_id),
+        "stall" => stall::on_restart(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_restart(battle, condition_id, pokemon_pos)
