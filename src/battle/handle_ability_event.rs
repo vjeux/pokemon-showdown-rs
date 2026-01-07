@@ -322,6 +322,7 @@ impl Battle {
             "AnyModifySpA" => ability_callbacks::dispatch_on_any_modify_sp_a(
                 self,
                 ability_id.as_str(),
+                relay_var_int,
                 event_source_pos,
                 Some(pokemon_pos),
                 move_id,
@@ -329,8 +330,9 @@ impl Battle {
             "AnyModifySpD" => ability_callbacks::dispatch_on_any_modify_sp_d(
                 self,
                 ability_id.as_str(),
-                event_source_pos,
+                relay_var_int,
                 Some(pokemon_pos),
+                event_source_pos,
                 move_id,
             ),
             "AnyRedirectTarget" => ability_callbacks::dispatch_on_any_redirect_target(

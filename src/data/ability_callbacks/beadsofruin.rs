@@ -47,7 +47,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///     this.debug('Beads of Ruin SpD drop');
 ///     return this.chainModify(0.75);
 /// }
-pub fn on_any_modify_sp_d(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_any_modify_sp_d(battle: &mut Battle, _spd: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     let ability_holder = match battle.effect_state.target {
         Some(pos) => pos,
         None => return EventResult::Continue,

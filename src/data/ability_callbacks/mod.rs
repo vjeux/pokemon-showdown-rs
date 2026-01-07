@@ -678,33 +678,25 @@ pub fn dispatch_on_any_modify_def(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyModifySpA(spa, source, target, move)
-
 /// Dispatch onAnyModifySpA callbacks
 pub fn dispatch_on_any_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "vesselofruin" => vesselofruin::on_any_modify_sp_a(battle, source_pos, target_pos, move_id),
+        "vesselofruin" => vesselofruin::on_any_modify_sp_a(battle, spa, source_pos, target_pos, move_id),
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyModifySpD(spd, target, source, move)
-
 /// Dispatch onAnyModifySpD callbacks
 pub fn dispatch_on_any_modify_sp_d(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "beadsofruin" => beadsofruin::on_any_modify_sp_d(battle, target_pos, source_pos, move_id),
+        "beadsofruin" => beadsofruin::on_any_modify_sp_d(battle, spd, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -3324,9 +3316,9 @@ pub fn dispatch_on_any_modify_def_sub_order(
 pub fn dispatch_on_any_modify_sp_a_priority(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_a(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_sp_a(battle, ability_id, spa, source_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3335,9 +3327,9 @@ pub fn dispatch_on_any_modify_sp_a_priority(
 pub fn dispatch_on_any_modify_sp_a_order(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_a(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_sp_a(battle, ability_id, spa, source_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3346,9 +3338,9 @@ pub fn dispatch_on_any_modify_sp_a_order(
 pub fn dispatch_on_any_modify_sp_a_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_a(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_sp_a(battle, ability_id, spa, source_pos, target_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3357,9 +3349,9 @@ pub fn dispatch_on_any_modify_sp_a_sub_order(
 pub fn dispatch_on_any_modify_sp_d_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_d(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_sp_d(battle, ability_id, spd, target_pos, source_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3368,9 +3360,9 @@ pub fn dispatch_on_any_modify_sp_d_priority(
 pub fn dispatch_on_any_modify_sp_d_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_d(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_sp_d(battle, ability_id, spd, target_pos, source_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3379,9 +3371,9 @@ pub fn dispatch_on_any_modify_sp_d_order(
 pub fn dispatch_on_any_modify_sp_d_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_d(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_sp_d(battle, ability_id, spd, target_pos, source_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
