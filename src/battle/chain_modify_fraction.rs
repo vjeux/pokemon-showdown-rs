@@ -7,6 +7,7 @@ impl Battle {
     /// Chain modify the event modifier using a fraction
     /// Used for precise ratios: battle.chain_modify_fraction(3, 2) for 1.5x
     pub fn chain_modify_fraction(&mut self, numerator: i32, denominator: i32) -> i32 {
+        eprintln!("[CHAIN_MODIFY_FRACTION] Called: numerator={}, denominator={}", numerator, denominator);
         if let Some(ref mut event) = self.event {
             // Extract modifier value first to avoid borrow checker issues
             let modifier = event.modifier;
@@ -28,6 +29,7 @@ impl Battle {
             event.modifier = new_modifier;
             new_modifier
         } else {
+            eprintln!("[CHAIN_MODIFY_FRACTION] No event context!");
             4096 // Default modifier (1.0 in 4096 basis points)
         }
     }

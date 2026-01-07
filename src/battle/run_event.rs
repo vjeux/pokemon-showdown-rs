@@ -645,7 +645,13 @@ impl Battle {
             // Check if num is non-negative (matches JavaScript condition)
             if num >= 0 {
                 if let Some(ref event) = self.event {
+                    if event_id == "ModifyDamage" {
+                        eprintln!("[RUN_EVENT] ModifyDamage - Before modify: num={}, modifier={}", num, event.modifier);
+                    }
                     let modified = self.modify_internal(num, event.modifier);
+                    if event_id == "ModifyDamage" {
+                        eprintln!("[RUN_EVENT] ModifyDamage - After modify: modified={}", modified);
+                    }
                     relay_var = EventResult::Number(modified);
                 }
             }

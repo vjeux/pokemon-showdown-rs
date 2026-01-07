@@ -141,7 +141,14 @@ pub fn self_drops(
                             // }
                             if let Some(ref side_condition_name) = self_data.side_condition {
                                 let side_condition_id = crate::dex_data::ID::new(side_condition_name);
-                                let _applied = battle.sides[source_pos.0].add_side_condition(side_condition_id, None);
+                                // Use Battle::add_side_condition with source tracking (not Side::add_side_condition)
+                                // This ensures durationCallback and SideStart callbacks are called
+                                let _applied = battle.add_side_condition(
+                                    source_pos.0,           // side_idx
+                                    side_condition_id,      // condition_id
+                                    Some(source_pos),       // source
+                                    Some(_move_id),         // sourceEffect (move)
+                                );
                             }
 
                             // Apply slot condition from self effect (to source's slot)
@@ -247,7 +254,14 @@ pub fn self_drops(
                         // }
                         if let Some(ref side_condition_name) = self_data.side_condition {
                             let side_condition_id = crate::dex_data::ID::new(side_condition_name);
-                            let _applied = battle.sides[source_pos.0].add_side_condition(side_condition_id, None);
+                            // Use Battle::add_side_condition with source tracking (not Side::add_side_condition)
+                            // This ensures durationCallback and SideStart callbacks are called
+                            let _applied = battle.add_side_condition(
+                                source_pos.0,           // side_idx
+                                side_condition_id,      // condition_id
+                                Some(source_pos),       // source
+                                Some(_move_id),         // sourceEffect (move)
+                            );
                         }
 
                         // Apply slot condition from self effect (to source's slot)

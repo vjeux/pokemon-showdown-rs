@@ -423,6 +423,25 @@ impl Battle {
                     &attacking_move_id
                 )
             }
+            "AnyModifyDamage" | "ModifyDamage" => {
+                // For side conditions like Aurora Veil, Light Screen, and Reflect
+                // Extract damage from relay_var, source and target from current_event
+                // Side condition callbacks are in move_callbacks module (move-embedded conditions)
+                eprintln!("[HANDLE_CONDITION_EVENT] AnyModifyDamage case: condition_id={}", condition_id);
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                eprintln!("[HANDLE_CONDITION_EVENT] Calling dispatch_condition_on_any_modify_damage for {}", condition_id);
+
+                // Call dispatcher in move_callbacks (for move-embedded conditions like auroraveil)
+                let result = crate::data::move_callbacks::dispatch_condition_on_any_modify_damage(
+                    self,
+                    condition_id,
+                    source_pos,
+                    target_pos,
+                );
+                eprintln!("[HANDLE_CONDITION_EVENT] Result: {:?}", result);
+                result
+            }
             _ => EventResult::Continue,
         };
 
