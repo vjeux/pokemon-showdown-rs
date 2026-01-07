@@ -33,10 +33,9 @@ impl BattleQueue {
     pub fn add_choice(&mut self, battle: &mut crate::battle::Battle, side_action: &crate::side::ChosenAction, side_idx: usize) {
         use crate::battle_queue::{Action, MoveAction, MoveActionType, SwitchAction, SwitchActionType, TeamAction, FieldAction, FieldActionType};
 
-        // Convert ChosenAction to Action (inline logic from deleted Battle.resolve_action)
-        let mut actions = Vec::new();
-
-        match side_action.choice {
+        // Convert ChosenAction to a basic Action
+        // This action will be passed to resolve_action which will expand it
+        let basic_action = match side_action.choice {
             crate::side::ChoiceType::Move => {
                 if let Some(ref move_id) = side_action.move_id {
                     let pokemon_idx = battle.sides[side_idx]
@@ -45,7 +44,7 @@ impl BattleQueue {
                         .and_then(|opt| *opt)
                         .unwrap_or(0);
 
-                    actions.push(Action::Move(MoveAction {
+                    Action::Move(MoveAction {
                         choice: MoveActionType::Move,
                         sub_order: 0,
                         effect_order: 0,
@@ -53,7 +52,7 @@ impl BattleQueue {
                         pokemon_index: pokemon_idx,
                         move_id: move_id.clone(),
                         target_loc: side_action.target_loc.unwrap_or(0),
-                        original_target: None, // Will be set during target resolution
+                        original_target: None,
                         mega: side_action.mega,
                         zmove: side_action.zmove.clone(),
                         max_move: side_action.max_move.clone(),
@@ -64,12 +63,14 @@ impl BattleQueue {
                         fractional_priority: 0.0,
                         speed: 0.0,
                         order: 200,
-                    }));
+                    })
+                } else {
+                    return; // No move specified
                 }
             }
             crate::side::ChoiceType::Switch => {
                 if let Some(switch_to) = side_action.switch_index {
-                    actions.push(Action::Switch(SwitchAction {
+                    Action::Switch(SwitchAction {
                         choice: SwitchActionType::Switch,
                         sub_order: 0,
                         effect_order: 0,
@@ -80,35 +81,35 @@ impl BattleQueue {
                         priority: 0,
                         speed: 0.0,
                         order: 103,
-                    }));
+                    })
+                } else {
+                    return; // No switch target specified
                 }
             }
             crate::side::ChoiceType::Team => {
-                // JavaScript: priority: -index (line 1027 in side.ts)
-                // The index is stored in switch_index by choose_team
                 let priority = -(side_action.switch_index.unwrap_or(0) as i8);
-                actions.push(Action::Team(TeamAction {
+                Action::Team(TeamAction {
                     choice: crate::battle_queue::TeamActionType::Team,
                     priority,
                     sub_order: 0,
                     effect_order: 0,
-                    speed: 1.0,  // Will be set by get_action_speed
+                    speed: 1.0,
                     pokemon_index: side_action.pokemon_index,
                     side_index: side_idx,
                     index: side_action.pokemon_index,
-                }));
+                })
             }
             crate::side::ChoiceType::Pass => {
-                actions.push(Action::Field(FieldAction {
+                Action::Field(FieldAction {
                     choice: FieldActionType::Pass,
                     sub_order: 0,
                     effect_order: 0,
                     priority: 0,
-                }));
+                })
             }
             crate::side::ChoiceType::InstaSwitch => {
                 if let Some(switch_to) = side_action.switch_index {
-                    actions.push(Action::Switch(SwitchAction {
+                    Action::Switch(SwitchAction {
                         choice: SwitchActionType::InstaSwitch,
                         sub_order: 0,
                         effect_order: 0,
@@ -119,12 +120,14 @@ impl BattleQueue {
                         priority: 0,
                         speed: 0.0,
                         order: 3,
-                    }));
+                    })
+                } else {
+                    return; // No switch target specified
                 }
             }
             crate::side::ChoiceType::RevivalBlessing => {
                 if let Some(switch_to) = side_action.switch_index {
-                    actions.push(Action::Switch(SwitchAction {
+                    Action::Switch(SwitchAction {
                         choice: SwitchActionType::RevivalBlessing,
                         sub_order: 0,
                         effect_order: 0,
@@ -135,16 +138,22 @@ impl BattleQueue {
                         priority: 0,
                         speed: 0.0,
                         order: 6,
-                    }));
+                    })
+                } else {
+                    return; // No switch target specified
                 }
             }
             crate::side::ChoiceType::Shift => {
-                // Shift is not implemented yet, skip
+                return; // Shift is not implemented yet, skip
             }
-        }
+        };
+
+        // JS: const resolvedChoices = this.resolveAction(choice);
+        // Call resolve_action with mid_turn=false (not mid-turn)
+        let resolved_actions = BattleQueue::resolve_action(basic_action, battle, false);
 
         // JS: this.list.push(...resolvedChoices);
-        for action in actions {
+        for action in resolved_actions {
             self.list.push(action.clone());
 
             // JS: if (resolvedChoice && resolvedChoice.choice === 'move' && resolvedChoice.move.id !== 'recharge') {

@@ -39,9 +39,13 @@ impl Battle {
             (None, None, String::new(), String::new())
         };
 
-        // Extract move_id from active_move
+        // Extract move_id from active_move, or from current_event.effect if active_move is not set
+        // This is needed for events like FractionalPriority which fire before the move becomes active
         let move_id_owned = if let Some(ref active_move) = self.active_move {
             active_move.id.to_string()
+        } else if let Some(ref event) = self.current_event {
+            // If no active_move, try to get move from event.effect
+            event.effect.as_ref().map(|id| id.to_string()).unwrap_or_else(|| String::new())
         } else {
             String::new()
         };

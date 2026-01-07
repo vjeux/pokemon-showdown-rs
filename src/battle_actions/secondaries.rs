@@ -37,8 +37,6 @@ pub fn secondaries(
     move_id: &ID,
     _is_self: bool,
 ) {
-    eprintln!("[SECONDARIES] Called for move_id={}, targets.len={}", move_id.as_str(), targets.len());
-
     // if (!moveData.secondaries) return;
     let has_secondaries = {
         if let Some(ref active_move) = battle.active_move {
@@ -47,8 +45,6 @@ pub fn secondaries(
             false
         }
     };
-
-    eprintln!("[SECONDARIES] has_secondaries={}", has_secondaries);
 
     if !has_secondaries {
         return;

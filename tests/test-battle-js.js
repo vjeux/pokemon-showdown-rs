@@ -46,6 +46,13 @@ battle.prng.rng.next = function() {
         console.error(`[PRNG_JS] call #${totalPrngCalls}, result=${result}`);
         lines.forEach((line, i) => console.error(`  Frame ${i}: ${line.trim()}`));
     }
+    // Log PRNG calls on turn 43 to debug divergence
+    if (battle.turn === 43 && totalPrngCalls >= 164 && totalPrngCalls <= 172) {
+        const stack = new Error().stack;
+        const lines = stack.split('\n').slice(1, 10); // Get first 9 frames
+        console.error(`[PRNG_JS] call #${totalPrngCalls}, result=${result}`);
+        lines.forEach((line, i) => console.error(`  ${line.trim()}`));
+    }
     return result;
 };
 
