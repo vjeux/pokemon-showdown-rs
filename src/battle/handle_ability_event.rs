@@ -818,11 +818,21 @@ impl Battle {
                 )
             }
             "SourceModifyDamagePriority" => {
+                // Extract parameters from current_event
+                let (damage, source_pos, move_id_str) = if let Some(ref event) = self.current_event {
+                    (
+                        match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
+                        event.target.unwrap_or((0, 0)),
+                        event.effect.as_ref().map(|id| id.as_str().to_string()).unwrap_or_default()
+                    )
+                } else {
+                    (0, (0, 0), String::new())
+                };
                 ability_callbacks::dispatch_on_source_modify_damage_priority(
                     self,
                     ability_id.as_str(),
-                    0, pokemon_pos, pokemon_pos,
-                move_id,
+                    damage, source_pos, pokemon_pos,
+                &move_id_str
             )
             }
             "SourceModifySecondaries" => ability_callbacks::dispatch_on_source_modify_secondaries(

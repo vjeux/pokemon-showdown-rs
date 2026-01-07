@@ -1523,11 +1523,6 @@ pub fn dispatch_on_source_modify_atk(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSourceModifyDamage()
-//   onSourceModifyDamage(damage, source, target, move)
-
 /// Dispatch onSourceModifyDamage callbacks
 pub fn dispatch_on_source_modify_damage(
     battle: &mut Battle,
