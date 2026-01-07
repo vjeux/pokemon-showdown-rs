@@ -752,9 +752,6 @@ pub fn dispatch_on_any_try_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyTryPrimaryHit(target, source, move)
 
 /// Dispatch onAnyTryPrimaryHit callbacks
 pub fn dispatch_on_any_try_primary_hit(
