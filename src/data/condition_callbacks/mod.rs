@@ -219,11 +219,6 @@ pub fn dispatch_on_damaging_hit(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onDisableMove(pokemon)
-//   onDisableMove(target)
-
 /// Dispatch onDisableMove callbacks
 pub fn dispatch_on_disable_move(
     battle: &mut Battle,
