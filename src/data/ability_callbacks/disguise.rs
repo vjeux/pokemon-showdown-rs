@@ -154,7 +154,7 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 ///     if (!target.runImmunity(move)) return;
 ///     return 0;
 /// }
-pub fn on_effectiveness(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _type_str: &str, _move_id: &str) -> EventResult {
+pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize, usize), _type_str: &str, _move_id: &str) -> EventResult {
     use crate::dex_data::ID;
 
     // if (move.category === 'Status') return;

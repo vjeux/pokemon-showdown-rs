@@ -975,21 +975,16 @@ pub fn dispatch_on_eat_item(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onEffectiveness()
-//   onEffectiveness(typeMod, target, type)
-//   onEffectiveness(typeMod, target, type, move)
 
 /// Dispatch onEffectiveness callbacks
 pub fn dispatch_on_effectiveness(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
+    type_mod: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "disguise" => disguise::on_effectiveness(battle, damage, target_pos, type_str, move_id),
-        "iceface" => iceface::on_effectiveness(battle, damage, target_pos, type_str, move_id),
+        "disguise" => disguise::on_effectiveness(battle, type_mod, target_pos, type_str, move_id),
+        "iceface" => iceface::on_effectiveness(battle, type_mod, target_pos, type_str, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -3860,9 +3855,9 @@ pub fn dispatch_on_eat_item_sub_order(
 pub fn dispatch_on_effectiveness_priority(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
+    type_mod: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
 ) -> EventResult {
-    dispatch_on_effectiveness(battle, ability_id, damage, target_pos, type_str, move_id)
+    dispatch_on_effectiveness(battle, ability_id, type_mod, target_pos, type_str, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3871,9 +3866,9 @@ pub fn dispatch_on_effectiveness_priority(
 pub fn dispatch_on_effectiveness_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
+    type_mod: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
 ) -> EventResult {
-    dispatch_on_effectiveness(battle, ability_id, damage, target_pos, type_str, move_id)
+    dispatch_on_effectiveness(battle, ability_id, type_mod, target_pos, type_str, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3882,9 +3877,9 @@ pub fn dispatch_on_effectiveness_order(
 pub fn dispatch_on_effectiveness_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
+    type_mod: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
 ) -> EventResult {
-    dispatch_on_effectiveness(battle, ability_id, damage, target_pos, type_str, move_id)
+    dispatch_on_effectiveness(battle, ability_id, type_mod, target_pos, type_str, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
