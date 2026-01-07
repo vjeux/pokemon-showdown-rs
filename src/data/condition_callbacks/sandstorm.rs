@@ -57,7 +57,11 @@ pub fn duration_callback(
 /// ```
 pub fn on_modify_sp_d(
     battle: &mut Battle,
+    _spd: i32,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _source_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // if (pokemon.hasType('Rock') && this.field.isWeather('sandstorm'))
     let has_rock_type = {

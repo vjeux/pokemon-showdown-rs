@@ -472,21 +472,18 @@ pub fn dispatch_on_modify_move(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifySpD()
-//   onModifySpD(spd)
-//   onModifySpD(spd, pokemon)
-//   onModifySpD(spd, target, source, move)
-
 /// Dispatch onModifySpD callbacks
 pub fn dispatch_on_modify_sp_d(
     battle: &mut Battle,
     condition_id: &str,
+    _spd: i32,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _source_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "sandstorm" => sandstorm::on_modify_sp_d(battle, pokemon_pos),
+        "sandstorm" => sandstorm::on_modify_sp_d(battle, _spd, pokemon_pos, _target_pos, _source_pos, _move_id),
         _ => EventResult::Continue,
     }
 }

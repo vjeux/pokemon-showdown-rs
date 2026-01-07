@@ -212,7 +212,17 @@ impl Battle {
                 condition_callbacks::dispatch_on_modify_move(self, condition_id, pokemon_pos, target_pos)
             }
             "ModifySpD" => {
-                condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, pokemon_pos)
+                // Extract spd from relay_var, target, source, and move_id
+                let spd = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
+                condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, spd, pokemon_pos, target_pos, source_pos, &move_id)
             }
             "ModifySpe" => {
                 let spe = self.event.as_ref().and_then(|e| match &e.relay_var {
