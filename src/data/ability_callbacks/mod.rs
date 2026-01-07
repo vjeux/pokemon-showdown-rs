@@ -1497,13 +1497,6 @@ pub fn dispatch_on_source_damaging_hit(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSourceModifyAccuracy(accuracy)
-//   onSourceModifyAccuracy(accuracy, target)
-//   onSourceModifyAccuracy(accuracy, target, source)
-//   onSourceModifyAccuracy(accuracy, target, source, move)
-
 /// Dispatch onSourceModifyAccuracy callbacks
 pub fn dispatch_on_source_modify_accuracy(
     battle: &mut Battle,

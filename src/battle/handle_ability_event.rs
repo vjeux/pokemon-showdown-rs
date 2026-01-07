@@ -774,14 +774,14 @@ impl Battle {
             "SourceModifyAccuracy" => ability_callbacks::dispatch_on_source_modify_accuracy(
                 self,
                 ability_id.as_str(),
-                0, pokemon_pos, pokemon_pos,
+                relay_var_int, event_target_pos.unwrap_or((0, 0)), pokemon_pos,
             move_id,
             ),
             "SourceModifyAccuracyPriority" => {
                 ability_callbacks::dispatch_on_source_modify_accuracy_priority(
                     self,
                     ability_id.as_str(),
-                    0, pokemon_pos, pokemon_pos,
+                    relay_var_int, event_target_pos.unwrap_or((0, 0)), pokemon_pos,
                 move_id,
             )
             }
