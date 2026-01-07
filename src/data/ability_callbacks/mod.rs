@@ -924,10 +924,6 @@ pub fn dispatch_on_damaging_hit(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onDeductPP(pokemon)
-//   onDeductPP(target, source)
 
 /// Dispatch onDeductPP callbacks
 pub fn dispatch_on_deduct_p_p(

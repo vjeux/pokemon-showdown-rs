@@ -481,7 +481,7 @@ impl Battle {
                 )
             }
             "DeductPP" => {
-                ability_callbacks::dispatch_on_deduct_p_p(self, ability_id.as_str(), Some(pokemon_pos), None)
+                ability_callbacks::dispatch_on_deduct_p_p(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos)
             }
             "DisableMove" => {
                 ability_callbacks::dispatch_on_disable_move(self, ability_id.as_str(), pokemon_pos)
