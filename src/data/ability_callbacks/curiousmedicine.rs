@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         this.add('-clearboost', ally, '[from] ability: Curious Medicine', `[of] ${pokemon}`);
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::battle::Arg;
 
     // for (const ally of pokemon.adjacentAllies())

@@ -1589,95 +1589,77 @@ pub fn dispatch_on_source_try_primary_hit(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onStart()
-//   onStart(attacker, defender, effect)
-//   onStart(pokemon)
-//   onStart(pokemon, source)
-//   onStart(pokemon, source, effect)
-//   onStart(pokemon, source, sourceEffect)
-//   onStart(side, source, sideCondition)
-//   onStart(source)
-//   onStart(target)
-//   onStart(target, source)
-//   onStart(target, source, effect)
-//   onStart(target, source, move)
-//   onStart(target, source, sideCondition)
-//   onStart(target, source, sourceEffect)
-//   onStart(this, pokemon)
-
 /// Dispatch onStart callbacks
 pub fn dispatch_on_start(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "airlock" => airlock::on_start(battle, pokemon_pos),
-        "anticipation" => anticipation::on_start(battle, pokemon_pos),
-        "asoneglastrier" => asoneglastrier::on_start(battle, pokemon_pos),
-        "asonespectrier" => asonespectrier::on_start(battle, pokemon_pos),
-        "aurabreak" => aurabreak::on_start(battle, pokemon_pos),
-        "beadsofruin" => beadsofruin::on_start(battle, pokemon_pos),
-        "cloudnine" => cloudnine::on_start(battle, pokemon_pos),
-        "comatose" => comatose::on_start(battle, pokemon_pos),
-        "commander" => commander::on_start(battle, pokemon_pos),
-        "costar" => costar::on_start(battle, pokemon_pos),
-        "curiousmedicine" => curiousmedicine::on_start(battle, pokemon_pos),
-        "darkaura" => darkaura::on_start(battle, pokemon_pos),
-        "dauntlessshield" => dauntlessshield::on_start(battle, pokemon_pos),
-        "deltastream" => deltastream::on_start(battle, pokemon_pos),
-        "desolateland" => desolateland::on_start(battle, pokemon_pos),
-        "download" => download::on_start(battle, pokemon_pos),
-        "drizzle" => drizzle::on_start(battle, pokemon_pos),
-        "drought" => drought::on_start(battle, pokemon_pos),
-        "electricsurge" => electricsurge::on_start(battle, pokemon_pos),
-        "embodyaspectcornerstone" => embodyaspectcornerstone::on_start(battle, pokemon_pos),
-        "embodyaspecthearthflame" => embodyaspecthearthflame::on_start(battle, pokemon_pos),
-        "embodyaspectteal" => embodyaspectteal::on_start(battle, pokemon_pos),
-        "embodyaspectwellspring" => embodyaspectwellspring::on_start(battle, pokemon_pos),
-        "fairyaura" => fairyaura::on_start(battle, pokemon_pos),
-        "flowergift" => flowergift::on_start(battle, pokemon_pos),
-        "forecast" => forecast::on_start(battle, pokemon_pos),
-        "forewarn" => forewarn::on_start(battle, pokemon_pos),
-        "frisk" => frisk::on_start(battle, pokemon_pos),
-        "gluttony" => gluttony::on_start(battle, pokemon_pos),
-        "gorillatactics" => gorillatactics::on_start(battle, pokemon_pos),
-        "grassysurge" => grassysurge::on_start(battle, pokemon_pos),
-        "hadronengine" => hadronengine::on_start(battle, pokemon_pos),
-        "hospitality" => hospitality::on_start(battle, pokemon_pos),
-        "iceface" => iceface::on_start(battle, pokemon_pos),
-        "intimidate" => intimidate::on_start(battle, pokemon_pos),
-        "intrepidsword" => intrepidsword::on_start(battle, pokemon_pos),
-        "klutz" => klutz::on_start(battle, pokemon_pos),
-        "mimicry" => mimicry::on_start(battle, pokemon_pos),
-        "mistysurge" => mistysurge::on_start(battle, pokemon_pos),
-        "moldbreaker" => moldbreaker::on_start(battle, pokemon_pos),
-        "orichalcumpulse" => orichalcumpulse::on_start(battle, pokemon_pos),
-        "pastelveil" => pastelveil::on_start(battle, pokemon_pos),
-        "pressure" => pressure::on_start(battle, pokemon_pos),
-        "primordialsea" => primordialsea::on_start(battle, pokemon_pos),
-        "protosynthesis" => protosynthesis::on_start(battle, pokemon_pos),
-        "psychicsurge" => psychicsurge::on_start(battle, pokemon_pos),
-        "quarkdrive" => quarkdrive::on_start(battle, pokemon_pos),
-        "sandstream" => sandstream::on_start(battle, pokemon_pos),
-        "schooling" => schooling::on_start(battle, pokemon_pos),
-        "screencleaner" => screencleaner::on_start(battle, pokemon_pos),
-        "shieldsdown" => shieldsdown::on_start(battle, pokemon_pos),
-        "slowstart" => slowstart::on_start(battle, pokemon_pos),
-        "snowwarning" => snowwarning::on_start(battle, pokemon_pos),
-        "supersweetsyrup" => supersweetsyrup::on_start(battle, pokemon_pos),
-        "supremeoverlord" => supremeoverlord::on_start(battle, pokemon_pos),
-        "swordofruin" => swordofruin::on_start(battle, pokemon_pos),
-        "tabletsofruin" => tabletsofruin::on_start(battle, pokemon_pos),
-        "teravolt" => teravolt::on_start(battle, pokemon_pos),
-        "trace" => trace::on_start(battle, pokemon_pos),
-        "truant" => truant::on_start(battle, pokemon_pos),
-        "turboblaze" => turboblaze::on_start(battle, pokemon_pos),
-        "unnerve" => unnerve::on_start(battle, pokemon_pos),
-        "vesselofruin" => vesselofruin::on_start(battle, pokemon_pos),
-        "windrider" => windrider::on_start(battle, pokemon_pos),
+        "airlock" => airlock::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "anticipation" => anticipation::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "asoneglastrier" => asoneglastrier::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "asonespectrier" => asonespectrier::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "aurabreak" => aurabreak::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "beadsofruin" => beadsofruin::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "cloudnine" => cloudnine::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "comatose" => comatose::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "commander" => commander::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "costar" => costar::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "curiousmedicine" => curiousmedicine::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "darkaura" => darkaura::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "dauntlessshield" => dauntlessshield::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "deltastream" => deltastream::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "desolateland" => desolateland::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "download" => download::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "drizzle" => drizzle::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "drought" => drought::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "electricsurge" => electricsurge::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "embodyaspectcornerstone" => embodyaspectcornerstone::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "embodyaspecthearthflame" => embodyaspecthearthflame::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "embodyaspectteal" => embodyaspectteal::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "embodyaspectwellspring" => embodyaspectwellspring::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "fairyaura" => fairyaura::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "flowergift" => flowergift::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "forecast" => forecast::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "forewarn" => forewarn::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "frisk" => frisk::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "gluttony" => gluttony::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "gorillatactics" => gorillatactics::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "grassysurge" => grassysurge::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "hadronengine" => hadronengine::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "hospitality" => hospitality::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "iceface" => iceface::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "intimidate" => intimidate::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "intrepidsword" => intrepidsword::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "klutz" => klutz::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "mimicry" => mimicry::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "mistysurge" => mistysurge::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "moldbreaker" => moldbreaker::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "orichalcumpulse" => orichalcumpulse::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "pastelveil" => pastelveil::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "pressure" => pressure::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "primordialsea" => primordialsea::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "protosynthesis" => protosynthesis::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "psychicsurge" => psychicsurge::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "quarkdrive" => quarkdrive::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "sandstream" => sandstream::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "schooling" => schooling::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "screencleaner" => screencleaner::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "shieldsdown" => shieldsdown::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "slowstart" => slowstart::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "snowwarning" => snowwarning::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "supersweetsyrup" => supersweetsyrup::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "supremeoverlord" => supremeoverlord::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "swordofruin" => swordofruin::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "tabletsofruin" => tabletsofruin::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "teravolt" => teravolt::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "trace" => trace::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "truant" => truant::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "turboblaze" => turboblaze::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "unnerve" => unnerve::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "vesselofruin" => vesselofruin::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "windrider" => windrider::on_start(battle, pokemon_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -4957,9 +4939,9 @@ pub fn dispatch_on_source_try_primary_hit_sub_order(
 pub fn dispatch_on_start_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_start(battle, ability_id, pokemon_pos)
+    dispatch_on_start(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4968,9 +4950,9 @@ pub fn dispatch_on_start_priority(
 pub fn dispatch_on_start_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_start(battle, ability_id, pokemon_pos)
+    dispatch_on_start(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4979,9 +4961,9 @@ pub fn dispatch_on_start_order(
 pub fn dispatch_on_start_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_start(battle, ability_id, pokemon_pos)
+    dispatch_on_start(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -5482,13 +5464,13 @@ pub fn dispatch_condition_on_modify_spe(
 pub fn dispatch_condition_on_start(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "flashfire" => flashfire::condition::on_start(battle, pokemon_pos),
-        "protosynthesis" => protosynthesis::condition::on_start(battle, pokemon_pos),
-        "quarkdrive" => quarkdrive::condition::on_start(battle, pokemon_pos),
-        "zenmode" => zenmode::condition::on_start(battle, pokemon_pos),
+        "flashfire" => flashfire::condition::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "protosynthesis" => protosynthesis::condition::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "quarkdrive" => quarkdrive::condition::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "zenmode" => zenmode::condition::on_start(battle, pokemon_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }

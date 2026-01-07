@@ -27,7 +27,7 @@ use crate::event::EventResult;
 ///     }
 ///     this.add('-copyboost', pokemon, ally, '[from] ability: Costar');
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::battle::Arg;
     use crate::Pokemon;
     use crate::dex_data::ID;

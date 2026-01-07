@@ -31,14 +31,14 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 
     // ((this.effect as any).onStart as (p: Pokemon) => void).call(this, pokemon);
     // This calls the ability's own onStart callback
-    on_start(battle, pokemon_pos)
+    on_start(battle, pokemon_pos, None, None)
 }
 
 /// onStart(pokemon) {
 ///     pokemon.abilityState.ending = false; // Clear the ending flag
 ///     this.eachEvent('WeatherChange', this.effect);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::dex_data::ID;
 
     // pokemon.abilityState.ending = false;

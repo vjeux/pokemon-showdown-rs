@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (source.species.id === 'kyogre' && source.item === 'blueorb') return;
 ///     this.field.setWeather('raindance');
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // Check if it's Kyogre with Blue Orb
     let is_kyogre_with_blue_orb = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

@@ -10,7 +10,7 @@ use crate::event::EventResult;
 /// onStart(pokemon) {
 ///     this.singleEvent('WeatherChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // this.singleEvent('WeatherChange', this.effect, this.effectState, pokemon);
     // This just calls the WeatherChange event, which we've implemented as on_weather_change
     on_weather_change(battle, pokemon_pos)

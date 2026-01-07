@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         this.add('-activate', pokemon, 'ability: Hadron Engine');
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // if (!this.field.setTerrain('electricterrain') && this.field.isTerrain('electricterrain')) {
     //     this.add('-activate', pokemon, 'ability: Hadron Engine');
     // }

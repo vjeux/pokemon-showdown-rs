@@ -11,7 +11,7 @@ use crate::pokemon::Pokemon;
 /// onStart(pokemon) {
 ///     this.singleEvent('TerrainChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // NOTE: singleEvent('TerrainChange') skipped - requires event system infrastructure
     // this.singleEvent('TerrainChange', this.effect, this.effectState, pokemon);
     EventResult::Continue

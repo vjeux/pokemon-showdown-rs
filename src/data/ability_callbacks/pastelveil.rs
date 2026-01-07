@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::battle::Arg;
     use crate::Pokemon;
 
@@ -117,7 +117,7 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
         None => return EventResult::Continue,
     };
 
-    on_start(battle, ability_holder_pos)
+    on_start(battle, ability_holder_pos, None, None)
 }
 
 /// onSetStatus(status, target, source, effect) {

@@ -25,7 +25,7 @@ use serde_json::Value;
 ///         this.singleEvent('Update', this.effect, this.effectState, pokemon);
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // this.effectState.seek = true;
     battle.effect_state.data.insert("seek".to_string(), Value::Bool(true));
 

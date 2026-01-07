@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 1 }, pokemon);
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // if (pokemon.baseSpecies.name === 'Ogerpon-Hearthflame-Tera' && pokemon.terastallized && !this.effectState.embodied)
     let (base_species_name, is_terastallized, already_embodied) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

@@ -13,7 +13,7 @@ use crate::Pokemon;
 /// onStart(pokemon) {
 ///     this.singleEvent('WeatherChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // Trigger WeatherChange event to check if Protosynthesis should activate
     // Pass the ability ID as the effect
     let ability_id = ID::from("protosynthesis");
@@ -109,7 +109,7 @@ pub mod condition {
     ///     this.effectState.bestStat = pokemon.getBestStat(false, true);
     ///     this.add('-start', pokemon, 'protosynthesis' + this.effectState.bestStat);
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
         // Get pokemon slot for messages
         let slot = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             pokemon.get_slot()

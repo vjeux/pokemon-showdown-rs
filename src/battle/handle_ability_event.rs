@@ -865,13 +865,13 @@ impl Battle {
                 ability_id.as_str(),
                 Some(pokemon_pos), None, None
             ),
-            "Start" => ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos),
+            "Start" => ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }),
             "SwitchIn" => {
                 // JavaScript getCallback() special logic:
                 // In gen >= 5, abilities use onStart callback during SwitchIn event
                 // instead of onSwitchIn callback (unless ability has onAnySwitchIn)
                 if self.gen >= 5 {
-                    let result = ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos);
+                    let result = ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) });
                     if !matches!(result, EventResult::Continue) {
                         return result;
                     }

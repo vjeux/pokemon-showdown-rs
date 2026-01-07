@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     if (this.suppressingAbility(pokemon)) return;
 ///     this.add('-ability', pokemon, 'Vessel of Ruin');
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     if battle.suppressing_ability(Some(pokemon_pos)) {
         return EventResult::Continue;
     }
