@@ -362,7 +362,13 @@ impl Battle {
                 ability_id.as_str(),
             ),
             "AnyTryMove" => {
-                ability_callbacks::dispatch_on_any_try_move(self, ability_id.as_str(), Some(pokemon_pos), None, None)
+                ability_callbacks::dispatch_on_any_try_move(
+                    self,
+                    ability_id.as_str(),
+                    Some(pokemon_pos),
+                    event_source_pos,
+                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                )
             }
             "AnyTryPrimaryHit" => ability_callbacks::dispatch_on_any_try_primary_hit(
                 self,

@@ -740,9 +740,6 @@ pub fn dispatch_on_any_switch_in(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyTryMove(target, source, effect)
 
 /// Dispatch onAnyTryMove callbacks
 pub fn dispatch_on_any_try_move(
