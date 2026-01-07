@@ -1849,23 +1849,17 @@ pub fn dispatch_on_update(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onWeather()
-//   onWeather(target)
-//   onWeather(target, source, effect)
-
 /// Dispatch onWeather callbacks
 pub fn dispatch_on_weather(
     battle: &mut Battle,
     ability_id: &str,
-    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
+    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "dryskin" => dryskin::on_weather(battle, weather_id, pokemon_pos, source_pos),
-        "icebody" => icebody::on_weather(battle, weather_id, pokemon_pos, source_pos),
-        "raindish" => raindish::on_weather(battle, weather_id, pokemon_pos, source_pos),
-        "solarpower" => solarpower::on_weather(battle, weather_id, pokemon_pos, source_pos),
+        "dryskin" => dryskin::on_weather(battle, weather_id, pokemon_pos, source_pos, effect_id),
+        "icebody" => icebody::on_weather(battle, weather_id, pokemon_pos, source_pos, effect_id),
+        "raindish" => raindish::on_weather(battle, weather_id, pokemon_pos, source_pos, effect_id),
+        "solarpower" => solarpower::on_weather(battle, weather_id, pokemon_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -5248,9 +5242,9 @@ pub fn dispatch_on_update_sub_order(
 pub fn dispatch_on_weather_priority(
     battle: &mut Battle,
     ability_id: &str,
-    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
+    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos)
+    dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -5259,9 +5253,9 @@ pub fn dispatch_on_weather_priority(
 pub fn dispatch_on_weather_order(
     battle: &mut Battle,
     ability_id: &str,
-    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
+    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos)
+    dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -5270,9 +5264,9 @@ pub fn dispatch_on_weather_order(
 pub fn dispatch_on_weather_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>,
+    weather_id: &str, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos)
+    dispatch_on_weather(battle, ability_id, weather_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

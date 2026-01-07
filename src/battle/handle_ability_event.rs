@@ -985,7 +985,7 @@ impl Battle {
                 ability_callbacks::dispatch_on_update(self, ability_id.as_str(), pokemon_pos)
             },
             "Weather" => {
-                ability_callbacks::dispatch_on_weather(self, ability_id.as_str(), "", pokemon_pos, None)
+                ability_callbacks::dispatch_on_weather(self, ability_id.as_str(), "", pokemon_pos, None, None)
             },
             "WeatherChange" => ability_callbacks::dispatch_on_weather_change(
                 self,

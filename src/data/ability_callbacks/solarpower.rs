@@ -37,7 +37,7 @@ pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usiz
 ///         this.damage(target.baseMaxhp / 8, target, target);
 ///     }
 /// }
-pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // Check if target has Utility Umbrella
     let has_umbrella = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

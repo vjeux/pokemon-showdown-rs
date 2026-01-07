@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         this.heal(target.baseMaxhp / 16);
 ///     }
 /// }
-pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     if weather_id == "hail" || weather_id == "snowscape" {
         // Get base max HP and calculate heal amount
         let heal_amount = {
