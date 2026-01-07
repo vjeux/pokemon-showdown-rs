@@ -1922,9 +1922,6 @@ pub fn dispatch_on_after_each_boost_sub_order(
 ) -> EventResult {
     dispatch_on_after_each_boost(battle, ability_id, boost, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterMoveSecondaryPriority callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_priority(
     battle: &mut Battle,
@@ -1933,9 +1930,6 @@ pub fn dispatch_on_after_move_secondary_priority(
 ) -> EventResult {
     dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterMoveSecondaryOrder callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_order(
     battle: &mut Battle,
@@ -1944,9 +1938,6 @@ pub fn dispatch_on_after_move_secondary_order(
 ) -> EventResult {
     dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterMoveSecondarySubOrder callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_sub_order(
     battle: &mut Battle,
@@ -1955,9 +1946,6 @@ pub fn dispatch_on_after_move_secondary_sub_order(
 ) -> EventResult {
     dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterMoveSecondarySelfPriority callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_priority(
     battle: &mut Battle,
@@ -1966,9 +1954,6 @@ pub fn dispatch_on_after_move_secondary_self_priority(
 ) -> EventResult {
     dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterMoveSecondarySelfOrder callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_order(
     battle: &mut Battle,
@@ -1977,9 +1962,6 @@ pub fn dispatch_on_after_move_secondary_self_order(
 ) -> EventResult {
     dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterMoveSecondarySelfSubOrder callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_sub_order(
     battle: &mut Battle,
@@ -1988,9 +1970,6 @@ pub fn dispatch_on_after_move_secondary_self_sub_order(
 ) -> EventResult {
     dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterSetStatusPriority callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_priority(
     battle: &mut Battle,
@@ -1999,9 +1978,6 @@ pub fn dispatch_on_after_set_status_priority(
 ) -> EventResult {
     dispatch_on_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterSetStatusOrder callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_order(
     battle: &mut Battle,
@@ -2010,9 +1986,6 @@ pub fn dispatch_on_after_set_status_order(
 ) -> EventResult {
     dispatch_on_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterSetStatusSubOrder callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_sub_order(
     battle: &mut Battle,
@@ -2021,9 +1994,6 @@ pub fn dispatch_on_after_set_status_sub_order(
 ) -> EventResult {
     dispatch_on_after_set_status(battle, ability_id, status, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterTerastallizationPriority callbacks (alias for onAfterTerastallization)
 pub fn dispatch_on_after_terastallization_priority(
     battle: &mut Battle,
@@ -2032,9 +2002,6 @@ pub fn dispatch_on_after_terastallization_priority(
 ) -> EventResult {
     dispatch_on_after_terastallization(battle, ability_id, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterTerastallizationOrder callbacks (alias for onAfterTerastallization)
 pub fn dispatch_on_after_terastallization_order(
     battle: &mut Battle,
@@ -2043,9 +2010,6 @@ pub fn dispatch_on_after_terastallization_order(
 ) -> EventResult {
     dispatch_on_after_terastallization(battle, ability_id, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterTerastallizationSubOrder callbacks (alias for onAfterTerastallization)
 pub fn dispatch_on_after_terastallization_sub_order(
     battle: &mut Battle,
