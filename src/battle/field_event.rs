@@ -471,6 +471,59 @@ impl Battle {
                 }
             }
 
+            // Handle side condition duration decrements
+            if event_id == "Residual" && handler.is_side {
+                if let Some(side_idx) = handler.side_idx {
+                    let should_remove = {
+                        if let Some(side) = self.sides.get_mut(side_idx) {
+                            if let Some(condition_state) = side.side_conditions.get_mut(&handler.effect_id) {
+                                if let Some(duration) = condition_state.duration.as_mut() {
+                                    // JavaScript: handler.state.duration--; if (!handler.state.duration) { handler.end.call(...); }
+                                    eprintln!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}', side={}, duration BEFORE decrement={}",
+                                        self.turn, handler.effect_id.as_str(), side_idx, *duration);
+                                    *duration -= 1;
+                                    eprintln!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}', side={}, duration AFTER decrement={}",
+                                        self.turn, handler.effect_id.as_str(), side_idx, *duration);
+                                    if *duration == 0 {
+                                        eprintln!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}' EXPIRED on side {}, calling SideEnd",
+                                            self.turn, handler.effect_id.as_str(), side_idx);
+                                        true
+                                    } else {
+                                        false
+                                    }
+                                } else {
+                                    false
+                                }
+                            } else {
+                                false
+                            }
+                        } else {
+                            false
+                        }
+                    };
+
+                    // Remove expired side condition
+                    if should_remove {
+                        // Call SideEnd event before removing
+                        let end_event = format!("SideEnd");
+                        self.single_event(&end_event, &handler.effect_id, None, None, None, None);
+
+                        // Actually remove the side condition
+                        if let Some(side) = self.sides.get_mut(side_idx) {
+                            side.side_conditions.remove(&handler.effect_id);
+                            eprintln!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}' REMOVED from side {}",
+                                self.turn, handler.effect_id.as_str(), side_idx);
+                        }
+
+                        // Skip calling the residual handler for expired effects
+                        if self.ended {
+                            return;
+                        }
+                        continue;
+                    }
+                }
+            }
+
             // JS: let handlerEventid = eventid;
             //     if ((handler.effectHolder as Side).sideConditions) handlerEventid = `Side${eventid}`;
             //     if ((handler.effectHolder as Field).pseudoWeather) handlerEventid = `Field${eventid}`;

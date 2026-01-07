@@ -61,7 +61,11 @@ impl Battle {
 
             // JS: if (callback !== undefined || (getKey && sideConditionData[getKey])) {
             let has_get_key = get_key.is_some_and(|key| {
-                sc_state.data.get(key).is_some()
+                // Check for the key on EffectState struct fields, not in data HashMap
+                match key {
+                    "duration" => sc_state.duration.is_some(),
+                    _ => false, // Other keys can be added as needed
+                }
             });
 
             if has_callback || has_get_key {

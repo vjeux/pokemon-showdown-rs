@@ -80,9 +80,9 @@ impl Dex {
             self_destruct: move_data.selfdestruct.clone(),
             breaks_protect: false,
             recoil: move_data.recoil,
-            mindblown_recoil: false,
-            steals_boosts: false,
-            struggle_recoil: false,
+            mindblown_recoil: move_data.mind_blown_recoil,
+            steals_boosts: move_data.steals_boosts,
+            struggle_recoil: move_data.struggle_recoil,
             secondary: None,
             secondaries: {
                 let mut secs = Vec::new();
