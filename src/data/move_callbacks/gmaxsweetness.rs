@@ -68,11 +68,29 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // for (const ally of source.side.pokemon) {
+        //     ally.cureStatus();
+        // }
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let source_side = source.0;
+
+        // Get the number of pokemon on the source's side
+        let pokemon_count = battle.sides[source_side].pokemon.len();
+
+        // Iterate through all pokemon on the side and cure their status
+        for poke_idx in 0..pokemon_count {
+            Pokemon::cure_status(battle, (source_side, poke_idx), false);
+        }
+
         EventResult::Continue
     }
 }
