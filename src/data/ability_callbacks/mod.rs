@@ -1567,10 +1567,6 @@ pub fn dispatch_on_source_modify_sp_a(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSourceTryHeal(damage, target, source, effect)
-
 /// Dispatch onSourceTryHeal callbacks
 pub fn dispatch_on_source_try_heal(
     battle: &mut Battle,
