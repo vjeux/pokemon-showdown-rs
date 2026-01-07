@@ -503,19 +503,16 @@ pub fn dispatch_on_modify_spe(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onMoveAborted(pokemon)
-//   onMoveAborted(pokemon, target, move)
-
 /// Dispatch onMoveAborted callbacks
 pub fn dispatch_on_move_aborted(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "twoturnmove" => twoturnmove::on_move_aborted(battle, pokemon_pos),
+        "twoturnmove" => twoturnmove::on_move_aborted(battle, pokemon_pos, target_pos, move_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_move_aborted(battle, condition_id, pokemon_pos)

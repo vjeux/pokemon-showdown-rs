@@ -232,7 +232,12 @@ impl Battle {
                 condition_callbacks::dispatch_on_modify_spe(self, condition_id, spe, pokemon_pos)
             }
             "MoveAborted" => {
-                condition_callbacks::dispatch_on_move_aborted(self, condition_id, pokemon_pos)
+                // Extract target from current_event and move_id from active_move
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
+                condition_callbacks::dispatch_on_move_aborted(self, condition_id, pokemon_pos, target_pos, &move_id)
             }
             "Residual" => {
                 condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos)

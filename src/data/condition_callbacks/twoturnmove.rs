@@ -247,6 +247,8 @@ pub fn on_lock_move(
 pub fn on_move_aborted(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // pokemon.removeVolatile('twoturnmove');
     crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("twoturnmove"));
