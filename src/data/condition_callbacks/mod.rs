@@ -191,10 +191,6 @@ pub fn dispatch_on_before_switch_out(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onBeforeTurn(pokemon)
-
 /// Dispatch onBeforeTurn callbacks
 pub fn dispatch_on_before_turn(
     battle: &mut Battle,
