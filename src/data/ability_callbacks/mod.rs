@@ -1663,12 +1663,6 @@ pub fn dispatch_on_start(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSwitchIn()
-//   onSwitchIn(pokemon)
-//   onSwitchIn(target)
-
 /// Dispatch onSwitchIn callbacks
 pub fn dispatch_on_switch_in(
     battle: &mut Battle,
