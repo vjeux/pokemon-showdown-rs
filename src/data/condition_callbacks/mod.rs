@@ -388,11 +388,6 @@ pub fn dispatch_on_field_restart(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onImmunity(type)
-//   onImmunity(type, pokemon)
-
 /// Dispatch onImmunity callbacks
 pub fn dispatch_on_immunity(
     battle: &mut Battle,
