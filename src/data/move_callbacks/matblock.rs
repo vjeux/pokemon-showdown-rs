@@ -96,6 +96,7 @@ pub mod condition {
         battle: &mut Battle,
         source_pos: (usize, usize),
         target_pos: (usize, usize),
+        _move_id: Option<&str>,
     ) -> EventResult {
         use crate::dex_data::ID;
 

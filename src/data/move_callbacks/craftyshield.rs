@@ -62,6 +62,7 @@ pub mod condition {
         battle: &mut Battle,
         _source_pos: (usize, usize),
         target_pos: (usize, usize),
+        _move_id: Option<&str>,
     ) -> EventResult {
         // Get move data from battle context
         let move_id = match &battle.active_move {

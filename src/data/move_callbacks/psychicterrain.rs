@@ -63,6 +63,7 @@ pub mod condition {
         battle: &mut Battle,
         source_pos: (usize, usize),
         target_pos: (usize, usize),
+        _move_id: Option<&str>,
     ) -> EventResult {
         let source = source_pos;
         let target = target_pos;
