@@ -271,7 +271,6 @@ impl Battle {
         let id = ID::from(condition_id);
         if let Some(condition_data) = self.dex.conditions().get_by_id(&id) {
             eprintln!("[CONDITION_HAS_CALLBACK] Found condition in dex");
-            eprintln!("[CONDITION_HAS_CALLBACK] condition_data.extra keys: {:?}", condition_data.extra.keys().collect::<Vec<_>>());
             // IMPORTANT: In JavaScript, conditions can have callbacks that are static values (not functions)
             // Example: phantomforce has onInvulnerability: false
             // These static values create handlers that return the static value
