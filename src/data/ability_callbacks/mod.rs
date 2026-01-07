@@ -808,9 +808,6 @@ pub fn dispatch_on_before_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onBeforeSwitchIn(pokemon)
 
 /// Dispatch onBeforeSwitchIn callbacks
 pub fn dispatch_on_before_switch_in(
