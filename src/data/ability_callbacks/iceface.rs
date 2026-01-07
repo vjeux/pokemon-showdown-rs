@@ -149,7 +149,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
 ///     if (!target.runImmunity(move)) return;
 ///     return false;
 /// }
-pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // if (!target) return;
     let target_pos = match target_pos {
         Some(pos) => pos,

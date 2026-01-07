@@ -847,10 +847,6 @@ pub fn dispatch_on_check_show(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onCriticalHit(target, source, move)
-//   onCriticalHit(target, type, move)
 
 /// Dispatch onCriticalHit callbacks
 pub fn dispatch_on_critical_hit(
@@ -860,7 +856,7 @@ pub fn dispatch_on_critical_hit(
 ) -> EventResult {
     match ability_id {
         "disguise" => disguise::on_critical_hit(battle, target_pos, source_pos, move_id),
-        "iceface" => iceface::on_critical_hit(battle, target_pos, move_id),
+        "iceface" => iceface::on_critical_hit(battle, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }

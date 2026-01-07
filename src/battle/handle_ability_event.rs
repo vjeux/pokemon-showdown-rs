@@ -432,7 +432,7 @@ impl Battle {
                 ability_callbacks::dispatch_on_check_show(self, ability_id.as_str(), pokemon_pos)
             }
             "CriticalHit" => {
-                ability_callbacks::dispatch_on_critical_hit(self, ability_id.as_str(), Some(pokemon_pos), None, move_id)
+                ability_callbacks::dispatch_on_critical_hit(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos, move_id)
             }
             "Damage" => {
                 ability_callbacks::dispatch_on_damage(self, ability_id.as_str(), relay_var_int, pokemon_pos, None, None)
