@@ -1389,41 +1389,31 @@ pub fn dispatch_on_prepare_hit(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onResidual()
-//   onResidual(pokemon)
-//   onResidual(pokemon, s, effect)
-//   onResidual(pokemon, source)
-//   onResidual(pokemon, source, effect)
-//   onResidual(source)
-//   onResidual(source, target, effect)
-//   onResidual(target)
-//   onResidual(target, source, effect)
-
 /// Dispatch onResidual callbacks
 pub fn dispatch_on_residual(
     battle: &mut Battle,
     ability_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "baddreams" => baddreams::on_residual(battle, pokemon_pos),
-        "cudchew" => cudchew::on_residual(battle, pokemon_pos),
-        "harvest" => harvest::on_residual(battle, pokemon_pos),
-        "healer" => healer::on_residual(battle, pokemon_pos),
-        "hungerswitch" => hungerswitch::on_residual(battle, pokemon_pos),
-        "hydration" => hydration::on_residual(battle, pokemon_pos),
-        "moody" => moody::on_residual(battle, pokemon_pos),
-        "opportunist" => opportunist::on_residual(battle, pokemon_pos),
-        "pickup" => pickup::on_residual(battle, pokemon_pos),
-        "powerconstruct" => powerconstruct::on_residual(battle, pokemon_pos),
-        "schooling" => schooling::on_residual(battle, pokemon_pos),
-        "shedskin" => shedskin::on_residual(battle, pokemon_pos),
-        "shieldsdown" => shieldsdown::on_residual(battle, pokemon_pos),
-        "slowstart" => slowstart::on_residual(battle, pokemon_pos),
-        "speedboost" => speedboost::on_residual(battle, pokemon_pos),
-        "zenmode" => zenmode::on_residual(battle, pokemon_pos),
+        "baddreams" => baddreams::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "cudchew" => cudchew::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "harvest" => harvest::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "healer" => healer::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "hungerswitch" => hungerswitch::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "hydration" => hydration::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "moody" => moody::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "opportunist" => opportunist::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "pickup" => pickup::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "powerconstruct" => powerconstruct::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "schooling" => schooling::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "shedskin" => shedskin::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "shieldsdown" => shieldsdown::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "slowstart" => slowstart::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "speedboost" => speedboost::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "zenmode" => zenmode::on_residual(battle, pokemon_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -4580,8 +4570,10 @@ pub fn dispatch_on_residual_priority(
     battle: &mut Battle,
     ability_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_residual(battle, ability_id, pokemon_pos)
+    dispatch_on_residual(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4591,8 +4583,10 @@ pub fn dispatch_on_residual_order(
     battle: &mut Battle,
     ability_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_residual(battle, ability_id, pokemon_pos)
+    dispatch_on_residual(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -4602,8 +4596,10 @@ pub fn dispatch_on_residual_sub_order(
     battle: &mut Battle,
     ability_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_residual(battle, ability_id, pokemon_pos)
+    dispatch_on_residual(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

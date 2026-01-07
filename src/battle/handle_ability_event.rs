@@ -707,17 +707,21 @@ impl Battle {
                 ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), Some(pokemon_pos), event_target_pos, &move_id_string)
             }
             "Residual" => {
-                ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos)
+                ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
             }
             "ResidualOrder" => ability_callbacks::dispatch_on_residual_order(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
+                event_source_pos,
+                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
             ),
             "ResidualSubOrder" => ability_callbacks::dispatch_on_residual_sub_order(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
+                event_source_pos,
+                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
             ),
             "SetStatus" => {
                 ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), "", pokemon_pos, None, None)

@@ -18,7 +18,7 @@ use crate::pokemon::Pokemon;
 ///         }
 ///     }
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // if (this.field.isWeather(['sunnyday', 'desolateland']) || this.randomChance(1, 2))
     // JavaScript isWeather accepts array - check each weather
     let should_activate = battle.is_weather("sunnyday") || battle.is_weather("desolateland")

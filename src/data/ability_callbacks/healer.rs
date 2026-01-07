@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::pokemon::Pokemon;
     use crate::battle::Arg;
 
