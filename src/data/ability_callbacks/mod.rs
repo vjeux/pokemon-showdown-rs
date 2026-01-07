@@ -1364,11 +1364,6 @@ pub fn dispatch_on_modify_type(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyWeight(weighthg)
-//   onModifyWeight(weighthg, pokemon)
-
 /// Dispatch onModifyWeight callbacks
 pub fn dispatch_on_modify_weight(
     battle: &mut Battle,

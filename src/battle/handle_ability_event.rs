@@ -693,9 +693,9 @@ impl Battle {
                 event_target_pos,
             ),
             "ModifyWeight" => {
-                ability_callbacks::dispatch_on_modify_weight(self, ability_id.as_str(), 0, pokemon_pos)
+                ability_callbacks::dispatch_on_modify_weight(self, ability_id.as_str(), relay_var_int, pokemon_pos)
             }
-            "ModifyWeightPriority" => ability_callbacks::dispatch_on_modify_weight_priority(self, ability_id.as_str(), 0, pokemon_pos),
+            "ModifyWeightPriority" => ability_callbacks::dispatch_on_modify_weight_priority(self, ability_id.as_str(), relay_var_int, pokemon_pos),
             "PrepareHit" => {
                 // Get move_id from active_move context (extract to avoid borrow issues)
                 let move_id_string = if let Some(ref active_move) = self.active_move {
