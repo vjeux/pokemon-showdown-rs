@@ -208,11 +208,120 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
-        EventResult::Continue
+        use crate::dex_data::ID;
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let mut success = false;
+
+        // const removeAll = ["spikes", "toxicspikes", "stealthrock", "stickyweb", "gmaxsteelsurge"];
+        let remove_all = vec!["spikes", "toxicspikes", "stealthrock", "stickyweb", "gmaxsteelsurge"];
+
+        // const removeTarget = ["reflect", "lightscreen", "auroraveil", "safeguard", "mist", ...removeAll];
+        let mut remove_target = vec!["reflect", "lightscreen", "auroraveil", "safeguard", "mist"];
+        remove_target.extend(remove_all.iter());
+
+        let source_side_idx = source.0;
+        let foe_side_idx = if source_side_idx == 0 { 1 } else { 0 };
+
+        // for (const targetCondition of removeTarget) {
+        //     if (source.side.foe.removeSideCondition(targetCondition)) {
+        //         if (!removeAll.includes(targetCondition)) continue;
+        //         this.add("-sideend", source.side.foe, this.dex.conditions.get(targetCondition).name, "[from] move: G-Max Wind Rage", `[of] ${source}`);
+        //         success = true;
+        //     }
+        // }
+        for target_condition in &remove_target {
+            let condition_id = ID::new(target_condition);
+            if battle.sides[foe_side_idx].remove_side_condition(&condition_id) {
+                if !remove_all.contains(target_condition) {
+                    continue;
+                }
+
+                // this.add("-sideend", source.side.foe, this.dex.conditions.get(targetCondition).name, "[from] move: G-Max Wind Rage", `[of] ${source}`);
+                let (foe_side_arg, source_ident, condition_name) = {
+                    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+
+                    let condition_name = condition_id.to_string();
+                    let foe_side_id = if foe_side_idx == 0 { "p1" } else { "p2" };
+
+                    (
+                        crate::battle::Arg::Str(foe_side_id),
+                        source_pokemon.get_slot(),
+                        condition_name,
+                    )
+                };
+
+                battle.add(
+                    "-sideend",
+                    &[
+                        foe_side_arg,
+                        condition_name.into(),
+                        "[from] move: G-Max Wind Rage".into(),
+                        format!("[of] {}", source_ident).into(),
+                    ],
+                );
+                success = true;
+            }
+        }
+
+        // for (const sideCondition of removeAll) {
+        //     if (source.side.removeSideCondition(sideCondition)) {
+        //         this.add("-sideend", source.side, this.dex.conditions.get(sideCondition).name, "[from] move: G-Max Wind Rage", `[of] ${source}`);
+        //         success = true;
+        //     }
+        // }
+        for side_condition in &remove_all {
+            let condition_id = ID::new(side_condition);
+            if battle.sides[source_side_idx].remove_side_condition(&condition_id) {
+                // this.add("-sideend", source.side, this.dex.conditions.get(sideCondition).name, "[from] move: G-Max Wind Rage", `[of] ${source}`);
+                let (source_side_arg, source_ident, condition_name) = {
+                    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                        Some(p) => p,
+                        None => return EventResult::Continue,
+                    };
+
+                    let condition_name = condition_id.to_string();
+                    let source_side_id = if source_side_idx == 0 { "p1" } else { "p2" };
+
+                    (
+                        crate::battle::Arg::Str(source_side_id),
+                        source_pokemon.get_slot(),
+                        condition_name,
+                    )
+                };
+
+                battle.add(
+                    "-sideend",
+                    &[
+                        source_side_arg,
+                        condition_name.into(),
+                        "[from] move: G-Max Wind Rage".into(),
+                        format!("[of] {}", source_ident).into(),
+                    ],
+                );
+                success = true;
+            }
+        }
+
+        // this.field.clearTerrain();
+        battle.clear_terrain();
+
+        // return success;
+        if success {
+            EventResult::Boolean(true)
+        } else {
+            EventResult::Continue
+        }
     }
 }
