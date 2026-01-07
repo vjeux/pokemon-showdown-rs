@@ -309,10 +309,6 @@ pub fn dispatch_on_faint(
     use crate::data::move_callbacks;
     move_callbacks::dispatch_condition_on_faint(battle, condition_id, target_pos, source_pos, effect_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFieldEnd()
-
 /// Dispatch onFieldEnd callbacks
 pub fn dispatch_on_field_end(
     battle: &mut Battle,
@@ -334,10 +330,6 @@ pub fn dispatch_on_field_end(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFieldResidual()
-
 /// Dispatch onFieldResidual callbacks
 pub fn dispatch_on_field_residual(
     battle: &mut Battle,
@@ -356,16 +348,6 @@ pub fn dispatch_on_field_residual(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFieldStart()
-//   onFieldStart(battle, source, effect)
-//   onFieldStart(field, source)
-//   onFieldStart(field, source, effect)
-//   onFieldStart(target)
-//   onFieldStart(target, source)
-//   onFieldStart(target, source, sourceEffect)
-
 /// Dispatch onFieldStart callbacks
 pub fn dispatch_on_field_start(
     battle: &mut Battle,
