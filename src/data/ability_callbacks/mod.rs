@@ -1578,11 +1578,6 @@ pub fn dispatch_on_source_try_heal(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSourceTryPrimaryHit(target, source, effect)
-//   onSourceTryPrimaryHit(target, source, move)
-
 /// Dispatch onSourceTryPrimaryHit callbacks
 pub fn dispatch_on_source_try_primary_hit(
     battle: &mut Battle,
