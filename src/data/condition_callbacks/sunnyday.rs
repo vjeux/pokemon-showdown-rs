@@ -20,15 +20,19 @@ use crate::event::EventResult;
 /// ```
 pub fn duration_callback(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
     // if (source?.hasItem('heatrock')) { return 8; }
-    let has_heat_rock = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+    let has_heat_rock = if let Some(pos) = source_pos {
+        let pokemon = match battle.pokemon_at(pos.0, pos.1) {
             Some(p) => p,
             None => return EventResult::Number(5),
         };
         pokemon.has_item(battle, &["heatrock"])
+    } else {
+        false
     };
 
     if has_heat_rock {

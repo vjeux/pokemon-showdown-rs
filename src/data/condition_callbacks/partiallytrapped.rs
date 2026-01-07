@@ -19,20 +19,32 @@ use crate::event::EventResult;
 /// }
 pub fn duration_callback(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Called for {:?}", pokemon_pos);
+    eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Called for source_pos={:?}", source_pos);
 
-    // In JavaScript: if (source?.hasItem('gripclaw')) return 8;
-    // Note: We don't have source info here, so we can't check for Grip Claw
-    // For now, just return random 5-6 turns (JavaScript: this.random(5, 7) returns 5 or 6)
+    // if (source?.hasItem('gripclaw')) return 8;
+    let has_grip_claw = if let Some(pos) = source_pos {
+        let pokemon = match battle.pokemon_at(pos.0, pos.1) {
+            Some(p) => p,
+            None => return EventResult::Number(battle.prng.random_range(5, 7)),
+        };
+        pokemon.has_item(battle, &["gripclaw"])
+    } else {
+        false
+    };
 
-    // this.random(5, 7) returns a number from 5 to 6 inclusive
-    let duration = battle.prng.random_range(5, 7);
-
-    eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Duration={}", duration);
-
-    EventResult::Number(duration)
+    if has_grip_claw {
+        eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Source has Grip Claw, duration=8");
+        EventResult::Number(8)
+    } else {
+        // this.random(5, 7) returns a number from 5 to 6 inclusive
+        let duration = battle.prng.random_range(5, 7);
+        eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Duration={}", duration);
+        EventResult::Number(duration)
+    }
 }
 
 /// onStart

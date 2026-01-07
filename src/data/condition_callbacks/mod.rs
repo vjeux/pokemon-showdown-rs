@@ -48,26 +48,21 @@ pub mod twoturnmove;
 // These functions route condition events to specific condition implementations.
 // They return EventResult directly, with EventResult::Continue for no match.
 // =========================================================================
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   durationCallback()
-//   durationCallback(source, effect)
-//   durationCallback(target, source)
-//   durationCallback(target, source, effect)
-
 /// Dispatch durationCallback callbacks
 pub fn dispatch_duration_callback(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
-        "hail" => hail::duration_callback(battle, pokemon_pos),
-        "partiallytrapped" => partiallytrapped::duration_callback(battle, pokemon_pos),
-        "raindance" => raindance::duration_callback(battle, pokemon_pos),
-        "sandstorm" => sandstorm::duration_callback(battle, pokemon_pos),
-        "snowscape" => snowscape::duration_callback(battle, pokemon_pos),
-        "sunnyday" => sunnyday::duration_callback(battle, pokemon_pos),
+        "hail" => hail::duration_callback(battle, pokemon_pos, source_pos, effect_id),
+        "partiallytrapped" => partiallytrapped::duration_callback(battle, pokemon_pos, source_pos, effect_id),
+        "raindance" => raindance::duration_callback(battle, pokemon_pos, source_pos, effect_id),
+        "sandstorm" => sandstorm::duration_callback(battle, pokemon_pos, source_pos, effect_id),
+        "snowscape" => snowscape::duration_callback(battle, pokemon_pos, source_pos, effect_id),
+        "sunnyday" => sunnyday::duration_callback(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_duration_callback(battle, condition_id, pokemon_pos)
