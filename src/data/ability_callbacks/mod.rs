@@ -1348,12 +1348,6 @@ pub fn dispatch_on_modify_spe(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyType(move)
-//   onModifyType(move, pokemon)
-//   onModifyType(move, pokemon, target)
-
 /// Dispatch onModifyType callbacks
 pub fn dispatch_on_modify_type(
     battle: &mut Battle,
