@@ -173,14 +173,12 @@ pub mod condition {
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', side, 'move: Aurora Veil');
-        // Following the pattern from gmaxcannonade.rs - access side via current_effect_state
-        if let Some(effect_state) = &battle.current_effect_state {
-            if let Some(side_index) = effect_state.side {
-                let side_id = if side_index == 0 { "p1" } else { "p2" };
+        // Following the pattern from gmaxcannonade.rs - access side via with_effect_state_ref
+        if let Some(side_index) = battle.with_effect_state_ref(|state| state.side).flatten() {
+            let side_id = if side_index == 0 { "p1" } else { "p2" };
 
-                let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sidestart", &[side_arg, "move: Aurora Veil".into()]);
-            }
+            let side_arg = crate::battle::Arg::Str(side_id);
+            battle.add("-sidestart", &[side_arg, "move: Aurora Veil".into()]);
         }
 
         EventResult::Continue
@@ -191,14 +189,12 @@ pub mod condition {
     /// }
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', side, 'move: Aurora Veil');
-        // Following the pattern from gmaxcannonade.rs - access side via current_effect_state
-        if let Some(effect_state) = &battle.current_effect_state {
-            if let Some(side_index) = effect_state.side {
-                let side_id = if side_index == 0 { "p1" } else { "p2" };
+        // Following the pattern from gmaxcannonade.rs - access side via with_effect_state_ref
+        if let Some(side_index) = battle.with_effect_state_ref(|state| state.side).flatten() {
+            let side_id = if side_index == 0 { "p1" } else { "p2" };
 
-                let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sideend", &[side_arg, "move: Aurora Veil".into()]);
-            }
+            let side_arg = crate::battle::Arg::Str(side_id);
+            battle.add("-sideend", &[side_arg, "move: Aurora Veil".into()]);
         }
 
         EventResult::Continue

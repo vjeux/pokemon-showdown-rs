@@ -54,15 +54,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 /// }
 pub fn on_any_pseudo_weather_change(battle: &mut Battle) -> EventResult {
     // const pokemon = this.effectState.target;
-    let pokemon_pos = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.target
-        } else {
-            return EventResult::Continue;
-        }
-    };
-
-    let pokemon_pos = match pokemon_pos {
+    let pokemon_pos = match battle.with_effect_state_ref(|state| state.target).flatten() {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

@@ -71,11 +71,8 @@ pub mod condition {
         move_id: &str,
     ) -> EventResult {
         // const ragePowderUser = this.effectState.target;
-        let rage_powder_user = match &battle.current_effect_state {
-            Some(effect_state) => match effect_state.target {
-                Some(pos) => pos,
-                None => return EventResult::Continue,
-            },
+        let rage_powder_user = match battle.with_effect_state_ref(|state| state.target).flatten() {
+            Some(pos) => pos,
             None => return EventResult::Continue,
         };
 

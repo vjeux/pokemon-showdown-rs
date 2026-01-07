@@ -301,14 +301,10 @@ pub mod condition {
     pub fn on_start(battle: &mut Battle) -> EventResult {
         // this.effectState.hitCount = 0;
         // this.effectState.contactHitCount = 0;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .insert("hitCount".to_string(), serde_json::json!(0));
-            effect_state
-                .data
-                .insert("contactHitCount".to_string(), serde_json::json!(0));
-        }
+        battle.with_effect_state(|state| {
+            state.data.insert("hitCount".to_string(), serde_json::json!(0));
+            state.data.insert("contactHitCount".to_string(), serde_json::json!(0));
+        });
 
         EventResult::Continue
     }

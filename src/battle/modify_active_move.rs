@@ -37,9 +37,9 @@ impl Battle {
         if self.active_move.is_some() {
             // Store custom properties in current_effect_state
             // This is used for custom properties that don't have dedicated fields in ActiveMove
-            if let Some(ref mut effect_state) = self.current_effect_state {
-                effect_state.data.insert(property.to_string(), value);
-            }
+            self.with_effect_state(|state| {
+                state.data.insert(property.to_string(), value);
+            });
         }
     }
 
@@ -48,11 +48,7 @@ impl Battle {
     ///
     /// JavaScript (used in Magnitude onUseMoveMessage):
     ///   const magnitude = move.magnitude;
-    pub fn get_active_move_property(&self, property: &str) -> Option<&serde_json::Value> {
-        if let Some(ref effect_state) = self.current_effect_state {
-            effect_state.data.get(property)
-        } else {
-            None
-        }
+    pub fn get_active_move_property(&self, property: &str) -> Option<serde_json::Value> {
+        self.with_effect_state_ref(|state| state.data.get(property).cloned()).flatten()
     }
 }

@@ -15,7 +15,7 @@ pub mod condition {
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', side, 'move: Sticky Web');
-        let side_index = battle.current_effect_state.as_ref().and_then(|es| es.side);
+        let side_index = battle.with_effect_state_ref(|state| state.side).flatten();
 
         if let Some(side_idx) = side_index {
             let side_id = if side_idx == 0 { "p1" } else { "p2" };

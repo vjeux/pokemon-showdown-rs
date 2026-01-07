@@ -52,11 +52,8 @@ pub mod condition {
         //     pokemon.disableMove(moveSlot.id, true);
         // }
         let source_move_ids: Vec<ID> = {
-            let source_pos = match &battle.current_effect_state {
-                Some(state) => match state.source {
-                    Some(pos) => pos,
-                    None => return EventResult::Continue,
-                },
+            let source_pos = match battle.with_effect_state_ref(|state| state.source).flatten() {
+                Some(pos) => pos,
                 None => return EventResult::Continue,
             };
 
@@ -124,11 +121,8 @@ pub mod condition {
 
         // Check if source has this move
         let source_has_move = {
-            let source_pos = match &battle.current_effect_state {
-                Some(state) => match state.source {
-                    Some(pos) => pos,
-                    None => return EventResult::Continue,
-                },
+            let source_pos = match battle.with_effect_state_ref(|state| state.source).flatten() {
+                Some(pos) => pos,
                 None => return EventResult::Continue,
             };
 
@@ -143,11 +137,8 @@ pub mod condition {
         if source_has_move {
             // this.add('cant', attacker, 'move: Imprison', move);
             // We need to get the attacker position from current_effect_state.target
-            let attacker_pos = match &battle.current_effect_state {
-                Some(state) => match state.target {
-                    Some(pos) => pos,
-                    None => return EventResult::Continue,
-                },
+            let attacker_pos = match battle.with_effect_state_ref(|state| state.target).flatten() {
+                Some(pos) => pos,
                 None => return EventResult::Continue,
             };
 

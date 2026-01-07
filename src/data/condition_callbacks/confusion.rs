@@ -86,12 +86,11 @@ pub fn on_start(
     // this.effectState.time = this.random(min, 6);
     let time = battle.random_with_range(min, 6);
 
-    // Set time in effect state (NOT in pokemon.volatiles!)
+    // Set time in effect state using with_effect_state
     // In JavaScript: this.effectState.time = value
-    // In Rust: battle.current_effect_state is a reference to the volatile's state
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state.data.insert("time".to_string(), serde_json::Value::Number(serde_json::Number::from(time)));
-    }
+    battle.with_effect_state(|state| {
+        state.data.insert("time".to_string(), serde_json::Value::Number(serde_json::Number::from(time)));
+    });
 
     EventResult::Continue
 }

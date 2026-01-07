@@ -42,7 +42,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
         || weather_str == "primordialsea"
     {
         // this.runEvent('WeatherChange', pokemon, pokemon, this.effect);
-        let effect = battle.current_effect.clone();
+        let effect = battle.current_effect_id().cloned();
         battle.run_event("WeatherChange", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
     }
 
@@ -58,28 +58,24 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 /// }
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.effectState.inactive) return;
-    let is_inactive = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .get("inactive")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false)
-        } else {
-            false
-        }
-    };
+    let is_inactive = battle.with_effect_state_ref(|state| {
+        state
+            .data
+            .get("inactive")
+            .and_then(|v| v.as_bool())
+            .unwrap_or(false)
+    }).unwrap_or(false);
 
     if !is_inactive {
         return EventResult::Continue;
     }
 
     // this.effectState.inactive = false;
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state
+    battle.with_effect_state(|state| {
+        state
             .data
             .insert("inactive".to_string(), serde_json::json!(false));
-    }
+    });
 
     // if (['sunnyday', 'raindance', 'desolateland', 'primordialsea'].includes(this.field.effectiveWeather()))
     let weather = battle.effective_weather();
@@ -91,7 +87,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         || weather_str == "primordialsea"
     {
         // this.runEvent('WeatherChange', pokemon, pokemon, this.effect);
-        let effect = battle.current_effect.clone();
+        let effect = battle.current_effect_id().cloned();
         battle.run_event("WeatherChange", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
     }
 
@@ -115,16 +111,16 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         || weather_str == "primordialsea"
     {
         // this.runEvent('WeatherChange', pokemon, pokemon, this.effect);
-        let effect = battle.current_effect.clone();
+        let effect = battle.current_effect_id().cloned();
         battle.run_event("WeatherChange", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), effect.as_ref(), EventResult::Continue, false, false);
     }
 
     // this.effectState.inactive = true;
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state
+    battle.with_effect_state(|state| {
+        state
             .data
             .insert("inactive".to_string(), serde_json::json!(true));
-    }
+    });
 
     EventResult::Continue
 }

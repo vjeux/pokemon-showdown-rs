@@ -34,7 +34,7 @@ pub mod team_generator;
 pub mod teams;
 
 // Re-export commonly used types for convenience
-pub use battle::{Arg, Battle, BattleOptions, PlayerOptions};
+pub use battle::{Arg, Battle, BattleOptions, PlayerOptions, EffectContext};
 pub use battle_actions::{BattleActions, DamageResult};
 pub use dex::Dex;
 pub use dex_data::{GameType, Gender, SideID, ID};

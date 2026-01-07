@@ -14,11 +14,11 @@ use crate::pokemon::Pokemon;
 /// }
 pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
     // this.effectState.started = true;
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state
+    battle.with_effect_state(|state| {
+        state
             .data
             .insert("started".to_string(), serde_json::json!(true));
-    }
+    });
 
     // ((this.effect as any).onUpdate as (p: Pokemon) => void).call(this, pokemon);
     // Call onUpdate with the pokemon
@@ -42,15 +42,13 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.effectState.started || pokemon.transformed) return;
     let (started, transformed) = {
-        let started = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
+        let started = battle.with_effect_state_ref(|state| {
+            state
                 .data
                 .get("started")
                 .and_then(|v| v.as_bool())
                 .unwrap_or(false)
-        } else {
-            false
-        };
+        }).unwrap_or(false);
 
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,

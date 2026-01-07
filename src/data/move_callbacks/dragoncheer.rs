@@ -104,12 +104,12 @@ pub mod condition {
             target_pokemon.has_type(battle, "dragon")
         };
 
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert(
+        battle.with_effect_state(|state| {
+            state.data.insert(
                 "hasDragonType".to_string(),
                 serde_json::Value::Bool(has_dragon_type),
             );
-        }
+        });
 
         EventResult::Continue
     }
@@ -123,15 +123,13 @@ pub mod condition {
         _source_pos: Option<(usize, usize)>,
     ) -> EventResult {
         // return critRatio + (this.effectState.hasDragonType ? 2 : 1);
-        let has_dragon_type = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
+        let has_dragon_type = battle.with_effect_state_ref(|state| {
+            state
                 .data
                 .get("hasDragonType")
                 .and_then(|v| v.as_bool())
                 .unwrap_or(false)
-        } else {
-            false
-        };
+        }).unwrap_or(false);
 
         let boost = if has_dragon_type { 2 } else { 1 };
 

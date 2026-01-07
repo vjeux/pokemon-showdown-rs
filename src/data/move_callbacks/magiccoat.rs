@@ -53,9 +53,10 @@ pub mod condition {
             if effect.is_some() {
                 // It's a move
                 if let Some(ref move_data) = battle.active_move {
-                    if let Some(ref mut effect_state) = battle.current_effect_state {
-                        effect_state.prankster_boosted = move_data.prankster_boosted;
-                    }
+                    let prankster_boosted = move_data.prankster_boosted;
+                    battle.with_effect_state(|state| {
+                        state.prankster_boosted = prankster_boosted;
+                    });
                 }
             }
         }
@@ -125,10 +126,7 @@ pub mod condition {
                 Some(active_move) => active_move.id.clone(),
                 None => return EventResult::Continue,
             };
-            let prankster_boosted = match &battle.current_effect_state {
-                Some(es) => es.prankster_boosted,
-                None => false,
-            };
+            let prankster_boosted = battle.with_effect_state_ref(|state| state.prankster_boosted).unwrap_or(false);
             (move_id, prankster_boosted)
         };
 
@@ -211,11 +209,8 @@ pub mod condition {
                 Some(active_move) => active_move.id.clone(),
                 None => return EventResult::Continue,
             };
-            let effect_state_target = match &battle.current_effect_state {
-                Some(es) => match es.target {
-                    Some(t) => t,
-                    None => return EventResult::Continue,
-                },
+            let effect_state_target = match battle.with_effect_state_ref(|state| state.target).flatten() {
+                Some(t) => t,
                 None => return EventResult::Continue,
             };
             (move_id, effect_state_target)

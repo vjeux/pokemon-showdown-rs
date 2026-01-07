@@ -137,7 +137,7 @@ impl Battle {
                     effect_type: EffectType::Condition,
                     target: Some(target),
                     index: None,
-                    state: Some(volatile_state.clone()),
+                    state: None, // Don't clone - look up fresh in run_event
                     effect_holder: Some(target),
                     order: None,
                     priority: 0,

@@ -20,11 +20,9 @@ pub fn on_modify_move(
     if battle.is_weather("hail") || battle.is_weather("snowscape") {
         // move.accuracy = true;
         // Store accuracy override in current effect state
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .insert("accuracy".to_string(), serde_json::Value::Bool(true));
-        }
+        battle.with_effect_state(|state| {
+            state.data.insert("accuracy".to_string(), serde_json::Value::Bool(true));
+        });
     }
 
     EventResult::Continue

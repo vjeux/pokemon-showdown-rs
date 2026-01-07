@@ -89,8 +89,8 @@ impl Battle {
             // TypeScript: onAfterSubDamage(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "AfterSubDamage" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let effect_id_clone = self.current_effect.clone();
-                let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
+                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
+                let effect_id_str = effect_id_owned.as_deref();
                 item_callbacks::dispatch_on_after_sub_damage(
                     self,
                     item_id.as_str(),
@@ -168,8 +168,8 @@ impl Battle {
             // TypeScript: onDamage(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "Damage" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let effect_id_clone = self.current_effect.clone();
-                let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
+                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
+                let effect_id_str = effect_id_owned.as_deref();
                 item_callbacks::dispatch_on_damage(
                     self,
                     item_id.as_str(),
@@ -215,8 +215,8 @@ impl Battle {
                     Some(EventResult::Boost(b)) => b,
                     _ => return EventResult::Continue,
                 };
-                let effect_id_clone = self.current_effect.clone();
-                let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
+                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
+                let effect_id_str = effect_id_owned.as_deref();
                 item_callbacks::dispatch_on_foe_after_boost(
                     self,
                     item_id.as_str(),
@@ -389,8 +389,8 @@ impl Battle {
 
             // TypeScript: onSetAbility(target:Pokemon?, source:Pokemon?, effect:Effect?)
             "SetAbility" => {
-                let effect_id_clone = self.current_effect.clone();
-                let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
+                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
+                let effect_id_str = effect_id_owned.as_deref();
                 item_callbacks::dispatch_on_set_ability(
                     self,
                     item_id.as_str(),
@@ -529,8 +529,8 @@ impl Battle {
             // TypeScript: onTryHeal(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "TryHeal" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let effect_id_clone = self.current_effect.clone();
-                let effect_id_str = effect_id_clone.as_ref().map(|e| e.as_str());
+                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
+                let effect_id_str = effect_id_owned.as_deref();
                 item_callbacks::dispatch_on_try_heal(
                     self,
                     item_id.as_str(),

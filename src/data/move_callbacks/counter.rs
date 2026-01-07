@@ -98,14 +98,14 @@ pub mod condition {
     ) -> EventResult {
         // this.effectState.slot = null;
         // this.effectState.damage = 0;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state
+        battle.with_effect_state(|state| {
+            state
                 .data
                 .insert("slot".to_string(), serde_json::Value::Null);
-            effect_state
+            state
                 .data
                 .insert("damage".to_string(), serde_json::Value::Number(0.into()));
-        }
+        });
 
         EventResult::Continue
     }
@@ -127,16 +127,14 @@ pub mod condition {
         }
 
         // if (source !== this.effectState.target || !this.effectState.slot) return;
-        let (effect_target, slot) = if let Some(ref effect_state) = battle.current_effect_state {
-            let target = effect_state
+        let (effect_target, slot) = battle.with_effect_state_ref(|state| {
+            let target = state
                 .data
                 .get("target")
                 .and_then(|v| serde_json::from_value::<(usize, usize)>(v.clone()).ok());
-            let slot = effect_state.data.get("slot").cloned();
+            let slot = state.data.get("slot").cloned();
             (target, slot)
-        } else {
-            (None, None)
-        };
+        }).unwrap_or((None, None));
 
         if source_pos != effect_target {
             return EventResult::Continue;
@@ -198,16 +196,16 @@ pub mod condition {
             let slot = source_pokemon.get_slot();
 
             // this.effectState.damage = 2 * damage;
-            if let Some(ref mut effect_state) = battle.current_effect_state {
-                effect_state.data.insert(
+            battle.with_effect_state(|state| {
+                state.data.insert(
                     "slot".to_string(),
                     serde_json::to_value(slot).unwrap_or(serde_json::Value::Null),
                 );
-                effect_state.data.insert(
+                state.data.insert(
                     "damage".to_string(),
                     serde_json::Value::Number((2 * damage).into()),
                 );
-            }
+            });
         }
 
         EventResult::Continue

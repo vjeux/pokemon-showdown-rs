@@ -88,12 +88,12 @@ pub mod condition {
     /// }
     pub fn on_start(battle: &mut Battle) -> EventResult {
         // this.effectState.multiplier = 1;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert(
+        battle.with_effect_state(|state| {
+            state.data.insert(
                 "multiplier".to_string(),
                 serde_json::to_value(1).unwrap_or(serde_json::Value::Null),
             );
-        }
+        });
 
         EventResult::Continue
     }
@@ -105,11 +105,12 @@ pub mod condition {
     ///     this.effectState.duration = 2;
     /// }
     pub fn on_restart(battle: &mut Battle) -> EventResult {
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            // if (this.effectState.multiplier < 4) {
-            //     this.effectState.multiplier <<= 1;
-            // }
-            let current_multiplier = effect_state
+        // if (this.effectState.multiplier < 4) {
+        //     this.effectState.multiplier <<= 1;
+        // }
+        // this.effectState.duration = 2;
+        battle.with_effect_state(|state| {
+            let current_multiplier = state
                 .data
                 .get("multiplier")
                 .and_then(|v| v.as_i64())
@@ -119,15 +120,15 @@ pub mod condition {
                 // this.effectState.multiplier <<= 1;
                 let new_multiplier = current_multiplier << 1; // Left shift by 1 = multiply by 2
 
-                effect_state.data.insert(
+                state.data.insert(
                     "multiplier".to_string(),
                     serde_json::to_value(new_multiplier).unwrap_or(serde_json::Value::Null),
                 );
             }
 
             // this.effectState.duration = 2;
-            effect_state.duration = Some(2);
-        }
+            state.duration = Some(2);
+        });
 
         EventResult::Continue
     }

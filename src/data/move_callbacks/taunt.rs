@@ -38,11 +38,11 @@ pub mod condition {
         };
 
         if should_extend_duration {
-            if let Some(ref mut effect_state) = battle.current_effect_state {
-                if let Some(duration) = effect_state.duration {
-                    effect_state.duration = Some(duration + 1);
+            battle.with_effect_state(|state| {
+                if let Some(duration) = state.duration {
+                    state.duration = Some(duration + 1);
                 }
-            }
+            });
         }
 
         // this.add('-start', target, 'move: Taunt');

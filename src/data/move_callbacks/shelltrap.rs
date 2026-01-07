@@ -156,11 +156,9 @@ pub mod condition {
 
         if !is_ally && is_physical {
             // this.effectState.gotHit = true;
-            if let Some(ref mut effect_state) = battle.current_effect_state {
-                effect_state
-                    .data
-                    .insert("gotHit".to_string(), serde_json::json!(true));
-            }
+            battle.with_effect_state(|state| {
+                state.data.insert("gotHit".to_string(), serde_json::json!(true));
+            });
 
             // const action = this.queue.willMove(pokemon);
             // if (action) {

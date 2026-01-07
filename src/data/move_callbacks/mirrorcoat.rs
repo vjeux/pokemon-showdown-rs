@@ -104,15 +104,11 @@ pub mod condition {
         _move_id: &str,
     ) -> EventResult {
         // this.effectState.slot = null;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .insert("slot".to_string(), serde_json::Value::Null);
-            // this.effectState.damage = 0;
-            effect_state
-                .data
-                .insert("damage".to_string(), serde_json::to_value(0).unwrap());
-        }
+        // this.effectState.damage = 0;
+        battle.with_effect_state(|state| {
+            state.data.insert("slot".to_string(), serde_json::Value::Null);
+            state.data.insert("damage".to_string(), serde_json::to_value(0).unwrap());
+        });
 
         EventResult::Continue
     }
@@ -134,14 +130,11 @@ pub mod condition {
         }
 
         // if (source !== this.effectState.target || !this.effectState.slot) return;
-        let (effect_target, effect_slot) = {
-            if let Some(ref effect_state) = battle.current_effect_state {
-                let target = effect_state.target;
-                let slot = effect_state.data.get("slot");
-                (target, slot.cloned())
-            } else {
-                return EventResult::Continue;
-            }
+        let (effect_target, effect_slot) = match battle.with_effect_state_ref(|state| {
+            (state.target, state.data.get("slot").cloned())
+        }) {
+            Some((target, slot)) => (target, slot),
+            None => return EventResult::Continue,
         };
 
         if source_pos != effect_target
@@ -215,15 +208,10 @@ pub mod condition {
             source_pokemon.get_slot()
         };
 
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .insert("slot".to_string(), serde_json::to_value(slot).unwrap());
-            effect_state.data.insert(
-                "damage".to_string(),
-                serde_json::to_value(2 * damage).unwrap(),
-            );
-        }
+        battle.with_effect_state(|state| {
+            state.data.insert("slot".to_string(), serde_json::to_value(slot).unwrap());
+            state.data.insert("damage".to_string(), serde_json::to_value(2 * damage).unwrap());
+        });
 
         EventResult::Continue
     }

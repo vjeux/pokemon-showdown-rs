@@ -21,7 +21,7 @@ pub mod condition {
         // }
 
         // this.add('-sidestart', side, 'Spikes');
-        let side_index = battle.current_effect_state.as_ref().and_then(|es| es.side);
+        let side_index = battle.with_effect_state_ref(|state| state.side).flatten();
 
         if let Some(side_idx) = side_index {
             let side_id = if side_idx == 0 { "p1" } else { "p2" };
@@ -30,11 +30,11 @@ pub mod condition {
         }
 
         // this.effectState.layers = 1;
-        if let Some(effect_state) = &mut battle.current_effect_state {
-            effect_state
+        battle.with_effect_state(|state| {
+            state
                 .data
                 .insert("layers".to_string(), serde_json::json!(1));
-        }
+        });
 
         EventResult::Continue
     }
@@ -53,18 +53,19 @@ pub mod condition {
 
         // if (this.effectState.layers >= 3) return false;
         let layers = battle
-            .current_effect_state
-            .as_ref()
-            .and_then(|es| es.data.get("layers"))
-            .and_then(|v| v.as_i64())
-            .unwrap_or(0) as i32;
+            .with_effect_state_ref(|state| {
+                state.data.get("layers")
+                    .and_then(|v| v.as_i64())
+                    .unwrap_or(0) as i32
+            })
+            .unwrap_or(0);
 
         if layers >= 3 {
             return EventResult::Boolean(false);
         }
 
         // this.add('-sidestart', side, 'Spikes');
-        let side_index = battle.current_effect_state.as_ref().and_then(|es| es.side);
+        let side_index = battle.with_effect_state_ref(|state| state.side).flatten();
 
         if let Some(side_idx) = side_index {
             let side_id = if side_idx == 0 { "p1" } else { "p2" };
@@ -73,11 +74,11 @@ pub mod condition {
         }
 
         // this.effectState.layers++;
-        if let Some(effect_state) = &mut battle.current_effect_state {
-            effect_state
+        battle.with_effect_state(|state| {
+            state
                 .data
                 .insert("layers".to_string(), serde_json::json!(layers + 1));
-        }
+        });
 
         EventResult::Continue
     }
@@ -117,14 +118,13 @@ pub mod condition {
 
         // const damageAmounts = [0, 3, 4, 6]; // 1/8, 1/6, 1/4
         // this.damage(damageAmounts[this.effectState.layers] * pokemon.maxhp / 24);
-        let layers = match &battle.current_effect_state {
-            Some(state) => state
+        let layers = battle.with_effect_state_ref(|state| {
+            state
                 .data
                 .get("layers")
                 .and_then(|v| v.as_i64())
-                .unwrap_or(1) as i32,
-            None => 1,
-        };
+                .unwrap_or(1) as i32
+        }).unwrap_or(1);
         let damage_amounts = [0, 3, 4, 6];
 
         let max_hp = {

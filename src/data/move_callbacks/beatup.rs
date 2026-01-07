@@ -40,16 +40,16 @@ pub fn on_modify_move(
     let multihit = allies.len() as i32;
 
     // Store allies and multihit in current effect state
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state.data.insert(
+    battle.with_effect_state(|state| {
+        state.data.insert(
             "allies".to_string(),
             serde_json::to_value(&allies).unwrap_or(serde_json::Value::Null),
         );
-        effect_state.data.insert(
+        state.data.insert(
             "multihit".to_string(),
             serde_json::to_value(multihit).unwrap_or(serde_json::Value::Null),
         );
-    }
+    });
 
     EventResult::Continue
 }
@@ -66,8 +66,8 @@ pub fn base_power_callback(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // Get allies from current effect state
-    let ally_pos = if let Some(ref mut effect_state) = battle.current_effect_state {
-        if let Some(allies_value) = effect_state.data.get_mut("allies") {
+    let ally_pos = battle.with_effect_state(|state| {
+        if let Some(allies_value) = state.data.get_mut("allies") {
             // move.allies!.shift()
             if let Some(allies_array) = allies_value.as_array_mut() {
                 if !allies_array.is_empty() {
@@ -83,9 +83,7 @@ pub fn base_power_callback(
         } else {
             None
         }
-    } else {
-        None
-    };
+    }).flatten();
 
     let ally_pos = match ally_pos {
         Some(pos) => pos,

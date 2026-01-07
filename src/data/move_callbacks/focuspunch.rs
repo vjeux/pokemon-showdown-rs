@@ -122,12 +122,12 @@ pub mod condition {
 
         if move_category != "Status" {
             // this.effectState.lostFocus = true;
-            if let Some(ref mut effect_state) = battle.current_effect_state {
-                effect_state.data.insert(
+            battle.with_effect_state(|state| {
+                state.data.insert(
                     "lostFocus".to_string(),
                     serde_json::to_value(true).unwrap_or(serde_json::Value::Null),
                 );
-            }
+            });
         }
 
         EventResult::Continue

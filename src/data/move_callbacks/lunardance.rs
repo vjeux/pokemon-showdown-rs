@@ -61,8 +61,8 @@ pub mod condition {
         };
 
         // this.singleEvent('Swap', this.effect, this.effectState, target);
-        let effect_id = match &battle.current_effect_state {
-            Some(es) => es.id.clone(),
+        let effect_id = match battle.current_effect_id() {
+            Some(id) => id.clone(),
             None => return EventResult::Continue,
         };
 

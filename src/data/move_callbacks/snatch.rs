@@ -67,15 +67,9 @@ pub mod condition {
         let source = source_pos;
 
         // const snatchUser = this.effectState.source;
-        let snatch_user = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            match effect_state.source {
-                Some(s) => s,
-                None => return EventResult::Continue,
-            }
+        let snatch_user = match battle.with_effect_state_ref(|state| state.source).flatten() {
+            Some(s) => s,
+            None => return EventResult::Continue,
         };
 
         // if (snatchUser.isSkyDropped()) return;

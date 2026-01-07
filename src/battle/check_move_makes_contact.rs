@@ -42,11 +42,9 @@ impl Battle {
                         // JS: if (announcePads)
                         if announce_pads {
                             // Get effect name for first message
-                            let effect_name = if let Some(ref current_effect) = self.current_effect {
-                                current_effect.to_string()
-                            } else {
-                                String::from("")
-                            };
+                            let effect_name = self.current_effect_id()
+                                .map(|e| e.to_string())
+                                .unwrap_or_default();
 
                             // Get identifiers for logging
                             let defender_ident = {

@@ -15,13 +15,11 @@ pub mod condition {
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', targetSide, 'G-Max Volcalith');
-        if let Some(effect_state) = &battle.current_effect_state {
-            if let Some(side_index) = effect_state.side {
-                let side_id = if side_index == 0 { "p1" } else { "p2" };
+        if let Some(side_index) = battle.with_effect_state_ref(|state| state.side).flatten() {
+            let side_id = if side_index == 0 { "p1" } else { "p2" };
 
-                let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sidestart", &[side_arg, "G-Max Volcalith".into()]);
-            }
+            let side_arg = crate::battle::Arg::Str(side_id);
+            battle.add("-sidestart", &[side_arg, "G-Max Volcalith".into()]);
         }
 
         EventResult::Continue
@@ -77,13 +75,11 @@ pub mod condition {
     /// }
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', targetSide, 'G-Max Volcalith');
-        if let Some(effect_state) = &battle.current_effect_state {
-            if let Some(side_index) = effect_state.side {
-                let side_id = if side_index == 0 { "p1" } else { "p2" };
+        if let Some(side_index) = battle.with_effect_state_ref(|state| state.side).flatten() {
+            let side_id = if side_index == 0 { "p1" } else { "p2" };
 
-                let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sideend", &[side_arg, "G-Max Volcalith".into()]);
-            }
+            let side_arg = crate::battle::Arg::Str(side_id);
+            battle.add("-sideend", &[side_arg, "G-Max Volcalith".into()]);
         }
 
         EventResult::Continue

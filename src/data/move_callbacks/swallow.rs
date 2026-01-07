@@ -23,7 +23,7 @@ pub fn on_try(
 
     // if (move.sourceEffect === 'snatch') return;
     // Check if this move was called by Snatch
-    let source_effect = battle.current_effect_state.as_ref().and_then(|es| es.source_effect.clone());
+    let source_effect = battle.with_effect_state_ref(|state| state.source_effect.clone()).flatten();
     if let Some(effect) = source_effect {
         if effect.as_str() == "snatch" {
             return EventResult::Continue;

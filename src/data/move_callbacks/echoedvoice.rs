@@ -86,15 +86,15 @@ pub mod condition {
         eprintln!("[ECHOED_VOICE] on_field_start called!");
 
         // this.effectState.multiplier = 1;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
+        battle.with_effect_state(|state| {
             eprintln!("[ECHOED_VOICE] Found current_effect_state, setting multiplier to 1");
-            effect_state.data.insert(
+            state.data.insert(
                 "multiplier".to_string(),
                 serde_json::Value::Number(1.into()),
             );
-        } else {
+        }).unwrap_or_else(|| {
             eprintln!("[ECHOED_VOICE] WARNING: current_effect_state is None!");
-        }
+        });
 
         EventResult::Continue
     }
@@ -116,20 +116,19 @@ pub mod condition {
         //         this.effectState.multiplier++;
         //     }
         // }
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            eprintln!("[ECHOED_VOICE] Found current_effect_state");
-            let duration = effect_state.duration.unwrap_or(0);
-            eprintln!("[ECHOED_VOICE] Current duration: {:?}", effect_state.duration);
+        let duration = battle.with_effect_state_ref(|state| state.duration.unwrap_or(0)).unwrap_or(0);
+        eprintln!("[ECHOED_VOICE] Current duration: {:?}", duration);
 
-            if duration != 2 {
+        if duration != 2 {
+            battle.with_effect_state(|state| {
                 // this.effectState.duration = 2;
-                effect_state.duration = Some(2);
+                state.duration = Some(2);
                 eprintln!("[ECHOED_VOICE] Set duration to 2");
 
                 // if (this.effectState.multiplier < 5) {
                 //     this.effectState.multiplier++;
                 // }
-                let current_multiplier = effect_state
+                let current_multiplier = state
                     .data
                     .get("multiplier")
                     .and_then(|v| v.as_i64())
@@ -137,7 +136,7 @@ pub mod condition {
                 eprintln!("[ECHOED_VOICE] Current multiplier: {}", current_multiplier);
 
                 if current_multiplier < 5 {
-                    effect_state.data.insert(
+                    state.data.insert(
                         "multiplier".to_string(),
                         serde_json::Value::Number((current_multiplier + 1).into()),
                     );
@@ -145,11 +144,11 @@ pub mod condition {
                 } else {
                     eprintln!("[ECHOED_VOICE] Multiplier already at max (5)");
                 }
-            } else {
-                eprintln!("[ECHOED_VOICE] Duration is already 2, not incrementing");
-            }
+            }).unwrap_or_else(|| {
+                eprintln!("[ECHOED_VOICE] WARNING: current_effect_state is None!");
+            });
         } else {
-            eprintln!("[ECHOED_VOICE] WARNING: current_effect_state is None!");
+            eprintln!("[ECHOED_VOICE] Duration is already 2, not incrementing");
         }
 
         EventResult::Continue

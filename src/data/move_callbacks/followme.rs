@@ -97,11 +97,8 @@ pub mod condition {
     ) -> EventResult {
         // if (!this.effectState.target.isSkyDropped() && this.validTarget(this.effectState.target, source, move.target)) {
         // Get the effect state target (the Pokemon with Follow Me active)
-        let effect_state_target = match &battle.current_effect_state {
-            Some(effect_state) => match effect_state.target {
-                Some(pos) => pos,
-                None => return EventResult::Continue,
-            },
+        let effect_state_target = match battle.with_effect_state_ref(|state| state.target).flatten() {
+            Some(pos) => pos,
             None => return EventResult::Continue,
         };
 

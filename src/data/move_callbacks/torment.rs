@@ -49,9 +49,9 @@ pub mod condition {
         // if (effect?.id === 'gmaxmeltdown') this.effectState.duration = 3;
         if let Some(effect) = effect_id {
             if effect == "gmaxmeltdown" {
-                if let Some(ref mut effect_state) = battle.current_effect_state {
-                    effect_state.duration = Some(3);
-                }
+                battle.with_effect_state(|state| {
+                    state.duration = Some(3);
+                });
             }
         }
 

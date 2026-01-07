@@ -86,19 +86,17 @@ impl Battle {
         }
 
         // Save parent state
-        let parent_effect = self.current_effect.clone();
-        let parent_effect_state = self.current_effect_state.clone();
+        let parent_context = self.current_effect_context.clone();
         let parent_event = self.current_event.clone();
 
-        // Set current event context
-        self.current_effect = Some(effect_id.clone());
-
-        // Get side condition state and set as current effect state
-        // Since we unified EffectState types in Batch 188, Side now uses event_system::EffectState
-        let effect_state = self.sides.get(side_idx)
-            .and_then(|s| s.side_conditions.get(effect_id))
-            .cloned();
-        self.current_effect_state = effect_state;
+        // Set current event context with SideCondition effect type
+        self.current_effect_context = Some(crate::EffectContext {
+            effect_id: effect_id.clone(),
+            effect_type: crate::battle::EffectType::SideCondition,
+            effect_holder: None,
+            side_index: Some(side_idx),
+            prankster_boosted: false,
+        });
 
         let mut event_info = EventInfo::new(event_id);
         event_info.target = None; // Side events don't have a Pokemon target
@@ -113,8 +111,7 @@ impl Battle {
 
         // Restore parent state
         self.event_depth -= 1;
-        self.current_effect = parent_effect;
-        self.current_effect_state = parent_effect_state;
+        self.current_effect_context = parent_context;
         self.current_event = parent_event;
 
         result

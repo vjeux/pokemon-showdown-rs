@@ -73,9 +73,9 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.effectState.duration = 2;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.duration = Some(2);
-        }
+        battle.with_effect_state(|state| {
+            state.duration = Some(2);
+        });
 
         // this.add('-start', pokemon, 'move: Laser Focus');
         let pokemon_arg = {

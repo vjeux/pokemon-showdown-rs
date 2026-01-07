@@ -53,11 +53,11 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
     };
 
     // Store boosts in effectState.data
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state
+    battle.with_effect_state(|state| {
+        state
             .data
             .insert("boosts".to_string(), serde_json::json!(boosts_to_clear));
-    }
+    });
 
     // if (ready) (this.effectState.target as Pokemon).useItem();
     if ready {
@@ -69,9 +69,9 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
     }
 
     // delete this.effectState.boosts;
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state.data.remove("boosts");
-    }
+    battle.with_effect_state(|state| {
+        state.data.remove("boosts");
+    });
 
     EventResult::Continue
 }
@@ -81,13 +81,7 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
 /// }
 pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     // Get effectState.target
-    let target_pos = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.target
-        } else {
-            return EventResult::Continue;
-        }
-    };
+    let target_pos = battle.with_effect_state_ref(|state| state.target).flatten();
 
     // Call onStart with effectState.target
     on_start(battle, target_pos)
@@ -98,13 +92,7 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
 /// }
 pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
     // Get effectState.target
-    let target_pos = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.target
-        } else {
-            return EventResult::Continue;
-        }
-    };
+    let target_pos = battle.with_effect_state_ref(|state| state.target).flatten();
 
     // Call onStart with effectState.target
     on_start(battle, target_pos)
@@ -115,13 +103,7 @@ pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
 /// }
 pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
     // Get effectState.target
-    let target_pos = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.target
-        } else {
-            return EventResult::Continue;
-        }
-    };
+    let target_pos = battle.with_effect_state_ref(|state| state.target).flatten();
 
     // Call onStart with effectState.target
     on_start(battle, target_pos)
@@ -141,27 +123,23 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 /// }
 pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.setBoost(this.effectState.boosts);
-    let boosts_map = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            if let Some(boosts_value) = effect_state.data.get("boosts") {
-                if let Some(obj) = boosts_value.as_object() {
-                    let mut map = std::collections::HashMap::new();
-                    for (key, value) in obj {
-                        if let Some(num) = value.as_i64() {
-                            map.insert(key.clone(), num as i8);
-                        }
+    let boosts_map = battle.with_effect_state_ref(|state| {
+        if let Some(boosts_value) = state.data.get("boosts") {
+            if let Some(obj) = boosts_value.as_object() {
+                let mut map = std::collections::HashMap::new();
+                for (key, value) in obj {
+                    if let Some(num) = value.as_i64() {
+                        map.insert(key.clone(), num as i8);
                     }
-                    Some(map)
-                } else {
-                    None
                 }
+                Some(map)
             } else {
                 None
             }
         } else {
             None
         }
-    };
+    }).flatten();
 
     if let Some(boosts) = boosts_map {
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

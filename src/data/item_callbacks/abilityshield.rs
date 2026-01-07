@@ -16,13 +16,13 @@ use crate::event::EventResult;
 /// }
 pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::battle::Arg;
-    use crate::event_system::EffectType;
+    use crate::battle::EffectType;
 
     // if (effect && effect.effectType === 'Ability' && effect.name !== 'Trace') {
     //     this.add('-ability', source, effect);
     // }
-    if let Some(effect_data) = &battle.current_effect_data {
-        if effect_data.effect_type == EffectType::Ability && effect_data.name != "trace" {
+    if let (Some(effect_type), Some(effect_id)) = (battle.current_effect_type(), battle.current_effect_id()) {
+        if effect_type == EffectType::Ability && effect_id.as_str() != "trace" {
             if let Some(source_pos) = source_pos {
                 let source_str = if let Some(source) = battle.pokemon_at(source_pos.0, source_pos.1) {
                     source.to_string()
@@ -31,7 +31,7 @@ pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, s
                 };
 
                 if !source_str.is_empty() {
-                    let effect_name = effect_data.name.clone();
+                    let effect_name = effect_id.to_string();
                     battle.add("-ability", &[
                         Arg::String(source_str),
                         Arg::String(effect_name),

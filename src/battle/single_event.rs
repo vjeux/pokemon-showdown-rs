@@ -132,7 +132,7 @@ impl Battle {
         }
 
         // Determine effect type for suppression checks
-        let effect_type = self.get_effect_type(effect_id);
+        let effect_type = self.get_effect_type(effect_id).to_string();
 
         // SUPPRESSION CHECKS (from JavaScript battle.ts:598-622)
 
@@ -202,8 +202,30 @@ impl Battle {
 
         // Save parent event context
         let parent_event = self.current_event.take();
-        let parent_effect = self.current_effect.take();
-        let parent_effect_state = self.current_effect_state.take();
+        let parent_context = self.current_effect_context.take();
+
+        // Determine EffectType from string
+        let effect_type_enum = match effect_type.as_str() {
+            "Ability" => crate::battle::EffectType::Ability,
+            "Item" => crate::battle::EffectType::Item,
+            "Move" => crate::battle::EffectType::Move,
+            "Status" => crate::battle::EffectType::Status,
+            "Weather" => crate::battle::EffectType::Weather,
+            "Terrain" => crate::battle::EffectType::Terrain,
+            "SideCondition" => crate::battle::EffectType::SideCondition,
+            "SlotCondition" => crate::battle::EffectType::SlotCondition,
+            "FieldCondition" => crate::battle::EffectType::FieldCondition,
+            _ => crate::battle::EffectType::Condition,
+        };
+
+        // Set up current effect context
+        self.current_effect_context = Some(crate::EffectContext {
+            effect_id: effect_id.clone(),
+            effect_type: effect_type_enum,
+            effect_holder: target,
+            side_index: target.map(|(side, _)| side),
+            prankster_boosted: false,
+        });
 
         // Set up current event
         // JavaScript: this.event = { id: eventid, target, source, effect: sourceEffect };
@@ -217,7 +239,6 @@ impl Battle {
             relay_var: relay_var.clone(),
             type_param: None,
         });
-        self.current_effect = Some(effect_id.clone());
         self.event_depth += 1;
 
         // Dispatch based on effect type
@@ -229,8 +250,7 @@ impl Battle {
         // Restore parent context
         self.event_depth -= 1;
         self.current_event = parent_event;
-        self.current_effect = parent_effect;
-        self.current_effect_state = parent_effect_state;
+        self.current_effect_context = parent_context;
 
         // JavaScript: return returnVal === undefined ? relayVar : returnVal;
         // If handler returns Continue (undefined equivalent) and we have relay_var, return it

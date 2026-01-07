@@ -56,13 +56,13 @@ pub fn on_start(
         // JavaScript: this.effectState.move = effect.id;
         // In Rust, current_effect_state is the volatile's state (set by dispatch_single_event)
         // We must modify current_effect_state, which will be copied back to the volatile
-        eprintln!("[TWOTURNMOVE_ONSTART] Storing move_id={} in current_effect_state.data", move_id_val.as_str());
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert("move".to_string(), serde_json::json!(move_id_val.as_str()));
+        eprintln!("[TWOTURNMOVE_ONSTART] Storing move_id={} in effect_state.data", move_id_val.as_str());
+        battle.with_effect_state(|state| {
+            state.data.insert("move".to_string(), serde_json::json!(move_id_val.as_str()));
             eprintln!("[TWOTURNMOVE_ONSTART] Stored successfully");
-        } else {
+        }).unwrap_or_else(|| {
             eprintln!("[TWOTURNMOVE_ONSTART] WARNING: current_effect_state is None!");
-        }
+        });
 
         // attacker.addVolatile(effect.id);
         // Add a volatile for the specific move (e.g., "dig", "fly", "solarbeam")

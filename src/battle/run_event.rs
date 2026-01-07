@@ -600,7 +600,22 @@ impl Battle {
                 }
                 EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain
                 | EffectType::SideCondition | EffectType::SlotCondition => {
-                    self.handle_condition_event(&event_variant, effect_id.as_str(), handler_target_event.as_ref())
+                    // JavaScript: this.effectState = handler.state || this.initEffectState({});
+                    // Set up current_effect_context so callbacks can use with_effect_state
+                    let parent_context = self.set_effect_context(crate::EffectContext {
+                        effect_id: effect_id.clone(),
+                        effect_type: handler.effect_type,
+                        effect_holder: handler.effect_holder,
+                        side_index: handler.effect_holder.map(|(side, _)| side),
+                        prankster_boosted: false,
+                    });
+
+                    let result = self.handle_condition_event(&event_variant, effect_id.as_str(), handler_target_event.as_ref());
+
+                    // Restore parent effect context
+                    self.restore_effect_context(parent_context);
+
+                    result
                 }
                 _ => {
                     // Fall back to dispatch_single_event for other types

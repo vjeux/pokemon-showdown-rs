@@ -121,13 +121,7 @@ pub fn on_move_fail(
         // if (target === this.effectState.target) {
         //     this.add('-end', target, 'Sky Drop', '[interrupt]');
         // }
-        let effect_target = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            effect_state.target
-        };
+        let effect_target = battle.with_effect_state_ref(|state| state.target).flatten();
 
         if Some(target) == effect_target {
             let target_arg = {
@@ -422,13 +416,7 @@ pub mod condition {
         // }
         let pokemon = pokemon_pos;
 
-        let (effect_target, effect_source) = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            (effect_state.target, effect_state.source)
-        };
+        let (effect_target, effect_source) = battle.with_effect_state_ref(|state| (state.target, state.source)).unwrap_or((None, None));
 
         if Some(pokemon) == effect_target || Some(pokemon) == effect_source {
             return EventResult::Boolean(false);
@@ -446,13 +434,7 @@ pub mod condition {
         //     if (defender !== this.effectState.source) return;
         //     defender.trapped = true;
         // }
-        let effect_source = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            effect_state.source
-        };
+        let effect_source = battle.with_effect_state_ref(|state| state.source).flatten();
 
         // The defender is passed via the effect_state context
         // We need to get the defender from the current context
@@ -482,13 +464,7 @@ pub mod condition {
         //         return null;
         //     }
         // }
-        let effect_source = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            effect_state.source
-        };
+        let effect_source = battle.with_effect_state_ref(|state| state.source).flatten();
 
         // The attacker would be passed via event context
         // For this implementation, we check if the current actor is the effect source
@@ -523,13 +499,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let (effect_target, effect_source) = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            (effect_state.target, effect_state.source)
-        };
+        let (effect_target, effect_source) = battle.with_effect_state_ref(|state| (state.target, state.source)).unwrap_or((None, None));
 
         // if (source !== this.effectState.target) return;
         if Some(source) != effect_target {
@@ -701,13 +671,7 @@ pub mod condition {
         };
         let source = source_pos;
 
-        let (effect_target, effect_source) = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            (effect_state.target, effect_state.source)
-        };
+        let (effect_target, effect_source) = battle.with_effect_state_ref(|state| (state.target, state.source)).unwrap_or((None, None));
 
         // if (target !== this.effectState.target && target !== this.effectState.source) {
         //     return;

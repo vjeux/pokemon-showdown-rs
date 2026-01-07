@@ -84,11 +84,8 @@ pub mod condition {
         };
 
         // if (this.validTarget(this.effectState.target, source, move.target)) {
-        let effect_state_target = match &battle.current_effect_state {
-            Some(state) => match state.target {
-                Some(target) => target,
-                None => return EventResult::Continue,
-            },
+        let effect_state_target = match battle.with_effect_state_ref(|state| state.target).flatten() {
+            Some(target) => target,
             None => return EventResult::Continue,
         };
 

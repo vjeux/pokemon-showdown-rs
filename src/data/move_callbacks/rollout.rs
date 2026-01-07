@@ -247,13 +247,10 @@ pub mod condition {
     pub fn on_start(battle: &mut Battle) -> EventResult {
         // this.effectState.hitCount = 0;
         // this.effectState.contactHitCount = 0;
-        let effect_state = match &mut battle.current_effect_state {
-            Some(es) => es,
-            None => return EventResult::Continue,
-        };
-
-        effect_state.hit_count = Some(0);
-        effect_state.contact_hit_count = Some(0);
+        battle.with_effect_state(|state| {
+            state.hit_count = Some(0);
+            state.contact_hit_count = Some(0);
+        });
 
         EventResult::Continue
     }

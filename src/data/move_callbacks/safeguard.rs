@@ -281,15 +281,9 @@ pub mod condition {
         //         this.add('-sidestart', side, 'Safeguard');
         //     }
         // }
-        let side = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            match effect_state.side {
-                Some(s) => s,
-                None => return EventResult::Continue,
-            }
+        let side = match battle.with_effect_state_ref(|state| state.side).flatten() {
+            Some(s) => s,
+            None => return EventResult::Continue,
         };
 
         let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
@@ -323,15 +317,9 @@ pub mod condition {
     /// }
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', side, 'Safeguard');
-        let side = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            match effect_state.side {
-                Some(s) => s,
-                None => return EventResult::Continue,
-            }
+        let side = match battle.with_effect_state_ref(|state| state.side).flatten() {
+            Some(s) => s,
+            None => return EventResult::Continue,
         };
 
         let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });

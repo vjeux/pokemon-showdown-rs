@@ -17,7 +17,7 @@ pub mod condition {
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', side, 'move: Toxic Spikes');
-        let side_index = battle.current_effect_state.as_ref().and_then(|es| es.side);
+        let side_index = battle.with_effect_state_ref(|state| state.side).flatten();
 
         if let Some(side_idx) = side_index {
             let side_id = if side_idx == 0 { "p1" } else { "p2" };
@@ -26,11 +26,11 @@ pub mod condition {
         }
 
         // this.effectState.layers = 1;
-        if let Some(effect_state) = &mut battle.current_effect_state {
-            effect_state
+        battle.with_effect_state(|state| {
+            state
                 .data
                 .insert("layers".to_string(), serde_json::json!(1));
-        }
+        });
 
         EventResult::Continue
     }
@@ -43,18 +43,19 @@ pub mod condition {
     pub fn on_side_restart(battle: &mut Battle) -> EventResult {
         // if (this.effectState.layers >= 2) return false;
         let layers = battle
-            .current_effect_state
-            .as_ref()
-            .and_then(|es| es.data.get("layers"))
-            .and_then(|v| v.as_i64())
-            .unwrap_or(0) as i32;
+            .with_effect_state_ref(|state| {
+                state.data.get("layers")
+                    .and_then(|v| v.as_i64())
+                    .unwrap_or(0) as i32
+            })
+            .unwrap_or(0);
 
         if layers >= 2 {
             return EventResult::Boolean(false);
         }
 
         // this.add('-sidestart', side, 'move: Toxic Spikes');
-        let side_index = battle.current_effect_state.as_ref().and_then(|es| es.side);
+        let side_index = battle.with_effect_state_ref(|state| state.side).flatten();
 
         if let Some(side_idx) = side_index {
             let side_id = if side_idx == 0 { "p1" } else { "p2" };
@@ -63,11 +64,11 @@ pub mod condition {
         }
 
         // this.effectState.layers++;
-        if let Some(effect_state) = &mut battle.current_effect_state {
-            effect_state
+        battle.with_effect_state(|state| {
+            state
                 .data
                 .insert("layers".to_string(), serde_json::json!(layers + 1));
-        }
+        });
 
         EventResult::Continue
     }
@@ -155,11 +156,12 @@ pub mod condition {
 
             // else if (this.effectState.layers >= 2)
             let layers = battle
-                .current_effect_state
-                .as_ref()
-                .and_then(|es| es.data.get("layers"))
-                .and_then(|v| v.as_i64())
-                .unwrap_or(0) as i32;
+                .with_effect_state_ref(|state| {
+                    state.data.get("layers")
+                        .and_then(|v| v.as_i64())
+                        .unwrap_or(0) as i32
+                })
+                .unwrap_or(0);
 
             if layers >= 2 {
                 // pokemon.trySetStatus('tox', pokemon.side.foe.active[0]);

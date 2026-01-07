@@ -33,21 +33,21 @@ pub mod condition {
             return EventResult::Continue;
         };
 
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state
+        battle.with_effect_state(|state| {
+            state
                 .data
                 .insert("hp".to_string(), serde_json::to_value(hp).unwrap());
-        }
+        });
 
         // this.effectState.startingTurn = this.getOverflowedTurnCount();
         let starting_turn = battle.get_overflowed_turn_count();
 
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert(
+        battle.with_effect_state(|state| {
+            state.data.insert(
                 "startingTurn".to_string(),
                 serde_json::to_value(starting_turn).unwrap(),
             );
-        }
+        });
 
         // if (this.effectState.startingTurn === 255)
         if starting_turn == 255 {
@@ -72,21 +72,16 @@ pub mod condition {
         use crate::dex_data::ID;
 
         // if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
-        let (starting_turn, target_pos, source_slot) = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-
-            let starting_turn = effect_state
+        let (starting_turn, target_pos, source_slot) = battle.with_effect_state_ref(|state| {
+            let starting_turn = state
                 .data
                 .get("startingTurn")
                 .and_then(|v| v.as_i64())
                 .map(|v| v as i32)
                 .unwrap_or(0);
 
-            (starting_turn, effect_state.target, effect_state.source_slot)
-        };
+            (starting_turn, state.target, state.source_slot)
+        }).unwrap_or((0, None, None));
 
         let current_turn = battle.get_overflowed_turn_count();
 
@@ -136,16 +131,14 @@ pub mod condition {
 
         if !is_fainted {
             // const damage = this.heal(this.effectState.hp, target, target);
-            let hp_to_heal = if let Some(ref effect_state) = battle.current_effect_state {
-                effect_state
+            let hp_to_heal = battle.with_effect_state_ref(|state| {
+                state
                     .data
                     .get("hp")
                     .and_then(|v| v.as_i64())
                     .map(|v| v as i32)
                     .unwrap_or(0)
-            } else {
-                0
-            };
+            }).unwrap_or(0);
 
             if hp_to_heal > 0 {
                 let damage = battle.heal(hp_to_heal, Some(target), Some(target), None);
@@ -161,8 +154,8 @@ pub mod condition {
                             };
 
                             let source_name =
-                                if let Some(ref effect_state) = battle.current_effect_state {
-                                    if let Some(source_pos) = effect_state.source {
+                                battle.with_effect_state_ref(|state| {
+                                    if let Some(source_pos) = state.source {
                                         match battle.pokemon_at(source_pos.0, source_pos.1) {
                                             Some(p) => p.name.clone(),
                                             None => "".to_string(),
@@ -170,9 +163,7 @@ pub mod condition {
                                     } else {
                                         "".to_string()
                                     }
-                                } else {
-                                    "".to_string()
-                                };
+                                }).unwrap_or_else(|| "".to_string());
 
                             (
                                 target_pokemon.get_slot(),

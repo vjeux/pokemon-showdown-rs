@@ -406,6 +406,18 @@ impl Battle {
                     move_id_string.as_deref(),
                 )
             }
+            "Hit" => {
+                // onHit callback for conditions (volatiles like focuspunch)
+                // pokemon_pos is the Pokemon with the volatile (target being hit)
+                // source_pos is the Pokemon doing the hitting (attacker)
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                crate::data::move_callbacks::dispatch_condition_on_hit(
+                    self,
+                    condition_id,
+                    source_pos,
+                    pokemon_pos,
+                )
+            }
             "AnyInvulnerability" | "Invulnerability" => {
                 // For AnyInvulnerability, we need the ORIGINAL target/source from the run_event call,
                 // NOT the Pokemon that has the volatile. The volatile may be on a different Pokemon

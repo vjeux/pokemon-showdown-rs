@@ -59,12 +59,12 @@ pub mod condition {
         };
 
         // this.effectState.multiplier = 1.5;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert(
+        battle.with_effect_state(|state| {
+            state.data.insert(
                 "multiplier".to_string(),
                 serde_json::to_value(1.5).unwrap_or(serde_json::Value::Null),
             );
-        }
+        });
 
         // this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
         let (target_slot, source_slot) = {
@@ -111,8 +111,8 @@ pub mod condition {
         };
 
         // this.effectState.multiplier *= 1.5;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            let current_multiplier = effect_state
+        battle.with_effect_state(|state| {
+            let current_multiplier = state
                 .data
                 .get("multiplier")
                 .and_then(|v| v.as_f64())
@@ -120,11 +120,11 @@ pub mod condition {
 
             let new_multiplier = current_multiplier * 1.5;
 
-            effect_state.data.insert(
+            state.data.insert(
                 "multiplier".to_string(),
                 serde_json::to_value(new_multiplier).unwrap_or(serde_json::Value::Null),
             );
-        }
+        });
 
         // this.add('-singleturn', target, 'Helping Hand', `[of] ${source}`);
         let (target_slot, source_slot) = {
@@ -162,15 +162,13 @@ pub mod condition {
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
         // this.debug('Boosting from Helping Hand: ' + this.effectState.multiplier);
-        let multiplier = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
+        let multiplier = battle.with_effect_state_ref(|state| {
+            state
                 .data
                 .get("multiplier")
                 .and_then(|v| v.as_f64())
                 .unwrap_or(1.0)
-        } else {
-            1.0
-        };
+        }).unwrap_or(1.0);
 
         battle.debug(&format!("Boosting from Helping Hand: {}", multiplier));
 

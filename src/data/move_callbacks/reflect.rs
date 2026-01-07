@@ -72,15 +72,9 @@ pub mod condition {
 
         // if (target !== source && this.effectState.target.hasAlly(target) && this.getCategory(move) === 'Physical') {
         if target != source {
-            let effect_target = {
-                let effect_state = match &battle.current_effect_state {
-                    Some(es) => es,
-                    None => return EventResult::Continue,
-                };
-                match effect_state.target {
-                    Some(t) => t,
-                    None => return EventResult::Continue,
-                }
+            let effect_target = match battle.with_effect_state_ref(|state| state.target).flatten() {
+                Some(t) => t,
+                None => return EventResult::Continue,
             };
 
             let has_ally = battle.is_ally(effect_target, target);
@@ -131,15 +125,9 @@ pub mod condition {
     /// }
     pub fn on_side_start(battle: &mut Battle) -> EventResult {
         // this.add('-sidestart', side, 'Reflect');
-        let side = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            match effect_state.side {
-                Some(s) => s,
-                None => return EventResult::Continue,
-            }
+        let side = match battle.with_effect_state_ref(|state| state.side).flatten() {
+            Some(s) => s,
+            None => return EventResult::Continue,
         };
 
         let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });
@@ -154,15 +142,9 @@ pub mod condition {
     /// }
     pub fn on_side_end(battle: &mut Battle) -> EventResult {
         // this.add('-sideend', side, 'Reflect');
-        let side = {
-            let effect_state = match &battle.current_effect_state {
-                Some(es) => es,
-                None => return EventResult::Continue,
-            };
-            match effect_state.side {
-                Some(s) => s,
-                None => return EventResult::Continue,
-            }
+        let side = match battle.with_effect_state_ref(|state| state.side).flatten() {
+            Some(s) => s,
+            None => return EventResult::Continue,
         };
 
         let side_arg = crate::battle::Arg::Str(if side == 0 { "p1" } else { "p2" });

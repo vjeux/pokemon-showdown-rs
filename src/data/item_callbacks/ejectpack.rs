@@ -24,17 +24,13 @@ pub fn on_after_boost(
     boost: &crate::dex_data::BoostsTable,
 ) -> EventResult {
     // if (this.effectState.eject || this.activeMove?.id === 'partingshot') return;
-    let eject_already_set = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .get("eject")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false)
-        } else {
-            false
-        }
-    };
+    let eject_already_set = battle.with_effect_state_ref(|state| {
+        state
+            .data
+            .get("eject")
+            .and_then(|v| v.as_bool())
+            .unwrap_or(false)
+    }).unwrap_or(false);
 
     let active_move_is_parting_shot = battle
         .active_move
@@ -58,11 +54,11 @@ pub fn on_after_boost(
 
     // this.effectState.eject = true;
     if has_negative_boost {
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state
+        battle.with_effect_state(|state| {
+            state
                 .data
                 .insert("eject".to_string(), serde_json::json!(true));
-        }
+        });
     }
 
     EventResult::Continue
@@ -74,30 +70,20 @@ pub fn on_after_boost(
 /// }
 pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.eject) return;
-    let eject_set = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .get("eject")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false)
-        } else {
-            false
-        }
-    };
+    let eject_set = battle.with_effect_state_ref(|state| {
+        state
+            .data
+            .get("eject")
+            .and_then(|v| v.as_bool())
+            .unwrap_or(false)
+    }).unwrap_or(false);
 
     if !eject_set {
         return EventResult::Continue;
     }
 
     // (this.effectState.target as Pokemon).useItem();
-    let target_pos = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.target
-        } else {
-            return EventResult::Continue;
-        }
-    };
+    let target_pos = battle.with_effect_state_ref(|state| state.target).flatten();
 
     if let Some(pos) = target_pos {
         Pokemon::use_item(battle, pos, None, None);
@@ -112,30 +98,20 @@ pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
 /// }
 pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.eject) return;
-    let eject_set = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .get("eject")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false)
-        } else {
-            false
-        }
-    };
+    let eject_set = battle.with_effect_state_ref(|state| {
+        state
+            .data
+            .get("eject")
+            .and_then(|v| v.as_bool())
+            .unwrap_or(false)
+    }).unwrap_or(false);
 
     if !eject_set {
         return EventResult::Continue;
     }
 
     // (this.effectState.target as Pokemon).useItem();
-    let target_pos = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.target
-        } else {
-            return EventResult::Continue;
-        }
-    };
+    let target_pos = battle.with_effect_state_ref(|state| state.target).flatten();
 
     if let Some(pos) = target_pos {
         Pokemon::use_item(battle, pos, None, None);
@@ -150,30 +126,20 @@ pub fn on_any_after_mega(battle: &mut Battle) -> EventResult {
 /// }
 pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
     // if (!this.effectState.eject) return;
-    let eject_set = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .get("eject")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false)
-        } else {
-            false
-        }
-    };
+    let eject_set = battle.with_effect_state_ref(|state| {
+        state
+            .data
+            .get("eject")
+            .and_then(|v| v.as_bool())
+            .unwrap_or(false)
+    }).unwrap_or(false);
 
     if !eject_set {
         return EventResult::Continue;
     }
 
     // (this.effectState.target as Pokemon).useItem();
-    let target_pos = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.target
-        } else {
-            return EventResult::Continue;
-        }
-    };
+    let target_pos = battle.with_effect_state_ref(|state| state.target).flatten();
 
     if let Some(pos) = target_pos {
         Pokemon::use_item(battle, pos, None, None);
@@ -188,30 +154,20 @@ pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
 /// }
 pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.effectState.eject) return;
-    let eject_set = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
-                .data
-                .get("eject")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false)
-        } else {
-            false
-        }
-    };
+    let eject_set = battle.with_effect_state_ref(|state| {
+        state
+            .data
+            .get("eject")
+            .and_then(|v| v.as_bool())
+            .unwrap_or(false)
+    }).unwrap_or(false);
 
     if !eject_set {
         return EventResult::Continue;
     }
 
     // (this.effectState.target as Pokemon).useItem();
-    let target_pos = {
-        if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.target
-        } else {
-            return EventResult::Continue;
-        }
-    };
+    let target_pos = battle.with_effect_state_ref(|state| state.target).flatten();
 
     if let Some(pos) = target_pos {
         Pokemon::use_item(battle, pos, None, None);
@@ -287,9 +243,9 @@ pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 /// }
 pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // delete this.effectState.eject;
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state.data.remove("eject");
-    }
+    battle.with_effect_state(|state| {
+        state.data.remove("eject");
+    });
 
     EventResult::Continue
 }

@@ -189,11 +189,11 @@ pub mod condition {
             target_pokemon.maxhp / 4
         };
 
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state
+        battle.with_effect_state(|state| {
+            state
                 .data
                 .insert("hp".to_string(), serde_json::to_value(sub_hp).unwrap());
-        }
+        });
 
         // if (target.volatiles['partiallytrapped'])
         let partially_trapped_info = {
@@ -340,18 +340,14 @@ pub mod condition {
         };
 
         // Get substitute HP from effect state
-        let sub_hp = {
-            if let Some(ref effect_state) = battle.current_effect_state {
-                effect_state
-                    .data
-                    .get("hp")
-                    .and_then(|v| v.as_i64())
-                    .map(|v| v as i32)
-                    .unwrap_or(0)
-            } else {
-                0
-            }
-        };
+        let sub_hp = battle.with_effect_state_ref(|state| {
+            state
+                .data
+                .get("hp")
+                .and_then(|v| v.as_i64())
+                .map(|v| v as i32)
+                .unwrap_or(0)
+        }).unwrap_or(0);
 
         // if (damage > target.volatiles['substitute'].hp)
         let actual_damage = if damage > sub_hp {
@@ -361,12 +357,12 @@ pub mod condition {
         };
 
         // target.volatiles['substitute'].hp -= damage;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
+        battle.with_effect_state(|state| {
             let new_hp = sub_hp - actual_damage;
-            effect_state
+            state
                 .data
                 .insert("hp".to_string(), serde_json::to_value(new_hp).unwrap());
-        }
+        });
 
         // source.lastDamage = damage;
         {
@@ -378,18 +374,14 @@ pub mod condition {
         }
 
         // if (target.volatiles['substitute'].hp <= 0)
-        let new_sub_hp = {
-            if let Some(ref effect_state) = battle.current_effect_state {
-                effect_state
-                    .data
-                    .get("hp")
-                    .and_then(|v| v.as_i64())
-                    .map(|v| v as i32)
-                    .unwrap_or(0)
-            } else {
-                0
-            }
-        };
+        let new_sub_hp = battle.with_effect_state_ref(|state| {
+            state
+                .data
+                .get("hp")
+                .and_then(|v| v.as_i64())
+                .map(|v| v as i32)
+                .unwrap_or(0)
+        }).unwrap_or(0);
 
         if new_sub_hp <= 0 {
             // if (move.ohko) this.add('-ohko');

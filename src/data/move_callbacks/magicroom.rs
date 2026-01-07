@@ -168,10 +168,7 @@ pub mod condition {
     /// }
     pub fn on_field_end(battle: &mut Battle) -> EventResult {
         // this.add('-fieldend', 'move: Magic Room', '[of] ' + this.effectState.source);
-        let source = match &battle.current_effect_state {
-            Some(es) => es.source,
-            None => return EventResult::Continue,
-        };
+        let source = battle.with_effect_state_ref(|state| state.source).flatten();
 
         if let Some(source_pos) = source {
             let source_arg = {

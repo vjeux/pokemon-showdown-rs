@@ -66,20 +66,20 @@ pub mod condition {
         // this.effectState.layers = 1;
         // this.effectState.def = 0;
         // this.effectState.spd = 0;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert(
+        battle.with_effect_state(|state| {
+            state.data.insert(
                 "layers".to_string(),
                 serde_json::to_value(1).unwrap_or(serde_json::Value::Null),
             );
-            effect_state.data.insert(
+            state.data.insert(
                 "def".to_string(),
                 serde_json::to_value(0).unwrap_or(serde_json::Value::Null),
             );
-            effect_state.data.insert(
+            state.data.insert(
                 "spd".to_string(),
                 serde_json::to_value(0).unwrap_or(serde_json::Value::Null),
             );
-        }
+        });
 
         // this.add('-start', target, 'stockpile' + this.effectState.layers);
         let target_slot = {
@@ -120,31 +120,31 @@ pub mod condition {
             (target_pokemon.boosts.def, target_pokemon.boosts.spd)
         };
 
-        if let Some(ref mut effect_state) = battle.current_effect_state {
+        battle.with_effect_state(|state| {
             if cur_def != new_def {
-                let current_def = effect_state
+                let current_def = state
                     .data
                     .get("def")
                     .and_then(|v| v.as_i64())
                     .unwrap_or(0);
-                effect_state.data.insert(
+                state.data.insert(
                     "def".to_string(),
                     serde_json::to_value(current_def - 1).unwrap_or(serde_json::Value::Null),
                 );
             }
 
             if cur_spd != new_spd {
-                let current_spd = effect_state
+                let current_spd = state
                     .data
                     .get("spd")
                     .and_then(|v| v.as_i64())
                     .unwrap_or(0);
-                effect_state.data.insert(
+                state.data.insert(
                     "spd".to_string(),
                     serde_json::to_value(current_spd - 1).unwrap_or(serde_json::Value::Null),
                 );
             }
-        }
+        });
 
         EventResult::Continue
     }
@@ -167,11 +167,12 @@ pub mod condition {
 
         // if (this.effectState.layers >= 3) return false;
         let layers = battle
-            .current_effect_state
-            .as_ref()
-            .and_then(|es| es.data.get("layers"))
-            .and_then(|v| v.as_i64())
-            .unwrap_or(0) as i32;
+            .with_effect_state_ref(|state| {
+                state.data.get("layers")
+                    .and_then(|v| v.as_i64())
+                    .unwrap_or(0) as i32
+            })
+            .unwrap_or(0);
 
         if layers >= 3 {
             return EventResult::NotFail;
@@ -179,12 +180,12 @@ pub mod condition {
 
         // this.effectState.layers++;
         let new_layers = layers + 1;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert(
+        battle.with_effect_state(|state| {
+            state.data.insert(
                 "layers".to_string(),
                 serde_json::to_value(new_layers).unwrap_or(serde_json::Value::Null),
             );
-        }
+        });
 
         // this.add('-start', target, 'stockpile' + this.effectState.layers);
         let target_slot = {
@@ -226,31 +227,31 @@ pub mod condition {
             (target_pokemon.boosts.def, target_pokemon.boosts.spd)
         };
 
-        if let Some(ref mut effect_state) = battle.current_effect_state {
+        battle.with_effect_state(|state| {
             if cur_def != new_def {
-                let current_def = effect_state
+                let current_def = state
                     .data
                     .get("def")
                     .and_then(|v| v.as_i64())
                     .unwrap_or(0);
-                effect_state.data.insert(
+                state.data.insert(
                     "def".to_string(),
                     serde_json::to_value(current_def - 1).unwrap_or(serde_json::Value::Null),
                 );
             }
 
             if cur_spd != new_spd {
-                let current_spd = effect_state
+                let current_spd = state
                     .data
                     .get("spd")
                     .and_then(|v| v.as_i64())
                     .unwrap_or(0);
-                effect_state.data.insert(
+                state.data.insert(
                     "spd".to_string(),
                     serde_json::to_value(current_spd - 1).unwrap_or(serde_json::Value::Null),
                 );
             }
-        }
+        });
 
         EventResult::Continue
     }
@@ -274,28 +275,24 @@ pub mod condition {
         };
 
         // if (this.effectState.def || this.effectState.spd) {
-        let (def_value, spd_value, layers) = {
-            if let Some(ref effect_state) = battle.current_effect_state {
-                let def = effect_state
-                    .data
-                    .get("def")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0);
-                let spd = effect_state
-                    .data
-                    .get("spd")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0);
-                let layers = effect_state
-                    .data
-                    .get("layers")
-                    .and_then(|v| v.as_i64())
-                    .unwrap_or(0);
-                (def, spd, layers)
-            } else {
-                (0, 0, 0)
-            }
-        };
+        let (def_value, spd_value, layers) = battle.with_effect_state_ref(|state| {
+            let def = state
+                .data
+                .get("def")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            let spd = state
+                .data
+                .get("spd")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            let layers = state
+                .data
+                .get("layers")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0);
+            (def, spd, layers)
+        }).unwrap_or((0, 0, 0));
 
         if def_value != 0 || spd_value != 0 {
             // const boosts: SparseBoostsTable = {};

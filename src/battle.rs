@@ -124,6 +124,7 @@ mod handle_item_event;
 mod handle_move_event;
 mod handle_condition_event;
 mod run_event;
+mod with_effect_state;
 mod find_event_handlers;
 mod priority_event;
 mod get_event_modifier;
@@ -255,10 +256,11 @@ pub struct EventListener {
 
 /// Effect type - matches JavaScript effectType
 /// Used to determine event handler priority ordering
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 /// JavaScript equivalent: EffectType (sim/global-types.ts)
 pub enum EffectType {
     ZMove,
+    #[default]
     Condition,
     SlotCondition,
     SideCondition,
@@ -276,6 +278,24 @@ pub enum EffectType {
 
 /// Type alias for event callback functions
 pub type EventCallback = Box<dyn Fn(&EventInfo) -> Option<i32> + Send + Sync>;
+
+/// Context for the current effect being processed
+/// Used by with_effect_state to look up the correct state
+/// Rust-specific: JavaScript uses this.effectState which is a reference
+/// Consolidates: current_effect, current_effect_state, current_effect_data
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct EffectContext {
+    /// Effect ID (e.g., "focuspunch", "intimidate")
+    pub effect_id: ID,
+    /// Type of effect
+    pub effect_type: EffectType,
+    /// Pokemon that holds this effect (for volatiles, abilities, items, status)
+    pub effect_holder: Option<(usize, usize)>,
+    /// Side index (for side conditions)
+    pub side_index: Option<usize>,
+    /// Whether this effect was Prankster boosted
+    pub prankster_boosted: bool,
+}
 
 /// Type alias for spread move hit result (damages, targets)
 pub type SpreadMoveHitResult = (crate::battle_actions::SpreadMoveDamage, crate::battle_actions::SpreadMoveTargets);
@@ -716,15 +736,10 @@ pub struct Battle {
     // TODO: DELETE - Not in JavaScript Battle class (use `event` field instead)
     /// Current event being processed (internal tracking)
     pub current_event: Option<EventInfo>,
-    // TODO: DELETE - Not in JavaScript Battle class (use `effect` field instead)
-    /// Current effect being processed (internal tracking)
-    pub current_effect: Option<ID>,
-    // TODO: DELETE - Not in JavaScript Battle class (use `effect_state` field instead)
-    /// Current effect state (internal tracking)
-    pub current_effect_state: Option<EffectState>,
-    // TODO: DELETE - Not in JavaScript Battle class
-    /// Current effect metadata (name, type, pranksterBoosted, etc.)
-    pub current_effect_data: Option<crate::event_system::EffectData>,
+    /// Current effect context for with_effect_state lookups
+    /// Rust-specific: Stores info needed to look up the current effect's state
+    /// Consolidates: current_effect, current_effect_state, current_effect_data
+    pub current_effect_context: Option<EffectContext>,
 
     /// Log position for sent messages
     /// JavaScript: sentLogPos: number

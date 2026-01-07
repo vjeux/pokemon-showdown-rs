@@ -66,26 +66,20 @@ impl Battle {
             eprintln!("[ADD_PSEUDOWEATHER] Pseudoweather already exists, calling FieldRestart event");
 
             // JavaScript: return this.battle.singleEvent('FieldRestart', status, state, this, source, sourceEffect);
-            // singleEvent sets this.effectState = state before calling the callback
-            // We need to clone the state, set it, call the event, then write it back
-
-            // Get the current state
-            let state = self.field.pseudo_weather.get(&id).unwrap().clone();
-
-            // Set current_effect_state to the cloned state
-            let prev_effect_state = self.current_effect_state.take();
-            self.current_effect_state = Some(state.clone());
+            // Set up effect context so callbacks can use with_effect_state to access/modify state
+            let prev_context = self.set_effect_context(crate::EffectContext {
+                effect_id: id.clone(),
+                effect_type: crate::battle::EffectType::FieldCondition,
+                effect_holder: None,
+                side_index: None,
+                prankster_boosted: false,
+            });
 
             // Call the event
             let result = self.handle_condition_event("FieldRestart", condition_id, None);
 
-            // Get the modified state back and update the field
-            if let Some(modified_state) = self.current_effect_state.take() {
-                self.field.pseudo_weather.insert(id.clone(), modified_state);
-            }
-
-            // Restore previous effect state
-            self.current_effect_state = prev_effect_state;
+            // Restore previous context
+            self.restore_effect_context(prev_context);
 
             match result {
                 crate::event::EventResult::Boolean(false) => {
@@ -115,22 +109,22 @@ impl Battle {
             // }
 
             // Add to field first so the event handlers can access it
-            self.field.pseudo_weather.insert(id.clone(), state.clone());
+            self.field.pseudo_weather.insert(id.clone(), state);
 
-            // Set current_effect_state to the new state
-            let prev_effect_state = self.current_effect_state.take();
-            self.current_effect_state = Some(state);
+            // Set up effect context so callbacks can use with_effect_state to access/modify state
+            let prev_context = self.set_effect_context(crate::EffectContext {
+                effect_id: id.clone(),
+                effect_type: crate::battle::EffectType::FieldCondition,
+                effect_holder: None,
+                side_index: None,
+                prankster_boosted: false,
+            });
 
             eprintln!("[ADD_PSEUDOWEATHER] Calling FieldStart event");
             let result = self.handle_condition_event("FieldStart", condition_id, None);
 
-            // Get the modified state back and update the field
-            if let Some(modified_state) = self.current_effect_state.take() {
-                self.field.pseudo_weather.insert(id.clone(), modified_state);
-            }
-
-            // Restore previous effect state
-            self.current_effect_state = prev_effect_state;
+            // Restore previous context
+            self.restore_effect_context(prev_context);
 
             match result {
                 crate::event::EventResult::Boolean(false) => {

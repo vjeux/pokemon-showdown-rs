@@ -43,30 +43,9 @@ impl Battle {
             if let Some(pokemon) = self.pokemon_at(target_pokemon_pos.0, target_pokemon_pos.1) {
                 // Check if effect is in target's volatiles
                 if pokemon.volatiles.contains_key(effect_id) {
-                    // Set current_effect_state from the volatile's state (like JS does with this.effectState)
-                    let volatile_state = pokemon.volatiles.get(effect_id).cloned();
-                    let previous_effect_state = self.current_effect_state.take();
-                    self.current_effect_state = volatile_state;
-
-                    let result = self.handle_condition_event(event_id, effect_str, target);
-
-                    // CRITICAL FIX: Save modified current_effect_state back to Pokemon's volatile
-                    // In JavaScript, this.effectState is a REFERENCE to this.volatiles[status.id]
-                    // In Rust, we cloned it above, so we must copy it back after the callback modifies it
-                    // This fixes bugs where callbacks set effectState.trueDuration, effectState.move, etc.
-                    if let Some(modified_state) = self.current_effect_state.take() {
-                        if let Some(pokemon_mut) = self.pokemon_at_mut(target_pokemon_pos.0, target_pokemon_pos.1) {
-                            if let Some(volatile) = pokemon_mut.volatiles.get_mut(effect_id) {
-                                // Copy the modified state back
-                                *volatile = modified_state;
-                            }
-                        }
-                    }
-
-                    // Restore previous effect state
-                    self.current_effect_state = previous_effect_state;
-
-                    return result;
+                    // The context is already set up by single_event with effect_holder = target_pos
+                    // Callbacks should use with_effect_state to access/modify the volatile's state
+                    return self.handle_condition_event(event_id, effect_str, target);
                 }
                 // Check if effect is target's status
                 if !pokemon.status.is_empty() && pokemon.status.as_str() == effect_str {

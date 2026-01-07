@@ -45,24 +45,15 @@ pub fn on_residual(
     }
 
     // this.effectState.trueDuration--;
-    // In JavaScript: this.effectState is a reference to the volatile's state
-    // In Rust: battle.current_effect_state is a clone that will be copied back
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        if let Some(true_duration_val) = effect_state.data.get_mut("trueDuration") {
+    battle.with_effect_state(|state| {
+        if let Some(true_duration_val) = state.data.get_mut("trueDuration") {
             if let Some(true_duration) = true_duration_val.as_i64() {
                 let new_duration = true_duration - 1;
-                eprintln!("[LOCKEDMOVE_RESIDUAL] turn={}, pokemon=({}, {}), trueDuration {} -> {}",
-                    battle.turn, pokemon_pos.0, pokemon_pos.1, true_duration, new_duration);
+                eprintln!("[LOCKEDMOVE_RESIDUAL] trueDuration {} -> {}", true_duration, new_duration);
                 *true_duration_val = serde_json::Value::Number(serde_json::Number::from(new_duration));
-            } else {
-                eprintln!("[LOCKEDMOVE_RESIDUAL] trueDuration is not an i64");
             }
-        } else {
-            eprintln!("[LOCKEDMOVE_RESIDUAL] No trueDuration in effect_state.data");
         }
-    } else {
-        eprintln!("[LOCKEDMOVE_RESIDUAL] ERROR: No current_effect_state!");
-    }
+    });
 
     EventResult::Continue
 }
@@ -88,16 +79,11 @@ pub fn on_start(
         battle.turn, pokemon_pos.0, pokemon_pos.1, true_duration);
 
     // this.effectState.move = effect.id;
-    // In JavaScript: effect is the second parameter to singleEvent, which is the condition (status)
-    // But looking at the actual usage, effect.id should be the MOVE that triggered lockedmove
-    // In Rust: current_effect_state.source_effect contains the move that caused this volatile
-    let move_id = if let Some(ref effect_state) = battle.current_effect_state {
-        effect_state.source_effect.as_ref()
-            .map(|id| id.to_string())
-            .or_else(|| battle.current_effect.as_ref().map(|id| id.to_string()))
-    } else {
-        None
-    };
+    // Get move ID from source_effect or current_effect
+    let move_id = battle.with_effect_state_ref(|state| {
+        state.source_effect.as_ref().map(|id| id.to_string())
+    }).flatten()
+        .or_else(|| battle.current_effect_id().map(|id| id.to_string()));
 
     let move_id = match move_id {
         Some(id) => id,
@@ -107,16 +93,12 @@ pub fn on_start(
         }
     };
 
-    // Set volatile state data in current_effect_state
-    // In JavaScript: this.effectState.trueDuration = ...
-    // In Rust: battle.current_effect_state is a clone that will be copied back to pokemon.volatiles
-    if let Some(ref mut effect_state) = battle.current_effect_state {
-        effect_state.data.insert("trueDuration".to_string(), serde_json::Value::Number(serde_json::Number::from(true_duration)));
-        effect_state.data.insert("move".to_string(), serde_json::Value::String(move_id));
-        eprintln!("[LOCKEDMOVE_START] Set trueDuration={} and move in current_effect_state", true_duration);
-    } else {
-        eprintln!("[LOCKEDMOVE_START] ERROR: No current_effect_state!");
-    }
+    // Set volatile state data
+    battle.with_effect_state(|state| {
+        state.data.insert("trueDuration".to_string(), serde_json::Value::Number(serde_json::Number::from(true_duration)));
+        state.data.insert("move".to_string(), serde_json::Value::String(move_id));
+        eprintln!("[LOCKEDMOVE_START] Set trueDuration={} and move", true_duration);
+    });
 
     EventResult::Continue
 }
@@ -132,28 +114,21 @@ pub fn on_start(
 /// ```
 pub fn on_restart(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    // if (this.effectState.trueDuration >= 2)
-    // In JavaScript: this.effectState is a reference to the volatile's state
-    // In Rust: battle.current_effect_state is a clone that will be copied back
-    let true_duration_ge_2 = if let Some(ref effect_state) = battle.current_effect_state {
-        effect_state.data.get("trueDuration")
+    // if (this.effectState.trueDuration >= 2) { this.effectState.duration = 2; }
+    battle.with_effect_state(|state| {
+        let true_duration_ge_2 = state.data.get("trueDuration")
             .and_then(|d| d.as_i64())
             .map(|d| d >= 2)
-            .unwrap_or(false)
-    } else {
-        false
-    };
+            .unwrap_or(false);
 
-    if true_duration_ge_2 {
-        // this.effectState.duration = 2;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.duration = Some(2);
+        if true_duration_ge_2 {
+            state.duration = Some(2);
         }
-    }
+    });
 
     EventResult::Continue
 }
@@ -214,24 +189,18 @@ pub fn on_end(
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     // if (this.effectState.trueDuration > 1) return;
-    // In JavaScript: this.effectState is a reference to the volatile's state
-    // In Rust: battle.current_effect_state is a clone of the volatile's state
-    let true_duration = if let Some(ref effect_state) = battle.current_effect_state {
-        effect_state.data.get("trueDuration")
+    let true_duration = battle.with_effect_state_ref(|state| {
+        state.data.get("trueDuration")
             .and_then(|d| d.as_i64())
             .unwrap_or(0)
-    } else {
-        // Fallback: try to read from pokemon.volatiles if current_effect_state not set
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        let lockedmove_id = ID::from("lockedmove");
-        pokemon.volatiles.get(&lockedmove_id)
+    }).unwrap_or_else(|| {
+        // Fallback: try to read from pokemon.volatiles
+        battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
+            .and_then(|p| p.volatiles.get(&ID::from("lockedmove")))
             .and_then(|v| v.data.get("trueDuration"))
             .and_then(|d| d.as_i64())
             .unwrap_or(0)
-    };
+    });
 
     eprintln!("[LOCKEDMOVE_END] turn={}, pokemon=({}, {}), trueDuration={}",
         battle.turn, pokemon_pos.0, pokemon_pos.1, true_duration);
@@ -276,28 +245,22 @@ pub fn on_lock_move(
     }
 
     // return this.effectState.move;
-    // In JavaScript: this.effectState is a reference to the volatile's state
-    // In Rust: battle.current_effect_state is a clone of the volatile's state
-    let move_id = if let Some(ref effect_state) = battle.current_effect_state {
-        effect_state.data.get("move")
+    let move_id = battle.with_effect_state_ref(|state| {
+        state.data.get("move")
             .and_then(|m| m.as_str())
             .map(|s| s.to_string())
-    } else {
-        // Fallback: try to read from pokemon.volatiles if current_effect_state not set
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        let lockedmove_id = ID::from("lockedmove");
-        pokemon.volatiles.get(&lockedmove_id)
-            .and_then(|v| v.data.get("move"))
-            .and_then(|m| m.as_str())
-            .map(|s| s.to_string())
-    };
+    }).flatten()
+        .or_else(|| {
+            // Fallback: try to read from pokemon.volatiles
+            battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
+                .and_then(|p| p.volatiles.get(&ID::from("lockedmove")))
+                .and_then(|v| v.data.get("move"))
+                .and_then(|m| m.as_str())
+                .map(|s| s.to_string())
+        });
 
     match move_id {
         Some(m) => EventResult::ID(ID::from(m.as_str())),
         None => EventResult::Continue,
     }
 }
-

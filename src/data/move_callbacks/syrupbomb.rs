@@ -48,16 +48,21 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // if (this.effectState.source && !this.effectState.source.isActive)
-        let should_remove = if let Some(ref effect_state) = battle.current_effect_state {
-            if let Some(source_pos) = effect_state.source {
-                let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
-                    Some(p) => p,
-                    None => return EventResult::Continue,
-                };
-                !source_pokemon.is_active
+        let should_remove = battle.with_effect_state_ref(|state| {
+            if let Some(source_pos) = state.source {
+                // Need to check if source is active - we'll return the source_pos
+                Some(source_pos)
             } else {
-                false
+                None
             }
+        }).flatten();
+
+        let should_remove = if let Some(source_pos) = should_remove {
+            let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            !source_pokemon.is_active
         } else {
             false
         };
@@ -77,11 +82,7 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.boost({ spe: -1 }, pokemon, this.effectState.source);
-        let source_pos = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state.source
-        } else {
-            None
-        };
+        let source_pos = battle.with_effect_state_ref(|state| state.source).flatten();
 
         // Boost spe by -1
         let boosts = [("spe", -1i8)];

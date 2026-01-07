@@ -35,12 +35,12 @@ pub mod condition {
     /// }
     pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         // this.effectState.totalDamage = 0;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert(
+        battle.with_effect_state(|state| {
+            state.data.insert(
                 "totalDamage".to_string(),
                 serde_json::Value::Number(0.into()),
             );
-        }
+        });
 
         // this.add('-start', pokemon, 'move: Bide');
         let pokemon_ident = {

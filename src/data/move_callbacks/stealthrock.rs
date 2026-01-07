@@ -19,12 +19,11 @@ pub mod condition {
         // }
 
         // this.add('-sidestart', side, 'move: Stealth Rock');
-        if let Some(effect_state) = &battle.current_effect_state {
-            if let Some(side_index) = effect_state.side {
-                let side_id = if side_index == 0 { "p1" } else { "p2" };
-                let side_arg = crate::battle::Arg::Str(side_id);
-                battle.add("-sidestart", &[side_arg, "move: Stealth Rock".into()]);
-            }
+        let side_index = battle.with_effect_state_ref(|state| state.side).flatten();
+        if let Some(side_idx) = side_index {
+            let side_id = if side_idx == 0 { "p1" } else { "p2" };
+            let side_arg = crate::battle::Arg::Str(side_id);
+            battle.add("-sidestart", &[side_arg, "move: Stealth Rock".into()]);
         }
 
         EventResult::Continue

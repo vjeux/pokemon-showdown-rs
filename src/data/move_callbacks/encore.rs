@@ -116,12 +116,12 @@ pub mod condition {
         }
 
         // this.effectState.move = move.id;
-        if let Some(ref mut effect_state) = battle.current_effect_state {
-            effect_state.data.insert(
+        battle.with_effect_state(|state| {
+            state.data.insert(
                 "move".to_string(),
                 serde_json::to_value(actual_move_id.to_string()).unwrap(),
             );
-        }
+        });
 
         // this.add('-start', target, 'Encore');
         let target_ident = {
@@ -139,11 +139,11 @@ pub mod condition {
         // }
         let will_move = battle.queue.will_move(target.0, target.1);
         if will_move.is_none() {
-            if let Some(ref mut effect_state) = battle.current_effect_state {
-                if let Some(duration) = effect_state.duration {
-                    effect_state.duration = Some(duration + 1);
+            battle.with_effect_state(|state| {
+                if let Some(duration) = state.duration {
+                    state.duration = Some(duration + 1);
                 }
-            }
+            });
         }
 
         EventResult::Continue
@@ -161,15 +161,13 @@ pub mod condition {
         use crate::dex_data::ID;
 
         // if (move.id !== this.effectState.move) return this.effectState.move;
-        let encore_move_id = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
+        let encore_move_id = battle.with_effect_state_ref(|state| {
+            state
                 .data
                 .get("move")
                 .and_then(|v| v.as_str())
                 .map(ID::from)
-        } else {
-            None
-        };
+        }).flatten();
 
         if let Some(encore_id) = encore_move_id {
             if move_id != encore_id.as_str() {
@@ -200,15 +198,13 @@ pub mod condition {
         // if (!moveSlot || moveSlot.pp <= 0) {
         //     target.removeVolatile('encore');
         // }
-        let encore_move_id = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
+        let encore_move_id = battle.with_effect_state_ref(|state| {
+            state
                 .data
                 .get("move")
                 .and_then(|v| v.as_str())
                 .map(ID::from)
-        } else {
-            None
-        };
+        }).flatten();
 
         if let Some(encore_id) = encore_move_id {
             let should_remove = {
@@ -273,15 +269,13 @@ pub mod condition {
         // if (!this.effectState.move || !pokemon.hasMove(this.effectState.move)) {
         //     return;
         // }
-        let encore_move_id = if let Some(ref effect_state) = battle.current_effect_state {
-            effect_state
+        let encore_move_id = battle.with_effect_state_ref(|state| {
+            state
                 .data
                 .get("move")
                 .and_then(|v| v.as_str())
                 .map(ID::from)
-        } else {
-            None
-        };
+        }).flatten();
 
         let encore_id = match encore_move_id {
             Some(id) => id,

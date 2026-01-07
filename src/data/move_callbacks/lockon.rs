@@ -107,10 +107,7 @@ pub mod condition {
         };
 
         // if (move && source === this.effectState.target && target === this.effectState.source) return 0;
-        let (effect_target, effect_source) = match &battle.current_effect_state {
-            Some(es) => (es.target, es.source),
-            None => return EventResult::Continue,
-        };
+        let (effect_target, effect_source) = battle.with_effect_state_ref(|state| (state.target, state.source)).unwrap_or((None, None));
 
         if Some(source) == effect_target && Some(target) == effect_source {
             return EventResult::Number(0);
@@ -140,10 +137,7 @@ pub mod condition {
         };
 
         // if (move && source === this.effectState.target && target === this.effectState.source) return true;
-        let (effect_target, effect_source) = match &battle.current_effect_state {
-            Some(es) => (es.target, es.source),
-            None => return EventResult::Continue,
-        };
+        let (effect_target, effect_source) = battle.with_effect_state_ref(|state| (state.target, state.source)).unwrap_or((None, None));
 
         if Some(source) == effect_target && Some(target) == effect_source {
             return EventResult::Boolean(true);

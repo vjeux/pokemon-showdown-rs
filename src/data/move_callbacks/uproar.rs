@@ -248,9 +248,8 @@ pub mod condition {
         if status == Some("slp") {
             // Get effectState.target
             let effect_target = battle
-                .current_effect_state
-                .as_ref()
-                .and_then(|es| es.target);
+                .with_effect_state_ref(|state| state.target)
+                .flatten();
 
             let pokemon_slot = {
                 let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
