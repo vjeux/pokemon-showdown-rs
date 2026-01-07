@@ -583,7 +583,7 @@ impl Battle {
             "ModifyAccuracy" => ability_callbacks::dispatch_on_modify_accuracy(
                 self,
                 ability_id.as_str(),
-                0, pokemon_pos, pokemon_pos,
+                relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
             move_id,
             ),
             "ModifyAccuracyPriority" => ability_callbacks::dispatch_on_modify_accuracy_priority(

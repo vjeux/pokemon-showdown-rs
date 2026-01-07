@@ -1159,13 +1159,6 @@ pub fn dispatch_on_immunity(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyAccuracy(accuracy)
-//   onModifyAccuracy(accuracy, target)
-//   onModifyAccuracy(accuracy, target, source)
-//   onModifyAccuracy(accuracy, target, source, move)
-
 /// Dispatch onModifyAccuracy callbacks
 pub fn dispatch_on_modify_accuracy(
     battle: &mut Battle,
