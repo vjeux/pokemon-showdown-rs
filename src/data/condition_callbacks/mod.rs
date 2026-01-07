@@ -430,11 +430,6 @@ pub fn dispatch_on_any_invulnerability(
     println!("[DISPATCH_INVULN] Returning {:?}", result);
     result
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onLockMove()
-//   onLockMove(pokemon)
-
 /// Dispatch onLockMove callbacks
 pub fn dispatch_on_lock_move(
     battle: &mut Battle,
