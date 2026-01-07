@@ -404,10 +404,6 @@ pub fn dispatch_on_immunity(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyInvulnerability(target, source, move)
-
 /// Dispatch onAnyInvulnerability callbacks
 pub fn dispatch_on_any_invulnerability(
     battle: &mut Battle,
