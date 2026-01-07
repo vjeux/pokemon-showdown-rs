@@ -261,7 +261,7 @@ impl Battle {
         let actual_damage = if let Some(side) = self.sides.get_mut(target_pos.0) {
             if let Some(pokemon) = side.pokemon.get_mut(target_pos.1) {
                 let old_hp = pokemon.hp;
-                pokemon.hp = pokemon.hp.saturating_sub(damage);
+                pokemon.hp = pokemon.hp.saturating_sub(damage).max(0);  // Clamp to 0
                 let actual = old_hp - pokemon.hp;
                 actual
             } else {
