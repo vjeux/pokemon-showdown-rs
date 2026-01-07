@@ -53,6 +53,13 @@ battle.prng.rng.next = function() {
         console.error(`[PRNG_JS] call #${totalPrngCalls}, result=${result}`);
         lines.forEach((line, i) => console.error(`  ${line.trim()}`));
     }
+    // Log PRNG calls on turn 15 for seed 24 debugging
+    if (totalPrngCalls >= 23 && totalPrngCalls <= 26) {
+        const stack = new Error().stack;
+        const lines = stack.split('\n').slice(1, 6); // Get first 5 frames
+        console.error(`[PRNG_JS_T15] turn=${battle.turn}, call #${totalPrngCalls}, result=${result}`);
+        lines.forEach((line, i) => console.error(`  ${line.trim()}`));
+    }
     return result;
 };
 
@@ -115,16 +122,16 @@ battle.findPokemonEventHandlers = function(pokemon, callbackName, getKey) {
 // Instrument speedSort to log shuffles
 const originalSpeedSort = battle.speedSort.bind(battle);
 battle.speedSort = function(list, comparator) {
-    if (battle.turn === 1 && list.length > 0 && list[0].effect) {
-        console.error(`[SPEED_SORT_JS] turn=1, sorting ${list.length} handlers`);
+    if ((battle.turn === 1 || battle.turn === 14) && list.length > 0 && list[0].effect) {
+        console.error(`[SPEED_SORT_JS] turn=${battle.turn}, sorting ${list.length} handlers`);
         list.forEach((h, i) => {
-            console.error(`[SPEED_SORT_JS]   [${i}] effect=${h.effect.id}, priority=${h.priority}, order=${h.order}, subOrder=${h.subOrder}, speed=${h.speed}`);
+            console.error(`[SPEED_SORT_JS]   [${i}] effect=${h.effect.id}, priority=${h.priority}, order=${h.order}, subOrder=${h.subOrder}, speed=${h.speed}, effectOrder=${h.effectOrder}`);
         });
     }
     const originalShuffle = battle.prng.shuffle.bind(battle.prng);
     battle.prng.shuffle = function(arr, start, end) {
-        if (battle.turn === 1) {
-            console.error(`[SHUFFLE_JS] turn=1, shuffling range [${start}, ${end}), arr.length=${arr.length}`);
+        if (battle.turn === 1 || battle.turn === 14) {
+            console.error(`[SHUFFLE_JS] turn=${battle.turn}, shuffling range [${start}, ${end}), arr.length=${arr.length}`);
             if (arr[start] && arr[start].effect) {
                 const items = [];
                 for (let i = start; i < end && i < arr.length; i++) {
@@ -137,7 +144,7 @@ battle.speedSort = function(list, comparator) {
     };
     const result = originalSpeedSort(list, comparator);
     battle.prng.shuffle = originalShuffle;
-    if (battle.turn === 1 && list.length > 0 && list[0].effect) {
+    if ((battle.turn === 1 || battle.turn === 14) && list.length > 0 && list[0].effect) {
         console.error(`[SPEED_SORT_JS] after sort:`);
         list.forEach((h, i) => {
             console.error(`[SPEED_SORT_JS]   [${i}] effect=${h.effect.id}`);

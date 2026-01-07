@@ -125,8 +125,13 @@ pub fn on_before_move(
     _target_pos: Option<(usize, usize)>,
     _move_id: &str,
 ) -> EventResult {
+    eprintln!("[PAR] turn={}, onBeforeMove called for pokemon={:?}", battle.turn, pokemon_pos);
+
     // if (this.randomChance(1, 4))
-    if battle.random_chance(1, 4) {
+    let is_paralyzed = battle.random_chance(1, 4);
+    eprintln!("[PAR] turn={}, randomChance(1, 4) = {}", battle.turn, is_paralyzed);
+
+    if is_paralyzed {
         // this.add('cant', pokemon, 'par');
         let pokemon_ident = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

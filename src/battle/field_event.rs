@@ -177,7 +177,8 @@ impl Battle {
             let effect_id = handler.effect_id;
             let holder = handler.effect_holder;
             let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
-            let effect_order = handler.effect_order.unwrap_or(0); // JavaScript: effectOrder for tie-breaking
+            // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
+            let effect_order = 0;
             let handler = self.create_field_handler(
                 effect_id,
                 effect_type,
@@ -205,7 +206,8 @@ impl Battle {
                     let effect_id = handler.effect_id;
                     let holder = handler.effect_holder;
                     let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
-                    let effect_order = handler.effect_order.unwrap_or(0); // JavaScript: effectOrder for tie-breaking
+                    // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
+                    let effect_order = 0;
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
@@ -242,7 +244,8 @@ impl Battle {
                         let effect_id = handler.effect_id;
                         let holder = handler.effect_holder;
                         let effect_type = handler.effect_type;
-                        let effect_order = handler.effect_order.unwrap_or(0); // JavaScript: effectOrder for tie-breaking
+                        // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
+                        let effect_order = 0;
                         let handler = self.create_field_handler(
                             effect_id,
                             effect_type,
@@ -272,7 +275,12 @@ impl Battle {
                     let effect_id = handler.effect_id;
                     let holder = handler.effect_holder;
                     let effect_type = handler.effect_type;
-                    let effect_order = handler.effect_order.unwrap_or(0); // JavaScript: effectOrder for tie-breaking
+                    // IMPORTANT: Do NOT use handler.effect_order for field event handlers!
+                    // JavaScript fieldEvent() creates handlers with effectOrder=undefined for volatiles.
+                    // This causes volatiles with the same priority/speed/subOrder to be tied and shuffled.
+                    // Rust was incorrectly propagating volatile effect_order, breaking ties that should exist.
+                    // Always use 0 to match JavaScript's undefined behavior.
+                    let effect_order = 0;
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
