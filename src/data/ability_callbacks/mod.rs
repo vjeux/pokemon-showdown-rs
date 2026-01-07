@@ -1306,21 +1306,6 @@ pub fn dispatch_on_modify_secondaries(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifySpA()
-//   onModifySpA(atk, attacker, defender)
-//   onModifySpA(atk, attacker, defender, move)
-//   onModifySpA(atk, pokemon)
-//   onModifySpA(atk, pokemon, defender, move)
-//   onModifySpA(atk, pokemon, target, move)
-//   onModifySpA(relayVar, source, target, move)
-//   onModifySpA(spa)
-//   onModifySpA(spa, attacker, defender, move)
-//   onModifySpA(spa, pokemon)
-//   onModifySpA(spa, pokemon, target, move)
-//   onModifySpA(spa, user, target, move)
-
 /// Dispatch onModifySpA callbacks
 pub fn dispatch_on_modify_sp_a(
     battle: &mut Battle,
