@@ -89,6 +89,10 @@ pub fn modify_damage(
     move_data: &crate::dex::MoveData,
     is_crit: bool,
 ) -> i32 {
+    if battle.turn >= 64 && battle.turn <= 66 {
+        eprintln!("[MODIFY_DAMAGE] ENTRY: turn={}, move={}, base_damage={}, source=({},{}), target=({},{})",
+            battle.turn, move_data.id, base_damage, source_pos.0, source_pos.1, target_pos.0, target_pos.1);
+    }
     // baseDamage += 2;
     base_damage += 2;
 
@@ -162,6 +166,10 @@ pub fn modify_damage(
     let (source_types, _target_types, target_slot) = {
         let source_types = if let Some(side) = battle.sides.get(source_pos.0) {
             if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+                if battle.turn >= 64 && battle.turn <= 66 {
+                    eprintln!("[MODIFY_DAMAGE] Reading source types for {} (species: {}): {:?}",
+                        pokemon.name, pokemon.species_id, pokemon.types);
+                }
                 pokemon.types.clone()
             } else {
                 vec![]
@@ -172,7 +180,10 @@ pub fn modify_damage(
 
         let target_types = if let Some(side) = battle.sides.get(target_pos.0) {
             if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-                eprintln!("[MODIFY_DAMAGE] Reading types for {} (species: {}): {:?}", pokemon.name, pokemon.species_id, pokemon.types);
+                if battle.turn >= 64 && battle.turn <= 66 {
+                    eprintln!("[MODIFY_DAMAGE] Reading target types for {} (species: {}): {:?}",
+                        pokemon.name, pokemon.species_id, pokemon.types);
+                }
                 pokemon.types.clone()
             } else {
                 vec![]
@@ -211,8 +222,15 @@ pub fn modify_damage(
         move_data.move_type.clone()
     };
 
+    if battle.turn >= 64 && battle.turn <= 66 {
+        eprintln!("[MODIFY_DAMAGE] move_type={}, source_types={:?}", move_type, source_types);
+    }
+
     if &move_type != "???" {
         let has_stab = source_types.iter().any(|t| t == &move_type);
+        if battle.turn >= 64 && battle.turn <= 66 {
+            eprintln!("[MODIFY_DAMAGE] Checking STAB: has_stab={}", has_stab);
+        }
         if has_stab {
             base_damage = battle.modify(base_damage, 3, 2);
             eprintln!("[MODIFY_DAMAGE] After STAB: base_damage={}", base_damage);

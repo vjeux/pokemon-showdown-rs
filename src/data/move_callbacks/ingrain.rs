@@ -40,14 +40,16 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.heal(pokemon.baseMaxhp / 16);
-        let heal_amount = {
+        let (heal_amount, pokemon_name) = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.base_maxhp / 16
+            (pokemon_pokemon.base_maxhp / 16, pokemon_pokemon.name.clone())
         };
 
+        eprintln!("[INGRAIN RESIDUAL] turn={}, pokemon={}, healing {} HP",
+            battle.turn, pokemon_name, heal_amount);
         battle.heal(heal_amount, Some(pokemon), None, None);
 
         EventResult::Continue

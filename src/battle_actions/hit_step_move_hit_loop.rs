@@ -483,7 +483,7 @@ pub fn hit_step_move_hit_loop(
     //     }
     // }
     if (active_move.recoil.is_some() || active_move.id.as_str() == "chloroblast") && active_move.total_damage > 0 {
-        let (hp_before_recoil, max_hp, recoil_damage) = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+        let (hp_before_recoil, max_hp, recoil_damage, pokemon_name) = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
             Some(pokemon) => {
                 let recoil = battle_actions::BattleActions::calc_recoil_damage(
                     active_move.total_damage,
@@ -491,12 +491,21 @@ pub fn hit_step_move_hit_loop(
                     active_move.recoil,
                     pokemon.maxhp,
                 );
-                (pokemon.hp, pokemon.maxhp, recoil)
+                (pokemon.hp, pokemon.maxhp, recoil, pokemon.name.clone())
             }
-            None => (0, 0, 0),
+            None => (0, 0, 0, String::new()),
         };
 
+        if battle.turn >= 64 && battle.turn <= 66 {
+            eprintln!("[RECOIL] turn={}, pokemon={}, move={}, total_damage={}, recoil_fraction={:?}, calculated_recoil={}",
+                battle.turn, pokemon_name, active_move.id.as_str(), active_move.total_damage,
+                active_move.recoil, recoil_damage);
+        }
+
         if recoil_damage > 0 {
+            if battle.turn >= 64 && battle.turn <= 66 {
+                eprintln!("[RECOIL] Applying {} recoil damage to {} on turn {}", recoil_damage, pokemon_name, battle.turn);
+            }
             battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&ID::from("recoil")), false);
 
             let hp_after = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
