@@ -752,17 +752,15 @@ pub fn dispatch_on_try_hit(
     use crate::data::move_callbacks;
     move_callbacks::dispatch_condition_on_try_hit(battle, condition_id, source_pos, target_pos, move_id)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onTryPrimaryHit(target, source, move)
-
 /// Dispatch onTryPrimaryHit callbacks
 pub fn dispatch_on_try_primary_hit(
     battle: &mut Battle,
     condition_id: &str,
-    pokemon_pos: (usize, usize),
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    move_id: Option<&str>,
 ) -> EventResult {
     // Route to actual implementation in move_callbacks
     use crate::data::move_callbacks;
-    move_callbacks::dispatch_condition_on_try_primary_hit(battle, condition_id, pokemon_pos)
+    move_callbacks::dispatch_condition_on_try_primary_hit(battle, condition_id, target_pos, source_pos, move_id)
 }

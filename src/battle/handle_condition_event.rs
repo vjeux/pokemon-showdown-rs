@@ -331,7 +331,16 @@ impl Battle {
                 )
             }
             "TryPrimaryHit" => {
-                condition_callbacks::dispatch_on_try_primary_hit(self, condition_id, pokemon_pos)
+                // Extract source from current_event and move_id from active_move
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let move_id_string = self.active_move.as_ref().map(|m| m.id.as_str().to_string());
+                condition_callbacks::dispatch_on_try_primary_hit(
+                    self,
+                    condition_id,
+                    pokemon_pos,
+                    source_pos,
+                    move_id_string.as_deref(),
+                )
             }
             "TryHit" => {
                 // TryHit needs both source and target positions
