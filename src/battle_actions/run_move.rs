@@ -139,8 +139,15 @@ pub fn run_move(
     // Call beforeMoveCallback
     // if (move.beforeMoveCallback)
     //     move.beforeMoveCallback.call(this, pokemon, target, move);
-    if battle.has_callback(move_id, "beforeMoveCallback") {
-        crate::data::move_callbacks::dispatch_before_move_callback(battle, move_id.as_str(), pokemon_pos);
+    //
+    // JavaScript: if this callback returns true, the move is cancelled
+    // (e.g., Focus Punch when lostFocus is set)
+    if crate::data::move_callbacks::has_before_move_callback(move_id.as_str()) {
+        let callback_result = crate::data::move_callbacks::dispatch_before_move_callback(battle, move_id.as_str(), pokemon_pos);
+        if let crate::event::EventResult::Boolean(true) = callback_result {
+            // Move was cancelled by beforeMoveCallback
+            return;
+        }
     }
 
     // Reset lastDamage

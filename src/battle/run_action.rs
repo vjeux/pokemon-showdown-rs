@@ -314,12 +314,16 @@ impl Battle {
 
         match action {
             Action::Move(move_action) => {
+                use crate::battle_queue::MoveActionType;
+
                 let side_idx = move_action.side_index;
                 let poke_idx = move_action.pokemon_index;
                 let move_id = &move_action.move_id;
                 let target_loc = move_action.target_loc;
 
-                // Check if Pokemon can still act
+                // Check if Pokemon can still act (is active and not fainted)
+                // JS: if (!action.pokemon.isActive) return false;
+                // JS: if (action.pokemon.fainted) return false;
                 let can_act = if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
                         if pokemon.is_fainted() {
@@ -338,19 +342,75 @@ impl Battle {
                 };
 
                 if can_act {
-                    eprintln!("[RUN_ACTION] About to call run_move, move={}", move_id.as_str());
-                    crate::battle_actions::run_move(
-                        self,
-                        move_id,
-                        (side_idx, poke_idx),
-                        target_loc,
-                        None, // source_effect
-                        move_action.zmove.clone(), // z_move
-                        false, // external_move
-                        move_action.max_move.clone(), // max_move
-                        None, // original_target
-                    );
-                    eprintln!("[RUN_ACTION] After run_move, move={}", move_id.as_str());
+                    match move_action.choice {
+                        MoveActionType::Move => {
+                            // JS: case 'move':
+                            // JS:     if (!action.pokemon.isActive) return false;
+                            // JS:     if (action.pokemon.fainted) return false;
+                            // JS:     this.actions.runMove(action.move, action.pokemon, action.targetLoc, {
+                            // JS:         sourceEffect: action.sourceEffect, zMove: action.zmove,
+                            // JS:         maxMove: action.maxMove, originalTarget: action.originalTarget,
+                            // JS:     });
+                            // JS:     break;
+                            eprintln!("[RUN_ACTION] About to call run_move, move={}", move_id.as_str());
+                            crate::battle_actions::run_move(
+                                self,
+                                move_id,
+                                (side_idx, poke_idx),
+                                target_loc,
+                                None, // source_effect
+                                move_action.zmove.clone(), // z_move
+                                false, // external_move
+                                move_action.max_move.clone(), // max_move
+                                None, // original_target
+                            );
+                            eprintln!("[RUN_ACTION] After run_move, move={}", move_id.as_str());
+                        }
+                        MoveActionType::BeforeTurnMove => {
+                            // JS: case 'beforeTurnMove':
+                            // JS:     if (!action.pokemon.isActive) return false;
+                            // JS:     if (action.pokemon.fainted) return false;
+                            // JS:     this.debug('before turn callback: ' + action.move.id);
+                            // JS:     const target = this.getTarget(action.pokemon, action.move, action.targetLoc);
+                            // JS:     if (!target) return false;
+                            // JS:     if (!action.move.beforeTurnCallback) throw new Error(`beforeTurnMove has no beforeTurnCallback`);
+                            // JS:     action.move.beforeTurnCallback.call(this, action.pokemon, target);
+                            // JS:     break;
+                            eprintln!("[RUN_ACTION] Executing beforeTurnMove callback for move={}", move_id.as_str());
+
+                            // Note: JavaScript gets the target and checks if it's valid, but the current Rust
+                            // dispatch function doesn't take a target parameter. The callbacks that need the
+                            // target obtain it themselves (e.g., from battle.active_target or other sources).
+                            // For now, we'll just call the dispatch function without the target.
+                            // TODO: Update dispatch_before_turn_callback to take target_loc parameter if needed
+
+                            // Call the move's before_turn_callback
+                            let result = crate::data::move_callbacks::dispatch_before_turn_callback(
+                                self,
+                                move_id.as_str(),
+                                (side_idx, poke_idx)
+                            );
+                            eprintln!("[RUN_ACTION] beforeTurnMove callback returned {:?}", result);
+                        }
+                        MoveActionType::PriorityChargeMove => {
+                            // JS: case 'priorityChargeMove':
+                            // JS:     if (!action.pokemon.isActive) return false;
+                            // JS:     if (action.pokemon.fainted) return false;
+                            // JS:     this.debug('priority charge callback: ' + action.move.id);
+                            // JS:     if (!action.move.priorityChargeCallback) throw new Error(`priorityChargeMove has no priorityChargeCallback`);
+                            // JS:     action.move.priorityChargeCallback.call(this, action.pokemon);
+                            // JS:     break;
+                            eprintln!("[RUN_ACTION] Executing priorityChargeMove callback for move={}", move_id.as_str());
+
+                            // Call the move's priority_charge_callback
+                            let result = crate::data::move_callbacks::dispatch_priority_charge_callback(
+                                self,
+                                move_id.as_str(),
+                                (side_idx, poke_idx)
+                            );
+                            eprintln!("[RUN_ACTION] priorityChargeMove callback returned {:?}", result);
+                        }
+                    }
                 }
             }
             Action::Switch(switch_action) => {

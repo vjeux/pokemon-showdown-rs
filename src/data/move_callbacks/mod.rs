@@ -1442,6 +1442,11 @@ pub fn has_priority_charge_callback(move_id: &str) -> bool {
     matches!(move_id, "beakblast" | "chillyreception" | "focuspunch" | "shelltrap")
 }
 
+/// Check if a move has a beforeMoveCallback
+pub fn has_before_move_callback(move_id: &str) -> bool {
+    matches!(move_id, "bide" | "focuspunch")
+}
+
 // Condition dispatch functions
 /// Dispatch condition durationCallback callbacks
 pub fn dispatch_condition_duration_callback(
