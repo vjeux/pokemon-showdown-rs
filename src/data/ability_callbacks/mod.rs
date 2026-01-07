@@ -1173,18 +1173,6 @@ pub fn dispatch_on_modify_accuracy(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifyAtk()
-//   onModifyAtk(atk)
-//   onModifyAtk(atk, attacker, defender)
-//   onModifyAtk(atk, attacker, defender, move)
-//   onModifyAtk(atk, pokemon)
-//   onModifyAtk(atk, pokemon, defender, move)
-//   onModifyAtk(atk, pokemon, target, move)
-//   onModifyAtk(atk, source, target, move)
-//   onModifyAtk(atk, user, target, move)
-
 /// Dispatch onModifyAtk callbacks
 pub fn dispatch_on_modify_atk(
     battle: &mut Battle,
