@@ -1054,10 +1054,6 @@ pub fn dispatch_on_flinch(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFoeAfterBoost(boost, target, source, effect)
-
 /// Dispatch onFoeAfterBoost callbacks
 pub fn dispatch_on_foe_after_boost(
     battle: &mut Battle,

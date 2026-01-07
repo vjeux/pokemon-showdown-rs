@@ -539,7 +539,7 @@ impl Battle {
             "FoeAfterBoost" => ability_callbacks::dispatch_on_foe_after_boost(
                 self,
                 ability_id.as_str(),
-                Some(pokemon_pos), None, None
+                Some(pokemon_pos), event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }
             ),
             "FoeMaybeTrapPokemon" => ability_callbacks::dispatch_on_foe_maybe_trap_pokemon(
                 self,
