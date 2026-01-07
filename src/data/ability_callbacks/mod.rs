@@ -1030,21 +1030,16 @@ pub fn dispatch_on_end(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFaint()
-//   onFaint(pokemon)
-//   onFaint(target)
-//   onFaint(target, source, effect)
-
 /// Dispatch onFaint callbacks
 pub fn dispatch_on_faint(
     battle: &mut Battle,
     ability_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "illusion" => illusion::on_faint(battle, pokemon_pos),
+        "illusion" => illusion::on_faint(battle, pokemon_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -3946,8 +3941,10 @@ pub fn dispatch_on_faint_priority(
     battle: &mut Battle,
     ability_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_faint(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3957,8 +3954,10 @@ pub fn dispatch_on_faint_order(
     battle: &mut Battle,
     ability_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_faint(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3968,8 +3967,10 @@ pub fn dispatch_on_faint_sub_order(
     battle: &mut Battle,
     ability_id: &str,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_faint(battle, ability_id, pokemon_pos)
+    dispatch_on_faint(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND

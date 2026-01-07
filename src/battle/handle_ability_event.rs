@@ -532,7 +532,7 @@ impl Battle {
                 Some(pokemon_pos)
             ),
             "End" => ability_callbacks::dispatch_on_end(self, ability_id.as_str(), pokemon_pos),
-            "Faint" => ability_callbacks::dispatch_on_faint(self, ability_id.as_str(), pokemon_pos),
+            "Faint" => ability_callbacks::dispatch_on_faint(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }),
             "Flinch" => {
                 ability_callbacks::dispatch_on_flinch(self, ability_id.as_str(), pokemon_pos)
             }
