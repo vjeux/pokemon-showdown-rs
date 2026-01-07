@@ -322,7 +322,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///         pokemon.formeChange('Eiscue', this.effect, true);
 ///     }
 /// }
-pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::battle::Arg;
     use crate::dex_data::ID;
 

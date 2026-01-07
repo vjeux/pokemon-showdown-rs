@@ -1863,23 +1863,17 @@ pub fn dispatch_on_weather(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onWeatherChange(pokemon)
-//   onWeatherChange(pokemon, source, sourceEffect)
-//   onWeatherChange(target, source, sourceEffect)
-
 /// Dispatch onWeatherChange callbacks
 pub fn dispatch_on_weather_change(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "flowergift" => flowergift::on_weather_change(battle, pokemon_pos),
-        "forecast" => forecast::on_weather_change(battle, pokemon_pos),
-        "iceface" => iceface::on_weather_change(battle, pokemon_pos, None),
-        "protosynthesis" => protosynthesis::on_weather_change(battle, pokemon_pos),
+        "flowergift" => flowergift::on_weather_change(battle, pokemon_pos, source_pos, effect_id),
+        "forecast" => forecast::on_weather_change(battle, pokemon_pos, source_pos, effect_id),
+        "iceface" => iceface::on_weather_change(battle, pokemon_pos, source_pos, effect_id),
+        "protosynthesis" => protosynthesis::on_weather_change(battle, pokemon_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -5275,9 +5269,9 @@ pub fn dispatch_on_weather_sub_order(
 pub fn dispatch_on_weather_change_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_weather_change(battle, ability_id, pokemon_pos)
+    dispatch_on_weather_change(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -5286,9 +5280,9 @@ pub fn dispatch_on_weather_change_priority(
 pub fn dispatch_on_weather_change_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_weather_change(battle, ability_id, pokemon_pos)
+    dispatch_on_weather_change(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -5297,9 +5291,9 @@ pub fn dispatch_on_weather_change_order(
 pub fn dispatch_on_weather_change_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_weather_change(battle, ability_id, pokemon_pos)
+    dispatch_on_weather_change(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 
 // Condition dispatch functions

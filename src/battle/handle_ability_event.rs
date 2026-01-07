@@ -991,6 +991,8 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
+                event_source_pos,
+                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
             ),
             _ => EventResult::Continue,
         };

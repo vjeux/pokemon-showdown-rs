@@ -29,7 +29,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///         pokemon.removeVolatile('protosynthesis');
 ///     }
 /// }
-pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // Check if it's sunny day
     let is_sunny = battle.is_weather("sunnyday");
     eprintln!("[PROTOSYNTHESIS] on_weather_change called, is_sunny={}", is_sunny);
