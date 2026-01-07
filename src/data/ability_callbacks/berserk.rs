@@ -66,7 +66,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
 ///     }
 ///     return true;
 /// }
-pub fn on_try_eat_item(battle: &mut Battle) -> EventResult {
+pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     // const healingItems = [...]

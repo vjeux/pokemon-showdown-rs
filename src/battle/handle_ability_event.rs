@@ -963,11 +963,11 @@ impl Battle {
                 result
             }
             "TryEatItem" => {
-                ability_callbacks::dispatch_on_try_eat_item(self, ability_id.as_str())
+                ability_callbacks::dispatch_on_try_eat_item(self, ability_id.as_str(), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }, pokemon_pos)
             }
             "TryEatItemPriority" => ability_callbacks::dispatch_on_try_eat_item_priority(
                 self,
-                ability_id.as_str()
+                ability_id.as_str(), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }, pokemon_pos
             ),
             "TryHeal" => {
                 ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), None, None)

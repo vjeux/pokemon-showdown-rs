@@ -128,7 +128,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
 /// onTryEatItem(item, pokemon) {
 ///     this.add('-activate', pokemon, 'ability: Ripen');
 /// }
-pub fn on_try_eat_item(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize)) -> EventResult {
     use crate::battle::Arg;
 
     // this.add('-activate', pokemon, 'ability: Ripen');
