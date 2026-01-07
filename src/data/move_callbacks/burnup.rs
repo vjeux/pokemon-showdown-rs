@@ -72,11 +72,51 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // pokemon.setType(pokemon.getTypes(true).map((type) => type === "Fire" ? "???" : type));
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // Get types with exclude_added=true, map "Fire" to "???"
+        let new_types = {
+            let pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.get_types(battle, true)
+                .into_iter()
+                .map(|t| if t == "Fire" { "???".to_string() } else { t })
+                .collect::<Vec<String>>()
+        };
+
+        // Set the new types
+        crate::pokemon::Pokemon::set_type(battle, source, new_types, false);
+
+        // this.add("-start", pokemon, "typechange", pokemon.getTypes().join("/"), "[from] move: Burn Up");
+        let (pokemon_ident, types_str) = {
+            let pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            let types = pokemon.get_types(battle, false);
+            (pokemon.get_slot(), types.join("/"))
+        };
+
+        battle.add(
+            "-start",
+            &[
+                pokemon_ident.as_str().into(),
+                "typechange".into(),
+                types_str.into(),
+                "[from] move: Burn Up".into(),
+            ],
+        );
+
         EventResult::Continue
     }
 }
