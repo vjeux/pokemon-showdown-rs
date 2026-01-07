@@ -81,11 +81,42 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        // for (const pokemon of source.foes()) {
+        //     if (!pokemon.volatiles["dynamax"]) pokemon.addVolatile("torment", source, effect);
+        // }
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let foe_positions = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.foes(battle, false)
+        };
+
+        for foe_pos in foe_positions {
+            let has_dynamax = {
+                let foe = match battle.pokemon_at(foe_pos.0, foe_pos.1) {
+                    Some(p) => p,
+                    None => continue,
+                };
+                foe.has_volatile(&ID::from("dynamax"))
+            };
+
+            // Only add torment if not dynamaxed
+            if !has_dynamax {
+                Pokemon::add_volatile(battle, foe_pos, ID::from("torment"), Some(source), None, None, None);
+            }
+        }
+
         EventResult::Continue
     }
 }
