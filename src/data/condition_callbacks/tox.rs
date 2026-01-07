@@ -44,7 +44,7 @@ pub fn on_start(
             None => return EventResult::Continue,
         };
 
-        pokemon.status_state.data.insert("stage".to_string(), serde_json::Value::Number(serde_json::Number::from(0)));
+        pokemon.status_state.data.insert("stage".to_string(), serde_json::json!(0));
     }
 
     // Check if sourceEffect is toxicorb or ability
@@ -103,7 +103,7 @@ pub fn on_switch_in(
         None => return EventResult::Continue,
     };
 
-    pokemon.status_state.data.insert("stage".to_string(), serde_json::Value::Number(serde_json::Number::from(0)));
+    pokemon.status_state.data.insert("stage".to_string(), serde_json::json!(0));
 
     EventResult::Continue
 }
@@ -145,7 +145,7 @@ pub fn on_residual(
         };
 
         let incremented = stage + 1;
-        pokemon.status_state.data.insert("stage".to_string(), serde_json::Value::Number(serde_json::Number::from(incremented)));
+        pokemon.status_state.data.insert("stage".to_string(), serde_json::json!(incremented));
         incremented
     } else {
         stage

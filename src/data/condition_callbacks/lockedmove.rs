@@ -50,7 +50,7 @@ pub fn on_residual(
             if let Some(true_duration) = true_duration_val.as_i64() {
                 let new_duration = true_duration - 1;
                 eprintln!("[LOCKEDMOVE_RESIDUAL] trueDuration {} -> {}", true_duration, new_duration);
-                *true_duration_val = serde_json::Value::Number(serde_json::Number::from(new_duration));
+                *true_duration_val = serde_json::json!(new_duration);
             }
         }
     });
@@ -95,7 +95,7 @@ pub fn on_start(
 
     // Set volatile state data
     battle.with_effect_state(|state| {
-        state.data.insert("trueDuration".to_string(), serde_json::Value::Number(serde_json::Number::from(true_duration)));
+        state.data.insert("trueDuration".to_string(), serde_json::json!(true_duration));
         state.data.insert("move".to_string(), serde_json::Value::String(move_id));
         eprintln!("[LOCKEDMOVE_START] Set trueDuration={} and move", true_duration);
     });

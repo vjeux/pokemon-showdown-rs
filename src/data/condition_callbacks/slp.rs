@@ -102,8 +102,8 @@ pub fn on_start(
     // Set status state time using with_effect_state
     // JavaScript: this.effectState.startTime, this.effectState.time
     battle.with_effect_state(|state| {
-        state.data.insert("startTime".to_string(), serde_json::Value::Number(serde_json::Number::from(start_time)));
-        state.data.insert("time".to_string(), serde_json::Value::Number(serde_json::Number::from(start_time)));
+        state.data.insert("startTime".to_string(), serde_json::json!(start_time));
+        state.data.insert("time".to_string(), serde_json::json!(start_time));
     });
 
     // if (target.removeVolatile('nightmare'))
@@ -159,7 +159,7 @@ pub fn on_before_move(
         battle.with_effect_state(|state| {
             if let Some(time_val) = state.data.get_mut("time") {
                 if let Some(time) = time_val.as_i64() {
-                    *time_val = serde_json::Value::Number(serde_json::Number::from(time - 1));
+                    *time_val = serde_json::json!(time - 1);
                 }
             }
         });
@@ -170,7 +170,7 @@ pub fn on_before_move(
     battle.with_effect_state(|state| {
         if let Some(time_val) = state.data.get_mut("time") {
             if let Some(time) = time_val.as_i64() {
-                *time_val = serde_json::Value::Number(serde_json::Number::from(time - 1));
+                *time_val = serde_json::json!(time - 1);
             }
         }
     });

@@ -66,7 +66,7 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
     );
     pokemon.ability_state.data.insert(
         "counter".to_string(),
-        serde_json::Value::Number(serde_json::Number::from(counter)),
+        serde_json::json!(counter),
     );
 
     EventResult::Continue
@@ -131,7 +131,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
         };
         pokemon.ability_state.data.insert(
             "counter".to_string(),
-            serde_json::Value::Number(serde_json::Number::from(new_counter)),
+            serde_json::json!(new_counter),
         );
         return EventResult::Continue;
     }
