@@ -764,20 +764,6 @@ pub fn dispatch_on_any_try_primary_hit(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onBasePower()
-//   onBasePower(basePower)
-//   onBasePower(basePower, attacker, defender, move)
-//   onBasePower(basePower, pokemon)
-//   onBasePower(basePower, pokemon, target)
-//   onBasePower(basePower, pokemon, target, move)
-//   onBasePower(basePower, source)
-//   onBasePower(basePower, source, target)
-//   onBasePower(basePower, source, target, move)
-//   onBasePower(basePower, user, target)
-//   onBasePower(basePower, user, target, move)
-//   onBasePower(relayVar, source, target, move)
 
 /// Dispatch onBasePower callbacks
 pub fn dispatch_on_base_power(
