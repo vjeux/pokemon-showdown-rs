@@ -148,6 +148,8 @@ pub fn on_restart(
 pub fn on_after_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // if (this.effectState.duration === 1)
     let duration_is_1 = {

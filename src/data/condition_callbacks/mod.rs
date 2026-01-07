@@ -69,37 +69,24 @@ pub fn dispatch_duration_callback(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAfterMove()
-//   onAfterMove(pokemon)
-//   onAfterMove(pokemon, attacker, move)
-//   onAfterMove(pokemon, target, move)
-//   onAfterMove(source)
-//   onAfterMove(source, target, move)
-
 /// Dispatch onAfterMove callbacks
 pub fn dispatch_on_after_move(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "lockedmove" => lockedmove::on_after_move(battle, pokemon_pos),
+        "lockedmove" => lockedmove::on_after_move(battle, pokemon_pos, target_pos, move_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             // dispatch_condition_on_after_move takes (battle, move_id, source_pos, target_pos)
-            move_callbacks::dispatch_condition_on_after_move(battle, condition_id, pokemon_pos, None)
+            move_callbacks::dispatch_condition_on_after_move(battle, condition_id, pokemon_pos, target_pos)
         }
     }
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAfterMoveSecondary()
-//   onAfterMoveSecondary(target)
-//   onAfterMoveSecondary(target, source, move)
-
-/// Dispatch onAfterMoveSecondary callbacks
 pub fn dispatch_on_after_move_secondary(
     battle: &mut Battle,
     condition_id: &str,
