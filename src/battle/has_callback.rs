@@ -271,32 +271,30 @@ impl Battle {
         let id = ID::from(condition_id);
         if let Some(condition_data) = self.dex.conditions().get_by_id(&id) {
             eprintln!("[CONDITION_HAS_CALLBACK] Found condition in dex");
+            // IMPORTANT: In JavaScript, conditions can have callbacks that are static values (not functions)
+            // Example: phantomforce has onInvulnerability: false
+            // These static values create handlers that return the static value
+            // So we need to check if the KEY exists, not just if the value is true
+            //
             // Check the exact event_id first, then try with "on" prefix for backward compatibility
-            let has_callback = condition_data.extra.get(event_id)
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false);
+            let has_key = condition_data.extra.contains_key(event_id);
 
-            if has_callback {
+            if has_key {
                 eprintln!("[CONDITION_HAS_CALLBACK] Found exact match: {}", event_id);
                 true
             } else if !event_id.starts_with("on") {
                 // Try with "on" prefix for backward compatibility
                 let with_on = format!("on{}", event_id);
-                let result = condition_data.extra.get(&with_on)
-                    .and_then(|v| v.as_bool())
-                    .unwrap_or(false);
-                eprintln!("[CONDITION_HAS_CALLBACK] Tried with 'on' prefix: {}={}", with_on, result);
-                result
+                let has_key_with_on = condition_data.extra.contains_key(&with_on);
+                eprintln!("[CONDITION_HAS_CALLBACK] Tried with 'on' prefix: {}={}", with_on, has_key_with_on);
+                has_key_with_on
             } else {
                 eprintln!("[CONDITION_HAS_CALLBACK] No match found in condition data, checking if move-embedded");
                 // Special case: Some side conditions use "onResidual" instead of "onSideResidual"
                 // Example: gmaxvolcalith has condition.onResidual that should match onSideResidual requests
                 // JavaScript allows this because the callback signature matches (both take target)
                 if event_id == "onSideResidual" {
-                    let fallback_result = condition_data.extra.get("onResidual")
-                        .and_then(|v| v.as_bool())
-                        .unwrap_or(false);
-                    if fallback_result {
+                    if condition_data.extra.contains_key("onResidual") {
                         eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual for onSideResidual request");
                         return true;
                     }
@@ -306,10 +304,7 @@ impl Battle {
                 // Example: grassyterrain has condition.onResidual that should match onFieldResidual requests
                 // JavaScript allows this because the callback signature matches (both take target)
                 if event_id == "onFieldResidual" {
-                    let fallback_result = condition_data.extra.get("onResidual")
-                        .and_then(|v| v.as_bool())
-                        .unwrap_or(false);
-                    if fallback_result {
+                    if condition_data.extra.contains_key("onResidual") {
                         eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual for onFieldResidual request");
                         return true;
                     }
@@ -320,22 +315,18 @@ impl Battle {
                 if let Some(move_data) = self.dex.moves().get(condition_id) {
                     if let Some(ref condition_data) = move_data.condition {
                         eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition (from dex branch), checking condition callbacks");
-                        // Check the actual callback boolean flags in the condition data
+                        // Check if the key exists in the condition data (not just if it's true)
                         // This was populated by scripts/update-move-callbacks.js
-                        if let Some(callback_val) = condition_data.extra.get(event_id) {
-                            if let Some(true) = callback_val.as_bool() {
-                                eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
-                                return true;
-                            }
+                        if condition_data.extra.contains_key(event_id) {
+                            eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
+                            return true;
                         }
 
                         // Also check for onResidual fallback in embedded condition
                         if event_id == "onSideResidual" {
-                            if let Some(callback_val) = condition_data.extra.get("onResidual") {
-                                if let Some(true) = callback_val.as_bool() {
-                                    eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual in embedded condition for onSideResidual request");
-                                    return true;
-                                }
+                            if condition_data.extra.contains_key("onResidual") {
+                                eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual in embedded condition for onSideResidual request");
+                                return true;
                             }
                         }
                     }
@@ -353,13 +344,11 @@ impl Battle {
             if let Some(move_data) = self.dex.moves().get(condition_id) {
                 if let Some(ref condition_data) = move_data.condition {
                     eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition, checking condition callbacks");
-                    // Check the actual callback boolean flags in the condition data
+                    // Check if the key exists in the condition data (not just if it's true)
                     // This was populated by scripts/update-move-callbacks.js
-                    if let Some(callback_val) = condition_data.extra.get(event_id) {
-                        if let Some(true) = callback_val.as_bool() {
-                            eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
-                            return true;
-                        }
+                    if condition_data.extra.contains_key(event_id) {
+                        eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
+                        return true;
                     }
                 }
             }
