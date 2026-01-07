@@ -29,7 +29,7 @@ pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: (usi
     // JavaScript isWeather accepts array - check each weather
     if battle.is_weather("hail") || battle.is_weather("snowscape") {
         // return this.chainModify([3277, 4096]);
-        return EventResult::Number(battle.chain_modify_fraction(3277, 4096));
+        battle.chain_modify_fraction(3277, 4096); return EventResult::Continue;
     }
     EventResult::Continue
 }

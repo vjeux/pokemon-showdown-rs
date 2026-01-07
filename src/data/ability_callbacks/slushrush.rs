@@ -17,7 +17,7 @@ pub fn on_modify_spe(battle: &mut Battle, _spe: i32, _pokemon_pos: (usize, usize
     // JavaScript isWeather accepts string or array - checking multiple weathers
     if battle.is_weather("hail") || battle.is_weather("snowscape") {
         // return this.chainModify(2);
-        return EventResult::Number(battle.chain_modify(2.0));
+        battle.chain_modify(2.0); return EventResult::Continue;
     }
     EventResult::Continue
 }

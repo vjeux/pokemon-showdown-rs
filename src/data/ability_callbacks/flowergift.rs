@@ -172,7 +172,7 @@ pub fn on_ally_modify_atk(battle: &mut Battle, _atk: i32, _pokemon_pos: (usize, 
 
     if is_sunny {
         // return this.chainModify(1.5);
-        return EventResult::Number(battle.chain_modify(1.5));
+        battle.chain_modify(1.5); return EventResult::Continue;
     }
 
     EventResult::Continue
@@ -224,7 +224,7 @@ pub fn on_ally_modify_sp_d(battle: &mut Battle, _spd: i32, _pokemon_pos: (usize,
 
     if is_sunny {
         // return this.chainModify(1.5);
-        return EventResult::Number(battle.chain_modify(1.5));
+        battle.chain_modify(1.5); return EventResult::Continue;
     }
 
     EventResult::Continue

@@ -28,7 +28,7 @@ pub fn on_base_power(
             battle.debug("double power");
 
             // return this.chainModify(2);
-            return EventResult::Number(battle.chain_modify(2.0_f32));
+            battle.chain_modify(2.0_f32); return EventResult::Continue;
         }
     }
 

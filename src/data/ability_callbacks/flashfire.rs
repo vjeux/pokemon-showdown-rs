@@ -138,7 +138,7 @@ pub mod condition {
 
         // this.debug('Flash Fire boost');
         // return this.chainModify(1.5);
-        EventResult::Number(battle.chain_modify(1.5))
+        { battle.chain_modify(1.5); EventResult::Continue }
     }
 
     /// onModifySpA(atk, attacker, defender, move) {
@@ -175,7 +175,7 @@ pub mod condition {
 
         // this.debug('Flash Fire boost');
         // return this.chainModify(1.5);
-        EventResult::Number(battle.chain_modify(1.5))
+        { battle.chain_modify(1.5); EventResult::Continue }
     }
 
     /// onEnd(target) {

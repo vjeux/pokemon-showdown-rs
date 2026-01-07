@@ -96,6 +96,6 @@ pub mod condition {
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
         // return this.chainModify(1.5);
-        EventResult::Number(battle.chain_modify_fraction(3, 2)) // 1.5 = 3/2
+        { battle.chain_modify_fraction(3, 2); EventResult::Continue } // 1.5 = 3/2
     }
 }

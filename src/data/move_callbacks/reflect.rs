@@ -115,10 +115,10 @@ pub mod condition {
                     battle.debug("Reflect weaken");
                     // if (this.activePerHalf > 1) return this.chainModify([2732, 4096]);
                     if battle.active_per_half > 1 {
-                        return EventResult::Number(battle.chain_modify_fraction(2732, 4096));
+                        battle.chain_modify_fraction(2732, 4096); return EventResult::Continue;
                     }
                     // return this.chainModify(0.5);
-                    return EventResult::Number(battle.chain_modify_fraction(1, 2));
+                    battle.chain_modify_fraction(1, 2); return EventResult::Continue;
                 }
             }
         }

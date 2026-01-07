@@ -38,7 +38,7 @@ pub fn on_base_power(
             battle.debug("terrain buff");
 
             // return this.chainModify(1.5);
-            return EventResult::Number(battle.chain_modify(1.5_f32));
+            battle.chain_modify(1.5_f32); return EventResult::Continue;
         }
     }
 

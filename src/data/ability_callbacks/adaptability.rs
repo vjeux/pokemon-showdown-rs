@@ -42,10 +42,10 @@ pub fn on_modify_s_t_a_b(battle: &mut Battle, stab: f64, source_pos: Option<(usi
         // if (stab === 2)
         if (stab - 2.0).abs() < 0.001 {
             // return 2.25;
-            return EventResult::Number(battle.chain_modify(2.25));
+            battle.chain_modify(2.25); return EventResult::Continue;
         }
         // return 2;
-        return EventResult::Number(battle.chain_modify(2.0));
+        battle.chain_modify(2.0); return EventResult::Continue;
     }
 
     EventResult::Continue

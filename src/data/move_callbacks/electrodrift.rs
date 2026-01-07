@@ -39,7 +39,7 @@ pub fn on_base_power(
         battle.debug("electro drift super effective buff");
 
         // return this.chainModify([5461, 4096]);
-        return EventResult::Number(battle.chain_modify_fraction(5461, 4096));
+        battle.chain_modify_fraction(5461, 4096); return EventResult::Continue;
     }
 
     EventResult::Continue

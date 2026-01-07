@@ -134,6 +134,6 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize
 
     // this.debug(`Supreme Overlord boost: ${powMod[this.effectState.fallen]}/4096`);
     // return this.chainModify([powMod[this.effectState.fallen], 4096]);
-    EventResult::Number(battle.chain_modify_fraction(pow_mod[fallen], 4096))
+    { battle.chain_modify_fraction(pow_mod[fallen], 4096); EventResult::Continue }
 }
 

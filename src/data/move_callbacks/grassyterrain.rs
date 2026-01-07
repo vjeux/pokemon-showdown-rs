@@ -95,7 +95,7 @@ pub mod condition {
                     battle.debug("move weakened by grassy terrain");
 
                     // return this.chainModify(0.5);
-                    return EventResult::Number(battle.chain_modify(0.5_f32));
+                    battle.chain_modify(0.5_f32); return EventResult::Continue;
                 }
             }
         }
@@ -118,7 +118,7 @@ pub mod condition {
                     battle.debug("grassy terrain boost");
 
                     // return this.chainModify([5325, 4096]);
-                    return EventResult::Number(battle.chain_modify(5325.0 / 4096.0_f32));
+                    battle.chain_modify(5325.0 / 4096.0_f32); return EventResult::Continue;
                 }
             }
         }

@@ -23,7 +23,7 @@ pub fn on_any_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: Opti
     if let Some(tpos) = target_pos {
         if tpos != ability_holder && battle.is_ally(tpos, ability_holder) {
             eprintln!("Friend Guard weaken");
-            return EventResult::Number(battle.chain_modify(0.75));
+            battle.chain_modify(0.75); return EventResult::Continue;
         }
     }
 

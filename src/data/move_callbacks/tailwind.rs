@@ -116,7 +116,7 @@ pub mod condition {
     /// }
     pub fn on_modify_spe(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
         // return this.chainModify(2);
-        EventResult::Number(battle.chain_modify(2.0))
+        { battle.chain_modify(2.0); EventResult::Continue }
     }
 
     /// onSideEnd(side) {

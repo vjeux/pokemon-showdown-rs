@@ -76,7 +76,7 @@ pub fn on_modify_sp_d(
 
     if has_rock_type && is_sandstorm {
         // return this.modify(spd, 1.5);
-        return EventResult::Number(battle.chain_modify(1.5));
+        battle.chain_modify(1.5); return EventResult::Continue;
     }
 
     EventResult::Continue

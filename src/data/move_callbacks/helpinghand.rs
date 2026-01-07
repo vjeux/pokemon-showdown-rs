@@ -175,6 +175,6 @@ pub mod condition {
         battle.debug(&format!("Boosting from Helping Hand: {}", multiplier));
 
         // return this.chainModify(this.effectState.multiplier);
-        EventResult::Number(battle.chain_modify(multiplier as f32))
+        { battle.chain_modify(multiplier as f32); EventResult::Continue }
     }
 }

@@ -20,5 +20,5 @@ pub fn on_source_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_po
     // Since this callback is only called when accuracy can be modified,
     // we can always apply the modifier.
     // return this.chainModify([4505, 4096]);
-    EventResult::Number(battle.chain_modify_fraction(4505, 4096))
+    { battle.chain_modify_fraction(4505, 4096); EventResult::Continue }
 }

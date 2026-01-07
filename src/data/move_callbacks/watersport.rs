@@ -67,7 +67,7 @@ pub mod condition {
 
         if move_type == "Fire" {
             battle.debug("water sport weaken");
-            return EventResult::Number(battle.chain_modify_fraction(1352, 4096));
+            battle.chain_modify_fraction(1352, 4096); return EventResult::Continue;
         }
 
         EventResult::Continue

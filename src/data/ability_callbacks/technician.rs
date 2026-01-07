@@ -29,7 +29,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize
     // }
     if base_power_after_multiplier <= 60 {
         eprintln!("Technician boost");
-        return EventResult::Number(battle.chain_modify(1.5));
+        battle.chain_modify(1.5); return EventResult::Continue;
     }
 
     EventResult::Continue

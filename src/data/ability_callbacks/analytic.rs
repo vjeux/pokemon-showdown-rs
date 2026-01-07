@@ -48,7 +48,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize
         // this.debug('Analytic boost');
         battle.debug("Analytic boost");
         // return this.chainModify([5325, 4096]);
-        return EventResult::Number(battle.chain_modify_fraction(5325, 4096));
+        battle.chain_modify_fraction(5325, 4096); return EventResult::Continue;
     }
 
     EventResult::Continue

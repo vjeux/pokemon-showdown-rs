@@ -223,7 +223,7 @@ pub fn on_source_modify_damage(
     // if (move.id === 'behemothbash' || move.id === 'behemothblade' || move.id === 'dynamaxcannon')
     if move_id == "behemothbash" || move_id == "behemothblade" || move_id == "dynamaxcannon" {
         // return this.chainModify(2);
-        return EventResult::Number(battle.chain_modify(2.0));
+        battle.chain_modify(2.0); return EventResult::Continue;
     }
 
     EventResult::Continue

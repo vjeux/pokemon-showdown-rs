@@ -56,7 +56,7 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usiz
 
     if has_sheer_force {
         // 5325/4096 = ~1.3x power boost
-        return EventResult::Number(battle.chain_modify_fraction(5325, 4096));
+        battle.chain_modify_fraction(5325, 4096); return EventResult::Continue;
     }
 
     EventResult::Continue

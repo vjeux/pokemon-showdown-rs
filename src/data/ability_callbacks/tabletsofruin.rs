@@ -102,7 +102,7 @@ pub fn on_any_modify_atk(battle: &mut Battle, _atk: i32, source_pos: Option<(usi
 
     if should_apply {
         eprintln!("Tablets of Ruin Atk drop");
-        return EventResult::Number(battle.chain_modify(0.75));
+        battle.chain_modify(0.75); return EventResult::Continue;
     }
 
     EventResult::Continue

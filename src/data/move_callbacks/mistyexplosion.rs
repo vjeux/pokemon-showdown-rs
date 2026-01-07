@@ -43,7 +43,7 @@ pub fn on_base_power(
         // (debug is typically not needed in Rust implementation)
 
         // return this.chainModify(1.5);
-        return EventResult::Number(battle.chain_modify_fraction(3, 2)); // 1.5 = 3/2
+        battle.chain_modify_fraction(3, 2); return EventResult::Continue; // 1.5 = 3/2
     }
 
     EventResult::Continue

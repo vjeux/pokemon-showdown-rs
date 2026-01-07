@@ -40,7 +40,7 @@ pub fn on_ally_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: O
     if is_special {
         // this.debug('Battery boost');
         // return this.chainModify([5325, 4096]);
-        return EventResult::Number(battle.chain_modify_fraction(5325, 4096));
+        battle.chain_modify_fraction(5325, 4096); return EventResult::Continue;
     }
 
     EventResult::Continue

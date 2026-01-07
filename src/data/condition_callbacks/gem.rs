@@ -27,6 +27,6 @@ pub fn on_base_power(
     // In Rust, we use eprintln for debug messages (similar to JavaScript implementation)
 
     // return this.chainModify([5325, 4096]);
-    EventResult::Number(battle.chain_modify_fraction(5325, 4096))
+    { battle.chain_modify_fraction(5325, 4096); EventResult::Continue }
 }
 

@@ -25,7 +25,7 @@ pub fn on_modify_spe(battle: &mut Battle, _spe: i32, pokemon_pos: (usize, usize)
     let eff_weather = pokemon.effective_weather(battle, field_weather.as_str());
 
     if eff_weather == "sunnyday" || eff_weather == "desolateland" {
-        return EventResult::Number(battle.chain_modify(2.0));
+        battle.chain_modify(2.0); return EventResult::Continue;
     }
 
     EventResult::Continue

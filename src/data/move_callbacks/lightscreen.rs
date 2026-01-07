@@ -131,9 +131,9 @@ pub mod condition {
         //         if (this.activePerHalf > 1) return this.chainModify([2732, 4096]);
         //         return this.chainModify(0.5);
         if battle.active_per_half > 1 {
-            EventResult::Number(battle.chain_modify_fraction(2732, 4096))
+            { battle.chain_modify_fraction(2732, 4096); EventResult::Continue }
         } else {
-            EventResult::Number(battle.chain_modify(0.5_f32))
+            { battle.chain_modify(0.5_f32); EventResult::Continue }
         }
     }
 

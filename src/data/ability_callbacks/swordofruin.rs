@@ -115,7 +115,7 @@ pub fn on_any_modify_def(battle: &mut Battle, _def: i32, target_pos: Option<(usi
         // this.debug('Sword of Ruin Def drop');
         eprintln!("Sword of Ruin Def drop");
         // return this.chainModify(0.75);
-        return EventResult::Number(battle.chain_modify(0.75));
+        battle.chain_modify(0.75); return EventResult::Continue;
     }
 
     EventResult::Continue

@@ -70,7 +70,7 @@ pub mod condition {
             // (debug is typically not needed in Rust implementation)
 
             // return this.chainModify([1352, 4096]);
-            return EventResult::Number(battle.chain_modify_fraction(1352, 4096));
+            battle.chain_modify_fraction(1352, 4096); return EventResult::Continue;
         }
 
         EventResult::Continue

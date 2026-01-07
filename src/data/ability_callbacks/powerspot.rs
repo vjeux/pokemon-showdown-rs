@@ -38,6 +38,6 @@ pub fn on_ally_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: 
 
     // this.debug('Power Spot boost');
     // return this.chainModify([5325, 4096]);
-    EventResult::Number(battle.chain_modify_fraction(5325, 4096))
+    { battle.chain_modify_fraction(5325, 4096); EventResult::Continue }
 }
 

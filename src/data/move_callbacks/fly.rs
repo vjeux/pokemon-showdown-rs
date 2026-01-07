@@ -135,7 +135,7 @@ pub mod condition {
         // if (move.id === 'gust' || move.id === 'twister') {
         if move_id == "gust" || move_id == "twister" {
             // return this.chainModify(2);
-            return EventResult::Number(battle.chain_modify(2.0));
+            battle.chain_modify(2.0); return EventResult::Continue;
         }
 
         EventResult::Continue

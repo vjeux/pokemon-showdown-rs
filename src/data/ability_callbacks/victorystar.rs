@@ -21,7 +21,7 @@ pub fn on_any_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: 
     // if (source.isAlly(this.effectState.target) && typeof accuracy === 'number')
     if let Some(src_pos) = source_pos {
         if battle.is_ally(src_pos, ability_holder) {
-            return EventResult::Number(battle.chain_modify_fraction(4506, 4096));
+            battle.chain_modify_fraction(4506, 4096); return EventResult::Continue;
         }
     }
 

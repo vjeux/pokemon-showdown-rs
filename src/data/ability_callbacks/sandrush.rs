@@ -14,7 +14,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_modify_spe(battle: &mut Battle, _spe: i32, _pokemon_pos: (usize, usize)) -> EventResult {
     if battle.field.has_weather(&crate::ID::from("sandstorm")) {
-        return EventResult::Number(battle.chain_modify(2.0));
+        battle.chain_modify(2.0); return EventResult::Continue;
     }
     EventResult::Continue
 }

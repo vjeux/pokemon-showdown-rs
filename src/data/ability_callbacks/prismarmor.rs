@@ -23,7 +23,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
     if let Some(move_hit_data) = battle.get_move_hit_data(target_pos) {
         if move_hit_data.type_mod > 0 {
             eprintln!("Prism Armor neutralize");
-            return EventResult::Number(battle.chain_modify(0.75));
+            battle.chain_modify(0.75); return EventResult::Continue;
         }
     }
 

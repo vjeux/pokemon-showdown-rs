@@ -62,7 +62,7 @@ pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usi
 
     if battle.is_terrain("electricterrain") {
         eprintln!("Hadron Engine boost");
-        return EventResult::Number(battle.chain_modify_fraction(5461, 4096));
+        battle.chain_modify_fraction(5461, 4096); return EventResult::Continue;
     }
 
     EventResult::Continue

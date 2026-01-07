@@ -102,7 +102,7 @@ pub fn on_any_modify_sp_a(battle: &mut Battle, _spa: i32, source_pos: Option<(us
 
     if should_apply {
         eprintln!("Vessel of Ruin SpA drop");
-        return EventResult::Number(battle.chain_modify(0.75));
+        battle.chain_modify(0.75); return EventResult::Continue;
     }
 
     EventResult::Continue

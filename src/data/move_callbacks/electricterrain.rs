@@ -221,7 +221,7 @@ pub mod condition {
                 battle.debug("electric terrain boost");
 
                 // return this.chainModify([5325, 4096]);
-                return EventResult::Number(battle.chain_modify_fraction(5325, 4096));
+                battle.chain_modify_fraction(5325, 4096); return EventResult::Continue;
             }
         }
 

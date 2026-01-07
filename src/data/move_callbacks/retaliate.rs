@@ -35,7 +35,7 @@ pub fn on_base_power(
 
     if fainted_last_turn.is_some() {
         battle.debug("Boosted for a faint last turn");
-        return EventResult::Number(battle.chain_modify(2_f32));
+        battle.chain_modify(2_f32); return EventResult::Continue;
     }
 
     EventResult::Continue

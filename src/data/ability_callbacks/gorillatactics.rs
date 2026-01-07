@@ -171,7 +171,7 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize
 
     // this.debug('Gorilla Tactics Atk Boost');
     // return this.chainModify(1.5);
-    EventResult::Number(battle.chain_modify(1.5))
+    { battle.chain_modify(1.5); EventResult::Continue }
 }
 
 /// onDisableMove(pokemon) {

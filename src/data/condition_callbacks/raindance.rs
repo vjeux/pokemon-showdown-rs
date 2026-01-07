@@ -95,14 +95,14 @@ pub fn on_weather_modify_damage(
     if move_type == "water" {
         // this.debug('rain water boost');
         // return this.chainModify(1.5);
-        return EventResult::Number(battle.chain_modify(1.5));
+        battle.chain_modify(1.5); return EventResult::Continue;
     }
 
     // if (move.type === 'Fire')
     if move_type == "fire" {
         // this.debug('rain fire suppress');
         // return this.chainModify(0.5);
-        return EventResult::Number(battle.chain_modify(0.5));
+        battle.chain_modify(0.5); return EventResult::Continue;
     }
 
     EventResult::Continue

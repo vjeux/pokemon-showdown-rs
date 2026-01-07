@@ -47,7 +47,7 @@ pub mod condition {
         // if (boostedMoves.includes(move.id)) {
         if boosted_moves.contains(&current_move_id) {
             // return this.chainModify(2);
-            return EventResult::Number(battle.chain_modify(2_f32));
+            battle.chain_modify(2_f32); return EventResult::Continue;
         }
 
         EventResult::Continue

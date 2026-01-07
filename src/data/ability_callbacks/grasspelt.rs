@@ -13,7 +13,7 @@ use crate::event::EventResult;
 pub fn on_modify_def(battle: &mut Battle, _def: i32, _defender_pos: (usize, usize), _attacker_pos: (usize, usize), _move_id: &str) -> EventResult {
     // if (this.field.isTerrain('grassyterrain')) return this.chainModify(1.5);
     if battle.is_terrain("grassyterrain") {
-        return EventResult::Number(battle.chain_modify(1.5));
+        battle.chain_modify(1.5); return EventResult::Continue;
     }
     EventResult::Continue
 }

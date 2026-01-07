@@ -42,7 +42,13 @@ pub fn on_base_power(
         );
 
         // return this.chainModify(2);
-        return EventResult::Number(battle.chain_modify(2.0_f32));
+        // IMPORTANT: In JavaScript, chainModify() modifies this.event.modifier and returns undefined.
+        // The return statement returns undefined, which means the relay variable stays unchanged.
+        // After all handlers, runEvent multiplies the relay variable by the modifier.
+        // In Rust, chain_modify returns the modifier value, but we should NOT return it.
+        // Instead, call chain_modify to update the event modifier, then return Continue.
+        battle.chain_modify(2.0);
+        return EventResult::Continue;
     }
 
     EventResult::Continue

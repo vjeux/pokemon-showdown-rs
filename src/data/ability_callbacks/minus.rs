@@ -40,7 +40,7 @@ pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usiz
     };
 
     if has_synergy {
-        return EventResult::Number(battle.chain_modify(1.5));
+        battle.chain_modify(1.5); return EventResult::Continue;
     }
 
     EventResult::Continue

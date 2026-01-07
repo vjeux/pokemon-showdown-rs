@@ -119,7 +119,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
         }
 
         // return this.chainModify(0.5);
-        return EventResult::Number(battle.chain_modify_fraction(1, 2));
+        battle.chain_modify_fraction(1, 2); return EventResult::Continue;
     }
 
     EventResult::Continue
