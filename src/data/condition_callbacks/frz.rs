@@ -247,7 +247,10 @@ pub fn on_after_move_secondary(
 /// ```
 pub fn on_damaging_hit(
     battle: &mut Battle,
+    _damage: i32,
     pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+    _move_id: &str,
 ) -> EventResult {
     // if (move.type === 'Fire' && move.category !== 'Status' && move.id !== 'polarflare')
     let should_thaw = match &battle.active_move {

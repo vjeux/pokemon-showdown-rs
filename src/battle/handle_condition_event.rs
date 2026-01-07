@@ -106,7 +106,16 @@ impl Battle {
                 condition_callbacks::dispatch_on_before_turn(self, condition_id, pokemon_pos)
             }
             "DamagingHit" => {
-                condition_callbacks::dispatch_on_damaging_hit(self, condition_id, pokemon_pos)
+                // Extract damage from relay_var, source from current_event, and move_id from active_move
+                let damage = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
+                condition_callbacks::dispatch_on_damaging_hit(self, condition_id, damage, pokemon_pos, source_pos, &move_id)
             }
             "DisableMove" => {
                 condition_callbacks::dispatch_on_disable_move(self, condition_id, pokemon_pos)

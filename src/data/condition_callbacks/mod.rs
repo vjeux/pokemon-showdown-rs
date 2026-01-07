@@ -202,20 +202,17 @@ pub fn dispatch_on_before_turn(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onDamagingHit()
-//   onDamagingHit(damage, target, source, effect)
-//   onDamagingHit(damage, target, source, move)
-
 /// Dispatch onDamagingHit callbacks
 pub fn dispatch_on_damaging_hit(
     battle: &mut Battle,
     condition_id: &str,
+    damage: i32,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "frz" => frz::on_damaging_hit(battle, pokemon_pos),
+        "frz" => frz::on_damaging_hit(battle, damage, pokemon_pos, source_pos, move_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_damaging_hit(battle, condition_id, pokemon_pos)
