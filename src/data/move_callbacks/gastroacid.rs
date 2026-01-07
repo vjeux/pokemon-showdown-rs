@@ -119,7 +119,7 @@ pub mod condition {
 
         battle.single_event(
             "End",
-            &ability_id,
+            &crate::battle::Effect::ability(ability_id),
             Some(pokemon),
             Some(pokemon),
             Some(&ID::from("gastroacid")),

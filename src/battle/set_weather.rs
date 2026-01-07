@@ -244,7 +244,7 @@ impl Battle {
         // If it returns false, revert to previous weather
         let field_start_result = self.single_event(
             "FieldStart",
-            &weather_id,
+            &crate::battle::Effect::weather(weather_id.clone()),
             None, // field as target - we don't pass this in current arch
             source_pos,
             None,

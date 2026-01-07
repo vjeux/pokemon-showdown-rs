@@ -101,7 +101,7 @@ pub fn on_hit(
                 // }
                 let eat_result = battle.single_event(
                     "Eat",
-                    &item_id,
+                    &crate::battle::Effect::item(item_id.clone()),
                     Some(pokemon_pos),
                     Some(pokemon_pos),
                     None,

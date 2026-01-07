@@ -178,12 +178,12 @@ impl Battle {
 
                 // Call End event for ability
                 if !ability_id.is_empty() {
-                    self.single_event("End", &ability_id, Some((side_idx, poke_idx)), None, None, None);
+                    self.single_event("End", &crate::battle::Effect::ability(ability_id.clone()), Some((side_idx, poke_idx)), None, None, None);
                 }
 
                 // Call End event for item
                 if !item_id.is_empty() {
-                    self.single_event("End", &item_id, Some((side_idx, poke_idx)), None, None, None);
+                    self.single_event("End", &crate::battle::Effect::item(item_id.clone()), Some((side_idx, poke_idx)), None, None, None);
                 }
 
                 // JS: if (pokemon.formeRegression && !pokemon.transformed) {

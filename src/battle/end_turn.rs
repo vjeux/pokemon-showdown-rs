@@ -683,7 +683,7 @@ impl Battle {
         // Call singleEvent('DisableMove') for each move (allows move-specific disable logic)
         // JS: for (const moveSlot of pokemon.moveSlots) { this.singleEvent('DisableMove', activeMove, null, pokemon); }
         for (pokemon_pos, move_id) in disable_move_data {
-            self.single_event("DisableMove", &move_id, Some(pokemon_pos), None, None, None);
+            self.single_event("DisableMove", &crate::battle::Effect::move_(move_id.clone()), Some(pokemon_pos), None, None, None);
 
             // JS: if (activeMove.flags['cantusetwice'] && pokemon.lastMove?.id === moveSlot.id) {
             // JS:     pokemon.disableMove(pokemon.lastMove.id);
@@ -856,7 +856,7 @@ impl Battle {
                         // JS: this.singleEvent('FoeMaybeTrapPokemon', ability, {}, pokemon, source);
                         self.single_event(
                             "FoeMaybeTrapPokemon",
-                            &ability_id,
+                            &crate::battle::Effect::ability(ability_id.clone()),
                             Some(pokemon_pos),
                             Some(foe_pos),
                             None,

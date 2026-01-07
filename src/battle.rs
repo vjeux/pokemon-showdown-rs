@@ -276,6 +276,75 @@ pub enum EffectType {
     Status,
 }
 
+/// Effect - represents an effect with its ID and type
+/// JavaScript equivalent: Effect interface (sim/global-types.ts)
+/// In JavaScript, Effect has many fields (id, name, effectType, flags, etc.)
+/// In Rust, we only need the essential fields for singleEvent: id and effectType
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Effect {
+    /// Effect ID (e.g., "stall", "intimidate", "leftovers")
+    pub id: ID,
+    /// Type of effect (Ability, Item, Move, Condition, etc.)
+    pub effect_type: EffectType,
+}
+
+impl Effect {
+    /// Create a new Effect with the given id and effect_type
+    pub fn new(id: ID, effect_type: EffectType) -> Self {
+        Self { id, effect_type }
+    }
+
+    /// Create an Ability effect
+    pub fn ability(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::Ability)
+    }
+
+    /// Create an Item effect
+    pub fn item(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::Item)
+    }
+
+    /// Create a Move effect
+    pub fn move_(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::Move)
+    }
+
+    /// Create a Condition (volatile) effect
+    pub fn condition(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::Condition)
+    }
+
+    /// Create a Status effect
+    pub fn status(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::Status)
+    }
+
+    /// Create a Weather effect
+    pub fn weather(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::Weather)
+    }
+
+    /// Create a Terrain effect
+    pub fn terrain(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::Terrain)
+    }
+
+    /// Create a SideCondition effect
+    pub fn side_condition(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::SideCondition)
+    }
+
+    /// Create a SlotCondition effect
+    pub fn slot_condition(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::SlotCondition)
+    }
+
+    /// Create a FieldCondition (pseudo-weather) effect
+    pub fn field_condition(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::FieldCondition)
+    }
+}
+
 /// Type alias for event callback functions
 pub type EventCallback = Box<dyn Fn(&EventInfo) -> Option<i32> + Send + Sync>;
 

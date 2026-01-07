@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::EventInfo;
+use crate::battle::{EventInfo, EffectType, Effect};
 use crate::event::EventResult;
 
 impl Battle {
@@ -12,6 +12,10 @@ impl Battle {
     /// Equivalent to battle.ts singleEvent() (lines 571-652)
     ///
     /// This fires a single event handler with full suppression logic.
+    ///
+    /// JavaScript signature: singleEvent(eventid, effect, state, target, source, sourceEffect, relayVar)
+    /// In JavaScript, `effect` is an object with `id` and `effectType` properties.
+    /// In Rust, we pass an `Effect` struct that contains both.
     // TypeScript source:
     // /** The entire event system revolves around this function and runEvent. */
     // 	singleEvent(
@@ -100,14 +104,17 @@ impl Battle {
     pub fn single_event(
         &mut self,
         event_id: &str,
-        effect_id: &ID,
+        effect: &Effect,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
         source_effect: Option<&ID>,
         relay_var: Option<EventResult>,
     ) -> EventResult {
-        eprintln!("[SINGLE_EVENT] event_id={}, effect_id={}, target={:?}, depth={}",
-            event_id, effect_id.as_str(), target, self.event_depth);
+        let effect_id = &effect.id;
+        let effect_type = effect.effect_type;
+
+        eprintln!("[SINGLE_EVENT] event_id={}, effect_id={}, effect_type={:?}, target={:?}, depth={}",
+            event_id, effect_id.as_str(), effect_type, target, self.event_depth);
 
         // JavaScript: if (this.eventDepth >= 8) throw Error
         if self.event_depth >= 8 {
@@ -131,31 +138,10 @@ impl Battle {
             return EventResult::Boolean(false);
         }
 
-        // Determine effect type for suppression checks
-        // IMPORTANT: Check if effect_id is a volatile on the target Pokemon FIRST
-        // This is needed because some volatiles share names with abilities (e.g., "stall")
-        // If we use get_effect_type(), it finds the Stall ability before the stall volatile
-        // which causes with_effect_state() to look in ability_state instead of volatiles
-        let effect_type = if let Some((side_idx, poke_idx)) = target {
-            if let Some(pokemon) = self.pokemon_at(side_idx, poke_idx) {
-                if pokemon.volatiles.contains_key(effect_id) {
-                    "Condition".to_string()
-                } else if !pokemon.status.is_empty() && pokemon.status == *effect_id {
-                    "Status".to_string()
-                } else {
-                    self.get_effect_type(effect_id).to_string()
-                }
-            } else {
-                self.get_effect_type(effect_id).to_string()
-            }
-        } else {
-            self.get_effect_type(effect_id).to_string()
-        };
-
         // SUPPRESSION CHECKS (from JavaScript battle.ts:598-622)
 
         // JavaScript: if (effect.effectType === 'Status' && target.status !== effect.id) return relayVar
-        if effect_type == "Status" {
+        if effect_type == EffectType::Status {
             if let Some((side_idx, poke_idx)) = target {
                 if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
@@ -168,13 +154,13 @@ impl Battle {
         }
 
         // JavaScript: if (eventid === 'SwitchIn' && effect.effectType === 'Ability' && effect.flags['breakable'] && this.suppressingAbility(target))
-        if event_id == "SwitchIn" && effect_type == "Ability" && self.suppressing_ability(target) {
+        if event_id == "SwitchIn" && effect_type == EffectType::Ability && self.suppressing_ability(target) {
             self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
             return EventResult::Continue;
         }
 
         // JavaScript: if (eventid !== 'Start' && eventid !== 'TakeItem' && effect.effectType === 'Item' && target.ignoringItem())
-        if event_id != "Start" && event_id != "TakeItem" && effect_type == "Item" {
+        if event_id != "Start" && event_id != "TakeItem" && effect_type == EffectType::Item {
             if let Some((side_idx, poke_idx)) = target {
                 if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
@@ -191,7 +177,7 @@ impl Battle {
         }
 
         // JavaScript: if (eventid !== 'End' && effect.effectType === 'Ability' && target.ignoringAbility())
-        if event_id != "End" && effect_type == "Ability" {
+        if event_id != "End" && effect_type == EffectType::Ability {
             if let Some((side_idx, poke_idx)) = target {
                 if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
@@ -208,7 +194,7 @@ impl Battle {
         }
 
         // JavaScript: if (effect.effectType === 'Weather' && eventid !== 'FieldStart' && eventid !== 'FieldResidual' && eventid !== 'FieldEnd' && this.field.suppressingWeather())
-        if effect_type == "Weather"
+        if effect_type == EffectType::Weather
             && event_id != "FieldStart"
             && event_id != "FieldResidual"
             && event_id != "FieldEnd"
@@ -222,24 +208,10 @@ impl Battle {
         let parent_event = self.current_event.take();
         let parent_context = self.current_effect_context.take();
 
-        // Determine EffectType from string
-        let effect_type_enum = match effect_type.as_str() {
-            "Ability" => crate::battle::EffectType::Ability,
-            "Item" => crate::battle::EffectType::Item,
-            "Move" => crate::battle::EffectType::Move,
-            "Status" => crate::battle::EffectType::Status,
-            "Weather" => crate::battle::EffectType::Weather,
-            "Terrain" => crate::battle::EffectType::Terrain,
-            "SideCondition" => crate::battle::EffectType::SideCondition,
-            "SlotCondition" => crate::battle::EffectType::SlotCondition,
-            "FieldCondition" => crate::battle::EffectType::FieldCondition,
-            _ => crate::battle::EffectType::Condition,
-        };
-
         // Set up current effect context
         self.current_effect_context = Some(crate::EffectContext {
             effect_id: effect_id.clone(),
-            effect_type: effect_type_enum,
+            effect_type,
             effect_holder: target,
             side_index: target.map(|(side, _)| side),
             prankster_boosted: false,

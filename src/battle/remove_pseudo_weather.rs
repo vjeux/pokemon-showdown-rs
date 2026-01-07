@@ -25,7 +25,7 @@ impl Battle {
         // this.battle.singleEvent('FieldEnd', status, state, this);
         self.single_event(
             "FieldEnd",
-            id,
+            &crate::battle::Effect::field_condition(id.clone()),
             None,  // field as target
             None,
             None,

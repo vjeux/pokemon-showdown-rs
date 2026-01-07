@@ -53,7 +53,7 @@ pub fn on_ally_after_use_item(battle: &mut Battle, _item_id: Option<&str>, pokem
     // For TakeItem event, if it returns false/Null, we should not proceed
     let take_item_result = battle.single_event(
         "TakeItem",
-        &my_item,
+        &crate::battle::Effect::item(my_item.clone()),
         Some(pokemon_pos),
         Some(source_pos),
         None,

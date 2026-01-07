@@ -163,7 +163,7 @@ pub fn spread_move_hit(
         // JS: hitResult = this.battle.singleEvent('TryHitField', moveData, {}, target || null, pokemon, move);
         battle.single_event(
             "TryHitField",
-            move_data_id,
+            &crate::battle::Effect::move_(move_data_id.clone()),
             target_pos,
             Some(source_pos),
             Some(move_id),
@@ -175,7 +175,7 @@ pub fn spread_move_hit(
         // JS: hitResult = this.battle.singleEvent('TryHitSide', moveData, {}, target || null, pokemon, move);
         battle.single_event(
             "TryHitSide",
-            move_data_id,
+            &crate::battle::Effect::move_(move_data_id.clone()),
             target_pos,
             Some(source_pos),
             Some(move_id),
@@ -185,7 +185,7 @@ pub fn spread_move_hit(
         // JS: hitResult = this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
         battle.single_event(
             "TryHit",
-            move_data_id,
+            &crate::battle::Effect::move_(move_data_id.clone()),
             target_pos,
             Some(source_pos),
             Some(move_id),
@@ -476,7 +476,7 @@ pub fn spread_move_hit(
             for target_pos in &damaged_targets {
                 battle.single_event(
                     "AfterHit",
-                    move_data_id,
+                    &crate::battle::Effect::move_(move_data_id.clone()),
                     Some(*target_pos),
                     Some(source_pos),
                     Some(move_id),

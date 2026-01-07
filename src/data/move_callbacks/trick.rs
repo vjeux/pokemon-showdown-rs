@@ -121,7 +121,7 @@ pub fn on_hit(
     let my_item_allowed = if let Some(ref my_item_id) = my_item {
         let result = battle.single_event(
             "TakeItem",
-            my_item_id,
+            &crate::battle::Effect::item(my_item_id.clone()),
             Some(source),
             Some(target_pos),
             None,
@@ -135,7 +135,7 @@ pub fn on_hit(
     let your_item_allowed = if let Some(ref your_item_id) = your_item {
         let result = battle.single_event(
             "TakeItem",
-            your_item_id,
+            &crate::battle::Effect::item(your_item_id.clone()),
             Some(target_pos),
             Some(source),
             None,

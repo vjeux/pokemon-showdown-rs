@@ -28,7 +28,7 @@ impl Battle {
         // this.battle.singleEvent('FieldEnd', prevTerrain, this.terrainState, this);
         self.single_event(
             "FieldEnd",
-            &prev_terrain,
+            &crate::battle::Effect::terrain(prev_terrain.clone()),
             None,  // field as target
             None,
             None,

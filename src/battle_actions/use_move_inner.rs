@@ -223,7 +223,7 @@ pub fn use_move_inner(
 
         battle.single_event(
             "ModifyType",
-            &active_move.id,
+            &crate::battle::Effect::move_(active_move.id.clone()),
             Some(pokemon_pos),
             target_pos,
             Some(&active_move.id),
@@ -267,7 +267,7 @@ pub fn use_move_inner(
 
         battle.single_event(
             "ModifyType",
-            &active_move.id,
+            &crate::battle::Effect::move_(active_move.id.clone()),
             Some(pokemon_pos),
             target_pos,
             Some(&active_move.id),
@@ -360,7 +360,7 @@ pub fn use_move_inner(
     // this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
     battle.single_event(
         "ModifyType",
-        &active_move.id,
+        &crate::battle::Effect::move_(active_move.id.clone()),
         Some(pokemon_pos),
         target_pos,
         Some(&active_move.id),
@@ -370,7 +370,7 @@ pub fn use_move_inner(
     // this.battle.singleEvent('ModifyMove', move, null, pokemon, target, move, move);
     battle.single_event(
         "ModifyMove",
-        &active_move.id,
+        &crate::battle::Effect::move_(active_move.id.clone()),
         Some(pokemon_pos),
         target_pos,
         Some(&active_move.id),
@@ -639,7 +639,7 @@ pub fn use_move_inner(
     // }
     let try_move_single = battle.single_event(
         "TryMove",
-        &active_move.id,
+        &crate::battle::Effect::move_(active_move.id.clone()),
         Some(pokemon_pos),
         Some(final_target),
         Some(&active_move.id),
@@ -671,7 +671,7 @@ pub fn use_move_inner(
     // this.battle.singleEvent('UseMoveMessage', move, null, pokemon, target, move);
     battle.single_event(
         "UseMoveMessage",
-        &active_move.id,
+        &crate::battle::Effect::move_(active_move.id.clone()),
         Some(pokemon_pos),
         Some(final_target),
         Some(&active_move.id),
@@ -810,7 +810,7 @@ pub fn use_move_inner(
     if !move_result.is_success() {
         battle.single_event(
             "MoveFail",
-            &active_move.id,
+            &crate::battle::Effect::move_(active_move.id.clone()),
             Some(final_target),
             Some(pokemon_pos),
             Some(&active_move.id),
@@ -840,7 +840,7 @@ pub fn use_move_inner(
 
         battle.single_event(
             "AfterMoveSecondarySelf",
-            &active_move.id,
+            &crate::battle::Effect::move_(active_move.id.clone()),
             Some(pokemon_pos),
             Some(final_target),
             Some(&active_move.id),

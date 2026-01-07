@@ -266,7 +266,7 @@ impl Pokemon {
         for volatile_id in volatile_ids {
             battle.single_event(
                 "Copy",
-                &volatile_id,
+                &crate::battle::Effect::condition(volatile_id),
                 Some(target_pos),
                 None,
                 None,

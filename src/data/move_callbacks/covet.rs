@@ -73,7 +73,7 @@ pub fn on_after_hit(
     // Check if taking the item is allowed via singleEvent
     let take_item_result = battle.single_event(
         "TakeItem",
-        &your_item_id,
+        &crate::battle::Effect::item(your_item_id.clone()),
         Some(source_pos),
         Some(target_pos),
         Some(&your_item_id),

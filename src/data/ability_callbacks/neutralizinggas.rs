@@ -107,7 +107,7 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 
         if has_illusion {
             // this.singleEvent('End', this.dex.abilities.get('Illusion'), target.abilityState, target, pokemon, 'neutralizinggas');
-            battle.single_event("End", &ID::from("illusion"), Some(target_pos), Some(pokemon_pos), Some(&ID::from("neutralizinggas")), None);
+            battle.single_event("End", &crate::battle::Effect::ability(ID::from("illusion")), Some(target_pos), Some(pokemon_pos), Some(&ID::from("neutralizinggas")), None);
         }
 
         // if (target.volatiles['slowstart']) {
@@ -145,7 +145,7 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 
         if strong_weathers.contains(&target_ability_id.as_str()) {
             // this.singleEvent('End', this.dex.abilities.get(target.getAbility().id), target.abilityState, target, pokemon, 'neutralizinggas');
-            battle.single_event("End", &ID::from(target_ability_id.as_str()), Some(target_pos), Some(pokemon_pos), Some(&ID::from("neutralizinggas")), None);
+            battle.single_event("End", &crate::battle::Effect::ability(ID::from(target_ability_id.as_str())), Some(target_pos), Some(pokemon_pos), Some(&ID::from("neutralizinggas")), None);
         }
     }
 
@@ -337,7 +337,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             };
             target.get_ability().to_string()
         };
-        battle.single_event("Start", &ID::from(target_ability_id.as_str()), Some(target_pos), None, None, None);
+        battle.single_event("Start", &crate::battle::Effect::ability(ID::from(target_ability_id.as_str())), Some(target_pos), None, None, None);
 
         // if (pokemon.ability === "gluttony") {
         //     pokemon.abilityState.gluttony = false;

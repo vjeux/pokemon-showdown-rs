@@ -115,7 +115,7 @@ pub fn on_hit(
     // if (this.singleEvent('Eat', item, target.itemState, source, source, move)) {
     let eat_result = battle.single_event(
         "Eat",
-        &item_id,
+        &crate::battle::Effect::item(item_id.clone()),
         Some(source),
         Some(source),
         Some(&ID::from("pluck")),

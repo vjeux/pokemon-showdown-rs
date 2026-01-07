@@ -28,7 +28,7 @@ impl Battle {
         // this.battle.singleEvent('FieldEnd', prevWeather, this.weatherState, this);
         self.single_event(
             "FieldEnd",
-            &prev_weather,
+            &crate::battle::Effect::weather(prev_weather.clone()),
             None,  // field as target
             None,
             None,

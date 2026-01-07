@@ -157,7 +157,7 @@ impl Pokemon {
                 // to ensure current_effect_state is set up correctly
                 let restart_result = battle.single_event(
                     "Restart",
-                    &volatile_id,
+                    &crate::battle::Effect::condition(volatile_id.clone()),
                     Some(target_pos),
                     source_pos,
                     source_effect,
@@ -302,7 +302,7 @@ impl Pokemon {
         // Call the Start event for the newly added volatile
         let start_result = battle.single_event(
             "Start",
-            &volatile_id,
+            &crate::battle::Effect::condition(volatile_id.clone()),
             Some(target_pos),
             source_pos,
             source_effect,

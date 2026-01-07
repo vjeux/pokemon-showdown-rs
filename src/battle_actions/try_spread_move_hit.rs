@@ -164,7 +164,7 @@ pub fn try_spread_move_hit(
     // Phase 1: Call Try event
     let try_result = battle.single_event(
         "Try",
-        move_id,
+        &crate::battle::Effect::move_(move_id.clone()),
         Some(pokemon_pos),
         target_0,
         Some(move_id),
@@ -179,7 +179,7 @@ pub fn try_spread_move_hit(
     let prepare_hit_1 = if try_truthy {
         let result = battle.single_event(
             "PrepareHit",
-            move_id,
+            &crate::battle::Effect::move_(move_id.clone()),
             target_0,
             Some(pokemon_pos),
             Some(move_id),

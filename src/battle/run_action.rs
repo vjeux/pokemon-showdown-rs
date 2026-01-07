@@ -435,7 +435,7 @@ impl Battle {
 
                 if has_status {
                     let naturalcure_id = ID::new("naturalcure");
-                    self.single_event("CheckShow", &naturalcure_id, Some((side_idx, poke_idx)), None, None, None);
+                    self.single_event("CheckShow", &crate::battle::Effect::ability(naturalcure_id), Some((side_idx, poke_idx)), None, None, None);
                 }
 
                 // JS: if (this.actions.switchIn(action.target, action.pokemon.position, action.sourceEffect) === 'pursuitfaint') {
@@ -733,7 +733,7 @@ impl Battle {
                         // JS: }
                         for (side_idx, poke_idx) in all_pokemon_positions {
                             let species_id = self.sides[side_idx].pokemon[poke_idx].species_id.clone();
-                            self.single_event("Start", &species_id, Some((side_idx, poke_idx)), None, None, None);
+                            self.single_event("Start", &crate::battle::Effect::condition(species_id), Some((side_idx, poke_idx)), None, None, None);
                         }
 
                         // JS: this.midTurn = true;

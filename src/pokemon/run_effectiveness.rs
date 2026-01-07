@@ -77,7 +77,7 @@ impl Pokemon {
                 // Call singleEvent on the move to allow move-specific effectiveness modifiers (e.g., Freeze-Dry)
                 let single_event_result = battle.single_event(
                     "Effectiveness",
-                    move_id,
+                    &crate::battle::Effect::move_(move_id.clone()),
                     Some(pokemon_pos),
                     None,
                     None,

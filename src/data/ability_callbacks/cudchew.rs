@@ -167,7 +167,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
     // if (this.singleEvent('Eat', item, null, pokemon, null, null))
     let eat_result = battle.single_event(
         "Eat",
-        &berry_id,
+        &crate::battle::Effect::item(berry_id.clone()),
         Some(pokemon_pos),
         None,
         None,

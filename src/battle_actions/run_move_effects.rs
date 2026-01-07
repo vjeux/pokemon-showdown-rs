@@ -496,7 +496,7 @@ pub fn run_move_effects(
                     //         hitResult = this.battle.singleEvent('HitField', moveData, {}, target, source, move);
                     let hit_result = battle.single_event(
                         "HitField",
-                        &move_data.id,
+                        &crate::battle::Effect::move_(move_data.id.clone()),
                         Some(target_pos),
                         Some(source_pos),
                         Some(&active_move.id),
@@ -513,7 +513,7 @@ pub fn run_move_effects(
                     //         hitResult = this.battle.singleEvent('HitSide', moveData, {}, target.side, source, move);
                     let hit_result = battle.single_event(
                         "HitSide",
-                        &move_data.id,
+                        &crate::battle::Effect::move_(move_data.id.clone()),
                         Some(target_pos),
                         Some(source_pos),
                         Some(&active_move.id),
@@ -528,7 +528,7 @@ pub fn run_move_effects(
                     //         hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
                     let hit_result = battle.single_event(
                         "Hit",
-                        &move_data.id,
+                        &crate::battle::Effect::move_(move_data.id.clone()),
                         Some(target_pos),
                         Some(source_pos),
                         Some(&active_move.id),

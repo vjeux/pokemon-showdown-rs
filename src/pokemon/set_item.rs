@@ -143,7 +143,7 @@ impl Pokemon {
         // JS: if (oldItem.exists) this.battle.singleEvent('End', oldItem, oldItemState, this);
         // ✅ NOW IMPLEMENTED (Session 24 Part 74): singleEvent('End') for old item
         if !old_item_id.as_str().is_empty() {
-            battle.single_event("End", &old_item_id, Some(pokemon_pos), None, None, None);
+            battle.single_event("End", &crate::battle::Effect::item(old_item_id.clone()), Some(pokemon_pos), None, None, None);
         }
 
         // JS: if (item.id) {
@@ -151,7 +151,7 @@ impl Pokemon {
         // JS: }
         // ✅ NOW IMPLEMENTED (Session 24 Part 74): singleEvent('Start') for new item
         if !item_id.as_str().is_empty() {
-            battle.single_event("Start", &item_id, Some(pokemon_pos), source_pos, source_effect, None);
+            battle.single_event("Start", &crate::battle::Effect::item(item_id.clone()), Some(pokemon_pos), source_pos, source_effect, None);
         }
 
         // JS: return true;

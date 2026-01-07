@@ -514,7 +514,7 @@ impl Battle {
                     if should_remove {
                         // Call SideEnd event before removing
                         let end_event = format!("SideEnd");
-                        self.single_event(&end_event, &handler.effect_id, None, None, None, None);
+                        self.single_event(&end_event, &crate::battle::Effect::side_condition(handler.effect_id.clone()), None, None, None, None);
 
                         // Actually remove the side condition
                         if let Some(side) = self.sides.get_mut(side_idx) {
@@ -564,7 +564,7 @@ impl Battle {
                             let target_pos = (side_idx, poke_idx);
                             eprintln!("[FIELD_EVENT] Calling side condition {} Residual for Pokemon {:?}",
                                 handler.effect_id.as_str(), target_pos);
-                            self.single_event(&handler_event_id, &handler.effect_id, Some(target_pos), None, None, None);
+                            self.single_event(&handler_event_id, &crate::battle::Effect::side_condition(handler.effect_id.clone()), Some(target_pos), None, None, None);
 
                             // JS: this.faintMessages();
                             self.faint_messages(false, false, true);
@@ -580,7 +580,7 @@ impl Battle {
                 // Normal handling for non-side-Residual events
                 eprintln!("[FIELD_EVENT] Calling single_event for event='{}', effect='{}', turn={}",
                     handler_event_id, handler.effect_id.as_str(), self.turn);
-                self.single_event(&handler_event_id, &handler.effect_id, handler.holder, None, None, None);
+                self.single_event(&handler_event_id, &crate::battle::Effect::new(handler.effect_id.clone(), handler._effect_type), handler.holder, None, None, None);
 
                 // AFTER calling the callback, decrement terrain duration and clear if expired
                 if event_id == "Residual" && handler.is_field && self.field.terrain == handler.effect_id {

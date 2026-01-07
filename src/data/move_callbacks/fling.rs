@@ -71,7 +71,7 @@ pub fn on_prepare_hit(
     // if (!this.singleEvent('TakeItem', item, source.itemState, source, source, move, item)) return false;
     let take_item_result = battle.single_event(
         "TakeItem",
-        &item_id,
+        &crate::battle::Effect::item(item_id.clone()),
         Some(pokemon),
         Some(pokemon),
         Some(&item_id),
@@ -146,7 +146,7 @@ pub fn on_prepare_hit(
 
             battle.single_event(
                 "EatItem",
-                &ability_id,
+                &crate::battle::Effect::ability(ability_id),
                 Some(pokemon),
                 Some(pokemon),
                 Some(&item_id),
@@ -236,7 +236,7 @@ pub fn on_hit(
         // if (this.singleEvent('Eat', item, source.itemState, target, source, move)) {
         let eat_result = battle.single_event(
             "Eat",
-            &item_id,
+            &crate::battle::Effect::item(item_id.clone()),
             Some(target),
             Some(source),
             Some(&item_id),
