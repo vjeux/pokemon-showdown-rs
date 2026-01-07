@@ -21,14 +21,13 @@ pub fn on_start(
     eprintln!("[STALL_START] Called for {:?}", pokemon_pos);
 
     // Set counter to 3 when stall is first added
-    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    if let Some(stall_volatile) = pokemon_mut.volatiles.get_mut(&ID::from("stall")) {
-        stall_volatile.data.insert("counter".to_string(), serde_json::Value::from(3));
-        eprintln!("[STALL_START] Set counter to 3");
+    // In JavaScript: this.effectState.counter = 3
+    // In Rust: battle.current_effect_state is a clone that will be copied back
+    if let Some(ref mut effect_state) = battle.current_effect_state {
+        effect_state.data.insert("counter".to_string(), serde_json::Value::from(3));
+        eprintln!("[STALL_START] Set counter to 3 in current_effect_state");
+    } else {
+        eprintln!("[STALL_START] WARNING: No current_effect_state!");
     }
 
     EventResult::Continue
@@ -45,21 +44,22 @@ pub fn on_stall_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    // Phase 1: Get counter from the volatile's effectState
-    let counter = {
+    // Phase 1: Get counter from current_effect_state
+    // In JavaScript: this.effectState.counter || 1
+    // In Rust: battle.current_effect_state is a clone of the volatile's state
+    let counter = if let Some(ref effect_state) = battle.current_effect_state {
+        effect_state.data.get("counter")
+            .and_then(|v| v.as_i64())
+            .map(|v| v as i32)
+            .unwrap_or(1)
+    } else {
+        // Fallback: try to read from pokemon.volatiles if current_effect_state not set
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-
-        // Get the stall volatile
-        let stall_volatile = match pokemon.volatiles.get(&ID::from("stall")) {
-            Some(v) => v,
-            None => return EventResult::Continue,
-        };
-
-        // Get counter from data, default to 1
-        stall_volatile.data.get("counter")
+        pokemon.volatiles.get(&ID::from("stall"))
+            .and_then(|v| v.data.get("counter"))
             .and_then(|v| v.as_i64())
             .map(|v| v as i32)
             .unwrap_or(1)
@@ -101,20 +101,22 @@ pub fn on_restart(
 
     const COUNTER_MAX: i32 = 729; // From conditions.json
 
-    // Phase 1: Get current counter
-    let current_counter = {
+    // Phase 1: Get current counter from current_effect_state
+    // In JavaScript: this.effectState.counter
+    // In Rust: battle.current_effect_state is a clone that will be copied back
+    let current_counter = if let Some(ref effect_state) = battle.current_effect_state {
+        effect_state.data.get("counter")
+            .and_then(|v| v.as_i64())
+            .map(|v| v as i32)
+            .unwrap_or(3)
+    } else {
+        // Fallback: try to read from pokemon.volatiles if current_effect_state not set
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-
-        // Get the stall volatile
-        let stall_volatile = match pokemon.volatiles.get(&ID::from("stall")) {
-            Some(v) => v,
-            None => return EventResult::Continue,
-        };
-
-        stall_volatile.data.get("counter")
+        pokemon.volatiles.get(&ID::from("stall"))
+            .and_then(|v| v.data.get("counter"))
             .and_then(|v| v.as_i64())
             .map(|v| v as i32)
             .unwrap_or(3)
@@ -122,13 +124,8 @@ pub fn on_restart(
 
     eprintln!("[STALL_RESTART] Current counter: {}", current_counter);
 
-    // Phase 2: Update counter and duration
-    let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
-    };
-
-    if let Some(stall_volatile) = pokemon_mut.volatiles.get_mut(&ID::from("stall")) {
+    // Phase 2: Update counter and duration in current_effect_state
+    if let Some(ref mut effect_state) = battle.current_effect_state {
         // if (this.effectState.counter < this.effect.counterMax) {
         //     this.effectState.counter *= 3;
         // }
@@ -138,10 +135,12 @@ pub fn on_restart(
             current_counter
         };
 
-        stall_volatile.data.insert("counter".to_string(), serde_json::Value::from(new_counter));
-        stall_volatile.duration = Some(2);
+        effect_state.data.insert("counter".to_string(), serde_json::Value::from(new_counter));
+        effect_state.duration = Some(2);
 
         eprintln!("[STALL_RESTART] Updated counter to {}, duration to 2", new_counter);
+    } else {
+        eprintln!("[STALL_RESTART] WARNING: No current_effect_state!");
     }
 
     EventResult::Continue

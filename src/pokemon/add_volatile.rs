@@ -153,12 +153,15 @@ impl Pokemon {
             // JS: }
             if pokemon.volatiles.contains_key(&volatile_id) {
                 // Call onRestart callback if the volatile already exists
-                let restart_result = crate::data::condition_callbacks::dispatch_on_restart(
-                    battle,
-                    volatile_id.as_str(),
-                    target_pos,
+                // IMPORTANT: Call through single_event (not dispatch_on_restart directly)
+                // to ensure current_effect_state is set up correctly
+                let restart_result = battle.single_event(
+                    "Restart",
+                    &volatile_id,
+                    Some(target_pos),
                     source_pos,
-                    source_effect.map(|id| id.as_str()),
+                    source_effect,
+                    None,
                 );
 
                 // If onRestart returns false or Continue, return false (volatile not re-added)
