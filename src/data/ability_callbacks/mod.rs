@@ -1078,12 +1078,6 @@ pub fn dispatch_on_foe_maybe_trap_pokemon(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFoeTrapPokemon()
-//   onFoeTrapPokemon(defender)
-//   onFoeTrapPokemon(pokemon)
-
 /// Dispatch onFoeTrapPokemon callbacks
 pub fn dispatch_on_foe_trap_pokemon(
     battle: &mut Battle,
