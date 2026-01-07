@@ -157,11 +157,34 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+        use crate::pokemon::Pokemon;
+
+        // for (const pokemon of source.alliesAndSelf()) {
+        //     pokemon.addVolatile("gmaxchistrike");
+        // }
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        let ally_positions = {
+            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            source_pokemon.allies_and_self(battle, false)
+        };
+
+        for ally_pos in ally_positions {
+            Pokemon::add_volatile(battle, ally_pos, ID::from("gmaxchistrike"), Some(source), None, None, None);
+        }
+
         EventResult::Continue
     }
 }
