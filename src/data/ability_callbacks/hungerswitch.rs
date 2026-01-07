@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onResidual(pokemon) {
@@ -63,7 +63,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
                         battle_ref2,
                         (pokemon_pos.0, pokemon_index),
                         ID::from(target_forme),
-                        Some(ID::from("hungerswitch")),
+                        Some(Effect::ability("hungerswitch")),
                         false,
                         "0",
                         None

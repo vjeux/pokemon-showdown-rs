@@ -1,6 +1,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::event_system::EffectState;
+use crate::battle::Effect;
 
 /// Check if an item is a restorative berry
 /// JavaScript: RESTORATIVE_BERRIES.has(item.id)
@@ -73,7 +74,7 @@ impl Pokemon {
         pokemon_pos: (usize, usize),
         _is_forced: bool,
         _source_pos: Option<(usize, usize)>,
-        _source_effect: Option<&ID>,
+        _source_effect: Option<&Effect>,
     ) -> Option<ID> {
         // Phase 1: Extract pokemon data to check conditions
         let (item_id, hp, is_active) = {

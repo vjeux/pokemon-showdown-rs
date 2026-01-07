@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onSwitchOut(pokemon) {
@@ -54,7 +54,7 @@ pub fn on_switch_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
                         battle_ref2,
                         (pokemon_pos.0, pokemon_index),
                         ID::from("palafinhero"),
-                        Some(ID::from("zerotohero")),
+                        Some(Effect::ability("zerotohero")),
                         true,
                         "0",
                         None

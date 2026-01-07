@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onModifyMove(move, attacker, defender) {
@@ -84,7 +84,7 @@ pub fn on_modify_move(battle: &mut Battle, _move_id: &str, _source_pos: (usize, 
                         battle_ref2,
                         (attacker_pos.0, pokemon_index),
                         ID::from(target_forme),
-                        Some(ID::from("stancechange")),
+                        Some(Effect::ability("stancechange")),
                         false,
                         "0",
                         None

@@ -12,7 +12,8 @@ use crate::event::EventResult;
 /// }
 pub fn on_start(battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // Set terrain to Electric Terrain
-    battle.set_terrain(crate::ID::from("electricterrain"), None);
+    let source_effect = Some(crate::battle::Effect::ability("electricsurge"));
+    battle.set_terrain(crate::ID::from("electricterrain"), None, source_effect);
     EventResult::Continue
 }
 

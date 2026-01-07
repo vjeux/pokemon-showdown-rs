@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
@@ -128,7 +128,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
                     battle_ref2,
                     pokemon_pos,  // Use pokemon_pos directly, not active_slot lookup
                     ID::from(forme_id),
-                    Some(ID::from("forecast")),
+                    Some(Effect::ability("forecast")),
                     false,
                     "0",
                     Some("[msg]")

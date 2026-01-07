@@ -71,7 +71,7 @@ impl Battle {
         &mut self,
         weather_id: ID,
         source_pos: Option<(usize, usize)>,
-        source_effect: Option<ID>,
+        source_effect: Option<Effect>,
     ) -> Option<bool> {
         // Get current weather for comparison
         let current_weather = self.field.weather.clone();
@@ -87,8 +87,8 @@ impl Battle {
             //     return false;
             // }
             if let Some(ref eff) = source_effect {
-                let effect_type = self.get_effect_type(eff);
-                if effect_type == "Ability" {
+                let is_ability = matches!(eff.effect_type, crate::battle::EffectType::Ability);
+                if is_ability {
                     // Ability weather - check gen or permanent duration
                     if self.gen > 5 || self.field.weather_state.duration == Some(0) {
                         return Some(false);
@@ -126,7 +126,8 @@ impl Battle {
                 // }
 
                 if let Some(ref eff) = source_effect {
-                    let effect_type = self.get_effect_type(eff);
+                    let is_ability = matches!(eff.effect_type, crate::battle::EffectType::Ability);
+                    let is_move = matches!(eff.effect_type, crate::battle::EffectType::Move);
 
                     // Get source pokemon identifier for message
                     let source_ident = if let Some(pos) = source_pos {
@@ -140,17 +141,21 @@ impl Battle {
                     };
 
                     // Get source effect name
-                    let source_effect_name = if let Some(move_data) = self.dex.moves().get_by_id(eff) {
+                    let source_effect_name = if let Some(move_data) = self.dex.moves().get_by_id(&eff.id) {
                         move_data.name.clone()
-                    } else if let Some(ability_data) = self.dex.abilities().get_by_id(eff) {
+                    } else if let Some(ability_data) = self.dex.abilities().get_by_id(&eff.id) {
                         ability_data.name.clone()
                     } else {
-                        eff.to_string()
+                        eff.id.to_string()
                     };
 
                     // Check if sourceEffect is a move with weather property
-                    let is_weather_move = if let Some(move_data) = self.dex.moves().get_by_id(eff) {
-                        move_data.weather.is_some()
+                    let is_weather_move = if is_move {
+                        if let Some(move_data) = self.dex.moves().get_by_id(&eff.id) {
+                            move_data.weather.is_some()
+                        } else {
+                            false
+                        }
                     } else {
                         false
                     };
@@ -173,7 +178,7 @@ impl Battle {
                             source_effect_name.into(),
                             from_str.into(),
                         ]);
-                    } else if effect_type == "Ability" {
+                    } else if is_ability {
                         // Ability: add('-ability', source, sourceEffect, '[from] ' + this.weather, '[fail]')
                         let from_str = format!("[from] {}", current_weather_name);
                         self.add("-ability", &[
@@ -229,7 +234,7 @@ impl Battle {
                 &weather_id,
                 source_pos,
                 source_pos,
-                source_effect.as_ref().map(|id| id.as_str()),
+                source_effect.as_ref(),
             );
 
             eprintln!("[SET_WEATHER] Duration callback returned: {:?}", result);

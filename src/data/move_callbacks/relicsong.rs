@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onHit(target, pokemon, move) {
@@ -99,7 +99,7 @@ pub fn on_after_move_secondary_self(
             battle,
             pokemon,
             ID::from(forme_name.as_str()),
-            Some(effect_id),
+            Some(Effect::move_(effect_id)),
             false,
             "0",
             Some("[msg]"),

@@ -29,7 +29,7 @@ impl Battle {
         side_idx: usize,
         condition_id: ID,
         source_pos: Option<(usize, usize)>,
-        _source_effect: Option<&ID>,
+        source_effect: Option<&Effect>,
     ) -> bool {
         // Check if side exists
         if side_idx >= self.sides.len() {
@@ -49,7 +49,7 @@ impl Battle {
                     &condition_id,
                     side_idx,
                     source_pos,
-                    _source_effect,
+                    source_effect,
                 );
 
                 // Convert EventResult to bool
@@ -94,7 +94,7 @@ impl Battle {
                 &condition_id,
                 target_pos,
                 source_pos,
-                _source_effect.map(|id| id.as_str()),
+                source_effect,
             );
 
             if let crate::event::EventResult::Number(duration) = result {
@@ -115,7 +115,7 @@ impl Battle {
                 &condition_id,
                 side_idx,
                 source_pos,
-                _source_effect,
+                source_effect,
             );
 
             // Check if event returned false (failure)

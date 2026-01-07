@@ -9,6 +9,7 @@
 use crate::*;
 use crate::event_system::EffectState;
 use crate::dex_data::ID;
+use crate::battle::Effect;
 
 impl Battle {
 
@@ -51,7 +52,7 @@ impl Battle {
         &mut self,
         condition_id: &str,
         _source_pos: Option<(usize, usize)>,
-        _source_effect: Option<&ID>,
+        _source_effect: Option<&Effect>,
     ) -> bool {
         let id = ID::from(condition_id);
 

@@ -803,7 +803,7 @@ pub struct Battle {
     /// Current effect (JavaScript: effect: Effect)
     /// NOTE: Rust also has current_effect for internal use
     /// JavaScript: effect: Effect | null
-    pub effect: Option<ID>,
+    pub effect: Option<Effect>,
     /// Current effect state (JavaScript: effectState: EffectState)
     /// NOTE: Rust also has current_effect_state for internal use
     /// JavaScript: effectState: EffectState

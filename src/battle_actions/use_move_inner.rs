@@ -174,7 +174,7 @@ pub fn use_move_inner(
     move_or_move_name: &ID,
     pokemon_pos: (usize, usize),
     mut target_pos: Option<(usize, usize)>,
-    source_effect_param: Option<&ID>,
+    source_effect_param: Option<&Effect>,
     z_move_param: Option<&str>,
     max_move_param: Option<&str>,
 ) -> bool {
@@ -234,7 +234,7 @@ pub fn use_move_inner(
         // Get the potentially modified move back
         if let Some(ref modified_move) = battle.active_move {
             if modified_move.move_type != "Normal" {
-                source_effect = Some(active_move.id.clone());
+                source_effect = Some(Effect::move_(active_move.id.clone()));
             }
             active_move = modified_move.clone();
         }
@@ -247,7 +247,7 @@ pub fn use_move_inner(
         (active_move.category != "Status" &&
          source_effect.as_ref().map_or(false, |se| {
              // Check if the source effect is a Z-move by checking battle.active_move
-             battle.active_move.as_ref().map_or(false, |am| am.is_z && am.id == *se)
+             battle.active_move.as_ref().map_or(false, |am| am.is_z && am.id == se.id)
          }));
 
     if should_convert_to_z {
@@ -288,7 +288,7 @@ pub fn use_move_inner(
     let should_convert_to_max = max_move.is_some() ||
         (active_move.category != "Status" &&
          source_effect.as_ref().map_or(false, |se| {
-             battle.active_move.as_ref().map_or(false, |am| am.is_max && am.id == *se)
+             battle.active_move.as_ref().map_or(false, |am| am.is_max && am.id == se.id)
          }));
 
     if should_convert_to_max {
@@ -345,7 +345,7 @@ pub fn use_move_inner(
         active_move.source_effect_name = Some(se.to_string());
         // Check if source effect is an active move and has ignoreAbility
         if let Some(ref existing_active) = battle.active_move {
-            if existing_active.id == *se {
+            if existing_active.id == se.id {
                 active_move.ignore_ability = existing_active.ignore_ability;
             }
         }
@@ -596,7 +596,7 @@ pub fn use_move_inner(
     //     }
     // }
     let caller_move_for_pressure = source_effect.as_ref().and_then(|se| {
-        if battle.active_move.as_ref().map_or(false, |am| am.id == *se && am.pp > 0) {
+        if battle.active_move.as_ref().map_or(false, |am| am.id == se.id && am.pp > 0) {
             source_effect.clone()
         } else {
             None
@@ -628,8 +628,9 @@ pub fn use_move_inner(
         }
 
         if extra_pp > 0 {
-            let move_to_deduct = caller_move_for_pressure.as_ref().unwrap_or(move_or_move_name);
-            battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].deduct_pp(battle.gen, move_to_deduct, Some(extra_pp));
+            // deduct_pp expects an ID, so extract the ID from the Effect or use move_or_move_name
+            let move_id_to_deduct = caller_move_for_pressure.as_ref().map(|e| &e.id).unwrap_or(move_or_move_name);
+            battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].deduct_pp(battle.gen, move_id_to_deduct, Some(extra_pp));
         }
     }
 

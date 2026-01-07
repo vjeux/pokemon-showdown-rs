@@ -18,13 +18,21 @@
 // track 'hidden' status. We track disabled as bool only.
 
 use crate::*;
+use crate::battle::Effect;
 
 impl Pokemon {
     /// Disable a move
     /// Equivalent to pokemon.ts disableMove()
-    pub fn disable_move(&mut self, move_id: &str, _is_hidden: bool, source_effect: Option<String>) {
+    pub fn disable_move(&mut self, move_id: &str, _is_hidden: bool, source_effect: Option<&Effect>) {
         // JS: moveid = toID(moveid);
         let id = crate::dex_data::to_id(move_id);
+
+        // Get source effect name if provided
+        // JS: moveSlot.disabledSource = (sourceEffect?.name || moveSlot.move);
+        let source_effect_name = source_effect.map(|eff| {
+            // Get the name from the effect based on its type
+            eff.id.to_string()
+        });
 
         // JS: for (const moveSlot of this.moveSlots) {
         for slot in &mut self.move_slots {
@@ -36,7 +44,7 @@ impl Pokemon {
                 slot.disabled = true;
 
                 // JS: moveSlot.disabledSource = (sourceEffect?.name || moveSlot.move);
-                slot.disabled_source = source_effect.clone().or_else(|| Some(slot.move_name.clone()));
+                slot.disabled_source = source_effect_name.clone().or_else(|| Some(slot.move_name.clone()));
             }
         }
     }

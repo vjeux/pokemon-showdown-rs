@@ -3,6 +3,7 @@
 //! Pokemon Showdown - http://pokemonshowdown.com/
 
 use crate::*;
+use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::dex_data::StatsTable;
 
@@ -90,7 +91,7 @@ impl Pokemon {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         species_id: ID,
-        source_id: Option<ID>,
+        source: Option<Effect>,
         is_permanent: bool,
         ability_slot: &str,
         message: Option<&str>,
@@ -108,6 +109,7 @@ impl Pokemon {
         // const species = this.setSpecies(rawSpecies, source);
         // JavaScript: const species = this.setSpecies(rawSpecies, source);
         // Call position-based set_species
+        let source_id = source.as_ref().map(|e| e.id.clone());
         let set_species_result = Pokemon::set_species_pos(
             battle,
             pokemon_pos,
@@ -134,10 +136,14 @@ impl Pokemon {
             let apparent_species = species_base_species.unwrap_or_else(|| species_name.clone());
 
             // if (source?.effectType === 'Ability')
-            if let Some(source) = source_id {
-                // Check if source is an ability by looking it up in dex
-                let source_name = if let Some(ability_data) = battle.dex.abilities().get(source.as_str()) {
-                    Some(ability_data.name.clone())
+            if let Some(ref src) = source {
+                // Check if source is an ability by checking effect_type
+                let is_ability = matches!(src.effect_type, crate::battle::EffectType::Ability);
+
+                // Get ability name from dex if it's an ability
+                let source_name = if is_ability {
+                    battle.dex.abilities().get(src.id.as_str())
+                        .map(|ability_data| ability_data.name.clone())
                 } else {
                     None
                 };
@@ -242,55 +248,59 @@ impl Pokemon {
             }
 
             // Handle source effects
-            if let Some(source) = source_id.as_ref() {
-                // Check if source is an Item
-                if let Some(item_data) = battle.dex.items().get(source.as_str()) {
-                    // Check for different item types
-                    let is_zmove = item_data.z_move.is_some();
-                    let is_primal = source.as_str().ends_with("orb")
-                        && (source.as_str().contains("blue") || source.as_str().contains("red"));
+            if let Some(ref src) = source {
+                // Check if source is an Item by effect_type
+                let is_item = matches!(src.effect_type, crate::battle::EffectType::Item);
 
-                    // Add messages before modifying pokemon
-                    if is_zmove {
-                        // Ultra Burst
-                        battle.add(
-                            "-burst",
-                            &[
-                                pokemon_slot.as_str().into(),
-                                species_base_species.unwrap_or(species_name.clone()).into(),
-                                source.as_str().into(),
-                            ],
-                        );
-                    } else if is_primal {
-                        // Primal Reversion
-                        battle.add(
-                            "-primal",
-                            &[pokemon_slot.as_str().into(), source.as_str().into()],
-                        );
-                    } else {
-                        // Mega Evolution
-                        battle.add(
-                            "-mega",
-                            &[
-                                pokemon_slot.as_str().into(),
-                                species_base_species
-                                    .clone()
-                                    .unwrap_or(species_name.clone())
-                                    .into(),
-                                source.as_str().into(),
-                            ],
-                        );
+                if is_item {
+                    if let Some(item_data) = battle.dex.items().get(src.id.as_str()) {
+                        // Check for different item types
+                        let is_zmove = item_data.z_move.is_some();
+                        let is_primal = src.id.as_str().ends_with("orb")
+                            && (src.id.as_str().contains("blue") || src.id.as_str().contains("red"));
+
+                        // Add messages before modifying pokemon
+                        if is_zmove {
+                            // Ultra Burst
+                            battle.add(
+                                "-burst",
+                                &[
+                                    pokemon_slot.as_str().into(),
+                                    species_base_species.unwrap_or(species_name.clone()).into(),
+                                    src.id.as_str().into(),
+                                ],
+                            );
+                        } else if is_primal {
+                            // Primal Reversion
+                            battle.add(
+                                "-primal",
+                                &[pokemon_slot.as_str().into(), src.id.as_str().into()],
+                            );
+                        } else {
+                            // Mega Evolution
+                            battle.add(
+                                "-mega",
+                                &[
+                                    pokemon_slot.as_str().into(),
+                                    species_base_species
+                                        .clone()
+                                        .unwrap_or(species_name.clone())
+                                        .into(),
+                                    src.id.as_str().into(),
+                                ],
+                            );
+                        }
+
+                        // Now modify pokemon fields
+                        let pokemon = &mut battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1];
+                        pokemon.can_terastallize = None; // National Dex behavior
+
+                        if is_zmove || !is_primal {
+                            pokemon.move_this_turn_result = Some(true); // Ultra Burst/Mega counts as an action for Truant
+                        }
+                        pokemon.forme_regression = true;
                     }
-
-                    // Now modify pokemon fields
-                    let pokemon = &mut battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1];
-                    pokemon.can_terastallize = None; // National Dex behavior
-
-                    if is_zmove || !is_primal {
-                        pokemon.move_this_turn_result = Some(true); // Ultra Burst/Mega counts as an action for Truant
-                    }
-                    pokemon.forme_regression = true;
-                } else if battle.dex.conditions().get(source.as_str()).is_some() {
+                } else if matches!(src.effect_type, crate::battle::EffectType::Status) {
                     // Source is a Status (e.g., Shaymin-Sky -> Shaymin)
                     let mut args = vec![
                         pokemon_slot.as_str().into(),
@@ -305,8 +315,8 @@ impl Pokemon {
 
             // Handle ability changes for permanent formes
             // if (isPermanent && (!source || !['disguise', 'iceface'].includes(source.id))) {
-            let should_change_ability = if let Some(source) = source_id.as_ref() {
-                source.as_str() != "disguise" && source.as_str() != "iceface"
+            let should_change_ability = if let Some(ref src) = source {
+                src.id.as_str() != "disguise" && src.id.as_str() != "iceface"
             } else {
                 true // No source means we should change ability (Tera forme)
             };
@@ -332,7 +342,7 @@ impl Pokemon {
                     let ability_to_set = crate::dex_data::ID::from(ability_str.as_str());
 
                     // if (source || !this.getAbility().flags['cantsuppress'])
-                    let should_override = if source_id.is_some() {
+                    let should_override = if source.is_some() {
                         true
                     } else {
                         // Check if current ability can be suppressed

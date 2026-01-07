@@ -43,7 +43,8 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        Pokemon::try_set_status(battle, target_pos, ID::from("brn"), Some("move: Burning Jealousy"));
+        let move_effect = crate::battle::Effect::move_("burningjealousy");
+        Pokemon::try_set_status(battle, target_pos, ID::from("brn"), Some(&move_effect));
     }
 
     EventResult::Continue

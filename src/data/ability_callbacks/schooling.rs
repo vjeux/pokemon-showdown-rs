@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
@@ -60,7 +60,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                 if let Some(pokemon_index) = active_slot {
                     if pokemon_index < side.pokemon.len() {
                         
-                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("wishiwashischool"), Some(ID::from("schooling")), false, "0", None);
+                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("wishiwashischool"), Some(Effect::ability("schooling")), false, "0", None);
                     }
                 }
             }
@@ -79,7 +79,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                 if let Some(pokemon_index) = active_slot {
                     if pokemon_index < side.pokemon.len() {
                         
-                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("wishiwashi"), Some(ID::from("schooling")), false, "0", None);
+                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("wishiwashi"), Some(Effect::ability("schooling")), false, "0", None);
                     }
                 }
             }
@@ -145,7 +145,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
                 if let Some(pokemon_index) = active_slot {
                     if pokemon_index < side.pokemon.len() {
                         
-                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("wishiwashischool"), Some(ID::from("schooling")), false, "0", None);
+                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("wishiwashischool"), Some(Effect::ability("schooling")), false, "0", None);
                     }
                 }
             }
@@ -164,7 +164,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
                 if let Some(pokemon_index) = active_slot {
                     if pokemon_index < side.pokemon.len() {
                         
-                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("wishiwashi"), Some(ID::from("schooling")), false, "0", None);
+                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("wishiwashi"), Some(Effect::ability("schooling")), false, "0", None);
                     }
                 }
             }

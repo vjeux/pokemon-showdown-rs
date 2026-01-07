@@ -238,22 +238,14 @@ pub fn on_disable_move(
     }
 
     // for (const moveSlot of pokemon.moveSlots)
-    // Get move slots to iterate and source effect
-    let (move_slots, source_effect_str) = {
+    // Get move slots to iterate
+    let move_slots = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        let slots: Vec<ID> = pokemon.move_slots.iter().map(|ms| ms.id.clone()).collect();
-
-        let choicelock_id = ID::from("choicelock");
-        let source_eff = pokemon.volatiles.get(&choicelock_id)
-            .and_then(|v| v.data.get("sourceEffect"))
-            .and_then(|se| se.as_str())
-            .map(|s| s.to_string());
-
-        (slots, source_eff)
+        pokemon.move_slots.iter().map(|ms| ms.id.clone()).collect::<Vec<_>>()
     };
 
     for move_id in move_slots {
@@ -264,7 +256,8 @@ pub fn on_disable_move(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.disable_move(move_id.as_str(), false, source_effect_str.clone());
+            // Note: sourceEffect from volatile data is not set, so pass None
+            pokemon.disable_move(move_id.as_str(), false, None);
         }
     }
 

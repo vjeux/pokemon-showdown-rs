@@ -3,6 +3,7 @@
 //! 1:1 port of runMegaEvo from battle-actions.ts
 
 use crate::*;
+use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::battle_actions::{can_mega_evo, can_ultra_burst};
 
@@ -61,7 +62,7 @@ pub fn run_mega_evo(
         battle,
         (side_index, pokemon_index),
         ID::from(speciesid.as_str()),
-        Some(item_id), // source (item)
+        Some(Effect::item(item_id)), // source (item)
         true,          // is_permanent
         "0",           // ability_slot
         None,          // message

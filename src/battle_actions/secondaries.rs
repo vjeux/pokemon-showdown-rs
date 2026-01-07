@@ -210,7 +210,8 @@ pub fn secondaries(
                 // }
                 if let Some(terrain_name) = &secondary.terrain {
                     let terrain_id = crate::dex_data::ID::new(terrain_name);
-                    let _applied = battle.set_terrain(terrain_id, None);
+                    let terrain_effect = Some(crate::battle::Effect::move_(move_id.clone()));
+                    let _applied = battle.set_terrain(terrain_id, None, terrain_effect);
                 }
 
                 // Apply weather from secondary effect

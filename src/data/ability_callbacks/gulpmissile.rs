@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -88,7 +88,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         );
     } else {
         // source.trySetStatus('par', target, move);
-        Pokemon::try_set_status(battle, source_pos, ID::from("par"), Some(move_id));
+        let move_effect = Effect::move_(move_id);
+        Pokemon::try_set_status(battle, source_pos, ID::from("par"), Some(&move_effect));
     }
 
     // target.formeChange('cramorant', move);
@@ -101,7 +102,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         let active_slot = side.active.get(target_pos.1).cloned().flatten();
         if let Some(pokemon_index) = active_slot {
             if pokemon_index < side.pokemon.len() {
-                crate::pokemon::Pokemon::forme_change(battle_ref2, (target_pos.0, pokemon_index), ID::from("cramorant"), Some(ID::from(move_id)), false, "0", None);
+                crate::pokemon::Pokemon::forme_change(battle_ref2, (target_pos.0, pokemon_index), ID::from("cramorant"), Some(Effect::move_(move_id)), false, "0", None);
             }
         }
     }
@@ -169,7 +170,7 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, _target_pos: Option<(usize
         let active_slot = side.active.get(source_pos.1).cloned().flatten();
         if let Some(pokemon_index) = active_slot {
             if pokemon_index < side.pokemon.len() {
-                crate::pokemon::Pokemon::forme_change(battle_ref2, (source_pos.0, pokemon_index), ID::from(forme), Some(ID::from(effect_id)), false, "0", None);
+                crate::pokemon::Pokemon::forme_change(battle_ref2, (source_pos.0, pokemon_index), ID::from(forme), Some(Effect::move_(effect_id)), false, "0", None);
             }
         }
     }

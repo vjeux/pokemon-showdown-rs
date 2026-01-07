@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onDamage(damage, target, source, effect) {
@@ -275,7 +275,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
                     battle_ref2,
                     (pokemon_pos.0, pokemon_index),
                     ID::from(new_species_id),
-                    Some(ID::from("disguise")),
+                    Some(Effect::ability("disguise")),
                     true,
                     "0",
                     None,

@@ -257,7 +257,7 @@ pub fn run_move(
         move_id,
         pokemon_pos,
         Some(target_pos),
-        source_effect.map(|e| &e.id),
+        source_effect,
         z_move.as_deref(),
         max_move.as_deref(),
     );

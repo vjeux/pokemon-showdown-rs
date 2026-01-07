@@ -169,14 +169,16 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                Pokemon::try_set_status(battle, pokemon_pos, ID::from("tox"), Some("Toxic Spikes"));
+                let move_effect = crate::battle::Effect::move_("toxicspikes");
+                Pokemon::try_set_status(battle, pokemon_pos, ID::from("tox"), Some(&move_effect));
             } else {
                 // pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
                 let _pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), Some("Toxic Spikes"));
+                let move_effect = crate::battle::Effect::move_("toxicspikes");
+                Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), Some(&move_effect));
             }
         }
 

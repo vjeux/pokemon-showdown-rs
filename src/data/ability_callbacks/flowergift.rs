@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
@@ -84,7 +84,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
                             battle_ref2,
                             (pokemon_pos.0, pokemon_index),
                             ID::from("cherrimsunshine"),
-                            Some(ID::from("flowergift")),
+                            Some(Effect::ability("flowergift")),
                             false,
                             "0",
                             Some("[msg]")
@@ -112,7 +112,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
                             battle_ref2,
                             (pokemon_pos.0, pokemon_index),
                             ID::from("cherrim"),
-                            Some(ID::from("flowergift")),
+                            Some(Effect::ability("flowergift")),
                             false,
                             "0",
                             Some("[msg]")

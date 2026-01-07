@@ -55,7 +55,7 @@ impl Side {
         battle: &mut Battle,
         status_id: ID,
         source_pos: Option<(usize, usize)>,
-        source_effect: Option<ID>,
+        source_effect: Option<Effect>,
     ) -> bool {
         // JavaScript: if (!source && this.battle.event?.target) source = this.battle.event.target;
         // JavaScript: if (source === 'debug') source = this.active[0];
@@ -115,7 +115,7 @@ impl Side {
             &status_id,
             target_pos,
             source_pos,
-            source_effect.as_ref().map(|id| id.as_str()),
+            source_effect.as_ref(),
         );
 
         if let crate::event::EventResult::Number(duration) = result {

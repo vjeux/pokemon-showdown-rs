@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -44,7 +44,7 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
                         battle_ref2,
                         (pokemon_pos.0, pokemon_index),
                         ID::from("kyogreprimal"),
-                        Some(ID::from("blueorb")),
+                        Some(Effect::item("blueorb")),
                         true,
                         "0",
                         None,

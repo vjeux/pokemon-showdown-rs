@@ -6,6 +6,7 @@
 //! like Copycat, Sleep Talk, Snatch, etc.
 
 use crate::*;
+use crate::battle::Effect;
 
 impl Battle {
     /// Use a move - wrapper for the standalone use_move function
@@ -39,7 +40,7 @@ impl Battle {
         move_id: &ID,
         pokemon_pos: (usize, usize),
         target_pos: Option<(usize, usize)>,
-        source_effect: Option<&ID>,
+        source_effect: Option<&Effect>,
         z_move: Option<&str>,
         max_move: Option<&str>,
     ) -> bool {

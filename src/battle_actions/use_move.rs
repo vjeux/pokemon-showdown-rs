@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle::Effect;
 use super::use_move_inner::use_move_inner;
 
 
@@ -39,7 +40,7 @@ pub fn use_move(
     move_id: &ID,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    source_effect: Option<&ID>,
+    source_effect: Option<&Effect>,
     z_move: Option<&str>,
     max_move: Option<&str>,
 ) -> bool {

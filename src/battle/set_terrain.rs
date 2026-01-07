@@ -30,12 +30,12 @@
 // 		return true;
 // 	}
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event_system::EffectState;
 
 impl Battle {
-    pub fn set_terrain(&mut self, terrain_id: ID, source_pos: Option<(usize, usize)>) -> bool {
+    pub fn set_terrain(&mut self, terrain_id: ID, source_pos: Option<(usize, usize)>, source_effect: Option<Effect>) -> bool {
         // if (this.terrain === status.id) return false;
         if self.field.terrain == terrain_id {
             return false;
@@ -72,7 +72,7 @@ impl Battle {
                 &terrain_id,
                 None,  // target_pos
                 source_pos,  // source_pos
-                None,  // effect_id
+                source_effect.as_ref(),
             );
 
             if let crate::event::EventResult::Number(dur) = duration_result {

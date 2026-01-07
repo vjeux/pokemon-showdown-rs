@@ -51,7 +51,8 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                pokemon_mut.disable_move(move_id.as_str(), false, Some("Assault Vest".to_string()));
+                let effect = crate::battle::Effect::item("assaultvest");
+                pokemon_mut.disable_move(move_id.as_str(), false, Some(&effect));
             }
         }
     }

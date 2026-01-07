@@ -89,7 +89,7 @@ pub fn on_try_move(
             battle,
             attacker,
             ID::from(forme),
-            Some(move_id.clone()),
+            Some(Effect::move_(move_id.clone())),
             false,
             "",
             None,

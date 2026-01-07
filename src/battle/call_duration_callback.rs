@@ -7,6 +7,7 @@
 
 use crate::*;
 use crate::event::EventResult;
+use crate::battle::Effect;
 
 impl Battle {
     /// Call durationCallback for a side condition
@@ -23,7 +24,7 @@ impl Battle {
     /// - condition_id: ID of the side condition
     /// - target_pos: Target Pokemon position (usually side's active[0])
     /// - source_pos: Source Pokemon position
-    /// - source_effect: Source effect ID
+    /// - source_effect: Source effect
     ///
     /// Returns: EventResult::Number with duration, or EventResult::Continue if no callback
     pub fn call_duration_callback(
@@ -31,8 +32,11 @@ impl Battle {
         condition_id: &ID,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        source_effect: Option<&str>,
+        source_effect: Option<&Effect>,
     ) -> EventResult {
+        // Extract effect ID string for callbacks that need it
+        let effect_id_str = source_effect.map(|e| e.id.as_str());
+
         // Dispatch to condition-specific duration callback
         match condition_id.as_str() {
             "auroraveil" => {
@@ -40,7 +44,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "electricterrain" => {
@@ -48,7 +52,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "grassyterrain" => {
@@ -56,7 +60,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "gravity" => {
@@ -64,7 +68,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "healblock" => {
@@ -72,7 +76,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "lightscreen" => {
@@ -80,7 +84,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "magicroom" => {
@@ -88,7 +92,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "mistyterrain" => {
@@ -96,7 +100,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "psychicterrain" => {
@@ -104,7 +108,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "reflect" => {
@@ -112,7 +116,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "safeguard" => {
@@ -120,7 +124,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "tailwind" => {
@@ -128,7 +132,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "trickroom" => {
@@ -136,7 +140,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             "wonderroom" => {
@@ -144,7 +148,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    source_effect,
+                    effect_id_str,
                 )
             }
             _ => EventResult::Continue,

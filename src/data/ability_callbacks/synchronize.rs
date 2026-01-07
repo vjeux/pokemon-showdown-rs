@@ -69,7 +69,8 @@ pub fn on_after_set_status(battle: &mut Battle, status: Option<&str>, target_pos
     // and show messages when activating against it.
     // Note: The source_effect parameter in Rust is currently not fully functional for custom Effect objects,
     // but we pass "synchronize" to at least identify the source
-    Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from(status_id), Some("synchronize"));
+    let sync_effect = crate::battle::Effect::ability("synchronize");
+    Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from(status_id), Some(&sync_effect));
 
     EventResult::Continue
 }

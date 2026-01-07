@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onSwitchIn(pokemon) {
@@ -73,7 +73,7 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
                         battle_ref2,
                         (pokemon_pos.0, pokemon_index),
                         ID::from("terapagosterastal"),
-                        Some(ID::from("terashift")),
+                        Some(Effect::ability("terashift")),
                         true,
                         "0",
                         None

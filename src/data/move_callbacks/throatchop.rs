@@ -80,8 +80,9 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
+        let effect = crate::battle::Effect::move_("throatchop");
         for move_id in moves_to_disable {
-            pokemon_mut.disable_move(move_id.as_str(), false, Some("Throat Chop".to_string()));
+            pokemon_mut.disable_move(move_id.as_str(), false, Some(&effect));
         }
 
         EventResult::Continue

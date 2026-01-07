@@ -357,11 +357,12 @@ pub fn run_move_effects(
                 eprintln!("[SIDE_CONDITION] Applying side condition '{}' to side {}", side_condition, target_pos.0);
                 //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
                 let condition_id = ID::new(side_condition);
+                let move_effect = Effect::move_(active_move.id.clone());
                 let hit_result = battle.add_side_condition(
                     target_pos.0,
                     condition_id,
                     Some(source_pos),
-                    Some(&active_move.id),
+                    Some(&move_effect),
                 );
                 eprintln!("[SIDE_CONDITION] add_side_condition returned: {}", hit_result);
                 //     didSomething = this.combineResults(didSomething, hitResult);
@@ -386,11 +387,12 @@ pub fn run_move_effects(
                                 active_move.id.as_str(), target_pos.0);
                             // Apply the move itself as a side condition (use move ID, not condition ID)
                             let side_condition_id = active_move.id.clone();
+                            let move_effect = Effect::move_(active_move.id.clone());
                             let hit_result = battle.add_side_condition(
                                 target_pos.0,
                                 side_condition_id,
                                 Some(source_pos),
-                                Some(&active_move.id),
+                                Some(&move_effect),
                             );
                             eprintln!("[SIDE_CONDITION_EMBEDDED] add_side_condition returned: {}", hit_result);
                             let hit_result_dr = if hit_result {
@@ -428,7 +430,7 @@ pub fn run_move_effects(
                 let hit_result = battle.set_weather(
                     weather_id,
                     Some(source_pos),
-                    Some(active_move.id.clone()),
+                    Some(Effect::move_(active_move.id.clone())),
                 );
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 // JavaScript returns true/false/null, convert to DamageResult
@@ -444,9 +446,8 @@ pub fn run_move_effects(
             if let Some(ref terrain) = move_data.terrain {
                 //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
                 let terrain_id = ID::new(terrain);
-                // TODO: field.set_terrain should be a Battle-level method that handles events
-                // For now, using the simple field implementation
-                let hit_result = battle.set_terrain(terrain_id, None); // duration
+                let terrain_effect = Some(Effect::move_(active_move.id.clone()));
+                let hit_result = battle.set_terrain(terrain_id, None, terrain_effect);
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
                     DamageResult::Success

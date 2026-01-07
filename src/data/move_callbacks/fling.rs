@@ -113,7 +113,7 @@ pub fn on_prepare_hit(
     //
     // Store the item ID in the battle state so on_hit can access it
     // The item will be removed by the fling volatile's onUpdate
-    battle.effect = Some(item_id.clone());
+    battle.effect = Some(Effect::item(item_id.clone()));
 
     // Get item.isBerry to handle berry case
     let is_berry = {
@@ -217,10 +217,11 @@ pub fn on_hit(
     };
 
     // Get the flung item ID from battle.effect (set in on_prepare_hit)
-    let item_id = match &battle.effect {
-        Some(id) => id.clone(),
+    let item_effect = match &battle.effect {
+        Some(effect) => effect.clone(),
         None => return EventResult::Continue,
     };
+    let item_id = item_effect.id.clone();
 
     // Get item data
     let (is_berry, has_on_eat) = {
@@ -236,16 +237,16 @@ pub fn on_hit(
         // if (this.singleEvent('Eat', item, source.itemState, target, source, move)) {
         let eat_result = battle.single_event(
             "Eat",
-            &crate::battle::Effect::item(item_id.clone()),
+            &item_effect,
             Some(target),
             Some(source),
-            Some(&Effect::item(item_id.clone())),
+            Some(&item_effect),
             None,
         );
 
         if eat_result.boolean() != Some(false) {
             // this.runEvent('EatItem', target, source, move, item);
-            battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&Effect::item(item_id.clone())), EventResult::Continue, false, false);
+            battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&item_effect), EventResult::Continue, false, false);
 
             // if (item.id === 'leppaberry') target.staleness = 'external';
             if item_id.as_str() == "leppaberry" {

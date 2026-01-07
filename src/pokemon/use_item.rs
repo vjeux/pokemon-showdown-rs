@@ -1,6 +1,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::event_system::EffectState;
+use crate::battle::Effect;
 
 impl Pokemon {
 
@@ -53,7 +54,7 @@ impl Pokemon {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
-        _source_effect: Option<&ID>,
+        _source_effect: Option<&Effect>,
     ) -> Option<ID> {
         // Phase 1: Extract pokemon data immutably to check conditions
         let (hp, is_active, item_id, is_gem) = {

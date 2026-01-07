@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle::Effect;
 
 impl Pokemon {
 
@@ -13,7 +14,7 @@ impl Pokemon {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         status_id: ID,
-        _source_effect: Option<&str>
+        _source_effect: Option<&Effect>
     ) -> bool {
         // JS: return this.setStatus(this.status || status, source, sourceEffect);
         //

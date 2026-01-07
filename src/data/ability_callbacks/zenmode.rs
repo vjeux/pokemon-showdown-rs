@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 /// onResidual(pokemon) {
@@ -129,7 +129,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
                 if let Some(pokemon_index) = active_slot {
                     if pokemon_index < side.pokemon.len() {
                         
-                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from(battle_only_species), Some(ID::from("zenmode")), false, "0", Some("[silent]"));
+                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from(battle_only_species), Some(Effect::ability("zenmode")), false, "0", Some("[silent]"));
                     }
                 }
             }
@@ -180,7 +180,7 @@ pub mod condition {
                     if let Some(pokemon_index) = active_slot {
                         if pokemon_index < side.pokemon.len() {
                             
-                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("darmanitanzen"), Some(ID::from("zenmode")), false, "0", None);
+                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("darmanitanzen"), Some(Effect::ability("zenmode")), false, "0", None);
                         }
                     }
                 }
@@ -198,7 +198,7 @@ pub mod condition {
                     if let Some(pokemon_index) = active_slot {
                         if pokemon_index < side.pokemon.len() {
                             
-                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("darmanitangalarzen"), Some(ID::from("zenmode")), false, "0", None);
+                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("darmanitangalarzen"), Some(Effect::ability("zenmode")), false, "0", None);
                         }
                     }
                 }
@@ -251,7 +251,7 @@ pub mod condition {
                     if let Some(pokemon_index) = active_slot {
                         if pokemon_index < side.pokemon.len() {
                             
-                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from(battle_only_species), Some(ID::from("zenmode")), false, "0", None);
+                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from(battle_only_species), Some(Effect::ability("zenmode")), false, "0", None);
                         }
                     }
                 }

@@ -7,6 +7,7 @@
 
 use crate::*;
 use crate::battle::EventInfo;
+use crate::battle::Effect;
 
 impl Battle {
     /// Single event targeting a Side (not a Pokemon)
@@ -23,7 +24,7 @@ impl Battle {
     /// - effect_id: ID of the side condition
     /// - side_idx: Index of the side being targeted
     /// - source: Optional source Pokemon position
-    /// - source_effect: Optional source effect ID
+    /// - source_effect: Optional source effect
     ///
     /// Returns: EventResult from the callback
     pub fn single_event_side(
@@ -32,7 +33,7 @@ impl Battle {
         effect_id: &ID,
         side_idx: usize,
         source: Option<(usize, usize)>,
-        source_effect: Option<&ID>,
+        source_effect: Option<&Effect>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
@@ -98,23 +99,8 @@ impl Battle {
             prankster_boosted: false,
         });
 
-        // Convert source_effect ID to Effect by looking up its type
-        let source_effect_obj = source_effect.map(|id| {
-            let effect_type_str = self.get_effect_type(id);
-            let effect_type = match effect_type_str {
-                "Ability" => crate::battle::EffectType::Ability,
-                "Item" => crate::battle::EffectType::Item,
-                "Move" => crate::battle::EffectType::Move,
-                "Status" => crate::battle::EffectType::Status,
-                "Weather" => crate::battle::EffectType::Weather,
-                "Terrain" => crate::battle::EffectType::Terrain,
-                "SideCondition" => crate::battle::EffectType::SideCondition,
-                "SlotCondition" => crate::battle::EffectType::SlotCondition,
-                "FieldCondition" => crate::battle::EffectType::FieldCondition,
-                _ => crate::battle::EffectType::Condition,
-            };
-            crate::battle::Effect::new(id.clone(), effect_type)
-        });
+        // source_effect is already an Effect, so just clone it
+        let source_effect_obj = source_effect.cloned();
 
         let mut event_info = EventInfo::new(event_id);
         event_info.target = None; // Side events don't have a Pokemon target
