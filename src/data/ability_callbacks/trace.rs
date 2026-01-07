@@ -96,7 +96,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             pokemon.ability.clone()
         };
 
-        battle.single_event("Update", &crate::battle::Effect::ability(ability_id), Some(pokemon_pos), None, None, None);
+        battle.single_event("Update", &crate::battle::Effect::ability(ability_id), None, Some(pokemon_pos), None, None, None);
     }
 
     EventResult::Continue

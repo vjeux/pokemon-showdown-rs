@@ -109,7 +109,7 @@ impl Battle {
                 let move_id_ref = &move_action.move_id.clone();
                 let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
                 let result =
-                    self.single_event("ModifyPriority", &crate::battle::Effect::move_(move_id_ref.clone()), Some(pokemon_pos), None, None, None);
+                    self.single_event("ModifyPriority", &crate::battle::Effect::move_(move_id_ref.clone()), None, Some(pokemon_pos), None, None, None);
                 if let Some(new_priority) = result.number() {
                     priority = new_priority as i8;
                 }

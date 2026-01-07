@@ -123,7 +123,7 @@ impl Pokemon {
 
         // JS: this.battle.singleEvent('End', item, oldItemState, this);
         // ✅ NOW IMPLEMENTED (Session 24 Part 75): singleEvent('End') for removed item
-        battle.single_event("End", &crate::battle::Effect::item(item.clone()), Some(pokemon_pos), None, None, None);
+        battle.single_event("End", &crate::battle::Effect::item(item.clone()), None, Some(pokemon_pos), None, None, None);
 
         // JS: this.battle.runEvent('AfterTakeItem', this, null, null, item);
         // ✅ NOW IMPLEMENTED (Session 24 Part 80): runEvent('AfterTakeItem')

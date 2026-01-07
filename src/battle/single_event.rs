@@ -1,6 +1,7 @@
 use crate::*;
 use crate::battle::{EventInfo, EffectType, Effect};
 use crate::event::EventResult;
+use crate::event_system::EffectState;
 
 impl Battle {
 
@@ -105,6 +106,7 @@ impl Battle {
         &mut self,
         event_id: &str,
         effect: &Effect,
+        state: Option<&EffectState>,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
         source_effect: Option<&Effect>,
@@ -205,8 +207,19 @@ impl Battle {
         }
 
         // Save parent event context
+        // JavaScript: const parentEffect = this.effect;
+        // JavaScript: const parentEffectState = this.effectState;
+        // JavaScript: const parentEvent = this.event;
         let parent_event = self.current_event.take();
         let parent_context = self.current_effect_context.take();
+        let parent_effect_state = std::mem::take(&mut self.effect_state);
+
+        // Set up current effect state
+        // JavaScript: this.effectState = state as EffectState || this.initEffectState({});
+        self.effect_state = match state {
+            Some(s) => s.clone(),
+            None => EffectState::new(effect_id.clone()),
+        };
 
         // Set up current effect context
         self.current_effect_context = Some(crate::EffectContext {
@@ -242,9 +255,14 @@ impl Battle {
         eprintln!("[SINGLE_EVENT] AFTER dispatch_single_event: event_id={}, effect_id={}, result={:?}", event_id, effect_id.as_str(), result);
 
         // Restore parent context
+        // JavaScript: this.eventDepth--;
+        // JavaScript: this.effect = parentEffect;
+        // JavaScript: this.effectState = parentEffectState;
+        // JavaScript: this.event = parentEvent;
         self.event_depth -= 1;
         self.current_event = parent_event;
         self.current_effect_context = parent_context;
+        self.effect_state = parent_effect_state;
 
         // JavaScript: return returnVal === undefined ? relayVar : returnVal;
         // If handler returns Continue (undefined equivalent) and we have relay_var, return it

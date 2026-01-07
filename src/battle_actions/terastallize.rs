@@ -107,6 +107,7 @@ pub fn terastallize(
             battle.single_event(
                 "End",
                 &crate::battle::Effect::ability(illusion_id),
+                None,
                 Some(pokemon_pos),
                 None,
                 None,

@@ -267,6 +267,7 @@ impl Pokemon {
             battle.single_event(
                 "Copy",
                 &crate::battle::Effect::condition(volatile_id),
+                None,
                 Some(target_pos),
                 None,
                 None,

@@ -76,6 +76,7 @@ impl Battle {
         let field_start_result = self.single_event(
             "FieldStart",
             &crate::battle::Effect::field_condition(pseudo_weather_id.clone()),
+            None,
             None,  // field as target
             source_pos,
             None,

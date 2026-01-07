@@ -71,6 +71,7 @@ pub fn try_move_hit(
     let try_result = battle.single_event(
         "Try",
         &crate::battle::Effect::move_(move_id.clone()),
+        None,
         Some(pokemon_pos),
         Some(target),
         Some(&crate::battle::Effect::move_(move_id.clone())),
@@ -80,6 +81,7 @@ pub fn try_move_hit(
     let prepare_hit_single = battle.single_event(
         "PrepareHit",
         &crate::battle::Effect::move_(move_id.clone()),
+        None,
         Some(target),
         Some(pokemon_pos),
         Some(&crate::battle::Effect::move_(move_id.clone())),

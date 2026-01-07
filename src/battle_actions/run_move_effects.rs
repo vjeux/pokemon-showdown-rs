@@ -499,6 +499,7 @@ pub fn run_move_effects(
                     let hit_result = battle.single_event(
                         "HitField",
                         &crate::battle::Effect::move_(move_data.id.clone()),
+                        None,
                         Some(target_pos),
                         Some(source_pos),
                         Some(&Effect::move_(active_move.id.clone())),
@@ -516,6 +517,7 @@ pub fn run_move_effects(
                     let hit_result = battle.single_event(
                         "HitSide",
                         &crate::battle::Effect::move_(move_data.id.clone()),
+                        None,
                         Some(target_pos),
                         Some(source_pos),
                         Some(&Effect::move_(active_move.id.clone())),
@@ -531,6 +533,7 @@ pub fn run_move_effects(
                     let hit_result = battle.single_event(
                         "Hit",
                         &crate::battle::Effect::move_(move_data.id.clone()),
+                        None,
                         Some(target_pos),
                         Some(source_pos),
                         Some(&Effect::move_(active_move.id.clone())),

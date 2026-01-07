@@ -140,7 +140,7 @@ pub mod condition {
 
             // Check if item is not empty
             if item_id != ID::from("") {
-                battle.single_event("End", &crate::battle::Effect::item(item_id), Some(pokemon_pos), Some(pokemon_pos), None, None);
+                battle.single_event("End", &crate::battle::Effect::item(item_id), None, Some(pokemon_pos), Some(pokemon_pos), None, None);
             }
         }
 

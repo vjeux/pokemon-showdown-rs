@@ -72,6 +72,7 @@ pub fn on_prepare_hit(
     let take_item_result = battle.single_event(
         "TakeItem",
         &crate::battle::Effect::item(item_id.clone()),
+        None,
         Some(pokemon),
         Some(pokemon),
         Some(&Effect::move_(ID::new("fling"))),
@@ -147,6 +148,7 @@ pub fn on_prepare_hit(
             battle.single_event(
                 "EatItem",
                 &crate::battle::Effect::ability(ability_id),
+                None,
                 Some(pokemon),
                 Some(pokemon),
                 Some(&Effect::item(item_id.clone())),
@@ -238,6 +240,7 @@ pub fn on_hit(
         let eat_result = battle.single_event(
             "Eat",
             &item_effect,
+            None,
             Some(target),
             Some(source),
             Some(&item_effect),

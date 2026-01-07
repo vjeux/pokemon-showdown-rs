@@ -66,7 +66,7 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        battle.single_event("Swap", &crate::battle::Effect::side_condition(effect_id), Some(target), Some(target), None, None);
+        battle.single_event("Swap", &crate::battle::Effect::side_condition(effect_id), None, Some(target), Some(target), None, None);
 
         EventResult::Continue
     }

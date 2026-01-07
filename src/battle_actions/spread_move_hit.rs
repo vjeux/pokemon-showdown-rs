@@ -165,6 +165,7 @@ pub fn spread_move_hit(
         battle.single_event(
             "TryHitField",
             &crate::battle::Effect::move_(move_data_id.clone()),
+            None,
             target_pos,
             Some(source_pos),
             Some(&Effect::move_(move_id.clone())),
@@ -177,6 +178,7 @@ pub fn spread_move_hit(
         battle.single_event(
             "TryHitSide",
             &crate::battle::Effect::move_(move_data_id.clone()),
+            None,
             target_pos,
             Some(source_pos),
             Some(&Effect::move_(move_id.clone())),
@@ -187,6 +189,7 @@ pub fn spread_move_hit(
         battle.single_event(
             "TryHit",
             &crate::battle::Effect::move_(move_data_id.clone()),
+            None,
             target_pos,
             Some(source_pos),
             Some(&Effect::move_(move_id.clone())),
@@ -478,6 +481,7 @@ pub fn spread_move_hit(
                 battle.single_event(
                     "AfterHit",
                     &crate::battle::Effect::move_(move_data_id.clone()),
+                    None,
                     Some(*target_pos),
                     Some(source_pos),
                     Some(&Effect::move_(move_id.clone())),

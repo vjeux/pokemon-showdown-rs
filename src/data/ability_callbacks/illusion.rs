@@ -106,7 +106,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     if has_illusion {
         // this.singleEvent('End', this.dex.abilities.get('Illusion'), target.abilityState, target, source, move);
         let illusion_id = ID::from("illusion");
-        battle.single_event("End", &crate::battle::Effect::ability(illusion_id), Some(target), source_pos, None, None);
+        battle.single_event("End", &crate::battle::Effect::ability(illusion_id), None, Some(target), source_pos, None, None);
     }
 
     EventResult::Continue

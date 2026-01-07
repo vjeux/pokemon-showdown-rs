@@ -436,7 +436,7 @@ pub mod condition {
         }
 
         // this.singleEvent('AfterSubDamage', move, null, target, source, move, damage);
-        battle.single_event("AfterSubDamage", &crate::battle::Effect::move_(move_id.clone()), Some(target), Some(source), Some(&Effect::move_(move_id.clone())), Some(EventResult::Number(actual_damage)));
+        battle.single_event("AfterSubDamage", &crate::battle::Effect::move_(move_id.clone()), None, Some(target), Some(source), Some(&Effect::move_(move_id.clone())), Some(EventResult::Number(actual_damage)));
 
         // this.runEvent('AfterSubDamage', target, source, move, damage);
         battle.run_event("AfterSubDamage", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&Effect::move_(move_id.clone())), EventResult::Number(actual_damage), false, false);

@@ -116,6 +116,7 @@ pub fn on_hit(
     let eat_result = battle.single_event(
         "Eat",
         &crate::battle::Effect::item(item_id.clone()),
+        None,
         Some(source),
         Some(source),
         Some(&Effect::move_(ID::from("pluck"))),

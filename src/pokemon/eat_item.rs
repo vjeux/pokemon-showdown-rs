@@ -151,7 +151,7 @@ impl Pokemon {
         // JS: this.battle.singleEvent('Eat', item, this.itemState, this, source, sourceEffect);
         // JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
         // ✅ NOW IMPLEMENTED (Session 24 Part 83): singleEvent('Eat') and runEvent('EatItem')
-        battle.single_event("Eat", &crate::battle::Effect::item(item_id.clone()), Some(pokemon_pos), _source_pos, None, None);
+        battle.single_event("Eat", &crate::battle::Effect::item(item_id.clone()), None, Some(pokemon_pos), _source_pos, None, None);
         battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), _source_pos, Some(&crate::battle::Effect::item(item_id.clone())), EventResult::Continue, false, false);
 
         // JS: if (RESTORATIVE_BERRIES.has(item.id)) {

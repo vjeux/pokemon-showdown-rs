@@ -82,7 +82,7 @@ impl Pokemon {
 
         // JS: this.battle.singleEvent('End', status, this.volatiles[status.id], this);
         // ✅ NOW IMPLEMENTED (Session 24 Part 84): singleEvent('End') for removed volatile
-        battle.single_event("End", &crate::battle::Effect::condition(volatile_id.clone()), Some(pokemon_pos), None, None, None);
+        battle.single_event("End", &crate::battle::Effect::condition(volatile_id.clone()), None, Some(pokemon_pos), None, None, None);
 
         // Phase 2: Remove the volatile
         // JS: delete this.volatiles[status.id];

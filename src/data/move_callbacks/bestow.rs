@@ -58,7 +58,7 @@ pub fn on_hit(
 
     // if (!this.singleEvent('TakeItem', myItem, source.itemState, target, source, move, myItem) || !target.setItem(myItem)) {
     let take_item_event =
-        battle.single_event("TakeItem", &crate::battle::Effect::item(my_item.clone()), Some(target), Some(pokemon_pos), None, None);
+        battle.single_event("TakeItem", &crate::battle::Effect::item(my_item.clone()), None, Some(target), Some(pokemon_pos), None, None);
 
     let set_item_success = Pokemon::set_item(battle, target, my_item.clone(), None, None);
 

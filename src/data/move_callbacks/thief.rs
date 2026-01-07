@@ -75,6 +75,7 @@ pub fn on_after_hit(
     let take_item_result = battle.single_event(
         "TakeItem",
         &crate::battle::Effect::item(your_item_id.clone()),
+        None,
         Some(source_pos),
         Some(target_pos),
         Some(&Effect::item(your_item_id.clone())),

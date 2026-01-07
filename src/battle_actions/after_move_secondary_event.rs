@@ -40,6 +40,7 @@ pub fn after_move_secondary_event(
             battle.single_event(
                 "AfterMoveSecondary",
                 &crate::battle::Effect::move_(active_move.id.clone()),
+                None,
                 Some(first_target),
                 Some(attacker_pos),
                 None,

@@ -95,6 +95,7 @@ fn self_check_try_immunity(
     let try_immunity_result = battle.single_event(
         "TryImmunity",
         &crate::battle::Effect::move_(active_move.id.clone()),
+        None,
         Some(target_pos),
         Some(attacker_pos),
         None,

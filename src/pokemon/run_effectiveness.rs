@@ -79,6 +79,7 @@ impl Pokemon {
                 let single_event_result = battle.single_event(
                     "Effectiveness",
                     &crate::battle::Effect::move_(move_id.clone()),
+                    None,
                     Some(pokemon_pos),
                     None,
                     None,

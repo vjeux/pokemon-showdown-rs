@@ -54,6 +54,7 @@ pub fn on_ally_after_use_item(battle: &mut Battle, _item_id: Option<&str>, pokem
     let take_item_result = battle.single_event(
         "TakeItem",
         &crate::battle::Effect::item(my_item.clone()),
+        None,
         Some(pokemon_pos),
         Some(source_pos),
         None,

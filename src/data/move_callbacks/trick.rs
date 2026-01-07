@@ -122,6 +122,7 @@ pub fn on_hit(
         let result = battle.single_event(
             "TakeItem",
             &crate::battle::Effect::item(my_item_id.clone()),
+            None,
             Some(source),
             Some(target_pos),
             None,
@@ -136,6 +137,7 @@ pub fn on_hit(
         let result = battle.single_event(
             "TakeItem",
             &crate::battle::Effect::item(your_item_id.clone()),
+            None,
             Some(target_pos),
             Some(source),
             None,

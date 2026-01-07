@@ -166,6 +166,7 @@ pub fn try_spread_move_hit(
     let try_result = battle.single_event(
         "Try",
         &crate::battle::Effect::move_(move_id.clone()),
+        None,
         Some(pokemon_pos),
         target_0,
         Some(&Effect::move_(move_id.clone())),
@@ -181,6 +182,7 @@ pub fn try_spread_move_hit(
         let result = battle.single_event(
             "PrepareHit",
             &crate::battle::Effect::move_(move_id.clone()),
+            None,
             target_0,
             Some(pokemon_pos),
             Some(&Effect::move_(move_id.clone())),

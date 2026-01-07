@@ -159,6 +159,7 @@ impl Pokemon {
                 let restart_result = battle.single_event(
                     "Restart",
                     &crate::battle::Effect::condition(volatile_id.clone()),
+                    None,
                     Some(target_pos),
                     source_pos,
                     source_effect,
@@ -304,6 +305,7 @@ impl Pokemon {
         let start_result = battle.single_event(
             "Start",
             &crate::battle::Effect::condition(volatile_id.clone()),
+            None,
             Some(target_pos),
             source_pos,
             source_effect,

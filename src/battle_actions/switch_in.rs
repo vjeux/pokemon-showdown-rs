@@ -219,9 +219,9 @@ pub fn switch_in(
 
             // Trigger End events for ability and item
             let ability_id = battle.sides[side_index].pokemon[old_idx].ability.clone();
-            battle.single_event("End", &crate::battle::Effect::ability(ability_id), Some((side_index, old_idx)), None, None, None);
+            battle.single_event("End", &crate::battle::Effect::ability(ability_id), None, Some((side_index, old_idx)), None, None, None);
             let item_id = battle.sides[side_index].pokemon[old_idx].item.clone();
-            battle.single_event("End", &crate::battle::Effect::item(item_id), Some((side_index, old_idx)), None, None, None);
+            battle.single_event("End", &crate::battle::Effect::item(item_id), None, Some((side_index, old_idx)), None, None, None);
 
             // Cancel any queued action
             battle.queue.cancel_action(side_index, old_idx);

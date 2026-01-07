@@ -251,6 +251,7 @@ impl Battle {
         let field_start_result = self.single_event(
             "FieldStart",
             &crate::battle::Effect::weather(weather_id.clone()),
+            None,
             None, // field as target - we don't pass this in current arch
             source_pos,
             None,

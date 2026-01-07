@@ -23,7 +23,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 
     // Only call singleEvent if pokemon has an item
     if !item_id.is_empty() {
-        battle.single_event("End", &crate::battle::Effect::item(ID::from(item_id)), Some(pokemon_pos), None, None, None);
+        battle.single_event("End", &crate::battle::Effect::item(ID::from(item_id)), None, Some(pokemon_pos), None, None, None);
     }
 
     EventResult::Continue

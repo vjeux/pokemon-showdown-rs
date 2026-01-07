@@ -196,7 +196,7 @@ impl Pokemon {
         // JS: }
         // ✅ NOW IMPLEMENTED (Session 24 Part 77): singleEvent('Start') with rollback logic
         if !status.as_str().is_empty() {
-            let start_result = battle.single_event("Start", &crate::battle::Effect::status(status.clone()), Some(pokemon_pos), source_pos, source_effect, None);
+            let start_result = battle.single_event("Start", &crate::battle::Effect::status(status.clone()), None, Some(pokemon_pos), source_pos, source_effect, None);
             // Check if event failed (returned false or null)
             let event_failed = matches!(start_result, EventResult::Boolean(false) | EventResult::Null);
             if event_failed {

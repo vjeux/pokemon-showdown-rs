@@ -29,6 +29,7 @@ impl Battle {
         self.single_event(
             "FieldEnd",
             &crate::battle::Effect::weather(prev_weather.clone()),
+            None,
             None,  // field as target
             None,
             None,

@@ -271,7 +271,7 @@ pub fn run_move(
 
     // AfterMove events
     // this.battle.singleEvent('AfterMove', move, null, pokemon, target, move);
-    battle.single_event("AfterMove", &crate::battle::Effect::move_(move_id.clone()), Some(pokemon_pos), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), None);
+    battle.single_event("AfterMove", &crate::battle::Effect::move_(move_id.clone()), None, Some(pokemon_pos), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), None);
 
     // this.battle.runEvent('AfterMove', pokemon, target, move);
     battle.run_event("AfterMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
