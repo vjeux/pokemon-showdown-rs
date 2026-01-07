@@ -988,9 +988,6 @@ pub fn dispatch_on_effectiveness(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onEmergencyExit(target)
 
 /// Dispatch onEmergencyExit callbacks
 pub fn dispatch_on_emergency_exit(
