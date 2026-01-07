@@ -177,10 +177,6 @@ pub fn dispatch_on_source_before_move(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onBeforeSwitchOut(pokemon)
-
 /// Dispatch onBeforeSwitchOut callbacks
 pub fn dispatch_on_before_switch_out(
     battle: &mut Battle,
