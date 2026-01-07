@@ -704,7 +704,7 @@ impl Battle {
                     String::new()
                 };
                 // For PrepareHit, pokemon_pos is the source (Pokemon using the move)
-                ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), Some(pokemon_pos), None, &move_id_string)
+                ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), Some(pokemon_pos), event_target_pos, &move_id_string)
             }
             "Residual" => {
                 ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos)

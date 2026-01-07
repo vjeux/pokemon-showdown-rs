@@ -1376,18 +1376,6 @@ pub fn dispatch_on_modify_weight(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onPrepareHit()
-//   onPrepareHit(pokemon)
-//   onPrepareHit(pokemon, source)
-//   onPrepareHit(source, target)
-//   onPrepareHit(source, target, move)
-//   onPrepareHit(t, s, m)
-//   onPrepareHit(target, pokemon, move)
-//   onPrepareHit(target, source)
-//   onPrepareHit(target, source, move)
-
 /// Dispatch onPrepareHit callbacks
 pub fn dispatch_on_prepare_hit(
     battle: &mut Battle,
