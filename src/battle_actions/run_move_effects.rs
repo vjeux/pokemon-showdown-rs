@@ -553,6 +553,7 @@ pub fn run_move_effects(
                     // Call onHit callbacks for each of the target's volatile conditions
                     // In JavaScript, this happens automatically through runEvent's effect iteration
                     // In Rust, we need to explicitly dispatch to volatile condition callbacks
+                    // AND set up current_effect_state to point to each volatile's EffectState
                     let target_volatile_ids: Vec<String> = {
                         match battle.pokemon_at(target_pos.0, target_pos.1) {
                             Some(target_pokemon) => {
@@ -565,6 +566,23 @@ pub fn run_move_effects(
                     };
 
                     for volatile_id in target_volatile_ids {
+                        // Set up current_effect_state with a clone of this volatile's EffectState
+                        // JavaScript does this automatically in runEvent before calling each callback
+                        {
+                            let target_pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+                                Some(p) => p,
+                                None => continue,
+                            };
+
+                            let volatile_id_obj = crate::dex_data::ID::from(volatile_id.as_str());
+                            if let Some(volatile_state) = target_pokemon.volatiles.get(&volatile_id_obj) {
+                                // Clone the state and set as current_effect_state
+                                battle.current_effect_state = Some(volatile_state.clone());
+                            } else {
+                                continue;
+                            }
+                        }
+
                         // Call the volatile's onHit callback if it has one
                         // Pass target_pos as the Pokemon with the volatile, and source_pos as the attacker
                         crate::data::move_callbacks::dispatch_condition_on_hit(
@@ -573,6 +591,17 @@ pub fn run_move_effects(
                             target_pos,  // Pokemon with the volatile
                             source_pos,  // Pokemon using the move
                         );
+
+                        // Write the modified state back to the volatile
+                        if let Some(modified_state) = battle.current_effect_state.take() {
+                            let target_pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+                                Some(p) => p,
+                                None => continue,
+                            };
+
+                            let volatile_id_obj = crate::dex_data::ID::from(volatile_id.as_str());
+                            target_pokemon.volatiles.insert(volatile_id_obj, modified_state);
+                        }
                     }
                 }
             }
