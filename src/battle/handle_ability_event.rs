@@ -314,8 +314,9 @@ impl Battle {
             "AnyModifyDef" => ability_callbacks::dispatch_on_any_modify_def(
                 self,
                 ability_id.as_str(),
-                event_source_pos,
+                relay_var_int,
                 Some(pokemon_pos),
+                event_source_pos,
                 move_id,
             ),
             "AnyModifySpA" => ability_callbacks::dispatch_on_any_modify_sp_a(

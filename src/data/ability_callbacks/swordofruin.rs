@@ -49,7 +49,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult
 ///     this.debug('Sword of Ruin Def drop');
 ///     return this.chainModify(0.75);
 /// }
-pub fn on_any_modify_def(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_any_modify_def(battle: &mut Battle, _def: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     // const abilityHolder = this.effectState.target;
     let ability_holder = match battle.effect_state.target {
         Some(pos) => pos,

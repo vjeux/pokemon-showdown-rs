@@ -643,11 +643,9 @@ pub fn dispatch_on_any_modify_atk(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyModifyBoost(boosts, pokemon)
-
 /// Dispatch onAnyModifyBoost callbacks
+/// Note: JavaScript signature is onAnyModifyBoost(boosts, pokemon)
+/// In Rust, boosts are accessed through battle.current_event.relay_var
 pub fn dispatch_on_any_modify_boost(
     battle: &mut Battle,
     ability_id: &str,
@@ -658,10 +656,6 @@ pub fn dispatch_on_any_modify_boost(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyModifyDamage(damage, source, target, move)
-
 /// Dispatch onAnyModifyDamage callbacks
 pub fn dispatch_on_any_modify_damage(
     battle: &mut Battle,
@@ -673,19 +667,14 @@ pub fn dispatch_on_any_modify_damage(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onAnyModifyDef(def, target)
-//   onAnyModifyDef(def, target, source, move)
-
 /// Dispatch onAnyModifyDef callbacks
 pub fn dispatch_on_any_modify_def(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
     match ability_id {
-        "swordofruin" => swordofruin::on_any_modify_def(battle, target_pos, source_pos, move_id),
+        "swordofruin" => swordofruin::on_any_modify_def(battle, def, target_pos, source_pos, move_id),
         _ => EventResult::Continue,
     }
 }
@@ -3302,9 +3291,9 @@ pub fn dispatch_on_any_modify_damage_sub_order(
 pub fn dispatch_on_any_modify_def_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_def(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_def(battle, ability_id, def, target_pos, source_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3313,9 +3302,9 @@ pub fn dispatch_on_any_modify_def_priority(
 pub fn dispatch_on_any_modify_def_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_def(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_def(battle, ability_id, def, target_pos, source_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -3324,9 +3313,9 @@ pub fn dispatch_on_any_modify_def_order(
 pub fn dispatch_on_any_modify_def_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
 ) -> EventResult {
-    dispatch_on_any_modify_def(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_def(battle, ability_id, def, target_pos, source_pos, move_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
