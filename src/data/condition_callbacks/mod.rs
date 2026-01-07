@@ -693,22 +693,19 @@ pub fn dispatch_on_try_move(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onType(types, pokemon)
-
 /// Dispatch onType callbacks
 pub fn dispatch_on_type(
     battle: &mut Battle,
     condition_id: &str,
     pokemon_pos: (usize, usize),
+    types: Option<&[String]>,
 ) -> EventResult {
     match condition_id {
-        "arceus" => arceus::on_type(battle, pokemon_pos),
-        "silvally" => silvally::on_type(battle, pokemon_pos),
+        "arceus" => arceus::on_type(battle, pokemon_pos, types),
+        "silvally" => silvally::on_type(battle, pokemon_pos, types),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_type(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_type(battle, condition_id, pokemon_pos, types)
         }
     }
 }

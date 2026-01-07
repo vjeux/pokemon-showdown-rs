@@ -351,7 +351,13 @@ impl Battle {
                     move_id_string.as_deref(),
                 )
             }
-            "Type" => condition_callbacks::dispatch_on_type(self, condition_id, pokemon_pos),
+            "Type" => {
+                // Extract types from pokemon
+                let types_vec = self.pokemon_at(pokemon_pos.0, pokemon_pos.1)
+                    .map(|p| p.types.clone());
+                let types_slice = types_vec.as_ref().map(|v| &v[..]);
+                condition_callbacks::dispatch_on_type(self, condition_id, pokemon_pos, types_slice)
+            }
             "Weather" => {
                 condition_callbacks::dispatch_on_weather(self, condition_id, pokemon_pos)
             }

@@ -26,6 +26,7 @@ use crate::event::EventResult;
 pub fn on_type(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
+    _types: Option<&[String]>,
 ) -> EventResult {
     // if (pokemon.transformed || pokemon.ability !== 'rkssystem' && this.gen >= 8) return types;
     let (transformed, has_rkssystem) = {

@@ -94,7 +94,7 @@ pub mod condition {
     ///     this.effectState.typeWas = types;
     ///     return types.filter(type => type !== 'Flying');
     /// }
-    pub fn on_type(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_type(battle: &mut Battle, target_pos: Option<(usize, usize)>, _types: Option<&[String]>) -> EventResult {
         let target_pos = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,

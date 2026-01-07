@@ -2665,9 +2665,10 @@ pub fn dispatch_condition_on_type(
     battle: &mut Battle,
     move_id: &str,
     source_pos: (usize, usize),
+    types: Option<&[String]>,
 ) -> EventResult {
     match move_id {
-        "roost" => roost::condition::on_type(battle, Some(source_pos)),
+        "roost" => roost::condition::on_type(battle, Some(source_pos), types),
         _ => EventResult::Continue,
     }
 }
