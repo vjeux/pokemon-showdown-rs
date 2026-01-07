@@ -4,7 +4,7 @@
 
 use crate::*;
 use crate::event::EventResult;
-use crate::battle::SwitchResult;
+use crate::battle::{SwitchResult, Effect};
 use crate::event_system::EffectState;
 
 /// Switch a Pokemon in
@@ -115,7 +115,7 @@ pub fn switch_in(
     side_index: usize,
     pos: usize,
     pokemon_index: usize,
-    source_effect: Option<&ID>,
+    source_effect: Option<&Effect>,
     is_drag: bool,
 ) -> SwitchResult {
     // Check if pokemon exists and is not already active

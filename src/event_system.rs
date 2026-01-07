@@ -143,8 +143,7 @@ pub struct EffectState {
     pub target_side: Option<usize>,
     /// Source effect that caused this effect
     /// JavaScript: sourceEffect?: Effect
-    /// TODO: Rust uses ID instead of full Effect object
-    pub source_effect: Option<ID>,
+    pub source_effect: Option<crate::battle::Effect>,
     /// Source slot (for slot conditions)
     /// JavaScript: sourceSlot?: number
     pub source_slot: Option<usize>,

@@ -285,7 +285,7 @@ impl Pokemon {
         }
         // ✅ NOW IMPLEMENTED: sourceEffect assignment (Session 24 Part 27)
         if let Some(src_effect) = source_effect {
-            state.source_effect = Some(src_effect.id.clone());
+            state.source_effect = Some(src_effect.clone());
         }
 
         // JavaScript: this.volatiles[status.id] = this.battle.initEffectState(this.volatiles[status.id]);

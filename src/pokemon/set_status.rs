@@ -184,7 +184,7 @@ impl Pokemon {
             pokemon_mut.status_state.source_slot = Some(src_pos.1);
         }
         if let Some(src_effect) = source_effect {
-            pokemon_mut.status_state.source_effect = Some(src_effect.id.clone());
+            pokemon_mut.status_state.source_effect = Some(src_effect.clone());
         }
         // Note: Missing duration and durationCallback logic (needs Battle/dex access)
 

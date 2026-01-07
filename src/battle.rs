@@ -355,6 +355,12 @@ impl Effect {
     }
 }
 
+impl std::fmt::Display for Effect {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.id)
+    }
+}
+
 /// Type alias for event callback functions
 pub type EventCallback = Box<dyn Fn(&EventInfo) -> Option<i32> + Send + Sync>;
 

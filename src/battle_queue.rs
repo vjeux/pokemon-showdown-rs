@@ -10,6 +10,7 @@
 //! - we go through the action queue
 //! - repeat
 
+use crate::battle::Effect;
 use crate::dex_data::ID;
 use serde::{Deserialize, Serialize};
 
@@ -98,8 +99,7 @@ pub struct MoveAction {
     pub max_move: Option<String>,
     /// Source effect that triggered this action
     /// JavaScript: sourceEffect?: Effect | null
-    /// TODO: Change to full Effect type when available (currently uses ID)
-    pub source_effect: Option<ID>,
+    pub source_effect: Option<Effect>,
     /// Tera type if terastallizing (Gen 9+)
     /// JavaScript: terastallize?: string
     pub terastallize: Option<String>,
@@ -163,8 +163,7 @@ pub struct SwitchAction {
     pub target_index: usize,
     /// Effect that caused the switch
     /// JavaScript: sourceEffect: Effect | null
-    /// TODO: Change to full Effect type when available (currently uses ID)
-    pub source_effect: Option<ID>,
+    pub source_effect: Option<Effect>,
 }
 
 /// Switch action choice type

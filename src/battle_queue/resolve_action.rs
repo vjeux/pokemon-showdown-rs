@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle::Effect;
 use crate::battle_queue::*;
 
 impl BattleQueue {
@@ -297,7 +298,7 @@ impl BattleQueue {
                     if let Some(flag_str) = switch_flag {
                         if !flag_str.is_empty() {
                             if let Some(Action::Switch(switch_action_mut)) = actions.last_mut() {
-                                switch_action_mut.source_effect = Some(ID::from(flag_str.as_str()));
+                                switch_action_mut.source_effect = Some(Effect::move_(flag_str.as_str()));
                             }
                         }
                     }
