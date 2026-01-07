@@ -67,11 +67,30 @@ pub mod self_callbacks {
     /// }
     /// ```
     pub fn on_hit(
-        _battle: &mut Battle,
+        battle: &mut Battle,
         _target_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // TODO: Implement 1-to-1 from JS
+        use crate::dex_data::ID;
+
+        let source = match source_pos {
+            Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // for (const side of source.side.foeSidesWithConditions()) {
+        //     side.addSideCondition("stealthrock");
+        // }
+
+        let source_side_index = source.0;
+
+        // Add stealth rock to all foe sides (sides that are not the source's side)
+        for (side_idx, side) in battle.sides.iter_mut().enumerate() {
+            if side_idx != source_side_index {
+                side.add_side_condition(ID::from("stealthrock"), None);
+            }
+        }
+
         EventResult::Continue
     }
 }
