@@ -63,7 +63,19 @@ impl Dex {
             heal: move_data.heal,
             drain: None,
             force_switch: false,
-            self_switch: move_data.self_switch.as_ref().and_then(|v| v.as_str().map(|s| s.to_string())),
+            self_switch: move_data.self_switch.as_ref().and_then(|v| {
+                // Handle both boolean and string values
+                // JavaScript: selfSwitch?: boolean | string
+                // - true means normal switch
+                // - 'copyvolatile' or 'shedtail' means special switch behavior
+                if let Some(s) = v.as_str() {
+                    Some(s.to_string())
+                } else if v.as_bool() == Some(true) {
+                    Some("true".to_string())
+                } else {
+                    None
+                }
+            }),
             self_boost: None,
             self_destruct: move_data.selfdestruct.clone(),
             breaks_protect: false,

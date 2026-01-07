@@ -427,14 +427,19 @@ impl Battle {
         let mut staleness_by_side: Vec<Option<String>> = Vec::new();
 
         // Reset Pokemon turn-specific fields
-        for side in &mut self.sides {
+        for (side_idx, side) in self.sides.iter_mut().enumerate() {
             let mut side_trapped = true;
             let mut side_staleness: Option<String> = None;
 
-            for pokemon in &mut side.pokemon {
+            for (poke_idx, pokemon) in side.pokemon.iter_mut().enumerate() {
+                eprintln!("[END_TURN] Checking Pokemon {} (array_idx {}, side {}), is_active={}, fainted={}",
+                    pokemon.set.species, poke_idx, side_idx, pokemon.is_active, pokemon.fainted);
+
                 if !pokemon.is_active {
                     continue;
                 }
+
+                eprintln!("[END_TURN] Processing active Pokemon {} for DisableMove", pokemon.set.species);
 
                 // JS: pokemon.moveThisTurn = '';
                 pokemon.move_this_turn = None;
@@ -474,7 +479,9 @@ impl Battle {
                 }
 
                 // Collect pokemon position for DisableMove event
-                let pokemon_pos = (pokemon.side_index, pokemon.position);
+                // IMPORTANT: Use (side_idx, poke_idx) not (pokemon.side_index, pokemon.position)
+                // because pokemon.position can change during switches!
+                let pokemon_pos = (side_idx, poke_idx);
                 pokemon_positions.push(pokemon_pos);
 
                 // Collect move slot data for later single_event calls
@@ -496,6 +503,7 @@ impl Battle {
                 // JS:     }
                 // JS: }
                 // Collect for processing after the loop (to avoid borrow checker issues)
+                // Use pokemon_pos which is already (side_idx, poke_idx)
                 if !pokemon.attacked_by.is_empty() {
                     attacked_by_updates.push(pokemon_pos);
                 }
