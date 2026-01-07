@@ -251,12 +251,6 @@ pub fn dispatch_on_drag_out(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onEffectiveness()
-//   onEffectiveness(typeMod, target, type)
-//   onEffectiveness(typeMod, target, type, move)
-
 /// Dispatch onEffectiveness callbacks
 pub fn dispatch_on_effectiveness(
     battle: &mut Battle,
