@@ -61,7 +61,10 @@ pub fn duration_callback(
 /// ```
 pub fn on_weather_modify_damage(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    _damage: i32,
+    _attacker_pos: Option<(usize, usize)>,
+    _defender_pos: Option<(usize, usize)>,
+    _move_id: Option<&str>,
 ) -> EventResult {
     // Get defender position from battle context
     let defender_pos = match battle.active_target {

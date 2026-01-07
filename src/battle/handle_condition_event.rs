@@ -372,11 +372,24 @@ impl Battle {
                     effect_id_owned.as_deref(),
                 )
             }
-            "WeatherModifyDamage" => condition_callbacks::dispatch_on_weather_modify_damage(
-                self,
-                condition_id,
-                pokemon_pos,
-            ),
+            "WeatherModifyDamage" => {
+                // Extract damage from relay_var, attacker/defender from current_event, and move_id from active_move
+                let damage = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n as i32),
+                    _ => None,
+                }).unwrap_or(0);
+                let attacker_pos = self.current_event.as_ref().and_then(|e| e.source);
+                let defender_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let move_id_string = self.active_move.as_ref().map(|m| m.id.as_str().to_string());
+                condition_callbacks::dispatch_on_weather_modify_damage(
+                    self,
+                    condition_id,
+                    damage,
+                    attacker_pos,
+                    defender_pos,
+                    move_id_string.as_deref(),
+                )
+            }
             "AnyInvulnerability" | "Invulnerability" => {
                 // For AnyInvulnerability, we need the ORIGINAL target/source from the run_event call,
                 // NOT the Pokemon that has the volatile. The volatile may be on a different Pokemon

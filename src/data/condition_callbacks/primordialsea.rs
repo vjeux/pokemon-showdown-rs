@@ -81,7 +81,10 @@ pub fn on_try_move(
 /// ```
 pub fn on_weather_modify_damage(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
+    _damage: i32,
+    _attacker_pos: Option<(usize, usize)>,
+    _defender_pos: Option<(usize, usize)>,
+    _move_id: Option<&str>,
 ) -> EventResult {
     // Get the active move
     let move_type = match &battle.active_move {

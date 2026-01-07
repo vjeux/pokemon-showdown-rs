@@ -723,21 +723,20 @@ pub fn dispatch_on_weather(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onWeatherModifyDamage(damage, attacker, defender, move)
-
 /// Dispatch onWeatherModifyDamage callbacks
 pub fn dispatch_on_weather_modify_damage(
     battle: &mut Battle,
     condition_id: &str,
-    pokemon_pos: (usize, usize),
+    damage: i32,
+    attacker_pos: Option<(usize, usize)>,
+    defender_pos: Option<(usize, usize)>,
+    move_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
-        "desolateland" => desolateland::on_weather_modify_damage(battle, pokemon_pos),
-        "primordialsea" => primordialsea::on_weather_modify_damage(battle, pokemon_pos),
-        "raindance" => raindance::on_weather_modify_damage(battle, pokemon_pos),
-        "sunnyday" => sunnyday::on_weather_modify_damage(battle, pokemon_pos),
+        "desolateland" => desolateland::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, move_id),
+        "primordialsea" => primordialsea::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, move_id),
+        "raindance" => raindance::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, move_id),
+        "sunnyday" => sunnyday::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, move_id),
         _ => EventResult::Continue,
     }
 }

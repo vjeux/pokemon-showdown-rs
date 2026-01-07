@@ -63,7 +63,10 @@ pub fn duration_callback(
 /// ```
 pub fn on_weather_modify_damage(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _damage: i32,
+    _attacker_pos: Option<(usize, usize)>,
+    _defender_pos: Option<(usize, usize)>,
+    _move_id: Option<&str>,
 ) -> EventResult {
     // Get the active move
     let (move_id, move_type) = match &battle.active_move {
@@ -72,8 +75,8 @@ pub fn on_weather_modify_damage(
     };
 
     // Get attacker and defender positions
-    let attacker_pos = battle.active_pokemon.unwrap_or(pokemon_pos);
-    let defender_pos = battle.active_target.unwrap_or(pokemon_pos);
+    let attacker_pos = _attacker_pos.or(battle.active_pokemon).unwrap_or((0, 0));
+    let defender_pos = _defender_pos.or(battle.active_target).unwrap_or((0, 0));
 
     // if (move.id === 'hydrosteam' && !attacker.hasItem('utilityumbrella'))
     if move_id.as_str() == "hydrosteam" {
