@@ -101,15 +101,29 @@ pub fn modify_damage(
     //   this.battle.debug(`Spread modifier: ${spreadModifier}`);
     //   baseDamage = this.battle.modify(baseDamage, spreadModifier);
     // }
+    // IMPORTANT: Spread moves only get damage reduction in multi-target battles (Doubles, Triples, etc.)
+    // In Singles, spreadHit may be true (for moves that CAN hit multiple targets), but no modifier is applied.
+    // The spread modifier is only for when there are actually multiple Pokemon on each side.
     if let Some(ref active_move) = battle.active_move {
         if active_move.spread_hit {
-            let spread_modifier = if battle.game_type == crate::dex_data::GameType::FreeForAll {
-                0.5
-            } else {
-                0.75
-            };
-            eprintln!("[MODIFY_DAMAGE] Spread modifier: {}", spread_modifier);
-            base_damage = battle.modify_f(base_damage, spread_modifier);
+            // Only apply spread modifier in Doubles, Triples, FreeForAll, etc. NOT in Singles.
+            let should_apply_spread = !matches!(battle.game_type, crate::dex_data::GameType::Singles);
+
+            if should_apply_spread {
+                let spread_modifier = if battle.game_type == crate::dex_data::GameType::FreeForAll {
+                    0.5
+                } else {
+                    0.75
+                };
+                if battle.turn >= 64 && battle.turn <= 66 {
+                    eprintln!("[MODIFY_DAMAGE] Spread modifier: {}, game_type={:?}, spreadHit={}",
+                        spread_modifier, battle.game_type, active_move.spread_hit);
+                }
+                base_damage = battle.modify_f(base_damage, spread_modifier);
+            } else if battle.turn >= 64 && battle.turn <= 66 {
+                eprintln!("[MODIFY_DAMAGE] NOT applying spread modifier (Singles format), game_type={:?}, spreadHit={}",
+                    battle.game_type, active_move.spread_hit);
+            }
         }
         // else if (move.multihitType === "parentalbond" && move.hit > 1) {
         //   const bondModifier = this.battle.gen > 6 ? 0.25 : 0.5;
@@ -124,18 +138,31 @@ pub fn modify_damage(
     }
 
     // baseDamage = this.battle.runEvent("WeatherModifyDamage", pokemon, target, move, baseDamage);
-    eprintln!("[MODIFY_DAMAGE] Before WeatherModifyDamage event: base_damage={}", base_damage);
-    if let EventResult::Number(modified) = battle.run_event(
-                "WeatherModifyDamage",
-                Some(crate::event::EventTarget::Pokemon(source_pos)),
+    eprintln!("[MODIFY_DAMAGE] turn={}, Before WeatherModifyDamage event: base_damage={}", battle.turn, base_damage);
+    let weather_result = battle.run_event(
+        "WeatherModifyDamage",
+        Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
         Some(&move_data.id),
         EventResult::Number(base_damage),
         false,
         false
-    ) {
-        base_damage = modified;
-        eprintln!("[MODIFY_DAMAGE] After WeatherModifyDamage event: base_damage={}", base_damage);
+    );
+
+    match weather_result {
+        EventResult::Number(modified) => {
+            base_damage = modified;
+            eprintln!("[MODIFY_DAMAGE] turn={}, After WeatherModifyDamage event (Number): base_damage={}", battle.turn, base_damage);
+        }
+        EventResult::Float(multiplier) => {
+            // JavaScript: return this.chainModify(multiplier)
+            // chainModify returns a modified value, not a multiplier
+            base_damage = battle.modify_f(base_damage, multiplier);
+            eprintln!("[MODIFY_DAMAGE] turn={}, After WeatherModifyDamage event (Float {}x): base_damage={}", battle.turn, multiplier, base_damage);
+        }
+        _ => {
+            eprintln!("[MODIFY_DAMAGE] turn={}, WeatherModifyDamage returned: {:?}", battle.turn, weather_result);
+        }
     }
 
     // if (isCrit) {
