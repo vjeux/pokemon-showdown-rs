@@ -2018,9 +2018,6 @@ pub fn dispatch_on_after_terastallization_sub_order(
 ) -> EventResult {
     dispatch_on_after_terastallization(battle, ability_id, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterUseItemPriority callbacks (alias for onAfterUseItem)
 pub fn dispatch_on_after_use_item_priority(
     battle: &mut Battle,
@@ -2029,9 +2026,6 @@ pub fn dispatch_on_after_use_item_priority(
 ) -> EventResult {
     dispatch_on_after_use_item(battle, ability_id, item_id, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterUseItemOrder callbacks (alias for onAfterUseItem)
 pub fn dispatch_on_after_use_item_order(
     battle: &mut Battle,
@@ -2040,9 +2034,6 @@ pub fn dispatch_on_after_use_item_order(
 ) -> EventResult {
     dispatch_on_after_use_item(battle, ability_id, item_id, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAfterUseItemSubOrder callbacks (alias for onAfterUseItem)
 pub fn dispatch_on_after_use_item_sub_order(
     battle: &mut Battle,
@@ -2051,9 +2042,6 @@ pub fn dispatch_on_after_use_item_sub_order(
 ) -> EventResult {
     dispatch_on_after_use_item(battle, ability_id, item_id, pokemon_pos)
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures: NONE FOUND
-
 /// Dispatch onAllyAfterUseItemPriority callbacks (alias for onAllyAfterUseItem)
 pub fn dispatch_on_ally_after_use_item_priority(
     battle: &mut Battle,
