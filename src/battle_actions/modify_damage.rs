@@ -141,8 +141,8 @@ pub fn modify_damage(
     eprintln!("[MODIFY_DAMAGE] turn={}, Before WeatherModifyDamage event: base_damage={}", battle.turn, base_damage);
     let weather_result = battle.run_event(
         "WeatherModifyDamage",
-        Some(crate::event::EventTarget::Pokemon(source_pos)),
-        Some(target_pos),
+        Some(crate::event::EventTarget::Pokemon(target_pos)),  // target = defender
+        Some(source_pos),                                       // source = attacker
         Some(&move_data.id),
         EventResult::Number(base_damage),
         false,
@@ -346,12 +346,12 @@ pub fn modify_damage(
     eprintln!("[MODIFY_DAMAGE] Before ModifyDamage event: base_damage={}", base_damage);
     if let EventResult::Number(modified) = battle.run_event(
                 "ModifyDamage",
-                Some(crate::event::EventTarget::Pokemon(source_pos)),
-        Some(target_pos),
-        Some(&move_data.id),
-        EventResult::Number(base_damage),
-        false,
-        false
+                Some(crate::event::EventTarget::Pokemon(target_pos)),  // target = defender
+                Some(source_pos),                                       // source = attacker
+                Some(&move_data.id),
+                EventResult::Number(base_damage),
+                false,
+                false
     ) {
         base_damage = modified;
         eprintln!("[MODIFY_DAMAGE] After ModifyDamage event: base_damage={}", base_damage);

@@ -452,6 +452,11 @@ impl Battle {
         self.event = Some(event_info.clone());
         self.current_event = Some(event_info);
 
+        if event_id == "ModifyDamage" {
+            eprintln!("[RUN_EVENT] ModifyDamage - Created event with modifier={}",
+                self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
+        }
+
         // JavaScript: this.eventDepth++;
         self.event_depth += 1;
 
@@ -630,6 +635,11 @@ impl Battle {
             }
         }
 
+        if event_id == "ModifyDamage" {
+            eprintln!("[RUN_EVENT] ModifyDamage - After handler loop, event.modifier={}",
+                self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
+        }
+
         // JavaScript: this.eventDepth--;
         self.event_depth -= 1;
 
@@ -646,11 +656,11 @@ impl Battle {
             if num >= 0 {
                 if let Some(ref event) = self.event {
                     if event_id == "ModifyDamage" {
-                        eprintln!("[RUN_EVENT] ModifyDamage - Before modify: num={}, modifier={}", num, event.modifier);
+                        eprintln!("[RUN_EVENT] ModifyDamage - Before modify: num={}, modifier={}, event_depth={}", num, event.modifier, self.event_depth);
                     }
                     let modified = self.modify_internal(num, event.modifier);
                     if event_id == "ModifyDamage" {
-                        eprintln!("[RUN_EVENT] ModifyDamage - After modify: modified={}", modified);
+                        eprintln!("[RUN_EVENT] ModifyDamage - After modify: modified={}, event_depth={}", modified, self.event_depth);
                     }
                     relay_var = EventResult::Number(modified);
                 }

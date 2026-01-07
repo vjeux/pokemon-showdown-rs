@@ -427,19 +427,38 @@ impl Battle {
                 // For side conditions like Aurora Veil, Light Screen, and Reflect
                 // Extract damage from relay_var, source and target from current_event
                 // Side condition callbacks are in move_callbacks module (move-embedded conditions)
-                eprintln!("[HANDLE_CONDITION_EVENT] AnyModifyDamage case: condition_id={}", condition_id);
+                eprintln!("[HANDLE_CONDITION_EVENT] AnyModifyDamage case: condition_id={}, event.modifier BEFORE callback={}",
+                    condition_id, self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
+
+                // Debug: print current_event details
+                if let Some(ref curr_ev) = self.current_event {
+                    eprintln!("[HANDLE_CONDITION_EVENT] current_event: source={:?}, target={:?}, effect={:?}",
+                        curr_ev.source, curr_ev.target, curr_ev.effect);
+                }
+
                 let target_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
                 let source_pos = self.current_event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
-                eprintln!("[HANDLE_CONDITION_EVENT] Calling dispatch_condition_on_any_modify_damage for {}", condition_id);
+
+                // Extract the active move ID (the move being used, not the condition ID)
+                // This is critical: JavaScript callbacks receive the active move, not the condition
+                let move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
+
+                eprintln!("[HANDLE_CONDITION_EVENT] Calling dispatch_condition_on_any_modify_damage for condition={}, move={}, source={:?}, target={:?}",
+                    condition_id, move_id, source_pos, target_pos);
 
                 // Call dispatcher in move_callbacks (for move-embedded conditions like auroraveil)
+                // Pass the actual move ID, not the condition ID
                 let result = crate::data::move_callbacks::dispatch_condition_on_any_modify_damage(
                     self,
                     condition_id,
                     source_pos,
                     target_pos,
+                    &move_id,
                 );
-                eprintln!("[HANDLE_CONDITION_EVENT] Result: {:?}", result);
+                eprintln!("[HANDLE_CONDITION_EVENT] Result: {:?}, event.modifier AFTER callback={}",
+                    result, self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
                 result
             }
             _ => EventResult::Continue,

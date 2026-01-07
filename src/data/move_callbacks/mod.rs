@@ -1610,11 +1610,12 @@ pub fn dispatch_condition_on_any_invulnerability(
 /// Dispatch condition onAnyModifyDamage callbacks
 pub fn dispatch_condition_on_any_modify_damage(
     battle: &mut Battle,
-    move_id: &str,
+    condition_id: &str,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
+    move_id: &str,
 ) -> EventResult {
-    match move_id {
+    match condition_id {
         "auroraveil" => auroraveil::condition::on_any_modify_damage(
             battle,
             0,
