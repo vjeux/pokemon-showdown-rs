@@ -892,7 +892,7 @@ impl Battle {
             "TerrainChange" => ability_callbacks::dispatch_on_terrain_change(
                 self,
                 ability_id.as_str(),
-                pokemon_pos
+                pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }
             ),
             "TryAddVolatile" => {
                 // Extract status_id from relay_var (e.g., "confusion")

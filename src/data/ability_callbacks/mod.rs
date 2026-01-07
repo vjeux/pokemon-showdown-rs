@@ -1710,20 +1710,15 @@ pub fn dispatch_on_take_item(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onTerrainChange(pokemon)
-//   onTerrainChange(target, source, sourceEffect)
-
 /// Dispatch onTerrainChange callbacks
 pub fn dispatch_on_terrain_change(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
     match ability_id {
-        "mimicry" => mimicry::on_terrain_change(battle, pokemon_pos),
-        "quarkdrive" => quarkdrive::on_terrain_change(battle, pokemon_pos),
+        "mimicry" => mimicry::on_terrain_change(battle, pokemon_pos, source_pos, effect_id),
+        "quarkdrive" => quarkdrive::on_terrain_change(battle, pokemon_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
 }
@@ -5059,9 +5054,9 @@ pub fn dispatch_on_take_item_sub_order(
 pub fn dispatch_on_terrain_change_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_terrain_change(battle, ability_id, pokemon_pos)
+    dispatch_on_terrain_change(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -5070,9 +5065,9 @@ pub fn dispatch_on_terrain_change_priority(
 pub fn dispatch_on_terrain_change_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_terrain_change(battle, ability_id, pokemon_pos)
+    dispatch_on_terrain_change(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
@@ -5081,9 +5076,9 @@ pub fn dispatch_on_terrain_change_order(
 pub fn dispatch_on_terrain_change_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
 ) -> EventResult {
-    dispatch_on_terrain_change(battle, ability_id, pokemon_pos)
+    dispatch_on_terrain_change(battle, ability_id, pokemon_pos, source_pos, effect_id)
 }
 // TODO: verify that the list of calls in JavaScript matches the Rust equivalent
 // JavaScript signatures: NONE FOUND
