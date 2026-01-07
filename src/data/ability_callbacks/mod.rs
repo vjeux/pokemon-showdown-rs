@@ -1284,10 +1284,6 @@ pub fn dispatch_on_modify_priority(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onModifySTAB(stab, source, target, move)
-
 /// Dispatch onModifySTAB callbacks
 pub fn dispatch_on_modify_s_t_a_b(
     battle: &mut Battle,
