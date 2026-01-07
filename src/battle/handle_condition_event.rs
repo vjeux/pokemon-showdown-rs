@@ -178,7 +178,10 @@ impl Battle {
                 condition_callbacks::dispatch_on_field_start(self, condition_id, pokemon_pos)
             }
             "FieldRestart" => {
-                condition_callbacks::dispatch_on_field_restart(self, condition_id, pokemon_pos)
+                // Extract target and source from current_event
+                let target_pos = self.current_event.as_ref().and_then(|e| e.target);
+                let source_pos = self.current_event.as_ref().and_then(|e| e.source);
+                condition_callbacks::dispatch_on_field_restart(self, condition_id, pokemon_pos, target_pos, source_pos)
             }
             "Immunity" => {
                 // Extract immunity type from event type_param

@@ -371,16 +371,13 @@ pub fn dispatch_on_field_start(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFieldRestart()
-//   onFieldRestart(target, source)
-
 /// Dispatch onFieldRestart callbacks
 pub fn dispatch_on_field_restart(
     battle: &mut Battle,
     condition_id: &str,
     _pokemon_pos: (usize, usize),
+    _target_pos: Option<(usize, usize)>,
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     use crate::data::move_callbacks;
 
