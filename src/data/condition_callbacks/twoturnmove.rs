@@ -53,14 +53,15 @@ pub fn on_start(
 
     if let Some(ref move_id_val) = move_id {
         // Store move ID in twoturnmove volatile's effectState.data
-        let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-
-        let twoturnmove_id = ID::from("twoturnmove");
-        if let Some(state) = pokemon_mut.volatiles.get_mut(&twoturnmove_id) {
-            state.data.insert("move".to_string(), serde_json::json!(move_id_val.as_str()));
+        // JavaScript: this.effectState.move = effect.id;
+        // In Rust, current_effect_state is the volatile's state (set by dispatch_single_event)
+        // We must modify current_effect_state, which will be copied back to the volatile
+        eprintln!("[TWOTURNMOVE_ONSTART] Storing move_id={} in current_effect_state.data", move_id_val.as_str());
+        if let Some(ref mut effect_state) = battle.current_effect_state {
+            effect_state.data.insert("move".to_string(), serde_json::json!(move_id_val.as_str()));
+            eprintln!("[TWOTURNMOVE_ONSTART] Stored successfully");
+        } else {
+            eprintln!("[TWOTURNMOVE_ONSTART] WARNING: current_effect_state is None!");
         }
 
         // attacker.addVolatile(effect.id);
@@ -218,24 +219,45 @@ pub fn on_lock_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
+    eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Called for pokemon=({},{}), turn={}", pokemon_pos.0, pokemon_pos.1, battle.turn);
+
     // return this.effectState.move;
     // Get the move ID from the twoturnmove volatile's effectState.data
     let move_id = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
-            None => return EventResult::Continue,
+            None => {
+                eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Pokemon not found!");
+                return EventResult::Continue;
+            }
         };
 
         let twoturnmove_id = ID::from("twoturnmove");
-        pokemon.volatiles.get(&twoturnmove_id)
-            .and_then(|v| v.data.get("move"))
-            .and_then(|m| m.as_str())
-            .map(|s| s.to_string())
+        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Pokemon has {} volatiles: {:?}", pokemon.volatiles.len(), pokemon.volatiles.keys().map(|k| k.as_str()).collect::<Vec<_>>());
+
+        if let Some(volatile_state) = pokemon.volatiles.get(&twoturnmove_id) {
+            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Found twoturnmove volatile!");
+            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Volatile data keys: {:?}", volatile_state.data.keys().collect::<Vec<_>>());
+            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Volatile duration: {:?}", volatile_state.duration);
+            volatile_state.data.get("move")
+                .and_then(|m| m.as_str())
+                .map(|s| s.to_string())
+        } else {
+            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] twoturnmove volatile NOT FOUND");
+            None
+        }
     };
 
+    eprintln!("[TWOTURNMOVE_ONLOCKMOVE] move_id={:?}", move_id);
     match move_id {
-        Some(id) => EventResult::String(id),
-        None => EventResult::Continue,
+        Some(id) => {
+            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Returning String({})", id);
+            EventResult::String(id)
+        }
+        None => {
+            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] No move_id, returning Continue");
+            EventResult::Continue
+        }
     }
 }
 
