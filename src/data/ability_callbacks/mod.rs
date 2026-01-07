@@ -860,13 +860,6 @@ pub fn dispatch_on_critical_hit(
         _ => EventResult::Continue,
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onDamage()
-//   onDamage(damage, pokemon, source, effect)
-//   onDamage(damage, target, source, effect)
-//   onDamage(damage, target, source, move)
-//   onDamage(item, pokemon)
 
 /// Dispatch onDamage callbacks
 pub fn dispatch_on_damage(

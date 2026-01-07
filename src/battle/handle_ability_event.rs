@@ -435,12 +435,22 @@ impl Battle {
                 ability_callbacks::dispatch_on_critical_hit(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos, move_id)
             }
             "Damage" => {
-                ability_callbacks::dispatch_on_damage(self, ability_id.as_str(), relay_var_int, pokemon_pos, None, None)
+                ability_callbacks::dispatch_on_damage(
+                    self,
+                    ability_id.as_str(),
+                    relay_var_int,
+                    pokemon_pos,
+                    event_source_pos,
+                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                )
             }
             "DamagePriority" => ability_callbacks::dispatch_on_damage_priority(
                 self,
                 ability_id.as_str(),
-                relay_var_int, pokemon_pos, None, None
+                relay_var_int,
+                pokemon_pos,
+                event_source_pos,
+                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
             ),
             "DamagingHit" => {
                 // Get move_id, source, and damage from current event context
