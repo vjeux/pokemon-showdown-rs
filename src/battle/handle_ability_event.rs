@@ -752,13 +752,17 @@ impl Battle {
             "SourceBasePower" => ability_callbacks::dispatch_on_source_base_power(
                 self,
                 ability_id.as_str(),
-                0,
+                relay_var_int,
+                pokemon_pos,
+                event_target_pos.unwrap_or((0, 0)),
             move_id,
             ),
             "SourceBasePowerPriority" => ability_callbacks::dispatch_on_source_base_power_priority(
                 self,
                 ability_id.as_str(),
-                0,
+                relay_var_int,
+                pokemon_pos,
+                event_target_pos.unwrap_or((0, 0)),
             move_id,
             ),
             "SourceDamagingHit" => ability_callbacks::dispatch_on_source_damaging_hit(

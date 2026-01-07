@@ -66,7 +66,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///         return this.chainModify(1.25);
 ///     }
 /// }
-pub fn on_source_base_power(battle: &mut Battle, _base_power: i32, move_id: &str) -> EventResult {
+pub fn on_source_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), move_id: &str) -> EventResult {
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Fire" {
             let modified = battle.chain_modify(1.25);
