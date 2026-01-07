@@ -926,8 +926,7 @@ impl Battle {
                 let result = ability_callbacks::dispatch_on_try_boost(
                     self,
                     ability_id.as_str(),
-                    pokemon_pos,
-                    boost.as_mut(),
+                    boost.as_mut(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
                 );
                 // Put it back
                 if let Some(b) = boost {
@@ -953,8 +952,7 @@ impl Battle {
                 let result = ability_callbacks::dispatch_on_try_boost_priority(
                     self,
                     ability_id.as_str(),
-                    pokemon_pos,
-                    boost.as_mut(),
+                    boost.as_mut(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
                 );
                 // Put it back
                 if let Some(b) = boost {

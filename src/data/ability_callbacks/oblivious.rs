@@ -136,10 +136,8 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: 
 /// }
 pub fn on_try_boost(
     battle: &mut Battle,
-    target_pos: (usize, usize),
-    boost: Option<&mut crate::dex_data::BoostsTable>,
+    boost: Option<&mut crate::dex_data::BoostsTable>, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>,
 ) -> EventResult {
-    // Check if effect is Intimidate
     let is_intimidate = battle.current_event.as_ref()
         .and_then(|e| e.effect.as_ref())
         .map(|id| id.as_str() == "intimidate")

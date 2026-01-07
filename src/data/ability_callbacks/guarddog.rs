@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     this.add('-activate', pokemon, 'ability: Guard Dog');
 ///     return null;
 /// }
-pub fn on_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize), __source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
     let pokemon_ident = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -38,8 +38,7 @@ pub fn on_drag_out(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
 /// }
 pub fn on_try_boost(
     battle: &mut Battle,
-    target_pos: (usize, usize),
-    boost: Option<&mut crate::dex_data::BoostsTable>,
+    boost: Option<&mut crate::dex_data::BoostsTable>, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>,
 ) -> EventResult {
     // Check if effect is Intimidate
     let is_intimidate = battle.current_event.as_ref()

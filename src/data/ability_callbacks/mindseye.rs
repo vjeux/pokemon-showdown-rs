@@ -18,12 +18,8 @@ use crate::event::EventResult;
 /// }
 pub fn on_try_boost(
     battle: &mut Battle,
-    target_pos: (usize, usize),
-    boost: Option<&mut crate::dex_data::BoostsTable>,
+    boost: Option<&mut crate::dex_data::BoostsTable>, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, _effect_id: Option<&str>,
 ) -> EventResult {
-    // Get source from current event
-    let source_pos = battle.current_event.as_ref().and_then(|e| e.source);
-
     // if (source && target === source) return;
     if let Some(src) = source_pos {
         if src == target_pos {
