@@ -297,13 +297,6 @@ pub fn dispatch_on_end(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onFaint()
-//   onFaint(pokemon)
-//   onFaint(target)
-//   onFaint(target, source, effect)
-
 /// Dispatch onFaint callbacks (with target, source, effect)
 pub fn dispatch_on_faint(
     battle: &mut Battle,
