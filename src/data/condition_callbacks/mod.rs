@@ -558,20 +558,17 @@ pub fn dispatch_on_restart(
         }
     }
 }
-// TODO: verify that the list of calls in JavaScript matches the Rust equivalent
-// JavaScript signatures:
-//   onSourceModifyDamage()
-//   onSourceModifyDamage(damage, source, target, move)
-
 /// Dispatch onSourceModifyDamage callbacks
 pub fn dispatch_on_source_modify_damage(
     battle: &mut Battle,
     condition_id: &str,
+    _damage: i32,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
+    move_id: &str,
 ) -> EventResult {
     match condition_id {
-        "dynamax" => dynamax::on_source_modify_damage(battle, source_pos, target_pos),
+        "dynamax" => dynamax::on_source_modify_damage(battle, _damage, source_pos, target_pos, move_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_source_modify_damage(battle, condition_id, source_pos, target_pos)

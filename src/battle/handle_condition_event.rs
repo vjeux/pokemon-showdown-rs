@@ -267,14 +267,23 @@ impl Battle {
                 condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
             }
             "SourceModifyDamage" => {
-                // SourceModifyDamage needs both source and target positions
-                // pokemon_pos is the source, extract target from current_event
+                // SourceModifyDamage needs damage, source, target, and move
+                // pokemon_pos is the source, extract target and damage from current_event
+                let damage = self.current_event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
                 let target_pos = self.current_event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
+                let move_id = self.active_move.as_ref()
+                    .map(|m| m.id.to_string())
+                    .unwrap_or_default();
                 condition_callbacks::dispatch_on_source_modify_damage(
                     self,
                     condition_id,
+                    damage,
                     pokemon_pos,  // source_pos
                     target_pos,
+                    &move_id,
                 )
             }
             "StallMove" => {

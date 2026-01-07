@@ -210,16 +210,15 @@ pub fn on_before_switch_out(
 /// ```
 pub fn on_source_modify_damage(
     battle: &mut Battle,
+    _damage: i32,
     _source_pos: (usize, usize),
     _target_pos: (usize, usize),
+    move_id: &str,
 ) -> EventResult {
     // if (move.id === 'behemothbash' || move.id === 'behemothblade' || move.id === 'dynamaxcannon')
-    if let Some(ref active_move) = battle.active_move {
-        let move_id = active_move.id.as_str();
-        if move_id == "behemothbash" || move_id == "behemothblade" || move_id == "dynamaxcannon" {
-            // return this.chainModify(2);
-            return EventResult::Number(battle.chain_modify(2.0));
-        }
+    if move_id == "behemothbash" || move_id == "behemothblade" || move_id == "dynamaxcannon" {
+        // return this.chainModify(2);
+        return EventResult::Number(battle.chain_modify(2.0));
     }
 
     EventResult::Continue
