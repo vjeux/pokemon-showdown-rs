@@ -14,13 +14,11 @@ use crate::Pokemon;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    pokemon_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    // pokemon_pos is the target (the Pokemon being hit by Magic Powder)
+    let target = pokemon_pos;
 
     // if (target.getTypes().join() === 'Psychic' || !target.setType('Psychic')) return false;
     let types_string = {
