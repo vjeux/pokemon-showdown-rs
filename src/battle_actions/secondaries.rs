@@ -192,7 +192,14 @@ pub fn secondaries(
                 // }
                 if let Some(slot_condition_name) = &secondary.slot_condition {
                     let slot_condition_id = crate::dex_data::ID::new(slot_condition_name);
-                    let _applied = battle.sides[target_pos.0].add_slot_condition(target_pos.1, slot_condition_id, None);
+                    let move_effect = crate::battle::Effect::move_(move_id.clone());
+                    let _applied = battle.add_slot_condition(
+                        target_pos,
+                        slot_condition_id,
+                        Some(source_pos),
+                        Some(&move_effect),
+                        None,
+                    );
                 }
 
                 // Apply pseudo weather from secondary effect

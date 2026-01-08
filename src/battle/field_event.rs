@@ -580,7 +580,31 @@ impl Battle {
                 // Normal handling for non-side-Residual events
                 eprintln!("[FIELD_EVENT] Calling single_event for event='{}', effect='{}', turn={}",
                     handler_event_id, handler.effect_id.as_str(), self.turn);
-                self.single_event(&handler_event_id, &crate::battle::Effect::new(handler.effect_id.clone(), handler._effect_type), None, handler.holder, None, None, None);
+
+                // For slot conditions, we need to pass the actual state so callbacks can access it
+                // Clone the state to avoid borrow checker issues with self.single_event
+                let state_owned = if handler._effect_type == crate::battle::EffectType::SlotCondition {
+                    if let Some((side_idx, slot)) = handler.holder {
+                        self.sides.get(side_idx)
+                            .and_then(|side| side.slot_conditions.get(slot))
+                            .and_then(|slot_conds| slot_conds.get(&handler.effect_id))
+                            .cloned()
+                    } else {
+                        None
+                    }
+                } else if handler._effect_type == crate::battle::EffectType::SideCondition {
+                    if let Some(side_idx) = handler.side_idx {
+                        self.sides.get(side_idx)
+                            .and_then(|side| side.side_conditions.get(&handler.effect_id))
+                            .cloned()
+                    } else {
+                        None
+                    }
+                } else {
+                    None
+                };
+
+                self.single_event(&handler_event_id, &crate::battle::Effect::new(handler.effect_id.clone(), handler._effect_type), state_owned.as_ref(), handler.holder, None, None, None);
 
                 // AFTER calling the callback, decrement terrain duration and clear if expired
                 if event_id == "Residual" && handler.is_field && self.field.terrain == handler.effect_id {

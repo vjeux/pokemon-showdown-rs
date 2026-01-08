@@ -164,6 +164,8 @@ mod suppressing_weather;
 mod is_weather;
 mod is_terrain;
 mod remove_pseudo_weather;
+mod remove_slot_condition;
+mod add_slot_condition;
 mod add_pseudo_weather;
 mod show_open_team_sheets;
 mod spread_modify;

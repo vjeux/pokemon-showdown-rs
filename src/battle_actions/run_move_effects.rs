@@ -410,10 +410,14 @@ pub fn run_move_effects(
             if let Some(ref slot_condition) = move_data.slot_condition {
                 //     hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
                 let condition_id = ID::new(slot_condition);
-                let hit_result = {
-                    let side = &mut battle.sides[target_pos.0];
-                    side.add_slot_condition(target_pos.1, condition_id, None) // slot, condition_id, duration
-                };
+                let source_effect = Effect::move_(active_move.id.clone());
+                let hit_result = battle.add_slot_condition(
+                    target_pos,
+                    condition_id,
+                    Some(source_pos),
+                    Some(&source_effect),
+                    None,
+                );
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
                     DamageResult::Success

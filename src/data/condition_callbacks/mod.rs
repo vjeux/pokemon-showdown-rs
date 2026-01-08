@@ -622,7 +622,7 @@ pub fn dispatch_on_start(
         _ => {
             // Try move-embedded condition callbacks
             use crate::data::move_callbacks;
-            move_callbacks::dispatch_condition_on_start(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_start(battle, condition_id, pokemon_pos, source_pos)
         }
     }
 }

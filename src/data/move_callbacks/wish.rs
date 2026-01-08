@@ -19,9 +19,11 @@ pub mod condition {
     /// }
     pub fn on_start(
         battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
+        pokemon_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
     ) -> EventResult {
+        use crate::dex_data::ID;
+
         // this.effectState.hp = source.maxhp / 2;
         let hp = if let Some(source) = source_pos {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -33,16 +35,24 @@ pub mod condition {
             return EventResult::Continue;
         };
 
-        battle.with_effect_state(|state| {
-            state.hp = Some(hp);
-        });
-
         // this.effectState.startingTurn = this.getOverflowedTurnCount();
         let starting_turn = battle.get_overflowed_turn_count();
 
-        battle.with_effect_state(|state| {
-            state.starting_turn = Some(starting_turn);
-        });
+        // Store in the slot condition's state directly
+        // pokemon_pos is the slot where the wish condition was placed
+        let side_idx = pokemon_pos.0;
+        let slot = pokemon_pos.1;
+
+        if let Some(side) = battle.sides.get_mut(side_idx) {
+            if let Some(slot_conds) = side.slot_conditions.get_mut(slot) {
+                if let Some(wish_state) = slot_conds.get_mut(&ID::from("wish")) {
+                    wish_state.hp = Some(hp);
+                    wish_state.starting_turn = Some(starting_turn);
+                    wish_state.source = source_pos;
+                    wish_state.source_slot = source_pos.map(|p| p.1);
+                }
+            }
+        }
 
         // if (this.effectState.startingTurn === 255)
         if starting_turn == 255 {
@@ -69,7 +79,6 @@ pub mod condition {
         // if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
         let (starting_turn, target_pos, source_slot) = battle.with_effect_state_ref(|state| {
             let starting_turn = state.starting_turn.unwrap_or(0);
-
             (starting_turn, state.target, state.source_slot)
         }).unwrap_or((0, None, None));
 
@@ -90,8 +99,8 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        let side = &mut battle.sides[target.0];
-        side.remove_slot_condition(slot, &ID::from("wish"));
+        // Use Battle method that fires the End event
+        battle.remove_slot_condition(target.0, slot, &ID::from("wish"));
 
         EventResult::Continue
     }

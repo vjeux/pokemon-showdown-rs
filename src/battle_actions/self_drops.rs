@@ -159,7 +159,14 @@ pub fn self_drops(
                             // }
                             if let Some(ref slot_condition_name) = self_data.slot_condition {
                                 let slot_condition_id = crate::dex_data::ID::new(slot_condition_name);
-                                let _applied = battle.sides[source_pos.0].add_slot_condition(source_pos.1, slot_condition_id, None);
+                                let slot_move_effect = Effect::move_(_move_id.clone());
+                                let _applied = battle.add_slot_condition(
+                                    source_pos,
+                                    slot_condition_id,
+                                    Some(source_pos),
+                                    Some(&slot_move_effect),
+                                    None,
+                                );
                             }
 
                             // Apply pseudo weather from self effect
@@ -274,7 +281,14 @@ pub fn self_drops(
                         // }
                         if let Some(ref slot_condition_name) = self_data.slot_condition {
                             let slot_condition_id = crate::dex_data::ID::new(slot_condition_name);
-                            let _applied = battle.sides[source_pos.0].add_slot_condition(source_pos.1, slot_condition_id, None);
+                            let move_effect = Effect::move_(_move_id.clone());
+                            let _applied = battle.add_slot_condition(
+                                source_pos,
+                                slot_condition_id,
+                                Some(source_pos),
+                                Some(&move_effect),
+                                None,
+                            );
                         }
 
                         // Apply pseudo weather from self effect

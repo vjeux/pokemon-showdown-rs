@@ -78,12 +78,24 @@ impl Battle {
         // EXCEPTION: For side condition events (SideResidual, SideStart, SideEnd, SideRestart),
         // check if the move has an embedded condition and route to condition handler
         // Example: gmaxvolcalith is a move with condition.onResidual
+        // ALSO: For slot condition events (Residual, Start, End), check if this is a slot condition
+        // based on the current effect context (set by single_event before calling dispatch)
         if let Some(move_def) = self.dex.moves().get(effect_id.as_str()) {
             // Check if this is a side condition event and the move has an embedded condition
             if (event_id == "SideResidual" || event_id == "SideStart" || event_id == "SideEnd" || event_id == "SideRestart")
                 && move_def.condition.is_some() {
                 // Route to condition handler for the embedded condition
                 return self.handle_condition_event(event_id, effect_str, target);
+            }
+            // Check if this is a slot condition event (for moves like Wish that create slot conditions)
+            // The current effect context tells us if we're processing a slot condition
+            if let Some(ref effect) = self.effect {
+                if effect.effect_type == crate::battle::EffectType::SlotCondition
+                    && move_def.condition.is_some()
+                    && (event_id == "Residual" || event_id == "Start" || event_id == "End") {
+                    // Route to condition handler for the embedded condition
+                    return self.handle_condition_event(event_id, effect_str, target);
+                }
             }
             // Normal move events
             return self.handle_move_event(event_id, effect_id, target, source);
