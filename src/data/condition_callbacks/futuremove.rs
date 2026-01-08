@@ -131,6 +131,8 @@ pub fn on_residual(
 
     // Remove the condition BEFORE executing on_end
     // This ensures that when the future move's onTry is called, the condition doesn't exist
+    // Note: For futuremove, we intentionally call the side method directly to avoid
+    // triggering the End event here since on_end_with_data handles the move execution
     if let Some(side) = battle.sides.get_mut(target_side_index) {
         eprintln!("[FUTUREMOVE::ON_RESIDUAL] Removing slot condition before calling on_end");
         side.remove_slot_condition(target_position, &ID::from("futuremove"));

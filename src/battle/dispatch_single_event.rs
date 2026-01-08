@@ -52,18 +52,13 @@ impl Battle {
 
         let effect_str = effect_id.as_str();
 
-        // IMPORTANT: For Try, TryMove, PrepareHit, Hit and ModifyType events, check if effect is a MOVE first
-        // This ensures that when single_event("Try", "noretreat", ...) is called,
-        // it routes to the MOVE's onTry handler, not the volatile's handler
-        // Same for TryMove, PrepareHit, Hit and ModifyType events
-        // For two-turn moves like Meteor Beam, the move is also added as a volatile,
-        // so we need to prioritize the MOVE handler for TryMove events
-        // For moves like Ivy Cudgel that change type based on the user's species,
-        // we need to prioritize the MOVE handler for ModifyType events
-        // Note: run_event() now calls handlers directly based on effect_type, so this only affects single_event calls
-        if event_id == "Try" || event_id == "TryMove" || event_id == "PrepareHit" || event_id == "Hit" || event_id == "ModifyType" {
-            if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
-                return self.handle_move_event(event_id, effect_id, target, source);
+        // If we're in a Move context, prioritize the move handler over volatiles with the same name
+        // This handles cases like "noretreat" which exists both as a move and as a volatile
+        if let Some(ref effect) = self.effect {
+            if effect.effect_type == crate::battle::EffectType::Move {
+                if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
+                    return self.handle_move_event(event_id, effect_id, target, source);
+                }
             }
         }
 
@@ -123,18 +118,13 @@ impl Battle {
         // - "gmaxvolcalith" is a move with condition.onSideResidual
         //
         if let Some(move_def) = self.dex.moves().get(effect_id.as_str()) {
-            // Check if this is a side condition event and the move has an embedded condition
-            if (event_id == "SideResidual" || event_id == "SideStart" || event_id == "SideEnd" || event_id == "SideRestart")
-                && move_def.condition.is_some() {
-                // Route to condition handler for the embedded condition
-                return self.handle_condition_event(event_id, effect_str, target);
-            }
-            // Check if this is a slot condition event (for moves like Wish that create slot conditions)
-            // The current effect context tells us if we're processing a slot condition
+            // Check if we're in a side/slot condition context and the move has an embedded condition
+            // The effect type tells us the context - no need to check specific event IDs
             if let Some(ref effect) = self.effect {
-                if effect.effect_type == crate::battle::EffectType::SlotCondition
+                if (effect.effect_type == crate::battle::EffectType::SideCondition
+                    || effect.effect_type == crate::battle::EffectType::SlotCondition)
                     && move_def.condition.is_some()
-                    && (event_id == "Residual" || event_id == "Start" || event_id == "End") {
+                {
                     // Route to condition handler for the embedded condition
                     return self.handle_condition_event(event_id, effect_str, target);
                 }
