@@ -2651,26 +2651,26 @@ pub fn dispatch_condition_on_try_heal(
 /// Dispatch condition onTryHit callbacks
 pub fn dispatch_condition_on_try_hit(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    _active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
-    move_id_param: Option<&str>,
+    condition_id_param: Option<&str>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "banefulbunker" => banefulbunker::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "burningbulwark" => burningbulwark::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "craftyshield" => craftyshield::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "kingsshield" => kingsshield::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "magiccoat" => magiccoat::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "matblock" => matblock::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "maxguard" => maxguard::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "obstruct" => obstruct::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "protect" => protect::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "psychicterrain" => psychicterrain::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "quickguard" => quickguard::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "silktrap" => silktrap::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "spikyshield" => spikyshield::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
-        "wideguard" => wideguard::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
+    let condition_id = condition_id_param.unwrap_or(""); match condition_id {
+        "banefulbunker" => banefulbunker::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "burningbulwark" => burningbulwark::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "craftyshield" => craftyshield::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "kingsshield" => kingsshield::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "magiccoat" => magiccoat::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "matblock" => matblock::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "maxguard" => maxguard::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "obstruct" => obstruct::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "protect" => protect::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "psychicterrain" => psychicterrain::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "quickguard" => quickguard::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "silktrap" => silktrap::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "spikyshield" => spikyshield::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
+        "wideguard" => wideguard::condition::on_try_hit(battle, source_pos, target_pos, condition_id_param),
         _ => EventResult::Continue,
     }
 }
@@ -2678,13 +2678,13 @@ pub fn dispatch_condition_on_try_hit(
 /// Dispatch condition onTryMove callbacks
 pub fn dispatch_condition_on_try_move(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    _active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    _move_id_param: Option<&str>,
+    condition_id_param: Option<&str>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "powder" => powder::condition::on_try_move(battle, source_pos, target_pos, _move_id_param),
+    let condition_id = condition_id_param.unwrap_or(""); match condition_id {
+        "powder" => powder::condition::on_try_move(battle, source_pos, target_pos, condition_id_param),
         _ => EventResult::Continue,
     }
 }
