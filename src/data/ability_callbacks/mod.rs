@@ -1546,7 +1546,10 @@ pub fn dispatch_on_source_modify_damage(
 pub fn dispatch_on_source_modify_secondaries(
     battle: &mut Battle,
     ability_id: &str,
-    secondaries: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     match ability_id {
         "parentalbond" => parentalbond::on_source_modify_secondaries(battle, secondaries, target_pos, source_pos, move_id),
@@ -4177,7 +4180,10 @@ pub fn dispatch_on_source_modify_damage_sub_order(
 pub fn dispatch_on_source_modify_secondaries_priority(
     battle: &mut Battle,
     ability_id: &str,
-    secondaries: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     dispatch_on_source_modify_secondaries(battle, ability_id, secondaries, target_pos, source_pos, move_id)
 }
@@ -4186,7 +4192,10 @@ pub fn dispatch_on_source_modify_secondaries_priority(
 pub fn dispatch_on_source_modify_secondaries_order(
     battle: &mut Battle,
     ability_id: &str,
-    secondaries: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     dispatch_on_source_modify_secondaries(battle, ability_id, secondaries, target_pos, source_pos, move_id)
 }
@@ -4195,7 +4204,10 @@ pub fn dispatch_on_source_modify_secondaries_order(
 pub fn dispatch_on_source_modify_secondaries_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    secondaries: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    move_id: &str,
 ) -> EventResult {
     dispatch_on_source_modify_secondaries(battle, ability_id, secondaries, target_pos, source_pos, move_id)
 }

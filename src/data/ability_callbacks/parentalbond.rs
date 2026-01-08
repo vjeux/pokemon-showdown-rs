@@ -50,11 +50,17 @@ pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, 
 ///         return secondaries.filter(effect => effect.volatileStatus === 'flinch');
 ///     }
 /// }
-pub fn on_source_modify_secondaries(battle: &mut Battle, _secondaries: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_source_modify_secondaries(
+    battle: &mut Battle,
+    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    _target_pos: Option<(usize, usize)>,
+    _source_pos: Option<(usize, usize)>,
+    move_id: &str,
+) -> EventResult {
     // if (move.multihitType === 'parentalbond' && move.id === 'secretpower' && move.hit < 2)
     let should_filter = if let Some(ref active_move) = battle.active_move {
         active_move.multi_hit_type.as_deref() == Some("parentalbond")
-            && active_move.id.as_str() == "secretpower"
+            && move_id == "secretpower"
             && active_move.hit < 2
     } else {
         return EventResult::Continue;
@@ -66,12 +72,12 @@ pub fn on_source_modify_secondaries(battle: &mut Battle, _secondaries: i32, _tar
 
     // hack to prevent accidentally suppressing King's Rock/Razor Fang
     // return secondaries.filter(effect => effect.volatileStatus === 'flinch');
-    if let Some(ref mut active_move) = battle.active_move {
-        active_move.secondaries.retain(|effect| {
-            effect.volatile_status.as_deref() == Some("flinch")
-        });
-    }
+    let filtered: Vec<_> = secondaries
+        .iter()
+        .filter(|effect| effect.volatile_status.as_deref() == Some("flinch"))
+        .cloned()
+        .collect();
 
-    EventResult::Continue
+    EventResult::Secondaries(filtered)
 }
 

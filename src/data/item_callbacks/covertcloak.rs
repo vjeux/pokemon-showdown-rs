@@ -14,14 +14,21 @@ use crate::event::EventResult;
 pub fn on_modify_secondaries(
     battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    secondaries: &mut Vec<crate::battle_actions::SecondaryEffect>,
+    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
 ) -> EventResult {
-    // this.debug('Covert Cloak prevent secondary');
-    battle.debug("Covert Cloak prevent secondary");
-
     // return secondaries.filter(effect => !!effect.self);
-    // In Rust with mutable ref, use retain() to modify in place
-    secondaries.retain(|effect| effect.self_effect);
+    // Filter out opponent-targeting secondaries, keep only self-targeting ones
+    let filtered: Vec<_> = secondaries
+        .iter()
+        .filter(|effect| effect.self_effect)
+        .cloned()
+        .collect();
 
-    EventResult::Continue
+    if filtered.len() < secondaries.len() {
+        // this.debug('Covert Cloak prevent secondary');
+        battle.debug("Covert Cloak prevent secondary");
+    }
+
+    // Return the filtered secondaries so the caller uses them
+    EventResult::Secondaries(filtered)
 }

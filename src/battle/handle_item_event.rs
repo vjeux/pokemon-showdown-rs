@@ -328,35 +328,24 @@ impl Battle {
 
             // TypeScript: onModifySecondaries(pokemon:Pokemon, secondaries:any)
             "ModifySecondaries" => {
-                // Temporarily take secondaries out of event to get mutable access
-                let mut secondaries = self.event.as_mut().and_then(|e| {
-                    let relay_var = e.relay_var.take();
-                    match relay_var {
-                        Some(EventResult::Secondaries(s)) => Some(s),
-                        _ => {
-                            // Put it back if it wasn't Secondaries
-                            e.relay_var = relay_var;
-                            None
-                        }
+                // Clone secondaries from event relay_var to avoid borrow conflict
+                let secondaries = self.event.as_ref().and_then(|e| {
+                    match &e.relay_var {
+                        Some(EventResult::Secondaries(s)) => Some(s.clone()),
+                        _ => None,
                     }
                 });
-                let result = if let Some(ref mut sec) = secondaries {
+                if let Some(sec) = secondaries {
+                    // Callback returns EventResult::Secondaries with filtered list
                     item_callbacks::dispatch_on_modify_secondaries(
                         self,
                         item_id.as_str(),
                         pokemon_pos,
-                        sec,
+                        &sec,
                     )
                 } else {
                     EventResult::Continue
-                };
-                // Put secondaries back into event
-                if let Some(sec) = secondaries {
-                    if let Some(ref mut event) = self.event {
-                        event.relay_var = Some(EventResult::Secondaries(sec));
-                    }
                 }
-                result
             }
 
             // TypeScript: onModifySpA(pokemon:Pokemon)

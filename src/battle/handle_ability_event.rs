@@ -839,12 +839,28 @@ impl Battle {
                 &move_id_str
             )
             }
-            "SourceModifySecondaries" => ability_callbacks::dispatch_on_source_modify_secondaries(
-                self,
-                ability_id.as_str(),
-                relay_var_int, event_target_pos, Some(pokemon_pos),
-            move_id,
-            ),
+            "SourceModifySecondaries" => {
+                // Extract secondaries from event relay_var
+                let secondaries = self.event.as_ref().and_then(|e| {
+                    match &e.relay_var {
+                        Some(EventResult::Secondaries(s)) => Some(s.clone()),
+                        _ => None,
+                    }
+                });
+                if let Some(sec) = secondaries {
+                    // Callback returns EventResult::Secondaries with filtered list
+                    ability_callbacks::dispatch_on_source_modify_secondaries(
+                        self,
+                        ability_id.as_str(),
+                        &sec,
+                        event_target_pos,
+                        Some(pokemon_pos),
+                        move_id,
+                    )
+                } else {
+                    EventResult::Continue
+                }
+            }
             "SourceModifySpA" => ability_callbacks::dispatch_on_source_modify_sp_a(
                 self,
                 ability_id.as_str(),

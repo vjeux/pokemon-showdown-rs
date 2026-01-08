@@ -997,7 +997,7 @@ pub fn dispatch_on_modify_secondaries(
     battle: &mut Battle,
     item_id: &str,
     pokemon_pos: (usize, usize),
-    secondaries: &mut Vec<crate::battle_actions::SecondaryEffect>,
+    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
 ) -> EventResult {
     match item_id {
         "covertcloak" => covertcloak::on_modify_secondaries(battle, pokemon_pos, secondaries),
