@@ -84,14 +84,14 @@ use crate::event::EventResult;
 pub fn modify_damage(
     battle: &mut Battle,
     mut base_damage: i32,
-    source_pos: (usize, usize),
+    pokemon_pos: (usize, usize),
     target_pos: (usize, usize),
     move_data: &crate::dex::MoveData,
     is_crit: bool,
 ) -> i32 {
     if battle.turn >= 64 && battle.turn <= 66 {
         eprintln!("[MODIFY_DAMAGE] ENTRY: turn={}, move={}, base_damage={}, source=({},{}), target=({},{})",
-            battle.turn, move_data.id, base_damage, source_pos.0, source_pos.1, target_pos.0, target_pos.1);
+            battle.turn, move_data.id, base_damage, pokemon_pos.0, pokemon_pos.1, target_pos.0, target_pos.1);
     }
     // baseDamage += 2;
     base_damage += 2;
@@ -142,7 +142,7 @@ pub fn modify_damage(
     let weather_result = battle.run_event(
         "WeatherModifyDamage",
         Some(crate::event::EventTarget::Pokemon(target_pos)),  // target = defender
-        Some(source_pos),                                       // source = attacker
+        Some(pokemon_pos),                                       // source = attacker
         Some(&crate::battle::Effect::move_(move_data.id.clone())),
         EventResult::Number(base_damage),
         false,
@@ -195,8 +195,8 @@ pub fn modify_damage(
 
     // Get source and target data for STAB and type effectiveness
     let (source_types, _target_types, target_slot) = {
-        let source_types = if let Some(side) = battle.sides.get(source_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+        let source_types = if let Some(side) = battle.sides.get(pokemon_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(pokemon_pos.1) {
                 if battle.turn >= 64 && battle.turn <= 66 {
                     eprintln!("[MODIFY_DAMAGE] Reading source types for {} (species: {}): {:?}",
                         pokemon.name, pokemon.species_id, pokemon.types);
@@ -325,8 +325,8 @@ pub fn modify_damage(
     //   }
     // }
     let (source_status, source_has_guts) = {
-        if let Some(side) = battle.sides.get(source_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+        if let Some(side) = battle.sides.get(pokemon_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(pokemon_pos.1) {
                 let status = pokemon.status.clone();
                 let has_guts = pokemon.has_ability(battle, &["guts"]);
                 (status, has_guts)
@@ -354,11 +354,12 @@ pub fn modify_damage(
     }
 
     // baseDamage = this.battle.runEvent("ModifyDamage", pokemon, target, move, baseDamage);
+    // Note: In JavaScript, 'pokemon' (attacker) is the event target, 'target' (defender) is the source
     eprintln!("[MODIFY_DAMAGE] Before ModifyDamage event: base_damage={}", base_damage);
     if let EventResult::Number(modified) = battle.run_event(
                 "ModifyDamage",
-                Some(crate::event::EventTarget::Pokemon(target_pos)),  // target = defender
-                Some(source_pos),                                       // source = attacker
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),  // pokemon = attacker (event target)
+                Some(target_pos),                                       // target = defender (source)
                 Some(&crate::battle::Effect::move_(move_data.id.clone())),
                 EventResult::Number(base_damage),
                 false,
