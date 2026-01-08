@@ -136,6 +136,7 @@ pub fn dispatch_on_before_move(
         "mustrecharge" => mustrecharge::on_before_move(battle, pokemon_pos, target_pos, active_move),
         "par" => par::on_before_move(battle, pokemon_pos, target_pos, active_move),
         "slp" => slp::on_before_move(battle, pokemon_pos, target_pos, active_move),
+        "taunt" => move_callbacks::taunt::condition::on_before_move(battle, pokemon_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_before_move(battle, active_move, pokemon_pos)

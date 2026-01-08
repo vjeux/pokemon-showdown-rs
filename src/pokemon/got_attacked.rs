@@ -35,7 +35,8 @@ impl Pokemon {
             damage_value: Some(damage), // JavaScript: damageValue: damage
         });
 
-        // Track times attacked (not in JS source, but used for mechanics)
-        self.times_attacked += 1;
+        // NOTE: timesAttacked is NOT incremented here!
+        // In JavaScript, gotAttacked() only pushes to attackedBy.
+        // The timesAttacked increment happens separately in moveHitLoop.
     }
 }
