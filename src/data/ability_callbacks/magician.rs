@@ -27,12 +27,12 @@ use crate::pokemon::Pokemon;
 ///         }
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), _target_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (!move || source.switchFlag === true || !move.hitTargets || source.item || source.volatiles['gem'] ||
     //     move.id === 'fling' || move.category === 'Status') return;
 
     // Check if there's an active move
-    let active_move = match &battle.active_move {
+    let active_move = match active_move {
         Some(m) => m,
         None => return EventResult::Continue,
     };
@@ -84,7 +84,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usi
     // this.speedSort(hitTargets);
     // Note: In JavaScript this sorts by speed, but in Rust we skip sorting to avoid borrow checker issues.
     // This doesn't affect correctness, just the order in which we try to steal items.
-    let hit_targets = battle.active_move.as_ref().unwrap().hit_targets.clone();
+    let hit_targets = active_move.hit_targets.clone();
 
     // for (const pokemon of hitTargets)
     for &target_pos in &hit_targets {

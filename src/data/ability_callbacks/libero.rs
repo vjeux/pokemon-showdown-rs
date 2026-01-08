@@ -18,7 +18,7 @@ use crate::pokemon::Pokemon;
 ///         this.add('-start', source, 'typechange', type, '[from] ability: Libero');
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (this.effectState.libero) return;
     if let Some(true) = battle.effect_state.libero {
         return EventResult::Continue;
@@ -30,15 +30,17 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _
         None => return EventResult::Continue,
     };
 
-    // if (move.hasBounced || move.flags['futuremove'] || move.sourceEffect === 'snatch' || move.callsMove) return;
-    let should_return = if let Some(ref active_move) = battle.active_move {
-        active_move.has_bounced
-            || active_move.flags.future_move
-            || active_move.source_effect.as_ref().map(|e| e.as_str()) == Some("snatch")
-            || active_move.calls_move.is_some()
-    } else {
-        return EventResult::Continue;
+    // Get active move
+    let active_move = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
     };
+
+    // if (move.hasBounced || move.flags['futuremove'] || move.sourceEffect === 'snatch' || move.callsMove) return;
+    let should_return = active_move.has_bounced
+        || active_move.flags.future_move
+        || active_move.source_effect.as_ref().map(|e| e.as_str()) == Some("snatch")
+        || active_move.calls_move.is_some();
 
     if should_return {
         return EventResult::Continue;
@@ -46,14 +48,10 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _
 
     // const type = move.type;
     // if (type && type !== '???' && source.getTypes().join() !== type)
-    let move_type = if let Some(ref active_move) = battle.active_move {
-        if active_move.move_type.is_empty() || active_move.move_type == "???" {
-            return EventResult::Continue;
-        }
-        active_move.move_type.clone()
-    } else {
+    if active_move.move_type.is_empty() || active_move.move_type == "???" {
         return EventResult::Continue;
-    };
+    }
+    let move_type = active_move.move_type.clone();
 
     // Check if source types already match move type
     let types_match = {

@@ -25,7 +25,7 @@ use crate::pokemon::Pokemon;
 ///         this.add('-item', target, yourItem, '[from] ability: Pickpocket', `[of] ${source}`);
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
     use crate::dex_data::ID;
 
@@ -35,13 +35,11 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), 
     }
 
     // Check if move has contact flag
-    let move_id = {
-        let active_move = match &battle.active_move {
-            Some(m) => m,
-            None => return EventResult::Continue,
-        };
-        active_move.id.clone()
+    let active_move = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
     };
+    let move_id = active_move.id.clone();
 
     let has_contact = battle.check_move_makes_contact(&move_id, source_pos, target_pos, false);
     if !has_contact {
