@@ -211,6 +211,20 @@ pub fn get_damage(
         return Some(target_hp);
     }
 
+    // JavaScript: if (move.damageCallback) return move.damageCallback.call(this.battle, source, target);
+    // damageCallback provides custom damage calculation (e.g., Ruination deals 50% of target HP)
+    use crate::data::move_callbacks;
+    let active_move_for_damage_cb = battle.active_move.clone();
+    if let crate::event::EventResult::Number(custom_damage) = move_callbacks::dispatch_damage_callback(
+        battle,
+        active_move_for_damage_cb.as_ref(),
+        source_pos,
+        Some(target_pos),
+    ) {
+        eprintln!("[GET_DAMAGE] damageCallback returned {}", custom_damage);
+        return Some(custom_damage);
+    }
+
     // Fixed damage moves
     if let Some(_heal_tuple) = move_data.heal {
         // Heal moves have (numerator, denominator) format
@@ -236,7 +250,6 @@ pub fn get_damage(
     // JavaScript: if (move.basePowerCallback) { basePower = move.basePowerCallback.call(this.battle, source, target, move); }
     // CRITICAL: Always check for basePowerCallback, regardless of initial base_power!
     // Max/G-Max moves have non-zero base_power in move data but use callback to calculate actual damage
-    use crate::data::move_callbacks;
     let active_move_for_callback = battle.active_move.clone();
     if let crate::event::EventResult::Number(bp) = move_callbacks::dispatch_base_power_callback(
         battle,
