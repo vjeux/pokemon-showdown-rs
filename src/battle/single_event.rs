@@ -214,6 +214,9 @@ impl Battle {
         let parent_effect = self.effect.take();
         let parent_effect_state = std::mem::take(&mut self.effect_state);
 
+        // Extract type_param from parent event to preserve it for Effectiveness events
+        let preserved_type_param = parent_event.as_ref().and_then(|e| e.type_param.clone());
+
         // Set up current effect state
         // JavaScript: this.effectState = state as EffectState || this.initEffectState({});
         self.effect_state = match state {
@@ -244,7 +247,7 @@ impl Battle {
             effect: source_effect_obj,
             modifier: 4096,
             relay_var: relay_var.clone(),
-            type_param: None,
+            type_param: preserved_type_param,
         });
         self.event_depth += 1;
 
