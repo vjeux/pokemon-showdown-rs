@@ -147,6 +147,10 @@ pub fn hit_step_move_hit_loop(
 
         // move.hit = hit;
         active_move.hit = hit;
+        // Also sync to battle.active_move so callbacks can read it
+        if let Some(ref mut battle_active_move) = battle.active_move {
+            battle_active_move.hit = hit;
+        }
 
         // Handle smartTarget
         // if (move.smartTarget && targets.length > 1) {
