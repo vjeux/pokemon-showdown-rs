@@ -25,9 +25,10 @@ use crate::pokemon::Pokemon;
 /// ```
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
+    // JavaScript: onTryHit(target, pokemon) - target comes first, pokemon (source) second
     let pokemon = source_pos;
     let target = target_pos;
 
@@ -80,7 +81,7 @@ pub fn on_try_hit(
     crate::battle_actions::use_move(battle, &move_id, pokemon, Some(target), None, None, None);
 
     // return null;
-    EventResult::Stop
+    EventResult::Null
 }
 
 pub mod condition {

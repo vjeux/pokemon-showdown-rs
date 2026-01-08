@@ -14,9 +14,10 @@ use crate::pokemon::Pokemon;
 /// }
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     _target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
+    // JavaScript: onTryHit(target, source) - target comes first, source second
     let source = source_pos;
 
     // if (source.volatiles['lockon']) return false;

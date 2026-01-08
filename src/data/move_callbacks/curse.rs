@@ -69,18 +69,12 @@ pub fn on_modify_move(
 /// }
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
     use crate::dex_data::ID;
 
-    // if (!source.hasType('Ghost')) {
-    //     delete move.volatileStatus;
-    //     delete move.onHit;
-    //     move.self = { boosts: { spe: -1, atk: 1, def: 1 } };
-    // } else if (move.volatileStatus && target.volatiles['curse']) {
-    //     return false;
-    // }
+    // JavaScript: onTryHit(target, source, move) - target comes first, source second
     let source = source_pos;
     let target = target_pos;
 

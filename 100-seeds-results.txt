@@ -40,7 +40,7 @@ Seed 30: ✗ FAIL (69%) - 69/100 turns
 Seed 31: ✗ FAIL (12%) - 6/47 turns
 Seed 32: ✓ PASS (100%) - 42/42 turns
 Seed 33: ✗ FAIL (51%) - 48/93 turns
-Seed 34: ✗ FAIL (1%) - 1/74 turns
+Seed 34: ✗ FAIL (13%) - 10/74 turns
 Seed 35: ✓ PASS (100%) - 77/77 turns
 Seed 36: ✓ PASS (100%) - 29/29 turns
 Seed 37: ✗ FAIL (4%) - 4/96 turns

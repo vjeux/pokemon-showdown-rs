@@ -17,14 +17,12 @@ use crate::event::EventResult;
 /// }
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
-    // NOTE: The call in mod.rs passes (battle, target_pos, source_pos)
-    // But the parameters here are (source_pos, target_pos)
-    // So we need to swap them to get the correct values
-    let pokemon = target_pos;  // The user of Mirror Move
-    let target = source_pos;   // The target (foe who used the last move)
+    // JavaScript: onTryHit(target, pokemon) - target comes first, pokemon (source) second
+    let pokemon = source_pos;  // The user of Mirror Move
+    let target = target_pos;   // The target (foe who used the last move)
 
     // const move = target.lastMove;
     let last_move_id = {

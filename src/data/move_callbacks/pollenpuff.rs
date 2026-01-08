@@ -15,11 +15,12 @@ use crate::event::EventResult;
 /// }
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
-    let source = source_pos;
+    // JavaScript: onTryHit(target, source, move) - target comes first, source second
     let target = target_pos;
+    let source = source_pos;
 
     // if (source.isAlly(target)) {
     let is_ally = battle.is_ally(source, target);

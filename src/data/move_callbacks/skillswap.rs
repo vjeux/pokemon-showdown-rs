@@ -20,22 +20,12 @@ use crate::event::EventResult;
 /// }
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
     use crate::dex_data::ID;
 
-    // onTryHit(target, source) {
-    //     const targetAbility = target.getAbility();
-    //     const sourceAbility = source.getAbility();
-    //     if (sourceAbility.flags['failskillswap'] || targetAbility.flags['failskillswap'] || target.volatiles['dynamax']) {
-    //         return false;
-    //     }
-    //     const sourceCanBeSet = this.runEvent('SetAbility', source, source, this.effect, targetAbility);
-    //     if (!sourceCanBeSet) return sourceCanBeSet;
-    //     const targetCanBeSet = this.runEvent('SetAbility', target, source, this.effect, sourceAbility);
-    //     if (!targetCanBeSet) return targetCanBeSet;
-    // }
+    // JavaScript: onTryHit(target, source) - target comes first, source second
     let target = target_pos;
     let source = source_pos;
 

@@ -77,11 +77,12 @@ pub fn base_power_callback(
 /// }
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
     use crate::dex_data::ID;
 
+    // JavaScript: onTryHit(target, pokemon, move) - target comes first, pokemon (source) second
     // Get the target
     let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
         Some(p) => p,

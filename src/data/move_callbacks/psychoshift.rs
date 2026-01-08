@@ -13,11 +13,12 @@ use crate::event::EventResult;
 /// }
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     _target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
     use crate::dex_data::ID;
 
+    // JavaScript: onTryHit(target, source, move) - target comes first, source second
     let source = source_pos;
 
     // if (!source.status) return false;

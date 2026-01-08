@@ -20,11 +20,12 @@ use crate::Pokemon;
 /// }
 pub fn on_try_hit(
     battle: &mut Battle,
-    source_pos: (usize, usize),
     target_pos: (usize, usize),
+    source_pos: (usize, usize),
 ) -> EventResult {
     use crate::dex_data::ID;
 
+    // JavaScript: onTryHit(target, source) - target comes first, source second
     let target = target_pos;
     let source = source_pos;
 
