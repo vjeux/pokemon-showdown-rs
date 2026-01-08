@@ -269,12 +269,13 @@ pub fn dispatch_on_effectiveness(
         "deltastream" => deltastream::on_effectiveness(battle, type_mod, target_type, pokemon_pos, active_move),
         "tarshot" => {
             eprintln!("[DISPATCH_ON_EFFECTIVENESS] Calling tarshot callback with type_mod={}, target_type={}", type_mod, target_type);
-            crate::data::move_callbacks::dispatch_condition_on_effectiveness(
+            // Call tarshot's on_effectiveness directly (not through move_callbacks dispatcher
+            // which would match on active_move.id instead of condition_id)
+            move_callbacks::tarshot::condition::on_effectiveness(
                 battle,
-                active_move,
                 type_mod,
                 target_type,
-                pokemon_pos,
+                Some(pokemon_pos),
             )
         }
         _ => EventResult::Continue,
