@@ -411,7 +411,16 @@ pub fn get_damage(
     };
 
     // Determine attack and defense stats
-    let is_physical = move_data.category == "Physical";
+    // CRITICAL: Check active_move.category first!
+    // Moves like Photon Geyser and Shell Side Arm modify active_move.category in their onModifyMove callback
+    // JavaScript passes the same move object around, but in Rust we have separate move_data and active_move
+    // So we must check active_move first to get modifications from onModifyMove events
+    let category = if let Some(ref active_move) = battle.active_move {
+        active_move.category.clone()
+    } else {
+        move_data.category.clone()
+    };
+    let is_physical = category == "Physical";
 
     // Get attacker and defender boosts before we potentially modify them for crits
     // JavaScript: let atkBoosts = attacker.boosts[attackStat];
