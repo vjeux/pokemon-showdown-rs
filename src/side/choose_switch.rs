@@ -118,7 +118,11 @@ impl Side {
             return Err(format!("You don't have a Pokemon in slot {}", slot + 1));
         }
 
-        if slot < self.active.len() {
+        // In JavaScript, pokemon array is physically reordered so active Pokemon are at
+        // indices 0..(active.length-1). In Rust, we use position field instead.
+        // Check if the target Pokemon is in an active position.
+        let target = self.pokemon.get(slot).ok_or("Invalid slot")?;
+        if target.position < self.active.len() {
             return Err("Can't switch to an active Pokemon".to_string());
         }
 
@@ -126,7 +130,6 @@ impl Side {
             return Err(format!("Pokemon in slot {} already switching in", slot + 1));
         }
 
-        let target = self.pokemon.get(slot).ok_or("Invalid slot")?;
         if target.is_fainted() {
             return Err("Can't switch to a fainted Pokemon".to_string());
         }

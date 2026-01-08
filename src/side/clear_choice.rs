@@ -46,11 +46,12 @@ impl Side {
                 .count();
 
             // Count benched Pokemon that aren't fainted
+            // Note: In JavaScript, pokemon array is physically reordered so active Pokemon
+            // are at front. In Rust, we use position field instead, so we filter by position.
             let can_switch_in = self
                 .pokemon
                 .iter()
-                .skip(self.active.len())
-                .filter(|p| !p.is_fainted())
+                .filter(|p| p.position >= self.active.len() && !p.is_fainted())
                 .count();
 
             forced_switches = can_switch_out.min(can_switch_in);
