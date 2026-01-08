@@ -27,7 +27,7 @@ use crate::pokemon::Pokemon;
 ///         }
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (!target.hp) return;
     let has_hp = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
@@ -42,27 +42,29 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), 
     }
 
     // const type = move.type;
+    let active_move = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
+    // Check conditions
+    if active_move.category == "Status" || active_move.move_type.is_empty() || active_move.move_type == "???" {
+        return EventResult::Continue;
+    }
+
+    let move_type = active_move.move_type.clone();
+
     // if (target.isActive && move.effectType === 'Move' && move.category !== 'Status' && type !== '???' && !target.hasType(type))
-    let (move_type, is_active, should_change_type) = {
+    let (is_active, should_change_type) = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        let active_move = match &battle.active_move {
-            Some(m) => m,
-            None => return EventResult::Continue,
-        };
-
-        // Check conditions
-        if active_move.category == "Status" || active_move.move_type.is_empty() || active_move.move_type == "???" {
-            return EventResult::Continue;
-        }
-
         // Check if target already has this type
-        let has_type = target.has_type(battle, &active_move.move_type);
+        let has_type = target.has_type(battle, &move_type);
 
-        (active_move.move_type.clone(), target.is_active, !has_type)
+        (target.is_active, !has_type)
     };
 
     if !is_active || !should_change_type {

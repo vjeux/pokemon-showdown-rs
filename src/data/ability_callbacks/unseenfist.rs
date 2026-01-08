@@ -10,9 +10,9 @@ use crate::event::EventResult;
 /// onModifyMove(move) {
 ///     if (move.flags['contact']) delete move.flags['protect'];
 /// }
-pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move.flags['contact']) delete move.flags['protect'];
-    if let Some(ref mut active_move) = battle.active_move {
+    if let Some(active_move) = active_move {
         if active_move.flags.contact {
             // delete move.flags['protect']; - in Rust, we set it to false
             active_move.flags.protect = false;

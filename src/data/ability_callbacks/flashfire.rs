@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
     use crate::dex_data::ID;
     use crate::pokemon::Pokemon;
@@ -26,7 +26,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
         return EventResult::Continue;
     }
 
-    let move_type = if let Some(ref active_move) = battle.active_move {
+    let move_type = if let Some(active_move) = active_move {
         active_move.move_type.clone()
     } else {
         return EventResult::Continue;
@@ -110,11 +110,11 @@ pub mod condition {
     ///         return this.chainModify(1.5);
     ///     }
     /// }
-    pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
         use crate::dex_data::ID;
 
         // if (move.type === 'Fire' && attacker.hasAbility('flashfire'))
-        let move_type = if let Some(ref active_move) = battle.active_move {
+        let move_type = if let Some(active_move) = active_move {
             active_move.move_type.clone()
         } else {
             return EventResult::Continue;
@@ -147,11 +147,11 @@ pub mod condition {
     ///         return this.chainModify(1.5);
     ///     }
     /// }
-    pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
         use crate::dex_data::ID;
 
         // if (move.type === 'Fire' && attacker.hasAbility('flashfire'))
-        let move_type = if let Some(ref active_move) = battle.active_move {
+        let move_type = if let Some(active_move) = active_move {
             active_move.move_type.clone()
         } else {
             return EventResult::Continue;

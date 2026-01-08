@@ -11,9 +11,9 @@ use crate::event::EventResult;
 ///     // most of the implementation is in Battle#getTarget
 ///     move.tracksTarget = move.target !== 'scripted';
 /// }
-pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // move.tracksTarget = move.target !== 'scripted';
-    if let Some(ref mut active_move) = battle.active_move {
+    if let Some(active_move) = active_move {
         if active_move.target != "scripted" {
             active_move.tracks_target = true;
         }

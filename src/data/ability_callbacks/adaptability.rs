@@ -15,14 +15,14 @@ use crate::event::EventResult;
 ///         return 2;
 ///     }
 /// }
-pub fn on_modify_s_t_a_b(battle: &mut Battle, stab: f64, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_modify_s_t_a_b(battle: &mut Battle, stab: f64, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.forceSTAB || source.hasType(move.type))
     let src_pos = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
-    let active_move = match &battle.active_move {
+    let active_move = match active_move {
         Some(m) => m,
         None => return EventResult::Continue,
     };

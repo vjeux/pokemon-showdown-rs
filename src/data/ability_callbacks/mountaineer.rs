@@ -27,11 +27,11 @@ pub fn on_damage(_battle: &mut Battle, _damage: i32, _target_pos: (usize, usize)
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
 
     // if (move.type === 'Rock' && !target.activeTurns)
-    let move_type = if let Some(ref active_move) = battle.active_move {
+    let move_type = if let Some(active_move) = active_move {
         active_move.move_type.clone()
     } else {
         return EventResult::Continue;

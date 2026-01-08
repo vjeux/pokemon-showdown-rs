@@ -13,9 +13,14 @@ use crate::event::EventResult;
 ///     const targetForme = (move.id === 'kingsshield' ? 'Aegislash' : 'Aegislash-Blade');
 ///     if (attacker.species.name !== targetForme) attacker.formeChange(targetForme);
 /// }
-pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
-    
+
+    // Get move info from passed parameter
+    let (move_category, move_id) = match &active_move {
+        Some(m) => (m.category.clone(), m.id.clone()),
+        None => return EventResult::Continue,
+    };
 
     // Get attacker position from current event
     let attacker_pos = match &battle.event {
@@ -27,7 +32,7 @@ pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_a
     };
 
     // if (attacker.species.baseSpecies !== 'Aegislash' || attacker.transformed) return;
-    let (base_species, transformed, species_name, move_category, move_id) = {
+    let (base_species, transformed, species_name) = {
         let attacker = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
@@ -38,15 +43,10 @@ pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_a
             None => return EventResult::Continue,
         };
 
-        let move_category = battle.active_move.as_ref().map(|m| m.category.clone()).unwrap_or_default();
-        let move_id = battle.active_move.as_ref().map(|m| m.id.clone()).unwrap_or_default();
-
         (
             species_data.base_species.clone().unwrap_or_default(),
             attacker.transformed,
             species_data.name.clone(),
-            move_category,
-            move_id,
         )
     };
 

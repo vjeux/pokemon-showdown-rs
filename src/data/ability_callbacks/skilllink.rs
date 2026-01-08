@@ -16,12 +16,12 @@ use crate::dex::Multihit;
 ///         delete move.multiaccuracy;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move.multihit && Array.isArray(move.multihit) && move.multihit.length)
     // In JavaScript, multihit can be a number or [min, max] array
     // When it's an array (Range in Rust), we set it to the max value (index 1)
 
-    if let Some(ref mut active_move) = battle.active_move {
+    if let Some(active_move) = active_move {
         // Check if this is a multi-hit range
         if let Some(Multihit::Range(_min, max)) = active_move.multi_hit {
             // move.multihit = move.multihit[1]

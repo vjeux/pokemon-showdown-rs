@@ -12,13 +12,9 @@ use crate::event::EventResult;
 ///         move.type = 'Water';
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move.flags['sound'] && !pokemon.volatiles['dynamax'])
-    let has_sound_flag = if let Some(ref active_move) = battle.active_move {
-        active_move.flags.sound
-    } else {
-        false
-    };
+    let has_sound_flag = active_move.as_ref().map(|m| m.flags.sound).unwrap_or(false);
 
     if !has_sound_flag {
         return EventResult::Continue;
@@ -39,7 +35,7 @@ pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_a
     }
 
     // move.type = 'Water';
-    if let Some(ref mut active_move) = battle.active_move {
+    if let Some(active_move) = active_move {
         active_move.move_type = "Water".to_string();
     }
 

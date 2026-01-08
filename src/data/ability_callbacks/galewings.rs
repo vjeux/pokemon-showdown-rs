@@ -10,11 +10,11 @@ use crate::event::EventResult;
 /// onModifyPriority(priority, pokemon, target, move) {
 ///     if (move?.type === 'Flying' && pokemon.hp === pokemon.maxhp) return priority + 1;
 /// }
-pub fn on_modify_priority(battle: &mut Battle, priority: i32, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_modify_priority(battle: &mut Battle, priority: i32, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move?.type === 'Flying' && pokemon.hp === pokemon.maxhp) return priority + 1;
 
     // Check if move is Flying type
-    let is_flying = battle.active_move.as_ref()
+    let is_flying = active_move
         .map(|m| m.move_type == "Flying")
         .unwrap_or(false);
 

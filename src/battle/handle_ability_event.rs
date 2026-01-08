@@ -620,15 +620,23 @@ impl Battle {
             }
             "ModifyDefPriority" => ability_callbacks::dispatch_on_modify_def_priority(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), active_move_clone.as_ref()),
             "ModifyMove" => {
-                ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), active_move_clone.as_ref(), pokemon_pos, event_target_pos)
+                let mut active_move_temp = self.active_move.take();
+                let result = ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), active_move_temp.as_mut(), pokemon_pos, event_target_pos);
+                self.active_move = active_move_temp;
+                result
             }
-            "ModifyMovePriority" => ability_callbacks::dispatch_on_modify_move_priority(
-                self,
-                ability_id.as_str(),
-            active_move_clone.as_ref(),
-            pokemon_pos,
-            event_target_pos,
-            ),
+            "ModifyMovePriority" => {
+                let mut active_move_temp = self.active_move.take();
+                let result = ability_callbacks::dispatch_on_modify_move_priority(
+                    self,
+                    ability_id.as_str(),
+                    active_move_temp.as_mut(),
+                    pokemon_pos,
+                    event_target_pos,
+                );
+                self.active_move = active_move_temp;
+                result
+            }
             "ModifyPriority" => ability_callbacks::dispatch_on_modify_priority(
                 self,
                 ability_id.as_str(),
@@ -675,15 +683,23 @@ impl Battle {
                 ability_callbacks::dispatch_on_modify_spe(self, ability_id.as_str(), relay_var_int, pokemon_pos)
             }
             "ModifyType" => {
-                ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), active_move_clone.as_ref(), pokemon_pos, event_target_pos)
+                let mut active_move_temp = self.active_move.take();
+                let result = ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), active_move_temp.as_mut(), pokemon_pos, event_target_pos);
+                self.active_move = active_move_temp;
+                result
             }
-            "ModifyTypePriority" => ability_callbacks::dispatch_on_modify_type_priority(
-                self,
-                ability_id.as_str(),
-                active_move_clone.as_ref(),
-                pokemon_pos,
-                event_target_pos,
-            ),
+            "ModifyTypePriority" => {
+                let mut active_move_temp = self.active_move.take();
+                let result = ability_callbacks::dispatch_on_modify_type_priority(
+                    self,
+                    ability_id.as_str(),
+                    active_move_temp.as_mut(),
+                    pokemon_pos,
+                    event_target_pos,
+                );
+                self.active_move = active_move_temp;
+                result
+            }
             "ModifyWeight" => {
                 ability_callbacks::dispatch_on_modify_weight(self, ability_id.as_str(), relay_var_int, pokemon_pos)
             }

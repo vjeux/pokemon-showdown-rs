@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///     }
 ///     if (move.self?.chance) move.self.chance *= 2;
 /// }
-pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move.secondaries)
     let has_secondaries = if let Some(ref active_move) = battle.active_move {
         !active_move.secondaries.is_empty()
@@ -32,7 +32,7 @@ pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_a
     // for (const secondary of move.secondaries) {
     //     if (secondary.chance) secondary.chance *= 2;
     // }
-    if let Some(ref mut active_move) = battle.active_move {
+    if let Some(active_move) = active_move {
         for secondary in &mut active_move.secondaries {
             if let Some(ref mut chance) = secondary.chance {
                 *chance *= 2;

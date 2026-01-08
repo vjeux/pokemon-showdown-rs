@@ -17,10 +17,9 @@ use crate::event::EventResult;
 ///         move.typeChangerBoosted = this.effect;
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    // Get active move
-    let active_move = match &battle.active_move {
-        Some(m) => m.clone(),
+pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    let active_move = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
 
@@ -64,11 +63,9 @@ pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_a
     }
 
     // Convert to Fairy type and mark as boosted
-    if let Some(ref mut active_move) = battle.active_move {
-        active_move.move_type = "Fairy".to_string();
-        active_move.type_changer_boosted = Some(Effect::ability("pixilate"));
-        eprintln!("[PIXILATE] Changed {} from Normal to Fairy", active_move.name);
-    }
+    active_move.move_type = "Fairy".to_string();
+    active_move.type_changer_boosted = Some(Effect::ability("pixilate"));
+    eprintln!("[PIXILATE] Changed {} from Normal to Fairy", active_move.name);
 
     EventResult::Continue
 }
@@ -76,23 +73,17 @@ pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_a
 /// onBasePower(basePower, pokemon, target, move) {
 ///     if (move.typeChangerBoosted === this.effect) return this.chainModify([4915, 4096]);
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_base_power(_battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     eprintln!("[PIXILATE on_base_power] CALLED! base_power={}", base_power);
 
     // Check if this move was boosted by Pixilate
-    let should_boost = if let Some(ref active_move) = battle.active_move {
-        eprintln!("[PIXILATE on_base_power] active_move type_changer_boosted={:?}", active_move.type_changer_boosted);
-        if let Some(ref booster) = active_move.type_changer_boosted {
+    let should_boost = active_move
+        .and_then(|m| m.type_changer_boosted.as_ref())
+        .map(|booster| {
             eprintln!("[PIXILATE on_base_power] booster={}, checking if pixilate", booster.as_str());
             booster.as_str() == "pixilate"
-        } else {
-            eprintln!("[PIXILATE on_base_power] No type_changer_boosted set");
-            false
-        }
-    } else {
-        eprintln!("[PIXILATE on_base_power] No active_move!");
-        false
-    };
+        })
+        .unwrap_or(false);
 
     eprintln!("[PIXILATE on_base_power] should_boost={}", should_boost);
 

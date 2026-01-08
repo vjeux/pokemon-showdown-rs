@@ -1244,7 +1244,7 @@ pub fn dispatch_on_modify_def(
 pub fn dispatch_on_modify_move(
     battle: &mut Battle,
     ability_id: &str,
-    active_move: Option<&ActiveMove>,
+    active_move: Option<&mut ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
@@ -1353,7 +1353,7 @@ pub fn dispatch_on_modify_spe(
 pub fn dispatch_on_modify_type(
     battle: &mut Battle,
     ability_id: &str,
-    active_move: Option<&ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    active_move: Option<&mut ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
         "aerilate" => aerilate::on_modify_type(battle, active_move, pokemon_pos, target_pos),
@@ -3671,7 +3671,7 @@ pub fn dispatch_on_modify_def_sub_order(
 pub fn dispatch_on_modify_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    active_move: Option<&ActiveMove>,
+    active_move: Option<&mut ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
@@ -3682,7 +3682,7 @@ pub fn dispatch_on_modify_move_priority(
 pub fn dispatch_on_modify_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    active_move: Option<&ActiveMove>,
+    active_move: Option<&mut ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
@@ -3693,7 +3693,7 @@ pub fn dispatch_on_modify_move_order(
 pub fn dispatch_on_modify_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    active_move: Option<&ActiveMove>,
+    active_move: Option<&mut ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
@@ -3839,7 +3839,7 @@ pub fn dispatch_on_modify_spe_sub_order(
 pub fn dispatch_on_modify_type_priority(
     battle: &mut Battle,
     ability_id: &str,
-    active_move: Option<&ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    active_move: Option<&mut ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     dispatch_on_modify_type(battle, ability_id, active_move, pokemon_pos, target_pos)
 }
@@ -3848,7 +3848,7 @@ pub fn dispatch_on_modify_type_priority(
 pub fn dispatch_on_modify_type_order(
     battle: &mut Battle,
     ability_id: &str,
-    active_move: Option<&ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    active_move: Option<&mut ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     dispatch_on_modify_type(battle, ability_id, active_move, pokemon_pos, target_pos)
 }
@@ -3857,7 +3857,7 @@ pub fn dispatch_on_modify_type_order(
 pub fn dispatch_on_modify_type_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    active_move: Option<&ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    active_move: Option<&mut ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     dispatch_on_modify_type(battle, ability_id, active_move, pokemon_pos, target_pos)
 }

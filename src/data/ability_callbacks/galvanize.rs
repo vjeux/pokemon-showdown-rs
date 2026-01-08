@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///         move.typeChangerBoosted = this.effect;
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // const noModifyType = [...]
     let no_modify_type = [
         "judgment",
@@ -39,7 +39,7 @@ pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_a
     };
 
     // Check move properties
-    if let Some(ref mut active_move) = battle.active_move {
+    if let Some(active_move) = active_move {
         // if (move.type === 'Normal' && ...)
         let is_normal_type = active_move.move_type == "Normal";
         let in_no_modify_list = no_modify_type.contains(&active_move.id.as_str());
@@ -62,13 +62,11 @@ pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_a
 /// onBasePower(basePower, pokemon, target, move) {
 ///     if (move.typeChangerBoosted === this.effect) return this.chainModify([4915, 4096]);
 /// }
-pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.typeChangerBoosted === this.effect)
-    let is_boosted = if let Some(ref active_move) = battle.active_move {
-        active_move.type_changer_boosted.as_ref().map(|e| e.as_str()) == Some("galvanize")
-    } else {
-        false
-    };
+    let is_boosted = active_move
+        .map(|m| m.type_changer_boosted.as_ref().map(|e| e.as_str()) == Some("galvanize"))
+        .unwrap_or(false);
 
     if is_boosted {
         // return this.chainModify([4915, 4096]);

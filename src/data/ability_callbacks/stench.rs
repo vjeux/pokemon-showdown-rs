@@ -20,26 +20,20 @@ use crate::event::EventResult;
 ///         });
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(_battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::battle_actions::SecondaryEffect;
 
     // if (move.category !== "Status")
-    let is_status = if let Some(ref active_move) = battle.active_move {
-        active_move.category == "Status"
-    } else {
-        return EventResult::Continue;
-    };
+    if let Some(active_move) = active_move {
+        if active_move.category == "Status" {
+            return EventResult::Continue;
+        }
 
-    if is_status {
-        return EventResult::Continue;
-    }
-
-    // this.debug('Adding Stench flinch');
-    // if (!move.secondaries) move.secondaries = [];
-    // for (const secondary of move.secondaries) {
-    //     if (secondary.volatileStatus === 'flinch') return;
-    // }
-    if let Some(ref mut active_move) = battle.active_move {
+        // this.debug('Adding Stench flinch');
+        // if (!move.secondaries) move.secondaries = [];
+        // for (const secondary of move.secondaries) {
+        //     if (secondary.volatileStatus === 'flinch') return;
+        // }
         // Check if flinch secondary already exists
         for secondary in &active_move.secondaries {
             if secondary.volatile_status.as_ref().map(|s| s.as_str()) == Some("flinch") {

@@ -72,9 +72,9 @@ pub fn on_try_boost(
 /// onModifyMove(move) {
 ///     move.ignoreEvasion = true;
 /// }
-pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // move.ignoreEvasion = true;
-    if let Some(ref mut active_move) = battle.active_move {
+    if let Some(active_move) = active_move {
         active_move.ignore_evasion = true;
     }
 
