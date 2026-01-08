@@ -282,6 +282,7 @@ pub fn spread_move_hit<'a>(
         &targets_mut,
         source_pos,
         move_data_id,
+        hit_effect.clone(),
         is_secondary,
         is_self,
     );
@@ -375,9 +376,14 @@ pub fn spread_move_hit<'a>(
     // 4. self drops
     // JS: if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
     // NOTE: We use the pre-extracted values from BEFORE run_move_effects
+    // IMPORTANT: Only process self_drops and secondaries when hit_effect is a Move (not Secondary)
+    // JavaScript's moveData is the HitEffect, so for secondaries it's a SecondaryEffect which has no self/secondaries
 
-    // Only call self_drops if self_effect exists and selfDropped is false
-    if has_self_effect && !self_dropped {
+    // Only call self_drops if:
+    // 1. hit_effect is a Move (not a Secondary) - JavaScript checks moveData.self which is undefined for secondaries
+    // 2. self_effect exists and selfDropped is false
+    let is_hit_effect_move = matches!(hit_effect, Some(HitEffect::Move(_))) || hit_effect.is_none();
+    if is_hit_effect_move && has_self_effect && !self_dropped {
         crate::battle_actions::self_drops(
             battle,
             &targets_mut,
@@ -392,17 +398,21 @@ pub fn spread_move_hit<'a>(
     // 5. secondary effects
     // JS: if (moveData.secondaries) this.secondaries(targets, pokemon, move, moveData, isSelf);
     // Use the cloned move_data from BEFORE run_move_effects
-    if let Some(ref move_data) = move_data_clone {
-        if !move_data.secondaries.is_empty() {
-            eprintln!("[SPREAD_MOVE_HIT] Calling secondaries for move_id={}", move_id);
-            crate::battle_actions::secondaries(
-                battle,
-                &targets_mut,
-                source_pos,
-                move_data,  // move_ (the original move)
-                move_data,  // move_data (the cloned ActiveMove)
-                is_self,
-            );
+    // IMPORTANT: Only process secondaries when hit_effect is a Move (not Secondary)
+    // JavaScript checks moveData.secondaries which is undefined for SecondaryEffect objects
+    if is_hit_effect_move {
+        if let Some(ref move_data) = move_data_clone {
+            if !move_data.secondaries.is_empty() {
+                eprintln!("[SPREAD_MOVE_HIT] Calling secondaries for move_id={}", move_id);
+                crate::battle_actions::secondaries(
+                    battle,
+                    &targets_mut,
+                    source_pos,
+                    move_data,  // move_ (the original move)
+                    move_data,  // move_data (the cloned ActiveMove)
+                    is_self,
+                );
+            }
         }
     }
 

@@ -3,7 +3,7 @@
 //! 1:1 port of getSpreadDamage from battle-actions.ts
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, HitEffect};
 
 /// Get damage for each target in a spread move
 /// Equivalent to getSpreadDamage() in battle-actions.ts:1163
@@ -47,12 +47,13 @@ use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, S
 ///     }
 ///     return damage;
 ///   }
-pub fn get_spread_damage(
+pub fn get_spread_damage<'a>(
     battle: &mut Battle,
     damages: SpreadMoveDamage,
     targets: &SpreadMoveTargets,
     source_pos: (usize, usize),
     move_id: &ID,
+    hit_effect: Option<HitEffect<'a>>,
     _is_secondary: bool,
     _is_self: bool,
 ) -> SpreadMoveDamage {
@@ -71,6 +72,16 @@ pub fn get_spread_damage(
 
         // damage[i] = undefined;
         result_damages[i] = DamageResult::Undefined;
+
+        // In JavaScript, getDamage is called with moveData, which can be a SecondaryEffect.
+        // SecondaryEffect has no basePower, so getDamage returns undefined early:
+        //   if (!basePower) return basePower === 0 ? undefined : basePower;
+        // We need to match this behavior: if hit_effect is a Secondary, skip damage calculation.
+        if matches!(hit_effect, Some(HitEffect::Secondary(_))) {
+            // Secondary effects have no basePower, so getDamage would return undefined
+            // in JavaScript. Keep damage[i] as Undefined and continue.
+            continue;
+        }
 
         // const curDamage = this.getDamage(source, target, moveData);
         let cur_damage = crate::battle_actions::get_damage(battle, source_pos, target_pos, move_id);

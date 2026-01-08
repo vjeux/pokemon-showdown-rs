@@ -7,14 +7,14 @@ Step 2: Running JavaScript battles...
 Step 3: Running Rust battles...
 Step 4: Comparing results...
 
-Seed 1: ✗ FAIL (34%) - 14/41 turns
-Seed 2: ✗ FAIL (29%) - 20/67 turns
-Seed 3: ✗ FAIL (25%) - 9/36 turns
-Seed 4: ✗ FAIL (1%) - 1/63 turns
-Seed 5: ✗ FAIL (3%) - 1/26 turns
-Seed 6: ✗ FAIL (5%) - 4/70 turns
-Seed 7: ✗ FAIL (2%) - 2/100 turns
-Seed 8: ✗ FAIL (58%) - 32/55 turns
+Seed 1: ✗ FAIL (73%) - 30/41 turns
+Seed 2: ✓ PASS (100%) - 67/67 turns
+Seed 3: ✓ PASS (100%) - 36/36 turns
+Seed 4: ✓ PASS (100%) - 63/63 turns
+Seed 5: ✓ PASS (100%) - 26/26 turns
+Seed 6: ✓ PASS (100%) - 70/70 turns
+Seed 7: ✓ PASS (100%) - 100/100 turns
+Seed 8: ✓ PASS (100%) - 55/55 turns
 Seed 9: ✓ PASS (100%) - 56/56 turns
 Seed 10: ✓ PASS (100%) - 32/32 turns
 Seed 11: ✓ PASS (100%) - 82/82 turns
@@ -36,13 +36,13 @@ Seed 26: ✓ PASS (100%) - 21/21 turns
 Seed 27: ✗ FAIL (69%) - 37/53 turns
 Seed 28: ✗ FAIL (3%) - 2/52 turns
 Seed 29: ✗ FAIL (5%) - 2/37 turns
-Seed 30: ✗ FAIL (69%) - 69/100 turns
+Seed 30: ✗ FAIL (17%) - 17/100 turns
 Seed 31: ✗ FAIL (2%) - 1/47 turns
 Seed 32: ✓ PASS (100%) - 42/42 turns
-Seed 33: ✗ FAIL (51%) - 48/93 turns
+Seed 33: ✗ FAIL (24%) - 23/93 turns
 Seed 34: ✗ FAIL (1%) - 1/74 turns
 Seed 35: ✗ FAIL (41%) - 32/77 turns
-Seed 36: ✓ PASS (100%) - 29/29 turns
+Seed 36: ✗ FAIL (72%) - 21/29 turns
 Seed 37: ✗ FAIL (4%) - 4/96 turns
 Seed 38: ✗ FAIL (30%) - 16/52 turns
 Seed 39: ✗ FAIL (1%) - 1/77 turns
@@ -112,9 +112,9 @@ Seed 100: ✗ FAIL (30%) - 30/100 turns
 Summary
 =======================================
 Total seeds tested: 100
-Passed (100%): 21
-Failed (<100%): 79
+Passed (100%): 27
+Failed (<100%): 73
 
-Average pass rate: 41%
+Average pass rate: 47%
 
 ✗ Some seeds failed
