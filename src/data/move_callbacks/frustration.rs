@@ -23,7 +23,7 @@ pub fn base_power_callback(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon_pokemon.happiness
+        pokemon_pokemon.happiness as u32
     };
 
     let bp = ((255 - happiness) * 10) / 25;

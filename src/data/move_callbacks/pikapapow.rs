@@ -25,7 +25,7 @@ pub fn base_power_callback(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let happiness = pokemon_pokemon.happiness;
+        let happiness = pokemon_pokemon.happiness as u32;
         let calculated_bp = (happiness * 10) / 25;
         if calculated_bp == 0 {
             1
