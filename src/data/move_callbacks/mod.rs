@@ -1453,65 +1453,66 @@ pub fn has_before_move_callback(active_move: Option<&ActiveMove>) -> bool {
 
 // Condition dispatch functions
 /// Dispatch condition durationCallback callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_duration_callback(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "auroraveil" => {
-            auroraveil::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            auroraveil::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         "electricterrain" => electricterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            Some(move_id),
+            Some(condition_id),
         ),
         "grassyterrain" => grassyterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            Some(move_id),
+            Some(condition_id),
         ),
         "gravity" => {
-            gravity::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            gravity::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         "healblock" => {
-            healblock::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            healblock::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         "lightscreen" => {
-            lightscreen::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            lightscreen::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         "magicroom" => {
-            magicroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            magicroom::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         "mistyterrain" => mistyterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            Some(move_id),
+            Some(condition_id),
         ),
         "psychicterrain" => psychicterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            Some(move_id),
+            Some(condition_id),
         ),
         "reflect" => {
-            reflect::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            reflect::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         "safeguard" => {
-            safeguard::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            safeguard::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         "tailwind" => {
-            tailwind::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            tailwind::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         "trickroom" => {
-            trickroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            trickroom::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         "wonderroom" => {
-            wonderroom::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
+            wonderroom::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
         }
         _ => EventResult::Continue,
     }
@@ -1732,12 +1733,13 @@ pub fn dispatch_condition_on_before_move(
 }
 
 /// Dispatch condition onBeforeSwitchOut callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_before_switch_out(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "pursuit" => pursuit::condition::on_before_switch_out(battle, source_pos),
         _ => EventResult::Continue,
     }
@@ -1789,12 +1791,13 @@ pub fn dispatch_condition_on_damaging_hit(
 }
 
 /// Dispatch condition onDisableMove callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_disable_move(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "disable" => disable::condition::on_disable_move(battle, source_pos),
         "encore" => encore::condition::on_disable_move(battle, source_pos),
         "gravity" => gravity::condition::on_disable_move(battle, source_pos),
@@ -1833,12 +1836,13 @@ pub fn dispatch_condition_on_effectiveness(
 }
 
 /// Dispatch condition onEnd callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_end(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "attract" => attract::condition::on_end(battle, source_pos),
         "bide" => bide::condition::on_end(battle, source_pos),
         "charge" => charge::condition::on_end(battle, source_pos),
@@ -1883,12 +1887,13 @@ pub fn dispatch_condition_on_faint(
 }
 
 /// Dispatch condition onFieldEnd callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_field_end(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "electricterrain" => electricterrain::condition::on_field_end(battle),
         "grassyterrain" => grassyterrain::condition::on_field_end(battle),
         "gravity" => gravity::condition::on_field_end(battle),
@@ -1904,12 +1909,13 @@ pub fn dispatch_condition_on_field_end(
 }
 
 /// Dispatch condition onFieldRestart callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_field_restart(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "echoedvoice" => echoedvoice::condition::on_field_restart(battle),
         "magicroom" => magicroom::condition::on_field_restart(battle, None, None),
         "trickroom" => trickroom::condition::on_field_restart(battle, None, None),
@@ -1919,12 +1925,13 @@ pub fn dispatch_condition_on_field_restart(
 }
 
 /// Dispatch condition onFieldStart callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_field_start(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "echoedvoice" => echoedvoice::condition::on_field_start(battle),
         "electricterrain" => {
             electricterrain::condition::on_field_start(battle, None, Some(source_pos), None)
@@ -2038,13 +2045,14 @@ pub fn dispatch_condition_on_hit(
 }
 
 /// Dispatch condition onImmunity callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_immunity(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     immunity_type: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "dig" => dig::condition::on_immunity(battle, source_pos),
         "dive" => dive::condition::on_immunity(battle, source_pos),
         "magnetrise" => magnetrise::condition::on_immunity(battle, source_pos),
@@ -2112,12 +2120,13 @@ pub fn dispatch_condition_on_modify_crit_ratio(
 }
 
 /// Dispatch condition onModifyMove callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_modify_move(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "gravity" => gravity::condition::on_modify_move(battle, source_pos, None),
         "healblock" => healblock::condition::on_modify_move(battle, source_pos, None),
         "throatchop" => throatchop::condition::on_modify_move(battle, source_pos, None),
@@ -2128,13 +2137,14 @@ pub fn dispatch_condition_on_modify_move(
 }
 
 /// Dispatch condition onModifySpe callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_modify_spe(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     _spe: i32,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "grasspledge" => grasspledge::condition::on_modify_spe(battle, source_pos),
         "tailwind" => tailwind::condition::on_modify_spe(battle, source_pos),
         _ => EventResult::Continue,
@@ -2244,12 +2254,13 @@ pub fn dispatch_condition_on_residual(
 }
 
 /// Dispatch condition onRestart callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_restart(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "allyswitch" => allyswitch::condition::on_restart(battle, source_pos),
         "charge" => charge::condition::on_restart(battle, source_pos, None, None),
         "defensecurl" => defensecurl::condition::on_restart(battle, source_pos),
@@ -2270,12 +2281,13 @@ pub fn dispatch_condition_on_restart(
 }
 
 /// Dispatch condition onFieldResidual callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_field_residual(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "grassyterrain" => grassyterrain::condition::on_field_residual(battle, source_pos),
         _ => EventResult::Continue,
     }
@@ -2553,12 +2565,13 @@ pub fn dispatch_condition_on_swap(
 }
 
 /// Dispatch condition onSwitchIn callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_switch_in(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "gmaxsteelsurge" => gmaxsteelsurge::condition::on_switch_in(battle, source_pos),
         "healingwish" => healingwish::condition::on_switch_in(battle, Some(source_pos)),
         "lunardance" => lunardance::condition::on_switch_in(battle, Some(source_pos)),
@@ -2571,12 +2584,13 @@ pub fn dispatch_condition_on_switch_in(
 }
 
 /// Dispatch condition onTrapPokemon callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_trap_pokemon(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "fairylock" => fairylock::condition::on_trap_pokemon(battle, source_pos),
         "ingrain" => ingrain::condition::on_trap_pokemon(battle, source_pos),
         "noretreat" => noretreat::condition::on_trap_pokemon(battle, source_pos),
