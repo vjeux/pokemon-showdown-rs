@@ -7,14 +7,14 @@ Step 2: Running JavaScript battles...
 Step 3: Running Rust battles...
 Step 4: Comparing results...
 
-Seed 1: ✓ PASS (100%) - 41/41 turns
-Seed 2: ✓ PASS (100%) - 67/67 turns
-Seed 3: ✓ PASS (100%) - 36/36 turns
-Seed 4: ✓ PASS (100%) - 63/63 turns
-Seed 5: ✓ PASS (100%) - 26/26 turns
-Seed 6: ✓ PASS (100%) - 70/70 turns
-Seed 7: ✓ PASS (100%) - 100/100 turns
-Seed 8: ✓ PASS (100%) - 55/55 turns
+Seed 1: ✗ FAIL (34%) - 14/41 turns
+Seed 2: ✗ FAIL (29%) - 20/67 turns
+Seed 3: ✗ FAIL (25%) - 9/36 turns
+Seed 4: ✗ FAIL (1%) - 1/63 turns
+Seed 5: ✗ FAIL (3%) - 1/26 turns
+Seed 6: ✗ FAIL (5%) - 4/70 turns
+Seed 7: ✗ FAIL (2%) - 2/100 turns
+Seed 8: ✗ FAIL (58%) - 32/55 turns
 Seed 9: ✓ PASS (100%) - 56/56 turns
 Seed 10: ✓ PASS (100%) - 32/32 turns
 Seed 11: ✓ PASS (100%) - 82/82 turns
@@ -49,14 +49,14 @@ Seed 39: ✗ FAIL (1%) - 1/77 turns
 Seed 40: ✗ FAIL (14%) - 5/35 turns
 Seed 41: ✗ FAIL (11%) - 2/18 turns
 Seed 42: ✗ FAIL (30%) - 16/53 turns
-Seed 43: ✗ FAIL (54%) - 29/53 turns
-Seed 44: ✓ PASS (100%) - 48/48 turns
+Seed 43: ✗ FAIL (3%) - 2/53 turns
+Seed 44: ✗ FAIL (0%) - 0/48 turns
 Seed 45: ✗ FAIL (28%) - 18/64 turns
-Seed 46: ✗ FAIL (57%) - 49/85 turns
+Seed 46: ✗ FAIL (10%) - 9/85 turns
 Seed 47: ✗ FAIL (57%) - 37/64 turns
-Seed 48: ✗ FAIL (7%) - 4/51 turns
+Seed 48: ✗ FAIL (1%) - 1/51 turns
 Seed 49: ✗ FAIL (1%) - 1/71 turns
-Seed 50: ✗ FAIL (47%) - 11/23 turns
+Seed 50: ✗ FAIL (4%) - 1/23 turns
 Seed 51: ✗ FAIL (1%) - 1/53 turns
 Seed 52: ✗ FAIL (20%) - 15/74 turns
 Seed 53: ✗ FAIL (67%) - 31/46 turns
@@ -82,7 +82,7 @@ Seed 72: ✗ FAIL (8%) - 5/56 turns
 Seed 73: ✓ PASS (100%) - 37/37 turns
 Seed 74: ✗ FAIL (22%) - 11/50 turns
 Seed 75: ✗ FAIL (59%) - 37/62 turns
-Seed 76: ✗ FAIL (1%) - 1/100 turns
+Seed 76: ✗ FAIL (4%) - 4/100 turns
 Seed 77: ✗ FAIL (45%) - 33/73 turns
 Seed 78: ✗ FAIL (13%) - 6/43 turns
 Seed 79: ✗ FAIL (51%) - 35/68 turns
@@ -112,9 +112,9 @@ Seed 100: ✗ FAIL (30%) - 30/100 turns
 Summary
 =======================================
 Total seeds tested: 100
-Passed (100%): 30
-Failed (<100%): 70
+Passed (100%): 21
+Failed (<100%): 79
 
-Average pass rate: 50%
+Average pass rate: 41%
 
 ✗ Some seeds failed
