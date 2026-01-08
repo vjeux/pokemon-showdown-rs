@@ -1,7 +1,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::event_system::EffectState;
-use crate::battle::Effect;
+use crate::battle::{Effect, EffectType};
 
 impl Pokemon {
 
@@ -126,7 +126,7 @@ impl Pokemon {
             return false;
         }
 
-        // JS: if (!ignoreImmunities && status.id && ...) {
+        // JS: if (!ignoreImmunities && status.id && !(source?.hasAbility('corrosion') && ['tox', 'psn'].includes(status.id))) {
         // JS:     if (!this.runStatusImmunity(status.id === 'tox' ? 'psn' : status.id)) {
         // JS:         this.battle.debug('immune to status');
         // JS:         if ((sourceEffect as Move)?.status) {
@@ -135,7 +135,46 @@ impl Pokemon {
         // JS:         return false;
         // JS:     }
         // JS: }
-        // Note: Missing runStatusImmunity check and Corrosion ability exception
+        // ✅ NOW IMPLEMENTED: runStatusImmunity check with Corrosion ability exception
+        if !_ignore_immunities && !status.as_str().is_empty() {
+            // Check if source has Corrosion ability (bypasses poison immunity)
+            let source_has_corrosion = if let Some(src_pos) = source_pos {
+                if let Some(src_pokemon) = battle.pokemon_at(src_pos.0, src_pos.1) {
+                    src_pokemon.has_ability(battle, &["corrosion"])
+                } else {
+                    false
+                }
+            } else {
+                false
+            };
+
+            let status_str = status.as_str();
+            let is_poison_status = status_str == "tox" || status_str == "psn";
+
+            // Corrosion only bypasses immunity for poison statuses
+            if !(source_has_corrosion && is_poison_status) {
+                // For 'tox', check immunity against 'psn'
+                let immunity_check_status = if status_str == "tox" { "psn" } else { status_str };
+
+                // Check if sourceEffect is a move with a status field (for message display)
+                let source_effect_has_status = source_effect.map_or(false, |e| {
+                    if e.effect_type == EffectType::Move {
+                        if let Some(move_data) = battle.dex.moves.get(&e.id) {
+                            move_data.status.is_some()
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    }
+                });
+
+                if !Pokemon::run_status_immunity(battle, pokemon_pos, immunity_check_status, source_effect_has_status) {
+                    battle.debug("immune to status");
+                    return false;
+                }
+            }
+        }
 
         // JS: const prevStatus = this.status;
         // JS: const prevStatusState = this.statusState;
