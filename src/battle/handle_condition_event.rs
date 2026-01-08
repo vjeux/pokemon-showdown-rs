@@ -148,7 +148,13 @@ impl Battle {
 
                 condition_callbacks::dispatch_on_effectiveness(self, condition_id, type_mod, &target_type, pokemon_pos, active_move_clone.as_ref())
             }
-            "End" => condition_callbacks::dispatch_on_end(self, condition_id, pokemon_pos),
+            "End" => {
+                // Try ability-embedded condition callbacks first (for abilities like Zen Mode)
+                // These have side effects even when returning Continue, so we always call them
+                crate::data::ability_callbacks::dispatch_condition_on_end(self, condition_id, pokemon_pos);
+                // Then try standalone/move-embedded condition callbacks
+                condition_callbacks::dispatch_on_end(self, condition_id, pokemon_pos)
+            }
             "Faint" => {
                 // Faint needs target, source, and effect from event
                 // target_pos is the pokemon that fainted (pokemon_pos)
@@ -327,6 +333,9 @@ impl Battle {
                 let effect_id_owned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.to_string());
+                // Try ability-embedded condition callbacks first (for abilities like Zen Mode)
+                crate::data::ability_callbacks::dispatch_condition_on_start(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref());
+                // Then try standalone/move-embedded condition callbacks
                 condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
             }
             "SwitchIn" => {
