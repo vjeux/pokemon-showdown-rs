@@ -45,7 +45,7 @@ pub mod condition {
     ///         this.debug(move.name + "'s type changed to Electric");
     ///     }
     /// }
-    pub fn on_modify_type(battle: &mut Battle, _move_id: &str) -> EventResult {
+    pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
         // if (move.type === 'Normal') {
         //     move.type = 'Electric';
         //     this.debug(move.name + "'s type changed to Electric");

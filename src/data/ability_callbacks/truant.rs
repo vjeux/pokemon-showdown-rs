@@ -51,7 +51,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///     }
 ///     pokemon.addVolatile('truant');
 /// }
-pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (pokemon.removeVolatile('truant'))
     let removed = crate::pokemon::Pokemon::remove_volatile(
         battle,

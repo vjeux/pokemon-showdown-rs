@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, target_pos: (usize, usize), _source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (target?.volatiles['confusion'])
     let has_confusion = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

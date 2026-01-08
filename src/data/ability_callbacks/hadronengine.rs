@@ -55,7 +55,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///         return this.chainModify([5461, 4096]);
 ///     }
 /// }
-pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (this.field.isTerrain('electricterrain')) {
     //     this.debug('Hadron Engine boost');
     //     return this.chainModify([5461, 4096]);

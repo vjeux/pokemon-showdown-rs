@@ -456,7 +456,7 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_foe_before_move(battle: &mut Battle, _move_id: &str) -> EventResult {
+    pub fn on_foe_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // onFoeBeforeMove(attacker, defender, move) {
         //     if (attacker === this.effectState.source) {
         //         attacker.activeMoveActions--;
@@ -543,9 +543,10 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
 
         eprintln!("[SKYDROP_ANY_INVULN] Called with target_pos={:?}, source_pos={:?}, move_id={}", target_pos, source_pos, move_id);
 
@@ -649,9 +650,10 @@ pub mod condition {
         _base_power: i32,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
 
         // onAnyBasePower(basePower, target, source, move) {
         //     if (target !== this.effectState.target && target !== this.effectState.source) {

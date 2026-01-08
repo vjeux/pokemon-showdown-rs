@@ -18,7 +18,7 @@ use crate::event::EventResult;
 ///         this.boost({ spe: -1 }, pokemon, target, null, true);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Lower Speed of all other active Pokemon when hit
     if let Some(target) = target_pos {
         // Get all active Pokemon (not including fainted)

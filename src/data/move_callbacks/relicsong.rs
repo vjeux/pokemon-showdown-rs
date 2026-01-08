@@ -56,7 +56,7 @@ pub fn on_after_move_secondary_self(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     use crate::dex_data::ID;
 

@@ -81,7 +81,7 @@ pub fn on_prepare_hit(
 /// }
 pub fn on_modify_type(
     battle: &mut Battle,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {

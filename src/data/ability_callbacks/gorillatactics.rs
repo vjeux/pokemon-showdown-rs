@@ -32,7 +32,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///         return false;
 ///     }
 /// }
-pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     use crate::battle::Arg;
 
     // if (move.isZOrMaxPowered || move.id === 'struggle') return;
@@ -101,7 +101,8 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 ///     if (pokemon.abilityState.choiceLock || move.isZOrMaxPowered || move.id === 'struggle') return;
 ///     pokemon.abilityState.choiceLock = move.id;
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (pokemon.abilityState.choiceLock || move.isZOrMaxPowered || move.id === 'struggle') return;
     let choice_lock = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -149,7 +150,7 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str, pokemon_pos: (usize, u
 ///     this.debug('Gorilla Tactics Atk Boost');
 ///     return this.chainModify(1.5);
 /// }
-pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     use crate::dex_data::ID;
 
     // if (pokemon.volatiles['dynamax']) return;

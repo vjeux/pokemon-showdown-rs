@@ -20,8 +20,9 @@ pub fn on_charge_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (pokemon.useItem())
     let used_item = {
         let _pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

@@ -68,9 +68,10 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
 
         // onFoeRedirectTarget(target, source, source2, move) {
         //     if (this.validTarget(this.effectState.target, source, move.target)) {

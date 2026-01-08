@@ -54,7 +54,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///         return this.chainModify([5461, 4096]);
 ///     }
 /// }
-pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Check if the attacker is in sunny day or desolate land weather
     let effective_weather = {
         let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {

@@ -143,8 +143,10 @@ pub fn run_move(
     //
     // JavaScript: if this callback returns true, the move is cancelled
     // (e.g., Focus Punch when lostFocus is set)
-    if crate::data::move_callbacks::has_before_move_callback(move_id.as_str()) {
-        let callback_result = crate::data::move_callbacks::dispatch_before_move_callback(battle, move_id.as_str(), pokemon_pos);
+    // Clone active_move to avoid borrow issues
+    let active_move_for_callback = battle.active_move.clone();
+    if crate::data::move_callbacks::has_before_move_callback(active_move_for_callback.as_ref()) {
+        let callback_result = crate::data::move_callbacks::dispatch_before_move_callback(battle, active_move_for_callback.as_ref(), pokemon_pos);
         if let crate::event::EventResult::Boolean(true) = callback_result {
             // Move was cancelled by beforeMoveCallback
             return;

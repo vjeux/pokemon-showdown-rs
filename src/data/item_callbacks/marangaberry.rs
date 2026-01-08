@@ -13,7 +13,7 @@ use crate::Pokemon;
 ///         target.eatItem();
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.category === 'Special') {
     //     target.eatItem();
     // }

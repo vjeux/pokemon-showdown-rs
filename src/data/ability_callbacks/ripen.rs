@@ -92,7 +92,7 @@ pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>,
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), target_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), target_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (target.abilityState.berryWeaken)
     let berry_weaken = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

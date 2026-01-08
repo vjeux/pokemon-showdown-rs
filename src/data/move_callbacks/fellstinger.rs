@@ -14,8 +14,9 @@ pub fn on_after_move_secondary_self(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     let pokemon = pokemon_pos;
 
     // if (!target || target.fainted || target.hp <= 0) this.boost({ atk: 3 }, pokemon, pokemon, move);

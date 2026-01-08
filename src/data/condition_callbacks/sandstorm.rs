@@ -61,7 +61,7 @@ pub fn on_modify_sp_d(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // if (pokemon.hasType('Rock') && this.field.isWeather('sandstorm'))
     let has_rock_type = {

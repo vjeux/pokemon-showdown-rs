@@ -17,7 +17,8 @@ use crate::event::EventResult;
 ///         move.hasSheerForce = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, move_id: &str, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (move.secondaries)
     if let Some(ref mut active_move) = battle.active_move {
         // Check if secondaries exist (not empty)
@@ -46,7 +47,7 @@ pub fn on_modify_move(battle: &mut Battle, move_id: &str, _pokemon_pos: (usize, 
 /// onBasePower(basePower, pokemon, target, move) {
 ///     if (move.hasSheerForce) return this.chainModify([5325, 4096]);
 /// }
-pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (move.hasSheerForce) return this.chainModify([5325, 4096]);
     let has_sheer_force = if let Some(ref active_move) = battle.active_move {
         active_move.has_sheer_force

@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 1 });
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // Boost Attack by 1 stage when hit by a Dark-type move
     if let Some(target) = target_pos {
         // Check if the move is Dark-type

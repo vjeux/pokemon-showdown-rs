@@ -384,10 +384,13 @@ impl Battle {
                             // For now, we'll just call the dispatch function without the target.
                             // TODO: Update dispatch_before_turn_callback to take target_loc parameter if needed
 
+                            // Create temporary ActiveMove for the dispatch
+                            let temp_active_move = self.dex.get_active_move(move_id.as_str());
+
                             // Call the move's before_turn_callback
                             let result = crate::data::move_callbacks::dispatch_before_turn_callback(
                                 self,
-                                move_id.as_str(),
+                                temp_active_move.as_ref(),
                                 (side_idx, poke_idx)
                             );
                             eprintln!("[RUN_ACTION] beforeTurnMove callback returned {:?}", result);
@@ -402,10 +405,13 @@ impl Battle {
                             // JS:     break;
                             eprintln!("[RUN_ACTION] Executing priorityChargeMove callback for move={}", move_id.as_str());
 
+                            // Create temporary ActiveMove for the dispatch
+                            let temp_active_move = self.dex.get_active_move(move_id.as_str());
+
                             // Call the move's priority_charge_callback
                             let result = crate::data::move_callbacks::dispatch_priority_charge_callback(
                                 self,
-                                move_id.as_str(),
+                                temp_active_move.as_ref(),
                                 (side_idx, poke_idx)
                             );
                             eprintln!("[RUN_ACTION] priorityChargeMove callback returned {:?}", result);

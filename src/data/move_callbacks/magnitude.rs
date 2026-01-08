@@ -74,7 +74,7 @@ pub fn on_use_move_message(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // Get magnitude from active move property
     let magnitude = battle

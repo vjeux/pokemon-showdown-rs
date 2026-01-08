@@ -14,7 +14,7 @@ use crate::dex::Multihit;
 ///     move.multihit = 2;
 ///     move.multihitType = 'parentalbond';
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (move.category === 'Status' || move.multihit || move.flags['noparentalbond'] || move.flags['charge'] ||
     //     move.flags['futuremove'] || move.spreadHit || move.isZ || move.isMax) return;
     let should_return = if let Some(ref active_move) = battle.active_move {
@@ -55,8 +55,9 @@ pub fn on_source_modify_secondaries(
     secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (move.multihitType === 'parentalbond' && move.id === 'secretpower' && move.hit < 2)
     let should_filter = if let Some(ref active_move) = battle.active_move {
         active_move.multi_hit_type.as_deref() == Some("parentalbond")

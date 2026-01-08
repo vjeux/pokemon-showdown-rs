@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///         move.typeChangerBoosted = this.effect;
 ///     }
 /// }
-pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_type(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // Get active move
     let active_move = match &battle.active_move {
         Some(m) => m.clone(),
@@ -76,7 +76,7 @@ pub fn on_modify_type(battle: &mut Battle, _move_id: &str, pokemon_pos: (usize, 
 /// onBasePower(basePower, pokemon, target, move) {
 ///     if (move.typeChangerBoosted === this.effect) return this.chainModify([4915, 4096]);
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     eprintln!("[PIXILATE on_base_power] CALLED! base_power={}", base_power);
 
     // Check if this move was boosted by Pixilate

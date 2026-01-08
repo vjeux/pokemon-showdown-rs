@@ -14,7 +14,7 @@ use crate::pokemon::Pokemon;
 ///         source.addVolatile('gem');
 ///     }
 /// }
-pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (target === source || move.category === 'Status' || move.flags['pledgecombo']) return;
     let target = match target_pos {
         Some(pos) => pos,

@@ -215,8 +215,9 @@ pub fn on_source_modify_damage(
     _damage: i32,
     _source_pos: (usize, usize),
     _target_pos: (usize, usize),
-    move_id: &str,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (move.id === 'behemothbash' || move.id === 'behemothblade' || move.id === 'dynamaxcannon')
     if move_id == "behemothbash" || move_id == "behemothblade" || move_id == "dynamaxcannon" {
         // return this.chainModify(2);
@@ -239,7 +240,7 @@ pub fn on_drag_out(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // this.add('-block', pokemon, 'Dynamax');
     let pokemon_ident = {

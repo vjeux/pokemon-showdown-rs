@@ -39,17 +39,9 @@ impl Battle {
             (None, None, String::new(), String::new())
         };
 
-        // Extract move_id from active_move, or from event.effect if active_move is not set
-        // This is needed for events like FractionalPriority which fire before the move becomes active
-        let move_id_owned = if let Some(ref active_move) = self.active_move {
-            active_move.id.to_string()
-        } else if let Some(ref event) = self.event {
-            // If no active_move, try to get move from event.effect
-            event.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new())
-        } else {
-            String::new()
-        };
-        let move_id = move_id_owned.as_str();
+        // Clone active_move to pass to dispatch functions
+        // We clone because we need to pass a reference to the move while also having &mut self
+        let active_move_clone = self.active_move.clone();
 
         // Extract relay variables from event
         let (relay_var_int, _relay_var_float, relay_var_boost, relay_var_string) = if let Some(ref event) = self.event {
@@ -97,14 +89,14 @@ impl Battle {
                 ability_id.as_str(),
                 pokemon_pos,
                 event_source_pos.unwrap_or((0, 0)),
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AfterMoveSecondarySelf" => ability_callbacks::dispatch_on_after_move_secondary_self(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
                 event_target_pos.unwrap_or((0, 0)),
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AfterSetStatus" => ability_callbacks::dispatch_on_after_set_status(
                 self,
@@ -137,7 +129,7 @@ impl Battle {
                 relay_var_int,
                 event_source_pos,
                 event_target_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AllyBasePowerPriority" => ability_callbacks::dispatch_on_ally_base_power_priority(
                 self,
@@ -145,7 +137,7 @@ impl Battle {
                 relay_var_int,
                 event_source_pos,
                 event_target_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AllyFaint" => {
                 ability_callbacks::dispatch_on_ally_faint(self, ability_id.as_str(), Some(pokemon_pos))
@@ -202,7 +194,7 @@ impl Battle {
                 ability_id.as_str(),
                 Some(pokemon_pos),
                 event_source_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyAccuracy" => ability_callbacks::dispatch_on_any_accuracy(
                 self,
@@ -210,7 +202,7 @@ impl Battle {
                 relay_var_int,
                 Some(pokemon_pos),
                 event_source_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyAfterMega" => ability_callbacks::dispatch_on_any_after_mega(
                 self,
@@ -240,7 +232,7 @@ impl Battle {
                 relay_var_int,
                 Some(pokemon_pos),
                 event_target_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyBasePowerPriority" => ability_callbacks::dispatch_on_any_base_power_priority(
                 self,
@@ -248,7 +240,7 @@ impl Battle {
                 relay_var_int,
                 Some(pokemon_pos),
                 event_target_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyBeforeMove" => ability_callbacks::dispatch_on_any_before_move(
                 self,
@@ -276,7 +268,7 @@ impl Battle {
                 ability_id.as_str(),
                 Some(pokemon_pos),
                 event_source_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyInvulnerabilityPriority" => {
                 ability_callbacks::dispatch_on_any_invulnerability_priority(
@@ -284,7 +276,7 @@ impl Battle {
                     ability_id.as_str(),
                     Some(pokemon_pos),
                     None,
-                    move_id,
+                    active_move_clone.as_ref(),
                 )
             }
             "AnyModifyAccuracy" => ability_callbacks::dispatch_on_any_modify_accuracy(
@@ -303,7 +295,7 @@ impl Battle {
                 relay_var_int,
                 event_source_pos,
                 Some(pokemon_pos),
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyModifyBoost" => ability_callbacks::dispatch_on_any_modify_boost(
                 self,
@@ -317,7 +309,7 @@ impl Battle {
                 relay_var_int,
                 event_source_pos,
                 Some(pokemon_pos),
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyModifyDef" => ability_callbacks::dispatch_on_any_modify_def(
                 self,
@@ -325,7 +317,7 @@ impl Battle {
                 relay_var_int,
                 Some(pokemon_pos),
                 event_source_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyModifySpA" => ability_callbacks::dispatch_on_any_modify_sp_a(
                 self,
@@ -333,7 +325,7 @@ impl Battle {
                 relay_var_int,
                 event_source_pos,
                 Some(pokemon_pos),
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyModifySpD" => ability_callbacks::dispatch_on_any_modify_sp_d(
                 self,
@@ -341,7 +333,7 @@ impl Battle {
                 relay_var_int,
                 Some(pokemon_pos),
                 event_source_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnyRedirectTarget" => ability_callbacks::dispatch_on_any_redirect_target(
                 self,
@@ -349,7 +341,7 @@ impl Battle {
                 Some(pokemon_pos),
                 event_source_pos,
                 event_target_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "AnySetWeather" => ability_callbacks::dispatch_on_any_set_weather(
                 self,
@@ -379,7 +371,7 @@ impl Battle {
                 ability_id.as_str(),
                 Some(pokemon_pos),
                 event_source_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "BasePower" => {
                 // BasePower is called via run_event, so attacker is in event.target, defender is in event.source
@@ -396,23 +388,23 @@ impl Battle {
                 let move_id_owned = self.active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
                 let move_id = move_id_owned.as_str();
 
-                ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), base_power, attacker_pos, defender_pos, move_id)
+                ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), base_power, attacker_pos, defender_pos, active_move_clone.as_ref())
             }
             "BasePowerPriority" => ability_callbacks::dispatch_on_base_power_priority(
                 self,
                 ability_id.as_str(),
                 0, pokemon_pos, pokemon_pos,
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "BeforeMove" => {
-                ability_callbacks::dispatch_on_before_move(self, ability_id.as_str(), pokemon_pos, event_target_pos, move_id)
+                ability_callbacks::dispatch_on_before_move(self, ability_id.as_str(), pokemon_pos, event_target_pos, active_move_clone.as_ref())
             }
             "BeforeMovePriority" => ability_callbacks::dispatch_on_before_move_priority(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
                 event_target_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "BeforeSwitchIn" => ability_callbacks::dispatch_on_before_switch_in(
                 self,
@@ -436,7 +428,7 @@ impl Battle {
                 ability_callbacks::dispatch_on_check_show(self, ability_id.as_str(), pokemon_pos)
             }
             "CriticalHit" => {
-                ability_callbacks::dispatch_on_critical_hit(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos, move_id)
+                ability_callbacks::dispatch_on_critical_hit(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos, active_move_clone.as_ref())
             }
             "Damage" => {
                 ability_callbacks::dispatch_on_damage(
@@ -458,30 +450,26 @@ impl Battle {
             ),
             "DamagingHit" => {
                 // Get move_id, source, and damage from current event context
-                let (move_id, source_pos, damage) = self.event.as_ref()
+                let (move_id_str, source_pos, damage) = self.event.as_ref()
                     .map(|e| (
                         e.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new()),
                         e.source,
                         match &e.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 } // Extract damage from relay_var
                     ))
                     .unwrap_or_else(|| (String::new(), None, 0));
-                ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), damage, Some(pokemon_pos), source_pos, &move_id)
+                let _ = move_id_str; // Unused, we now use active_move_clone
+                ability_callbacks::dispatch_on_damaging_hit(self, ability_id.as_str(), damage, Some(pokemon_pos), source_pos, active_move_clone.as_ref())
             }
             "DamagingHitOrder" => {
-                // Get move_id and source from current event context
-                let (move_id, source_pos) = self.event.as_ref()
-                    .map(|e| (
-                        e.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new()),
-                        e.source
-                    ))
-                    .unwrap_or_else(|| (String::new(), None));
+                // Get source from current event context
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
                 ability_callbacks::dispatch_on_damaging_hit_order(
                     self,
                     ability_id.as_str(),
                     0,
                     Some(pokemon_pos),
                     source_pos,
-                    &move_id,
+                    active_move_clone.as_ref(),
                 )
             }
             "DeductPP" => {
@@ -491,14 +479,14 @@ impl Battle {
                 ability_callbacks::dispatch_on_disable_move(self, ability_id.as_str(), pokemon_pos)
             }
             "DragOut" => {
-                ability_callbacks::dispatch_on_drag_out(self, ability_id.as_str(), pokemon_pos, event_source_pos, move_id)
+                ability_callbacks::dispatch_on_drag_out(self, ability_id.as_str(), pokemon_pos, event_source_pos, active_move_clone.as_ref())
             }
             "DragOutPriority" => ability_callbacks::dispatch_on_drag_out_priority(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
                 event_source_pos,
-                move_id,
+                active_move_clone.as_ref(),
             ),
             "EatItem" => {
                 ability_callbacks::dispatch_on_eat_item(
@@ -528,7 +516,7 @@ impl Battle {
                     (type_mod, target_type)
                 };
 
-                ability_callbacks::dispatch_on_effectiveness(self, ability_id.as_str(), type_mod, pokemon_pos, &target_type, move_id)
+                ability_callbacks::dispatch_on_effectiveness(self, ability_id.as_str(), type_mod, pokemon_pos, &target_type, active_move_clone.as_ref())
             }
             "EmergencyExit" => ability_callbacks::dispatch_on_emergency_exit(
                 self,
@@ -560,7 +548,7 @@ impl Battle {
                 ability_id.as_str()
             ),
             "FoeTryMove" => {
-                ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos, move_id)
+                ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos, active_move_clone.as_ref())
             }
             "FractionalPriority" => ability_callbacks::dispatch_on_fractional_priority(
                 self,
@@ -568,7 +556,7 @@ impl Battle {
                 relay_var_int,
                 pokemon_pos,
             None,
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "FractionalPriorityPriority" => {
                 ability_callbacks::dispatch_on_fractional_priority_priority(
@@ -577,10 +565,10 @@ impl Battle {
                     relay_var_int,
                     pokemon_pos,
                 None,
-                move_id,
+                active_move_clone.as_ref(),
             )
             }
-            "Hit" => ability_callbacks::dispatch_on_hit(self, ability_id.as_str(), pokemon_pos, event_source_pos.unwrap_or((0, 0)), move_id),
+            "Hit" => ability_callbacks::dispatch_on_hit(self, ability_id.as_str(), pokemon_pos, event_source_pos.unwrap_or((0, 0)), active_move_clone.as_ref()),
             "Immunity" => {
                 ability_callbacks::dispatch_on_immunity(self, ability_id.as_str(), "", pokemon_pos)
             }
@@ -588,13 +576,13 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "ModifyAccuracyPriority" => ability_callbacks::dispatch_on_modify_accuracy_priority(
                 self,
                 ability_id.as_str(),
                 0, pokemon_pos, pokemon_pos,
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "ModifyAtk" => {
                 let (atk, defender_pos, move_id_str) = if let Some(ref event) = self.event {
@@ -606,17 +594,17 @@ impl Battle {
                 } else {
                     (0, (0, 0), String::new())
                 };
-                ability_callbacks::dispatch_on_modify_atk(self, ability_id.as_str(), atk, pokemon_pos, defender_pos, &move_id_str)
+                ability_callbacks::dispatch_on_modify_atk(self, ability_id.as_str(), atk, pokemon_pos, defender_pos, active_move_clone.as_ref())
             }
             "ModifyAtkPriority" => ability_callbacks::dispatch_on_modify_atk_priority(
                 self,
                 ability_id.as_str(),
                 0, pokemon_pos, pokemon_pos,
-            move_id,
+            active_move_clone.as_ref(),
             ),
-            "ModifyCritRatio" => ability_callbacks::dispatch_on_modify_crit_ratio(self, ability_id.as_str(), relay_var_int, pokemon_pos, None, move_id),
+            "ModifyCritRatio" => ability_callbacks::dispatch_on_modify_crit_ratio(self, ability_id.as_str(), relay_var_int, pokemon_pos, None, active_move_clone.as_ref()),
             "ModifyDamage" => {
-                ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), relay_var_int, pokemon_pos, event_source_pos.unwrap_or((0, 0)), move_id)
+                ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), relay_var_int, pokemon_pos, event_source_pos.unwrap_or((0, 0)), active_move_clone.as_ref())
             }
             "ModifyDef" => {
                 let (def, attacker_pos, move_id_str) = if let Some(ref event) = self.event {
@@ -628,16 +616,16 @@ impl Battle {
                 } else {
                     (0, (0, 0), String::new())
                 };
-                ability_callbacks::dispatch_on_modify_def(self, ability_id.as_str(), def, pokemon_pos, attacker_pos, &move_id_str)
+                ability_callbacks::dispatch_on_modify_def(self, ability_id.as_str(), def, pokemon_pos, attacker_pos, active_move_clone.as_ref())
             }
-            "ModifyDefPriority" => ability_callbacks::dispatch_on_modify_def_priority(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), ""),
+            "ModifyDefPriority" => ability_callbacks::dispatch_on_modify_def_priority(self, ability_id.as_str(), 0, pokemon_pos, (0, 0), active_move_clone.as_ref()),
             "ModifyMove" => {
-                ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), move_id, pokemon_pos, event_target_pos)
+                ability_callbacks::dispatch_on_modify_move(self, ability_id.as_str(), active_move_clone.as_ref(), pokemon_pos, event_target_pos)
             }
             "ModifyMovePriority" => ability_callbacks::dispatch_on_modify_move_priority(
                 self,
                 ability_id.as_str(),
-            move_id,
+            active_move_clone.as_ref(),
             pokemon_pos,
             event_target_pos,
             ),
@@ -645,7 +633,7 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 relay_var_int, pokemon_pos, event_target_pos,
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "ModifySTAB" => {
                 let (stab, source_pos, target_pos, move_id_str) = if let Some(ref event) = self.event {
@@ -662,7 +650,7 @@ impl Battle {
                 } else {
                     (1.0, None, Some(pokemon_pos), String::new())
                 };
-                ability_callbacks::dispatch_on_modify_s_t_a_b(self, ability_id.as_str(), stab, source_pos, target_pos, &move_id_str)
+                ability_callbacks::dispatch_on_modify_s_t_a_b(self, ability_id.as_str(), stab, source_pos, target_pos, active_move_clone.as_ref())
             }
             "ModifySecondaries" => ability_callbacks::dispatch_on_modify_secondaries(self, ability_id.as_str()),
             "ModifySpA" => {
@@ -675,24 +663,24 @@ impl Battle {
                 } else {
                     (0, (0, 0), String::new())
                 };
-                ability_callbacks::dispatch_on_modify_sp_a(self, ability_id.as_str(), spa, pokemon_pos, defender_pos, &move_id_str)
+                ability_callbacks::dispatch_on_modify_sp_a(self, ability_id.as_str(), spa, pokemon_pos, defender_pos, active_move_clone.as_ref())
             }
             "ModifySpAPriority" => ability_callbacks::dispatch_on_modify_sp_a_priority(
                 self,
                 ability_id.as_str(),
                 0, pokemon_pos, pokemon_pos,
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "ModifySpe" => {
                 ability_callbacks::dispatch_on_modify_spe(self, ability_id.as_str(), relay_var_int, pokemon_pos)
             }
             "ModifyType" => {
-                ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), move_id, pokemon_pos, event_target_pos)
+                ability_callbacks::dispatch_on_modify_type(self, ability_id.as_str(), active_move_clone.as_ref(), pokemon_pos, event_target_pos)
             }
             "ModifyTypePriority" => ability_callbacks::dispatch_on_modify_type_priority(
                 self,
                 ability_id.as_str(),
-                move_id,
+                active_move_clone.as_ref(),
                 pokemon_pos,
                 event_target_pos,
             ),
@@ -701,14 +689,8 @@ impl Battle {
             }
             "ModifyWeightPriority" => ability_callbacks::dispatch_on_modify_weight_priority(self, ability_id.as_str(), relay_var_int, pokemon_pos),
             "PrepareHit" => {
-                // Get move_id from active_move context (extract to avoid borrow issues)
-                let move_id_string = if let Some(ref active_move) = self.active_move {
-                    active_move.id.to_string()
-                } else {
-                    String::new()
-                };
                 // For PrepareHit, pokemon_pos is the source (Pokemon using the move)
-                ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), Some(pokemon_pos), event_target_pos, &move_id_string)
+                ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), Some(pokemon_pos), event_target_pos, active_move_clone.as_ref())
             }
             "Residual" => {
                 ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
@@ -759,7 +741,7 @@ impl Battle {
                 relay_var_int,
                 pokemon_pos,
                 event_target_pos.unwrap_or((0, 0)),
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "SourceBasePowerPriority" => ability_callbacks::dispatch_on_source_base_power_priority(
                 self,
@@ -767,39 +749,39 @@ impl Battle {
                 relay_var_int,
                 pokemon_pos,
                 event_target_pos.unwrap_or((0, 0)),
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "SourceDamagingHit" => ability_callbacks::dispatch_on_source_damaging_hit(
                 self,
                 ability_id.as_str(),
                 relay_var_int, event_target_pos, Some(pokemon_pos),
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "SourceModifyAccuracy" => ability_callbacks::dispatch_on_source_modify_accuracy(
                 self,
                 ability_id.as_str(),
                 relay_var_int, event_target_pos.unwrap_or((0, 0)), pokemon_pos,
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "SourceModifyAccuracyPriority" => {
                 ability_callbacks::dispatch_on_source_modify_accuracy_priority(
                     self,
                     ability_id.as_str(),
                     relay_var_int, event_target_pos.unwrap_or((0, 0)), pokemon_pos,
-                move_id,
+                active_move_clone.as_ref(),
             )
             }
             "SourceModifyAtk" => ability_callbacks::dispatch_on_source_modify_atk(
                 self,
                 ability_id.as_str(),
                 relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "SourceModifyAtkPriority" => ability_callbacks::dispatch_on_source_modify_atk_priority(
                 self,
                 ability_id.as_str(),
                 relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "SourceModifyDamage" => {
                 // Extract parameters from event
@@ -818,12 +800,12 @@ impl Battle {
                     self,
                     ability_id.as_str(),
                     damage, source_pos, pokemon_pos,
-                &move_id_str
+                    active_move_clone.as_ref()
                 )
             }
             "SourceModifyDamagePriority" => {
                 // Extract parameters from event
-                let (damage, source_pos, move_id_str) = if let Some(ref event) = self.event {
+                let (damage, source_pos, _move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
@@ -836,8 +818,8 @@ impl Battle {
                     self,
                     ability_id.as_str(),
                     damage, source_pos, pokemon_pos,
-                &move_id_str
-            )
+                    active_move_clone.as_ref()
+                )
             }
             "SourceModifySecondaries" => {
                 // Extract secondaries from event relay_var
@@ -855,7 +837,7 @@ impl Battle {
                         &sec,
                         event_target_pos,
                         Some(pokemon_pos),
-                        move_id,
+                        active_move_clone.as_ref(),
                     )
                 } else {
                     EventResult::Continue
@@ -865,14 +847,14 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "SourceModifySpAPriority" => {
                 ability_callbacks::dispatch_on_source_modify_sp_a_priority(
                     self,
                     ability_id.as_str(),
                     relay_var_int, pokemon_pos, event_target_pos.unwrap_or((0, 0)),
-                move_id,
+                active_move_clone.as_ref(),
             )
             }
             "SourceTryHeal" => ability_callbacks::dispatch_on_source_try_heal(
@@ -993,13 +975,13 @@ impl Battle {
                 ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), None, None)
             }
             "TryHit" => {
-                ability_callbacks::dispatch_on_try_hit(self, ability_id.as_str(), pokemon_pos, event_source_pos.unwrap_or((0, 0)), move_id)
+                ability_callbacks::dispatch_on_try_hit(self, ability_id.as_str(), pokemon_pos, event_source_pos.unwrap_or((0, 0)), active_move_clone.as_ref())
             }
             "TryHitPriority" => ability_callbacks::dispatch_on_try_hit_priority(
                 self,
                 ability_id.as_str(),
                 pokemon_pos, pokemon_pos,
-            move_id,
+            active_move_clone.as_ref(),
             ),
             "Update" => {
                 ability_callbacks::dispatch_on_update(self, ability_id.as_str(), pokemon_pos)

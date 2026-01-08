@@ -92,7 +92,7 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         // this.effectState.slot = null;
         // this.effectState.damage = 0;
@@ -113,8 +113,9 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // if (move.id !== 'counter') return;
         if move_id != "counter" {
             return EventResult::Continue;
@@ -155,8 +156,9 @@ pub mod condition {
         damage: i32,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // Get target and source
         let target = match target_pos {
             Some(pos) => pos,

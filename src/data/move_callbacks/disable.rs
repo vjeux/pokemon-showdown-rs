@@ -280,7 +280,7 @@ pub mod condition {
     ///         return false;
     ///     }
     /// }
-    pub fn on_before_move(battle: &mut Battle, move_id: &str) -> EventResult {
+    pub fn on_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // if (!(move.isZ && move.isZOrMaxPowered) && move.id === this.effectState.move) {
         //     this.add('cant', attacker, 'Disable', move);
         //     return false;

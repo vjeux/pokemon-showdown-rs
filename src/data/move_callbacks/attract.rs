@@ -236,7 +236,7 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         // Get the pokemon to access its volatiles
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

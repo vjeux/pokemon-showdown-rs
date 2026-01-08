@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.category == "Physical" {
             if let Some(attacker) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {

@@ -94,7 +94,7 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
@@ -124,7 +124,7 @@ pub mod condition {
         _accuracy: i32,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,

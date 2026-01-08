@@ -54,8 +54,10 @@ impl BattleQueue {
                         let (has_before_turn_callback, has_priority_charge_callback, is_max, is_z) = {
                             let move_id_str = move_action.move_id.as_str();
                             (
-                                crate::data::move_callbacks::has_before_turn_callback(move_id_str),
-                                crate::data::move_callbacks::has_priority_charge_callback(move_id_str),
+                                // Inline check for beforeTurnCallback (counter, mirrorcoat, pursuit)
+                                matches!(move_id_str, "counter" | "mirrorcoat" | "pursuit"),
+                                // Inline check for priorityChargeCallback (beakblast, chillyreception, focuspunch, shelltrap)
+                                matches!(move_id_str, "beakblast" | "chillyreception" | "focuspunch" | "shelltrap"),
                                 move_action.max_move.is_some(),
                                 move_action.zmove.is_some(),
                             )

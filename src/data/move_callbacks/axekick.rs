@@ -15,7 +15,7 @@ pub fn on_move_fail(
     battle: &mut Battle,
     _target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // Get the source
     let source = match source_pos {

@@ -4,6 +4,7 @@
 //! Individual condition implementations are in separate files.
 
 use crate::battle::Battle;
+use crate::battle_actions::ActiveMove;
 use crate::data::move_callbacks;
 use crate::event::EventResult;
 
@@ -66,7 +67,7 @@ pub fn dispatch_duration_callback(
         "sunnyday" => sunnyday::duration_callback(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_duration_callback(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_duration_callback(battle, None, pokemon_pos)
         }
     }
 }
@@ -76,14 +77,14 @@ pub fn dispatch_on_after_move(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "lockedmove" => lockedmove::on_after_move(battle, pokemon_pos, target_pos, move_id),
+        "lockedmove" => lockedmove::on_after_move(battle, pokemon_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
             // dispatch_condition_on_after_move takes (battle, move_id, source_pos, target_pos)
-            move_callbacks::dispatch_condition_on_after_move(battle, condition_id, pokemon_pos, target_pos)
+            move_callbacks::dispatch_condition_on_after_move(battle, active_move, pokemon_pos, target_pos)
         }
     }
 }
@@ -93,10 +94,10 @@ pub fn dispatch_on_after_move_secondary(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "frz" => frz::on_after_move_secondary(battle, pokemon_pos, source_pos, move_id),
+        "frz" => frz::on_after_move_secondary(battle, pokemon_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -107,15 +108,15 @@ pub fn dispatch_on_base_power(
     base_power: i32,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "gem" => gem::on_base_power(battle, base_power, pokemon_pos, target_pos, move_id),
-        "rolloutstorage" => rolloutstorage::on_base_power(battle, base_power, pokemon_pos, target_pos, move_id),
+        "gem" => gem::on_base_power(battle, base_power, pokemon_pos, target_pos, active_move),
+        "rolloutstorage" => rolloutstorage::on_base_power(battle, base_power, pokemon_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
             // dispatch_condition_on_base_power takes (battle, move_id, source_pos, target_pos)
-            move_callbacks::dispatch_condition_on_base_power(battle, condition_id, pokemon_pos, target_pos)
+            move_callbacks::dispatch_condition_on_base_power(battle, active_move, pokemon_pos, target_pos)
         }
     }
 }
@@ -125,19 +126,19 @@ pub fn dispatch_on_before_move(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "choicelock" => choicelock::on_before_move(battle, pokemon_pos, target_pos, move_id),
-        "confusion" => confusion::on_before_move(battle, pokemon_pos, target_pos, move_id),
-        "flinch" => flinch::on_before_move(battle, pokemon_pos, target_pos, move_id),
-        "frz" => frz::on_before_move(battle, pokemon_pos, target_pos, move_id),
-        "mustrecharge" => mustrecharge::on_before_move(battle, pokemon_pos, target_pos, move_id),
-        "par" => par::on_before_move(battle, pokemon_pos, target_pos, move_id),
-        "slp" => slp::on_before_move(battle, pokemon_pos, target_pos, move_id),
+        "choicelock" => choicelock::on_before_move(battle, pokemon_pos, target_pos, active_move),
+        "confusion" => confusion::on_before_move(battle, pokemon_pos, target_pos, active_move),
+        "flinch" => flinch::on_before_move(battle, pokemon_pos, target_pos, active_move),
+        "frz" => frz::on_before_move(battle, pokemon_pos, target_pos, active_move),
+        "mustrecharge" => mustrecharge::on_before_move(battle, pokemon_pos, target_pos, active_move),
+        "par" => par::on_before_move(battle, pokemon_pos, target_pos, active_move),
+        "slp" => slp::on_before_move(battle, pokemon_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_before_move(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_before_move(battle, active_move, pokemon_pos)
         }
     }
 }
@@ -148,13 +149,13 @@ pub fn dispatch_on_foe_before_move(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "skydrop" => skydrop::on_foe_before_move(battle, pokemon_pos, target_pos, source_pos, move_id),
+        "skydrop" => skydrop::on_foe_before_move(battle, pokemon_pos, target_pos, source_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_foe_before_move(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_foe_before_move(battle, active_move, pokemon_pos)
         }
     }
 }
@@ -188,7 +189,7 @@ pub fn dispatch_on_before_switch_out(
         "dynamax" => dynamax::on_before_switch_out(battle, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_before_switch_out(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_before_switch_out(battle, None, pokemon_pos)
         }
     }
 }
@@ -210,13 +211,13 @@ pub fn dispatch_on_damaging_hit(
     damage: i32,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "frz" => frz::on_damaging_hit(battle, damage, pokemon_pos, source_pos, move_id),
+        "frz" => frz::on_damaging_hit(battle, damage, pokemon_pos, source_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_damaging_hit(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_damaging_hit(battle, active_move, pokemon_pos)
         }
     }
 }
@@ -230,7 +231,7 @@ pub fn dispatch_on_disable_move(
         "choicelock" => choicelock::on_disable_move(battle, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_disable_move(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_disable_move(battle, None, pokemon_pos)
         }
     }
 }
@@ -240,15 +241,15 @@ pub fn dispatch_on_drag_out(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "commanded" => commanded::on_drag_out(battle, pokemon_pos, source_pos, move_id),
-        "commanding" => commanding::on_drag_out(battle, pokemon_pos, source_pos, move_id),
-        "dynamax" => dynamax::on_drag_out(battle, pokemon_pos, source_pos, move_id),
+        "commanded" => commanded::on_drag_out(battle, pokemon_pos, source_pos, active_move),
+        "commanding" => commanding::on_drag_out(battle, pokemon_pos, source_pos, active_move),
+        "dynamax" => dynamax::on_drag_out(battle, pokemon_pos, source_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_drag_out(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_drag_out(battle, active_move, pokemon_pos)
         }
     }
 }
@@ -259,18 +260,18 @@ pub fn dispatch_on_effectiveness(
     type_mod: i32,
     target_type: &str,
     pokemon_pos: (usize, usize),
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    eprintln!("[DISPATCH_ON_EFFECTIVENESS] condition_id={}, type_mod={}, target_type={}, pokemon_pos={:?}, move_id={}",
-        condition_id, type_mod, target_type, pokemon_pos, move_id);
+    eprintln!("[DISPATCH_ON_EFFECTIVENESS] condition_id={}, type_mod={}, target_type={}, pokemon_pos={:?}, active_move={:?}",
+        condition_id, type_mod, target_type, pokemon_pos, active_move);
 
     match condition_id {
-        "deltastream" => deltastream::on_effectiveness(battle, type_mod, target_type, pokemon_pos, move_id),
+        "deltastream" => deltastream::on_effectiveness(battle, type_mod, target_type, pokemon_pos, active_move),
         "tarshot" => {
             eprintln!("[DISPATCH_ON_EFFECTIVENESS] Calling tarshot callback with type_mod={}, target_type={}", type_mod, target_type);
             crate::data::move_callbacks::dispatch_condition_on_effectiveness(
                 battle,
-                "tarshot",
+                active_move,
                 type_mod,
                 target_type,
                 pokemon_pos,
@@ -294,7 +295,7 @@ pub fn dispatch_on_end(
         "twoturnmove" => twoturnmove::on_end(battle, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_end(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_end(battle, None, pokemon_pos)
         }
     }
 }
@@ -308,7 +309,7 @@ pub fn dispatch_on_faint(
 ) -> EventResult {
     // Route to actual implementation in move_callbacks
     use crate::data::move_callbacks;
-    move_callbacks::dispatch_condition_on_faint(battle, condition_id, target_pos, source_pos, effect_id)
+    move_callbacks::dispatch_condition_on_faint(battle, None, target_pos, source_pos, effect_id)
 }
 /// Dispatch onFieldEnd callbacks
 pub fn dispatch_on_field_end(
@@ -327,7 +328,7 @@ pub fn dispatch_on_field_end(
         "sunnyday" => sunnyday::on_field_end(battle, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_field_end(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_field_end(battle, None, pokemon_pos)
         }
     }
 }
@@ -348,7 +349,7 @@ pub fn dispatch_on_field_residual(
         "sunnyday" => sunnyday::on_field_residual(battle, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_field_residual(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_field_residual(battle, None, pokemon_pos)
         }
     }
 }
@@ -371,7 +372,7 @@ pub fn dispatch_on_field_start(
         "sunnyday" => sunnyday::on_field_start(battle, _pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_field_start(battle, condition_id, _pokemon_pos)
+            move_callbacks::dispatch_condition_on_field_start(battle, None, _pokemon_pos)
         }
     }
 }
@@ -388,7 +389,7 @@ pub fn dispatch_on_field_restart(
     match condition_id {
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_field_restart(battle, condition_id, _pokemon_pos)
+            move_callbacks::dispatch_condition_on_field_restart(battle, None, _pokemon_pos)
         }
     }
 }
@@ -404,7 +405,7 @@ pub fn dispatch_on_immunity(
         "sunnyday" => sunnyday::on_immunity(battle, immunity_type, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_immunity(battle, condition_id, immunity_type, pokemon_pos)
+            move_callbacks::dispatch_condition_on_immunity(battle, None, immunity_type, pokemon_pos)
         }
     }
 }
@@ -414,20 +415,20 @@ pub fn dispatch_on_any_invulnerability(
     condition_id: &str,
     target_pos: (usize, usize),
     source_pos: (usize, usize),
-    attacking_move_id: &str,
+    attacking_active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    println!("[DISPATCH_INVULN] Called with condition_id='{}', target_pos={:?}, source_pos={:?}, attacking_move_id='{}'",
-        condition_id, target_pos, source_pos, attacking_move_id);
+    println!("[DISPATCH_INVULN] Called with condition_id='{}', target_pos={:?}, source_pos={:?}, attacking_active_move='{:?}'",
+        condition_id, target_pos, source_pos, attacking_active_move);
 
     let result = match condition_id {
         "skydrop" => {
             println!("[DISPATCH_INVULN] Routing to skydrop callback");
-            skydrop::on_any_invulnerability(battle, target_pos, source_pos, attacking_move_id)
+            skydrop::on_any_invulnerability(battle, target_pos, source_pos, attacking_active_move)
         },
         _ => {
             println!("[DISPATCH_INVULN] No match for '{}', trying fallback", condition_id);
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_any_invulnerability(battle, condition_id, target_pos, source_pos, attacking_move_id)
+            move_callbacks::dispatch_condition_on_any_invulnerability(battle, condition_id, target_pos, source_pos, attacking_active_move)
         },
     };
 
@@ -454,10 +455,10 @@ pub fn dispatch_on_modify_def(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "snowscape" => snowscape::on_modify_def(battle, _def, pokemon_pos, _target_pos, _source_pos, _move_id),
+        "snowscape" => snowscape::on_modify_def(battle, _def, pokemon_pos, _target_pos, _source_pos, _active_move),
         _ => EventResult::Continue,
     }
 }
@@ -472,7 +473,7 @@ pub fn dispatch_on_modify_move(
         "frz" => frz::on_modify_move(battle, pokemon_pos, target_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_modify_move(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_modify_move(battle, None, pokemon_pos)
         }
     }
 }
@@ -484,10 +485,10 @@ pub fn dispatch_on_modify_sp_d(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "sandstorm" => sandstorm::on_modify_sp_d(battle, _spd, pokemon_pos, _target_pos, _source_pos, _move_id),
+        "sandstorm" => sandstorm::on_modify_sp_d(battle, _spd, pokemon_pos, _target_pos, _source_pos, _active_move),
         _ => EventResult::Continue,
     }
 }
@@ -503,7 +504,7 @@ pub fn dispatch_on_modify_spe(
         _ => {
             // Fallback to move-embedded condition callbacks
             // dispatch_condition_on_modify_spe takes (battle, move_id, spe, source_pos)
-            move_callbacks::dispatch_condition_on_modify_spe(battle, condition_id, spe, pokemon_pos)
+            move_callbacks::dispatch_condition_on_modify_spe(battle, None, spe, pokemon_pos)
         }
     }
 }
@@ -513,13 +514,13 @@ pub fn dispatch_on_move_aborted(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "twoturnmove" => twoturnmove::on_move_aborted(battle, pokemon_pos, target_pos, move_id),
+        "twoturnmove" => twoturnmove::on_move_aborted(battle, pokemon_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_move_aborted(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_move_aborted(battle, active_move, pokemon_pos)
         }
     }
 }
@@ -543,7 +544,7 @@ pub fn dispatch_on_residual(
         "tox" => tox::on_residual(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_residual(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_residual(battle, None, pokemon_pos)
         }
     }
 }
@@ -560,7 +561,7 @@ pub fn dispatch_on_restart(
         "stall" => stall::on_restart(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_restart(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_restart(battle, None, pokemon_pos)
         }
     }
 }
@@ -571,13 +572,13 @@ pub fn dispatch_on_source_modify_damage(
     _damage: i32,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "dynamax" => dynamax::on_source_modify_damage(battle, _damage, source_pos, target_pos, move_id),
+        "dynamax" => dynamax::on_source_modify_damage(battle, _damage, source_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_source_modify_damage(battle, condition_id, source_pos, target_pos)
+            move_callbacks::dispatch_condition_on_source_modify_damage(battle, active_move, source_pos, target_pos)
         }
     }
 }
@@ -621,8 +622,9 @@ pub fn dispatch_on_start(
         "twoturnmove" => twoturnmove::on_start(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Try move-embedded condition callbacks
+            // Note: We pass None for active_move since we don't have it in this context
             use crate::data::move_callbacks;
-            move_callbacks::dispatch_condition_on_start(battle, condition_id, pokemon_pos, source_pos)
+            move_callbacks::dispatch_condition_on_start(battle, None, pokemon_pos, source_pos)
         }
     }
 }
@@ -637,7 +639,7 @@ pub fn dispatch_on_switch_in(
         "tox" => tox::on_switch_in(battle, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_switch_in(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_switch_in(battle, None, pokemon_pos)
         }
     }
 }
@@ -654,7 +656,7 @@ pub fn dispatch_on_trap_pokemon(
         "trapped" => trapped::on_trap_pokemon(battle, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_trap_pokemon(battle, condition_id, pokemon_pos)
+            move_callbacks::dispatch_condition_on_trap_pokemon(battle, None, pokemon_pos)
         }
     }
 }
@@ -673,7 +675,7 @@ pub fn dispatch_on_try_add_volatile(
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_try_add_volatile(
                 battle,
-                condition_id,
+                None,
                 status,
                 target_pos,
                 source_pos,
@@ -688,14 +690,14 @@ pub fn dispatch_on_try_move(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    move_id: Option<&str>,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "desolateland" => desolateland::on_try_move(battle, pokemon_pos, target_pos, move_id),
-        "primordialsea" => primordialsea::on_try_move(battle, pokemon_pos, target_pos, move_id),
+        "desolateland" => desolateland::on_try_move(battle, pokemon_pos, target_pos, active_move),
+        "primordialsea" => primordialsea::on_try_move(battle, pokemon_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_try_move(battle, condition_id, pokemon_pos, target_pos, move_id)
+            move_callbacks::dispatch_condition_on_try_move(battle, active_move, pokemon_pos, target_pos, None)
         }
     }
 }
@@ -711,7 +713,7 @@ pub fn dispatch_on_type(
         "silvally" => silvally::on_type(battle, pokemon_pos, types),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_type(battle, condition_id, pokemon_pos, types)
+            move_callbacks::dispatch_condition_on_type(battle, None, pokemon_pos, types)
         }
     }
 }
@@ -736,13 +738,13 @@ pub fn dispatch_on_weather_modify_damage(
     damage: i32,
     attacker_pos: Option<(usize, usize)>,
     defender_pos: Option<(usize, usize)>,
-    move_id: Option<&str>,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
-        "desolateland" => desolateland::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, move_id),
-        "primordialsea" => primordialsea::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, move_id),
-        "raindance" => raindance::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, move_id),
-        "sunnyday" => sunnyday::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, move_id),
+        "desolateland" => desolateland::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, active_move),
+        "primordialsea" => primordialsea::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, active_move),
+        "raindance" => raindance::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, active_move),
+        "sunnyday" => sunnyday::on_weather_modify_damage(battle, damage, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -752,11 +754,11 @@ pub fn dispatch_on_try_hit(
     condition_id: &str,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
-    move_id: Option<&str>,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     // Route to actual implementation in move_callbacks
     use crate::data::move_callbacks;
-    move_callbacks::dispatch_condition_on_try_hit(battle, condition_id, source_pos, target_pos, move_id)
+    move_callbacks::dispatch_condition_on_try_hit(battle, active_move, source_pos, target_pos, Some(condition_id))
 }
 /// Dispatch onTryPrimaryHit callbacks
 pub fn dispatch_on_try_primary_hit(
@@ -764,9 +766,9 @@ pub fn dispatch_on_try_primary_hit(
     condition_id: &str,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    move_id: Option<&str>,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     // Route to actual implementation in move_callbacks
     use crate::data::move_callbacks;
-    move_callbacks::dispatch_condition_on_try_primary_hit(battle, condition_id, target_pos, source_pos, move_id)
+    move_callbacks::dispatch_condition_on_try_primary_hit(battle, condition_id, target_pos, source_pos, active_move.map(|m| m.id.as_str()))
 }

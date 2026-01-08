@@ -4,6 +4,7 @@
 //! Individual item implementations will be added as needed.
 
 use crate::battle::Battle;
+use crate::battle_actions::ActiveMove;
 use crate::event::EventResult;
 
 // Individual item modules
@@ -368,13 +369,13 @@ pub fn dispatch_on_after_move_secondary(
     item_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match item_id {
-        "ejectbutton" => ejectbutton::on_after_move_secondary(battle, target_pos, source_pos, move_id),
-        "keeberry" => keeberry::on_after_move_secondary(battle, target_pos, source_pos, move_id),
-        "marangaberry" => marangaberry::on_after_move_secondary(battle, target_pos, source_pos, move_id),
-        "redcard" => redcard::on_after_move_secondary(battle, target_pos, source_pos, move_id),
+        "ejectbutton" => ejectbutton::on_after_move_secondary(battle, target_pos, source_pos, active_move),
+        "keeberry" => keeberry::on_after_move_secondary(battle, target_pos, source_pos, active_move),
+        "marangaberry" => marangaberry::on_after_move_secondary(battle, target_pos, source_pos, active_move),
+        "redcard" => redcard::on_after_move_secondary(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -391,12 +392,12 @@ pub fn dispatch_on_after_move_secondary_self(
     item_id: &str,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match item_id {
-        "lifeorb" => lifeorb::on_after_move_secondary_self(battle, source_pos, target_pos, move_id),
-        "shellbell" => shellbell::on_after_move_secondary_self(battle, source_pos, target_pos, move_id),
-        "throatspray" => throatspray::on_after_move_secondary_self(battle, source_pos, target_pos, move_id),
+        "lifeorb" => lifeorb::on_after_move_secondary_self(battle, source_pos, target_pos, active_move),
+        "shellbell" => shellbell::on_after_move_secondary_self(battle, source_pos, target_pos, active_move),
+        "throatspray" => throatspray::on_after_move_secondary_self(battle, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -606,10 +607,10 @@ pub fn dispatch_on_charge_move(
     item_id: &str,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match item_id {
-        "powerherb" => powerherb::on_charge_move(battle, pokemon_pos, target_pos, move_id),
+        "powerherb" => powerherb::on_charge_move(battle, pokemon_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -831,11 +832,11 @@ pub fn dispatch_on_hit(
     item_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match item_id {
-        "enigmaberry" => enigmaberry::on_hit(battle, target_pos, source_pos, move_id),
-        "stickybarb" => stickybarb::on_hit(battle, target_pos, source_pos, move_id),
+        "enigmaberry" => enigmaberry::on_hit(battle, target_pos, source_pos, active_move),
+        "stickybarb" => stickybarb::on_hit(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1192,27 +1193,27 @@ pub fn dispatch_on_source_try_primary_hit(
     item_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match item_id {
-        "buggem" => buggem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "darkgem" => darkgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "dragongem" => dragongem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "electricgem" => electricgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "fairygem" => fairygem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "fightinggem" => fightinggem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "firegem" => firegem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "flyinggem" => flyinggem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "ghostgem" => ghostgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "grassgem" => grassgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "groundgem" => groundgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "icegem" => icegem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "normalgem" => normalgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "poisongem" => poisongem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "psychicgem" => psychicgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "rockgem" => rockgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "steelgem" => steelgem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
-        "watergem" => watergem::on_source_try_primary_hit(battle, target_pos, source_pos, move_id),
+        "buggem" => buggem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "darkgem" => darkgem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "dragongem" => dragongem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "electricgem" => electricgem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "fairygem" => fairygem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "fightinggem" => fightinggem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "firegem" => firegem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "flyinggem" => flyinggem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "ghostgem" => ghostgem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "grassgem" => grassgem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "groundgem" => groundgem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "icegem" => icegem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "normalgem" => normalgem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "poisongem" => poisongem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "psychicgem" => psychicgem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "rockgem" => rockgem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "steelgem" => steelgem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
+        "watergem" => watergem::on_source_try_primary_hit(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }

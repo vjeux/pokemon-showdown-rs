@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Double Attack if defender just switched in (activeTurns == 0)
     let defender_active_turns = {
         let defender = match battle.pokemon_at(defender_pos.0, defender_pos.1) {
@@ -36,7 +36,7 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usiz
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Double Special Attack if defender just switched in (activeTurns == 0)
     let defender_active_turns = {
         let defender = match battle.pokemon_at(defender_pos.0, defender_pos.1) {

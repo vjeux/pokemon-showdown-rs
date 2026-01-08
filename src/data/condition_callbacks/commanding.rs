@@ -20,7 +20,7 @@ pub fn on_drag_out(
     _battle: &mut Battle,
     _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // return false;
     EventResult::Boolean(false)

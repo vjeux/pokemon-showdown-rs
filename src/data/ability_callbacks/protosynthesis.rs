@@ -198,7 +198,7 @@ pub mod condition {
     ///     this.debug('Protosynthesis atk boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+    pub fn on_modify_atk(battle: &mut Battle, atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
         // Get bestStat from volatile's data using with_effect_state_ref
         // JavaScript: this.effectState.bestStat
         let best_stat = battle.with_effect_state_ref(|state| {
@@ -230,7 +230,7 @@ pub mod condition {
     ///     this.debug('Protosynthesis def boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_def(battle: &mut Battle, def: i32, defender_pos: (usize, usize), _attacker_pos: (usize, usize), _move_id: &str) -> EventResult {
+    pub fn on_modify_def(battle: &mut Battle, def: i32, defender_pos: (usize, usize), _attacker_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
         // Get bestStat from volatile's data using with_effect_state_ref
         // JavaScript: this.effectState.bestStat
         let best_stat = battle.with_effect_state_ref(|state| {
@@ -262,7 +262,7 @@ pub mod condition {
     ///     this.debug('Protosynthesis spa boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_sp_a(battle: &mut Battle, spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+    pub fn on_modify_sp_a(battle: &mut Battle, spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
         // Get bestStat from volatile's data using with_effect_state_ref
         // JavaScript: this.effectState.bestStat
         let best_stat = battle.with_effect_state_ref(|state| {
@@ -294,7 +294,7 @@ pub mod condition {
     ///     this.debug('Protosynthesis spd boost');
     ///     return this.chainModify([5325, 4096]);
     /// }
-    pub fn on_modify_sp_d(battle: &mut Battle, spd: i32, defender_pos: (usize, usize), _attacker_pos: (usize, usize), _move_id: &str) -> EventResult {
+    pub fn on_modify_sp_d(battle: &mut Battle, spd: i32, defender_pos: (usize, usize), _attacker_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
         // Get bestStat from volatile's data using with_effect_state_ref
         // JavaScript: this.effectState.bestStat
         let best_stat = battle.with_effect_state_ref(|state| {

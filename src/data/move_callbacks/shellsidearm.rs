@@ -142,7 +142,7 @@ pub fn on_after_sub_damage(
     _damage: i32,
     target_pos: (usize, usize),
     source_pos: (usize, usize),
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
     let is_ally = battle.is_ally(source_pos, target_pos);

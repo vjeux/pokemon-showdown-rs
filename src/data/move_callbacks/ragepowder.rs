@@ -68,8 +68,9 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // const ragePowderUser = this.effectState.target;
         let rage_powder_user = match battle.with_effect_state_ref(|state| state.target).flatten() {
             Some(pos) => pos,

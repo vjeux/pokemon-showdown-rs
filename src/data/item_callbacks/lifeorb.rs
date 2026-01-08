@@ -21,7 +21,7 @@ pub fn on_modify_damage(battle: &mut Battle, _damage: i32, _pokemon_pos: (usize,
 ///         this.damage(source.baseMaxhp / 10, source, source, this.dex.items.get('lifeorb'));
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     battle.debug(&format!("[LIFE ORB] on_after_move_secondary_self called: source={:?}, target={:?}", source_pos, target_pos));
 
     // if (source && source !== target && move && move.category !== 'Status' && !source.forceSwitchFlag)

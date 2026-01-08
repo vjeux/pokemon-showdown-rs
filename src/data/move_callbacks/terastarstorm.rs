@@ -17,7 +17,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_modify_type(
     battle: &mut Battle,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     use crate::dex_data::StatID;

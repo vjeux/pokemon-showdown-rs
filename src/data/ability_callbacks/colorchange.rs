@@ -27,7 +27,7 @@ use crate::pokemon::Pokemon;
 ///         }
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (!target.hp) return;
     let has_hp = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

@@ -4,6 +4,7 @@
 //! Each move with callbacks is in its own file.
 
 use crate::battle::Battle;
+use crate::battle_actions::ActiveMove;
 use crate::event::EventResult;
 
 // Individual move modules
@@ -431,11 +432,11 @@ pub mod yawn;
 /// Dispatch basePowerCallback callbacks
 pub fn dispatch_base_power_callback(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "acrobatics" => acrobatics::base_power_callback(battle, pokemon_pos, target_pos),
         "assurance" => assurance::base_power_callback(battle, pokemon_pos, target_pos),
         "avalanche" => avalanche::base_power_callback(battle, pokemon_pos, target_pos),
@@ -495,10 +496,10 @@ pub fn dispatch_base_power_callback(
 /// Dispatch beforeMoveCallback callbacks
 pub fn dispatch_before_move_callback(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "bide" => bide::before_move_callback(battle, pokemon_pos),
         "focuspunch" => focuspunch::before_move_callback(battle, pokemon_pos),
         _ => EventResult::Continue,
@@ -512,10 +513,10 @@ pub fn dispatch_before_move_callback(
 /// Dispatch beforeTurnCallback callbacks
 pub fn dispatch_before_turn_callback(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "counter" => counter::before_turn_callback(battle, pokemon_pos),
         "mirrorcoat" => mirrorcoat::before_turn_callback(battle, pokemon_pos),
         "pursuit" => pursuit::before_turn_callback(battle, pokemon_pos),
@@ -528,11 +529,11 @@ pub fn dispatch_before_turn_callback(
 /// Dispatch damageCallback callbacks
 pub fn dispatch_damage_callback(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "comeuppance" => comeuppance::damage_callback(battle, pokemon_pos, target_pos),
         "counter" => counter::damage_callback(battle, pokemon_pos, target_pos),
         "endeavor" => endeavor::damage_callback(battle, pokemon_pos, target_pos),
@@ -556,11 +557,11 @@ pub fn dispatch_damage_callback(
 /// Dispatch onAfterHit callbacks
 pub fn dispatch_on_after_hit(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     target_pos: (usize, usize),  // JavaScript: onAfterHit(target, source) - target first
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "ceaselessedge" => ceaselessedge::on_after_hit(battle, target_pos, source_pos),
         "covet" => covet::on_after_hit(battle, target_pos, source_pos),
         "icespinner" => icespinner::on_after_hit(battle, target_pos, source_pos),
@@ -582,11 +583,11 @@ pub fn dispatch_on_after_hit(
 /// Dispatch onAfterMove callbacks
 pub fn dispatch_on_after_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "beakblast" => beakblast::on_after_move(battle, source_pos, target_pos),
         "iceball" => iceball::on_after_move(battle, source_pos, target_pos),
         "mindblown" => mindblown::on_after_move(battle, source_pos, target_pos),
@@ -607,22 +608,22 @@ pub fn dispatch_on_after_move(
 /// Dispatch onAfterMoveSecondarySelf callbacks
 pub fn dispatch_on_after_move_secondary_self(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "fellstinger" => {
-            fellstinger::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id)
+            fellstinger::on_after_move_secondary_self(battle, pokemon_pos, target_pos, active_move)
         }
         "orderup" => {
-            orderup::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id)
+            orderup::on_after_move_secondary_self(battle, pokemon_pos, target_pos, active_move)
         }
         "polarflare" => {
-            polarflare::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id)
+            polarflare::on_after_move_secondary_self(battle, pokemon_pos, target_pos, active_move)
         }
         "relicsong" => {
-            relicsong::on_after_move_secondary_self(battle, pokemon_pos, target_pos, move_id)
+            relicsong::on_after_move_secondary_self(battle, pokemon_pos, target_pos, active_move)
         }
         _ => EventResult::Continue,
     }
@@ -638,22 +639,22 @@ pub fn dispatch_on_after_move_secondary_self(
 /// Dispatch onAfterSubDamage callbacks
 pub fn dispatch_on_after_sub_damage(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     damage: i32,
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "ceaselessedge" => ceaselessedge::on_after_sub_damage(
             battle,
             damage,
             target_pos,
             Some(pokemon_pos),
-            move_id,
+            active_move,
         ),
         "coreenforcer" => coreenforcer::on_after_sub_damage(battle, damage, target_pos),
         "flameburst" => {
-            flameburst::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id)
+            flameburst::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), active_move)
         }
         "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, damage, target_pos),
         "icespinner" => {
@@ -667,11 +668,11 @@ pub fn dispatch_on_after_sub_damage(
             }
         }
         "rapidspin" => {
-            rapidspin::on_after_sub_damage(battle, damage, target_pos, pokemon_pos, move_id)
+            rapidspin::on_after_sub_damage(battle, damage, target_pos, pokemon_pos, active_move)
         }
         "shellsidearm" => {
             if let Some(target) = target_pos {
-                shellsidearm::on_after_sub_damage(battle, damage, target, pokemon_pos, move_id)
+                shellsidearm::on_after_sub_damage(battle, damage, target, pokemon_pos, active_move)
             } else {
                 EventResult::Continue
             }
@@ -679,7 +680,7 @@ pub fn dispatch_on_after_sub_damage(
         "splinteredstormshards" => splinteredstormshards::on_after_sub_damage(battle),
         "steelroller" => steelroller::on_after_sub_damage(battle),
         "stoneaxe" => {
-            stoneaxe::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), move_id)
+            stoneaxe::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), active_move)
         }
         _ => EventResult::Continue,
     }
@@ -701,12 +702,12 @@ pub fn dispatch_on_after_sub_damage(
 /// JavaScript: onBasePower(basePower, attacker, defender, move) - ATTACKER=SOURCE, DEFENDER=TARGET
 pub fn dispatch_on_base_power(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     base_power: i32,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "barbbarrage" => barbbarrage::on_base_power(battle, base_power, target_pos, source_pos),
         "brine" => brine::on_base_power(battle, base_power, target_pos, source_pos),
         "collisioncourse" => {
@@ -743,13 +744,13 @@ pub fn dispatch_on_base_power(
 /// Dispatch onDamage callbacks
 pub fn dispatch_on_damage(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     damage: i32,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "falseswipe" => falseswipe::on_damage(battle, damage, target_pos, source_pos, effect_id),
         "holdback" => holdback::on_damage(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
@@ -761,10 +762,10 @@ pub fn dispatch_on_damage(
 /// Dispatch onDisableMove callbacks
 pub fn dispatch_on_disable_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "belch" => belch::on_disable_move(battle, pokemon_pos),
         "stuffcheeks" => stuffcheeks::on_disable_move(battle, pokemon_pos),
         _ => EventResult::Continue,
@@ -777,14 +778,14 @@ pub fn dispatch_on_disable_move(
 /// Dispatch onEffectiveness callbacks
 pub fn dispatch_on_effectiveness(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     type_mod: i32,
     target_type: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
     // Type mod and target_type parameters added to support moves that need them
     // Currently passing placeholder/default values from callers until event system is updated
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "flyingpress" => flyingpress::on_effectiveness(battle, type_mod, target_type),
         "freezedry" => freezedry::on_effectiveness(battle, type_mod, target_type),
         "thousandarrows" => thousandarrows::on_effectiveness(battle, type_mod, target_type, Some(pokemon_pos)),
@@ -798,11 +799,11 @@ pub fn dispatch_on_effectiveness(
 /// They target the move user, not the move target
 pub fn dispatch_self_on_hit(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "batonpass" => batonpass::self_callbacks::on_hit(battle, target_pos, source_pos),
         "burnup" => burnup::self_callbacks::on_hit(battle, target_pos, source_pos),
         "doubleshock" => doubleshock::self_callbacks::on_hit(battle, target_pos, source_pos),
@@ -875,11 +876,11 @@ pub fn dispatch_self_on_hit(
 /// JavaScript: onHit(target, source, move) - TARGET FIRST
 pub fn dispatch_on_hit(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "acupressure" => acupressure::on_hit(battle, target_pos, source_pos),
         "afteryou" => afteryou::on_hit(battle, target_pos, source_pos),
         "alluringvoice" => alluringvoice::on_hit(battle, target_pos, source_pos),
@@ -1003,17 +1004,17 @@ pub fn dispatch_on_hit(
 /// Dispatch onHitField callbacks
 pub fn dispatch_on_hit_field(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "courtchange" => courtchange::on_hit_field(battle, target_pos, Some(pokemon_pos)),
-        "flowershield" => flowershield::on_hit_field(battle, Some(pokemon_pos), move_id),
+        "flowershield" => flowershield::on_hit_field(battle, Some(pokemon_pos), active_move),
         "haze" => haze::on_hit_field(battle),
-        "perishsong" => perishsong::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
+        "perishsong" => perishsong::on_hit_field(battle, target_pos, Some(pokemon_pos), active_move),
         "rototiller" => rototiller::on_hit_field(battle, target_pos, Some(pokemon_pos)),
-        "teatime" => teatime::on_hit_field(battle, target_pos, Some(pokemon_pos), move_id),
+        "teatime" => teatime::on_hit_field(battle, target_pos, Some(pokemon_pos), active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1023,12 +1024,12 @@ pub fn dispatch_on_hit_field(
 /// Dispatch onHitSide callbacks
 pub fn dispatch_on_hit_side(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "gearup" => gearup::on_hit_side(battle, Some(pokemon_pos), move_id),
-        "magneticflux" => magneticflux::on_hit_side(battle, Some(pokemon_pos), move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "gearup" => gearup::on_hit_side(battle, Some(pokemon_pos), active_move),
+        "magneticflux" => magneticflux::on_hit_side(battle, Some(pokemon_pos), active_move),
         "quickguard" => quickguard::on_hit_side(battle, Some(pokemon_pos)),
         "wideguard" => wideguard::on_hit_side(battle, Some(pokemon_pos)),
         _ => EventResult::Continue,
@@ -1046,11 +1047,11 @@ pub fn dispatch_on_hit_side(
 /// Dispatch onModifyMove callbacks
 pub fn dispatch_on_modify_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "beatup" => beatup::on_modify_move(battle, pokemon_pos, target_pos),
         "bleakwindstorm" => bleakwindstorm::on_modify_move(battle, pokemon_pos, target_pos),
         "blizzard" => blizzard::on_modify_move(battle, pokemon_pos, target_pos),
@@ -1094,11 +1095,11 @@ pub fn dispatch_on_modify_move(
 /// Dispatch onModifyPriority callbacks
 pub fn dispatch_on_modify_priority(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "grassyglide" => grassyglide::on_modify_priority(battle, Some(pokemon_pos), None, move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "grassyglide" => grassyglide::on_modify_priority(battle, Some(pokemon_pos), None, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1107,12 +1108,12 @@ pub fn dispatch_on_modify_priority(
 /// Dispatch onModifyTarget callbacks
 pub fn dispatch_on_modify_target(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "comeuppance" => comeuppance::on_modify_target(battle, Some(pokemon_pos), None, move_id),
-        "metalburst" => metalburst::on_modify_target(battle, Some(pokemon_pos), None, move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "comeuppance" => comeuppance::on_modify_target(battle, Some(pokemon_pos), None, active_move),
+        "metalburst" => metalburst::on_modify_target(battle, Some(pokemon_pos), None, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1123,24 +1124,24 @@ pub fn dispatch_on_modify_target(
 /// Dispatch onModifyType callbacks
 pub fn dispatch_on_modify_type(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
-        "aurawheel" => aurawheel::on_modify_type(battle, move_id, pokemon_pos),
-        "hiddenpower" => hiddenpower::on_modify_type(battle, move_id, pokemon_pos),
-        "ivycudgel" => ivycudgel::on_modify_type(battle, move_id, pokemon_pos),
-        "judgment" => judgment::on_modify_type(battle, move_id, pokemon_pos),
-        "multiattack" => multiattack::on_modify_type(battle, move_id, pokemon_pos),
-        "naturalgift" => naturalgift::on_modify_type(battle, move_id, pokemon_pos),
-        "ragingbull" => ragingbull::on_modify_type(battle, move_id, pokemon_pos),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "aurawheel" => aurawheel::on_modify_type(battle, active_move, pokemon_pos),
+        "hiddenpower" => hiddenpower::on_modify_type(battle, active_move, pokemon_pos),
+        "ivycudgel" => ivycudgel::on_modify_type(battle, active_move, pokemon_pos),
+        "judgment" => judgment::on_modify_type(battle, active_move, pokemon_pos),
+        "multiattack" => multiattack::on_modify_type(battle, active_move, pokemon_pos),
+        "naturalgift" => naturalgift::on_modify_type(battle, active_move, pokemon_pos),
+        "ragingbull" => ragingbull::on_modify_type(battle, active_move, pokemon_pos),
         "revelationdance" => revelationdance::on_modify_type(battle, pokemon_pos),
-        "technoblast" => technoblast::on_modify_type(battle, move_id, pokemon_pos),
-        "terablast" => terablast::on_modify_type(battle, move_id, pokemon_pos, None),
-        "terastarstorm" => terastarstorm::on_modify_type(battle, move_id, pokemon_pos),
-        "terrainpulse" => terrainpulse::on_modify_type(battle, move_id, pokemon_pos),
-        "weatherball" => weatherball::on_modify_type(battle, move_id, pokemon_pos),
+        "technoblast" => technoblast::on_modify_type(battle, active_move, pokemon_pos),
+        "terablast" => terablast::on_modify_type(battle, active_move, pokemon_pos, None),
+        "terastarstorm" => terastarstorm::on_modify_type(battle, active_move, pokemon_pos),
+        "terrainpulse" => terrainpulse::on_modify_type(battle, active_move, pokemon_pos),
+        "weatherball" => weatherball::on_modify_type(battle, active_move, pokemon_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1151,15 +1152,15 @@ pub fn dispatch_on_modify_type(
 /// Dispatch onMoveFail callbacks
 pub fn dispatch_on_move_fail(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "axekick" => axekick::on_move_fail(battle, None, Some(pokemon_pos), move_id),
-        "highjumpkick" => highjumpkick::on_move_fail(battle, None, Some(pokemon_pos), move_id),
-        "jumpkick" => jumpkick::on_move_fail(battle, None, Some(pokemon_pos), move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "axekick" => axekick::on_move_fail(battle, None, Some(pokemon_pos), active_move),
+        "highjumpkick" => highjumpkick::on_move_fail(battle, None, Some(pokemon_pos), active_move),
+        "jumpkick" => jumpkick::on_move_fail(battle, None, Some(pokemon_pos), active_move),
         "skydrop" => skydrop::on_move_fail(battle, None, Some(pokemon_pos)),
-        "supercellslam" => supercellslam::on_move_fail(battle, None, Some(pokemon_pos), move_id),
+        "supercellslam" => supercellslam::on_move_fail(battle, None, Some(pokemon_pos), active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1176,11 +1177,11 @@ pub fn dispatch_on_move_fail(
 /// Dispatch onPrepareHit callbacks
 pub fn dispatch_on_prepare_hit(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "allyswitch" => allyswitch::on_prepare_hit(battle, pokemon_pos, target_pos),
         "banefulbunker" => banefulbunker::on_prepare_hit(battle, pokemon_pos, target_pos),
         "burningbulwark" => burningbulwark::on_prepare_hit(battle, pokemon_pos, target_pos),
@@ -1217,11 +1218,11 @@ pub fn dispatch_on_prepare_hit(
 /// JavaScript: onTry(target, source) - TARGET FIRST
 pub fn dispatch_on_try(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "aurawheel" => aurawheel::on_try(battle, target_pos, source_pos),
         "auroraveil" => auroraveil::on_try(battle, target_pos, source_pos),
         "clangoroussoul" => clangoroussoul::on_try(battle, target_pos, source_pos),
@@ -1283,11 +1284,11 @@ pub fn dispatch_on_try(
 /// JavaScript: onTryHit(target, source, move) - TARGET FIRST
 pub fn dispatch_on_try_hit(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     target_pos: (usize, usize),
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "autotomize" => autotomize::on_try_hit(battle, target_pos, source_pos),
         "brickbreak" => brickbreak::on_try_hit(battle, target_pos, source_pos),
         "celebrate" => celebrate::on_try_hit(battle, target_pos, source_pos),
@@ -1343,10 +1344,10 @@ pub fn dispatch_on_try_hit(
 /// Dispatch onTryImmunity callbacks
 pub fn dispatch_on_try_immunity(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "attract" => attract::on_try_immunity(battle, Some(pokemon_pos), None),
         "captivate" => captivate::on_try_immunity(battle, pokemon_pos, None),
         "dreameater" => dreameater::on_try_immunity(battle, Some(pokemon_pos)),
@@ -1371,11 +1372,11 @@ pub fn dispatch_on_try_immunity(
 /// Dispatch onTryMove callbacks
 pub fn dispatch_on_try_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "bounce" => bounce::on_try_move(battle, source_pos, target_pos),
         "burnup" => burnup::on_try_move(battle, source_pos, target_pos),
         "dig" => dig::on_try_move(battle, source_pos, target_pos),
@@ -1405,11 +1406,11 @@ pub fn dispatch_on_try_move(
 /// Dispatch onUseMoveMessage callbacks
 pub fn dispatch_on_use_move_message(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "magnitude" => magnitude::on_use_move_message(battle, pokemon_pos, None, move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "magnitude" => magnitude::on_use_move_message(battle, pokemon_pos, None, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1420,10 +1421,10 @@ pub fn dispatch_on_use_move_message(
 /// Dispatch priorityChargeCallback callbacks
 pub fn dispatch_priority_charge_callback(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "beakblast" => beakblast::priority_charge_callback(battle, pokemon_pos),
         "chillyreception" => chillyreception::priority_charge_callback(battle, pokemon_pos),
         "focuspunch" => focuspunch::priority_charge_callback(battle, pokemon_pos),
@@ -1433,17 +1434,20 @@ pub fn dispatch_priority_charge_callback(
 }
 
 /// Check if a move has a beforeTurnCallback
-pub fn has_before_turn_callback(move_id: &str) -> bool {
+pub fn has_before_turn_callback(active_move: Option<&ActiveMove>) -> bool {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     matches!(move_id, "counter" | "mirrorcoat" | "pursuit")
 }
 
 /// Check if a move has a priorityChargeCallback
-pub fn has_priority_charge_callback(move_id: &str) -> bool {
+pub fn has_priority_charge_callback(active_move: Option<&ActiveMove>) -> bool {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     matches!(move_id, "beakblast" | "chillyreception" | "focuspunch" | "shelltrap")
 }
 
 /// Check if a move has a beforeMoveCallback
-pub fn has_before_move_callback(move_id: &str) -> bool {
+pub fn has_before_move_callback(active_move: Option<&ActiveMove>) -> bool {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     matches!(move_id, "bide" | "focuspunch")
 }
 
@@ -1451,10 +1455,10 @@ pub fn has_before_move_callback(move_id: &str) -> bool {
 /// Dispatch condition durationCallback callbacks
 pub fn dispatch_condition_duration_callback(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "auroraveil" => {
             auroraveil::condition::duration_callback(battle, None, Some(source_pos), Some(move_id))
         }
@@ -1516,20 +1520,20 @@ pub fn dispatch_condition_duration_callback(
 /// Dispatch condition onAccuracy callbacks
 pub fn dispatch_condition_on_accuracy(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     accuracy: i32,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "glaiverush" => {
-            glaiverush::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id)
+            glaiverush::condition::on_accuracy(battle, accuracy, target_pos, source_pos, active_move)
         }
         "minimize" => {
-            minimize::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id)
+            minimize::condition::on_accuracy(battle, accuracy, target_pos, source_pos, active_move)
         }
         "telekinesis" => {
-            telekinesis::condition::on_accuracy(battle, accuracy, target_pos, source_pos, move_id)
+            telekinesis::condition::on_accuracy(battle, accuracy, target_pos, source_pos, active_move)
         }
         _ => EventResult::Continue,
     }
@@ -1538,11 +1542,11 @@ pub fn dispatch_condition_on_accuracy(
 /// Dispatch condition onAfterMove callbacks
 pub fn dispatch_condition_on_after_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "charge" => charge::condition::on_after_move(battle, source_pos, target_pos),
         _ => EventResult::Continue,
     }
@@ -1551,12 +1555,12 @@ pub fn dispatch_condition_on_after_move(
 /// Dispatch condition onAllyTryHitSide callbacks
 pub fn dispatch_condition_on_ally_try_hit_side(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "magiccoat" => {
-            magiccoat::condition::on_ally_try_hit_side(battle, None, Some(source_pos), move_id)
+            magiccoat::condition::on_ally_try_hit_side(battle, None, Some(source_pos), active_move)
         }
         _ => EventResult::Continue,
     }
@@ -1565,12 +1569,12 @@ pub fn dispatch_condition_on_ally_try_hit_side(
 /// Dispatch condition onAnyBasePower callbacks
 pub fn dispatch_condition_on_any_base_power(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "skydrop" => {
-            skydrop::condition::on_any_base_power(battle, 0, None, Some(source_pos), move_id)
+            skydrop::condition::on_any_base_power(battle, 0, None, Some(source_pos), active_move)
         }
         _ => EventResult::Continue,
     }
@@ -1579,10 +1583,10 @@ pub fn dispatch_condition_on_any_base_power(
 /// Dispatch condition onAnyDragOut callbacks
 pub fn dispatch_condition_on_any_drag_out(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "skydrop" => skydrop::condition::on_any_drag_out(battle, source_pos),
         _ => EventResult::Continue,
     }
@@ -1594,18 +1598,19 @@ pub fn dispatch_condition_on_any_invulnerability(
     condition_id: &str,
     target_pos: (usize, usize),
     source_pos: (usize, usize),
-    attacking_move_id: &str,
+    attacking_active_move: Option<&ActiveMove>,
 ) -> EventResult {
+    let attacking_move_id = attacking_active_move.map(|m| m.id.as_str()).unwrap_or("");
     eprintln!("[DISPATCH_COND_ANY_INVULN] condition_id='{}', attacking_move_id='{}', target_pos={:?}, source_pos={:?}",
         condition_id, attacking_move_id, target_pos, source_pos);
     let result = match condition_id {
         "phantomforce" => {
             eprintln!("[DISPATCH_COND_ANY_INVULN] Matched phantomforce, calling callback");
-            crate::data::condition_callbacks::phantomforce::on_any_invulnerability(battle, Some(target_pos), Some(source_pos), attacking_move_id)
+            crate::data::condition_callbacks::phantomforce::on_any_invulnerability(battle, Some(target_pos), Some(source_pos), attacking_active_move)
         }
         "skydrop" => {
             eprintln!("[DISPATCH_COND_ANY_INVULN] Matched skydrop, calling callback with attacking_move_id={}", attacking_move_id);
-            skydrop::condition::on_any_invulnerability(battle, Some(target_pos), Some(source_pos), attacking_move_id)
+            skydrop::condition::on_any_invulnerability(battle, Some(target_pos), Some(source_pos), attacking_active_move)
         }
         _ => {
             eprintln!("[DISPATCH_COND_ANY_INVULN] No match, returning Continue");
@@ -1622,7 +1627,7 @@ pub fn dispatch_condition_on_any_modify_damage(
     condition_id: &str,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
         "auroraveil" => auroraveil::condition::on_any_modify_damage(
@@ -1630,21 +1635,21 @@ pub fn dispatch_condition_on_any_modify_damage(
             0,
             Some(source_pos),
             Some(target_pos),
-            move_id,
+            active_move,
         ),
         "lightscreen" => lightscreen::condition::on_any_modify_damage(
             battle,
             0,
             Some(source_pos),
             Some(target_pos),
-            move_id,
+            active_move,
         ),
         "reflect" => reflect::condition::on_any_modify_damage(
             battle,
             0,
             Some(source_pos),
             Some(target_pos),
-            move_id,
+            active_move,
         ),
         _ => EventResult::Continue,
     }
@@ -1653,11 +1658,11 @@ pub fn dispatch_condition_on_any_modify_damage(
 /// Dispatch condition onAnyPrepareHit callbacks
 pub fn dispatch_condition_on_any_prepare_hit(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "snatch" => snatch::condition::on_any_prepare_hit(battle, Some(source_pos), None, move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "snatch" => snatch::condition::on_any_prepare_hit(battle, Some(source_pos), None, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1665,10 +1670,10 @@ pub fn dispatch_condition_on_any_prepare_hit(
 /// Dispatch condition onAnySetStatus callbacks
 pub fn dispatch_condition_on_any_set_status(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "uproar" => uproar::condition::on_any_set_status(battle, None, source_pos),
         _ => EventResult::Continue,
     }
@@ -1677,11 +1682,11 @@ pub fn dispatch_condition_on_any_set_status(
 /// Dispatch condition onBasePower callbacks
 pub fn dispatch_condition_on_base_power(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "charge" => charge::condition::on_base_power(battle, 0, source_pos, target_pos),
         "electricterrain" => {
             electricterrain::condition::on_base_power(battle, 0, source_pos, target_pos)
@@ -1704,24 +1709,24 @@ pub fn dispatch_condition_on_base_power(
 /// Dispatch condition onBeforeMove callbacks
 pub fn dispatch_condition_on_before_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "attract" => attract::condition::on_before_move(battle, source_pos, None, move_id),
-        "bide" => bide::condition::on_before_move(battle, source_pos, None, move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "attract" => attract::condition::on_before_move(battle, source_pos, None, active_move),
+        "bide" => bide::condition::on_before_move(battle, source_pos, None, active_move),
         "chillyreception" => {
-            chillyreception::condition::on_before_move(battle, Some(source_pos), None, move_id)
+            chillyreception::condition::on_before_move(battle, Some(source_pos), None, active_move)
         }
-        "destinybond" => destinybond::condition::on_before_move(battle, source_pos, None, move_id),
-        "disable" => disable::condition::on_before_move(battle, move_id),
+        "destinybond" => destinybond::condition::on_before_move(battle, source_pos, None, active_move),
+        "disable" => disable::condition::on_before_move(battle, active_move),
         "glaiverush" => glaiverush::condition::on_before_move(battle, source_pos),
-        "gravity" => gravity::condition::on_before_move(battle, source_pos, None, move_id),
+        "gravity" => gravity::condition::on_before_move(battle, source_pos, None, active_move),
         "grudge" => grudge::condition::on_before_move(battle, source_pos),
-        "healblock" => healblock::condition::on_before_move(battle, source_pos, None, move_id),
+        "healblock" => healblock::condition::on_before_move(battle, source_pos, None, active_move),
         "rage" => rage::condition::on_before_move(battle, source_pos),
-        "taunt" => taunt::condition::on_before_move(battle, source_pos, move_id),
-        "throatchop" => throatchop::condition::on_before_move(battle, source_pos, None, move_id),
+        "taunt" => taunt::condition::on_before_move(battle, source_pos, active_move),
+        "throatchop" => throatchop::condition::on_before_move(battle, source_pos, None, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1729,10 +1734,10 @@ pub fn dispatch_condition_on_before_move(
 /// Dispatch condition onBeforeSwitchOut callbacks
 pub fn dispatch_condition_on_before_switch_out(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "pursuit" => pursuit::condition::on_before_switch_out(battle, source_pos),
         _ => EventResult::Continue,
     }
@@ -1741,10 +1746,10 @@ pub fn dispatch_condition_on_before_switch_out(
 /// Dispatch condition onCopy callbacks
 pub fn dispatch_condition_on_copy(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "gastroacid" => gastroacid::condition::on_copy(battle, source_pos),
         "powershift" => powershift::condition::on_copy(battle, source_pos),
         "powertrick" => powertrick::condition::on_copy(battle, source_pos),
@@ -1755,11 +1760,11 @@ pub fn dispatch_condition_on_copy(
 /// Dispatch condition onDamage callbacks
 pub fn dispatch_condition_on_damage(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "bide" => bide::condition::on_damage(battle, 0, target_pos, Some(source_pos), None),
         "endure" => endure::condition::on_damage(battle, 0, target_pos, Some(source_pos), None),
         _ => EventResult::Continue,
@@ -1769,15 +1774,15 @@ pub fn dispatch_condition_on_damage(
 /// Dispatch condition onDamagingHit callbacks
 pub fn dispatch_condition_on_damaging_hit(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "counter" => {
-            counter::condition::on_damaging_hit(battle, 0, None, Some(source_pos), move_id)
+            counter::condition::on_damaging_hit(battle, 0, None, Some(source_pos), active_move)
         }
         "mirrorcoat" => {
-            mirrorcoat::condition::on_damaging_hit(battle, 0, None, Some(source_pos), move_id)
+            mirrorcoat::condition::on_damaging_hit(battle, 0, None, Some(source_pos), active_move)
         }
         _ => EventResult::Continue,
     }
@@ -1786,10 +1791,10 @@ pub fn dispatch_condition_on_damaging_hit(
 /// Dispatch condition onDisableMove callbacks
 pub fn dispatch_condition_on_disable_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "disable" => disable::condition::on_disable_move(battle, source_pos),
         "encore" => encore::condition::on_disable_move(battle, source_pos),
         "gravity" => gravity::condition::on_disable_move(battle, source_pos),
@@ -1804,10 +1809,10 @@ pub fn dispatch_condition_on_disable_move(
 /// Dispatch condition onDragOut callbacks
 pub fn dispatch_condition_on_drag_out(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "ingrain" => ingrain::condition::on_drag_out(battle, source_pos),
         _ => EventResult::Continue,
     }
@@ -1816,12 +1821,12 @@ pub fn dispatch_condition_on_drag_out(
 /// Dispatch condition onEffectiveness callbacks
 pub fn dispatch_condition_on_effectiveness(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     type_mod: i32,
     target_type: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "tarshot" => tarshot::condition::on_effectiveness(battle, type_mod, target_type, Some(source_pos)),
         _ => EventResult::Continue,
     }
@@ -1830,10 +1835,10 @@ pub fn dispatch_condition_on_effectiveness(
 /// Dispatch condition onEnd callbacks
 pub fn dispatch_condition_on_end(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "attract" => attract::condition::on_end(battle, source_pos),
         "bide" => bide::condition::on_end(battle, source_pos),
         "charge" => charge::condition::on_end(battle, source_pos),
@@ -1864,12 +1869,12 @@ pub fn dispatch_condition_on_end(
 /// Dispatch condition onFaint callbacks (with target, source, effect)
 pub fn dispatch_condition_on_faint(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "destinybond" => destinybond::condition::on_faint(battle, target_pos, source_pos, effect_id),
         "grudge" => grudge::condition::on_faint(battle, target_pos, source_pos, effect_id),
         "skydrop" => skydrop::condition::on_faint(battle, target_pos),
@@ -1880,10 +1885,10 @@ pub fn dispatch_condition_on_faint(
 /// Dispatch condition onFieldEnd callbacks
 pub fn dispatch_condition_on_field_end(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "electricterrain" => electricterrain::condition::on_field_end(battle),
         "grassyterrain" => grassyterrain::condition::on_field_end(battle),
         "gravity" => gravity::condition::on_field_end(battle),
@@ -1901,10 +1906,10 @@ pub fn dispatch_condition_on_field_end(
 /// Dispatch condition onFieldRestart callbacks
 pub fn dispatch_condition_on_field_restart(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "echoedvoice" => echoedvoice::condition::on_field_restart(battle),
         "magicroom" => magicroom::condition::on_field_restart(battle, None, None),
         "trickroom" => trickroom::condition::on_field_restart(battle, None, None),
@@ -1916,10 +1921,10 @@ pub fn dispatch_condition_on_field_restart(
 /// Dispatch condition onFieldStart callbacks
 pub fn dispatch_condition_on_field_start(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "echoedvoice" => echoedvoice::condition::on_field_start(battle),
         "electricterrain" => {
             electricterrain::condition::on_field_start(battle, None, Some(source_pos), None)
@@ -1948,12 +1953,12 @@ pub fn dispatch_condition_on_field_start(
 /// Dispatch condition onFoeBeforeMove callbacks
 pub fn dispatch_condition_on_foe_before_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "imprison" => imprison::condition::on_foe_before_move(battle, move_id),
-        "skydrop" => skydrop::condition::on_foe_before_move(battle, move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "imprison" => imprison::condition::on_foe_before_move(battle, active_move),
+        "skydrop" => skydrop::condition::on_foe_before_move(battle, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1961,10 +1966,10 @@ pub fn dispatch_condition_on_foe_before_move(
 /// Dispatch condition onFoeDisableMove callbacks
 pub fn dispatch_condition_on_foe_disable_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "imprison" => imprison::condition::on_foe_disable_move(battle, source_pos),
         _ => EventResult::Continue,
     }
@@ -1973,18 +1978,18 @@ pub fn dispatch_condition_on_foe_disable_move(
 /// Dispatch condition onFoeRedirectTarget callbacks
 pub fn dispatch_condition_on_foe_redirect_target(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "followme" => {
-            followme::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id)
+            followme::condition::on_foe_redirect_target(battle, None, Some(source_pos), active_move)
         }
         "ragepowder" => {
-            ragepowder::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id)
+            ragepowder::condition::on_foe_redirect_target(battle, None, Some(source_pos), active_move)
         }
         "spotlight" => {
-            spotlight::condition::on_foe_redirect_target(battle, None, Some(source_pos), move_id)
+            spotlight::condition::on_foe_redirect_target(battle, None, Some(source_pos), active_move)
         }
         _ => EventResult::Continue,
     }
@@ -1993,10 +1998,10 @@ pub fn dispatch_condition_on_foe_redirect_target(
 /// Dispatch condition onFoeTrapPokemon callbacks
 pub fn dispatch_condition_on_foe_trap_pokemon(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "skydrop" => skydrop::condition::on_foe_trap_pokemon(battle),
         _ => EventResult::Continue,
     }
@@ -2005,11 +2010,11 @@ pub fn dispatch_condition_on_foe_trap_pokemon(
 /// Dispatch condition onHit callbacks
 pub fn dispatch_condition_on_hit(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "banefulbunker" => banefulbunker::condition::on_hit(battle, source_pos, Some(target_pos)),
         "beakblast" => beakblast::condition::on_hit(battle, source_pos, Some(target_pos)),
         "burningbulwark" => burningbulwark::condition::on_hit(battle, source_pos, Some(target_pos)),
@@ -2027,11 +2032,11 @@ pub fn dispatch_condition_on_hit(
 /// Dispatch condition onImmunity callbacks
 pub fn dispatch_condition_on_immunity(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     immunity_type: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "dig" => dig::condition::on_immunity(battle, source_pos),
         "dive" => dive::condition::on_immunity(battle, source_pos),
         "magnetrise" => magnetrise::condition::on_immunity(battle, source_pos),
@@ -2043,14 +2048,14 @@ pub fn dispatch_condition_on_immunity(
 /// Dispatch condition onInvulnerability callbacks
 pub fn dispatch_condition_on_invulnerability(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "bounce" => bounce::condition::on_invulnerability(battle, None, Some(source_pos), move_id),
-        "dig" => dig::condition::on_invulnerability(battle, None, Some(source_pos), move_id),
-        "dive" => dive::condition::on_invulnerability(battle, None, Some(source_pos), move_id),
-        "fly" => fly::condition::on_invulnerability(battle, None, Some(source_pos), move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "bounce" => bounce::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
+        "dig" => dig::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
+        "dive" => dive::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
+        "fly" => fly::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
         _ => EventResult::Continue,
     }
 }
@@ -2058,10 +2063,10 @@ pub fn dispatch_condition_on_invulnerability(
 /// Dispatch condition onModifyAccuracy callbacks
 pub fn dispatch_condition_on_modify_accuracy(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     accuracy: i32,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "gravity" => gravity::condition::on_modify_accuracy(battle, accuracy),
         _ => EventResult::Continue,
     }
@@ -2070,10 +2075,10 @@ pub fn dispatch_condition_on_modify_accuracy(
 /// Dispatch condition onModifyBoost callbacks
 pub fn dispatch_condition_on_modify_boost(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "foresight" => foresight::condition::on_modify_boost(battle),
         "miracleeye" => miracleeye::condition::on_modify_boost(battle),
         _ => EventResult::Continue,
@@ -2083,11 +2088,11 @@ pub fn dispatch_condition_on_modify_boost(
 /// Dispatch condition onModifyCritRatio callbacks
 pub fn dispatch_condition_on_modify_crit_ratio(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     crit_ratio: i32,
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "dragoncheer" => {
             dragoncheer::condition::on_modify_crit_ratio(battle, crit_ratio, source_pos)
         }
@@ -2101,10 +2106,10 @@ pub fn dispatch_condition_on_modify_crit_ratio(
 /// Dispatch condition onModifyMove callbacks
 pub fn dispatch_condition_on_modify_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "gravity" => gravity::condition::on_modify_move(battle, source_pos, None),
         "healblock" => healblock::condition::on_modify_move(battle, source_pos, None),
         "throatchop" => throatchop::condition::on_modify_move(battle, source_pos, None),
@@ -2117,11 +2122,11 @@ pub fn dispatch_condition_on_modify_move(
 /// Dispatch condition onModifySpe callbacks
 pub fn dispatch_condition_on_modify_spe(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     _spe: i32,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "grasspledge" => grasspledge::condition::on_modify_spe(battle, source_pos),
         "tailwind" => tailwind::condition::on_modify_spe(battle, source_pos),
         _ => EventResult::Continue,
@@ -2131,12 +2136,12 @@ pub fn dispatch_condition_on_modify_spe(
 /// Dispatch condition onModifyType callbacks
 pub fn dispatch_condition_on_modify_type(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "electrify" => electrify::condition::on_modify_type(battle, move_id),
-        "iondeluge" => iondeluge::condition::on_modify_type(battle, move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "electrify" => electrify::condition::on_modify_type(battle, active_move),
+        "iondeluge" => iondeluge::condition::on_modify_type(battle, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -2144,13 +2149,13 @@ pub fn dispatch_condition_on_modify_type(
 /// Dispatch condition onMoveAborted callbacks
 pub fn dispatch_condition_on_move_aborted(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "bide" => bide::condition::on_move_aborted(battle, source_pos),
-        "charge" => charge::condition::on_move_aborted(battle, source_pos, None, move_id),
-        "destinybond" => destinybond::condition::on_move_aborted(battle, source_pos, None, move_id),
+        "charge" => charge::condition::on_move_aborted(battle, source_pos, None, active_move),
+        "destinybond" => destinybond::condition::on_move_aborted(battle, source_pos, None, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -2158,10 +2163,10 @@ pub fn dispatch_condition_on_move_aborted(
 /// Dispatch condition onNegateImmunity callbacks
 pub fn dispatch_condition_on_negate_immunity(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "foresight" => foresight::condition::on_negate_immunity(battle, source_pos),
         "miracleeye" => miracleeye::condition::on_negate_immunity(battle, source_pos),
         _ => EventResult::Continue,
@@ -2171,11 +2176,11 @@ pub fn dispatch_condition_on_negate_immunity(
 /// Dispatch condition onOverrideAction callbacks
 pub fn dispatch_condition_on_override_action(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
-        "encore" => encore::condition::on_override_action(battle, source_pos, None, move_id),
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+        "encore" => encore::condition::on_override_action(battle, source_pos, None, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -2183,15 +2188,15 @@ pub fn dispatch_condition_on_override_action(
 /// Dispatch condition onRedirectTarget callbacks
 pub fn dispatch_condition_on_redirect_target(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "counter" => {
-            counter::condition::on_redirect_target(battle, None, Some(source_pos), move_id)
+            counter::condition::on_redirect_target(battle, None, Some(source_pos), active_move)
         }
         "mirrorcoat" => {
-            mirrorcoat::condition::on_redirect_target(battle, None, Some(source_pos), move_id)
+            mirrorcoat::condition::on_redirect_target(battle, None, Some(source_pos), active_move)
         }
         "skydrop" => skydrop::condition::on_redirect_target(battle, None, Some(source_pos)),
         _ => EventResult::Continue,
@@ -2201,10 +2206,10 @@ pub fn dispatch_condition_on_redirect_target(
 /// Dispatch condition onResidual callbacks
 pub fn dispatch_condition_on_residual(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "aquaring" => aquaring::condition::on_residual(battle, source_pos),
         "curse" => curse::condition::on_residual(battle, source_pos),
         "encore" => encore::condition::on_residual(battle, Some(source_pos)),
@@ -2232,10 +2237,10 @@ pub fn dispatch_condition_on_residual(
 /// Dispatch condition onRestart callbacks
 pub fn dispatch_condition_on_restart(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "allyswitch" => allyswitch::condition::on_restart(battle, source_pos),
         "charge" => charge::condition::on_restart(battle, source_pos, None, None),
         "defensecurl" => defensecurl::condition::on_restart(battle, source_pos),
@@ -2258,10 +2263,10 @@ pub fn dispatch_condition_on_restart(
 /// Dispatch condition onFieldResidual callbacks
 pub fn dispatch_condition_on_field_residual(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "grassyterrain" => grassyterrain::condition::on_field_residual(battle, source_pos),
         _ => EventResult::Continue,
     }
@@ -2270,10 +2275,10 @@ pub fn dispatch_condition_on_field_residual(
 /// Dispatch condition onSetStatus callbacks
 pub fn dispatch_condition_on_set_status(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "electricterrain" => {
             electricterrain::condition::on_set_status(battle, None, None, Some(source_pos), None)
         }
@@ -2290,10 +2295,10 @@ pub fn dispatch_condition_on_set_status(
 /// Dispatch condition onSideEnd callbacks
 pub fn dispatch_condition_on_side_end(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "auroraveil" => auroraveil::condition::on_side_end(battle),
         "firepledge" => firepledge::condition::on_side_end(battle),
         "gmaxcannonade" => gmaxcannonade::condition::on_side_end(battle),
@@ -2315,10 +2320,10 @@ pub fn dispatch_condition_on_side_end(
 /// Dispatch condition onSideRestart callbacks
 pub fn dispatch_condition_on_side_restart(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     _source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "spikes" => spikes::condition::on_side_restart(battle),
         "toxicspikes" => toxicspikes::condition::on_side_restart(battle),
         _ => EventResult::Continue,
@@ -2328,10 +2333,10 @@ pub fn dispatch_condition_on_side_restart(
 /// Dispatch condition onSideStart callbacks
 pub fn dispatch_condition_on_side_start(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "auroraveil" => auroraveil::condition::on_side_start(battle),
         "craftyshield" => craftyshield::condition::on_side_start(battle, None, Some(source_pos)),
         "firepledge" => firepledge::condition::on_side_start(battle),
@@ -2362,12 +2367,12 @@ pub fn dispatch_condition_on_side_start(
 /// Dispatch condition onSourceAccuracy callbacks
 pub fn dispatch_condition_on_source_accuracy(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "lockon" => {
-            lockon::condition::on_source_accuracy(battle, 0, None, Some(source_pos), move_id)
+            lockon::condition::on_source_accuracy(battle, 0, None, Some(source_pos), active_move)
         }
         _ => EventResult::Continue,
     }
@@ -2376,12 +2381,12 @@ pub fn dispatch_condition_on_source_accuracy(
 /// Dispatch condition onSourceBasePower callbacks
 pub fn dispatch_condition_on_source_base_power(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "bounce" => {
-            bounce::condition::on_source_base_power(battle, 0, None, Some(source_pos), move_id)
+            bounce::condition::on_source_base_power(battle, 0, None, Some(source_pos), active_move)
         }
         _ => EventResult::Continue,
     }
@@ -2390,12 +2395,12 @@ pub fn dispatch_condition_on_source_base_power(
 /// Dispatch condition onSourceInvulnerability callbacks
 pub fn dispatch_condition_on_source_invulnerability(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "lockon" => {
-            lockon::condition::on_source_invulnerability(battle, None, Some(source_pos), move_id)
+            lockon::condition::on_source_invulnerability(battle, None, Some(source_pos), active_move)
         }
         _ => EventResult::Continue,
     }
@@ -2404,31 +2409,31 @@ pub fn dispatch_condition_on_source_invulnerability(
 /// Dispatch condition onSourceModifyDamage callbacks
 pub fn dispatch_condition_on_source_modify_damage(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "dig" => dig::condition::on_source_modify_damage(
             battle,
             0,
             Some(source_pos),
             Some(target_pos),
-            move_id,
+            active_move,
         ),
         "dive" => dive::condition::on_source_modify_damage(
             battle,
             0,
             Some(source_pos),
             Some(target_pos),
-            move_id,
+            active_move,
         ),
         "fly" => fly::condition::on_source_modify_damage(
             battle,
             0,
             Some(source_pos),
             Some(target_pos),
-            move_id,
+            active_move,
         ),
         "glaiverush" => glaiverush::condition::on_source_modify_damage(battle),
         "minimize" => minimize::condition::on_source_modify_damage(
@@ -2436,7 +2441,7 @@ pub fn dispatch_condition_on_source_modify_damage(
             0,
             Some(source_pos),
             Some(target_pos),
-            move_id,
+            active_move,
         ),
         _ => EventResult::Continue,
     }
@@ -2445,11 +2450,11 @@ pub fn dispatch_condition_on_source_modify_damage(
 /// Dispatch condition onStart callbacks
 pub fn dispatch_condition_on_start(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "allyswitch" => allyswitch::condition::on_start(battle, pokemon_pos),
         "aquaring" => aquaring::condition::on_start(battle, pokemon_pos),
         "attract" => attract::condition::on_start(battle, pokemon_pos, None, None),
@@ -2458,7 +2463,7 @@ pub fn dispatch_condition_on_start(
         "bide" => bide::condition::on_start(battle, pokemon_pos),
         "burningbulwark" => burningbulwark::condition::on_start(battle, Some(pokemon_pos)),
         "charge" => charge::condition::on_start(battle, pokemon_pos, None, None),
-        "counter" => counter::condition::on_start(battle, None, Some(pokemon_pos), move_id),
+        "counter" => counter::condition::on_start(battle, None, Some(pokemon_pos), active_move),
         "curse" => curse::condition::on_start(battle, pokemon_pos, None),
         "destinybond" => destinybond::condition::on_start(battle, pokemon_pos),
         "disable" => disable::condition::on_start(battle, pokemon_pos, None, None),
@@ -2489,7 +2494,7 @@ pub fn dispatch_condition_on_start(
         "maxguard" => maxguard::condition::on_start(battle, Some(pokemon_pos)),
         "miracleeye" => miracleeye::condition::on_start(battle, pokemon_pos),
         "mirrorcoat" => {
-            mirrorcoat::condition::on_start(battle, Some(pokemon_pos), None, "mirrorcoat")
+            mirrorcoat::condition::on_start(battle, Some(pokemon_pos), None, None)
         }
         "nightmare" => nightmare::condition::on_start(battle, pokemon_pos),
         "noretreat" => noretreat::condition::on_start(battle, pokemon_pos),
@@ -2528,10 +2533,10 @@ pub fn dispatch_condition_on_start(
 /// Dispatch condition onSwap callbacks
 pub fn dispatch_condition_on_swap(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "healingwish" => healingwish::condition::on_swap(battle, Some(source_pos)),
         "lunardance" => lunardance::condition::on_swap(battle, Some(source_pos)),
         _ => EventResult::Continue,
@@ -2541,10 +2546,10 @@ pub fn dispatch_condition_on_swap(
 /// Dispatch condition onSwitchIn callbacks
 pub fn dispatch_condition_on_switch_in(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "gmaxsteelsurge" => gmaxsteelsurge::condition::on_switch_in(battle, source_pos),
         "healingwish" => healingwish::condition::on_switch_in(battle, Some(source_pos)),
         "lunardance" => lunardance::condition::on_switch_in(battle, Some(source_pos)),
@@ -2559,10 +2564,10 @@ pub fn dispatch_condition_on_switch_in(
 /// Dispatch condition onTrapPokemon callbacks
 pub fn dispatch_condition_on_trap_pokemon(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "fairylock" => fairylock::condition::on_trap_pokemon(battle, source_pos),
         "ingrain" => ingrain::condition::on_trap_pokemon(battle, source_pos),
         "noretreat" => noretreat::condition::on_trap_pokemon(battle, source_pos),
@@ -2574,13 +2579,13 @@ pub fn dispatch_condition_on_trap_pokemon(
 /// Dispatch condition onTryAddVolatile callbacks
 pub fn dispatch_condition_on_try_add_volatile(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     status: Option<&str>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "electricterrain" => {
             electricterrain::condition::on_try_add_volatile(battle, status, target_pos)
         }
@@ -2598,10 +2603,10 @@ pub fn dispatch_condition_on_try_add_volatile(
 /// Dispatch condition onTryBoost callbacks
 pub fn dispatch_condition_on_try_boost(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "mist" => mist::condition::on_try_boost(battle, Some(source_pos), None, None),
         _ => EventResult::Continue,
     }
@@ -2610,10 +2615,10 @@ pub fn dispatch_condition_on_try_boost(
 /// Dispatch condition onTryHeal callbacks
 pub fn dispatch_condition_on_try_heal(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "healblock" => healblock::condition::on_try_heal(battle, 0, Some(source_pos), None, None),
         _ => EventResult::Continue,
     }
@@ -2622,12 +2627,12 @@ pub fn dispatch_condition_on_try_heal(
 /// Dispatch condition onTryHit callbacks
 pub fn dispatch_condition_on_try_hit(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
     move_id_param: Option<&str>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "banefulbunker" => banefulbunker::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
         "burningbulwark" => burningbulwark::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
         "craftyshield" => craftyshield::condition::on_try_hit(battle, source_pos, target_pos, move_id_param),
@@ -2649,12 +2654,12 @@ pub fn dispatch_condition_on_try_hit(
 /// Dispatch condition onTryMove callbacks
 pub fn dispatch_condition_on_try_move(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
     _move_id_param: Option<&str>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "powder" => powder::condition::on_try_move(battle, source_pos, target_pos, _move_id_param),
         _ => EventResult::Continue,
     }
@@ -2674,7 +2679,7 @@ pub fn dispatch_condition_on_try_primary_hit(
                 battle,
                 Some(target_pos),
                 source_pos,
-                move_id.unwrap_or(""),
+                None,
             )
         }
         _ => EventResult::Continue,
@@ -2684,11 +2689,11 @@ pub fn dispatch_condition_on_try_primary_hit(
 /// Dispatch condition onType callbacks
 pub fn dispatch_condition_on_type(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     types: Option<&[String]>,
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "roost" => roost::condition::on_type(battle, Some(source_pos), types),
         _ => EventResult::Continue,
     }
@@ -2697,10 +2702,10 @@ pub fn dispatch_condition_on_type(
 /// Dispatch condition onUpdate callbacks
 pub fn dispatch_condition_on_update(
     battle: &mut Battle,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "attract" => attract::condition::on_update(battle, source_pos),
         "fling" => fling::condition::on_update(battle, source_pos),
         "syrupbomb" => syrupbomb::condition::on_update(battle, source_pos),

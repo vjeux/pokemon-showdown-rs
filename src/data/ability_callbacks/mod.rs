@@ -4,6 +4,7 @@
 //! Each ability with callbacks is in its own file.
 
 use crate::battle::Battle;
+use crate::battle_actions::ActiveMove;
 use crate::event::EventResult;
 
 // Individual ability modules
@@ -339,13 +340,13 @@ pub fn dispatch_on_after_each_boost(
 pub fn dispatch_on_after_move_secondary(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "angershell" => angershell::on_after_move_secondary(battle, target_pos, source_pos, move_id),
-        "berserk" => berserk::on_after_move_secondary(battle, target_pos, source_pos, move_id),
-        "colorchange" => colorchange::on_after_move_secondary(battle, target_pos, source_pos, move_id),
-        "pickpocket" => pickpocket::on_after_move_secondary(battle, target_pos, source_pos, move_id),
+        "angershell" => angershell::on_after_move_secondary(battle, target_pos, source_pos, active_move),
+        "berserk" => berserk::on_after_move_secondary(battle, target_pos, source_pos, active_move),
+        "colorchange" => colorchange::on_after_move_secondary(battle, target_pos, source_pos, active_move),
+        "pickpocket" => pickpocket::on_after_move_secondary(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -354,10 +355,10 @@ pub fn dispatch_on_after_move_secondary(
 pub fn dispatch_on_after_move_secondary_self(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "magician" => magician::on_after_move_secondary_self(battle, source_pos, target_pos, move_id),
+        "magician" => magician::on_after_move_secondary_self(battle, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -414,12 +415,12 @@ pub fn dispatch_on_ally_after_use_item(
 pub fn dispatch_on_ally_base_power(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, move_id: &str,
+    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "battery" => battery::on_ally_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "powerspot" => powerspot::on_ally_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "steelyspirit" => steelyspirit::on_ally_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "battery" => battery::on_ally_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "powerspot" => powerspot::on_ally_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "steelyspirit" => steelyspirit::on_ally_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -504,13 +505,13 @@ pub fn dispatch_on_ally_try_boost(
 pub fn dispatch_on_ally_try_hit_side(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "magicbounce" => magicbounce::on_ally_try_hit_side(battle, target_pos, source_pos, move_id),
-        "rebound" => rebound::on_ally_try_hit_side(battle, target_pos, source_pos, move_id),
-        "sapsipper" => sapsipper::on_ally_try_hit_side(battle, target_pos, source_pos, move_id),
-        "soundproof" => soundproof::on_ally_try_hit_side(battle, target_pos, source_pos, move_id),
+        "magicbounce" => magicbounce::on_ally_try_hit_side(battle, target_pos, source_pos, active_move),
+        "rebound" => rebound::on_ally_try_hit_side(battle, target_pos, source_pos, active_move),
+        "sapsipper" => sapsipper::on_ally_try_hit_side(battle, target_pos, source_pos, active_move),
+        "soundproof" => soundproof::on_ally_try_hit_side(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -518,10 +519,10 @@ pub fn dispatch_on_ally_try_hit_side(
 pub fn dispatch_on_any_accuracy(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "noguard" => noguard::on_any_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "noguard" => noguard::on_any_accuracy(battle, accuracy, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -571,11 +572,11 @@ pub fn dispatch_on_any_after_terastallization(
 pub fn dispatch_on_any_base_power(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "darkaura" => darkaura::on_any_base_power(battle, base_power, source_pos, target_pos, move_id),
-        "fairyaura" => fairyaura::on_any_base_power(battle, base_power, source_pos, target_pos, move_id),
+        "darkaura" => darkaura::on_any_base_power(battle, base_power, source_pos, target_pos, active_move),
+        "fairyaura" => fairyaura::on_any_base_power(battle, base_power, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -614,10 +615,10 @@ pub fn dispatch_on_any_faint(
 pub fn dispatch_on_any_invulnerability(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "noguard" => noguard::on_any_invulnerability(battle, target_pos, source_pos, move_id),
+        "noguard" => noguard::on_any_invulnerability(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -636,10 +637,10 @@ pub fn dispatch_on_any_modify_accuracy(
 pub fn dispatch_on_any_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "tabletsofruin" => tabletsofruin::on_any_modify_atk(battle, atk, source_pos, target_pos, move_id),
+        "tabletsofruin" => tabletsofruin::on_any_modify_atk(battle, atk, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -660,10 +661,10 @@ pub fn dispatch_on_any_modify_boost(
 pub fn dispatch_on_any_modify_damage(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "friendguard" => friendguard::on_any_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "friendguard" => friendguard::on_any_modify_damage(battle, damage, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -671,10 +672,10 @@ pub fn dispatch_on_any_modify_damage(
 pub fn dispatch_on_any_modify_def(
     battle: &mut Battle,
     ability_id: &str,
-    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "swordofruin" => swordofruin::on_any_modify_def(battle, def, target_pos, source_pos, move_id),
+        "swordofruin" => swordofruin::on_any_modify_def(battle, def, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -682,10 +683,10 @@ pub fn dispatch_on_any_modify_def(
 pub fn dispatch_on_any_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "vesselofruin" => vesselofruin::on_any_modify_sp_a(battle, spa, source_pos, target_pos, move_id),
+        "vesselofruin" => vesselofruin::on_any_modify_sp_a(battle, spa, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -693,10 +694,10 @@ pub fn dispatch_on_any_modify_sp_a(
 pub fn dispatch_on_any_modify_sp_d(
     battle: &mut Battle,
     ability_id: &str,
-    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "beadsofruin" => beadsofruin::on_any_modify_sp_d(battle, spd, target_pos, source_pos, move_id),
+        "beadsofruin" => beadsofruin::on_any_modify_sp_d(battle, spd, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -705,11 +706,11 @@ pub fn dispatch_on_any_modify_sp_d(
 pub fn dispatch_on_any_redirect_target(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "lightningrod" => lightningrod::on_any_redirect_target(battle, target_pos, source_pos, source2_pos, move_id),
-        "stormdrain" => stormdrain::on_any_redirect_target(battle, target_pos, source_pos, source2_pos, move_id),
+        "lightningrod" => lightningrod::on_any_redirect_target(battle, target_pos, source_pos, source2_pos, active_move),
+        "stormdrain" => stormdrain::on_any_redirect_target(battle, target_pos, source_pos, source2_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -757,10 +758,10 @@ pub fn dispatch_on_any_try_move(
 pub fn dispatch_on_any_try_primary_hit(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "aurabreak" => aurabreak::on_any_try_primary_hit(battle, target_pos, source_pos, move_id),
+        "aurabreak" => aurabreak::on_any_try_primary_hit(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -769,29 +770,29 @@ pub fn dispatch_on_any_try_primary_hit(
 pub fn dispatch_on_base_power(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "aerilate" => aerilate::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "analytic" => analytic::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "flareboost" => flareboost::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "galvanize" => galvanize::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "ironfist" => ironfist::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "megalauncher" => megalauncher::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "normalize" => normalize::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "pixilate" => pixilate::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "punkrock" => punkrock::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "reckless" => reckless::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "refrigerate" => refrigerate::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "rivalry" => rivalry::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "sandforce" => sandforce::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "sharpness" => sharpness::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "sheerforce" => sheerforce::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "strongjaw" => strongjaw::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "supremeoverlord" => supremeoverlord::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "technician" => technician::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "toughclaws" => toughclaws::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
-        "toxicboost" => toxicboost::on_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "aerilate" => aerilate::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "analytic" => analytic::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "flareboost" => flareboost::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "galvanize" => galvanize::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "ironfist" => ironfist::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "megalauncher" => megalauncher::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "normalize" => normalize::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "pixilate" => pixilate::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "punkrock" => punkrock::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "reckless" => reckless::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "refrigerate" => refrigerate::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "rivalry" => rivalry::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "sandforce" => sandforce::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "sharpness" => sharpness::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "sheerforce" => sheerforce::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "strongjaw" => strongjaw::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "supremeoverlord" => supremeoverlord::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "technician" => technician::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "toughclaws" => toughclaws::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
+        "toxicboost" => toxicboost::on_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -800,11 +801,11 @@ pub fn dispatch_on_base_power(
 pub fn dispatch_on_before_move(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "gorillatactics" => gorillatactics::on_before_move(battle, pokemon_pos, target_pos, move_id),
-        "truant" => truant::on_before_move(battle, pokemon_pos, target_pos, move_id),
+        "gorillatactics" => gorillatactics::on_before_move(battle, pokemon_pos, target_pos, active_move),
+        "truant" => truant::on_before_move(battle, pokemon_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -852,11 +853,11 @@ pub fn dispatch_on_check_show(
 pub fn dispatch_on_critical_hit(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "disguise" => disguise::on_critical_hit(battle, target_pos, source_pos, move_id),
-        "iceface" => iceface::on_critical_hit(battle, target_pos, source_pos, move_id),
+        "disguise" => disguise::on_critical_hit(battle, target_pos, source_pos, active_move),
+        "iceface" => iceface::on_critical_hit(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -887,40 +888,40 @@ pub fn dispatch_on_damage(
 pub fn dispatch_on_damaging_hit(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "aftermath" => aftermath::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "cottondown" => cottondown::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "cursedbody" => cursedbody::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "cutecharm" => cutecharm::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "effectspore" => effectspore::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "electromorphosis" => electromorphosis::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "flamebody" => flamebody::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "gooey" => gooey::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "gulpmissile" => gulpmissile::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "illusion" => illusion::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "innardsout" => innardsout::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "ironbarbs" => ironbarbs::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "justified" => justified::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "lingeringaroma" => lingeringaroma::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "mummy" => mummy::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "perishbody" => perishbody::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "poisonpoint" => poisonpoint::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "rattled" => rattled::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "roughskin" => roughskin::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "sandspit" => sandspit::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "seedsower" => seedsower::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "stamina" => stamina::on_damaging_hit(battle, damage, target_pos, source_pos, Some(move_id)),
-        "static" => r#static::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "steamengine" => steamengine::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "tanglinghair" => tanglinghair::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "thermalexchange" => thermalexchange::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "toxicdebris" => toxicdebris::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "wanderingspirit" => wanderingspirit::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "watercompaction" => watercompaction::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "weakarmor" => weakarmor::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "windpower" => windpower::on_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "aftermath" => aftermath::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "cottondown" => cottondown::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "cursedbody" => cursedbody::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "cutecharm" => cutecharm::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "effectspore" => effectspore::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "electromorphosis" => electromorphosis::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "flamebody" => flamebody::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "gooey" => gooey::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "gulpmissile" => gulpmissile::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "illusion" => illusion::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "innardsout" => innardsout::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "ironbarbs" => ironbarbs::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "justified" => justified::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "lingeringaroma" => lingeringaroma::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "mummy" => mummy::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "perishbody" => perishbody::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "poisonpoint" => poisonpoint::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "rattled" => rattled::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "roughskin" => roughskin::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "sandspit" => sandspit::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "seedsower" => seedsower::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "stamina" => stamina::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "static" => r#static::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "steamengine" => steamengine::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "tanglinghair" => tanglinghair::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "thermalexchange" => thermalexchange::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "toxicdebris" => toxicdebris::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "wanderingspirit" => wanderingspirit::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "watercompaction" => watercompaction::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "weakarmor" => weakarmor::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "windpower" => windpower::on_damaging_hit(battle, damage, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -953,11 +954,11 @@ pub fn dispatch_on_disable_move(
 pub fn dispatch_on_drag_out(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "guarddog" => guarddog::on_drag_out(battle, pokemon_pos, source_pos, move_id),
-        "suctioncups" => suctioncups::on_drag_out(battle, pokemon_pos, source_pos, move_id),
+        "guarddog" => guarddog::on_drag_out(battle, pokemon_pos, source_pos, active_move),
+        "suctioncups" => suctioncups::on_drag_out(battle, pokemon_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -980,11 +981,11 @@ pub fn dispatch_on_eat_item(
 pub fn dispatch_on_effectiveness(
     battle: &mut Battle,
     ability_id: &str,
-    type_mod: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
+    type_mod: i32, target_pos: (usize, usize), type_str: &str, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "disguise" => disguise::on_effectiveness(battle, type_mod, target_pos, type_str, move_id),
-        "iceface" => iceface::on_effectiveness(battle, type_mod, target_pos, type_str, move_id),
+        "disguise" => disguise::on_effectiveness(battle, type_mod, target_pos, type_str, active_move),
+        "iceface" => iceface::on_effectiveness(battle, type_mod, target_pos, type_str, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1107,12 +1108,12 @@ pub fn dispatch_on_foe_try_eat_item(
 pub fn dispatch_on_foe_try_move(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "armortail" => armortail::on_foe_try_move(battle, target_pos, source_pos, move_id),
-        "dazzling" => dazzling::on_foe_try_move(battle, target_pos, source_pos, move_id),
-        "queenlymajesty" => queenlymajesty::on_foe_try_move(battle, target_pos, source_pos, move_id),
+        "armortail" => armortail::on_foe_try_move(battle, target_pos, source_pos, active_move),
+        "dazzling" => dazzling::on_foe_try_move(battle, target_pos, source_pos, active_move),
+        "queenlymajesty" => queenlymajesty::on_foe_try_move(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1121,11 +1122,11 @@ pub fn dispatch_on_fractional_priority(
     battle: &mut Battle,
     ability_id: &str,
     priority: i32,
-    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "myceliummight" => myceliummight::on_fractional_priority(battle, priority, pokemon_pos, target_pos, move_id),
-        "quickdraw" => quickdraw::on_fractional_priority(battle, priority, pokemon_pos, target_pos, move_id),
+        "myceliummight" => myceliummight::on_fractional_priority(battle, priority, pokemon_pos, target_pos, active_move),
+        "quickdraw" => quickdraw::on_fractional_priority(battle, priority, pokemon_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1133,11 +1134,11 @@ pub fn dispatch_on_fractional_priority(
 pub fn dispatch_on_hit(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "angerpoint" => angerpoint::on_hit(battle, pokemon_pos, source_pos, move_id),
-        "owntempo" => owntempo::on_hit(battle, pokemon_pos, source_pos, move_id),
+        "angerpoint" => angerpoint::on_hit(battle, pokemon_pos, source_pos, active_move),
+        "owntempo" => owntempo::on_hit(battle, pokemon_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1163,13 +1164,13 @@ pub fn dispatch_on_immunity(
 pub fn dispatch_on_modify_accuracy(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "sandveil" => sandveil::on_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
-        "snowcloak" => snowcloak::on_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
-        "tangledfeet" => tangledfeet::on_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
-        "wonderskin" => wonderskin::on_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "sandveil" => sandveil::on_modify_accuracy(battle, accuracy, target_pos, source_pos, active_move),
+        "snowcloak" => snowcloak::on_modify_accuracy(battle, accuracy, target_pos, source_pos, active_move),
+        "tangledfeet" => tangledfeet::on_modify_accuracy(battle, accuracy, target_pos, source_pos, active_move),
+        "wonderskin" => wonderskin::on_modify_accuracy(battle, accuracy, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1177,27 +1178,27 @@ pub fn dispatch_on_modify_accuracy(
 pub fn dispatch_on_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "blaze" => blaze::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "defeatist" => defeatist::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "dragonsmaw" => dragonsmaw::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "gorillatactics" => gorillatactics::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "guts" => guts::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "hugepower" => hugepower::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "hustle" => hustle::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "orichalcumpulse" => orichalcumpulse::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "overgrow" => overgrow::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "purepower" => purepower::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "rockypayload" => rockypayload::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "slowstart" => slowstart::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "stakeout" => stakeout::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "steelworker" => steelworker::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "swarm" => swarm::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "torrent" => torrent::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "transistor" => transistor::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "waterbubble" => waterbubble::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "blaze" => blaze::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "defeatist" => defeatist::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "dragonsmaw" => dragonsmaw::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "gorillatactics" => gorillatactics::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "guts" => guts::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "hugepower" => hugepower::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "hustle" => hustle::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "orichalcumpulse" => orichalcumpulse::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "overgrow" => overgrow::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "purepower" => purepower::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "rockypayload" => rockypayload::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "slowstart" => slowstart::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "stakeout" => stakeout::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "steelworker" => steelworker::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "swarm" => swarm::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "torrent" => torrent::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "transistor" => transistor::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "waterbubble" => waterbubble::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1205,11 +1206,11 @@ pub fn dispatch_on_modify_atk(
 pub fn dispatch_on_modify_crit_ratio(
     battle: &mut Battle,
     ability_id: &str,
-    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "merciless" => merciless::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos, move_id),
-        "superluck" => superluck::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos, move_id),
+        "merciless" => merciless::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos, active_move),
+        "superluck" => superluck::on_modify_crit_ratio(battle, crit_ratio, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1217,12 +1218,12 @@ pub fn dispatch_on_modify_crit_ratio(
 pub fn dispatch_on_modify_damage(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "neuroforce" => neuroforce::on_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "sniper" => sniper::on_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "tintedlens" => tintedlens::on_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "neuroforce" => neuroforce::on_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "sniper" => sniper::on_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "tintedlens" => tintedlens::on_modify_damage(battle, damage, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1230,12 +1231,12 @@ pub fn dispatch_on_modify_damage(
 pub fn dispatch_on_modify_def(
     battle: &mut Battle,
     ability_id: &str,
-    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "furcoat" => furcoat::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
-        "grasspelt" => grasspelt::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
-        "marvelscale" => marvelscale::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
+        "furcoat" => furcoat::on_modify_def(battle, def, defender_pos, attacker_pos, active_move),
+        "grasspelt" => grasspelt::on_modify_def(battle, def, defender_pos, attacker_pos, active_move),
+        "marvelscale" => marvelscale::on_modify_def(battle, def, defender_pos, attacker_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1243,31 +1244,31 @@ pub fn dispatch_on_modify_def(
 pub fn dispatch_on_modify_move(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "battlebond" => battlebond::on_modify_move(battle, move_id, source_pos, target_pos),
-        "gorillatactics" => gorillatactics::on_modify_move(battle, move_id, source_pos, target_pos),
-        "illuminate" => illuminate::on_modify_move(battle, move_id, source_pos, target_pos),
-        "infiltrator" => infiltrator::on_modify_move(battle, move_id, source_pos, target_pos),
-        "keeneye" => keeneye::on_modify_move(battle, move_id, source_pos, target_pos),
-        "longreach" => longreach::on_modify_move(battle, move_id, source_pos, target_pos),
-        "mindseye" => mindseye::on_modify_move(battle, move_id, source_pos, target_pos),
-        "moldbreaker" => moldbreaker::on_modify_move(battle, move_id, source_pos, target_pos),
-        "myceliummight" => myceliummight::on_modify_move(battle, move_id, source_pos, target_pos),
-        "propellertail" => propellertail::on_modify_move(battle, move_id, source_pos, target_pos),
-        "scrappy" => scrappy::on_modify_move(battle, move_id, source_pos, target_pos),
-        "serenegrace" => serenegrace::on_modify_move(battle, move_id, source_pos, target_pos),
-        "sheerforce" => sheerforce::on_modify_move(battle, move_id, source_pos, target_pos),
-        "skilllink" => skilllink::on_modify_move(battle, move_id, source_pos, target_pos),
-        "stalwart" => stalwart::on_modify_move(battle, move_id, source_pos, target_pos),
-        "stancechange" => stancechange::on_modify_move(battle, move_id, source_pos, target_pos),
-        "stench" => stench::on_modify_move(battle, move_id, source_pos, target_pos),
-        "teravolt" => teravolt::on_modify_move(battle, move_id, source_pos, target_pos),
-        "turboblaze" => turboblaze::on_modify_move(battle, move_id, source_pos, target_pos),
-        "unseenfist" => unseenfist::on_modify_move(battle, move_id, source_pos, target_pos),
+        "battlebond" => battlebond::on_modify_move(battle, active_move, source_pos, target_pos),
+        "gorillatactics" => gorillatactics::on_modify_move(battle, active_move, source_pos, target_pos),
+        "illuminate" => illuminate::on_modify_move(battle, active_move, source_pos, target_pos),
+        "infiltrator" => infiltrator::on_modify_move(battle, active_move, source_pos, target_pos),
+        "keeneye" => keeneye::on_modify_move(battle, active_move, source_pos, target_pos),
+        "longreach" => longreach::on_modify_move(battle, active_move, source_pos, target_pos),
+        "mindseye" => mindseye::on_modify_move(battle, active_move, source_pos, target_pos),
+        "moldbreaker" => moldbreaker::on_modify_move(battle, active_move, source_pos, target_pos),
+        "myceliummight" => myceliummight::on_modify_move(battle, active_move, source_pos, target_pos),
+        "propellertail" => propellertail::on_modify_move(battle, active_move, source_pos, target_pos),
+        "scrappy" => scrappy::on_modify_move(battle, active_move, source_pos, target_pos),
+        "serenegrace" => serenegrace::on_modify_move(battle, active_move, source_pos, target_pos),
+        "sheerforce" => sheerforce::on_modify_move(battle, active_move, source_pos, target_pos),
+        "skilllink" => skilllink::on_modify_move(battle, active_move, source_pos, target_pos),
+        "stalwart" => stalwart::on_modify_move(battle, active_move, source_pos, target_pos),
+        "stancechange" => stancechange::on_modify_move(battle, active_move, source_pos, target_pos),
+        "stench" => stench::on_modify_move(battle, active_move, source_pos, target_pos),
+        "teravolt" => teravolt::on_modify_move(battle, active_move, source_pos, target_pos),
+        "turboblaze" => turboblaze::on_modify_move(battle, active_move, source_pos, target_pos),
+        "unseenfist" => unseenfist::on_modify_move(battle, active_move, source_pos, target_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1275,12 +1276,12 @@ pub fn dispatch_on_modify_move(
 pub fn dispatch_on_modify_priority(
     battle: &mut Battle,
     ability_id: &str,
-    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "galewings" => galewings::on_modify_priority(battle, priority, pokemon_pos, target_pos, move_id),
-        "prankster" => prankster::on_modify_priority(battle, priority, pokemon_pos, target_pos, move_id),
-        "triage" => triage::on_modify_priority(battle, priority, pokemon_pos, target_pos, move_id),
+        "galewings" => galewings::on_modify_priority(battle, priority, pokemon_pos, target_pos, active_move),
+        "prankster" => prankster::on_modify_priority(battle, priority, pokemon_pos, target_pos, active_move),
+        "triage" => triage::on_modify_priority(battle, priority, pokemon_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1289,10 +1290,10 @@ pub fn dispatch_on_modify_s_t_a_b(
     battle: &mut Battle,
     ability_id: &str,
     stab: f64,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "adaptability" => adaptability::on_modify_s_t_a_b(battle, stab, source_pos, target_pos, move_id),
+        "adaptability" => adaptability::on_modify_s_t_a_b(battle, stab, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1310,24 +1311,24 @@ pub fn dispatch_on_modify_secondaries(
 pub fn dispatch_on_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "blaze" => blaze::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "defeatist" => defeatist::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "dragonsmaw" => dragonsmaw::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "hadronengine" => hadronengine::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "minus" => minus::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "overgrow" => overgrow::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "plus" => plus::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "rockypayload" => rockypayload::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "solarpower" => solarpower::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "stakeout" => stakeout::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "steelworker" => steelworker::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "swarm" => swarm::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "torrent" => torrent::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "transistor" => transistor::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "waterbubble" => waterbubble::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "blaze" => blaze::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "defeatist" => defeatist::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "dragonsmaw" => dragonsmaw::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "hadronengine" => hadronengine::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "minus" => minus::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "overgrow" => overgrow::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "plus" => plus::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "rockypayload" => rockypayload::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "solarpower" => solarpower::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "stakeout" => stakeout::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "steelworker" => steelworker::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "swarm" => swarm::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "torrent" => torrent::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "transistor" => transistor::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "waterbubble" => waterbubble::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1352,15 +1353,15 @@ pub fn dispatch_on_modify_spe(
 pub fn dispatch_on_modify_type(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    active_move: Option<&ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match ability_id {
-        "aerilate" => aerilate::on_modify_type(battle, move_id, pokemon_pos, target_pos),
-        "galvanize" => galvanize::on_modify_type(battle, move_id, pokemon_pos, target_pos),
-        "liquidvoice" => liquidvoice::on_modify_type(battle, move_id, pokemon_pos, target_pos),
-        "normalize" => normalize::on_modify_type(battle, move_id, pokemon_pos, target_pos),
-        "pixilate" => pixilate::on_modify_type(battle, move_id, pokemon_pos, target_pos),
-        "refrigerate" => refrigerate::on_modify_type(battle, move_id, pokemon_pos, target_pos),
+        "aerilate" => aerilate::on_modify_type(battle, active_move, pokemon_pos, target_pos),
+        "galvanize" => galvanize::on_modify_type(battle, active_move, pokemon_pos, target_pos),
+        "liquidvoice" => liquidvoice::on_modify_type(battle, active_move, pokemon_pos, target_pos),
+        "normalize" => normalize::on_modify_type(battle, active_move, pokemon_pos, target_pos),
+        "pixilate" => pixilate::on_modify_type(battle, active_move, pokemon_pos, target_pos),
+        "refrigerate" => refrigerate::on_modify_type(battle, active_move, pokemon_pos, target_pos),
         _ => EventResult::Continue,
     }
 }
@@ -1380,12 +1381,12 @@ pub fn dispatch_on_modify_weight(
 pub fn dispatch_on_prepare_hit(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "libero" => libero::on_prepare_hit(battle, source_pos, target_pos, move_id),
-        "parentalbond" => parentalbond::on_prepare_hit(battle, source_pos, target_pos, move_id),
-        "protean" => protean::on_prepare_hit(battle, source_pos, target_pos, move_id),
+        "libero" => libero::on_prepare_hit(battle, source_pos, target_pos, active_move),
+        "parentalbond" => parentalbond::on_prepare_hit(battle, source_pos, target_pos, active_move),
+        "protean" => protean::on_prepare_hit(battle, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1478,10 +1479,10 @@ pub fn dispatch_on_source_after_faint(
 pub fn dispatch_on_source_base_power(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "dryskin" => dryskin::on_source_base_power(battle, base_power, attacker_pos, defender_pos, move_id),
+        "dryskin" => dryskin::on_source_base_power(battle, base_power, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1489,11 +1490,11 @@ pub fn dispatch_on_source_base_power(
 pub fn dispatch_on_source_damaging_hit(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "poisontouch" => poisontouch::on_source_damaging_hit(battle, damage, target_pos, source_pos, move_id),
-        "toxicchain" => toxicchain::on_source_damaging_hit(battle, damage, target_pos, source_pos, move_id),
+        "poisontouch" => poisontouch::on_source_damaging_hit(battle, damage, target_pos, source_pos, active_move),
+        "toxicchain" => toxicchain::on_source_damaging_hit(battle, damage, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1501,11 +1502,11 @@ pub fn dispatch_on_source_damaging_hit(
 pub fn dispatch_on_source_modify_accuracy(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "compoundeyes" => compoundeyes::on_source_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
-        "hustle" => hustle::on_source_modify_accuracy(battle, accuracy, target_pos, source_pos, move_id),
+        "compoundeyes" => compoundeyes::on_source_modify_accuracy(battle, accuracy, target_pos, source_pos, active_move),
+        "hustle" => hustle::on_source_modify_accuracy(battle, accuracy, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1513,13 +1514,13 @@ pub fn dispatch_on_source_modify_accuracy(
 pub fn dispatch_on_source_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "heatproof" => heatproof::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "purifyingsalt" => purifyingsalt::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "thickfat" => thickfat::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "waterbubble" => waterbubble::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "heatproof" => heatproof::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "purifyingsalt" => purifyingsalt::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "thickfat" => thickfat::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "waterbubble" => waterbubble::on_source_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1527,18 +1528,18 @@ pub fn dispatch_on_source_modify_atk(
 pub fn dispatch_on_source_modify_damage(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "filter" => filter::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "fluffy" => fluffy::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "icescales" => icescales::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "multiscale" => multiscale::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "prismarmor" => prismarmor::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "punkrock" => punkrock::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "ripen" => ripen::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "shadowshield" => shadowshield::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
-        "solidrock" => solidrock::on_source_modify_damage(battle, damage, source_pos, target_pos, move_id),
+        "filter" => filter::on_source_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "fluffy" => fluffy::on_source_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "icescales" => icescales::on_source_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "multiscale" => multiscale::on_source_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "prismarmor" => prismarmor::on_source_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "punkrock" => punkrock::on_source_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "ripen" => ripen::on_source_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "shadowshield" => shadowshield::on_source_modify_damage(battle, damage, source_pos, target_pos, active_move),
+        "solidrock" => solidrock::on_source_modify_damage(battle, damage, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1549,10 +1550,10 @@ pub fn dispatch_on_source_modify_secondaries(
     secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "parentalbond" => parentalbond::on_source_modify_secondaries(battle, secondaries, target_pos, source_pos, move_id),
+        "parentalbond" => parentalbond::on_source_modify_secondaries(battle, secondaries, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1560,13 +1561,13 @@ pub fn dispatch_on_source_modify_secondaries(
 pub fn dispatch_on_source_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "heatproof" => heatproof::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "purifyingsalt" => purifyingsalt::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "thickfat" => thickfat::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "waterbubble" => waterbubble::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "heatproof" => heatproof::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "purifyingsalt" => purifyingsalt::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "thickfat" => thickfat::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "waterbubble" => waterbubble::on_source_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1788,31 +1789,31 @@ pub fn dispatch_on_try_heal(
 pub fn dispatch_on_try_hit(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "bulletproof" => bulletproof::on_try_hit(battle, target_pos, source_pos, move_id),
-        "dryskin" => dryskin::on_try_hit(battle, target_pos, source_pos, move_id),
-        "eartheater" => eartheater::on_try_hit(battle, target_pos, source_pos, move_id),
-        "flashfire" => flashfire::on_try_hit(battle, target_pos, source_pos, move_id),
-        "goodasgold" => goodasgold::on_try_hit(battle, target_pos, source_pos, move_id),
-        "lightningrod" => lightningrod::on_try_hit(battle, target_pos, source_pos, move_id),
-        "magicbounce" => magicbounce::on_try_hit(battle, target_pos, source_pos, move_id),
-        "motordrive" => motordrive::on_try_hit(battle, target_pos, source_pos, move_id),
-        "mountaineer" => mountaineer::on_try_hit(battle, target_pos, source_pos, move_id),
-        "oblivious" => oblivious::on_try_hit(battle, target_pos, source_pos, move_id),
-        "overcoat" => overcoat::on_try_hit(battle, target_pos, source_pos, move_id),
-        "rebound" => rebound::on_try_hit(battle, target_pos, source_pos, move_id),
-        "sapsipper" => sapsipper::on_try_hit(battle, target_pos, source_pos, move_id),
-        "soundproof" => soundproof::on_try_hit(battle, target_pos, source_pos, move_id),
-        "stormdrain" => stormdrain::on_try_hit(battle, target_pos, source_pos, move_id),
-        "sturdy" => sturdy::on_try_hit(battle, target_pos, source_pos, move_id),
-        "telepathy" => telepathy::on_try_hit(battle, target_pos, source_pos, move_id),
-        "voltabsorb" => voltabsorb::on_try_hit(battle, target_pos, source_pos, move_id),
-        "waterabsorb" => waterabsorb::on_try_hit(battle, target_pos, source_pos, move_id),
-        "wellbakedbody" => wellbakedbody::on_try_hit(battle, target_pos, source_pos, move_id),
-        "windrider" => windrider::on_try_hit(battle, target_pos, source_pos, move_id),
-        "wonderguard" => wonderguard::on_try_hit(battle, target_pos, source_pos, move_id),
+        "bulletproof" => bulletproof::on_try_hit(battle, target_pos, source_pos, active_move),
+        "dryskin" => dryskin::on_try_hit(battle, target_pos, source_pos, active_move),
+        "eartheater" => eartheater::on_try_hit(battle, target_pos, source_pos, active_move),
+        "flashfire" => flashfire::on_try_hit(battle, target_pos, source_pos, active_move),
+        "goodasgold" => goodasgold::on_try_hit(battle, target_pos, source_pos, active_move),
+        "lightningrod" => lightningrod::on_try_hit(battle, target_pos, source_pos, active_move),
+        "magicbounce" => magicbounce::on_try_hit(battle, target_pos, source_pos, active_move),
+        "motordrive" => motordrive::on_try_hit(battle, target_pos, source_pos, active_move),
+        "mountaineer" => mountaineer::on_try_hit(battle, target_pos, source_pos, active_move),
+        "oblivious" => oblivious::on_try_hit(battle, target_pos, source_pos, active_move),
+        "overcoat" => overcoat::on_try_hit(battle, target_pos, source_pos, active_move),
+        "rebound" => rebound::on_try_hit(battle, target_pos, source_pos, active_move),
+        "sapsipper" => sapsipper::on_try_hit(battle, target_pos, source_pos, active_move),
+        "soundproof" => soundproof::on_try_hit(battle, target_pos, source_pos, active_move),
+        "stormdrain" => stormdrain::on_try_hit(battle, target_pos, source_pos, active_move),
+        "sturdy" => sturdy::on_try_hit(battle, target_pos, source_pos, active_move),
+        "telepathy" => telepathy::on_try_hit(battle, target_pos, source_pos, active_move),
+        "voltabsorb" => voltabsorb::on_try_hit(battle, target_pos, source_pos, active_move),
+        "waterabsorb" => waterabsorb::on_try_hit(battle, target_pos, source_pos, active_move),
+        "wellbakedbody" => wellbakedbody::on_try_hit(battle, target_pos, source_pos, active_move),
+        "windrider" => windrider::on_try_hit(battle, target_pos, source_pos, active_move),
+        "wonderguard" => wonderguard::on_try_hit(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -1929,49 +1930,49 @@ pub fn dispatch_on_after_each_boost_sub_order(
 pub fn dispatch_on_after_move_secondary_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, active_move)
 }
 /// Dispatch onAfterMoveSecondaryOrder callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, active_move)
 }
 /// Dispatch onAfterMoveSecondarySubOrder callbacks (alias for onAfterMoveSecondary)
 pub fn dispatch_on_after_move_secondary_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_after_move_secondary(battle, ability_id, target_pos, source_pos, active_move)
 }
 /// Dispatch onAfterMoveSecondarySelfPriority callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_priority(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, active_move)
 }
 /// Dispatch onAfterMoveSecondarySelfOrder callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_order(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, active_move)
 }
 /// Dispatch onAfterMoveSecondarySelfSubOrder callbacks (alias for onAfterMoveSecondarySelf)
 pub fn dispatch_on_after_move_secondary_self_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_after_move_secondary_self(battle, ability_id, source_pos, target_pos, active_move)
 }
 /// Dispatch onAfterSetStatusPriority callbacks (alias for onAfterSetStatus)
 pub fn dispatch_on_after_set_status_priority(
@@ -2073,25 +2074,25 @@ pub fn dispatch_on_ally_after_use_item_sub_order(
 pub fn dispatch_on_ally_base_power_priority(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, move_id: &str,
+    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
+    dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, active_move)
 }
 /// Dispatch onAllyBasePowerOrder callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, move_id: &str,
+    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
+    dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, active_move)
 }
 /// Dispatch onAllyBasePowerSubOrder callbacks (alias for onAllyBasePower)
 pub fn dispatch_on_ally_base_power_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, move_id: &str,
+    base_power: i32, attacker_pos: Option<(usize, usize)>, defender_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
+    dispatch_on_ally_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, active_move)
 }
 /// Dispatch onAllyFaintPriority callbacks (alias for onAllyFaint)
 pub fn dispatch_on_ally_faint_priority(
@@ -2251,54 +2252,54 @@ pub fn dispatch_on_ally_try_boost_sub_order(
 pub fn dispatch_on_ally_try_hit_side_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAllyTryHitSideOrder callbacks (alias for onAllyTryHitSide)
 pub fn dispatch_on_ally_try_hit_side_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAllyTryHitSideSubOrder callbacks (alias for onAllyTryHitSide)
 pub fn dispatch_on_ally_try_hit_side_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_ally_try_hit_side(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyAccuracyPriority callbacks (alias for onAnyAccuracy)
 pub fn dispatch_on_any_accuracy_priority(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
+    dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyAccuracyOrder callbacks (alias for onAnyAccuracy)
 pub fn dispatch_on_any_accuracy_order(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
+    dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyAccuracySubOrder callbacks (alias for onAnyAccuracy)
 pub fn dispatch_on_any_accuracy_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    accuracy: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
+    dispatch_on_any_accuracy(battle, ability_id, accuracy, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyAfterMegaPriority callbacks (alias for onAnyAfterMega)
@@ -2404,27 +2405,27 @@ pub fn dispatch_on_any_after_terastallization_sub_order(
 pub fn dispatch_on_any_base_power_priority(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, move_id)
+    dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyBasePowerOrder callbacks (alias for onAnyBasePower)
 pub fn dispatch_on_any_base_power_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, move_id)
+    dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyBasePowerSubOrder callbacks (alias for onAnyBasePower)
 pub fn dispatch_on_any_base_power_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, move_id)
+    dispatch_on_any_base_power(battle, ability_id, base_power, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyBeforeMovePriority callbacks (alias for onAnyBeforeMove)
@@ -2506,27 +2507,27 @@ pub fn dispatch_on_any_faint_sub_order(
 pub fn dispatch_on_any_invulnerability_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyInvulnerabilityOrder callbacks (alias for onAnyInvulnerability)
 pub fn dispatch_on_any_invulnerability_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyInvulnerabilitySubOrder callbacks (alias for onAnyInvulnerability)
 pub fn dispatch_on_any_invulnerability_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_invulnerability(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyModifyAccuracyPriority callbacks (alias for onAnyModifyAccuracy)
@@ -2560,27 +2561,27 @@ pub fn dispatch_on_any_modify_accuracy_sub_order(
 pub fn dispatch_on_any_modify_atk_priority(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_atk(battle, ability_id, atk, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_atk(battle, ability_id, atk, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyModifyAtkOrder callbacks (alias for onAnyModifyAtk)
 pub fn dispatch_on_any_modify_atk_order(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_atk(battle, ability_id, atk, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_atk(battle, ability_id, atk, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyModifyAtkSubOrder callbacks (alias for onAnyModifyAtk)
 pub fn dispatch_on_any_modify_atk_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    atk: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_atk(battle, ability_id, atk, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_atk(battle, ability_id, atk, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyModifyBoostPriority callbacks (alias for onAnyModifyBoost)
@@ -2614,135 +2615,135 @@ pub fn dispatch_on_any_modify_boost_sub_order(
 pub fn dispatch_on_any_modify_damage_priority(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyModifyDamageOrder callbacks (alias for onAnyModifyDamage)
 pub fn dispatch_on_any_modify_damage_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyModifyDamageSubOrder callbacks (alias for onAnyModifyDamage)
 pub fn dispatch_on_any_modify_damage_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_damage(battle, ability_id, damage, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyModifyDefPriority callbacks (alias for onAnyModifyDef)
 pub fn dispatch_on_any_modify_def_priority(
     battle: &mut Battle,
     ability_id: &str,
-    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_def(battle, ability_id, def, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_def(battle, ability_id, def, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyModifyDefOrder callbacks (alias for onAnyModifyDef)
 pub fn dispatch_on_any_modify_def_order(
     battle: &mut Battle,
     ability_id: &str,
-    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_def(battle, ability_id, def, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_def(battle, ability_id, def, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyModifyDefSubOrder callbacks (alias for onAnyModifyDef)
 pub fn dispatch_on_any_modify_def_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    def: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_def(battle, ability_id, def, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_def(battle, ability_id, def, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyModifySpAPriority callbacks (alias for onAnyModifySpA)
 pub fn dispatch_on_any_modify_sp_a_priority(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_a(battle, ability_id, spa, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_sp_a(battle, ability_id, spa, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyModifySpAOrder callbacks (alias for onAnyModifySpA)
 pub fn dispatch_on_any_modify_sp_a_order(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_a(battle, ability_id, spa, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_sp_a(battle, ability_id, spa, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyModifySpASubOrder callbacks (alias for onAnyModifySpA)
 pub fn dispatch_on_any_modify_sp_a_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_a(battle, ability_id, spa, source_pos, target_pos, move_id)
+    dispatch_on_any_modify_sp_a(battle, ability_id, spa, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onAnyModifySpDPriority callbacks (alias for onAnyModifySpD)
 pub fn dispatch_on_any_modify_sp_d_priority(
     battle: &mut Battle,
     ability_id: &str,
-    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_d(battle, ability_id, spd, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_sp_d(battle, ability_id, spd, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyModifySpDOrder callbacks (alias for onAnyModifySpD)
 pub fn dispatch_on_any_modify_sp_d_order(
     battle: &mut Battle,
     ability_id: &str,
-    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_d(battle, ability_id, spd, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_sp_d(battle, ability_id, spd, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyModifySpDSubOrder callbacks (alias for onAnyModifySpD)
 pub fn dispatch_on_any_modify_sp_d_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    spd: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_modify_sp_d(battle, ability_id, spd, target_pos, source_pos, move_id)
+    dispatch_on_any_modify_sp_d(battle, ability_id, spd, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyRedirectTargetPriority callbacks (alias for onAnyRedirectTarget)
 pub fn dispatch_on_any_redirect_target_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, source2_pos, move_id)
+    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, source2_pos, active_move)
 }
 
 /// Dispatch onAnyRedirectTargetOrder callbacks (alias for onAnyRedirectTarget)
 pub fn dispatch_on_any_redirect_target_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, source2_pos, move_id)
+    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, source2_pos, active_move)
 }
 
 /// Dispatch onAnyRedirectTargetSubOrder callbacks (alias for onAnyRedirectTarget)
 pub fn dispatch_on_any_redirect_target_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, source2_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, source2_pos, move_id)
+    dispatch_on_any_redirect_target(battle, ability_id, target_pos, source_pos, source2_pos, active_move)
 }
 
 /// Dispatch onAnySetWeatherPriority callbacks (alias for onAnySetWeather)
@@ -2827,81 +2828,81 @@ pub fn dispatch_on_any_try_move_sub_order(
 pub fn dispatch_on_any_try_primary_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyTryPrimaryHitOrder callbacks (alias for onAnyTryPrimaryHit)
 pub fn dispatch_on_any_try_primary_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onAnyTryPrimaryHitSubOrder callbacks (alias for onAnyTryPrimaryHit)
 pub fn dispatch_on_any_try_primary_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_any_try_primary_hit(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onBasePowerPriority callbacks (alias for onBasePower)
 pub fn dispatch_on_base_power_priority(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
+    dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onBasePowerOrder callbacks (alias for onBasePower)
 pub fn dispatch_on_base_power_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
+    dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onBasePowerSubOrder callbacks (alias for onBasePower)
 pub fn dispatch_on_base_power_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
+    dispatch_on_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onBeforeMovePriority callbacks (alias for onBeforeMove)
 pub fn dispatch_on_before_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, move_id)
+    dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, active_move)
 }
 
 /// Dispatch onBeforeMoveOrder callbacks (alias for onBeforeMove)
 pub fn dispatch_on_before_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, move_id)
+    dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, active_move)
 }
 
 /// Dispatch onBeforeMoveSubOrder callbacks (alias for onBeforeMove)
 pub fn dispatch_on_before_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, move_id)
+    dispatch_on_before_move(battle, ability_id, pokemon_pos, target_pos, active_move)
 }
 
 /// Dispatch onBeforeSwitchInPriority callbacks (alias for onBeforeSwitchIn)
@@ -2989,27 +2990,27 @@ pub fn dispatch_on_check_show_sub_order(
 pub fn dispatch_on_critical_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onCriticalHitOrder callbacks (alias for onCriticalHit)
 pub fn dispatch_on_critical_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onCriticalHitSubOrder callbacks (alias for onCriticalHit)
 pub fn dispatch_on_critical_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_critical_hit(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onDamagePriority callbacks (alias for onDamage)
@@ -3043,27 +3044,27 @@ pub fn dispatch_on_damage_sub_order(
 pub fn dispatch_on_damaging_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
+    dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onDamagingHitOrder callbacks (alias for onDamagingHit)
 pub fn dispatch_on_damaging_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
+    dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onDamagingHitSubOrder callbacks (alias for onDamagingHit)
 pub fn dispatch_on_damaging_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
+    dispatch_on_damaging_hit(battle, ability_id, damage, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onDeductPPPriority callbacks (alias for onDeductPP)
@@ -3124,27 +3125,27 @@ pub fn dispatch_on_disable_move_sub_order(
 pub fn dispatch_on_drag_out_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_drag_out(battle, ability_id, pokemon_pos, source_pos, move_id)
+    dispatch_on_drag_out(battle, ability_id, pokemon_pos, source_pos, active_move)
 }
 
 /// Dispatch onDragOutOrder callbacks (alias for onDragOut)
 pub fn dispatch_on_drag_out_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_drag_out(battle, ability_id, pokemon_pos, source_pos, move_id)
+    dispatch_on_drag_out(battle, ability_id, pokemon_pos, source_pos, active_move)
 }
 
 /// Dispatch onDragOutSubOrder callbacks (alias for onDragOut)
 pub fn dispatch_on_drag_out_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_drag_out(battle, ability_id, pokemon_pos, source_pos, move_id)
+    dispatch_on_drag_out(battle, ability_id, pokemon_pos, source_pos, active_move)
 }
 
 /// Dispatch onEatItemPriority callbacks (alias for onEatItem)
@@ -3178,27 +3179,27 @@ pub fn dispatch_on_eat_item_sub_order(
 pub fn dispatch_on_effectiveness_priority(
     battle: &mut Battle,
     ability_id: &str,
-    type_mod: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
+    type_mod: i32, target_pos: (usize, usize), type_str: &str, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_effectiveness(battle, ability_id, type_mod, target_pos, type_str, move_id)
+    dispatch_on_effectiveness(battle, ability_id, type_mod, target_pos, type_str, active_move)
 }
 
 /// Dispatch onEffectivenessOrder callbacks (alias for onEffectiveness)
 pub fn dispatch_on_effectiveness_order(
     battle: &mut Battle,
     ability_id: &str,
-    type_mod: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
+    type_mod: i32, target_pos: (usize, usize), type_str: &str, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_effectiveness(battle, ability_id, type_mod, target_pos, type_str, move_id)
+    dispatch_on_effectiveness(battle, ability_id, type_mod, target_pos, type_str, active_move)
 }
 
 /// Dispatch onEffectivenessSubOrder callbacks (alias for onEffectiveness)
 pub fn dispatch_on_effectiveness_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    type_mod: i32, target_pos: (usize, usize), type_str: &str, move_id: &str,
+    type_mod: i32, target_pos: (usize, usize), type_str: &str, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_effectiveness(battle, ability_id, type_mod, target_pos, type_str, move_id)
+    dispatch_on_effectiveness(battle, ability_id, type_mod, target_pos, type_str, active_move)
 }
 
 /// Dispatch onEmergencyExitPriority callbacks (alias for onEmergencyExit)
@@ -3424,27 +3425,27 @@ pub fn dispatch_on_foe_try_eat_item_sub_order(
 pub fn dispatch_on_foe_try_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onFoeTryMoveOrder callbacks (alias for onFoeTryMove)
 pub fn dispatch_on_foe_try_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onFoeTryMoveSubOrder callbacks (alias for onFoeTryMove)
 pub fn dispatch_on_foe_try_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_foe_try_move(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onFractionalPriorityPriority callbacks (alias for onFractionalPriority)
@@ -3452,9 +3453,9 @@ pub fn dispatch_on_fractional_priority_priority(
     battle: &mut Battle,
     ability_id: &str,
     priority: i32,
-    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_fractional_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
+    dispatch_on_fractional_priority(battle, ability_id, priority, pokemon_pos, target_pos, active_move)
 }
 
 /// Dispatch onFractionalPriorityOrder callbacks (alias for onFractionalPriority)
@@ -3462,9 +3463,9 @@ pub fn dispatch_on_fractional_priority_order(
     battle: &mut Battle,
     ability_id: &str,
     priority: i32,
-    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_fractional_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
+    dispatch_on_fractional_priority(battle, ability_id, priority, pokemon_pos, target_pos, active_move)
 }
 
 /// Dispatch onFractionalPrioritySubOrder callbacks (alias for onFractionalPriority)
@@ -3472,36 +3473,36 @@ pub fn dispatch_on_fractional_priority_sub_order(
     battle: &mut Battle,
     ability_id: &str,
     priority: i32,
-    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_fractional_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
+    dispatch_on_fractional_priority(battle, ability_id, priority, pokemon_pos, target_pos, active_move)
 }
 
 /// Dispatch onHitPriority callbacks (alias for onHit)
 pub fn dispatch_on_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, move_id)
+    dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, active_move)
 }
 
 /// Dispatch onHitOrder callbacks (alias for onHit)
 pub fn dispatch_on_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, move_id)
+    dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, active_move)
 }
 
 /// Dispatch onHitSubOrder callbacks (alias for onHit)
 pub fn dispatch_on_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    pokemon_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    pokemon_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, move_id)
+    dispatch_on_hit(battle, ability_id, pokemon_pos, source_pos, active_move)
 }
 
 /// Dispatch onImmunityPriority callbacks (alias for onImmunity)
@@ -3535,195 +3536,195 @@ pub fn dispatch_on_immunity_sub_order(
 pub fn dispatch_on_modify_accuracy_priority(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
+    dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onModifyAccuracyOrder callbacks (alias for onModifyAccuracy)
 pub fn dispatch_on_modify_accuracy_order(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
+    dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onModifyAccuracySubOrder callbacks (alias for onModifyAccuracy)
 pub fn dispatch_on_modify_accuracy_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
+    dispatch_on_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onModifyAtkPriority callbacks (alias for onModifyAtk)
 pub fn dispatch_on_modify_atk_priority(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
+    dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onModifyAtkOrder callbacks (alias for onModifyAtk)
 pub fn dispatch_on_modify_atk_order(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
+    dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onModifyAtkSubOrder callbacks (alias for onModifyAtk)
 pub fn dispatch_on_modify_atk_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
+    dispatch_on_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onModifyCritRatioPriority callbacks (alias for onModifyCritRatio)
 pub fn dispatch_on_modify_crit_ratio_priority(
     battle: &mut Battle,
     ability_id: &str,
-    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos, move_id)
+    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifyCritRatioOrder callbacks (alias for onModifyCritRatio)
 pub fn dispatch_on_modify_crit_ratio_order(
     battle: &mut Battle,
     ability_id: &str,
-    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos, move_id)
+    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifyCritRatioSubOrder callbacks (alias for onModifyCritRatio)
 pub fn dispatch_on_modify_crit_ratio_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    crit_ratio: i32, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos, move_id)
+    dispatch_on_modify_crit_ratio(battle, ability_id, crit_ratio, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifyDamagePriority callbacks (alias for onModifyDamage)
 pub fn dispatch_on_modify_damage_priority(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
+    dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifyDamageOrder callbacks (alias for onModifyDamage)
 pub fn dispatch_on_modify_damage_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
+    dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifyDamageSubOrder callbacks (alias for onModifyDamage)
 pub fn dispatch_on_modify_damage_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
+    dispatch_on_modify_damage(battle, ability_id, damage, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifyDefPriority callbacks (alias for onModifyDef)
 pub fn dispatch_on_modify_def_priority(
     battle: &mut Battle,
     ability_id: &str,
-    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, move_id)
+    dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, active_move)
 }
 
 /// Dispatch onModifyDefOrder callbacks (alias for onModifyDef)
 pub fn dispatch_on_modify_def_order(
     battle: &mut Battle,
     ability_id: &str,
-    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, move_id)
+    dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, active_move)
 }
 
 /// Dispatch onModifyDefSubOrder callbacks (alias for onModifyDef)
 pub fn dispatch_on_modify_def_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, move_id)
+    dispatch_on_modify_def(battle, ability_id, def, defender_pos, attacker_pos, active_move)
 }
 
 /// Dispatch onModifyMovePriority callbacks (alias for onModifyMove)
 pub fn dispatch_on_modify_move_priority(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_move(battle, ability_id, move_id, source_pos, target_pos)
+    dispatch_on_modify_move(battle, ability_id, active_move, source_pos, target_pos)
 }
 
 /// Dispatch onModifyMoveOrder callbacks (alias for onModifyMove)
 pub fn dispatch_on_modify_move_order(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_move(battle, ability_id, move_id, source_pos, target_pos)
+    dispatch_on_modify_move(battle, ability_id, active_move, source_pos, target_pos)
 }
 
 /// Dispatch onModifyMoveSubOrder callbacks (alias for onModifyMove)
 pub fn dispatch_on_modify_move_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_move(battle, ability_id, move_id, source_pos, target_pos)
+    dispatch_on_modify_move(battle, ability_id, active_move, source_pos, target_pos)
 }
 
 /// Dispatch onModifyPriorityPriority callbacks (alias for onModifyPriority)
 pub fn dispatch_on_modify_priority_priority(
     battle: &mut Battle,
     ability_id: &str,
-    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
+    dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifyPriorityOrder callbacks (alias for onModifyPriority)
 pub fn dispatch_on_modify_priority_order(
     battle: &mut Battle,
     ability_id: &str,
-    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
+    dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifyPrioritySubOrder callbacks (alias for onModifyPriority)
 pub fn dispatch_on_modify_priority_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, move_id: &str,
+    priority: i32, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, move_id)
+    dispatch_on_modify_priority(battle, ability_id, priority, pokemon_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifySTABPriority callbacks (alias for onModifySTAB)
@@ -3731,9 +3732,9 @@ pub fn dispatch_on_modify_s_t_a_b_priority(
     battle: &mut Battle,
     ability_id: &str,
     stab: f64,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, move_id)
+    dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifySTABOrder callbacks (alias for onModifySTAB)
@@ -3741,9 +3742,9 @@ pub fn dispatch_on_modify_s_t_a_b_order(
     battle: &mut Battle,
     ability_id: &str,
     stab: f64,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, move_id)
+    dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifySTABSubOrder callbacks (alias for onModifySTAB)
@@ -3751,9 +3752,9 @@ pub fn dispatch_on_modify_s_t_a_b_sub_order(
     battle: &mut Battle,
     ability_id: &str,
     stab: f64,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, move_id)
+    dispatch_on_modify_s_t_a_b(battle, ability_id, stab, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onModifySecondariesPriority callbacks (alias for onModifySecondaries)
@@ -3784,27 +3785,27 @@ pub fn dispatch_on_modify_secondaries_sub_order(
 pub fn dispatch_on_modify_sp_a_priority(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
+    dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onModifySpAOrder callbacks (alias for onModifySpA)
 pub fn dispatch_on_modify_sp_a_order(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
+    dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onModifySpASubOrder callbacks (alias for onModifySpA)
 pub fn dispatch_on_modify_sp_a_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
+    dispatch_on_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onModifySpePriority callbacks (alias for onModifySpe)
@@ -3838,27 +3839,27 @@ pub fn dispatch_on_modify_spe_sub_order(
 pub fn dispatch_on_modify_type_priority(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    active_move: Option<&ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_type(battle, ability_id, move_id, pokemon_pos, target_pos)
+    dispatch_on_modify_type(battle, ability_id, active_move, pokemon_pos, target_pos)
 }
 
 /// Dispatch onModifyTypeOrder callbacks (alias for onModifyType)
 pub fn dispatch_on_modify_type_order(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    active_move: Option<&ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_type(battle, ability_id, move_id, pokemon_pos, target_pos)
+    dispatch_on_modify_type(battle, ability_id, active_move, pokemon_pos, target_pos)
 }
 
 /// Dispatch onModifyTypeSubOrder callbacks (alias for onModifyType)
 pub fn dispatch_on_modify_type_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    move_id: &str, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
+    active_move: Option<&ActiveMove>, pokemon_pos: (usize, usize), target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    dispatch_on_modify_type(battle, ability_id, move_id, pokemon_pos, target_pos)
+    dispatch_on_modify_type(battle, ability_id, active_move, pokemon_pos, target_pos)
 }
 
 /// Dispatch onModifyWeightPriority callbacks (alias for onModifyWeight)
@@ -3892,27 +3893,27 @@ pub fn dispatch_on_modify_weight_sub_order(
 pub fn dispatch_on_prepare_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onPrepareHitOrder callbacks (alias for onPrepareHit)
 pub fn dispatch_on_prepare_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onPrepareHitSubOrder callbacks (alias for onPrepareHit)
 pub fn dispatch_on_prepare_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, move_id: &str,
+    source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, move_id)
+    dispatch_on_prepare_hit(battle, ability_id, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onResidualPriority callbacks (alias for onResidual)
@@ -4045,135 +4046,135 @@ pub fn dispatch_on_source_after_faint_sub_order(
 pub fn dispatch_on_source_base_power_priority(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
+    dispatch_on_source_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onSourceBasePowerOrder callbacks (alias for onSourceBasePower)
 pub fn dispatch_on_source_base_power_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
+    dispatch_on_source_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onSourceBasePowerSubOrder callbacks (alias for onSourceBasePower)
 pub fn dispatch_on_source_base_power_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, move_id)
+    dispatch_on_source_base_power(battle, ability_id, base_power, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onSourceDamagingHitPriority callbacks (alias for onSourceDamagingHit)
 pub fn dispatch_on_source_damaging_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
+    dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onSourceDamagingHitOrder callbacks (alias for onSourceDamagingHit)
 pub fn dispatch_on_source_damaging_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
+    dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onSourceDamagingHitSubOrder callbacks (alias for onSourceDamagingHit)
 pub fn dispatch_on_source_damaging_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str,
+    damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, move_id)
+    dispatch_on_source_damaging_hit(battle, ability_id, damage, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onSourceModifyAccuracyPriority callbacks (alias for onSourceModifyAccuracy)
 pub fn dispatch_on_source_modify_accuracy_priority(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
+    dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onSourceModifyAccuracyOrder callbacks (alias for onSourceModifyAccuracy)
 pub fn dispatch_on_source_modify_accuracy_order(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
+    dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onSourceModifyAccuracySubOrder callbacks (alias for onSourceModifyAccuracy)
 pub fn dispatch_on_source_modify_accuracy_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    accuracy: i32, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, move_id)
+    dispatch_on_source_modify_accuracy(battle, ability_id, accuracy, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onSourceModifyAtkPriority callbacks (alias for onSourceModifyAtk)
 pub fn dispatch_on_source_modify_atk_priority(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
+    dispatch_on_source_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onSourceModifyAtkOrder callbacks (alias for onSourceModifyAtk)
 pub fn dispatch_on_source_modify_atk_order(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
+    dispatch_on_source_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onSourceModifyAtkSubOrder callbacks (alias for onSourceModifyAtk)
 pub fn dispatch_on_source_modify_atk_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, move_id)
+    dispatch_on_source_modify_atk(battle, ability_id, atk, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onSourceModifyDamagePriority callbacks (alias for onSourceModifyDamage)
 pub fn dispatch_on_source_modify_damage_priority(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
+    dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onSourceModifyDamageOrder callbacks (alias for onSourceModifyDamage)
 pub fn dispatch_on_source_modify_damage_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
+    dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onSourceModifyDamageSubOrder callbacks (alias for onSourceModifyDamage)
 pub fn dispatch_on_source_modify_damage_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), move_id: &str,
+    damage: i32, source_pos: (usize, usize), target_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, move_id)
+    dispatch_on_source_modify_damage(battle, ability_id, damage, source_pos, target_pos, active_move)
 }
 
 /// Dispatch onSourceModifySecondariesPriority callbacks (alias for onSourceModifySecondaries)
@@ -4183,9 +4184,9 @@ pub fn dispatch_on_source_modify_secondaries_priority(
     secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_secondaries(battle, ability_id, secondaries, target_pos, source_pos, move_id)
+    dispatch_on_source_modify_secondaries(battle, ability_id, secondaries, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onSourceModifySecondariesOrder callbacks (alias for onSourceModifySecondaries)
@@ -4195,9 +4196,9 @@ pub fn dispatch_on_source_modify_secondaries_order(
     secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_secondaries(battle, ability_id, secondaries, target_pos, source_pos, move_id)
+    dispatch_on_source_modify_secondaries(battle, ability_id, secondaries, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onSourceModifySecondariesSubOrder callbacks (alias for onSourceModifySecondaries)
@@ -4207,36 +4208,36 @@ pub fn dispatch_on_source_modify_secondaries_sub_order(
     secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_secondaries(battle, ability_id, secondaries, target_pos, source_pos, move_id)
+    dispatch_on_source_modify_secondaries(battle, ability_id, secondaries, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onSourceModifySpAPriority callbacks (alias for onSourceModifySpA)
 pub fn dispatch_on_source_modify_sp_a_priority(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
+    dispatch_on_source_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onSourceModifySpAOrder callbacks (alias for onSourceModifySpA)
 pub fn dispatch_on_source_modify_sp_a_order(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
+    dispatch_on_source_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onSourceModifySpASubOrder callbacks (alias for onSourceModifySpA)
 pub fn dispatch_on_source_modify_sp_a_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_source_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, move_id)
+    dispatch_on_source_modify_sp_a(battle, ability_id, spa, attacker_pos, defender_pos, active_move)
 }
 
 /// Dispatch onSourceTryHealPriority callbacks (alias for onSourceTryHeal)
@@ -4540,27 +4541,27 @@ pub fn dispatch_on_try_heal_sub_order(
 pub fn dispatch_on_try_hit_priority(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onTryHitOrder callbacks (alias for onTryHit)
 pub fn dispatch_on_try_hit_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onTryHitSubOrder callbacks (alias for onTryHit)
 pub fn dispatch_on_try_hit_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    target_pos: (usize, usize), source_pos: (usize, usize), move_id: &str,
+    target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, move_id)
+    dispatch_on_try_hit(battle, ability_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onUpdatePriority callbacks (alias for onUpdate)
@@ -4664,12 +4665,12 @@ pub fn dispatch_condition_on_end(
 pub fn dispatch_condition_on_modify_atk(
     battle: &mut Battle,
     ability_id: &str,
-    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    atk: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "flashfire" => flashfire::condition::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "protosynthesis" => protosynthesis::condition::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
-        "quarkdrive" => quarkdrive::condition::on_modify_atk(battle, atk, attacker_pos, defender_pos, move_id),
+        "flashfire" => flashfire::condition::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "protosynthesis" => protosynthesis::condition::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
+        "quarkdrive" => quarkdrive::condition::on_modify_atk(battle, atk, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -4678,11 +4679,11 @@ pub fn dispatch_condition_on_modify_atk(
 pub fn dispatch_condition_on_modify_def(
     battle: &mut Battle,
     ability_id: &str,
-    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
+    def: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "protosynthesis" => protosynthesis::condition::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
-        "quarkdrive" => quarkdrive::condition::on_modify_def(battle, def, defender_pos, attacker_pos, move_id),
+        "protosynthesis" => protosynthesis::condition::on_modify_def(battle, def, defender_pos, attacker_pos, active_move),
+        "quarkdrive" => quarkdrive::condition::on_modify_def(battle, def, defender_pos, attacker_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -4691,12 +4692,12 @@ pub fn dispatch_condition_on_modify_def(
 pub fn dispatch_condition_on_modify_sp_a(
     battle: &mut Battle,
     ability_id: &str,
-    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), move_id: &str,
+    spa: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "flashfire" => flashfire::condition::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "protosynthesis" => protosynthesis::condition::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
-        "quarkdrive" => quarkdrive::condition::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, move_id),
+        "flashfire" => flashfire::condition::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "protosynthesis" => protosynthesis::condition::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
+        "quarkdrive" => quarkdrive::condition::on_modify_sp_a(battle, spa, attacker_pos, defender_pos, active_move),
         _ => EventResult::Continue,
     }
 }
@@ -4705,11 +4706,11 @@ pub fn dispatch_condition_on_modify_sp_a(
 pub fn dispatch_condition_on_modify_sp_d(
     battle: &mut Battle,
     ability_id: &str,
-    spd: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), move_id: &str,
+    spd: i32, defender_pos: (usize, usize), attacker_pos: (usize, usize), active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
-        "protosynthesis" => protosynthesis::condition::on_modify_sp_d(battle, spd, defender_pos, attacker_pos, move_id),
-        "quarkdrive" => quarkdrive::condition::on_modify_sp_d(battle, spd, defender_pos, attacker_pos, move_id),
+        "protosynthesis" => protosynthesis::condition::on_modify_sp_d(battle, spd, defender_pos, attacker_pos, active_move),
+        "quarkdrive" => quarkdrive::condition::on_modify_sp_d(battle, spd, defender_pos, attacker_pos, active_move),
         _ => EventResult::Continue,
     }
 }

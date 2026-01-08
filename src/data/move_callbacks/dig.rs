@@ -125,8 +125,9 @@ pub mod condition {
         _battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // if (['earthquake', 'magnitude'].includes(move.id)) {
         //     return;
         // }
@@ -149,8 +150,9 @@ pub mod condition {
         _damage: i32,
         _source_pos: Option<(usize, usize)>,
         _target_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // if (move.id === 'earthquake' || move.id === 'magnitude') {
         //     return this.chainModify(2);
         // }

@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return priority + 1;
 ///     }
 /// }
-pub fn on_modify_priority(battle: &mut Battle, priority: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_modify_priority(battle: &mut Battle, priority: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move?.category === 'Status') {
     //     move.pranksterBoosted = true;
     //     return priority + 1;

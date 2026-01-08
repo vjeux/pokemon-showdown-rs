@@ -109,7 +109,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
 ///         this.boost({ atk: 1, spa: 1, spe: 1, def: -1, spd: -1 }, target, target);
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // this.effectState.checkedAngerShell = true;
     battle.effect_state.checked_anger_shell = Some(true);
 

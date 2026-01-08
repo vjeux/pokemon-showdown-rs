@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return 50;
 ///     }
 /// }
-pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: (usize, usize), _source_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: (usize, usize), _source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.category == "Status" {
             return EventResult::Number(50);

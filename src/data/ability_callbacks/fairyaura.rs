@@ -42,7 +42,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///     if (move.auraBooster !== this.effectState.target) return;
 ///     return this.chainModify([move.hasAuraBreak ? 3072 : 5448, 4096]);
 /// }
-pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Get the Fairy Aura holder
     let aura_holder = match battle.effect_state.target {
         Some(pos) => pos,

@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([4915, 4096]);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.recoil || move.hasCrashDamage) {
     //     this.debug('Reckless boost');
     //     return this.chainModify([4915, 4096]);

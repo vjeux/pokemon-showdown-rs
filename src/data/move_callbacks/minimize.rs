@@ -23,9 +23,10 @@ pub mod condition {
         _damage: i32,
         _source_pos: Option<(usize, usize)>,
         _target_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
 
         // const boostedMoves = [
         //     'stomp', 'steamroller', 'bodyslam', 'flyingpress', 'dragonrush', 'heatcrash', 'heavyslam', 'maliciousmoonsault', 'supercellslam',
@@ -67,9 +68,10 @@ pub mod condition {
         accuracy: i32,
         _target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
 
         // const boostedMoves = [
         //     'stomp', 'steamroller', 'bodyslam', 'flyingpress', 'dragonrush', 'heatcrash', 'heavyslam', 'maliciousmoonsault', 'supercellslam',

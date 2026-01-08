@@ -142,7 +142,7 @@ pub mod condition {
         _accuracy: i32,
         _target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         // if (move && !move.ohko) return true;
         // Check if there's an active move and it's not an OHKO move

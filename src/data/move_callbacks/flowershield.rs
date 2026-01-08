@@ -28,9 +28,10 @@ use crate::event::EventResult;
 pub fn on_hit_field(
     battle: &mut Battle,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     use crate::dex_data::ID;
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
 
     let source = source_pos;
 

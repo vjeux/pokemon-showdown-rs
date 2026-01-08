@@ -30,8 +30,9 @@ pub mod condition {
         battle: &mut Battle,
         source_pos: Option<(usize, usize)>,
         _target_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // if (move.id !== 'chillyreception') return;
         if move_id != "chillyreception" {
             // return;

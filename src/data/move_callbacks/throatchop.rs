@@ -98,7 +98,7 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         let pokemon = pokemon_pos;
 

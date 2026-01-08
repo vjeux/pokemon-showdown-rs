@@ -86,7 +86,7 @@ pub fn on_before_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> 
 ///         this.singleEvent('End', this.dex.abilities.get('Illusion'), target.abilityState, target, source, move);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::dex_data::ID;
 
     let target = match target_pos {

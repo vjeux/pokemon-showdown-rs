@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(1.5);
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // const basePowerAfterMultiplier = this.modify(basePower, this.event.modifier);
     let modifier = battle.get_event_modifier();
     let base_power_after_multiplier = battle.modify_f(base_power, modifier as f64 / 4096.0);

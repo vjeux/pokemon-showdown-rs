@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // for (const allyActive of pokemon.allies()) {
     //     if (allyActive.hasAbility(['minus', 'plus'])) {
     //         return this.chainModify(1.5);

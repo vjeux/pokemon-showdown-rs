@@ -106,7 +106,7 @@ pub fn on_immunity(_battle: &mut Battle, type_or_status: &str, _pokemon_pos: (us
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     if move_id == "attract" || move_id == "captivate" || move_id == "taunt" {
         let target_ident = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

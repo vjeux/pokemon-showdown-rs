@@ -18,7 +18,7 @@ use crate::pokemon::Pokemon;
 ///         this.add('-start', source, 'typechange', type, '[from] ability: Libero');
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (this.effectState.libero) return;
     if let Some(true) = battle.effect_state.libero {
         return EventResult::Continue;

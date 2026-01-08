@@ -47,7 +47,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///     this.debug('Tablets of Ruin Atk drop');
 ///     return this.chainModify(0.75);
 /// }
-pub fn on_any_modify_atk(battle: &mut Battle, _atk: i32, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_any_modify_atk(battle: &mut Battle, _atk: i32, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     let ability_holder = match battle.effect_state.target {
         Some(pos) => pos,
         None => return EventResult::Continue,

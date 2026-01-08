@@ -16,7 +16,7 @@ pub fn on_modify_priority(
     battle: &mut Battle,
     source_pos: Option<(usize, usize)>,
     _target_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     let source = match source_pos {
         Some(pos) => pos,

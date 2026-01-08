@@ -22,8 +22,9 @@ use crate::event::EventResult;
 pub fn on_hit_side(
     battle: &mut Battle,
     source_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     use crate::dex_data::ID;
 
     let source = source_pos;

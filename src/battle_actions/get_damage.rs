@@ -237,9 +237,10 @@ pub fn get_damage(
     // CRITICAL: Always check for basePowerCallback, regardless of initial base_power!
     // Max/G-Max moves have non-zero base_power in move data but use callback to calculate actual damage
     use crate::data::move_callbacks;
+    let active_move_for_callback = battle.active_move.clone();
     if let crate::event::EventResult::Number(bp) = move_callbacks::dispatch_base_power_callback(
         battle,
-        move_data.id.as_str(),
+        active_move_for_callback.as_ref(),
         source_pos,
         Some(target_pos),
     ) {

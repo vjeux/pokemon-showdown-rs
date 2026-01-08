@@ -74,8 +74,9 @@ pub mod condition {
         _damage: i32,
         source_pos: Option<(usize, usize)>,
         target_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         eprintln!("[AURORAVEIL] on_any_modify_damage called: source={:?}, target={:?}, move={}", source_pos, target_pos, move_id);
 
         // Get target and source positions

@@ -26,7 +26,7 @@ pub fn on_base_power(
     _base_power: i32,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // let bp = Math.max(1, move.basePower);
     let base_power = match &battle.active_move {

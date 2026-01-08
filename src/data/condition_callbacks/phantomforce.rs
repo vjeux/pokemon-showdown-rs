@@ -24,7 +24,7 @@ pub fn on_any_invulnerability(
     _battle: &mut Battle,
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
-    _attacking_move_id: &str,
+    _attacking_active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // onInvulnerability: false means always invulnerable
     EventResult::Boolean(false)

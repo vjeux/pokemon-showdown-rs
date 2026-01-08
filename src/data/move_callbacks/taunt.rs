@@ -156,7 +156,7 @@ pub mod condition {
     pub fn on_before_move(
         battle: &mut Battle,
         attacker_pos: (usize, usize),
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         // Get active move properties
         let (is_z, is_z_or_max_powered, category, move_id, move_name) = match &battle.active_move {

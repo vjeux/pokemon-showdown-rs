@@ -18,7 +18,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize, usize), defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::dex_data::Gender;
 
     let (attacker_gender, defender_gender) = {

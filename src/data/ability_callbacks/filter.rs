@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.75);
 ///     }
 /// }
-pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), target_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), target_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (target.getMoveHitData(move).typeMod > 0) {
     //     this.debug('Filter neutralize');
     //     return this.chainModify(0.75);

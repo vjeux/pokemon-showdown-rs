@@ -29,6 +29,9 @@ impl Battle {
         let source = self.event.as_ref().and_then(|e| e.source);
         let relay_var = self.event.as_ref().and_then(|e| e.relay_var.clone());
 
+        // Clone active_move to pass to dispatch functions
+        let active_move_clone = self.active_move.clone();
+
         match event_id {
             // TypeScript: onAfterBoost(target:Pokemon, boost:BoostsTable)
             "AfterBoost" => {
@@ -46,17 +49,12 @@ impl Battle {
 
             // TypeScript: onAfterMoveSecondary(target:Pokemon?, source:Pokemon?, move:Move)
             "AfterMoveSecondary" => {
-                let move_id_str = if let Some(ref active_move) = self.active_move {
-                    active_move.id.to_string()
-                } else {
-                    String::new()
-                };
                 item_callbacks::dispatch_on_after_move_secondary(
                     self,
                     item_id.as_str(),
                     target_opt,
                     source,
-                    &move_id_str,
+                    active_move_clone.as_ref(),
                 )
             }
 
@@ -64,17 +62,12 @@ impl Battle {
             "AfterMoveSecondarySelf" => {
                 if let Some(source_pos) = target_opt {
                     let target_pos = source;
-                    let move_id_str = if let Some(ref active_move) = self.active_move {
-                        active_move.id.to_string()
-                    } else {
-                        String::new()
-                    };
                     item_callbacks::dispatch_on_after_move_secondary_self(
                         self,
                         item_id.as_str(),
                         source_pos,
                         target_pos,
-                        &move_id_str,
+                        active_move_clone.as_ref(),
                     )
                 } else {
                     EventResult::Continue
@@ -150,18 +143,13 @@ impl Battle {
 
             // TypeScript: onChargeMove(pokemon:Pokemon, target:Pokemon?, move:Move)
             "ChargeMove" => {
-                let move_id_str = if let Some(ref active_move) = self.active_move {
-                    active_move.id.to_string()
-                } else {
-                    String::new()
-                };
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_charge_move(
                     self,
                     item_id.as_str(),
                     pokemon_pos,
                     target_pos,
-                    &move_id_str,
+                    active_move_clone.as_ref(),
                 )
             }
 
@@ -243,17 +231,12 @@ impl Battle {
 
             // TypeScript: onHit(target:Pokemon?, source:Pokemon?, move:Move)
             "Hit" => {
-                let move_id_str = if let Some(ref active_move) = self.active_move {
-                    active_move.id.to_string()
-                } else {
-                    String::new()
-                };
                 item_callbacks::dispatch_on_hit(
                     self,
                     item_id.as_str(),
                     target_opt,
                     source,
-                    &move_id_str,
+                    active_move_clone.as_ref(),
                 )
             }
 
@@ -412,17 +395,12 @@ impl Battle {
 
             // TypeScript: onSourceTryPrimaryHit(target:Pokemon?, source:Pokemon?, move:Move)
             "SourceTryPrimaryHit" => {
-                let move_id_str = if let Some(ref active_move) = self.active_move {
-                    active_move.id.to_string()
-                } else {
-                    String::new()
-                };
                 item_callbacks::dispatch_on_source_try_primary_hit(
                     self,
                     item_id.as_str(),
                     target_opt,
                     source,
-                    &move_id_str,
+                    active_move_clone.as_ref(),
                 )
             }
 

@@ -132,7 +132,7 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         // Get the volatile state using with_effect_state_ref
         // JavaScript: this.effectState.duration, this.effectState.totalDamage, this.effectState.lastDamageSource

@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         this.boost({ def: -1, spe: 2 }, target, target);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // When hit by Physical move, lower Defense by 1 and boost Speed by 2
     if let Some(target) = target_pos {
         // Check if the move is Physical category

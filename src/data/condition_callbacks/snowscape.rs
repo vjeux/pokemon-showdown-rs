@@ -58,7 +58,7 @@ pub fn on_modify_def(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // if (pokemon.hasType('Ice') && this.field.isWeather('snowscape'))
     let has_ice_type = {

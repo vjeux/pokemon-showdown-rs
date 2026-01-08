@@ -18,8 +18,9 @@ pub fn on_fractional_priority(
     _priority: i32,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    move_id: &str,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // Get the move data from move_id
     let is_status = if let Some(move_data) = battle.dex.moves().get(move_id) {
         move_data.category == "Status"

@@ -164,8 +164,9 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // Get the move data
         let move_data = match battle.dex.moves().get_by_id(&ID::from(move_id)) {
             Some(m) => m,

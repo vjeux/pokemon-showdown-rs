@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         return -0.1;
 ///     }
 /// }
-pub fn on_fractional_priority(battle: &mut Battle, _priority: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_fractional_priority(battle: &mut Battle, _priority: i32, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.category === 'Status')
     let is_status = if let Some(ref active_move) = battle.active_move {
         active_move.category == "Status"
@@ -33,7 +33,7 @@ pub fn on_fractional_priority(battle: &mut Battle, _priority: i32, _pokemon_pos:
 ///         move.ignoreAbility = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, _move_id: &str, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, _active_move: Option<&crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move.category === 'Status')
     if let Some(ref mut active_move) = battle.active_move {
         if active_move.category == "Status" {

@@ -28,8 +28,9 @@ pub fn on_any_invulnerability(
     battle: &mut Battle,
     target_pos: (usize, usize),
     source_pos: (usize, usize),
-    attacking_move_id: &str,
+    attacking_active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    let attacking_move_id = attacking_active_move.map(|m| m.id.as_str()).unwrap_or("");
     println!("[SKYDROP_INVULN] Called for target={:?}, source={:?}, move='{}'", target_pos, source_pos, attacking_move_id);
 
     // Get the Pokemon that has the skydrop volatile (could be target_pos from the event)
@@ -109,7 +110,7 @@ pub fn on_foe_before_move(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // Get effectState.source from the skydrop volatile
     let effect_source = {

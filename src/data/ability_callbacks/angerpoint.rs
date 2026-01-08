@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 12 }, target, target);
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (!target.hp) return;
     let has_hp = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

@@ -27,7 +27,7 @@ pub fn on_damage(_battle: &mut Battle, _damage: i32, _target_pos: (usize, usize)
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
 
     // if (move.type === 'Rock' && !target.activeTurns)

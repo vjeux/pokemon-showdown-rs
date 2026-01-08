@@ -20,7 +20,7 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_foe_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_foe_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     use crate::battle::Arg;
 
     // const targetAllExceptions = ['perishsong', 'flowershield', 'rototiller'];

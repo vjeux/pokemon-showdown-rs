@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // 30% chance to poison the target when attacker makes contact
     if let (Some(target), Some(source)) = (target_pos, source_pos) {
         // Despite not being a secondary, Shield Dust / Covert Cloak block Poison Touch's effect

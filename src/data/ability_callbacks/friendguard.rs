@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.75);
 ///     }
 /// }
-pub fn on_any_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_any_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     let ability_holder = match battle.effect_state.target {
         Some(pos) => pos,
         None => return EventResult::Continue,

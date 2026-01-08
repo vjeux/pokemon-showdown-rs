@@ -111,7 +111,7 @@ pub fn on_before_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // Get move info
     let (has_defrost, move_id, _move_name) = match &battle.active_move {
@@ -223,7 +223,7 @@ pub fn on_after_move_secondary(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // if (move.thawsTarget)
     let thaws_target = match &battle.active_move {
@@ -253,7 +253,7 @@ pub fn on_damaging_hit(
     _damage: i32,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // if (move.type === 'Fire' && move.category !== 'Status' && move.id !== 'polarflare')
     let should_thaw = match &battle.active_move {

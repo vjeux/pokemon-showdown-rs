@@ -155,8 +155,9 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
-        move_id: &str,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         use crate::dex_data::ID;
 
         // if (move.id === 'destinybond') return;
@@ -182,7 +183,7 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::dex_data::ID;
 

@@ -24,7 +24,7 @@ pub fn on_immunity(_battle: &mut Battle, type_or_status: &str, _pokemon_pos: (us
 ///         return this.chainModify([3277, 4096]);
 ///     }
 /// }
-pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: (usize, usize), _source_pos: (usize, usize), _move_id: &str) -> EventResult {
+pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: (usize, usize), _source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     if battle.is_weather("sandstorm") {
         battle.chain_modify_fraction(3277, 4096); return EventResult::Continue;
     }

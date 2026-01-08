@@ -17,7 +17,7 @@ use crate::event::EventResult;
 ///         this.add('-start', source, 'typechange', type, '[from] ability: Protean');
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, move_id: &str) -> EventResult {
+pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     eprintln!("[PROTEAN] on_prepare_hit called: source_pos={:?}, move_id={}", source_pos, move_id);
 
     // Get source position

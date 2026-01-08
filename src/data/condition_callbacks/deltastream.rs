@@ -24,7 +24,7 @@ pub fn on_effectiveness(
     type_mod: i32,
     target_type: &str,
     _pokemon_pos: (usize, usize),
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // Get move category from active_move
     // if (move && move.effectType === 'Move' && move.category !== 'Status' && type === 'Flying' && typeMod > 0)

@@ -267,7 +267,7 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _move_id: &str,
+        _active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::battle_actions::BattleActions;
         use crate::dex_data::ID;

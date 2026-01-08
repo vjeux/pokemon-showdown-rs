@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         return 2;
 ///     }
 /// }
-pub fn on_modify_s_t_a_b(battle: &mut Battle, stab: f64, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_modify_s_t_a_b(battle: &mut Battle, stab: f64, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.forceSTAB || source.hasType(move.type))
     let src_pos = match source_pos {
         Some(pos) => pos,

@@ -64,7 +64,7 @@ pub fn on_weather_modify_damage(
     _damage: i32,
     _attacker_pos: Option<(usize, usize)>,
     _defender_pos: Option<(usize, usize)>,
-    _move_id: Option<&str>,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // Get defender position from battle context
     let defender_pos = match battle.active_target {

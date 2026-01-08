@@ -31,7 +31,7 @@ pub fn on_hit_field(
     battle: &mut Battle,
     _target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    _move_id: &str,
+    _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
 
     let source = source_pos;

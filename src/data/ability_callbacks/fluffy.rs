@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     if (move.flags['contact']) mod /= 2;
 ///     return this.chainModify(mod);
 /// }
-pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), _target_pos: (usize, usize), move_id: &str) -> EventResult {
+pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), _target_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     eprintln!("[FLUFFY] on_source_modify_damage called for move: {}", move_id);
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         let mut mod_value = 1.0;

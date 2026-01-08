@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         this.damage(target.getUndynamaxedHP(damage), source, target);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _move_id: &str) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // If target fainted, damage the attacker by the damage taken
     if let (Some(target), Some(source)) = (target_pos, source_pos) {
         // Check if target has 0 HP (fainted)
