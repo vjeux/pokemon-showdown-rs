@@ -47,7 +47,7 @@ Seed 37: ✗ FAIL (4%) - 4/96 turns
 Seed 38: ✗ FAIL (30%) - 16/52 turns
 Seed 39: ✗ FAIL (1%) - 1/77 turns
 Seed 40: ✗ FAIL (14%) - 5/35 turns
-Seed 41: ✗ FAIL (11%) - 2/18 turns
+Seed 41: ✗ FAIL (22%) - 4/18 turns
 Seed 42: ✗ FAIL (30%) - 16/53 turns
 Seed 43: ✗ FAIL (3%) - 2/53 turns
 Seed 44: ✓ PASS (100%) - 48/48 turns

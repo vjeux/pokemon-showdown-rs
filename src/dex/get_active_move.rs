@@ -110,24 +110,41 @@ impl Dex {
             override_defensive_pokemon: None,
             override_defensive_stat: None,
             force_stab: false,
-            ignore_ability: false,
-            ignore_accuracy: false,
-            ignore_evasion: false,
+            ignore_ability: move_data.ignore_ability,
+            ignore_accuracy: move_data.ignore_accuracy,
+            ignore_evasion: move_data.ignore_evasion,
             ignore_positive_evasion: None,
-            ignore_immunity: None,
-            ignore_defensive: false,
+            ignore_immunity: move_data.ignore_immunity.as_ref().map(|v| {
+                // Handle both boolean and object values
+                // JavaScript: ignoreImmunity: boolean | { Type: true, ... }
+                if v.as_bool() == Some(true) {
+                    crate::battle_actions::IgnoreImmunity::All
+                } else if let Some(obj) = v.as_object() {
+                    // Convert object to HashMap
+                    let mut map = std::collections::HashMap::new();
+                    for (k, val) in obj {
+                        if let Some(b) = val.as_bool() {
+                            map.insert(k.clone(), b);
+                        }
+                    }
+                    crate::battle_actions::IgnoreImmunity::Specific(map)
+                } else {
+                    crate::battle_actions::IgnoreImmunity::All
+                }
+            }),
+            ignore_defensive: move_data.ignore_defensive,
             ignore_offensive: false,
             ignore_negative_offensive: false,
             ignore_positive_defensive: false,
             infiltrates: false,
             will_crit: move_data.will_crit,
-            multi_accuracy: false,
+            multi_accuracy: move_data.multiaccuracy,
             multi_hit: move_data.multihit.clone(),
             multi_hit_type: None,
             no_damage_variance: None,
             non_ghost_target: None,
             spread_modifier: None,
-            sleep_usable: false,
+            sleep_usable: move_data.sleep_usable,
             smart_target: move_data.smart_target,
             tracks_target: move_data.tracks_target.unwrap_or(false),
             calls_move: None,
