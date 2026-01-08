@@ -105,7 +105,7 @@ Seed 95: ✗ FAIL (32%) - 8/25 turns
 Seed 96: ✗ FAIL (20%) - 12/60 turns
 Seed 97: ✗ FAIL (76%) - 49/64 turns
 Seed 98: ✓ PASS (100%) - 84/84 turns
-Seed 99: ✗ FAIL (16%) - 8/48 turns
+Seed 99: ✗ FAIL (75%) - 36/48 turns
 Seed 100: ✗ FAIL (30%) - 30/100 turns
 
 =======================================

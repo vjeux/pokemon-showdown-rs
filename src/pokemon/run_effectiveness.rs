@@ -73,9 +73,20 @@ impl Pokemon {
                 let mut type_mod = battle.dex.get_effectiveness(&move_type, defender_type);
                 eprintln!("[RUN_EFFECTIVENESS] defender_type={}, initial_type_mod={}", defender_type, type_mod);
 
+                // Set type_param BEFORE calling singleEvent so move callbacks (like Flying Press) can access it
+                // JS: singleEvent('Effectiveness', move, null, this, type, move, typeMod)
+                // The 5th argument `type` is passed to the callback as the defender type
+                if battle.event.is_none() {
+                    battle.event = Some(crate::battle::EventInfo::new("temp"));
+                }
+                if let Some(ref mut event) = battle.event {
+                    event.type_param = Some(defender_type.clone());
+                    event.relay_var = Some(EventResult::Number(type_mod));
+                }
+
                 // JS: typeMod = this.battle.singleEvent('Effectiveness', move, null, this, type, move, typeMod);
                 // ✅ NOW IMPLEMENTED (Session 24 Part 92): singleEvent with relay_var support
-                // Call singleEvent on the move to allow move-specific effectiveness modifiers (e.g., Freeze-Dry)
+                // Call singleEvent on the move to allow move-specific effectiveness modifiers (e.g., Freeze-Dry, Flying Press)
                 let single_event_result = battle.single_event(
                     "Effectiveness",
                     &crate::battle::Effect::move_(move_id.clone()),
@@ -88,19 +99,13 @@ impl Pokemon {
 
                 // Extract modified type_mod from event result
                 if let crate::event::EventResult::Number(modified_mod) = single_event_result {
+                    eprintln!("[RUN_EFFECTIVENESS] after_singleEvent, typeMod={}", modified_mod);
                     type_mod = modified_mod;
                 }
 
                 // JS: totalTypeMod += this.battle.runEvent('Effectiveness', this, type, move, typeMod);
                 // runEvent returns modified effectiveness or None if event fails
-                // Set type_param for Effectiveness event so condition callbacks (like tarshot) can access the defender type
-                // Ensure battle.event exists before setting type_param
-                if battle.event.is_none() {
-                    battle.event = Some(crate::battle::EventInfo::new("temp"));
-                }
-                if let Some(ref mut event) = battle.event {
-                    event.type_param = Some(defender_type.clone());
-                }
+                // type_param is already set above for both singleEvent and runEvent
                 let event_result = battle.run_event(
                     "Effectiveness",
                     Some(crate::event::EventTarget::Pokemon(pokemon_pos)),

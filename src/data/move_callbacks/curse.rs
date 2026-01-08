@@ -148,14 +148,37 @@ pub fn on_try_hit(
 /// onHit(target, source) {
 ///     this.directDamage(source.maxhp / 2, source, source);
 /// }
+/// NOTE: This callback is only called for Ghost-type users of Curse.
+/// For non-Ghost users, JavaScript does `delete move.onHit` in onTryHit.
+/// We check Ghost type here since Rust dispatch is static.
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // this.directDamage(source.maxhp / 2, source, source);
-    let source = pokemon_pos;
+    // JavaScript: onHit(target, source) - but only for Ghost-type users
+    // For non-Ghost, onTryHit does: delete move.onHit
+    // We simulate this by checking Ghost type here
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
 
+    let source_has_ghost = {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        source_pokemon.has_type(battle, "ghost")
+    };
+
+    // Only Ghost-type users perform this onHit behavior (directDamage)
+    // Non-Ghost users have `delete move.onHit` in JavaScript's onTryHit
+    if !source_has_ghost {
+        return EventResult::Continue;
+    }
+
+    // this.directDamage(source.maxhp / 2, source, source);
     let damage = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,

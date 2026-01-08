@@ -138,14 +138,7 @@ impl Battle {
             if let Some(pokemon) = side.pokemon.get_mut(poke_idx) {
                 let old_hp = pokemon.hp;
                 pokemon.hp = (pokemon.hp + damage).min(pokemon.maxhp);
-                let healed_amount = pokemon.hp - old_hp;
-
-                if self.turn >= 64 && self.turn <= 66 {
-                    eprintln!("[HEAL METHOD] turn={}, pokemon={}, old_hp={}, heal_amount={}, new_hp={}, actual_healed={}",
-                        self.turn, pokemon.name, old_hp, damage, pokemon.hp, healed_amount);
-                }
-
-                healed_amount
+                pokemon.hp - old_hp
             } else {
                 0
             }
