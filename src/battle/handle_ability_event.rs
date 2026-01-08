@@ -570,7 +570,9 @@ impl Battle {
             }
             "Hit" => ability_callbacks::dispatch_on_hit(self, ability_id.as_str(), pokemon_pos, event_source_pos.unwrap_or((0, 0)), active_move_clone.as_ref()),
             "Immunity" => {
-                ability_callbacks::dispatch_on_immunity(self, ability_id.as_str(), "", pokemon_pos)
+                // JS: runEvent('Immunity', this, null, null, type)
+                // The status/type being checked is passed as relay_var (String)
+                ability_callbacks::dispatch_on_immunity(self, ability_id.as_str(), relay_var_string.as_str(), pokemon_pos)
             }
             "ModifyAccuracy" => ability_callbacks::dispatch_on_modify_accuracy(
                 self,

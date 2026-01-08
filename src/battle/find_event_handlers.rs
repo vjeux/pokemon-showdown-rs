@@ -260,14 +260,12 @@ impl Battle {
         }
 
         // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
+        // In JavaScript, findFieldEventHandlers is called with the target Pokemon as customHolder
+        // so that weather callbacks (like sandstorm's onModifySpD) know which Pokemon to check
         let prefixed_event = format!("on{}", event_name);
-        let mut field_handlers = self.find_field_event_handlers(&prefixed_event, None, None);
+        let mut field_handlers = self.find_field_event_handlers(&prefixed_event, None, target);
         for handler in &mut field_handlers {
             handler.event_name = event_name.to_string();
-            // For Weather/Update/BeforeTurn events, field effects (like sandstorm) should use the target Pokemon
-            if !prefixed_handlers && target.is_some() {
-                handler.effect_holder = target;
-            }
         }
         handlers.extend(field_handlers);
 

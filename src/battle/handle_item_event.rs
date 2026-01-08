@@ -82,7 +82,10 @@ impl Battle {
             // TypeScript: onAfterSubDamage(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "AfterSubDamage" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
+                // JS passes the original effect from the event, not the item's ID
+                let effect_id_owned = self.event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|eff| eff.id.as_str().to_string());
                 let effect_id_str = effect_id_owned.as_deref();
                 item_callbacks::dispatch_on_after_sub_damage(
                     self,
@@ -156,7 +159,11 @@ impl Battle {
             // TypeScript: onDamage(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "Damage" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
+                // JS passes the original effect (e.g., the move) from the Damage event,
+                // not the item's own ID. Use event.effect instead of current_effect_id().
+                let effect_id_owned = self.event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|eff| eff.id.as_str().to_string());
                 let effect_id_str = effect_id_owned.as_deref();
                 item_callbacks::dispatch_on_damage(
                     self,
