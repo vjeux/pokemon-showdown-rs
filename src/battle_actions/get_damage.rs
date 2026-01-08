@@ -172,22 +172,27 @@ pub fn get_damage(
     // Check immunity first
     // JavaScript:if (source.ignoreImmunity && (source.ignoreImmunity === true || source.ignoreImmunity[type])) return true;
     // JavaScript: if (!target.runImmunity(move, !suppressMessages)) return false;
-    
+
+    // Get the move type from active_move if available (may be modified by abilities like Refrigerate)
+    let move_type = battle.active_move.as_ref()
+        .map(|m| m.move_type.clone())
+        .unwrap_or_else(|| move_data.move_type.clone());
+
     // Check if move ignores immunity (e.g., Z-moves)
     let ignores_immunity = if let Some(ref ignore_imm) = move_data.ignore_immunity {
         // Can be true (ignores all immunity) or an object with type names
         if ignore_imm.as_bool() == Some(true) {
             true
         } else if let Some(obj) = ignore_imm.as_object() {
-            obj.contains_key(&move_data.move_type)
+            obj.contains_key(&move_type)
         } else {
             false
         }
     } else {
         false
     };
-    
-    if !ignores_immunity && !Pokemon::run_immunity(battle, target_pos, &move_data.move_type, true) {
+
+    if !ignores_immunity && !Pokemon::run_immunity(battle, target_pos, &move_type, true) {
         return None; // Immune
     }
 

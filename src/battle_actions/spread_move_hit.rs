@@ -222,6 +222,12 @@ pub fn spread_move_hit<'a>(
         event::EventResult::Null => {
             return (vec![DamageResult::Failed], targets_mut);
         }
+        event::EventResult::NotFail => {
+            // JS: NOT_FAIL means move failed but without the fail message
+            // The target is removed from processing but no -fail message is added
+            eprintln!("[SPREAD_MOVE_HIT] TryHit returned NotFail, returning Failed (silently)");
+            return (vec![DamageResult::Failed], targets_mut);
+        }
         _ => {}
     }
 

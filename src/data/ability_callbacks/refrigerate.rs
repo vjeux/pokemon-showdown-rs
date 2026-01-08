@@ -75,4 +75,3 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _attacker_pos: (usiz
 
     EventResult::Continue
 }
-
