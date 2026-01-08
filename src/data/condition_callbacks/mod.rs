@@ -544,7 +544,7 @@ pub fn dispatch_on_residual(
         "tox" => tox::on_residual(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_residual(battle, None, pokemon_pos)
+            move_callbacks::dispatch_condition_on_residual(battle, condition_id, pokemon_pos)
         }
     }
 }

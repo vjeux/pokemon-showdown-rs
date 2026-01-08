@@ -2212,12 +2212,13 @@ pub fn dispatch_condition_on_redirect_target(
 }
 
 /// Dispatch condition onResidual callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_residual(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "aquaring" => aquaring::condition::on_residual(battle, source_pos),
         "curse" => curse::condition::on_residual(battle, source_pos),
         "encore" => encore::condition::on_residual(battle, Some(source_pos)),
