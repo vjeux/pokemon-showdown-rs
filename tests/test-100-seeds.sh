@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Test 100 seeds and compute pass rate
-# Pass rate = (number of matching turns / total JS turns) * 100%
+# Uses batch runners for efficiency - all seeds run in single JS/Rust invocations
 
 # Output file
 RESULTS_FILE="100-seeds-results.txt"
@@ -24,11 +24,30 @@ passed_seeds=0
 failed_seeds=0
 total_pass_rate=0
 
-for seed in $(seq 1 $total_seeds); do
-    # Run the comparison test silently
-    ./tests/compare-battles.sh $seed > /tmp/seed-${seed}-result.txt 2>&1
-    result=$?
+# Step 1: Generate all teams (batch)
+log "Step 1: Generating teams..."
+node tests/generate-teams-batch.js 1 $total_seeds > /dev/null 2>&1
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --release --example generate_teams_batch 1 $total_seeds 2>/dev/null" > /dev/null
 
+# Step 2: Run all JS battles (batch)
+log "Step 2: Running JavaScript battles..."
+node tests/test-battle-batch.js 1 $total_seeds > /dev/null 2>&1
+
+# Step 3: Run all Rust battles (batch)
+log "Step 3: Running Rust battles..."
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --release --example test_battle_batch 1 $total_seeds 2>/dev/null" > /dev/null
+
+# Copy Rust output files from container
+for seed in $(seq 1 $total_seeds); do
+    docker cp pokemon-rust-dev:/tmp/rust-battle-seed${seed}.txt /tmp/rust-battle-seed${seed}.txt 2>/dev/null
+    docker cp pokemon-rust-dev:/tmp/teams-seed${seed}-rust.json /tmp/teams-seed${seed}-rust.json 2>/dev/null
+done
+
+log "Step 4: Comparing results..."
+log ""
+
+# Step 4: Compare results
+for seed in $(seq 1 $total_seeds); do
     # Count turns in JavaScript output
     js_turns=$(grep "^#" /tmp/js-battle-seed${seed}.txt 2>/dev/null | wc -l | tr -d ' ')
 
