@@ -78,7 +78,7 @@ Seed 68: ✗ FAIL (32%) - 22/68 turns
 Seed 69: ✗ FAIL (13%) - 9/66 turns
 Seed 70: ✗ FAIL (32%) - 16/50 turns
 Seed 71: ✗ FAIL (59%) - 16/27 turns
-Seed 72: ✗ FAIL (8%) - 5/56 turns
+Seed 72: ✗ FAIL (39%) - 22/56 turns
 Seed 73: ✓ PASS (100%) - 37/37 turns
 Seed 74: ✗ FAIL (22%) - 11/50 turns
 Seed 75: ✗ FAIL (59%) - 37/62 turns

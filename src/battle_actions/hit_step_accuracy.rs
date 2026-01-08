@@ -313,7 +313,7 @@ pub fn hit_step_accuracy(
             accuracy = 0; // In Rust, 0 represents boolean true for accuracy
         } else {
             // accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
-            if let EventResult::Number(modified_acc) = battle.run_event(
+            let result = battle.run_event(
                 "Accuracy",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
@@ -321,8 +321,20 @@ pub fn hit_step_accuracy(
                 EventResult::Number(accuracy),
                 false,
                 false
-            ) {
-                accuracy = modified_acc;
+            );
+            // JavaScript: accuracy can be true (always hit) or a number
+            // No Guard returns true from onAnyAccuracy, meaning always hit
+            match result {
+                EventResult::Boolean(true) => {
+                    // true means always hit - set accuracy to 0 (our representation of true)
+                    accuracy = 0;
+                }
+                EventResult::Number(modified_acc) => {
+                    accuracy = modified_acc;
+                }
+                _ => {
+                    // Keep existing accuracy
+                }
             }
         }
 

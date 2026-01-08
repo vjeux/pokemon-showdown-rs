@@ -1,6 +1,7 @@
 use crate::*;
 use crate::battle::{Effect, EffectType, EventInfo, EventListener, PriorityItem};
 use crate::event::EventResult;
+use crate::event_system::EffectState;
 
 impl Battle {
 
@@ -583,10 +584,48 @@ impl Battle {
                     self.handle_move_event(&event_variant, &effect_id, handler_target_event.as_ref(), source)
                 }
                 EffectType::Ability => {
-                    self.handle_ability_event(&event_variant, &effect_id, handler_target_event.as_ref())
+                    // JavaScript: this.effectState = handler.state || this.initEffectState({});
+                    // Set up effect_state so ability callbacks can access it
+                    let parent_effect_state = std::mem::take(&mut self.effect_state);
+                    self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
+
+                    let parent_effect = self.set_effect_context(crate::Effect {
+                        id: effect_id.clone(),
+                        effect_type: handler.effect_type,
+                        effect_holder: handler.effect_holder,
+                        side_index: handler.effect_holder.map(|(side, _)| side),
+                        prankster_boosted: false,
+                    });
+
+                    let result = self.handle_ability_event(&event_variant, &effect_id, handler_target_event.as_ref());
+
+                    // Restore parent context
+                    self.restore_effect_context(parent_effect);
+                    self.effect_state = parent_effect_state;
+
+                    result
                 }
                 EffectType::Item => {
-                    self.handle_item_event(&event_variant, &effect_id, handler_target_event.as_ref())
+                    // JavaScript: this.effectState = handler.state || this.initEffectState({});
+                    // Set up effect_state so item callbacks can access it
+                    let parent_effect_state = std::mem::take(&mut self.effect_state);
+                    self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
+
+                    let parent_effect = self.set_effect_context(crate::Effect {
+                        id: effect_id.clone(),
+                        effect_type: handler.effect_type,
+                        effect_holder: handler.effect_holder,
+                        side_index: handler.effect_holder.map(|(side, _)| side),
+                        prankster_boosted: false,
+                    });
+
+                    let result = self.handle_item_event(&event_variant, &effect_id, handler_target_event.as_ref());
+
+                    // Restore parent context
+                    self.restore_effect_context(parent_effect);
+                    self.effect_state = parent_effect_state;
+
+                    result
                 }
                 EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain
                 | EffectType::SideCondition | EffectType::SlotCondition => {
