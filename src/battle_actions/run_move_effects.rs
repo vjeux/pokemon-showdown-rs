@@ -536,7 +536,19 @@ pub fn run_move_effects<'a>(
                 }
             } else {
                 //     if (moveData.onHit) {
-                if battle.has_callback(effect_id, "Hit") {
+                // For secondary effects, the onHit callback is defined in the secondary object,
+                // not directly on the move. We need to check if the hit_effect is a Secondary
+                // and if the parent move has a secondary.onHit callback.
+                let has_hit_callback = match &hit_effect {
+                    HitEffect::Secondary(_) => {
+                        // For secondaries, check if the parent move has a secondary onHit
+                        // by looking at the dispatch function
+                        crate::data::move_callbacks::has_secondary_on_hit(active_move.id.as_str())
+                    },
+                    _ => battle.has_callback(effect_id, "Hit"),
+                };
+
+                if has_hit_callback {
                     eprintln!("[RUN_MOVE_EFFECTS] Found Hit callback for effect_id={}", effect_id);
                     //         hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
                     let hit_result = battle.single_event(

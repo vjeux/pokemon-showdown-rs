@@ -872,6 +872,36 @@ pub fn dispatch_self_on_hit(
 //   onHit(target, source, m)
 //   onHit(target, source, move)
 
+/// Check if a move has a secondary.onHit callback
+/// This is used to determine if we should call the onHit dispatch for secondary effects
+/// In JavaScript, the secondary object can have its own onHit callback
+pub fn has_secondary_on_hit(move_id: &str) -> bool {
+    // List of moves that have secondary.onHit callbacks
+    // These are moves where the onHit is defined inside the secondary object
+    // and we have the callback implemented in Rust
+    match move_id {
+        "direclaw" => true,
+        "triattack" => true,
+        "barbbarrage" => true,
+        "psychicnoise" => true,
+        "relicsong" => true,
+        "shellsidearm" => true,
+        "spiritshackle" => true,
+        "anchorshot" => true,
+        "clangoroussoulblaze" => true,
+        "syrupbomb" => true,
+        "axekick" => true,
+        "doubleironbash" => true,
+        "freezingglare" => true,
+        "genesissupernova" => true,
+        "upperhand" => true,
+        "alluringvoice" => true,
+        "burningjealousy" => true,
+        "eeriespell" => true,
+        _ => false,
+    }
+}
+
 /// Dispatch onHit callbacks
 /// JavaScript: onHit(target, source, move) - TARGET FIRST
 pub fn dispatch_on_hit(
