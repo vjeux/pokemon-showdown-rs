@@ -47,10 +47,12 @@ pub fn try_primary_hit_event(
         // Direct assignment - runEvent returns number | boolean | undefined in JS
         // In Rust: EventResult maps to number | boolean | null
         // IMPORTANT: EventResult::Continue means "no handler interfered", which is success (true) in damage terms
+        // IMPORTANT: EventResult::HitSubstitute means the substitute took the hit, not the target
         damage[i] = match result {
             EventResult::Number(val) => DamageResult::Damage(val),
             EventResult::Boolean(false) => DamageResult::Failed,
             EventResult::Null => DamageResult::Undefined,
+            EventResult::HitSubstitute => DamageResult::HitSubstitute,
             // Continue means no handler stopped the move → success
             EventResult::Continue | EventResult::Boolean(true) => DamageResult::Success,
             _ => DamageResult::Success,

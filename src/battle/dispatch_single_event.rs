@@ -100,23 +100,6 @@ impl Battle {
         }
 
         // Handle move events
-        //
-        // EXCEPTION: For side/slot condition events, check if the move has an embedded
-        // condition and route to condition handler. This mimics JavaScript's behavior
-        // where dex.conditions.get("wish") extracts the move's .condition property:
-        //
-        //     // dex-conditions.ts lines 687-692
-        //     else if (
-        //         (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).condition) ||
-        //         ...
-        //     ) {
-        //         condition = new Condition({ name: found.name || id, ...found.condition });
-        //     }
-        //
-        // Examples:
-        // - "wish" is a move with condition.onStart, condition.onResidual, condition.onEnd
-        // - "gmaxvolcalith" is a move with condition.onSideResidual
-        //
         if let Some(move_def) = self.dex.moves().get(effect_id.as_str()) {
             // Check if we're in a side/slot condition context and the move has an embedded condition
             // The effect type tells us the context - no need to check specific event IDs

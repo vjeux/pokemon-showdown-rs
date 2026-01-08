@@ -975,7 +975,8 @@
     "onFractionalPriorityPriority": -2,
     "num": 210,
     "gen": 4,
-    "onEat": true
+    "onEat": true,
+    "onFractionalPriority": true
   },
   "damprock": {
     "name": "Damp Rock",
@@ -2677,9 +2678,9 @@
     },
     "spritenum": 475,
     "itemUser": [
-      "Farfetch’d",
-      "Farfetch’d-Galar",
-      "Sirfetch’d"
+      "Farfetch\u2019d",
+      "Farfetch\u2019d-Galar",
+      "Sirfetch\u2019d"
     ],
     "num": 259,
     "gen": 8,
@@ -4031,7 +4032,8 @@
       "basePower": 80
     },
     "num": 217,
-    "gen": 2
+    "gen": 2,
+    "onFractionalPriority": true
   },
   "quickpowder": {
     "name": "Quick Powder",
@@ -4915,7 +4917,7 @@
     },
     "spritenum": 475,
     "itemUser": [
-      "Farfetch’d"
+      "Farfetch\u2019d"
     ],
     "num": 259,
     "gen": 2,
