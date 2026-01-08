@@ -799,25 +799,42 @@ pub fn use_move_inner(
     }
 
     // if (move.selfBoost && moveResult) this.moveHit(pokemon, pokemon, move, move.selfBoost, false, true);
-    let (has_self_boost, move_id_for_boost) = if let Some(ref am) = battle.active_move {
-        (am.self_boost.is_some(), am.id.clone())
+    let (self_boost, move_id_for_boost) = if let Some(ref am) = battle.active_move {
+        (am.self_boost.clone(), am.id.clone())
     } else {
-        (false, ID::from(""))
+        (None, ID::from(""))
     };
 
-    if has_self_boost && move_result.is_success() {
-        // Apply self-boost using moveHit
-        // moveHit(pokemon, pokemon, move, move.selfBoost, false, true)
-        // Parameters: targets, pokemon, move, moveData, isSecondary, isSelf
-        crate::battle_actions::move_hit(
-            battle,
-            &[Some(pokemon_pos)], // targets = [pokemon] (self-targeting)
-            pokemon_pos,          // pokemon (user)
-            &move_id_for_boost,   // move
-            None,                 // moveData (None means use active_move)
-            false,                // isSecondary
-            true,                 // isSelf
-        );
+    if let Some(ref boosts) = self_boost {
+        if move_result.is_success() {
+            // Apply self-boost using moveHit
+            // moveHit(pokemon, pokemon, move, move.selfBoost, false, true)
+            // Parameters: targets, pokemon, move, moveData, isSecondary, isSelf
+            // Create a SecondaryEffect containing just the boosts
+            let self_boost_effect = crate::battle_actions::SecondaryEffect {
+                chance: None,
+                boosts: Some(boosts.clone()),
+                status: None,
+                volatile_status: None,
+                side_condition: None,
+                slot_condition: None,
+                pseudo_weather: None,
+                terrain: None,
+                weather: None,
+                ability: None,
+                kingsrock: None,
+                self_effect: false,
+            };
+            crate::battle_actions::move_hit(
+                battle,
+                &[Some(pokemon_pos)], // targets = [pokemon] (self-targeting)
+                pokemon_pos,          // pokemon (user)
+                &move_id_for_boost,   // move
+                Some(crate::battle_actions::HitEffect::Secondary(&self_boost_effect)),
+                false,                // isSecondary
+                true,                 // isSelf
+            );
+        }
     }
 
     // if (!pokemon.hp) {

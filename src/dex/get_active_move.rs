@@ -76,7 +76,18 @@ impl Dex {
                     None
                 }
             }),
-            self_boost: None,
+            self_boost: move_data.self_boost.as_ref().and_then(|sb| {
+                // selfBoost has structure: { boosts: { atk: 1, def: 1, ... } }
+                let boosts_val = sb.get("boosts")?;
+                let boosts_obj = boosts_val.as_object()?;
+                let mut boosts_map = std::collections::HashMap::new();
+                for (k, v) in boosts_obj {
+                    if let Some(n) = v.as_i64() {
+                        boosts_map.insert(k.clone(), n as i32);
+                    }
+                }
+                Some(Self::convert_boosts_hash_to_table(&boosts_map))
+            }),
             self_destruct: move_data.selfdestruct.clone(),
             breaks_protect: false,
             recoil: move_data.recoil,
