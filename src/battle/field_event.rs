@@ -327,8 +327,54 @@ impl Battle {
                     handlers.push(handler);
                 }
 
-                // Note: findFieldEventHandlers and findBattleEventHandlers with customHolder
-                // are not fully implemented yet
+                // JS: handlers = handlers.concat(this.findFieldEventHandlers(this.field, callbackName, undefined, active));
+                // This finds field handlers (like sandstorm's onResidual) that target each Pokemon
+                // Note: This is different from onFieldResidual - this is onResidual with customHolder = active Pokemon
+                let field_handlers_for_pokemon = self.find_field_event_handlers(&callback_name, None, Some(target_pos));
+                for handler in field_handlers_for_pokemon {
+                    let effect_id = handler.effect_id;
+                    let effect_type = handler.effect_type;
+                    let effect_order = 0;
+                    // For field handlers targeting Pokemon, check if the effect has this callback
+                    let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
+                    let handler = self.create_field_handler(
+                        effect_id,
+                        effect_type,
+                        Some(target_pos), // Handler's holder is the target Pokemon
+                        false, // is_field = false because effectHolder is the Pokemon, not Field
+                        false,
+                        None,
+                        &callback_name,
+                        event_id,
+                        effect_order,
+                        handler_has_callback,
+                    );
+                    handlers.push(handler);
+                }
+
+                // JS: handlers = handlers.concat(this.findBattleEventHandlers(callbackName, getKey, active));
+                // This finds battle-level handlers that target each Pokemon
+                let battle_handlers_for_pokemon = self.find_battle_event_handlers(&callback_name, get_key, Some(target_pos));
+                for handler in battle_handlers_for_pokemon {
+                    let effect_id = handler.effect_id;
+                    let effect_type = handler.effect_type;
+                    let effect_order = 0;
+                    // For battle handlers targeting Pokemon, check if the effect has this callback
+                    let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
+                    let handler = self.create_field_handler(
+                        effect_id,
+                        effect_type,
+                        Some(target_pos), // Handler's holder is the target Pokemon
+                        false,
+                        false,
+                        None,
+                        &callback_name,
+                        event_id,
+                        effect_order,
+                        handler_has_callback,
+                    );
+                    handlers.push(handler);
+                }
             }
         }
 
@@ -380,18 +426,26 @@ impl Battle {
             //     }
 
             // Handle field effects (weather, terrain, pseudo-weather)
+            // JavaScript (battle.ts:515-522):
+            // if (eventid === 'Residual' && handler.end && handler.state?.duration) {
+            //     handler.state.duration--;
+            //     if (!handler.state.duration) {
+            //         const endCallArgs = handler.endCallArgs || [handler.effectHolder, effect.id];
+            //         handler.end.call(...endCallArgs as [any, ...any[]]);
+            //         if (this.ended) return;
+            //         continue;
+            //     }
+            // }
+            // Note: handler.end is the end callback (clearWeather, clearTerrain, removePseudoWeather)
+            // This is different from handler.callback (the onFieldResidual callback).
+            // Duration is decremented and effects are cleared based on handler.end, NOT handler.callback.
             eprintln!("[FIELD_EVENT HANDLER] event={}, effect_id={}, is_field={}, is_side={}",
                 event_id, handler.effect_id.as_str(), handler.is_field, handler.is_side);
             if event_id == "Residual" && handler.is_field {
                 eprintln!("[FIELD_EVENT RESIDUAL FIELD] effect_id={}, weather={}, terrain={}",
                     handler.effect_id.as_str(), self.field.weather.as_str(), self.field.terrain.as_str());
 
-                // TEMPORARY: Disable early expiration for terrain to allow residual callbacks on last turn
-                // JavaScript behavior appears to call residual callbacks before expiring terrains
-                // TODO: Investigate the exact JavaScript handler.end mechanism
-                let is_terrain = self.field.terrain == handler.effect_id;
-
-                let should_clear = if !is_terrain {
+                let should_clear = {
                     // Check weather
                     if self.field.weather == handler.effect_id {
                         eprintln!("[WEATHER DURATION] Checking sandstorm duration, current={:?}", self.field.weather_state.duration);
@@ -407,10 +461,14 @@ impl Battle {
                     }
                     // Check terrain
                     else if self.field.terrain == handler.effect_id {
+                        eprintln!("[TERRAIN DURATION] Checking terrain duration, current={:?}", self.field.terrain_state.duration);
                         if let Some(duration) = self.field.terrain_state.duration.as_mut() {
+                            eprintln!("[TERRAIN DURATION] BEFORE decrement: duration={}", *duration);
                             *duration -= 1;
+                            eprintln!("[TERRAIN DURATION] AFTER decrement: duration={}", *duration);
                             *duration == 0
                         } else {
+                            eprintln!("[TERRAIN DURATION] No duration set (permanent terrain)");
                             false
                         }
                     }
@@ -425,13 +483,21 @@ impl Battle {
                     } else {
                         false
                     }
-                } else {
-                    // For terrains, don't do early expiration - let callback run first
-                    false
                 };
 
-                // Clear expired field effects
+                // Clear expired field effects and call FieldEnd
                 if should_clear {
+                    // Call FieldEnd event before clearing
+                    self.single_event(
+                        "FieldEnd",
+                        &crate::battle::Effect::new(handler.effect_id.clone(), handler._effect_type),
+                        None,
+                        None,
+                        None,
+                        None,
+                        None,
+                    );
+
                     // Clear weather
                     if self.field.weather == handler.effect_id {
                         self.field.weather = ID::new("");
@@ -638,27 +704,6 @@ impl Battle {
                     };
 
                     self.single_event(&handler_event_id, &crate::battle::Effect::new(handler.effect_id.clone(), handler._effect_type), state_owned.as_ref(), handler.holder, None, None, None);
-
-                    // AFTER calling the callback, decrement terrain duration and clear if expired
-                    if event_id == "Residual" && handler.is_field && self.field.terrain == handler.effect_id {
-                        eprintln!("[FIELD_EVENT] AFTER callback, decrementing terrain duration");
-                        let should_clear_terrain = {
-                            if let Some(duration) = self.field.terrain_state.duration.as_mut() {
-                                eprintln!("[TERRAIN DURATION] BEFORE decrement: {}", *duration);
-                                *duration -= 1;
-                                eprintln!("[TERRAIN DURATION] AFTER decrement: {}", *duration);
-                                *duration == 0
-                            } else {
-                                false
-                            }
-                        };
-
-                        if should_clear_terrain {
-                            eprintln!("[TERRAIN DURATION] Clearing expired terrain");
-                            self.field.terrain = ID::new("");
-                            self.field.terrain_state = crate::event_system::EffectState::new(ID::new(""));
-                        }
-                    }
 
                     // JS: this.faintMessages();
                     self.faint_messages(false, false, true);

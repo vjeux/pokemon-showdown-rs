@@ -25,7 +25,13 @@ impl Battle {
         let active_move_clone = self.active_move.clone();
 
         // Extract pokemon position from EventTarget
-        let pokemon_pos = target.and_then(|t| t.as_pokemon()).unwrap_or((0, 0));
+        // If target is None (for field handlers), fall back to event.target
+        // This is important for Weather events where the handler is a field handler
+        // but the target is the Pokemon passed to runEvent
+        let pokemon_pos = target
+            .and_then(|t| t.as_pokemon())
+            .or_else(|| self.event.as_ref().and_then(|e| e.target))
+            .unwrap_or((0, 0));
 
         if event_id.contains("Invulnerability") {
             eprintln!("[HANDLE_CONDITION_EVENT] event_id={}, condition_id={}, target={:?}",

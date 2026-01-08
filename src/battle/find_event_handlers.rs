@@ -260,10 +260,10 @@ impl Battle {
         }
 
         // JavaScript: handlers.push(...this.findFieldEventHandlers(this.field, `on${eventName}`));
-        // In JavaScript, findFieldEventHandlers is called with the target Pokemon as customHolder
-        // so that weather callbacks (like sandstorm's onModifySpD) know which Pokemon to check
+        // Note: JavaScript does NOT pass customHolder here - that's only done in fieldEvent()
+        // We must NOT pass target here or the field handler will incorrectly inherit the Pokemon's speed
         let prefixed_event = format!("on{}", event_name);
-        let mut field_handlers = self.find_field_event_handlers(&prefixed_event, None, target);
+        let mut field_handlers = self.find_field_event_handlers(&prefixed_event, None, None);
         for handler in &mut field_handlers {
             handler.event_name = event_name.to_string();
         }
