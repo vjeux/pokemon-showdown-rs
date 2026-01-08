@@ -35,11 +35,11 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize
 
     if attacker_gender != Gender::None && defender_gender != Gender::None {
         if attacker_gender == defender_gender {
-            let modified = battle.chain_modify(1.25);
-            return EventResult::Number(modified);
+            battle.chain_modify(1.25);
+            return EventResult::Continue;
         } else {
-            let modified = battle.chain_modify(0.75);
-            return EventResult::Number(modified);
+            battle.chain_modify(0.75);
+            return EventResult::Continue;
         }
     }
 

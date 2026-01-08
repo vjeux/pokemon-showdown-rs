@@ -15,8 +15,8 @@ use crate::event::EventResult;
 pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     if let Some(pokemon) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
         if pokemon.hp <= pokemon.maxhp / 2 {
-            let modified = battle.chain_modify(0.5);
-            return EventResult::Number(modified);
+            battle.chain_modify(0.5);
+            return EventResult::Continue;
         }
     }
     EventResult::Continue
@@ -30,8 +30,8 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize
 pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     if let Some(pokemon) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
         if pokemon.hp <= pokemon.maxhp / 2 {
-            let modified = battle.chain_modify(0.5);
-            return EventResult::Number(modified);
+            battle.chain_modify(0.5);
+            return EventResult::Continue;
         }
     }
     EventResult::Continue

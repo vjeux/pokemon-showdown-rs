@@ -17,8 +17,8 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: (usize
         if move_data.category == "Special" {
             if let Some(attacker) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                 if attacker.status == "brn".into() {
-                    let modified = battle.chain_modify(1.5);
-                    return EventResult::Number(modified);
+                    battle.chain_modify(1.5);
+                    return EventResult::Continue;
                 }
             }
         }

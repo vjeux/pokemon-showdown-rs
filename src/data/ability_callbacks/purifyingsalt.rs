@@ -77,8 +77,8 @@ pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (us
 pub fn on_source_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Ghost" {
-            let modified = battle.chain_modify(0.5);
-            return EventResult::Number(modified);
+            battle.chain_modify(0.5);
+            return EventResult::Continue;
         }
     }
     EventResult::Continue
@@ -93,8 +93,8 @@ pub fn on_source_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usiz
 pub fn on_source_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     if let Some(move_data) = battle.dex.moves().get(move_id) {
         if move_data.move_type == "Ghost" {
-            let modified = battle.chain_modify(0.5);
-            return EventResult::Number(modified);
+            battle.chain_modify(0.5);
+            return EventResult::Continue;
         }
     }
     EventResult::Continue

@@ -37,11 +37,11 @@ Seed 27: ✗ FAIL (1%) - 1/53 turns
 Seed 28: ✗ FAIL (3%) - 2/52 turns
 Seed 29: ✗ FAIL (5%) - 2/37 turns
 Seed 30: ✗ FAIL (69%) - 69/100 turns
-Seed 31: ✗ FAIL (2%) - 1/47 turns
+Seed 31: ✗ FAIL (12%) - 6/47 turns
 Seed 32: ✓ PASS (100%) - 42/42 turns
 Seed 33: ✗ FAIL (51%) - 48/93 turns
 Seed 34: ✗ FAIL (1%) - 1/74 turns
-Seed 35: ✗ FAIL (41%) - 32/77 turns
+Seed 35: ✓ PASS (100%) - 77/77 turns
 Seed 36: ✓ PASS (100%) - 29/29 turns
 Seed 37: ✗ FAIL (4%) - 4/96 turns
 Seed 38: ✗ FAIL (30%) - 16/52 turns
@@ -112,9 +112,9 @@ Seed 100: ✗ FAIL (30%) - 30/100 turns
 Summary
 =======================================
 Total seeds tested: 100
-Passed (100%): 25
-Failed (<100%): 75
+Passed (100%): 26
+Failed (<100%): 74
 
-Average pass rate: 46%
+Average pass rate: 47%
 
 ✗ Some seeds failed

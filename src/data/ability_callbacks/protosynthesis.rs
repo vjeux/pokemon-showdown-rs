@@ -222,7 +222,7 @@ pub mod condition {
 
         // Apply 1.3x boost (5325/4096)
         let modified = battle.modify(atk, 5325, 4096);
-        EventResult::Number(modified)
+        EventResult::Continue
     }
 
     /// onModifyDef(def, pokemon) {
@@ -254,7 +254,7 @@ pub mod condition {
 
         // Apply 1.3x boost (5325/4096)
         let modified = battle.modify(def, 5325, 4096);
-        EventResult::Number(modified)
+        EventResult::Continue
     }
 
     /// onModifySpA(spa, pokemon) {
@@ -286,7 +286,7 @@ pub mod condition {
 
         // Apply 1.3x boost (5325/4096)
         let modified = battle.modify(spa, 5325, 4096);
-        EventResult::Number(modified)
+        EventResult::Continue
     }
 
     /// onModifySpD(spd, pokemon) {
@@ -318,7 +318,7 @@ pub mod condition {
 
         // Apply 1.3x boost (5325/4096)
         let modified = battle.modify(spd, 5325, 4096);
-        EventResult::Number(modified)
+        EventResult::Continue
     }
 
     /// onModifySpe(spe, pokemon) {
@@ -350,7 +350,7 @@ pub mod condition {
 
         // Apply 1.5x boost (3/2 ratio)
         let modified = battle.modify(spe, 3, 2);
-        EventResult::Number(modified)
+        EventResult::Continue
     }
 
     /// onEnd(pokemon) {

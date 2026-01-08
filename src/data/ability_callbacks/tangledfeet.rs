@@ -27,8 +27,8 @@ pub fn on_modify_accuracy(battle: &mut Battle, _accuracy: i32, target_pos: (usiz
     if has_confusion {
         // this.debug('Tangled Feet - decreasing accuracy');
         // return this.chainModify(0.5);
-        let modified = battle.chain_modify(0.5);
-        return EventResult::Number(modified);
+        battle.chain_modify(0.5);
+        return EventResult::Continue;
     }
 
     EventResult::Continue

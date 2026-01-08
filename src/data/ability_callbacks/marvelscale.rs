@@ -15,8 +15,8 @@ use crate::event::EventResult;
 pub fn on_modify_def(battle: &mut Battle, _def: i32, defender_pos: (usize, usize), _attacker_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     if let Some(pokemon) = battle.pokemon_at(defender_pos.0, defender_pos.1) {
         if !pokemon.status.is_empty() {
-            let modified = battle.chain_modify(1.5);
-            return EventResult::Number(modified);
+            battle.chain_modify(1.5);
+            return EventResult::Continue;
         }
     }
     EventResult::Continue

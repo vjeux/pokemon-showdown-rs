@@ -18,8 +18,8 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize
         if move_data.move_type == "Fire" {
             if let Some(attacker) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                 if attacker.hp <= attacker.maxhp / 3 {
-                    let modified = battle.chain_modify(1.5);
-                    return EventResult::Number(modified);
+                    battle.chain_modify(1.5);
+                    return EventResult::Continue;
                 }
             }
         }
@@ -38,8 +38,8 @@ pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usiz
         if move_data.move_type == "Fire" {
             if let Some(attacker) = battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                 if attacker.hp <= attacker.maxhp / 3 {
-                    let modified = battle.chain_modify(1.5);
-                    return EventResult::Number(modified);
+                    battle.chain_modify(1.5);
+                    return EventResult::Continue;
                 }
             }
         }

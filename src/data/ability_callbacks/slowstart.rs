@@ -105,8 +105,8 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize
 
     if let Some(counter) = pokemon.ability_state.counter {
         if counter > 0 {
-            let modified = battle.chain_modify(0.5);
-            return EventResult::Number(modified);
+            battle.chain_modify(0.5);
+            return EventResult::Continue;
         }
     }
 
@@ -126,8 +126,8 @@ pub fn on_modify_spe(battle: &mut Battle, _spe: i32, pokemon_pos: (usize, usize)
     if let Some(counter) = pokemon.ability_state.counter {
         if counter > 0 {
             eprintln!("[SLOW START onModifySpe] counter={}, applying 0.5x modifier", counter);
-            let modified = battle.chain_modify(0.5);
-            return EventResult::Number(modified);
+            battle.chain_modify(0.5);
+            return EventResult::Continue;
         }
     }
 
