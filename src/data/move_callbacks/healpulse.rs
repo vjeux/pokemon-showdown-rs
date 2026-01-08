@@ -25,11 +25,11 @@ use crate::event::EventResult;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),  // First param is target (the Pokemon being healed)
+    source_pos: Option<(usize, usize)>,  // Second param is source (the Pokemon using the move)
 ) -> EventResult {
-    let source = pokemon_pos;
-    let target = match target_pos {
+    let target = target_pos;
+    let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

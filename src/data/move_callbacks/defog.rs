@@ -30,14 +30,14 @@ use crate::event::EventResult;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),  // First param is target
+    source_pos: Option<(usize, usize)>,  // Second param is source
 ) -> EventResult {
     use crate::dex_data::ID;
 
     // Get source and target
-    let source = pokemon_pos;
-    let target = match target_pos {
+    let target = target_pos;
+    let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -65,7 +65,7 @@ pub fn on_hit(
     if !has_substitute || infiltrates {
         // success = !!this.boost({ evasion: -1 });
         let boosts = [("evasion", -1)];
-        let boost_result = battle.boost(&boosts, target, Some(pokemon_pos), None, false, false);
+        let boost_result = battle.boost(&boosts, target, Some(source), None, false, false);
         success = boost_result;
     }
 

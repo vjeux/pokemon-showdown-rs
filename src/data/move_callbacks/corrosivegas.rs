@@ -18,15 +18,15 @@ use crate::Pokemon;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),  // First param is target
+    source_pos: Option<(usize, usize)>,  // Second param is source
 ) -> EventResult {
     // Get target and source
-    let target = match target_pos {
+    let target = target_pos;
+    let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
-    let source = pokemon_pos;
 
     // const item = target.takeItem(source);
     let item = Pokemon::take_item(battle, target, Some(source));

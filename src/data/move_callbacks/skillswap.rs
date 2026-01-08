@@ -143,8 +143,8 @@ pub fn on_try_hit(
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),  // First param is target
+    source_pos: Option<(usize, usize)>,  // Second param is source
 ) -> EventResult {
     // onHit(target, source, move) {
     //     const targetAbility = target.getAbility();
@@ -165,8 +165,8 @@ pub fn on_hit(
     //     this.singleEvent('Start', targetAbility, source.abilityState, source);
     //     this.singleEvent('Start', sourceAbility, target.abilityState, target);
     // }
-    let source = pokemon_pos;
-    let target = match target_pos {
+    let target = target_pos;
+    let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

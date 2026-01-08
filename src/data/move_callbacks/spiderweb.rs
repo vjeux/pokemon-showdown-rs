@@ -12,8 +12,8 @@ use crate::event::EventResult;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),  // First param is target
+    source_pos: Option<(usize, usize)>,  // Second param is source
 ) -> EventResult {
     use crate::dex_data::ID;
     use crate::pokemon::Pokemon;
@@ -21,8 +21,8 @@ pub fn on_hit(
     // onHit(target, source, move) {
     //     return target.addVolatile('trapped', source, move, 'trapper');
     // }
-    let source = pokemon_pos;
-    let target = match target_pos {
+    let target = target_pos;
+    let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
