@@ -73,6 +73,7 @@ pub fn hit_step_try_hit_event(
         match r {
             EventResult::NotFail => false,        // NOT_FAIL is falsy
             EventResult::Number(0) | EventResult::Boolean(false) => false,     // 0/false is falsy
+            EventResult::Null => false,           // null is falsy in JavaScript (immunity)
             _ => true,      // anything else is truthy
         }
     }).collect()
