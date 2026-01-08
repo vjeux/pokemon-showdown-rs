@@ -507,6 +507,16 @@ impl Battle {
                     result, self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
                 result
             }
+            "Update" => {
+                // onUpdate callback for conditions (volatiles like fling)
+                // pokemon_pos is the Pokemon with the volatile
+                condition_callbacks::dispatch_on_update(
+                    self,
+                    condition_id,
+                    pokemon_pos,
+                    active_move_clone.as_ref(),
+                )
+            }
             _ => EventResult::Continue,
         };
 

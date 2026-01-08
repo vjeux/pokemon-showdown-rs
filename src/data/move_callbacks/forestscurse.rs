@@ -14,13 +14,12 @@ use crate::event::EventResult;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),          // target - the Pokemon that gets Grass type added
+    _source_pos: Option<(usize, usize)>, // source - the move user (not used)
 ) -> EventResult {
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    // JavaScript: onHit(target) - target is the Pokemon that gets Grass type added
+    // The dispatcher passes (target, source), so we use the first parameter
+    let target = target_pos;
 
     // if (target.hasType('Grass')) return false;
     let has_grass_type = {

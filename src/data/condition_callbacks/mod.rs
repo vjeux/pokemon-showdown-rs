@@ -804,3 +804,23 @@ pub fn dispatch_on_try_primary_hit(
     use crate::data::move_callbacks;
     move_callbacks::dispatch_condition_on_try_primary_hit(battle, condition_id, target_pos, source_pos, active_move.map(|m| m.id.as_str()))
 }
+
+/// Dispatch onUpdate callbacks
+/// This handles volatiles added by moves like fling that need to execute onUpdate
+pub fn dispatch_on_update(
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
+    _active_move: Option<&ActiveMove>,
+) -> EventResult {
+    // Route to move-embedded condition callbacks
+    // Note: dispatch_condition_on_update expects (battle, active_move, source_pos)
+    // but we have the condition_id. We need to match by condition_id, not move_id.
+    match condition_id {
+        "fling" => crate::data::move_callbacks::fling::condition::on_update(battle, pokemon_pos),
+        "attract" => crate::data::move_callbacks::attract::condition::on_update(battle, pokemon_pos),
+        "syrupbomb" => crate::data::move_callbacks::syrupbomb::condition::on_update(battle, pokemon_pos),
+        "telekinesis" => crate::data::move_callbacks::telekinesis::condition::on_update(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
+}
