@@ -68,7 +68,7 @@ Seed 58: ✗ FAIL (54%) - 24/44 turns
 Seed 59: ✗ FAIL (34%) - 34/100 turns
 Seed 60: ✗ FAIL (2%) - 2/68 turns
 Seed 61: ✗ FAIL (91%) - 91/100 turns
-Seed 62: ✗ FAIL (1%) - 1/79 turns
+Seed 62: ✗ FAIL (35%) - 28/79 turns
 Seed 63: ✗ FAIL (1%) - 1/80 turns
 Seed 64: ✗ FAIL (81%) - 54/66 turns
 Seed 65: ✗ FAIL (24%) - 6/25 turns
