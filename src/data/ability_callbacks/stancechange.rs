@@ -68,30 +68,16 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
 
     // if (attacker.species.name !== targetForme) attacker.formeChange(targetForme);
     if species_name != target_forme && species_name.to_lowercase().replace("-", "") != target_forme {
-        unsafe {
-            // SAFETY: We're creating two mutable references to battle.
-            // This is safe because we're accessing different parts of the battle structure.
-            let battle_ptr = battle as *mut Battle;
-            let battle_ref1 = &mut *battle_ptr;
-            let battle_ref2 = &mut *battle_ptr;
-
-            // Get pokemon directly from sides array
-            let side = &mut battle_ref1.sides[attacker_pos.0];
-            let active_slot = side.active.get(attacker_pos.1).cloned().flatten();
-            if let Some(pokemon_index) = active_slot {
-                if pokemon_index < side.pokemon.len() {
-                    crate::pokemon::Pokemon::forme_change(
-                        battle_ref2,
-                        (attacker_pos.0, pokemon_index),
-                        ID::from(target_forme),
-                        Some(Effect::ability("stancechange")),
-                        false,
-                        "0",
-                        None
-                    );
-                }
-            }
-        }
+        // attacker_pos is already (side_idx, pokemon_index), pass it directly
+        crate::pokemon::Pokemon::forme_change(
+            battle,
+            attacker_pos,
+            ID::from(target_forme),
+            Some(Effect::ability("stancechange")),
+            false,
+            "0",
+            None
+        );
     }
 
     EventResult::Continue

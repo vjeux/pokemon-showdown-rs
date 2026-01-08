@@ -47,30 +47,16 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
     };
 
     // pokemon.formeChange(targetForme);
-    unsafe {
-        // SAFETY: We're creating two mutable references to battle.
-        // This is safe because we're accessing different parts of the battle structure.
-        let battle_ptr = battle as *mut Battle;
-        let battle_ref1 = &mut *battle_ptr;
-        let battle_ref2 = &mut *battle_ptr;
-
-        // Get pokemon directly from sides array
-        let side = &mut battle_ref1.sides[pokemon_pos.0];
-        let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-        if let Some(pokemon_index) = active_slot {
-            if pokemon_index < side.pokemon.len() {
-                crate::pokemon::Pokemon::forme_change(
-                        battle_ref2,
-                        (pokemon_pos.0, pokemon_index),
-                        ID::from(target_forme),
-                        Some(Effect::ability("hungerswitch")),
-                        false,
-                        "0",
-                        None
-                    );
-            }
-        }
-    }
+    // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+    crate::pokemon::Pokemon::forme_change(
+        battle,
+        pokemon_pos,
+        ID::from(target_forme),
+        Some(Effect::ability("hungerswitch")),
+        false,
+        "0",
+        None
+    );
 
     EventResult::Continue
 }

@@ -68,58 +68,31 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
         // if (pokemon.species.id !== 'cherrimsunshine')
         if species_id.as_str() != "cherrimsunshine" {
             // pokemon.formeChange('Cherrim-Sunshine', this.effect, false, '0', '[msg]');
-            unsafe {
-                // SAFETY: We're creating two mutable references to battle.
-                // This is safe because we're accessing different parts of the battle structure.
-                let battle_ptr = battle as *mut Battle;
-                let battle_ref1 = &mut *battle_ptr;
-                let battle_ref2 = &mut *battle_ptr;
-
-                // Get pokemon directly from sides array
-                let side = &mut battle_ref1.sides[pokemon_pos.0];
-                let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-                if let Some(pokemon_index) = active_slot {
-                    if pokemon_index < side.pokemon.len() {
-                        crate::pokemon::Pokemon::forme_change(
-                            battle_ref2,
-                            (pokemon_pos.0, pokemon_index),
-                            ID::from("cherrimsunshine"),
-                            Some(Effect::ability("flowergift")),
-                            false,
-                            "0",
-                            Some("[msg]")
-                        );
-                    }
-                }
-            }
+            // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+            crate::pokemon::Pokemon::forme_change(
+                battle,
+                pokemon_pos,
+                ID::from("cherrimsunshine"),
+                Some(Effect::ability("flowergift")),
+                false,
+                "0",
+                Some("[msg]")
+            );
         }
     } else {
         // if (pokemon.species.id === 'cherrimsunshine')
         if species_id.as_str() == "cherrimsunshine" {
             // pokemon.formeChange('Cherrim', this.effect, false, '0', '[msg]');
-            unsafe {
-                // SAFETY: Same as above
-                let battle_ptr = battle as *mut Battle;
-                let battle_ref1 = &mut *battle_ptr;
-                let battle_ref2 = &mut *battle_ptr;
-
-                // Get pokemon directly from sides array
-                let side = &mut battle_ref1.sides[pokemon_pos.0];
-                let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-                if let Some(pokemon_index) = active_slot {
-                    if pokemon_index < side.pokemon.len() {
-                        crate::pokemon::Pokemon::forme_change(
-                            battle_ref2,
-                            (pokemon_pos.0, pokemon_index),
-                            ID::from("cherrim"),
-                            Some(Effect::ability("flowergift")),
-                            false,
-                            "0",
-                            Some("[msg]")
-                        );
-                    }
-                }
-            }
+            // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+            crate::pokemon::Pokemon::forme_change(
+                battle,
+                pokemon_pos,
+                ID::from("cherrim"),
+                Some(Effect::ability("flowergift")),
+                false,
+                "0",
+                Some("[msg]")
+            );
         }
     }
 

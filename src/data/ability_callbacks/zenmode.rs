@@ -119,20 +119,8 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     if base_species.as_deref() == Some("Darmanitan") {
         if let Some(battle_only_species) = battle_only {
             // pokemon.formeChange(pokemon.species.battleOnly as string, this.effect, false, '0', '[silent]');
-            unsafe {
-                let battle_ptr = battle as *mut Battle;
-                let battle_ref1 = &mut *battle_ptr;
-                let battle_ref2 = &mut *battle_ptr;
-
-                let side = &mut battle_ref1.sides[pokemon_pos.0];
-                let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-                if let Some(pokemon_index) = active_slot {
-                    if pokemon_index < side.pokemon.len() {
-                        
-                        crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from(battle_only_species), Some(Effect::ability("zenmode")), false, "0", Some("[silent]"));
-                    }
-                }
-            }
+            // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(battle_only_species), Some(Effect::ability("zenmode")), false, "0", Some("[silent]"));
         }
     }
 
@@ -170,38 +158,14 @@ pub mod condition {
         if !species_name.contains("Galar") {
             // if (pokemon.species.id !== 'darmanitanzen') pokemon.formeChange('Darmanitan-Zen');
             if species_id.as_str() != "darmanitanzen" {
-                unsafe {
-                    let battle_ptr = battle as *mut Battle;
-                    let battle_ref1 = &mut *battle_ptr;
-                    let battle_ref2 = &mut *battle_ptr;
-
-                    let side = &mut battle_ref1.sides[pokemon_pos.0];
-                    let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-                    if let Some(pokemon_index) = active_slot {
-                        if pokemon_index < side.pokemon.len() {
-                            
-                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("darmanitanzen"), Some(Effect::ability("zenmode")), false, "0", None);
-                        }
-                    }
-                }
+                // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+                crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("darmanitanzen"), Some(Effect::ability("zenmode")), false, "0", None);
             }
         } else {
             // if (pokemon.species.id !== 'darmanitangalarzen') pokemon.formeChange('Darmanitan-Galar-Zen');
             if species_id.as_str() != "darmanitangalarzen" {
-                unsafe {
-                    let battle_ptr = battle as *mut Battle;
-                    let battle_ref1 = &mut *battle_ptr;
-                    let battle_ref2 = &mut *battle_ptr;
-
-                    let side = &mut battle_ref1.sides[pokemon_pos.0];
-                    let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-                    if let Some(pokemon_index) = active_slot {
-                        if pokemon_index < side.pokemon.len() {
-                            
-                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from("darmanitangalarzen"), Some(Effect::ability("zenmode")), false, "0", None);
-                        }
-                    }
-                }
+                // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+                crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("darmanitangalarzen"), Some(Effect::ability("zenmode")), false, "0", None);
             }
         }
 
@@ -241,20 +205,8 @@ pub mod condition {
         if forme.as_deref() == Some("Zen") || forme.as_deref() == Some("Galar-Zen") {
             // pokemon.formeChange(pokemon.species.battleOnly as string);
             if let Some(battle_only_species) = battle_only {
-                unsafe {
-                    let battle_ptr = battle as *mut Battle;
-                    let battle_ref1 = &mut *battle_ptr;
-                    let battle_ref2 = &mut *battle_ptr;
-
-                    let side = &mut battle_ref1.sides[pokemon_pos.0];
-                    let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-                    if let Some(pokemon_index) = active_slot {
-                        if pokemon_index < side.pokemon.len() {
-                            
-                            crate::pokemon::Pokemon::forme_change(battle_ref2, (pokemon_pos.0, pokemon_index), ID::from(battle_only_species), Some(Effect::ability("zenmode")), false, "0", None);
-                        }
-                    }
-                }
+                // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+                crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(battle_only_species), Some(Effect::ability("zenmode")), false, "0", None);
             }
         }
 

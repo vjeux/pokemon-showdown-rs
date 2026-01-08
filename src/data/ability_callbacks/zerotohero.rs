@@ -41,27 +41,16 @@ pub fn on_switch_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
     // if (pokemon.species.forme !== 'Hero')
     if forme.as_deref() != Some("Hero") {
         // pokemon.formeChange('Palafin-Hero', this.effect, true);
-        unsafe {
-            let battle_ptr = battle as *mut Battle;
-            let battle_ref1 = &mut *battle_ptr;
-            let battle_ref2 = &mut *battle_ptr;
-
-            let side = &mut battle_ref1.sides[pokemon_pos.0];
-            let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-            if let Some(pokemon_index) = active_slot {
-                if pokemon_index < side.pokemon.len() {
-                    crate::pokemon::Pokemon::forme_change(
-                        battle_ref2,
-                        (pokemon_pos.0, pokemon_index),
-                        ID::from("palafinhero"),
-                        Some(Effect::ability("zerotohero")),
-                        true,
-                        "0",
-                        None
-                    );
-                }
-            }
-        }
+        // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+        crate::pokemon::Pokemon::forme_change(
+            battle,
+            pokemon_pos,
+            ID::from("palafinhero"),
+            Some(Effect::ability("zerotohero")),
+            true,
+            "0",
+            None
+        );
 
         // pokemon.heroMessageDisplayed = false;
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

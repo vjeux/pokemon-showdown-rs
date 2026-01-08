@@ -254,27 +254,16 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     };
 
     // pokemon.formeChange(speciesid, this.effect, true);
-    unsafe {
-        let battle_ptr = battle as *mut Battle;
-        let battle_ref1 = &mut *battle_ptr;
-        let battle_ref2 = &mut *battle_ptr;
-
-        let side = &mut battle_ref1.sides[pokemon_pos.0];
-        let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-        if let Some(pokemon_index) = active_slot {
-            if pokemon_index < side.pokemon.len() {
-                crate::pokemon::Pokemon::forme_change(
-                    battle_ref2,
-                    (pokemon_pos.0, pokemon_index),
-                    ID::from(new_species_id),
-                    Some(Effect::ability("disguise")),
-                    true,
-                    "0",
-                    None,
-                );
-            }
-        }
-    }
+    // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+    crate::pokemon::Pokemon::forme_change(
+        battle,
+        pokemon_pos,
+        ID::from(new_species_id),
+        Some(Effect::ability("disguise")),
+        true,
+        "0",
+        None,
+    );
 
     // this.damage(pokemon.baseMaxhp / 8, pokemon, pokemon, this.dex.species.get(speciesid));
     // In JS, species.get returns an Effect, but we don't have a Species effect type in Rust

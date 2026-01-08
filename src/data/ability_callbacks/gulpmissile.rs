@@ -93,19 +93,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     }
 
     // target.formeChange('cramorant', move);
-    unsafe {
-        let battle_ptr = battle as *mut Battle;
-        let battle_ref1 = &mut *battle_ptr;
-        let battle_ref2 = &mut *battle_ptr;
-
-        let side = &mut battle_ref1.sides[target_pos.0];
-        let active_slot = side.active.get(target_pos.1).cloned().flatten();
-        if let Some(pokemon_index) = active_slot {
-            if pokemon_index < side.pokemon.len() {
-                crate::pokemon::Pokemon::forme_change(battle_ref2, (target_pos.0, pokemon_index), ID::from("cramorant"), Some(Effect::move_(move_id)), false, "0", None);
-            }
-        }
-    }
+    // target_pos is already (side_idx, pokemon_index), pass it directly
+    crate::pokemon::Pokemon::forme_change(battle, target_pos, ID::from("cramorant"), Some(Effect::move_(move_id)), false, "0", None);
 
     EventResult::Continue
 }
@@ -161,19 +150,8 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, _target_pos: Option<(usize
     };
 
     // source.formeChange(forme, effect);
-    unsafe {
-        let battle_ptr = battle as *mut Battle;
-        let battle_ref1 = &mut *battle_ptr;
-        let battle_ref2 = &mut *battle_ptr;
-
-        let side = &mut battle_ref1.sides[source_pos.0];
-        let active_slot = side.active.get(source_pos.1).cloned().flatten();
-        if let Some(pokemon_index) = active_slot {
-            if pokemon_index < side.pokemon.len() {
-                crate::pokemon::Pokemon::forme_change(battle_ref2, (source_pos.0, pokemon_index), ID::from(forme), Some(Effect::move_(effect_id)), false, "0", None);
-            }
-        }
-    }
+    // source_pos is already (side_idx, pokemon_index), pass it directly
+    crate::pokemon::Pokemon::forme_change(battle, source_pos, ID::from(forme), Some(Effect::move_(effect_id)), false, "0", None);
 
     EventResult::Continue
 }
