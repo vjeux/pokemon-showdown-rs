@@ -763,10 +763,10 @@ pub fn dispatch_on_damage(
 /// Dispatch onDisableMove callbacks
 pub fn dispatch_on_disable_move(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    move_id: &str,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match move_id {
         "belch" => belch::on_disable_move(battle, pokemon_pos),
         "stuffcheeks" => stuffcheeks::on_disable_move(battle, pokemon_pos),
         _ => EventResult::Continue,

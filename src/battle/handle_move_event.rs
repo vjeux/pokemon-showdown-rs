@@ -23,7 +23,6 @@ impl Battle {
 
         // Clone active_move to pass to dispatch functions
         let active_move_clone = self.active_move.clone();
-        let _ = move_id; // No longer needed directly, using active_move_clone
 
         match event_id {
             "AfterHit" => {
@@ -85,7 +84,7 @@ impl Battle {
                     effect_id.as_deref(),
                 )
             }
-            "DisableMove" => move_callbacks::dispatch_on_disable_move(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0))),
+            "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_id.as_str(), target_pos.unwrap_or((0,0))),
             "Effectiveness" => {
                 // Extract type_mod from relay_var and target_type from type_param
                 let (type_mod, target_type) = {
