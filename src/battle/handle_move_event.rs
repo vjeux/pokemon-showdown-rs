@@ -134,7 +134,7 @@ impl Battle {
             }
             "TryImmunity" => {
                 if let Some(tgt) = target_pos {
-                    move_callbacks::dispatch_on_try_immunity(self, active_move_clone.as_ref(), tgt)
+                    move_callbacks::dispatch_on_try_immunity(self, active_move_clone.as_ref(), tgt, source_pos)
                 } else {
                     EventResult::Continue
                 }

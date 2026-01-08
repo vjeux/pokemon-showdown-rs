@@ -310,10 +310,26 @@ impl Pokemon {
             base_move_slots: move_slots.clone(),
             move_slots,
 
-            hp_type: set.hptype.clone().unwrap_or_default(),
-            hp_power: 0, // Will be calculated by Battle::dex.getHiddenPower(ivs)
-            base_hp_type: set.hptype.clone().unwrap_or_default(), // JS: this.baseHpType = this.hpType;
-            base_hp_power: 0, // Will be set after Battle::dex.getHiddenPower(ivs) calculates hp_power
+            // Calculate Hidden Power type and power from IVs
+            // JavaScript: const hpData = this.battle.dex.getHiddenPower(this.set.ivs);
+            //             this.hpType = set.hpType || hpData.type;
+            //             this.hpPower = hpData.power;
+            hp_type: {
+                let (hp_type_from_ivs, _) = crate::dex::Dex::get_hidden_power(&set.ivs);
+                set.hptype.clone().unwrap_or_else(|| hp_type_from_ivs.to_string())
+            },
+            hp_power: {
+                let (_, hp_power_from_ivs) = crate::dex::Dex::get_hidden_power(&set.ivs);
+                hp_power_from_ivs as u8
+            },
+            base_hp_type: {
+                let (hp_type_from_ivs, _) = crate::dex::Dex::get_hidden_power(&set.ivs);
+                set.hptype.clone().unwrap_or_else(|| hp_type_from_ivs.to_string())
+            },
+            base_hp_power: {
+                let (_, hp_power_from_ivs) = crate::dex::Dex::get_hidden_power(&set.ivs);
+                hp_power_from_ivs as u8
+            },
 
             status: ID::empty(),
             status_state: EffectState::new(ID::empty()),

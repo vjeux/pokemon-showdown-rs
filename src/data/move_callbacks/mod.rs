@@ -1378,10 +1378,11 @@ pub fn dispatch_on_try_immunity(
     battle: &mut Battle,
     active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "attract" => attract::on_try_immunity(battle, Some(pokemon_pos), None),
-        "captivate" => captivate::on_try_immunity(battle, pokemon_pos, None),
+        "attract" => attract::on_try_immunity(battle, Some(pokemon_pos), source_pos),
+        "captivate" => captivate::on_try_immunity(battle, pokemon_pos, source_pos),
         "dreameater" => dreameater::on_try_immunity(battle, Some(pokemon_pos)),
         "endeavor" => endeavor::on_try_immunity(battle, None, pokemon_pos),
         "leechseed" => leechseed::on_try_immunity(battle, Some(pokemon_pos)),
