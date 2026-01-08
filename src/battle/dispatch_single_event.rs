@@ -1,4 +1,34 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
+//
+// BACKGROUND: JavaScript vs Rust event dispatch
+// ==============================================
+//
+// In JavaScript, singleEvent() directly looks up callbacks on the effect object:
+//
+//     // battle.ts line 624
+//     const callback = customCallback || (effect as any)[`on${eventid}`];
+//     if (callback === undefined) return relayVar;
+//
+// The magic happens in dex.conditions.get() which extracts embedded conditions:
+//
+//     // dex-conditions.ts lines 687-692
+//     else if (
+//         (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).condition) ||
+//         (this.dex.data.Abilities.hasOwnProperty(id) && (found = this.dex.data.Abilities[id]).condition) ||
+//         (this.dex.data.Items.hasOwnProperty(id) && (found = this.dex.data.Items[id]).condition)
+//     ) {
+//         condition = new Condition({ name: found.name || id, ...found.condition });
+//     }
+//
+// So when JavaScript calls dex.conditions.get("wish"):
+// 1. It finds "wish" is a Move with a .condition property
+// 2. It extracts move.condition and returns it as a Condition object
+// 3. The Condition object has onStart, onResidual, onEnd directly on it
+// 4. singleEvent just does effect['on' + eventid] to get the callback
+//
+// In Rust, we don't have this extraction step. Instead, we route based on
+// effect type and look up the embedded condition in the handler. Both
+// approaches achieve the same result.
 
 use crate::*;
 
@@ -75,11 +105,23 @@ impl Battle {
         }
 
         // Handle move events
-        // EXCEPTION: For side condition events (SideResidual, SideStart, SideEnd, SideRestart),
-        // check if the move has an embedded condition and route to condition handler
-        // Example: gmaxvolcalith is a move with condition.onResidual
-        // ALSO: For slot condition events (Residual, Start, End), check if this is a slot condition
-        // based on the current effect context (set by single_event before calling dispatch)
+        //
+        // EXCEPTION: For side/slot condition events, check if the move has an embedded
+        // condition and route to condition handler. This mimics JavaScript's behavior
+        // where dex.conditions.get("wish") extracts the move's .condition property:
+        //
+        //     // dex-conditions.ts lines 687-692
+        //     else if (
+        //         (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).condition) ||
+        //         ...
+        //     ) {
+        //         condition = new Condition({ name: found.name || id, ...found.condition });
+        //     }
+        //
+        // Examples:
+        // - "wish" is a move with condition.onStart, condition.onResidual, condition.onEnd
+        // - "gmaxvolcalith" is a move with condition.onSideResidual
+        //
         if let Some(move_def) = self.dex.moves().get(effect_id.as_str()) {
             // Check if this is a side condition event and the move has an embedded condition
             if (event_id == "SideResidual" || event_id == "SideStart" || event_id == "SideEnd" || event_id == "SideRestart")
