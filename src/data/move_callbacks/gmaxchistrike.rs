@@ -116,13 +116,13 @@ pub mod condition {
     /// onModifyCritRatio(critRatio) {
     ///     return critRatio + this.effectState.layers;
     /// }
-    pub fn on_modify_crit_ratio(battle: &mut Battle) -> EventResult {
+    pub fn on_modify_crit_ratio(battle: &mut Battle, crit_ratio: i32) -> EventResult {
         // return critRatio + this.effectState.layers;
         let layers = battle
             .with_effect_state_ref(|state| state.layers.unwrap_or(1))
             .unwrap_or(1);
 
-        EventResult::Number(layers)
+        EventResult::Number(crit_ratio + layers)
     }
 }
 

@@ -620,20 +620,30 @@ pub fn use_move_inner(
 
         for &pressure_target_pos in &pressure_targets {
             // Run DeductPP event to check for Pressure ability
+            // JavaScript: const ppDrop = this.battle.runEvent('DeductPP', source, pokemon, move);
+            //             if (ppDrop !== true) { extraPP += ppDrop || 0; }
+            // Pressure returns 1 (extra PP to deduct)
             let pp_drop_result = battle.run_event(
                 "DeductPP",
                 Some(crate::event::EventTarget::Pokemon(pressure_target_pos)),
                 Some(pokemon_pos),
                 Some(&Effect::move_(active_move.id.clone())),
-                EventResult::Number(1), // Default PP drop is 1
+                EventResult::Boolean(true), // Default is true (no extra PP)
                 false,
                 false,
             );
 
-            // If the event returns a number > 1, it means Pressure is active
-            if let EventResult::Number(pp_drop) = pp_drop_result {
-                if pp_drop > 1 {
-                    extra_pp += (pp_drop - 1) as u8; // Add extra PP (beyond the base 1)
+            // JavaScript: if (ppDrop !== true) { extraPP += ppDrop || 0; }
+            // If a handler returned a Number (like Pressure returning 1), add it
+            match pp_drop_result {
+                EventResult::Number(pp_drop) => {
+                    extra_pp += pp_drop as u8;
+                }
+                EventResult::Boolean(true) => {
+                    // No modification, don't add
+                }
+                _ => {
+                    // Other cases (Continue treated as no modification)
                 }
             }
         }

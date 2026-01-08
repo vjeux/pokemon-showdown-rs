@@ -251,6 +251,21 @@ impl Battle {
                 }).unwrap_or(0);
                 condition_callbacks::dispatch_on_modify_spe(self, condition_id, spe, pokemon_pos)
             }
+            "ModifyCritRatio" => {
+                // Extract crit_ratio from relay_var and source_pos from event
+                // gmaxchistrike, focusenergy, dragoncheer, laserfocus - move-embedded conditions
+                let crit_ratio = self.event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                crate::data::move_callbacks::dispatch_condition_on_modify_crit_ratio(
+                    self,
+                    condition_id,
+                    crit_ratio,
+                    source_pos,
+                )
+            }
             "MoveAborted" => {
                 // Extract target from event and move_id from active_move
                 let target_pos = self.event.as_ref().and_then(|e| e.target);

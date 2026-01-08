@@ -2134,18 +2134,19 @@ pub fn dispatch_condition_on_modify_boost(
 }
 
 /// Dispatch condition onModifyCritRatio callbacks
+/// Takes condition_id directly to support volatiles like gmaxchistrike
 pub fn dispatch_condition_on_modify_crit_ratio(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     crit_ratio: i32,
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "dragoncheer" => {
             dragoncheer::condition::on_modify_crit_ratio(battle, crit_ratio, source_pos)
         }
         "focusenergy" => focusenergy::condition::on_modify_crit_ratio(battle, crit_ratio),
-        "gmaxchistrike" => gmaxchistrike::condition::on_modify_crit_ratio(battle),
+        "gmaxchistrike" => gmaxchistrike::condition::on_modify_crit_ratio(battle, crit_ratio),
         "laserfocus" => laserfocus::condition::on_modify_crit_ratio(battle),
         _ => EventResult::Continue,
     }

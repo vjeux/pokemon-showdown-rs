@@ -107,29 +107,12 @@ impl Battle {
                 move_callbacks::dispatch_on_effectiveness(self, active_move_clone.as_ref(), type_mod, &target_type, target_pos.unwrap_or((0,0)))
             }
             "Hit" => {
-                // Call both regular onHit and self.onHit callbacks
-                // Regular onHit targets the move target, self.onHit targets the move user
-                let result = move_callbacks::dispatch_on_hit(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos);
-
-                // For self callbacks, only call dispatch_self_on_hit if target != source.
-                // If target == source, we're in self_drops calling moveHit for self effects,
-                // and we don't want to recursively call self.onHit again.
-                let self_result = match (source_pos, target_pos) {
-                    (Some(src), Some(tgt)) if src != tgt => {
-                        move_callbacks::dispatch_self_on_hit(self, active_move_clone.as_ref(), src, target_pos)
-                    }
-                    (Some(src), None) => {
-                        move_callbacks::dispatch_self_on_hit(self, active_move_clone.as_ref(), src, target_pos)
-                    }
-                    _ => EventResult::Continue,
-                };
-
-                // If either returns a non-Continue result, use that; otherwise Continue
-                match (result, self_result) {
-                    (EventResult::Continue, EventResult::Continue) => EventResult::Continue,
-                    (EventResult::Continue, other) => other,
-                    (other, _) => other,
-                }
+                // Regular onHit targets the move target
+                // Note: self.onHit callbacks are NOT called here - they are called from
+                // run_move_effects when is_self=true (triggered by self_drops)
+                // JavaScript: singleEvent('Hit', moveData, {}, target, source, move) only calls
+                // the regular onHit, not self.onHit
+                move_callbacks::dispatch_on_hit(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos)
             }
             "HitField" => move_callbacks::dispatch_on_hit_field(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0))),

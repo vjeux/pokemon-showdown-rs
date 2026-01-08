@@ -512,29 +512,54 @@ pub fn run_move_effects<'a>(
                 // For secondary effects, the onHit callback is defined in the secondary object,
                 // not directly on the move. We need to check if the hit_effect is a Secondary
                 // and if the parent move has a secondary.onHit callback.
+                //
+                // IMPORTANT: For self effects (is_self=true), we need to check for self.onHit
+                // callbacks and dispatch to them directly. The normal has_callback check
+                // doesn't find self.onHit callbacks.
                 let has_hit_callback = match &hit_effect {
                     HitEffect::Secondary(_) => {
                         // For secondaries, check if the parent move has a secondary onHit
                         // by looking at the dispatch function
                         crate::data::move_callbacks::has_secondary_on_hit(active_move.id.as_str())
                     },
-                    _ => battle.has_callback(effect_id, "Hit"),
+                    _ => {
+                        if is_self {
+                            // For self effects, check for self.onHit callbacks
+                            battle.move_has_self_callback(active_move.id.as_str(), "Hit")
+                        } else {
+                            battle.has_callback(effect_id, "Hit")
+                        }
+                    },
                 };
 
                 if has_hit_callback {
-                    eprintln!("[RUN_MOVE_EFFECTS] Found Hit callback for effect_id={}", effect_id);
-                    //         hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
-                    let hit_result = battle.single_event(
-                        "Hit",
-                        &crate::battle::Effect::move_(effect_id.clone()),
-                        None,
-                        Some(target_pos),
-                        Some(source_pos),
-                        Some(&Effect::move_(active_move.id.clone())),
-                        None,
-                    );
-                    //         didSomething = this.combineResults(didSomething, hitResult);
-                    did_something = combine_results(did_something, hit_result.into());
+                    eprintln!("[RUN_MOVE_EFFECTS] Found Hit callback for effect_id={}, is_self={}", effect_id, is_self);
+
+                    if is_self {
+                        // For self effects, dispatch to self.onHit callback directly
+                        // JavaScript: singleEvent('Hit', moveData.self, {}, source, source, move)
+                        // The target is the source for self effects
+                        let hit_result = crate::data::move_callbacks::dispatch_self_on_hit(
+                            battle,
+                            Some(active_move),
+                            source_pos,  // target is source for self effects
+                            Some(source_pos),
+                        );
+                        did_something = combine_results(did_something, hit_result.into());
+                    } else {
+                        //         hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
+                        let hit_result = battle.single_event(
+                            "Hit",
+                            &crate::battle::Effect::move_(effect_id.clone()),
+                            None,
+                            Some(target_pos),
+                            Some(source_pos),
+                            Some(&Effect::move_(active_move.id.clone())),
+                            None,
+                        );
+                        //         didSomething = this.combineResults(didSomething, hitResult);
+                        did_something = combine_results(did_something, hit_result.into());
+                    }
                 }
                 //     if (!isSelf && !isSecondary) {
                 if !is_self && !is_secondary {
