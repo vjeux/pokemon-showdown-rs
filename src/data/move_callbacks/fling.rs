@@ -41,10 +41,14 @@ use crate::Pokemon;
 /// }
 pub fn on_prepare_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),           // target (not used by fling)
+    source_pos: Option<(usize, usize)>,     // source - the attacker using fling
 ) -> EventResult {
-    let pokemon = pokemon_pos;
+    // JavaScript uses "source" to get the item, not "target"
+    let pokemon = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
 
     // if (source.ignoringItem(true)) return false;
     let ignoring_item = {
