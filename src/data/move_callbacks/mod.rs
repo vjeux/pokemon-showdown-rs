@@ -2469,13 +2469,14 @@ pub fn dispatch_condition_on_source_modify_damage(
 }
 
 /// Dispatch condition onStart callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_start(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "allyswitch" => allyswitch::condition::on_start(battle, pokemon_pos),
         "aquaring" => aquaring::condition::on_start(battle, pokemon_pos),
         "attract" => attract::condition::on_start(battle, pokemon_pos, None, None),
@@ -2484,7 +2485,7 @@ pub fn dispatch_condition_on_start(
         "bide" => bide::condition::on_start(battle, pokemon_pos),
         "burningbulwark" => burningbulwark::condition::on_start(battle, Some(pokemon_pos)),
         "charge" => charge::condition::on_start(battle, pokemon_pos, None, None),
-        "counter" => counter::condition::on_start(battle, None, Some(pokemon_pos), active_move),
+        "counter" => counter::condition::on_start(battle, None, Some(pokemon_pos), None),
         "curse" => curse::condition::on_start(battle, pokemon_pos, None),
         "destinybond" => destinybond::condition::on_start(battle, pokemon_pos),
         "disable" => disable::condition::on_start(battle, pokemon_pos, None, None),

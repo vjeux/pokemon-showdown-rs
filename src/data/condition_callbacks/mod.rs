@@ -621,10 +621,9 @@ pub fn dispatch_on_start(
         "trapped" => trapped::on_start(battle, pokemon_pos, source_pos, effect_id),
         "twoturnmove" => twoturnmove::on_start(battle, pokemon_pos, source_pos, effect_id),
         _ => {
-            // Try move-embedded condition callbacks
-            // Note: We pass None for active_move since we don't have it in this context
+            // Try move-embedded condition callbacks (nightmare, etc.)
             use crate::data::move_callbacks;
-            move_callbacks::dispatch_condition_on_start(battle, None, pokemon_pos, source_pos)
+            move_callbacks::dispatch_condition_on_start(battle, condition_id, pokemon_pos, source_pos)
         }
     }
 }
