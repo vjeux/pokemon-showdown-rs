@@ -34,7 +34,7 @@ pub fn on_hit(
     //     move.flags['metronome']
     // ));
     let all_moves = battle.dex.moves().all();
-    let moves: Vec<ID> = all_moves
+    let mut moves_with_num: Vec<(i32, ID)> = all_moves
         .iter()
         .filter(|&&move_data| {
             // (!move.isNonstandard || move.isNonstandard === 'Unobtainable') && move.flags['metronome']
@@ -45,16 +45,16 @@ pub fn on_hit(
             };
             is_valid && move_data.flags.contains_key("metronome")
         })
-        .map(|m| m.id.clone())
+        .map(|m| (m.num, m.id.clone()))
         .collect();
+
+    // moves.sort((a, b) => a.num - b.num);
+    moves_with_num.sort_by_key(|(num, _)| *num);
+    let moves: Vec<ID> = moves_with_num.into_iter().map(|(_, id)| id).collect();
 
     // let randomMove = '';
     // if (moves.length) {
     let random_move: Option<ID> = if !moves.is_empty() {
-        // moves.sort((a, b) => a.num - b.num);
-        // Note: We've already cloned the IDs, so we can't sort by num anymore
-        // This is acceptable as the random sampling will be from the filtered list
-
         // randomMove = this.sample(moves).id;
         let sampled = battle.sample(&moves);
         sampled.cloned()
