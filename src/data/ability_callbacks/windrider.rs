@@ -39,12 +39,12 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
 
     // if (target !== source && move.flags['wind'])
     if target_pos != source_pos {
-        let is_wind_move = if let Some(ref active_move) = battle.active_move {
+        let is_wind_move = if let Some(active_move) = active_move {
             active_move.flags.wind
         } else {
             return EventResult::Continue;

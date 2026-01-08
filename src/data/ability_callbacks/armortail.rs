@@ -20,20 +20,20 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_foe_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_foe_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
 
     // const targetAllExceptions = ['perishsong', 'flowershield', 'rototiller'];
     let target_all_exceptions = ["perishsong", "flowershield", "rototiller"];
 
     // if (move.target === 'foeSide' || (move.target === 'all' && !targetAllExceptions.includes(move.id)))
-    let (move_target, move_id, move_priority): (String, String, i8) = {
-        let active_move = match &battle.active_move {
-            Some(m) => m,
-            None => return EventResult::Continue,
-        };
-        (active_move.target.clone(), active_move.id.to_string(), active_move.priority)
+    let active_move = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
     };
+    let move_target = active_move.target.clone();
+    let move_id = active_move.id.to_string();
+    let move_priority = active_move.priority;
 
     if move_target == "foeSide" || (move_target == "all" && !target_all_exceptions.contains(&move_id.as_str())) {
         return EventResult::Continue;

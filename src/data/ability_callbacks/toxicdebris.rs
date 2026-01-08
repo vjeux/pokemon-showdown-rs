@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         side.addSideCondition('toxicspikes', target);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
     use crate::dex_data::ID;
 
@@ -53,7 +53,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     };
 
     // if (move.category === 'Physical' && (!toxicSpikes || toxicSpikes.layers < 2))
-    let move_category = battle.active_move.as_ref().map(|m| m.category.clone()).unwrap_or_default();
+    let move_category = active_move.map(|m| m.category.as_str()).unwrap_or("");
 
     if move_category == "Physical" && toxic_spikes_layers < 2 {
         // this.add('-activate', target, 'ability: Toxic Debris');
