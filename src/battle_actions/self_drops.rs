@@ -354,7 +354,7 @@ pub fn self_drops(
                             &self_targets,
                             source_pos,
                             &active_move,  // Original move as active_move
-                            &self_active_move,  // Self effect data as move_data
+                            crate::battle_actions::HitEffect::Move(&self_active_move),  // Self effect data as move_data
                             is_secondary,
                             true,  // isSelf=true
                         );

@@ -3,7 +3,7 @@
 //! 1:1 port of runMoveEffects from battle-actions.ts:1201
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, SpreadMoveTargets, SpreadMoveTarget, DamageResult, combine_results, SpreadMoveDamageExt};
+use crate::battle_actions::{SpreadMoveDamage, SpreadMoveTargets, SpreadMoveTarget, DamageResult, combine_results, SpreadMoveDamageExt, HitEffect};
 use crate::battle::Effect;
 
 /// Run move effects (boosts, healing, status, etc.)
@@ -139,19 +139,20 @@ use crate::battle::Effect;
 //
 //     return damage;
 // }
-pub fn run_move_effects(
+pub fn run_move_effects<'a>(
     battle: &mut Battle,
     mut damages: SpreadMoveDamage,
     targets: &SpreadMoveTargets,
     source_pos: (usize, usize),
     active_move: &crate::battle_actions::ActiveMove,
-    move_data: &crate::battle_actions::ActiveMove,
+    hit_effect: HitEffect<'a>,
     is_secondary: bool,
     is_self: bool,
 ) -> SpreadMoveDamage {
     // JavaScript signature: runMoveEffects(damage, targets, source, move, moveData, isSecondary?, isSelf?)
     // Both move and moveData are ActiveMove types in JavaScript
     // In many cases they're the same, but moveData can differ for secondary effects
+    // hit_effect provides access to the moveData fields via accessor methods
 
     // let didAnything: number | boolean | null | undefined = damage.reduce(this.combineResults);
     let mut did_anything = damages.reduce();
@@ -176,7 +177,7 @@ pub fn run_move_effects(
             //     hitResult = this.battle.boost(moveData.boosts, target, source, move, isSecondary, isSelf);
             //     didSomething = this.combineResults(didSomething, hitResult);
             // }
-            if let Some(ref boosts) = move_data.boosts {
+            if let Some(boosts) = hit_effect.boosts() {
                 // Check !target.fainted
                 let target_fainted = {
                     let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
@@ -217,7 +218,7 @@ pub fn run_move_effects(
             }
 
             // if (moveData.heal && !target.fainted) {
-            if let Some(heal_fraction) = move_data.heal {
+            if let Some(heal_fraction) = hit_effect.heal() {
                 // Check !target.fainted and get hp/maxhp
                 let (target_fainted, target_hp, target_maxhp, target_base_maxhp) = {
                     let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
@@ -296,7 +297,7 @@ pub fn run_move_effects(
             }
 
             // if (moveData.status) {
-            if let Some(ref status) = move_data.status {
+            if let Some(status) = hit_effect.status() {
                 //     hitResult = target.trySetStatus(moveData.status, source, moveData.ability ? moveData.ability : move);
                 let status_id = ID::new(status);
                 let hit_result = Pokemon::try_set_status(
@@ -330,7 +331,7 @@ pub fn run_move_effects(
             // Need to add this field to ActiveMove struct
 
             // if (moveData.volatileStatus) {
-            if let Some(ref volatile_status) = move_data.volatile_status {
+            if let Some(volatile_status) = hit_effect.volatile_status() {
                 //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                 let volatile_id = ID::new(volatile_status);
                 let hit_result = Pokemon::add_volatile(
@@ -352,8 +353,8 @@ pub fn run_move_effects(
             }
 
             // if (moveData.sideCondition) {
-            eprintln!("[SIDE_CONDITION] move_id={}, has side_condition={}", active_move.id.as_str(), move_data.side_condition.is_some());
-            if let Some(ref side_condition) = move_data.side_condition {
+            eprintln!("[SIDE_CONDITION] move_id={}, has side_condition={}", active_move.id.as_str(), hit_effect.side_condition().is_some());
+            if let Some(side_condition) = hit_effect.side_condition() {
                 eprintln!("[SIDE_CONDITION] Applying side condition '{}' to side {}", side_condition, target_pos.0);
                 //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
                 let condition_id = ID::new(side_condition);
@@ -377,7 +378,7 @@ pub fn run_move_effects(
             // INFRASTRUCTURE FIX: Handle moves with embedded conditions that have onSideStart
             // E.g., gmaxvolcalith has a "condition" with onSideStart, onResidual, onSideEnd
             // In this case, the move itself becomes a side condition
-            if move_data.side_condition.is_none() {
+            if hit_effect.side_condition().is_none() {
                 // Look up the move data from dex to check for embedded condition with onSideStart
                 if let Some(original_move_data) = battle.dex.moves().get(active_move.id.as_str()) {
                     // Check if move has embedded condition with onSideStart
@@ -407,7 +408,7 @@ pub fn run_move_effects(
             }
 
             // if (moveData.slotCondition) {
-            if let Some(ref slot_condition) = move_data.slot_condition {
+            if let Some(slot_condition) = hit_effect.slot_condition() {
                 //     hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
                 let condition_id = ID::new(slot_condition);
                 let source_effect = Effect::move_(active_move.id.clone());
@@ -428,7 +429,7 @@ pub fn run_move_effects(
             }
 
             // if (moveData.weather) {
-            if let Some(ref weather) = move_data.weather {
+            if let Some(weather) = hit_effect.weather() {
                 //     hitResult = this.battle.field.setWeather(moveData.weather, source, move);
                 let weather_id = ID::new(weather);
                 let hit_result = battle.set_weather(
@@ -447,7 +448,7 @@ pub fn run_move_effects(
             }
 
             // if (moveData.terrain) {
-            if let Some(ref terrain) = move_data.terrain {
+            if let Some(terrain) = hit_effect.terrain() {
                 //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
                 let terrain_id = ID::new(terrain);
                 let terrain_effect = Some(Effect::move_(active_move.id.clone()));
@@ -462,7 +463,7 @@ pub fn run_move_effects(
             }
 
             // if (moveData.pseudoWeather) {
-            if let Some(ref pseudo_weather) = move_data.pseudo_weather {
+            if let Some(pseudo_weather) = hit_effect.pseudo_weather() {
                 //     hitResult = this.battle.field.addPseudoWeather(moveData.pseudoWeather, source, move);
                 let pseudo_weather_id = ID::new(pseudo_weather);
                 // TODO: field.add_pseudo_weather should be a Battle-level method that handles events
@@ -478,7 +479,7 @@ pub fn run_move_effects(
             }
 
             // if (moveData.forceSwitch) {
-            if move_data.force_switch {
+            if hit_effect.force_switch() {
                 //     hitResult = !!this.battle.canSwitch(target.side);
                 let can_switch_count = battle.can_switch(target_pos.0);
                 let hit_result = can_switch_count > 0; // !! converts to boolean
@@ -495,14 +496,17 @@ pub fn run_move_effects(
             //   These are like the TryHit events, except we don't need a FieldHit event.
             //   Scroll up for the TryHit event documentation, and just ignore the "Try" part. ;)
 
+            // Get effect_id for callbacks (use active_move.id if hit_effect is a SecondaryEffect)
+            let effect_id = hit_effect.id().unwrap_or(&active_move.id);
+
             // if (move.target === 'all' && !isSelf) {
             if active_move.target == "all" && !is_self {
                 //     if (moveData.onHitField) {
-                if battle.has_callback(&move_data.id, "HitField") {
+                if battle.has_callback(effect_id, "HitField") {
                     //         hitResult = this.battle.singleEvent('HitField', moveData, {}, target, source, move);
                     let hit_result = battle.single_event(
                         "HitField",
-                        &crate::battle::Effect::move_(move_data.id.clone()),
+                        &crate::battle::Effect::move_(effect_id.clone()),
                         None,
                         Some(target_pos),
                         Some(source_pos),
@@ -516,11 +520,11 @@ pub fn run_move_effects(
             // } else if ((move.target === 'foeSide' || move.target === 'allySide') && !isSelf) {
             else if (active_move.target == "foeSide" || active_move.target == "allySide") && !is_self {
                 //     if (moveData.onHitSide) {
-                if battle.has_callback(&move_data.id, "HitSide") {
+                if battle.has_callback(effect_id, "HitSide") {
                     //         hitResult = this.battle.singleEvent('HitSide', moveData, {}, target.side, source, move);
                     let hit_result = battle.single_event(
                         "HitSide",
-                        &crate::battle::Effect::move_(move_data.id.clone()),
+                        &crate::battle::Effect::move_(effect_id.clone()),
                         None,
                         Some(target_pos),
                         Some(source_pos),
@@ -532,11 +536,12 @@ pub fn run_move_effects(
                 }
             } else {
                 //     if (moveData.onHit) {
-                if battle.has_callback(&move_data.id, "Hit") {
+                if battle.has_callback(effect_id, "Hit") {
+                    eprintln!("[RUN_MOVE_EFFECTS] Found Hit callback for effect_id={}", effect_id);
                     //         hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
                     let hit_result = battle.single_event(
                         "Hit",
-                        &crate::battle::Effect::move_(move_data.id.clone()),
+                        &crate::battle::Effect::move_(effect_id.clone()),
                         None,
                         Some(target_pos),
                         Some(source_pos),
@@ -563,7 +568,7 @@ pub fn run_move_effects(
         }
 
         // if (moveData.selfdestruct === 'ifHit' && damage[i] !== false) {
-        if let Some(ref selfdestruct) = move_data.self_destruct {
+        if let Some(selfdestruct) = hit_effect.self_destruct() {
             if selfdestruct == "ifHit" && !matches!(damages[i], DamageResult::Failed) {
                 //     this.battle.faint(source, source, move);
                 battle.faint(source_pos, Some(source_pos), Some(active_move.id.as_str()));
@@ -571,7 +576,7 @@ pub fn run_move_effects(
         }
 
         // if (moveData.selfSwitch) {
-        if move_data.self_switch.is_some() {
+        if hit_effect.self_switch().is_some() {
             //     if (this.battle.canSwitch(source.side) && !source.volatiles['commanded']) {
             let can_switch_count = battle.can_switch(source_pos.0);
             let has_commanded = {
@@ -610,8 +615,8 @@ pub fn run_move_effects(
     let did_anything_is_falsy = matches!(did_anything, DamageResult::Failed | DamageResult::Undefined);
 
     if did_anything_is_falsy && !did_anything_is_zero
-        && move_data.self_effect.is_none()
-        && move_data.self_destruct.is_none() {
+        && hit_effect.self_effect_data().is_none()
+        && hit_effect.self_destruct().is_none() {
 
         if !is_self && !is_secondary {
             // if (didAnything === false) {

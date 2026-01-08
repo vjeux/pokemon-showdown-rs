@@ -804,7 +804,7 @@ pub fn use_move_inner(
             &[Some(pokemon_pos)], // targets = [pokemon] (self-targeting)
             pokemon_pos,          // pokemon (user)
             &move_id_for_boost,   // move
-            Some(&move_id_for_boost), // moveData (use move.selfBoost data - passed via active_move)
+            None,                 // moveData (None means use active_move)
             false,                // isSecondary
             true,                 // isSelf
         );

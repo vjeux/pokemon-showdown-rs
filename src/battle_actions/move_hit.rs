@@ -14,7 +14,7 @@
 
 use crate::*;
 use crate::battle_actions::spread_move_hit::spread_move_hit;
-use crate::battle_actions::DamageResult;
+use crate::battle_actions::{DamageResult, HitEffect};
 
 /// Apply move hit to target(s)
 /// Equivalent to moveHit() in battle-actions.ts:1385
@@ -27,12 +27,12 @@ use crate::battle_actions::DamageResult;
 /// - Damage(n) if damage was dealt (number in JS)
 /// - Undefined if move succeeded without damage (undefined in JS)
 /// - Failed if move failed (false in JS)
-pub fn move_hit(
+pub fn move_hit<'a>(
     battle: &mut Battle,
     targets: &[Option<(usize, usize)>],
     pokemon_pos: (usize, usize),
     move_id: &ID,
-    move_data_id: Option<&ID>,
+    hit_effect: Option<HitEffect<'a>>,
     is_secondary: bool,
     is_self: bool,
 ) -> DamageResult {
@@ -47,7 +47,7 @@ pub fn move_hit(
         None => SpreadMoveTarget::None,
     }).collect();
 
-    let (damages, _targets) = spread_move_hit(battle, &spread_targets, pokemon_pos, move_id, move_data_id, is_secondary, is_self);
+    let (damages, _targets) = spread_move_hit(battle, &spread_targets, pokemon_pos, move_id, hit_effect, is_secondary, is_self);
 
     let ret_val = match damages.get(0) {
         Some(DamageResult::Damage(n)) => DamageResult::Damage(*n),
@@ -65,4 +65,3 @@ pub fn move_hit(
         other => other,
     }
 }
-

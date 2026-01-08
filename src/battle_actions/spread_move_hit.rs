@@ -5,7 +5,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle::SpreadMoveHitResult;
-use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, HitEffect};
 use crate::battle::Effect;
 
 /// Spread move hit - handles individual target hit processing
@@ -123,12 +123,12 @@ use crate::battle::Effect;
 //
 ///
 /// Returns (damages, targets) where damages[i] corresponds to targets[i]
-pub fn spread_move_hit(
+pub fn spread_move_hit<'a>(
     battle: &mut Battle,
     targets: &SpreadMoveTargets,
     source_pos: (usize, usize),
     move_id: &ID,
-    hit_effect_id: Option<&ID>,
+    hit_effect: Option<HitEffect<'a>>,
     is_secondary: bool,
     is_self: bool,
 ) -> SpreadMoveHitResult {
@@ -142,9 +142,12 @@ pub fn spread_move_hit(
     // JS: targets is mutable in JavaScript
     let mut targets_mut: SpreadMoveTargets = targets.clone();
 
-    // Get moveData ID (defaults to move_id if hit_effect_id is None)
+    // Get moveData ID (defaults to move_id if hit_effect is None or is a SecondaryEffect)
     // JS: let moveData = hitEffect as ActiveMove; if (!moveData) moveData = move;
-    let move_data_id = hit_effect_id.unwrap_or(move_id);
+    let move_data_id = match &hit_effect {
+        Some(HitEffect::Move(m)) => &m.id,
+        _ => move_id,
+    };
 
     // Get target for TryHit events (first target)
     // JS: const target = targets[0];
@@ -311,6 +314,22 @@ pub fn spread_move_hit(
     // JavaScript: runMoveEffects(damage, targets, source, move: ActiveMove, moveData: ActiveMove, isSecondary?, isSelf?)
     // Both move and moveData are ActiveMove - typically the same unless dealing with secondary effects
 
+    // IMPORTANT: Clone the ActiveMove BEFORE calling run_move_effects!
+    // This is critical because run_move_effects may trigger callbacks (like Metronome's onHit)
+    // that call use_move for a different move, which would change battle.active_move.
+    // JavaScript doesn't have this problem because it passes moveData as a parameter.
+    let (has_self_effect, self_dropped, move_data_clone) = {
+        if let Some(ref active_move) = battle.active_move {
+            let has_self = active_move.self_effect.is_some();
+            eprintln!("[SPREAD_MOVE_HIT] BEFORE run_move_effects: move_id={}, has_self_effect={}, self_dropped={}, secondaries.len()={}",
+                active_move.id, has_self, active_move.self_dropped, active_move.secondaries.len());
+            (has_self, active_move.self_dropped, Some(active_move.clone()))
+        } else {
+            eprintln!("[SPREAD_MOVE_HIT] No active_move when extracting info BEFORE run_move_effects!");
+            (false, false, None)
+        }
+    };
+
     // Get active_move pointer (for 'move' parameter)
     let active_move_ptr = {
         match &battle.active_move {
@@ -319,9 +338,12 @@ pub fn spread_move_hit(
         }
     };
 
-    // For moveData, use active_move unless hit_effect provides a different one
-    // Currently we only have move_data_id, so we'll use active_move for both until hit_effect is properly threaded through
-    let move_data_ptr = active_move_ptr; // TODO: Should use hit_effect if provided
+    // For moveData, use hit_effect if provided, otherwise wrap active_move in HitEffect::Move
+    // JS: let moveData = hitEffect as ActiveMove; if (!moveData) moveData = move;
+    let hit_effect_for_run = match &hit_effect {
+        Some(he) => he.clone(),
+        None => HitEffect::Move(unsafe { &*active_move_ptr }),
+    };
 
     damage = unsafe {
         crate::battle_actions::run_move_effects(
@@ -330,7 +352,7 @@ pub fn spread_move_hit(
             &targets_mut,
             source_pos,
             &*active_move_ptr,
-            &*move_data_ptr,
+            hit_effect_for_run,
             is_secondary,
             is_self,
         )
@@ -352,20 +374,7 @@ pub fn spread_move_hit(
 
     // 4. self drops
     // JS: if (moveData.self && !move.selfDropped) this.selfDrops(targets, pokemon, move, moveData, isSecondary);
-    // Extract both self_effect and secondaries info before calling any functions
-    // IMPORTANT: Check active_move.self_effect, not the base move definition
-    // JavaScript checks moveData.self which is from the ActiveMove parameter
-    let (has_self_effect, self_dropped, has_secondaries) = {
-        if let Some(ref active_move) = battle.active_move {
-            let has_self = active_move.self_effect.is_some();
-            eprintln!("[SPREAD_MOVE_HIT] move_id={}, has_self_effect={}, self_dropped={}, secondaries.len()={}",
-                active_move.id, has_self, active_move.self_dropped, active_move.secondaries.len());
-            (has_self, active_move.self_dropped, !active_move.secondaries.is_empty())
-        } else {
-            eprintln!("[SPREAD_MOVE_HIT] No active_move when extracting info!");
-            (false, false, false)
-        }
-    };
+    // NOTE: We use the pre-extracted values from BEFORE run_move_effects
 
     // Only call self_drops if self_effect exists and selfDropped is false
     if has_self_effect && !self_dropped {
@@ -382,16 +391,19 @@ pub fn spread_move_hit(
 
     // 5. secondary effects
     // JS: if (moveData.secondaries) this.secondaries(targets, pokemon, move, moveData, isSelf);
-    // Use the has_secondaries flag we extracted earlier (from ActiveMove.secondaries)
-    if has_secondaries {
-        eprintln!("[SPREAD_MOVE_HIT] Calling secondaries for move_id={}", move_id);
-        crate::battle_actions::secondaries(
-            battle,
-            &targets_mut,
-            source_pos,
-            move_id,
-            is_self,
-        );
+    // Use the cloned move_data from BEFORE run_move_effects
+    if let Some(ref move_data) = move_data_clone {
+        if !move_data.secondaries.is_empty() {
+            eprintln!("[SPREAD_MOVE_HIT] Calling secondaries for move_id={}", move_id);
+            crate::battle_actions::secondaries(
+                battle,
+                &targets_mut,
+                source_pos,
+                move_data,  // move_ (the original move)
+                move_data,  // move_data (the cloned ActiveMove)
+                is_self,
+            );
+        }
     }
 
     // Restore activeTarget
