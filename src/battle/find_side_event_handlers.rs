@@ -55,7 +55,7 @@ impl Battle {
             // JS: const sideConditionData = side.sideConditions[id];
             // JS: const sideCondition = this.dex.conditions.getByID(id as ID);
             // JS: const callback = this.getCallback(side, sideCondition, callbackName);
-            let has_callback = self.has_callback(sc_id, callback_name);
+            let has_callback = self.has_side_condition_callback(sc_id, callback_name);
             eprintln!("[FIND_SIDE_HANDLERS]   Checking {}, has_callback({})={}",
                 sc_id.as_str(), callback_name, has_callback);
 

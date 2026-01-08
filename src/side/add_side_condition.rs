@@ -76,7 +76,7 @@ impl Side {
         if self.side_conditions.contains_key(&status_id) {
             // if (!(status as any).onSideRestart) return false;
             // return this.battle.singleEvent('SideRestart', status, ...);
-            if battle.has_callback(&status_id, "SideRestart") {
+            if battle.has_side_condition_callback(&status_id, "SideRestart") {
                 let side_idx = self.n;
                 let result = battle.single_event_side(
                     "SideRestart",

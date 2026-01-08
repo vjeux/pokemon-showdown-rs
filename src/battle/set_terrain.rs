@@ -67,7 +67,7 @@ impl Battle {
         // if (status.durationCallback) {
         //     this.terrainState.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
         // }
-        if self.has_callback(&terrain_id, "durationCallback") {
+        if self.has_terrain_callback(&terrain_id, "durationCallback") {
             let duration_result = self.call_duration_callback(
                 &terrain_id,
                 None,  // target_pos

@@ -475,7 +475,7 @@ pub fn run_move_effects<'a>(
             // if (move.target === 'all' && !isSelf) {
             if active_move.target == "all" && !is_self {
                 //     if (moveData.onHitField) {
-                if battle.has_callback(effect_id, "HitField") {
+                if battle.has_move_id_callback(effect_id, "HitField") {
                     //         hitResult = this.battle.singleEvent('HitField', moveData, {}, target, source, move);
                     let hit_result = battle.single_event(
                         "HitField",
@@ -493,7 +493,7 @@ pub fn run_move_effects<'a>(
             // } else if ((move.target === 'foeSide' || move.target === 'allySide') && !isSelf) {
             else if (active_move.target == "foeSide" || active_move.target == "allySide") && !is_self {
                 //     if (moveData.onHitSide) {
-                if battle.has_callback(effect_id, "HitSide") {
+                if battle.has_move_id_callback(effect_id, "HitSide") {
                     //         hitResult = this.battle.singleEvent('HitSide', moveData, {}, target.side, source, move);
                     let hit_result = battle.single_event(
                         "HitSide",
@@ -527,7 +527,7 @@ pub fn run_move_effects<'a>(
                             // For self effects, check for self.onHit callbacks
                             battle.move_has_self_callback(active_move.id.as_str(), "Hit")
                         } else {
-                            battle.has_callback(effect_id, "Hit")
+                            battle.has_move_id_callback(effect_id, "Hit")
                         }
                     },
                 };

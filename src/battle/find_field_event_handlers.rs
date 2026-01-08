@@ -56,7 +56,7 @@ impl Battle {
         // (need to extract before calling resolve_priority due to borrow checker)
         let pseudo_weather_handlers: Vec<(ID, EffectState)> = self.field.pseudo_weather.iter()
             .filter(|(pw_id, pw_state)| {
-                let has_callback = self.has_callback(pw_id, callback_name);
+                let has_callback = self.has_pseudo_weather_callback(pw_id, callback_name);
                 let has_get_key = get_key.is_some_and(|key| {
                     // JavaScript checks pseudoWeatherState[getKey], which means checking if duration exists
                     key == "duration" && pw_state.duration.is_some()
@@ -95,7 +95,7 @@ impl Battle {
         // JS: if (callback !== undefined || (getKey && this.field.weatherState[getKey])) {
         let weather_handler = if !self.field.weather.is_empty() {
             eprintln!("[FIND_FIELD_EVENT T{}] Checking weather '{}' for callback '{}'", self.turn, self.field.weather.as_str(), callback_name);
-            let has_callback = self.has_callback(&self.field.weather, callback_name);
+            let has_callback = self.has_weather_callback(&self.field.weather, callback_name);
             eprintln!("[FIND_FIELD_EVENT T{}] has_callback={}", self.turn, has_callback);
             let has_get_key = if let Some(key) = get_key {
                 // JavaScript checks weatherState[getKey], which in Rust means checking if the duration field exists
@@ -141,7 +141,7 @@ impl Battle {
         // JS: callback = this.getCallback(field, terrain, callbackName);
         // JS: if (callback !== undefined || (getKey && field.terrainState[getKey])) {
         let terrain_handler = if !self.field.terrain.is_empty() {
-            let has_callback = self.has_callback(&self.field.terrain, callback_name);
+            let has_callback = self.has_terrain_callback(&self.field.terrain, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks terrainState[getKey], which means checking if duration exists
                 key == "duration" && self.field.terrain_state.duration.is_some()

@@ -4,72 +4,42 @@ use crate::*;
 
 impl Battle {
 
-    /// Check if an effect has a callback for a specific event
-    /// This is a Rust helper to replicate JavaScript's getCallback() check
-    /// without actually executing the callback
-    ///
-    /// Returns true if the effect has a handler for the event, false otherwise
-    pub fn has_callback(&self, effect_id: &ID, event_id: &str) -> bool {
-        let effect_str = effect_id.as_str();
+    // ============================================================================
+    // SPECIALIZED CALLBACK CHECKERS
+    // Each function knows exactly what type of effect it's checking, avoiding
+    // the ambiguity of the old generic has_callback() that guessed based on dex lookups.
+    // ============================================================================
 
-        eprintln!("[HAS_CALLBACK] Checking effect_id={}, event_id={}", effect_str, event_id);
-
-        // IMPORTANT: Check conditions (status, volatile, weather, terrain) FIRST
-        // This is critical because some IDs like "stall" exist as both abilities AND conditions
-        // When checking a volatile, we want to find the CONDITION, not the ability
-        // In JavaScript, the volatile already has its callback attached, so there's no ambiguity
-        //
-        // HOWEVER: If the condition is a move-embedded condition (like gmaxvolcalith),
-        // we need to check BOTH condition callbacks AND move callbacks!
-        // Example: gmaxvolcalith has condition.onSideStart AND self.onHit
-        let condition_check = self.dex.conditions().get_by_id(effect_id);
-        let is_also_move = self.dex.moves().get(effect_str).is_some();
-
-        if condition_check.is_some() {
-            let has_condition_callback = self.condition_has_callback(effect_str, event_id);
-            eprintln!("[HAS_CALLBACK] Found as condition, has_callback={}, is_also_move={}", has_condition_callback, is_also_move);
-
-            // If it's ONLY a condition (not also a move), return the condition result
-            if !is_also_move {
-                return has_condition_callback;
-            }
-
-            // If it's BOTH a condition and a move, check move callbacks too
-            // Fall through to check move callbacks below, but remember condition result
-            let has_move_callback = self.move_has_callback(effect_str, event_id);
-            let has_self_callback = self.move_has_self_callback(effect_str, event_id);
-            eprintln!("[HAS_CALLBACK] Also a move: condition={}, move={}, self={}",
-                has_condition_callback, has_move_callback, has_self_callback);
-            return has_condition_callback || has_move_callback || has_self_callback;
+    /// Check if a status condition has a callback for an event
+    /// Status conditions: slp, psn, tox, brn, par, frz
+    pub fn has_status_callback(&self, status_id: &ID, event_id: &str) -> bool {
+        if status_id.is_empty() {
+            return false;
         }
+        eprintln!("[HAS_STATUS_CALLBACK] status_id={}, event_id={}", status_id.as_str(), event_id);
+        self.condition_has_callback(status_id.as_str(), event_id)
+    }
 
-        // Check if this is a move-embedded condition
-        // JavaScript's dex.conditions.getByID() checks moves for embedded conditions:
-        // } else if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).condition ...
-        //     condition = new Condition({ name: found.name || id, ...found.condition });
-        // IMPORTANT: Don't return early! A move with an embedded condition can have BOTH
-        // condition callbacks (onSideStart, onResidual, etc.) AND move callbacks (onHit, etc.)
-        // Example: gmaxvolcalith has condition.onSideStart AND self.onHit
-        let has_embedded_condition = if let Some(move_data) = self.dex.moves().get(effect_str) {
-            if move_data.condition.is_some() {
-                // This is a move with an embedded condition (like King's Shield, gmaxvolcalith)
-                // Check if the condition has the callback
-                eprintln!("[HAS_CALLBACK] Found as move-embedded condition, checking condition_has_callback");
-                let has_condition_callback = self.condition_has_callback(effect_str, event_id);
-                eprintln!("[HAS_CALLBACK] Embedded condition has_callback={}", has_condition_callback);
-                has_condition_callback
-            } else {
-                false
-            }
-        } else {
-            false
-        };
+    /// Check if a volatile condition has a callback for an event
+    /// Volatiles: confusion, substitute, taunt, encore, etc.
+    /// Also handles ability-embedded conditions (flashfire, etc.)
+    pub fn has_volatile_callback(&self, volatile_id: &ID, event_id: &str) -> bool {
+        if volatile_id.is_empty() {
+            return false;
+        }
+        let volatile_str = volatile_id.as_str();
+        eprintln!("[HAS_VOLATILE_CALLBACK] volatile_id={}, event_id={}", volatile_str, event_id);
+
+        // First check conditions dex
+        if self.condition_has_callback(volatile_str, event_id) {
+            return true;
+        }
 
         // Check ability-embedded conditions
         // Some abilities define a `condition` block with their own callbacks
         // When a volatile is added with the ability's ID (e.g., "flashfire"),
         // its callbacks are in ability.condition, not in conditions.json
-        if let Some(ability_data) = self.dex.abilities().get(effect_str) {
+        if let Some(ability_data) = self.dex.abilities().get(volatile_str) {
             if let Some(condition_value) = ability_data.extra.get("condition") {
                 if let Some(condition) = condition_value.as_object() {
                     // Check if the condition has this callback
@@ -93,38 +63,149 @@ impl Battle {
             }
         }
 
-        // Check abilities (for ability-specific callbacks like onTryHit, onEnd)
-        if self.dex.abilities().get(effect_str).is_some() {
-            return self.ability_has_callback(effect_str, event_id);
+        false
+    }
+
+    /// Check if a slot condition has a callback for an event
+    /// Slot conditions: healingwish, lunardance, wish, etc.
+    pub fn has_slot_condition_callback(&self, slot_cond_id: &ID, event_id: &str) -> bool {
+        if slot_cond_id.is_empty() {
+            return false;
+        }
+        eprintln!("[HAS_SLOT_CONDITION_CALLBACK] slot_cond_id={}, event_id={}", slot_cond_id.as_str(), event_id);
+        self.condition_has_callback(slot_cond_id.as_str(), event_id)
+    }
+
+    /// Check if a side condition has a callback for an event
+    /// Side conditions: spikes, stealthrock, reflect, lightscreen, etc.
+    pub fn has_side_condition_callback(&self, side_cond_id: &ID, event_id: &str) -> bool {
+        if side_cond_id.is_empty() {
+            return false;
+        }
+        let side_cond_str = side_cond_id.as_str();
+        eprintln!("[HAS_SIDE_CONDITION_CALLBACK] side_cond_id={}, event_id={}", side_cond_str, event_id);
+
+        // Check conditions dex first
+        if self.condition_has_callback(side_cond_str, event_id) {
+            return true;
         }
 
-        // Check items
-        if self.dex.items().get(effect_str).is_some() {
-            return self.item_has_callback(effect_str, event_id);
-        }
-
-        // Check moves (both regular and self callbacks)
-        if self.dex.moves().get(effect_str).is_some() {
-            // A move has a callback if:
-            // 1. The embedded condition has the callback (already checked above)
-            // 2. The move itself has the callback
-            // 3. The move's self effect has the callback
-            let has_move_callback = self.move_has_callback(effect_str, event_id);
-            let has_self_callback = self.move_has_self_callback(effect_str, event_id);
-            eprintln!("[HAS_CALLBACK] Move check: embedded={}, move={}, self={}",
-                has_embedded_condition, has_move_callback, has_self_callback);
-            return has_embedded_condition || has_move_callback || has_self_callback;
-        }
-
-        // Check species - species can have callbacks like onSwitchIn for form changes
-        if self.dex.species().get(effect_str).is_some() {
-            return self.species_has_callback(effect_str, event_id);
+        // Side conditions can also be move-embedded (like gmaxvolcalith)
+        // For these, we also need to check the move's condition callbacks
+        if let Some(move_data) = self.dex.moves().get(side_cond_str) {
+            if let Some(ref condition_data) = move_data.condition {
+                if condition_data.extra.contains_key(event_id) {
+                    return true;
+                }
+                // Try with "on" prefix
+                if !event_id.starts_with("on") {
+                    let with_on = format!("on{}", event_id);
+                    if condition_data.extra.contains_key(&with_on) {
+                        return true;
+                    }
+                }
+            }
         }
 
         false
     }
 
-    /// Check if a an ability has a callback for an event
+    /// Check if a weather condition has a callback for an event
+    /// Weather: sunnyday, raindance, sandstorm, hail, snow
+    pub fn has_weather_callback(&self, weather_id: &ID, event_id: &str) -> bool {
+        if weather_id.is_empty() {
+            return false;
+        }
+        eprintln!("[HAS_WEATHER_CALLBACK] weather_id={}, event_id={}", weather_id.as_str(), event_id);
+        self.condition_has_callback(weather_id.as_str(), event_id)
+    }
+
+    /// Check if a terrain condition has a callback for an event
+    /// Terrain: electricterrain, grassyterrain, mistyterrain, psychicterrain
+    pub fn has_terrain_callback(&self, terrain_id: &ID, event_id: &str) -> bool {
+        if terrain_id.is_empty() {
+            return false;
+        }
+        eprintln!("[HAS_TERRAIN_CALLBACK] terrain_id={}, event_id={}", terrain_id.as_str(), event_id);
+        self.condition_has_callback(terrain_id.as_str(), event_id)
+    }
+
+    /// Check if a pseudo-weather condition has a callback for an event
+    /// Pseudo-weather: trickroom, gravity, magicroom, wonderroom
+    pub fn has_pseudo_weather_callback(&self, pw_id: &ID, event_id: &str) -> bool {
+        if pw_id.is_empty() {
+            return false;
+        }
+        eprintln!("[HAS_PSEUDO_WEATHER_CALLBACK] pw_id={}, event_id={}", pw_id.as_str(), event_id);
+        self.condition_has_callback(pw_id.as_str(), event_id)
+    }
+
+    /// Check if an item has a callback for an event (ID version)
+    /// Wrapper for item_has_callback that takes &ID for consistency
+    pub fn has_item_id_callback(&self, item_id: &ID, event_id: &str) -> bool {
+        if item_id.is_empty() {
+            return false;
+        }
+        eprintln!("[HAS_ITEM_ID_CALLBACK] item_id={}, event_id={}", item_id.as_str(), event_id);
+        self.item_has_callback(item_id.as_str(), event_id)
+    }
+
+    /// Check if a species has a callback for an event (ID version)
+    /// Wrapper for species_has_callback that takes &ID for consistency
+    pub fn has_species_id_callback(&self, species_id: &ID, event_id: &str) -> bool {
+        if species_id.is_empty() {
+            return false;
+        }
+        eprintln!("[HAS_SPECIES_ID_CALLBACK] species_id={}, event_id={}", species_id.as_str(), event_id);
+        self.species_has_callback(species_id.as_str(), event_id)
+    }
+
+    /// Check if a move has a callback for an event (ID version)
+    /// Wrapper for move_has_callback that takes &ID for consistency
+    pub fn has_move_id_callback(&self, move_id: &ID, event_id: &str) -> bool {
+        if move_id.is_empty() {
+            return false;
+        }
+        eprintln!("[HAS_MOVE_ID_CALLBACK] move_id={}, event_id={}", move_id.as_str(), event_id);
+        self.move_has_callback(move_id.as_str(), event_id)
+    }
+
+    /// Check if an ability has a callback for an event (ID version)
+    /// Wrapper for ability_has_callback that takes &ID for consistency
+    pub fn has_ability_id_callback(&self, ability_id: &ID, event_id: &str) -> bool {
+        if ability_id.is_empty() {
+            return false;
+        }
+        eprintln!("[HAS_ABILITY_ID_CALLBACK] ability_id={}, event_id={}", ability_id.as_str(), event_id);
+        self.ability_has_callback(ability_id.as_str(), event_id)
+    }
+
+    /// Check if an effect has a callback based on its effect type
+    /// This is for cases where the effect type is known at runtime (e.g., from handler.effect_type)
+    pub fn has_callback_for_effect_type(&self, effect_id: &ID, event_id: &str, effect_type: &super::EffectType) -> bool {
+        match effect_type {
+            super::EffectType::Status => self.has_status_callback(effect_id, event_id),
+            super::EffectType::Condition => self.has_volatile_callback(effect_id, event_id),
+            super::EffectType::Ability => self.has_ability_id_callback(effect_id, event_id),
+            super::EffectType::Item => self.has_item_id_callback(effect_id, event_id),
+            super::EffectType::Move => self.has_move_id_callback(effect_id, event_id),
+            super::EffectType::Weather => self.has_weather_callback(effect_id, event_id),
+            super::EffectType::Terrain => self.has_terrain_callback(effect_id, event_id),
+            super::EffectType::SideCondition => self.has_side_condition_callback(effect_id, event_id),
+            super::EffectType::SlotCondition => self.has_slot_condition_callback(effect_id, event_id),
+            // These types don't have callbacks or are not expected in this context
+            super::EffectType::ZMove
+            | super::EffectType::FieldCondition
+            | super::EffectType::Format
+            | super::EffectType::Rule
+            | super::EffectType::Ruleset => false,
+        }
+    }
+
+    // ============================================================================
+    // INTERNAL HELPER FUNCTIONS
+    // These are the underlying implementations used by the specialized functions.
+    // ============================================================================
     pub fn ability_has_callback(&self, ability_id: &str, event_id: &str) -> bool {
         // Gen 5+ special case: abilities use onStart during SwitchIn events
         // This matches JavaScript getCallback() behavior

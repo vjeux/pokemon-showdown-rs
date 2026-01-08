@@ -84,7 +84,7 @@ impl Battle {
         // JS: let callback = this.getCallback(pokemon, status, callbackName);
         // JS: if (callback !== undefined || (getKey && pokemon.statusState[getKey])) {
         if !pokemon.status.is_empty() {
-            let has_callback = self.has_callback(&pokemon.status, callback_name);
+            let has_callback = self.has_status_callback(&pokemon.status, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks statusState[getKey], which means checking if duration exists
                 key == "duration" && pokemon.status_state.duration.is_some()
@@ -117,7 +117,7 @@ impl Battle {
             // JS: callback = this.getCallback(pokemon, volatile, callbackName);
             // JS: if (callback !== undefined || (getKey && volatileState[getKey])) {
             eprintln!("[FIND_POKEMON_HANDLERS] Checking volatile_id={} for callback={}", volatile_id.as_str(), callback_name);
-            let has_callback = self.has_callback(volatile_id, callback_name);
+            let has_callback = self.has_volatile_callback(volatile_id, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks volatileState[getKey], which means checking if duration exists
                 key == "duration" && volatile_state.duration.is_some()
@@ -187,7 +187,7 @@ impl Battle {
         // JS: callback = this.getCallback(pokemon, item, callbackName);
         // JS: if (callback !== undefined || (getKey && pokemon.itemState[getKey])) {
         if !pokemon.item.is_empty() {
-            let has_callback = self.has_callback(&pokemon.item, callback_name);
+            let has_callback = self.has_item_id_callback(&pokemon.item, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks itemState[getKey], which means checking if duration exists
                 key == "duration" && pokemon.item_state.duration.is_some()
@@ -217,7 +217,7 @@ impl Battle {
         // Note: Species don't have getKey (no duration field)
         // Note: Species callbacks use Condition effectType (like volatiles) with subOrder 2
         //       per JavaScript effectTypeOrder in battle.ts resolvePriority
-        if self.has_callback(&pokemon.species_id, callback_name) {
+        if self.has_species_id_callback(&pokemon.species_id, callback_name) {
             handlers.push(EventListener {
                     event_name: String::new(),
                 effect_id: pokemon.species_id.clone(),
@@ -242,7 +242,7 @@ impl Battle {
                 // JS: const slotCondition = this.dex.conditions.getByID(conditionid as ID);
                 // JS: callback = this.getCallback(pokemon, slotCondition, callbackName);
                 // JS: if (callback !== undefined || (getKey && slotConditionState[getKey])) {
-                let has_callback = self.has_callback(slot_cond_id, callback_name);
+                let has_callback = self.has_slot_condition_callback(slot_cond_id, callback_name);
                 let has_get_key = get_key.is_some_and(|key| {
                     // JavaScript checks slotConditionState[getKey], which means checking if duration exists
                     key == "duration" && slot_cond_state.duration.is_some()

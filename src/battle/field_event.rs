@@ -184,7 +184,7 @@ impl Battle {
             let effect_order = 0;
             // JavaScript: handler.callback is set from getCallback() result
             // If getCallback returns undefined, callback is undefined even if handler exists
-            let handler_has_callback = self.has_callback(&effect_id, &field_event);
+            let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &field_event, &effect_type);
             let handler = self.create_field_handler(
                 effect_id,
                 effect_type,
@@ -217,7 +217,7 @@ impl Battle {
                     let effect_order = 0;
                     // JavaScript: handler.callback is set from getCallback() result
                     // For onSideResidual handlers, check if the effect has this callback
-                    let handler_has_callback = self.has_callback(&effect_id, &side_event);
+                    let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &side_event, &effect_type);
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
@@ -258,7 +258,7 @@ impl Battle {
                         // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
                         let effect_order = 0;
                         // For any event handlers, check if the effect has this callback
-                        let handler_has_callback = self.has_callback(&effect_id, &any_event);
+                        let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &any_event, &effect_type);
                         let handler = self.create_field_handler(
                             effect_id,
                             effect_type,
@@ -296,7 +296,7 @@ impl Battle {
                     // Always use 0 to match JavaScript's undefined behavior.
                     let effect_order = 0;
                     // For Pokemon handlers, check if the effect has this callback
-                    let handler_has_callback = self.has_callback(&effect_id, &callback_name);
+                    let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
@@ -320,7 +320,7 @@ impl Battle {
                     let effect_type = handler.effect_type;
                     let effect_order = 0;
                     // For side condition handlers targeting Pokemon, check if the effect has this callback
-                    let handler_has_callback = self.has_callback(&effect_id, &callback_name);
+                    let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,

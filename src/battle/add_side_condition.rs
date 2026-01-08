@@ -42,7 +42,7 @@ impl Battle {
             // return this.battle.singleEvent('SideRestart', status, this.sideConditions[status.id], this, source, sourceEffect);
 
             // Check if condition has onSideRestart callback
-            if self.has_callback(&condition_id, "SideRestart") {
+            if self.has_side_condition_callback(&condition_id, "SideRestart") {
                 // Fire SideRestart event
                 let result = self.single_event_side(
                     "SideRestart",
@@ -110,7 +110,7 @@ impl Battle {
         //     delete this.sideConditions[status.id];
         //     return false;
         // }
-        if self.has_callback(&condition_id, "SideStart") {
+        if self.has_side_condition_callback(&condition_id, "SideStart") {
             let result = self.single_event_side(
                 "SideStart",
                 &condition_id,

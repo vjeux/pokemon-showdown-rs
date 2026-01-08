@@ -228,7 +228,7 @@ impl Battle {
 
         // Call durationCallback if it exists
         eprintln!("[SET_WEATHER] Checking if has_callback for DurationCallback");
-        if self.has_callback(&weather_id, "DurationCallback") {
+        if self.has_weather_callback(&weather_id, "DurationCallback") {
             eprintln!("[SET_WEATHER] Calling duration callback for '{}'", weather_id.as_str());
             let result = self.call_duration_callback(
                 &weather_id,

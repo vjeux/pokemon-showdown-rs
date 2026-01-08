@@ -83,7 +83,7 @@ impl Battle {
         }
 
         // Check if callback exists
-        if !self.has_callback(effect_id, event_id) {
+        if !self.has_side_condition_callback(effect_id, event_id) {
             return EventResult::Continue;
         }
 
