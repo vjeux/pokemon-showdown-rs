@@ -670,17 +670,12 @@ pub fn dispatch_on_try_add_volatile(
 ) -> EventResult {
     match condition_id {
         "dynamax" => dynamax::on_try_add_volatile(battle, status, target_pos.unwrap_or((0,0)), source_pos, effect_id),
-        _ => {
-            // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_try_add_volatile(
-                battle,
-                None,
-                status,
-                target_pos,
-                source_pos,
-                effect_id
-            )
-        }
+        // Move-embedded conditions with onTryAddVolatile callbacks
+        "electricterrain" => move_callbacks::electricterrain::condition::on_try_add_volatile(battle, status, target_pos),
+        "focuspunch" => move_callbacks::focuspunch::condition::on_try_add_volatile(battle, status, target_pos.unwrap_or((0,0))),
+        "mistyterrain" => move_callbacks::mistyterrain::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
+        "safeguard" => move_callbacks::safeguard::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
+        _ => EventResult::Continue,
     }
 }
 /// Dispatch onTryMove callbacks

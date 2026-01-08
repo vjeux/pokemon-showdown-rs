@@ -18,7 +18,7 @@ Seed 8: ✓ PASS (100%) - 55/55 turns
 Seed 9: ✗ FAIL (10%) - 6/56 turns
 Seed 10: ✓ PASS (100%) - 32/32 turns
 Seed 11: ✓ PASS (100%) - 82/82 turns
-Seed 12: ✗ FAIL (6%) - 3/47 turns
+Seed 12: ✗ FAIL (14%) - 7/47 turns
 Seed 13: ✓ PASS (100%) - 33/33 turns
 Seed 14: ✗ FAIL (43%) - 13/30 turns
 Seed 15: ✓ PASS (100%) - 31/31 turns
