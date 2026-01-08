@@ -15,6 +15,7 @@ struct FieldEventHandler {
     priority: i32,
     sub_order: i32,
     effect_order: i32, // JavaScript: effectOrder (creation order for tie-breaking)
+    has_callback: bool, // JavaScript: handler.callback !== undefined
 }
 
 impl Battle {
@@ -31,6 +32,7 @@ impl Battle {
         callback_name: &str,
         event_id: &str,
         effect_order: i32, // JavaScript: effectOrder from handler state
+        has_callback: bool, // JavaScript: handler.callback !== undefined
     ) -> FieldEventHandler {
 
         use std::sync::atomic::{AtomicUsize, Ordering};
@@ -93,6 +95,7 @@ impl Battle {
             priority,
             sub_order,
             effect_order, // JavaScript: effectOrder for tie-breaking
+            has_callback,
         }
     }
 
@@ -179,6 +182,9 @@ impl Battle {
             let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
             // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
             let effect_order = 0;
+            // JavaScript: handler.callback is set from getCallback() result
+            // If getCallback returns undefined, callback is undefined even if handler exists
+            let handler_has_callback = self.has_callback(&effect_id, &field_event);
             let handler = self.create_field_handler(
                 effect_id,
                 effect_type,
@@ -189,6 +195,7 @@ impl Battle {
                 &callback_name,
                 event_id,
                 effect_order,
+                handler_has_callback,
             );
             handlers.push(handler);
         }
@@ -208,6 +215,9 @@ impl Battle {
                     let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
                     // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
                     let effect_order = 0;
+                    // JavaScript: handler.callback is set from getCallback() result
+                    // For onSideResidual handlers, check if the effect has this callback
+                    let handler_has_callback = self.has_callback(&effect_id, &side_event);
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
@@ -218,6 +228,7 @@ impl Battle {
                         &callback_name,
                         event_id,
                         effect_order,
+                        handler_has_callback,
                     );
                     handlers.push(handler);
                 }
@@ -246,6 +257,8 @@ impl Battle {
                         let effect_type = handler.effect_type;
                         // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
                         let effect_order = 0;
+                        // For any event handlers, check if the effect has this callback
+                        let handler_has_callback = self.has_callback(&effect_id, &any_event);
                         let handler = self.create_field_handler(
                             effect_id,
                             effect_type,
@@ -256,6 +269,7 @@ impl Battle {
                             &any_event,
                             event_id,
                             effect_order,
+                            handler_has_callback,
                         );
                         handlers.push(handler);
                     }
@@ -281,6 +295,8 @@ impl Battle {
                     // Rust was incorrectly propagating volatile effect_order, breaking ties that should exist.
                     // Always use 0 to match JavaScript's undefined behavior.
                     let effect_order = 0;
+                    // For Pokemon handlers, check if the effect has this callback
+                    let handler_has_callback = self.has_callback(&effect_id, &callback_name);
                     let handler = self.create_field_handler(
                         effect_id,
                         effect_type,
@@ -291,13 +307,37 @@ impl Battle {
                         &callback_name,
                         event_id,
                         effect_order,
+                        handler_has_callback,
                     );
                     handlers.push(handler);
                 }
 
-                // Note: findSideEventHandlers and findFieldEventHandlers with customHolder
-                // are not fully implemented in Rust find_*_event_handlers methods
-                // This is an architectural simplification
+                // JS: handlers = handlers.concat(this.findSideEventHandlers(side, callbackName, undefined, active));
+                // This finds side condition handlers (like gmaxcannonade's onResidual) that target each Pokemon
+                let side_handlers_for_pokemon = self.find_side_event_handlers(&callback_name, side_idx, None, Some(target_pos));
+                for handler in side_handlers_for_pokemon {
+                    let effect_id = handler.effect_id;
+                    let effect_type = handler.effect_type;
+                    let effect_order = 0;
+                    // For side condition handlers targeting Pokemon, check if the effect has this callback
+                    let handler_has_callback = self.has_callback(&effect_id, &callback_name);
+                    let handler = self.create_field_handler(
+                        effect_id,
+                        effect_type,
+                        Some(target_pos), // Handler's holder is the target Pokemon
+                        false,
+                        false,
+                        Some(side_idx), // Side condition handlers are side-specific
+                        &callback_name,
+                        event_id,
+                        effect_order,
+                        handler_has_callback,
+                    );
+                    handlers.push(handler);
+                }
+
+                // Note: findFieldEventHandlers and findBattleEventHandlers with customHolder
+                // are not fully implemented yet
             }
         }
 
@@ -546,93 +586,96 @@ impl Battle {
             // JS: if (handler.callback) {
             //         this.singleEvent(handlerEventid, effect, handler.state, handler.effectHolder, null, null, undefined, handler.callback);
             //     }
-            // Special handling for side condition Residual events
-            // These callbacks take a Pokemon as target and should be called for each active Pokemon on the side
-            if handler.is_side && event_id == "Residual" {
-                // Only process the specific side this handler is for (not all sides with the condition)
-                if let Some(side_idx) = handler.side_idx {
-                    if self.sides[side_idx].side_conditions.contains_key(&handler.effect_id) {
-                        // Get active Pokemon positions on this side
-                        let active_positions: Vec<usize> = self.sides[side_idx].active
-                            .iter()
-                            .flatten()
-                            .copied()
-                            .collect();
+            // Only call the callback if one exists - JavaScript handlers can be added for duration without a callback
+            if handler.has_callback {
+                // Special handling for side condition Residual events
+                // These callbacks take a Pokemon as target and should be called for each active Pokemon on the side
+                if handler.is_side && event_id == "Residual" {
+                    // Only process the specific side this handler is for (not all sides with the condition)
+                    if let Some(side_idx) = handler.side_idx {
+                        if self.sides[side_idx].side_conditions.contains_key(&handler.effect_id) {
+                            // Get active Pokemon positions on this side
+                            let active_positions: Vec<usize> = self.sides[side_idx].active
+                                .iter()
+                                .flatten()
+                                .copied()
+                                .collect();
 
-                        // Call the callback for each active Pokemon on this side
-                        for poke_idx in active_positions {
-                            let target_pos = (side_idx, poke_idx);
-                            eprintln!("[FIELD_EVENT] Calling side condition {} Residual for Pokemon {:?}",
-                                handler.effect_id.as_str(), target_pos);
-                            self.single_event(&handler_event_id, &crate::battle::Effect::side_condition(handler.effect_id.clone()), None, Some(target_pos), None, None, None);
+                            // Call the callback for each active Pokemon on this side
+                            for poke_idx in active_positions {
+                                let target_pos = (side_idx, poke_idx);
+                                eprintln!("[FIELD_EVENT] Calling side condition {} Residual for Pokemon {:?}",
+                                    handler.effect_id.as_str(), target_pos);
+                                self.single_event(&handler_event_id, &crate::battle::Effect::side_condition(handler.effect_id.clone()), None, Some(target_pos), None, None, None);
 
-                            // JS: this.faintMessages();
-                            self.faint_messages(false, false, true);
+                                // JS: this.faintMessages();
+                                self.faint_messages(false, false, true);
 
-                            // JS: if (this.ended) return;
-                            if self.ended {
-                                return;
+                                // JS: if (this.ended) return;
+                                if self.ended {
+                                    return;
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                // Normal handling for non-side-Residual events
-                eprintln!("[FIELD_EVENT] Calling single_event for event='{}', effect='{}', turn={}",
-                    handler_event_id, handler.effect_id.as_str(), self.turn);
-
-                // For slot conditions, we need to pass the actual state so callbacks can access it
-                // Clone the state to avoid borrow checker issues with self.single_event
-                let state_owned = if handler._effect_type == crate::battle::EffectType::SlotCondition {
-                    if let Some((side_idx, slot)) = handler.holder {
-                        self.sides.get(side_idx)
-                            .and_then(|side| side.slot_conditions.get(slot))
-                            .and_then(|slot_conds| slot_conds.get(&handler.effect_id))
-                            .cloned()
-                    } else {
-                        None
-                    }
-                } else if handler._effect_type == crate::battle::EffectType::SideCondition {
-                    if let Some(side_idx) = handler.side_idx {
-                        self.sides.get(side_idx)
-                            .and_then(|side| side.side_conditions.get(&handler.effect_id))
-                            .cloned()
-                    } else {
-                        None
-                    }
                 } else {
-                    None
-                };
+                    // Normal handling for non-side-Residual events
+                    eprintln!("[FIELD_EVENT] Calling single_event for event='{}', effect='{}', turn={}",
+                        handler_event_id, handler.effect_id.as_str(), self.turn);
 
-                self.single_event(&handler_event_id, &crate::battle::Effect::new(handler.effect_id.clone(), handler._effect_type), state_owned.as_ref(), handler.holder, None, None, None);
-
-                // AFTER calling the callback, decrement terrain duration and clear if expired
-                if event_id == "Residual" && handler.is_field && self.field.terrain == handler.effect_id {
-                    eprintln!("[FIELD_EVENT] AFTER callback, decrementing terrain duration");
-                    let should_clear_terrain = {
-                        if let Some(duration) = self.field.terrain_state.duration.as_mut() {
-                            eprintln!("[TERRAIN DURATION] BEFORE decrement: {}", *duration);
-                            *duration -= 1;
-                            eprintln!("[TERRAIN DURATION] AFTER decrement: {}", *duration);
-                            *duration == 0
+                    // For slot conditions, we need to pass the actual state so callbacks can access it
+                    // Clone the state to avoid borrow checker issues with self.single_event
+                    let state_owned = if handler._effect_type == crate::battle::EffectType::SlotCondition {
+                        if let Some((side_idx, slot)) = handler.holder {
+                            self.sides.get(side_idx)
+                                .and_then(|side| side.slot_conditions.get(slot))
+                                .and_then(|slot_conds| slot_conds.get(&handler.effect_id))
+                                .cloned()
                         } else {
-                            false
+                            None
                         }
+                    } else if handler._effect_type == crate::battle::EffectType::SideCondition {
+                        if let Some(side_idx) = handler.side_idx {
+                            self.sides.get(side_idx)
+                                .and_then(|side| side.side_conditions.get(&handler.effect_id))
+                                .cloned()
+                        } else {
+                            None
+                        }
+                    } else {
+                        None
                     };
 
-                    if should_clear_terrain {
-                        eprintln!("[TERRAIN DURATION] Clearing expired terrain");
-                        self.field.terrain = ID::new("");
-                        self.field.terrain_state = crate::event_system::EffectState::new(ID::new(""));
+                    self.single_event(&handler_event_id, &crate::battle::Effect::new(handler.effect_id.clone(), handler._effect_type), state_owned.as_ref(), handler.holder, None, None, None);
+
+                    // AFTER calling the callback, decrement terrain duration and clear if expired
+                    if event_id == "Residual" && handler.is_field && self.field.terrain == handler.effect_id {
+                        eprintln!("[FIELD_EVENT] AFTER callback, decrementing terrain duration");
+                        let should_clear_terrain = {
+                            if let Some(duration) = self.field.terrain_state.duration.as_mut() {
+                                eprintln!("[TERRAIN DURATION] BEFORE decrement: {}", *duration);
+                                *duration -= 1;
+                                eprintln!("[TERRAIN DURATION] AFTER decrement: {}", *duration);
+                                *duration == 0
+                            } else {
+                                false
+                            }
+                        };
+
+                        if should_clear_terrain {
+                            eprintln!("[TERRAIN DURATION] Clearing expired terrain");
+                            self.field.terrain = ID::new("");
+                            self.field.terrain_state = crate::event_system::EffectState::new(ID::new(""));
+                        }
                     }
-                }
 
-                // JS: this.faintMessages();
-                self.faint_messages(false, false, true);
+                    // JS: this.faintMessages();
+                    self.faint_messages(false, false, true);
 
-                // JS: if (this.ended) return;
-                if self.ended {
-                    return;
+                    // JS: if (this.ended) return;
+                    if self.ended {
+                        return;
+                    }
                 }
             }
         }

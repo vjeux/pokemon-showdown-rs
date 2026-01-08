@@ -403,6 +403,7 @@ pub mod topsyturvy;
 pub mod torment;
 pub mod toxicspikes;
 pub mod transform;
+pub mod triattack;
 pub mod trick;
 pub mod trickortreat;
 pub mod trickroom;
@@ -1018,6 +1019,7 @@ pub fn dispatch_on_hit(
         "tidyup" => tidyup::on_hit(battle, target_pos, source_pos),
         "topsyturvy" => topsyturvy::on_hit(battle, target_pos, source_pos),
         "transform" => transform::on_hit(battle, target_pos, source_pos),
+        "triattack" => triattack::on_hit(battle, target_pos, source_pos),
         "trick" => trick::on_hit(battle, target_pos, source_pos),
         "trickortreat" => trickortreat::on_hit(battle, target_pos, source_pos),
         "venomdrench" => venomdrench::on_hit(battle, target_pos, source_pos),

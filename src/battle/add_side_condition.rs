@@ -50,6 +50,7 @@ impl Battle {
                     side_idx,
                     source_pos,
                     source_effect,
+                    None, // SideRestart doesn't target a specific Pokemon
                 );
 
                 // Convert EventResult to bool
@@ -116,6 +117,7 @@ impl Battle {
                 side_idx,
                 source_pos,
                 source_effect,
+                None, // SideStart doesn't target a specific Pokemon
             );
 
             // Check if event returned false (failure)

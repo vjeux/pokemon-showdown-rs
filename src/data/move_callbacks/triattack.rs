@@ -42,14 +42,12 @@ pub fn on_hit(
 
     let result = battle.random(3);
 
-    if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-        if result == 0 {
-            target_pokemon.try_set_status(ID::from("brn"), None);
-        } else if result == 1 {
-            target_pokemon.try_set_status(ID::from("par"), None);
-        } else {
-            target_pokemon.try_set_status(ID::from("frz"), None);
-        }
+    if result == 0 {
+        Pokemon::try_set_status(battle, target_pos, ID::from("brn"), None);
+    } else if result == 1 {
+        Pokemon::try_set_status(battle, target_pos, ID::from("par"), None);
+    } else {
+        Pokemon::try_set_status(battle, target_pos, ID::from("frz"), None);
     }
 
     EventResult::Continue

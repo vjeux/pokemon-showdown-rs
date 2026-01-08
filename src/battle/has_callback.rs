@@ -290,15 +290,12 @@ impl Battle {
                 has_key_with_on
             } else {
                 eprintln!("[CONDITION_HAS_CALLBACK] No match found in condition data, checking if move-embedded");
-                // Special case: Some side conditions use "onResidual" instead of "onSideResidual"
-                // Example: gmaxvolcalith has condition.onResidual that should match onSideResidual requests
-                // JavaScript allows this because the callback signature matches (both take target)
-                if event_id == "onSideResidual" {
-                    if condition_data.extra.contains_key("onResidual") {
-                        eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual for onSideResidual request");
-                        return true;
-                    }
-                }
+                // NOTE: onSideResidual and onResidual are DIFFERENT callbacks:
+                // - onSideResidual: called once per side, no Pokemon target
+                // - onResidual: called once per Pokemon on the side
+                // Do NOT treat onResidual as a fallback for onSideResidual.
+                // The Pokemon-targeted onResidual handlers are found via
+                // find_side_event_handlers with custom_holder in field_event.
 
                 // Special case: Some field conditions use "onResidual" instead of "onFieldResidual"
                 // Example: grassyterrain has condition.onResidual that should match onFieldResidual requests
@@ -322,13 +319,8 @@ impl Battle {
                             return true;
                         }
 
-                        // Also check for onResidual fallback in embedded condition
-                        if event_id == "onSideResidual" {
-                            if condition_data.extra.contains_key("onResidual") {
-                                eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual in embedded condition for onSideResidual request");
-                                return true;
-                            }
-                        }
+                        // NOTE: Do NOT fallback from onSideResidual to onResidual for embedded conditions.
+                        // They are different callbacks (per-side vs per-Pokemon).
                     }
                 }
                 eprintln!("[CONDITION_HAS_CALLBACK] Returning false - not found");

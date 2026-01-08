@@ -84,6 +84,7 @@ impl Side {
                     side_idx,
                     source_pos,
                     source_effect.as_ref(),
+                    None, // SideRestart doesn't target a specific Pokemon
                 );
                 // Convert EventResult to bool
                 return match result {
@@ -135,6 +136,7 @@ impl Side {
             side_idx,
             source_pos,
             source_effect.as_ref(),
+            None, // SideStart doesn't target a specific Pokemon
         );
 
         // Check if SideStart event failed

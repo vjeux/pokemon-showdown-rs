@@ -34,6 +34,7 @@ impl Battle {
         side_idx: usize,
         source: Option<(usize, usize)>,
         source_effect: Option<&Effect>,
+        target_pos: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
@@ -111,7 +112,7 @@ impl Battle {
         self.event_depth += 1;
 
         // Dispatch to the side condition callback
-        let result = self.dispatch_single_event_side(event_id, effect_id, side_idx, source);
+        let result = self.dispatch_single_event_side(event_id, effect_id, side_idx, source, target_pos);
 
         // Restore parent state
         self.event_depth -= 1;
@@ -129,6 +130,7 @@ impl Battle {
         condition_id: &ID,
         _side_idx: usize,
         source: Option<(usize, usize)>,
+        target_pos: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
 
@@ -161,6 +163,7 @@ impl Battle {
                 match event_id {
                     "SideStart" => crate::data::move_callbacks::gmaxcannonade::condition::on_side_start(self),
                     "SideEnd" => crate::data::move_callbacks::gmaxcannonade::condition::on_side_end(self),
+                    "Residual" => crate::data::move_callbacks::gmaxcannonade::condition::on_residual(self, target_pos),
                     _ => EventResult::Continue,
                 }
             }
@@ -174,6 +177,7 @@ impl Battle {
                 match event_id {
                     "SideStart" => crate::data::move_callbacks::gmaxvinelash::condition::on_side_start(self),
                     "SideEnd" => crate::data::move_callbacks::gmaxvinelash::condition::on_side_end(self),
+                    "Residual" => crate::data::move_callbacks::gmaxvinelash::condition::on_residual(self, target_pos),
                     _ => EventResult::Continue,
                 }
             }
@@ -181,6 +185,7 @@ impl Battle {
                 match event_id {
                     "SideStart" => crate::data::move_callbacks::gmaxvolcalith::condition::on_side_start(self),
                     "SideEnd" => crate::data::move_callbacks::gmaxvolcalith::condition::on_side_end(self),
+                    "Residual" => crate::data::move_callbacks::gmaxvolcalith::condition::on_residual(self, target_pos),
                     _ => EventResult::Continue,
                 }
             }
@@ -188,6 +193,7 @@ impl Battle {
                 match event_id {
                     "SideStart" => crate::data::move_callbacks::gmaxwildfire::condition::on_side_start(self),
                     "SideEnd" => crate::data::move_callbacks::gmaxwildfire::condition::on_side_end(self),
+                    "Residual" => crate::data::move_callbacks::gmaxwildfire::condition::on_residual(self, target_pos),
                     _ => EventResult::Continue,
                 }
             }
