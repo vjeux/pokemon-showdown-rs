@@ -509,6 +509,41 @@ pub fn dispatch_on_modify_spe(
         }
     }
 }
+
+/// Dispatch onModifySpA callbacks for conditions
+pub fn dispatch_on_modify_sp_a(
+    battle: &mut Battle,
+    condition_id: &str,
+    spa: i32,
+    pokemon_pos: (usize, usize),
+    target_pos: (usize, usize),
+    active_move: Option<&ActiveMove>,
+) -> EventResult {
+    use crate::data::ability_callbacks::flashfire;
+
+    match condition_id {
+        "flashfire" => flashfire::condition::on_modify_sp_a(battle, spa, pokemon_pos, target_pos, active_move),
+        _ => EventResult::Continue
+    }
+}
+
+/// Dispatch onModifyAtk callbacks for conditions
+pub fn dispatch_on_modify_atk(
+    battle: &mut Battle,
+    condition_id: &str,
+    atk: i32,
+    pokemon_pos: (usize, usize),
+    target_pos: (usize, usize),
+    active_move: Option<&ActiveMove>,
+) -> EventResult {
+    use crate::data::ability_callbacks::flashfire;
+
+    match condition_id {
+        "flashfire" => flashfire::condition::on_modify_atk(battle, atk, pokemon_pos, target_pos, active_move),
+        _ => EventResult::Continue
+    }
+}
+
 /// Dispatch onMoveAborted callbacks
 pub fn dispatch_on_move_aborted(
     battle: &mut Battle,

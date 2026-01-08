@@ -372,6 +372,11 @@ impl Battle {
         // JavaScript: Sort handlers based on event type (lines 145-151)
         if matches!(event_id, "Invulnerability" | "TryHit" | "DamagingHit" | "EntryHazard") {
             // Left-to-right order
+            eprintln!("[RUN_EVENT] Sorting {} handlers for event '{}' using left-to-right order", handlers.len(), event_id);
+            for (i, handler) in handlers.iter().enumerate() {
+                eprintln!("[RUN_EVENT]   Handler {}: effect={}, effect_type={:?}, priority={:?}, order={:?}",
+                    i, handler.effect_id, handler.effect_type, handler.priority, handler.order);
+            }
             handlers.sort_by(|a, b| {
                 let a_item = Self::event_listener_to_priority_item(a);
                 let b_item = Self::event_listener_to_priority_item(b);

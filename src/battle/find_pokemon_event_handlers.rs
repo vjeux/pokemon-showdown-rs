@@ -151,8 +151,15 @@ impl Battle {
         // JS: const ability = pokemon.getAbility();
         // JS: callback = this.getCallback(pokemon, ability, callbackName);
         // JS: if (callback !== undefined || (getKey && pokemon.abilityState[getKey])) {
+        //
+        // IMPORTANT: For abilities, we should only check the ability's DIRECT callbacks
+        // (like onTryHit, onEnd), NOT the ability's embedded condition callbacks.
+        // The embedded condition callbacks (like onModifySpA) are for the VOLATILE
+        // that gets added when the ability triggers, not for the ability itself.
         if !pokemon.ability.is_empty() {
-            let has_callback = self.has_callback(&pokemon.ability, callback_name);
+            // Use ability_has_callback directly instead of has_callback
+            // This ensures we only check the ability's direct callbacks
+            let has_callback = self.ability_has_callback(&pokemon.ability.as_str(), callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks abilityState[getKey], which means checking if duration exists
                 key == "duration" && pokemon.ability_state.duration.is_some()

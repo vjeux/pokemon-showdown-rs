@@ -224,6 +224,26 @@ impl Battle {
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_modify_sp_d(self, condition_id, spd, pokemon_pos, target_pos, source_pos, active_move_clone.as_ref())
             }
+            "ModifySpA" => {
+                // Extract spa from relay_var, target, source
+                let spa = self.event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                condition_callbacks::dispatch_on_modify_sp_a(self, condition_id, spa, pokemon_pos, target_pos.unwrap_or(pokemon_pos), active_move_clone.as_ref())
+            }
+            "ModifyAtk" => {
+                // Extract atk from relay_var, target, source
+                let atk = self.event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                condition_callbacks::dispatch_on_modify_atk(self, condition_id, atk, pokemon_pos, target_pos.unwrap_or(pokemon_pos), active_move_clone.as_ref())
+            }
             "ModifySpe" => {
                 let spe = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n),

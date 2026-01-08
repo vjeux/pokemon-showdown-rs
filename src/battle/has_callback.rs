@@ -65,7 +65,35 @@ impl Battle {
             false
         };
 
-        // Check abilities
+        // Check ability-embedded conditions
+        // Some abilities define a `condition` block with their own callbacks
+        // When a volatile is added with the ability's ID (e.g., "flashfire"),
+        // its callbacks are in ability.condition, not in conditions.json
+        if let Some(ability_data) = self.dex.abilities().get(effect_str) {
+            if let Some(condition_value) = ability_data.extra.get("condition") {
+                if let Some(condition) = condition_value.as_object() {
+                    // Check if the condition has this callback
+                    let has_key = condition.contains_key(event_id);
+                    let priority_key = format!("{}Priority", event_id);
+                    let has_priority_key = condition.contains_key(&priority_key);
+
+                    if has_key || has_priority_key {
+                        return true;
+                    }
+
+                    // Try with "on" prefix
+                    if !event_id.starts_with("on") {
+                        let with_on = format!("on{}", event_id);
+                        let priority_with_on = format!("on{}Priority", event_id);
+                        if condition.contains_key(&with_on) || condition.contains_key(&priority_with_on) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Check abilities (for ability-specific callbacks like onTryHit, onEnd)
         if self.dex.abilities().get(effect_str).is_some() {
             return self.ability_has_callback(effect_str, event_id);
         }
@@ -277,17 +305,22 @@ impl Battle {
             // So we need to check if the KEY exists, not just if the value is true
             //
             // Check the exact event_id first, then try with "on" prefix for backward compatibility
+            // ALSO check for Priority variant: if "onModifySpAPriority" exists, then "onModifySpA" callback exists
             let has_key = condition_data.extra.contains_key(event_id);
+            let priority_key = format!("{}Priority", event_id);
+            let has_priority_key = condition_data.extra.contains_key(&priority_key);
 
-            if has_key {
-                eprintln!("[CONDITION_HAS_CALLBACK] Found exact match: {}", event_id);
+            if has_key || has_priority_key {
+                eprintln!("[CONDITION_HAS_CALLBACK] Found match: {} (has_key={}, has_priority_key={})", event_id, has_key, has_priority_key);
                 true
             } else if !event_id.starts_with("on") {
                 // Try with "on" prefix for backward compatibility
                 let with_on = format!("on{}", event_id);
+                let priority_with_on = format!("on{}Priority", event_id);
                 let has_key_with_on = condition_data.extra.contains_key(&with_on);
-                eprintln!("[CONDITION_HAS_CALLBACK] Tried with 'on' prefix: {}={}", with_on, has_key_with_on);
-                has_key_with_on
+                let has_priority_with_on = condition_data.extra.contains_key(&priority_with_on);
+                eprintln!("[CONDITION_HAS_CALLBACK] Tried with 'on' prefix: {}={}, {}Priority={}", with_on, has_key_with_on, with_on, has_priority_with_on);
+                has_key_with_on || has_priority_with_on
             } else {
                 eprintln!("[CONDITION_HAS_CALLBACK] No match found in condition data, checking if move-embedded");
                 // NOTE: onSideResidual and onResidual are DIFFERENT callbacks:
