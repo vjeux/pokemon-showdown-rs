@@ -400,13 +400,14 @@ impl Battle {
                 )
             }
             "Hit" => {
-                // onHit callback for conditions (volatiles like focuspunch)
+                // onHit callback for conditions (volatiles like rage)
                 // pokemon_pos is the Pokemon with the volatile (target being hit)
                 // source_pos is the Pokemon doing the hitting (attacker)
+                // condition_id is the volatile that triggered this (e.g., "rage")
                 let source_pos = self.event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
                 crate::data::move_callbacks::dispatch_condition_on_hit(
                     self,
-                    active_move_clone.as_ref(),
+                    condition_id,
                     source_pos,
                     pokemon_pos,
                 )

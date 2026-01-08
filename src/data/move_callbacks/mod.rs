@@ -2008,23 +2008,31 @@ pub fn dispatch_condition_on_foe_trap_pokemon(
 }
 
 /// Dispatch condition onHit callbacks
+/// Called when a Pokemon with a volatile condition is hit by an attack.
+/// The condition_id is the volatile (e.g., "rage"), not the attacking move.
+///
+/// Arguments follow JavaScript onHit(target, source, move) convention:
+/// - target_pos: Pokemon with the volatile (being hit)
+/// - source_pos: Pokemon doing the hitting (attacker)
 pub fn dispatch_condition_on_hit(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
-    source_pos: (usize, usize),
-    target_pos: (usize, usize),
+    condition_id: &str,
+    source_pos: (usize, usize),   // attacker
+    target_pos: (usize, usize),   // Pokemon with volatile (target being hit)
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "banefulbunker" => banefulbunker::condition::on_hit(battle, source_pos, Some(target_pos)),
-        "beakblast" => beakblast::condition::on_hit(battle, source_pos, Some(target_pos)),
-        "burningbulwark" => burningbulwark::condition::on_hit(battle, source_pos, Some(target_pos)),
-        "focuspunch" => focuspunch::condition::on_hit(battle, source_pos, Some(target_pos)),
-        "kingsshield" => kingsshield::condition::on_hit(battle, source_pos, Some(target_pos)),
-        "obstruct" => obstruct::condition::on_hit(battle, source_pos, Some(target_pos)),
-        "rage" => rage::condition::on_hit(battle, source_pos, Some(target_pos)),
-        "shelltrap" => shelltrap::condition::on_hit(battle, source_pos, Some(target_pos)),
-        "silktrap" => silktrap::condition::on_hit(battle, source_pos, Some(target_pos)),
-        "spikyshield" => spikyshield::condition::on_hit(battle, source_pos, Some(target_pos)),
+    // Pass target first (Pokemon with volatile), source second (attacker)
+    // to match JS onHit(target, source, move) signature
+    match condition_id {
+        "banefulbunker" => banefulbunker::condition::on_hit(battle, target_pos, Some(source_pos)),
+        "beakblast" => beakblast::condition::on_hit(battle, target_pos, Some(source_pos)),
+        "burningbulwark" => burningbulwark::condition::on_hit(battle, target_pos, Some(source_pos)),
+        "focuspunch" => focuspunch::condition::on_hit(battle, target_pos, Some(source_pos)),
+        "kingsshield" => kingsshield::condition::on_hit(battle, target_pos, Some(source_pos)),
+        "obstruct" => obstruct::condition::on_hit(battle, target_pos, Some(source_pos)),
+        "rage" => rage::condition::on_hit(battle, target_pos, Some(source_pos)),
+        "shelltrap" => shelltrap::condition::on_hit(battle, target_pos, Some(source_pos)),
+        "silktrap" => silktrap::condition::on_hit(battle, target_pos, Some(source_pos)),
+        "spikyshield" => spikyshield::condition::on_hit(battle, target_pos, Some(source_pos)),
         _ => EventResult::Continue,
     }
 }
