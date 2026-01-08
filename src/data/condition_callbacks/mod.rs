@@ -112,6 +112,7 @@ pub fn dispatch_on_base_power(
 ) -> EventResult {
     match condition_id {
         "gem" => gem::on_base_power(battle, base_power, pokemon_pos, target_pos, active_move),
+        "mefirst" => move_callbacks::mefirst::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "rolloutstorage" => rolloutstorage::on_base_power(battle, base_power, pokemon_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks

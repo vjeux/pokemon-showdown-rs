@@ -26,8 +26,19 @@ impl<'a> DexConditions<'a> {
         // Try alias lookup
         if let Some(canonical_name) = self.dex.aliases.get(&id) {
             let canonical_id = ID::new(canonical_name);
-            return self.dex.conditions.get(&canonical_id);
+            if let Some(condition) = self.dex.conditions.get(&canonical_id) {
+                return Some(condition);
+            }
         }
+
+        // Check if it's a move with an embedded condition
+        // JavaScript: this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).condition
+        if let Some(move_data) = self.dex.moves.get(&id) {
+            if let Some(ref condition) = move_data.condition {
+                return Some(condition);
+            }
+        }
+
         None
     }
 

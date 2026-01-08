@@ -35,10 +35,6 @@ impl Battle {
         has_callback: bool, // JavaScript: handler.callback !== undefined
     ) -> FieldEventHandler {
 
-        use std::sync::atomic::{AtomicUsize, Ordering};
-        static CALL_ID: AtomicUsize = AtomicUsize::new(0);
-        let call_id = CALL_ID.fetch_add(1, Ordering::SeqCst);
-
         // For field and side handlers, the callback name needs to be prefixed
         // JS: if ((handler.effectHolder as Side).sideConditions) handlerEventid = `Side${eventid}`;
         // JS: if ((handler.effectHolder as Field).pseudoWeather) handlerEventid = `Field${eventid}`;
@@ -50,14 +46,9 @@ impl Battle {
             callback_name.to_string()
         };
 
-        eprintln!("[CREATE#{} START] effect={}, type={:?}, callback={}, prefixed={}",
-            call_id, effect_id.as_str(), effect_type, callback_name, prefixed_callback);
-
         // Get order and priority from dex using the prefixed callback name
         let order = self.get_callback_order(effect_type, effect_id.as_str(), &prefixed_callback);
         let priority = self.get_callback_priority(effect_type, effect_id.as_str(), &prefixed_callback);
-
-        eprintln!("[CREATE#{} DONE] order={:?}, priority={}", call_id, order, priority);
 
         // Get sub_order: first try custom value, then fall back to default based on effect type
         let sub_order = self.get_callback_sub_order(effect_type, effect_id.as_str(), callback_name)

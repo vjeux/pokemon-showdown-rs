@@ -87,25 +87,14 @@ impl Battle {
             EffectType::Condition | EffectType::Weather | EffectType::FieldCondition |
             EffectType::SideCondition | EffectType::SlotCondition => {
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
-                    eprintln!("[GET_CALLBACK_ORDER] Found condition '{}', looking for property '{}'", effect_id, property_name);
                     if let Some(value) = condition_data.extra.get(&property_name) {
-                        eprintln!("[GET_CALLBACK_ORDER] Found value: {:?}", value);
-                        let as_i64 = value.as_i64();
-                        eprintln!("[GET_CALLBACK_ORDER] as_i64() = {:?}", as_i64);
-                        let result_value = value.as_i64().map(|v| v as i32);
-                        eprintln!("[GET_CALLBACK_ORDER] Mapped result = {:?}", result_value);
-                        return result_value;
-                    } else {
-                        eprintln!("[GET_CALLBACK_ORDER] Property not found in extra");
+                        return value.as_i64().map(|v| v as i32);
                     }
-                } else {
-                    eprintln!("[GET_CALLBACK_ORDER] Condition '{}' not found in dex", effect_id);
                 }
                 None
             }
             _ => None,
         };
-        eprintln!("[GET_CALLBACK_ORDER] Returning {:?} for effect_id={}, callback={}", result, effect_id, callback_name);
         result
     }
 
@@ -124,20 +113,11 @@ impl Battle {
         // Construct the property name: e.g., "onBeforeMovePriority"
         let property_name = format!("on{}Priority", event);
 
-        eprintln!("[GET_CALLBACK_PRIORITY] effect_type={:?}, effect_id={}, callback_name={}, property_name={}",
-            effect_type, effect_id, callback_name, property_name);
-
         match effect_type {
             EffectType::Ability => {
                 if let Some(ability_data) = self.dex.abilities().get(effect_id) {
-                    eprintln!("[GET_CALLBACK_PRIORITY] Found ability '{}' in dex", effect_id);
-                    eprintln!("[GET_CALLBACK_PRIORITY] ability_data.extra keys: {:?}", ability_data.extra.keys().collect::<Vec<_>>());
                     if let Some(value) = ability_data.extra.get(&property_name) {
-                        let priority = value.as_i64().map(|v| v as i32).unwrap_or(0);
-                        eprintln!("[GET_CALLBACK_PRIORITY] Found {}={} for ability '{}'", property_name, priority, effect_id);
-                        return priority;
-                    } else {
-                        eprintln!("[GET_CALLBACK_PRIORITY] Property '{}' not found in ability '{}' extra data", property_name, effect_id);
+                        return value.as_i64().map(|v| v as i32).unwrap_or(0);
                     }
                 }
                 0
