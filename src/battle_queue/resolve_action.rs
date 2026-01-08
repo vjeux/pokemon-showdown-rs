@@ -287,27 +287,37 @@ impl BattleQueue {
                 // }
 
                 if !mid_turn {
-                    let pokemon_pos = (switch_action.side_index, switch_action.pokemon_index);
+                    // Note: switch_action.pokemon_index is the active slot index (0 for active[0]),
+                    // not the pokemon array index. We need to convert it.
+                    let side_idx = switch_action.side_index;
+                    let active_slot = switch_action.pokemon_index;
 
-                    // Get switch flag
-                    let switch_flag = {
-                        let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1);
-                        pokemon.and_then(|p| p.switch_flag.clone())
-                    };
+                    // Get the actual pokemon array index from the active slot
+                    let actual_poke_idx = battle.sides.get(side_idx)
+                        .and_then(|side| side.active.get(active_slot))
+                        .and_then(|&opt_idx| opt_idx);
 
-                    // Set source effect if switchFlag is a non-empty move ID
-                    // Need to use actions.last_mut() to get mutable reference
-                    if let Some(flag_str) = switch_flag {
-                        if !flag_str.is_empty() {
-                            if let Some(Action::Switch(switch_action_mut)) = actions.last_mut() {
-                                switch_action_mut.source_effect = Some(Effect::move_(flag_str.as_str()));
+                    if let Some(poke_idx) = actual_poke_idx {
+                        // Get switch flag
+                        let switch_flag = {
+                            let pokemon = battle.pokemon_at(side_idx, poke_idx);
+                            pokemon.and_then(|p| p.switch_flag.clone())
+                        };
+
+                        // Set source effect if switchFlag is a non-empty move ID
+                        // Need to use actions.last_mut() to get mutable reference
+                        if let Some(flag_str) = switch_flag {
+                            if !flag_str.is_empty() {
+                                if let Some(Action::Switch(switch_action_mut)) = actions.last_mut() {
+                                    switch_action_mut.source_effect = Some(Effect::move_(flag_str.as_str()));
+                                }
                             }
                         }
-                    }
 
-                    // Clear switch flag
-                    if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                        pokemon.switch_flag = None;
+                        // Clear switch flag
+                        if let Some(pokemon) = battle.pokemon_at_mut(side_idx, poke_idx) {
+                            pokemon.switch_flag = None;
+                        }
                     }
                 }
             }
