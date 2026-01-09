@@ -563,11 +563,21 @@ impl Battle {
 
                     // Remove expired volatile
                     if should_remove {
+                        // Call End event before removing (this is what faints Pokemon for Perish Song, etc.)
+                        // JS: handler.end.call(this, target, pokemon.volatiles[handler.effectId]);
+                        eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' calling End event before removal",
+                            self.turn, handler.effect_id.as_str());
+                        self.single_event("End", &crate::battle::Effect::condition(handler.effect_id.clone()),
+                            None, Some((side_idx, poke_idx)), None, None, None);
+
+                        // Actually remove the volatile
                         if let Some(pokemon) = self.sides.get_mut(side_idx)
                             .and_then(|s| s.pokemon.get_mut(poke_idx)) {
                             pokemon.volatiles.remove(&handler.effect_id);
+                            eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' REMOVED from pokemon ({}, {})",
+                                self.turn, handler.effect_id.as_str(), side_idx, poke_idx);
                         }
-                        // Skip calling the event handler for expired effects
+                        // Skip calling the residual handler for expired effects
                         if self.ended {
                             return;
                         }
