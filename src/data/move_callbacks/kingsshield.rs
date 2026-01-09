@@ -144,7 +144,7 @@ pub mod condition {
                     active_move.category == "Status",
                     active_move.clone(),
                     active_move.is_z.is_some(),
-                    active_move.is_max,
+                    active_move.is_max.is_some(),
                 )
             } else {
                 eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] No active_move, returning Continue");

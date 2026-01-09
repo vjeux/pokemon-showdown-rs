@@ -48,7 +48,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     }
 
     // if (!move.isMax && !move.flags['futuremove'] && move.id !== 'struggle')
-    let should_activate = !active_move.is_max
+    let should_activate = active_move.is_max.is_none()
         && !active_move.flags.future_move
         && move_id != "struggle";
 

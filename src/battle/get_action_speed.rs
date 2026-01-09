@@ -88,7 +88,7 @@ impl Battle {
                 if let Some(ref max_move_name) = move_action.max_move {
                     // Max Move transformation: get the active Max Move
                     if let Some(max_move) = self.dex.get_active_move(max_move_name) {
-                        if max_move.is_max {
+                        if max_move.is_max.is_some() {
                             // Use Max Move for priority calculation
                             move_id = max_move.id;
                         }

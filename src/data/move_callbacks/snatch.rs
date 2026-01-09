@@ -89,7 +89,7 @@ pub mod condition {
             };
             (
                 active_move.is_z.is_some(),
-                active_move.is_max,
+                active_move.is_max.is_some(),
                 active_move.flags.snatch,
                 active_move.source_effect.as_ref().map(|e| e.as_str().to_string()),
             )

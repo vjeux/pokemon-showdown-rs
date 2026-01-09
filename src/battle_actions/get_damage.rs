@@ -375,7 +375,7 @@ pub fn get_damage(
     // }
     // CRITICAL: This check happens AFTER crit calculation, so crit PRNG calls are made even for Max moves without dynamax
     // The damage calculation continues with basePower=0, and modifyDamage applies minimum damage check (returns 1)
-    if active_move.is_max {
+    if active_move.is_max.is_some() {
         let has_dynamax_volatile = if let Some(side) = battle.sides.get(source_pos.0) {
             if let Some(pokemon) = side.pokemon.get(source_pos.1) {
                 pokemon.has_volatile(&ID::new("dynamax"))

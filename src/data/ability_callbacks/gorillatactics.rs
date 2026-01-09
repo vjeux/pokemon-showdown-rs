@@ -37,7 +37,7 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 
     // Get move info from passed parameter
     let (move_id, is_z, is_max) = match active_move {
-        Some(m) => (m.id.as_str(), m.is_z.is_some(), m.is_max),
+        Some(m) => (m.id.as_str(), m.is_z.is_some(), m.is_max.is_some()),
         None => return EventResult::Continue,
     };
 
@@ -100,7 +100,7 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // Get move info from passed parameter
     let (move_id, is_z, is_max) = match &active_move {
-        Some(m) => (m.id.as_str(), m.is_z.is_some(), m.is_max),
+        Some(m) => (m.id.as_str(), m.is_z.is_some(), m.is_max.is_some()),
         None => return EventResult::Continue,
     };
 

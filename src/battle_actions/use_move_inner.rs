@@ -290,7 +290,7 @@ pub fn use_move_inner(
     let should_convert_to_max = max_move.is_some() ||
         (active_move.category != "Status" &&
          source_effect.as_ref().map_or(false, |se| {
-             battle.active_move.as_ref().map_or(false, |am| am.is_max && am.id == se.id)
+             battle.active_move.as_ref().map_or(false, |am| am.is_max.is_some() && am.id == se.id)
          }));
 
     if should_convert_to_max {

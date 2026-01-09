@@ -35,7 +35,7 @@ pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battl
     ];
 
     // Check exclusions
-    if no_modify_type.contains(&active_move.id.as_str()) && !active_move.is_max {
+    if no_modify_type.contains(&active_move.id.as_str()) && !active_move.is_max.is_some() {
         return EventResult::Continue;
     }
 

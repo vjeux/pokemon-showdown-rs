@@ -56,7 +56,7 @@ impl Dex {
             no_pp_boosts: None,
             is_z: move_data.is_z.clone(),
             z_move: None,
-            is_max: move_data.is_max.is_some(),
+            is_max: move_data.is_max.clone(),
             max_move: None,
             ohko: move_data.ohko.as_ref().map(|o| match o {
                 crate::dex::Ohko::Generic => "true".to_string(),

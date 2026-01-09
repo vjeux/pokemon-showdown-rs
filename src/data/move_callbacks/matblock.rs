@@ -125,7 +125,7 @@ pub mod condition {
             let is_z_or_max = battle
                 .active_move
                 .as_ref()
-                .map(|m| m.is_z.is_some() || m.is_max)
+                .map(|m| m.is_z.is_some() || m.is_max.is_some())
                 .unwrap_or(false);
 
             if is_z_or_max {

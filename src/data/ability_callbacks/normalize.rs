@@ -49,7 +49,7 @@ pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battl
 
         // if (!(move.isZ && move.category !== 'Status') &&
         //     (!noModifyType.includes(move.id) || this.activeMove?.isMax) && !(move.name === 'Tera Blast' && pokemon.terastallized))
-        if !is_z_non_status && (!in_no_modify_list || active_move.is_max) && !is_tera_blast_terastallized {
+        if !is_z_non_status && (!in_no_modify_list || active_move.is_max.is_some()) && !is_tera_blast_terastallized {
             // move.type = 'Normal';
             active_move.move_type = "Normal".to_string();
             // move.typeChangerBoosted = this.effect;

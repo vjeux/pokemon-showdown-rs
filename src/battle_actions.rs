@@ -410,8 +410,8 @@ pub struct ActiveMove {
     pub z_move: Option<ZMoveData>,
     /// Is this a Max move?
     /// JavaScript: isMax?: boolean | string
-    /// TODO: Rust uses bool, cannot represent string variant (Gmax move name)
-    pub is_max: bool,
+    #[serde(rename = "isMax", default, deserialize_with = "crate::dex::deserialize_is_max")]
+    pub is_max: Option<crate::dex::IsMax>,
     /// Max move data
     /// JavaScript: maxMove?: { basePower: number }
     pub max_move: Option<MaxMoveData>,

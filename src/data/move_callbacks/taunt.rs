@@ -161,7 +161,7 @@ pub mod condition {
         // Get active move properties
         let (is_z, is_z_or_max_powered, category, move_id, move_name) = match &battle.active_move {
             Some(m) => {
-                let is_z_or_max = m.is_z.is_some() || m.is_max;
+                let is_z_or_max = m.is_z.is_some() || m.is_max.is_some();
                 let name = battle.dex.moves().get_by_id(&m.id)
                     .map(|md| md.name.clone())
                     .unwrap_or_else(|| m.id.to_string());
