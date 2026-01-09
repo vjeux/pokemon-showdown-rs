@@ -58,10 +58,7 @@ impl Dex {
             z_move: None,
             is_max: move_data.is_max.clone(),
             max_move: None,
-            ohko: move_data.ohko.as_ref().map(|o| match o {
-                crate::dex::Ohko::Generic => "true".to_string(),
-                crate::dex::Ohko::TypeBased(t) => t.clone(),
-            }),
+            ohko: move_data.ohko.clone(),
             thaws_target: None,
             heal: move_data.heal,
             drain: None,

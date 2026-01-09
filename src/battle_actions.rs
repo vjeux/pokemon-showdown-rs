@@ -417,7 +417,8 @@ pub struct ActiveMove {
     pub max_move: Option<MaxMoveData>,
     /// OHKO type
     /// JavaScript: ohko?: boolean | 'Ice'
-    pub ohko: Option<String>,
+    #[serde(default, deserialize_with = "crate::dex::deserialize_ohko")]
+    pub ohko: Option<crate::dex::Ohko>,
     /// Thaws the target
     /// JavaScript: thawsTarget?: boolean
     pub thaws_target: Option<bool>,
