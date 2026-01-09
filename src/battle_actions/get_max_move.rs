@@ -17,6 +17,7 @@ use crate::*;
 ///     const maxMove = this.dex.moves.get(this.MAX_MOVES[move.category === 'Status' ? move.category : move.type]);
 ///     if (maxMove.exists) return maxMove;
 /// }
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_max_move<'a>(
     battle: &'a Battle,
     side_index: usize,

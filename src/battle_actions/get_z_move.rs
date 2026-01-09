@@ -30,6 +30,7 @@ use crate::*;
 ///         }
 ///     }
 /// }
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_z_move(
     battle: &Battle,
     side_index: usize,

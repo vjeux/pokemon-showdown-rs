@@ -33,6 +33,7 @@ use crate::event::EventResult;
 ///     }
 ///     return hitResults;
 /// }
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn hit_step_try_immunity(
     battle: &mut Battle,
     targets: &[(usize, usize)],
@@ -83,6 +84,7 @@ pub fn hit_step_try_immunity(
     hit_results
 }
 
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 fn self_check_try_immunity(
     battle: &mut Battle,
     target_pos: (usize, usize),

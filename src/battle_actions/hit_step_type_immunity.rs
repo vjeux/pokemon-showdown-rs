@@ -20,6 +20,7 @@ use crate::battle_actions::ActiveMove;
 ///
 ///     return hitResults;
 /// }
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn hit_step_type_immunity(
     battle: &mut Battle,
     targets: &[(usize, usize)],

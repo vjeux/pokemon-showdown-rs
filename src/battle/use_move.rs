@@ -35,6 +35,7 @@ impl Battle {
     /// - max_move: Optional Max move variant
     ///
     /// Returns: true if move succeeded, false otherwise
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn use_move(
         &mut self,
         move_id: &ID,
@@ -79,6 +80,7 @@ impl Battle {
     /// - prankster_boosted: Whether move should be prankster boosted
     ///
     /// Returns: true if move succeeded, false otherwise
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn use_move_with_bounced(
         &mut self,
         move_id: &ID,

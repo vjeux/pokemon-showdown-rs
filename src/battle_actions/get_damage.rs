@@ -158,6 +158,7 @@ use crate::dex_data::StatID;
 ///
 /// The false case (with error message) is handled by returning 0 and
 /// letting the caller add the fail message.
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_damage(
     battle: &mut Battle,
     source_pos: (usize, usize),

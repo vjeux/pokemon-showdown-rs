@@ -35,6 +35,7 @@ impl Pokemon {
     //
     /// Refactored to associated function to access Battle for event calls
     /// Call as: Pokemon::run_effectiveness(battle, pokemon_pos, move_id)
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn run_effectiveness(
         battle: &mut Battle,
         pokemon_pos: (usize, usize),

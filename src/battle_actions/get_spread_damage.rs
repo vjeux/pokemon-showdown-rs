@@ -47,6 +47,7 @@ use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, S
 ///     }
 ///     return damage;
 ///   }
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_spread_damage<'a>(
     battle: &mut Battle,
     damages: SpreadMoveDamage,

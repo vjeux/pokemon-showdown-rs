@@ -20,6 +20,7 @@ impl Battle {
     // 		return !!move.flags['contact'];
     // 	}
     //
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn check_move_makes_contact(
         &mut self,
         move_id: &ID,

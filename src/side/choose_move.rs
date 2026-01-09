@@ -286,6 +286,7 @@ impl Side {
     // 		return true;
     // 	}
     //
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn choose_move(
         &mut self,
         battle: &mut Battle,

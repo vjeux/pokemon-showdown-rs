@@ -11,6 +11,7 @@ impl Pokemon {
     // 		this.moveThisTurn = move.id;
     // 	}
     //
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn move_used(&mut self, battle: &Battle, move_id: ID, target_loc: Option<i8>) {
         // JS: this.lastMove = move;
         // Note: JS stores the entire ActiveMove object, Rust stores just the ID

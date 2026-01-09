@@ -24,6 +24,7 @@ use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, S
 /// JavaScript signature:
 /// tryPrimaryHitEvent(damage: SpreadMoveDamage, targets: SpreadMoveTargets, pokemon: Pokemon,
 ///                    move: ActiveMove, moveData: ActiveMove, isSecondary?: boolean): SpreadMoveDamage
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn try_primary_hit_event(
     battle: &mut Battle,
     mut damage: SpreadMoveDamage,

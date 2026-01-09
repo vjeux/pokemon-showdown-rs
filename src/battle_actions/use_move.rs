@@ -35,6 +35,7 @@ use super::use_move_inner::use_move_inner;
 // 		return moveResult;
 // 	}
 //
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn use_move(
     battle: &mut crate::battle::Battle,
     move_id: &ID,

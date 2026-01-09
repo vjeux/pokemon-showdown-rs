@@ -32,6 +32,7 @@ use crate::battle_actions::ActiveMove;
 ///     zMove.isZOrMaxPowered = true;
 ///     return zMove;
 /// }
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_active_z_move(
     battle: &Battle,
     side_index: usize,

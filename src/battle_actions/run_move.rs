@@ -17,6 +17,7 @@ use crate::battle::Effect;
 ///     sourceEffect?: Effect | null, zMove?: string, externalMove?: boolean,
 ///     maxMove?: string, originalTarget?: Pokemon,
 /// })
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn run_move(
     battle: &mut Battle,
     move_id: &ID,

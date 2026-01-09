@@ -21,6 +21,7 @@ use crate::battle::Effect;
 ///     // ... (see full JS source in file header)
 ///     return damage;
 /// }
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn hit_step_move_hit_loop(
     battle: &mut Battle,
     targets: &mut SpreadMoveTargets,

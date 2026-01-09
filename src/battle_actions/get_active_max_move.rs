@@ -29,6 +29,7 @@ use crate::battle_actions::ActiveMove;
 ///     maxMove.isZOrMaxPowered = true;
 ///     return maxMove;
 /// }
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_active_max_move(
     battle: &Battle,
     side_index: usize,
