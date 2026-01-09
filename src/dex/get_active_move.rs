@@ -65,7 +65,7 @@ impl Dex {
             force_switch: move_data.force_switch,
             self_switch: move_data.self_switch.clone(),
             self_boost: move_data.self_boost,
-            self_destruct: move_data.selfdestruct.clone(),
+            self_destruct: move_data.self_destruct.clone(),
             breaks_protect: move_data.breaks_protect,
             recoil: move_data.recoil,
             mindblown_recoil: move_data.mind_blown_recoil,

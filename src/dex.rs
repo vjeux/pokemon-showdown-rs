@@ -563,9 +563,8 @@ pub struct MoveData {
     pub ohko: Option<Ohko>,
     /// Self-destruct type
     /// JavaScript: selfdestruct?: 'always' | 'ifHit' | boolean
-    /// TODO: Rust uses Option<String>, JavaScript uses union type
-    #[serde(default)]
-    pub selfdestruct: Option<String>,
+    #[serde(rename = "selfdestruct", default)]
+    pub self_destruct: Option<String>,
     /// Tracks target location
     /// JavaScript: tracksTarget?: boolean
     #[serde(rename = "tracksTarget", default)]
