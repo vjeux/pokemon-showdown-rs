@@ -2461,13 +2461,15 @@ pub fn dispatch_condition_on_source_invulnerability(
 }
 
 /// Dispatch condition onSourceModifyDamage callbacks
+/// These are callbacks on conditions/volatiles embedded in moves (like glaiverush)
 pub fn dispatch_condition_on_source_modify_damage(
     battle: &mut Battle,
+    condition_id: &str,
     active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "dig" => dig::condition::on_source_modify_damage(
             battle,
             0,

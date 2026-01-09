@@ -622,7 +622,7 @@ pub fn dispatch_on_source_modify_damage(
         "dynamax" => dynamax::on_source_modify_damage(battle, _damage, source_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_source_modify_damage(battle, active_move, source_pos, target_pos)
+            move_callbacks::dispatch_condition_on_source_modify_damage(battle, condition_id, active_move, source_pos, target_pos)
         }
     }
 }

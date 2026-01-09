@@ -14,10 +14,11 @@ use crate::event::EventResult;
 ///     pokemon.side.removeSideCondition('lightscreen');
 ///     pokemon.side.removeSideCondition('auroraveil');
 /// }
+/// NOTE: dispatch_on_try_hit passes (target_pos, source_pos) per JS convention
 pub fn on_try_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
     target_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     // will shatter screens through sub, before you hit
     // pokemon.side.removeSideCondition('reflect');
