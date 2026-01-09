@@ -153,6 +153,12 @@ impl Pokemon {
             // JS:     return this.battle.singleEvent('Restart', status, this.volatiles[status.id], this, source, sourceEffect);
             // JS: }
             if pokemon.volatiles.contains_key(&volatile_id) {
+                // JavaScript checks if onRestart callback EXISTS before calling singleEvent
+                // If no onRestart callback, return false immediately (no durationCallback called)
+                if !crate::data::condition_callbacks::has_on_restart_callback(volatile_id.as_str()) {
+                    return false;
+                }
+
                 // Call onRestart callback if the volatile already exists
                 // IMPORTANT: Call through single_event (not dispatch_on_restart directly)
                 // to ensure current_effect_state is set up correctly

@@ -632,6 +632,20 @@ pub fn dispatch_on_residual(
         }
     }
 }
+/// Check if a condition has an onRestart callback
+/// JavaScript: if (!status.onRestart) return false;
+/// This is needed because JavaScript checks for callback existence before calling singleEvent
+pub fn has_on_restart_callback(condition_id: &str) -> bool {
+    match condition_id {
+        "lockedmove" | "stall" => true,
+        // Move-embedded conditions with onRestart
+        "rollout" | "iceball" | "uproar" | "focusenergy" | "laserfocus" | "stockpile" |
+        "gmaxchistrike" | "minimize" | "charge" | "healblock" | "smackdown" |
+        "powertrick" | "powershift" | "helpinghand" | "furycutter" | "defensecurl" | "allyswitch" => true,
+        _ => false,
+    }
+}
+
 /// Dispatch onRestart callbacks
 pub fn dispatch_on_restart(
     battle: &mut Battle,

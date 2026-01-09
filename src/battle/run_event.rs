@@ -394,16 +394,16 @@ impl Battle {
             // Speed sort (default)
             eprintln!("[RUN_EVENT] Sorting {} handlers for event '{}' using speed_sort", handlers.len(), event_id);
             for (i, handler) in handlers.iter().enumerate() {
-                eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}",
-                    i, handler.effect_id, handler.priority, handler.order, handler.speed);
+                eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}, sub_order={:?}, effect_order={:?}",
+                    i, handler.effect_id, handler.priority, handler.order, handler.speed, handler.sub_order, handler.effect_order);
             }
             self.speed_sort(&mut handlers, |listener| {
                 Self::event_listener_to_priority_item(listener)
             });
             eprintln!("[RUN_EVENT] After sorting:");
             for (i, handler) in handlers.iter().enumerate() {
-                eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}",
-                    i, handler.effect_id, handler.priority, handler.order, handler.speed);
+                eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}, sub_order={:?}, effect_order={:?}",
+                    i, handler.effect_id, handler.priority, handler.order, handler.speed, handler.sub_order, handler.effect_order);
             }
         }
 

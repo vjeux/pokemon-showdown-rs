@@ -132,7 +132,10 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    effect_order: Some(volatile_state.effect_order),
+                    // JavaScript: handler.effectOrder is NOT set for volatiles in findPokemonEventHandlers
+                    // The state.effectOrder exists but is not copied to handler.effectOrder
+                    // So when comparePriority does (effectOrder || 0), it uses 0 for both
+                    effect_order: None,
                     speed: None,
                 });
             }
