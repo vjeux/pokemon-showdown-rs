@@ -68,7 +68,8 @@ pub fn on_try_move(
     let charge_result =
         battle.run_event("ChargeMove", Some(crate::event::EventTarget::Pokemon(attacker)), defender, Some(&Effect::move_(move_id.clone())), EventResult::Continue, false, false);
 
-    if matches!(charge_result, EventResult::Number(0)) {
+    // runEvent returns false/null when the charge should be skipped (e.g., Power Herb)
+    if matches!(charge_result, EventResult::Boolean(false) | EventResult::Null) {
         // return;
         return EventResult::Continue;
     }
