@@ -45,23 +45,30 @@ pub fn on_try_hit(
     };
 
     // Extract boosts before mutable borrow
-    let boost_vec: Vec<(String, i8)> = {
+    let boost_vec: Vec<(&str, i8)> = {
         let move_data = match battle.dex.moves().get_by_id(&move_id) {
             Some(m) => m,
             None => return EventResult::Continue,
         };
 
         if let Some(boosts) = &move_data.boosts {
-            // Convert HashMap<String, i32> to Vec<(String, i8)>
-            boosts.iter().map(|(k, v)| (k.clone(), *v as i8)).collect()
+            // Convert BoostsTable to Vec<(&str, i8)>
+            let mut v = Vec::new();
+            if boosts.atk != 0 { v.push(("atk", boosts.atk)); }
+            if boosts.def != 0 { v.push(("def", boosts.def)); }
+            if boosts.spa != 0 { v.push(("spa", boosts.spa)); }
+            if boosts.spd != 0 { v.push(("spd", boosts.spd)); }
+            if boosts.spe != 0 { v.push(("spe", boosts.spe)); }
+            if boosts.accuracy != 0 { v.push(("accuracy", boosts.accuracy)); }
+            if boosts.evasion != 0 { v.push(("evasion", boosts.evasion)); }
+            v
         } else {
             return EventResult::Boolean(true);
         }
     };
 
     // Apply boosts to the pokemon
-    let boost_vec_refs: Vec<(&str, i8)> = boost_vec.iter().map(|(k, v)| (k.as_str(), *v)).collect();
-    let boost_success = battle.boost(&boost_vec_refs, source_pos, None, None, false, false);
+    let boost_success = battle.boost(&boost_vec, source_pos, None, None, false, false);
 
     if !boost_success {
         // return null;

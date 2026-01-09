@@ -314,7 +314,7 @@ pub struct MoveSecondary {
     /// Stat boosts to apply
     /// JavaScript: boosts?: SparseBoostsTable
     #[serde(default)]
-    pub boosts: Option<HashMap<String, i32>>,
+    pub boosts: Option<crate::dex_data::BoostsTable>,
     /// Volatile status to inflict
     /// JavaScript: volatileStatus?: string
     #[serde(rename = "volatileStatus", default)]
@@ -508,7 +508,7 @@ pub struct MoveData {
     /// Stat boosts
     /// JavaScript: boosts?: SparseBoostsTable
     #[serde(default)]
-    pub boosts: Option<HashMap<String, i32>>,
+    pub boosts: Option<crate::dex_data::BoostsTable>,
     /// Status condition to inflict
     /// JavaScript: status?: string
     #[serde(default)]

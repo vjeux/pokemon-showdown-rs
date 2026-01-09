@@ -9,7 +9,7 @@ impl Dex {
     /// Used when copying move.self from MoveData to ActiveMove.self_effect
     pub fn convert_self_effect(secondary: &MoveSecondary) -> crate::battle_actions::SelfEffect {
         crate::battle_actions::SelfEffect {
-            boosts: secondary.boosts.as_ref().map(Self::convert_boosts_hash_to_table),
+            boosts: secondary.boosts,
             status: secondary.status.clone(),
             volatile_status: secondary.volatile_status_secondary.clone(),
             side_condition: secondary.side_condition.clone(),

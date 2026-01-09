@@ -168,10 +168,7 @@ impl Dex {
             base_move: None,
 
             // From HitEffect
-            boosts: move_data
-                .boosts
-                .as_ref()
-                .map(Self::convert_boosts_hash_to_table),
+            boosts: move_data.boosts,
             status: move_data.status.clone(),
             volatile_status: move_data.volatile_status.clone(),
             side_condition: move_data.side_condition.clone(),
