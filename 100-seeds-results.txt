@@ -78,7 +78,7 @@ Seed 68: ✓ PASS (100%) - 68/68 turns
 Seed 69: ✓ PASS (100%) - 66/66 turns
 Seed 70: ✓ PASS (100%) - 50/50 turns
 Seed 71: ✓ PASS (100%) - 27/27 turns
-Seed 72: ✗ FAIL (53%) - 30/56 turns
+Seed 72: ✓ PASS (100%) - 56/56 turns
 Seed 73: ✓ PASS (100%) - 37/37 turns
 Seed 74: ✓ PASS (100%) - 50/50 turns
 Seed 75: ✓ PASS (100%) - 62/62 turns
@@ -112,8 +112,8 @@ Seed 100: ✗ FAIL (30%) - 30/100 turns
 Summary
 =======================================
 Total seeds tested: 100
-Passed (100%): 78
-Failed (<100%): 22
+Passed (100%): 79
+Failed (<100%): 21
 
 Average pass rate: 92%
 

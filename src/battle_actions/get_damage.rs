@@ -365,6 +365,13 @@ pub fn get_damage(
         eprintln!("[GET_DAMAGE CRIT] Critical hit after CriticalHit event: {}", is_crit);
     }
 
+    // Store crit in move_hit_data for other effects (e.g., Aurora Veil, Reflect, Light Screen)
+    // JavaScript: moveHit.crit = ...
+    if let Some(hit_data) = battle.get_move_hit_data_mut(target_pos) {
+        hit_data.crit = is_crit;
+        eprintln!("[GET_DAMAGE] Stored crit={} in move_hit_data for target {:?}", is_crit, target_pos);
+    }
+
     // Trigger BasePower event to allow abilities/items/moves to modify base power
     // JavaScript: basePower = this.battle.runEvent('BasePower', source, target, move, basePower, true);
     //                                                                                          ^^^^

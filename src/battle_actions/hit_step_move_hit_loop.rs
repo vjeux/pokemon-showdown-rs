@@ -330,19 +330,52 @@ pub fn hit_step_move_hit_loop(
             }
 
             // accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy);
-            // accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
-            // Note: Full event system would modify accuracy_value here
-            // For now, we skip the event firing since it requires complex relay_var handling
+            // TODO: Implement ModifyAccuracy event if needed
 
-            // if (!move.alwaysHit) {
-            //     if (accuracy !== true && !this.battle.randomChance(accuracy, 100)) break;
-            // }
-            if !active_move.always_hit {
-                // Check random chance
-                if !battle.random_chance(accuracy_value as i32, 100) {
-                    // Accuracy check failed, break out of hit loop
-                    break;
+            // accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
+            // This is critical for abilities like No Guard that bypass accuracy checks
+            let accuracy_result = battle.run_event(
+                "Accuracy",
+                Some(crate::event::EventTarget::Pokemon(target)),
+                Some(attacker_pos),
+                Some(&crate::battle::Effect::move_(active_move.id.clone())),
+                crate::event::EventResult::Number(accuracy_value as i32),
+                false,
+                false
+            );
+
+            // Check result: if true, always hit; if number, use that accuracy
+            let accuracy_check_passed = match accuracy_result {
+                crate::event::EventResult::Boolean(true) => {
+                    // No Guard or similar ability - always hit, no random check needed
+                    true
                 }
+                crate::event::EventResult::Number(modified_acc) => {
+                    // if (!move.alwaysHit) {
+                    //     if (accuracy !== true && !this.battle.randomChance(accuracy, 100)) break;
+                    // }
+                    if active_move.always_hit {
+                        true
+                    } else if modified_acc == 0 {
+                        // 0 in our system represents "true" (always hit)
+                        true
+                    } else {
+                        battle.random_chance(modified_acc, 100)
+                    }
+                }
+                _ => {
+                    // Fallback: use original accuracy
+                    if active_move.always_hit {
+                        true
+                    } else {
+                        battle.random_chance(accuracy_value as i32, 100)
+                    }
+                }
+            };
+
+            if !accuracy_check_passed {
+                // Accuracy check failed, break out of hit loop
+                break;
             }
         }
 
