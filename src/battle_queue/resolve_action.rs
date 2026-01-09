@@ -200,12 +200,19 @@ impl BattleQueue {
                 // Get the move data for checking callbacks
                 let active_move = battle.dex.get_active_move(move_id.as_str());
 
+                // IMPORTANT: Only add sub-actions (beforeTurnMove, priorityChargeMove, mega, etc.)
+                // when the choice is specifically MoveActionType::Move. Otherwise we'd create
+                // infinite recursion when resolving beforeTurnMove/priorityChargeMove actions.
+                // JavaScript checks: if (action.choice === 'move')
+                let is_main_move_action = move_action.choice == MoveActionType::Move;
+
                 // JS: if (!action.maxMove && !action.zmove && action.move.beforeTurnCallback) {
                 //         actions.unshift(...this.resolveAction({
                 //             choice: 'beforeTurnMove', pokemon: action.pokemon, move: action.move, targetLoc: action.targetLoc,
                 //         }));
                 //     }
-                if move_action.max_move.is_none()
+                if is_main_move_action
+                    && move_action.max_move.is_none()
                     && move_action.zmove.is_none()
                     && crate::data::move_callbacks::has_before_turn_callback(active_move.as_ref())
                 {
@@ -240,7 +247,7 @@ impl BattleQueue {
                 //             pokemon: action.pokemon,
                 //         }));
                 //     }
-                if move_action.mega && !Pokemon::is_sky_dropped(battle, pokemon_pos) {
+                if is_main_move_action && move_action.mega && !Pokemon::is_sky_dropped(battle, pokemon_pos) {
                     let mega_action = Action::Pokemon(PokemonAction {
                         choice: PokemonActionType::MegaEvo,
                         order: 104,
@@ -263,7 +270,7 @@ impl BattleQueue {
                 //             pokemon: action.pokemon,
                 //         }));
                 //     }
-                if move_action.terastallize.is_some() {
+                if is_main_move_action && move_action.terastallize.is_some() {
                     // Check if the pokemon is already terastallized
                     let is_terastallized = battle
                         .pokemon_at(pokemon_pos.0, pokemon_pos.1)
@@ -294,7 +301,7 @@ impl BattleQueue {
                 //             pokemon: action.pokemon,
                 //         }));
                 //     }
-                if move_action.max_move.is_some() {
+                if is_main_move_action && move_action.max_move.is_some() {
                     // Check if the pokemon already has dynamax volatile
                     let has_dynamax = battle
                         .pokemon_at(pokemon_pos.0, pokemon_pos.1)
@@ -326,7 +333,8 @@ impl BattleQueue {
                 //             move: action.move,
                 //         }));
                 //     }
-                if move_action.max_move.is_none()
+                if is_main_move_action
+                    && move_action.max_move.is_none()
                     && move_action.zmove.is_none()
                     && crate::data::move_callbacks::has_priority_charge_callback(active_move.as_ref())
                 {
