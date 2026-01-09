@@ -476,13 +476,12 @@ impl Battle {
                 } else {
                     EventResult::Continue
                 };
-                // Put boost back into event
+                // Return the modified boost so run_event can use it
                 if let Some(b) = boost {
-                    if let Some(ref mut event) = self.event {
-                        event.relay_var = Some(EventResult::Boost(b));
-                    }
+                    EventResult::Boost(b)
+                } else {
+                    result
                 }
-                result
             }
 
             // TypeScript: onTryEatItem(item:string, pokemon:Pokemon)

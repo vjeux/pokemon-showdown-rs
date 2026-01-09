@@ -948,13 +948,15 @@ impl Battle {
                     ability_id.as_str(),
                     boost.as_mut(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
                 );
-                // Put it back
+                // Return the modified boost so run_event can use it
+                // In JavaScript, the boost object is modified in-place and returned by runEvent
+                // In Rust, we need to return the modified boost so it propagates back
                 if let Some(b) = boost {
-                    if let Some(ref mut event) = self.event {
-                        event.relay_var = Some(EventResult::Boost(b));
-                    }
+                    // Always return the boost (possibly modified by the handler)
+                    EventResult::Boost(b)
+                } else {
+                    result
                 }
-                result
             }
             "TryBoostPriority" => {
                 // Temporarily take boost out of event to get mutable access
@@ -974,13 +976,12 @@ impl Battle {
                     ability_id.as_str(),
                     boost.as_mut(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
                 );
-                // Put it back
+                // Return the modified boost so run_event can use it
                 if let Some(b) = boost {
-                    if let Some(ref mut event) = self.event {
-                        event.relay_var = Some(EventResult::Boost(b));
-                    }
+                    EventResult::Boost(b)
+                } else {
+                    result
                 }
-                result
             }
             "TryEatItem" => {
                 ability_callbacks::dispatch_on_try_eat_item(self, ability_id.as_str(), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }, pokemon_pos)

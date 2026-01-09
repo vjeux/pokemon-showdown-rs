@@ -186,10 +186,27 @@ impl Battle {
         // Clamp boosts to [-6, 6] range - done per-stat below
 
         // JS: boost = this.runEvent('TryBoost', target, source, effect, { ...boost });
-        // This event can prevent boosts from being applied (e.g., Clear Body ability)
-        // If the event handler needs to cancel boosts, it should set a flag or modify Pokemon state
-        // Note: JavaScript can return null to cancel all boosts - we call the event for side effects
-        self.run_event("TryBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_obj.as_ref(), EventResult::Continue, false, false);
+        // This event can prevent boosts from being applied (e.g., Clear Body, Keen Eye abilities)
+        // The boost table is passed to handlers which can modify it (e.g., set accuracy to 0)
+        let try_boost_result = self.run_event("TryBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_obj.as_ref(), EventResult::Boost(boost_table.clone()), false, false);
+
+        // Get the modified boost table from the event result
+        let modified_boost_table = match try_boost_result {
+            EventResult::Boost(b) => b,
+            EventResult::Null => return false, // JS: if boost is null, return false
+            _ => boost_table.clone(), // Fall back to original if no boost returned
+        };
+
+        // Convert modified boost table back to a vector of (stat, amount) pairs
+        // Only include non-zero boosts (abilities like Keen Eye set unwanted boosts to 0)
+        let mut modified_boosts: Vec<(&str, i8)> = Vec::new();
+        if modified_boost_table.atk != 0 { modified_boosts.push(("atk", modified_boost_table.atk)); }
+        if modified_boost_table.def != 0 { modified_boosts.push(("def", modified_boost_table.def)); }
+        if modified_boost_table.spa != 0 { modified_boosts.push(("spa", modified_boost_table.spa)); }
+        if modified_boost_table.spd != 0 { modified_boosts.push(("spd", modified_boost_table.spd)); }
+        if modified_boost_table.spe != 0 { modified_boosts.push(("spe", modified_boost_table.spe)); }
+        if modified_boost_table.accuracy != 0 { modified_boosts.push(("accuracy", modified_boost_table.accuracy)); }
+        if modified_boost_table.evasion != 0 { modified_boosts.push(("evasion", modified_boost_table.evasion)); }
 
         let mut success = false;
         let mut stats_raised = false;
@@ -208,7 +225,8 @@ impl Battle {
         };
 
         // JS: for (boostName in boost) { ... }
-        for (stat, amount) in boosts {
+        // Use the modified boosts after TryBoost event (abilities can remove boosts)
+        for (stat, amount) in modified_boosts.iter() {
             if let Some(side) = self.sides.get_mut(target_side) {
                 if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
                     let current = match *stat {
