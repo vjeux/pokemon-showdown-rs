@@ -500,24 +500,37 @@ impl Battle {
                         curr_ev.source, curr_ev.target, curr_ev.effect);
                 }
 
-                let target_pos = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0));
-                let source_pos = self.event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                // In runEvent("ModifyDamage", pokemon, target, move, baseDamage):
+                // - pokemon (attacker) becomes event.target
+                // - target (defender) becomes event.source
+                //
+                // But JS callback onAnyModifyDamage(damage, source, target, move) expects:
+                // - source = attacker
+                // - target = defender
+                //
+                // So we need to swap: event.target -> callback source, event.source -> callback target
+                let event_target = self.event.as_ref().and_then(|e| e.target).unwrap_or((0, 0)); // attacker
+                let event_source = self.event.as_ref().and_then(|e| e.source).unwrap_or((0, 0)); // defender
+
+                // For the callback: source_pos = attacker = event.target, target_pos = defender = event.source
+                let callback_source = event_target; // attacker
+                let callback_target = event_source; // defender
 
                 // Extract the active move ID for logging
                 let move_id_for_log = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
 
-                eprintln!("[HANDLE_CONDITION_EVENT] Calling dispatch_condition_on_any_modify_damage for condition={}, move={}, source={:?}, target={:?}",
-                    condition_id, move_id_for_log, source_pos, target_pos);
+                eprintln!("[HANDLE_CONDITION_EVENT] Calling dispatch_condition_on_any_modify_damage for condition={}, move={}, source(attacker)={:?}, target(defender)={:?}",
+                    condition_id, move_id_for_log, callback_source, callback_target);
 
                 // Call dispatcher in move_callbacks (for move-embedded conditions like auroraveil)
                 // Pass the active move, not just the ID
                 let result = crate::data::move_callbacks::dispatch_condition_on_any_modify_damage(
                     self,
                     condition_id,
-                    source_pos,
-                    target_pos,
+                    callback_source, // attacker
+                    callback_target, // defender
                     active_move_clone.as_ref(),
                 );
                 eprintln!("[HANDLE_CONDITION_EVENT] Result: {:?}, event.modifier AFTER callback={}",
