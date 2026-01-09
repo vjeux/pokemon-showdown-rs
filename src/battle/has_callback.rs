@@ -264,13 +264,16 @@ impl Battle {
         // Look up the item in dex data and check its extra field for callback
         // In JavaScript, callbacks can be:
         // - true (boolean indicating callback exists)
+        // - false (static value that returns false, e.g., onNegateImmunity: false)
         // - a function (actual callback)
         // - a static value like -0.1 (for onFractionalPriority)
-        // In Rust, we check for boolean true OR any number (static return value)
+        // In Rust, we check for boolean (true OR false) OR any number (static return value)
+        // The KEY existing is what matters - even if the value is false, the callback exists!
         if let Some(item_data) = self.dex.items().get(item_id) {
             // Check the exact event_id first, then try with "on" prefix for backward compatibility
+            // IMPORTANT: Check if the key EXISTS and is a bool/number, not just if it's true
             let has_callback = item_data.extra.get(event_id)
-                .map(|v| v.as_bool().unwrap_or(false) || v.as_f64().is_some() || v.as_i64().is_some())
+                .map(|v| v.is_boolean() || v.as_f64().is_some() || v.as_i64().is_some())
                 .unwrap_or(false);
 
             if has_callback {
@@ -279,7 +282,7 @@ impl Battle {
                 // Try with "on" prefix for backward compatibility
                 let with_on = format!("on{}", event_id);
                 item_data.extra.get(&with_on)
-                    .map(|v| v.as_bool().unwrap_or(false) || v.as_f64().is_some() || v.as_i64().is_some())
+                    .map(|v| v.is_boolean() || v.as_f64().is_some() || v.as_i64().is_some())
                     .unwrap_or(false)
             } else {
                 false

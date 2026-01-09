@@ -48,6 +48,26 @@ pub fn on_trap_pokemon(
     EventResult::Continue
 }
 
+/// onInvulnerability: false
+/// JavaScript source (data/conditions.ts):
+/// ```js
+/// // Dodging moves is handled in BattleActions#hitStepInvulnerabilityEvent
+/// // This is here for moves that manually call this event like Perish Song
+/// onInvulnerability: false,
+/// ```
+///
+/// When onInvulnerability is set to the static value `false`, it means
+/// the Pokemon is ALWAYS invulnerable while this condition is active.
+pub fn on_invulnerability(
+    _battle: &mut Battle,
+    _target_pos: Option<(usize, usize)>,
+    _source_pos: Option<(usize, usize)>,
+    _attacking_active_move: Option<&crate::battle_actions::ActiveMove>,
+) -> EventResult {
+    // onInvulnerability: false means always invulnerable
+    EventResult::Boolean(false)
+}
+
 /// onBeforeTurn
 /// JavaScript source (data/conditions.ts):
 /// ```js

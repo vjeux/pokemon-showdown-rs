@@ -25,6 +25,7 @@ pub mod gem;
 pub mod hail;
 pub mod healreplacement;
 pub mod lockedmove;
+pub mod luckychant;
 pub mod mustrecharge;
 pub mod par;
 pub mod partiallytrapped;
@@ -231,6 +232,19 @@ pub fn dispatch_on_before_turn(
 ) -> EventResult {
     match condition_id {
         "commanding" => commanding::on_before_turn(battle, pokemon_pos),
+        _ => EventResult::Continue,
+    }
+}
+/// Dispatch side condition onCriticalHit callbacks
+pub fn dispatch_side_condition_on_critical_hit(
+    battle: &mut Battle,
+    condition_id: &str,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    active_move: Option<&ActiveMove>,
+) -> EventResult {
+    match condition_id {
+        "luckychant" => luckychant::on_critical_hit(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }

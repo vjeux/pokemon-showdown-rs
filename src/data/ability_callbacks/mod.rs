@@ -24,6 +24,7 @@ pub mod asonespectrier;
 pub mod aurabreak;
 pub mod baddreams;
 pub mod battery;
+pub mod battlearmor;
 pub mod battlebond;
 pub mod beadsofruin;
 pub mod beastboost;
@@ -224,6 +225,7 @@ pub mod shadowtag;
 pub mod sharpness;
 pub mod shedskin;
 pub mod sheerforce;
+pub mod shellarmor;
 pub mod shielddust;
 pub mod shieldsdown;
 pub mod simple;
@@ -856,8 +858,10 @@ pub fn dispatch_on_critical_hit(
     target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match ability_id {
+        "battlearmor" => battlearmor::on_critical_hit(battle, target_pos, source_pos, active_move),
         "disguise" => disguise::on_critical_hit(battle, target_pos, source_pos, active_move),
         "iceface" => iceface::on_critical_hit(battle, target_pos, source_pos, active_move),
+        "shellarmor" => shellarmor::on_critical_hit(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }

@@ -260,6 +260,7 @@ pub mod razorfang;
 pub mod redcard;
 pub mod redorb;
 pub mod rindoberry;
+pub mod ringtarget;
 pub mod rockgem;
 pub mod rockincense;
 pub mod rockmemory;

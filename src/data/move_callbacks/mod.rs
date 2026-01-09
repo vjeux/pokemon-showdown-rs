@@ -2100,6 +2100,7 @@ pub fn dispatch_condition_on_invulnerability(
     // Match on condition_id (the volatile that has the callback), not the attacking move
     match condition_id {
         "bounce" => bounce::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
+        "commanding" => crate::data::condition_callbacks::commanding::on_invulnerability(battle, None, Some(source_pos), active_move),
         "dig" => dig::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
         "dive" => dive::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
         "fly" => fly::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
