@@ -68,7 +68,7 @@ Seed 58: ✓ PASS (100%) - 44/44 turns
 Seed 59: ✓ PASS (100%) - 100/100 turns
 Seed 60: ✗ FAIL (80%) - 55/68 turns
 Seed 61: ✗ FAIL (91%) - 91/100 turns
-Seed 62: ✗ FAIL (35%) - 28/79 turns
+Seed 62: ✓ PASS (100%) - 79/79 turns
 Seed 63: ✗ FAIL (55%) - 44/80 turns
 Seed 64: ✓ PASS (100%) - 66/66 turns
 Seed 65: ✓ PASS (100%) - 25/25 turns
@@ -112,8 +112,8 @@ Seed 100: ✗ FAIL (30%) - 30/100 turns
 Summary
 =======================================
 Total seeds tested: 100
-Passed (100%): 76
-Failed (<100%): 24
+Passed (100%): 77
+Failed (<100%): 23
 
 Average pass rate: 91%
 

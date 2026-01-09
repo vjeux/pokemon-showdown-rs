@@ -563,9 +563,21 @@ pub fn get_damage(
 
     // Get defense stat with boosts (now potentially modified for crits)
     // JavaScript: let defense = defender.calculateStat(defenseStat, defBoosts, 1, target);
+    // Note: Wonder Room swaps def <-> spd, so we need to check for it
     let mut defense = if let Some(side) = battle.sides.get(target_pos.0) {
         if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-            let base_stat = match defense_stat {
+            // Apply Wonder Room stat swap if active
+            // JavaScript: In calculateStat(), Wonder Room swaps def and spd
+            let actual_defense_stat = if battle.field.has_pseudo_weather(&ID::from("wonderroom")) {
+                match defense_stat {
+                    "def" => "spd",
+                    "spd" => "def",
+                    other => other,
+                }
+            } else {
+                defense_stat
+            };
+            let base_stat = match actual_defense_stat {
                 "def" => pokemon.stored_stats.def,
                 "spd" => pokemon.stored_stats.spd,
                 "atk" => pokemon.stored_stats.atk,
@@ -575,8 +587,8 @@ pub fn get_damage(
             };
             let (num, denom) = BattleActions::get_boost_modifier(def_boost);
             let result = (base_stat * num / denom).max(1);
-            eprintln!("[GET_DAMAGE] Defense calc (stat={}): pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
-                defense_stat, pokemon.name, base_stat, def_boost, num, denom, result);
+            eprintln!("[GET_DAMAGE] Defense calc (stat={}, actual={}): pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
+                defense_stat, actual_defense_stat, pokemon.name, base_stat, def_boost, num, denom, result);
             result
         } else {
             return None;

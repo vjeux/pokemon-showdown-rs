@@ -43,9 +43,23 @@ impl Battle {
         // if (state) {
         if self.field.pseudo_weather.contains_key(&pseudo_weather_id) {
             // if (!(status as any).onFieldRestart) return false;
+            // Check if the condition has an onFieldRestart callback
+            if !self.condition_has_callback(&pseudo_weather_id.as_str(), "FieldRestart") {
+                return false;
+            }
             // return this.battle.singleEvent('FieldRestart', status, state, this, source, sourceEffect);
-            // TODO: Implement FieldRestart event
-            return false;
+            // Call the FieldRestart event which may toggle off the pseudo weather
+            let result = self.single_event(
+                "FieldRestart",
+                &crate::battle::Effect::field_condition(pseudo_weather_id.clone()),
+                None,
+                None,  // field as target
+                source_pos,
+                None,
+                None,
+            );
+            // FieldRestart should return true if handled, false otherwise
+            return !matches!(result, crate::event::EventResult::Boolean(false));
         }
 
         // state = this.pseudoWeather[status.id] = this.battle.initEffectState({

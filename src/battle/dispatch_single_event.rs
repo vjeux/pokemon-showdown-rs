@@ -101,11 +101,12 @@ impl Battle {
 
         // Handle move events
         if let Some(move_def) = self.dex.moves().get(effect_id.as_str()) {
-            // Check if we're in a side/slot condition context and the move has an embedded condition
+            // Check if we're in a side/slot/field condition context and the move has an embedded condition
             // The effect type tells us the context - no need to check specific event IDs
             if let Some(ref effect) = self.effect {
                 if (effect.effect_type == crate::battle::EffectType::SideCondition
-                    || effect.effect_type == crate::battle::EffectType::SlotCondition)
+                    || effect.effect_type == crate::battle::EffectType::SlotCondition
+                    || effect.effect_type == crate::battle::EffectType::FieldCondition)
                     && move_def.condition.is_some()
                 {
                     // Route to condition handler for the embedded condition
