@@ -15,6 +15,7 @@ mod deserialize_is_max;
 mod deserialize_ohko;
 mod deserialize_self_switch;
 mod deserialize_self_boost;
+mod deserialize_ignore_immunity;
 mod deserialize_move_flags;
 mod new;
 mod load_from_json;
@@ -47,6 +48,7 @@ pub use deserialize_is_max::deserialize_is_max;
 pub use deserialize_ohko::deserialize_ohko;
 pub use deserialize_self_switch::deserialize_self_switch;
 pub use deserialize_self_boost::deserialize_self_boost;
+pub use deserialize_ignore_immunity::deserialize_ignore_immunity;
 pub use deserialize_move_flags::deserialize_move_flags;
 
 /// Gender ratio structure
@@ -640,9 +642,8 @@ pub struct MoveData {
     pub ignore_evasion: bool,
     /// Ignore type immunities
     /// JavaScript: ignoreImmunity?: boolean | { [type: string]: boolean }
-    /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses boolean | object union
-    #[serde(rename = "ignoreImmunity", default)]
-    pub ignore_immunity: Option<serde_json::Value>,
+    #[serde(rename = "ignoreImmunity", default, deserialize_with = "deserialize_ignore_immunity")]
+    pub ignore_immunity: Option<crate::battle_actions::IgnoreImmunity>,
     /// Fixed damage amount (like "level" for Seismic Toss)
     /// JavaScript: damage?: number | string | boolean
     #[serde(default)]

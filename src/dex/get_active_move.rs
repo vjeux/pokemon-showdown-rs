@@ -91,24 +91,7 @@ impl Dex {
             ignore_accuracy: move_data.ignore_accuracy,
             ignore_evasion: move_data.ignore_evasion,
             ignore_positive_evasion: None,
-            ignore_immunity: move_data.ignore_immunity.as_ref().map(|v| {
-                // Handle both boolean and object values
-                // JavaScript: ignoreImmunity: boolean | { Type: true, ... }
-                if v.as_bool() == Some(true) {
-                    crate::battle_actions::IgnoreImmunity::All
-                } else if let Some(obj) = v.as_object() {
-                    // Convert object to HashMap
-                    let mut map = std::collections::HashMap::new();
-                    for (k, val) in obj {
-                        if let Some(b) = val.as_bool() {
-                            map.insert(k.clone(), b);
-                        }
-                    }
-                    crate::battle_actions::IgnoreImmunity::Specific(map)
-                } else {
-                    crate::battle_actions::IgnoreImmunity::All
-                }
-            }),
+            ignore_immunity: move_data.ignore_immunity.clone(),
             ignore_defensive: move_data.ignore_defensive,
             ignore_offensive: false,
             ignore_negative_offensive: false,
