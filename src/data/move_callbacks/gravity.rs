@@ -340,7 +340,7 @@ pub mod condition {
         };
 
         let is_z_move = if let Some(move_data) = battle.active_move.as_ref() {
-            move_data.is_z
+            move_data.is_z.is_some()
         } else {
             false
         };
@@ -391,7 +391,7 @@ pub mod condition {
         };
 
         let is_z_move = if let Some(move_data) = battle.active_move.as_ref() {
-            move_data.is_z
+            move_data.is_z.is_some()
         } else {
             false
         };

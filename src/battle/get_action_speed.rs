@@ -69,7 +69,7 @@ impl Battle {
                 if let Some(ref zmove_name) = move_action.zmove {
                     // Z-Move transformation: get the active Z-Move
                     if let Some(z_move) = self.dex.get_active_move(zmove_name) {
-                        if z_move.is_z {
+                        if z_move.is_z.is_some() {
                             // Use Z-Move for priority calculation
                             move_id = z_move.id;
                         }

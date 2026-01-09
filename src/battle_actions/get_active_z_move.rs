@@ -84,7 +84,7 @@ pub fn get_active_z_move(
     //     }
     if move_data.category == "Status" {
         let mut active_move = move_data_to_active_move(move_data);
-        active_move.is_z = true;
+        active_move.is_z = Some("true".to_string());
         active_move.is_z_or_max_powered = true;
         return active_move;
     }

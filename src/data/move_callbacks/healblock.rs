@@ -200,7 +200,7 @@ pub mod condition {
 
         // Check if move is Z or Max move
         let (is_z, is_max) = if let Some(ref active_move) = battle.active_move {
-            (active_move.is_z, active_move.is_max)
+            (active_move.is_z.is_some(), active_move.is_max)
         } else {
             (false, false)
         };
@@ -275,7 +275,7 @@ pub mod condition {
 
         // Check if move is Z or Max move
         let (is_z, is_max) = if let Some(ref active_move) = battle.active_move {
-            (active_move.is_z, active_move.is_max)
+            (active_move.is_z.is_some(), active_move.is_max)
         } else {
             (false, false)
         };
@@ -370,7 +370,7 @@ pub mod condition {
 
             // Check if the active move is a Z-move
             if let Some(ref active_move) = battle.active_move {
-                if active_move.is_z {
+                if active_move.is_z.is_some() {
                     return EventResult::Number(damage);
                 }
             }

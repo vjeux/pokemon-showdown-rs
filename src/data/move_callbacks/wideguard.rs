@@ -120,7 +120,7 @@ pub mod condition {
         }
 
         // if (move.isZ || move.isMax) {
-        if move_data.is_z || move_data.is_max {
+        if move_data.is_z.is_some() || move_data.is_max {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
             if move_data.id == ID::from("gmaxoneblow") || move_data.id == ID::from("gmaxrapidflow") {
                 return EventResult::Continue;

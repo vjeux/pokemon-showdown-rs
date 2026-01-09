@@ -404,8 +404,7 @@ pub struct ActiveMove {
     pub no_pp_boosts: Option<bool>,
     /// Is this a Z-move?
     /// JavaScript: isZ?: boolean | IDEntry
-    /// TODO: Rust uses bool, cannot represent IDEntry variant (specific Z-crystal)
-    pub is_z: bool,
+    pub is_z: Option<String>,
     /// Z-move data
     /// JavaScript: zMove?: { basePower?: number, effect?: IDEntry, boost?: SparseBoostsTable }
     pub z_move: Option<ZMoveData>,

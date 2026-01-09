@@ -161,11 +161,11 @@ pub mod condition {
         // Get active move properties
         let (is_z, is_z_or_max_powered, category, move_id, move_name) = match &battle.active_move {
             Some(m) => {
-                let is_z_or_max = m.is_z || m.is_max;
+                let is_z_or_max = m.is_z.is_some() || m.is_max;
                 let name = battle.dex.moves().get_by_id(&m.id)
                     .map(|md| md.name.clone())
                     .unwrap_or_else(|| m.id.to_string());
-                (m.is_z, is_z_or_max, m.category.clone(), m.id.clone(), name)
+                (m.is_z.is_some(), is_z_or_max, m.category.clone(), m.id.clone(), name)
             }
             None => return EventResult::Continue,
         };

@@ -141,7 +141,7 @@ pub mod condition {
                     Some(active_move) => active_move,
                     None => return EventResult::Continue,
                 };
-                (active_move.is_z, active_move.is_max)
+                (active_move.is_z.is_some(), active_move.is_max)
             };
 
             if is_z || is_max {

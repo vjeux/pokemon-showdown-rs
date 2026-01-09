@@ -143,7 +143,7 @@ pub mod condition {
                     active_move.flags.protect,
                     active_move.category == "Status",
                     active_move.clone(),
-                    active_move.is_z,
+                    active_move.is_z.is_some(),
                     active_move.is_max,
                 )
             } else {

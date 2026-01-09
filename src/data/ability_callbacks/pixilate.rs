@@ -40,7 +40,7 @@ pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battl
     }
 
     // Don't change Z-moves (except Status category)
-    if active_move.is_z && active_move.category != "Status" {
+    if active_move.is_z.is_some() && active_move.category != "Status" {
         return EventResult::Continue;
     }
 

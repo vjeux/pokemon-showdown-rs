@@ -248,7 +248,7 @@ pub fn use_move_inner(
         (active_move.category != "Status" &&
          source_effect.as_ref().map_or(false, |se| {
              // Check if the source effect is a Z-move by checking battle.active_move
-             battle.active_move.as_ref().map_or(false, |am| am.is_z && am.id == se.id)
+             battle.active_move.as_ref().map_or(false, |am| am.is_z.is_some() && am.id == se.id)
          }));
 
     if should_convert_to_z {
@@ -453,7 +453,7 @@ pub fn use_move_inner(
     //     attrs = `|[anim]${movename}${attrs}`;
     //     movename = `Z-${movename}`;
     // }
-    if z_move.is_some() && active_move.is_z {
+    if z_move.is_some() && active_move.is_z.is_some() {
         attrs = format!("|[anim]{}{}", movename, attrs);
         movename = format!("Z-{}", movename);
     }

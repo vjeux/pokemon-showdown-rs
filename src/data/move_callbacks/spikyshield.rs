@@ -156,7 +156,7 @@ pub mod condition {
             (
                 active_move.flags.protect,
                 active_move.id.clone(),
-                active_move.is_z,
+                active_move.is_z.is_some(),
                 active_move.is_max,
                 active_move.smart_target,
             )

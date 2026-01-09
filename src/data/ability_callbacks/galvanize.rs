@@ -43,7 +43,7 @@ pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battl
         // if (move.type === 'Normal' && ...)
         let is_normal_type = active_move.move_type == "Normal";
         let in_no_modify_list = no_modify_type.contains(&active_move.id.as_str());
-        let is_z_non_status = active_move.is_z && active_move.category != "Status";
+        let is_z_non_status = active_move.is_z.is_some() && active_move.category != "Status";
         let is_tera_blast_terastallized = active_move.name == "Tera Blast" && is_terastallized;
 
         // if (move.type === 'Normal' && (!noModifyType.includes(move.id) || this.activeMove?.isMax) &&

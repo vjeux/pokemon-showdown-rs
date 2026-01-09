@@ -24,7 +24,7 @@ pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, 
             || active_move.flags.charge
             || active_move.flags.future_move
             || active_move.spread_hit
-            || active_move.is_z
+            || active_move.is_z.is_some()
             || active_move.is_max
     } else {
         return EventResult::Continue;

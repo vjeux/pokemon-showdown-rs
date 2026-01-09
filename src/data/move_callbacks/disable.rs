@@ -298,7 +298,7 @@ pub mod condition {
                 let is_z_or_max_powered_z = battle
                     .active_move
                     .as_ref()
-                    .map(|m| m.is_z && m.is_z_or_max_powered)
+                    .map(|m| m.is_z.is_some() && m.is_z_or_max_powered)
                     .unwrap_or(false);
 
                 // If it's a Z-move with max power, don't disable it

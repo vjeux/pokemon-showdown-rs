@@ -151,7 +151,7 @@ pub mod condition {
             };
             let has_protect = active_move.flags.protect;
             let is_status = active_move.category == "Status";
-            let is_z = active_move.is_z;
+            let is_z = active_move.is_z.is_some();
             let is_max = active_move.is_max;
             (has_protect, is_status, is_z, is_max)
         };

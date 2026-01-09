@@ -44,7 +44,7 @@ pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battl
     // Check move properties
     if let Some(active_move) = active_move {
         let in_no_modify_list = no_modify_type.contains(&active_move.id.as_str());
-        let is_z_non_status = active_move.is_z && active_move.category != "Status";
+        let is_z_non_status = active_move.is_z.is_some() && active_move.category != "Status";
         let is_tera_blast_terastallized = active_move.name == "Tera Blast" && is_terastallized;
 
         // if (!(move.isZ && move.category !== 'Status') &&
