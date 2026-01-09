@@ -2097,10 +2097,12 @@ pub fn dispatch_condition_on_immunity(
 /// Dispatch condition onInvulnerability callbacks
 pub fn dispatch_condition_on_invulnerability(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    // Match on condition_id (the volatile that has the callback), not the attacking move
+    match condition_id {
         "bounce" => bounce::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
         "dig" => dig::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
         "dive" => dive::condition::on_invulnerability(battle, None, Some(source_pos), active_move),

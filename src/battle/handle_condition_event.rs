@@ -462,7 +462,7 @@ impl Battle {
                     pokemon_pos,
                 )
             }
-            "AnyInvulnerability" | "Invulnerability" => {
+            "AnyInvulnerability" => {
                 // For AnyInvulnerability, we need the ORIGINAL target/source from the run_event call,
                 // NOT the Pokemon that has the volatile. The volatile may be on a different Pokemon
                 // than the target of the attack (e.g., Sky Drop volatile is on the user, not the target).
@@ -472,6 +472,17 @@ impl Battle {
                     self,
                     condition_id,
                     target_pos,  // Use original target from event, not pokemon_pos
+                    source_pos,
+                    active_move_clone.as_ref()
+                )
+            }
+            "Invulnerability" => {
+                // For onInvulnerability, call the regular dispatch for condition callbacks
+                // This handles two-turn moves like Dive, Fly, Dig, etc.
+                let source_pos = self.event.as_ref().and_then(|e| e.source).unwrap_or((0, 0));
+                crate::data::move_callbacks::dispatch_condition_on_invulnerability(
+                    self,
+                    condition_id,
                     source_pos,
                     active_move_clone.as_ref()
                 )
