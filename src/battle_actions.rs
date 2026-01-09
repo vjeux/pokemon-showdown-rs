@@ -363,7 +363,7 @@ pub struct ActiveMove {
     // =========================================================================
     /// Condition data for moves that create conditions
     /// JavaScript: condition?: ConditionData
-    pub condition: Option<String>, // TODO: Should be ConditionData type when available
+    pub condition: Option<crate::dex::ConditionData>,
     /// Base power of the move
     /// JavaScript: basePower: number
     pub base_power: i32,
