@@ -550,23 +550,44 @@ impl Battle {
             "FoeTryMove" => {
                 ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos, active_move_clone.as_ref())
             }
-            "FractionalPriority" => ability_callbacks::dispatch_on_fractional_priority(
-                self,
-                ability_id.as_str(),
-                relay_var_int,
-                pokemon_pos,
-            None,
-            active_move_clone.as_ref(),
-            ),
+            "FractionalPriority" => {
+                // For FractionalPriority, the move is passed via source_effect (event_effect_id), not active_move
+                // This is because FractionalPriority is called during action resolution before active_move is set
+                // JavaScript: runEvent('FractionalPriority', action.pokemon, null, action.move, 0)
+                // The 4th parameter (action.move) becomes the source_effect in runEvent
+                let move_for_priority = if active_move_clone.is_some() {
+                    active_move_clone.clone()
+                } else if !event_effect_id.is_empty() {
+                    self.dex.get_active_move(&event_effect_id)
+                } else {
+                    None
+                };
+                ability_callbacks::dispatch_on_fractional_priority(
+                    self,
+                    ability_id.as_str(),
+                    relay_var_int,
+                    pokemon_pos,
+                    None,
+                    move_for_priority.as_ref(),
+                )
+            }
             "FractionalPriorityPriority" => {
+                // Same as FractionalPriority - need to get move from source_effect
+                let move_for_priority = if active_move_clone.is_some() {
+                    active_move_clone.clone()
+                } else if !event_effect_id.is_empty() {
+                    self.dex.get_active_move(&event_effect_id)
+                } else {
+                    None
+                };
                 ability_callbacks::dispatch_on_fractional_priority_priority(
                     self,
                     ability_id.as_str(),
                     relay_var_int,
                     pokemon_pos,
-                None,
-                active_move_clone.as_ref(),
-            )
+                    None,
+                    move_for_priority.as_ref(),
+                )
             }
             "Hit" => ability_callbacks::dispatch_on_hit(self, ability_id.as_str(), pokemon_pos, event_source_pos.unwrap_or((0, 0)), active_move_clone.as_ref()),
             "Immunity" => {
