@@ -65,11 +65,11 @@ pub fn on_hit(
         let last_move = battle.dex.moves().get_by_id(&last_move_id);
         let (has_failinstruct, is_z, is_max, has_charge, has_recharge) = match last_move {
             Some(m) => (
-                m.flags.get("failinstruct").copied().unwrap_or(0) != 0,
+                m.flags.get("failinstruct").unwrap_or(false),
                 m.is_z.is_some(),
                 m.is_max.is_some(),
-                m.flags.get("charge").copied().unwrap_or(0) != 0,
-                m.flags.get("recharge").copied().unwrap_or(0) != 0,
+                m.flags.get("charge").unwrap_or(false),
+                m.flags.get("recharge").unwrap_or(false),
             ),
             None => (false, false, false, false, false),
         };

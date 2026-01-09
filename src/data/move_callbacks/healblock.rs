@@ -149,8 +149,8 @@ pub mod condition {
                         .dex
                         .moves
                         .get(&slot.id)
-                        .and_then(|move_data| move_data.flags.get("heal"))
-                        .is_some()
+                        .map(|move_data| move_data.flags.get("heal").unwrap_or(false))
+                        .unwrap_or(false)
                 })
                 .map(|slot| slot.id.clone())
                 .collect()

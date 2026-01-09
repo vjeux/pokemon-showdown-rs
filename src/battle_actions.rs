@@ -373,7 +373,7 @@ pub struct ActiveMove {
     pub accuracy: crate::dex::Accuracy,
     /// Power Points
     /// JavaScript: pp: number
-    pub pp: u8,
+    pub pp: i32,
     /// Move category (Physical/Special/Status)
     /// JavaScript: category: string
     pub category: String,
@@ -816,6 +816,57 @@ pub struct MoveFlags {
     /// Wind flag (boosted by Wind Power)
     /// JavaScript: wind?: 1
     pub wind: bool,
+}
+
+impl MoveFlags {
+    /// Check if a flag is set by name (for compatibility with HashMap-style access)
+    pub fn contains_key(&self, flag: &str) -> bool {
+        self.get(flag).unwrap_or(false)
+    }
+
+    /// Get flag value by name (for compatibility with HashMap-style access)
+    pub fn get(&self, flag: &str) -> Option<bool> {
+        Some(match flag {
+            "allyanim" => self.allyanim,
+            "bite" => self.bite,
+            "bullet" => self.bullet,
+            "bypasssub" => self.bypasssub,
+            "cantusetwice" => self.cant_use_twice,
+            "charge" => self.charge,
+            "contact" => self.contact,
+            "dance" => self.dance,
+            "defrost" => self.defrost,
+            "distance" => self.distance,
+            "failcopycat" => self.failcopycat,
+            "failencore" => self.failencore,
+            "failinstruct" => self.failinstruct,
+            "failmefirst" => self.failmefirst,
+            "failmimic" => self.failmimic,
+            "futuremove" => self.future_move,
+            "gravity" => self.gravity,
+            "heal" => self.heal,
+            "metronome" => self.metronome,
+            "mirror" => self.mirror,
+            "mustpressure" => self.mustpressure,
+            "noassist" => self.noassist,
+            "nonsky" => self.nonsky,
+            "noparentalbond" => self.noparentalbond,
+            "nosketch" => self.nosketch,
+            "nosleeptalk" => self.nosleeptalk,
+            "pledgecombo" => self.pledgecombo,
+            "powder" => self.powder,
+            "protect" => self.protect,
+            "pulse" => self.pulse,
+            "punch" => self.punch,
+            "recharge" => self.recharge,
+            "reflectable" => self.reflectable,
+            "slicing" => self.slicing,
+            "snatch" => self.snatch,
+            "sound" => self.sound,
+            "wind" => self.wind,
+            _ => return None,
+        })
+    }
 }
 
 /// Max move data

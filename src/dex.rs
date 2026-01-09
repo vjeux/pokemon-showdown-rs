@@ -13,6 +13,7 @@ mod default_crit_ratio;
 mod deserialize_accuracy;
 mod deserialize_is_max;
 mod deserialize_ohko;
+mod deserialize_move_flags;
 mod new;
 mod load_from_json;
 mod get_active_move;
@@ -42,6 +43,7 @@ pub use default_crit_ratio::default_crit_ratio;
 pub use deserialize_accuracy::deserialize_accuracy;
 pub use deserialize_is_max::deserialize_is_max;
 pub use deserialize_ohko::deserialize_ohko;
+pub use deserialize_move_flags::deserialize_move_flags;
 
 /// Gender ratio structure
 /// Gender ratio (chance of male vs female)
@@ -501,8 +503,8 @@ pub struct MoveData {
     pub self_effect: Option<MoveSecondary>,
     /// Move flags
     /// JavaScript: flags: MoveFlags
-    #[serde(default)]
-    pub flags: HashMap<String, i32>,
+    #[serde(default, deserialize_with = "deserialize_move_flags")]
+    pub flags: crate::battle_actions::MoveFlags,
     /// Stat boosts
     /// JavaScript: boosts?: SparseBoostsTable
     #[serde(default)]

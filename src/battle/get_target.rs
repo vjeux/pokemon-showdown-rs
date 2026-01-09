@@ -149,7 +149,6 @@ impl Battle {
                 let has_futuremove = move_def
                     .flags
                     .get("futuremove")
-                    .map(|&v| v != 0)
                     .unwrap_or(false);
                 return if has_futuremove { Some(user) } else { None };
             }

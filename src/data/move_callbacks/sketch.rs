@@ -95,7 +95,7 @@ pub fn on_hit(
             None => return EventResult::Boolean(false),
         };
 
-        let has_nosketch = move_data.flags.get("nosketch").copied().unwrap_or(0) != 0;
+        let has_nosketch = move_data.flags.get("nosketch").unwrap_or(false);
         if has_nosketch || move_data.is_z.is_some() || move_data.is_max.is_some() {
             return EventResult::Boolean(false);
         }

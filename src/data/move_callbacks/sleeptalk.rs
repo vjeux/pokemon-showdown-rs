@@ -112,8 +112,8 @@ pub fn on_hit(
         // if (move.flags['nosleeptalk'] || move.flags['charge'] || (move.isZ && move.basePower !== 1) || move.isMax) {
         //     continue;
         // }
-        if move_data.flags.get("nosleeptalk").copied().unwrap_or(0) != 0
-            || move_data.flags.get("charge").copied().unwrap_or(0) != 0
+        if move_data.flags.get("nosleeptalk").unwrap_or(false)
+            || move_data.flags.get("charge").unwrap_or(false)
             || (move_data.is_z.is_some() && move_data.base_power != 1)
             || move_data.is_max.is_some()
         {
