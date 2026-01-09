@@ -20,7 +20,7 @@ impl<'a> BattleActions<'a> {
     ) -> i32 {
         // JS: if (move.id === 'chloroblast') return Math.round(pokemon.maxhp / 2);
         if move_id == "chloroblast" {
-            return pokemon_max_hp / 2;
+            return (pokemon_max_hp as f64 / 2.0).round() as i32;
         }
         // JS: return this.battle.clampIntRange(Math.round(damageDealt * move.recoil![0] / move.recoil![1]), 1);
         if let Some((num, denom)) = recoil {
