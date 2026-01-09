@@ -288,9 +288,12 @@ impl Battle {
             }
 
             // TypeScript: onModifyDamage(damage:number, pokemon:Pokemon, target:Pokemon?)
+            // Note: In the ModifyDamage event, event.target = attacker, event.source = defender
+            // The item callback wants: pokemon = attacker (item holder), target = defender
             "ModifyDamage" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                // Use event.source for the target (defender), not event.target (which is the attacker)
+                let target_pos = self.event.as_ref().and_then(|e| e.source);
                 item_callbacks::dispatch_on_modify_damage(
                     self,
                     item_id.as_str(),
