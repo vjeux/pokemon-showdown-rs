@@ -66,5 +66,5 @@ pub fn on_try(
     );
 
     // return null;
-    EventResult::Stop
+    EventResult::Null
 }
