@@ -629,6 +629,12 @@ pub fn hit_step_move_hit_loop(
             _ => None,
         })
         .collect();
+    // Sync battle.active_move with local active_move before calling after_move_secondary_event
+    // In JS, move is passed by reference so totalDamage is immediately visible.
+    // In Rust, we clone, so we need to sync before callbacks read from battle.active_move.
+    if let Some(ref mut battle_active_move) = battle.active_move {
+        battle_active_move.total_damage = active_move.total_damage;
+    }
     crate::battle_actions::after_move_secondary_event(battle, &valid_targets, attacker_pos, active_move);
 
     // if (!(move.hasSheerForce && pokemon.hasAbility('sheerforce'))) {
