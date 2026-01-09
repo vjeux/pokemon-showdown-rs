@@ -59,6 +59,7 @@ impl BattleQueue {
                         source_effect: None,
                         terastallize: side_action.terastallize.clone(),
                         move_priority_modified: None,
+                        prankster_boosted: false,
                         priority: 0,
                         fractional_priority: 0.0,
                         speed: 0.0,

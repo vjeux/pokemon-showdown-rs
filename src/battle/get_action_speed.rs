@@ -116,7 +116,16 @@ impl Battle {
 
                 // JS: priority = this.runEvent('ModifyPriority', action.pokemon, null, move, priority);
                 // Allows ability/item-based priority modification (e.g., Prankster, Quick Claw)
+                // IMPORTANT: We need to temporarily set battle.active_move for callbacks like
+                // Prankster that check move.category and set move.pranksterBoosted
                 let effect_id = move_action.move_id.clone();
+
+                // Create a temporary ActiveMove for the ModifyPriority event
+                // This is needed because ability callbacks like Prankster check battle.active_move
+                let temp_active_move = self.dex.get_active_move(move_id.as_str());
+                let previous_active_move = self.active_move.take();
+                self.active_move = temp_active_move;
+
                 let relay_result = self.run_event(
                 "ModifyPriority",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
@@ -126,6 +135,18 @@ impl Battle {
                     false,
                     false,
                 );
+
+                // Check if prankster_boosted was set
+                let prankster_boosted = self.active_move.as_ref()
+                    .map(|m| m.prankster_boosted)
+                    .unwrap_or(false);
+                if prankster_boosted {
+                    move_action.prankster_boosted = true;
+                }
+
+                // Restore previous active_move
+                self.active_move = previous_active_move;
+
                 if let EventResult::Number(modified_priority) = relay_result {
                     priority = modified_priority as i8;
                 }

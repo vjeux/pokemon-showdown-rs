@@ -206,6 +206,7 @@ pub fn on_hit(
         source_effect: None,
         terastallize: None,
         move_priority_modified: None,
+        prankster_boosted: false,
     };
 
     // Resolve the action (handles target resolution, speed calculation, etc.)

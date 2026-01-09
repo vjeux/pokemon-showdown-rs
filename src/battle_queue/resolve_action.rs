@@ -90,6 +90,7 @@ impl BattleQueue {
                                 source_effect: None,
                                 terastallize: None,
                                 move_priority_modified: None,
+                                prankster_boosted: false,
                             });
                             actions_to_prepend.push(priority_charge_action);
                         }
@@ -197,6 +198,7 @@ impl BattleQueue {
                                 source_effect: None,
                                 terastallize: None,
                                 move_priority_modified: None,
+                                prankster_boosted: false,
                             });
                             actions_to_prepend.push(before_turn_action);
                         }

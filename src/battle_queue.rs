@@ -109,6 +109,10 @@ pub struct MoveAction {
     /// Stores the priority value assigned to the move itself, allowing Quick Guard
     /// to detect if the move's priority was artificially enhanced (e.g., by Prankster)
     pub move_priority_modified: Option<i8>,
+    /// True if this move's priority was boosted by Prankster
+    /// JavaScript: move.pranksterBoosted: boolean
+    /// Used to prevent Prankster-boosted moves from affecting Dark-type Pokemon
+    pub prankster_boosted: bool,
 }
 
 impl MoveAction {
