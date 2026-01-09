@@ -83,12 +83,17 @@ pub fn on_modify_type(
 /// }
 pub fn on_prepare_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     use crate::dex_data::ID;
 
-    let pokemon = pokemon_pos;
+    // In JS signature: onPrepareHit(target, pokemon, move)
+    // 'pokemon' is the source (user of the move)
+    let pokemon = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Boolean(false),
+    };
 
     // if (pokemon.ignoringItem()) return false;
     let ignoring_item = {
