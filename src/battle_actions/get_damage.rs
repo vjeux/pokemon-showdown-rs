@@ -146,6 +146,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle::Effect;
+use crate::dex_data::StatID;
 
 /// Get damage for a move
 /// Equivalent to getDamage() in battle-actions.ts:1583
@@ -464,6 +465,29 @@ pub fn get_damage(
     };
     let is_physical = category == "Physical";
 
+    // JavaScript: const attacker = move.overrideOffensivePokemon === 'target' ? target : source;
+    // JavaScript: const defender = move.overrideDefensivePokemon === 'source' ? source : target;
+    // Determine which Pokemon to use for attack/defense stats
+    let attacker_pos = if let Some(ref active_move) = battle.active_move {
+        if active_move.override_offensive_pokemon.as_deref() == Some("target") {
+            target_pos
+        } else {
+            source_pos
+        }
+    } else {
+        source_pos
+    };
+
+    let defender_pos = if let Some(ref active_move) = battle.active_move {
+        if active_move.override_defensive_pokemon.as_deref() == Some("source") {
+            source_pos
+        } else {
+            target_pos
+        }
+    } else {
+        target_pos
+    };
+
     // JavaScript: let attackStat: StatIDExceptHP = move.overrideOffensiveStat || (isPhysical ? 'atk' : 'spa');
     // JavaScript: const defenseStat: StatIDExceptHP = move.overrideDefensiveStat || (isPhysical ? 'def' : 'spd');
     // Determine which stats to use for damage calculation
@@ -477,8 +501,8 @@ pub fn get_damage(
     // Get attacker and defender boosts based on the stat being used
     // JavaScript: let atkBoosts = attacker.boosts[attackStat];
     // JavaScript: let defBoosts = defender.boosts[defenseStat];
-    let mut atk_boost = if let Some(side) = battle.sides.get(source_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+    let mut atk_boost = if let Some(side) = battle.sides.get(attacker_pos.0) {
+        if let Some(pokemon) = side.pokemon.get(attacker_pos.1) {
             match attack_stat {
                 "atk" => pokemon.boosts.atk,
                 "spa" => pokemon.boosts.spa,
@@ -490,8 +514,8 @@ pub fn get_damage(
         } else { 0 }
     } else { 0 };
 
-    let mut def_boost = if let Some(side) = battle.sides.get(target_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(target_pos.1) {
+    let mut def_boost = if let Some(side) = battle.sides.get(defender_pos.0) {
+        if let Some(pokemon) = side.pokemon.get(defender_pos.1) {
             match defense_stat {
                 "def" => pokemon.boosts.def,
                 "spd" => pokemon.boosts.spd,
@@ -546,20 +570,20 @@ pub fn get_damage(
 
     // Get attack stat with boosts (now potentially modified for crits)
     // JavaScript: let attack = attacker.calculateStat(attackStat, atkBoosts, 1, source);
-    let mut attack = if let Some(side) = battle.sides.get(source_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-            let base_stat = match attack_stat {
-                "atk" => pokemon.stored_stats.atk,
-                "spa" => pokemon.stored_stats.spa,
-                "def" => pokemon.stored_stats.def,
-                "spd" => pokemon.stored_stats.spd,
-                "spe" => pokemon.stored_stats.spe,
-                _ => if is_physical { pokemon.stored_stats.atk } else { pokemon.stored_stats.spa }
-            };
-            let (num, denom) = BattleActions::get_boost_modifier(atk_boost);
-            let result = (base_stat * num / denom).max(1);
-            eprintln!("[GET_DAMAGE] Attack calc (stat={}): pokemon={}, base_stat={}, boost={}, modifier=({}/{}), attack={}",
-                attack_stat, pokemon.name, base_stat, atk_boost, num, denom, result);
+    // Convert string stat name to StatID
+    let attack_stat_id = match attack_stat {
+        "atk" => StatID::Atk,
+        "spa" => StatID::SpA,
+        "def" => StatID::Def,
+        "spd" => StatID::SpD,
+        "spe" => StatID::Spe,
+        _ => if is_physical { StatID::Atk } else { StatID::SpA }
+    };
+    let mut attack = if let Some(side) = battle.sides.get(attacker_pos.0) {
+        if let Some(pokemon) = side.pokemon.get(attacker_pos.1) {
+            let result = pokemon.calculate_stat(battle, attack_stat_id, atk_boost as i8, 1.0, Some(source_pos));
+            eprintln!("[GET_DAMAGE] Attack calc (stat={:?}): pokemon={}, boost={}, attack={}",
+                attack_stat_id, pokemon.name, atk_boost, result);
             result
         } else {
             return None;
@@ -570,32 +594,20 @@ pub fn get_damage(
 
     // Get defense stat with boosts (now potentially modified for crits)
     // JavaScript: let defense = defender.calculateStat(defenseStat, defBoosts, 1, target);
-    // Note: Wonder Room swaps def <-> spd, so we need to check for it
-    let mut defense = if let Some(side) = battle.sides.get(target_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-            // Apply Wonder Room stat swap if active
-            // JavaScript: In calculateStat(), Wonder Room swaps def and spd
-            let actual_defense_stat = if battle.field.has_pseudo_weather(&ID::from("wonderroom")) {
-                match defense_stat {
-                    "def" => "spd",
-                    "spd" => "def",
-                    other => other,
-                }
-            } else {
-                defense_stat
-            };
-            let base_stat = match actual_defense_stat {
-                "def" => pokemon.stored_stats.def,
-                "spd" => pokemon.stored_stats.spd,
-                "atk" => pokemon.stored_stats.atk,
-                "spa" => pokemon.stored_stats.spa,
-                "spe" => pokemon.stored_stats.spe,
-                _ => if is_physical { pokemon.stored_stats.def } else { pokemon.stored_stats.spd }
-            };
-            let (num, denom) = BattleActions::get_boost_modifier(def_boost);
-            let result = (base_stat * num / denom).max(1);
-            eprintln!("[GET_DAMAGE] Defense calc (stat={}, actual={}): pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
-                defense_stat, actual_defense_stat, pokemon.name, base_stat, def_boost, num, denom, result);
+    // Note: Wonder Room swap is handled inside calculate_stat
+    let defense_stat_id = match defense_stat {
+        "def" => StatID::Def,
+        "spd" => StatID::SpD,
+        "atk" => StatID::Atk,
+        "spa" => StatID::SpA,
+        "spe" => StatID::Spe,
+        _ => if is_physical { StatID::Def } else { StatID::SpD }
+    };
+    let mut defense = if let Some(side) = battle.sides.get(defender_pos.0) {
+        if let Some(pokemon) = side.pokemon.get(defender_pos.1) {
+            let result = pokemon.calculate_stat(battle, defense_stat_id, def_boost as i8, 1.0, Some(target_pos));
+            eprintln!("[GET_DAMAGE] Defense calc (stat={:?}): pokemon={}, boost={}, defense={}",
+                defense_stat_id, pokemon.name, def_boost, result);
             result
         } else {
             return None;

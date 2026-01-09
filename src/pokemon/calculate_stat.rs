@@ -41,7 +41,7 @@ impl Pokemon {
     // 		return this.battle.modify(stat, (modifier || 1));
     // 	}
     //
-    pub fn calculate_stat(&self, battle: &mut Battle, stat: StatID, boost: i8, modifier: f64, _stat_user_pos: Option<(usize, usize)>) -> i32 {
+    pub fn calculate_stat(&self, battle: &Battle, stat: StatID, boost: i8, modifier: f64, _stat_user_pos: Option<(usize, usize)>) -> i32 {
         // JS: statName = toID(statName) as StatIDExceptHP;
         // JS: if (statName === 'hp') throw new Error("Please read `maxhp` directly");
         if stat == StatID::HP {
