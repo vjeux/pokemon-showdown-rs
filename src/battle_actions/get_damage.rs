@@ -230,12 +230,29 @@ pub fn get_damage(
         return Some(custom_damage);
     }
 
-    // Fixed damage moves
-    if let Some(_heal_tuple) = move_data.heal {
-        // Heal moves have (numerator, denominator) format
-        // But damage field would be different - this is actually heal, not damage
-        // For actual fixed damage, we'd check move.damage field
-        // For now, skip this
+    // JavaScript: if (move.damage === 'level') { return source.level; } else if (move.damage) { return move.damage; }
+    // Fixed damage moves (e.g., Seismic Toss deals damage equal to user's level)
+    if let Some(ref damage_value) = move_data.damage {
+        // Get source level for "level" damage type
+        let source_level = if let Some(side) = battle.sides.get(source_pos.0) {
+            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
+                pokemon.level as i32
+            } else {
+                return None;
+            }
+        } else {
+            return None;
+        };
+
+        if let Some(damage_str) = damage_value.as_str() {
+            if damage_str == "level" {
+                eprintln!("[GET_DAMAGE] Fixed damage move (damage='level'), returning source.level={}", source_level);
+                return Some(source_level);
+            }
+        } else if let Some(damage_num) = damage_value.as_i64() {
+            eprintln!("[GET_DAMAGE] Fixed damage move (damage={}), returning {}", damage_num, damage_num);
+            return Some(damage_num as i32);
+        }
     }
 
     // CRITICAL: Check active_move.base_power first!
