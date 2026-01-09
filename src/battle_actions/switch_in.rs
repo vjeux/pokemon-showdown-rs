@@ -255,7 +255,79 @@ pub fn switch_in(
             }
 
             // Clear volatiles on old Pokemon
-            battle.sides[side_index].pokemon[old_idx].clear_volatiles();
+            // JS: oldActive.clearVolatile();
+            // Note: JavaScript's clearVolatile() calls moveSlots = baseMoveSlots.slice() which is a
+            // SHALLOW copy - the move slot objects are shared. So PP is NOT restored.
+            // In Rust, clone() is a DEEP copy which would restore PP incorrectly.
+            // So we manually call the parts of clear_volatile that don't reset moveSlots:
+            // 1. Clear boosts (JS does this)
+            // 2. Clear volatiles (JS does this)
+            // 3. Reset ability/species/etc (JS does this via set_species)
+            // But we must NOT reset move_slots because that would restore PP.
+
+            // Use unsafe to work around borrow checker for set_species call
+            unsafe {
+                let pokemon = &mut battle.sides[side_index].pokemon[old_idx] as *mut Pokemon;
+                let battle_ptr = battle as *mut Battle;
+
+                // Clear boosts (matches JS: this.boosts = { atk: 0, def: 0, ... })
+                (*pokemon).clear_boosts();
+
+                // Clear volatiles and reset other state, but preserve move slots
+                // This is a partial clear_volatile that doesn't reset moveSlots
+                (*pokemon).transformed = false;
+                (*pokemon).ability = (*pokemon).base_ability.clone();
+                (*pokemon).hp_type = (*pokemon).base_hp_type.clone();
+                (*pokemon).hp_power = (*pokemon).base_hp_power;
+                if (*pokemon).can_terastallize == Some("false".to_string()) {
+                    (*pokemon).can_terastallize = (*pokemon).tera_type.clone();
+                }
+
+                // Handle linked volatiles before clearing
+                let linked_volatiles: Vec<_> = (*pokemon).volatiles.iter()
+                    .filter_map(|(_, state)| {
+                        if let (Some(status), Some(pokemon_vec)) = (&state.linked_status, &state.linked_pokemon) {
+                            Some((status.clone(), pokemon_vec.clone()))
+                        } else {
+                            None
+                        }
+                    })
+                    .collect();
+
+                for (status, pokemon_vec) in linked_volatiles {
+                    Pokemon::remove_linked_volatiles(
+                        &mut *battle_ptr,
+                        (side_index, old_idx),
+                        &ID::from(status.as_str()),
+                        &pokemon_vec,
+                    );
+                }
+
+                // Clear volatiles
+                (*pokemon).volatiles.clear();
+
+                // Reset other fields (same as clear_volatile)
+                (*pokemon).switch_flag = None;
+                (*pokemon).force_switch_flag = false;
+                (*pokemon).last_move = None;
+                if (*battle_ptr).gen == 2 {
+                    (*pokemon).last_move_encore = None;
+                }
+                (*pokemon).last_move_used = None;
+                (*pokemon).move_this_turn = None;
+                (*pokemon).move_last_turn_result = None;
+                (*pokemon).move_this_turn_result = None;
+                (*pokemon).last_damage = 0;
+                (*pokemon).attacked_by.clear();
+                (*pokemon).hurt_this_turn = None;
+                (*pokemon).newly_switched = true;
+                (*pokemon).being_called_back = false;
+                (*pokemon).volatile_staleness = None;
+
+                // Reset species
+                let base_species = (*pokemon).base_species.clone();
+                Pokemon::set_species_pos(&mut *battle_ptr, (side_index, old_idx), &base_species, None, false);
+            }
         }
 
         // Update old active state
