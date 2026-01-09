@@ -101,6 +101,31 @@ pub fn dispatch_on_after_move_secondary(
         _ => EventResult::Continue,
     }
 }
+/// Dispatch onAccuracy callbacks
+///
+/// Called during accuracy check to determine if a move hits.
+/// Volatiles like glaiverush return true to make moves always hit.
+pub fn dispatch_on_accuracy(
+    battle: &mut Battle,
+    condition_id: &str,
+    accuracy: i32,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    active_move: Option<&ActiveMove>,
+) -> EventResult {
+    match condition_id {
+        "glaiverush" => {
+            move_callbacks::glaiverush::condition::on_accuracy(battle, accuracy, target_pos, source_pos, active_move)
+        }
+        "minimize" => {
+            move_callbacks::minimize::condition::on_accuracy(battle, accuracy, target_pos, source_pos, active_move)
+        }
+        "telekinesis" => {
+            move_callbacks::telekinesis::condition::on_accuracy(battle, accuracy, target_pos, source_pos, active_move)
+        }
+        _ => EventResult::Continue,
+    }
+}
 /// Dispatch onBasePower callbacks
 pub fn dispatch_on_base_power(
     battle: &mut Battle,

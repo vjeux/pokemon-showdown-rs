@@ -70,6 +70,24 @@ impl Battle {
                     active_move_clone.as_ref()
                 )
             }
+            "Accuracy" => {
+                // Extract accuracy from relay_var, source from event
+                // onAccuracy is called on volatiles of the target to check if move hits
+                // Glaiverush returns true to make moves always hit
+                let accuracy = self.event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                condition_callbacks::dispatch_on_accuracy(
+                    self,
+                    condition_id,
+                    accuracy,
+                    Some(pokemon_pos),
+                    source_pos,
+                    active_move_clone.as_ref()
+                )
+            }
             "BasePower" => {
                 // Extract base_power from relay_var, target from event, and move_id from active_move
                 let base_power = self.event.as_ref().and_then(|e| match &e.relay_var {
