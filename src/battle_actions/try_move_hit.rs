@@ -99,8 +99,9 @@ pub fn try_move_hit(
     ).is_truthy();
 
     // JavaScript uses && operator which short-circuits on false
-    let mut hit_result = !matches!(try_result, EventResult::Boolean(false) | EventResult::NotFail | EventResult::Null);
-    hit_result = hit_result && !matches!(prepare_hit_single, EventResult::Boolean(false) | EventResult::NotFail | EventResult::Null);
+    // Stop represents "return null" in JavaScript - should be treated as falsy
+    let mut hit_result = !matches!(try_result, EventResult::Boolean(false) | EventResult::NotFail | EventResult::Null | EventResult::Stop);
+    hit_result = hit_result && !matches!(prepare_hit_single, EventResult::Boolean(false) | EventResult::NotFail | EventResult::Null | EventResult::Stop);
     hit_result = hit_result && prepare_hit_run;
 
     // if (!hitResult) {
