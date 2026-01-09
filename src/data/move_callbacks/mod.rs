@@ -1638,10 +1638,6 @@ pub fn dispatch_condition_on_any_invulnerability(
     eprintln!("[DISPATCH_COND_ANY_INVULN] condition_id='{}', attacking_move_id='{}', target_pos={:?}, source_pos={:?}",
         condition_id, attacking_move_id, target_pos, source_pos);
     let result = match condition_id {
-        "phantomforce" => {
-            eprintln!("[DISPATCH_COND_ANY_INVULN] Matched phantomforce, calling callback");
-            crate::data::condition_callbacks::phantomforce::on_any_invulnerability(battle, Some(target_pos), Some(source_pos), attacking_active_move)
-        }
         "skydrop" => {
             eprintln!("[DISPATCH_COND_ANY_INVULN] Matched skydrop, calling callback with attacking_move_id={}", attacking_move_id);
             skydrop::condition::on_any_invulnerability(battle, Some(target_pos), Some(source_pos), attacking_active_move)
@@ -2107,6 +2103,7 @@ pub fn dispatch_condition_on_invulnerability(
         "dig" => dig::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
         "dive" => dive::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
         "fly" => fly::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
+        "phantomforce" => crate::data::condition_callbacks::phantomforce::on_invulnerability(battle, None, Some(source_pos), active_move),
         _ => EventResult::Continue,
     }
 }

@@ -20,7 +20,7 @@ use crate::event::EventResult;
 /// the Pokemon is ALWAYS invulnerable while this condition is active.
 /// Unlike Fly/Dig/Dive which check specific moves, Phantom Force makes
 /// the user completely invulnerable to ALL moves.
-pub fn on_any_invulnerability(
+pub fn on_invulnerability(
     _battle: &mut Battle,
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,

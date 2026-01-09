@@ -5,7 +5,7 @@ Testing 100 Seeds with Pass Rate
 Step 1: Generating teams...
 Step 2: Running JavaScript battles...
 Step 3: Running Rust battles...
-bash: line 1: 36646 Aborted                 cargo run --release --example test_battle_batch 1 100 2> /dev/null
+bash: line 1: 37143 Aborted                 cargo run --release --example test_battle_batch 1 100 2> /dev/null
 Step 4: Comparing results...
 
 Seed 1: ✓ PASS (100%) - 41/41 turns
@@ -31,7 +31,7 @@ Seed 20: ✓ PASS (100%) - 85/85 turns
 Seed 21: ✓ PASS (100%) - 72/72 turns
 Seed 22: ✗ FAIL (68%) - 62/90 turns
 Seed 23: ✗ FAIL (29%) - 17/57 turns
-Seed 24: ✗ FAIL (15%) - 15/100 turns
+Seed 24: ✓ PASS (100%) - 100/100 turns
 Seed 25: ✓ PASS (100%) - 80/80 turns
 Seed 26: ✓ PASS (100%) - 21/21 turns
 Seed 27: ✓ PASS (100%) - 53/53 turns
@@ -113,9 +113,9 @@ Seed 100: ✗ FAIL (30%) - 30/100 turns
 Summary
 =======================================
 Total seeds tested: 100
-Passed (100%): 56
-Failed (<100%): 44
+Passed (100%): 57
+Failed (<100%): 43
 
-Average pass rate: 80%
+Average pass rate: 81%
 
 ✗ Some seeds failed
