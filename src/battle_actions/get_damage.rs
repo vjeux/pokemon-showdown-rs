@@ -219,9 +219,7 @@ pub fn get_damage(
 
     // JavaScript: if (move.damage === 'level') { return source.level; } else if (move.damage) { return move.damage; }
     // Fixed damage moves (e.g., Seismic Toss deals damage equal to user's level)
-    // Note: In ActiveMove, damage is Option<i32> - the 'level' case is handled via damageCallback
-    // TODO: The 'level' string case should be converted during get_active_move
-    if let Some(damage_num) = active_move.damage {
+    if let Some(ref damage_value) = active_move.damage {
         let source_level = if let Some(side) = battle.sides.get(source_pos.0) {
             if let Some(pokemon) = side.pokemon.get(source_pos.1) {
                 pokemon.level as i32
@@ -231,13 +229,16 @@ pub fn get_damage(
         } else {
             return None;
         };
-        // If damage is -1, treat as 'level' (special sentinel value)
-        if damage_num == -1 {
-            eprintln!("[GET_DAMAGE] Fixed damage move (damage='level'), returning source.level={}", source_level);
-            return Some(source_level);
+        match damage_value {
+            crate::battle_actions::Damage::Level => {
+                eprintln!("[GET_DAMAGE] Fixed damage move (damage='level'), returning source.level={}", source_level);
+                return Some(source_level);
+            }
+            crate::battle_actions::Damage::Fixed(damage_num) => {
+                eprintln!("[GET_DAMAGE] Fixed damage move (damage={}), returning {}", damage_num, damage_num);
+                return Some(*damage_num);
+            }
         }
-        eprintln!("[GET_DAMAGE] Fixed damage move (damage={}), returning {}", damage_num, damage_num);
-        return Some(damage_num);
     }
 
     // Use active_move.base_power directly

@@ -16,6 +16,7 @@ mod deserialize_ohko;
 mod deserialize_self_switch;
 mod deserialize_self_boost;
 mod deserialize_ignore_immunity;
+mod deserialize_damage;
 mod deserialize_move_flags;
 mod new;
 mod load_from_json;
@@ -49,6 +50,7 @@ pub use deserialize_ohko::deserialize_ohko;
 pub use deserialize_self_switch::deserialize_self_switch;
 pub use deserialize_self_boost::deserialize_self_boost;
 pub use deserialize_ignore_immunity::deserialize_ignore_immunity;
+pub use deserialize_damage::deserialize_damage;
 pub use deserialize_move_flags::deserialize_move_flags;
 
 /// Gender ratio structure
@@ -646,8 +648,8 @@ pub struct MoveData {
     pub ignore_immunity: Option<crate::battle_actions::IgnoreImmunity>,
     /// Fixed damage amount (like "level" for Seismic Toss)
     /// JavaScript: damage?: number | string | boolean
-    #[serde(default)]
-    pub damage: Option<serde_json::Value>,
+    #[serde(default, deserialize_with = "deserialize_damage")]
+    pub damage: Option<crate::battle_actions::Damage>,
     /// Forces target to switch out
     /// JavaScript: forceSwitch?: boolean
     #[serde(rename = "forceSwitch", default)]

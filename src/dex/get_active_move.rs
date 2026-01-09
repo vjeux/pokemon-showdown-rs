@@ -51,7 +51,7 @@ impl Dex {
             target: move_data.target.clone(),
             flags: move_data.flags.clone(),
             real_move: move_data.real_move.clone(),
-            damage: None,
+            damage: move_data.damage.clone(),
             contest_type: move_data.contest_type.clone(),
             no_pp_boosts: move_data.no_pp_boosts,
             is_z: move_data.is_z.clone(),

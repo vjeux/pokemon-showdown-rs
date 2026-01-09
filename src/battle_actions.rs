@@ -305,6 +305,16 @@ pub enum IgnoreImmunity {
     Specific(HashMap<String, bool>),
 }
 
+/// Fixed damage value for moves
+/// JavaScript: damage?: number | 'level' | false | null
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub enum Damage {
+    /// Fixed numeric damage
+    Fixed(i32),
+    /// Damage equals user's level (Seismic Toss, Night Shade)
+    Level,
+}
+
 /// Active move state - represents a move being executed
 /// Equivalent to ActiveMove in battle-actions.ts
 #[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
@@ -394,8 +404,7 @@ pub struct ActiveMove {
     pub real_move: Option<String>,
     /// Fixed damage value
     /// JavaScript: damage?: number | 'level' | false | null
-    /// TODO: Rust uses Option<i32>, cannot represent 'level' or false variants
-    pub damage: Option<i32>,
+    pub damage: Option<Damage>,
     /// Contest type
     /// JavaScript: contestType?: string
     pub contest_type: Option<String>,
