@@ -4,302 +4,386 @@ use crate::battle_queue::*;
 
 impl BattleQueue {
     /// Resolve an action into a list of actions to execute
-    /// Equivalent to battle-queue.ts resolveAction() (lines 233-342)
+    /// Equivalent to battle-queue.ts resolveAction() (lines 166-272)
     ///
-    /// JavaScript equivalent:
-    /// ```javascript
-    /// resolveAction(action: ActionChoice, midTurn = false): Action[]
-    /// ```
-    ///
-    /// This method takes an action choice and converts it into an ordered list of actions.
-    /// For example, a move action with mega evolution becomes two actions:
-    /// 1. megaEvo action (order 104)
-    /// 2. move action (order 200)
-    ///
-    /// Parameters:
-    /// - action: The action to resolve
-    /// - battle: Mutable reference to battle (needed for runEvent, getActionSpeed, etc.)
-    /// - mid_turn: Whether this is mid-turn resolution (skips beforeTurnMove/mega/etc.)
+    // /**
+    //  * Takes an ActionChoice, and fills it out into a full Action object.
+    //  *
+    //  * Returns an array of Actions because some ActionChoices (like mega moves)
+    //  * resolve to two Actions (mega evolution + use move)
+    //  */
+    // resolveAction(action: ActionChoice, midTurn = false): Action[] {
+    //     if (!action) throw new Error(`Action not passed to resolveAction`);
+    //     if (action.choice === 'pass') return [];
+    //     const actions = [action];
+    //
+    //     if (!action.side && action.pokemon) action.side = action.pokemon.side;
+    //     if (!action.move && action.moveid) action.move = this.battle.dex.getActiveMove(action.moveid);
+    //     if (!action.order) {
+    //         const orders: { [choice: string]: number } = {
+    //             team: 1,
+    //             start: 2,
+    //             instaswitch: 3,
+    //             beforeTurn: 4,
+    //             beforeTurnMove: 5,
+    //             revivalblessing: 6,
+    //
+    //             runSwitch: 101,
+    //             switch: 103,
+    //             megaEvo: 104,
+    //             megaEvoX: 104,
+    //             megaEvoY: 104,
+    //             runDynamax: 105,
+    //             terastallize: 106,
+    //             priorityChargeMove: 107,
+    //
+    //             shift: 200,
+    //             // default is 200 (for moves)
+    //
+    //             residual: 300,
+    //         };
+    //         if (action.choice in orders) {
+    //             action.order = orders[action.choice];
+    //         } else {
+    //             action.order = 200;
+    //             if (!['move', 'event'].includes(action.choice)) {
+    //                 throw new Error(`Unexpected orderless action ${action.choice}`);
+    //             }
+    //         }
+    //     }
+    //     if (!midTurn) {
+    //         if (action.choice === 'move') {
+    //             if (!action.maxMove && !action.zmove && action.move.beforeTurnCallback) {
+    //                 actions.unshift(...this.resolveAction({
+    //                     choice: 'beforeTurnMove', pokemon: action.pokemon, move: action.move, targetLoc: action.targetLoc,
+    //                 }));
+    //             }
+    //             if (action.mega && !action.pokemon.isSkyDropped()) {
+    //                 actions.unshift(...this.resolveAction({
+    //                     choice: 'megaEvo',
+    //                     pokemon: action.pokemon,
+    //                 }));
+    //             }
+    //             if (action.megax && !action.pokemon.isSkyDropped()) {
+    //                 actions.unshift(...this.resolveAction({
+    //                     choice: 'megaEvoX',
+    //                     pokemon: action.pokemon,
+    //                 }));
+    //             }
+    //             if (action.megay && !action.pokemon.isSkyDropped()) {
+    //                 actions.unshift(...this.resolveAction({
+    //                     choice: 'megaEvoY',
+    //                     pokemon: action.pokemon,
+    //                 }));
+    //             }
+    //             if (action.terastallize && !action.pokemon.terastallized) {
+    //                 actions.unshift(...this.resolveAction({
+    //                     choice: 'terastallize',
+    //                     pokemon: action.pokemon,
+    //                 }));
+    //             }
+    //             if (action.maxMove && !action.pokemon.volatiles['dynamax']) {
+    //                 actions.unshift(...this.resolveAction({
+    //                     choice: 'runDynamax',
+    //                     pokemon: action.pokemon,
+    //                 }));
+    //             }
+    //             if (!action.maxMove && !action.zmove && action.move.priorityChargeCallback) {
+    //                 actions.unshift(...this.resolveAction({
+    //                     choice: 'priorityChargeMove',
+    //                     pokemon: action.pokemon,
+    //                     move: action.move,
+    //                 }));
+    //             }
+    //             action.fractionalPriority = this.battle.runEvent('FractionalPriority', action.pokemon, null, action.move, 0);
+    //         } else if (['switch', 'instaswitch'].includes(action.choice)) {
+    //             if (typeof action.pokemon.switchFlag === 'string') {
+    //                 action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
+    //             }
+    //             action.pokemon.switchFlag = false;
+    //         }
+    //     }
+    //
+    //     const deferPriority = this.battle.gen === 7 && action.mega && action.mega !== 'done';
+    //     if (action.move) {
+    //         let target = null;
+    //         action.move = this.battle.dex.getActiveMove(action.move);
+    //
+    //         if (!action.targetLoc) {
+    //             target = this.battle.getRandomTarget(action.pokemon, action.move);
+    //             // TODO: what actually happens here?
+    //             if (target) action.targetLoc = action.pokemon.getLocOf(target);
+    //         }
+    //         action.originalTarget = action.pokemon.getAtLoc(action.targetLoc);
+    //     }
+    //     if (!deferPriority) this.battle.getActionSpeed(action);
+    //     return actions as any;
+    // }
     ///
     /// Returns: Vec of actions to add to the queue
     pub fn resolve_action(
-        action: Action,
+        mut action: Action,
         battle: &mut Battle,
         mid_turn: bool,
     ) -> Vec<Action> {
-        // if (!action) throw new Error(`Action not passed to resolveAction`);
-        // if (action.choice === 'pass') return [];
-        match &action {
-            Action::Field(field_action) if field_action.choice == FieldActionType::Pass => {
+        // JS: if (action.choice === 'pass') return [];
+        if let Action::Field(ref field_action) = action {
+            if field_action.choice == FieldActionType::Pass {
                 return vec![];
             }
-            _ => {}
         }
 
-        let mut actions = vec![action.clone()];
+        // JS: const actions = [action];
+        // We'll build the actions list and unshift additional actions at the end
+        let mut prefix_actions: Vec<Action> = Vec::new();
 
-        // Build list of actions to prepend (in reverse order since we'll insert at position 0)
-        let mut actions_to_prepend: Vec<Action> = vec![];
-
-        // Process based on action type
-        match &action {
-            Action::Move(move_action) => {
-                // if (!midTurn) {
-                if !mid_turn {
-                    // if (action.choice === 'move') {
-                    if move_action.choice == MoveActionType::Move {
-                        let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
-
-                        // Get move data
-                        let (has_before_turn_callback, has_priority_charge_callback, is_max, is_z) = {
-                            let move_id_str = move_action.move_id.as_str();
-                            (
-                                // Inline check for beforeTurnCallback (counter, mirrorcoat, pursuit)
-                                matches!(move_id_str, "counter" | "mirrorcoat" | "pursuit"),
-                                // Inline check for priorityChargeCallback (beakblast, chillyreception, focuspunch, shelltrap)
-                                matches!(move_id_str, "beakblast" | "chillyreception" | "focuspunch" | "shelltrap"),
-                                move_action.max_move.is_some(),
-                                move_action.zmove.is_some(),
-                            )
-                        };
-
-                        // if (!action.maxMove && !action.zmove && action.move.priorityChargeCallback) {
-                        //     actions.unshift(...this.resolveAction({
-                        //         choice: 'priorityChargeMove',
-                        //         pokemon: action.pokemon,
-                        //         move: action.move,
-                        //     }));
-                        // }
-                        if !is_max && !is_z && has_priority_charge_callback {
-                            let priority_charge_action = Action::Move(MoveAction {
-                                choice: MoveActionType::PriorityChargeMove,
-                                order: 107,
-                                priority: move_action.priority,
-                                fractional_priority: 0.0,
-                                speed: move_action.speed,
-                                sub_order: 0,
-                                effect_order: 0,
-                                pokemon_index: move_action.pokemon_index,
-                                side_index: move_action.side_index,
-                                target_loc: move_action.target_loc,
-                                original_target: move_action.original_target,
-                                move_id: move_action.move_id.clone(),
-                                mega: false,
-                                zmove: None,
-                                max_move: None,
-                                source_effect: None,
-                                terastallize: None,
-                                move_priority_modified: None,
-                                prankster_boosted: false,
-                            });
-                            actions_to_prepend.push(priority_charge_action);
-                        }
-
-                        // if (action.maxMove && !action.pokemon.volatiles['dynamax']) {
-                        //     actions.unshift(...this.resolveAction({
-                        //         choice: 'runDynamax',
-                        //         pokemon: action.pokemon,
-                        //     }));
-                        // }
-                        if is_max {
-                            let has_dynamax = {
-                                let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1);
-                                pokemon
-                                    .map(|p| p.volatiles.contains_key(&ID::from("dynamax")))
-                                    .unwrap_or(false)
-                            };
-                            if !has_dynamax {
-                                let dynamax_action = Action::Pokemon(PokemonAction {
-                                    choice: PokemonActionType::RunDynamax,
-                                    order: 105,
-                                    priority: 0,
-                                    speed: move_action.speed,
-                                    sub_order: 0,
-                                    effect_order: 0,
-                                    pokemon_index: move_action.pokemon_index,
-                                    side_index: move_action.side_index,
-                                    event: None,
-                                    dragger: None,
-                                });
-                                actions_to_prepend.push(dynamax_action);
-                            }
-                        }
-
-                        // if (action.terastallize && !action.pokemon.terastallized) {
-                        //     actions.unshift(...this.resolveAction({
-                        //         choice: 'terastallize',
-                        //         pokemon: action.pokemon,
-                        //     }));
-                        // }
-                        let is_terastallized = {
-                            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1);
-                            pokemon.map(|p| p.terastallized.is_some()).unwrap_or(false)
-                        };
-                        if move_action.terastallize.is_some() && !is_terastallized {
-                            let tera_action = Action::Pokemon(PokemonAction {
-                                choice: PokemonActionType::Terastallize,
-                                order: 106,
-                                priority: 0,
-                                speed: move_action.speed,
-                                sub_order: 0,
-                                effect_order: 0,
-                                pokemon_index: move_action.pokemon_index,
-                                side_index: move_action.side_index,
-                                event: None,
-                                dragger: None,
-                            });
-                            actions_to_prepend.push(tera_action);
-                        }
-
-                        // if (action.mega && !action.pokemon.isSkyDropped()) {
-                        //     actions.unshift(...this.resolveAction({
-                        //         choice: 'megaEvo',
-                        //         pokemon: action.pokemon,
-                        //     }));
-                        // }
-                        if move_action.mega && !Pokemon::is_sky_dropped(battle, pokemon_pos) {
-                            let mega_action = Action::Pokemon(PokemonAction {
-                                choice: PokemonActionType::MegaEvo,
-                                order: 104,
-                                priority: 0,
-                                speed: move_action.speed,
-                                sub_order: 0,
-                                effect_order: 0,
-                                pokemon_index: move_action.pokemon_index,
-                                side_index: move_action.side_index,
-                                event: None,
-                                dragger: None,
-                            });
-                            actions_to_prepend.push(mega_action);
-                        }
-
-                        // if (!action.maxMove && !action.zmove && action.move.beforeTurnCallback) {
-                        //     actions.unshift(...this.resolveAction({
-                        //         choice: 'beforeTurnMove', pokemon: action.pokemon, move: action.move, targetLoc: action.targetLoc,
-                        //     }));
-                        // }
-                        if !is_max && !is_z && has_before_turn_callback {
-                            let before_turn_action = Action::Move(MoveAction {
-                                choice: MoveActionType::BeforeTurnMove,
-                                order: 5, // beforeTurnMove order
-                                priority: move_action.priority,
-                                fractional_priority: 0.0,
-                                speed: move_action.speed,
-                                sub_order: 0,
-                                effect_order: 0,
-                                pokemon_index: move_action.pokemon_index,
-                                side_index: move_action.side_index,
-                                target_loc: move_action.target_loc,
-                                original_target: move_action.original_target,
-                                move_id: move_action.move_id.clone(),
-                                mega: false,
-                                zmove: None,
-                                max_move: None,
-                                source_effect: None,
-                                terastallize: None,
-                                move_priority_modified: None,
-                                prankster_boosted: false,
-                            });
-                            actions_to_prepend.push(before_turn_action);
-                        }
-
-                        // Insert all prepended actions in reverse order (so they appear in correct order)
-                        for prepended_action in actions_to_prepend.into_iter().rev() {
-                            actions.insert(0, prepended_action);
-                        }
-
-                        // Calculate fractional priority for the main move action
-                        // action.fractionalPriority = this.battle.runEvent('FractionalPriority', action.pokemon, null, action.move, 0);
-                        let fractional_priority = {
-                            let move_id = move_action.move_id.clone();
-                            // JavaScript: action.move is available when runEvent is called
-                            // Set battle.active_move to the action's move before calling run_event
-                            // This makes the move available to ability callbacks like Quick Draw
-                            let active_move_for_priority = battle.dex.get_active_move(move_id.as_str());
-                            let saved_active_move = battle.active_move.take();
-                            battle.active_move = active_move_for_priority;
-
-                            let result = battle.run_event(
-                "FractionalPriority",
-                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
-                                None,
-                                Some(&crate::battle::Effect::move_(move_id)),
-                                crate::event::EventResult::Float(0.0),
-                                false,
-                                false,
-                            );
-
-                            // Restore original active_move
-                            battle.active_move = saved_active_move;
-
-                            match result {
-                                crate::event::EventResult::Float(f) => f,
-                                _ => 0.0,
-                            }
-                        };
-
-                        // Update the main action's fractional priority (it's now at the end of the actions list)
-                        if let Some(Action::Move(main_action)) = actions.last_mut() {
-                            main_action.fractional_priority = fractional_priority;
-                        }
-                    }
-                }
-
-                // Handle target location resolution
-                // This operates on the LAST action (the main move action), not the prepended ones
-                if let Some(Action::Move(move_action)) = actions.last_mut() {
-                    // if (!action.targetLoc) {
-                    //     target = this.battle.getRandomTarget(action.pokemon, action.move);
-                    //     if (target) action.targetLoc = action.pokemon.getLocOf(target);
-                    // }
-                    // action.originalTarget = action.pokemon.getAtLoc(action.targetLoc);
-                    if move_action.target_loc == 0 {
-                        let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
-
-                        // Extract move target before borrowing battle mutably
-                        let move_target = battle.dex.moves().get_by_id(&move_action.move_id)
-                            .map(|m| m.target.clone());
-
-                        if let Some(target_str) = move_target {
-                            // Get random target
-                            let target = battle.get_random_target(
-                                pokemon_pos.0,
-                                pokemon_pos.1,
-                                &target_str,
-                            );
-                            if let Some(target) = target {
-                                // Get target location relative to pokemon
-                                let target_loc = {
-                                    let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1);
-                                    pokemon.map(|p| p.get_loc_of(target.0, target.1, battle.active_per_half)).unwrap_or(0)
-                                };
-
-                                move_action.target_loc = target_loc;
-                                move_action.original_target = Some(target);
-                            }
-                        }
-                    }
-
-                    // Set original target based on target_loc
-                    if move_action.original_target.is_none() {
-                        let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
-                        let target_at_loc = {
-                            let pokemon = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1);
-                            pokemon.and_then(|p| p.get_at_loc(move_action.target_loc, battle.active_per_half))
-                        };
-                        move_action.original_target = target_at_loc;
+        // JS: if (!action.order) { ... }
+        // Set the order based on choice type if not already set
+        match &mut action {
+            Action::Move(ref mut move_action) => {
+                // JS: default is 200 for moves
+                if move_action.order == 0 {
+                    match move_action.choice {
+                        MoveActionType::Move => move_action.order = 200,
+                        MoveActionType::BeforeTurnMove => move_action.order = 5,
+                        MoveActionType::PriorityChargeMove => move_action.order = 107,
                     }
                 }
             }
-            Action::Switch(switch_action) => {
-                // } else if (['switch', 'instaswitch'].includes(action.choice)) {
-                //     if (typeof action.pokemon.switchFlag === 'string') {
-                //         action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
-                //     }
-                //     action.pokemon.switchFlag = false;
-                // }
+            Action::Switch(ref mut switch_action) => {
+                if switch_action.order == 0 {
+                    match switch_action.choice {
+                        SwitchActionType::Switch => switch_action.order = 103,
+                        SwitchActionType::InstaSwitch => switch_action.order = 3,
+                        SwitchActionType::RevivalBlessing => switch_action.order = 6,
+                    }
+                }
+            }
+            Action::Team(_) => {
+                // Order is always 1 for team actions (set via order() method)
+            }
+            Action::Field(ref field_action) => {
+                // Order is set via order() method based on choice type
+                // start: 2, beforeTurn: 4, pass: 200, residual: 300
+                match field_action.choice {
+                    FieldActionType::Start => {} // order 2
+                    FieldActionType::BeforeTurn => {} // order 4
+                    FieldActionType::Pass => {} // order 200
+                    FieldActionType::Residual => {} // order 300
+                }
+            }
+            Action::Pokemon(ref mut poke_action) => {
+                if poke_action.order == 0 {
+                    match poke_action.choice {
+                        PokemonActionType::Start => poke_action.order = 2,
+                        PokemonActionType::BeforeTurn => poke_action.order = 4,
+                        PokemonActionType::RunSwitch => poke_action.order = 101,
+                        PokemonActionType::MegaEvo
+                        | PokemonActionType::MegaEvoX
+                        | PokemonActionType::MegaEvoY => poke_action.order = 104,
+                        PokemonActionType::RunDynamax => poke_action.order = 105,
+                        PokemonActionType::Terastallize => poke_action.order = 106,
+                        PokemonActionType::Shift => poke_action.order = 200,
+                        PokemonActionType::Event => poke_action.order = 200,
+                        PokemonActionType::Residual => poke_action.order = 300,
+                    }
+                }
+            }
+        }
 
-                if !mid_turn {
+        // JS: if (!midTurn) { ... }
+        if !mid_turn {
+            if let Action::Move(ref mut move_action) = action {
+                let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
+                let move_id = move_action.move_id.clone();
+
+                // Get the move data for checking callbacks
+                let active_move = battle.dex.get_active_move(move_id.as_str());
+
+                // JS: if (!action.maxMove && !action.zmove && action.move.beforeTurnCallback) {
+                //         actions.unshift(...this.resolveAction({
+                //             choice: 'beforeTurnMove', pokemon: action.pokemon, move: action.move, targetLoc: action.targetLoc,
+                //         }));
+                //     }
+                if move_action.max_move.is_none()
+                    && move_action.zmove.is_none()
+                    && crate::data::move_callbacks::has_before_turn_callback(active_move.as_ref())
+                {
+                    let before_turn_action = Action::Move(MoveAction {
+                        choice: MoveActionType::BeforeTurnMove,
+                        order: 5,
+                        priority: 0,
+                        fractional_priority: 0.0,
+                        speed: 0.0,
+                        sub_order: 0,
+                        effect_order: 0,
+                        side_index: move_action.side_index,
+                        pokemon_index: move_action.pokemon_index,
+                        target_loc: move_action.target_loc,
+                        original_target: None,
+                        move_id: move_action.move_id.clone(),
+                        mega: false,
+                        zmove: None,
+                        max_move: None,
+                        source_effect: None,
+                        terastallize: None,
+                        move_priority_modified: None,
+                        prankster_boosted: false,
+                    });
+                    let resolved = BattleQueue::resolve_action(before_turn_action, battle, mid_turn);
+                    prefix_actions.extend(resolved);
+                }
+
+                // JS: if (action.mega && !action.pokemon.isSkyDropped()) {
+                //         actions.unshift(...this.resolveAction({
+                //             choice: 'megaEvo',
+                //             pokemon: action.pokemon,
+                //         }));
+                //     }
+                if move_action.mega && !Pokemon::is_sky_dropped(battle, pokemon_pos) {
+                    let mega_action = Action::Pokemon(PokemonAction {
+                        choice: PokemonActionType::MegaEvo,
+                        order: 104,
+                        priority: 0,
+                        speed: 0.0,
+                        sub_order: 0,
+                        effect_order: 0,
+                        side_index: move_action.side_index,
+                        pokemon_index: move_action.pokemon_index,
+                        event: None,
+                        dragger: None,
+                    });
+                    let resolved = BattleQueue::resolve_action(mega_action, battle, mid_turn);
+                    prefix_actions.extend(resolved);
+                }
+
+                // JS: if (action.terastallize && !action.pokemon.terastallized) {
+                //         actions.unshift(...this.resolveAction({
+                //             choice: 'terastallize',
+                //             pokemon: action.pokemon,
+                //         }));
+                //     }
+                if move_action.terastallize.is_some() {
+                    // Check if the pokemon is already terastallized
+                    let is_terastallized = battle
+                        .pokemon_at(pokemon_pos.0, pokemon_pos.1)
+                        .map(|p| p.terastallized.is_some())
+                        .unwrap_or(false);
+
+                    if !is_terastallized {
+                        let tera_action = Action::Pokemon(PokemonAction {
+                            choice: PokemonActionType::Terastallize,
+                            order: 106,
+                            priority: 0,
+                            speed: 0.0,
+                            sub_order: 0,
+                            effect_order: 0,
+                            side_index: move_action.side_index,
+                            pokemon_index: move_action.pokemon_index,
+                            event: None,
+                            dragger: None,
+                        });
+                        let resolved = BattleQueue::resolve_action(tera_action, battle, mid_turn);
+                        prefix_actions.extend(resolved);
+                    }
+                }
+
+                // JS: if (action.maxMove && !action.pokemon.volatiles['dynamax']) {
+                //         actions.unshift(...this.resolveAction({
+                //             choice: 'runDynamax',
+                //             pokemon: action.pokemon,
+                //         }));
+                //     }
+                if move_action.max_move.is_some() {
+                    // Check if the pokemon already has dynamax volatile
+                    let has_dynamax = battle
+                        .pokemon_at(pokemon_pos.0, pokemon_pos.1)
+                        .map(|p| p.has_volatile(&ID::new("dynamax")))
+                        .unwrap_or(false);
+
+                    if !has_dynamax {
+                        let dynamax_action = Action::Pokemon(PokemonAction {
+                            choice: PokemonActionType::RunDynamax,
+                            order: 105,
+                            priority: 0,
+                            speed: 0.0,
+                            sub_order: 0,
+                            effect_order: 0,
+                            side_index: move_action.side_index,
+                            pokemon_index: move_action.pokemon_index,
+                            event: None,
+                            dragger: None,
+                        });
+                        let resolved = BattleQueue::resolve_action(dynamax_action, battle, mid_turn);
+                        prefix_actions.extend(resolved);
+                    }
+                }
+
+                // JS: if (!action.maxMove && !action.zmove && action.move.priorityChargeCallback) {
+                //         actions.unshift(...this.resolveAction({
+                //             choice: 'priorityChargeMove',
+                //             pokemon: action.pokemon,
+                //             move: action.move,
+                //         }));
+                //     }
+                if move_action.max_move.is_none()
+                    && move_action.zmove.is_none()
+                    && crate::data::move_callbacks::has_priority_charge_callback(active_move.as_ref())
+                {
+                    let priority_charge_action = Action::Move(MoveAction {
+                        choice: MoveActionType::PriorityChargeMove,
+                        order: 107,
+                        priority: 0,
+                        fractional_priority: 0.0,
+                        speed: 0.0,
+                        sub_order: 0,
+                        effect_order: 0,
+                        side_index: move_action.side_index,
+                        pokemon_index: move_action.pokemon_index,
+                        target_loc: 0,
+                        original_target: None,
+                        move_id: move_action.move_id.clone(),
+                        mega: false,
+                        zmove: None,
+                        max_move: None,
+                        source_effect: None,
+                        terastallize: None,
+                        move_priority_modified: None,
+                        prankster_boosted: false,
+                    });
+                    let resolved =
+                        BattleQueue::resolve_action(priority_charge_action, battle, mid_turn);
+                    prefix_actions.extend(resolved);
+                }
+
+                // JS: action.fractionalPriority = this.battle.runEvent('FractionalPriority', action.pokemon, null, action.move, 0);
+                // Run FractionalPriority event to get fractional priority modifier
+                let effect = Effect::move_(move_id.clone());
+                let frac_result = battle.run_event(
+                    "FractionalPriority",
+                    Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
+                    None,
+                    Some(&effect),
+                    crate::event::EventResult::Number(0),
+                    false,
+                    false,
+                );
+                if let crate::event::EventResult::Number(frac_priority) = frac_result {
+                    // Need to re-borrow the move action since we used battle
+                    if let Action::Move(ref mut m) = action {
+                        m.fractional_priority = frac_priority as f64;
+                    }
+                }
+            } else if let Action::Switch(ref mut switch_action) = action {
+                // JS: else if (['switch', 'instaswitch'].includes(action.choice)) {
+                //         if (typeof action.pokemon.switchFlag === 'string') {
+                //             action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
+                //         }
+                //         action.pokemon.switchFlag = false;
+                //     }
+                if switch_action.choice == SwitchActionType::Switch
+                    || switch_action.choice == SwitchActionType::InstaSwitch
+                {
                     // Note: switch_action.pokemon_index is the active slot index (0 for active[0]),
                     // not the pokemon array index. We need to convert it.
                     let side_idx = switch_action.side_index;
@@ -311,46 +395,87 @@ impl BattleQueue {
                         .and_then(|&opt_idx| opt_idx);
 
                     if let Some(poke_idx) = actual_poke_idx {
-                        // Get switch flag
-                        let switch_flag = {
-                            let pokemon = battle.pokemon_at(side_idx, poke_idx);
-                            pokemon.and_then(|p| p.switch_flag.clone())
+                        // Check if switchFlag is a string (move ID)
+                        // JS: if (typeof action.pokemon.switchFlag === 'string')
+                        let switch_flag_move = {
+                            if let Some(pokemon) = battle.pokemon_at(side_idx, poke_idx) {
+                                // switch_flag is Option<String> - Some(move_id) means a move forced the switch
+                                pokemon.switch_flag.clone()
+                            } else {
+                                None
+                            }
                         };
 
-                        // Set source effect if switchFlag is a non-empty move ID
-                        // Need to use actions.last_mut() to get mutable reference
-                        if let Some(flag_str) = switch_flag {
-                            if !flag_str.is_empty() {
-                                if let Some(Action::Switch(switch_action_mut)) = actions.last_mut() {
-                                    switch_action_mut.source_effect = Some(Effect::move_(flag_str.as_str()));
-                                }
+                        // JS: action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
+                        if let Some(move_id) = switch_flag_move {
+                            if !move_id.is_empty() {
+                                switch_action.source_effect = Some(Effect::move_(ID::new(&move_id)));
                             }
                         }
 
-                        // Clear switch flag
+                        // JS: action.pokemon.switchFlag = false;
                         if let Some(pokemon) = battle.pokemon_at_mut(side_idx, poke_idx) {
                             pokemon.switch_flag = None;
                         }
                     }
                 }
             }
-            _ => {}
         }
 
-        // const deferPriority = this.battle.gen === 7 && action.mega && action.mega !== 'done';
-        // if (!deferPriority) this.battle.getActionSpeed(action);
-        let defer_priority = match actions.last() {
-            Some(Action::Move(move_action)) => battle.gen == 7 && move_action.mega,
-            _ => false,
+        // JS: const deferPriority = this.battle.gen === 7 && action.mega && action.mega !== 'done';
+        let defer_priority = if let Action::Move(ref move_action) = action {
+            battle.gen == 7 && move_action.mega
+            // Note: In JS, mega can be 'done' after mega evolution completes
+            // In Rust, we use a simple bool, so we just check if it's true
+            // The 'done' check would need to be handled differently if needed
+        } else {
+            false
         };
 
-        if !defer_priority {
-            // Get speed for each action
-            for action in actions.iter_mut() {
-                battle.get_action_speed(action);
+        // JS: if (action.move) { ... }
+        // Handle move target resolution
+        if let Action::Move(ref mut move_action) = action {
+            let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
+
+            // JS: if (!action.targetLoc) {
+            //         target = this.battle.getRandomTarget(action.pokemon, action.move);
+            //         if (target) action.targetLoc = action.pokemon.getLocOf(target);
+            //     }
+            if move_action.target_loc == 0 {
+                // Get move target type from dex
+                let move_target = battle
+                    .dex
+                    .moves()
+                    .get(move_action.move_id.as_str())
+                    .map(|m| m.target.clone())
+                    .unwrap_or_else(|| "normal".to_string());
+
+                if let Some((target_side, target_idx)) =
+                    battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &move_target)
+                {
+                    // Get the location of the target relative to the user
+                    if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        move_action.target_loc =
+                            pokemon.get_loc_of(target_side, target_idx, battle.active_per_half);
+                    }
+                }
+            }
+
+            // JS: action.originalTarget = action.pokemon.getAtLoc(action.targetLoc);
+            if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                move_action.original_target =
+                    pokemon.get_at_loc(move_action.target_loc, battle.active_per_half);
             }
         }
 
-        actions
+        // JS: if (!deferPriority) this.battle.getActionSpeed(action);
+        if !defer_priority {
+            battle.get_action_speed(&mut action);
+        }
+
+        // JS: return actions as any;
+        // Prepend prefix_actions to the main action
+        prefix_actions.push(action);
+        prefix_actions
     }
 }
