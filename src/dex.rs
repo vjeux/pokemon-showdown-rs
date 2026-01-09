@@ -13,6 +13,7 @@ mod default_crit_ratio;
 mod deserialize_accuracy;
 mod deserialize_is_max;
 mod deserialize_ohko;
+mod deserialize_self_switch;
 mod deserialize_move_flags;
 mod new;
 mod load_from_json;
@@ -43,6 +44,7 @@ pub use default_crit_ratio::default_crit_ratio;
 pub use deserialize_accuracy::deserialize_accuracy;
 pub use deserialize_is_max::deserialize_is_max;
 pub use deserialize_ohko::deserialize_ohko;
+pub use deserialize_self_switch::deserialize_self_switch;
 pub use deserialize_move_flags::deserialize_move_flags;
 
 /// Gender ratio structure
@@ -616,9 +618,8 @@ pub struct MoveData {
     pub slot_condition: Option<String>,
     /// Self-switch flag (U-turn, Baton Pass, etc.)
     /// JavaScript: selfSwitch?: boolean | string
-    /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses boolean | string union
-    #[serde(rename = "selfSwitch", default)]
-    pub self_switch: Option<serde_json::Value>,
+    #[serde(rename = "selfSwitch", default, deserialize_with = "deserialize_self_switch")]
+    pub self_switch: Option<String>,
     /// Ignore target's ability
     /// JavaScript: ignoreAbility?: boolean
     #[serde(rename = "ignoreAbility", default)]

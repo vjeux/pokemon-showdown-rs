@@ -162,8 +162,8 @@ pub fn switch_in(
             let switch_copy_flag: Option<String> = if let Some(effect_id) = source_effect {
                 // Check if effect is a move and has selfSwitch property
                 if let Some(move_data) = battle.dex.moves().get(effect_id.as_str()) {
-                    // self_switch is Option<Value>, extract string if present
-                    move_data.self_switch.as_ref().and_then(|v| v.as_str()).map(|s| s.to_string())
+                    // self_switch is now Option<String>
+                    move_data.self_switch.clone()
                 } else {
                     None
                 }
