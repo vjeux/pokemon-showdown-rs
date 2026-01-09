@@ -541,9 +541,13 @@ pub fn dispatch_on_modify_atk(
     active_move: Option<&ActiveMove>,
 ) -> EventResult {
     use crate::data::ability_callbacks::flashfire;
+    use crate::data::ability_callbacks::protosynthesis;
+    use crate::data::ability_callbacks::quarkdrive;
 
     match condition_id {
         "flashfire" => flashfire::condition::on_modify_atk(battle, atk, pokemon_pos, target_pos, active_move),
+        "protosynthesis" => protosynthesis::condition::on_modify_atk(battle, atk, pokemon_pos, target_pos, active_move),
+        "quarkdrive" => quarkdrive::condition::on_modify_atk(battle, atk, pokemon_pos, target_pos, active_move),
         _ => EventResult::Continue
     }
 }
