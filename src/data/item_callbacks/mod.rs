@@ -1434,7 +1434,16 @@ pub fn dispatch_on_take_item(
         "zapplate" => zapplate::on_take_item(battle, item_pos, pokemon_pos, source_pos),
         "zeraorite" => zeraorite::on_take_item(battle, item_pos, pokemon_pos, source_pos),
         "zygardite" => zygardite::on_take_item(battle, item_pos, pokemon_pos, source_pos),
-        _ => EventResult::Continue,
+        _ => {
+            // Z-crystals (items with zMove) cannot be removed
+            // Check if this item is a Z-crystal by looking up its z_move field
+            if let Some(item_data) = battle.dex.items().get_by_id(&item_id.into()) {
+                if item_data.z_move.is_some() {
+                    return EventResult::Boolean(false);
+                }
+            }
+            EventResult::Continue
+        }
     }
 }
 //   onTerrainChange(pokemon)
