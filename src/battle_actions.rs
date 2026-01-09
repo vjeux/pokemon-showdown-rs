@@ -394,8 +394,7 @@ pub struct ActiveMove {
     pub real_move: Option<String>,
     /// Fixed damage value
     /// JavaScript: damage?: number | 'level' | false | null
-    /// TODO: Rust uses Option<i32>, cannot represent 'level' or false variants
-    pub damage: Option<i32>,
+    pub damage: Option<crate::dex::MoveDamage>,
     /// Contest type
     /// JavaScript: contestType?: string
     pub contest_type: Option<String>,

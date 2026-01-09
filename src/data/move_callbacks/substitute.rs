@@ -267,7 +267,7 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _active_move: Option<&crate::battle_actions::ActiveMove>,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::battle_actions::BattleActions;
         use crate::dex_data::ID;
@@ -287,34 +287,23 @@ pub mod condition {
             return EventResult::Continue;
         }
 
-        let (bypasses_sub, infiltrates, is_ohko, move_id) = match &battle.active_move {
-            Some(m) => {
-                let bypasses = m.flags.bypasssub;
-                eprintln!("[SUBSTITUTE onTryPrimaryHit] move={}, bypasssub={}, sound={}, infiltrates={}",
-                    m.name, m.flags.bypasssub, m.flags.sound, m.infiltrates);
-                (
-                    bypasses,
-                    m.infiltrates,
-                    m.ohko.clone(),
-                    m.id.clone(),
-                )
-            }
+        let active_move = match active_move {
+            Some(m) => m,
             None => return EventResult::Continue,
         };
 
-        if bypasses_sub || infiltrates {
+        eprintln!("[SUBSTITUTE onTryPrimaryHit] move={}, bypasssub={}, sound={}, infiltrates={}",
+            active_move.name, active_move.flags.bypasssub, active_move.flags.sound, active_move.infiltrates);
+
+        if active_move.flags.bypasssub || active_move.infiltrates {
             return EventResult::Continue;
         }
 
         // Get recoil and drain from move data
-        let (recoil, drain) = {
-            battle.dex.moves.get(&move_id)
-                .map(|m| (m.recoil, m.drain))
-                .unwrap_or((None, None))
-        };
+        let (recoil, drain) = (active_move.recoil, active_move.drain);
 
         // let damage = this.actions.getDamage(source, target, move);
-        let damage = match crate::battle_actions::get_damage(battle, source, target, &move_id) {
+        let damage = match crate::battle_actions::get_damage(battle, source, target, active_move, false) {
             Some(d) => d,
             None => {
                 // if (!damage && damage !== 0)
@@ -371,7 +360,7 @@ pub mod condition {
 
         if new_sub_hp <= 0 {
             // if (move.ohko) this.add('-ohko');
-            if is_ohko.is_some() {
+            if active_move.ohko.is_some() {
                 battle.add("-ohko", &[]);
             }
 
@@ -398,7 +387,7 @@ pub mod condition {
         }
 
         // if (move.recoil || move.id === 'chloroblast')
-        if recoil.is_some() || move_id.as_str() == "chloroblast" {
+        if recoil.is_some() || active_move.id.as_str() == "chloroblast" {
             // this.damage(this.actions.calcRecoilDamage(damage, move, source), source, target, 'recoil');
             let source_max_hp = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -409,7 +398,7 @@ pub mod condition {
             };
 
             let recoil_damage =
-                BattleActions::calc_recoil_damage(actual_damage, move_id.as_str(), recoil, source_max_hp);
+                BattleActions::calc_recoil_damage(actual_damage, active_move.id.as_str(), recoil, source_max_hp);
 
             battle.damage(recoil_damage, Some(source), Some(target), Some(&Effect::move_(ID::from("recoil"))), false);
         }
@@ -422,10 +411,10 @@ pub mod condition {
         }
 
         // this.singleEvent('AfterSubDamage', move, null, target, source, move, damage);
-        battle.single_event("AfterSubDamage", &crate::battle::Effect::move_(move_id.clone()), None, Some(target), Some(source), Some(&Effect::move_(move_id.clone())), Some(EventResult::Number(actual_damage)));
+        battle.single_event("AfterSubDamage", &crate::battle::Effect::move_(active_move.id.clone()), None, Some(target), Some(source), Some(&Effect::move_(active_move.id.clone())), Some(EventResult::Number(actual_damage)));
 
         // this.runEvent('AfterSubDamage', target, source, move, damage);
-        battle.run_event("AfterSubDamage", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&Effect::move_(move_id.clone())), EventResult::Number(actual_damage), false, false);
+        battle.run_event("AfterSubDamage", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(actual_damage), false, false);
 
         // return this.HIT_SUBSTITUTE;
         EventResult::HitSubstitute

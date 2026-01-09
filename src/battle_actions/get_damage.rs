@@ -8,7 +8,7 @@
 // 		suppressMessages = false
 // 	): number | undefined | null | false {
 // 		if (typeof move === 'string') move = this.dex.getActiveMove(move);
-// 
+//
 // 		if (typeof move === 'number') {
 // 			const basePower = move;
 // 			move = new Dex.Move({
@@ -19,11 +19,11 @@
 // 			}) as ActiveMove;
 // 			move.hit = 0;
 // 		}
-// 
+//
 // 		if (!target.runImmunity(move, !suppressMessages)) {
 // 			return false;
 // 		}
-// 
+//
 // 		if (move.ohko) return this.battle.gen === 3 ? target.hp : target.maxhp;
 // 		if (move.damageCallback) return move.damageCallback.call(this.battle, source, target);
 // 		if (move.damage === 'level') {
@@ -31,16 +31,16 @@
 // 		} else if (move.damage) {
 // 			return move.damage;
 // 		}
-// 
+//
 // 		const category = this.battle.getCategory(move);
-// 
+//
 // 		let basePower: number | false | null = move.basePower;
 // 		if (move.basePowerCallback) {
 // 			basePower = move.basePowerCallback.call(this.battle, source, target, move);
 // 		}
 // 		if (!basePower) return basePower === 0 ? undefined : basePower;
 // 		basePower = this.battle.clampIntRange(basePower, 1);
-// 
+//
 // 		let critMult;
 // 		let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
 // 		if (this.battle.gen <= 5) {
@@ -54,7 +54,7 @@
 // 				critMult = [0, 24, 8, 2, 1];
 // 			}
 // 		}
-// 
+//
 // 		const moveHit = target.getMoveHitData(move);
 // 		moveHit.crit = move.willCrit || false;
 // 		if (move.willCrit === undefined) {
@@ -62,21 +62,21 @@
 // 				moveHit.crit = this.battle.randomChance(1, critMult[critRatio]);
 // 			}
 // 		}
-// 
+//
 // 		if (moveHit.crit) {
 // 			moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
 // 		}
-// 
+//
 // 		// happens after crit calculation
 // 		basePower = this.battle.runEvent('BasePower', source, target, move, basePower, true);
-// 
+//
 // 		if (!basePower) return 0;
 // 		basePower = this.battle.clampIntRange(basePower, 1);
 // 		// Hacked Max Moves have 0 base power, even if you Dynamax
 // 		if ((!source.volatiles['dynamax'] && move.isMax) || (move.isMax && this.dex.moves.get(move.baseMove).isMax)) {
 // 			basePower = 0;
 // 		}
-// 
+//
 // 		const dexMove = this.dex.moves.get(move.id);
 // 		if (source.terastallized && (source.terastallized === 'Stellar' ?
 // 			!source.stellarBoostedTypes.includes(move.type) : source.hasType(move.type)) &&
@@ -86,31 +86,31 @@
 // 		) {
 // 			basePower = 60;
 // 		}
-// 
+//
 // 		const level = source.level;
-// 
+//
 // 		const attacker = move.overrideOffensivePokemon === 'target' ? target : source;
 // 		const defender = move.overrideDefensivePokemon === 'source' ? source : target;
-// 
+//
 // 		const isPhysical = move.category === 'Physical';
 // 		let attackStat: StatIDExceptHP = move.overrideOffensiveStat || (isPhysical ? 'atk' : 'spa');
 // 		const defenseStat: StatIDExceptHP = move.overrideDefensiveStat || (isPhysical ? 'def' : 'spd');
-// 
+//
 // 		const statTable = { atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe' };
-// 
+//
 // 		let atkBoosts = attacker.boosts[attackStat];
 // 		let defBoosts = defender.boosts[defenseStat];
-// 
+//
 // 		let ignoreNegativeOffensive = !!move.ignoreNegativeOffensive;
 // 		let ignorePositiveDefensive = !!move.ignorePositiveDefensive;
-// 
+//
 // 		if (moveHit.crit) {
 // 			ignoreNegativeOffensive = true;
 // 			ignorePositiveDefensive = true;
 // 		}
 // 		const ignoreOffensive = !!(move.ignoreOffensive || (ignoreNegativeOffensive && atkBoosts < 0));
 // 		const ignoreDefensive = !!(move.ignoreDefensive || (ignorePositiveDefensive && defBoosts > 0));
-// 
+//
 // 		if (ignoreOffensive) {
 // 			this.battle.debug('Negating (sp)atk boost/penalty.');
 // 			atkBoosts = 0;
@@ -119,25 +119,25 @@
 // 			this.battle.debug('Negating (sp)def boost/penalty.');
 // 			defBoosts = 0;
 // 		}
-// 
+//
 // 		let attack = attacker.calculateStat(attackStat, atkBoosts, 1, source);
 // 		let defense = defender.calculateStat(defenseStat, defBoosts, 1, target);
-// 
+//
 // 		attackStat = (category === 'Physical' ? 'atk' : 'spa');
-// 
+//
 // 		// Apply Stat Modifiers
 // 		attack = this.battle.runEvent('Modify' + statTable[attackStat], source, target, move, attack);
 // 		defense = this.battle.runEvent('Modify' + statTable[defenseStat], target, source, move, defense);
-// 
+//
 // 		if (this.battle.gen <= 4 && ['explosion', 'selfdestruct'].includes(move.id) && defenseStat === 'def') {
 // 			defense = this.battle.clampIntRange(Math.floor(defense / 2), 1);
 // 		}
-// 
+//
 // 		const tr = this.battle.trunc;
-// 
+//
 // 		// int(int(int(2 * L / 5 + 2) * A * P / D) / 50);
 // 		const baseDamage = tr(tr(tr(tr(2 * level / 5 + 2) * basePower * attack) / defense) / 50);
-// 
+//
 // 		// Calculate damage modifiers separately (order differs between generations)
 // 		return this.modifyDamage(baseDamage, source, target, move, suppressMessages);
 // 	}
@@ -146,526 +146,456 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle::Effect;
-use crate::dex_data::StatID;
+use crate::battle_actions::ActiveMove;
+use crate::dex_data::{StatID, BoostID};
+use crate::data::move_callbacks;
 
 /// Get damage for a move
 /// Equivalent to getDamage() in battle-actions.ts:1583
 ///
-/// Returns:
-/// - Some(damage) - amount of damage to deal
-/// - Some(0) - move succeeds but deals 0 damage
-/// - None - move fails (no message)
-///
-/// The false case (with error message) is handled by returning 0 and
-/// letting the caller add the fail message.
+/// JavaScript: getDamage(source, target, move, suppressMessages = false): number | undefined | null | false
+/// Rust: Returns Option<i32> where None represents undefined/null/false
 pub fn get_damage(
     battle: &mut Battle,
     source_pos: (usize, usize),
     target_pos: (usize, usize),
-    move_id: &ID,
+    move_: &ActiveMove,
+    suppress_messages: bool,
 ) -> Option<i32> {
-    // Get move data
-    let move_data = match battle.dex.moves().get(move_id.as_str()) {
-        Some(m) => m.clone(),
-        None => return None,
-    };
+    // JavaScript handles move as string | number | ActiveMove
+    // In Rust, the caller provides the ActiveMove directly
 
-    // Check immunity first
-    // JavaScript:if (source.ignoreImmunity && (source.ignoreImmunity === true || source.ignoreImmunity[type])) return true;
-    // JavaScript: if (!target.runImmunity(move, !suppressMessages)) return false;
+    let move_id = &move_.id;
 
-    // Get the move type from active_move if available (may be modified by abilities like Refrigerate)
-    let move_type = battle.active_move.as_ref()
-        .map(|m| m.move_type.clone())
-        .unwrap_or_else(|| move_data.move_type.clone());
+    // JS: if (!target.runImmunity(move, !suppressMessages)) {
+    // JS:     return false;
+    // JS: }
+    let move_type = &move_.move_type;
 
-    // Check if move ignores immunity (e.g., Z-moves)
-    let ignores_immunity = if let Some(ref ignore_imm) = move_data.ignore_immunity {
-        // Can be true (ignores all immunity) or an object with type names
-        if ignore_imm.as_bool() == Some(true) {
-            true
-        } else if let Some(obj) = ignore_imm.as_object() {
-            obj.contains_key(&move_type)
-        } else {
-            false
+    if !Pokemon::run_immunity(battle, target_pos, move_type, !suppress_messages) {
+        // JS: return false;
+        return None;
+    }
+
+    // JS: if (move.ohko) return this.battle.gen === 3 ? target.hp : target.maxhp;
+    if move_.ohko.is_some() {
+        let target_hp = battle.pokemon_at(target_pos.0, target_pos.1)?.hp;
+        let target_maxhp = battle.pokemon_at(target_pos.0, target_pos.1)?.maxhp;
+        return Some(if battle.gen == 3 { target_hp } else { target_maxhp });
+    }
+
+    // JS: if (move.damageCallback) return move.damageCallback.call(this.battle, source, target);
+    if battle.has_move_id_callback(move_id, "damageCallback") {
+        let damage_callback_result = move_callbacks::dispatch_damage_callback(
+            battle,
+            Some(move_),
+            source_pos,
+            Some(target_pos),
+        );
+        if let EventResult::Number(dmg) = damage_callback_result {
+            return Some(dmg);
         }
-    } else {
-        false
-    };
-
-    if !ignores_immunity && !Pokemon::run_immunity(battle, target_pos, &move_type, true) {
-        return None; // Immune
     }
 
-    let (target_side, target_poke) = target_pos;
-
-    // OHKO moves
-    if move_data.ohko.is_some() {
-        let target_hp = if let Some(side) = battle.sides.get(target_side) {
-            if let Some(pokemon) = side.pokemon.get(target_poke) {
-                if battle.gen == 3 {
-                    pokemon.hp
-                } else {
-                    pokemon.maxhp
-                }
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        };
-        return Some(target_hp);
-    }
-
-    // JavaScript: if (move.damageCallback) return move.damageCallback.call(this.battle, source, target);
-    // damageCallback provides custom damage calculation (e.g., Ruination deals 50% of target HP)
-    use crate::data::move_callbacks;
-    let active_move_for_damage_cb = battle.active_move.clone();
-    if let crate::event::EventResult::Number(custom_damage) = move_callbacks::dispatch_damage_callback(
-        battle,
-        active_move_for_damage_cb.as_ref(),
-        source_pos,
-        Some(target_pos),
-    ) {
-        eprintln!("[GET_DAMAGE] damageCallback returned {}", custom_damage);
-        return Some(custom_damage);
-    }
-
-    // JavaScript: if (move.damage === 'level') { return source.level; } else if (move.damage) { return move.damage; }
-    // Fixed damage moves (e.g., Seismic Toss deals damage equal to user's level)
-    if let Some(ref damage_value) = move_data.damage {
-        // Get source level for "level" damage type
-        let source_level = if let Some(side) = battle.sides.get(source_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-                pokemon.level as i32
-            } else {
-                return None;
-            }
-        } else {
-            return None;
-        };
-
-        if let Some(damage_str) = damage_value.as_str() {
-            if damage_str == "level" {
-                eprintln!("[GET_DAMAGE] Fixed damage move (damage='level'), returning source.level={}", source_level);
+    // JS: if (move.damage === 'level') {
+    // JS:     return source.level;
+    // JS: } else if (move.damage) {
+    // JS:     return move.damage;
+    // JS: }
+    if let Some(ref damage_value) = move_.damage {
+        match damage_value {
+            crate::dex::MoveDamage::Level => {
+                let source_level = battle.pokemon_at(source_pos.0, source_pos.1)?.level as i32;
                 return Some(source_level);
             }
-        } else if let Some(damage_num) = damage_value.as_i64() {
-            eprintln!("[GET_DAMAGE] Fixed damage move (damage={}), returning {}", damage_num, damage_num);
-            return Some(damage_num as i32);
+            crate::dex::MoveDamage::Fixed(dmg) => {
+                return Some(*dmg);
+            }
         }
     }
 
-    // CRITICAL: Check active_move.base_power first!
-    // Moves like Present modify active_move.base_power in their onModifyMove callback
-    // JavaScript passes the same move object around, but in Rust we have separate move_data and active_move
-    // So we must check active_move first to get modifications from onModifyMove events
-    eprintln!("[GET_DAMAGE] move_id={}, move_data.base_power={}, active_move.base_power={:?}",
-        move_data.id,
-        move_data.base_power,
-        battle.active_move.as_ref().map(|m| m.base_power));
-    let mut base_power = if let Some(ref active_move) = battle.active_move {
-        active_move.base_power
-    } else {
-        move_data.base_power
-    };
+    // JS: const category = this.battle.getCategory(move);
+    let category = battle.get_category(move_id);
 
-    // JavaScript: if (move.basePowerCallback) { basePower = move.basePowerCallback.call(this.battle, source, target, move); }
-    // CRITICAL: Always check for basePowerCallback, regardless of initial base_power!
-    // Max/G-Max moves have non-zero base_power in move data but use callback to calculate actual damage
-    let active_move_for_callback = battle.active_move.clone();
-    if let crate::event::EventResult::Number(bp) = move_callbacks::dispatch_base_power_callback(
-        battle,
-        active_move_for_callback.as_ref(),
-        source_pos,
-        Some(target_pos),
-    ) {
-        base_power = bp;
-        eprintln!("[GET_DAMAGE] basePowerCallback set basePower to {}", base_power);
+    // JS: let basePower: number | false | null = move.basePower;
+    // JS: if (move.basePowerCallback) {
+    // JS:     basePower = move.basePowerCallback.call(this.battle, source, target, move);
+    // JS: }
+    let mut base_power = move_.base_power;
+    if battle.has_move_id_callback(move_id, "basePowerCallback") {
+        let base_power_callback_result = move_callbacks::dispatch_base_power_callback(
+            battle,
+            Some(move_),
+            source_pos,
+            Some(target_pos),
+        );
+        if let EventResult::Number(bp) = base_power_callback_result {
+            base_power = bp;
+        }
     }
 
-    // JavaScript: if (!basePower) return basePower === 0 ? void 0 : basePower;
-    // If basePower is 0, return undefined (None)
-    // This is critical for Status moves - they should not trigger DamagingHit
+    // JS: if (!basePower) return basePower === 0 ? undefined : basePower;
     if base_power == 0 {
-        eprintln!("[GET_DAMAGE] basePower is 0, returning None (undefined - Status move)");
-        return None; // undefined - Status move, no damage calculation
+        // JS: return undefined (no damage calculation for status moves)
+        return None;
+    }
+    if base_power < 0 {
+        // JS: return basePower (which would be false or null in JS)
+        return None;
     }
 
-    // Calculate critical hit
-    // JavaScript: let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
-    let mut crit_ratio = move_data.crit_ratio;
-    let mut is_crit = false;
+    // JS: basePower = this.battle.clampIntRange(basePower, 1);
+    base_power = battle.clamp_int_range(base_power, Some(1), None);
 
-    // Trigger ModifyCritRatio event to allow abilities to modify crit ratio
-    if let EventResult::Number(modified_crit) = battle.run_event(
-                "ModifyCritRatio",
-                Some(crate::event::EventTarget::Pokemon(source_pos)),
+    // JS: let critMult;
+    // JS: let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
+    let mut crit_ratio = move_.crit_ratio;
+    let crit_ratio_result = battle.run_event(
+        "ModifyCritRatio",
+        Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
-        Some(&Effect::move_(move_data.id.clone())),
+        Some(&Effect::move_(move_id.clone())),
         EventResult::Number(crit_ratio),
         false,
-        false
-    ) {
-        crit_ratio = modified_crit;
+        false,
+    );
+    if let EventResult::Number(cr) = crit_ratio_result {
+        crit_ratio = cr;
     }
 
-    // Clamp crit ratio based on generation
-    let crit_mult = if battle.gen <= 5 {
-        crit_ratio = crit_ratio.clamp(0, 5);
-        [0, 16, 8, 4, 3, 2]
-    } else if battle.gen == 6 {
-        crit_ratio = crit_ratio.clamp(0, 4);
-        [0, 16, 8, 2, 1, 0] // Padded to size 6, last element never accessed
+    // JS: if (this.battle.gen <= 5) {
+    // JS:     critRatio = this.battle.clampIntRange(critRatio, 0, 5);
+    // JS:     critMult = [0, 16, 8, 4, 3, 2];
+    // JS: } else {
+    // JS:     critRatio = this.battle.clampIntRange(critRatio, 0, 4);
+    // JS:     if (this.battle.gen === 6) {
+    // JS:         critMult = [0, 16, 8, 2, 1];
+    // JS:     } else {
+    // JS:         critMult = [0, 24, 8, 2, 1];
+    // JS:     }
+    // JS: }
+    let crit_mult: Vec<i32> = if battle.gen <= 5 {
+        crit_ratio = battle.clamp_int_range(crit_ratio, Some(0), Some(5));
+        vec![0, 16, 8, 4, 3, 2]
     } else {
-        crit_ratio = crit_ratio.clamp(0, 4);
-        [0, 24, 8, 2, 1, 0] // Padded to size 6, last element never accessed
+        crit_ratio = battle.clamp_int_range(crit_ratio, Some(0), Some(4));
+        if battle.gen == 6 {
+            vec![0, 16, 8, 2, 1]
+        } else {
+            vec![0, 24, 8, 2, 1]
+        }
     };
 
-    // Determine if this is a critical hit
-    // JavaScript: moveHit.crit = move.willCrit || false; if (move.willCrit === undefined && critRatio) moveHit.crit = this.battle.randomChance(1, critMult[critRatio]);
-
-    // Check if will_crit is explicitly set in active_move
-    if let Some(ref active_move) = battle.active_move {
-        if let Some(will_crit) = active_move.will_crit {
-            is_crit = will_crit;
-        } else {
-            // will_crit is None (undefined), so roll for crit
-            if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
-                let crit_chance = crit_mult[crit_ratio as usize];
-                if crit_chance > 0 {
-                    is_crit = battle.random_chance(1, crit_chance);
-                    eprintln!("[GET_DAMAGE CRIT] crit_ratio={}, crit_chance=1/{}, is_crit={}", crit_ratio, crit_chance, is_crit);
-                }
-            }
-        }
-    } else {
-        // No active_move, roll normally if crit_ratio > 0
-        if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
-            let crit_chance = crit_mult[crit_ratio as usize];
-            if crit_chance > 0 {
-                is_crit = battle.random_chance(1, crit_chance);
-                eprintln!("[GET_DAMAGE CRIT] crit_ratio={}, crit_chance=1/{}, is_crit={}", crit_ratio, crit_chance, is_crit);
-            }
-        }
+    // JS: const moveHit = target.getMoveHitData(move);
+    // JS: moveHit.crit = move.willCrit || false;
+    // JS: if (move.willCrit === undefined) {
+    // JS:     if (critRatio) {
+    // JS:         moveHit.crit = this.battle.randomChance(1, critMult[critRatio]);
+    // JS:     }
+    // JS: }
+    let will_crit = move_.will_crit;
+    let mut is_crit = will_crit.unwrap_or(false);
+    if will_crit.is_none() && crit_ratio > 0 {
+        is_crit = battle.random_chance(1, crit_mult[crit_ratio as usize]);
     }
 
-    // Trigger CriticalHit event to allow abilities to prevent/modify crit
-    // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
+    // JS: if (moveHit.crit) {
+    // JS:     moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
+    // JS: }
     if is_crit {
-        eprintln!("[GET_DAMAGE CRIT] Critical hit confirmed before CriticalHit event");
-        is_crit = battle.run_event(
-                "CriticalHit",
-                Some(crate::event::EventTarget::Pokemon(target_pos)),
+        let crit_result = battle.run_event(
+            "CriticalHit",
+            Some(crate::event::EventTarget::Pokemon(target_pos)),
             None,
-            Some(&Effect::move_(move_data.id.clone())),
-            crate::event::EventResult::Number(1),
+            Some(&Effect::move_(move_id.clone())),
+            EventResult::Continue,
             false,
             false,
-        ).is_truthy();
-        eprintln!("[GET_DAMAGE CRIT] Critical hit after CriticalHit event: {}", is_crit);
+        );
+        is_crit = !matches!(crit_result, EventResult::Boolean(false));
     }
 
-    // Store crit in move_hit_data for other effects (e.g., Aurora Veil, Reflect, Light Screen)
-    // JavaScript: moveHit.crit = ...
-    if let Some(hit_data) = battle.get_move_hit_data_mut(target_pos) {
-        hit_data.crit = is_crit;
-        eprintln!("[GET_DAMAGE] Stored crit={} in move_hit_data for target {:?}", is_crit, target_pos);
+    // Store crit in move hit data
+    if let Some(move_hit_data) = battle.get_move_hit_data_mut(target_pos) {
+        move_hit_data.crit = is_crit;
     }
 
-    // Trigger BasePower event to allow abilities/items/moves to modify base power
-    // JavaScript: basePower = this.battle.runEvent('BasePower', source, target, move, basePower, true);
-    //                                                                                          ^^^^
-    //                                                                                      on_effect=true
-    // When on_effect is true, the move's onBasePower handler is called (e.g., Knock Off's 1.5x boost)
-    eprintln!("[GET_DAMAGE] basePower BEFORE BasePower event: {}", base_power);
-    if let EventResult::Number(modified_bp) = battle.run_event(
-                "BasePower",
-                Some(crate::event::EventTarget::Pokemon(source_pos)),
+    // JS: // happens after crit calculation
+    // JS: basePower = this.battle.runEvent('BasePower', source, target, move, basePower, true);
+    let base_power_event_result = battle.run_event(
+        "BasePower",
+        Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
-        Some(&Effect::move_(move_data.id.clone())),
+        Some(&Effect::move_(move_id.clone())),
         EventResult::Number(base_power),
         true,
-        false
-    ) {
-        base_power = modified_bp;
-        eprintln!("[GET_DAMAGE] basePower AFTER BasePower event: {}", base_power);
-    } else {
-        eprintln!("[GET_DAMAGE] No BasePower event modification");
+        false,
+    );
+    if let EventResult::Number(bp) = base_power_event_result {
+        base_power = bp;
     }
 
-    // JavaScript: if (!basePower) return 0;
-    // If basePower is 0 after the BasePower event, return 0 (this is different from the early return above)
+    // JS: if (!basePower) return 0;
     if base_power == 0 {
-        eprintln!("[GET_DAMAGE] basePower is 0 after BasePower event, returning Some(0)");
         return Some(0);
     }
 
-    // JavaScript: basePower = this.battle.clampIntRange(basePower, 1);
-    base_power = base_power.max(1);
-    eprintln!("[GET_DAMAGE] basePower after clamp to min 1: {}", base_power);
+    // JS: basePower = this.battle.clampIntRange(basePower, 1);
+    base_power = battle.clamp_int_range(base_power, Some(1), None);
 
-    // JavaScript (lines 1653-1654): Hacked Max Moves have 0 base power, even if you Dynamax
-    // if ((!source.volatiles['dynamax'] && move.isMax) || (move.isMax && this.dex.moves.get(move.baseMove).isMax)) {
-    //     basePower = 0;
-    // }
-    // CRITICAL: This check happens AFTER crit calculation, so crit PRNG calls are made even for Max moves without dynamax
-    // The damage calculation continues with basePower=0, and modifyDamage applies minimum damage check (returns 1)
-    if move_data.is_max.is_some() {
-        let has_dynamax_volatile = if let Some(side) = battle.sides.get(source_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-                pokemon.has_volatile(&ID::new("dynamax"))
-            } else {
-                false
-            }
+    // JS: // Hacked Max Moves have 0 base power, even if you Dynamax
+    // JS: if ((!source.volatiles['dynamax'] && move.isMax) || (move.isMax && this.dex.moves.get(move.baseMove).isMax)) {
+    // JS:     basePower = 0;
+    // JS: }
+    let source_has_dynamax = battle.pokemon_at(source_pos.0, source_pos.1)
+        .map(|p| p.volatiles.contains_key(&ID::new("dynamax")))
+        .unwrap_or(false);
+
+    // In ActiveMove, is_max is bool
+    // In MoveData (from base_move lookup), is_max is Option<IsMax>
+    let active_is_max = move_.is_max;
+    if (!source_has_dynamax && active_is_max) ||
+       (active_is_max && move_.base_move.as_ref()
+           .and_then(|bm| battle.dex.moves().get_by_id(bm))
+           .and_then(|m| m.is_max.as_ref())
+           .is_some()) {
+        base_power = 0;
+    }
+
+    // JS: const dexMove = this.dex.moves.get(move.id);
+    // JS: if (source.terastallized && (source.terastallized === 'Stellar' ?
+    // JS:     !source.stellarBoostedTypes.includes(move.type) : source.hasType(move.type)) &&
+    // JS:     basePower < 60 && dexMove.priority <= 0 && !dexMove.multihit &&
+    // JS:     // Hard move.basePower check for moves like Dragon Energy that have variable BP
+    // JS:     !((move.basePower === 0 || move.basePower === 150) && move.basePowerCallback)
+    // JS: ) {
+    // JS:     basePower = 60;
+    // JS: }
+    let (source_terastallized, source_stellar_boosted, source_types) = {
+        let source = battle.pokemon_at(source_pos.0, source_pos.1)?;
+        (
+            source.terastallized.clone(),
+            source.stellar_boosted_types.clone(),
+            source.types.clone(),
+        )
+    };
+
+    if let Some(ref tera_type) = source_terastallized {
+        // Check if the move has a basePowerCallback by checking the dex data
+        // This is more efficient than calling dispatch_base_power_callback
+        let has_base_power_callback = battle.has_move_id_callback(&move_.id, "basePowerCallback");
+
+        let tera_boost_applies = if tera_type == "Stellar" {
+            !source_stellar_boosted.contains(&move_type.to_string())
         } else {
-            false
+            source_types.iter().any(|t| t == move_type)
         };
 
-        // Check first condition: !source.volatiles["dynamax"] && move.isMax
-        if !has_dynamax_volatile {
-            if move_data.id.as_str() == "gmaxterror" {
-                eprintln!("[gmaxterror {}] Max move check: no dynamax volatile, setting basePower=0 and continuing (minimum damage will be 1)", battle.turn);
-            }
-            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower=0 and continuing");
-            base_power = 0; // Set basePower to 0, but continue calculation (minimum damage will be 1)
-        } else if let Some(ref base_move_id) = move_data.base_move {
-            // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
-            // This checks if the base move (the original move before dynamax conversion) is also a Max move
-            if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
-                if base_move_data.is_max.is_some() {
-                    // Hacked Max Move: the base move is itself a Max move
-                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower=0 and continuing");
-                    base_power = 0; // Set basePower to 0, but continue calculation (minimum damage will be 1)
-                }
-            }
+        if tera_boost_applies &&
+           base_power < 60 &&
+           move_.priority <= 0 &&
+           move_.multi_hit.is_none() &&
+           !((move_.base_power == 0 || move_.base_power == 150) && has_base_power_callback) {
+            base_power = 60;
         }
     }
 
-    // Get attacker level
-    let level = if let Some(side) = battle.sides.get(source_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-            pokemon.level as i32
-        } else {
-            return None;
-        }
-    } else {
-        return None;
-    };
+    // JS: const level = source.level;
+    let level = battle.pokemon_at(source_pos.0, source_pos.1)?.level as i32;
 
-    // Determine attack and defense stats
-    // CRITICAL: Check active_move.category first!
-    // Moves like Photon Geyser and Shell Side Arm modify active_move.category in their onModifyMove callback
-    // JavaScript passes the same move object around, but in Rust we have separate move_data and active_move
-    // So we must check active_move first to get modifications from onModifyMove events
-    let category = if let Some(ref active_move) = battle.active_move {
-        active_move.category.clone()
-    } else {
-        move_data.category.clone()
-    };
-    let is_physical = category == "Physical";
-
-    // JavaScript: const attacker = move.overrideOffensivePokemon === 'target' ? target : source;
-    // JavaScript: const defender = move.overrideDefensivePokemon === 'source' ? source : target;
-    // Determine which Pokemon to use for attack/defense stats
-    let attacker_pos = if let Some(ref active_move) = battle.active_move {
-        if active_move.override_offensive_pokemon.as_deref() == Some("target") {
-            target_pos
-        } else {
-            source_pos
-        }
+    // JS: const attacker = move.overrideOffensivePokemon === 'target' ? target : source;
+    // JS: const defender = move.overrideDefensivePokemon === 'source' ? source : target;
+    let attacker_pos = if move_.override_offensive_pokemon.as_ref()
+        .map(|s| s.as_str()) == Some("target") {
+        target_pos
     } else {
         source_pos
     };
 
-    let defender_pos = if let Some(ref active_move) = battle.active_move {
-        if active_move.override_defensive_pokemon.as_deref() == Some("source") {
-            source_pos
-        } else {
-            target_pos
-        }
+    let defender_pos = if move_.override_defensive_pokemon.as_ref()
+        .map(|s| s.as_str()) == Some("source") {
+        source_pos
     } else {
         target_pos
     };
 
-    // JavaScript: let attackStat: StatIDExceptHP = move.overrideOffensiveStat || (isPhysical ? 'atk' : 'spa');
-    // JavaScript: const defenseStat: StatIDExceptHP = move.overrideDefensiveStat || (isPhysical ? 'def' : 'spd');
-    // Determine which stats to use for damage calculation
-    let attack_stat = move_data.override_offensive_stat.as_deref()
-        .unwrap_or(if is_physical { "atk" } else { "spa" });
-    let defense_stat = move_data.override_defensive_stat.as_deref()
-        .unwrap_or(if is_physical { "def" } else { "spd" });
+    // JS: const isPhysical = move.category === 'Physical';
+    // JS: let attackStat: StatIDExceptHP = move.overrideOffensiveStat || (isPhysical ? 'atk' : 'spa');
+    // JS: const defenseStat: StatIDExceptHP = move.overrideDefensiveStat || (isPhysical ? 'def' : 'spd');
+    let is_physical = category == "Physical";
+    let mut attack_stat = if let Some(ref override_stat) = move_.override_offensive_stat {
+        match override_stat.as_str() {
+            "atk" => StatID::Atk,
+            "def" => StatID::Def,
+            "spa" => StatID::SpA,
+            "spd" => StatID::SpD,
+            "spe" => StatID::Spe,
+            _ => if is_physical { StatID::Atk } else { StatID::SpA },
+        }
+    } else {
+        if is_physical { StatID::Atk } else { StatID::SpA }
+    };
 
-    eprintln!("[GET_DAMAGE] is_physical={}, attack_stat={}, defense_stat={}", is_physical, attack_stat, defense_stat);
+    let defense_stat = if let Some(ref override_stat) = move_.override_defensive_stat {
+        match override_stat.as_str() {
+            "atk" => StatID::Atk,
+            "def" => StatID::Def,
+            "spa" => StatID::SpA,
+            "spd" => StatID::SpD,
+            "spe" => StatID::Spe,
+            _ => if is_physical { StatID::Def } else { StatID::SpD },
+        }
+    } else {
+        if is_physical { StatID::Def } else { StatID::SpD }
+    };
 
-    // Get attacker and defender boosts based on the stat being used
-    // JavaScript: let atkBoosts = attacker.boosts[attackStat];
-    // JavaScript: let defBoosts = defender.boosts[defenseStat];
-    let mut atk_boost = if let Some(side) = battle.sides.get(attacker_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(attacker_pos.1) {
-            match attack_stat {
-                "atk" => pokemon.boosts.atk,
-                "spa" => pokemon.boosts.spa,
-                "def" => pokemon.boosts.def,
-                "spd" => pokemon.boosts.spd,
-                "spe" => pokemon.boosts.spe,
-                _ => if is_physical { pokemon.boosts.atk } else { pokemon.boosts.spa }
-            }
-        } else { 0 }
-    } else { 0 };
+    // JS: const statTable = { atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe' };
+    // Used for event names later
 
-    let mut def_boost = if let Some(side) = battle.sides.get(defender_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(defender_pos.1) {
-            match defense_stat {
-                "def" => pokemon.boosts.def,
-                "spd" => pokemon.boosts.spd,
-                "atk" => pokemon.boosts.atk,
-                "spa" => pokemon.boosts.spa,
-                "spe" => pokemon.boosts.spe,
-                _ => if is_physical { pokemon.boosts.def } else { pokemon.boosts.spd }
-            }
-        } else { 0 }
-    } else { 0 };
+    // JS: let atkBoosts = attacker.boosts[attackStat];
+    // JS: let defBoosts = defender.boosts[defenseStat];
+    let attacker_boost = battle.pokemon_at(attacker_pos.0, attacker_pos.1)?
+        .boosts.get(stat_id_to_boost_id(attack_stat));
+    let defender_boost = battle.pokemon_at(defender_pos.0, defender_pos.1)?
+        .boosts.get(stat_id_to_boost_id(defense_stat));
 
-    // JavaScript: let ignoreNegativeOffensive = !!move.ignoreNegativeOffensive;
-    // JavaScript: let ignorePositiveDefensive = !!move.ignorePositiveDefensive;
-    // JavaScript: if (moveHit.crit) {
-    // JavaScript:     ignoreNegativeOffensive = true;
-    // JavaScript:     ignorePositiveDefensive = true;
-    // JavaScript: }
-    // TODO: Add ignore_negative_offensive and ignore_positive_defensive fields to MoveData
-    // For now, hardcode to false since only used by specific moves like Chip Away
-    let mut ignore_negative_offensive = false;
-    let mut ignore_positive_defensive = false;
+    let mut atk_boosts = attacker_boost;
+    let mut def_boosts = defender_boost;
 
+    // JS: let ignoreNegativeOffensive = !!move.ignoreNegativeOffensive;
+    // JS: let ignorePositiveDefensive = !!move.ignorePositiveDefensive;
+    let mut ignore_negative_offensive = move_.ignore_negative_offensive;
+    let mut ignore_positive_defensive = move_.ignore_positive_defensive;
+
+    // JS: if (moveHit.crit) {
+    // JS:     ignoreNegativeOffensive = true;
+    // JS:     ignorePositiveDefensive = true;
+    // JS: }
     if is_crit {
         ignore_negative_offensive = true;
         ignore_positive_defensive = true;
     }
 
-    // JavaScript: const ignoreOffensive = !!(move.ignoreOffensive || (ignoreNegativeOffensive && atkBoosts < 0));
-    // JavaScript: const ignoreDefensive = !!(move.ignoreDefensive || (ignorePositiveDefensive && defBoosts > 0));
-    // TODO: Add ignore_offensive and ignore_defensive fields to MoveData
-    // For now, hardcode to false since only used by specific moves like Sacred Sword
-    let ignore_offensive = false || (ignore_negative_offensive && atk_boost < 0);
-    let ignore_defensive = false || (ignore_positive_defensive && def_boost > 0);
+    // JS: const ignoreOffensive = !!(move.ignoreOffensive || (ignoreNegativeOffensive && atkBoosts < 0));
+    // JS: const ignoreDefensive = !!(move.ignoreDefensive || (ignorePositiveDefensive && defBoosts > 0));
+    let ignore_offensive = move_.ignore_offensive || (ignore_negative_offensive && atk_boosts < 0);
+    let ignore_defensive = move_.ignore_defensive || (ignore_positive_defensive && def_boosts > 0);
 
-    // JavaScript: if (ignoreOffensive) {
-    // JavaScript:     this.battle.debug('Negating (sp)atk boost/penalty.');
-    // JavaScript:     atkBoosts = 0;
-    // JavaScript: }
+    // JS: if (ignoreOffensive) {
+    // JS:     this.battle.debug('Negating (sp)atk boost/penalty.');
+    // JS:     atkBoosts = 0;
+    // JS: }
     if ignore_offensive {
-        eprintln!("[GET_DAMAGE] Negating (sp)atk boost/penalty. (was {})", atk_boost);
-        atk_boost = 0;
+        battle.debug("Negating (sp)atk boost/penalty.");
+        atk_boosts = 0;
     }
 
-    // JavaScript: if (ignoreDefensive) {
-    // JavaScript:     this.battle.debug('Negating (sp)def boost/penalty.');
-    // JavaScript:     defBoosts = 0;
-    // JavaScript: }
+    // JS: if (ignoreDefensive) {
+    // JS:     this.battle.debug('Negating (sp)def boost/penalty.');
+    // JS:     defBoosts = 0;
+    // JS: }
     if ignore_defensive {
-        eprintln!("[GET_DAMAGE] Negating (sp)def boost/penalty. (was {})", def_boost);
-        def_boost = 0;
+        battle.debug("Negating (sp)def boost/penalty.");
+        def_boosts = 0;
     }
 
-    // Get attack stat with boosts (now potentially modified for crits)
-    // JavaScript: let attack = attacker.calculateStat(attackStat, atkBoosts, 1, source);
-    // Convert string stat name to StatID
-    let attack_stat_id = match attack_stat {
-        "atk" => StatID::Atk,
-        "spa" => StatID::SpA,
-        "def" => StatID::Def,
-        "spd" => StatID::SpD,
-        "spe" => StatID::Spe,
-        _ => if is_physical { StatID::Atk } else { StatID::SpA }
+    // JS: let attack = attacker.calculateStat(attackStat, atkBoosts, 1, source);
+    // JS: let defense = defender.calculateStat(defenseStat, defBoosts, 1, target);
+    let mut attack = {
+        let attacker = battle.pokemon_at(attacker_pos.0, attacker_pos.1)?;
+        attacker.calculate_stat(battle, attack_stat, atk_boosts, 1.0, Some(source_pos))
     };
-    let mut attack = if let Some(side) = battle.sides.get(attacker_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(attacker_pos.1) {
-            let result = pokemon.calculate_stat(battle, attack_stat_id, atk_boost as i8, 1.0, Some(source_pos));
-            eprintln!("[GET_DAMAGE] Attack calc (stat={:?}): pokemon={}, boost={}, attack={}",
-                attack_stat_id, pokemon.name, atk_boost, result);
-            result
-        } else {
-            return None;
-        }
-    } else {
-        return None;
+    let mut defense = {
+        let defender = battle.pokemon_at(defender_pos.0, defender_pos.1)?;
+        defender.calculate_stat(battle, defense_stat, def_boosts, 1.0, Some(target_pos))
     };
 
-    // Get defense stat with boosts (now potentially modified for crits)
-    // JavaScript: let defense = defender.calculateStat(defenseStat, defBoosts, 1, target);
-    // Note: Wonder Room swap is handled inside calculate_stat
-    let defense_stat_id = match defense_stat {
-        "def" => StatID::Def,
-        "spd" => StatID::SpD,
-        "atk" => StatID::Atk,
-        "spa" => StatID::SpA,
-        "spe" => StatID::Spe,
-        _ => if is_physical { StatID::Def } else { StatID::SpD }
+    // JS: attackStat = (category === 'Physical' ? 'atk' : 'spa');
+    attack_stat = if category == "Physical" { StatID::Atk } else { StatID::SpA };
+
+    // JS: // Apply Stat Modifiers
+    // JS: attack = this.battle.runEvent('Modify' + statTable[attackStat], source, target, move, attack);
+    // JS: defense = this.battle.runEvent('Modify' + statTable[defenseStat], target, source, move, defense);
+    let attack_event_name = match attack_stat {
+        StatID::Atk => "ModifyAtk",
+        StatID::SpA => "ModifySpA",
+        _ => "ModifyAtk",
     };
-    let mut defense = if let Some(side) = battle.sides.get(defender_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(defender_pos.1) {
-            let result = pokemon.calculate_stat(battle, defense_stat_id, def_boost as i8, 1.0, Some(target_pos));
-            eprintln!("[GET_DAMAGE] Defense calc (stat={:?}): pokemon={}, boost={}, defense={}",
-                defense_stat_id, pokemon.name, def_boost, result);
-            result
-        } else {
-            return None;
-        }
-    } else {
-        return None;
+    let defense_event_name = match defense_stat {
+        StatID::Def => "ModifyDef",
+        StatID::SpD => "ModifySpD",
+        _ => "ModifyDef",
     };
 
-    // JavaScript: attack = this.battle.runEvent('ModifyAtk', source, target, move, attack);
-    // JavaScript: defense = this.battle.runEvent('ModifyDef', target, source, move, defense);
-    // Apply stat modifier events
-    if is_physical {
-        // Debug: log pokemon info
-        if let Some(pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
-            eprintln!("[GET_DAMAGE] ModifyAtk for Pokemon: {}, Ability: {}, attack={}",
-                pokemon.name, pokemon.ability, attack);
-        }
-        eprintln!("[GET_DAMAGE] BEFORE ModifyAtk: attack={}", attack);
-        match battle.run_event("ModifyAtk", Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&Effect::move_(move_id.clone())), EventResult::Number(attack), false, false) {
-            EventResult::Number(n) => attack = n,
-            _ => {}
-        }
-        eprintln!("[GET_DAMAGE] AFTER ModifyAtk: attack={}", attack);
-        match battle.run_event("ModifyDef", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&Effect::move_(move_id.clone())), EventResult::Number(defense), false, false) {
-            EventResult::Number(n) => defense = n,
-            _ => {}
-        }
-    } else {
-        eprintln!("[GET_DAMAGE] BEFORE ModifySpA: attack={}", attack);
-        match battle.run_event("ModifySpA", Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&Effect::move_(move_id.clone())), EventResult::Number(attack), false, false) {
-            EventResult::Number(n) => {
-                eprintln!("[GET_DAMAGE] AFTER ModifySpA: attack changed from {} to {}", attack, n);
-                attack = n;
-            },
-            _ => {
-                eprintln!("[GET_DAMAGE] AFTER ModifySpA: no change, attack={}", attack);
-            }
-        }
-        match battle.run_event("ModifySpD", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&Effect::move_(move_id.clone())), EventResult::Number(defense), false, false) {
-            EventResult::Number(n) => defense = n,
-            _ => {}
-        }
+    let attack_result = battle.run_event(
+        attack_event_name,
+        Some(crate::event::EventTarget::Pokemon(source_pos)),
+        Some(target_pos),
+        Some(&Effect::move_(move_id.clone())),
+        EventResult::Number(attack),
+        false,
+        false,
+    );
+    if let EventResult::Number(atk) = attack_result {
+        attack = atk;
     }
 
-    // Base damage calculation
-    // JavaScript: const baseDamage = tr(tr(tr(tr(2 * level / 5 + 2) * basePower * attack) / defense) / 50);
-    // Must truncate at each step to match JavaScript exactly
-    let step1 = battle.trunc((2 * level / 5 + 2) as f64, None) as i32;
-    let step2 = battle.trunc((step1 * base_power) as f64, None) as i32;
-    let step3 = battle.trunc((step2 * attack) as f64, None) as i32;
-    let step4 = battle.trunc(step3 as f64 / defense.max(1) as f64, None) as i32;
-    let base_damage = battle.trunc(step4 as f64 / 50.0, None) as i32;
+    let defense_result = battle.run_event(
+        defense_event_name,
+        Some(crate::event::EventTarget::Pokemon(target_pos)),
+        Some(source_pos),
+        Some(&Effect::move_(move_id.clone())),
+        EventResult::Number(defense),
+        false,
+        false,
+    );
+    if let EventResult::Number(def) = defense_result {
+        defense = def;
+    }
 
-    eprintln!("[GET_DAMAGE] level={}, basePower={}, attack={}, defense={}", level, base_power, attack, defense);
-    eprintln!("[GET_DAMAGE] step1={}, step2={}, step3={}, step4={}, base_damage={}", step1, step2, step3, step4, base_damage);
+    // JS: if (this.battle.gen <= 4 && ['explosion', 'selfdestruct'].includes(move.id) && defenseStat === 'def') {
+    // JS:     defense = this.battle.clampIntRange(Math.floor(defense / 2), 1);
+    // JS: }
+    if battle.gen <= 4 &&
+       (move_id.as_str() == "explosion" || move_id.as_str() == "selfdestruct") &&
+       defense_stat == StatID::Def {
+        defense = battle.clamp_int_range((defense as f64 / 2.0).floor() as i32, Some(1), None);
+    }
 
-    // Call modifyDamage for the full calculation (pass is_crit for damage multiplier)
-    let damage = crate::battle_actions::modify_damage(battle, base_damage, source_pos, target_pos, &move_data, is_crit);
+    // JS: const tr = this.battle.trunc;
+    // JS: // int(int(int(2 * L / 5 + 2) * A * P / D) / 50);
+    // JS: const baseDamage = tr(tr(tr(tr(2 * level / 5 + 2) * basePower * attack) / defense) / 50);
+    let tr = |x: f64| battle.trunc(x, None) as i32;
+    let base_damage = tr(
+        tr(
+            tr(
+                tr(2.0 * level as f64 / 5.0 + 2.0) as f64 * base_power as f64 * attack as f64
+            ) as f64 / defense as f64
+        ) as f64 / 50.0
+    );
 
-    Some(damage)
+    // JS: // Calculate damage modifiers separately (order differs between generations)
+    // JS: return this.modifyDamage(baseDamage, source, target, move, suppressMessages);
+    let final_damage = crate::battle_actions::modify_damage(
+        battle,
+        base_damage,
+        source_pos,
+        target_pos,
+        move_,
+        is_crit,
+    );
+
+    Some(final_damage)
+}
+
+/// Helper function to convert StatID to BoostID
+fn stat_id_to_boost_id(stat: StatID) -> BoostID {
+    match stat {
+        StatID::Atk => BoostID::Atk,
+        StatID::Def => BoostID::Def,
+        StatID::SpA => BoostID::SpA,
+        StatID::SpD => BoostID::SpD,
+        StatID::Spe => BoostID::Spe,
+        StatID::HP => BoostID::Atk, // HP doesn't have a boost, shouldn't happen
+    }
 }

@@ -3,7 +3,7 @@
 //! 1:1 port of getSpreadDamage from battle-actions.ts
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, HitEffect};
+use crate::battle_actions::{ActiveMove, SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, HitEffect};
 
 /// Get damage for each target in a spread move
 /// Equivalent to getSpreadDamage() in battle-actions.ts:1163
@@ -52,7 +52,7 @@ pub fn get_spread_damage<'a>(
     damages: SpreadMoveDamage,
     targets: &SpreadMoveTargets,
     source_pos: (usize, usize),
-    move_id: &ID,
+    move_: &ActiveMove,
     hit_effect: Option<HitEffect<'a>>,
     _is_secondary: bool,
     _is_self: bool,
@@ -84,7 +84,7 @@ pub fn get_spread_damage<'a>(
         }
 
         // const curDamage = this.getDamage(source, target, moveData);
-        let cur_damage = crate::battle_actions::get_damage(battle, source_pos, target_pos, move_id);
+        let cur_damage = crate::battle_actions::get_damage(battle, source_pos, target_pos, move_, false);
 
         // getDamage has several possible return values:
         //
