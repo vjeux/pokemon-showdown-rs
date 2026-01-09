@@ -457,18 +457,42 @@ pub fn get_damage(
     };
     let is_physical = category == "Physical";
 
-    // Get attacker and defender boosts before we potentially modify them for crits
+    // JavaScript: let attackStat: StatIDExceptHP = move.overrideOffensiveStat || (isPhysical ? 'atk' : 'spa');
+    // JavaScript: const defenseStat: StatIDExceptHP = move.overrideDefensiveStat || (isPhysical ? 'def' : 'spd');
+    // Determine which stats to use for damage calculation
+    let attack_stat = move_data.override_offensive_stat.as_deref()
+        .unwrap_or(if is_physical { "atk" } else { "spa" });
+    let defense_stat = move_data.override_defensive_stat.as_deref()
+        .unwrap_or(if is_physical { "def" } else { "spd" });
+
+    eprintln!("[GET_DAMAGE] is_physical={}, attack_stat={}, defense_stat={}", is_physical, attack_stat, defense_stat);
+
+    // Get attacker and defender boosts based on the stat being used
     // JavaScript: let atkBoosts = attacker.boosts[attackStat];
     // JavaScript: let defBoosts = defender.boosts[defenseStat];
     let mut atk_boost = if let Some(side) = battle.sides.get(source_pos.0) {
         if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-            if is_physical { pokemon.boosts.atk } else { pokemon.boosts.spa }
+            match attack_stat {
+                "atk" => pokemon.boosts.atk,
+                "spa" => pokemon.boosts.spa,
+                "def" => pokemon.boosts.def,
+                "spd" => pokemon.boosts.spd,
+                "spe" => pokemon.boosts.spe,
+                _ => if is_physical { pokemon.boosts.atk } else { pokemon.boosts.spa }
+            }
         } else { 0 }
     } else { 0 };
 
     let mut def_boost = if let Some(side) = battle.sides.get(target_pos.0) {
         if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-            if is_physical { pokemon.boosts.def } else { pokemon.boosts.spd }
+            match defense_stat {
+                "def" => pokemon.boosts.def,
+                "spd" => pokemon.boosts.spd,
+                "atk" => pokemon.boosts.atk,
+                "spa" => pokemon.boosts.spa,
+                "spe" => pokemon.boosts.spe,
+                _ => if is_physical { pokemon.boosts.def } else { pokemon.boosts.spd }
+            }
         } else { 0 }
     } else { 0 };
 
@@ -514,23 +538,22 @@ pub fn get_damage(
     }
 
     // Get attack stat with boosts (now potentially modified for crits)
+    // JavaScript: let attack = attacker.calculateStat(attackStat, atkBoosts, 1, source);
     let mut attack = if let Some(side) = battle.sides.get(source_pos.0) {
         if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-            if is_physical {
-                let base_stat = pokemon.stored_stats.atk;
-                let (num, denom) = BattleActions::get_boost_modifier(atk_boost);
-                let result = (base_stat * num / denom).max(1);
-                eprintln!("[GET_DAMAGE] Physical attack calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), attack={}",
-                    pokemon.name, base_stat, atk_boost, num, denom, result);
-                result
-            } else {
-                let base_stat = pokemon.stored_stats.spa;
-                let (num, denom) = BattleActions::get_boost_modifier(atk_boost);
-                let result = (base_stat * num / denom).max(1);
-                eprintln!("[GET_DAMAGE] Special attack calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), attack={}",
-                    pokemon.name, base_stat, atk_boost, num, denom, result);
-                result
-            }
+            let base_stat = match attack_stat {
+                "atk" => pokemon.stored_stats.atk,
+                "spa" => pokemon.stored_stats.spa,
+                "def" => pokemon.stored_stats.def,
+                "spd" => pokemon.stored_stats.spd,
+                "spe" => pokemon.stored_stats.spe,
+                _ => if is_physical { pokemon.stored_stats.atk } else { pokemon.stored_stats.spa }
+            };
+            let (num, denom) = BattleActions::get_boost_modifier(atk_boost);
+            let result = (base_stat * num / denom).max(1);
+            eprintln!("[GET_DAMAGE] Attack calc (stat={}): pokemon={}, base_stat={}, boost={}, modifier=({}/{}), attack={}",
+                attack_stat, pokemon.name, base_stat, atk_boost, num, denom, result);
+            result
         } else {
             return None;
         }
@@ -539,23 +562,22 @@ pub fn get_damage(
     };
 
     // Get defense stat with boosts (now potentially modified for crits)
+    // JavaScript: let defense = defender.calculateStat(defenseStat, defBoosts, 1, target);
     let mut defense = if let Some(side) = battle.sides.get(target_pos.0) {
         if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-            if is_physical {
-                let base_stat = pokemon.stored_stats.def;
-                let (num, denom) = BattleActions::get_boost_modifier(def_boost);
-                let result = (base_stat * num / denom).max(1);
-                eprintln!("[GET_DAMAGE] Physical defense calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
-                    pokemon.name, base_stat, def_boost, num, denom, result);
-                result
-            } else {
-                let base_stat = pokemon.stored_stats.spd;
-                let (num, denom) = BattleActions::get_boost_modifier(def_boost);
-                let result = (base_stat * num / denom).max(1);
-                eprintln!("[GET_DAMAGE] Special defense calc: pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
-                    pokemon.name, base_stat, def_boost, num, denom, result);
-                result
-            }
+            let base_stat = match defense_stat {
+                "def" => pokemon.stored_stats.def,
+                "spd" => pokemon.stored_stats.spd,
+                "atk" => pokemon.stored_stats.atk,
+                "spa" => pokemon.stored_stats.spa,
+                "spe" => pokemon.stored_stats.spe,
+                _ => if is_physical { pokemon.stored_stats.def } else { pokemon.stored_stats.spd }
+            };
+            let (num, denom) = BattleActions::get_boost_modifier(def_boost);
+            let result = (base_stat * num / denom).max(1);
+            eprintln!("[GET_DAMAGE] Defense calc (stat={}): pokemon={}, base_stat={}, boost={}, modifier=({}/{}), defense={}",
+                defense_stat, pokemon.name, base_stat, def_boost, num, denom, result);
+            result
         } else {
             return None;
         }
