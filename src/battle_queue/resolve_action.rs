@@ -212,6 +212,13 @@ impl BattleQueue {
                         // action.fractionalPriority = this.battle.runEvent('FractionalPriority', action.pokemon, null, action.move, 0);
                         let fractional_priority = {
                             let move_id = move_action.move_id.clone();
+                            // JavaScript: action.move is available when runEvent is called
+                            // Set battle.active_move to the action's move before calling run_event
+                            // This makes the move available to ability callbacks like Quick Draw
+                            let active_move_for_priority = battle.dex.get_active_move(move_id.as_str());
+                            let saved_active_move = battle.active_move.take();
+                            battle.active_move = active_move_for_priority;
+
                             let result = battle.run_event(
                 "FractionalPriority",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
@@ -221,6 +228,10 @@ impl BattleQueue {
                                 false,
                                 false,
                             );
+
+                            // Restore original active_move
+                            battle.active_move = saved_active_move;
+
                             match result {
                                 crate::event::EventResult::Float(f) => f,
                                 _ => 0.0,
