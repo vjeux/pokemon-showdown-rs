@@ -318,7 +318,7 @@ pub struct MoveSecondary {
     /// Volatile status to inflict
     /// JavaScript: volatileStatus?: string
     #[serde(rename = "volatileStatus", default)]
-    pub volatile_status_secondary: Option<String>,
+    pub volatile_status: Option<String>,
     /// Side condition to apply
     /// JavaScript: sideCondition?: string
     #[serde(rename = "sideCondition", default)]

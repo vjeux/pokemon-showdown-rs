@@ -59,10 +59,10 @@ impl Dex {
             is_max: move_data.is_max.clone(),
             max_move: None,
             ohko: move_data.ohko.clone(),
-            thaws_target: None,
+            thaws_target: move_data.thaws_target,
             heal: move_data.heal,
-            drain: None,
-            force_switch: false,
+            drain: move_data.drain,
+            force_switch: move_data.force_switch,
             self_switch: move_data.self_switch.as_ref().and_then(|v| {
                 // Handle both boolean and string values
                 // JavaScript: selfSwitch?: boolean | string
@@ -89,37 +89,26 @@ impl Dex {
                 Some(Self::convert_boosts_hash_to_table(&boosts_map))
             }),
             self_destruct: move_data.selfdestruct.clone(),
-            breaks_protect: false,
+            breaks_protect: move_data.breaks_protect,
             recoil: move_data.recoil,
             mindblown_recoil: move_data.mind_blown_recoil,
             steals_boosts: move_data.steals_boosts,
             struggle_recoil: move_data.struggle_recoil,
-            secondary: None,
-            secondaries: {
-                let mut secs = Vec::new();
-                // Add singular secondary if it exists
-                if let Some(ref sec) = move_data.secondary {
-                    secs.push(Self::convert_secondary(sec));
-                }
-                // Add plural secondaries if they exist
-                if let Some(ref sec_vec) = move_data.secondaries {
-                    for sec in sec_vec {
-                        secs.push(Self::convert_secondary(sec));
-                    }
-                }
-                secs
-            },
-            self_effect: move_data.self_effect.as_ref().map(|se| Self::convert_self_effect(se)),
-            has_sheer_force: false,
+            secondary: move_data.secondary.as_ref().map(|s| Self::convert_secondary(s)),
+            secondaries: move_data.secondaries.as_ref()
+                .map(|secs| secs.iter().map(|s| Self::convert_secondary(s)).collect())
+                .unwrap_or_default(),
+            self_effect: move_data.self_effect.as_ref().map(|s| Self::convert_self_effect(s)),
+            has_sheer_force: move_data.has_sheer_force,
             always_hit: matches!(move_data.accuracy, Accuracy::AlwaysHits),
             base_move_type: None,
             base_power_modifier: None,
             crit_modifier: None,
             crit_ratio: move_data.crit_ratio,
-            override_offensive_pokemon: None,
-            override_offensive_stat: None,
+            override_offensive_pokemon: move_data.override_offensive_pokemon.clone(),
+            override_offensive_stat: move_data.override_offensive_stat.clone(),
             override_defensive_pokemon: None,
-            override_defensive_stat: None,
+            override_defensive_stat: move_data.override_defensive_stat.clone(),
             force_stab: false,
             ignore_ability: move_data.ignore_ability,
             ignore_accuracy: move_data.ignore_accuracy,
@@ -157,12 +146,12 @@ impl Dex {
             spread_modifier: None,
             sleep_usable: move_data.sleep_usable,
             smart_target: move_data.smart_target,
-            tracks_target: move_data.tracks_target.unwrap_or(false),
-            calls_move: None,
-            has_crash_damage: None,
+            tracks_target: move_data.tracks_target,
+            calls_move: move_data.calls_move,
+            has_crash_damage: move_data.has_crash_damage,
             is_confusion_self_hit: None,
-            stalling_move: None,
-            base_move: None,
+            stalling_move: move_data.stalling_move,
+            base_move: move_data.base_move.clone(),
 
             // From HitEffect
             boosts: move_data.boosts,

@@ -227,7 +227,7 @@ pub fn on_after_move_secondary(
 ) -> EventResult {
     // if (move.thawsTarget)
     let thaws_target = match &battle.active_move {
-        Some(m) => m.thaws_target.unwrap_or(false),
+        Some(m) => m.thaws_target,
         None => false,
     };
 

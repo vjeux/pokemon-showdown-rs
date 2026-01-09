@@ -14,7 +14,7 @@ impl Dex {
             (
                 self_sec.boosts,
                 self_sec.status.clone(),
-                self_sec.volatile_status_secondary.clone(),
+                self_sec.volatile_status.clone(),
                 true,  // This is a self-effect
             )
         } else {
@@ -22,7 +22,7 @@ impl Dex {
             (
                 secondary.boosts,
                 secondary.status.clone(),
-                secondary.volatile_status_secondary.clone(),
+                secondary.volatile_status.clone(),
                 false,  // This is a target effect
             )
         };

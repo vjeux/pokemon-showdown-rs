@@ -421,7 +421,7 @@ pub struct ActiveMove {
     pub ohko: Option<crate::dex::Ohko>,
     /// Thaws the target
     /// JavaScript: thawsTarget?: boolean
-    pub thaws_target: Option<bool>,
+    pub thaws_target: bool,
     /// Healing fraction
     /// JavaScript: heal?: number[] | null
     pub heal: Option<(i32, i32)>,
@@ -559,20 +559,20 @@ pub struct ActiveMove {
     /// JavaScript: smartTarget?: boolean
     pub smart_target: Option<bool>,
     /// Tracks target (e.g., Lock-On)
-    /// JavaScript: tracksTarget: boolean
-    pub tracks_target: bool,
+    /// JavaScript: tracksTarget?: boolean
+    pub tracks_target: Option<bool>,
     /// Calls another move
     /// JavaScript: callsMove?: boolean
-    pub calls_move: Option<bool>,
+    pub calls_move: bool,
     /// Has crash damage on miss (High Jump Kick, etc.)
     /// JavaScript: hasCrashDamage?: boolean
-    pub has_crash_damage: Option<bool>,
+    pub has_crash_damage: bool,
     /// Is this confusion self-hit?
     /// JavaScript: isConfusionSelfHit?: boolean
     pub is_confusion_self_hit: Option<bool>,
     /// Is this a stalling move (Protect, etc.)?
     /// JavaScript: stallingMove?: boolean
-    pub stalling_move: Option<bool>,
+    pub stalling_move: bool,
     /// Base move ID (for moves that call other moves)
     /// JavaScript: baseMove?: ID
     pub base_move: Option<ID>,

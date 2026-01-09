@@ -40,7 +40,7 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _
     let should_return = active_move.has_bounced
         || active_move.flags.future_move
         || active_move.source_effect.as_ref().map(|e| e.as_str()) == Some("snatch")
-        || active_move.calls_move.is_some();
+        || active_move.calls_move;
 
     if should_return {
         return EventResult::Continue;

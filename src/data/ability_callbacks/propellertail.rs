@@ -15,7 +15,7 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
     // move.tracksTarget = move.target !== 'scripted';
     if let Some(active_move) = active_move {
         if active_move.target != "scripted" {
-            active_move.tracks_target = true;
+            active_move.tracks_target = Some(true);
         }
     }
 

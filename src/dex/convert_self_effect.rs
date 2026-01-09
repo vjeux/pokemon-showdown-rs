@@ -11,7 +11,7 @@ impl Dex {
         crate::battle_actions::SelfEffect {
             boosts: secondary.boosts,
             status: secondary.status.clone(),
-            volatile_status: secondary.volatile_status_secondary.clone(),
+            volatile_status: secondary.volatile_status.clone(),
             side_condition: secondary.side_condition.clone(),
             slot_condition: secondary.slot_condition.clone(),
             pseudo_weather: secondary.pseudo_weather.clone(),
