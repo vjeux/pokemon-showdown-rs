@@ -87,16 +87,22 @@ pub fn base_power_callback(
         pokemon_pokemon.status == ID::from("slp")
     };
 
+    // NOTE: basePowerCallback is called outside the event dispatch system, so we can't use
+    // battle.with_effect_state() as it requires battle.effect to be set. Instead, we directly
+    // modify the pokemon's volatile state.
     if has_iceball && !is_sleeping {
-        // JavaScript: this.effectState.hitCount++, this.effectState.contactHitCount++
-        battle.with_effect_state(|state| {
-            let hit_count = state.hit_count.unwrap_or(0) + 1;
-            state.hit_count = Some(hit_count);
-            state.contact_hit_count = Some(state.contact_hit_count.unwrap_or(0) + 1);
-            if hit_count < 5 {
-                state.duration = Some(2);
+        // Directly update the volatile state on the pokemon
+        let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        if let Some(volatile_state) = pokemon_mut.volatiles.get_mut(&ID::from("iceball")) {
+            volatile_state.hit_count = Some(volatile_state.hit_count.unwrap_or(0) + 1);
+            volatile_state.contact_hit_count = Some(volatile_state.contact_hit_count.unwrap_or(0) + 1);
+            if volatile_state.hit_count.unwrap_or(0) < 5 {
+                volatile_state.duration = Some(2);
             }
-        });
+        }
     }
 
     // if (pokemon.volatiles['defensecurl']) {
