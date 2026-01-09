@@ -25,9 +25,6 @@ impl Battle {
     // 	}
     //
     pub fn each_event(&mut self, event_id: &str, effect: Option<&Effect>, relay_var: Option<bool>) {
-        if event_id == "Weather" {
-            eprintln!("[EACH_EVENT] Called for Weather event, turn={}", self.turn);
-        }
         // JS: const actives = this.getAllActive();
         // Collect all active Pokemon with their speeds
         let mut actives: Vec<(usize, usize, i32)> = Vec::new();
@@ -38,14 +35,6 @@ impl Battle {
                         actives.push((side_idx, *poke_idx, pokemon.speed));
                     }
                 }
-            }
-        }
-
-        if event_id == "Weather" {
-            eprintln!("[EACH_EVENT] Found {} active Pokemon for Weather event", actives.len());
-            for (i, (side_idx, poke_idx, speed)) in actives.iter().enumerate() {
-                let name = self.sides[*side_idx].pokemon[*poke_idx].name.clone();
-                eprintln!("[EACH_EVENT] Active {} Pokemon {}:  ({}, {}) speed={}", i, name, side_idx, poke_idx, speed);
             }
         }
 

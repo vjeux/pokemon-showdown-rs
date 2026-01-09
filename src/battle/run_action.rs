@@ -787,9 +787,11 @@ impl Battle {
 
                         // JS: this.battle.speedSort(allActive);
                         // Extract Pokemon speeds first to avoid borrow checker issues
+                        // IMPORTANT: Use pokemon.speed (modified action speed) NOT stored_stats.spe (raw stat)
+                        // JS uses pokemon.speed which is updated by updateSpeed() to be getActionSpeed()
                         let speeds: Vec<i32> = all_active
                             .iter()
-                            .map(|(s_idx, p_idx)| self.sides[*s_idx].pokemon[*p_idx].stored_stats.spe as i32)
+                            .map(|(s_idx, p_idx)| self.sides[*s_idx].pokemon[*p_idx].speed)
                             .collect();
 
                         // Now sort using the pre-extracted speeds
