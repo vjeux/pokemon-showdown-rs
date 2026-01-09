@@ -14,6 +14,7 @@ mod deserialize_accuracy;
 mod deserialize_is_max;
 mod deserialize_ohko;
 mod deserialize_self_switch;
+mod deserialize_self_boost;
 mod deserialize_move_flags;
 mod new;
 mod load_from_json;
@@ -45,6 +46,7 @@ pub use deserialize_accuracy::deserialize_accuracy;
 pub use deserialize_is_max::deserialize_is_max;
 pub use deserialize_ohko::deserialize_ohko;
 pub use deserialize_self_switch::deserialize_self_switch;
+pub use deserialize_self_boost::deserialize_self_boost;
 pub use deserialize_move_flags::deserialize_move_flags;
 
 /// Gender ratio structure
@@ -699,8 +701,8 @@ pub struct MoveData {
     pub steals_boosts: bool,
     /// Self boost effect (stat boosts to user)
     /// JavaScript: selfBoost?: { boosts?: SparseBoostsTable }
-    #[serde(rename = "selfBoost", default)]
-    pub self_boost: Option<serde_json::Value>,
+    #[serde(rename = "selfBoost", default, deserialize_with = "deserialize_self_boost")]
+    pub self_boost: Option<crate::dex_data::BoostsTable>,
     /// Multi-hit accuracy check per hit (Population Bomb)
     /// JavaScript: multiaccuracy?: boolean
     #[serde(rename = "multiaccuracy", default)]

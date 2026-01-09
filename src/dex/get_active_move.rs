@@ -64,18 +64,7 @@ impl Dex {
             drain: move_data.drain,
             force_switch: move_data.force_switch,
             self_switch: move_data.self_switch.clone(),
-            self_boost: move_data.self_boost.as_ref().and_then(|sb| {
-                // selfBoost has structure: { boosts: { atk: 1, def: 1, ... } }
-                let boosts_val = sb.get("boosts")?;
-                let boosts_obj = boosts_val.as_object()?;
-                let mut boosts_map = std::collections::HashMap::new();
-                for (k, v) in boosts_obj {
-                    if let Some(n) = v.as_i64() {
-                        boosts_map.insert(k.clone(), n as i32);
-                    }
-                }
-                Some(Self::convert_boosts_hash_to_table(&boosts_map))
-            }),
+            self_boost: move_data.self_boost,
             self_destruct: move_data.selfdestruct.clone(),
             breaks_protect: move_data.breaks_protect,
             recoil: move_data.recoil,
