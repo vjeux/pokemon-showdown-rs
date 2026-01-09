@@ -282,26 +282,12 @@ pub fn spread_move_hit<'a>(
     // 1. call to getDamage
     // JS: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
     eprintln!("[SPREAD_MOVE_HIT] About to call get_spread_damage");
-
-    // Get the ActiveMove - either from hit_effect or from battle.active_move
-    // We need to clone to avoid borrow conflicts with the mutable battle reference
-    let active_move_for_damage = match &hit_effect {
-        Some(HitEffect::Move(m)) => (*m).clone(),
-        _ => match &battle.active_move {
-            Some(m) => m.clone(),
-            None => {
-                eprintln!("[SPREAD_MOVE_HIT] ERROR: No active move available for get_spread_damage");
-                return (vec![DamageResult::Failed; targets_mut.len()], targets_mut);
-            }
-        },
-    };
-
     damage = crate::battle_actions::get_spread_damage(
         battle,
         damage,
         &targets_mut,
         source_pos,
-        &active_move_for_damage,
+        move_data_id,
         hit_effect.clone(),
         is_secondary,
         is_self,

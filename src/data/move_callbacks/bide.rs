@@ -231,7 +231,7 @@ pub mod condition {
                 name: "Bide".to_string(),
                 fullname: "move: Bide".to_string(),
                 accuracy: Accuracy::AlwaysHits,
-                damage: Some(crate::dex::MoveDamage::Fixed(total_damage * 2)), // Fixed damage: totalDamage * 2
+                damage: Some(total_damage * 2), // Fixed damage: totalDamage * 2
                 category: "Physical".to_string(),
                 priority: 1,
                 flags: MoveFlags {

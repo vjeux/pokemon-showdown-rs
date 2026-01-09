@@ -639,9 +639,9 @@ pub struct MoveData {
     #[serde(rename = "ignoreImmunity", default)]
     pub ignore_immunity: Option<serde_json::Value>,
     /// Fixed damage amount (like "level" for Seismic Toss)
-    /// JavaScript: damage?: number | 'level' | false | null
+    /// JavaScript: damage?: number | string | boolean
     #[serde(default)]
-    pub damage: Option<MoveDamage>,
+    pub damage: Option<serde_json::Value>,
     /// Forces target to switch out
     /// JavaScript: forceSwitch?: boolean
     #[serde(rename = "forceSwitch", default)]
@@ -750,80 +750,6 @@ pub enum Accuracy {
 impl Default for Accuracy {
     fn default() -> Self {
         Accuracy::Percent(100)
-    }
-}
-
-/// Move damage type - represents the various ways damage can be specified
-/// JavaScript: damage?: number | 'level' | false | null
-#[derive(Debug, Clone, PartialEq)]
-pub enum MoveDamage {
-    /// Fixed numeric damage amount
-    Fixed(i32),
-    /// Damage equals the user's level
-    Level,
-}
-
-impl Default for MoveDamage {
-    fn default() -> Self {
-        MoveDamage::Fixed(0)
-    }
-}
-
-impl Serialize for MoveDamage {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        match self {
-            MoveDamage::Fixed(n) => serializer.serialize_i32(*n),
-            MoveDamage::Level => serializer.serialize_str("level"),
-        }
-    }
-}
-
-impl<'de> Deserialize<'de> for MoveDamage {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        use serde::de::{self, Visitor};
-
-        struct MoveDamageVisitor;
-
-        impl<'de> Visitor<'de> for MoveDamageVisitor {
-            type Value = MoveDamage;
-
-            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-                formatter.write_str("a number or the string 'level'")
-            }
-
-            fn visit_i64<E>(self, value: i64) -> Result<Self::Value, E>
-            where
-                E: de::Error,
-            {
-                Ok(MoveDamage::Fixed(value as i32))
-            }
-
-            fn visit_u64<E>(self, value: u64) -> Result<Self::Value, E>
-            where
-                E: de::Error,
-            {
-                Ok(MoveDamage::Fixed(value as i32))
-            }
-
-            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
-            where
-                E: de::Error,
-            {
-                if value == "level" {
-                    Ok(MoveDamage::Level)
-                } else {
-                    Err(de::Error::unknown_variant(value, &["level"]))
-                }
-            }
-        }
-
-        deserializer.deserialize_any(MoveDamageVisitor)
     }
 }
 
