@@ -283,16 +283,22 @@ pub fn spread_move_hit<'a>(
     // 1. call to getDamage
     // JS: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
     eprintln!("[SPREAD_MOVE_HIT] About to call get_spread_damage");
-    damage = crate::battle_actions::get_spread_damage(
-        battle,
-        damage,
-        &targets_mut,
-        source_pos,
-        move_data_id,
-        hit_effect.clone(),
-        is_secondary,
-        is_self,
-    );
+    // Get the active move for damage calculation - JavaScript passes ActiveMove directly
+    let active_move_for_damage = battle.active_move.clone();
+    if let Some(ref active_move) = active_move_for_damage {
+        damage = crate::battle_actions::get_spread_damage(
+            battle,
+            damage,
+            &targets_mut,
+            source_pos,
+            active_move,
+            hit_effect.clone(),
+            is_secondary,
+            is_self,
+        );
+    } else {
+        eprintln!("[SPREAD_MOVE_HIT] WARNING: No active_move available for get_spread_damage");
+    }
 
     // JS: for (const i of targets.keys()) { if (damage[i] === false) targets[i] = false; }
     for i in 0..targets_mut.len() {

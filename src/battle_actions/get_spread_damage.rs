@@ -3,7 +3,7 @@
 //! 1:1 port of getSpreadDamage from battle-actions.ts
 
 use crate::*;
-use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, HitEffect};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, HitEffect, ActiveMove};
 
 /// Get damage for each target in a spread move
 /// Equivalent to getSpreadDamage() in battle-actions.ts:1163
@@ -47,13 +47,14 @@ use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, S
 ///     }
 ///     return damage;
 ///   }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
+/// JavaScript: getSpreadDamage(damage, targets, source, move: ActiveMove, moveData: ActiveMove, ...)
+/// Now takes ActiveMove directly instead of move_id, matching JavaScript's pattern.
 pub fn get_spread_damage<'a>(
     battle: &mut Battle,
     damages: SpreadMoveDamage,
     targets: &SpreadMoveTargets,
     source_pos: (usize, usize),
-    move_id: &ID,
+    active_move: &ActiveMove,
     hit_effect: Option<HitEffect<'a>>,
     _is_secondary: bool,
     _is_self: bool,
@@ -85,7 +86,7 @@ pub fn get_spread_damage<'a>(
         }
 
         // const curDamage = this.getDamage(source, target, moveData);
-        let cur_damage = crate::battle_actions::get_damage(battle, source_pos, target_pos, move_id);
+        let cur_damage = crate::battle_actions::get_damage(battle, source_pos, target_pos, active_move);
 
         // getDamage has several possible return values:
         //

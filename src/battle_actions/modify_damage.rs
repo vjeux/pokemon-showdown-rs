@@ -4,6 +4,7 @@
 
 use crate::*;
 use crate::event::EventResult;
+use crate::battle_actions::ActiveMove;
 
 /// Apply damage modifiers
 /// Equivalent to modifyDamage() in battle-actions.js:1449
@@ -81,17 +82,19 @@ use crate::event::EventResult;
 ///     if (this.battle.gen !== 5 && !baseDamage) return 1;
 ///     return tr(baseDamage, 16);
 ///   }
+/// JavaScript: modifyDamage(baseDamage, pokemon, target, move: ActiveMove, suppressMessages)
+/// Now takes ActiveMove directly instead of MoveData, matching JavaScript's pattern.
 pub fn modify_damage(
     battle: &mut Battle,
     mut base_damage: i32,
     pokemon_pos: (usize, usize),
     target_pos: (usize, usize),
-    move_data: &crate::dex::MoveData,
+    active_move: &ActiveMove,
     is_crit: bool,
 ) -> i32 {
     if battle.turn >= 64 && battle.turn <= 66 {
         eprintln!("[MODIFY_DAMAGE] ENTRY: turn={}, move={}, base_damage={}, source=({},{}), target=({},{})",
-            battle.turn, move_data.id, base_damage, pokemon_pos.0, pokemon_pos.1, target_pos.0, target_pos.1);
+            battle.turn, active_move.id, base_damage, pokemon_pos.0, pokemon_pos.1, target_pos.0, target_pos.1);
     }
     // baseDamage += 2;
     base_damage += 2;
@@ -104,37 +107,35 @@ pub fn modify_damage(
     // IMPORTANT: Spread moves only get damage reduction in multi-target battles (Doubles, Triples, etc.)
     // In Singles, spreadHit may be true (for moves that CAN hit multiple targets), but no modifier is applied.
     // The spread modifier is only for when there are actually multiple Pokemon on each side.
-    if let Some(ref active_move) = battle.active_move {
-        if active_move.spread_hit {
-            // Only apply spread modifier in Doubles, Triples, FreeForAll, etc. NOT in Singles.
-            let should_apply_spread = !matches!(battle.game_type, crate::dex_data::GameType::Singles);
+    if active_move.spread_hit {
+        // Only apply spread modifier in Doubles, Triples, FreeForAll, etc. NOT in Singles.
+        let should_apply_spread = !matches!(battle.game_type, crate::dex_data::GameType::Singles);
 
-            if should_apply_spread {
-                let spread_modifier = if battle.game_type == crate::dex_data::GameType::FreeForAll {
-                    0.5
-                } else {
-                    0.75
-                };
-                if battle.turn >= 64 && battle.turn <= 66 {
-                    eprintln!("[MODIFY_DAMAGE] Spread modifier: {}, game_type={:?}, spreadHit={}",
-                        spread_modifier, battle.game_type, active_move.spread_hit);
-                }
-                base_damage = battle.modify_f(base_damage, spread_modifier);
-            } else if battle.turn >= 64 && battle.turn <= 66 {
-                eprintln!("[MODIFY_DAMAGE] NOT applying spread modifier (Singles format), game_type={:?}, spreadHit={}",
-                    battle.game_type, active_move.spread_hit);
+        if should_apply_spread {
+            let spread_modifier = if battle.game_type == crate::dex_data::GameType::FreeForAll {
+                0.5
+            } else {
+                0.75
+            };
+            if battle.turn >= 64 && battle.turn <= 66 {
+                eprintln!("[MODIFY_DAMAGE] Spread modifier: {}, game_type={:?}, spreadHit={}",
+                    spread_modifier, battle.game_type, active_move.spread_hit);
             }
+            base_damage = battle.modify_f(base_damage, spread_modifier);
+        } else if battle.turn >= 64 && battle.turn <= 66 {
+            eprintln!("[MODIFY_DAMAGE] NOT applying spread modifier (Singles format), game_type={:?}, spreadHit={}",
+                battle.game_type, active_move.spread_hit);
         }
-        // else if (move.multihitType === "parentalbond" && move.hit > 1) {
-        //   const bondModifier = this.battle.gen > 6 ? 0.25 : 0.5;
-        //   this.battle.debug(`Parental Bond modifier: ${bondModifier}`);
-        //   baseDamage = this.battle.modify(baseDamage, bondModifier);
-        // }
-        else if active_move.multi_hit_type.as_deref() == Some("parentalbond") && active_move.hit > 1 {
-            let bond_modifier = if battle.gen > 6 { 0.25 } else { 0.5 };
-            eprintln!("[MODIFY_DAMAGE] Parental Bond modifier: {}", bond_modifier);
-            base_damage = battle.modify_f(base_damage, bond_modifier);
-        }
+    }
+    // else if (move.multihitType === "parentalbond" && move.hit > 1) {
+    //   const bondModifier = this.battle.gen > 6 ? 0.25 : 0.5;
+    //   this.battle.debug(`Parental Bond modifier: ${bondModifier}`);
+    //   baseDamage = this.battle.modify(baseDamage, bondModifier);
+    // }
+    else if active_move.multi_hit_type.as_deref() == Some("parentalbond") && active_move.hit > 1 {
+        let bond_modifier = if battle.gen > 6 { 0.25 } else { 0.5 };
+        eprintln!("[MODIFY_DAMAGE] Parental Bond modifier: {}", bond_modifier);
+        base_damage = battle.modify_f(base_damage, bond_modifier);
     }
 
     // baseDamage = this.battle.runEvent("WeatherModifyDamage", pokemon, target, move, baseDamage);
@@ -143,7 +144,7 @@ pub fn modify_damage(
         "WeatherModifyDamage",
         Some(crate::event::EventTarget::Pokemon(target_pos)),  // target = defender
         Some(pokemon_pos),                                       // source = attacker
-        Some(&crate::battle::Effect::move_(move_data.id.clone())),
+        Some(&crate::battle::Effect::move_(active_move.id.clone())),
         EventResult::Number(base_damage),
         false,
         false
@@ -179,10 +180,7 @@ pub fn modify_damage(
     // baseDamage = this.battle.randomizer(baseDamage);
     // JavaScript: if (!move.noDamageVariance) { baseDamage = this.battle.randomizer(baseDamage); }
     // Check if the move has noDamageVariance set to true
-    let should_apply_variance = battle.active_move
-        .as_ref()
-        .and_then(|m| m.no_damage_variance)
-        .unwrap_or(false) == false; // Apply variance unless explicitly disabled
+    let should_apply_variance = active_move.no_damage_variance.unwrap_or(false) == false; // Apply variance unless explicitly disabled
 
     eprintln!("[MODIFY_DAMAGE] turn={}, BEFORE randomizer: base_damage={}, should_apply={}",
         battle.turn, base_damage, should_apply_variance);
@@ -245,13 +243,8 @@ pub fn modify_damage(
     //   ...
     //   baseDamage = this.battle.modify(baseDamage, stab);
     // }
-    // CRITICAL: Use active_move.move_type, not move_data.move_type!
-    // Abilities like Pixilate modify active_move.move_type, so we need to read from there.
-    let move_type = if let Some(ref active_move) = battle.active_move {
-        active_move.move_type.clone()
-    } else {
-        move_data.move_type.clone()
-    };
+    // Use move_type from the passed active_move (may be modified by abilities like Pixilate)
+    let move_type = active_move.move_type.clone();
 
     if battle.turn >= 64 && battle.turn <= 66 {
         eprintln!("[MODIFY_DAMAGE] move_type={}, source_types={:?}", move_type, source_types);
@@ -278,10 +271,10 @@ pub fn modify_damage(
     // let typeMod = target.runEffectiveness(move);
     // typeMod = this.battle.clampIntRange(typeMod, -6, 6);
     // target.getMoveHitData(move).typeMod = typeMod;
-    let mut type_mod = Pokemon::run_effectiveness(battle, target_pos, &move_data.id);
+    let mut type_mod = Pokemon::run_effectiveness(battle, target_pos, &active_move.id);
     type_mod = battle.clamp_int_range(type_mod, Some(-6), Some(6));
     eprintln!("[MODIFY_DAMAGE] Type effectiveness (via run_effectiveness): move_id={}, type_mod={}",
-        move_data.id, type_mod);
+        active_move.id, type_mod);
     // Store type_mod in move hit data
     // target.getMoveHitData(move).typeMod = typeMod;
     if let Some(move_hit_data) = battle.get_move_hit_data_mut(target_pos) {
@@ -339,10 +332,10 @@ pub fn modify_damage(
     };
 
     if source_status.as_str() == "brn"
-        && move_data.category == "Physical"
+        && active_move.category == "Physical"
         && !source_has_guts
     {
-        if battle.gen < 6 || move_data.id.as_str() != "facade" {
+        if battle.gen < 6 || active_move.id.as_str() != "facade" {
             base_damage = battle.modify(base_damage, 1, 2);
             eprintln!("[MODIFY_DAMAGE] After burn halving: base_damage={}", base_damage);
         }
@@ -360,7 +353,7 @@ pub fn modify_damage(
                 "ModifyDamage",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),  // pokemon = attacker (event target)
                 Some(target_pos),                                       // target = defender (source)
-                Some(&crate::battle::Effect::move_(move_data.id.clone())),
+                Some(&crate::battle::Effect::move_(active_move.id.clone())),
                 EventResult::Number(base_damage),
                 false,
                 false
@@ -375,21 +368,10 @@ pub fn modify_damage(
     // }
     // Check if move is Z-powered or Max-powered and broke through protect
     // Z-moves and Max moves that break through protection deal reduced damage
-    let (is_z_or_max_powered, z_broke_protect) = {
-        if let Some(ref active_move) = battle.active_move {
-            let is_z_or_max = active_move.is_z_or_max_powered;
-
-            // Check if this Z/Max move broke through protection
-            // target.getMoveHitData(move).zBrokeProtect
-            let broke_protect = battle.get_move_hit_data(target_pos)
-                .map(|hit_data| hit_data.z_broke_protect)
-                .unwrap_or(false);
-
-            (is_z_or_max, broke_protect)
-        } else {
-            (false, false)
-        }
-    };
+    let is_z_or_max_powered = active_move.is_z_or_max_powered;
+    let z_broke_protect = battle.get_move_hit_data(target_pos)
+        .map(|hit_data| hit_data.z_broke_protect)
+        .unwrap_or(false);
 
     if is_z_or_max_powered && z_broke_protect {
         base_damage = battle.modify(base_damage, 1, 4); // 0.25x = 1/4

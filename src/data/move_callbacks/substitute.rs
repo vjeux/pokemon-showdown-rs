@@ -314,7 +314,16 @@ pub mod condition {
         };
 
         // let damage = this.actions.getDamage(source, target, move);
-        let damage = match crate::battle_actions::get_damage(battle, source, target, &move_id) {
+        // Get the active move for damage calculation - JavaScript passes ActiveMove directly
+        let active_move_for_damage = battle.active_move.clone();
+        let active_move_ref = match active_move_for_damage.as_ref() {
+            Some(m) => m,
+            None => {
+                eprintln!("[SUBSTITUTE] WARNING: No active_move available for get_damage");
+                return EventResult::Continue;
+            }
+        };
+        let damage = match crate::battle_actions::get_damage(battle, source, target, active_move_ref) {
             Some(d) => d,
             None => {
                 // if (!damage && damage !== 0)
