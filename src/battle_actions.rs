@@ -876,6 +876,7 @@ impl MoveFlags {
 pub struct MaxMoveData {
     /// Base power of the Max Move
     /// JavaScript: basePower: number
+    #[serde(rename = "basePower", default)]
     pub base_power: i32,
 }
 
@@ -886,12 +887,15 @@ pub struct MaxMoveData {
 pub struct ZMoveData {
     /// Base power of the Z-Move
     /// JavaScript: basePower?: number
+    #[serde(rename = "basePower", default)]
     pub base_power: Option<i32>,
     /// Stat boosts from Z-Move
     /// JavaScript: boost?: SparseBoostsTable
+    #[serde(default)]
     pub boost: Option<BoostsTable>,
     /// Effect ID
     /// JavaScript: effect?: IDEntry
+    #[serde(default)]
     pub effect: Option<String>,
 }
 

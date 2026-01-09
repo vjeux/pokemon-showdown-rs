@@ -113,7 +113,7 @@ pub fn get_z_move(
                     //             return this.Z_MOVES[move.type];
                     //         }
                     else if move_data.z_move.as_ref()
-                        .and_then(|zm| zm.get("basePower"))
+                        .and_then(|zm| zm.base_power)
                         .is_some()
                     {
                         // Use the Z_MOVES constant to get the Z-move name

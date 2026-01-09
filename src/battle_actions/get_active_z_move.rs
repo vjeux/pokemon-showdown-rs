@@ -123,8 +123,8 @@ pub fn get_active_z_move(
 
     // Set base power from original move's zMove data
     if let Some(ref z_move_info) = move_data.z_move {
-        if let Some(base_power) = z_move_info.get("basePower").and_then(|v| v.as_i64()) {
-            active_move.base_power = base_power as i32;
+        if let Some(base_power) = z_move_info.base_power {
+            active_move.base_power = base_power;
         }
     }
 

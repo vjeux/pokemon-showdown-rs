@@ -585,11 +585,11 @@ pub struct MoveData {
     /// Z-Move options (basePower, effect, boost)
     /// JavaScript: zMove?: { basePower?: number, effect?: string, boost?: SparseBoostsTable }
     #[serde(rename = "zMove", default)]
-    pub z_move: Option<serde_json::Value>,
+    pub z_move: Option<crate::battle_actions::ZMoveData>,
     /// Max Move options (basePower)
     /// JavaScript: maxMove?: { basePower?: number }
     #[serde(rename = "maxMove", default)]
-    pub max_move: Option<serde_json::Value>,
+    pub max_move: Option<crate::battle_actions::MaxMoveData>,
     /// Calls another move (like Metronome, Sleep Talk)
     /// JavaScript: callsMove?: boolean
     #[serde(rename = "callsMove", default)]

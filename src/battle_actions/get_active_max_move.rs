@@ -97,9 +97,7 @@ pub fn get_active_max_move(
 
         //     if (!move.maxMove?.basePower) throw new Error(`${move.name} doesn't have a maxMove basePower`);
         let max_move_base_power = move_data.max_move.as_ref()
-            .and_then(|mm| mm.get("basePower"))
-            .and_then(|bp| bp.as_i64())
-            .map(|bp| bp as i32)
+            .map(|mm| mm.base_power)
             .expect(&format!("{} doesn't have a maxMove basePower", move_data.name));
 
         //     if (!['gmaxdrumsolo', 'gmaxfireball', 'gmaxhydrosnipe'].includes(maxMove.id)) {
