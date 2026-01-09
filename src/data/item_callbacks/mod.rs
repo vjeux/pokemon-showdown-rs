@@ -124,6 +124,7 @@ pub mod flyingmemory;
 pub mod focusband;
 pub mod focussash;
 pub mod froslassite;
+pub mod fullincense;
 pub mod galladite;
 pub mod ganlonberry;
 pub mod garchompite;
@@ -167,6 +168,7 @@ pub mod kasibberry;
 pub mod kebiaberry;
 pub mod keeberry;
 pub mod kingsrock;
+pub mod laggingtail;
 pub mod lansatberry;
 pub mod latiasite;
 pub mod latiosite;
@@ -806,6 +808,8 @@ pub fn dispatch_on_fractional_priority(
 ) -> EventResult {
     match item_id {
         "custapberry" => custapberry::on_fractional_priority(battle, pokemon_pos, priority),
+        "fullincense" => fullincense::on_fractional_priority(battle, pokemon_pos, priority),
+        "laggingtail" => laggingtail::on_fractional_priority(battle, pokemon_pos, priority),
         "quickclaw" => quickclaw::on_fractional_priority(battle, pokemon_pos, priority),
         _ => EventResult::Continue,
     }
