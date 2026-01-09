@@ -69,24 +69,29 @@ pub fn base_power_callback(
     //         rolloutData.duration = 2;
     //     }
     // }
+    // NOTE: basePowerCallback is called outside the event dispatch system, so we can't use
+    // battle.with_effect_state() as it requires battle.effect to be set. Instead, we directly
+    // modify the pokemon's volatile state.
     if rollout_data.is_some() {
-        let status = {
-            let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+        let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        let is_sleeping = pokemon_pokemon.status == ID::from("slp");
+
+        if !is_sleeping {
+            // Directly update the volatile state on the pokemon
+            let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.status.clone()
-        };
-
-        if status != ID::from("slp") {
-            // JavaScript: this.effectState.hitCount++, this.effectState.contactHitCount++
-            battle.with_effect_state(|state| {
-                state.hit_count = Some(state.hit_count.unwrap_or(0) + 1);
-                state.contact_hit_count = Some(state.contact_hit_count.unwrap_or(0) + 1);
-                if state.hit_count.unwrap_or(0) < 5 {
-                    state.duration = Some(2);
+            if let Some(volatile_state) = pokemon_mut.volatiles.get_mut(&ID::from("rollout")) {
+                volatile_state.hit_count = Some(volatile_state.hit_count.unwrap_or(0) + 1);
+                volatile_state.contact_hit_count = Some(volatile_state.contact_hit_count.unwrap_or(0) + 1);
+                if volatile_state.hit_count.unwrap_or(0) < 5 {
+                    volatile_state.duration = Some(2);
                 }
-            });
+            }
         }
     }
 
