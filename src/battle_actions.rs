@@ -401,7 +401,7 @@ pub struct ActiveMove {
     pub contest_type: Option<String>,
     /// No PP boosts allowed
     /// JavaScript: noPPBoosts?: boolean
-    pub no_pp_boosts: Option<bool>,
+    pub no_pp_boosts: bool,
     /// Is this a Z-move?
     /// JavaScript: isZ?: boolean | IDEntry
     pub is_z: Option<String>,
