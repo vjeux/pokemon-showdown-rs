@@ -2104,6 +2104,7 @@ pub fn dispatch_condition_on_invulnerability(
         "dive" => dive::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
         "fly" => fly::condition::on_invulnerability(battle, None, Some(source_pos), active_move),
         "phantomforce" => crate::data::condition_callbacks::phantomforce::on_invulnerability(battle, None, Some(source_pos), active_move),
+        "shadowforce" => crate::data::condition_callbacks::shadowforce::on_invulnerability(battle, None, Some(source_pos), active_move),
         _ => EventResult::Continue,
     }
 }

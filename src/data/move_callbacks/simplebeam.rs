@@ -61,8 +61,8 @@ pub fn on_try_hit(
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),  // First param is target
+    _source_pos: Option<(usize, usize)>,  // Second param is source
 ) -> EventResult {
     use crate::dex_data::ID;
 
@@ -70,10 +70,7 @@ pub fn on_hit(
     //     const oldAbility = target.setAbility('simple');
     //     if (!oldAbility) return oldAbility as false | null;
     // }
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    let target = target_pos;
 
     // const oldAbility = target.setAbility('simple');
     let old_ability = Pokemon::set_ability(battle, target, ID::from("simple"), None, None, false, false);

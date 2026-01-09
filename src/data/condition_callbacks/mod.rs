@@ -34,6 +34,7 @@ pub mod psn;
 pub mod raindance;
 pub mod rolloutstorage;
 pub mod sandstorm;
+pub mod shadowforce;
 pub mod silvally;
 pub mod skydrop;
 pub mod slp;
