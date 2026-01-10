@@ -79,18 +79,19 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle::Effect;
+use crate::battle_actions::ActiveMove;
 
 /// Try to hit targets with a spread move
 /// Equivalent to trySpreadMoveHit() in battle-actions.ts:545
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn try_spread_move_hit(
     battle: &mut Battle,
     targets: &[(usize, usize)],
     pokemon_pos: (usize, usize),
-    move_id: &ID,
+    active_move: &mut ActiveMove,
     not_active: bool,
 ) -> crate::battle_actions::DamageResult {
     use crate::battle_actions::DamageResult;
+    let move_id = active_move.id.clone();
     // Convert targets to mutable Vec for filtering
     // JS: targets: Pokemon[]
     let mut target_list: Vec<(usize, usize)> = targets.to_vec();
@@ -112,25 +113,23 @@ pub fn try_spread_move_hit(
     // - allAdjacent: hits all adjacent Pokemon
     // - allAdjacentFoes: hits all adjacent foes
     // - all: hits all Pokemon on the field
-    if let Some(active_move) = &mut battle.active_move {
-        let is_multi_target = matches!(
-            active_move.target.as_str(),
-            "allAdjacent" | "allAdjacentFoes" | "all"
-        );
+    let is_multi_target = matches!(
+        active_move.target.as_str(),
+        "allAdjacent" | "allAdjacentFoes" | "all"
+    );
 
-        if targets.len() > 1 || is_multi_target {
-            if active_move.smart_target != Some(true) {
-                if battle.turn >= 64 && battle.turn <= 66 {
-                    eprintln!("[TRY_SPREAD_MOVE_HIT] Setting spread_hit=true for move={}, targets.len()={}, is_multi_target={}",
-                        active_move.id, targets.len(), is_multi_target);
-                }
-                active_move.spread_hit = true;
-            }
-        } else {
+    if targets.len() > 1 || is_multi_target {
+        if active_move.smart_target != Some(true) {
             if battle.turn >= 64 && battle.turn <= 66 {
-                eprintln!("[TRY_SPREAD_MOVE_HIT] NOT setting spread_hit for move={}, targets.len()={}, is_multi_target={}",
+                eprintln!("[TRY_SPREAD_MOVE_HIT] Setting spread_hit=true for move={}, targets.len()={}, is_multi_target={}",
                     active_move.id, targets.len(), is_multi_target);
             }
+            active_move.spread_hit = true;
+        }
+    } else {
+        if battle.turn >= 64 && battle.turn <= 66 {
+            eprintln!("[TRY_SPREAD_MOVE_HIT] NOT setting spread_hit for move={}, targets.len()={}, is_multi_target={}",
+                active_move.id, targets.len(), is_multi_target);
         }
     }
 
@@ -244,10 +243,7 @@ pub fn try_spread_move_hit(
     let mut at_least_one_failure = false;
 
     // JS: for (const step of moveSteps) { ... }
-    // Clone active_move to avoid borrowing conflicts, but keep battle.active_move set
-    // so that event handlers (like King's Shield's onTryHit) can access it
-    let mut active_move = battle.active_move.as_ref().expect("active_move must be set").clone();
-
+    // Use the passed active_move parameter directly instead of cloning from battle.active_move
     for &step_idx in &step_order {
         // Call the appropriate step function
         // JS: const hitResults: (number | boolean | "" | undefined)[] | undefined = step.call(this, targets, pokemon, move);
@@ -258,7 +254,7 @@ pub fn try_spread_move_hit(
                     battle,
                     &target_list,
                     pokemon_pos,
-                    &mut active_move,
+                    active_move,
                 );
                 eprintln!("[TRY_SPREAD] Step 0 (Invuln): results={:?}, target_list.len()={}", results, target_list.len());
                 Some(results)
@@ -269,7 +265,7 @@ pub fn try_spread_move_hit(
                     battle,
                     &target_list,
                     pokemon_pos,
-                    &active_move,
+                    active_move,
                 );
                 Some(results)
             }
@@ -279,7 +275,7 @@ pub fn try_spread_move_hit(
                     battle,
                     &target_list,
                     pokemon_pos,
-                    &mut active_move,
+                    active_move,
                 );
                 Some(results)
             }
@@ -289,7 +285,7 @@ pub fn try_spread_move_hit(
                     battle,
                     &target_list,
                     pokemon_pos,
-                    &active_move,
+                    active_move,
                 );
                 Some(results)
             }
@@ -299,7 +295,7 @@ pub fn try_spread_move_hit(
                     battle,
                     &target_list,
                     pokemon_pos,
-                    move_id,
+                    &move_id,
                 );
                 Some(results)
             }
@@ -309,7 +305,7 @@ pub fn try_spread_move_hit(
                     battle,
                     &target_list,
                     pokemon_pos,
-                    &active_move,
+                    active_move,
                 );
                 // This function doesn't return results, so treat as success
                 Some(vec![true; target_list.len()])
@@ -320,7 +316,7 @@ pub fn try_spread_move_hit(
                     battle,
                     &target_list,
                     pokemon_pos,
-                    &mut active_move,
+                    active_move,
                 );
                 // This function doesn't return results, so treat as success
                 Some(vec![true; target_list.len()])
@@ -337,7 +333,7 @@ pub fn try_spread_move_hit(
                     battle,
                     &mut spread_targets,
                     pokemon_pos,
-                    &mut active_move,
+                    active_move,
                 );
 
                 // Convert SpreadMoveDamage to Vec<bool>
@@ -397,13 +393,11 @@ pub fn try_spread_move_hit(
         }
     }
 
-    // Restore active_move to battle
-    battle.active_move = Some(active_move.clone());
-
     // JS: move.hitTargets = targets;
-    if let Some(active_move) = &mut battle.active_move {
-        active_move.hit_targets = target_list.clone();
-    }
+    active_move.hit_targets = target_list.clone();
+
+    // Restore active_move to battle so event handlers can access it
+    battle.active_move = Some(active_move.clone());
 
     // JS: const moveResult = !!targets.length;
     let move_result = !target_list.is_empty();
@@ -417,13 +411,11 @@ pub fn try_spread_move_hit(
 
     // JS: const hitSlot = targets.map(p => p.getSlot());
     // JS: if (move.spreadHit) this.battle.attrLastMove('[spread] ' + hitSlot.join(','));
-    if let Some(active_move) = &battle.active_move {
-        if active_move.spread_hit {
-            // Get slot indices for each target
-            let hit_slots: Vec<String> = target_list.iter().map(|(_, idx)| idx.to_string()).collect();
-            let spread_str = format!("[spread] {}", hit_slots.join(","));
-            battle.attr_last_move(&[&spread_str]);
-        }
+    if active_move.spread_hit {
+        // Get slot indices for each target
+        let hit_slots: Vec<String> = target_list.iter().map(|(_, idx)| idx.to_string()).collect();
+        let spread_str = format!("[spread] {}", hit_slots.join(","));
+        battle.attr_last_move(&[&spread_str]);
     }
 
     // JS: return moveResult;

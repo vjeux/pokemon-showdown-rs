@@ -254,13 +254,24 @@ pub fn on_end_with_data(
         // Set flag to indicate we're executing a future move
         // This prevents the move's onTry from queuing another future move
         battle.executing_future_move = true;
+
+        // Create an ActiveMove from the stored move ID
+        let mut active_move = match battle.dex.get_active_move(move_id.as_str()) {
+            Some(am) => am,
+            None => {
+                eprintln!("[FUTUREMOVE::ON_END] Failed to get ActiveMove for move_id={}", move_id);
+                battle.executing_future_move = false;
+                return EventResult::Continue;
+            }
+        };
+
         // Call trySpreadMoveHit directly, not use_move
         let targets = vec![pokemon_pos];
         let _result = crate::battle_actions::try_spread_move_hit(
             battle,
             &targets,
             src,
-            &move_id,
+            &mut active_move,
             true, // notActive=true means it will call setActiveMove
         );
         // Clear the flag

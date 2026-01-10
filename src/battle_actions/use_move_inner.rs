@@ -801,7 +801,7 @@ pub fn use_move_inner(
             battle,
             &targets,
             pokemon_pos,
-            &active_move.id,
+            &mut active_move,
             false,
         );
     }
