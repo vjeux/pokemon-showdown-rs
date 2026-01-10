@@ -73,66 +73,123 @@ pub enum HitEffect<'a> {
 
 impl<'a> HitEffect<'a> {
     /// Get boosts from the hit effect
+    /// For secondaries with self_secondary, returns self_secondary.boosts
     pub fn boosts(&self) -> Option<&BoostsTable> {
         match self {
             HitEffect::Move(m) => m.boosts.as_ref(),
-            HitEffect::Secondary(s) => s.boosts.as_ref(),
+            HitEffect::Secondary(s) => {
+                // For self-targeting secondaries, boosts are in self_secondary
+                if let Some(ref self_sec) = s.self_secondary {
+                    self_sec.boosts.as_ref()
+                } else {
+                    s.boosts.as_ref()
+                }
+            }
         }
     }
 
     /// Get status from the hit effect
+    /// For secondaries with self_secondary, returns self_secondary.status
     pub fn status(&self) -> Option<&String> {
         match self {
             HitEffect::Move(m) => m.status.as_ref(),
-            HitEffect::Secondary(s) => s.status.as_ref(),
+            HitEffect::Secondary(s) => {
+                if let Some(ref self_sec) = s.self_secondary {
+                    self_sec.status.as_ref()
+                } else {
+                    s.status.as_ref()
+                }
+            }
         }
     }
 
     /// Get volatile_status from the hit effect
+    /// For secondaries with self_secondary, returns self_secondary.volatile_status
     pub fn volatile_status(&self) -> Option<&String> {
         match self {
             HitEffect::Move(m) => m.volatile_status.as_ref(),
-            HitEffect::Secondary(s) => s.volatile_status.as_ref(),
+            HitEffect::Secondary(s) => {
+                if let Some(ref self_sec) = s.self_secondary {
+                    self_sec.volatile_status.as_ref()
+                } else {
+                    s.volatile_status.as_ref()
+                }
+            }
         }
     }
 
     /// Get side_condition from the hit effect
+    /// For secondaries with self_secondary, returns self_secondary.side_condition
     pub fn side_condition(&self) -> Option<&String> {
         match self {
             HitEffect::Move(m) => m.side_condition.as_ref(),
-            HitEffect::Secondary(s) => s.side_condition.as_ref(),
+            HitEffect::Secondary(s) => {
+                if let Some(ref self_sec) = s.self_secondary {
+                    self_sec.side_condition.as_ref()
+                } else {
+                    s.side_condition.as_ref()
+                }
+            }
         }
     }
 
     /// Get slot_condition from the hit effect
+    /// For secondaries with self_secondary, returns self_secondary.slot_condition
     pub fn slot_condition(&self) -> Option<&String> {
         match self {
             HitEffect::Move(m) => m.slot_condition.as_ref(),
-            HitEffect::Secondary(s) => s.slot_condition.as_ref(),
+            HitEffect::Secondary(s) => {
+                if let Some(ref self_sec) = s.self_secondary {
+                    self_sec.slot_condition.as_ref()
+                } else {
+                    s.slot_condition.as_ref()
+                }
+            }
         }
     }
 
     /// Get pseudo_weather from the hit effect
+    /// For secondaries with self_secondary, returns self_secondary.pseudo_weather
     pub fn pseudo_weather(&self) -> Option<&String> {
         match self {
             HitEffect::Move(m) => m.pseudo_weather.as_ref(),
-            HitEffect::Secondary(s) => s.pseudo_weather.as_ref(),
+            HitEffect::Secondary(s) => {
+                if let Some(ref self_sec) = s.self_secondary {
+                    self_sec.pseudo_weather.as_ref()
+                } else {
+                    s.pseudo_weather.as_ref()
+                }
+            }
         }
     }
 
     /// Get terrain from the hit effect
+    /// For secondaries with self_secondary, returns self_secondary.terrain
     pub fn terrain(&self) -> Option<&String> {
         match self {
             HitEffect::Move(m) => m.terrain.as_ref(),
-            HitEffect::Secondary(s) => s.terrain.as_ref(),
+            HitEffect::Secondary(s) => {
+                if let Some(ref self_sec) = s.self_secondary {
+                    self_sec.terrain.as_ref()
+                } else {
+                    s.terrain.as_ref()
+                }
+            }
         }
     }
 
     /// Get weather from the hit effect
+    /// For secondaries with self_secondary, returns self_secondary.weather
     pub fn weather(&self) -> Option<&String> {
         match self {
             HitEffect::Move(m) => m.weather.as_ref(),
-            HitEffect::Secondary(s) => s.weather.as_ref(),
+            HitEffect::Secondary(s) => {
+                if let Some(ref self_sec) = s.self_secondary {
+                    self_sec.weather.as_ref()
+                } else {
+                    s.weather.as_ref()
+                }
+            }
         }
     }
 
