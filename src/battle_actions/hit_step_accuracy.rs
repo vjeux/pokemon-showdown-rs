@@ -73,29 +73,21 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle::Effect;
+use crate::battle_actions::ActiveMove;
 
 /// Check accuracy for each target
 /// Equivalent to hitStepAccuracy() in battle-actions.ts:580
 ///
 /// Returns a vec of booleans indicating whether each target was hit
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn hit_step_accuracy(
     battle: &mut Battle,
     targets: &[(usize, usize)],
     pokemon_pos: (usize, usize),
-    move_id: &ID,
+    active_move: &mut ActiveMove,
 ) -> Vec<bool> {
+    let move_id = active_move.id.clone();
     eprintln!("[HIT_STEP_ACCURACY] Called for move {:?} from {:?} targeting {:?}", move_id, pokemon_pos, targets);
     let mut hit_results = vec![false; targets.len()];
-
-    // Get move data
-    let move_data = match battle.dex.moves().get(move_id.as_str()) {
-        Some(m) => m.clone(),
-        None => {
-            // If move doesn't exist, consider all targets hit (shouldn't happen)
-            return vec![true; targets.len()];
-        }
-    };
 
     // Get pokemon
     let _pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -108,29 +100,18 @@ pub fn hit_step_accuracy(
     for (i, &target_pos) in targets.iter().enumerate() {
         eprintln!("[HIT_STEP_ACCURACY] Processing target {} of {}: {:?}", i, targets.len(), target_pos);
         // Get base accuracy from move
-        // CRITICAL: In JavaScript, move.accuracy refers to the ActiveMove (which can be modified by onModifyMove)
-        // So we must check battle.active_move.accuracy first before falling back to move_data.accuracy
-        let mut accuracy = if let Some(ref active_move) = battle.active_move {
-            match active_move.accuracy {
-                crate::dex::Accuracy::Percent(p) => p,
-                crate::dex::Accuracy::AlwaysHits => {
-                    hit_results[i] = true;
-                    continue;
-                }
-            }
-        } else {
-            match move_data.accuracy {
-                crate::dex::Accuracy::Percent(p) => p,
-                crate::dex::Accuracy::AlwaysHits => {
-                    hit_results[i] = true;
-                    continue;
-                }
+        // Use the passed active_move parameter directly
+        let mut accuracy = match active_move.accuracy {
+            crate::dex::Accuracy::Percent(p) => p,
+            crate::dex::Accuracy::AlwaysHits => {
+                hit_results[i] = true;
+                continue;
             }
         };
 
         // Handle OHKO moves
         // JavaScript: if (move.ohko) { ... }
-        if let Some(ref ohko_type) = move_data.ohko {
+        if let Some(ref ohko_type) = active_move.ohko {
             // if (!target.isSemiInvulnerable())
             let target_semi_invulnerable = Pokemon::is_semi_invulnerable(battle, target_pos);
 
@@ -220,7 +201,7 @@ pub fn hit_step_accuracy(
             let mut boost = 0;
 
             // if (!move.ignoreAccuracy)
-            if !move_data.ignore_accuracy {
+            if !active_move.ignore_accuracy {
                 // const boosts = this.battle.runEvent('ModifyBoost', pokemon, null, null, { ...pokemon.boosts });
                 // boost = this.battle.clampIntRange(boosts['accuracy'], -6, 6);
 
@@ -249,7 +230,7 @@ pub fn hit_step_accuracy(
             }
 
             // if (!move.ignoreEvasion)
-            if !move_data.ignore_evasion {
+            if !active_move.ignore_evasion {
                 // const boosts = this.battle.runEvent('ModifyBoost', target, null, null, { ...target.boosts });
                 // boost = this.battle.clampIntRange(boost - boosts['evasion'], -6, 6);
 
@@ -296,17 +277,13 @@ pub fn hit_step_accuracy(
         // }
 
         let always_hit = {
-            let active_always_hit = battle.active_move.as_ref()
-                .map(|m| m.always_hit)
-                .unwrap_or(false);
-
-            active_always_hit ||
+            active_move.always_hit ||
                 (move_id.as_str() == "toxic" && battle.gen >= 8 && {
                     battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
                         .map(|p| p.has_type(battle, "Poison"))
                         .unwrap_or(false)
                 }) ||
-                (move_data.target == "self" && move_data.category == "Status" && !Pokemon::is_semi_invulnerable(battle, target_pos))
+                (active_move.target == "self" && active_move.category == "Status" && !Pokemon::is_semi_invulnerable(battle, target_pos))
         };
 
         if always_hit {
@@ -352,19 +329,15 @@ pub fn hit_step_accuracy(
             //     this.battle.add('-miss', pokemon, target);
             // }
 
-            let (smart_target, spread_hit) = if let Some(ref mut active_move) = battle.active_move {
-                let was_smart = active_move.smart_target.unwrap_or(false);
-                if was_smart {
-                    // If smart_target was true, set it to false and don't show miss message
-                    active_move.smart_target = Some(false);
-                }
-                (was_smart, active_move.spread_hit)
-            } else {
-                (false, false)
-            };
+            let was_smart = active_move.smart_target.unwrap_or(false);
+            if was_smart {
+                // If smart_target was true, set it to false and don't show miss message
+                active_move.smart_target = Some(false);
+            }
+            let spread_hit = active_move.spread_hit;
 
             // Only show miss messages if it wasn't a smart target miss
-            if !smart_target {
+            if !was_smart {
                 if !spread_hit {
                     battle.attr_last_move(&["[miss]"]);
                 }
@@ -383,7 +356,7 @@ pub fn hit_step_accuracy(
 
             // Blunder Policy item handling
             // if (!move.ohko && pokemon.hasItem('blunderpolicy') && pokemon.useItem())
-            if move_data.ohko.is_none() {
+            if active_move.ohko.is_none() {
                 let has_blunder_policy = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1)
                     .map(|p| p.has_item(battle, &["blunderpolicy"]))
                     .unwrap_or(false);

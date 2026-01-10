@@ -295,7 +295,7 @@ pub fn try_spread_move_hit(
                     battle,
                     &target_list,
                     pokemon_pos,
-                    &move_id,
+                    active_move,
                 );
                 Some(results)
             }
