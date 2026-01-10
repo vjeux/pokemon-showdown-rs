@@ -16,12 +16,21 @@
 use crate::*;
 use crate::dex_data::{StatID, BoostID};
 
-impl Pokemon {
+impl Battle {
 
     /// Get combat power (for Pokemon Go style formats)
     /// Equivalent to getCombatPower in pokemon.ts
     /// ✅ NOW IMPLEMENTED: 1-to-1 with JavaScript (was using wrong formula)
-    pub fn get_combat_power(&self, battle: &mut Battle) -> i32 {
+    pub fn get_combat_power(&mut self, pokemon_pos: (usize, usize)) -> i32 {
+        // Get pokemon data we need first
+        let (level, boosts, evs) = {
+            let pokemon = match self.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return 0,
+            };
+            (pokemon.level, pokemon.boosts.clone(), pokemon.set.evs.clone())
+        };
+
         // JS: let statSum = 0;
         // JS: let awakeningSum = 0;
         let mut stat_sum = 0;
@@ -35,32 +44,32 @@ impl Pokemon {
             // HP doesn't have a boost, so use 0 for HP
             let boost = match stat_id {
                 StatID::HP => 0,
-                StatID::Atk => self.boosts.get(BoostID::Atk),
-                StatID::Def => self.boosts.get(BoostID::Def),
-                StatID::SpA => self.boosts.get(BoostID::SpA),
-                StatID::SpD => self.boosts.get(BoostID::SpD),
-                StatID::Spe => self.boosts.get(BoostID::Spe),
+                StatID::Atk => boosts.get(BoostID::Atk),
+                StatID::Def => boosts.get(BoostID::Def),
+                StatID::SpA => boosts.get(BoostID::SpA),
+                StatID::SpD => boosts.get(BoostID::SpD),
+                StatID::Spe => boosts.get(BoostID::Spe),
             };
 
             // Calculate stat with boost
-            let calculated = self.calculate_stat(battle, *stat_id, boost, 1.0, None);
+            let calculated = self.calculate_stat(pokemon_pos, *stat_id, boost, 1.0, None);
 
             stat_sum += calculated;
 
             // For awakening sum, add EV value
             // JS: this.set.evs[stat]
-            let ev_value = self.set.evs.get(*stat_id);
+            let ev_value = evs.get(*stat_id);
             awakening_sum += calculated + ev_value;
         }
 
         // JS: const combatPower = Math.floor(Math.floor(statSum * this.level * 6 / 100) +
         // JS:     (Math.floor(awakeningSum) * Math.floor((this.level * 4) / 100 + 2)));
-        let level = self.level as i32;
+        let level = level as i32;
         let combat_power =
             ((stat_sum * level * 6) / 100) +
             (awakening_sum * ((level * 4) / 100 + 2));
 
         // JS: return this.battle.clampIntRange(combatPower, 0, 10000);
-        battle.clamp_int_range(combat_power, Some(0), Some(10000))
+        self.clamp_int_range(combat_power, Some(0), Some(10000))
     }
 }

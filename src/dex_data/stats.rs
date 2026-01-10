@@ -58,6 +58,18 @@ impl StatID {
             StatID::Spe => "spe",
         }
     }
+
+    /// Convert StatID to BoostID (returns None for HP since HP can't be boosted)
+    pub fn to_boost_id(&self) -> Option<super::BoostID> {
+        match self {
+            StatID::HP => None,
+            StatID::Atk => Some(super::BoostID::Atk),
+            StatID::Def => Some(super::BoostID::Def),
+            StatID::SpA => Some(super::BoostID::SpA),
+            StatID::SpD => Some(super::BoostID::SpD),
+            StatID::Spe => Some(super::BoostID::Spe),
+        }
+    }
 }
 
 /// Stats table (all 6 stats)

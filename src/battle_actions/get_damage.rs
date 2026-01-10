@@ -529,18 +529,15 @@ pub fn get_damage(
         "spe" => StatID::Spe,
         _ => if is_physical { StatID::Atk } else { StatID::SpA }
     };
-    let mut attack = if let Some(side) = battle.sides.get(attacker_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(attacker_pos.1) {
-            let result = pokemon.calculate_stat(battle, attack_stat_id, atk_boost as i8, 1.0, Some(source_pos));
-            eprintln!("[GET_DAMAGE] Attack calc (stat={:?}): pokemon={}, boost={}, attack={}",
-                attack_stat_id, pokemon.name, atk_boost, result);
-            result
-        } else {
-            return None;
-        }
-    } else {
+    let attacker_name = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
+        .map(|p| p.name.clone())
+        .unwrap_or_default();
+    let mut attack = battle.calculate_stat(attacker_pos, attack_stat_id, atk_boost as i8, 1.0, Some(source_pos));
+    eprintln!("[GET_DAMAGE] Attack calc (stat={:?}): pokemon={}, boost={}, attack={}",
+        attack_stat_id, attacker_name, atk_boost, attack);
+    if attack == 0 {
         return None;
-    };
+    }
 
     // Get defense stat with boosts (now potentially modified for crits)
     // JavaScript: let defense = defender.calculateStat(defenseStat, defBoosts, 1, target);
@@ -553,18 +550,15 @@ pub fn get_damage(
         "spe" => StatID::Spe,
         _ => if is_physical { StatID::Def } else { StatID::SpD }
     };
-    let mut defense = if let Some(side) = battle.sides.get(defender_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(defender_pos.1) {
-            let result = pokemon.calculate_stat(battle, defense_stat_id, def_boost as i8, 1.0, Some(target_pos));
-            eprintln!("[GET_DAMAGE] Defense calc (stat={:?}): pokemon={}, boost={}, defense={}",
-                defense_stat_id, pokemon.name, def_boost, result);
-            result
-        } else {
-            return None;
-        }
-    } else {
+    let defender_name = battle.pokemon_at(defender_pos.0, defender_pos.1)
+        .map(|p| p.name.clone())
+        .unwrap_or_default();
+    let mut defense = battle.calculate_stat(defender_pos, defense_stat_id, def_boost as i8, 1.0, Some(target_pos));
+    eprintln!("[GET_DAMAGE] Defense calc (stat={:?}): pokemon={}, boost={}, defense={}",
+        defense_stat_id, defender_name, def_boost, defense);
+    if defense == 0 {
         return None;
-    };
+    }
 
     // JavaScript: attack = this.battle.runEvent('ModifyAtk', source, target, move, attack);
     // JavaScript: defense = this.battle.runEvent('ModifyDef', target, source, move, defense);
