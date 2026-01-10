@@ -49,14 +49,14 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///     this.debug('Sword of Ruin Def drop');
 ///     return this.chainModify(0.75);
 /// }
-pub fn on_any_modify_def(battle: &mut Battle, _def: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
-    // const abilityHolder = this.effectState.target;
-    let ability_holder = match battle.effect_state.target {
+pub fn on_any_modify_def(battle: &mut Battle, _def: i32, target_pos: Option<(usize, usize)>, ability_holder_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // ability_holder_pos is the Pokemon with Sword of Ruin
+    let ability_holder = match ability_holder_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
-    // if (target.hasAbility('Sword of Ruin')) return;
+    // target_pos is the Pokemon whose Def is being modified (the defender)
     if let Some(tpos) = target_pos {
         let target_has_sword = {
             let target = match battle.pokemon_at(tpos.0, tpos.1) {
@@ -112,10 +112,7 @@ pub fn on_any_modify_def(battle: &mut Battle, _def: i32, target_pos: Option<(usi
     };
 
     if should_apply {
-        // this.debug('Sword of Ruin Def drop');
-        eprintln!("Sword of Ruin Def drop");
-        // return this.chainModify(0.75);
-        battle.chain_modify(0.75); return EventResult::Continue;
+        battle.chain_modify(0.75);
     }
 
     EventResult::Continue

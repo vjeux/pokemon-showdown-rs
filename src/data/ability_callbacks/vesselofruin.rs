@@ -47,8 +47,9 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///     this.debug('Vessel of Ruin SpA drop');
 ///     return this.chainModify(0.75);
 /// }
-pub fn on_any_modify_sp_a(battle: &mut Battle, _spa: i32, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
-    let ability_holder = match battle.effect_state.target {
+pub fn on_any_modify_sp_a(battle: &mut Battle, _spa: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // target_pos is the ability holder (Pokemon with Vessel of Ruin)
+    let ability_holder = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -101,8 +102,7 @@ pub fn on_any_modify_sp_a(battle: &mut Battle, _spa: i32, source_pos: Option<(us
     };
 
     if should_apply {
-        eprintln!("Vessel of Ruin SpA drop");
-        battle.chain_modify(0.75); return EventResult::Continue;
+        battle.chain_modify(0.75);
     }
 
     EventResult::Continue

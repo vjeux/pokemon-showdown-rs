@@ -47,12 +47,14 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///     this.debug('Beads of Ruin SpD drop');
 ///     return this.chainModify(0.75);
 /// }
-pub fn on_any_modify_sp_d(battle: &mut Battle, _spd: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
-    let ability_holder = match battle.effect_state.target {
+pub fn on_any_modify_sp_d(battle: &mut Battle, _spd: i32, target_pos: Option<(usize, usize)>, ability_holder_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // ability_holder_pos is the Pokemon with Beads of Ruin
+    let ability_holder = match ability_holder_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
+    // target_pos is the Pokemon whose SpD is being modified (the defender)
     if let Some(tpos) = target_pos {
         let target_has_beads = {
             let target = match battle.pokemon_at(tpos.0, tpos.1) {
@@ -101,8 +103,7 @@ pub fn on_any_modify_sp_d(battle: &mut Battle, _spd: i32, target_pos: Option<(us
     };
 
     if should_apply {
-        eprintln!("Beads of Ruin SpD drop");
-        battle.chain_modify(0.75); return EventResult::Continue;
+        battle.chain_modify(0.75);
     }
 
     EventResult::Continue

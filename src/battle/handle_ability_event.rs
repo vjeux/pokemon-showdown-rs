@@ -293,8 +293,8 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 relay_var_int,
-                event_source_pos,
-                Some(pokemon_pos),
+                event_target_pos,       // source = attacker = event.target (for ModifyAtk)
+                Some(pokemon_pos),      // ability holder
                 active_move_clone.as_ref(),
             ),
             "AnyModifyBoost" => ability_callbacks::dispatch_on_any_modify_boost(
@@ -315,24 +315,24 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 relay_var_int,
-                Some(pokemon_pos),
-                event_source_pos,
+                event_target_pos,       // target = defender = event.target (for ModifyDef)
+                Some(pokemon_pos),      // ability holder
                 active_move_clone.as_ref(),
             ),
             "AnyModifySpA" => ability_callbacks::dispatch_on_any_modify_sp_a(
                 self,
                 ability_id.as_str(),
                 relay_var_int,
-                event_source_pos,
-                Some(pokemon_pos),
+                event_target_pos,       // source = attacker = event.target
+                Some(pokemon_pos),      // ability holder
                 active_move_clone.as_ref(),
             ),
             "AnyModifySpD" => ability_callbacks::dispatch_on_any_modify_sp_d(
                 self,
                 ability_id.as_str(),
                 relay_var_int,
-                Some(pokemon_pos),
-                event_source_pos,
+                event_target_pos,       // target = defender whose SpD is modified
+                Some(pokemon_pos),      // ability holder
                 active_move_clone.as_ref(),
             ),
             "AnyRedirectTarget" => ability_callbacks::dispatch_on_any_redirect_target(
