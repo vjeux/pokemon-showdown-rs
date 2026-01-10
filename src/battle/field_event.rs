@@ -168,9 +168,9 @@ impl Battle {
         let field_event = format!("onField{}", event_id);
         let field_handlers = self.find_field_event_handlers(&field_event, get_key, None);
         for handler in field_handlers {
-            let effect_id = handler.effect_id;
+            let effect_id = handler.effect.id;
             let holder = handler.effect_holder;
-            let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
+            let effect_type = handler.effect.effect_type;  // Use effect_type from handler, not determine_effect_type
             // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
             let effect_order = 0;
             // JavaScript: handler.callback is set from getCallback() result
@@ -201,9 +201,9 @@ impl Battle {
                 let side_event = format!("onSide{}", event_id);
                 let side_handlers = self.find_side_event_handlers(&side_event, side_idx, get_key, None);
                 for handler in side_handlers {
-                    let effect_id = handler.effect_id;
+                    let effect_id = handler.effect.id;
                     let holder = handler.effect_holder;
-                    let effect_type = handler.effect_type;  // Use effect_type from handler, not determine_effect_type
+                    let effect_type = handler.effect.effect_type;  // Use effect_type from handler, not determine_effect_type
                     // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
                     let effect_order = 0;
                     // JavaScript: handler.callback is set from getCallback() result
@@ -243,9 +243,9 @@ impl Battle {
                     let any_event = format!("onAny{}", event_id);
                     let any_handlers = self.find_pokemon_event_handlers(&any_event, target_pos, None);
                     for handler in any_handlers {
-                        let effect_id = handler.effect_id;
+                        let effect_id = handler.effect.id;
                         let holder = handler.effect_holder;
-                        let effect_type = handler.effect_type;
+                        let effect_type = handler.effect.effect_type;
                         // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
                         let effect_order = 0;
                         // For any event handlers, check if the effect has this callback
@@ -277,9 +277,9 @@ impl Battle {
                 // JS: handlers = handlers.concat(this.findPokemonEventHandlers(active, callbackName, getKey));
                 let pokemon_handlers = self.find_pokemon_event_handlers(&callback_name, target_pos, get_key);
                 for handler in pokemon_handlers {
-                    let effect_id = handler.effect_id;
+                    let effect_id = handler.effect.id;
                     let holder = handler.effect_holder;
-                    let effect_type = handler.effect_type;
+                    let effect_type = handler.effect.effect_type;
                     // IMPORTANT: Do NOT use handler.effect_order for field event handlers!
                     // JavaScript fieldEvent() creates handlers with effectOrder=undefined for volatiles.
                     // This causes volatiles with the same priority/speed/subOrder to be tied and shuffled.
@@ -307,8 +307,8 @@ impl Battle {
                 // This finds side condition handlers (like gmaxcannonade's onResidual) that target each Pokemon
                 let side_handlers_for_pokemon = self.find_side_event_handlers(&callback_name, side_idx, None, Some(target_pos));
                 for handler in side_handlers_for_pokemon {
-                    let effect_id = handler.effect_id;
-                    let effect_type = handler.effect_type;
+                    let effect_id = handler.effect.id;
+                    let effect_type = handler.effect.effect_type;
                     let effect_order = 0;
                     // For side condition handlers targeting Pokemon, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
@@ -332,8 +332,8 @@ impl Battle {
                 // Note: This is different from onFieldResidual - this is onResidual with customHolder = active Pokemon
                 let field_handlers_for_pokemon = self.find_field_event_handlers(&callback_name, None, Some(target_pos));
                 for handler in field_handlers_for_pokemon {
-                    let effect_id = handler.effect_id;
-                    let effect_type = handler.effect_type;
+                    let effect_id = handler.effect.id;
+                    let effect_type = handler.effect.effect_type;
                     let effect_order = 0;
                     // For field handlers targeting Pokemon, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
@@ -356,8 +356,8 @@ impl Battle {
                 // This finds battle-level handlers that target each Pokemon
                 let battle_handlers_for_pokemon = self.find_battle_event_handlers(&callback_name, get_key, Some(target_pos));
                 for handler in battle_handlers_for_pokemon {
-                    let effect_id = handler.effect_id;
-                    let effect_type = handler.effect_type;
+                    let effect_id = handler.effect.id;
+                    let effect_type = handler.effect.effect_type;
                     let effect_order = 0;
                     // For battle handlers targeting Pokemon, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);

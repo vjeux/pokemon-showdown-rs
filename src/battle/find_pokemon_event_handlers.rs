@@ -1,7 +1,7 @@
 // 1:1 port of findPokemonEventHandlers from battle.ts
 
 use crate::*;
-use crate::battle::{EventListener, EffectType};
+use crate::battle::{Effect, EventListener, EffectType};
 
 impl Battle {
     /// Find Pokemon event handlers
@@ -91,10 +91,21 @@ impl Battle {
             });
 
             if has_callback || has_get_key {
+                // Get status name from dex
+                let status_name = self.dex.conditions().get_by_id(&pokemon.status)
+                    .and_then(|c| c.name.clone())
+                    .unwrap_or_else(|| pokemon.status.to_string());
+
                 handlers.push(EventListener {
-                    event_name: String::new(),
-                    effect_id: pokemon.status.clone(),
-                    effect_type: EffectType::Status,
+                    callback_name: String::new(),
+                    effect: Effect {
+                        id: pokemon.status.clone(),
+                        name: status_name,
+                        effect_type: EffectType::Status,
+                        effect_holder: Some(target),
+                        side_index: Some(target.0),
+                        prankster_boosted: false,
+                    },
                     target: Some(target),
                     index: None,
                     state: Some(pokemon.status_state.clone()),
@@ -121,10 +132,21 @@ impl Battle {
             });
 
             if has_callback || has_get_key {
+                // Get volatile name from dex
+                let volatile_name = self.dex.conditions().get_by_id(volatile_id)
+                    .and_then(|c| c.name.clone())
+                    .unwrap_or_else(|| volatile_id.to_string());
+
                 handlers.push(EventListener {
-                    event_name: String::new(),
-                    effect_id: volatile_id.clone(),
-                    effect_type: EffectType::Condition,
+                    callback_name: String::new(),
+                    effect: Effect {
+                        id: volatile_id.clone(),
+                        name: volatile_name,
+                        effect_type: EffectType::Condition,
+                        effect_holder: Some(target),
+                        side_index: Some(target.0),
+                        prankster_boosted: false,
+                    },
                     target: Some(target),
                     index: None,
                     state: None, // Don't clone - look up fresh in run_event
@@ -159,10 +181,21 @@ impl Battle {
             });
 
             if has_callback || has_get_key {
+                // Get ability name from dex
+                let ability_name = self.dex.abilities().get(pokemon.ability.as_str())
+                    .map(|a| a.name.clone())
+                    .unwrap_or_else(|| pokemon.ability.to_string());
+
                 handlers.push(EventListener {
-                    event_name: String::new(),
-                    effect_id: pokemon.ability.clone(),
-                    effect_type: EffectType::Ability,
+                    callback_name: String::new(),
+                    effect: Effect {
+                        id: pokemon.ability.clone(),
+                        name: ability_name,
+                        effect_type: EffectType::Ability,
+                        effect_holder: Some(target),
+                        side_index: Some(target.0),
+                        prankster_boosted: false,
+                    },
                     target: Some(target),
                     index: None,
                     state: Some(pokemon.ability_state.clone()),
@@ -187,10 +220,21 @@ impl Battle {
             });
 
             if has_callback || has_get_key {
+                // Get item name from dex
+                let item_name = self.dex.items().get(pokemon.item.as_str())
+                    .map(|i| i.name.clone())
+                    .unwrap_or_else(|| pokemon.item.to_string());
+
                 handlers.push(EventListener {
-                    event_name: String::new(),
-                    effect_id: pokemon.item.clone(),
-                    effect_type: EffectType::Item,
+                    callback_name: String::new(),
+                    effect: Effect {
+                        id: pokemon.item.clone(),
+                        name: item_name,
+                        effect_type: EffectType::Item,
+                        effect_holder: Some(target),
+                        side_index: Some(target.0),
+                        prankster_boosted: false,
+                    },
                     target: Some(target),
                     index: None,
                     state: Some(pokemon.item_state.clone()),
@@ -211,10 +255,21 @@ impl Battle {
         // Note: Species callbacks use Condition effectType (like volatiles) with subOrder 2
         //       per JavaScript effectTypeOrder in battle.ts resolvePriority
         if self.has_species_id_callback(&pokemon.species_id, callback_name) {
+            // Get species name from dex
+            let species_name = self.dex.species().get(pokemon.species_id.as_str())
+                .map(|s| s.name.clone())
+                .unwrap_or_else(|| pokemon.species_id.to_string());
+
             handlers.push(EventListener {
-                    event_name: String::new(),
-                effect_id: pokemon.species_id.clone(),
-                effect_type: EffectType::Condition,
+                    callback_name: String::new(),
+                effect: Effect {
+                    id: pokemon.species_id.clone(),
+                    name: species_name,
+                    effect_type: EffectType::Condition,
+                    effect_holder: Some(target),
+                    side_index: Some(target.0),
+                    prankster_boosted: false,
+                },
                 target: Some(target),
                 index: None,
                 state: Some(pokemon.species_state.clone()),
@@ -242,10 +297,21 @@ impl Battle {
                 });
 
                 if has_callback || has_get_key {
+                    // Get slot condition name from dex
+                    let slot_cond_name = self.dex.conditions().get_by_id(slot_cond_id)
+                        .and_then(|c| c.name.clone())
+                        .unwrap_or_else(|| slot_cond_id.to_string());
+
                     handlers.push(EventListener {
-                    event_name: String::new(),
-                        effect_id: slot_cond_id.clone(),
-                        effect_type: EffectType::SlotCondition,
+                    callback_name: String::new(),
+                        effect: Effect {
+                            id: slot_cond_id.clone(),
+                            name: slot_cond_name,
+                            effect_type: EffectType::SlotCondition,
+                            effect_holder: Some(target),
+                            side_index: Some(target.0),
+                            prankster_boosted: false,
+                        },
                         target: Some(target),
                         index: None,
                         state: Some(slot_cond_state.clone()),

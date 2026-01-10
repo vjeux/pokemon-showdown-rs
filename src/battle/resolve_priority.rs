@@ -226,11 +226,11 @@ impl Battle {
         // JS: handler.subOrder = (handler.effect as any)[`${callbackName}SubOrder`] || 0;
         //
         // Look up order and priority from dex data based on effect type and ID
-        handler.order = self.get_callback_order(handler.effect_type, handler.effect_id.as_str(), callback_name);
-        handler.priority = self.get_callback_priority(handler.effect_type, handler.effect_id.as_str(), callback_name);
+        handler.order = self.get_callback_order(handler.effect.effect_type, handler.effect.id.as_str(), callback_name);
+        handler.priority = self.get_callback_priority(handler.effect.effect_type, handler.effect.id.as_str(), callback_name);
 
         // Check for custom sub_order from dex data first
-        if let Some(custom_sub_order) = self.get_callback_sub_order(handler.effect_type, handler.effect_id.as_str(), callback_name) {
+        if let Some(custom_sub_order) = self.get_callback_sub_order(handler.effect.effect_type, handler.effect.id.as_str(), callback_name) {
             handler.sub_order = custom_sub_order;
         }
 
@@ -238,7 +238,7 @@ impl Battle {
         // JS: if (!handler.subOrder) { ... }
         if handler.sub_order == 0 {
             // https://www.smogon.com/forums/threads/sword-shield-battle-mechanics-research.3655528/page-59#post-8685465
-            handler.sub_order = match handler.effect_type {
+            handler.sub_order = match handler.effect.effect_type {
                 EffectType::ZMove => 1,
                 EffectType::Condition => 2,
                 EffectType::SlotCondition => 3,
@@ -251,7 +251,7 @@ impl Battle {
                 EffectType::Ability => {
                     // JS: if (handler.effect.name === 'Poison Touch' || handler.effect.name === 'Perish Body') { handler.subOrder = 6; }
                     // JS: else if (handler.effect.name === 'Stall') { handler.subOrder = 9; }
-                    let ability_name = handler.effect_id.as_str();
+                    let ability_name = handler.effect.id.as_str();
                     if ability_name == "poisontouch" || ability_name == "perishbody" {
                         6
                     } else if ability_name == "stall" {
@@ -280,8 +280,8 @@ impl Battle {
         // JS: if (handler.effectHolder && (handler.effectHolder as Pokemon).getStat)
         if let Some(effect_holder) = handler.effect_holder {
             // Check if we need special handling for Magic Bounce
-            let needs_magic_bounce_speed = handler.effect_type == EffectType::Ability
-                && handler.effect_id.as_str() == "magicbounce"
+            let needs_magic_bounce_speed = handler.effect.effect_type == EffectType::Ability
+                && handler.effect.id.as_str() == "magicbounce"
                 && callback_name == "onAllyTryHitSide";
 
             // Get Magic Bounce speed if needed (requires mutable borrow)

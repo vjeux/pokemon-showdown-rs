@@ -1,7 +1,7 @@
 // 1:1 port of findSideEventHandlers from battle.ts
 
 use crate::*;
-use crate::battle::{EventListener, EffectType};
+use crate::battle::{Effect, EventListener, EffectType};
 
 impl Battle {
     /// Find side event handlers
@@ -73,10 +73,22 @@ impl Battle {
                 // JS:     effect: sideCondition, callback, state: sideConditionData,
                 // JS:     end: customHolder ? null : side.removeSideCondition, effectHolder: customHolder || side,
                 // JS: }, callbackName));
+
+                // Get side condition name from dex
+                let sc_name = self.dex.conditions().get_by_id(sc_id)
+                    .and_then(|c| c.name.clone())
+                    .unwrap_or_else(|| sc_id.to_string());
+
                 handlers.push(EventListener {
-                    event_name: String::new(),
-                    effect_id: sc_id.clone(),
-                    effect_type: EffectType::SideCondition,
+                    callback_name: String::new(),
+                    effect: Effect {
+                        id: sc_id.clone(),
+                        name: sc_name,
+                        effect_type: EffectType::SideCondition,
+                        effect_holder: custom_holder,
+                        side_index: Some(side_idx),
+                        prankster_boosted: false,
+                    },
                     target: None,
                     index: None,
                     state: Some(sc_state.clone()),

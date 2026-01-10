@@ -1,7 +1,7 @@
 // 1:1 port of findFieldEventHandlers from battle.ts
 
 use crate::*;
-use crate::battle::{EventListener, EffectType};
+use crate::battle::{Effect, EventListener, EffectType};
 use crate::event_system::EffectState;
 
 impl Battle {
@@ -68,11 +68,22 @@ impl Battle {
 
         // JS: for (const id in field.pseudoWeather) {
         for (pw_id, pw_state) in pseudo_weather_handlers {
+            // Get pseudo weather name from dex
+            let pw_name = self.dex.conditions().get_by_id(&pw_id)
+                .and_then(|c| c.name.clone())
+                .unwrap_or_else(|| pw_id.to_string());
+
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
             let mut handler = EventListener {
-                    event_name: String::new(),
-                effect_id: pw_id,
-                effect_type: EffectType::Condition,
+                callback_name: String::new(),
+                effect: Effect {
+                    id: pw_id,
+                    name: pw_name,
+                    effect_type: EffectType::Condition,
+                    effect_holder: custom_holder,
+                    side_index: None,
+                    prankster_boosted: false,
+                },
                 target: None,
                 index: None,
                 state: Some(pw_state),
@@ -115,11 +126,22 @@ impl Battle {
         };
 
         if let Some((weather_id, weather_state)) = weather_handler {
+            // Get weather name from dex
+            let weather_name = self.dex.conditions().get_by_id(&weather_id)
+                .and_then(|c| c.name.clone())
+                .unwrap_or_else(|| weather_id.to_string());
+
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
             let mut handler = EventListener {
-                    event_name: String::new(),
-                effect_id: weather_id,
-                effect_type: EffectType::Weather,
+                callback_name: String::new(),
+                effect: Effect {
+                    id: weather_id,
+                    name: weather_name,
+                    effect_type: EffectType::Weather,
+                    effect_holder: custom_holder,
+                    side_index: None,
+                    prankster_boosted: false,
+                },
                 target: None,
                 index: None,
                 state: Some(weather_state),
@@ -156,11 +178,22 @@ impl Battle {
         };
 
         if let Some((terrain_id, terrain_state)) = terrain_handler {
+            // Get terrain name from dex
+            let terrain_name = self.dex.conditions().get_by_id(&terrain_id)
+                .and_then(|c| c.name.clone())
+                .unwrap_or_else(|| terrain_id.to_string());
+
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
             let mut handler = EventListener {
-                    event_name: String::new(),
-                effect_id: terrain_id,
-                effect_type: EffectType::Terrain,
+                callback_name: String::new(),
+                effect: Effect {
+                    id: terrain_id,
+                    name: terrain_name,
+                    effect_type: EffectType::Terrain,
+                    effect_holder: custom_holder,
+                    side_index: None,
+                    prankster_boosted: false,
+                },
                 target: None,
                 index: None,
                 state: Some(terrain_state),

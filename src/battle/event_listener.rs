@@ -1,41 +1,34 @@
 //! Event Listener
 
-use crate::dex_data::ID;
 use crate::event_system::EffectState;
-use super::EffectType;
+use super::Effect;
 
 /// Event listener - matches JavaScript EventListener interface
 /// JavaScript: interface EventListener extends EventListenerWithoutPriority
 #[derive(Clone)]
 /// JavaScript equivalent: EventListener (sim/battle.ts)
-/// 10 fields in JavaScript
 pub struct EventListener {
-    /// Event name/variant (e.g., "Damage", "AllyDamage", "SourceDamage")
-    /// Not in JavaScript - Rust-specific field to track event variant
-    pub event_name: String,
     /// Effect that owns this handler
-    /// JavaScript: effect: BasicEffect (via effectId)
-    pub effect_id: ID,
-    /// Type of effect (Ability, Item, Move, Status, etc.)
-    /// JavaScript: effectType: EffectType
-    pub effect_type: EffectType,
+    /// JavaScript: effect: Effect
+    pub effect: Effect,
     /// Target Pokemon (optional)
     /// JavaScript: target?: Pokemon
-    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
     pub target: Option<(usize, usize)>,
     /// Index for multi-target events
     /// JavaScript: index?: number
     pub index: Option<usize>,
+    /// Callback name for static dispatch
+    /// JavaScript: callback?: Function - in JS this stores the function, in Rust we store the name
+    /// This is the event variant name (e.g., "Damage", "AllyDamage", "FoeDamage")
+    pub callback_name: String,
     /// Effect state
-    /// JavaScript: state?: EffectState
+    /// JavaScript: state: EffectState | null
     pub state: Option<EffectState>,
     /// Effect holder (Pokemon/Side/Field/Battle)
-    /// JavaScript: effectHolder?: Pokemon
-    /// TODO: Rust uses (side_idx, poke_idx) tuple instead of Pokemon reference due to ownership
+    /// JavaScript: effectHolder: Pokemon | Side | Field | Battle
     pub effect_holder: Option<(usize, usize)>,
     /// Order value (false = first in JS, represented as Option<i32>)
-    /// JavaScript: order?: false | number
-    /// TODO: Rust cannot represent the union type (false | number), uses Option<i32>
+    /// JavaScript: order: number | false
     pub order: Option<i32>,
     /// Priority value (higher = earlier)
     /// JavaScript: priority: number

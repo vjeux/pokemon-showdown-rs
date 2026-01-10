@@ -103,7 +103,7 @@ impl Battle {
             let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos, None);
             // Add event name to each handler and resolve priority
             for handler in &mut pokemon_handlers {
-                handler.event_name = event_name.to_string();
+                handler.callback_name = event_name.to_string();
             }
             handlers.extend(pokemon_handlers);
 
@@ -126,7 +126,7 @@ impl Battle {
                         let mut ally_handlers =
                             self.find_pokemon_event_handlers(&ally_event, ally_pos, None);
                         for handler in &mut ally_handlers {
-                            handler.event_name = format!("Ally{}", event_name);
+                            handler.callback_name = format!("Ally{}", event_name);
                         }
                         handlers.extend(ally_handlers);
 
@@ -135,7 +135,7 @@ impl Battle {
                         let mut any_handlers =
                             self.find_pokemon_event_handlers(&any_event, ally_pos, None);
                         for handler in &mut any_handlers {
-                            handler.event_name = format!("Any{}", event_name);
+                            handler.callback_name = format!("Any{}", event_name);
                         }
                         handlers.extend(any_handlers);
                     }
@@ -163,7 +163,7 @@ impl Battle {
                             eprintln!("[FIND_EVENT_HANDLERS] Found {} onFoe{} handlers from position {:?}",
                                 foe_handlers.len(), event_name, foe_pos);
                             for handler in &mut foe_handlers {
-                                handler.event_name = format!("Foe{}", event_name);
+                                handler.callback_name = format!("Foe{}", event_name);
                             }
                             handlers.extend(foe_handlers);
 
@@ -172,7 +172,7 @@ impl Battle {
                             let mut any_handlers =
                                 self.find_pokemon_event_handlers(&any_event, foe_pos, None);
                             for handler in &mut any_handlers {
-                                handler.event_name = format!("Any{}", event_name);
+                                handler.callback_name = format!("Any{}", event_name);
                             }
                             handlers.extend(any_handlers);
                         }
@@ -190,7 +190,7 @@ impl Battle {
                 let mut source_handlers =
                     self.find_pokemon_event_handlers(&source_event, source_pos, None);
                 for handler in &mut source_handlers {
-                    handler.event_name = format!("Source{}", event_name);
+                    handler.callback_name = format!("Source{}", event_name);
                 }
                 handlers.extend(source_handlers);
             }
@@ -233,7 +233,7 @@ impl Battle {
                     let mut side_handlers = self.find_side_event_handlers(&prefixed_event, side_idx, None, None);
                     eprintln!("[FIND_EVENT_HANDLERS] Found {} side handlers for {}", side_handlers.len(), prefixed_event);
                     for handler in &mut side_handlers {
-                        handler.event_name = event_name.to_string();
+                        handler.callback_name = event_name.to_string();
                     }
                     handlers.extend(side_handlers);
                 } else if prefixed_handlers {
@@ -242,7 +242,7 @@ impl Battle {
                     let foe_event = format!("onFoe{}", event_name);
                     let mut foe_side_handlers = self.find_side_event_handlers(&foe_event, side_idx, None, None);
                     for handler in &mut foe_side_handlers {
-                        handler.event_name = format!("Foe{}", event_name);
+                        handler.callback_name = format!("Foe{}", event_name);
                     }
                     handlers.extend(foe_side_handlers);
                 }
@@ -252,7 +252,7 @@ impl Battle {
                     let any_event = format!("onAny{}", event_name);
                     let mut any_side_handlers = self.find_side_event_handlers(&any_event, side_idx, None, None);
                     for handler in &mut any_side_handlers {
-                        handler.event_name = format!("Any{}", event_name);
+                        handler.callback_name = format!("Any{}", event_name);
                     }
                     handlers.extend(any_side_handlers);
                 }
@@ -265,14 +265,14 @@ impl Battle {
         let prefixed_event = format!("on{}", event_name);
         let mut field_handlers = self.find_field_event_handlers(&prefixed_event, None, None);
         for handler in &mut field_handlers {
-            handler.event_name = event_name.to_string();
+            handler.callback_name = event_name.to_string();
         }
         handlers.extend(field_handlers);
 
         // JavaScript: handlers.push(...this.findBattleEventHandlers(`on${eventName}`));
         let mut battle_handlers = self.find_battle_event_handlers(&prefixed_event, None, None);
         for handler in &mut battle_handlers {
-            handler.event_name = event_name.to_string();
+            handler.callback_name = event_name.to_string();
         }
         handlers.extend(battle_handlers);
 
@@ -281,7 +281,7 @@ impl Battle {
         // In Rust, we collect all handlers first, then call resolve_priority on each one
         for handler in &mut handlers {
             // Use the full callback name (e.g., "onSourceModifySpA" not just "ModifySpA")
-            let full_callback_name = format!("on{}", handler.event_name);
+            let full_callback_name = format!("on{}", handler.callback_name);
             self.resolve_priority(handler, &full_callback_name);
         }
 

@@ -1,7 +1,7 @@
 // 1:1 port of findBattleEventHandlers from battle.ts
 
 use crate::*;
-use crate::battle::{EventListener, EffectType};
+use crate::battle::{Effect, EventListener, EffectType};
 
 impl Battle {
     /// Find battle-level event handlers
@@ -83,9 +83,15 @@ impl Battle {
                 // JS:     subOrder: handler.subOrder,
                 // JS: });
                 handlers.push(EventListener {
-                    event_name: String::new(),
-                    effect_id: handler.target_id.clone(),
-                    effect_type: handler.target_type,
+                    callback_name: String::new(),
+                    effect: Effect {
+                        id: handler.target_id.clone(),
+                        name: handler.target_id.to_string(),
+                        effect_type: handler.target_type,
+                        effect_holder: custom_holder,
+                        side_index: None,
+                        prankster_boosted: false,
+                    },
                     target: None,
                     index: None,
                     state,

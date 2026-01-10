@@ -347,9 +347,8 @@ impl Battle {
 
             // Create EventListener for the sourceEffect
             let mut source_handler = EventListener {
-                event_name: event_id.to_string(),
-                effect_id: source_eff.id.clone(),
-                effect_type: source_eff.effect_type,
+                effect: source_eff.clone(),
+                callback_name: event_id.to_string(),
                 target: None,
                 index: None,
                 state: None, // JavaScript: state: this.initEffectState({})
@@ -376,7 +375,7 @@ impl Battle {
             eprintln!("[RUN_EVENT] Sorting {} handlers for event '{}' using left-to-right order", handlers.len(), event_id);
             for (i, handler) in handlers.iter().enumerate() {
                 eprintln!("[RUN_EVENT]   Handler {}: effect={}, effect_type={:?}, priority={:?}, order={:?}",
-                    i, handler.effect_id, handler.effect_type, handler.priority, handler.order);
+                    i, handler.effect.id, handler.effect.effect_type, handler.priority, handler.order);
             }
             handlers.sort_by(|a, b| {
                 let a_item = Self::event_listener_to_priority_item(a);
@@ -395,7 +394,7 @@ impl Battle {
             eprintln!("[RUN_EVENT] Sorting {} handlers for event '{}' using speed_sort", handlers.len(), event_id);
             for (i, handler) in handlers.iter().enumerate() {
                 eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}, sub_order={:?}, effect_order={:?}",
-                    i, handler.effect_id, handler.priority, handler.order, handler.speed, handler.sub_order, handler.effect_order);
+                    i, handler.effect.id, handler.priority, handler.order, handler.speed, handler.sub_order, handler.effect_order);
             }
             self.speed_sort(&mut handlers, |listener| {
                 Self::event_listener_to_priority_item(listener)
@@ -403,7 +402,7 @@ impl Battle {
             eprintln!("[RUN_EVENT] After sorting:");
             for (i, handler) in handlers.iter().enumerate() {
                 eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}, sub_order={:?}, effect_order={:?}",
-                    i, handler.effect_id, handler.priority, handler.order, handler.speed, handler.sub_order, handler.effect_order);
+                    i, handler.effect.id, handler.priority, handler.order, handler.speed, handler.sub_order, handler.effect_order);
             }
         }
 
@@ -454,9 +453,8 @@ impl Battle {
         // JavaScript: Loop through handlers (lines 174-282)
         // Execute each handler and accumulate results
         for handler in handlers {
-            let effect_id = handler.effect_id.clone();
+            let effect_id = handler.effect.id.clone();
             let handler_target = handler.effect_holder;
-            let event_variant = handler.event_name.clone();
 
             // JavaScript: const effect = handler.effect;
             // JavaScript: const effectHolder = handler.effectHolder;
@@ -579,9 +577,15 @@ impl Battle {
             // Call handler directly based on effect_type from the handler
             // This avoids ambiguity when an effect name exists as both a move and a volatile
             // In JavaScript, runEvent has Effect objects with effectType, so it knows which handler to call
-            let return_val = match handler.effect_type {
+            let callback_name_for_dispatch = if handler.callback_name.is_empty() {
+                event_id.to_string()
+            } else {
+                handler.callback_name.clone()
+            };
+
+            let return_val = match handler.effect.effect_type {
                 EffectType::Move => {
-                    self.handle_move_event(&event_variant, &effect_id, handler_target_event.as_ref(), source)
+                    self.handle_move_event(&callback_name_for_dispatch, &effect_id, handler_target_event.as_ref(), source)
                 }
                 EffectType::Ability => {
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
@@ -589,21 +593,9 @@ impl Battle {
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
 
-                    // Look up ability name from dex
-                    let ability_name = self.dex.abilities().get(effect_id.as_str())
-                        .map(|a| a.name.clone())
-                        .unwrap_or_else(|| effect_id.to_string());
+                    let parent_effect = self.set_effect_context(handler.effect.clone());
 
-                    let parent_effect = self.set_effect_context(crate::Effect {
-                        id: effect_id.clone(),
-                        name: ability_name,
-                        effect_type: handler.effect_type,
-                        effect_holder: handler.effect_holder,
-                        side_index: handler.effect_holder.map(|(side, _)| side),
-                        prankster_boosted: false,
-                    });
-
-                    let result = self.handle_ability_event(&event_variant, &effect_id, handler_target_event.as_ref());
+                    let result = self.handle_ability_event(&callback_name_for_dispatch, &effect_id, handler_target_event.as_ref());
 
                     // Restore parent context
                     self.restore_effect_context(parent_effect);
@@ -617,21 +609,9 @@ impl Battle {
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
 
-                    // Look up item name from dex
-                    let item_name = self.dex.items().get(effect_id.as_str())
-                        .map(|i| i.name.clone())
-                        .unwrap_or_else(|| effect_id.to_string());
+                    let parent_effect = self.set_effect_context(handler.effect.clone());
 
-                    let parent_effect = self.set_effect_context(crate::Effect {
-                        id: effect_id.clone(),
-                        name: item_name,
-                        effect_type: handler.effect_type,
-                        effect_holder: handler.effect_holder,
-                        side_index: handler.effect_holder.map(|(side, _)| side),
-                        prankster_boosted: false,
-                    });
-
-                    let result = self.handle_item_event(&event_variant, &effect_id, handler_target_event.as_ref());
+                    let result = self.handle_item_event(&callback_name_for_dispatch, &effect_id, handler_target_event.as_ref());
 
                     // Restore parent context
                     self.restore_effect_context(parent_effect);
@@ -644,22 +624,9 @@ impl Battle {
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
                     // Set up effect so callbacks can use with_effect_state
 
-                    // Look up condition/move name from dex
-                    let condition_name = self.dex.conditions().get_by_id(&effect_id)
-                        .and_then(|c| c.name.clone())
-                        .or_else(|| self.dex.moves().get(effect_id.as_str()).map(|m| m.name.clone()))
-                        .unwrap_or_else(|| effect_id.to_string());
+                    let parent_effect = self.set_effect_context(handler.effect.clone());
 
-                    let parent_effect = self.set_effect_context(crate::Effect {
-                        id: effect_id.clone(),
-                        name: condition_name,
-                        effect_type: handler.effect_type,
-                        effect_holder: handler.effect_holder,
-                        side_index: handler.effect_holder.map(|(side, _)| side),
-                        prankster_boosted: false,
-                    });
-
-                    let result = self.handle_condition_event(&event_variant, effect_id.as_str(), handler_target_event.as_ref());
+                    let result = self.handle_condition_event(&callback_name_for_dispatch, effect_id.as_str(), handler_target_event.as_ref());
 
                     // Restore parent effect context
                     self.restore_effect_context(parent_effect);
@@ -668,7 +635,7 @@ impl Battle {
                 }
                 _ => {
                     // Fall back to dispatch_single_event for other types
-                    self.dispatch_single_event(&event_variant, &effect_id, handler_target_event.as_ref(), source)
+                    self.dispatch_single_event(&callback_name_for_dispatch, &effect_id, handler_target_event.as_ref(), source)
                 }
             };
 
