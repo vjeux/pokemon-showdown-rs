@@ -162,9 +162,18 @@ impl Pokemon {
                 // Call onRestart callback if the volatile already exists
                 // IMPORTANT: Call through single_event (not dispatch_on_restart directly)
                 // to ensure current_effect_state is set up correctly
+                // IMPORTANT: Effect must have effect_holder set so with_effect_state can find the volatile state
+                let volatile_effect = crate::battle::Effect {
+                    id: volatile_id.clone(),
+                    name: volatile_id.to_string(),
+                    effect_type: crate::battle::EffectType::Condition,
+                    effect_holder: Some(target_pos),
+                    side_index: Some(target_pos.0),
+                    prankster_boosted: false,
+                };
                 let restart_result = battle.single_event(
                     "Restart",
-                    &crate::battle::Effect::condition(volatile_id.clone()),
+                    &volatile_effect,
                     None,
                     Some(target_pos),
                     source_pos,
@@ -308,9 +317,18 @@ impl Pokemon {
 
         // JavaScript: result = this.battle.singleEvent("Start", status, this.volatiles[status.id], this, source, sourceEffect);
         // Call the Start event for the newly added volatile
+        // IMPORTANT: Effect must have effect_holder set so with_effect_state can find the volatile state
+        let volatile_effect = crate::battle::Effect {
+            id: volatile_id.clone(),
+            name: volatile_id.to_string(),
+            effect_type: crate::battle::EffectType::Condition,
+            effect_holder: Some(target_pos),
+            side_index: Some(target_pos.0),
+            prankster_boosted: false,
+        };
         let start_result = battle.single_event(
             "Start",
-            &crate::battle::Effect::condition(volatile_id.clone()),
+            &volatile_effect,
             None,
             Some(target_pos),
             source_pos,

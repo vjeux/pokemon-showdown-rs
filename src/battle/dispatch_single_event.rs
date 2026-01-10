@@ -52,10 +52,14 @@ impl Battle {
 
         let effect_str = effect_id.as_str();
 
-        // If we're in a Move context, prioritize the move handler over volatiles with the same name
+        // If we're in a Move or MoveSelf context, prioritize the move handler over volatiles with the same name
         // This handles cases like "noretreat" which exists both as a move and as a volatile
+        // For MoveSelf (e.g., gmaxchistrike self.onHit), we want to call the move's self callback,
+        // not the volatile's callback even if the target has the volatile
         if let Some(ref effect) = self.effect {
-            if effect.effect_type == crate::battle::EffectType::Move {
+            if effect.effect_type == crate::battle::EffectType::Move
+                || effect.effect_type == crate::battle::EffectType::MoveSelf
+            {
                 if let Some(_move_def) = self.dex.moves().get(effect_id.as_str()) {
                     return self.handle_move_event(event_id, effect_id, target, source);
                 }
