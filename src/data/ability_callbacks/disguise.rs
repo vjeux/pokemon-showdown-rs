@@ -59,7 +59,10 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
     ]);
 
     // this.effectState.busted = true;
-    battle.effect_state.busted = Some(true);
+    // Use with_effect_state to persist in the ability's effect state
+    battle.with_effect_state(|state| {
+        state.busted = Some(true);
+    });
 
     // return 0;
     EventResult::Number(0)
@@ -211,8 +214,10 @@ pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize,
 pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
-    // Check this.effectState.busted
-    let busted = battle.effect_state.busted.unwrap_or(false);
+    // Check this.effectState.busted using with_effect_state_ref
+    let busted = battle.with_effect_state_ref(|state| {
+        state.busted
+    }).flatten().unwrap_or(false);
 
     if !busted {
         return EventResult::Continue;
