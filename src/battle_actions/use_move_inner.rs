@@ -753,7 +753,7 @@ pub fn use_move_inner(
             battle,
             &targets,
             pokemon_pos,
-            &active_move.id,
+            &active_move,
         );
 
         // if (damage === this.battle.NOT_FAIL) pokemon.moveThisTurnResult = null;

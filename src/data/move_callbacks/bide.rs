@@ -245,14 +245,14 @@ pub mod condition {
             };
 
             // Set the custom ActiveMove on the battle
+            let bide_move_for_hit = bide_move.clone();
             battle.active_move = Some(bide_move);
             battle.active_pokemon = Some(pokemon_pos);
             battle.active_target = Some(final_target);
 
             // Call tryMoveHit with the target
             use crate::battle_actions::try_move_hit;
-            let bide_id_for_hit = ID::from("bide");
-            try_move_hit(battle, &[final_target], pokemon_pos, &bide_id_for_hit);
+            try_move_hit(battle, &[final_target], pokemon_pos, &bide_move_for_hit);
 
             // pokemon.removeVolatile('bide');
             let bide_id = ID::from("bide");

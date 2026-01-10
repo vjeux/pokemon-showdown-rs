@@ -44,20 +44,20 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle_actions::move_hit::move_hit;
-use crate::battle_actions::DamageResult;
+use crate::battle_actions::{DamageResult, ActiveMove};
 
 /// Try to hit with a field-wide move (all, foeSide, allySide, allyTeam targets)
 /// Equivalent to tryMoveHit() in battle-actions.ts
 ///
 /// JavaScript signature:
 /// tryMoveHit(targetOrTargets: Pokemon | Pokemon[], pokemon: Pokemon, move: ActiveMove): number | undefined | false | ''
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn try_move_hit(
     battle: &mut Battle,
     target_or_targets: &[(usize, usize)],
     pokemon_pos: (usize, usize),
-    move_id: &ID,
+    active_move: &ActiveMove,
 ) -> DamageResult {
+    let move_id = &active_move.id;
     // const target = Array.isArray(targetOrTargets) ? targetOrTargets[0] : targetOrTargets;
     // const targets = Array.isArray(targetOrTargets) ? targetOrTargets : [target];
     let target = target_or_targets[0];
@@ -128,10 +128,8 @@ pub fn try_move_hit(
         return DamageResult::Failed;
     }
 
-    // Get move target type from active_move
-    let move_target = battle.active_move.as_ref()
-        .map(|m| m.target.clone())
-        .unwrap_or_else(|| "normal".to_string());
+    // Get move target type directly from active_move
+    let move_target = &active_move.target;
 
     // const isFFAHazard = move.target === 'foeSide' && this.battle.gameType === 'freeforall';
     let is_ffa_hazard = move_target == "foeSide" && battle.game_type == crate::dex_data::GameType::FreeForAll;
