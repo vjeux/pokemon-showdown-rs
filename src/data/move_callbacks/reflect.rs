@@ -90,13 +90,13 @@ pub mod condition {
 
             if has_ally && category == "Physical" {
                 // if (!target.getMoveHitData(move).crit && !move.infiltrates) {
-                let crit = {
-                    let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                        Some(p) => p,
-                        None => return EventResult::Continue,
-                    };
-                    target_pokemon.get_move_hit_data(&ID::from(move_id)).crit
-                };
+                // Use Battle::get_move_hit_data to get the actual stored crit value
+                // (Pokemon::get_move_hit_data is deprecated and always returns default)
+                let crit = battle
+                    .get_move_hit_data(target)
+                    .map(|hit_data| hit_data.crit)
+                    .unwrap_or(false);
+
                 let infiltrates = {
                     let active_move = match &battle.active_move {
                         Some(active_move) => active_move,

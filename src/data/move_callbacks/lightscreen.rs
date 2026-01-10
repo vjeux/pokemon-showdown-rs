@@ -101,23 +101,18 @@ pub mod condition {
         }
 
         //     if (!target.getMoveHitData(move).crit && !move.infiltrates) {
-        let (is_crit, infiltrates) = {
-            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
+        // Use Battle::get_move_hit_data to get the actual stored crit value
+        // (Pokemon::get_move_hit_data is deprecated and always returns default)
+        let is_crit = battle
+            .get_move_hit_data(target)
+            .map(|hit_data| hit_data.crit)
+            .unwrap_or(false);
 
-            let move_id_id = crate::dex_data::ID::from(move_id);
-            let is_crit = target_pokemon.get_move_hit_data(&move_id_id).crit;
-
-            let infiltrates = battle
-                .active_move
-                .as_ref()
-                .map(|m| m.infiltrates)
-                .unwrap_or(false);
-
-            (is_crit, infiltrates)
-        };
+        let infiltrates = battle
+            .active_move
+            .as_ref()
+            .map(|m| m.infiltrates)
+            .unwrap_or(false);
 
         if is_crit || infiltrates {
             return EventResult::Continue;
