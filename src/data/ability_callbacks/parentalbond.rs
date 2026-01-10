@@ -14,18 +14,18 @@ use crate::dex::Multihit;
 ///     move.multihit = 2;
 ///     move.multihitType = 'parentalbond';
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.category === 'Status' || move.multihit || move.flags['noparentalbond'] || move.flags['charge'] ||
     //     move.flags['futuremove'] || move.spreadHit || move.isZ || move.isMax) return;
-    let should_return = if let Some(ref active_move) = battle.active_move {
-        active_move.category == "Status"
-            || active_move.multi_hit.is_some()
-            || active_move.flags.noparentalbond
-            || active_move.flags.charge
-            || active_move.flags.future_move
-            || active_move.spread_hit
-            || active_move.is_z.is_some()
-            || active_move.is_max.is_some()
+    let should_return = if let Some(am) = active_move {
+        am.category == "Status"
+            || am.multi_hit.is_some()
+            || am.flags.noparentalbond
+            || am.flags.charge
+            || am.flags.future_move
+            || am.spread_hit
+            || am.is_z.is_some()
+            || am.is_max.is_some()
     } else {
         return EventResult::Continue;
     };
@@ -59,10 +59,10 @@ pub fn on_source_modify_secondaries(
 ) -> EventResult {
     let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (move.multihitType === 'parentalbond' && move.id === 'secretpower' && move.hit < 2)
-    let should_filter = if let Some(ref active_move) = battle.active_move {
-        active_move.multi_hit_type.as_deref() == Some("parentalbond")
+    let should_filter = if let Some(am) = active_move {
+        am.multi_hit_type.as_deref() == Some("parentalbond")
             && move_id == "secretpower"
-            && active_move.hit < 2
+            && am.hit < 2
     } else {
         return EventResult::Continue;
     };

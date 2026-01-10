@@ -109,7 +109,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
 ///         this.boost({ atk: 1, spa: 1, spe: 1, def: -1, spd: -1 }, target, target);
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // this.effectState.checkedAngerShell = true;
     battle.effect_state.checked_anger_shell = Some(true);
 
@@ -129,18 +129,20 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), 
             return EventResult::Continue;
         }
 
-        let active_move_data = if let Some(ref active_move) = battle.active_move {
-            // if (!move.totalDamage) return;
-            if active_move.total_damage <= 0 {
-                return EventResult::Continue;
-            }
-            (
-                active_move.total_damage,
-                active_move.multi_hit.is_some() || active_move.multi_hit_type.is_some(),
-            )
-        } else {
-            return EventResult::Continue;
+        let active_move_ref = match active_move {
+            Some(am) => am,
+            None => return EventResult::Continue,
         };
+
+        // if (!move.totalDamage) return;
+        if active_move_ref.total_damage <= 0 {
+            return EventResult::Continue;
+        }
+
+        let active_move_data = (
+            active_move_ref.total_damage,
+            active_move_ref.multi_hit.is_some() || active_move_ref.multi_hit_type.is_some(),
+        );
 
         (target.hp, target.maxhp, active_move_data.0, active_move_data.1)
     };

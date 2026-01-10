@@ -76,12 +76,18 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
 ///     if (!target.runImmunity(move)) return;
 ///     return false;
 /// }
-pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::dex_data::ID;
 
     // if (!target) return;
     let target = match target_pos {
         Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
 
@@ -108,11 +114,7 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
         };
 
         let has_substitute = target_pokemon.has_volatile(&ID::from("substitute"));
-        let bypasssub = battle.active_move.as_ref().map(|m| m.flags.bypasssub).unwrap_or(false);
-        let infiltrates = battle.active_move.as_ref().map(|m| m.infiltrates).unwrap_or(false);
-        let gen = battle.gen;
-
-        has_substitute && !bypasssub && !(infiltrates && gen >= 6)
+        has_substitute && !active_move_ref.flags.bypasssub && !(active_move_ref.infiltrates && battle.gen >= 6)
     };
 
     // if (hitSub) return;
@@ -121,15 +123,7 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
     }
 
     // if (!target.runImmunity(move)) return;
-    let immune = {
-        let move_type = if let Some(ref active_move) = battle.active_move {
-            active_move.move_type.clone()
-        } else {
-            return EventResult::Continue;
-        };
-
-        !crate::Pokemon::run_immunity(battle, target, &move_type, false)
-    };
+    let immune = !crate::Pokemon::run_immunity(battle, target, &active_move_ref.move_type, false);
 
     if immune {
         return EventResult::Continue;
@@ -151,12 +145,17 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 ///     if (!target.runImmunity(move)) return;
 ///     return 0;
 /// }
-pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize, usize), _type_str: &str, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize, usize), _type_str: &str, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::dex_data::ID;
 
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // if (move.category === 'Status') return;
-    let is_status = battle.active_move.as_ref().map(|m| m.category == "Status").unwrap_or(false);
-    if is_status {
+    if active_move_ref.category == "Status" {
         return EventResult::Continue;
     }
 
@@ -183,11 +182,7 @@ pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize,
         };
 
         let has_substitute = target.has_volatile(&ID::from("substitute"));
-        let bypasssub = battle.active_move.as_ref().map(|m| m.flags.bypasssub).unwrap_or(false);
-        let infiltrates = battle.active_move.as_ref().map(|m| m.infiltrates).unwrap_or(false);
-        let gen = battle.gen;
-
-        has_substitute && !bypasssub && !(infiltrates && gen >= 6)
+        has_substitute && !active_move_ref.flags.bypasssub && !(active_move_ref.infiltrates && battle.gen >= 6)
     };
 
     // if (hitSub) return;
@@ -196,15 +191,7 @@ pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize,
     }
 
     // if (!target.runImmunity(move)) return;
-    let immune = {
-        let move_type = if let Some(ref active_move) = battle.active_move {
-            active_move.move_type.clone()
-        } else {
-            return EventResult::Continue;
-        };
-
-        !crate::Pokemon::run_immunity(battle, target_pos, &move_type, false)
-    };
+    let immune = !crate::Pokemon::run_immunity(battle, target_pos, &active_move_ref.move_type, false);
 
     if immune {
         return EventResult::Continue;

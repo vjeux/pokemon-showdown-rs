@@ -57,11 +57,10 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         return EventResult::Continue;
     }
 
-    // Get the move ID from active_move
-    let move_id = if let Some(ref active_move) = battle.active_move {
-        active_move.id.clone()
-    } else {
-        return EventResult::Continue;
+    // Get the move ID from active_move parameter
+    let move_id = match active_move {
+        Some(am) => am.id.clone(),
+        None => return EventResult::Continue,
     };
 
     // if (this.checkMoveMakesContact(move, source, target))

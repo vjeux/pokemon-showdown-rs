@@ -74,7 +74,7 @@ pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usiz
 
     // if (move.type === 'Grass')
     let is_grass = {
-        let active_move = match &battle.active_move {
+        let active_move = match active_move {
             Some(m) => m,
             None => return EventResult::Continue,
         };

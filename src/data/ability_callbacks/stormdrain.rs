@@ -66,30 +66,22 @@ pub fn on_any_redirect_target(battle: &mut Battle, target_pos: Option<(usize, us
         None => return EventResult::Continue,
     };
 
-    // if (move.type !== 'Water' || move.flags['pledgecombo']) return;
-    let (is_water, has_pledgecombo) = {
-        let active_move = match &battle.active_move {
-            Some(m) => m,
-            None => return EventResult::Continue,
-        };
-        (active_move.move_type == "Water", active_move.flags.pledgecombo)
+    // Get the active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
     };
 
-    if !is_water || has_pledgecombo {
+    // if (move.type !== 'Water' || move.flags['pledgecombo']) return;
+    if active_move_ref.move_type != "Water" || active_move_ref.flags.pledgecombo {
         return EventResult::Continue;
     }
 
     // const redirectTarget = ['randomNormal', 'adjacentFoe'].includes(move.target) ? 'normal' : move.target;
-    let redirect_target = {
-        let active_move = match &battle.active_move {
-            Some(m) => m,
-            None => return EventResult::Continue,
-        };
-        if active_move.target == "randomNormal" || active_move.target == "adjacentFoe" {
-            "normal"
-        } else {
-            active_move.target.as_str()
-        }
+    let redirect_target = if active_move_ref.target == "randomNormal" || active_move_ref.target == "adjacentFoe" {
+        "normal"
+    } else {
+        active_move_ref.target.as_str()
     };
 
     // Get the Pokemon with Storm Drain from effect_state.target
