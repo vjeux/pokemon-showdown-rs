@@ -1739,12 +1739,14 @@ pub fn dispatch_condition_on_base_power(
 }
 
 /// Dispatch condition onBeforeMove callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_before_move(
     battle: &mut Battle,
+    condition_id: &str,
     active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "attract" => attract::condition::on_before_move(battle, source_pos, None, active_move),
         "bide" => bide::condition::on_before_move(battle, source_pos, None, active_move),
         "chillyreception" => {
@@ -2518,7 +2520,7 @@ pub fn dispatch_condition_on_start(
     match condition_id {
         "allyswitch" => allyswitch::condition::on_start(battle, pokemon_pos),
         "aquaring" => aquaring::condition::on_start(battle, pokemon_pos),
-        "attract" => attract::condition::on_start(battle, pokemon_pos, None, None),
+        "attract" => attract::condition::on_start(battle, pokemon_pos, source_pos, None),
         "banefulbunker" => banefulbunker::condition::on_start(battle, Some(pokemon_pos)),
         "beakblast" => beakblast::condition::on_start(battle, pokemon_pos),
         "bide" => bide::condition::on_start(battle, pokemon_pos),

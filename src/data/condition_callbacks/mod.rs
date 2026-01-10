@@ -169,7 +169,7 @@ pub fn dispatch_on_before_move(
         "taunt" => move_callbacks::taunt::condition::on_before_move(battle, pokemon_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_before_move(battle, active_move, pokemon_pos)
+            move_callbacks::dispatch_condition_on_before_move(battle, condition_id, active_move, pokemon_pos)
         }
     }
 }
