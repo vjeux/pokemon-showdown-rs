@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///     }
 ///     return undefined;
 /// }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
+
 pub fn after_move_secondary_event(
     battle: &mut Battle,
     targets: &[(usize, usize)],

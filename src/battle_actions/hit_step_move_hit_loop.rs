@@ -21,7 +21,6 @@ use crate::battle::Effect;
 ///     // ... (see full JS source in file header)
 ///     return damage;
 /// }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn hit_step_move_hit_loop(
     battle: &mut Battle,
     targets: &mut SpreadMoveTargets,
@@ -526,8 +525,7 @@ pub fn hit_step_move_hit_loop(
             Some(pokemon) => {
                 let recoil = battle_actions::BattleActions::calc_recoil_damage(
                     active_move.total_damage,
-                    active_move.id.as_str(),
-                    active_move.recoil,
+                    active_move,
                     pokemon.maxhp,
                 );
                 (pokemon.hp, pokemon.maxhp, recoil, pokemon.name.clone())

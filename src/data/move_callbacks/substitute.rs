@@ -306,11 +306,13 @@ pub mod condition {
             return EventResult::Continue;
         }
 
-        // Get recoil and drain from move data
+        // Get recoil and drain from active_move directly
         let (recoil, drain) = {
-            battle.dex.moves.get(&move_id)
-                .map(|m| (m.recoil, m.drain))
-                .unwrap_or((None, None))
+            let am = match &battle.active_move {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+            (am.recoil, am.drain)
         };
 
         // let damage = this.actions.getDamage(source, target, move);
@@ -418,7 +420,7 @@ pub mod condition {
             };
 
             let recoil_damage =
-                BattleActions::calc_recoil_damage(actual_damage, move_id.as_str(), recoil, source_max_hp);
+                BattleActions::calc_recoil_damage(actual_damage, active_move_ref, source_max_hp);
 
             battle.damage(recoil_damage, Some(source), Some(target), Some(&Effect::move_(ID::from("recoil"))), false);
         }

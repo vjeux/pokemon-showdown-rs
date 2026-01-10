@@ -21,7 +21,7 @@ use crate::battle::Effect;
 ///     }
 ///     return hitResults;
 /// }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
+
 pub fn hit_step_try_hit_event(
     battle: &mut Battle,
     targets: &[(usize, usize)],
