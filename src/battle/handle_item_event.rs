@@ -390,6 +390,8 @@ impl Battle {
             }
 
             // TypeScript: onSourceModifyDamage(damage:number, source:Pokemon, target:Pokemon, move:Move)
+            // For SourceModifyDamage on items, the effect holder is the TARGET (defender with the item)
+            // The "Source" in the name refers to the damage source (attacker), not the effect holder
             "SourceModifyDamage" => {
                 // Move is required for this callback - skip if no active move
                 let active_move = match &active_move_clone {
@@ -397,8 +399,11 @@ impl Battle {
                     None => return EventResult::Continue,
                 };
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let source_pos = pokemon_pos;
-                let target_pos = target_opt.unwrap_or(pokemon_pos);
+                // For type-resist berries (babiriberry, etc.), effect holder is the defender
+                // source = attacker (from event.source), target = defender (effect holder)
+                let event_source = self.event.as_ref().and_then(|e| e.source);
+                let source_pos = event_source.unwrap_or(pokemon_pos);  // source = attacker
+                let target_pos = pokemon_pos;  // target = effect holder (defender with the berry)
                 item_callbacks::dispatch_on_source_modify_damage(
                     self,
                     item_id.as_str(),
@@ -410,12 +415,14 @@ impl Battle {
             }
 
             // TypeScript: onSourceTryPrimaryHit(target:Pokemon?, source:Pokemon?, move:Move)
+            // For Source callbacks, the effect holder IS the source, and event.target is the target
             "SourceTryPrimaryHit" => {
+                let event_target = self.event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_source_try_primary_hit(
                     self,
                     item_id.as_str(),
-                    target_opt,
-                    source,
+                    event_target,      // target = Pokemon being hit
+                    target_opt,        // source = effect holder (Pokemon with the item)
                     active_move_clone.as_ref(),
                 )
             }
