@@ -17,11 +17,11 @@ pub fn on_modify_secondaries(battle: &mut Battle) -> EventResult {
     // In other words, it blocks all opponent-targeting secondaries
 
     if let Some(ref active_move) = battle.active_move {
-        // Filter secondaries to keep only effects with self_effect = true
+        // Filter secondaries to keep only effects with self_secondary (self-targeting)
         // !!effect.self in JavaScript means "keep if self is truthy"
         let filtered: Vec<_> = active_move.secondaries
             .iter()
-            .filter(|effect| effect.self_effect)
+            .filter(|effect| effect.self_secondary.is_some())
             .cloned()
             .collect();
 

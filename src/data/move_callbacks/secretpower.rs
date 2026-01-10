@@ -64,19 +64,10 @@ pub fn on_modify_move(
         //     chance: 30,
         //     status: 'par',
         // });
-        let secondary = crate::battle_actions::SecondaryEffect {
+        let secondary = crate::dex::MoveSecondary {
             chance: Some(30),
             status: Some("par".to_string()),
-            boosts: None,
-            volatile_status: None,
-            side_condition: None,
-            slot_condition: None,
-            pseudo_weather: None,
-            terrain: None,
-            weather: None,
-            ability: None,
-            kingsrock: None,
-            self_effect: false,
+            ..Default::default()
         };
         active_move.secondaries.push(secondary);
     } else if *terrain_id == ID::from("grassyterrain") {
@@ -84,19 +75,10 @@ pub fn on_modify_move(
         //     chance: 30,
         //     status: 'slp',
         // });
-        let secondary = crate::battle_actions::SecondaryEffect {
+        let secondary = crate::dex::MoveSecondary {
             chance: Some(30),
             status: Some("slp".to_string()),
-            boosts: None,
-            volatile_status: None,
-            side_condition: None,
-            slot_condition: None,
-            pseudo_weather: None,
-            terrain: None,
-            weather: None,
-            ability: None,
-            kingsrock: None,
-            self_effect: false,
+            ..Default::default()
         };
         active_move.secondaries.push(secondary);
     } else if *terrain_id == ID::from("mistyterrain") {
@@ -108,19 +90,10 @@ pub fn on_modify_move(
         // });
         let mut boosts = crate::dex_data::BoostsTable::new();
         boosts.spa = -1;
-        let secondary = crate::battle_actions::SecondaryEffect {
+        let secondary = crate::dex::MoveSecondary {
             chance: Some(30),
             boosts: Some(boosts),
-            status: None,
-            volatile_status: None,
-            side_condition: None,
-            slot_condition: None,
-            pseudo_weather: None,
-            terrain: None,
-            weather: None,
-            ability: None,
-            kingsrock: None,
-            self_effect: false,
+            ..Default::default()
         };
         active_move.secondaries.push(secondary);
     } else if *terrain_id == ID::from("psychicterrain") {
@@ -132,19 +105,10 @@ pub fn on_modify_move(
         // });
         let mut boosts = crate::dex_data::BoostsTable::new();
         boosts.spe = -1;
-        let secondary = crate::battle_actions::SecondaryEffect {
+        let secondary = crate::dex::MoveSecondary {
             chance: Some(30),
             boosts: Some(boosts),
-            status: None,
-            volatile_status: None,
-            side_condition: None,
-            slot_condition: None,
-            pseudo_weather: None,
-            terrain: None,
-            weather: None,
-            ability: None,
-            kingsrock: None,
-            self_effect: false,
+            ..Default::default()
         };
         active_move.secondaries.push(secondary);
     }

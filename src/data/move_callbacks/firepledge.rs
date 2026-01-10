@@ -170,16 +170,9 @@ pub fn on_modify_move(
             // move.forceSTAB = true;
             active_move.force_stab = true;
             // move.self = { sideCondition: 'waterpledge' };
-            active_move.self_effect = Some(crate::battle_actions::SelfEffect {
-                boosts: None,
-                status: None,
-                volatile_status: None,
+            active_move.self_effect = Some(crate::dex::MoveSecondary {
                 side_condition: Some("waterpledge".to_string()),
-                slot_condition: None,
-                pseudo_weather: None,
-                terrain: None,
-                weather: None,
-                chance: None,
+                ..Default::default()
             });
         } else if source_effect.as_str() == "grasspledge" {
             // move.type = 'Fire';

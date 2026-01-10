@@ -213,7 +213,7 @@ pub enum EventResult {
     /// Return a boost table (stat stages)
     Boost(crate::dex_data::BoostsTable),
     /// Return secondary effects
-    Secondaries(Vec<crate::battle_actions::SecondaryEffect>),
+    Secondaries(Vec<crate::dex::MoveSecondary>),
 }
 
 impl EventResult {

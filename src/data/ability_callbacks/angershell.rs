@@ -24,7 +24,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
         // Check if effect is a move
         if let Some(move_data) = battle.dex.moves().get(effect_id) {
             // Check if move is not multi-hit
-            let is_not_multihit = move_data.multihit.is_none();
+            let is_not_multihit = move_data.multi_hit.is_none();
 
             // Check if move has Sheer Force and source has sheerforce ability
             let has_sheer_force_boost = if let Some(source_pos) = source_pos {

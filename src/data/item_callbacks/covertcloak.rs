@@ -14,13 +14,13 @@ use crate::event::EventResult;
 pub fn on_modify_secondaries(
     battle: &mut Battle,
     _pokemon_pos: (usize, usize),
-    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    secondaries: &Vec<crate::dex::MoveSecondary>,
 ) -> EventResult {
     // return secondaries.filter(effect => !!effect.self);
     // Filter out opponent-targeting secondaries, keep only self-targeting ones
     let filtered: Vec<_> = secondaries
         .iter()
-        .filter(|effect| effect.self_effect)
+        .filter(|effect| effect.self_secondary.is_some())
         .cloned()
         .collect();
 

@@ -307,9 +307,9 @@ pub struct SpeciesData {
 }
 
 /// Move secondary effect data
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 /// JavaScript equivalent: MoveSecondary/SecondaryEffect (sim/dex-moves.ts)
-/// 9 fields in JavaScript (matching full SecondaryEffect)
+/// SecondaryEffect extends HitEffect with: chance, ability, kingsrock, self
 pub struct MoveSecondary {
     /// Chance of effect occurring (percentage)
     /// JavaScript: chance?: number
@@ -348,9 +348,17 @@ pub struct MoveSecondary {
     #[serde(default)]
     pub weather: Option<String>,
     /// Self-targeted secondary effect (applied to user instead of target)
-    /// JavaScript: self?: SecondaryEffect
+    /// JavaScript: self?: HitEffect
     #[serde(rename = "self", default)]
     pub self_secondary: Option<Box<MoveSecondary>>,
+    /// Ability data (runtime only, not from JSON)
+    /// JavaScript: ability?: Ability
+    #[serde(default)]
+    pub ability: Option<crate::dex_data::ID>,
+    /// King's Rock effect flag (runtime only, not from JSON)
+    /// JavaScript: kingsrock?: boolean
+    #[serde(default)]
+    pub kingsrock: Option<bool>,
 }
 
 /// Type of condition
@@ -543,9 +551,8 @@ pub struct MoveData {
     pub heal: Option<(i32, i32)>,
     /// Multi-hit specification
     /// JavaScript: multihit?: number | [number, number]
-    /// TODO: Rust uses Multihit enum, JavaScript uses union type
-    #[serde(default)]
-    pub multihit: Option<Multihit>,
+    #[serde(rename = "multihit", default)]
+    pub multi_hit: Option<Multihit>,
     /// Z-Move identifier
     /// JavaScript: isZ?: boolean | IDEntry
     /// TODO: Rust uses Option<String>, JavaScript uses boolean | IDEntry union
@@ -692,7 +699,7 @@ pub struct MoveData {
     /// Mind Blown recoil flag
     /// JavaScript: mindBlownRecoil?: boolean
     #[serde(rename = "mindBlownRecoil", default)]
-    pub mind_blown_recoil: bool,
+    pub mindblown_recoil: bool,
     /// Struggle recoil flag
     /// JavaScript: struggleRecoil?: boolean
     #[serde(rename = "struggleRecoil", default)]
@@ -708,7 +715,7 @@ pub struct MoveData {
     /// Multi-hit accuracy check per hit (Population Bomb)
     /// JavaScript: multiaccuracy?: boolean
     #[serde(rename = "multiaccuracy", default)]
-    pub multiaccuracy: bool,
+    pub multi_accuracy: bool,
     /// No PP boosts allowed (Revival Blessing)
     /// JavaScript: noPPBoosts?: boolean
     #[serde(rename = "noPPBoosts", default)]

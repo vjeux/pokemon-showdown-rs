@@ -468,13 +468,13 @@ pub struct ActiveMove {
     pub struggle_recoil: bool,
     /// Single secondary effect
     /// JavaScript: secondary?: SecondaryEffect | null
-    pub secondary: Option<SecondaryEffect>,
+    pub secondary: Option<crate::dex::MoveSecondary>,
     /// Multiple secondary effects
     /// JavaScript: secondaries?: SecondaryEffect[] | null
-    pub secondaries: Vec<SecondaryEffect>,
+    pub secondaries: Vec<crate::dex::MoveSecondary>,
     /// Self-targeting effect
     /// JavaScript: self?: SecondaryEffect | null
-    pub self_effect: Option<SelfEffect>,
+    pub self_effect: Option<crate::dex::MoveSecondary>,
     /// Has Sheer Force flag
     /// JavaScript: hasSheerForce: boolean
     pub has_sheer_force: bool,
@@ -1021,8 +1021,8 @@ pub struct SelfEffect {
 pub enum HitEffect<'a> {
     /// Reference to an ActiveMove
     Move(&'a ActiveMove),
-    /// Reference to a SecondaryEffect
-    Secondary(&'a SecondaryEffect),
+    /// Reference to a MoveSecondary (SecondaryEffect)
+    Secondary(&'a crate::dex::MoveSecondary),
 }
 
 impl<'a> HitEffect<'a> {
@@ -1094,7 +1094,7 @@ impl<'a> HitEffect<'a> {
     pub fn is_self_effect(&self) -> bool {
         match self {
             HitEffect::Move(_) => false,
-            HitEffect::Secondary(s) => s.self_effect,
+            HitEffect::Secondary(s) => s.self_secondary.is_some(),
         }
     }
 
@@ -1131,7 +1131,7 @@ impl<'a> HitEffect<'a> {
     }
 
     /// Get self_effect (only available on ActiveMove)
-    pub fn self_effect_data(&self) -> Option<&SelfEffect> {
+    pub fn self_effect_data(&self) -> Option<&crate::dex::MoveSecondary> {
         match self {
             HitEffect::Move(m) => m.self_effect.as_ref(),
             HitEffect::Secondary(_) => None,

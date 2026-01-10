@@ -31,7 +31,7 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target
     //     });
     // }
 
-    use crate::battle_actions::SecondaryEffect;
+    use crate::dex::MoveSecondary;
 
     if let Some(active_move) = battle.active_move.as_mut() {
         // if (move.category !== "Status")
@@ -51,19 +51,10 @@ pub fn on_modify_move(battle: &mut Battle, _pokemon_pos: (usize, usize), _target
             //     chance: 10,
             //     volatileStatus: 'flinch',
             // });
-            active_move.secondaries.push(SecondaryEffect {
+            active_move.secondaries.push(MoveSecondary {
                 chance: Some(10),
-                boosts: None,
-                status: None,
                 volatile_status: Some("flinch".to_string()),
-                side_condition: None,
-                slot_condition: None,
-                pseudo_weather: None,
-                terrain: None,
-                weather: None,
-                ability: None,
-                kingsrock: None,
-                self_effect: false,
+                ..Default::default()
             });
         }
     }

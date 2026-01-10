@@ -96,10 +96,10 @@ pub fn on_try_hit(
             active_move.volatile_status = None;
 
             // Set self-boost effect (move.self = { boosts: { spe: -1, atk: 1, def: 1 } })
-            use crate::battle_actions::SelfEffect;
+            use crate::dex::MoveSecondary;
             use crate::dex_data::BoostsTable;
 
-            active_move.self_effect = Some(SelfEffect {
+            active_move.self_effect = Some(MoveSecondary {
                 boosts: Some(BoostsTable {
                     atk: 1,
                     def: 1,
@@ -109,14 +109,7 @@ pub fn on_try_hit(
                     accuracy: 0,
                     evasion: 0,
                 }),
-                status: None,
-                volatile_status: None,
-                side_condition: None,
-                slot_condition: None,
-                pseudo_weather: None,
-                terrain: None,
-                weather: None,
-                chance: None,
+                ..Default::default()
             });
         }
     } else {

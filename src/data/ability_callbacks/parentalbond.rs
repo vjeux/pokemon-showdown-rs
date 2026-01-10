@@ -52,7 +52,7 @@ pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, 
 /// }
 pub fn on_source_modify_secondaries(
     battle: &mut Battle,
-    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    secondaries: &Vec<crate::dex::MoveSecondary>,
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
     active_move: Option<&crate::battle_actions::ActiveMove>,

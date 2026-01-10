@@ -91,7 +91,7 @@ pub fn secondaries(
 
             // const secondaryOverflow = (secondary.boosts || secondary.self) && this.battle.gen <= 8;
             let has_boosts = secondary.boosts.is_some();
-            let has_self = secondary.self_effect;
+            let has_self = secondary.self_secondary.is_some();
             let secondary_overflow = (has_boosts || has_self) && battle.gen <= 8;
 
             // if (typeof secondary.chance === 'undefined' ||
@@ -111,7 +111,7 @@ pub fn secondaries(
             if should_apply {
                 // this.moveHit(target, source, move, secondary, true, isSelf);
                 // Determine the actual target based on secondary.self
-                let effect_target = if secondary.self_effect {
+                let effect_target = if secondary.self_secondary.is_some() {
                     source_pos
                 } else {
                     target_pos

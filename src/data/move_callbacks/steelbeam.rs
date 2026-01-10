@@ -34,7 +34,7 @@ pub fn on_after_move(
         let move_data = battle.dex.moves().get_by_id(active_move);
         if let Some(m) = move_data {
             let mind_blown_recoil = m.flags.contains_key("mindBlownRecoil");
-            let is_multihit = m.multihit.is_some();
+            let is_multihit = m.multi_hit.is_some();
             (mind_blown_recoil, is_multihit)
         } else {
             return EventResult::Continue;

@@ -174,14 +174,14 @@ pub fn on_prepare_hit(
 
             // if (item.fling.status) { move.secondaries.push({ status: item.fling.status }); }
             if let Some(status) = fling.status {
-                active_move.secondaries.push(crate::battle_actions::SecondaryEffect {
+                active_move.secondaries.push(crate::dex::MoveSecondary {
                     status: Some(status),
                     ..Default::default()
                 });
             }
             // else if (item.fling.volatileStatus) { move.secondaries.push({ volatileStatus: item.fling.volatileStatus }); }
             else if let Some(volatile_status) = fling.volatile_status {
-                active_move.secondaries.push(crate::battle_actions::SecondaryEffect {
+                active_move.secondaries.push(crate::dex::MoveSecondary {
                     volatile_status: Some(volatile_status),
                     ..Default::default()
                 });

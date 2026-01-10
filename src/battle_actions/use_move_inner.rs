@@ -810,20 +810,10 @@ pub fn use_move_inner(
             // Apply self-boost using moveHit
             // moveHit(pokemon, pokemon, move, move.selfBoost, false, true)
             // Parameters: targets, pokemon, move, moveData, isSecondary, isSelf
-            // Create a SecondaryEffect containing just the boosts
-            let self_boost_effect = crate::battle_actions::SecondaryEffect {
-                chance: None,
+            // Create a MoveSecondary containing just the boosts
+            let self_boost_effect = crate::dex::MoveSecondary {
                 boosts: Some(boosts.clone()),
-                status: None,
-                volatile_status: None,
-                side_condition: None,
-                slot_condition: None,
-                pseudo_weather: None,
-                terrain: None,
-                weather: None,
-                ability: None,
-                kingsrock: None,
-                self_effect: false,
+                ..Default::default()
             };
             crate::battle_actions::move_hit(
                 battle,

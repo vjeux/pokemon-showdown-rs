@@ -21,7 +21,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_modify_move(_battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    use crate::battle_actions::SecondaryEffect;
+    use crate::dex::MoveSecondary;
 
     // if (move.category !== "Status")
     if let Some(active_move) = active_move {
@@ -42,19 +42,10 @@ pub fn on_modify_move(_battle: &mut Battle, active_move: Option<&mut crate::batt
         }
 
         // move.secondaries.push({ chance: 10, volatileStatus: 'flinch' });
-        active_move.secondaries.push(SecondaryEffect {
+        active_move.secondaries.push(MoveSecondary {
             chance: Some(10),
-            boosts: None,
-            status: None,
             volatile_status: Some("flinch".to_string()),
-            side_condition: None,
-            slot_condition: None,
-            pseudo_weather: None,
-            terrain: None,
-            weather: None,
-            ability: None,
-            kingsrock: None,
-            self_effect: false,
+            ..Default::default()
         });
     }
 

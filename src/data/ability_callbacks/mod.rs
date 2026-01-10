@@ -1551,7 +1551,7 @@ pub fn dispatch_on_source_modify_damage(
 pub fn dispatch_on_source_modify_secondaries(
     battle: &mut Battle,
     ability_id: &str,
-    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    secondaries: &Vec<crate::dex::MoveSecondary>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     active_move: Option<&ActiveMove>,
@@ -4185,7 +4185,7 @@ pub fn dispatch_on_source_modify_damage_sub_order(
 pub fn dispatch_on_source_modify_secondaries_priority(
     battle: &mut Battle,
     ability_id: &str,
-    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    secondaries: &Vec<crate::dex::MoveSecondary>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     active_move: Option<&ActiveMove>,
@@ -4197,7 +4197,7 @@ pub fn dispatch_on_source_modify_secondaries_priority(
 pub fn dispatch_on_source_modify_secondaries_order(
     battle: &mut Battle,
     ability_id: &str,
-    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    secondaries: &Vec<crate::dex::MoveSecondary>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     active_move: Option<&ActiveMove>,
@@ -4209,7 +4209,7 @@ pub fn dispatch_on_source_modify_secondaries_order(
 pub fn dispatch_on_source_modify_secondaries_sub_order(
     battle: &mut Battle,
     ability_id: &str,
-    secondaries: &Vec<crate::battle_actions::SecondaryEffect>,
+    secondaries: &Vec<crate::dex::MoveSecondary>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     active_move: Option<&ActiveMove>,
