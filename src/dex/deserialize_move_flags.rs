@@ -3,7 +3,7 @@
 // Deserializes move flags from JSON HashMap<String, i32> to MoveFlags struct
 
 use crate::battle_actions::MoveFlags;
-use serde::de::{self, MapAccess, Visitor};
+use serde::de::{MapAccess, Visitor};
 use std::fmt;
 
 pub fn deserialize_move_flags<'de, D>(deserializer: D) -> Result<MoveFlags, D::Error>

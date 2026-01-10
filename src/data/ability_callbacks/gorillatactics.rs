@@ -141,7 +141,7 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
 ///     this.debug('Gorilla Tactics Atk Boost');
 ///     return this.chainModify(1.5);
 /// }
-pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     use crate::dex_data::ID;
 
     // if (pokemon.volatiles['dynamax']) return;

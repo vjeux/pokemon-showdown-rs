@@ -347,7 +347,7 @@ pub fn dispatch_on_end(
 /// Dispatch onFaint callbacks (with target, source, effect)
 pub fn dispatch_on_faint(
     battle: &mut Battle,
-    condition_id: &str,
+    _condition_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,

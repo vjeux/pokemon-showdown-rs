@@ -10,8 +10,8 @@ use crate::event::EventResult;
 /// onModifyAtk(atk) {
 ///     return this.modify(atk, 1.5);
 /// }
-pub fn on_modify_atk(battle: &mut Battle, atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    let modified = battle.modify_f(atk, 1.5);
+pub fn on_modify_atk(battle: &mut Battle, atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let _modified = battle.modify_f(atk, 1.5);
     EventResult::Continue
 }
 

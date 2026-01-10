@@ -2734,7 +2734,7 @@ pub fn dispatch_condition_on_try_primary_hit(
     condition_id: &str,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    move_id: Option<&str>,
+    _move_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
         "substitute" => {

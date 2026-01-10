@@ -456,7 +456,7 @@ pub mod condition {
     ///         return null;
     ///     }
     /// }
-    pub fn on_foe_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    pub fn on_foe_before_move(battle: &mut Battle, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // onFoeBeforeMove(attacker, defender, move) {
         //     if (attacker === this.effectState.source) {
         //         attacker.activeMoveActions--;

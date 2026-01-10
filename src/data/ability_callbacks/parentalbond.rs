@@ -14,7 +14,7 @@ use crate::dex::Multihit;
 ///     move.multihit = 2;
 ///     move.multihitType = 'parentalbond';
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // if (move.category === 'Status' || move.multihit || move.flags['noparentalbond'] || move.flags['charge'] ||
     //     move.flags['futuremove'] || move.spreadHit || move.isZ || move.isMax) return;
     let should_return = if let Some(ref active_move) = battle.active_move {

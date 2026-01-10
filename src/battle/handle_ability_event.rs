@@ -386,7 +386,7 @@ impl Battle {
 
                 // Get move_id from active_move (extract to owned String to avoid borrow issues)
                 let move_id_owned = self.active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
-                let move_id = move_id_owned.as_str();
+                let _move_id = move_id_owned.as_str();
 
                 ability_callbacks::dispatch_on_base_power(self, ability_id.as_str(), base_power, attacker_pos, defender_pos, active_move_clone.as_ref())
             }
@@ -587,7 +587,7 @@ impl Battle {
             active_move_clone.as_ref(),
             ),
             "ModifyAtk" => {
-                let (atk, defender_pos, move_id_str) = if let Some(ref event) = self.event {
+                let (atk, defender_pos, _move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
@@ -609,7 +609,7 @@ impl Battle {
                 ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), relay_var_int, pokemon_pos, event_source_pos.unwrap_or((0, 0)), active_move_clone.as_ref())
             }
             "ModifyDef" => {
-                let (def, attacker_pos, move_id_str) = if let Some(ref event) = self.event {
+                let (def, attacker_pos, _move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.source.unwrap_or((0, 0)),
@@ -646,7 +646,7 @@ impl Battle {
             active_move_clone.as_ref(),
             ),
             "ModifySTAB" => {
-                let (stab, source_pos, target_pos, move_id_str) = if let Some(ref event) = self.event {
+                let (stab, source_pos, target_pos, _move_id_str) = if let Some(ref event) = self.event {
                     let stab_value = match &event.relay_var {
                         Some(EventResult::Float(f)) => *f,
                         _ => 1.0,
@@ -664,7 +664,7 @@ impl Battle {
             }
             "ModifySecondaries" => ability_callbacks::dispatch_on_modify_secondaries(self, ability_id.as_str()),
             "ModifySpA" => {
-                let (spa, defender_pos, move_id_str) = if let Some(ref event) = self.event {
+                let (spa, defender_pos, _move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
                         event.target.unwrap_or((0, 0)),
@@ -803,7 +803,7 @@ impl Battle {
             ),
             "SourceModifyDamage" => {
                 // Extract parameters from event
-                let (damage, source_pos, move_id_str) = if let Some(ref event) = self.event {
+                let (damage, source_pos, _move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 }, // damage value
                         event.target.unwrap_or((0, 0)), // attacker position

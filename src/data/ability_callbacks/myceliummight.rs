@@ -33,7 +33,7 @@ pub fn on_fractional_priority(battle: &mut Battle, _priority: i32, _pokemon_pos:
 ///         move.ignoreAbility = true;
 ///     }
 /// }
-pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(_battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move.category === 'Status')
     if let Some(active_move) = active_move {
         if active_move.category == "Status" {

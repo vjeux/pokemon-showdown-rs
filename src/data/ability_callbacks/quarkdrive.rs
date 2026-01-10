@@ -217,7 +217,7 @@ pub mod condition {
         }
 
         // Apply 1.3x boost (5325/4096)
-        let modified = battle.modify(atk, 5325, 4096);
+        let _modified = battle.modify(atk, 5325, 4096);
         EventResult::Continue
     }
 
@@ -249,7 +249,7 @@ pub mod condition {
         }
 
         // Apply 1.3x boost (5325/4096)
-        let modified = battle.modify(def, 5325, 4096);
+        let _modified = battle.modify(def, 5325, 4096);
         EventResult::Continue
     }
 
@@ -281,7 +281,7 @@ pub mod condition {
         }
 
         // Apply 1.3x boost (5325/4096)
-        let modified = battle.modify(spa, 5325, 4096);
+        let _modified = battle.modify(spa, 5325, 4096);
         EventResult::Continue
     }
 
@@ -313,7 +313,7 @@ pub mod condition {
         }
 
         // Apply 1.3x boost (5325/4096)
-        let modified = battle.modify(spd, 5325, 4096);
+        let _modified = battle.modify(spd, 5325, 4096);
         EventResult::Continue
     }
 
@@ -345,7 +345,7 @@ pub mod condition {
         }
 
         // Apply 1.5x boost (3/2 ratio)
-        let modified = battle.modify(spe, 3, 2);
+        let _modified = battle.modify(spe, 3, 2);
         EventResult::Continue
     }
 
