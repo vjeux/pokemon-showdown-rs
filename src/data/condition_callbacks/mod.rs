@@ -349,14 +349,14 @@ pub fn dispatch_on_end(
 /// Dispatch onFaint callbacks (with target, source, effect)
 pub fn dispatch_on_faint(
     battle: &mut Battle,
-    _condition_id: &str,
+    condition_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
     // Route to actual implementation in move_callbacks
     use crate::data::move_callbacks;
-    move_callbacks::dispatch_condition_on_faint(battle, None, target_pos, source_pos, effect_id)
+    move_callbacks::dispatch_condition_on_faint(battle, condition_id, target_pos, source_pos, effect_id)
 }
 /// Dispatch onFieldEnd callbacks
 pub fn dispatch_on_field_end(

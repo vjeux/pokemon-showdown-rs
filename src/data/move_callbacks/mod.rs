@@ -1905,14 +1905,15 @@ pub fn dispatch_condition_on_end(
 }
 
 /// Dispatch condition onFaint callbacks (with target, source, effect)
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_faint(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "destinybond" => destinybond::condition::on_faint(battle, target_pos, source_pos, effect_id),
         "grudge" => grudge::condition::on_faint(battle, target_pos, source_pos, effect_id),
         "skydrop" => skydrop::condition::on_faint(battle, target_pos),
