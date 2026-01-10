@@ -49,16 +49,16 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     }
 
     // if (['cramorantgulping', 'cramorantgorging'].includes(target.species.id))
-    let target_species = {
+    let (is_gulping, is_gorging) = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.set.species.clone()
+        // Use species_id (ID form) not set.species (display name)
+        // JavaScript: target.species.id
+        let species_id = target.species_id.as_str();
+        (species_id == "cramorantgulping", species_id == "cramorantgorging")
     };
-
-    let is_gulping = target_species == "cramorantgulping";
-    let is_gorging = target_species == "cramorantgorging";
 
     if !is_gulping && !is_gorging {
         return EventResult::Continue;
