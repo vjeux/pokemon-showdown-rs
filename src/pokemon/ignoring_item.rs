@@ -53,11 +53,6 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 47): ignoreKlutz flag check
         // Some items ignore Klutz (e.g., Macho Brace, Power items)
 
-        // Ability Shield prevents ability suppression, including Klutz
-        if self.has_item(battle, &["abilityshield"]) {
-            return false;
-        }
-
         if self.ability.as_str() == "klutz" {
             // Check if item has ignoreKlutz flag
             if let Some(item_data) = battle.dex.items().get_by_id(&self.item) {
