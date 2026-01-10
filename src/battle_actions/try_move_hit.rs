@@ -65,6 +65,8 @@ pub fn try_move_hit(
 
     // this.battle.setActiveMove(move, pokemon, targets[0]);
     battle.set_active_move(Some(move_id.clone()), Some(pokemon_pos), Some(targets[0]));
+    // Restore active_move to battle so event handlers can access it with all fields (including base_move)
+    battle.active_move = Some(active_move.clone());
 
     // let hitResult = this.battle.singleEvent('Try', move, null, pokemon, target, move) &&
     //     this.battle.singleEvent('PrepareHit', move, {}, target, pokemon, move) &&

@@ -151,6 +151,8 @@ pub fn try_spread_move_hit(
     // JS: if (notActive) this.battle.setActiveMove(move, pokemon, targets[0]);
     if not_active && !targets.is_empty() {
         battle.set_active_move(Some(move_id.clone()), Some(pokemon_pos), Some(targets[0]));
+        // Restore active_move to battle so event handlers can access it with all fields (including base_move)
+        battle.active_move = Some(active_move.clone());
     }
 
     // Get first target for Try/PrepareHit events
