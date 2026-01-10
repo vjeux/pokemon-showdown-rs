@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         this.boost({ spe: -1 }, source, target, null, true);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -26,7 +26,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 
     // if (this.checkMoveMakesContact(move, source, target, true))
     // source = attacker, target = defender (the one with Gooey)
-    if battle.check_move_makes_contact(&crate::ID::from(move_id), source_pos, target_pos, true) {
+    // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
+    if battle.check_move_makes_contact_with_active_move(active_move, source_pos, target_pos, true) {
         // this.add('-ability', target, 'Gooey');
         let target_slot = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

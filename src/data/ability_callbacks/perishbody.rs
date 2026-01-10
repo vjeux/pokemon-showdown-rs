@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     source.addVolatile('perishsong');
 ///     target.addVolatile('perishsong');
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
     use crate::Pokemon;
 
@@ -28,7 +28,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     };
 
     // if (!this.checkMoveMakesContact(move, source, target))
-    let makes_contact = battle.check_move_makes_contact(&crate::dex_data::ID::from(move_id), source_pos, target_pos, false);
+    // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
+    let makes_contact = battle.check_move_makes_contact_with_active_move(active_move, source_pos, target_pos, false);
     if !makes_contact {
         return EventResult::Continue;
     }

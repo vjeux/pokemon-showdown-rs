@@ -23,7 +23,7 @@ use crate::event::EventResult;
 ///         target.setAbility(sourceAbility);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
     use crate::dex_data::ID;
     use crate::pokemon::Pokemon;
@@ -57,14 +57,9 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         return EventResult::Continue;
     }
 
-    // Get the move ID from active_move parameter
-    let move_id = match active_move {
-        Some(am) => am.id.clone(),
-        None => return EventResult::Continue,
-    };
-
     // if (this.checkMoveMakesContact(move, source, target))
-    if !battle.check_move_makes_contact(&move_id, source_pos, target_pos, false) {
+    // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
+    if !battle.check_move_makes_contact_with_active_move(active_move, source_pos, target_pos, false) {
         return EventResult::Continue;
     }
 

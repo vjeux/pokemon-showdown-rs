@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -27,7 +27,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 
     // if (this.checkMoveMakesContact(move, source, target))
     // source = attacker, target = defender (the one with Flame Body)
-    if battle.check_move_makes_contact(&crate::ID::from(move_id), source_pos, target_pos, false) {
+    // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
+    if battle.check_move_makes_contact_with_active_move(active_move, source_pos, target_pos, false) {
         // if (this.randomChance(3, 10))
         if battle.random_chance(3, 10) {
             // source.trySetStatus('brn', target);

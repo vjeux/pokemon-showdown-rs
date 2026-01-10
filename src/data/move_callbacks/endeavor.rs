@@ -49,9 +49,12 @@ pub fn damage_callback(
 pub fn on_try_immunity(
     battle: &mut Battle,
     target_pos: Option<(usize, usize)>,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let pokemon = pokemon_pos;
+    let pokemon = match pokemon_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,

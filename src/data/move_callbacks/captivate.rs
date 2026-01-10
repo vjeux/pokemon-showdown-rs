@@ -13,9 +13,15 @@ use crate::event::EventResult;
 /// }
 pub fn on_try_immunity(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    pokemon_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    // Get the pokemon
+    let pokemon = match pokemon_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     // Get the source
     let source = match source_pos {
         Some(pos) => pos,
@@ -24,7 +30,7 @@ pub fn on_try_immunity(
 
     // return (pokemon.gender === 'M' && source.gender === 'F') || (pokemon.gender === 'F' && source.gender === 'M');
     let pokemon_gender = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };

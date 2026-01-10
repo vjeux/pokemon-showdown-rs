@@ -16,7 +16,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // 30% chance to poison the target when attacker makes contact
     if let (Some(target), Some(source)) = (target_pos, source_pos) {
         // Despite not being a secondary, Shield Dust / Covert Cloak block Poison Touch's effect
@@ -33,7 +33,10 @@ pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Opt
             return EventResult::Continue;
         }
 
-        if battle.check_move_makes_contact(&crate::ID::from(move_id), target, source, false) {
+        // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
+        // Note: For on_source_damaging_hit, target is the defender and source is the attacker (ability holder)
+        // So source attacks target, we check contact with (source, target) for the attacker/defender relationship
+        if battle.check_move_makes_contact_with_active_move(active_move, source, target, false) {
             if battle.random_chance(3, 10) {
                 // Try to set poison status on the target
                 crate::pokemon::Pokemon::try_set_status(battle, target, crate::ID::from("psn"), None);

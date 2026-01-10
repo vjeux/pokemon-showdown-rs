@@ -1384,13 +1384,13 @@ pub fn dispatch_on_try_immunity(
 ) -> EventResult {
     let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "attract" => attract::on_try_immunity(battle, Some(pokemon_pos), source_pos),
-        "captivate" => captivate::on_try_immunity(battle, pokemon_pos, source_pos),
+        "captivate" => captivate::on_try_immunity(battle, Some(pokemon_pos), source_pos),
         "dreameater" => dreameater::on_try_immunity(battle, Some(pokemon_pos)),
-        "endeavor" => endeavor::on_try_immunity(battle, None, pokemon_pos),
+        "endeavor" => endeavor::on_try_immunity(battle, Some(pokemon_pos), source_pos),
         "leechseed" => leechseed::on_try_immunity(battle, Some(pokemon_pos)),
         "octolock" => octolock::on_try_immunity(battle, Some(pokemon_pos)),
         "switcheroo" => switcheroo::on_try_immunity(battle, Some(pokemon_pos)),
-        "synchronoise" => synchronoise::on_try_immunity(battle, Some(pokemon_pos), None),
+        "synchronoise" => synchronoise::on_try_immunity(battle, Some(pokemon_pos), source_pos),
         "trick" => trick::on_try_immunity(battle, Some(pokemon_pos)),
         "worryseed" => worryseed::on_try_immunity(battle, Some(pokemon_pos)),
         _ => EventResult::Continue,

@@ -39,9 +39,9 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), 
         Some(m) => m,
         None => return EventResult::Continue,
     };
-    let move_id = active_move.id.clone();
 
-    let has_contact = battle.check_move_makes_contact(&move_id, source_pos, target_pos, false);
+    // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
+    let has_contact = battle.check_move_makes_contact_with_active_move(Some(active_move), source_pos, target_pos, false);
     if !has_contact {
         return EventResult::Continue;
     }

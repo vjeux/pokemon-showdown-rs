@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         this.damage(source.baseMaxhp / 4, source, target);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // If target fainted and move makes contact, damage the attacker
     if let (Some(target), Some(source)) = (target_pos, source_pos) {
         // Check if target has 0 HP
@@ -24,7 +24,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
             target_pokemon.hp
         };
 
-        if target_hp == 0 && battle.check_move_makes_contact(&crate::ID::from(move_id), source, target, true) {
+        // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
+        if target_hp == 0 && battle.check_move_makes_contact_with_active_move(active_move, source, target, true) {
             // Damage attacker by 1/4 of their max HP
             let damage_amount = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {

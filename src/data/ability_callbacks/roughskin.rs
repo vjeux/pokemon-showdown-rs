@@ -12,10 +12,11 @@ use crate::event::EventResult;
 ///         this.damage(source.baseMaxhp / 8, source, target);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Damage attacker by 1/8 max HP on contact
     if let (Some(target), Some(source)) = (target_pos, source_pos) {
-        if battle.check_move_makes_contact(&crate::ID::from(move_id), source, target, true) {
+        // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
+        if battle.check_move_makes_contact_with_active_move(active_move, source, target, true) {
             // Damage attacker by 1/8 of their max HP
             let damage_amount = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
