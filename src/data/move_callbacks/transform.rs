@@ -15,11 +15,14 @@ use crate::Pokemon;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let pokemon = pokemon_pos;
-    let target = match target_pos {
+    // JavaScript: onHit(target, pokemon) where pokemon.transformInto(target)
+    // target_pos = the target of Transform (the Pokemon to copy)
+    // source_pos = the Pokemon using Transform (the one who will be transformed)
+    let target = target_pos;
+    let pokemon = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -27,7 +30,7 @@ pub fn on_hit(
     // if (!pokemon.transformInto(target))
     //     return false;
 
-    // Call Pokemon::transform_into as an associated function with battle and both positions
+    // Call Pokemon::transform_into: pokemon transforms into target
     let success = Pokemon::transform_into(battle, pokemon, target, None);
 
     if !success {
