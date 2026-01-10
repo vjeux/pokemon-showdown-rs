@@ -699,8 +699,10 @@ pub fn dispatch_on_start(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&crate::battle::Effect>,
 ) -> EventResult {
+    // Extract effect_id for callbacks that still use the string form
+    let effect_id = effect.map(|e| e.id.as_str());
     match condition_id {
         "brn" => brn::on_start(battle, pokemon_pos, source_pos, effect_id),
         "choicelock" => choicelock::on_start(battle, pokemon_pos, source_pos, effect_id),
@@ -723,7 +725,7 @@ pub fn dispatch_on_start(
         _ => {
             // Try move-embedded condition callbacks (nightmare, etc.)
             use crate::data::move_callbacks;
-            move_callbacks::dispatch_condition_on_start(battle, condition_id, pokemon_pos, source_pos)
+            move_callbacks::dispatch_condition_on_start(battle, condition_id, pokemon_pos, source_pos, effect)
         }
     }
 }

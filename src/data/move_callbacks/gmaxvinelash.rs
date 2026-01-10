@@ -98,6 +98,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         use crate::dex_data::ID;
 

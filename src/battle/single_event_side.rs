@@ -91,9 +91,16 @@ impl Battle {
         let parent_effect = self.effect.clone();
         let parent_event = self.event.clone();
 
+        // Look up side condition name (usually from moves like Reflect, Light Screen)
+        let condition_name = self.dex.conditions().get_by_id(&effect_id)
+            .and_then(|c| c.name.clone())
+            .or_else(|| self.dex.moves().get(effect_id.as_str()).map(|m| m.name.clone()))
+            .unwrap_or_else(|| effect_id.to_string());
+
         // Set current event context with SideCondition effect type
         self.effect = Some(crate::Effect {
             id: effect_id.clone(),
+            name: condition_name,
             effect_type: crate::battle::EffectType::SideCondition,
             effect_holder: None,
             side_index: Some(side_idx),

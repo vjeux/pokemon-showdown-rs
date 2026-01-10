@@ -107,12 +107,19 @@ impl Battle {
                 move_callbacks::dispatch_on_effectiveness(self, active_move_clone.as_ref(), type_mod, &target_type, target_pos.unwrap_or((0,0)))
             }
             "Hit" => {
-                // Regular onHit targets the move target
-                // Note: self.onHit callbacks are NOT called here - they are called from
-                // run_move_effects when is_self=true (triggered by self_drops)
-                // JavaScript: singleEvent('Hit', moveData, {}, target, source, move) only calls
-                // the regular onHit, not self.onHit
-                move_callbacks::dispatch_on_hit(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos)
+                // Check effect_type to distinguish between regular onHit and self.onHit
+                // JavaScript: moveData.onHit vs moveData.self.onHit
+                let effect_type = self.effect.as_ref().map(|e| e.effect_type);
+                if effect_type == Some(crate::battle::EffectType::MoveSelf) {
+                    // Self-targeting onHit callback (JavaScript: moveData.self.onHit)
+                    // source_effect (the move) is available via self.event.effect
+                    // Clone to avoid borrow issues
+                    let source_effect = self.event.as_ref().and_then(|e| e.effect.clone());
+                    move_callbacks::dispatch_self_on_hit(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos, source_effect.as_ref())
+                } else {
+                    // Regular onHit targets the move target (JavaScript: moveData.onHit)
+                    move_callbacks::dispatch_on_hit(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos)
+                }
             }
             "HitField" => move_callbacks::dispatch_on_hit_field(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0))),

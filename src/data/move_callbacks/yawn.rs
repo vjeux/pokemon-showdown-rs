@@ -52,6 +52,7 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,

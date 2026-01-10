@@ -20,8 +20,9 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
+        let effect_id = _effect.map(|e| e.id.as_str());
         // this.effectState.layers = 1;
         battle.with_effect_state(|state| {
             state.layers = Some(1);
@@ -67,8 +68,9 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
+        let effect_id = _effect.map(|e| e.id.as_str());
         // if (this.effectState.layers >= 3) return false;
         let layers = battle
             .with_effect_state_ref(|state| state.layers.unwrap_or(1))
@@ -149,6 +151,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         use crate::dex_data::ID;
         use crate::pokemon::Pokemon;

@@ -224,9 +224,27 @@ impl Battle {
             None => EffectState::new(effect_id.clone()),
         };
 
+        // Look up proper name based on effect type
+        let effect_name = match effect_type {
+            EffectType::Ability => self.dex.abilities().get(effect_id.as_str())
+                .map(|a| a.name.clone())
+                .unwrap_or_else(|| effect_id.to_string()),
+            EffectType::Item => self.dex.items().get(effect_id.as_str())
+                .map(|i| i.name.clone())
+                .unwrap_or_else(|| effect_id.to_string()),
+            EffectType::Move | EffectType::MoveSelf => self.dex.moves().get(effect_id.as_str())
+                .map(|m| m.name.clone())
+                .unwrap_or_else(|| effect_id.to_string()),
+            _ => self.dex.conditions().get_by_id(effect_id)
+                .and_then(|c| c.name.clone())
+                .or_else(|| self.dex.moves().get(effect_id.as_str()).map(|m| m.name.clone()))
+                .unwrap_or_else(|| effect_id.to_string()),
+        };
+
         // Set up current effect context
         self.effect = Some(crate::Effect {
             id: effect_id.clone(),
+            name: effect_name,
             effect_type,
             effect_holder: target,
             side_index: target.map(|(side, _)| side),

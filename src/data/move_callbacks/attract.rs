@@ -76,7 +76,7 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // Get source position
         let source = match source_pos {
@@ -143,8 +143,8 @@ pub mod condition {
         // } else {
         //     this.add('-start', pokemon, 'Attract');
         // }
-        if let Some(effect_name) = effect_id {
-            if effect_name == "Cute Charm" {
+        if let Some(eff) = effect {
+            if eff.name == "Cute Charm" {
                 battle.add(
                     "-start",
                     &[
@@ -154,7 +154,7 @@ pub mod condition {
                         format!("[of] {}", source_name).into(),
                     ],
                 );
-            } else if effect_name == "Destiny Knot" {
+            } else if eff.name == "Destiny Knot" {
                 battle.add(
                     "-start",
                     &[

@@ -354,13 +354,14 @@ impl Battle {
             "Start" => {
                 // Extract source and effect from event
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
+                let source_effect = self.event.as_ref()
+                    .and_then(|e| e.effect.clone());
+                let effect_id_owned = source_effect.as_ref()
                     .map(|eff| eff.id.to_string());
                 // Try ability-embedded condition callbacks first (for abilities like Zen Mode)
                 crate::data::ability_callbacks::dispatch_condition_on_start(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref());
                 // Then try standalone/move-embedded condition callbacks
-                condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
+                condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos, source_pos, source_effect.as_ref())
             }
             "SwitchIn" => {
                 condition_callbacks::dispatch_on_switch_in(self, condition_id, pokemon_pos)

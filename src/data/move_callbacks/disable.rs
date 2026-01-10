@@ -88,8 +88,9 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
+        let effect_id = _effect.map(|e| e.id.as_str());
         // // The target hasn't taken its turn, or Cursed Body activated and the move was not used through Dancer or Instruct
         // if (
         //     this.queue.willMove(pokemon) ||

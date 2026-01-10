@@ -92,7 +92,7 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        _active_move: Option<&crate::battle_actions::ActiveMove>,
+        _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // this.effectState.slot = null;
         // this.effectState.damage = 0;

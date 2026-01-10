@@ -66,10 +66,17 @@ impl Battle {
         if self.field.pseudo_weather.contains_key(&id) {
             eprintln!("[ADD_PSEUDOWEATHER] Pseudoweather already exists, calling FieldRestart event");
 
+            // Look up condition name from dex
+            let condition_name = self.dex.conditions().get_by_id(&id)
+                .and_then(|c| c.name.clone())
+                .or_else(|| self.dex.moves().get(id.as_str()).map(|m| m.name.clone()))
+                .unwrap_or_else(|| id.to_string());
+
             // JavaScript: return this.battle.singleEvent('FieldRestart', status, state, this, source, sourceEffect);
             // Set up effect context so callbacks can use with_effect_state to access/modify state
             let prev_context = self.set_effect_context(crate::Effect {
                 id: id.clone(),
+                name: condition_name,
                 effect_type: crate::battle::EffectType::FieldCondition,
                 effect_holder: None,
                 side_index: None,
@@ -112,9 +119,16 @@ impl Battle {
             // Add to field first so the event handlers can access it
             self.field.pseudo_weather.insert(id.clone(), state);
 
+            // Look up condition name from dex
+            let condition_name = self.dex.conditions().get_by_id(&id)
+                .and_then(|c| c.name.clone())
+                .or_else(|| self.dex.moves().get(id.as_str()).map(|m| m.name.clone()))
+                .unwrap_or_else(|| id.to_string());
+
             // Set up effect context so callbacks can use with_effect_state to access/modify state
             let prev_context = self.set_effect_context(crate::Effect {
                 id: id.clone(),
+                name: condition_name,
                 effect_type: crate::battle::EffectType::FieldCondition,
                 effect_holder: None,
                 side_index: None,

@@ -27,8 +27,9 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
+        let effect_id = _effect.map(|e| e.id.as_str());
         use crate::dex_data::ID;
 
         let target = match target_pos {

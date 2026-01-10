@@ -21,5 +21,7 @@ pub enum EffectType {
     Ability,
     Item,
     Move,
+    /// Represents moveData.self in JavaScript - the self-targeting callbacks
+    MoveSelf,
     Status,
 }

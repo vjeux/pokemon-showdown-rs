@@ -30,6 +30,14 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
     let makes_contact = battle.check_move_makes_contact_with_active_move(active_move, source_pos, target_pos, false);
 
+    // Debug logging
+    eprintln!("[CUTECHARM_DEBUG] turn={}, active_move={:?}, move_id={:?}, contact_flag={:?}, makes_contact={}",
+        battle.turn,
+        active_move.is_some(),
+        active_move.map(|m| m.id.as_str()),
+        active_move.map(|m| m.flags.contact),
+        makes_contact);
+
     if makes_contact {
         // if (this.randomChance(3, 10))
         if battle.random_chance(3, 10) {

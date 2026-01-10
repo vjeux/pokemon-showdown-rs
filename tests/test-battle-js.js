@@ -40,10 +40,10 @@ battle.prng.rng.next = function() {
     totalPrngCalls++;
     const result = originalNext();
 
-    // Log PRNG calls on turns 15-17
-    if (battle.turn >= 15 && battle.turn <= 17) {
+    // Log PRNG calls on turns 41-43
+    if (battle.turn >= 41 && battle.turn <= 43) {
         const stack = new Error().stack;
-        const lines = stack.split('\n').slice(1, 4); // Get first 3 frames
+        const lines = stack.split('\n').slice(1, 8); // Get first 7 frames
         console.error(`[PRNG_JS] turn=${battle.turn}, call #${totalPrngCalls}, result=${result}`);
         lines.forEach((line, i) => console.error(`  ${line.trim()}`));
     }

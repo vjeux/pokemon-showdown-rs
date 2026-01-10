@@ -21,8 +21,9 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
+        let effect_id = _effect.map(|e| e.id.as_str());
         use crate::dex_data::ID;
 
         let pokemon = pokemon_pos;

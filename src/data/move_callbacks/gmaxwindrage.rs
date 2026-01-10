@@ -39,6 +39,7 @@ pub fn on_hit(
     battle: &mut Battle,
     _target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&crate::battle::Effect>,
 ) -> EventResult {
     let source = match source_pos {
         Some(pos) => pos,
@@ -211,6 +212,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         use crate::dex_data::ID;
 

@@ -82,6 +82,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         source_pos: (usize, usize),          // ACTUAL SOURCE (move user)
         _target_pos: Option<(usize, usize)>, // ACTUAL TARGET (move target)
+        _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // for (const pokemon of source.foes()) {
         //     pokemon.addVolatile("partiallytrapped", source, this.dex.getActiveMove("G-Max Centiferno"));

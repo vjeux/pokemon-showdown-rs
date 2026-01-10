@@ -30,6 +30,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         source_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
+        _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // for (const pokemon of source.foes()) {
         //     pokemon.trySetStatus('psn', source);

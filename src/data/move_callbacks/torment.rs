@@ -23,7 +23,7 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         use crate::dex_data::ID;
 
@@ -47,8 +47,8 @@ pub mod condition {
         }
 
         // if (effect?.id === 'gmaxmeltdown') this.effectState.duration = 3;
-        if let Some(effect) = effect_id {
-            if effect == "gmaxmeltdown" {
+        if let Some(eff) = effect {
+            if eff.id.as_str() == "gmaxmeltdown" {
                 battle.with_effect_state(|state| {
                     state.duration = Some(3);
                 });

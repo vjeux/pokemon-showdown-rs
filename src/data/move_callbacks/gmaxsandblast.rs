@@ -25,6 +25,7 @@ pub fn on_hit(
     battle: &mut Battle,
     _target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&crate::battle::Effect>,
 ) -> EventResult {
     // for (const pokemon of source.foes()) {
     //     pokemon.addVolatile('partiallytrapped', source, this.dex.getActiveMove('G-Max Sandblast'));
@@ -77,6 +78,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // for (const pokemon of source.foes()) {
         //     pokemon.addVolatile("partiallytrapped", source, this.dex.getActiveMove("G-Max Sandblast"));

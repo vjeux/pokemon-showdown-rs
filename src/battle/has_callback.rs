@@ -190,6 +190,7 @@ impl Battle {
             super::EffectType::Ability => self.has_ability_id_callback(effect_id, event_id),
             super::EffectType::Item => self.has_item_id_callback(effect_id, event_id),
             super::EffectType::Move => self.has_move_id_callback(effect_id, event_id),
+            super::EffectType::MoveSelf => self.move_has_self_callback(effect_id.as_str(), event_id),
             super::EffectType::Weather => self.has_weather_callback(effect_id, event_id),
             super::EffectType::Terrain => self.has_terrain_callback(effect_id, event_id),
             super::EffectType::SideCondition => self.has_side_condition_callback(effect_id, event_id),

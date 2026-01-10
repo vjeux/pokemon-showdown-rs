@@ -108,6 +108,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         source_pos: (usize, usize),      // ACTUAL SOURCE (move user)
         _target_pos: Option<(usize, usize)>, // ACTUAL TARGET (move target)
+        _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // self.onHit(source)
         // for (const side of source.side.foeSidesWithConditions()) {

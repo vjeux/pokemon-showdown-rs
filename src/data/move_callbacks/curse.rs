@@ -195,6 +195,7 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // this.add('-start', pokemon, 'Curse', `[of] ${source}`);
         let pokemon = pokemon_pos;

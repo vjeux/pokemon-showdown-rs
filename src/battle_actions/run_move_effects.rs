@@ -537,14 +537,17 @@ pub fn run_move_effects<'a>(
                     eprintln!("[RUN_MOVE_EFFECTS] Found Hit callback for effect_id={}, is_self={}", effect_id, is_self);
 
                     if is_self {
-                        // For self effects, dispatch to self.onHit callback directly
                         // JavaScript: singleEvent('Hit', moveData.self, {}, source, source, move)
-                        // The target is the source for self effects
-                        let hit_result = crate::data::move_callbacks::dispatch_self_on_hit(
-                            battle,
-                            Some(active_move),
-                            source_pos,  // target is source for self effects
-                            Some(source_pos),
+                        // For self effects, target is source (the move user)
+                        // We use Effect::move_self() to indicate this is moveData.self
+                        let hit_result = battle.single_event(
+                            "Hit",
+                            &crate::battle::Effect::move_self(effect_id.clone()),  // moveData.self
+                            None,
+                            Some(source_pos),  // target is source for self effects
+                            Some(source_pos),  // source is also source
+                            Some(&Effect::move_(active_move.id.clone())),  // sourceEffect is the move
+                            None,
                         );
                         did_something = combine_results(did_something, hit_result.into());
                     } else {

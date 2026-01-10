@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -25,6 +25,7 @@ pub fn on_hit(
     battle: &mut Battle,
     _target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     // for (const pokemon of source.foes()) {
     //     if (!pokemon.volatiles['dynamax']) pokemon.addVolatile('torment', source, effect);
@@ -53,8 +54,9 @@ pub fn on_hit(
         };
 
         // Only add torment if not dynamaxed
+        // JavaScript: pokemon.addVolatile('torment', source, effect);
         if !has_dynamax {
-            Pokemon::add_volatile(battle, foe_pos, ID::from("torment"), Some(source), None, None, None);
+            Pokemon::add_volatile(battle, foe_pos, ID::from("torment"), Some(source), effect, None, None);
         }
     }
 
@@ -84,6 +86,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
+        effect: Option<&Effect>,
     ) -> EventResult {
         // for (const pokemon of source.foes()) {
         //     if (!pokemon.volatiles["dynamax"]) pokemon.addVolatile("torment", source, effect);
@@ -112,8 +115,9 @@ pub mod self_callbacks {
             };
 
             // Only add torment if not dynamaxed
+            // JavaScript: pokemon.addVolatile('torment', source, effect);
             if !has_dynamax {
-                Pokemon::add_volatile(battle, foe_pos, ID::from("torment"), Some(source), None, None, None);
+                Pokemon::add_volatile(battle, foe_pos, ID::from("torment"), Some(source), effect, None, None);
             }
         }
 

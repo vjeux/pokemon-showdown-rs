@@ -75,6 +75,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // pokemon.setType(pokemon.getTypes(true).map((type) => type === "Fire" ? "???" : type));
         let source = match source_pos {

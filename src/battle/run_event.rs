@@ -589,8 +589,14 @@ impl Battle {
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
 
+                    // Look up ability name from dex
+                    let ability_name = self.dex.abilities().get(effect_id.as_str())
+                        .map(|a| a.name.clone())
+                        .unwrap_or_else(|| effect_id.to_string());
+
                     let parent_effect = self.set_effect_context(crate::Effect {
                         id: effect_id.clone(),
+                        name: ability_name,
                         effect_type: handler.effect_type,
                         effect_holder: handler.effect_holder,
                         side_index: handler.effect_holder.map(|(side, _)| side),
@@ -611,8 +617,14 @@ impl Battle {
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
 
+                    // Look up item name from dex
+                    let item_name = self.dex.items().get(effect_id.as_str())
+                        .map(|i| i.name.clone())
+                        .unwrap_or_else(|| effect_id.to_string());
+
                     let parent_effect = self.set_effect_context(crate::Effect {
                         id: effect_id.clone(),
+                        name: item_name,
                         effect_type: handler.effect_type,
                         effect_holder: handler.effect_holder,
                         side_index: handler.effect_holder.map(|(side, _)| side),
@@ -631,8 +643,16 @@ impl Battle {
                 | EffectType::SideCondition | EffectType::SlotCondition => {
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
                     // Set up effect so callbacks can use with_effect_state
+
+                    // Look up condition/move name from dex
+                    let condition_name = self.dex.conditions().get_by_id(&effect_id)
+                        .and_then(|c| c.name.clone())
+                        .or_else(|| self.dex.moves().get(effect_id.as_str()).map(|m| m.name.clone()))
+                        .unwrap_or_else(|| effect_id.to_string());
+
                     let parent_effect = self.set_effect_context(crate::Effect {
                         id: effect_id.clone(),
+                        name: condition_name,
                         effect_type: handler.effect_type,
                         effect_holder: handler.effect_holder,
                         side_index: handler.effect_holder.map(|(side, _)| side),

@@ -109,6 +109,7 @@ pub mod self_callbacks {
         battle: &mut Battle,
         _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
+        _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         eprintln!("[GMAXVOLCALITH::SELF::ON_HIT] Called with source_pos={:?}", source_pos);
         // for (const side of source.side.foeSidesWithConditions()) {
