@@ -72,7 +72,15 @@ impl Dex {
             steals_boosts: move_data.steals_boosts,
             struggle_recoil: move_data.struggle_recoil,
             secondary: move_data.secondary.clone(),
-            secondaries: move_data.secondaries.clone().unwrap_or_default(),
+            // If there's a singular secondary and no secondaries array, create one with the singular
+            // If there's a secondaries array, use it (JavaScript behavior: secondaries takes precedence)
+            secondaries: if move_data.secondaries.is_some() {
+                move_data.secondaries.clone().unwrap_or_default()
+            } else if let Some(ref sec) = move_data.secondary {
+                vec![sec.clone()]
+            } else {
+                Vec::new()
+            },
             self_effect: move_data.self_effect.clone(),
             has_sheer_force: move_data.has_sheer_force,
             always_hit: matches!(move_data.accuracy, Accuracy::AlwaysHits),
