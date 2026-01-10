@@ -69,7 +69,7 @@ impl Battle {
     ) -> Option<(usize, usize)> {
         // JS: move = this.dex.moves.get(move);
         let move_def = self.dex.moves().get(move_id.as_str())?;
-        let target_type = format!("{:?}", move_def.target);
+        let target_type = move_def.target.clone();
 
         // JS: let tracksTarget = move.tracksTarget;
         // JS: if (pokemon.hasAbility(['stalwart', 'propellertail'])) tracksTarget = true;
@@ -128,7 +128,7 @@ impl Battle {
         } else {
             0
         };
-        if (target_type == "AdjacentAlly" || target_type == "Any" || target_type == "Normal")
+        if (target_type == "adjacentAlly" || target_type == "any" || target_type == "normal")
             && target_loc as i32 == self_loc
         {
             // Check if Pokemon has volatiles that allow self-targeting
@@ -155,7 +155,7 @@ impl Battle {
         }
 
         // JS: if (move.target !== 'randomNormal' && this.validTargetLoc(targetLoc, pokemon, move.target)) {
-        if target_type != "RandomNormal"
+        if target_type != "randomNormal"
             && self.valid_target_loc(target_loc as i32, user, &target_type)
         {
             // JS: const target = pokemon.getAtLoc(targetLoc);
@@ -174,7 +174,7 @@ impl Battle {
                             // JS:     return target;
                             // JS: }
                             if self.is_ally(target, user) {
-                                if target_type == "AdjacentAllyOrSelf" && self.gen != 5 {
+                                if target_type == "adjacentAllyOrSelf" && self.gen != 5 {
                                     return Some(user);
                                 }
                                 // Target is a fainted ally: attack shouldn't retarget

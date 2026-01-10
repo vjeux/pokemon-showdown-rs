@@ -53,7 +53,15 @@ pub fn run_move(
 
     // Get target
     // let target = this.battle.getTarget(pokemon, maxMove || zMove || moveOrMoveName, targetLoc, originalTarget);
-    let target_pos = battle.get_move_target(pokemon_pos.0, target_loc);
+    // Use the move to look up target - prefer maxMove/zMove if specified, otherwise base move
+    let move_for_target_id = if let Some(ref mm) = max_move {
+        ID::new(mm)
+    } else if let Some(ref zm) = z_move {
+        ID::new(zm)
+    } else {
+        move_id.clone()
+    };
+    let target_pos = battle.get_target(pokemon_pos, &move_for_target_id, target_loc, _original_target);
 
     // Get base move - we already have it passed in
     // let baseMove = this.dex.getActiveMove(moveOrMoveName);
@@ -75,19 +83,19 @@ pub fn run_move(
         // const changedMove = this.battle.runEvent('OverrideAction', pokemon, target, baseMove);
         // JavaScript: if (changedMove && changedMove.id !== move.id) { ... }
         // For now, just run the event - full implementation would require changing the move
-        battle.run_event("OverrideAction", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+        battle.run_event("OverrideAction", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
     }
 
     // Set active move
     // this.battle.setActiveMove(move, pokemon, target);
-    battle.set_active_move(Some(move_id.clone()), Some(pokemon_pos), Some(target_pos));
+    battle.set_active_move(Some(move_id.clone()), Some(pokemon_pos), target_pos);
 
     // Run BeforeMove event
     // const willTryMove = this.battle.runEvent('BeforeMove', pokemon, target, move);
     let will_try_move = battle.run_event(
                 "BeforeMove",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
-        Some(target_pos),
+        target_pos,
         Some(&crate::battle::Effect::move_(move_id.clone())),
         crate::event::EventResult::Number(1),
         false,
@@ -96,7 +104,7 @@ pub fn run_move(
 
     if !will_try_move {
         // this.battle.runEvent('MoveAborted', pokemon, target, move);
-        battle.run_event("MoveAborted", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+        battle.run_event("MoveAborted", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
 
         // this.battle.clearActiveMove(true);
         battle.clear_active_move(true);
@@ -259,7 +267,7 @@ pub fn run_move(
         battle,
         move_data,
         pokemon_pos,
-        Some(target_pos),
+        target_pos,
         source_effect,
         z_move.as_deref(),
         max_move.as_deref(),
@@ -274,10 +282,10 @@ pub fn run_move(
 
     // AfterMove events
     // this.battle.singleEvent('AfterMove', move, null, pokemon, target, move);
-    battle.single_event("AfterMove", &crate::battle::Effect::move_(move_id.clone()), None, Some(pokemon_pos), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), None);
+    battle.single_event("AfterMove", &crate::battle::Effect::move_(move_id.clone()), None, Some(pokemon_pos), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), None);
 
     // this.battle.runEvent('AfterMove', pokemon, target, move);
-    battle.run_event("AfterMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(target_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+    battle.run_event("AfterMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
 
     // Handle 'cantusetwice' hint
     // if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id))

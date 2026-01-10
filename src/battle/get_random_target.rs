@@ -47,11 +47,11 @@ impl Battle {
         move_target: &str,
     ) -> Option<(usize, usize)> {
         // JS: if (['self', 'all', 'allySide', 'allyTeam', 'adjacentAllyOrSelf'].includes(move.target)) return pokemon;
-        if move_target == "Self"
-            || move_target == "All"
-            || move_target == "AllySide"
-            || move_target == "AllyTeam"
-            || move_target == "AdjacentAllyOrSelf"
+        if move_target == "self"
+            || move_target == "all"
+            || move_target == "allySide"
+            || move_target == "allyTeam"
+            || move_target == "adjacentAllyOrSelf"
         {
             return Some((user_side, user_idx));
         }
@@ -61,7 +61,7 @@ impl Battle {
         // JS:     const adjacentAllies = pokemon.adjacentAllies();
         // JS:     return adjacentAllies.length ? this.sample(adjacentAllies) : null;
         // JS: }
-        if move_target == "AdjacentAlly" {
+        if move_target == "adjacentAlly" {
             if self.game_type == GameType::Singles {
                 return None;
             }
@@ -94,9 +94,9 @@ impl Battle {
         // JS: if (this.activePerHalf > 2) {
         if self.active_per_half > 2 {
             // JS: if (move.target === 'adjacentFoe' || move.target === 'normal' || move.target === 'randomNormal') {
-            if move_target == "AdjacentFoe"
-                || move_target == "Normal"
-                || move_target == "RandomNormal"
+            if move_target == "adjacentFoe"
+                || move_target == "normal"
+                || move_target == "randomNormal"
             {
                 // JS: const adjacentFoes = pokemon.adjacentFoes();
                 // JS: if (adjacentFoes.length) return this.sample(adjacentFoes);

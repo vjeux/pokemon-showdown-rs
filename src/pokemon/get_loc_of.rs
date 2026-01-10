@@ -22,12 +22,18 @@ impl Pokemon {
         target_position: usize,
         active_per_half: usize,
     ) -> i8 {
-        if self.side_index == target_side_index {
-            // Same side - positive numbers
-            (target_position as i8 - self.position as i8 + 1).max(-(active_per_half as i8))
+        // JavaScript convention:
+        // - Positive = foe (opposing side)
+        // - Negative = ally (same side)
+        let same_half = (self.side_index % 2) == (target_side_index % 2);
+        let position = (target_position as i8) + 1;
+
+        if same_half {
+            // Same side (ally) - negative
+            -position
         } else {
-            // Opposing side - negative numbers
-            -(target_position as i8 + 1)
+            // Opposing side (foe) - positive
+            position
         }
     }
 }
