@@ -16,7 +16,7 @@
 
 use crate::*;
 use crate::event::EventResult;
-use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, ActiveMove};
 
 /// Fire TryPrimaryHit event for all targets
 /// Equivalent to tryPrimaryHitEvent() in battle-actions.ts
@@ -24,15 +24,15 @@ use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, S
 /// JavaScript signature:
 /// tryPrimaryHitEvent(damage: SpreadMoveDamage, targets: SpreadMoveTargets, pokemon: Pokemon,
 ///                    move: ActiveMove, moveData: ActiveMove, isSecondary?: boolean): SpreadMoveDamage
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn try_primary_hit_event(
     battle: &mut Battle,
     mut damage: SpreadMoveDamage,
     targets: &SpreadMoveTargets,
     pokemon_pos: (usize, usize),
-    move_id: &ID,
+    move_data: &ActiveMove,
     _is_secondary: bool,
 ) -> SpreadMoveDamage {
+    let move_id = &move_data.id;
     // for (const [i, target] of targets.entries()) {
     for (i, target) in targets.iter().enumerate() {
         // if (!target) continue;

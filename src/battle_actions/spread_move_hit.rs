@@ -143,12 +143,13 @@ pub fn spread_move_hit<'a>(
     // JS: targets is mutable in JavaScript
     let mut targets_mut: SpreadMoveTargets = targets.clone();
 
-    // Get moveData ID (defaults to move_id if hit_effect is None or is a SecondaryEffect)
+    // Get moveData (defaults to active_move if hit_effect is None or is a SecondaryEffect)
     // JS: let moveData = hitEffect as ActiveMove; if (!moveData) moveData = move;
-    let move_data_id = match &hit_effect {
-        Some(HitEffect::Move(m)) => &m.id,
-        _ => move_id,
+    let move_data: &ActiveMove = match &hit_effect {
+        Some(HitEffect::Move(m)) => m,
+        _ => active_move,
     };
+    let move_data_id = &move_data.id;
 
     // Get target for TryHit events (first target)
     // JS: const target = targets[0];
@@ -242,7 +243,7 @@ pub fn spread_move_hit<'a>(
                 damage,
                 &targets_mut,
                 source_pos,
-                move_data_id,
+                move_data,
                 is_secondary,
             );
             eprintln!("[SPREAD_MOVE_HIT] After try_primary_hit_event: damage={:?}", damage);
