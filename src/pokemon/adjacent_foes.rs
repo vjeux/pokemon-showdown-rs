@@ -23,7 +23,18 @@ impl Pokemon {
     /// Get adjacent foes
     /// Equivalent to pokemon.ts adjacentFoes()
     pub fn adjacent_foes(&self, battle: &Battle) -> Vec<(usize, usize)> {
-        let pokemon_pos = (self.side_index, self.position);
+        // Get our party index from side.active using our active slot position
+        // self.position is the active slot, side.active[slot] gives party index
+        let our_party_idx = if let Some(side) = battle.sides.get(self.side_index) {
+            if self.position < side.active.len() {
+                side.active[self.position].unwrap_or(usize::MAX)
+            } else {
+                usize::MAX
+            }
+        } else {
+            usize::MAX
+        };
+        let pokemon_pos = (self.side_index, our_party_idx);
         let mut result = Vec::new();
 
         // JS: if (this.battle.activePerHalf <= 2) return this.side.foes();

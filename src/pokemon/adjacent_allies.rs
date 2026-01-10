@@ -23,14 +23,26 @@ impl Pokemon {
     /// Equivalent to pokemon.ts adjacentAllies()
     pub fn adjacent_allies(&self, battle: &Battle) -> Vec<(usize, usize)> {
         let mut result = Vec::new();
-        let pokemon_pos = (self.side_index, self.position);
+
+        // Get our party index from side.active using our active slot position
+        // self.position is the active slot, side.active[slot] gives party index
+        let our_party_idx = if let Some(side) = battle.sides.get(self.side_index) {
+            if self.position < side.active.len() {
+                side.active[self.position].unwrap_or(usize::MAX)
+            } else {
+                usize::MAX
+            }
+        } else {
+            usize::MAX
+        };
+        let pokemon_pos = (self.side_index, our_party_idx);
 
         // JS: this.side.allies()
         // Get allies from the same side (active team)
         if let Some(side) = battle.sides.get(self.side_index) {
             for ally_idx in side.active.iter().flatten() {
                 let ally_pos = (self.side_index, *ally_idx);
-                // Skip if it's the same pokemon
+                // Skip if it's the same pokemon (compare party indices)
                 if ally_pos == pokemon_pos {
                     continue;
                 }
