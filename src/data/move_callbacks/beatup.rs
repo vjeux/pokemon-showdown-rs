@@ -18,16 +18,19 @@ pub fn on_modify_move(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
-    // Build list of allies that are not fainted and not statused
+    // Build list of party members that are not fainted and not statused
+    // IMPORTANT: This iterates over the ENTIRE party (pokemon.side.pokemon), not just active Pokemon
     let mut allies = Vec::new();
-    let allies_and_self = {
-        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-            Some(p) => p,
-            None => return EventResult::Continue,
-        };
-        pokemon.allies_and_self(battle, false)
+
+    let side_index = pokemon_pos.0;
+    let party_size = if let Some(side) = battle.sides.get(side_index) {
+        side.pokemon.len()
+    } else {
+        return EventResult::Continue;
     };
-    for pos in allies_and_self {
+
+    for poke_idx in 0..party_size {
+        let pos = (side_index, poke_idx);
         if let Some(pokemon) = battle.pokemon_at(pos.0, pos.1) {
             // ally === pokemon || !ally.fainted && !ally.status
             if pos == pokemon_pos || (!pokemon.fainted && pokemon.status == ID::from("")) {
@@ -36,10 +39,15 @@ pub fn on_modify_move(
         }
     }
 
-    // Store allies in current effect state (multihit is derived from allies.len())
-    battle.with_effect_state(|state| {
-        state.allies = Some(allies);
-    });
+    // move.multihit = move.allies.length;
+    let allies_count = allies.len() as i32;
+
+    // Store allies directly on the active move (not in effect_state which is temporary)
+    // Set multihit on the active move
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.allies = Some(allies);
+        active_move.multi_hit = Some(crate::dex::Multihit::Fixed(allies_count));
+    }
 
     EventResult::Continue
 }
@@ -55,10 +63,10 @@ pub fn base_power_callback(
     _pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // Get allies from current effect state
-    let ally_pos = battle.with_effect_state(|state| {
-        if let Some(allies) = state.allies.as_mut() {
-            // move.allies!.shift()
+    // Get allies from active move (not effect_state)
+    // move.allies!.shift() - pop the first ally from the list
+    let ally_pos = if let Some(ref mut active_move) = battle.active_move {
+        if let Some(ref mut allies) = active_move.allies {
             if !allies.is_empty() {
                 Some(allies.remove(0))
             } else {
@@ -67,7 +75,9 @@ pub fn base_power_callback(
         } else {
             None
         }
-    }).flatten();
+    } else {
+        None
+    };
 
     let ally_pos = match ally_pos {
         Some(pos) => pos,
