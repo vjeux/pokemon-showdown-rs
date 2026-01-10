@@ -25,7 +25,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     };
 
     // if (this.checkMoveMakesContact(move, source, target, true))
-    if battle.check_move_makes_contact(&crate::ID::from(move_id), target_pos, source_pos, true) {
+    // source = attacker, target = defender (the one with Gooey)
+    if battle.check_move_makes_contact(&crate::ID::from(move_id), source_pos, target_pos, true) {
         // this.add('-ability', target, 'Gooey');
         let target_slot = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

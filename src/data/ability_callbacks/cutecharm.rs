@@ -26,7 +26,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     };
 
     // if (this.checkMoveMakesContact(move, source, target))
-    if battle.check_move_makes_contact(&crate::ID::from(move_id), target_pos, source_pos, false) {
+    // source = attacker, target = defender (the one with Cute Charm)
+    if battle.check_move_makes_contact(&crate::ID::from(move_id), source_pos, target_pos, false) {
         // if (this.randomChance(3, 10))
         if battle.random_chance(3, 10) {
             // source.addVolatile('attract', this.effectState.target);
