@@ -39,6 +39,7 @@ use crate::dex_data::BoostsTable;
 ///     }
 ///     return undefined;
 /// }
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn hit_step_steal_boosts(
     battle: &mut Battle,
     targets: &[(usize, usize)],

@@ -162,6 +162,7 @@ impl Battle {
 
     /// Check if a move has a callback for an event (ID version)
     /// Wrapper for move_has_callback that takes &ID for consistency
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn has_move_id_callback(&self, move_id: &ID, event_id: &str) -> bool {
         if move_id.is_empty() {
             return false;
@@ -294,6 +295,7 @@ impl Battle {
     }
 
     /// Check if a move has a callback for an event
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn move_has_callback(&self, move_id: &str, event_id: &str) -> bool {
         // Look up the move in dex data and check its extra field for callback boolean
         if let Some(move_data) = self.dex.moves().get(move_id) {
@@ -326,6 +328,7 @@ impl Battle {
 
     /// Check if a move has a SELF callback for an event
     /// Self callbacks are in the self: { } object and target the move user, not the target
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn move_has_self_callback(&self, move_id: &str, event_id: &str) -> bool {
         eprintln!("[MOVE_HAS_SELF_CALLBACK] move_id={}, event_id={}", move_id, event_id);
         // Look up the move in dex data and check its extra field for callback boolean

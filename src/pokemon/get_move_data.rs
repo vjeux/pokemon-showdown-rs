@@ -15,6 +15,7 @@ impl Pokemon {
     // 		return null;
     // 	}
     //
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn get_move_data(&self, move_id: &ID) -> Option<&MoveSlot> {
         self.move_slots.iter().find(|slot| &slot.id == move_id)
     }

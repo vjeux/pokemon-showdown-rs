@@ -15,6 +15,7 @@ impl Pokemon {
     // 		return false;
     // 	}
     //
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn has_move(&self, move_id: &str) -> bool {
         // JS: moveid = toID(moveid);
         let mut id = crate::dex_data::to_id(move_id);

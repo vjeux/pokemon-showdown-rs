@@ -82,6 +82,7 @@ use crate::battle::Effect;
 
 /// Try to hit targets with a spread move
 /// Equivalent to trySpreadMoveHit() in battle-actions.ts:545
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn try_spread_move_hit(
     battle: &mut Battle,
     targets: &[(usize, usize)],

@@ -51,6 +51,7 @@ use crate::battle_actions::DamageResult;
 ///
 /// JavaScript signature:
 /// tryMoveHit(targetOrTargets: Pokemon | Pokemon[], pokemon: Pokemon, move: ActiveMove): number | undefined | false | ''
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn try_move_hit(
     battle: &mut Battle,
     target_or_targets: &[(usize, usize)],

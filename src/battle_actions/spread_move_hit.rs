@@ -123,6 +123,7 @@ use crate::battle::Effect;
 //
 ///
 /// Returns (damages, targets) where damages[i] corresponds to targets[i]
+// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn spread_move_hit<'a>(
     battle: &mut Battle,
     targets: &SpreadMoveTargets,

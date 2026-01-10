@@ -23,6 +23,7 @@ use crate::battle::Effect;
 impl Pokemon {
     /// Disable a move
     /// Equivalent to pokemon.ts disableMove()
+    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn disable_move(&mut self, move_id: &str, _is_hidden: bool, source_effect: Option<&Effect>) {
         // JS: moveid = toID(moveid);
         let id = crate::dex_data::to_id(move_id);
