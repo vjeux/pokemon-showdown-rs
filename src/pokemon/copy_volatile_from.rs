@@ -1,5 +1,5 @@
 use crate::*;
-use crate::pokemon::BoostsTable;
+use crate::dex_data::BoostsTable;
 
 impl Pokemon {
     /// Copy volatiles from another Pokemon (for Baton Pass, Shed Tail, etc.)
