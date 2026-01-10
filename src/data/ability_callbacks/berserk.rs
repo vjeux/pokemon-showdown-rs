@@ -49,7 +49,10 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
     };
 
     // this.effectState.checkedBerserk = !should_check;
-    battle.effect_state.checked_berserk = Some(!should_check);
+    // Use with_effect_state to persist in the ability's effect state
+    battle.with_effect_state(|state| {
+        state.checked_berserk = Some(!should_check);
+    });
 
     EventResult::Continue
 }
@@ -93,7 +96,9 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
     if let Some(item_id) = item_id {
         if healing_items.contains(&item_id) {
             // return this.effectState.checkedBerserk;
-            let checked_berserk = battle.effect_state.checked_berserk.unwrap_or(true);
+            let checked_berserk = battle.with_effect_state_ref(|state| {
+                state.checked_berserk
+            }).flatten().unwrap_or(true);
             return EventResult::Boolean(checked_berserk);
         }
     }
@@ -115,7 +120,9 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
 pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
 
     // this.effectState.checkedBerserk = true;
-    battle.effect_state.checked_berserk = Some(true);
+    battle.with_effect_state(|state| {
+        state.checked_berserk = Some(true);
+    });
 
     // if (!source || source === target || !target.hp || !move.totalDamage) return;
     if source_pos == target_pos {

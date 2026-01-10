@@ -39,7 +39,9 @@ pub fn on_foe_after_boost(battle: &mut Battle, _target_pos: Option<(usize, usize
 
     // if (!this.effectState.boosts) this.effectState.boosts = {} as SparseBoostsTable;
     // Get or create the boosts object in effect_state
-    let mut accumulated_boosts = battle.effect_state.boosts.unwrap_or_default();
+    let mut accumulated_boosts = battle.with_effect_state_ref(|state| {
+        state.boosts
+    }).flatten().unwrap_or_default();
 
     // for (i in boost) { if (boost[i]! > 0) { boostPlus[i] = (boostPlus[i] || 0) + boost[i]!; } }
     if boosts.atk > 0 {
@@ -65,7 +67,9 @@ pub fn on_foe_after_boost(battle: &mut Battle, _target_pos: Option<(usize, usize
     }
 
     // Store the accumulated boosts
-    battle.effect_state.boosts = Some(accumulated_boosts);
+    battle.with_effect_state(|state| {
+        state.boosts = Some(accumulated_boosts);
+    });
 
     EventResult::Continue
 }
@@ -125,15 +129,17 @@ pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize), _source_po
 /// }
 pub fn on_end(battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
     // delete this.effectState.boosts;
-    battle.effect_state.boosts = None;
+    battle.with_effect_state(|state| {
+        state.boosts = None;
+    });
     EventResult::Continue
 }
 
 // Helper function to apply accumulated boosts
 fn apply_accumulated_boosts(battle: &mut Battle) {
     // if (!this.effectState.boosts) return;
-    let boosts_to_apply = match battle.effect_state.boosts {
-        Some(ref boosts) => boosts.clone(),
+    let boosts_to_apply = match battle.with_effect_state_ref(|state| state.boosts).flatten() {
+        Some(boosts) => boosts.clone(),
         None => return,
     };
 
@@ -145,6 +151,7 @@ fn apply_accumulated_boosts(battle: &mut Battle) {
     }
 
     // this.boost(this.effectState.boosts, this.effectState.target);
+    // Note: effect_state.target is set by the event system to the effect holder
     let target_pos = match battle.effect_state.target {
         Some(pos) => pos,
         None => return,
@@ -168,6 +175,8 @@ fn apply_accumulated_boosts(battle: &mut Battle) {
     }
 
     // delete this.effectState.boosts;
-    battle.effect_state.boosts = None;
+    battle.with_effect_state(|state| {
+        state.boosts = None;
+    });
 }
 

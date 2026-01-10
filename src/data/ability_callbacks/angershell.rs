@@ -49,7 +49,10 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
     };
 
     // this.effectState.checkedAngerShell = !should_check;
-    battle.effect_state.checked_anger_shell = Some(!should_check);
+    // Use with_effect_state to persist in the ability's effect state
+    battle.with_effect_state(|state| {
+        state.checked_anger_shell = Some(!should_check);
+    });
 
     EventResult::Continue
 }
@@ -90,7 +93,9 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
     if let Some(item_id) = item_id {
         if healing_items.contains(&item_id) {
             // return this.effectState.checkedAngerShell;
-            let checked_anger_shell = battle.effect_state.checked_anger_shell.unwrap_or(true);
+            let checked_anger_shell = battle.with_effect_state_ref(|state| {
+                state.checked_anger_shell
+            }).flatten().unwrap_or(true);
             return EventResult::Boolean(checked_anger_shell);
         }
     }
@@ -111,7 +116,9 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
 /// }
 pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // this.effectState.checkedAngerShell = true;
-    battle.effect_state.checked_anger_shell = Some(true);
+    battle.with_effect_state(|state| {
+        state.checked_anger_shell = Some(true);
+    });
 
     // if (!source || source === target || !target.hp || !move.totalDamage) return;
     if source_pos == target_pos {

@@ -20,7 +20,11 @@ use crate::pokemon::Pokemon;
 /// }
 pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (this.effectState.libero) return;
-    if let Some(true) = battle.effect_state.libero {
+    // Use with_effect_state_ref to check persistent state
+    let libero_used = battle.with_effect_state_ref(|state| {
+        state.libero
+    }).flatten().unwrap_or(false);
+    if libero_used {
         return EventResult::Continue;
     }
 
@@ -74,7 +78,10 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _
     }
 
     // this.effectState.libero = true;
-    battle.effect_state.libero = Some(true);
+    // Use with_effect_state to persist in the ability's effect state
+    battle.with_effect_state(|state| {
+        state.libero = Some(true);
+    });
 
     // Get source slot for message
     let source_slot = {
