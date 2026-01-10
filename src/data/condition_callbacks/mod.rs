@@ -259,6 +259,8 @@ pub fn dispatch_on_damaging_hit(
 ) -> EventResult {
     match condition_id {
         "frz" => frz::on_damaging_hit(battle, damage, pokemon_pos, source_pos, active_move),
+        "mirrorcoat" => move_callbacks::mirrorcoat::condition::on_damaging_hit(battle, damage, Some(pokemon_pos), source_pos, active_move),
+        "counter" => move_callbacks::counter::condition::on_damaging_hit(battle, damage, Some(pokemon_pos), source_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_damaging_hit(battle, active_move, pokemon_pos)
