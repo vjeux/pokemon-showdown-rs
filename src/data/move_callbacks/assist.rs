@@ -100,6 +100,8 @@ pub fn on_hit(
     };
 
     // this.actions.useMove(randomMove, target);
+    // In JS, useMove(move, pokemon, options) - the 2nd arg is the user, and options.target is undefined
+    // So the called move picks its own target. We pass None for target to match this behavior.
     let move_data = match battle.dex.moves().get_by_id(&random_move).cloned() {
         Some(m) => m,
         None => return EventResult::Continue,
@@ -107,8 +109,8 @@ pub fn on_hit(
     battle_actions::use_move(
         battle,
         &move_data,
-        pokemon_pos,
-        Some(target),
+        target, // target is the Assist user (same as pokemon_pos since Assist targets self)
+        None,   // Let the called move pick its own target
         None,
         None,
         None,
