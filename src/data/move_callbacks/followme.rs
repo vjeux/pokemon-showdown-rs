@@ -34,15 +34,12 @@ pub mod condition {
     /// }
     pub fn on_start(
         battle: &mut Battle,
-        target_pos: Option<(usize, usize)>,
+        pokemon_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
         _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         let effect_id = _effect.map(|e| e.id.as_str());
-        let target = match target_pos {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        };
+        let target = pokemon_pos;
 
         // if (effect?.id === 'zpower') {
         //     this.add('-singleturn', target, 'move: Follow Me', '[zeffect]');

@@ -21,6 +21,7 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         use crate::dex_data::ID;
 

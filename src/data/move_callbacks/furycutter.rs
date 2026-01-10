@@ -85,7 +85,12 @@ pub mod condition {
     /// onStart() {
     ///     this.effectState.multiplier = 1;
     /// }
-    pub fn on_start(battle: &mut Battle) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
         // this.effectState.multiplier = 1;
         battle.with_effect_state(|state| {
             state.multiplier = Some(1);

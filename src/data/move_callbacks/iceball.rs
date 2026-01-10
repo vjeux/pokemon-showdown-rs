@@ -266,7 +266,12 @@ pub mod condition {
     ///     this.effectState.hitCount = 0;
     ///     this.effectState.contactHitCount = 0;
     /// }
-    pub fn on_start(battle: &mut Battle) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
         // this.effectState.hitCount = 0;
         // this.effectState.contactHitCount = 0;
         battle.with_effect_state(|state| {

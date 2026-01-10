@@ -137,7 +137,12 @@ pub mod condition {
     /// onStart() {
     ///     this.effectState.counter = 3;
     /// }
-    pub fn on_start(battle: &mut Battle, _source_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        _pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
         // this.effectState.counter = 3;
         // JavaScript: this.effectState.counter = 3
         battle.with_effect_state(|state| {

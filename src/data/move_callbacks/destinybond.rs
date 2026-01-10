@@ -35,7 +35,12 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-singlemove', pokemon, 'Destiny Bond');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
         // this.add('-singlemove', pokemon, 'Destiny Bond');
         let pokemon = pokemon_pos;
 

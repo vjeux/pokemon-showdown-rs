@@ -56,12 +56,14 @@ pub mod condition {
     /// onStart(target) {
     ///     this.add('-singleturn', target, 'move: Protect');
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
         // this.add('-singleturn', target, 'move: Protect');
-        let target = match target_pos {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        };
+        let target = pokemon_pos;
 
         let target_ident = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {

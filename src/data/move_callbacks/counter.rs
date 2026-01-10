@@ -90,7 +90,7 @@ pub mod condition {
     /// }
     pub fn on_start(
         battle: &mut Battle,
-        _target_pos: Option<(usize, usize)>,
+        _pokemon_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
         _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {

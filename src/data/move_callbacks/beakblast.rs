@@ -39,7 +39,12 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-singleturn', pokemon, 'move: Beak Blast');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
         // this.add('-singleturn', pokemon, 'move: Beak Blast');
         let pokemon_ident = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

@@ -16,7 +16,12 @@ pub mod condition {
     ///     }
     ///     this.add('-start', pokemon, 'Nightmare');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
         let pokemon = pokemon_pos;

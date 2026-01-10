@@ -18,7 +18,7 @@ pub mod condition {
     /// }
     pub fn on_start(
         battle: &mut Battle,
-        target_pos: Option<(usize, usize)>,
+        pokemon_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
         _effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
@@ -36,22 +36,20 @@ pub mod condition {
 
         if should_show_message {
             // this.add('-start', target, 'move: G-Max Chi Strike');
-            if let Some(target) = target_pos {
-                let target_ident = {
-                    let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                        Some(p) => p,
-                        None => return EventResult::Continue,
-                    };
-                    target_pokemon.get_slot()
+            let target_ident = {
+                let target_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
                 };
-                battle.add(
-                    "-start",
-                    &[
-                        target_ident.as_str().into(),
-                        "move: G-Max Chi Strike".into(),
-                    ],
-                );
-            }
+                target_pokemon.get_slot()
+            };
+            battle.add(
+                "-start",
+                &[
+                    target_ident.as_str().into(),
+                    "move: G-Max Chi Strike".into(),
+                ],
+            );
         }
 
         EventResult::Continue

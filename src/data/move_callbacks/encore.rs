@@ -30,13 +30,15 @@ pub mod condition {
     ///     }
     /// }
     /// ```
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
         use crate::dex_data::ID;
 
-        let target = match target_pos {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        };
+        let target = pokemon_pos;
 
         // let move: Move | ActiveMove | null = target.lastMove;
         // if (!move || target.volatiles['dynamax']) return false;

@@ -67,7 +67,12 @@ pub mod condition {
     /// onStart(pokemon) {
     ///     this.add('-start', pokemon, 'move: No Retreat');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
         let pokemon = pokemon_pos;
 
         // this.add('-start', pokemon, 'move: No Retreat');

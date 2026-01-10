@@ -53,11 +53,13 @@ pub mod condition {
     ///     if (curDef !== target.boosts.def) this.effectState.def--;
     ///     if (curSpD !== target.boosts.spd) this.effectState.spd--;
     /// }
-    pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        let target = match target_pos {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        };
+    pub fn on_start(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        _source_pos: Option<(usize, usize)>,
+        _effect: Option<&crate::battle::Effect>,
+    ) -> EventResult {
+        let target = pokemon_pos;
 
         // this.effectState.layers = 1;
         // this.effectState.def = 0;
