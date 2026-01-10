@@ -862,7 +862,7 @@ pub fn dispatch_on_try_primary_hit(
 ) -> EventResult {
     // Route to actual implementation in move_callbacks
     use crate::data::move_callbacks;
-    move_callbacks::dispatch_condition_on_try_primary_hit(battle, condition_id, target_pos, source_pos, active_move.map(|m| m.id.as_str()))
+    move_callbacks::dispatch_condition_on_try_primary_hit(battle, condition_id, target_pos, source_pos, active_move)
 }
 
 /// Dispatch onUpdate callbacks

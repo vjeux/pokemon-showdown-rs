@@ -2734,7 +2734,7 @@ pub fn dispatch_condition_on_try_primary_hit(
     condition_id: &str,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    _move_id: Option<&str>,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
         "substitute" => {
@@ -2742,7 +2742,7 @@ pub fn dispatch_condition_on_try_primary_hit(
                 battle,
                 Some(target_pos),
                 source_pos,
-                None,
+                active_move,
             )
         }
         _ => EventResult::Continue,
