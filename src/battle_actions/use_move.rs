@@ -1,5 +1,5 @@
-use crate::*;
 use crate::battle::Effect;
+use crate::dex::MoveData;
 use super::use_move_inner::use_move_inner;
 
 
@@ -35,10 +35,9 @@ use super::use_move_inner::use_move_inner;
 // 		return moveResult;
 // 	}
 //
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn use_move(
     battle: &mut crate::battle::Battle,
-    move_id: &ID,
+    move_data: &MoveData,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
     source_effect: Option<&Effect>,
@@ -46,7 +45,7 @@ pub fn use_move(
     max_move: Option<&str>,
 ) -> bool {
     eprintln!("[USE_MOVE] ENTRY: move={}, pokemon=({}, {}), turn={}, PRNG={}",
-        move_id.as_str(), pokemon_pos.0, pokemon_pos.1, battle.turn, battle.prng.call_count);
+        move_data.id.as_str(), pokemon_pos.0, pokemon_pos.1, battle.turn, battle.prng.call_count);
     // pokemon.moveThisTurnResult = undefined;
     let (side_idx, poke_idx) = pokemon_pos;
     battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result = None;
@@ -58,7 +57,7 @@ pub fn use_move(
     eprintln!("[USE_MOVE] About to call use_move_inner, PRNG={}", battle.prng.call_count);
     let move_result = use_move_inner(
         battle,
-        move_id,
+        move_data,
         pokemon_pos,
         target_pos,
         source_effect,

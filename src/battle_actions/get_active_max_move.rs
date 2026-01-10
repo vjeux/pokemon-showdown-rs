@@ -4,6 +4,7 @@
 
 use crate::*;
 use crate::battle_actions::ActiveMove;
+use crate::dex::MoveData;
 
 /// Get active Max Move for a given move
 /// Equivalent to battle-actions.ts getActiveMaxMove()
@@ -29,16 +30,12 @@ use crate::battle_actions::ActiveMove;
 ///     maxMove.isZOrMaxPowered = true;
 ///     return maxMove;
 /// }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_active_max_move(
     battle: &Battle,
     side_index: usize,
     pokemon_index: usize,
-    move_id: &str,
+    move_data: &MoveData,
 ) -> ActiveMove {
-    // if (typeof move === 'string') move = this.dex.getActiveMove(move);
-    let move_data = battle.dex.moves().get(move_id).expect("Move not found");
-
     // if (move.name === 'Struggle') return this.dex.getActiveMove(move);
     if move_data.name == "Struggle" {
         return move_data_to_active_move(move_data);

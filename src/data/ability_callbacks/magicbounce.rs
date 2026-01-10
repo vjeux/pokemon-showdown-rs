@@ -18,7 +18,6 @@ use crate::event::EventResult;
 ///     return null;
 /// }
 pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    use crate::dex_data::ID;
     use crate::pokemon::Pokemon;
 
     // if (target === source || move.hasBounced || !move.flags['reflectable'] || target.isSemiInvulnerable()) {
@@ -54,10 +53,13 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 
     // this.actions.useMove(newMove, target, { target: source });
     // Reflect the move: Magic Bounce holder (target) uses the move against the original source
-    let move_id = ID::from(move_id);
+    let move_data = match battle.dex.moves().get(move_id).cloned() {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
     crate::battle_actions::use_move(
         battle,
-        &move_id,
+        &move_data,
         target_pos,        // Magic Bounce holder becomes the user
         Some(source_pos),  // Original source becomes the target
         None,              // No source effect
@@ -81,7 +83,6 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
 ///     return null;
 /// }
 pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    use crate::dex_data::ID;
     use crate::pokemon::Pokemon;
 
     let target = match target_pos {
@@ -135,10 +136,13 @@ pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usiz
     };
 
     // Reflect the move: Magic Bounce holder uses the move against the original source
-    let move_id = ID::from(move_id);
+    let move_data = match battle.dex.moves().get(move_id).cloned() {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
     crate::battle_actions::use_move(
         battle,
-        &move_id,
+        &move_data,
         magic_bounce_holder,  // Magic Bounce holder becomes the user
         Some(source),         // Original source becomes the target
         None,                 // No source effect

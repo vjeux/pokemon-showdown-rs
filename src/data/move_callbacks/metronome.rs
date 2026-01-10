@@ -69,7 +69,11 @@ pub fn on_hit(
     };
 
     // this.actions.useMove(randomMove, pokemon);
-    crate::battle_actions::use_move(battle, &move_id, pokemon, None, None, None, None);
+    let move_data = match battle.dex.moves().get_by_id(&move_id).cloned() {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+    crate::battle_actions::use_move(battle, &move_data, pokemon, None, None, None, None);
 
     EventResult::Continue
 }

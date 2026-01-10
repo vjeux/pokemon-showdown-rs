@@ -41,7 +41,7 @@ pub fn on_try_hit(
         None => return EventResult::Boolean(false),
     };
 
-    let move_data = match battle.dex.moves().get_by_id(&move_id) {
+    let move_data = match battle.dex.moves().get_by_id(&move_id).cloned() {
         Some(m) => m,
         None => return EventResult::Boolean(false),
     };
@@ -57,7 +57,7 @@ pub fn on_try_hit(
     }
 
     // this.actions.useMove(move.id, pokemon, { target });
-    crate::battle_actions::use_move(battle, &move_id, pokemon, Some(target), None, None, None);
+    crate::battle_actions::use_move(battle, &move_data, pokemon, Some(target), None, None, None);
 
     // return null;
     EventResult::Null

@@ -55,9 +55,13 @@ pub fn on_try_hit(
     }
 
     // this.actions.useMove(move, pokemon, { target });
+    let move_data = match battle.dex.moves().get(move_id).cloned() {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
     battle_actions::use_move(
         battle,
-        &ID::from(move_id),
+        &move_data,
         pokemon,
         Some(target),
         None,

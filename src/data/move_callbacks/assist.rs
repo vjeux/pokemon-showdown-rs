@@ -100,9 +100,13 @@ pub fn on_hit(
     };
 
     // this.actions.useMove(randomMove, target);
+    let move_data = match battle.dex.moves().get_by_id(&random_move).cloned() {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
     battle_actions::use_move(
         battle,
-        random_move,
+        &move_data,
         pokemon_pos,
         Some(target),
         None,

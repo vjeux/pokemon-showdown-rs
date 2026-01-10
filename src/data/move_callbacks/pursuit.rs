@@ -343,7 +343,9 @@ pub mod condition {
                 }
             };
 
-            run_move(battle, &ID::from("pursuit"), source_pos, target_loc, None, None, false, None, None);
+            if let Some(pursuit_data) = battle.dex.moves().get("pursuit").cloned() {
+                run_move(battle, &pursuit_data, source_pos, target_loc, None, None, false, None, None);
+            }
         }
 
         EventResult::Continue

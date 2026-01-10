@@ -7,6 +7,7 @@
 
 use crate::*;
 use crate::battle::Effect;
+use crate::dex::MoveData;
 
 impl Battle {
     /// Use a move - wrapper for the standalone use_move function
@@ -27,7 +28,7 @@ impl Battle {
     /// - Magic Coat/Magic Bounce (reflects move)
     ///
     /// Parameters:
-    /// - move_id: ID of the move to use
+    /// - move_data: The move data to use
     /// - pokemon_pos: Position of Pokemon using the move
     /// - target_pos: Optional target position
     /// - source_effect: Optional source effect (e.g., "sleeptalk", "copycat")
@@ -35,10 +36,9 @@ impl Battle {
     /// - max_move: Optional Max move variant
     ///
     /// Returns: true if move succeeded, false otherwise
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn use_move(
         &mut self,
-        move_id: &ID,
+        move_data: &MoveData,
         pokemon_pos: (usize, usize),
         target_pos: Option<(usize, usize)>,
         source_effect: Option<&Effect>,
@@ -47,7 +47,7 @@ impl Battle {
     ) -> bool {
         crate::battle_actions::use_move::use_move(
             self,
-            move_id,
+            move_data,
             pokemon_pos,
             target_pos,
             source_effect,
@@ -73,17 +73,16 @@ impl Battle {
     /// 3. Calls use_move with swapped source/target
     ///
     /// Parameters:
-    /// - move_id: ID of the move being reflected
+    /// - move_data: The move data being reflected
     /// - new_user_pos: Position of Pokemon now using the move (original target)
     /// - new_target_pos: Position of new target (original user)
     /// - has_bounced: Whether to mark move as bounced
     /// - prankster_boosted: Whether move should be prankster boosted
     ///
     /// Returns: true if move succeeded, false otherwise
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn use_move_with_bounced(
         &mut self,
-        move_id: &ID,
+        move_data: &MoveData,
         new_user_pos: (usize, usize),
         new_target_pos: Option<(usize, usize)>,
         has_bounced: bool,
@@ -99,7 +98,7 @@ impl Battle {
 
         // Use the move with the new user and target
         self.use_move(
-            move_id,
+            move_data,
             new_user_pos,
             new_target_pos,
             None, // sourceEffect is None for reflected moves

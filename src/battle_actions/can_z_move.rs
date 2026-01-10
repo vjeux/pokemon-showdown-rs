@@ -121,7 +121,14 @@ pub fn can_z_move(
 
         //         const move = this.dex.moves.get(moveSlot.move);
         //         let zMoveName = this.getZMove(move, pokemon, true) || '';
-        let z_move_name = get_z_move(battle, side_index, pokemon_index, &move_slot.id.as_str(), true);
+        let move_data = match battle.dex.moves().get(move_slot.id.as_str()) {
+            Some(m) => m,
+            None => {
+                z_moves.push(None);
+                continue;
+            }
+        };
+        let z_move_name = get_z_move(battle, side_index, pokemon_index, move_data, true);
 
         //         if (zMoveName) {
         if let Some(mut z_move_name) = z_move_name {

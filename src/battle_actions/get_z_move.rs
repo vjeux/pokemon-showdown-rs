@@ -3,6 +3,7 @@
 //! 1:1 port of getZMove from battle-actions.ts
 
 use crate::*;
+use crate::dex::MoveData;
 
 /// Get Z-Move for a given move
 /// Equivalent to battle-actions.ts getZMove()
@@ -30,12 +31,11 @@ use crate::*;
 ///         }
 ///     }
 /// }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_z_move(
     battle: &Battle,
     side_index: usize,
     pokemon_index: usize,
-    move_id: &str,
+    move_data: &MoveData,
     skip_checks: bool,
 ) -> Option<String> {
     // Get pokemon
@@ -73,15 +73,12 @@ pub fn get_z_move(
         //     if (!moveData?.pp) return;
         // Check if the Pokemon has a move slot with PP for this move
         let has_pp = pokemon.move_slots.iter().any(|slot| {
-            slot.id.as_str() == move_id && slot.pp > 0
+            slot.id.as_str() == move_data.id.as_str() && slot.pp > 0
         });
         if !has_pp {
             return None;
         }
     }
-
-    // Get move data
-    let move_data = battle.dex.moves().get(move_id)?;
 
     //     if (item.zMoveFrom) {
     //         if (move.name === item.zMoveFrom) return item.zMove as string;

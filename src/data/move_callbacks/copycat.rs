@@ -56,7 +56,7 @@ pub fn on_hit(
     //     return false;
     // }
     let move_data = match battle.dex.moves().get_by_id(&actual_move_id) {
-        Some(m) => m,
+        Some(m) => m.clone(),
         None => return EventResult::Continue,
     };
 
@@ -68,7 +68,7 @@ pub fn on_hit(
     }
 
     // this.actions.useMove(move.id, pokemon);
-    battle.use_move(&actual_move_id, _pokemon_pos, None, None, None, None);
+    battle.use_move(&move_data, _pokemon_pos, None, None, None, None);
 
     EventResult::Continue
 }

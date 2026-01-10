@@ -353,9 +353,17 @@ impl Battle {
                             // JS:     });
                             // JS:     break;
                             eprintln!("[RUN_ACTION] About to call run_move, move={}", move_id.as_str());
+                            // Look up move data before calling run_move
+                            let move_data_for_run = match self.dex.moves().get(move_id.as_str()) {
+                                Some(m) => m.clone(),
+                                None => {
+                                    eprintln!("[RUN_ACTION] Could not find move data for: {}", move_id.as_str());
+                                    return;
+                                }
+                            };
                             crate::battle_actions::run_move(
                                 self,
-                                move_id,
+                                &move_data_for_run,
                                 (side_idx, poke_idx),
                                 target_loc,
                                 None, // source_effect

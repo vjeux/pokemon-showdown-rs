@@ -135,13 +135,15 @@ pub fn on_hit(
     // if (!randomMove) {
     //     return false;
     // }
-    let _random_move = match random_move {
+    let random_move_id = match random_move {
         Some(m) => m,
         None => return EventResult::Boolean(false),
     };
 
     // this.actions.useMove(randomMove, pokemon);
-    battle.use_move(&_random_move, pokemon, None, None, None, None);
+    if let Some(move_data) = battle.dex.moves().get(random_move_id.as_str()).cloned() {
+        battle.use_move(&move_data, pokemon, None, None, None, None);
+    }
 
     EventResult::Continue
 }

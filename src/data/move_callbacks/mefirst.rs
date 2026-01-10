@@ -43,7 +43,7 @@ pub fn on_try_hit(
 
     // const move = this.dex.getActiveMove(action.move.id);
     let move_id = action.move_id.clone();
-    let move_data = match battle.dex.moves().get_by_id(&move_id) {
+    let move_data = match battle.dex.moves().get_by_id(&move_id).cloned() {
         Some(m) => m,
         None => return EventResult::Boolean(false),
     };
@@ -78,7 +78,7 @@ pub fn on_try_hit(
     Pokemon::add_volatile(battle, pokemon, ID::from("mefirst"), None, None, None, None);
 
     // this.actions.useMove(move, pokemon, { target });
-    crate::battle_actions::use_move(battle, &move_id, pokemon, Some(target), None, None, None);
+    crate::battle_actions::use_move(battle, &move_data, pokemon, Some(target), None, None, None);
 
     // return null;
     EventResult::Null

@@ -3,6 +3,7 @@
 //! 1:1 port of getMaxMove from battle-actions.ts
 
 use crate::*;
+use crate::dex::MoveData;
 
 /// Get Max Move for a given move
 /// Equivalent to battle-actions.ts getMaxMove()
@@ -17,19 +18,17 @@ use crate::*;
 ///     const maxMove = this.dex.moves.get(this.MAX_MOVES[move.category === 'Status' ? move.category : move.type]);
 ///     if (maxMove.exists) return maxMove;
 /// }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_max_move<'a>(
     battle: &'a Battle,
     side_index: usize,
     pokemon_index: usize,
-    move_id: &str,
-) -> Option<&'a crate::dex::MoveData> {
-    // if (typeof move === 'string') move = this.dex.moves.get(move);
-    let move_data = battle.dex.moves().get(move_id)?;
-
+    move_data: &MoveData,
+) -> Option<&'a MoveData> {
     // if (move.name === 'Struggle') return move;
+    // Note: In JavaScript, it returns the same move. Since we receive a reference,
+    // we need to get it from the dex to return a dex reference
     if move_data.name == "Struggle" {
-        return Some(move_data);
+        return battle.dex.moves().get(move_data.id.as_str());
     }
 
     // Get pokemon

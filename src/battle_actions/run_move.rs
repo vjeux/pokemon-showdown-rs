@@ -8,6 +8,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle::Effect;
+use crate::dex::MoveData;
 
 /// Execute a move with full pipeline
 /// Equivalent to BattleActions.runMove() in battle-actions.ts
@@ -17,10 +18,9 @@ use crate::battle::Effect;
 ///     sourceEffect?: Effect | null, zMove?: string, externalMove?: boolean,
 ///     maxMove?: string, originalTarget?: Pokemon,
 /// })
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn run_move(
     battle: &mut Battle,
-    move_id: &ID,
+    move_data: &MoveData,
     pokemon_pos: (usize, usize),
     target_loc: i8,
     source_effect: Option<&Effect>,
@@ -29,6 +29,7 @@ pub fn run_move(
     max_move: Option<String>,
     _original_target: Option<(usize, usize)>,
 ) {
+    let move_id = &move_data.id;
     // Log on turns 15-17 for debugging
     if battle.turn >= 15 && battle.turn <= 17 {
         eprintln!("[RUN_MOVE] turn={}, move={}, pokemon={:?}, external_move={}",
@@ -54,12 +55,9 @@ pub fn run_move(
     // let target = this.battle.getTarget(pokemon, maxMove || zMove || moveOrMoveName, targetLoc, originalTarget);
     let target_pos = battle.get_move_target(pokemon_pos.0, target_loc);
 
-    // Get base move
+    // Get base move - we already have it passed in
     // let baseMove = this.dex.getActiveMove(moveOrMoveName);
-    let base_move = match battle.dex.moves().get(move_id.as_str()) {
-        Some(m) => m.clone(),
-        None => return,
-    };
+    let base_move = move_data.clone();
 
     // Store original priority
     // In JavaScript: let priority = baseMove.priority;
@@ -257,7 +255,7 @@ pub fn run_move(
     // const moveDidSomething = this.useMove(baseMove, pokemon, { target, sourceEffect, zMove, maxMove });
     let move_did_something = crate::battle_actions::use_move(
         battle,
-        move_id,
+        move_data,
         pokemon_pos,
         Some(target_pos),
         source_effect,
@@ -434,7 +432,7 @@ pub fn run_move(
             let dancer_ability = Effect::ability(ID::new("dancer"));
             run_move(
                 battle,
-                move_id,
+                move_data,
                 dancer_pos,
                 dancers_target_loc,
                 Some(&dancer_ability),

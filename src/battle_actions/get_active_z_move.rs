@@ -4,6 +4,7 @@
 
 use crate::*;
 use crate::battle_actions::ActiveMove;
+use crate::dex::MoveData;
 
 /// Get active Z-Move for a given move
 /// Equivalent to battle-actions.ts getActiveZMove()
@@ -32,16 +33,12 @@ use crate::battle_actions::ActiveMove;
 ///     zMove.isZOrMaxPowered = true;
 ///     return zMove;
 /// }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn get_active_z_move(
     battle: &Battle,
     side_index: usize,
     pokemon_index: usize,
-    move_id: &str,
+    move_data: &MoveData,
 ) -> ActiveMove {
-    // Get the base move
-    let move_data = battle.dex.moves().get(move_id).expect("Move not found");
-
     // Get pokemon
     let pokemon = battle.sides.get(side_index)
         .and_then(|s| s.pokemon.get(pokemon_index));
@@ -63,8 +60,6 @@ pub fn get_active_z_move(
                         if let Some(z_move_name) = z_move_value.as_str() {
                             // Get the active move data for the Z-move
                             if let Some(z_move_data) = battle.dex.moves().get(z_move_name) {
-                                // TODO: Implement full getActiveMove conversion
-                                // For now, create a basic ActiveMove with z-move properties
                                 let mut active_move = move_data_to_active_move(z_move_data);
                                 active_move.is_z_or_max_powered = true;
                                 return active_move;

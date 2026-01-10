@@ -121,17 +121,21 @@ pub mod condition {
         // const newMove = this.dex.getActiveMove(move.id);
         // newMove.hasBounced = true;
         // newMove.pranksterBoosted = this.effectState.pranksterBoosted;
-        let (_move_id, _prankster_boosted) = {
+        let (move_data, _prankster_boosted) = {
             let move_id = match &battle.active_move {
                 Some(active_move) => active_move.id.clone(),
                 None => return EventResult::Continue,
             };
             let prankster_boosted = battle.with_effect_state_ref(|state| state.prankster_boosted).unwrap_or(false);
-            (move_id, prankster_boosted)
+            let move_data = match battle.dex.moves().get(move_id.as_str()).cloned() {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+            (move_data, prankster_boosted)
         };
 
         // this.actions.useMove(newMove, target, { target: source });
-        battle.use_move_with_bounced(&_move_id, target, Some(source), true, _prankster_boosted);
+        battle.use_move_with_bounced(&move_data, target, Some(source), true, _prankster_boosted);
 
         // return null;
         EventResult::Stop
@@ -204,7 +208,7 @@ pub mod condition {
         // newMove.hasBounced = true;
         // newMove.pranksterBoosted = false;
         // this.actions.useMove(newMove, this.effectState.target, { target: source });
-        let (_move_id, _effect_state_target) = {
+        let (move_data, _effect_state_target) = {
             let move_id = match &battle.active_move {
                 Some(active_move) => active_move.id.clone(),
                 None => return EventResult::Continue,
@@ -213,10 +217,14 @@ pub mod condition {
                 Some(t) => t,
                 None => return EventResult::Continue,
             };
-            (move_id, effect_state_target)
+            let move_data = match battle.dex.moves().get(move_id.as_str()).cloned() {
+                Some(m) => m,
+                None => return EventResult::Continue,
+            };
+            (move_data, effect_state_target)
         };
 
-        battle.use_move_with_bounced(&_move_id, _effect_state_target, Some(source), true, false);
+        battle.use_move_with_bounced(&move_data, _effect_state_target, Some(source), true, false);
 
         // move.hasBounced = true; // only bounce once in free-for-all battles
         if let Some(ref mut active_move) = battle.active_move {

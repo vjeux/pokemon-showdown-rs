@@ -138,8 +138,9 @@ pub mod condition {
         }
 
         // this.actions.useMove(move.id, snatchUser);
-        let _move_id = ID::from(move_id);
-        battle.use_move(&_move_id, snatch_user, None, None, None, None);
+        if let Some(move_data) = battle.dex.moves().get(move_id).cloned() {
+            battle.use_move(&move_data, snatch_user, None, None, None, None);
+        }
 
         // return null;
         EventResult::Stop

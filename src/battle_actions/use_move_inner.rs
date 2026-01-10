@@ -1,6 +1,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle::Effect;
+use crate::dex::MoveData;
 
 /// Inner implementation of useMove - handles the actual move execution
 /// Equivalent to battle-actions.ts useMoveInner() (lines 380-543)
@@ -171,7 +172,7 @@ use crate::battle::Effect;
 //
 pub fn use_move_inner(
     battle: &mut crate::battle::Battle,
-    move_or_move_name: &ID,
+    move_data: &MoveData,
     pokemon_pos: (usize, usize),
     mut target_pos: Option<(usize, usize)>,
     source_effect_param: Option<&Effect>,
@@ -179,7 +180,7 @@ pub fn use_move_inner(
     max_move_param: Option<&str>,
 ) -> bool {
     eprintln!("[USE_MOVE_INNER] ENTRY: move={}, pokemon=({}, {}), target={:?}, PRNG={}",
-        move_or_move_name.as_str(), pokemon_pos.0, pokemon_pos.1, target_pos, battle.prng.call_count);
+        move_data.id.as_str(), pokemon_pos.0, pokemon_pos.1, target_pos, battle.prng.call_count);
 
     // let target = options?.target;
     // let sourceEffect = options?.sourceEffect;
@@ -202,10 +203,11 @@ pub fn use_move_inner(
     }
 
     // let move = this.dex.getActiveMove(moveOrMoveName);
-    let mut active_move = match battle.dex.get_active_move(move_or_move_name.as_str()) {
+    // Since we have MoveData, convert it directly to ActiveMove
+    let mut active_move = match battle.dex.get_active_move(move_data.id.as_str()) {
         Some(m) => m,
         None => {
-            eprintln!("[USE_MOVE_INNER] Move not found: {}", move_or_move_name.as_str());
+            eprintln!("[USE_MOVE_INNER] Move not found: {}", move_data.id.as_str());
             return false;
         }
     };
@@ -252,12 +254,15 @@ pub fn use_move_inner(
          }));
 
     if should_convert_to_z {
-        active_move = crate::battle_actions::get_active_z_move(
-            battle,
-            pokemon_pos.0,
-            pokemon_pos.1,
-            &active_move.id.to_string(),
-        );
+        // Look up the move data from the dex to pass to get_active_z_move
+        if let Some(base_move_data) = battle.dex.moves().get(active_move.id.as_str()) {
+            active_move = crate::battle_actions::get_active_z_move(
+                battle,
+                pokemon_pos.0,
+                pokemon_pos.1,
+                base_move_data,
+            );
+        }
     }
 
     // if (maxMove && move.category !== 'Status') {
@@ -294,12 +299,15 @@ pub fn use_move_inner(
          }));
 
     if should_convert_to_max {
-        active_move = crate::battle_actions::get_active_max_move(
-            battle,
-            pokemon_pos.0,
-            pokemon_pos.1,
-            &active_move.id.to_string(),
-        );
+        // Look up the move data from the dex to pass to get_active_max_move
+        if let Some(base_move_data) = battle.dex.moves().get(active_move.id.as_str()) {
+            active_move = crate::battle_actions::get_active_max_move(
+                battle,
+                pokemon_pos.0,
+                pokemon_pos.1,
+                base_move_data,
+            );
+        }
     }
 
     // if (this.battle.activeMove) {
@@ -649,8 +657,8 @@ pub fn use_move_inner(
         }
 
         if extra_pp > 0 {
-            // deduct_pp expects an ID, so extract the ID from the Effect or use move_or_move_name
-            let move_id_to_deduct = caller_move_for_pressure.as_ref().map(|e| &e.id).unwrap_or(move_or_move_name);
+            // deduct_pp expects an ID, so extract the ID from the Effect or use the move's ID
+            let move_id_to_deduct = caller_move_for_pressure.as_ref().map(|e| &e.id).unwrap_or(&move_data.id);
             battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].deduct_pp(battle.gen, move_id_to_deduct, Some(extra_pp));
         }
     }
