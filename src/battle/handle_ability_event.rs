@@ -127,16 +127,16 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 relay_var_int,
-                event_source_pos,
-                event_target_pos,
+                event_target_pos,  // attacker = event.target
+                event_source_pos,  // defender = event.source
                 active_move_clone.as_ref(),
             ),
             "AllyBasePowerPriority" => ability_callbacks::dispatch_on_ally_base_power_priority(
                 self,
                 ability_id.as_str(),
                 relay_var_int,
-                event_source_pos,
-                event_target_pos,
+                event_target_pos,  // attacker = event.target
+                event_source_pos,  // defender = event.source
                 active_move_clone.as_ref(),
             ),
             "AllyFaint" => {
