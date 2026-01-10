@@ -793,7 +793,8 @@ pub fn dispatch_on_try_move(
         "primordialsea" => primordialsea::on_try_move(battle, pokemon_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_try_move(battle, active_move, pokemon_pos, target_pos, None)
+            // Pass the condition_id so the move-embedded callback knows which condition to dispatch
+            move_callbacks::dispatch_condition_on_try_move(battle, active_move, pokemon_pos, target_pos, Some(condition_id))
         }
     }
 }
