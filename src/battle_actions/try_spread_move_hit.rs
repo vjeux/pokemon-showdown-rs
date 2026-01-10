@@ -419,8 +419,10 @@ pub fn try_spread_move_hit(
     }
 
     // JS: return moveResult;
+    // In JavaScript, moveResult is a boolean (true/false)
+    // true maps to DamageResult::Success, false maps to DamageResult::Failed
     if move_result {
-        DamageResult::Undefined
+        DamageResult::Success
     } else {
         DamageResult::Failed
     }
