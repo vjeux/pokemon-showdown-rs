@@ -217,10 +217,10 @@ pub fn try_move_hit(
     if is_ffa_hazard {
         // For FFA hazards, pass all targets
         let target_opts: Vec<Option<(usize, usize)>> = targets.iter().map(|&t| Some(t)).collect();
-        move_hit(battle, &target_opts, pokemon_pos, move_id, None, false, false)
+        move_hit(battle, &target_opts, pokemon_pos, active_move, None, false, false)
     } else {
         // For single target, pass just the first target
         let target_opts = vec![Some(target)];
-        move_hit(battle, &target_opts, pokemon_pos, move_id, None, false, false)
+        move_hit(battle, &target_opts, pokemon_pos, active_move, None, false, false)
     }
 }

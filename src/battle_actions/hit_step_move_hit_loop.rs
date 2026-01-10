@@ -386,7 +386,7 @@ pub fn hit_step_move_hit_loop(
             battle,
             &targets_copy,
             attacker_pos,
-            &active_move.id,
+            active_move,
             None, // hit_effect_id
             false, // is_secondary
             false, // is_self

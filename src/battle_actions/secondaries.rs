@@ -121,7 +121,7 @@ pub fn secondaries(
                     battle,
                     &[Some(effect_target)],
                     source_pos,
-                    &move_.id,
+                    move_,
                     Some(HitEffect::Secondary(&secondary)),
                     true,  // isSecondary
                     is_self,

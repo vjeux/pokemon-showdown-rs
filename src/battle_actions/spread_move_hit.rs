@@ -5,7 +5,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle::SpreadMoveHitResult;
-use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, HitEffect};
+use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, HitEffect, ActiveMove};
 use crate::battle::Effect;
 
 /// Spread move hit - handles individual target hit processing
@@ -123,16 +123,16 @@ use crate::battle::Effect;
 //
 ///
 /// Returns (damages, targets) where damages[i] corresponds to targets[i]
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn spread_move_hit<'a>(
     battle: &mut Battle,
     targets: &SpreadMoveTargets,
     source_pos: (usize, usize),
-    move_id: &ID,
+    active_move: &ActiveMove,
     hit_effect: Option<HitEffect<'a>>,
     is_secondary: bool,
     is_self: bool,
 ) -> SpreadMoveHitResult {
+    let move_id = &active_move.id;
     eprintln!("[SPREAD_MOVE_HIT] ENTRY: move_id={}, targets.len()={}, is_secondary={}, is_self={}",
         move_id, targets.len(), is_secondary, is_self);
     // Initialize damage array with Success (true) for all targets
@@ -157,11 +157,8 @@ pub fn spread_move_hit<'a>(
         _ => None,
     };
 
-    // Get move target type
-    let move_target = {
-        let move_data = battle.dex.moves.get(move_id).expect("Move not found");
-        move_data.target.clone()
-    };
+    // Get move target type directly from active_move
+    let move_target = &active_move.target;
 
     // Run TryHitField, TryHitSide, or TryHit events based on move target
     let hit_result = if move_target == "all" && !is_self {
