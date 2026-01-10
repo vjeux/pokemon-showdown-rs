@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     const targetForme = (move.id === 'kingsshield' ? 'Aegislash' : 'Aegislash-Blade');
 ///     if (attacker.species.name !== targetForme) attacker.formeChange(targetForme);
 /// }
-pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     use crate::dex_data::ID;
 
     // Get move info from passed parameter
@@ -22,14 +22,9 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
         None => return EventResult::Continue,
     };
 
-    // Get attacker position from current event
-    let attacker_pos = match &battle.event {
-        Some(event) => match event.source {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        },
-        None => return EventResult::Continue,
-    };
+    // The attacker is the Pokemon with the Stance Change ability, passed as source_pos
+    // In JS: onModifyMove(move, attacker, defender) - attacker is the second parameter
+    let attacker_pos = source_pos;
 
     // if (attacker.species.baseSpecies !== 'Aegislash' || attacker.transformed) return;
     let (base_species, transformed, species_name) = {
@@ -43,8 +38,12 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
             None => return EventResult::Continue,
         };
 
+        // For base formes, baseSpecies is None, so use name as the fallback
+        let base_species = species_data.base_species.clone()
+            .unwrap_or_else(|| species_data.name.clone());
+
         (
-            species_data.base_species.clone().unwrap_or_default(),
+            base_species,
             attacker.transformed,
             species_data.name.clone(),
         )
@@ -68,7 +67,6 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
 
     // if (attacker.species.name !== targetForme) attacker.formeChange(targetForme);
     if species_name != target_forme && species_name.to_lowercase().replace("-", "") != target_forme {
-        // attacker_pos is already (side_idx, pokemon_index), pass it directly
         crate::pokemon::Pokemon::forme_change(
             battle,
             attacker_pos,
