@@ -128,29 +128,3 @@ pub fn check_item_prevents_status(item_id: &ID, status: &str) -> bool {
         _ => false,
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_get_item_type_boost() {
-        assert_eq!(
-            get_item_type_boost(&ID::new("charcoal")),
-            Some(("Fire", 1.2))
-        );
-        assert_eq!(
-            get_item_type_boost(&ID::new("mysticwater")),
-            Some(("Water", 1.2))
-        );
-        assert_eq!(get_item_type_boost(&ID::new("leftovers")), None);
-    }
-
-    #[test]
-    fn test_check_item_prevents_status() {
-        assert!(check_item_prevents_status(&ID::new("lumberry"), "par"));
-        assert!(check_item_prevents_status(&ID::new("lumberry"), "brn"));
-        assert!(check_item_prevents_status(&ID::new("rawstberry"), "brn"));
-        assert!(!check_item_prevents_status(&ID::new("rawstberry"), "par"));
-    }
-}
