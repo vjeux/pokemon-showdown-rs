@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Test 100 seeds and compute pass rate
+# Test 500 seeds and compute pass rate
 # Uses batch runners for efficiency - all seeds run in single JS/Rust invocations
 
 # Output file
-RESULTS_FILE="100-seeds-results.txt"
+RESULTS_FILE="500-seeds-results.txt"
 
 # Start fresh output file
 > "$RESULTS_FILE"
@@ -15,11 +15,11 @@ log() {
 }
 
 log "======================================="
-log "Testing 100 Seeds with Pass Rate"
+log "Testing 500 Seeds with Pass Rate"
 log "======================================="
 log ""
 
-total_seeds=100
+total_seeds=500
 passed_seeds=0
 failed_seeds=0
 total_pass_rate=0
