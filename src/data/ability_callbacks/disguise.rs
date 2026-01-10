@@ -240,7 +240,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
     // const speciesid = pokemon.species.id === 'mimikyutotem' ? 'Mimikyu-Busted-Totem' : 'Mimikyu-Busted';
     let new_species_id = if species_id.as_str() == "mimikyutotem" {
-        "mimikyubusttotem"
+        "mimikyubustedtotem"
     } else {
         "mimikyubusted"
     };
