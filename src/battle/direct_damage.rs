@@ -70,18 +70,22 @@ impl Battle {
     ) -> i32 {
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
-        let (event_target, event_source, event_effect) = if let Some(ref event) = self.event
+        let (event_target, event_source) = if let Some(ref event) = self.event
         {
-            (event.target, event.source, event.effect.clone())
+            (event.target, event.source)
         } else {
-            (None, None, None)
+            (None, None)
         };
+
+        // JS uses this.effect (current handler's effect), NOT this.event.effect
+        let current_effect = self.effect.clone();
 
         let target = target.or(event_target);
         let _source = source.or(event_source); // Not used in current implementation but matches JS signature
         let effect_owned: Option<Effect>;
         let effect = if effect.is_none() {
-            effect_owned = event_effect;
+            // Use self.effect (current handler's effect) as fallback, not self.event.effect
+            effect_owned = current_effect;
             effect_owned.as_ref()
         } else {
             effect

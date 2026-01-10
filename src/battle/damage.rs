@@ -35,21 +35,27 @@ impl Battle {
 
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
-        let (event_target, event_source, event_effect) = if let Some(ref event) = self.event
+        let (event_target, event_source) = if let Some(ref event) = self.event
         {
-            eprintln!("[BATTLE_DAMAGE] event exists: target={:?}, source={:?}, effect={:?}",
-                event.target, event.source, event.effect.as_ref().map(|e| e.id.as_str()));
-            (event.target, event.source, event.effect.clone())
+            eprintln!("[BATTLE_DAMAGE] event exists: target={:?}, source={:?}",
+                event.target, event.source);
+            (event.target, event.source)
         } else {
-            (None, None, None)
+            (None, None)
         };
+
+        // JS uses this.effect (current handler's effect), NOT this.event.effect
+        let current_effect = self.effect.clone();
+        eprintln!("[BATTLE_DAMAGE] current effect (self.effect): {:?}",
+            current_effect.as_ref().map(|e| e.id.as_str()));
 
         let target = target.or(event_target);
         let source = source.or(event_source);
         eprintln!("[BATTLE_DAMAGE] After merging with event: target={:?}, source={:?}", target, source);
         let effect_owned: Option<Effect>;
         let effect = if effect.is_none() {
-            effect_owned = event_effect;
+            // Use self.effect (current handler's effect) as fallback, not self.event.effect
+            effect_owned = current_effect;
             effect_owned.as_ref()
         } else {
             effect

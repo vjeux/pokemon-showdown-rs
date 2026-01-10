@@ -245,8 +245,8 @@ impl Battle {
                     EventResult::Number(modified_damage) => {
                         target_damage = modified_damage;
                     }
-                    EventResult::Null => {
-                        // Event failed
+                    EventResult::Null | EventResult::Boolean(false) => {
+                        // Event failed / returned false (e.g., Magic Guard blocking damage)
                         self.debug("damage event failed");
                         ret_vals.push(DamageResult::Undefined);
                         continue;
