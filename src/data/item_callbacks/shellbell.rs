@@ -12,15 +12,19 @@ use crate::event::EventResult;
 ///         this.heal(move.totalDamage / 8, pokemon);
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.totalDamage && !pokemon.forceSwitchFlag) {
     //     this.heal(move.totalDamage / 8, pokemon);
     // }
 
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // Check if active move has totalDamage
-    let total_damage = battle.active_move.as_ref()
-        .map(|m| m.total_damage)
-        .unwrap_or(0);
+    let total_damage = active_move_ref.total_damage;
 
     if total_damage == 0 {
         return EventResult::Continue;

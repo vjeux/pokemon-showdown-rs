@@ -14,7 +14,7 @@ use crate::pokemon::Pokemon;
 ///         source.addVolatile('gem');
 ///     }
 /// }
-pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (target === source || move.category === 'Status') return;
     let target = match target_pos {
         Some(pos) => pos,
@@ -25,26 +25,24 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
         None => return EventResult::Continue,
     };
 
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // target === source
     if target == source {
         return EventResult::Continue;
     }
 
     // move.category === 'Status'
-    let is_status = battle.active_move.as_ref()
-        .map(|m| m.category.as_str() == "Status")
-        .unwrap_or(false);
-
-    if is_status {
+    if active_move_ref.category == "Status" {
         return EventResult::Continue;
     }
 
     // if (move.type === 'Ground' && source.useItem())
-    let is_ground = battle.active_move.as_ref()
-        .map(|m| m.move_type.as_str() == "Ground")
-        .unwrap_or(false);
-
-    if is_ground {
+    if active_move_ref.move_type == "Ground" {
         // source.useItem()
         let used_item = Pokemon::use_item(battle, source, None, None).is_some();
 

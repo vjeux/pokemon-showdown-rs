@@ -26,13 +26,16 @@ pub fn on_base_power(
     _base_power: i32,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    // let bp = Math.max(1, move.basePower);
-    let base_power = match &battle.active_move {
-        Some(m) => m.base_power.max(1),
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
+
+    // let bp = Math.max(1, move.basePower);
+    let base_power = active_move_ref.base_power.max(1);
 
     // bp *= 2 ** source.volatiles['rolloutstorage'].contactHitCount;
     let contact_hit_count = {

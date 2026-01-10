@@ -21,7 +21,7 @@ use crate::Pokemon;
 ///         }
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (source && source !== target && source.hp && target.hp && move && move.category !== 'Status') {
     //     if (!source.isActive || !this.canSwitch(source.side) || source.forceSwitchFlag || target.forceSwitchFlag) {
     //         return;
@@ -43,18 +43,19 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
         None => return EventResult::Continue,
     };
 
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // source !== target
     if source_pos == target_pos {
         return EventResult::Continue;
     }
 
     // Check if move.category !== 'Status'
-    let is_status_move = match &battle.active_move {
-        Some(active_move) => active_move.category == "Status",
-        None => return EventResult::Continue,
-    };
-
-    if is_status_move {
+    if active_move_ref.category == "Status" {
         return EventResult::Continue;
     }
 

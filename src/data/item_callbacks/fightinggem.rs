@@ -14,7 +14,7 @@ use crate::pokemon::Pokemon;
 ///         source.addVolatile('gem');
 ///     }
 /// }
-pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (target === source || move.category === 'Status') return;
     let target = match target_pos {
         Some(pos) => pos,
@@ -25,23 +25,23 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
         None => return EventResult::Continue,
     };
 
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // Check if target === source
     if target == source {
         return EventResult::Continue;
     }
 
-    // Check move.category === 'Status'
-    let active_move = match &battle.active_move {
-        Some(m) => m,
-        None => return EventResult::Continue,
-    };
-
-    if active_move.category == "Status" {
+    if active_move_ref.category == "Status" {
         return EventResult::Continue;
     }
 
     // if (move.type === 'Fighting' && source.useItem()) { source.addVolatile('gem'); }
-    if active_move.move_type == "Fighting" {
+    if active_move_ref.move_type == "Fighting" {
         // Two-phase borrow: first get item, then modify pokemon
         let item_used = {
             let _source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {

@@ -24,16 +24,16 @@ pub fn on_effectiveness(
     type_mod: i32,
     target_type: &str,
     _pokemon_pos: (usize, usize),
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    // Get move category from active_move
-    // if (move && move.effectType === 'Move' && move.category !== 'Status' && type === 'Flying' && typeMod > 0)
-    let category = match &battle.active_move {
-        Some(m) => &m.category,
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
 
-    if category != "Status" && target_type == "Flying" && type_mod > 0 {
+    // if (move && move.effectType === 'Move' && move.category !== 'Status' && type === 'Flying' && typeMod > 0)
+    if active_move_ref.category != "Status" && target_type == "Flying" && type_mod > 0 {
         // this.add('-fieldactivate', 'Delta Stream');
         battle.add("-fieldactivate", &[Arg::Str("Delta Stream")]);
 

@@ -25,16 +25,16 @@ pub fn on_try_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    // Get the active move
-    let (move_type, move_category) = match &battle.active_move {
-        Some(m) => (m.move_type.clone(), m.category.clone()),
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
 
     // if (move.type === 'Fire' && move.category !== 'Status')
-    if move_type == "Fire" && move_category != "Status" {
+    if active_move_ref.move_type == "Fire" && active_move_ref.category != "Status" {
         // this.debug('Primordial Sea fire suppress');
         // this.add('-fail', attacker, move, '[from] Primordial Sea');
         let attacker_ident = {
@@ -45,9 +45,7 @@ pub fn on_try_move(
             pokemon.get_slot()
         };
 
-        let move_name = battle.active_move.as_ref()
-            .map(|m| m.name.clone())
-            .unwrap_or_else(|| String::from("move"));
+        let move_name = active_move_ref.name.clone();
 
         battle.add(
             "-fail",
@@ -84,11 +82,11 @@ pub fn on_weather_modify_damage(
     _damage: i32,
     _attacker_pos: Option<(usize, usize)>,
     _defender_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    // Get the active move
-    let move_type = match &battle.active_move {
-        Some(m) => m.move_type.clone(),
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
 
@@ -112,7 +110,7 @@ pub fn on_weather_modify_damage(
     }
 
     // if (move.type === 'Water')
-    if move_type == "Water" {
+    if active_move_ref.move_type == "Water" {
         // this.debug('Rain water boost');
         // return this.chainModify(1.5);
         return EventResult::Float(1.5);

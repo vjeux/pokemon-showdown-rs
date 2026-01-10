@@ -14,7 +14,7 @@ use crate::Pokemon;
 ///         target.eatItem();
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.category === 'Physical') {
     //     if (move.id === 'present' && move.heal) return;
     //     target.eatItem();
@@ -25,12 +25,14 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
         None => return EventResult::Continue,
     };
 
-    // Check if move category is Physical
-    let is_physical = battle.active_move.as_ref()
-        .map(|m| m.category == "Physical")
-        .unwrap_or(false);
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
 
-    if !is_physical {
+    // Check if move category is Physical
+    if active_move_ref.category != "Physical" {
         return EventResult::Continue;
     }
 

@@ -111,13 +111,17 @@ pub fn on_before_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    // Get move info
-    let (has_defrost, move_id, _move_name) = match &battle.active_move {
-        Some(m) => (m.flags.defrost, m.id.as_str(), m.name.clone()),
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
+
+    // Get move info
+    let has_defrost = active_move_ref.flags.defrost;
+    let move_id = active_move_ref.id.as_str();
 
     // if (move.flags['defrost'] && !(move.id === 'burnup' && !pokemon.hasType('Fire'))) return;
     if has_defrost {
@@ -223,15 +227,16 @@ pub fn on_after_move_secondary(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    // if (move.thawsTarget)
-    let thaws_target = match &battle.active_move {
-        Some(m) => m.thaws_target,
-        None => false,
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
     };
 
-    if thaws_target {
+    // if (move.thawsTarget)
+    if active_move_ref.thaws_target {
         // target.cureStatus();
         crate::pokemon::Pokemon::cure_status(battle, pokemon_pos, false);
     }
@@ -253,17 +258,18 @@ pub fn on_damaging_hit(
     _damage: i32,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    // if (move.type === 'Fire' && move.category !== 'Status' && move.id !== 'polarflare')
-    let should_thaw = match &battle.active_move {
-        Some(m) => {
-            m.move_type.as_str() == "fire"
-                && m.category != "status"
-                && m.id.as_str() != "polarflare"
-        },
-        None => false,
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
     };
+
+    // if (move.type === 'Fire' && move.category !== 'Status' && move.id !== 'polarflare')
+    let should_thaw = active_move_ref.move_type.as_str() == "fire"
+        && active_move_ref.category != "status"
+        && active_move_ref.id.as_str() != "polarflare";
 
     if should_thaw {
         // target.cureStatus();

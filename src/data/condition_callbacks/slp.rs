@@ -142,8 +142,14 @@ pub fn on_before_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // if (pokemon.hasAbility('earlybird'))
     let has_earlybird = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -196,12 +202,7 @@ pub fn on_before_move(
     battle.add("cant", &[Arg::String(pokemon_ident), Arg::Str("slp")]);
 
     // if (move.sleepUsable)
-    let sleep_usable = match &battle.active_move {
-        Some(m) => m.sleep_usable,
-        None => false,
-    };
-
-    if sleep_usable {
+    if active_move_ref.sleep_usable {
         // return;
         return EventResult::Continue;
     }

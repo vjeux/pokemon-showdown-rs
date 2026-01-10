@@ -66,11 +66,11 @@ pub fn on_weather_modify_damage(
     _damage: i32,
     _attacker_pos: Option<(usize, usize)>,
     _defender_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    // Get the active move
-    let (move_id, move_type) = match &battle.active_move {
-        Some(m) => (m.id.clone(), m.move_type.clone()),
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
 
@@ -79,7 +79,7 @@ pub fn on_weather_modify_damage(
     let defender_pos = _defender_pos.or(battle.active_target).unwrap_or((0, 0));
 
     // if (move.id === 'hydrosteam' && !attacker.hasItem('utilityumbrella'))
-    if move_id.as_str() == "hydrosteam" {
+    if active_move_ref.id.as_str() == "hydrosteam" {
         let has_utility_umbrella = {
             let attacker = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                 Some(p) => p,
@@ -109,14 +109,14 @@ pub fn on_weather_modify_damage(
     }
 
     // if (move.type === 'Fire')
-    if move_type == "Fire" {
+    if active_move_ref.move_type == "Fire" {
         // this.debug('Sunny Day fire boost');
         // return this.chainModify(1.5);
         return EventResult::Float(1.5);
     }
 
     // if (move.type === 'Water')
-    if move_type == "Water" {
+    if active_move_ref.move_type == "Water" {
         // this.debug('Sunny Day water suppress');
         // return this.chainModify(0.5);
         return EventResult::Float(0.5);

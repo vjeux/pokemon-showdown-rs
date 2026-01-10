@@ -75,8 +75,14 @@ pub fn on_before_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // if (!pokemon.getItem().isChoice)
     let is_choice = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -102,7 +108,7 @@ pub fn on_before_move(
             None => return EventResult::Continue,
         };
 
-        let active_move_id = battle.active_move.as_ref().map(|m| m.id.to_string()).unwrap_or_default();
+        let active_move_id = active_move_ref.id.to_string();
 
         let choicelock_id = ID::from("choicelock");
         let locked_move = pokemon.volatiles.get(&choicelock_id)
@@ -133,7 +139,7 @@ pub fn on_before_move(
     // if (!pokemon.ignoringItem() && !pokemon.volatiles['dynamax'] && move.id !== this.effectState.move && move.id !== 'struggle')
     if !ignoring_item && !has_dynamax && move_id != locked_move_id && move_id != "struggle" {
         // this.addMove('move', pokemon, move.name);
-        let move_name = battle.active_move.as_ref().map(|m| m.name.clone()).unwrap_or_default();
+        let move_name = active_move_ref.name.clone();
         let pokemon_ident = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,

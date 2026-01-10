@@ -13,7 +13,7 @@ use crate::Pokemon;
 ///         target.eatItem();
 ///     }
 /// }
-pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.category === 'Special') {
     //     target.eatItem();
     // }
@@ -23,12 +23,14 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
         None => return EventResult::Continue,
     };
 
-    // Check if move category is Special
-    let is_special = battle.active_move.as_ref()
-        .map(|m| m.category == "Special")
-        .unwrap_or(false);
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
 
-    if !is_special {
+    // Check if move category is Special
+    if active_move_ref.category != "Special" {
         return EventResult::Continue;
     }
 

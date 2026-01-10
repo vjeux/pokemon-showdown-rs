@@ -5,7 +5,6 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
-use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
 
@@ -15,7 +14,7 @@ use crate::pokemon::Pokemon;
 ///         source.addVolatile('gem');
 ///     }
 /// }
-pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (target === source || move.category === 'Status' || move.flags['pledgecombo']) return;
     let target = match target_pos {
         Some(pos) => pos,
@@ -27,42 +26,29 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, target_pos: Option<(usize,
         None => return EventResult::Continue,
     };
 
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // target === source
     if target == source {
         return EventResult::Continue;
     }
 
     // move.category === 'Status' || move.flags['pledgecombo']
-    let (is_status, is_pledgecombo) = match &battle.active_move {
-        Some(active_move) => (
-            active_move.category == "Status",
-            active_move.flags.pledgecombo,
-        ),
-        None => return EventResult::Continue,
-    };
-
-    if is_status || is_pledgecombo {
+    if active_move_ref.category == "Status" || active_move_ref.flags.pledgecombo {
         return EventResult::Continue;
     }
 
     // if (move.type === 'Normal' && source.useItem())
-    let is_normal = match &battle.active_move {
-        Some(active_move) => active_move.move_type == "Normal",
-        None => return EventResult::Continue,
-    };
-
-    if is_normal {
-        let used_item = {
-            let _source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::use_item(battle, source, None, None).is_some()
-        };
+    if active_move_ref.move_type == "Normal" {
+        let used_item = Pokemon::use_item(battle, source, None, None).is_some();
 
         if used_item {
             // source.addVolatile('gem');
-            Pokemon::add_volatile(battle, source, ID::new("gem"), None, None, None, None);
+            Pokemon::add_volatile(battle, source, "gem".into(), None, None, None, None);
         }
     }
 

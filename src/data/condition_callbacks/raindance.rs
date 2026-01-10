@@ -64,8 +64,14 @@ pub fn on_weather_modify_damage(
     _damage: i32,
     _attacker_pos: Option<(usize, usize)>,
     _defender_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // Get defender position from battle context
     let defender_pos = match battle.active_target {
         Some(pos) => pos,
@@ -86,10 +92,7 @@ pub fn on_weather_modify_damage(
     }
 
     // Get move type from active_move
-    let move_type = match &battle.active_move {
-        Some(m) => m.move_type.as_str(),
-        None => return EventResult::Continue,
-    };
+    let move_type = active_move_ref.move_type.as_str();
 
     // if (move.type === 'Water')
     if move_type == "water" {

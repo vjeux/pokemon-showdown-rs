@@ -21,8 +21,17 @@ pub fn on_modify_damage(battle: &mut Battle, _damage: i32, _pokemon_pos: (usize,
 ///         this.damage(source.baseMaxhp / 10, source, source, this.dex.items.get('lifeorb'));
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     battle.debug(&format!("[LIFE ORB] on_after_move_secondary_self called: source={:?}, target={:?}", source_pos, target_pos));
+
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => {
+            battle.debug("[LIFE ORB] No active_move, returning Continue");
+            return EventResult::Continue;
+        }
+    };
 
     // if (source && source !== target && move && move.category !== 'Status' && !source.forceSwitchFlag)
     let target = match target_pos {
@@ -40,17 +49,7 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usi
     }
 
     // move && move.category !== 'Status'
-    let is_status_move = {
-        match &battle.active_move {
-            Some(active_move) => active_move.category == "Status",
-            None => {
-                battle.debug("[LIFE ORB] No active_move, returning Continue");
-                return EventResult::Continue;
-            }
-        }
-    };
-
-    if is_status_move {
+    if active_move_ref.category == "Status" {
         battle.debug("[LIFE ORB] Status move, returning Continue");
         return EventResult::Continue;
     }

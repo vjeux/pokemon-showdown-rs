@@ -156,19 +156,24 @@ pub mod condition {
     pub fn on_before_move(
         battle: &mut Battle,
         attacker_pos: (usize, usize),
-        _active_move: Option<&crate::battle_actions::ActiveMove>,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        // Get active move properties
-        let (is_z, is_z_or_max_powered, category, move_id, move_name) = match &battle.active_move {
-            Some(m) => {
-                let is_z_or_max = m.is_z.is_some() || m.is_max.is_some();
-                let name = battle.dex.moves().get_by_id(&m.id)
-                    .map(|md| md.name.clone())
-                    .unwrap_or_else(|| m.id.to_string());
-                (m.is_z.is_some(), is_z_or_max, m.category.clone(), m.id.clone(), name)
-            }
+        // Get active move from parameter
+        let active_move_ref = match active_move {
+            Some(m) => m,
             None => return EventResult::Continue,
         };
+
+        // Get active move properties
+        let is_z_or_max = active_move_ref.is_z.is_some() || active_move_ref.is_max.is_some();
+        let name = battle.dex.moves().get_by_id(&active_move_ref.id)
+            .map(|md| md.name.clone())
+            .unwrap_or_else(|| active_move_ref.id.to_string());
+        let is_z = active_move_ref.is_z.is_some();
+        let is_z_or_max_powered = is_z_or_max;
+        let category = &active_move_ref.category;
+        let move_id = &active_move_ref.id;
+        let move_name = name;
 
         // if (!(move.isZ && move.isZOrMaxPowered) && move.category === 'Status' && move.id !== 'mefirst')
         let is_z_and_powered = is_z && is_z_or_max_powered;

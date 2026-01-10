@@ -13,18 +13,19 @@ use crate::Pokemon;
 ///         target.useItem();
 ///     }
 /// }
-pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.flags['sound']) {
     //     target.useItem();
     // }
 
-    // Check if move has sound flag
-    let is_sound_move = match &battle.active_move {
-        Some(active_move) => active_move.flags.sound,
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
 
-    if is_sound_move {
+    // Check if move has sound flag
+    if active_move_ref.flags.sound {
         // target.useItem();
         let _pokemon_mut = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
             Some(p) => p,
