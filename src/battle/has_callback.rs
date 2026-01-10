@@ -424,15 +424,12 @@ impl Battle {
                 // The Pokemon-targeted onResidual handlers are found via
                 // find_side_event_handlers with custom_holder in field_event.
 
-                // Special case: Some field conditions use "onResidual" instead of "onFieldResidual"
-                // Example: grassyterrain has condition.onResidual that should match onFieldResidual requests
-                // JavaScript allows this because the callback signature matches (both take target)
-                if event_id == "onFieldResidual" {
-                    if condition_data.extra.contains_key("onResidual") {
-                        eprintln!("[CONDITION_HAS_CALLBACK] Found onResidual for onFieldResidual request");
-                        return true;
-                    }
-                }
+                // NOTE: onResidual and onFieldResidual are DIFFERENT callbacks:
+                // - onFieldResidual: called once per turn for the field (no target)
+                // - onResidual: called once per active Pokemon (target = Pokemon)
+                // These should NOT be conflated. If a terrain has onResidual but not
+                // onFieldResidual, it should NOT match onFieldResidual requests.
+                // The per-Pokemon onResidual is handled via findFieldEventHandlers(callbackName, customHolder).
 
                 // Before returning false, check if this is a move-embedded condition
                 // Even though the condition exists in the dex, the callback might be in the move dispatcher
