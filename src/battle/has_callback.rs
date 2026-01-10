@@ -229,11 +229,6 @@ impl Battle {
         // Look up the ability in dex data and check its extra field for callback boolean
         if let Some(ability_data) = self.dex.abilities().get(ability_id) {
             // Check the exact event_id first, then try with "on" prefix for backward compatibility
-            if ability_id == "cutecharm" && event_id == "onDamagingHit" {
-                eprintln!("[DEBUG_CUTECHARM] Looking for onDamagingHit in ability_data.extra");
-                eprintln!("[DEBUG_CUTECHARM] ability_data.extra keys: {:?}", ability_data.extra.keys().collect::<Vec<_>>());
-                eprintln!("[DEBUG_CUTECHARM] extra.get(onDamagingHit) = {:?}", ability_data.extra.get("onDamagingHit"));
-            }
             let has_callback = ability_data.extra.get(event_id)
                 .and_then(|v| v.as_bool())
                 .unwrap_or(false);
