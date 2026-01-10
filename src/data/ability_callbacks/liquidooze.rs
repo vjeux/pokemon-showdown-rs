@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         return 0;
 ///     }
 /// }
-pub fn on_source_try_heal(battle: &mut Battle, damage: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_source_try_heal(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // Check if the effect is one that can be reversed by Liquid Ooze
     let can_ooze = match effect_id {
         Some("drain") | Some("leechseed") | Some("strengthsap") => true,
@@ -23,9 +23,10 @@ pub fn on_source_try_heal(battle: &mut Battle, damage: i32, _target_pos: Option<
     };
 
     if can_ooze {
-        // Damage the source instead of healing
-        if let Some(source) = source_pos {
-            battle.damage(damage, Some(source), None, None, false);
+        // Damage the target (the Pokemon trying to heal) instead of healing
+        // JS: this.damage(damage) uses the event target by default
+        if let Some(target) = target_pos {
+            battle.damage(damage, Some(target), None, None, false);
         }
         // Return 0 to prevent healing
         return EventResult::Number(0);
