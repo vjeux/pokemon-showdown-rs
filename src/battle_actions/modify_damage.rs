@@ -192,41 +192,33 @@ pub fn modify_damage(
         battle.turn, should_apply_variance, base_damage);
 
     // Get source and target data for STAB and type effectiveness
+    // Use get_types() instead of pokemon.types to handle ability-based type changes
+    // (e.g., Multitype for Arceus, RKS System for Silvally)
     let (source_types, _target_types, target_slot) = {
-        let source_types = if let Some(side) = battle.sides.get(pokemon_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(pokemon_pos.1) {
-                if battle.turn >= 64 && battle.turn <= 66 {
-                    eprintln!("[MODIFY_DAMAGE] Reading source types for {} (species: {}): {:?}",
-                        pokemon.name, pokemon.species_id, pokemon.types);
-                }
-                pokemon.types.clone()
-            } else {
-                vec![]
+        let source_types = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            if battle.turn >= 64 && battle.turn <= 66 {
+                eprintln!("[MODIFY_DAMAGE] Reading source types for {} (species: {}): raw={:?}",
+                    pokemon.name, pokemon.species_id, pokemon.types);
             }
+            // Use get_types to properly handle ability-based type changes like Multitype
+            pokemon.get_types(battle, false)
         } else {
             vec![]
         };
 
-        let target_types = if let Some(side) = battle.sides.get(target_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-                if battle.turn >= 64 && battle.turn <= 66 {
-                    eprintln!("[MODIFY_DAMAGE] Reading target types for {} (species: {}): {:?}",
-                        pokemon.name, pokemon.species_id, pokemon.types);
-                }
-                pokemon.types.clone()
-            } else {
-                vec![]
+        let target_types = if let Some(pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
+            if battle.turn >= 64 && battle.turn <= 66 {
+                eprintln!("[MODIFY_DAMAGE] Reading target types for {} (species: {}): raw={:?}",
+                    pokemon.name, pokemon.species_id, pokemon.types);
             }
+            // Use get_types to properly handle ability-based type changes
+            pokemon.get_types(battle, false)
         } else {
             vec![]
         };
 
-        let target_slot = if let Some(side) = battle.sides.get(target_pos.0) {
-            if let Some(pokemon) = side.pokemon.get(target_pos.1) {
-                pokemon.get_slot()
-            } else {
-                String::new()
-            }
+        let target_slot = if let Some(pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
+            pokemon.get_slot()
         } else {
             String::new()
         };

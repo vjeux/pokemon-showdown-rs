@@ -495,10 +495,9 @@ pub fn get_damage(
 
     // JavaScript: const ignoreOffensive = !!(move.ignoreOffensive || (ignoreNegativeOffensive && atkBoosts < 0));
     // JavaScript: const ignoreDefensive = !!(move.ignoreDefensive || (ignorePositiveDefensive && defBoosts > 0));
-    // TODO: Add ignore_offensive and ignore_defensive fields to MoveData
-    // For now, hardcode to false since only used by specific moves like Sacred Sword
-    let ignore_offensive = false || (ignore_negative_offensive && atk_boost < 0);
-    let ignore_defensive = false || (ignore_positive_defensive && def_boost > 0);
+    // Read from active_move fields (set from move data)
+    let ignore_offensive = active_move.ignore_offensive || (ignore_negative_offensive && atk_boost < 0);
+    let ignore_defensive = active_move.ignore_defensive || (ignore_positive_defensive && def_boost > 0);
 
     // JavaScript: if (ignoreOffensive) {
     // JavaScript:     this.battle.debug('Negating (sp)atk boost/penalty.');

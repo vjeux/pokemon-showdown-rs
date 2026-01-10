@@ -39,13 +39,9 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _
         return EventResult::Continue;
     }
 
-    // Check if source already has this type (get types first to avoid borrow issues)
-    let source_types = if let Some(side) = battle.sides.get(source_pos.0) {
-        if let Some(pokemon) = side.pokemon.get(source_pos.1) {
-            pokemon.types.clone()
-        } else {
-            return EventResult::Continue;
-        }
+    // Check if source already has this type (use get_types for ability-based type changes)
+    let source_types = if let Some(pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
+        pokemon.get_types(battle, false)
     } else {
         return EventResult::Continue;
     };
