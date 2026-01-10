@@ -761,7 +761,6 @@ pub fn dispatch_on_damage(
 //   onDisableMove(target)
 
 /// Dispatch onDisableMove callbacks
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn dispatch_on_disable_move(
     battle: &mut Battle,
     move_id: &str,
@@ -877,7 +876,6 @@ pub fn dispatch_self_on_hit(
 /// Check if a move has a secondary.onHit callback
 /// This is used to determine if we should call the onHit dispatch for secondary effects
 /// In JavaScript, the secondary object can have its own onHit callback
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn has_secondary_on_hit(move_id: &str) -> bool {
     // List of moves that have secondary.onHit callbacks
     // These are moves where the onHit is defined inside the secondary object

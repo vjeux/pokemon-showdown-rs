@@ -18,7 +18,6 @@ impl Pokemon {
     // 		});
     // 	}
     //
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn got_attacked(
         &mut self,
         move_id: ID,

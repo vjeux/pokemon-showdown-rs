@@ -26,7 +26,6 @@ use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, S
 ///     }
 ///     return damage;
 /// }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn force_switch(
     battle: &mut Battle,
     mut damage: SpreadMoveDamage,

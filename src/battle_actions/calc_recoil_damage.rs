@@ -12,7 +12,6 @@ impl<'a> BattleActions<'a> {
     // 		return this.battle.clampIntRange(Math.round(damageDealt * move.recoil![0] / move.recoil![1]), 1);
     // 	}
     //
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn calc_recoil_damage(
         damage_dealt: i32,
         move_id: &str,

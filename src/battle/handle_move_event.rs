@@ -11,7 +11,6 @@ impl Battle {
     /// This method dispatches to move_callbacks module based on event name
     ///
     /// JavaScript singleEvent calls callbacks with: [target, source, sourceEffect]
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn handle_move_event(
         &mut self,
         event_id: &str,

@@ -78,7 +78,6 @@ use crate::battle::Effect;
 /// Equivalent to hitStepAccuracy() in battle-actions.ts:580
 ///
 /// Returns a vec of booleans indicating whether each target was hit
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn hit_step_accuracy(
     battle: &mut Battle,
     targets: &[(usize, usize)],

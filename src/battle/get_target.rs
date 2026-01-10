@@ -59,7 +59,6 @@ impl Battle {
     // 		return this.getRandomTarget(pokemon, move);
     // 	}
     //
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn get_target(
         &mut self,
         user: (usize, usize),

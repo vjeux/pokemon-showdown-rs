@@ -34,7 +34,6 @@ use crate::battle_actions::ActiveMove;
 ///     }
 ///     return undefined;
 /// }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn hit_step_break_protect(
     battle: &mut Battle,
     targets: &[(usize, usize)],

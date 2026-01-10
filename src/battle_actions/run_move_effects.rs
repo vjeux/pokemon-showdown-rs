@@ -139,7 +139,6 @@ use crate::battle::Effect;
 //
 //     return damage;
 // }
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn run_move_effects<'a>(
     battle: &mut Battle,
     mut damages: SpreadMoveDamage,

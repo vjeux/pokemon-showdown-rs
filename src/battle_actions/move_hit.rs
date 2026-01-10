@@ -27,7 +27,6 @@ use crate::battle_actions::{DamageResult, HitEffect};
 /// - Damage(n) if damage was dealt (number in JS)
 /// - Undefined if move succeeded without damage (undefined in JS)
 /// - Failed if move failed (false in JS)
-// TODO: Verify move parameter type matches JavaScript's ActiveMove usage
 pub fn move_hit<'a>(
     battle: &mut Battle,
     targets: &[Option<(usize, usize)>],

@@ -5,7 +5,6 @@ use crate::*;
 impl Pokemon {
 
     /// Get move PP for a move
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn get_move_pp(&self, move_id: &ID) -> Option<u8> {
         self.move_slots
             .iter()

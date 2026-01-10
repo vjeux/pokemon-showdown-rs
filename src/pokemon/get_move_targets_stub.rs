@@ -88,7 +88,6 @@ impl Pokemon {
     // so we take Battle as a parameter instead of accessing this.battle
     // This is an associated function (not instance method) because we need &mut Battle
     // but can't borrow pokemon from battle first due to borrow checker
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn get_move_targets(
         battle: &mut Battle,
         user_pos: (usize, usize),
