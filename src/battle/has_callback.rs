@@ -437,11 +437,22 @@ impl Battle {
                 if let Some(move_data) = self.dex.moves().get(condition_id) {
                     if let Some(ref condition_data) = move_data.condition {
                         eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition (from dex branch), checking condition callbacks");
+                        eprintln!("[CONDITION_HAS_CALLBACK] condition_data.extra keys: {:?}, looking for event_id={}", condition_data.extra.keys().collect::<Vec<_>>(), event_id);
                         // Check if the key exists in the condition data (not just if it's true)
                         // This was populated by scripts/update-move-callbacks.js
                         if condition_data.extra.contains_key(event_id) {
                             eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
                             return true;
+                        }
+
+                        // Try with "on" prefix for backward compatibility
+                        // Move-embedded conditions like shadowforce have "onInvulnerability" not "Invulnerability"
+                        if !event_id.starts_with("on") {
+                            let with_on = format!("on{}", event_id);
+                            if condition_data.extra.contains_key(&with_on) {
+                                eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", with_on);
+                                return true;
+                            }
                         }
 
                         // NOTE: Do NOT fallback from onSideResidual to onResidual for embedded conditions.
@@ -466,6 +477,16 @@ impl Battle {
                     if condition_data.extra.contains_key(event_id) {
                         eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
                         return true;
+                    }
+
+                    // Try with "on" prefix for backward compatibility
+                    // Move-embedded conditions like shadowforce have "onInvulnerability" not "Invulnerability"
+                    if !event_id.starts_with("on") {
+                        let with_on = format!("on{}", event_id);
+                        if condition_data.extra.contains_key(&with_on) {
+                            eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", with_on);
+                            return true;
+                        }
                     }
                 }
             }
