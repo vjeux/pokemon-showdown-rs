@@ -98,19 +98,18 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
-        _active_move: Option<&crate::battle_actions::ActiveMove>,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         let pokemon = pokemon_pos;
 
-        // if (!move.isZOrMaxPowered && move.flags['sound'])
-        let should_block = {
-            let active_move = match &battle.active_move {
-                Some(m) => m,
-                None => return EventResult::Continue,
-            };
-
-            !active_move.is_z_or_max_powered && active_move.flags.sound
+        // Get active_move from parameter
+        let active_move_ref = match active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
         };
+
+        // if (!move.isZOrMaxPowered && move.flags['sound'])
+        let should_block = !active_move_ref.is_z_or_max_powered && active_move_ref.flags.sound;
 
         if should_block {
             // this.add('cant', pokemon, 'move: Throat Chop');

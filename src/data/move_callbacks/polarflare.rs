@@ -53,22 +53,20 @@ pub fn on_after_move_secondary_self(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
 
-    // if (move.willChangeForme) {
-    let will_change_forme = {
-        let active_move = match &battle.active_move {
-            Some(active_move) => active_move,
-            None => return EventResult::Continue,
-        };
-        active_move.will_change_forme
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
     };
 
-    if !will_change_forme {
+    // if (move.willChangeForme) {
+    if !active_move_ref.will_change_forme {
         return EventResult::Continue;
     }
 
@@ -87,12 +85,7 @@ pub fn on_after_move_secondary_self(
 
     // pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
     let target_forme = format!("Ramnarok{}", forme);
-    let effect_id = {
-        match &battle.active_move {
-            Some(active_move) => active_move.id.clone(),
-            None => return EventResult::Continue,
-        }
-    };
+    let effect_id = active_move_ref.id.clone();
 
     // Use position-based forme_change
     crate::pokemon::Pokemon::forme_change(

@@ -142,17 +142,19 @@ pub fn on_after_sub_damage(
     _damage: i32,
     target_pos: (usize, usize),
     source_pos: (usize, usize),
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+
     // if (!source.isAlly(target)) this.hint(move.category + " Shell Side Arm");
     let is_ally = battle.is_ally(source_pos, target_pos);
 
     if !is_ally {
-        let category = battle
-            .active_move
-            .as_ref()
-            .map(|m| m.category.as_str())
-            .unwrap_or("Special");
+        let category = active_move_ref.category.as_str();
         let hint_str = format!("{} Shell Side Arm", category);
         battle.hint(&hint_str, false, None);
     }

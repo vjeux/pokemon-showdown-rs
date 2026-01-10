@@ -142,16 +142,19 @@ pub mod condition {
         _accuracy: i32,
         _target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        _active_move: Option<&crate::battle_actions::ActiveMove>,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        // Get active_move from parameter
+        let active_move_ref = match active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+
         // if (move && !move.ohko) return true;
-        // Check if there's an active move and it's not an OHKO move
-        if let Some(ref active_move) = battle.active_move {
-            // In JS, !move.ohko is true when ohko is falsy (null, undefined, false, etc.)
-            // In Rust, ohko is Option<String>, so None means not an OHKO move
-            if active_move.ohko.is_none() {
-                return EventResult::Boolean(true);
-            }
+        // In JS, !move.ohko is true when ohko is falsy (null, undefined, false, etc.)
+        // In Rust, ohko is Option<String>, so None means not an OHKO move
+        if active_move_ref.ohko.is_none() {
+            return EventResult::Boolean(true);
         }
 
         EventResult::Continue

@@ -267,7 +267,7 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _active_move: Option<&crate::battle_actions::ActiveMove>,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         use crate::battle_actions::BattleActions;
         use crate::dex_data::ID;
@@ -282,49 +282,31 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
+        // Get active_move from parameter
+        let active_move_ref = match active_move {
+            Some(m) => m,
+            None => return EventResult::Continue,
+        };
+
         // if (target === source || move.flags['bypasssub'] || move.infiltrates)
         if target == source {
             return EventResult::Continue;
         }
 
-        let (bypasses_sub, infiltrates, is_ohko, move_id) = match &battle.active_move {
-            Some(m) => {
-                let bypasses = m.flags.bypasssub;
-                eprintln!("[SUBSTITUTE onTryPrimaryHit] move={}, bypasssub={}, sound={}, infiltrates={}",
-                    m.name, m.flags.bypasssub, m.flags.sound, m.infiltrates);
-                (
-                    bypasses,
-                    m.infiltrates,
-                    m.ohko.clone(),
-                    m.id.clone(),
-                )
-            }
-            None => return EventResult::Continue,
-        };
+        eprintln!("[SUBSTITUTE onTryPrimaryHit] move={}, bypasssub={}, sound={}, infiltrates={}",
+            active_move_ref.name, active_move_ref.flags.bypasssub, active_move_ref.flags.sound, active_move_ref.infiltrates);
 
-        if bypasses_sub || infiltrates {
+        if active_move_ref.flags.bypasssub || active_move_ref.infiltrates {
             return EventResult::Continue;
         }
 
-        // Get recoil and drain from active_move directly
-        let (recoil, drain) = {
-            let am = match &battle.active_move {
-                Some(m) => m,
-                None => return EventResult::Continue,
-            };
-            (am.recoil, am.drain)
-        };
+        // Get recoil and drain from active_move
+        let recoil = active_move_ref.recoil;
+        let drain = active_move_ref.drain;
+        let is_ohko = active_move_ref.ohko.clone();
+        let move_id = active_move_ref.id.clone();
 
         // let damage = this.actions.getDamage(source, target, move);
-        // Get the active move for damage calculation - JavaScript passes ActiveMove directly
-        let active_move_for_damage = battle.active_move.clone();
-        let active_move_ref = match active_move_for_damage.as_ref() {
-            Some(m) => m,
-            None => {
-                eprintln!("[SUBSTITUTE] WARNING: No active_move available for get_damage");
-                return EventResult::Continue;
-            }
-        };
         let damage = match crate::battle_actions::get_damage(battle, source, target, active_move_ref) {
             Some(d) => d,
             None => {

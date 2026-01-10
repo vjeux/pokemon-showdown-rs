@@ -179,19 +179,20 @@ pub fn on_after_sub_damage(
     _damage: i32,
     _target_pos: Option<(usize, usize)>,
     pokemon_pos: (usize, usize),
-    _active_move: Option<&crate::battle_actions::ActiveMove>,
+    active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     use crate::dex_data::ID;
 
     let pokemon = pokemon_pos;
 
-    // if (!move.hasSheerForce) {
-    let has_sheer_force = match &battle.active_move {
-        Some(active_move) => active_move.has_sheer_force,
+    // Get active_move from parameter
+    let active_move_ref = match active_move {
+        Some(m) => m,
         None => return EventResult::Continue,
     };
 
-    if has_sheer_force {
+    // if (!move.hasSheerForce) {
+    if active_move_ref.has_sheer_force {
         return EventResult::Continue;
     }
 
