@@ -41,6 +41,7 @@ impl BoostID {
 
 /// Boosts table
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[serde(default)]
 /// JavaScript equivalent: BoostsTable (sim/global-types.ts)
 /// 7 fields in JavaScript
 pub struct BoostsTable {
