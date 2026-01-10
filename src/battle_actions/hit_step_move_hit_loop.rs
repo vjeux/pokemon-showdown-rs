@@ -621,7 +621,7 @@ pub fn hit_step_move_hit_loop(
                     _ => 0,
                 };
                 if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-                    target_pokemon.got_attacked(active_move.id.clone(), damage_int, attacker_pos.0, attacker_pos.1);
+                    target_pokemon.got_attacked(active_move, damage_int, attacker_pos.0, attacker_pos.1);
                 }
 
                 if let Some(DamageResult::Damage(_)) = damage_value {

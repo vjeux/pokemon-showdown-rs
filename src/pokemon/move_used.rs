@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle_actions::ActiveMove;
 
 impl Pokemon {
 
@@ -11,8 +12,9 @@ impl Pokemon {
     // 		this.moveThisTurn = move.id;
     // 	}
     //
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
-    pub fn move_used(&mut self, battle: &Battle, move_id: ID, target_loc: Option<i8>) {
+    pub fn move_used(&mut self, battle: &Battle, active_move: &ActiveMove, target_loc: Option<i8>) {
+        let move_id = active_move.id.clone();
+
         // JS: this.lastMove = move;
         // Note: JS stores the entire ActiveMove object, Rust stores just the ID
         self.last_move = Some(move_id.clone());

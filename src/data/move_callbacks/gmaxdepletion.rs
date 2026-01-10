@@ -88,11 +88,17 @@ pub fn on_hit(
         //     const ppDeducted = pokemon.deductPP(move.id, 2);
         let pp_deducted = {
             let gen = battle.gen;
+            // Create ActiveMove before mutable borrow
+            let active_move_for_pp = battle.dex.get_active_move(actual_move_id.as_str());
             let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.deduct_pp(gen, &actual_move_id, Some(2))
+            if let Some(ref am) = active_move_for_pp {
+                pokemon.deduct_pp(gen, am, Some(2))
+            } else {
+                0
+            }
         };
 
         //     if (ppDeducted) {
@@ -213,11 +219,17 @@ pub mod self_callbacks {
             //     const ppDeducted = pokemon.deductPP(move.id, 2);
             let pp_deducted = {
                 let gen = battle.gen;
+                // Create ActiveMove before mutable borrow
+                let active_move_for_pp = battle.dex.get_active_move(actual_move_id.as_str());
                 let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                     Some(p) => p,
                     None => continue,
                 };
-                pokemon.deduct_pp(gen, &actual_move_id, Some(2))
+                if let Some(ref am) = active_move_for_pp {
+                    pokemon.deduct_pp(gen, am, Some(2))
+                } else {
+                    0
+                }
             };
 
             //     if (ppDeducted) {

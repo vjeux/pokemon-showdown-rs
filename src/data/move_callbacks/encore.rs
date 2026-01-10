@@ -273,7 +273,10 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon_pokemon.has_move(encore_id.as_str())
+            // Create ActiveMove from ID to call has_move
+            battle.dex.get_active_move(encore_id.as_str())
+                .map(|am| pokemon_pokemon.has_move(&am))
+                .unwrap_or(false)
         };
 
         if !has_move {

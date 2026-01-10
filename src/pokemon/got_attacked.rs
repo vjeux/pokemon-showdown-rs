@@ -1,5 +1,6 @@
 use crate::*;
 use crate::pokemon::Attacker;
+use crate::battle_actions::ActiveMove;
 
 impl Pokemon {
 
@@ -18,14 +19,15 @@ impl Pokemon {
     // 		});
     // 	}
     //
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn got_attacked(
         &mut self,
-        move_id: ID,
+        active_move: &ActiveMove,
         damage: i32,
         source_side: usize,
         source_pos: usize,
     ) {
+        let move_id = active_move.id.clone();
+
         // JS: this.attackedBy.push({ source, damage, move: move.id, thisTurn: true, ... })
         self.attacked_by.push(Attacker {
             source: (source_side, source_pos),

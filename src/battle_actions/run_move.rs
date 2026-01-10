@@ -186,8 +186,10 @@ pub fn run_move(
         // }
         let gen = battle.gen;
         if !is_locked {
-            let pp_deducted = if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                pokemon.deduct_pp(gen, move_id, Some(1))
+            // Create ActiveMove for deduct_pp
+            let active_move_for_pp = battle.dex.get_active_move(move_id.as_str());
+            let pp_deducted = if let (Some(pokemon), Some(ref am)) = (battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1), &active_move_for_pp) {
+                pokemon.deduct_pp(gen, am, Some(1))
             } else {
                 0
             };

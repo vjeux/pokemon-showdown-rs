@@ -131,7 +131,10 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            source_pokemon.has_move(move_id_obj.as_str())
+            // Create ActiveMove from ID to call has_move
+            battle.dex.get_active_move(move_id_obj.as_str())
+                .map(|am| source_pokemon.has_move(&am))
+                .unwrap_or(false)
         };
 
         if source_has_move {

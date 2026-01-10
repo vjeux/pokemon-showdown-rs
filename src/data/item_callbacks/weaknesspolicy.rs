@@ -42,15 +42,15 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
         return EventResult::Continue;
     }
 
-    // Get move ID from active_move (clone to avoid borrow issues)
-    let move_id = match &battle.active_move {
-        Some(active_move) => active_move.id.clone(),
+    // Clone the active_move for run_effectiveness (need owned copy to avoid borrow issues)
+    let active_move_clone = match &battle.active_move {
+        Some(active_move) => active_move.clone(),
         None => return EventResult::Continue,
     };
 
     // Check type effectiveness against target
     // target.getMoveHitData(move).typeMod > 0 means super effective
-    let type_effectiveness = Pokemon::run_effectiveness(battle, target_pos, &move_id);
+    let type_effectiveness = Pokemon::run_effectiveness(battle, target_pos, &active_move_clone);
 
     // typeMod > 0 in JavaScript means super effective
     if type_effectiveness > 0 {

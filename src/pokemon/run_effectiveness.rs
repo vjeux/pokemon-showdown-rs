@@ -1,6 +1,7 @@
 use crate::*;
 use crate::battle::Effect;
 use crate::event::EventResult;
+use crate::battle_actions::ActiveMove;
 
 impl Pokemon {
 
@@ -34,13 +35,13 @@ impl Pokemon {
     // 	}
     //
     /// Refactored to associated function to access Battle for event calls
-    /// Call as: Pokemon::run_effectiveness(battle, pokemon_pos, move_id)
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
+    /// Call as: Pokemon::run_effectiveness(battle, pokemon_pos, active_move)
     pub fn run_effectiveness(
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
-        move_id: &ID,
+        active_move: &ActiveMove,
     ) -> i32 {
+        let move_id = &active_move.id;
         // JS: let totalTypeMod = 0;
         let mut total_type_mod = 0;
 

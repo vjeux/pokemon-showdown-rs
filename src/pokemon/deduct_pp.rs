@@ -21,13 +21,15 @@
 // Target parameter is unused in JS so we omit it.
 
 use crate::*;
+use crate::battle_actions::ActiveMove;
 
 impl Pokemon {
     /// Deduct PP for a move
     /// Equivalent to pokemon.ts deductPP()
     /// Returns the actual amount deducted
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
-    pub fn deduct_pp(&mut self, gen: u8, move_id: &ID, amount: Option<u8>) -> u8 {
+    pub fn deduct_pp(&mut self, gen: u8, active_move: &ActiveMove, amount: Option<u8>) -> u8 {
+        let move_id = &active_move.id;
+
         // JS: const ppData = this.getMoveData(move);
         // JS: if (!ppData) return 0;
         let slot_index = match self.move_slots.iter().position(|s| &s.id == move_id) {

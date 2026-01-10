@@ -586,7 +586,7 @@ pub fn use_move_inner(
     let get_move_targets_result = crate::pokemon::Pokemon::get_move_targets(
         battle,
         pokemon_pos,
-        &active_move.id,
+        &active_move,
         Some(target),
     );
     let targets = get_move_targets_result.targets;
@@ -657,9 +657,11 @@ pub fn use_move_inner(
         }
 
         if extra_pp > 0 {
-            // deduct_pp expects an ID, so extract the ID from the Effect or use the move's ID
+            // Create ActiveMove from move ID for deduct_pp
             let move_id_to_deduct = caller_move_for_pressure.as_ref().map(|e| &e.id).unwrap_or(&move_data.id);
-            battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].deduct_pp(battle.gen, move_id_to_deduct, Some(extra_pp));
+            if let Some(active_move_for_pp) = battle.dex.get_active_move(move_id_to_deduct.as_str()) {
+                battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].deduct_pp(battle.gen, &active_move_for_pp, Some(extra_pp));
+            }
         }
     }
 

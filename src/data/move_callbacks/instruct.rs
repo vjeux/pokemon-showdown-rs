@@ -79,8 +79,10 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
 
-        let move_slot_pp = target_pokemon
-            .get_move_data(&last_move_id)
+        // Create ActiveMove from the ID to pass to get_move_data
+        let last_active_move = battle.dex.get_active_move(last_move_id.as_str());
+        let move_slot_pp = last_active_move.as_ref()
+            .and_then(|am| target_pokemon.get_move_data(am))
             .map(|slot| slot.pp);
 
         (

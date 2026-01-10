@@ -198,7 +198,10 @@ pub fn on_disable_move(
             .and_then(|v| v.move_id.clone())
             .unwrap_or_default();
 
-        let has_move = pokemon.has_move(&locked_move);
+        // Create ActiveMove from ID to call has_move
+        let has_move = battle.dex.get_active_move(locked_move.as_str())
+            .map(|am| pokemon.has_move(&am))
+            .unwrap_or(false);
 
         (is_choice, has_move, locked_move)
     };

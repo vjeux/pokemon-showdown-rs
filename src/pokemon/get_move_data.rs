@@ -1,5 +1,6 @@
 use crate::*;
 use crate::pokemon::MoveSlot;
+use crate::battle_actions::ActiveMove;
 
 impl Pokemon {
 
@@ -15,8 +16,7 @@ impl Pokemon {
     // 		return null;
     // 	}
     //
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
-    pub fn get_move_data(&self, move_id: &ID) -> Option<&MoveSlot> {
-        self.move_slots.iter().find(|slot| &slot.id == move_id)
+    pub fn get_move_data(&self, active_move: &ActiveMove) -> Option<&MoveSlot> {
+        self.move_slots.iter().find(|slot| slot.id == active_move.id)
     }
 }

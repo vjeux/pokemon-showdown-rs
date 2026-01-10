@@ -3,8 +3,8 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::pokemon::GetMoveTargetsResult;
-use crate::dex_data::ID;
 use crate::battle::Effect;
+use crate::battle_actions::ActiveMove;
 
 impl Pokemon {
 
@@ -88,13 +88,13 @@ impl Pokemon {
     // so we take Battle as a parameter instead of accessing this.battle
     // This is an associated function (not instance method) because we need &mut Battle
     // but can't borrow pokemon from battle first due to borrow checker
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn get_move_targets(
         battle: &mut Battle,
         user_pos: (usize, usize),
-        move_id: &ID,
+        active_move: &ActiveMove,
         mut target: Option<(usize, usize)>,
     ) -> GetMoveTargetsResult {
+        let move_id = &active_move.id;
         let mut targets: Vec<(usize, usize)> = Vec::new();
 
         // Get move data to access target and flags

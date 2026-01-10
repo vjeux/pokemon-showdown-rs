@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle_actions::ActiveMove;
 
 impl Pokemon {
 
@@ -15,10 +16,9 @@ impl Pokemon {
     // 		return false;
     // 	}
     //
-    // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
-    pub fn has_move(&self, move_id: &str) -> bool {
+    pub fn has_move(&self, active_move: &ActiveMove) -> bool {
         // JS: moveid = toID(moveid);
-        let mut id = crate::dex_data::to_id(move_id);
+        let mut id = active_move.id.as_str().to_string();
 
         // JS: if (moveid.substr(0, 11) === 'hiddenpower') moveid = 'hiddenpower';
         if id.starts_with("hiddenpower") {

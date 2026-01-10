@@ -389,8 +389,13 @@ impl Battle {
                 item_callbacks::dispatch_on_source_modify_accuracy(self, item_id.as_str(), accuracy, target_pos)
             }
 
-            // TypeScript: onSourceModifyDamage(damage:number, source:Pokemon, target:Pokemon)
+            // TypeScript: onSourceModifyDamage(damage:number, source:Pokemon, target:Pokemon, move:Move)
             "SourceModifyDamage" => {
+                // Move is required for this callback - skip if no active move
+                let active_move = match &active_move_clone {
+                    Some(am) => am,
+                    None => return EventResult::Continue,
+                };
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 let source_pos = pokemon_pos;
                 let target_pos = target_opt.unwrap_or(pokemon_pos);
@@ -400,6 +405,7 @@ impl Battle {
                     damage,
                     source_pos,
                     target_pos,
+                    active_move,
                 )
             }
 

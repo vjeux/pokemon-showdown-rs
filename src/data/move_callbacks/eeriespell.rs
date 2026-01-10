@@ -83,11 +83,17 @@ pub fn on_hit(
     // if (!ppDeducted) return;
     let pp_deducted = {
         let gen = battle.gen;
+        // Create ActiveMove before mutable borrow
+        let active_move_for_pp = battle.dex.get_active_move(actual_move_id.as_str());
         let target_pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.deduct_pp(gen, &actual_move_id, Some(3))
+        if let Some(ref am) = active_move_for_pp {
+            target_pokemon.deduct_pp(gen, am, Some(3))
+        } else {
+            0
+        }
     };
 
     if pp_deducted == 0 {

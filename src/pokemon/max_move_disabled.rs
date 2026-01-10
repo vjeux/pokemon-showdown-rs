@@ -1,4 +1,5 @@
 use crate::*;
+use crate::battle_actions::ActiveMove;
 
 impl Pokemon {
 
@@ -11,10 +12,10 @@ impl Pokemon {
     // 		return !!(baseMove.category === 'Status' && (this.hasItem('assaultvest') || this.volatiles['taunt']));
     // 	}
     //
-    pub fn max_move_disabled(&self, battle: &Battle, base_move_id: &ID) -> bool {
+    pub fn max_move_disabled(&self, battle: &Battle, base_move: &ActiveMove) -> bool {
         // JS: baseMove = this.battle.dex.moves.get(baseMove);
         // JS: if (!this.getMoveData(baseMove.id)?.pp) return true;
-        if let Some(move_data) = self.get_move_data(base_move_id) {
+        if let Some(move_data) = self.get_move_data(base_move) {
             if move_data.pp == 0 {
                 return true;
             }
@@ -24,10 +25,8 @@ impl Pokemon {
         }
 
         // JS: return !!(baseMove.category === 'Status' && (this.hasItem('assaultvest') || this.volatiles['taunt']));
-        if let Some(base_move) = battle.dex.moves().get(base_move_id.as_str()) {
-            if base_move.category == "Status" {
-                return self.has_item(battle, &["assaultvest"]) || self.has_volatile(&ID::new("taunt"));
-            }
+        if base_move.category == "Status" {
+            return self.has_item(battle, &["assaultvest"]) || self.has_volatile(&ID::new("taunt"));
         }
 
         false

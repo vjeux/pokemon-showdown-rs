@@ -26,14 +26,14 @@ pub fn on_base_power(
         None => return EventResult::Continue,
     };
 
-    // Get the active move
-    let move_id = match &battle.active_move {
-        Some(active_move) => active_move.id.clone(),
+    // Get the active move (clone to avoid borrow issues)
+    let active_move_clone = match &battle.active_move {
+        Some(active_move) => active_move.clone(),
         None => return EventResult::Continue,
     };
 
     // if (target.runEffectiveness(move) > 0) {
-    let effectiveness = crate::Pokemon::run_effectiveness(battle, target, &move_id);
+    let effectiveness = crate::Pokemon::run_effectiveness(battle, target, &active_move_clone);
 
     if effectiveness > 0 {
         // this.debug(`collision course super effective buff`);

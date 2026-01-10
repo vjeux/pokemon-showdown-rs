@@ -5,6 +5,7 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
+use crate::battle_actions::ActiveMove;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -12,7 +13,7 @@ use crate::Pokemon;
 ///     if (move.type === 'Dark' && target.getMoveHitData(move).typeMod > 0) {
 ///         const hitSub = target.volatiles['substitute'] && !move.flags['bypasssub'] && !(move.infiltrates && this.gen >= 6);
 ///         if (hitSub) return;
-/// 
+///
 ///         if (target.eatItem()) {
 ///             this.debug('-50% reduction');
 ///             this.add('-enditem', target, this.effect, '[weaken]');
@@ -20,63 +21,39 @@ use crate::Pokemon;
 ///         }
 ///     }
 /// }
-pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), target_pos: (usize, usize)) -> EventResult {
-    // if (move.type === 'Dark' && target.getMoveHitData(move).typeMod > 0) {
-    //     const hitSub = target.volatiles['substitute'] && !move.flags['bypasssub'] && !(move.infiltrates && this.gen >= 6);
-    //     if (hitSub) return;
-    //
-    //     if (target.eatItem()) {
-    //         this.debug('-50% reduction');
-    //         this.add('-enditem', target, this.effect, '[weaken]');
-    //         return this.chainModify(0.5);
-    //     }
-    // }
-
+pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (usize, usize), target_pos: (usize, usize), active_move: &ActiveMove) -> EventResult {
     use crate::dex_data::ID;
 
-    // Check if move.type === 'Dark'
-    let (is_dark_type, bypass_sub, infiltrates) = match &battle.active_move {
-        Some(active_move) => (
-            active_move.move_type == "Dark",
-            active_move.flags.bypasssub,
-            active_move.infiltrates,
-        ),
-        None => return EventResult::Continue,
-    };
-
-    if !is_dark_type {
+    if active_move.move_type != "Dark" {
         return EventResult::Continue;
     }
 
-    // Check type effectiveness against target (typeMod > 0 means super effective)
     let type_effectiveness = {
         let _target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        Pokemon::run_effectiveness(battle, target_pos, &ID::from("Dark"))
+        Pokemon::run_effectiveness(battle, target_pos, active_move)
     };
 
     if type_effectiveness <= 0 {
         return EventResult::Continue;
     }
 
-    // const hitSub = target.volatiles['substitute'] && !move.flags['bypasssub'] && !(move.infiltrates && this.gen >= 6);
     let hit_sub = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
         target.volatiles.contains_key(&ID::from("substitute"))
-            && !bypass_sub
-            && !(infiltrates && battle.gen >= 6)
+            && !active_move.flags.bypasssub
+            && !(active_move.infiltrates && battle.gen >= 6)
     };
 
     if hit_sub {
         return EventResult::Continue;
     }
 
-    // if (target.eatItem())
     let item_eaten = {
         let _target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
@@ -86,10 +63,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
     };
 
     if item_eaten.is_some() {
-        // this.debug('-50% reduction');
         battle.debug("-50% reduction");
-
-        // this.add('-enditem', target, this.effect, '[weaken]');
         let target_ident = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
@@ -98,8 +72,6 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
             target.get_slot()
         };
         battle.add("-enditem", &[target_ident.as_str().into(), "Colbur Berry".into(), "[weaken]".into()]);
-
-        // return this.chainModify(0.5);
         battle.chain_modify(0.5);
     }
 
@@ -111,6 +83,5 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
 ///     gen: 4,
 /// }
 pub fn on_eat(_battle: &mut Battle, _pokemon_pos: (usize, usize)) -> EventResult {
-    // onEat callback has no implementation - just metadata
     EventResult::Continue
 }

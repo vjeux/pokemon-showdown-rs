@@ -60,13 +60,15 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     // Note: debug logging not implemented yet
 
     // if (target.runEffectiveness(move) <= 0 || !target.runImmunity(move))
-    use crate::dex_data::ID;
     use crate::Pokemon;
 
-    let move_id_obj = ID::from(move_id);
-
     // Check type effectiveness: runEffectiveness returns typeMod (0 = neutral, >0 = super effective, <0 = not very effective)
-    let type_effectiveness = Pokemon::run_effectiveness(battle, target_pos, &move_id_obj);
+    // Need to get active_move reference for run_effectiveness
+    let active_move_ref = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
+    };
+    let type_effectiveness = Pokemon::run_effectiveness(battle, target_pos, active_move_ref);
 
     // Check immunity: runImmunity returns true if NOT immune, false if immune
     let move_type = {

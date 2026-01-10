@@ -271,7 +271,7 @@ pub fn modify_damage(
     // let typeMod = target.runEffectiveness(move);
     // typeMod = this.battle.clampIntRange(typeMod, -6, 6);
     // target.getMoveHitData(move).typeMod = typeMod;
-    let mut type_mod = Pokemon::run_effectiveness(battle, target_pos, &active_move.id);
+    let mut type_mod = Pokemon::run_effectiveness(battle, target_pos, active_move);
     type_mod = battle.clamp_int_range(type_mod, Some(-6), Some(6));
     eprintln!("[MODIFY_DAMAGE] Type effectiveness (via run_effectiveness): move_id={}, type_mod={}",
         active_move.id, type_mod);
