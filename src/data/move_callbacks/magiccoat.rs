@@ -156,7 +156,7 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _active_move: Option<&crate::battle_actions::ActiveMove>,
+        active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         let target = match target_pos {
             Some(pos) => pos,
@@ -165,6 +165,12 @@ pub mod condition {
 
         let source = match source_pos {
             Some(pos) => pos,
+            None => return EventResult::Continue,
+        };
+
+        // Get active_move from parameter
+        let active_move_ref = match active_move {
+            Some(m) => m,
             None => return EventResult::Continue,
         };
 
@@ -179,22 +185,12 @@ pub mod condition {
         }
 
         // move.hasBounced
-        let has_bounced = battle
-            .active_move
-            .as_ref()
-            .map(|m| m.has_bounced)
-            .unwrap_or(false);
-        if has_bounced {
+        if active_move_ref.has_bounced {
             return EventResult::Continue;
         }
 
         // !move.flags['reflectable']
-        let is_reflectable = battle
-            .active_move
-            .as_ref()
-            .map(|m| m.flags.reflectable)
-            .unwrap_or(false);
-        if !is_reflectable {
+        if !active_move_ref.flags.reflectable {
             return EventResult::Continue;
         }
 
@@ -209,15 +205,11 @@ pub mod condition {
         // newMove.pranksterBoosted = false;
         // this.actions.useMove(newMove, this.effectState.target, { target: source });
         let (move_data, _effect_state_target) = {
-            let move_id = match &battle.active_move {
-                Some(active_move) => active_move.id.clone(),
-                None => return EventResult::Continue,
-            };
             let effect_state_target = match battle.with_effect_state_ref(|state| state.target).flatten() {
                 Some(t) => t,
                 None => return EventResult::Continue,
             };
-            let move_data = match battle.dex.moves().get(move_id.as_str()).cloned() {
+            let move_data = match battle.dex.moves().get(active_move_ref.id.as_str()).cloned() {
                 Some(m) => m,
                 None => return EventResult::Continue,
             };
@@ -227,8 +219,8 @@ pub mod condition {
         battle.use_move_with_bounced(&move_data, _effect_state_target, Some(source), true, false);
 
         // move.hasBounced = true; // only bounce once in free-for-all battles
-        if let Some(ref mut active_move) = battle.active_move {
-            active_move.has_bounced = true;
+        if let Some(ref mut active_move_mut) = battle.active_move {
+            active_move_mut.has_bounced = true;
         }
 
         // return null;
