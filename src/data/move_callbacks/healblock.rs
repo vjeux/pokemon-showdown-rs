@@ -188,6 +188,7 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // Check if move has heal flag
+        // JavaScript: if (move.flags['heal'] && ...) - checks if flag is truthy, not just present
         let has_heal_flag = {
             let move_id_obj = ID::from(move_id);
             battle
@@ -195,7 +196,7 @@ pub mod condition {
                 .moves
                 .get(&move_id_obj)
                 .and_then(|move_data| move_data.flags.get("heal"))
-                .is_some()
+                .unwrap_or(false)
         };
 
         // Check if move is Z or Max move
@@ -264,13 +265,14 @@ pub mod condition {
         };
 
         // Check if move has heal flag
+        // JavaScript: if (move.flags['heal'] && ...) - checks if flag is truthy, not just present
         let has_heal_flag = {
             battle
                 .dex
                 .moves
                 .get(&move_id)
                 .and_then(|move_data| move_data.flags.get("heal"))
-                .is_some()
+                .unwrap_or(false)
         };
 
         // Check if move is Z or Max move
