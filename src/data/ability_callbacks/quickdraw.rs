@@ -20,7 +20,21 @@ pub fn on_fractional_priority(
     _target_pos: Option<(usize, usize)>,
     active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    // Get move_id from active_move, or fallback to event's source_effect
+    // FractionalPriority is called during action resolution before active_move is set,
+    // so the move is passed via source_effect (4th arg to run_event in JavaScript)
+    let move_id_owned: String;
+    let move_id = if let Some(m) = active_move {
+        m.id.as_str()
+    } else {
+        // Fallback: get move ID from event's source_effect
+        move_id_owned = battle.event.as_ref()
+            .and_then(|e| e.effect.as_ref())
+            .map(|eff| eff.id.to_string())
+            .unwrap_or_default();
+        &move_id_owned
+    };
+
     // Get the move data from move_id
     let is_status = if let Some(move_data) = battle.dex.moves().get(move_id) {
         move_data.category == "Status"
