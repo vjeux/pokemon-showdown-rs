@@ -23,15 +23,18 @@ pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>,
     }
 
     // for (i in boost) { boost[i]! *= 2; }
-    if let Some(ref mut event) = battle.event {
-        if let Some(EventResult::Boost(ref mut boosts)) = event.relay_var {
-            boosts.atk *= 2;
-            boosts.def *= 2;
-            boosts.spa *= 2;
-            boosts.spd *= 2;
-            boosts.spe *= 2;
-            boosts.accuracy *= 2;
-            boosts.evasion *= 2;
+    // Extract boosts from event, double them, and return as EventResult::Boost
+    if let Some(ref event) = battle.event {
+        if let Some(EventResult::Boost(ref boosts)) = event.relay_var {
+            let mut doubled = boosts.clone();
+            doubled.atk *= 2;
+            doubled.def *= 2;
+            doubled.spa *= 2;
+            doubled.spd *= 2;
+            doubled.spe *= 2;
+            doubled.accuracy *= 2;
+            doubled.evasion *= 2;
+            return EventResult::Boost(doubled);
         }
     }
 

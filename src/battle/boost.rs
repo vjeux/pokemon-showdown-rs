@@ -168,19 +168,23 @@ impl Battle {
         }
 
         // JS: boost = this.runEvent('ChangeBoost', target, source, effect, { ...boost });
-        // This event allows abilities/items to modify boost amounts before they're applied
-        // Note: Full boost modification would require infrastructure changes to return modified boosts
-        // For now, we call the event so abilities can react, even if they can't modify the boost amounts
+        // This event allows abilities like Contrary/Simple to modify boost amounts before they're applied
         let effect_obj = effect.map(|e| self.create_effect_from_str(e));
-        self.run_event(
-                "ChangeBoost",
-                Some(crate::event::EventTarget::Pokemon(target)),
+        let change_boost_result = self.run_event(
+            "ChangeBoost",
+            Some(crate::event::EventTarget::Pokemon(target)),
             source,
             effect_obj.as_ref(),
-            EventResult::Continue,
+            EventResult::Boost(boost_table.clone()),
             false,
             false
         );
+
+        // Get the modified boost table from ChangeBoost (e.g., Contrary inverts boosts)
+        let boost_after_change = match change_boost_result {
+            EventResult::Boost(b) => b,
+            _ => boost_table.clone(), // Fall back to original if no boost returned
+        };
 
         // JS: boost = target.getCappedBoost(boost);
         // Clamp boosts to [-6, 6] range - done per-stat below
@@ -188,13 +192,13 @@ impl Battle {
         // JS: boost = this.runEvent('TryBoost', target, source, effect, { ...boost });
         // This event can prevent boosts from being applied (e.g., Clear Body, Keen Eye abilities)
         // The boost table is passed to handlers which can modify it (e.g., set accuracy to 0)
-        let try_boost_result = self.run_event("TryBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_obj.as_ref(), EventResult::Boost(boost_table.clone()), false, false);
+        let try_boost_result = self.run_event("TryBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_obj.as_ref(), EventResult::Boost(boost_after_change.clone()), false, false);
 
         // Get the modified boost table from the event result
         let modified_boost_table = match try_boost_result {
             EventResult::Boost(b) => b,
             EventResult::Null => return false, // JS: if boost is null, return false
-            _ => boost_table.clone(), // Fall back to original if no boost returned
+            _ => boost_after_change.clone(), // Fall back to what ChangeBoost returned if no boost returned
         };
 
         // Convert modified boost table back to a vector of (stat, amount) pairs

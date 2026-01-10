@@ -66,17 +66,18 @@ pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>,
         if let Some(item_data) = battle.dex.items().get(effect_id) {
             if item_data.is_berry {
                 // for (b in boost) { boost[b]! *= 2; }
-                // The boost table is in battle.event.relay_var
-                if let Some(ref mut event) = battle.event {
-                    if let Some(EventResult::Boost(ref mut boost_table)) = event.relay_var {
-                        // Double all boosts
-                        boost_table.atk *= 2;
-                        boost_table.def *= 2;
-                        boost_table.spa *= 2;
-                        boost_table.spd *= 2;
-                        boost_table.spe *= 2;
-                        boost_table.accuracy *= 2;
-                        boost_table.evasion *= 2;
+                // Extract boosts from event, double them, and return as EventResult::Boost
+                if let Some(ref event) = battle.event {
+                    if let Some(EventResult::Boost(ref boosts)) = event.relay_var {
+                        let mut doubled = boosts.clone();
+                        doubled.atk *= 2;
+                        doubled.def *= 2;
+                        doubled.spa *= 2;
+                        doubled.spd *= 2;
+                        doubled.spe *= 2;
+                        doubled.accuracy *= 2;
+                        doubled.evasion *= 2;
+                        return EventResult::Boost(doubled);
                     }
                 }
             }

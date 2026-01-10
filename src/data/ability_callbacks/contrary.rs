@@ -23,15 +23,18 @@ pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>,
     }
 
     // for (i in boost) { boost[i]! *= -1; }
-    if let Some(ref mut event) = battle.event {
-        if let Some(crate::event::EventResult::Boost(ref mut boosts)) = event.relay_var {
-            boosts.atk *= -1;
-            boosts.def *= -1;
-            boosts.spa *= -1;
-            boosts.spd *= -1;
-            boosts.spe *= -1;
-            boosts.accuracy *= -1;
-            boosts.evasion *= -1;
+    // Extract boosts from event, invert them, and return as EventResult::Boost
+    if let Some(ref event) = battle.event {
+        if let Some(crate::event::EventResult::Boost(ref boosts)) = event.relay_var {
+            let mut inverted = boosts.clone();
+            inverted.atk *= -1;
+            inverted.def *= -1;
+            inverted.spa *= -1;
+            inverted.spd *= -1;
+            inverted.spe *= -1;
+            inverted.accuracy *= -1;
+            inverted.evasion *= -1;
+            return EventResult::Boost(inverted);
         }
     }
 
