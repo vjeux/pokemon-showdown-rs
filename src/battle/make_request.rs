@@ -46,9 +46,9 @@ impl Battle {
         let req_type = if let Some(rt) = request_type {
             self.request_state = rt;
             // JS: for (const side of this.sides) { side.clearChoice(); }
-            // CRITICAL: In JavaScript, side.requestState mirrors battle.requestState
-            // We need to set it here so side.isChoiceDone() can read it
             for side in &mut self.sides {
+                // Set temporary request_state for clearChoice
+                // This will be updated below based on the actual request
                 side.request_state = match rt {
                     BattleRequestState::Move => RequestState::Move,
                     BattleRequestState::Switch => RequestState::Switch,
@@ -90,7 +90,24 @@ impl Battle {
         let requests = self.get_requests();
         for i in 0..self.sides.len() {
             // Convert serde_json::Value to BattleRequest
-            if let Ok(request) = serde_json::from_value(requests[i].clone()) {
+            if let Ok(request) = serde_json::from_value::<crate::choice::BattleRequest>(requests[i].clone()) {
+                // CRITICAL: In JavaScript, side.requestState is a GETTER that derives from activeRequest:
+                //   get requestState(): RequestState {
+                //       if (!this.activeRequest || this.activeRequest.wait) return '';
+                //       if (this.activeRequest.teamPreview) return 'teampreview';
+                //       if (this.activeRequest.forceSwitch) return 'switch';
+                //       return 'move';
+                //   }
+                // We must replicate this logic here using request_type:
+                use crate::choice::RequestType;
+                let side_request_state = match request.request_type {
+                    RequestType::Wait => RequestState::None,
+                    RequestType::TeamPreview => RequestState::TeamPreview,
+                    RequestType::Switch => RequestState::Switch,
+                    RequestType::Move => RequestState::Move,
+                };
+
+                self.sides[i].request_state = side_request_state;
                 self.sides[i].active_request = Some(request);
             }
         }

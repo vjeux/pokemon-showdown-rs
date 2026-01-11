@@ -263,7 +263,43 @@ for (let i = 1; i <= 100; i++) {
     printBattleState(battle, i);
 
     console.error(`>>> Making choices for turn ${battle.turn}...`);
+
+    // Debug: log choices at iterations 6-10
+    if (i >= 6 && i <= 10) {
+        console.error(`[CHOICE_DEBUG] Before makeChoices (iteration ${i}):`);
+        console.error(`[CHOICE_DEBUG]   P1 requestState=${battle.sides[0].requestState}, actions=${battle.sides[0].choice.actions.length}`);
+        console.error(`[CHOICE_DEBUG]   P2 requestState=${battle.sides[1].requestState}, actions=${battle.sides[1].choice.actions.length}`);
+        battle.sides[0].choice.actions.forEach((a, idx) => {
+            console.error(`[CHOICE_DEBUG]     P1 action[${idx}]: ${a.choice} ${a.move ? a.move.id : a.moveid || ''}`);
+        });
+        battle.sides[1].choice.actions.forEach((a, idx) => {
+            console.error(`[CHOICE_DEBUG]     P2 action[${idx}]: ${a.choice} ${a.move ? a.move.id : a.moveid || ''}`);
+        });
+        console.error(`[CHOICE_DEBUG]   Queue size: ${battle.queue.list.length}`);
+        battle.queue.list.forEach((a, idx) => {
+            if (a.choice === 'move') {
+                console.error(`[CHOICE_DEBUG]     Queue[${idx}]: ${a.choice} ${a.moveid || a.move?.id || ''} by ${a.pokemon?.name || '?'}`);
+            } else {
+                console.error(`[CHOICE_DEBUG]     Queue[${idx}]: ${a.choice}`);
+            }
+        });
+    }
+
     battle.makeChoices('default', 'default');
+
+    // Debug: log choices after makeChoices at iterations 6-10
+    if (i >= 6 && i <= 10) {
+        console.error(`[CHOICE_DEBUG] After makeChoices (iteration ${i}):`);
+        console.error(`[CHOICE_DEBUG]   P1 actions=${battle.sides[0].choice.actions.length}`);
+        console.error(`[CHOICE_DEBUG]   P2 actions=${battle.sides[1].choice.actions.length}`);
+        battle.sides[0].choice.actions.forEach((a, idx) => {
+            console.error(`[CHOICE_DEBUG]     P1 action[${idx}]: ${a.choice} ${a.move ? a.move.id : a.moveid || ''}`);
+        });
+        battle.sides[1].choice.actions.forEach((a, idx) => {
+            console.error(`[CHOICE_DEBUG]     P2 action[${idx}]: ${a.choice} ${a.move ? a.move.id : a.moveid || ''}`);
+        });
+        console.error(`[CHOICE_DEBUG]   Queue size after: ${battle.queue.list.length}`);
+    }
 
     const prngAfter = totalPrngCalls;
 

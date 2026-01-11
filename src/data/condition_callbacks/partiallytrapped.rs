@@ -182,13 +182,14 @@ pub fn on_residual(
     };
 
     // JavaScript: if (source && (!source.isActive || source.hp <= 0 || !source.activeTurns) && !gmaxEffect)
-    // Check if source Pokemon has fainted or is no longer active
+    // Check if source Pokemon has fainted, is no longer active, or has no active turns
     // G-Max traps (gmaxcentiferno, gmaxsandblast) continue even after source faints
     if let Some((source_side, source_poke)) = source_pos {
         let source_invalid = {
             if let Some(source) = battle.pokemon_at(source_side, source_poke) {
-                // Check if source is fainted (hp <= 0) or not active
-                source.hp == 0 || source.fainted
+                // Check if source is fainted (hp <= 0), not active, or has no active turns
+                // JS: !source.isActive || source.hp <= 0 || !source.activeTurns
+                !source.is_active || source.hp == 0 || source.fainted || source.active_turns == 0
             } else {
                 // Source doesn't exist anymore
                 true
@@ -308,10 +309,11 @@ pub fn on_trap_pokemon(
     };
 
     // Check if source is active
+    // JavaScript: this.effectState.source?.isActive
     let source_active = if let Some((source_side, source_poke)) = source_pos {
         if let Some(source) = battle.pokemon_at(source_side, source_poke) {
-            // Check if source is active
-            !source.fainted && source.hp > 0
+            // Check if source is active (the is_active field matches JS's isActive property)
+            source.is_active
         } else {
             false
         }
