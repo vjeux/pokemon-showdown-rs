@@ -571,11 +571,19 @@ pub fn get_damage(
         eprintln!("[GET_DAMAGE] BEFORE ModifyAtk: attack={}", attack);
         match battle.run_event("ModifyAtk", Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(attack), false, false) {
             EventResult::Number(n) => attack = n,
+            EventResult::Float(multiplier) => {
+                attack = battle.modify_f(attack, multiplier);
+                eprintln!("[GET_DAMAGE] ModifyAtk Float multiplier {}x applied: attack={}", multiplier, attack);
+            }
             _ => {}
         }
         eprintln!("[GET_DAMAGE] AFTER ModifyAtk: attack={}", attack);
         match battle.run_event("ModifyDef", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(defense), false, false) {
             EventResult::Number(n) => defense = n,
+            EventResult::Float(multiplier) => {
+                defense = battle.modify_f(defense, multiplier);
+                eprintln!("[GET_DAMAGE] ModifyDef Float multiplier {}x applied: defense={}", multiplier, defense);
+            }
             _ => {}
         }
     } else {
@@ -585,12 +593,21 @@ pub fn get_damage(
                 eprintln!("[GET_DAMAGE] AFTER ModifySpA: attack changed from {} to {}", attack, n);
                 attack = n;
             },
+            EventResult::Float(multiplier) => {
+                let old_attack = attack;
+                attack = battle.modify_f(attack, multiplier);
+                eprintln!("[GET_DAMAGE] AFTER ModifySpA: Float multiplier {}x applied, attack changed from {} to {}", multiplier, old_attack, attack);
+            }
             _ => {
                 eprintln!("[GET_DAMAGE] AFTER ModifySpA: no change, attack={}", attack);
             }
         }
         match battle.run_event("ModifySpD", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(defense), false, false) {
             EventResult::Number(n) => defense = n,
+            EventResult::Float(multiplier) => {
+                defense = battle.modify_f(defense, multiplier);
+                eprintln!("[GET_DAMAGE] ModifySpD Float multiplier {}x applied: defense={}", multiplier, defense);
+            }
             _ => {}
         }
     }
