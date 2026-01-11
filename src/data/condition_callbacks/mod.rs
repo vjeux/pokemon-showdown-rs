@@ -579,6 +579,26 @@ pub fn dispatch_on_modify_spe(
     }
 }
 
+/// Dispatch onModifyAccuracy callbacks for conditions (like Gravity)
+/// JavaScript: condition.onModifyAccuracy(accuracy, target, source, move)
+pub fn dispatch_on_modify_accuracy(
+    battle: &mut Battle,
+    condition_id: &str,
+    accuracy: i32,
+    _target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
+) -> EventResult {
+    use crate::data::move_callbacks::gravity;
+
+    match condition_id {
+        "gravity" => gravity::condition::on_modify_accuracy(battle, accuracy),
+        _ => {
+            // Fallback to move-embedded condition callbacks
+            move_callbacks::dispatch_condition_on_modify_accuracy(battle, None, accuracy)
+        }
+    }
+}
+
 /// Dispatch onModifySpA callbacks for conditions
 pub fn dispatch_on_modify_sp_a(
     battle: &mut Battle,

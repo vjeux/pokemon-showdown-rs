@@ -295,6 +295,15 @@ impl Battle {
                 }).unwrap_or(0);
                 condition_callbacks::dispatch_on_modify_spe(self, condition_id, spe, pokemon_pos)
             }
+            "ModifyAccuracy" => {
+                // Gravity's onModifyAccuracy boosts accuracy of all moves by 5/3
+                let accuracy = self.event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                condition_callbacks::dispatch_on_modify_accuracy(self, condition_id, accuracy, pokemon_pos, source_pos)
+            }
             "ModifyCritRatio" => {
                 // Extract crit_ratio from relay_var and source_pos from event
                 // gmaxchistrike, focusenergy, dragoncheer, laserfocus - move-embedded conditions
