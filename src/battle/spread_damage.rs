@@ -231,13 +231,14 @@ impl Battle {
 
                 // Fire Damage event
                 // JavaScript: targetDamage = this.runEvent('Damage', target, source, effect, targetDamage, true);
+                // The 6th parameter (true) is onEffect - this allows the move's own onDamage callback to run
                 let event_result = self.run_event(
                 "Damage",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
                     source,
                     effect,
                     EventResult::Number(target_damage),
-                    false,
+                    true,   // onEffect: include the move's onDamage callback (e.g., False Swipe)
                     false,
                 );
 
