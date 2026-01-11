@@ -40,6 +40,17 @@ impl Battle {
         static CALL_COUNTER: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
         let call_id = CALL_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
 
+        // Debug immediately at entry
+        eprintln!("[TURN_LOOP_ENTRY #{}] Queue contents at very start:", call_id);
+        for (i, action) in self.queue.list.iter().enumerate() {
+            match action {
+                Action::Move(m) => eprintln!("[TURN_LOOP_ENTRY]   [{}] Move: {} from ({}, {})", i, m.move_id.as_str(), m.side_index, m.pokemon_index),
+                Action::Switch(s) => eprintln!("[TURN_LOOP_ENTRY]   [{}] Switch: pokemon {}", i, s.pokemon_index),
+                Action::Field(f) => eprintln!("[TURN_LOOP_ENTRY]   [{}] Field: {:?}", i, f.choice),
+                _ => eprintln!("[TURN_LOOP_ENTRY]   [{}] Other", i),
+            }
+        }
+
         eprintln!("[TURN_LOOP #{}] Entry: turn={}, mid_turn={}, request_state={:?}, queue_size={}",
             call_id, self.turn, self.mid_turn, self.request_state, self.queue.list.len());
 

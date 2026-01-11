@@ -126,6 +126,11 @@ impl BattleQueue {
         battle: &mut Battle,
         mid_turn: bool,
     ) -> Vec<Action> {
+        // Debug: trace what action is being resolved
+        if let Action::Move(ref m) = action {
+            eprintln!("[RESOLVE_ACTION] Entry: move={}, choice={:?}, mid_turn={}", m.move_id.as_str(), m.choice, mid_turn);
+        }
+
         // JS: if (action.choice === 'pass') return [];
         if let Action::Field(ref field_action) = action {
             if field_action.choice == FieldActionType::Pass {
@@ -486,7 +491,18 @@ impl BattleQueue {
 
         // JS: return actions as any;
         // Prepend prefix_actions to the main action
-        prefix_actions.push(action);
+        prefix_actions.push(action.clone());
+
+        // Debug: trace what actions are being returned
+        if let Action::Move(ref m) = action {
+            eprintln!("[RESOLVE_ACTION] Exit: move={}, returning {} actions", m.move_id.as_str(), prefix_actions.len());
+            for (i, act) in prefix_actions.iter().enumerate() {
+                if let Action::Move(ref ma) = act {
+                    eprintln!("[RESOLVE_ACTION]   [{}] move={}, choice={:?}", i, ma.move_id.as_str(), ma.choice);
+                }
+            }
+        }
+
         prefix_actions
     }
 }

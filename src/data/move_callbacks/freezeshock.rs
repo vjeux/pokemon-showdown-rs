@@ -26,6 +26,8 @@ pub fn on_try_move(
 ) -> EventResult {
     use crate::dex_data::ID;
 
+    eprintln!("[FREEZESHOCK_ONTRYMOVE] turn={}, pokemon=({},{})", battle.turn, source_pos.0, source_pos.1);
+
     // onTryMove(attacker, defender, move) {
     //     if (attacker.removeVolatile(move.id)) {
     //         return;
@@ -46,20 +48,28 @@ pub fn on_try_move(
     let move_id = {
         let active_move = match &battle.active_move {
             Some(active_move) => active_move,
-            None => return EventResult::Continue,
+            None => {
+                eprintln!("[FREEZESHOCK_ONTRYMOVE] ERROR: active_move is None, returning Continue");
+                return EventResult::Continue;
+            }
         };
         active_move.id.clone()
     };
+
+    eprintln!("[FREEZESHOCK_ONTRYMOVE] Got move_id={}", move_id.as_str());
 
     let has_volatile = {
         let pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
+        eprintln!("[FREEZESHOCK_ONTRYMOVE] Checking for volatile '{}'. has_volatile={}", move_id.as_str(), pokemon.has_volatile(&move_id));
+        eprintln!("[FREEZESHOCK_ONTRYMOVE] All volatiles: {:?}", pokemon.volatiles.keys().map(|k| k.as_str()).collect::<Vec<_>>());
         pokemon.has_volatile(&move_id)
     };
 
     if has_volatile {
+        eprintln!("[FREEZESHOCK_ONTRYMOVE] Found volatile, removing and returning Continue");
         Pokemon::remove_volatile(battle, attacker, &move_id);
         return EventResult::Continue;
     }
