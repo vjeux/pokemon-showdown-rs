@@ -14,15 +14,13 @@ use crate::pokemon::Pokemon;
 ///     if (this.randomChance(1, 2)) return;
 ///     target.addVolatile('yawn');
 /// }
+/// JavaScript signature: onHit(target) - TARGET IS FIRST PARAMETER
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    let target = target_pos;
 
     // if (target.status || !target.runStatusImmunity('slp')) return;
     let has_status = {

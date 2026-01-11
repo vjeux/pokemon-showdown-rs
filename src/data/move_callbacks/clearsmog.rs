@@ -11,16 +11,15 @@ use crate::event::EventResult;
 ///     target.clearBoosts();
 ///     this.add('-clearboost', target);
 /// }
+/// JavaScript signature: onHit(target, source, move) - TARGET FIRST
+/// dispatch_on_hit passes: (target_pos, source_pos)
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // Get the target
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    // Get the target (first parameter)
+    let target = target_pos;
 
     // target.clearBoosts();
     {

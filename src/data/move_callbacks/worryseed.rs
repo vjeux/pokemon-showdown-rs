@@ -35,7 +35,7 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
     };
 
     if ability_id == ID::from("truant") || ability_id == ID::from("insomnia") {
-        return EventResult::NotFail;
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue
@@ -84,17 +84,18 @@ pub fn on_try_hit(
 ///     if (!oldAbility) return oldAbility as false | null;
 ///     if (target.status === 'slp') target.cureStatus();
 /// }
+/// JavaScript signature: onHit(target, source, move) - TARGET FIRST
+/// dispatch_on_hit passes: (target_pos, source_pos)
+/// So first param is the target, second param is the source
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     use crate::dex_data::ID;
 
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    // The target is the Pokemon being hit (first parameter)
+    let target = target_pos;
 
     // const oldAbility = target.setAbility('insomnia');
     // if (!oldAbility) return oldAbility as false | null;

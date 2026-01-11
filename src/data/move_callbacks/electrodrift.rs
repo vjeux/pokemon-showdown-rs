@@ -14,6 +14,7 @@ use crate::event::EventResult;
 ///         return this.chainModify([5461, 4096]);
 ///     }
 /// }
+/// Note: dispatch_on_base_power passes parameters where the SECOND param is target
 pub fn on_base_power(
     battle: &mut Battle,
     _base_power: i32,

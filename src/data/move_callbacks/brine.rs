@@ -12,13 +12,14 @@ use crate::event::EventResult;
 ///         return this.chainModify(2);
 ///     }
 /// }
+/// Note: dispatch_on_base_power passes parameters where the SECOND param is target
 pub fn on_base_power(
     battle: &mut Battle,
     _base_power: i32,
     _pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // Get the target
+    // Get the target (second positional param from dispatch)
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -34,8 +35,8 @@ pub fn on_base_power(
     //     return this.chainModify(2);
     // }
     if target_pokemon.hp * 2 <= target_pokemon.maxhp {
-        let result = battle.chain_modify(2.0);
-        return EventResult::Number(result);
+        // chainModify modifies the internal modifier, then return Continue
+        battle.chain_modify(2.0);
     }
 
     EventResult::Continue

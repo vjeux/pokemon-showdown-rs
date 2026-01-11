@@ -14,13 +14,15 @@ use crate::event::EventResult;
 ///         return this.chainModify([5461, 4096]);
 ///     }
 /// }
+/// Note: dispatch_on_base_power passes parameters where the SECOND param is target
+/// (This is a quirk of how handle_move_event calls it)
 pub fn on_base_power(
     battle: &mut Battle,
     _base_power: i32,
     _pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // Get the target
+    // Get the target (second positional param from dispatch)
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -40,8 +42,9 @@ pub fn on_base_power(
         battle.debug("collision course super effective buff");
 
         // return this.chainModify([5461, 4096]);
-        let result = battle.chain_modify_fraction(5461, 4096);
-        return EventResult::Number(result);
+        // Note: chain_modify_fraction modifies the internal modifier, then we return Continue
+        // to let the modifier be applied at the end of the event
+        battle.chain_modify_fraction(5461, 4096);
     }
 
     EventResult::Continue

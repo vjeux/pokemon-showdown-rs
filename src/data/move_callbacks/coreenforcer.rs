@@ -14,16 +14,14 @@ use crate::pokemon::Pokemon;
 ///     if (target.newlySwitched || this.queue.willMove(target)) return;
 ///     target.addVolatile('gastroacid');
 /// }
+/// JavaScript signature: onHit(target, source, move) - TARGET FIRST
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // Get the target
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    // Get the target (first parameter)
+    let target = target_pos;
 
     // if (target.getAbility().flags['cantsuppress']) return;
     let cant_suppress = {

@@ -55,6 +55,19 @@ impl Battle {
 
                 // BasePower event is for abilities/items to modify base power
                 // Note: basePowerCallback is handled in getDamage, not here
+                //
+                // JavaScript: onBasePower(basePower, source, target, move)
+                // run_event is called from get_damage.rs as:
+                //   run_event("BasePower", EventTarget::Pokemon(source_pos), Some(target_pos), ...)
+                // So:
+                //   target (EventTarget) contains the SOURCE (attacker)
+                //   source_pos contains the TARGET (defender) - naming is confusing!
+                //
+                // dispatch_on_base_power signature is (target_pos, source_pos) but
+                // the callbacks were written expecting the SECOND param to be target.
+                // So we pass (source_pos, target_pos) to match the callback expectations:
+                //   - First param (named target_pos in dispatch but unused by callbacks)
+                //   - Second param (named source_pos in dispatch) = actual target (defender)
                 let result = move_callbacks::dispatch_on_base_power(self, active_move_clone.as_ref(), base_power, target_pos.unwrap_or((0,0)), source_pos);
                 result
             }
