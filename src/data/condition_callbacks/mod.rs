@@ -495,6 +495,9 @@ pub fn dispatch_on_lock_move(
     match condition_id {
         "lockedmove" => lockedmove::on_lock_move(battle, pokemon_pos),
         "twoturnmove" => twoturnmove::on_lock_move(battle, pokemon_pos),
+        // Uproar locks the user into using Uproar
+        // JavaScript: onLockMove: 'uproar'
+        "uproar" => EventResult::String("uproar".to_string()),
         _ => EventResult::Continue,
     }
 }
