@@ -71,64 +71,53 @@ pub mod condition {
     pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         use crate::dex_data::ID;
 
-        eprintln!("[LEECH SEED] on_residual called for pokemon_pos={:?}", pokemon_pos);
-
         let pokemon = pokemon_pos;
 
         // const target = this.getAtSlot(pokemon.volatiles['leechseed'].sourceSlot);
-        let source_slot = {
+        // sourceSlot stores the slot index (0, 1, etc.) and source stores (side_idx, party_idx)
+        // We need to get the pokemon currently in that active slot, not the original party pokemon
+        let (source_side_idx, source_slot_idx) = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
-                None => {
-                    eprintln!("[LEECH SEED] Failed to get pokemon");
-                    return EventResult::Continue;
-                }
+                None => return EventResult::Continue,
             };
             let leechseed_volatile = match pokemon_pokemon.volatiles.get(&ID::from("leechseed")) {
                 Some(v) => v,
-                None => {
-                    eprintln!("[LEECH SEED] No leechseed volatile found");
-                    return EventResult::Continue;
-                }
+                None => return EventResult::Continue,
             };
-            eprintln!("[LEECH SEED] Found leechseed volatile, source_slot={:?}", leechseed_volatile.source_slot);
-            leechseed_volatile.source_slot
+            // Get the side from source and the slot index from source_slot
+            let source_side = leechseed_volatile.source.map(|(side, _)| side);
+            let slot = leechseed_volatile.source_slot;
+            match (source_side, slot) {
+                (Some(side), Some(slot)) => (side, slot),
+                _ => return EventResult::Continue,
+            }
         };
 
-        let target = match source_slot {
-            Some(slot) => {
-                // Convert slot index to string and pass to get_at_slot
-                let slot_str = slot.to_string();
-                battle.get_at_slot(Some(&slot_str))
-            }
-            None => None,
-        };
-
-        // if (!target || target.fainted || target.hp <= 0) {
-        //     this.debug('Nothing to leech into');
-        //     return;
-        // }
-        let target_pos = match target {
-            Some(pokemon) => (pokemon.side_index, pokemon.position),
-            None => {
-                eprintln!("[LEECH SEED] Nothing to leech into");
-                return EventResult::Continue;
-            }
+        // Look up the pokemon currently in that active slot (like JavaScript's getAtSlot)
+        let target_pos = {
+            let side = match battle.sides.get(source_side_idx) {
+                Some(s) => s,
+                None => return EventResult::Continue,
+            };
+            // Get the party index of the pokemon currently in this slot
+            let party_idx = match side.active.get(source_slot_idx) {
+                Some(Some(idx)) => *idx,
+                _ => return EventResult::Continue,
+            };
+            (source_side_idx, party_idx)
         };
 
         let target_is_alive = {
             let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
-                None => {
-                    eprintln!("[LEECH SEED] Nothing to leech into");
-                    return EventResult::Continue;
-                }
+                None => return EventResult::Continue,
             };
             !target_pokemon.fainted && target_pokemon.hp > 0
         };
 
         if !target_is_alive {
-            eprintln!("[LEECH SEED] Nothing to leech into");
+            // this.debug('Nothing to leech into');
             return EventResult::Continue;
         }
 
@@ -136,30 +125,20 @@ pub mod condition {
         let damage_amount = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
-                None => {
-                    eprintln!("[LEECH SEED] Failed to get pokemon for damage calc");
-                    return EventResult::Continue;
-                }
+                None => return EventResult::Continue,
             };
             pokemon_pokemon.base_maxhp / 8
         };
 
-        eprintln!("[LEECH SEED] Calling damage({}, {:?}, {:?})", damage_amount, pokemon, target_pos);
         let damage = battle.damage(damage_amount, Some(pokemon), Some(target_pos), None, false);
-        eprintln!("[LEECH SEED] damage() returned {:?}", damage);
 
         // if (damage) {
         //     this.heal(damage, target, pokemon);
         // }
         if let Some(damage_amount) = damage {
             if damage_amount > 0 {
-                eprintln!("[LEECH SEED] Calling heal({}, {:?}, {:?})", damage_amount, target_pos, pokemon);
                 battle.heal(damage_amount, Some(target_pos), Some(pokemon), None);
-            } else {
-                eprintln!("[LEECH SEED] damage_amount is 0, skipping heal");
             }
-        } else {
-            eprintln!("[LEECH SEED] damage is None, skipping heal");
         }
 
         EventResult::Continue
