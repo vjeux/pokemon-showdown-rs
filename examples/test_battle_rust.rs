@@ -264,6 +264,10 @@ fn main() {
         eprintln!(">>> Making choices for turn {}...", battle.turn);
         battle.make_choices(&["default", "default"]);
 
+        // Reset log position to prevent "LINE LIMIT EXCEEDED" check from failing
+        // In JavaScript, this is updated as logs are sent to clients, but in test mode we don't send logs
+        battle.sent_log_pos = battle.log.len();
+
         let prng_after = battle.prng.call_count;
 
         // Get active Pokemon HP

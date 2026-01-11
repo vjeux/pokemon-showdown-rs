@@ -130,7 +130,8 @@ impl Battle {
         }
 
         // JavaScript: if (this.log.length - this.sentLogPos > 1000) throw Error
-        if self.log.len() - self.sent_log_pos > 1000 {
+        let log_len = self.log.len();
+        if log_len > self.sent_log_pos && log_len - self.sent_log_pos > 1000 {
             self.add("message", &["LINE LIMIT EXCEEDED".into()]);
             self.add("message", &["PLEASE REPORT IN BUG THREAD".into()]);
             self.add("message", &[format!("Event: {}", event_id).into()]);
