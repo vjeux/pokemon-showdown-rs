@@ -167,9 +167,19 @@ impl Battle {
             }
         }
 
+        // JS: if (this.event) { effect ||= this.effect; }
+        // When effect is None, fall back to the current effect context (e.g., Intimidate ability)
+        // NOTE: In JS, this.effect is the current effect (set by set_effect_context), NOT this.event.effect
+        let effect_obj: Option<Effect> = if let Some(e) = effect {
+            Some(self.create_effect_from_str(e))
+        } else {
+            // Fall back to self.effect (the current effect context)
+            // This matches JS: effect ||= this.effect
+            self.effect.clone()
+        };
+
         // JS: boost = this.runEvent('ChangeBoost', target, source, effect, { ...boost });
         // This event allows abilities like Contrary/Simple to modify boost amounts before they're applied
-        let effect_obj = effect.map(|e| self.create_effect_from_str(e));
         let change_boost_result = self.run_event(
             "ChangeBoost",
             Some(crate::event::EventTarget::Pokemon(target)),
