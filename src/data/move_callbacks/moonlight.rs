@@ -78,7 +78,8 @@ pub fn on_hit(
         pokemon_pokemon.maxhp
     };
 
-    let heal_amount = (max_hp as f64 * factor).round() as i32;
+    // Use modify_f to match JavaScript's this.modify(pokemon.maxhp, factor)
+    let heal_amount = battle.modify_f(max_hp, factor);
     let heal_result = battle.heal(heal_amount, Some(pokemon), None, None);
     let success = heal_result.unwrap_or(0) > 0;
 
