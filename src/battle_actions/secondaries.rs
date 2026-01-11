@@ -50,23 +50,42 @@ pub fn secondaries(
     // for (const target of targets) {
     for target in targets {
         // if (target === false) continue;
+        // JavaScript only skips `false` targets, NOT `null` targets!
+        // When a substitute is hit, target becomes null but we still process secondaries
+        // (especially self-targeting ones like Steel Wing's defense boost)
         let target_pos = match target {
-            SpreadMoveTarget::Target(pos) => *pos,
-            _ => continue,
+            SpreadMoveTarget::Target(pos) => Some(*pos),
+            SpreadMoveTarget::None => None,  // null - still process secondaries (for self-targeting)
+            SpreadMoveTarget::Failed => continue,  // false - skip secondaries entirely
         };
 
         // const secondaries: Dex.SecondaryEffect[] =
         //     this.battle.runEvent('ModifySecondaries', target, source, moveData, moveData.secondaries.slice());
         // Pass secondaries as the relay value and get the (potentially modified) result back
-        let modify_result = battle.run_event(
-            "ModifySecondaries",
-            Some(crate::event::EventTarget::Pokemon(target_pos)),
-            Some(source_pos),
-            Some(&crate::battle::Effect::move_(move_data.id.clone())),
-            EventResult::Secondaries(move_data.secondaries.clone()),
-            false,
-            false,
-        );
+        // When target is null, JavaScript still calls runEvent with null target
+        let modify_result = if let Some(tpos) = target_pos {
+            battle.run_event(
+                "ModifySecondaries",
+                Some(crate::event::EventTarget::Pokemon(tpos)),
+                Some(source_pos),
+                Some(&crate::battle::Effect::move_(move_data.id.clone())),
+                EventResult::Secondaries(move_data.secondaries.clone()),
+                false,
+                false,
+            )
+        } else {
+            // Target is null - JavaScript passes null to runEvent
+            // We simulate this by not passing a target
+            battle.run_event(
+                "ModifySecondaries",
+                None,  // null target
+                Some(source_pos),
+                Some(&crate::battle::Effect::move_(move_data.id.clone())),
+                EventResult::Secondaries(move_data.secondaries.clone()),
+                false,
+                false,
+            )
+        };
 
         // Extract secondaries from result, or use empty if event blocked them
         let secondaries = match modify_result {
@@ -111,21 +130,29 @@ pub fn secondaries(
             if should_apply {
                 // this.moveHit(target, source, move, secondary, true, isSelf);
                 // Determine the actual target based on secondary.self
+                // When target is null (hit substitute), only self-targeting secondaries apply
                 let effect_target = if secondary.self_secondary.is_some() {
-                    source_pos
+                    Some(source_pos)
+                } else if let Some(tpos) = target_pos {
+                    Some(tpos)
                 } else {
-                    target_pos
+                    // Target is null and secondary doesn't target self - JavaScript still calls moveHit
+                    // with null target, which would fail to apply the effect
+                    // For now, skip non-self effects when target is null
+                    None
                 };
 
-                crate::battle_actions::move_hit(
-                    battle,
-                    &[Some(effect_target)],
-                    source_pos,
-                    move_,
-                    Some(HitEffect::Secondary(&secondary)),
-                    true,  // isSecondary
-                    is_self,
-                );
+                if let Some(et) = effect_target {
+                    crate::battle_actions::move_hit(
+                        battle,
+                        &[Some(et)],
+                        source_pos,
+                        move_,
+                        Some(HitEffect::Secondary(&secondary)),
+                        true,  // isSecondary
+                        is_self,
+                    );
+                }
             }
         }
     }

@@ -28,7 +28,7 @@ pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    source_effect_id: Option<&str>,
 ) -> EventResult {
     // Get target ident
     let target_ident = {
@@ -40,11 +40,13 @@ pub fn on_start(
     };
 
     // if (sourceEffect?.id === 'lockedmove')
-    let is_lockedmove = battle.effect.as_ref().map(|e| e.as_str() == "lockedmove").unwrap_or(false);
+    // JavaScript: sourceEffect is passed as a parameter, not battle.effect (which is the current effect being processed)
+    let is_lockedmove = source_effect_id.map(|e| e == "lockedmove").unwrap_or(false);
 
     // else if (sourceEffect?.effectType === 'Ability')
-    let is_ability = battle.effect.as_ref()
-        .and_then(|eff_id| battle.dex.abilities().get(eff_id.as_str()))
+    // Check if the source effect is an ability by looking it up in the dex
+    let is_ability = source_effect_id
+        .and_then(|eff_id| battle.dex.abilities().get(eff_id))
         .is_some();
 
     if is_lockedmove {
@@ -52,8 +54,8 @@ pub fn on_start(
         battle.add("-start", &[Arg::String(target_ident), Arg::Str("confusion"), Arg::Str("[fatigue]")]);
     } else if is_ability {
         // this.add('-start', target, 'confusion', '[from] ability: ' + sourceEffect.name, `[of] ${source}`);
-        let ability_name = battle.effect.as_ref()
-            .and_then(|eff_id| battle.dex.abilities().get(eff_id.as_str()))
+        let ability_name = source_effect_id
+            .and_then(|eff_id| battle.dex.abilities().get(eff_id))
             .map(|ab| ab.name.clone())
             .unwrap_or_else(|| "Unknown".to_string());
 
@@ -77,7 +79,8 @@ pub fn on_start(
     }
 
     // const min = sourceEffect?.id === 'axekick' ? 3 : 2;
-    let min = if battle.effect.as_ref().map(|e| e.as_str() == "axekick").unwrap_or(false) {
+    // JavaScript: sourceEffect is the parameter passed to onStart, NOT battle.effect
+    let min = if source_effect_id.map(|e| e == "axekick").unwrap_or(false) {
         3
     } else {
         2

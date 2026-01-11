@@ -39,11 +39,11 @@ impl Battle {
         }
 
         // JS: if (!effect && this.effect) effect = this.effect;
-        // Extract effect from self.event before mutable operations
+        // JavaScript's this.effect is the current effect context on the Battle object
+        // (set during handler processing), NOT this.event.effect
         let effect_owned: Option<Effect>;
         let effect = if effect.is_none() {
-            // JavaScript's this.effect is stored in self.event.effect
-            effect_owned = self.event.as_ref().and_then(|e| e.effect.clone());
+            effect_owned = self.effect.clone();
             effect_owned.as_ref()
         } else {
             effect

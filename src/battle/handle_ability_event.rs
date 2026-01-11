@@ -1009,7 +1009,10 @@ impl Battle {
                 ability_callbacks::dispatch_on_update(self, ability_id.as_str(), pokemon_pos)
             },
             "Weather" => {
-                ability_callbacks::dispatch_on_weather(self, ability_id.as_str(), "", pokemon_pos, None, None)
+                // JavaScript: onWeather(target, source, effect)
+                // effect is the weather effect (e.g., sunnyday, desolateland)
+                // This is passed via each_event("Weather") from sunnyday.on_field_residual
+                ability_callbacks::dispatch_on_weather(self, ability_id.as_str(), event_effect_id.as_str(), pokemon_pos, None, None)
             },
             "WeatherChange" => ability_callbacks::dispatch_on_weather_change(
                 self,
