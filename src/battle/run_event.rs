@@ -462,6 +462,24 @@ impl Battle {
             // Convert handler_target to EventTarget for passing to handle_*_event functions
             let handler_target_event = handler_target.map(crate::event::EventTarget::Pokemon);
 
+            // JavaScript: if ((handler.effectHolder as Pokemon).fainted) {
+            //     if (!(handler.state?.isSlotCondition)) continue;
+            // }
+            // Skip handlers from fainted Pokemon (unless it's a slot condition)
+            // Note: This checks .fainted (not hp==0) because faint queue processing
+            // sets .fainted=true. The hp==0 check is only used in allies()/foes()
+            // for finding handlers, not for executing them.
+            if let Some(handler_pos) = handler_target {
+                if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
+                    if pokemon.fainted {
+                        // TODO: Add isSlotCondition check when slot conditions are implemented
+                        // For now, skip all handlers from fainted Pokemon
+                        eprintln!("[RUN_EVENT] Skipping handler from fainted Pokemon at {:?}, effect={}", handler_pos, effect_id);
+                        continue;
+                    }
+                }
+            }
+
             // JavaScript: if (effect.effectType === 'Status' && (effectHolder as Pokemon).status !== effect.id) continue;
             // Check if status has changed
             // IMPORTANT: Only apply this check for Status-type conditions, not Weather/Terrain

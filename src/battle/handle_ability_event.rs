@@ -200,7 +200,7 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 relay_var_int,
-                Some(pokemon_pos),
+                event_target_pos,  // Use event target (Pokemon being attacked), not ability holder
                 event_source_pos,
                 active_move_clone.as_ref(),
             ),
@@ -266,7 +266,7 @@ impl Battle {
             "AnyInvulnerability" => ability_callbacks::dispatch_on_any_invulnerability(
                 self,
                 ability_id.as_str(),
-                Some(pokemon_pos),
+                event_target_pos,  // Use event target (Pokemon being attacked), not ability holder
                 event_source_pos,
                 active_move_clone.as_ref(),
             ),
@@ -274,8 +274,8 @@ impl Battle {
                 ability_callbacks::dispatch_on_any_invulnerability_priority(
                     self,
                     ability_id.as_str(),
-                    Some(pokemon_pos),
-                    None,
+                    event_target_pos,  // Use event target (Pokemon being attacked), not ability holder
+                    event_source_pos,
                     active_move_clone.as_ref(),
                 )
             }

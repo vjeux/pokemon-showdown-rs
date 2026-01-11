@@ -118,9 +118,22 @@ impl Battle {
                 // }
 
                 // Get all active Pokemon on target's side (allies and self)
+                // JavaScript: alliesAndSelf() calls side.allies() which filters out fainted Pokemon (!!ally.hp)
                 if let Some(side) = self.sides.get(target_side) {
                     for poke_idx in side.active.iter().flatten() {
                         let ally_pos = (target_side, *poke_idx);
+
+                        // JavaScript: allies() method filters out fainted Pokemon
+                        // allies(all?: boolean) { ... if (!all) allies = allies.filter(ally => !!ally.hp); ... }
+                        // Note: JavaScript uses !!ally.hp which is false when hp === 0
+                        let ally_has_no_hp = self.pokemon_at(ally_pos.0, ally_pos.1)
+                            .map(|p| p.hp == 0)
+                            .unwrap_or(true); // If not found, treat as fainted
+                        if ally_has_no_hp {
+                            eprintln!("[FIND_EVENT_HANDLERS] Skipping ally with 0 HP at position {:?}", ally_pos);
+                            continue;
+                        }
+
                         // onAlly handlers
                         let ally_event = format!("onAlly{}", event_name);
                         let mut ally_handlers =
@@ -148,6 +161,7 @@ impl Battle {
                 // }
 
                 // Get all active Pokemon on opposing side(s) (foes)
+                // JavaScript: target.foes() filters out fainted Pokemon (!!ally.hp)
                 for (side_idx, side) in self.sides.iter().enumerate() {
                     if side_idx != target_side {
                         eprintln!("[FIND_EVENT_HANDLERS] Looking for onFoe{} handlers, target_side={}, checking opposing side={}",
@@ -155,6 +169,19 @@ impl Battle {
                         eprintln!("[FIND_EVENT_HANDLERS] Opposing side.active = {:?}", side.active);
                         for poke_idx in side.active.iter().flatten() {
                             let foe_pos = (side_idx, *poke_idx);
+
+                            // JavaScript: foes() method filters out fainted Pokemon
+                            // allies(all?: boolean) { ... if (!all) allies = allies.filter(ally => !!ally.hp); ... }
+                            // Note: JavaScript uses !!ally.hp which is false when hp === 0
+                            // We need to check if the foe Pokemon has 0 HP and skip it
+                            let foe_has_no_hp = self.pokemon_at(foe_pos.0, foe_pos.1)
+                                .map(|p| p.hp == 0)
+                                .unwrap_or(true); // If not found, treat as fainted
+                            if foe_has_no_hp {
+                                eprintln!("[FIND_EVENT_HANDLERS] Skipping foe with 0 HP at position {:?}", foe_pos);
+                                continue;
+                            }
+
                             eprintln!("[FIND_EVENT_HANDLERS] Checking foe at position {:?} for onFoe{}", foe_pos, event_name);
                             // onFoe handlers
                             let foe_event = format!("onFoe{}", event_name);
