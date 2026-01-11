@@ -34,6 +34,15 @@ impl<'a> DexMoves<'a> {
     /// Get move by ID
     /// Equivalent to DexMoves.getByID() in dex-moves.ts
     pub fn get_by_id(&self, id: &ID) -> Option<&'a MoveData> {
+        // JS: if (id.startsWith('hiddenpower')) {
+        //         id = /([a-z]*)([0-9]*)/.exec(id)![1] as ID;
+        //     }
+        // Hidden power variants (hiddenpowerdark, hiddenpowerbug, etc.) should use the base
+        // hiddenpower move data so the onModifyType callback fires
+        let id_str = id.as_str();
+        if id_str.starts_with("hiddenpower") {
+            return self.dex.moves.get(&ID::new("hiddenpower"));
+        }
         self.dex.moves.get(id)
     }
 
