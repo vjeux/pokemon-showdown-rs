@@ -20,8 +20,8 @@ use crate::event::EventResult;
 /// ```
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // onHit(target) {
     //     let move: Move | ActiveMove | null = target.lastMove;
@@ -32,10 +32,7 @@ pub fn on_hit(
     //     if (!ppDeducted) return false;
     //     this.add("-activate", target, 'move: Spite', move.name, ppDeducted);
     // }
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    let target = target_pos;
 
     // let move: Move | ActiveMove | null = target.lastMove;
     // if (!move || move.isZ) return false;
