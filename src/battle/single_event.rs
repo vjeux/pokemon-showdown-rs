@@ -242,20 +242,14 @@ impl Battle {
         };
 
         // Set up current effect context
-        // For slot conditions, use the effect's effect_holder (which is the slot position)
-        // rather than target (which is the party index). This is needed so with_effect_state_ref
-        // can look up slot_conditions[slot] correctly.
-        let effect_holder = if effect_type == EffectType::SlotCondition {
-            effect.effect_holder.or(target)
-        } else {
-            target
-        };
+        // For all effect types, effect_holder uses target (party index for Pokemon)
+        // For slot conditions, with_effect_state_ref converts party index to slot position internally
         self.effect = Some(crate::Effect {
             id: effect_id.clone(),
             name: effect_name,
             effect_type,
-            effect_holder,
-            side_index: effect_holder.map(|(side, _)| side),
+            effect_holder: target,
+            side_index: target.map(|(side, _)| side),
             prankster_boosted: false,
         });
 

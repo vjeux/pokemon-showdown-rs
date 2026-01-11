@@ -62,12 +62,15 @@ impl Battle {
                 Some(f(state))
             }
             EffectType::SlotCondition => {
-                // Slot condition state
+                // For slot conditions, effect_holder is (side_idx, party_idx) of the Pokemon
+                // We need to use pokemon.position to look up the slot condition
                 let pos = ctx.effect_holder?;
                 if pos.0 >= self.sides.len() {
                     return None;
                 }
-                let state = self.sides[pos.0].slot_conditions.get_mut(pos.1)?.get_mut(&ctx.id)?;
+                // Get the Pokemon's active position to look up slot_conditions
+                let slot = self.sides.get(pos.0)?.pokemon.get(pos.1)?.position;
+                let state = self.sides[pos.0].slot_conditions.get_mut(slot)?.get_mut(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::Weather => {
@@ -125,11 +128,16 @@ impl Battle {
                 Some(f(state))
             }
             EffectType::SlotCondition => {
+                // For slot conditions, effect_holder is (side_idx, party_idx) of the Pokemon
+                // We need to use pokemon.position to look up the slot condition
                 let pos = ctx.effect_holder?;
                 if pos.0 >= self.sides.len() {
                     return None;
                 }
-                let state = self.sides[pos.0].slot_conditions.get(pos.1)?.get(&ctx.id)?;
+                // Get the Pokemon's active position to look up slot_conditions
+                let pokemon = self.sides.get(pos.0)?.pokemon.get(pos.1)?;
+                let slot = pokemon.position;
+                let state = self.sides[pos.0].slot_conditions.get(slot)?.get(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::Weather => {

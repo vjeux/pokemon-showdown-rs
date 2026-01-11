@@ -288,10 +288,6 @@ impl Battle {
         // JS: const side = pokemon.side;
         // JS: for (const conditionid in side.slotConditions[pokemon.position]) {
         if let Some(slot_conds) = self.sides[side_idx].slot_conditions.get(pokemon.position) {
-            // For slot conditions, the effect_holder needs to use the active position, not party index
-            // because slot_conditions are indexed by active position
-            let slot_holder = (side_idx, pokemon.position);
-
             for (slot_cond_id, slot_cond_state) in slot_conds {
                 // JS: const slotConditionState = side.slotConditions[pokemon.position][conditionid];
                 // JS: const slotCondition = this.dex.conditions.getByID(conditionid as ID);
@@ -309,20 +305,23 @@ impl Battle {
                         .and_then(|c| c.name.clone())
                         .unwrap_or_else(|| slot_cond_id.to_string());
 
+                    // JavaScript sets effectHolder: pokemon - the Pokemon object itself
+                    // We use (side_idx, poke_idx) which is the party index, not the slot position
+                    // with_effect_state_ref will convert to slot position using pokemon.position
                     handlers.push(EventListener {
                     callback_name: String::new(),
                         effect: Effect {
                             id: slot_cond_id.clone(),
                             name: slot_cond_name,
                             effect_type: EffectType::SlotCondition,
-                            effect_holder: Some(slot_holder),
+                            effect_holder: Some(target),  // Party index for callbacks
                             side_index: Some(side_idx),
                             prankster_boosted: false,
                         },
-                        target: Some(target),  // target stays as party index for event dispatch
+                        target: Some(target),  // Party index for event dispatch
                         index: None,
                         state: Some(slot_cond_state.clone()),
-                        effect_holder: Some(slot_holder),  // Uses active position for effect state lookup
+                        effect_holder: Some(target),  // Party index - with_effect_state converts to slot
                         order: None,
                         priority: 0,
                         sub_order: 0,

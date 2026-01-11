@@ -44,16 +44,11 @@ impl Battle {
             .cloned();
 
         // this.battle.singleEvent('End', status, this.slotConditions[target][status.id], this.active[target]);
-        // IMPORTANT: Create effect with effect_holder set to (side_idx, slot) so with_effect_state_ref
-        // can look up slot_conditions[slot] correctly. The target is the party index (for the Pokemon),
-        // but effect_holder must be the active slot position.
-        let mut effect = crate::battle::Effect::slot_condition(id.clone());
-        effect.effect_holder = Some((side_idx, slot));
-        effect.side_index = Some(side_idx);
-
+        // target_pos is the party index of the Pokemon. single_event will set effect_holder = target.
+        // with_effect_state_ref converts party index to slot position internally for slot conditions.
         self.single_event(
             "End",
-            &effect,
+            &crate::battle::Effect::slot_condition(id.clone()),
             state_owned.as_ref(),  // Pass the state so on_end can access hp
             target_pos,
             None,
