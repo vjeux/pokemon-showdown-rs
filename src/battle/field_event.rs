@@ -16,6 +16,7 @@ struct FieldEventHandler {
     sub_order: i32,
     effect_order: i32, // JavaScript: effectOrder (creation order for tie-breaking)
     has_callback: bool, // JavaScript: handler.callback !== undefined
+    callback_name: String, // JavaScript: the callback name without "on" prefix (e.g., "AnySwitchIn" for onAnySwitchIn)
 }
 
 impl Battle {
@@ -87,6 +88,15 @@ impl Battle {
             sub_order,
             effect_order, // JavaScript: effectOrder for tie-breaking
             has_callback,
+            // Store callback name without "on" prefix for dispatch
+            // e.g., "onAnySwitchIn" -> "AnySwitchIn", "onSwitchIn" -> "SwitchIn"
+            callback_name: if is_field {
+                format!("Field{}", event_id)
+            } else if is_side {
+                format!("Side{}", event_id)
+            } else {
+                callback_name.strip_prefix("on").unwrap_or(callback_name).to_string()
+            },
         }
     }
 
@@ -649,13 +659,8 @@ impl Battle {
             // JS: let handlerEventid = eventid;
             //     if ((handler.effectHolder as Side).sideConditions) handlerEventid = `Side${eventid}`;
             //     if ((handler.effectHolder as Field).pseudoWeather) handlerEventid = `Field${eventid}`;
-            let handler_event_id = if handler.is_side {
-                format!("Side{}", event_id)
-            } else if handler.is_field {
-                format!("Field{}", event_id)
-            } else {
-                event_id.to_string()
-            };
+            // Use the callback_name stored in the handler - this correctly handles "AnySwitchIn" for onAnySwitchIn handlers
+            let handler_event_id = handler.callback_name.clone();
 
             // JS: if (handler.callback) {
             //         this.singleEvent(handlerEventid, effect, handler.state, handler.effectHolder, null, null, undefined, handler.callback);

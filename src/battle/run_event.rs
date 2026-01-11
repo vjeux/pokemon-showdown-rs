@@ -610,6 +610,8 @@ impl Battle {
                     // Set up effect_state so ability callbacks can access it
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
+                    // JavaScript: this.effectState.target = effectHolder;
+                    self.effect_state.target = handler_target;
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
@@ -626,6 +628,8 @@ impl Battle {
                     // Set up effect_state so item callbacks can access it
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
+                    // JavaScript: this.effectState.target = effectHolder;
+                    self.effect_state.target = handler_target;
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
@@ -643,6 +647,8 @@ impl Battle {
                     // Set up effect_state so condition callbacks can access it
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
+                    // JavaScript: this.effectState.target = effectHolder;
+                    self.effect_state.target = handler_target;
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
