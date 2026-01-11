@@ -458,7 +458,7 @@ Seed 448: ✓ PASS (100%) - 82/82 turns
 Seed 449: ✗ FAIL (88%) - 75/85 turns
 Seed 450: ✗ FAIL (37%) - 30/79 turns
 Seed 451: ✓ PASS (100%) - 83/83 turns
-Seed 452: ✗ FAIL (70%) - 21/30 turns
+Seed 452: ✓ PASS (100%) - 30/30 turns
 Seed 453: ✗ FAIL (44%) - 44/100 turns
 Seed 454: ✓ PASS (100%) - 35/35 turns
 Seed 455: ✓ PASS (100%) - 82/82 turns
@@ -512,9 +512,9 @@ Seed 500: ✓ PASS (100%) - 98/98 turns
 Summary
 =======================================
 Total seeds tested: 500
-Passed (100%): 437
-Failed (<100%): 63
+Passed (100%): 438
+Failed (<100%): 62
 
-Average pass rate: 94%
+Average pass rate: 95%
 
 ✗ Some seeds failed

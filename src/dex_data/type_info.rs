@@ -394,9 +394,12 @@ fn get_type_chart(id: &str) -> Option<HashMap<String, u8>> {
 }
 
 fn get_all_types(gen: u8) -> Vec<TypeInfo> {
+    // IMPORTANT: This order must match JavaScript's TypeChart object key iteration order
+    // which is alphabetical. This affects sample() results in moves like Conversion 2.
     let type_ids = [
-        "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground",
-        "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy",
+        "bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying",
+        "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock",
+        "steel", "water",
     ];
 
     type_ids
