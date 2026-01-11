@@ -80,8 +80,18 @@ pub mod condition {
             pokemon_data.maxhp
         };
 
-        let multiplier = 2_i32.pow(type_mod as u32);
-        let damage_amount = (max_hp * multiplier) / 8;
+        // JavaScript uses 2 ** typeMod which handles negative exponents as fractions
+        // e.g., 2 ** -2 = 0.25, so maxhp * 0.25 / 8 = maxhp / 32
+        // In Rust, we need to handle negative typeMod specially
+        let damage_amount = if type_mod >= 0 {
+            // Positive: multiply by 2^typeMod
+            let multiplier = 1_i32 << type_mod;
+            (max_hp * multiplier) / 8
+        } else {
+            // Negative: divide by 2^(-typeMod)
+            let divisor = 1_i32 << (-type_mod);
+            max_hp / (8 * divisor)
+        };
         battle.damage(damage_amount, Some(pokemon), None, None, false);
 
         EventResult::Continue
