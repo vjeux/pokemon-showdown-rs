@@ -144,13 +144,14 @@ pub mod self_callbacks {
 
         let source_side_idx = source.0;
 
-        // Get list of foe side indices that have conditions
+        // Get list of foe side indices
+        // Note: foeSidesWithConditions() returns all foe sides, not just those with existing conditions
         let foe_side_indices: Vec<usize> = {
             let source_side = &battle.sides[source_side_idx];
             battle.sides
                 .iter()
                 .enumerate()
-                .filter(|(idx, side)| *idx != source_side.n && !side.side_conditions.is_empty())
+                .filter(|(idx, _side)| *idx != source_side.n)
                 .map(|(idx, _)| idx)
                 .collect()
         };
