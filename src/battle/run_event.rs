@@ -622,7 +622,9 @@ impl Battle {
                 EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain
                 | EffectType::SideCondition | EffectType::SlotCondition => {
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
-                    // Set up effect so callbacks can use with_effect_state
+                    // Set up effect_state so condition callbacks can access it
+                    let parent_effect_state = std::mem::take(&mut self.effect_state);
+                    self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
@@ -630,6 +632,7 @@ impl Battle {
 
                     // Restore parent effect context
                     self.restore_effect_context(parent_effect);
+                    self.effect_state = parent_effect_state;
 
                     result
                 }

@@ -121,14 +121,16 @@ impl Pokemon {
         // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's item field
         let use_item_result = battle.run_event("UseItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
-        if matches!(use_item_result, EventResult::Number(0)) || matches!(use_item_result, EventResult::Null) {
+        // Check for falsy results: Boolean(false), Number(0), Null, or Stop
+        if matches!(use_item_result, EventResult::Boolean(false) | EventResult::Number(0) | EventResult::Null | EventResult::Stop) {
             return None; // false in JavaScript
         }
 
         // Check TryEatItem unless forced
         if !_is_forced {
             let try_eat_result = battle.run_event("TryEatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
-            if matches!(try_eat_result, EventResult::Number(0)) || matches!(try_eat_result, EventResult::Null) {
+            // Check for falsy results: Boolean(false), Number(0), Null, or Stop
+            if matches!(try_eat_result, EventResult::Boolean(false) | EventResult::Number(0) | EventResult::Null | EventResult::Stop) {
                 return None; // false in JavaScript
             }
         }

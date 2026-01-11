@@ -35,10 +35,13 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 /// }
 pub fn on_try_eat_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.runEvent('TryHeal', pokemon, null, this.effect, 10)) return false;
+    // JS runEvent returns the relay value (10) if not blocked, or false if blocked
+    // We need to check if the result is falsy (Boolean(false) or Null)
 
     let result = battle.run_event("TryHeal", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Number(10), false, false);
 
-    if matches!(result, EventResult::Null | EventResult::Continue) {
+    // Only return false if the event explicitly returned false or was blocked
+    if matches!(result, EventResult::Boolean(false) | EventResult::Null | EventResult::Stop) {
         return EventResult::Boolean(false);
     }
 

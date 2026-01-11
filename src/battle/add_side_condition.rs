@@ -69,6 +69,17 @@ impl Battle {
         state.source = source_pos;
         state.created_turn = Some(self.turn); // Track when condition was added
 
+        // Set target to the side's first active position
+        // This is used by side condition callbacks like Light Screen that check this.effectState.target.hasAlly(target)
+        // In JS, effectState.target for side conditions refers to the side, and side.hasAlly() checks side membership
+        // In Rust, we use a position on that side so is_ally() can check if another Pokemon is on the same side
+        if side_idx < self.sides.len() && !self.sides[side_idx].active.is_empty() {
+            // Get the party index of the first active Pokemon on this side
+            if let Some(party_idx) = self.sides[side_idx].active[0] {
+                state.target = Some((side_idx, party_idx));
+            }
+        }
+
         // If source exists, add source_slot field
         if let Some(source) = source_pos {
             if let Some(source_pokemon) = self.pokemon_at(source.0, source.1) {
