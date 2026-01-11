@@ -158,7 +158,7 @@ pub mod condition {
         };
 
         // if (move.type === 'Psychic' && attacker.isGrounded() && !attacker.isSemiInvulnerable()) {
-        if move_type == "psychic" {
+        if move_type.eq_ignore_ascii_case("Psychic") {
             let is_grounded = {
                 let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                     Some(p) => p,

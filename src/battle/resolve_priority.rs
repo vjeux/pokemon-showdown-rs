@@ -37,8 +37,8 @@ impl Battle {
                 }
                 None
             }
-            // Weather, Condition, and other effect types stored in conditions dex
-            EffectType::Condition | EffectType::Weather | EffectType::FieldCondition |
+            // Weather, Condition, Status, and other effect types stored in conditions dex
+            EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::FieldCondition |
             EffectType::SideCondition | EffectType::SlotCondition => {
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
@@ -83,8 +83,8 @@ impl Battle {
                 }
                 None
             }
-            // Weather, Condition, and other effect types stored in conditions dex
-            EffectType::Condition | EffectType::Weather | EffectType::FieldCondition |
+            // Weather, Condition, Status, and other effect types stored in conditions dex
+            EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::FieldCondition |
             EffectType::SideCondition | EffectType::SlotCondition => {
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
@@ -130,8 +130,8 @@ impl Battle {
                 }
                 0
             }
-            // Weather, Condition, and other effect types stored in conditions dex
-            EffectType::Condition | EffectType::Weather | EffectType::FieldCondition |
+            // Weather, Condition, Status, and other effect types stored in conditions dex
+            EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::FieldCondition |
             EffectType::SideCondition | EffectType::SlotCondition => {
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
@@ -240,7 +240,7 @@ impl Battle {
             // https://www.smogon.com/forums/threads/sword-shield-battle-mechanics-research.3655528/page-59#post-8685465
             handler.sub_order = match handler.effect.effect_type {
                 EffectType::ZMove => 1,
-                EffectType::Condition => 2,
+                EffectType::Condition | EffectType::Status => 2,
                 EffectType::SlotCondition => 3,
                 EffectType::SideCondition => 4,
                 EffectType::FieldCondition => 5,

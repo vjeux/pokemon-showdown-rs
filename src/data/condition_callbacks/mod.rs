@@ -138,9 +138,13 @@ pub fn dispatch_on_base_power(
     active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
+        "electricterrain" => move_callbacks::electricterrain::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "gem" => gem::on_base_power(battle, base_power, pokemon_pos, target_pos, active_move),
+        "grassyterrain" => move_callbacks::grassyterrain::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "mefirst" => move_callbacks::mefirst::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
+        "mistyterrain" => move_callbacks::mistyterrain::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "mudsport" => move_callbacks::mudsport::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
+        "psychicterrain" => move_callbacks::psychicterrain::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "rolloutstorage" => rolloutstorage::on_base_power(battle, base_power, pokemon_pos, target_pos, active_move),
         "watersport" => move_callbacks::watersport::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
         _ => {

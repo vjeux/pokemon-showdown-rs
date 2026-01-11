@@ -206,7 +206,7 @@ pub mod condition {
         };
 
         // if (move.type === 'Electric' && attacker.isGrounded() && !attacker.isSemiInvulnerable()) {
-        if move_type == "electric" {
+        if move_type.eq_ignore_ascii_case("Electric") {
             let is_grounded = {
                 let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                     Some(p) => p,

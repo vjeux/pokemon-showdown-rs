@@ -52,7 +52,7 @@ pub mod condition {
         // }
         let (is_normal, move_name) = {
             if let Some(ref active_move) = battle.active_move {
-                (active_move.move_type == "normal", active_move.name.clone())
+                (active_move.move_type.eq_ignore_ascii_case("Normal"), active_move.name.clone())
             } else {
                 return EventResult::Continue;
             }
