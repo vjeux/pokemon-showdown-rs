@@ -5,7 +5,6 @@ Testing 500 Seeds with Pass Rate
 Step 1: Generating teams...
 Step 2: Running JavaScript battles...
 Step 3: Running Rust battles...
-bash: line 1: 71344 Segmentation fault      cargo run --release --example test_battle_batch 1 500 2> /dev/null
 Step 4: Comparing results...
 
 Seed 1: ✓ PASS (100%) - 41/41 turns
@@ -168,7 +167,7 @@ Seed 157: ✓ PASS (100%) - 84/84 turns
 Seed 158: ✓ PASS (100%) - 100/100 turns
 Seed 159: ✓ PASS (100%) - 37/37 turns
 Seed 160: ✓ PASS (100%) - 22/22 turns
-Seed 161: ✗ FAIL (27%) - 14/51 turns
+Seed 161: ✓ PASS (100%) - 51/51 turns
 Seed 162: ✓ PASS (100%) - 44/44 turns
 Seed 163: ✓ PASS (100%) - 100/100 turns
 Seed 164: ✓ PASS (100%) - 92/92 turns
@@ -197,7 +196,7 @@ Seed 186: ✓ PASS (100%) - 74/74 turns
 Seed 187: ✓ PASS (100%) - 76/76 turns
 Seed 188: ✓ PASS (100%) - 49/49 turns
 Seed 189: ✓ PASS (100%) - 55/55 turns
-Seed 190: ✗ FAIL (27%) - 17/61 turns
+Seed 190: ✗ FAIL (19%) - 12/61 turns
 Seed 191: ✗ FAIL (10%) - 10/100 turns
 Seed 192: ✓ PASS (100%) - 56/56 turns
 Seed 193: ✓ PASS (100%) - 82/82 turns
@@ -278,7 +277,7 @@ Seed 267: ✓ PASS (100%) - 46/46 turns
 Seed 268: ✗ FAIL (68%) - 35/51 turns
 Seed 269: ✓ PASS (100%) - 51/51 turns
 Seed 270: ✓ PASS (100%) - 31/31 turns
-Seed 271: ✗ FAIL (58%) - 31/53 turns
+Seed 271: ✓ PASS (100%) - 53/53 turns
 Seed 272: ✓ PASS (100%) - 88/88 turns
 Seed 273: ✓ PASS (100%) - 33/33 turns
 Seed 274: ✓ PASS (100%) - 57/57 turns
@@ -459,7 +458,7 @@ Seed 448: ✓ PASS (100%) - 82/82 turns
 Seed 449: ✗ FAIL (88%) - 75/85 turns
 Seed 450: ✗ FAIL (37%) - 30/79 turns
 Seed 451: ✓ PASS (100%) - 83/83 turns
-Seed 452: ✓ PASS (100%) - 30/30 turns
+Seed 452: ✗ FAIL (70%) - 21/30 turns
 Seed 453: ✗ FAIL (44%) - 44/100 turns
 Seed 454: ✓ PASS (100%) - 35/35 turns
 Seed 455: ✓ PASS (100%) - 82/82 turns
@@ -491,7 +490,7 @@ Seed 480: ✗ FAIL (66%) - 66/100 turns
 Seed 481: ✓ PASS (100%) - 76/76 turns
 Seed 482: ✓ PASS (100%) - 81/81 turns
 Seed 483: ✓ PASS (100%) - 43/43 turns
-Seed 484: ✗ FAIL (46%) - 43/92 turns
+Seed 484: ✗ FAIL (85%) - 79/92 turns
 Seed 485: ✓ PASS (100%) - 27/27 turns
 Seed 486: ✗ FAIL (64%) - 58/90 turns
 Seed 487: ✓ PASS (100%) - 53/53 turns
@@ -513,9 +512,9 @@ Seed 500: ✗ FAIL (41%) - 41/98 turns
 Summary
 =======================================
 Total seeds tested: 500
-Passed (100%): 405
-Failed (<100%): 95
+Passed (100%): 406
+Failed (<100%): 94
 
-Average pass rate: 90%
+Average pass rate: 91%
 
 ✗ Some seeds failed

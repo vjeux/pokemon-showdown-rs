@@ -186,9 +186,56 @@ impl Dex {
             .into_iter()
             .map(|(k, v)| (ID::new(&k), v))
             .collect();
+        // JavaScript sets default fling values in the Item constructor (sim/dex-items.ts):
+        //   if (this.isBerry) this.fling = { basePower: 10 };
+        //   if (this.id.endsWith('plate')) this.fling = { basePower: 90 };
+        //   if (this.onDrive) this.fling = { basePower: 70 };
+        //   if (this.megaStone) this.fling = { basePower: 80 };
+        //   if (this.onMemory) this.fling = { basePower: 50 };
         let items = items_raw
             .into_iter()
-            .map(|(k, v)| (ID::new(&k), v))
+            .map(|(k, mut v)| {
+                // Set default fling values if not already set
+                if v.fling.is_none() {
+                    if v.is_berry {
+                        v.fling = Some(crate::dex::FlingData {
+                            base_power: 10,
+                            effect: None,
+                            status: None,
+                            volatile_status: None,
+                        });
+                    } else if k.ends_with("plate") {
+                        v.fling = Some(crate::dex::FlingData {
+                            base_power: 90,
+                            effect: None,
+                            status: None,
+                            volatile_status: None,
+                        });
+                    } else if v.extra.contains_key("onDrive") {
+                        v.fling = Some(crate::dex::FlingData {
+                            base_power: 70,
+                            effect: None,
+                            status: None,
+                            volatile_status: None,
+                        });
+                    } else if v.mega_stone.is_some() {
+                        v.fling = Some(crate::dex::FlingData {
+                            base_power: 80,
+                            effect: None,
+                            status: None,
+                            volatile_status: None,
+                        });
+                    } else if v.on_memory.is_some() {
+                        v.fling = Some(crate::dex::FlingData {
+                            base_power: 50,
+                            effect: None,
+                            status: None,
+                            volatile_status: None,
+                        });
+                    }
+                }
+                (ID::new(&k), v)
+            })
             .collect();
         let natures = natures_raw
             .into_iter()
