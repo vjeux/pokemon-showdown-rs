@@ -10,10 +10,11 @@ use crate::event::EventResult;
 /// onTryHit(target) {
 ///     if (target.volatiles['foresight']) return false;
 /// }
+/// JavaScript signature: onTryHit(target, source, move) - TARGET FIRST
 pub fn on_try_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
     target_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     use crate::dex_data::ID;
 

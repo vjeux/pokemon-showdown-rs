@@ -36,10 +36,11 @@ pub fn on_try(
 /// onTryHit(target, source, move) {
 ///     this.add('-activate', target, 'move: Poltergeist', this.dex.items.get(target.item).name);
 /// }
+/// JavaScript signature: onTryHit(target, source, move) - TARGET FIRST
 pub fn on_try_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
     target_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     let target = target_pos;
 

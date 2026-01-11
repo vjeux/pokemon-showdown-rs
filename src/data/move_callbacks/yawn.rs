@@ -13,10 +13,11 @@ use crate::Pokemon;
 ///         return false;
 ///     }
 /// }
+/// JavaScript signature: onTryHit(target, source, move) - TARGET FIRST
 pub fn on_try_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
     target_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     let target = target_pos;
 
@@ -93,10 +94,21 @@ pub mod condition {
     pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         use crate::dex_data::ID;
 
+        eprintln!("[YAWN_END] Called for target {:?}", target_pos);
+
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
         };
+
+        // Debug: check if target already has slp
+        {
+            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            eprintln!("[YAWN_END] Target {} current status={:?}", target_pokemon.get_slot(), target_pokemon.status.as_str());
+        }
 
         // this.add('-end', target, 'move: Yawn', '[silent]');
         let target_slot = {
