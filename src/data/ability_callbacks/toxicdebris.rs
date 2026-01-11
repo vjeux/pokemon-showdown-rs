@@ -71,7 +71,10 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         ]);
 
         // side.addSideCondition('toxicspikes', target);
-        battle.sides[side_index].add_side_condition(ID::from("toxicspikes"), None);
+        // NOTE: Must use battle.add_side_condition() instead of sides[].add_side_condition()
+        // to properly fire SideRestart events which increment layer count for Toxic Spikes.
+        // The simple Side::add_side_condition() just returns false if condition exists.
+        battle.add_side_condition(side_index, ID::from("toxicspikes"), Some(target_pos), None);
     }
 
     EventResult::Continue

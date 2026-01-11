@@ -16,10 +16,12 @@ use crate::event::EventResult;
 ///     }
 ///     if (move.self?.chance) move.self.chance *= 2;
 /// }
-pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_modify_move(_battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, _source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // if (move.secondaries)
-    let has_secondaries = if let Some(ref active_move) = battle.active_move {
-        !active_move.secondaries.is_empty()
+    // NOTE: Must check the passed-in active_move parameter, NOT battle.active_move
+    // During ModifyMove dispatch, battle.active_move is temporarily taken out (None)
+    let has_secondaries = if let Some(ref m) = active_move {
+        !m.secondaries.is_empty()
     } else {
         false
     };
