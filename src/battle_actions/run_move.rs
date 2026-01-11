@@ -170,12 +170,16 @@ pub fn run_move(
 
     // Handle locked moves and PP deduction
     // if (!externalMove)
+    // Make source_effect mutable so we can update it when locked
+    let mut source_effect_for_use_move = source_effect.cloned();
     if !external_move {
         // Check for locked move
         // lockedMove = this.battle.runEvent('LockMove', pokemon);
         // JavaScript: if (lockedMove === true) lockedMove = false;
         // JavaScript: if (!lockedMove) { ... deduct PP ... }
         let locked_move_result = battle.run_event("LockMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
+
+        eprintln!("[RUN_MOVE] LockMove result: {:?}, turn={}, move={}", locked_move_result, battle.turn, move_id.as_str());
 
         // In JavaScript, LockMove can return:
         // - undefined/false/Continue: not locked
@@ -207,7 +211,10 @@ pub fn run_move(
         } else {
             // Move is locked - don't deduct PP
             // JavaScript: } else { sourceEffect = this.dex.conditions.get('lockedmove'); }
-            // Note: sourceEffect setting is handled elsewhere in the code
+            // Set sourceEffect to 'lockedmove' condition so that use_move knows this is a locked move
+            // This is important for skipping Pressure PP deduction on the attack turn
+            source_effect_for_use_move = Some(Effect::condition(ID::from("lockedmove")));
+            eprintln!("[RUN_MOVE] Move is locked, setting source_effect to 'lockedmove'");
         }
 
         // pokemon.moveUsed(move, targetLoc);
@@ -268,7 +275,7 @@ pub fn run_move(
         move_data,
         pokemon_pos,
         target_pos,
-        source_effect,
+        source_effect_for_use_move.as_ref(),
         z_move.as_deref(),
         max_move.as_deref(),
     );

@@ -285,6 +285,8 @@ fn main() {
             if let Some(poke_idx) = active_idx {
                 if let Some(pokemon) = battle.sides[1].pokemon.get(*poke_idx) {
                     let display_name = &pokemon.name;
+                    eprintln!("[DEBUG_OUTPUT] P2 active: poke_idx={}, name={}, hp={}/{}",
+                        poke_idx, display_name, pokemon.hp, pokemon.maxhp);
                     p2_active.push(format!("{}({}/{})", display_name, pokemon.hp, pokemon.maxhp));
                 }
             } else {

@@ -233,6 +233,12 @@ pub fn self_drops(
                         self_active_move.pseudo_weather = self_data.pseudo_weather.clone();
                         self_active_move.terrain = self_data.terrain.clone();
                         self_active_move.weather = self_data.weather.clone();
+                        // Clear properties that should NOT apply to self effects
+                        // (they only apply to the main target, not moveData.self)
+                        self_active_move.heal = None;
+                        self_active_move.drain = None;
+                        self_active_move.force_switch = false;
+                        self_active_move.self_destruct = None;
 
                         // Create targets array with source as the target (self-targeting)
                         let self_targets = vec![crate::battle_actions::SpreadMoveTarget::Target(source_pos)];
