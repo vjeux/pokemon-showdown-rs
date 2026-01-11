@@ -398,8 +398,11 @@ pub fn try_spread_move_hit(
     // JS: move.hitTargets = targets;
     active_move.hit_targets = target_list.clone();
 
-    // Restore active_move to battle so event handlers can access it
-    battle.active_move = Some(active_move.clone());
+    // NOTE: Do NOT restore battle.active_move here!
+    // When nested moves are called (e.g., Copycat calling useMove(Swift)),
+    // the nested move sets battle.active_move. Restoring it here would
+    // overwrite the nested move, causing lastMove to be set incorrectly.
+    // JavaScript doesn't have this restoration either.
 
     // JS: const moveResult = !!targets.length;
     let move_result = !target_list.is_empty();
