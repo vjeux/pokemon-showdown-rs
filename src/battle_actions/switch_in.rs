@@ -159,11 +159,19 @@ pub fn switch_in(
             // JS:     switchCopyFlag = (sourceEffect as Move).selfSwitch!;
             // JS: }
             // Check if source effect is a move with selfSwitch property
+            // IMPORTANT: JavaScript checks `typeof selfSwitch === 'string'` which excludes boolean true.
+            // So selfSwitch: true (U-Turn) does NOT trigger copyVolatileFrom.
+            // Only string values like "copyvolatile" (Baton Pass) or "shedtail" trigger copying.
+            // In our Rust implementation, we store boolean true as Some("true"), so we must exclude it.
             let switch_copy_flag: Option<String> = if let Some(effect_id) = source_effect {
                 // Check if effect is a move and has selfSwitch property
                 if let Some(move_data) = battle.dex.moves().get(effect_id.as_str()) {
-                    // self_switch is now Option<String>
-                    move_data.self_switch.clone()
+                    // self_switch is Option<String> where "true" means boolean true in JS
+                    // Only use non-"true" values (actual strings like "copyvolatile", "shedtail")
+                    match &move_data.self_switch {
+                        Some(val) if val != "true" => Some(val.clone()),
+                        _ => None,
+                    }
                 } else {
                     None
                 }
