@@ -1,4 +1,5 @@
 use crate::side::*;
+use crate::ID;
 
 impl Side {
 
@@ -118,11 +119,31 @@ impl Side {
             return Err(format!("You don't have a Pokemon in slot {}", slot + 1));
         }
 
+        // Check if the active Pokemon at this index has revivalblessing slot condition
+        let pokemon_position = if let Some(&Some(poke_idx)) = self.active.get(index) {
+            if let Some(pokemon) = self.pokemon.get(poke_idx) {
+                pokemon.position
+            } else {
+                index
+            }
+        } else {
+            index
+        };
+
+        // JS: if (this.slotConditions[pokemon.position]['revivalblessing']) {
+        let revivalblessing_id = ID::new("revivalblessing");
+        let has_revivalblessing = self.slot_conditions
+            .get(pokemon_position)
+            .map(|conditions| conditions.contains_key(&revivalblessing_id))
+            .unwrap_or(false);
+
         // In JavaScript, pokemon array is physically reordered so active Pokemon are at
         // indices 0..(active.length-1). In Rust, we use position field instead.
         // Check if the target Pokemon is in an active position.
         let target = self.pokemon.get(slot).ok_or("Invalid slot")?;
-        if target.position < self.active.len() {
+
+        // JS: else if (slot < this.active.length && !this.slotConditions[pokemon.position]['revivalblessing']) {
+        if target.position < self.active.len() && !has_revivalblessing {
             return Err("Can't switch to an active Pokemon".to_string());
         }
 
@@ -130,6 +151,50 @@ impl Side {
             return Err(format!("Pokemon in slot {} already switching in", slot + 1));
         }
 
+        // Handle RevivalBlessing case - targeting fainted Pokemon
+        if has_revivalblessing {
+            // JS: if (this.slotConditions[pokemon.position]['revivalblessing']) {
+            // JS:     if (!targetPokemon.fainted) {
+            // JS:         return this.emitChoiceError(`Can't switch: You have to pass to a fainted Pokémon`);
+            // JS:     }
+            if !target.is_fainted() {
+                return Err("Can't switch: You have to pass to a fainted Pokemon".to_string());
+            }
+
+            // JS: this.choice.forcedSwitchesLeft = this.battle.clampIntRange(this.choice.forcedSwitchesLeft - 1, 0);
+            if self.choice.forced_switches_left > 0 {
+                self.choice.forced_switches_left -= 1;
+            }
+
+            // JS: pokemon.switchFlag = false;
+            // Clear the switch flag on the Pokemon that used Revival Blessing
+            if let Some(&Some(poke_idx)) = self.active.get(index) {
+                if let Some(pokemon) = self.pokemon.get_mut(poke_idx) {
+                    pokemon.switch_flag = None;
+                }
+            }
+
+            // JS: this.choice.actions.push({ choice: 'revivalblessing', pokemon, target: targetPokemon });
+            self.choice.actions.push(ChosenAction {
+                choice: ChoiceType::RevivalBlessing,
+                pokemon_index: index,
+                target_loc: None,
+                move_id: None,
+                move_action: None,
+                switch_index: Some(slot),
+                mega: false,
+                megax: None,
+                megay: None,
+                zmove: None,
+                max_move: None,
+                terastallize: None,
+                priority: None,
+            });
+
+            return Ok(());
+        }
+
+        // Normal switch - target must not be fainted
         if target.is_fainted() {
             return Err("Can't switch to a fainted Pokemon".to_string());
         }

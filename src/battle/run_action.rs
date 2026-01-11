@@ -428,42 +428,193 @@ impl Battle {
                 }
             }
             Action::Switch(switch_action) => {
-                // JS: case 'switch':
-                // JS:     if (action.choice === 'switch' && action.pokemon.status) {
-                // JS:         this.singleEvent('CheckShow', this.dex.abilities.getByID('naturalcure'), null, action.pokemon);
-                // JS:     }
                 let side_idx = switch_action.side_index;
                 let poke_idx = switch_action.pokemon_index;
                 let target_idx = switch_action.target_index;
 
-                // Check if switching Pokemon has a status condition
-                let has_status = if let Some(side) = self.sides.get(side_idx) {
-                    if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                        !pokemon.status.is_empty()
+                // Handle RevivalBlessing separately from regular switches
+                if switch_action.choice == crate::battle_queue::SwitchActionType::RevivalBlessing {
+                    // JS: case 'revivalblessing':
+                    // JS:     action.pokemon.side.pokemonLeft++;
+                    // JS:     if (action.target.position < action.pokemon.side.active.length) {
+                    // JS:         this.queue.addChoice({
+                    // JS:             choice: 'instaswitch',
+                    // JS:             pokemon: action.target,
+                    // JS:             target: action.target,
+                    // JS:         });
+                    // JS:     }
+                    // JS:     action.target.fainted = false;
+                    // JS:     action.target.faintQueued = false;
+                    // JS:     action.target.subFainted = false;
+                    // JS:     action.target.status = '';
+                    // JS:     action.target.hp = 1; // Needed so hp functions works
+                    // JS:     action.target.sethp(action.target.maxhp / 2);
+                    // JS:     this.add('-heal', action.target, action.target.getHealth, '[from] move: Revival Blessing');
+                    // JS:     action.pokemon.side.removeSlotCondition(action.pokemon, 'revivalblessing');
+                    // JS:     break;
+
+                    // action.pokemon = poke_idx (the Pokemon that used Revival Blessing)
+                    // action.target = target_idx (the fainted Pokemon to revive)
+
+                    // JS: action.pokemon.side.pokemonLeft++;
+                    if let Some(side) = self.sides.get_mut(side_idx) {
+                        side.pokemon_left += 1;
+                    }
+
+                    // Get the target's position for the active slot check
+                    let target_position = if let Some(side) = self.sides.get(side_idx) {
+                        if let Some(pokemon) = side.pokemon.get(target_idx) {
+                            pokemon.position
+                        } else {
+                            usize::MAX
+                        }
+                    } else {
+                        usize::MAX
+                    };
+
+                    // Get active.length for comparison
+                    let active_length = if let Some(side) = self.sides.get(side_idx) {
+                        side.active.len()
+                    } else {
+                        0
+                    };
+
+                    // JS: if (action.target.position < action.pokemon.side.active.length) {
+                    if target_position < active_length {
+                        // JS: this.queue.addChoice({ choice: 'instaswitch', pokemon: action.target, target: action.target });
+                        // Queue an instaswitch for the revived Pokemon
+                        let instaswitch_action = crate::battle_queue::Action::Switch(
+                            crate::battle_queue::SwitchAction {
+                                choice: crate::battle_queue::SwitchActionType::InstaSwitch,
+                                order: 102, // instaswitch order
+                                priority: 0,
+                                speed: 0.0,
+                                sub_order: 0,
+                                effect_order: 0,
+                                pokemon_index: target_idx,
+                                side_index: side_idx,
+                                target_index: target_idx,
+                                source_effect: None,
+                            }
+                        );
+                        self.queue.add_choice_raw(instaswitch_action);
+                    }
+
+                    // Get maxhp for heal calculation
+                    let max_hp = if let Some(side) = self.sides.get(side_idx) {
+                        if let Some(pokemon) = side.pokemon.get(target_idx) {
+                            pokemon.maxhp
+                        } else {
+                            0
+                        }
+                    } else {
+                        0
+                    };
+
+                    // Revive the target Pokemon
+                    if let Some(side) = self.sides.get_mut(side_idx) {
+                        if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
+                            // JS: action.target.fainted = false;
+                            pokemon.fainted = false;
+                            // JS: action.target.faintQueued = false;
+                            pokemon.faint_queued = false;
+                            // JS: action.target.subFainted = false;
+                            pokemon.sub_fainted = Some(false);
+                            // JS: action.target.status = '';
+                            pokemon.status = ID::new("");
+                            // JS: action.target.hp = 1; // Needed so hp functions work
+                            pokemon.hp = 1;
+                        }
+                    }
+
+                    // JS: action.target.sethp(action.target.maxhp / 2);
+                    // Use the battle's set_hp method which handles rounding properly
+                    let new_hp = max_hp / 2;
+                    if let Some(side) = self.sides.get_mut(side_idx) {
+                        if let Some(pokemon) = side.pokemon.get_mut(target_idx) {
+                            pokemon.hp = std::cmp::max(1, new_hp);
+                        }
+                    }
+
+                    // JS: this.add('-heal', action.target, action.target.getHealth, '[from] move: Revival Blessing');
+                    // Get heal message details
+                    let heal_msg = if let Some(side) = self.sides.get(side_idx) {
+                        if let Some(pokemon) = side.pokemon.get(target_idx) {
+                            let health = format!("{}/{}", pokemon.hp, pokemon.maxhp);
+                            let side_id = format!("p{}", side_idx + 1);
+                            Some((pokemon.fullname(&side_id), health))
+                        } else {
+                            None
+                        }
+                    } else {
+                        None
+                    };
+                    if let Some((name, health)) = heal_msg {
+                        self.add("-heal", &[name.as_str().into(), health.as_str().into(), "[from] move: Revival Blessing".into()]);
+                    }
+
+                    // JS: action.pokemon.side.removeSlotCondition(action.pokemon, 'revivalblessing');
+                    // The poke_idx here is the ACTIVE position index, not the team array index
+                    // We need to look up the team array index first
+                    let user_team_idx = if let Some(side) = self.sides.get(side_idx) {
+                        if let Some(&Some(team_idx)) = side.active.get(poke_idx) {
+                            team_idx
+                        } else {
+                            poke_idx // Fallback
+                        }
+                    } else {
+                        poke_idx
+                    };
+                    let user_position = if let Some(side) = self.sides.get(side_idx) {
+                        if let Some(pokemon) = side.pokemon.get(user_team_idx) {
+                            pokemon.position
+                        } else {
+                            0
+                        }
+                    } else {
+                        0
+                    };
+                    let revivalblessing_id = ID::new("revivalblessing");
+                    if let Some(side) = self.sides.get_mut(side_idx) {
+                        side.remove_slot_condition(user_position, &revivalblessing_id);
+                    }
+
+                    // Done with RevivalBlessing - do NOT call switch_in
+                } else {
+                    // Regular switch handling
+                    // JS: case 'switch':
+                    // JS:     if (action.choice === 'switch' && action.pokemon.status) {
+                    // JS:         this.singleEvent('CheckShow', this.dex.abilities.getByID('naturalcure'), null, action.pokemon);
+                    // JS:     }
+
+                    // Check if switching Pokemon has a status condition
+                    let has_status = if let Some(side) = self.sides.get(side_idx) {
+                        if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                            !pokemon.status.is_empty()
+                        } else {
+                            false
+                        }
                     } else {
                         false
+                    };
+
+                    if switch_action.choice == crate::battle_queue::SwitchActionType::Switch && has_status {
+                        let naturalcure_id = ID::new("naturalcure");
+                        self.single_event("CheckShow", &crate::battle::Effect::ability(naturalcure_id), None, Some((side_idx, poke_idx)), None, None, None);
                     }
-                } else {
-                    false
-                };
 
-                if has_status {
-                    let naturalcure_id = ID::new("naturalcure");
-                    self.single_event("CheckShow", &crate::battle::Effect::ability(naturalcure_id), None, Some((side_idx, poke_idx)), None, None, None);
-                }
+                    // JS: if (this.actions.switchIn(action.target, action.pokemon.position, action.sourceEffect) === 'pursuitfaint') {
+                    let source_effect = switch_action.source_effect.as_ref();
+                    let switch_result = crate::battle_actions::switch_in(
+                        self,
+                        side_idx,
+                        poke_idx,  // position
+                        target_idx, // pokemon to switch in
+                        source_effect,
+                        false, // is_drag
+                    );
 
-                // JS: if (this.actions.switchIn(action.target, action.pokemon.position, action.sourceEffect) === 'pursuitfaint') {
-                let source_effect = switch_action.source_effect.as_ref();
-                let switch_result = crate::battle_actions::switch_in(
-                    self,
-                    side_idx,
-                    poke_idx,  // position
-                    target_idx, // pokemon to switch in
-                    source_effect,
-                    false, // is_drag
-                );
-
-                if matches!(switch_result, crate::battle::SwitchResult::PursuitFaint) {
+                    if matches!(switch_result, crate::battle::SwitchResult::PursuitFaint) {
                     // JS: // a pokemon fainted from Pursuit before it could switch
                     // JS: if (this.gen <= 4) {
                     // JS:     // in gen 2-4, the switch still happens
@@ -492,6 +643,7 @@ impl Battle {
                         // In gen 5+, the switch is cancelled
                         self.hint("A Pokemon can't switch between when it runs out of HP and when it faints", false, None);
                         // Switch is cancelled - switch_in already handled this by returning PursuitFaint
+                    }
                     }
                 }
             }

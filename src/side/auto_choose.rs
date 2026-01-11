@@ -1,5 +1,6 @@
 use crate::side::*;
 use crate::Battle;
+use crate::ID;
 
 impl Side {
 
@@ -39,30 +40,87 @@ impl Side {
             RequestState::Switch => {
                 let mut iterations = 0;
                 while !self.is_choice_done(None) && iterations < 10 {
-                    // JavaScript iterates through pokemon array starting at active.length.
-                    // Since JavaScript physically reorders the array when switching,
-                    // we need to iterate in position order to match.
+                    // Get the current choice index to find which active Pokemon needs a switch choice
+                    let index = self.get_choice_index(false);
 
-                    // Collect Pokemon indices, sorted by position
-                    let mut indices: Vec<usize> = (0..self.pokemon.len()).collect();
-                    indices.sort_by_key(|&i| self.pokemon[i].position);
+                    // Check if this active Pokemon has a revival blessing slot condition
+                    // JS: if (this.slotConditions[pokemon.position]['revivalblessing']) {
+                    //     slot = 0;
+                    //     while (!this.pokemon[slot].fainted) slot++;
+                    // } else {
+                    //     slot = this.active.length;
+                    //     while (this.choice.switchIns.has(slot) || this.pokemon[slot].fainted) slot++;
+                    // }
+                    let pokemon_position = if let Some(&Some(poke_idx)) = self.active.get(index) {
+                        if let Some(pokemon) = self.pokemon.get(poke_idx) {
+                            pokemon.position
+                        } else {
+                            index
+                        }
+                    } else {
+                        index
+                    };
 
-                    // Find first available switch target starting from active.length
-                    let mut found = false;
-                    for &i in indices.iter().skip(self.active.len()) {
-                        if !self.choice.switch_ins.contains(&i) {
+                    let revivalblessing_id = ID::new("revivalblessing");
+                    let has_revivalblessing = self.slot_conditions
+                        .get(pokemon_position)
+                        .map(|conditions| conditions.contains_key(&revivalblessing_id))
+                        .unwrap_or(false);
+
+                    if has_revivalblessing {
+                        // RevivalBlessing case: find first fainted Pokemon in POSITION order
+                        // JS: slot = 0; while (!this.pokemon[slot].fainted) slot++;
+                        // JavaScript physically reorders the pokemon array by position, so we need
+                        // to iterate in position order to match.
+                        // IMPORTANT: Skip Pokemon at active positions (position < active.len) since
+                        // Revival Blessing revives a BENCH Pokemon, not an active one that just fainted.
+                        let mut indices: Vec<usize> = (0..self.pokemon.len()).collect();
+                        indices.sort_by_key(|&i| self.pokemon[i].position);
+
+                        let mut found = false;
+                        for &i in indices.iter() {
                             if let Some(pokemon) = self.pokemon.get(i) {
-                                if !pokemon.is_fainted() {
+                                // Skip Pokemon at active positions - they cannot be Revival Blessing targets
+                                if pokemon.position < self.active.len() {
+                                    continue;
+                                }
+                                if pokemon.is_fainted() {
                                     let _ = self.choose_switch(i);
                                     found = true;
                                     break;
                                 }
                             }
                         }
-                    }
+                        if !found {
+                            break; // No fainted Pokemon found for revival
+                        }
+                    } else {
+                        // Normal switch case: find first non-fainted Pokemon starting at active.length
+                        // JavaScript iterates through pokemon array starting at active.length.
+                        // Since JavaScript physically reorders the array when switching,
+                        // we need to iterate in position order to match.
 
-                    if !found {
-                        break; // No valid switch found
+                        // Collect Pokemon indices, sorted by position
+                        let mut indices: Vec<usize> = (0..self.pokemon.len()).collect();
+                        indices.sort_by_key(|&i| self.pokemon[i].position);
+
+                        // Find first available switch target starting from active.length
+                        let mut found = false;
+                        for &i in indices.iter().skip(self.active.len()) {
+                            if !self.choice.switch_ins.contains(&i) {
+                                if let Some(pokemon) = self.pokemon.get(i) {
+                                    if !pokemon.is_fainted() {
+                                        let _ = self.choose_switch(i);
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if !found {
+                            break; // No valid switch found
+                        }
                     }
 
                     iterations += 1;
