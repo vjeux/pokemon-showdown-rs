@@ -305,6 +305,7 @@ pub fn run_move_effects<'a>(
                     battle,
                     target_pos,
                     status_id,
+                    Some(source_pos), // source
                     None, // source_effect - using active_move effect instead
                 );
                 //     if (!hitResult && move.status) {

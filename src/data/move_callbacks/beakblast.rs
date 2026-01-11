@@ -88,7 +88,7 @@ pub mod condition {
         //     source.trySetStatus('brn', target);
         // }
         if battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
-            Pokemon::try_set_status(battle, source, ID::from("brn"), None);
+            Pokemon::try_set_status(battle, source, ID::from("brn"), None, None);
         }
 
         EventResult::Continue

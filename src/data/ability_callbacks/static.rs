@@ -21,7 +21,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         if battle.check_move_makes_contact_with_active_move(active_move, source, target, false) {
             if battle.random_chance(3, 10) {
                 // Try to set paralysis status on the attacker
-                crate::pokemon::Pokemon::try_set_status(battle, source, crate::ID::from("par"), None);
+                crate::pokemon::Pokemon::try_set_status(battle, source, crate::ID::from("par"), None, None);
             }
         }
     }

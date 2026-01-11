@@ -129,7 +129,7 @@ pub mod condition {
         );
 
         // target.trySetStatus('slp', this.effectState.source);
-        Pokemon::try_set_status(battle, target, ID::from("slp"), None);
+        Pokemon::try_set_status(battle, target, ID::from("slp"), None, None);
 
         EventResult::Continue
     }

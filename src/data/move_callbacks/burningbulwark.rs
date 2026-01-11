@@ -202,7 +202,7 @@ pub mod condition {
         //     source.trySetStatus('brn', target);
         // }
         if battle.check_move_makes_contact(&move_id, source_pos, target_pos, false) {
-            Pokemon::try_set_status(battle, source_pos, ID::from("brn"), None);
+            Pokemon::try_set_status(battle, source_pos, ID::from("brn"), None, None);
         }
 
         // return this.NOT_FAIL;
@@ -243,7 +243,7 @@ pub mod condition {
         //     source.trySetStatus('brn', target);
         // }
         if move_data.is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
-            Pokemon::try_set_status(battle, source, ID::from("brn"), None);
+            Pokemon::try_set_status(battle, source, ID::from("brn"), None, None);
         }
 
         EventResult::Continue

@@ -14,7 +14,8 @@ impl Pokemon {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         status_id: ID,
-        _source_effect: Option<&Effect>
+        source_pos: Option<(usize, usize)>,
+        source_effect: Option<&Effect>
     ) -> bool {
         // JS: return this.setStatus(this.status || status, source, sourceEffect);
         //
@@ -38,6 +39,6 @@ impl Pokemon {
         }
 
         // Call setStatus which will handle all immunity checks and events
-        Pokemon::set_status(battle, pokemon_pos, status_id, None, None, false)
+        Pokemon::set_status(battle, pokemon_pos, status_id, source_pos, source_effect, false)
     }
 }

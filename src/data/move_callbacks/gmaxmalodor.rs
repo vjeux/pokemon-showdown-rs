@@ -44,7 +44,7 @@ pub mod self_callbacks {
         };
 
         for foe_pos in foe_positions {
-            Pokemon::try_set_status(battle, foe_pos, ID::from("psn"), None);
+            Pokemon::try_set_status(battle, foe_pos, ID::from("psn"), None, None);
         }
 
         EventResult::Continue

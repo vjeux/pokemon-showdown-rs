@@ -32,7 +32,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         // if (this.randomChance(3, 10))
         if battle.random_chance(3, 10) {
             // source.trySetStatus('brn', target);
-            crate::pokemon::Pokemon::try_set_status(battle, source_pos, crate::ID::from("brn"), None);
+            crate::pokemon::Pokemon::try_set_status(battle, source_pos, crate::ID::from("brn"), None, None);
         }
     }
 

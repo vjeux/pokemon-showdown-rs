@@ -39,7 +39,7 @@ pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Opt
         if battle.check_move_makes_contact_with_active_move(active_move, source, target, false) {
             if battle.random_chance(3, 10) {
                 // Try to set poison status on the target
-                crate::pokemon::Pokemon::try_set_status(battle, target, crate::ID::from("psn"), None);
+                crate::pokemon::Pokemon::try_set_status(battle, target, crate::ID::from("psn"), None, None);
             }
         }
     }

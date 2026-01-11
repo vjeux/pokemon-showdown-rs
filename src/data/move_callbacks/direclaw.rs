@@ -44,11 +44,11 @@ pub fn on_hit(
 
     if let Some(_target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
         if result == 0 {
-            Pokemon::try_set_status(battle, target_pos, ID::from("psn"), None);
+            Pokemon::try_set_status(battle, target_pos, ID::from("psn"), None, None);
         } else if result == 1 {
-            Pokemon::try_set_status(battle, target_pos, ID::from("par"), None);
+            Pokemon::try_set_status(battle, target_pos, ID::from("par"), None, None);
         } else {
-            Pokemon::try_set_status(battle, target_pos, ID::from("slp"), None);
+            Pokemon::try_set_status(battle, target_pos, ID::from("slp"), None, None);
         }
     }
 

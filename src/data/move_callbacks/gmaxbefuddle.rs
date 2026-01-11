@@ -62,11 +62,11 @@ pub mod self_callbacks {
             let result = battle.random(3);
 
             if result == 0 {
-                Pokemon::try_set_status(battle, foe_pos, ID::from("slp"), None);
+                Pokemon::try_set_status(battle, foe_pos, ID::from("slp"), None, None);
             } else if result == 1 {
-                Pokemon::try_set_status(battle, foe_pos, ID::from("par"), None);
+                Pokemon::try_set_status(battle, foe_pos, ID::from("par"), None, None);
             } else {
-                Pokemon::try_set_status(battle, foe_pos, ID::from("psn"), None);
+                Pokemon::try_set_status(battle, foe_pos, ID::from("psn"), None, None);
             }
         }
 

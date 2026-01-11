@@ -45,7 +45,7 @@ pub fn on_hit(
     };
 
     for foe_pos in foe_positions {
-        Pokemon::try_set_status(battle, foe_pos, ID::from("par"), None);
+        Pokemon::try_set_status(battle, foe_pos, ID::from("par"), None, None);
     }
 
     EventResult::Continue
@@ -94,7 +94,7 @@ pub mod self_callbacks {
         };
 
         for foe_pos in foe_positions {
-            Pokemon::try_set_status(battle, foe_pos, ID::from("par"), None);
+            Pokemon::try_set_status(battle, foe_pos, ID::from("par"), None, None);
         }
 
         EventResult::Continue

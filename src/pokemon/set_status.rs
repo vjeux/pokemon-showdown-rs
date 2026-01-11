@@ -107,8 +107,28 @@ impl Pokemon {
         // JS:     if (!sourceEffect) sourceEffect = this.battle.effect;
         // JS: }
         // JS: if (!source) source = this;
-        // ✅ NOW IMPLEMENTED (Session 24 Part 28): source_pos, source_effect, ignore_immunities parameters
-        // Note: battle.event source/sourceEffect defaulting still missing (needs Battle reference)
+        // ✅ NOW IMPLEMENTED: source_pos defaults from event.source or to target pokemon
+        let source_pos = if source_pos.is_some() {
+            source_pos
+        } else if let Some(ref event) = battle.event {
+            if event.source.is_some() {
+                event.source
+            } else {
+                Some(pokemon_pos)
+            }
+        } else {
+            Some(pokemon_pos)
+        };
+
+        // JS: if (!sourceEffect) sourceEffect = this.battle.effect;
+        // ✅ NOW IMPLEMENTED: source_effect defaults from battle.effect
+        let source_effect_owned: Option<crate::battle::Effect>;
+        let source_effect = if source_effect.is_some() {
+            source_effect
+        } else {
+            source_effect_owned = battle.effect.clone();
+            source_effect_owned.as_ref()
+        };
 
         // JS: if (this.status === status.id) {
         // JS:     if ((sourceEffect as Move)?.status === this.status) {

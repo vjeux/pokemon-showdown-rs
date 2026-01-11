@@ -34,7 +34,7 @@ pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Opt
 
         if battle.random_chance(3, 10) {
             // Try to set toxic (badly poisoned) status on the target
-            crate::pokemon::Pokemon::try_set_status(battle, target, crate::ID::from("tox"), None);
+            crate::pokemon::Pokemon::try_set_status(battle, target, crate::ID::from("tox"), None, None);
         }
     }
     EventResult::Continue

@@ -68,13 +68,13 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     // Apply status based on random roll
     if r < 11 {
         // JavaScript: source.setStatus('slp', target);
-        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("slp"), None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("slp"), None, None);
     } else if r < 21 {
         // JavaScript: source.setStatus('par', target);
-        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("par"), None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("par"), None, None);
     } else if r < 30 {
         // JavaScript: source.setStatus('psn', target);
-        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("psn"), None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("psn"), None, None);
     }
 
     EventResult::Continue

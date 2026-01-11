@@ -205,7 +205,7 @@ pub mod condition {
         //     source.trySetStatus('psn', target);
         // }
         if battle.check_move_makes_contact(&move_id, source_pos, target_pos, false) {
-            Pokemon::try_set_status(battle, source_pos, ID::from("psn"), None);
+            Pokemon::try_set_status(battle, source_pos, ID::from("psn"), None, None);
         }
 
         // return this.NOT_FAIL;
@@ -248,7 +248,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), None);
+            Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), None, None);
         }
 
         EventResult::Continue

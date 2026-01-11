@@ -13,7 +13,7 @@ use crate::Pokemon;
 /// }
 pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // pokemon.trySetStatus('brn', pokemon);
-    Pokemon::try_set_status(battle, pokemon_pos, crate::dex_data::ID::new("brn"), None);
+    Pokemon::try_set_status(battle, pokemon_pos, crate::dex_data::ID::new("brn"), None, None);
 
     EventResult::Continue
 }
