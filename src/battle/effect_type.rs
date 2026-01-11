@@ -24,4 +24,6 @@ pub enum EffectType {
     /// Represents moveData.self in JavaScript - the self-targeting callbacks
     MoveSelf,
     Status,
+    /// Represents a Pokemon species (used as effect source in some callbacks)
+    Species,
 }

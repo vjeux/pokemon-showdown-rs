@@ -200,7 +200,8 @@ impl Battle {
             | super::EffectType::FieldCondition
             | super::EffectType::Format
             | super::EffectType::Rule
-            | super::EffectType::Ruleset => false,
+            | super::EffectType::Ruleset
+            | super::EffectType::Species => false,
         }
     }
 

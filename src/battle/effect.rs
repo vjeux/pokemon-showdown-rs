@@ -126,6 +126,11 @@ impl Effect {
         Self::new(id.into(), EffectType::FieldCondition)
     }
 
+    /// Create a Species effect (used when species is the effect source)
+    pub fn species(id: impl Into<ID>) -> Self {
+        Self::new(id.into(), EffectType::Species)
+    }
+
     /// Get the ID as a string reference
     pub fn as_str(&self) -> &str {
         self.id.as_str()
