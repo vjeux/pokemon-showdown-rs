@@ -676,6 +676,18 @@ impl Battle {
                     // Handler returned a value, update relay_var
                     relay_var = return_val.clone();
 
+                    // CRITICAL: When a handler returns EventResult::Boost, also update event.relay_var
+                    // This ensures:
+                    // 1. Subsequent handlers see the modified boosts (like Contrary's inverted values)
+                    // 2. The final read at the end of run_event returns the correct modified value
+                    // Without this, handlers that return new boost values (like Contrary) get overwritten
+                    // by the original event.relay_var at the end of run_event.
+                    if let EventResult::Boost(ref boosts) = relay_var {
+                        if let Some(ref mut event) = self.event {
+                            event.relay_var = Some(EventResult::Boost(boosts.clone()));
+                        }
+                    }
+
                     // JavaScript: if (!relayVar || fastExit) { ... break; }
                     // Check if we should stop processing
                     let should_stop = match &relay_var {
