@@ -271,6 +271,22 @@ pub fn dispatch_on_damaging_hit(
         }
     }
 }
+/// Dispatch onDamage callbacks for conditions like Endure, Focus Band, Focus Sash
+/// Called from spread_damage when dealing damage to a Pokemon
+/// JavaScript: condition.onDamage(damage, target, source, effect)
+pub fn dispatch_on_damage(
+    battle: &mut Battle,
+    condition_id: &str,
+    damage: i32,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
+) -> EventResult {
+    match condition_id {
+        "endure" => move_callbacks::endure::condition::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        _ => EventResult::Continue,
+    }
+}
 /// Dispatch onDisableMove callbacks
 pub fn dispatch_on_disable_move(
     battle: &mut Battle,

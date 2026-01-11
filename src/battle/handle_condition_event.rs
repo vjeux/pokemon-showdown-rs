@@ -141,6 +141,20 @@ impl Battle {
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_damaging_hit(self, condition_id, damage, pokemon_pos, source_pos, active_move_clone.as_ref())
             }
+            "Damage" => {
+                // Called during spread_damage to modify damage before applying
+                // JavaScript: onDamage(damage, target, source, effect)
+                // Conditions like Endure use this to prevent fainting
+                let damage = self.event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id = self.event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|eff| eff.id.as_str().to_string());
+                condition_callbacks::dispatch_on_damage(self, condition_id, damage, pokemon_pos, source_pos, effect_id.as_deref())
+            }
             "DisableMove" => {
                 condition_callbacks::dispatch_on_disable_move(self, condition_id, pokemon_pos)
             }
