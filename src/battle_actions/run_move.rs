@@ -193,9 +193,14 @@ pub fn run_move(
         };
 
         // Deduct PP only if NOT locked
-        // if (!lockedMove) {
-        //     if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle'))
-        // }
+        // JS: if (!lockedMove) {
+        //         if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle')) {
+        //             this.battle.add('cant', pokemon, 'nopp', move);
+        //             this.battle.clearActiveMove(true);
+        //             pokemon.moveThisTurnResult = false;
+        //             return;
+        //         }
+        //     }
         let gen = battle.gen;
         if !is_locked {
             // Create ActiveMove for deduct_pp
@@ -205,9 +210,44 @@ pub fn run_move(
             } else {
                 0
             };
-            // Note: JavaScript code has incomplete condition - just checking but no action taken
-            // This matches the JavaScript pattern exactly
-            let _pp_check = pp_deducted == 0 && move_id.as_str() != "struggle";
+
+            // JS: if (!pokemon.deductPP(baseMove, null, target) && (move.id !== 'struggle')) {
+            //         this.battle.add('cant', pokemon, 'nopp', move);
+            //         this.battle.clearActiveMove(true);
+            //         pokemon.moveThisTurnResult = false;
+            //         return;
+            //     }
+            if pp_deducted == 0 && move_id.as_str() != "struggle" {
+                eprintln!("[RUN_MOVE] No PP left for {}, adding 'cant' message and returning", move_id);
+                // Get pokemon ident for the 'cant' message
+                let pokemon_ident = {
+                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                        Some(p) => p,
+                        None => return,
+                    };
+                    pokemon.get_slot()
+                };
+                let move_name = battle.dex.moves().get_by_id(&move_id)
+                    .map(|m| m.name.clone())
+                    .unwrap_or_else(|| move_id.to_string());
+
+                // JS: this.battle.add('cant', pokemon, 'nopp', move);
+                battle.add("cant", &[
+                    crate::battle::Arg::String(pokemon_ident),
+                    crate::battle::Arg::Str("nopp"),
+                    crate::battle::Arg::String(format!("move: {}", move_name)),
+                ]);
+
+                // JS: this.battle.clearActiveMove(true);
+                battle.clear_active_move(true);
+
+                // JS: pokemon.moveThisTurnResult = false;
+                if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                    pokemon.move_this_turn_result = Some(false);
+                }
+
+                return;
+            }
         } else {
             // Move is locked - don't deduct PP
             // JavaScript: } else { sourceEffect = this.dex.conditions.get('lockedmove'); }

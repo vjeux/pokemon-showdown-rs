@@ -29,7 +29,6 @@ pub fn on_hit(
     target_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-
     // if (!target.hp) return;
     let target_hp = {
         let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
@@ -119,7 +118,7 @@ pub fn on_hit(
             crate::battle::Arg::from(target_slot),
             crate::battle::Arg::from("move: Eerie Spell"),
             crate::battle::Arg::from(move_name),
-            crate::battle::Arg::from("3"),
+            crate::battle::Arg::from(pp_deducted.to_string()),
         ],
     );
 
