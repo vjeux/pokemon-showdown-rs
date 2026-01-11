@@ -12,7 +12,8 @@ use crate::event::EventResult;
 /// }
 pub fn on_effectiveness(_battle: &mut Battle, _type_mod: i32, target_type: &str) -> EventResult {
     // if (type === 'Water') return 1;
-    if target_type == "water" {
+    // Note: JavaScript uses capitalized type names like "Water"
+    if target_type == "Water" {
         return EventResult::Number(1);
     }
 
