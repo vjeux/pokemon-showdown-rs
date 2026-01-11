@@ -2426,6 +2426,95 @@ pub fn dispatch_condition_on_side_start(
     }
 }
 
+/// Dispatch side condition onSideStart callbacks by condition_id
+/// Used by single_event_side when the condition_id is known
+pub fn dispatch_side_condition_on_side_start_by_id(
+    battle: &mut Battle,
+    condition_id: &str,
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
+    match condition_id {
+        "auroraveil" => auroraveil::condition::on_side_start(battle),
+        "craftyshield" => craftyshield::condition::on_side_start(battle, None, source_pos),
+        "firepledge" => firepledge::condition::on_side_start(battle),
+        "gmaxcannonade" => gmaxcannonade::condition::on_side_start(battle),
+        "gmaxsteelsurge" => gmaxsteelsurge::condition::on_side_start(battle),
+        "gmaxvinelash" => gmaxvinelash::condition::on_side_start(battle),
+        "gmaxvolcalith" => gmaxvolcalith::condition::on_side_start(battle),
+        "gmaxwildfire" => gmaxwildfire::condition::on_side_start(battle),
+        "grasspledge" => grasspledge::condition::on_side_start(battle),
+        "lightscreen" => lightscreen::condition::on_side_start(battle),
+        "luckychant" => luckychant::condition::on_side_start(battle),
+        "matblock" => matblock::condition::on_side_start(battle, None, source_pos),
+        "mist" => mist::condition::on_side_start(battle),
+        "quickguard" => quickguard::condition::on_side_start(battle, None, source_pos),
+        "reflect" => reflect::condition::on_side_start(battle),
+        "safeguard" => safeguard::condition::on_side_start(battle, source_pos),
+        "spikes" => spikes::condition::on_side_start(battle),
+        "stealthrock" => stealthrock::condition::on_side_start(battle),
+        "stickyweb" => stickyweb::condition::on_side_start(battle),
+        "tailwind" => tailwind::condition::on_side_start(battle, source_pos),
+        "toxicspikes" => toxicspikes::condition::on_side_start(battle),
+        "waterpledge" => waterpledge::condition::on_side_start(battle),
+        "wideguard" => wideguard::condition::on_side_start(battle, None, source_pos),
+        _ => EventResult::Continue,
+    }
+}
+
+/// Dispatch side condition onSideRestart callbacks by condition_id
+/// Used by single_event_side when the condition_id is known
+pub fn dispatch_side_condition_on_side_restart_by_id(
+    battle: &mut Battle,
+    condition_id: &str,
+) -> EventResult {
+    match condition_id {
+        "spikes" => spikes::condition::on_side_restart(battle),
+        "toxicspikes" => toxicspikes::condition::on_side_restart(battle),
+        _ => EventResult::Continue,
+    }
+}
+
+/// Dispatch side condition onSideEnd callbacks by condition_id
+/// Used by single_event_side when the condition_id is known
+pub fn dispatch_side_condition_on_side_end_by_id(
+    battle: &mut Battle,
+    condition_id: &str,
+) -> EventResult {
+    match condition_id {
+        "auroraveil" => auroraveil::condition::on_side_end(battle),
+        "firepledge" => firepledge::condition::on_side_end(battle),
+        "gmaxcannonade" => gmaxcannonade::condition::on_side_end(battle),
+        "gmaxvinelash" => gmaxvinelash::condition::on_side_end(battle),
+        "gmaxvolcalith" => gmaxvolcalith::condition::on_side_end(battle),
+        "gmaxwildfire" => gmaxwildfire::condition::on_side_end(battle),
+        "grasspledge" => grasspledge::condition::on_side_end(battle),
+        "lightscreen" => lightscreen::condition::on_side_end(battle),
+        "luckychant" => luckychant::condition::on_side_end(battle),
+        "mist" => mist::condition::on_side_end(battle),
+        "reflect" => reflect::condition::on_side_end(battle),
+        "safeguard" => safeguard::condition::on_side_end(battle),
+        "tailwind" => tailwind::condition::on_side_end(battle),
+        "waterpledge" => waterpledge::condition::on_side_end(battle),
+        _ => EventResult::Continue,
+    }
+}
+
+/// Dispatch side condition onResidual callbacks by condition_id
+/// Used by single_event_side when the condition_id is known
+pub fn dispatch_side_condition_on_residual_by_id(
+    battle: &mut Battle,
+    condition_id: &str,
+    target_pos: Option<(usize, usize)>,
+) -> EventResult {
+    match condition_id {
+        "gmaxcannonade" => gmaxcannonade::condition::on_residual(battle, target_pos),
+        "gmaxvinelash" => gmaxvinelash::condition::on_residual(battle, target_pos),
+        "gmaxvolcalith" => gmaxvolcalith::condition::on_residual(battle, target_pos),
+        "gmaxwildfire" => gmaxwildfire::condition::on_residual(battle, target_pos),
+        _ => EventResult::Continue,
+    }
+}
+
 /// Dispatch condition onSourceAccuracy callbacks
 pub fn dispatch_condition_on_source_accuracy(
     battle: &mut Battle,

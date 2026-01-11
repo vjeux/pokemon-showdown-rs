@@ -15,9 +15,10 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
+/// JavaScript signature: onAfterHit(target, source, move) - target first, source second
 pub fn on_after_hit(
     battle: &mut Battle,
-    _target_pos: (usize, usize),  // JavaScript: onAfterHit(target, source, move) - target first
+    _target_pos: (usize, usize),
     source_pos: (usize, usize),
 ) -> EventResult {
     // if (!move.hasSheerForce && source.hp) {
@@ -44,7 +45,13 @@ pub fn on_after_hit(
         // Get foe sides (opposite side in a 2-player battle)
         for side_idx in 0..battle.sides.len() {
             if side_idx != source_side_idx {
-                battle.sides[side_idx].add_side_condition(ID::from("spikes"), None);
+                // Use Battle::add_side_condition which properly handles SideRestart for stacking
+                battle.add_side_condition(
+                    side_idx,
+                    ID::from("spikes"),
+                    Some(source_pos),
+                    Some(&crate::battle::Effect::move_("ceaselessedge")),
+                );
             }
         }
     }
@@ -96,7 +103,13 @@ pub fn on_after_sub_damage(
         // Get foe sides (opposite side in a 2-player battle)
         for side_idx in 0..battle.sides.len() {
             if side_idx != source_side_idx {
-                battle.sides[side_idx].add_side_condition(ID::from("spikes"), None);
+                // Use Battle::add_side_condition which properly handles SideRestart for stacking
+                battle.add_side_condition(
+                    side_idx,
+                    ID::from("spikes"),
+                    Some(source),
+                    Some(&crate::battle::Effect::move_("ceaselessedge")),
+                );
             }
         }
     }
