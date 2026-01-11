@@ -40,9 +40,22 @@ pub mod condition {
         let starting_turn = battle.get_overflowed_turn_count();
 
         // Store in the slot condition's state directly
-        // pokemon_pos is the slot where the wish condition was placed
+        // pokemon_pos is (side_idx, party_idx), but slot_conditions are indexed by active position
         let side_idx = pokemon_pos.0;
-        let slot = pokemon_pos.1;
+
+        // Get the Pokemon's active position (not party index)
+        let slot = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return EventResult::Continue,
+            };
+            pokemon.position
+        };
+
+        // Get source's active position for source_slot
+        let source_active_slot = source_pos.and_then(|pos| {
+            battle.pokemon_at(pos.0, pos.1).map(|p| p.position)
+        });
 
         if let Some(side) = battle.sides.get_mut(side_idx) {
             if let Some(slot_conds) = side.slot_conditions.get_mut(slot) {
@@ -50,7 +63,7 @@ pub mod condition {
                     wish_state.hp = Some(hp);
                     wish_state.starting_turn = Some(starting_turn);
                     wish_state.source = source_pos;
-                    wish_state.source_slot = source_pos.map(|p| p.1);
+                    wish_state.source_slot = source_active_slot;
                 }
             }
         }
@@ -79,11 +92,19 @@ pub mod condition {
 
         // if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
         let (starting_turn, target_pos, source_slot) = battle.with_effect_state_ref(|state| {
+            eprintln!("[WISH_ON_RESIDUAL] effect_state: starting_turn={:?}, target={:?}, source_slot={:?}, hp={:?}",
+                state.starting_turn, state.target, state.source_slot, state.hp);
             let starting_turn = state.starting_turn.unwrap_or(0);
             (starting_turn, state.target, state.source_slot)
-        }).unwrap_or((0, None, None));
+        }).unwrap_or_else(|| {
+            eprintln!("[WISH_ON_RESIDUAL] ERROR: with_effect_state_ref returned None");
+            (0, None, None)
+        });
 
         let current_turn = battle.get_overflowed_turn_count();
+
+        eprintln!("[WISH_ON_RESIDUAL] current_turn={}, starting_turn={}, should_proceed={}",
+            current_turn, starting_turn, current_turn > starting_turn);
 
         if current_turn <= starting_turn {
             return EventResult::Continue;

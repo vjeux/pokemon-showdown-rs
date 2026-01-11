@@ -84,13 +84,16 @@ impl Battle {
         // JS: let callback = this.getCallback(pokemon, status, callbackName);
         // JS: if (callback !== undefined || (getKey && pokemon.statusState[getKey])) {
         if !pokemon.status.is_empty() {
+            eprintln!("[FIND_POKEMON_HANDLERS] Checking status {} for callback {}", pokemon.status.as_str(), callback_name);
             let has_callback = self.has_status_callback(&pokemon.status, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks statusState[getKey], which means checking if duration exists
                 key == "duration" && pokemon.status_state.duration.is_some()
             });
+            eprintln!("[FIND_POKEMON_HANDLERS] has_callback={}, has_get_key={}", has_callback, has_get_key);
 
             if has_callback || has_get_key {
+                eprintln!("[FIND_POKEMON_HANDLERS] Adding status handler for {} {}", pokemon.status.as_str(), callback_name);
                 // Get status name from dex
                 let status_name = self.dex.conditions().get_by_id(&pokemon.status)
                     .and_then(|c| c.name.clone())
@@ -285,6 +288,10 @@ impl Battle {
         // JS: const side = pokemon.side;
         // JS: for (const conditionid in side.slotConditions[pokemon.position]) {
         if let Some(slot_conds) = self.sides[side_idx].slot_conditions.get(pokemon.position) {
+            // For slot conditions, the effect_holder needs to use the active position, not party index
+            // because slot_conditions are indexed by active position
+            let slot_holder = (side_idx, pokemon.position);
+
             for (slot_cond_id, slot_cond_state) in slot_conds {
                 // JS: const slotConditionState = side.slotConditions[pokemon.position][conditionid];
                 // JS: const slotCondition = this.dex.conditions.getByID(conditionid as ID);
@@ -308,14 +315,14 @@ impl Battle {
                             id: slot_cond_id.clone(),
                             name: slot_cond_name,
                             effect_type: EffectType::SlotCondition,
-                            effect_holder: Some(target),
-                            side_index: Some(target.0),
+                            effect_holder: Some(slot_holder),
+                            side_index: Some(side_idx),
                             prankster_boosted: false,
                         },
-                        target: Some(target),
+                        target: Some(target),  // target stays as party index for event dispatch
                         index: None,
                         state: Some(slot_cond_state.clone()),
-                        effect_holder: Some(target),
+                        effect_holder: Some(slot_holder),  // Uses active position for effect state lookup
                         order: None,
                         priority: 0,
                         sub_order: 0,

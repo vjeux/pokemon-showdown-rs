@@ -53,7 +53,17 @@ impl Battle {
         duration: Option<i32>,
     ) -> bool {
         let side_idx = target_pos.0;
-        let slot = target_pos.1;
+
+        // JavaScript: if (target instanceof Pokemon) target = target.position;
+        // We need to use the Pokemon's active position, not their party index
+        // target_pos.1 is the party index, but slot_conditions are indexed by active position
+        let slot = {
+            let pokemon = match self.pokemon_at(target_pos.0, target_pos.1) {
+                Some(p) => p,
+                None => return false,
+            };
+            pokemon.position
+        };
 
         // Check if slot is valid
         let slot_valid = self.sides.get(side_idx)
@@ -78,8 +88,11 @@ impl Battle {
             return false;
         }
 
-        // Get source slot for effect state
-        let source_slot = source_pos.map(|pos| pos.1);
+        // Get source slot for effect state (active position, not party index)
+        // JavaScript: sourceSlot: source.getSlot() - this returns the active position
+        let source_slot = source_pos.and_then(|pos| {
+            self.pokemon_at(pos.0, pos.1).map(|p| p.position)
+        });
 
         // const conditionState = this.slotConditions[target][status.id] = this.battle.initEffectState({...});
         let mut state = EffectState::new(status_id.clone());

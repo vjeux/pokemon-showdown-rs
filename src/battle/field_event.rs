@@ -398,6 +398,10 @@ impl Battle {
             }
         });
 
+        eprintln!("[FIELD_EVENT] event='{}', turn={}, AFTER speed_sort, handler IDs: {:?}",
+            event_id, self.turn,
+            handlers.iter().map(|h| h.effect_id.as_str()).collect::<Vec<_>>());
+
         // JS: while (handlers.length) { ... }
         while !handlers.is_empty() {
             let handler = handlers.remove(0);
@@ -405,12 +409,15 @@ impl Battle {
             // JS: if ((handler.effectHolder as Pokemon).fainted) {
             //         if (!(handler.state?.isSlotCondition)) continue;
             //     }
-            if let Some((side_idx, poke_idx)) = handler.holder {
-                if let Some(pokemon) = self.sides.get(side_idx)
-                    .and_then(|s| s.pokemon.get(poke_idx)) {
-                    if pokemon.fainted {
-                        // Skip fainted Pokemon (slot conditions not implemented)
-                        continue;
+            // Skip fainted Pokemon UNLESS it's a slot condition
+            // Slot conditions persist even when the Pokemon faints/switches out
+            if handler._effect_type != crate::battle::EffectType::SlotCondition {
+                if let Some((side_idx, poke_idx)) = handler.holder {
+                    if let Some(pokemon) = self.sides.get(side_idx)
+                        .and_then(|s| s.pokemon.get(poke_idx)) {
+                        if pokemon.fainted {
+                            continue;
+                        }
                     }
                 }
             }
