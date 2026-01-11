@@ -227,12 +227,14 @@ impl Battle {
             }
         }
 
-        // Look up the ability in dex data and check its extra field for callback boolean
+        // Look up the ability in dex data and check its extra field for callback
+        // IMPORTANT: In JavaScript, callback !== undefined means any defined value
+        // For abilities like Battle Armor with "onCriticalHit": false, the value exists
+        // so there IS a callback (it just returns false to prevent crits)
         if let Some(ability_data) = self.dex.abilities().get(ability_id) {
-            // Check the exact event_id first, then try with "on" prefix for backward compatibility
-            let has_callback = ability_data.extra.get(event_id)
-                .and_then(|v| v.as_bool())
-                .unwrap_or(false);
+            // Check if the event_id key exists in extra - if the key exists, there's a callback
+            // The value (true/false) is the callback's return value, not whether the callback exists
+            let has_callback = ability_data.extra.contains_key(event_id);
 
             if has_callback {
                 eprintln!("[ABILITY_HAS_CALLBACK] FOUND callback for ability_id={}, event_id={}", ability_id, event_id);
@@ -240,9 +242,7 @@ impl Battle {
             } else if !event_id.starts_with("on") {
                 // Try with "on" prefix for backward compatibility
                 let with_on = format!("on{}", event_id);
-                ability_data.extra.get(&with_on)
-                    .and_then(|v| v.as_bool())
-                    .unwrap_or(false)
+                ability_data.extra.contains_key(&with_on)
             } else {
                 false
             }
@@ -302,8 +302,11 @@ impl Battle {
         // Look up the move in dex data and check its extra field for callback boolean
         if let Some(move_data) = self.dex.moves().get(move_id) {
             // Check the move's direct callbacks (not self callbacks)
+            // IMPORTANT: Check if the key EXISTS and is a boolean, not just if it's true
+            // In JavaScript, callback !== undefined means any defined value (true OR false)
+            // indicates a handler exists. The value is the callback's return value.
             let has_callback = move_data.extra.get(event_id)
-                .and_then(|v| v.as_bool())
+                .map(|v| v.is_boolean())
                 .unwrap_or(false);
 
             if has_callback {
@@ -314,7 +317,7 @@ impl Battle {
             if !event_id.starts_with("on") {
                 let with_on = format!("on{}", event_id);
                 let has_callback_with_on = move_data.extra.get(&with_on)
-                    .and_then(|v| v.as_bool())
+                    .map(|v| v.is_boolean())
                     .unwrap_or(false);
                 if has_callback_with_on {
                     return true;
