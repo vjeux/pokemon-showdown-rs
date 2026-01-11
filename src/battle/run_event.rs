@@ -726,6 +726,18 @@ impl Battle {
             // Negative numbers (like -1 for type effectiveness) are passed through unchanged
         }
 
+        // CRITICAL FIX: For EventResult::Boost, handlers may have modified the boosts in-place
+        // via self.event.relay_var rather than returning a new value. In JavaScript, the boosts
+        // object is mutated directly (by reference). In Rust, we need to read back the modified
+        // boosts from self.event.relay_var since handlers like Unaware modify it directly.
+        if let EventResult::Boost(_) = relay_var {
+            if let Some(ref event) = self.event {
+                if let Some(EventResult::Boost(ref modified_boosts)) = event.relay_var {
+                    relay_var = EventResult::Boost(modified_boosts.clone());
+                }
+            }
+        }
+
         // JavaScript: this.event = parentEvent;
         // Restore parent event
         self.event = parent_event;

@@ -301,7 +301,10 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 "",  // Note: boosts handled via relay_var_boost in event
-                pokemon_pos,
+                // IMPORTANT: For onAnyModifyBoost(boosts, pokemon), `pokemon` is the event target
+                // (the Pokemon whose boosts are being modified), NOT the ability holder.
+                // The ability holder is accessed via effect_state.target inside the callback.
+                event_target_pos.unwrap_or(pokemon_pos),
             ),
             "AnyModifyDamage" => ability_callbacks::dispatch_on_any_modify_damage(
                 self,
