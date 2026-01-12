@@ -14,13 +14,20 @@ use crate::event::EventResult;
 ///         return 0;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     use crate::battle::Arg;
-    use crate::dex_data::ID;
+    use crate::battle::EffectType;
 
     // if (effect?.effectType === 'Move' ...)
-    let is_move = if let Some(eff_id) = effect_id {
-        battle.dex.moves().get_by_id(&ID::from(eff_id)).is_some()
+    // JavaScript checks the effect parameter's effectType, not this.effect (the handler's effect).
+    // The effect parameter is the effect that caused the damage, stored in battle.event.effect.
+    // battle.effect is the current handler's effect (the ability), not the damage source.
+    let is_move = if let Some(ref event) = battle.event {
+        if let Some(ref eff) = event.effect {
+            eff.effect_type == EffectType::Move
+        } else {
+            false
+        }
     } else {
         false
     };
