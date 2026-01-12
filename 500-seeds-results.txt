@@ -291,7 +291,7 @@ Seed 281: ✓ PASS (100%) - 74/74 turns
 Seed 282: ✓ PASS (100%) - 30/30 turns
 Seed 283: ✓ PASS (100%) - 36/36 turns
 Seed 284: ✗ FAIL (93%) - 93/100 turns
-Seed 285: ✗ FAIL (64%) - 34/53 turns
+Seed 285: ✓ PASS (100%) - 53/53 turns
 Seed 286: ✓ PASS (100%) - 41/41 turns
 Seed 287: ✓ PASS (100%) - 100/100 turns
 Seed 288: ✓ PASS (100%) - 29/29 turns
@@ -512,8 +512,8 @@ Seed 500: ✓ PASS (100%) - 98/98 turns
 Summary
 =======================================
 Total seeds tested: 500
-Passed (100%): 480
-Failed (<100%): 20
+Passed (100%): 481
+Failed (<100%): 19
 
 Average pass rate: 99%
 

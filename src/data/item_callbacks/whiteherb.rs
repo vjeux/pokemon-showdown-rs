@@ -45,7 +45,9 @@ pub fn on_start(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> Even
             let boost_value = pokemon.boosts.get(*boost_id);
             if boost_value < 0 {
                 ready = true;
-                boosts_to_clear.set(*boost_id, 0);
+                // Store the negative value as a marker that this boost needs to be cleared
+                // We can't store 0 because BoostsTable defaults to 0 for all stats
+                boosts_to_clear.set(*boost_id, boost_value);
             }
         }
 
@@ -135,8 +137,10 @@ pub fn on_use(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         let mut boost_map = std::collections::HashMap::new();
         for boost_id in BoostID::all() {
             let value = boosts.get(*boost_id);
-            if value != 0 {
-                boost_map.insert(*boost_id, value);
+            // If the stored value is negative, this boost needs to be cleared to 0
+            // We stored the negative value as a marker (see on_start)
+            if value < 0 {
+                boost_map.insert(*boost_id, 0);
             }
         }
         pokemon_mut.set_boost(boost_map);

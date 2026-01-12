@@ -44,7 +44,12 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usi
     }
 
     // this.heal(move.totalDamage / 8, pokemon);
-    battle.heal(total_damage / 8, Some(source_pos), None, None);
+    // In JS, division produces a float (e.g., 7/8 = 0.875).
+    // The heal() function then applies: if (damage && damage <= 1) damage = 1;
+    // So any non-zero totalDamage results in at least 1 HP heal.
+    // In Rust, we need to match this behavior by using max(1) for non-zero damage.
+    let heal_amount = (total_damage / 8).max(1);
+    battle.heal(heal_amount, Some(source_pos), None, None);
 
     EventResult::Continue
 }
