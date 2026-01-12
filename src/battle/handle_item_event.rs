@@ -261,6 +261,18 @@ impl Battle {
                 )
             }
 
+            // TypeScript: onNegateImmunity(pokemon:Pokemon, type:string) - returns false to negate immunity
+            "NegateImmunity" => {
+                // The type being checked is not passed via relay_var for NegateImmunity
+                // Ring Target's callback doesn't use the type parameter anyway
+                item_callbacks::dispatch_on_negate_immunity(
+                    self,
+                    item_id.as_str(),
+                    pokemon_pos,
+                    "",  // type is not needed for Ring Target
+                )
+            }
+
             // TypeScript: onMaybeTrapPokemon(pokemon:Pokemon)
             "MaybeTrapPokemon" => {
                 item_callbacks::dispatch_on_maybe_trap_pokemon(self, item_id.as_str(), pokemon_pos)

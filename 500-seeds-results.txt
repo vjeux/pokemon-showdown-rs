@@ -406,7 +406,7 @@ Seed 396: ✓ PASS (100%) - 82/82 turns
 Seed 397: ✓ PASS (100%) - 48/48 turns
 Seed 398: ✓ PASS (100%) - 32/32 turns
 Seed 399: ✓ PASS (100%) - 100/100 turns
-Seed 400: ✗ FAIL (28%) - 28/100 turns
+Seed 400: ✓ PASS (100%) - 100/100 turns
 Seed 401: ✓ PASS (100%) - 46/46 turns
 Seed 402: ✓ PASS (100%) - 34/34 turns
 Seed 403: ✓ PASS (100%) - 36/36 turns
@@ -512,8 +512,8 @@ Seed 500: ✓ PASS (100%) - 98/98 turns
 Summary
 =======================================
 Total seeds tested: 500
-Passed (100%): 474
-Failed (<100%): 26
+Passed (100%): 475
+Failed (<100%): 25
 
 Average pass rate: 98%
 

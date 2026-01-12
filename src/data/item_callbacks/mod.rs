@@ -860,6 +860,21 @@ pub fn dispatch_on_immunity(
         _ => EventResult::Continue,
     }
 }
+//   onNegateImmunity
+
+/// Dispatch onNegateImmunity callbacks
+/// Ring Target: onNegateImmunity: false (static value indicating immunity should be negated)
+pub fn dispatch_on_negate_immunity(
+    battle: &mut Battle,
+    item_id: &str,
+    pokemon_pos: (usize, usize),
+    type_str: &str,
+) -> EventResult {
+    match item_id {
+        "ringtarget" => ringtarget::on_negate_immunity(battle, pokemon_pos, type_str),
+        _ => EventResult::Continue,
+    }
+}
 //   onMaybeTrapPokemon(pokemon)
 
 /// Dispatch onMaybeTrapPokemon callbacks
