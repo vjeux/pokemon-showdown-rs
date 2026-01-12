@@ -423,6 +423,27 @@ impl Battle {
             "TrapPokemon" => {
                 condition_callbacks::dispatch_on_trap_pokemon(self, condition_id, pokemon_pos)
             }
+            "TryHeal" => {
+                // TryHeal is called when healing is attempted on the target
+                // Heal Block's onTryHeal returns false to prevent healing
+                // Extract damage, target, source, and effect from event
+                let damage = self.event.as_ref().and_then(|e| match &e.relay_var {
+                    Some(EventResult::Number(n)) => Some(*n),
+                    _ => None
+                }).unwrap_or(0);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|eff| eff.id.to_string());
+                condition_callbacks::dispatch_on_try_heal(
+                    self,
+                    condition_id,
+                    damage,
+                    Some(pokemon_pos),
+                    source_pos,
+                    effect_id_owned.as_deref()
+                )
+            }
             "TryAddVolatile" => {
                 // For TryAddVolatile, we need to pass the status (volatile) being added,
                 // the target, source, and effect. The status is in relay_var as EventResult::String.

@@ -834,6 +834,21 @@ pub fn dispatch_on_trap_pokemon(
         }
     }
 }
+/// Dispatch onTryHeal callbacks
+pub fn dispatch_on_try_heal(
+    battle: &mut Battle,
+    condition_id: &str,
+    damage: i32,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
+) -> EventResult {
+    match condition_id {
+        // Move-embedded conditions with onTryHeal callbacks
+        "healblock" => move_callbacks::healblock::condition::on_try_heal(battle, damage, target_pos, source_pos, effect_id),
+        _ => EventResult::Continue,
+    }
+}
 /// Dispatch onTryAddVolatile callbacks
 pub fn dispatch_on_try_add_volatile(
     battle: &mut Battle,

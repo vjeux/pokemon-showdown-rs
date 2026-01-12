@@ -324,7 +324,7 @@ Seed 314: ✓ PASS (100%) - 61/61 turns
 Seed 315: ✓ PASS (100%) - 75/75 turns
 Seed 316: ✗ FAIL (79%) - 73/92 turns
 Seed 317: ✓ PASS (100%) - 52/52 turns
-Seed 318: ✗ FAIL (56%) - 43/76 turns
+Seed 318: ✓ PASS (100%) - 76/76 turns
 Seed 319: ✗ FAIL (95%) - 95/100 turns
 Seed 320: ✓ PASS (100%) - 94/94 turns
 Seed 321: ✓ PASS (100%) - 25/25 turns
@@ -512,8 +512,8 @@ Seed 500: ✓ PASS (100%) - 98/98 turns
 Summary
 =======================================
 Total seeds tested: 500
-Passed (100%): 481
-Failed (<100%): 19
+Passed (100%): 482
+Failed (<100%): 18
 
 Average pass rate: 99%
 
