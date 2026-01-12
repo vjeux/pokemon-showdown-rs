@@ -52,11 +52,21 @@ impl Battle {
         let priority = self.get_callback_priority(effect_type, effect_id.as_str(), &prefixed_callback);
 
         // Get sub_order: first try custom value, then fall back to default based on effect type
+        // This matches JavaScript's resolvePriority effectTypeOrder
         let sub_order = self.get_callback_sub_order(effect_type, effect_id.as_str(), callback_name)
             .unwrap_or_else(|| match effect_type {
+                crate::battle::EffectType::ZMove => 1,
+                crate::battle::EffectType::Condition => 2,
+                crate::battle::EffectType::SlotCondition => 3,
+                crate::battle::EffectType::SideCondition => 4,
+                crate::battle::EffectType::FieldCondition => 5,
+                crate::battle::EffectType::Weather => 5,
+                crate::battle::EffectType::Format => 5,
+                crate::battle::EffectType::Rule => 5,
+                crate::battle::EffectType::Ruleset => 5,
                 crate::battle::EffectType::Ability => 7,
                 crate::battle::EffectType::Item => 8,
-                crate::battle::EffectType::Condition => 2,
+                // Status and other types default to 0 (like JavaScript)
                 _ => 0,
             });
 
