@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Guzzlord",
+      "species": "Guzzlord",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Grimmsnarl-Gmax",
+      "species": "Grimmsnarl-Gmax",
+      "level": 91,
+      "ability": "Prankster",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "leechseed"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->3, P1=[Guzzlord(602/602)], P2=[Grimmsnarl(275/321)]\" vs Rust=\"#1: turn=2, prng=0->4, P1=[Guzzlord(527/602)], P2=[Grimmsnarl(321/321)]\""
+}

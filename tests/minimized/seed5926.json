@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Snorlax",
+      "species": "Snorlax",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "filletaway"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Darmanitan-Zen",
+      "species": "Darmanitan-Zen",
+      "level": 84,
+      "ability": "Zen Mode",
+      "item": "berserkgene",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "ingrain"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 82,
+        "def": 107,
+        "spa": 63,
+        "spd": 92,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 14,
+        "def": 30,
+        "spa": 31,
+        "spd": 13,
+        "spe": 4
+      }
+    }
+  ],
+  "_bug": "Diverges at line 17: JS=\"#17: turn=17, prng=7->9, P1=[Snorlax(0/335)], P2=[Darmanitan(176/288)]\" vs Rust=\"#17: turn=17, prng=7->9, P1=[Snorlax(0/335)], P2=[Darmanitan(217/288)]\""
+}

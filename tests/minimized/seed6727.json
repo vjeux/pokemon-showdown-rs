@@ -1,0 +1,148 @@
+{
+  "p1": [
+    {
+      "name": "Toedscruel",
+      "species": "Toedscruel",
+      "level": 81,
+      "ability": "Mycelium Might",
+      "item": "",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "triattack",
+        "tickle"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 63,
+        "def": 104,
+        "spa": 85,
+        "spd": 87,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 6,
+        "def": 27,
+        "spa": 13,
+        "spd": 0,
+        "spe": 28
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Azurill",
+      "species": "Azurill",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 63,
+        "def": 93,
+        "spa": 80,
+        "spd": 106,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 21,
+        "def": 26,
+        "spa": 4,
+        "spd": 21,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Gyarados",
+      "species": "Gyarados",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "substitute"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Floatzel",
+      "species": "Floatzel",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "babydolleyes"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Glimmora-Mega",
+      "species": "Glimmora-Mega",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "solarblade"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 21: JS=\"#21: turn=18, prng=89->93, P1=[Toedscruel(0/250)], P2=[Glimmora(161/264)]\" vs Rust=\"#21: turn=18, prng=89->94, P1=[Toedscruel(0/250)], P2=[Glimmora(161/264)]\""
+}

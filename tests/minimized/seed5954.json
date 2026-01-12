@@ -1,0 +1,121 @@
+{
+  "p1": [
+    {
+      "name": "Amoonguss",
+      "species": "Amoonguss",
+      "level": 94,
+      "ability": "Effect Spore",
+      "item": "oddincense",
+      "nature": "bashful",
+      "gender": "M",
+      "moves": [
+        "esperwing",
+        "corrosivegas"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 77,
+        "def": 85,
+        "spa": 86,
+        "spd": 76,
+        "spe": 108
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 21,
+        "def": 29,
+        "spa": 2,
+        "spd": 17,
+        "spe": 28
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Kyogre-Primal",
+      "species": "Kyogre-Primal",
+      "level": 86,
+      "ability": "Primordial Sea",
+      "item": "",
+      "nature": "lonely",
+      "gender": "",
+      "moves": [
+        "faketears"
+      ],
+      "evs": {
+        "hp": 64,
+        "atk": 90,
+        "def": 111,
+        "spa": 87,
+        "spd": 89,
+        "spe": 69
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 13,
+        "def": 22,
+        "spa": 31,
+        "spd": 13,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Lugia",
+      "species": "Lugia",
+      "level": 88,
+      "ability": "Pressure",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "furyswipes"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Urshifu-Rapid-Strike",
+      "species": "Urshifu-Rapid-Strike",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "lightscreen",
+        "torchsong"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 70: JS=\"#70: turn=68, prng=172->177, P1=[Amoonguss(0/354)], P2=[Urshifu(263/263)]\" vs Rust=\"#70: turn=69, prng=172->173, P1=[Amoonguss(67/354)], P2=[Urshifu(263/263)]\""
+}

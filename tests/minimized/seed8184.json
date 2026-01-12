@@ -1,0 +1,178 @@
+{
+  "p1": [
+    {
+      "name": "Clefable",
+      "species": "Clefable",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "F",
+      "moves": [
+        "fierydance",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 77,
+        "def": 91,
+        "spa": 103,
+        "spd": 83,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 23,
+        "def": 10,
+        "spa": 0,
+        "spd": 5,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Minior-Meteor",
+      "species": "Minior-Meteor",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Shuckle",
+      "species": "Shuckle",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "pinmissile"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dialga-Origin",
+      "species": "Dialga-Origin",
+      "level": 87,
+      "ability": "Pressure",
+      "item": "",
+      "nature": "hardy",
+      "gender": "",
+      "moves": [
+        "confuseray"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 73,
+        "def": 85,
+        "spa": 94,
+        "spd": 104,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 15,
+        "def": 0,
+        "spa": 4,
+        "spd": 19,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Ogerpon-Wellspring-Tera",
+      "species": "Ogerpon-Wellspring-Tera",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 89,
+        "def": 65,
+        "spa": 128,
+        "spd": 82,
+        "spe": 52
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 20,
+        "def": 25,
+        "spa": 30,
+        "spd": 0,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Greninja-Bond",
+      "species": "Greninja-Bond",
+      "level": 55,
+      "ability": "Battle Bond",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "healorder",
+        "volttackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 36: JS=\"#36: turn=32, prng=172->179, P1=[Minior(171/271)], P2=[Greninja(0/172)]\" vs Rust=\"#36: turn=32, prng=172->175, P1=[Minior(271/271)], P2=[Greninja(0/172)]\""
+}

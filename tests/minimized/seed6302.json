@@ -1,0 +1,65 @@
+{
+  "p1": [
+    {
+      "name": "Salamence-Mega",
+      "species": "Salamence-Mega",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "struggle",
+        "confide",
+        "gmaxcannonade"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 69,
+        "def": 97,
+        "spa": 119,
+        "spd": 76,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 14,
+        "def": 30,
+        "spa": 19,
+        "spd": 8,
+        "spe": 10
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Barbaracle",
+      "species": "Barbaracle",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "petaldance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 44: JS=\"#44: turn=45, prng=191->196, P1=[Salamence(57/288)], P2=[Barbaracle(27/255)]\" vs Rust=\"#44: turn=44, prng=191->195, P1=[Salamence(35/288)], P2=[Barbaracle(0/255)]\""
+}

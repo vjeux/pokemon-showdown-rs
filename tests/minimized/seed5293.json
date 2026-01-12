@@ -1,0 +1,121 @@
+{
+  "p1": [
+    {
+      "name": "Zygarde-Complete",
+      "species": "Zygarde-Complete",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "eruption"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Clefable",
+      "species": "Clefable",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "counter"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Chimecho-Mega",
+      "species": "Chimecho-Mega",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "barbbarrage"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 74,
+        "def": 98,
+        "spa": 92,
+        "spd": 89,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 4,
+        "def": 22,
+        "spa": 14,
+        "spd": 21,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Bagon",
+      "species": "Bagon",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gmaxresonance",
+        "clangingscales",
+        "holdback"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 27: JS=\"#27: turn=26, prng=72->76, P1=[Clefable(1/187)], P2=[Bagon(58/239)]\" vs Rust=\"#27: turn=26, prng=72->76, P1=[Clefable(1/187)], P2=[Bagon(59/239)]\""
+}

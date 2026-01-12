@@ -1,0 +1,120 @@
+{
+  "p1": [
+    {
+      "name": "Toucannon",
+      "species": "Toucannon",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "mistball",
+        "glitzyglow"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Blacephalon",
+      "species": "Blacephalon",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Piloswine",
+      "species": "Piloswine",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 97,
+        "def": 80,
+        "spa": 100,
+        "spd": 89,
+        "spe": 65
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 17,
+        "def": 22,
+        "spa": 21,
+        "spd": 7,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Volbeat",
+      "species": "Volbeat",
+      "level": 61,
+      "ability": "Illuminate",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "courtchange"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 12: JS=\"#12: turn=11, prng=53->57, P1=[Toucannon(76/228)], P2=[Volbeat(53/182)]\" vs Rust=\"#12: turn=11, prng=53->57, P1=[Toucannon(76/228)], P2=[Volbeat(29/182)]\""
+}

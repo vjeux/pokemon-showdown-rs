@@ -1,0 +1,149 @@
+{
+  "p1": [
+    {
+      "name": "Hippowdon",
+      "species": "Hippowdon",
+      "level": 100,
+      "ability": "Sand Stream",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "venomdrench"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Torkoal",
+      "species": "Torkoal",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "snipeshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Treecko",
+      "species": "Treecko",
+      "level": 75,
+      "ability": "Overgrow",
+      "item": "",
+      "nature": "rash",
+      "gender": "M",
+      "moves": [
+        "floatyfall",
+        "revelationdance"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 61,
+        "def": 73,
+        "spa": 106,
+        "spd": 89,
+        "spe": 101
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 26,
+        "def": 31,
+        "spa": 2,
+        "spd": 30,
+        "spe": 24
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Flaaffy",
+      "species": "Flaaffy",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "hiddenpowersteel"
+      ],
+      "evs": {
+        "hp": 107,
+        "atk": 75,
+        "def": 88,
+        "spa": 77,
+        "spd": 76,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 30,
+        "def": 8,
+        "spa": 14,
+        "spd": 10,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Klawf",
+      "species": "Klawf",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "clangoroussoulblaze",
+        "acupressure"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 81,
+        "def": 107,
+        "spa": 81,
+        "spd": 69,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 14,
+        "def": 28,
+        "spa": 6,
+        "spd": 6,
+        "spe": 11
+      }
+    }
+  ],
+  "_bug": "Diverges at line 48: JS=\"#48: turn=46, prng=182->185, P1=[Treecko(36/160)], P2=[Klawf(85/241)]\" vs Rust=\"#48: turn=46, prng=182->185, P1=[Treecko(36/160)], P2=[Klawf(105/241)]\""
+}

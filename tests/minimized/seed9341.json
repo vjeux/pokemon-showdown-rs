@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Arceus-Bug",
+      "species": "Arceus-Bug",
+      "level": 72,
+      "ability": "Multitype",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Zygarde-Mega",
+      "species": "Zygarde-Mega",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "transform"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=4->21, P1=[Arceus(262/292)], P2=[Zygarde(297/383)]\" vs Rust=\"#2: turn=3, prng=4->21, P1=[Arceus(272/292)], P2=[Zygarde(297/383)]\""
+}

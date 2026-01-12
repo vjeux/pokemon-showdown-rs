@@ -1,0 +1,148 @@
+{
+  "p1": [
+    {
+      "name": "Keldeo",
+      "species": "Keldeo",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "",
+      "moves": [
+        "sweetkiss",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 93,
+        "def": 85,
+        "spa": 65,
+        "spd": 102,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 28,
+        "def": 16,
+        "spa": 14,
+        "spd": 13,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Scorbunny",
+      "species": "Scorbunny",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "powershift"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 80,
+        "def": 82,
+        "spa": 72,
+        "spd": 96,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 3,
+        "def": 18,
+        "spa": 8,
+        "spd": 4,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Rattata",
+      "species": "Rattata",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Finizen",
+      "species": "Finizen",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 90,
+        "def": 76,
+        "spa": 85,
+        "spd": 90,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 12,
+        "def": 9,
+        "spa": 23,
+        "spd": 18,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Annihilape",
+      "species": "Annihilape",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "adamant",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 70,
+        "def": 80,
+        "spa": 89,
+        "spd": 107,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 28,
+        "def": 2,
+        "spa": 15,
+        "spd": 7,
+        "spe": 4
+      }
+    }
+  ],
+  "_bug": "Diverges at line 27: JS=\"#27: turn=25, prng=113->127, P1=[Scorbunny(94/224)], P2=[Annihilape(324/324)]\" vs Rust=\"#27: turn=25, prng=113->125, P1=[Scorbunny(94/224)], P2=[Annihilape(324/324)]\""
+}

@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Foongus",
+      "species": "Foongus",
+      "level": 94,
+      "ability": "Effect Spore",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "electricterrain"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Drednaw-Gmax",
+      "species": "Drednaw-Gmax",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "constrict"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 3: JS=\"#3: turn=4, prng=10->15, P1=[Foongus(245/282)], P2=[Drednaw(295/295)]\" vs Rust=\"#3: turn=4, prng=10->16, P1=[Foongus(245/282)], P2=[Drednaw(295/295)]\""
+}

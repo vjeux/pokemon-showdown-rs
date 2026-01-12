@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Dewott",
+      "species": "Dewott",
+      "level": 54,
+      "ability": "Torrent",
+      "item": "",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "revelationdance"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 80,
+        "def": 114,
+        "spa": 74,
+        "spd": 69,
+        "spe": 96
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 4,
+        "def": 7,
+        "spa": 6,
+        "spd": 9,
+        "spe": 16
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Yanmega",
+      "species": "Yanmega",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 3: JS=\"#3: turn=4, prng=12->18, P1=[Dewott(7/170)], P2=[Yanmega(117/275)]\" vs Rust=\"#3: turn=4, prng=12->18, P1=[Dewott(7/170)], P2=[Yanmega(138/275)]\""
+}

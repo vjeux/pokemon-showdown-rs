@@ -1,0 +1,93 @@
+{
+  "p1": [
+    {
+      "name": "Necrozma-Dawn-Wings",
+      "species": "Necrozma-Dawn-Wings",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "maxovergrowth"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Oshawott",
+      "species": "Oshawott",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "swagger"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sinistea",
+      "species": "Sinistea",
+      "level": 99,
+      "ability": "Weak Armor",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "gmaxresonance",
+        "revivalblessing",
+        "ceaselessedge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 15: JS=\"#15: turn=15, prng=56->59, P1=[Oshawott(126/245)], P2=[Sinistea(2/239)]\" vs Rust=\"#15: turn=15, prng=56->59, P1=[Oshawott(126/245)], P2=[Sinistea(4/239)]\""
+}

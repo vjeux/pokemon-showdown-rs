@@ -1,0 +1,203 @@
+{
+  "p1": [
+    {
+      "name": "Scorbunny",
+      "species": "Scorbunny",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 93,
+        "def": 78,
+        "spa": 61,
+        "spd": 90,
+        "spe": 107
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 22,
+        "def": 9,
+        "spa": 18,
+        "spd": 6,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Luxray",
+      "species": "Luxray",
+      "level": 77,
+      "ability": "Rivalry",
+      "item": "",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "diamondstorm"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 76,
+        "def": 93,
+        "spa": 97,
+        "spd": 61,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 30,
+        "def": 3,
+        "spa": 6,
+        "spd": 12,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Oricorio-Pom-Pom",
+      "species": "Oricorio-Pom-Pom",
+      "level": 57,
+      "ability": "Dancer",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "taunt"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Fletchinder",
+      "species": "Fletchinder",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "helpinghand"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 69,
+        "def": 67,
+        "spa": 80,
+        "spd": 102,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 18,
+        "def": 10,
+        "spa": 2,
+        "spd": 30,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Dipplin",
+      "species": "Dipplin",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "clangoroussoul"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Draggalong",
+      "species": "Draggalong",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "iciclecrash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Silvally-Ground",
+      "species": "Silvally-Ground",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "petaldance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 34: JS=\"#34: turn=29, prng=140->150, P1=[Oricorio(128/182)], P2=[Silvally(0/184)]\" vs Rust=\"#34: turn=29, prng=140->152, P1=[Oricorio(126/182)], P2=[Silvally(0/184)]\""
+}

@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Tyranitar-Mega",
+      "species": "Tyranitar-Mega",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Lucario-Mega",
+      "species": "Lucario-Mega",
+      "level": 51,
+      "ability": "Adaptability",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "metalclaw"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->7, P1=[Tyranitar(109/193)], P2=[Lucario(144/158)]\" vs Rust=\"#1: turn=2, prng=0->7, P1=[Tyranitar(131/193)], P2=[Lucario(144/158)]\""
+}

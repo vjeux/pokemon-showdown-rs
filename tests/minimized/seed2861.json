@@ -1,0 +1,179 @@
+{
+  "p1": [
+    {
+      "name": "Ditto",
+      "species": "Ditto",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "calmmind"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 82,
+        "def": 79,
+        "spa": 80,
+        "spd": 77,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 3,
+        "def": 12,
+        "spa": 5,
+        "spd": 16,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Greninja",
+      "species": "Greninja",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "strugglebug"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 83,
+        "def": 113,
+        "spa": 80,
+        "spd": 73,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 14,
+        "def": 4,
+        "spa": 27,
+        "spd": 25,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Servine",
+      "species": "Servine",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "storedpower"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hatenna",
+      "species": "Hatenna",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "meanlook",
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Porygon",
+      "species": "Porygon",
+      "level": 83,
+      "ability": "Trace",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "healpulse",
+        "softboiled",
+        "toxicthread"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ting-Lu",
+      "species": "Ting-Lu",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "muddywater",
+        "mudsport"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 71: JS=\"#71: turn=68, prng=109->109, P1=[Hatenna(161/161)], P2=[Ting-Lu(46/361)]\" vs Rust=\"#71: turn=68, prng=109->110, P1=[Hatenna(161/161)], P2=[Ting-Lu(46/361)]\""
+}

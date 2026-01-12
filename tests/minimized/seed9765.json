@@ -1,0 +1,207 @@
+{
+  "p1": [
+    {
+      "name": "Pikachu-Starter",
+      "species": "Pikachu-Starter",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "perishsong"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Empoleon",
+      "species": "Empoleon",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "F",
+      "moves": [
+        "superpower",
+        "secretpower",
+        "muddywater"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 107,
+        "def": 86,
+        "spa": 73,
+        "spd": 54,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 10,
+        "def": 9,
+        "spa": 2,
+        "spd": 13,
+        "spe": 15
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Amoonguss",
+      "species": "Amoonguss",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Polteageist-Antique",
+      "species": "Polteageist-Antique",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "nastyplot",
+        "sunsteelstrike",
+        "mindreader"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kyurem-Black",
+      "species": "Kyurem-Black",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "maxooze"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Whimsicott",
+      "species": "Whimsicott",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "faketears"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Melmetal",
+      "species": "Melmetal",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "sheercold"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 62: JS=\"#62: turn=58, prng=84->89, P1=[Empoleon(0/260)], P2=[Melmetal(230/368)]\" vs Rust=\"#62: turn=59, prng=84->89, P1=[Empoleon(86/260)], P2=[Melmetal(230/368)]\""
+}

@@ -1,0 +1,149 @@
+{
+  "p1": [
+    {
+      "name": "Seaking",
+      "species": "Seaking",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 96,
+        "def": 104,
+        "spa": 64,
+        "spd": 78,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 2,
+        "def": 30,
+        "spa": 11,
+        "spd": 31,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Alcremie-Lemon-Cream",
+      "species": "Alcremie-Lemon-Cream",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "powertrip",
+        "instruct"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Growlithe",
+      "species": "Growlithe",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "figyberry",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 81,
+        "def": 85,
+        "spa": 76,
+        "spd": 94,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 25,
+        "def": 24,
+        "spa": 6,
+        "spd": 20,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Chandelure",
+      "species": "Chandelure",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "jawlock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Silvally-Ghost",
+      "species": "Silvally-Ghost",
+      "level": 63,
+      "ability": "RKS System",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "sweetscent",
+        "thundercage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 44: JS=\"#44: turn=42, prng=152->159, P1=[Alcremie(51/213)], P2=[Silvally(132/225)]\" vs Rust=\"#44: turn=42, prng=152->160, P1=[Alcremie(51/213)], P2=[Silvally(132/225)]\""
+}

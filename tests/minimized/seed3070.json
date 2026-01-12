@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Kangaskhan-Mega",
+      "species": "Kangaskhan-Mega",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "leafstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Hydrapple",
+      "species": "Hydrapple",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "pinkbow",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gmaxsmite",
+        "crushgrip"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 9: JS=\"#9: turn=10, prng=44->52, P1=[Kangaskhan(180/306)], P2=[Hydrapple(180/232)]\" vs Rust=\"#9: turn=10, prng=44->51, P1=[Kangaskhan(206/306)], P2=[Hydrapple(180/232)]\""
+}

@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Larvitar",
+      "species": "Larvitar",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Girafarig",
+      "species": "Girafarig",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "brightpowder",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Starmie",
+      "species": "Starmie",
+      "level": 75,
+      "ability": "Illuminate",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tripleaxel"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 4: JS=\"#4: turn=4, prng=18->28, P1=[Girafarig(144/193)], P2=[Starmie(160/214)]\" vs Rust=\"#4: turn=4, prng=18->30, P1=[Girafarig(94/193)], P2=[Starmie(164/214)]\""
+}

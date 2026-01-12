@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Nidoqueen",
+      "species": "Nidoqueen",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "comeuppance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Venonat",
+      "species": "Venonat",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tarshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 3: JS=\"#3: turn=4, prng=2->3, P1=[Nidoqueen(255/255)], P2=[Venonat(175/175)]\" vs Rust=\"#3: turn=4, prng=2->4, P1=[Nidoqueen(255/255)], P2=[Venonat(174/175)]\""
+}

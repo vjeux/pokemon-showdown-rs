@@ -1,0 +1,176 @@
+{
+  "p1": [
+    {
+      "name": "Crucibelle",
+      "species": "Crucibelle",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "furyattack"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 81,
+        "def": 81,
+        "spa": 82,
+        "spd": 84,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 4,
+        "def": 18,
+        "spa": 11,
+        "spd": 12,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Florges",
+      "species": "Florges",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "curse"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 91,
+        "def": 62,
+        "spa": 106,
+        "spd": 97,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 30,
+        "def": 27,
+        "spa": 28,
+        "spd": 24,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Piplup",
+      "species": "Piplup",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "firepunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Skeledirge",
+      "species": "Skeledirge",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 81,
+        "def": 71,
+        "spa": 100,
+        "spd": 83,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 4,
+        "def": 6,
+        "spa": 26,
+        "spd": 29,
+        "spe": 12
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Raging Bolt",
+      "species": "Raging Bolt",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "",
+      "moves": [
+        "rocktomb",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 70,
+        "def": 83,
+        "spa": 85,
+        "spd": 79,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 27,
+        "def": 22,
+        "spa": 1,
+        "spd": 17,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Darmanitan-Zen",
+      "species": "Darmanitan-Zen",
+      "level": 70,
+      "ability": "Zen Mode",
+      "item": "",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "bouncybubble"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 82,
+        "def": 93,
+        "spa": 62,
+        "spd": 117,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 16,
+        "def": 18,
+        "spa": 16,
+        "spd": 10,
+        "spe": 12
+      }
+    }
+  ],
+  "_bug": "Diverges at line 45: JS=\"#45: turn=42, prng=199->205, P1=[Skeledirge(8/346)], P2=[Darmanitan(89/248)]\" vs Rust=\"#45: turn=41, prng=199->205, P1=[Skeledirge(0/346)], P2=[Darmanitan(117/248)]\""
+}

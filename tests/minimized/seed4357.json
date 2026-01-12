@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Reuniclus",
+      "species": "Reuniclus",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 102,
+        "def": 35,
+        "spa": 96,
+        "spd": 90,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 28,
+        "def": 18,
+        "spa": 1,
+        "spd": 28,
+        "spe": 1
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Lapras",
+      "species": "Lapras",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "bigroot",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "aquaring"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->3, P1=[Reuniclus(308/308)], P2=[Lapras(214/228)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Reuniclus(308/308)], P2=[Lapras(210/228)]\""
+}

@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Kyogre-Primal",
+      "species": "Kyogre-Primal",
+      "level": 73,
+      "ability": "Primordial Sea",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "charm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hydrapple",
+      "species": "Hydrapple",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Swanna",
+      "species": "Swanna",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gmaxcuddle",
+        "hurricane"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 16: JS=\"#16: turn=16, prng=47->51, P1=[Hydrapple(268/268)], P2=[Swanna(174/203)]\" vs Rust=\"#16: turn=16, prng=47->53, P1=[Hydrapple(91/268)], P2=[Swanna(203/203)]\""
+}

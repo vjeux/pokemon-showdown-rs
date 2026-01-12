@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Hippowdon",
+      "species": "Hippowdon",
+      "level": 86,
+      "ability": "Sand Stream",
+      "item": "smoothrock",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Spinda",
+      "species": "Spinda",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "irondefense"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 5: JS=\"#5: turn=6, prng=12->15, P1=[Hippowdon(326/326)], P2=[Spinda(104/249)]\" vs Rust=\"#5: turn=6, prng=12->15, P1=[Hippowdon(326/326)], P2=[Spinda(119/249)]\""
+}

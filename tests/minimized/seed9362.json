@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Froslass",
+      "species": "Froslass",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "psychic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Groudon-Primal",
+      "species": "Groudon-Primal",
+      "level": 63,
+      "ability": "Desolate Land",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Jumpluff",
+      "species": "Jumpluff",
+      "level": 64,
+      "ability": "Chlorophyll",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tropkick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 5: JS=\"#5: turn=5, prng=12->20, P1=[Froslass(235/266)], P2=[Jumpluff(121/203)]\" vs Rust=\"#5: turn=5, prng=12->20, P1=[Froslass(229/266)], P2=[Jumpluff(133/203)]\""
+}

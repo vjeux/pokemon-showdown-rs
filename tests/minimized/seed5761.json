@@ -1,0 +1,122 @@
+{
+  "p1": [
+    {
+      "name": "Froslass-Mega",
+      "species": "Froslass-Mega",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 97,
+        "def": 99,
+        "spa": 71,
+        "spd": 56,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 24,
+        "def": 10,
+        "spa": 5,
+        "spd": 14,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Palpitoad",
+      "species": "Palpitoad",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "telekinesis"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Smokomodo",
+      "species": "Smokomodo",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "attract"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Kyurem-White",
+      "species": "Kyurem-White",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "multiattack",
+        "scaryface",
+        "iceburn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 40: JS=\"#40: turn=38, prng=123->127, P1=[Smokomodo(0/236)], P2=[Kyurem(17/367)]\" vs Rust=\"#40: turn=39, prng=123->123, P1=[Smokomodo(236/236)], P2=[Kyurem(17/367)]\""
+}

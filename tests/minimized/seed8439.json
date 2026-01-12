@@ -1,0 +1,208 @@
+{
+  "p1": [
+    {
+      "name": "Charmander",
+      "species": "Charmander",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "gmaxsteelsurge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Meloetta",
+      "species": "Meloetta",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "iceburn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zorua",
+      "species": "Zorua",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "pulverizingpancake",
+        "swallow"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 93,
+        "def": 62,
+        "spa": 87,
+        "spd": 97,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 15,
+        "def": 13,
+        "spa": 8,
+        "spd": 29,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Garchomp-Mega-Z",
+      "species": "Garchomp-Mega-Z",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "clangoroussoulblaze",
+        "darkvoid",
+        "metronome"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 99,
+        "def": 88,
+        "spa": 77,
+        "spd": 79,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 6,
+        "def": 21,
+        "spa": 23,
+        "spd": 9,
+        "spe": 25
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Snubbull",
+      "species": "Snubbull",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "dynamicpunch",
+        "nuzzle"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 66,
+        "def": 95,
+        "spa": 80,
+        "spd": 97,
+        "spe": 96
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 30,
+        "def": 20,
+        "spa": 17,
+        "spd": 4,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Mew",
+      "species": "Mew",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 83,
+        "def": 82,
+        "spa": 95,
+        "spd": 86,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 9,
+        "def": 1,
+        "spa": 25,
+        "spd": 27,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Marowak-Alola-Totem",
+      "species": "Marowak-Alola-Totem",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "stuffcheeks",
+        "slackoff"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 53: JS=\"#53: turn=49, prng=223->225, P1=[Garchomp(121/357)], P2=[Marowak(181/241)]\" vs Rust=\"#53: turn=48, prng=223->225, P1=[Garchomp(0/357)], P2=[Marowak(196/241)]\""
+}

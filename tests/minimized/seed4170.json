@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Glastrier",
+      "species": "Glastrier",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "hypervoice"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Uxie",
+      "species": "Uxie",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "letssnuggleforever",
+        "throatchop"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=5->9, P1=[Glastrier(235/340)], P2=[Uxie(217/260)]\" vs Rust=\"#2: turn=3, prng=5->12, P1=[Glastrier(235/340)], P2=[Uxie(175/260)]\""
+}

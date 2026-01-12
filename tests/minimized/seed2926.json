@@ -1,0 +1,65 @@
+{
+  "p1": [
+    {
+      "name": "Raticate-Alola",
+      "species": "Raticate-Alola",
+      "level": 80,
+      "ability": "Gluttony",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "crosschop",
+        "extremespeed",
+        "astonish"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Drifblim",
+      "species": "Drifblim",
+      "level": 92,
+      "ability": "Aftermath",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "safeguard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 26: JS=\"#26: turn=26, prng=36->40, P1=[Raticate(189/251)], P2=[Drifblim(0/425)]\" vs Rust=\"#26: turn=26, prng=36->41, P1=[Raticate(189/251)], P2=[Drifblim(0/425)]\""
+}

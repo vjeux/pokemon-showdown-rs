@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Silvally-Ground",
+      "species": "Silvally-Ground",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 119,
+        "atk": 65,
+        "def": 74,
+        "spa": 85,
+        "spd": 64,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 27,
+        "def": 16,
+        "spa": 27,
+        "spd": 29,
+        "spe": 15
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Rotom-Fan",
+      "species": "Rotom-Fan",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "fullincense",
+      "nature": "impish",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 103,
+        "atk": 70,
+        "def": 70,
+        "spa": 105,
+        "spd": 100,
+        "spe": 62
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 29,
+        "def": 9,
+        "spa": 13,
+        "spd": 1,
+        "spe": 11
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=3->18, P1=[Silvally(251/278)], P2=[Rotom(227/250)]\" vs Rust=\"#1: turn=2, prng=3->19, P1=[Silvally(251/278)], P2=[Rotom(221/250)]\""
+}

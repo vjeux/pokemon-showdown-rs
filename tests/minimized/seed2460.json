@@ -1,0 +1,66 @@
+{
+  "p1": [
+    {
+      "name": "Poochyena",
+      "species": "Poochyena",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Baxcalibur-Mega",
+      "species": "Baxcalibur-Mega",
+      "level": 82,
+      "ability": "Thermal Exchange",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "victorydance",
+        "snowscape",
+        "futuresight"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 35: JS=\"#35: turn=36, prng=102->105, P1=[Poochyena(183/183)], P2=[Baxcalibur(137/323)]\" vs Rust=\"#35: turn=36, prng=102->108, P1=[Poochyena(15/183)], P2=[Baxcalibur(137/323)]\""
+}

@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Arceus-Poison",
+      "species": "Arceus-Poison",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 73,
+        "def": 63,
+        "spa": 135,
+        "spd": 93,
+        "spe": 65
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 4,
+        "def": 8,
+        "spa": 26,
+        "spd": 14,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Golett",
+      "species": "Golett",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "focusenergy"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Delphox-Mega",
+      "species": "Delphox-Mega",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Stufful",
+      "species": "Stufful",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Greninja-Bond",
+      "species": "Greninja-Bond",
+      "level": 93,
+      "ability": "Battle Bond",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "wildcharge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 31: JS=\"#31: turn=30, prng=48->50, P1=[Golett(47/177)], P2=[Greninja(1/285)]\" vs Rust=\"#31: turn=30, prng=48->50, P1=[Golett(90/177)], P2=[Greninja(1/285)]\""
+}

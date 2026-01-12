@@ -1,0 +1,150 @@
+{
+  "p1": [
+    {
+      "name": "Skiploom",
+      "species": "Skiploom",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "sassy",
+      "gender": "M",
+      "moves": [
+        "bravebird"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 76,
+        "def": 88,
+        "spa": 110,
+        "spd": 102,
+        "spe": 59
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 17,
+        "def": 7,
+        "spa": 24,
+        "spd": 31,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Calyrex",
+      "species": "Calyrex",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "",
+      "moves": [
+        "neverendingnightmare",
+        "upperhand",
+        "ancientpower",
+        "outrage"
+      ],
+      "evs": {
+        "hp": 104,
+        "atk": 91,
+        "def": 76,
+        "spa": 84,
+        "spd": 67,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 10,
+        "def": 3,
+        "spa": 16,
+        "spd": 28,
+        "spe": 27
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Entei",
+      "species": "Entei",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "grassknot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Volkraken",
+      "species": "Volkraken",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "copycat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Stunfisk-Galar",
+      "species": "Stunfisk-Galar",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "screech"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 47: JS=\"#47: turn=45, prng=97->100, P1=[Calyrex(198/327)], P2=[Stunfisk(65/298)]\" vs Rust=\"#47: turn=45, prng=97->100, P1=[Calyrex(199/327)], P2=[Stunfisk(65/298)]\""
+}

@@ -1,0 +1,122 @@
+{
+  "p1": [
+    {
+      "name": "Manectric-Mega",
+      "species": "Manectric-Mega",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "thunderclap",
+        "aurawheel",
+        "icespinner",
+        "guillotine"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 98,
+        "def": 75,
+        "spa": 111,
+        "spd": 95,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 6,
+        "def": 4,
+        "spa": 14,
+        "spd": 0,
+        "spe": 2
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Deerling-Autumn",
+      "species": "Deerling-Autumn",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "odorsleuth"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Blastoise",
+      "species": "Blastoise",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "flash"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 92,
+        "def": 79,
+        "spa": 129,
+        "spd": 70,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 13,
+        "def": 10,
+        "spa": 18,
+        "spd": 1,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Stufful",
+      "species": "Stufful",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 51: JS=\"#51: turn=49, prng=80->81, P1=[Manectric(125/231)], P2=[Stufful(0/223)]\" vs Rust=\"#51: turn=50, prng=80->84, P1=[Manectric(91/231)], P2=[Stufful(84/223)]\""
+}

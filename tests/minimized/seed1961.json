@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Necrozma-Dawn-Wings",
+      "species": "Necrozma-Dawn-Wings",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "roleplay"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Poipole",
+      "species": "Poipole",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "mistyterrain",
+        "scorchingsands"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 18: JS=\"#18: turn=19, prng=6->12, P1=[Necrozma(84/262)], P2=[Poipole(97/195)]\" vs Rust=\"#18: turn=19, prng=6->12, P1=[Necrozma(68/262)], P2=[Poipole(97/195)]\""
+}

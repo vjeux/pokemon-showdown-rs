@@ -1,0 +1,66 @@
+{
+  "p1": [
+    {
+      "name": "Fletchling",
+      "species": "Fletchling",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "healorder",
+        "bide"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Slowking",
+      "species": "Slowking",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "spectralthief",
+        "speedswap",
+        "teeterdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 60: JS=\"#60: turn=61, prng=59->61, P1=[Fletchling(59/189)], P2=[Slowking(208/208)]\" vs Rust=\"#60: turn=61, prng=59->63, P1=[Fletchling(12/189)], P2=[Slowking(178/208)]\""
+}

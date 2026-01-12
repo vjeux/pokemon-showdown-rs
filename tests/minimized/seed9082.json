@@ -1,0 +1,273 @@
+{
+  "p1": [
+    {
+      "name": "Omanyte",
+      "species": "Omanyte",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "adamant",
+      "gender": "M",
+      "moves": [
+        "hydrosteam"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 97,
+        "def": 77,
+        "spa": 85,
+        "spd": 78,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 22,
+        "def": 9,
+        "spa": 31,
+        "spd": 2,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Bonsly",
+      "species": "Bonsly",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "chargebeam"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 69,
+        "def": 107,
+        "spa": 93,
+        "spd": 91,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 29,
+        "def": 18,
+        "spa": 9,
+        "spd": 19,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Meltan",
+      "species": "Meltan",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "metalburst"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Shinx",
+      "species": "Shinx",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Baxcalibur",
+      "species": "Baxcalibur",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tidyup",
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 72,
+        "atk": 92,
+        "def": 88,
+        "spa": 104,
+        "spd": 82,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 21,
+        "def": 19,
+        "spa": 4,
+        "spd": 2,
+        "spe": 13
+      }
+    },
+    {
+      "name": "Zubat",
+      "species": "Zubat",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "blazekick",
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Xatu",
+      "species": "Xatu",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "wringout",
+        "tackle",
+        "shadowforce",
+        "psychup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Drilbur",
+      "species": "Drilbur",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "thunderouskick",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mismagius",
+      "species": "Mismagius",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "toxic",
+        "assist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 36: JS=\"#36: turn=30, prng=92->93, P1=[Meltan(168/185)], P2=[Mismagius(104/262)]\" vs Rust=\"#36: turn=30, prng=92->94, P1=[Meltan(168/185)], P2=[Mismagius(103/262)]\""
+}

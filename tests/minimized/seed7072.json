@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Decidueye-Hisui",
+      "species": "Decidueye-Hisui",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "enigmaberry",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "menacingmoonrazemaelstrom",
+        "calmmind"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 91,
+        "def": 78,
+        "spa": 89,
+        "spd": 98,
+        "spe": 58
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 29,
+        "def": 15,
+        "spa": 9,
+        "spd": 24,
+        "spe": 7
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sinistcha-Masterpiece",
+      "species": "Sinistcha-Masterpiece",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=5->8, P1=[Decidueye(211/276)], P2=[Sinistcha(63/301)]\" vs Rust=\"#2: turn=3, prng=5->8, P1=[Decidueye(276/276)], P2=[Sinistcha(63/301)]\""
+}

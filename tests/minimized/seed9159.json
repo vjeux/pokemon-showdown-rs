@@ -1,0 +1,122 @@
+{
+  "p1": [
+    {
+      "name": "Probopass",
+      "species": "Probopass",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "M",
+      "moves": [
+        "guardswap"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 86,
+        "def": 79,
+        "spa": 92,
+        "spd": 94,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 15,
+        "def": 3,
+        "spa": 19,
+        "spd": 23,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Rotom-Fan",
+      "species": "Rotom-Fan",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "headlongrush",
+        "mountaingale",
+        "hammerarm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Charizard-Gmax",
+      "species": "Charizard-Gmax",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "skittersmack",
+        "grudge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Nidoking",
+      "species": "Nidoking",
+      "level": 67,
+      "ability": "Poison Point",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "telekinesis"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 28: JS=\"#28: turn=27, prng=79->84, P1=[Rotom(172/241)], P2=[Nidoking(134/220)]\" vs Rust=\"#28: turn=27, prng=79->84, P1=[Rotom(202/241)], P2=[Nidoking(134/220)]\""
+}

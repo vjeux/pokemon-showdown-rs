@@ -1,0 +1,244 @@
+{
+  "p1": [
+    {
+      "name": "Zebstrika",
+      "species": "Zebstrika",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "genesissupernova",
+        "flamethrower"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 101,
+        "def": 88,
+        "spa": 74,
+        "spd": 80,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 7,
+        "def": 23,
+        "spa": 8,
+        "spd": 20,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Bergmite",
+      "species": "Bergmite",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "F",
+      "moves": [
+        "hiddenpowersteel"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 90,
+        "def": 79,
+        "spa": 58,
+        "spd": 85,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 21,
+        "def": 9,
+        "spa": 23,
+        "spd": 30,
+        "spe": 28
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Rabsca",
+      "species": "Rabsca",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "icepunch",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 69,
+        "def": 94,
+        "spa": 91,
+        "spd": 79,
+        "spe": 101
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 7,
+        "def": 22,
+        "spa": 1,
+        "spd": 14,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Spinarak",
+      "species": "Spinarak",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "assist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Rampardos",
+      "species": "Rampardos",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle",
+        "maxairstream",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Victini",
+      "species": "Victini",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "gmaxvoltcrash",
+        "tackle",
+        "gmaxstonesurge",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Grimer-Alola",
+      "species": "Grimer-Alola",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Latios-Mega",
+      "species": "Latios-Mega",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "mindreader",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 13: JS=\"#13: turn=12, prng=70->76, P1=[Bergmite(106/232)], P2=[Spinarak(118/186)]\" vs Rust=\"#13: turn=12, prng=70->77, P1=[Bergmite(107/232)], P2=[Spinarak(118/186)]\""
+}

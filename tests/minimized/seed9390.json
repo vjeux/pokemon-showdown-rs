@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Arboliva",
+      "species": "Arboliva",
+      "level": 94,
+      "ability": "Seed Sower",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 80,
+        "def": 73,
+        "spa": 98,
+        "spd": 85,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 18,
+        "def": 9,
+        "spa": 6,
+        "spd": 15,
+        "spe": 29
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Blissey",
+      "species": "Blissey",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "psyshieldbash"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 103,
+        "def": 60,
+        "spa": 100,
+        "spd": 88,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 15,
+        "def": 9,
+        "spa": 23,
+        "spd": 1,
+        "spe": 7
+      }
+    }
+  ],
+  "_bug": "Diverges at line 5: JS=\"#5: turn=6, prng=80->100, P1=[Arboliva(290/290)], P2=[Blissey(333/583)]\" vs Rust=\"#5: turn=6, prng=80->99, P1=[Arboliva(290/290)], P2=[Blissey(333/583)]\""
+}

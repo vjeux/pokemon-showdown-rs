@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Blastoise-Mega",
+      "species": "Blastoise-Mega",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "meteorbeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sneasel",
+      "species": "Sneasel",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "synthesis",
+        "metronome"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 10: JS=\"#10: turn=10, prng=13->19, P1=[Blastoise(118/168)], P2=[Sneasel(0/264)]\" vs Rust=\"#10: turn=10, prng=13->18, P1=[Blastoise(168/168)], P2=[Sneasel(0/264)]\""
+}

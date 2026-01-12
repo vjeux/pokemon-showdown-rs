@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Okidogi",
+      "species": "Okidogi",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "freezeshock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Tapu Fini",
+      "species": "Tapu Fini",
+      "level": 57,
+      "ability": "Misty Surge",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "healorder"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=0->4, P1=[Okidogi(334/334)], P2=[Tapu Fini(164/176)]\" vs Rust=\"#2: turn=3, prng=0->5, P1=[Okidogi(334/334)], P2=[Tapu Fini(164/176)]\""
+}

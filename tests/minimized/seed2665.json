@@ -1,0 +1,206 @@
+{
+  "p1": [
+    {
+      "name": "Scraggy",
+      "species": "Scraggy",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "dazzlinggleam",
+        "gastroacid"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 77,
+        "def": 86,
+        "spa": 77,
+        "spd": 84,
+        "spe": 109
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 4,
+        "def": 10,
+        "spa": 1,
+        "spd": 21,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Jangmo-o",
+      "species": "Jangmo-o",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "junglehealing"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 94,
+        "def": 91,
+        "spa": 83,
+        "spd": 91,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 6,
+        "def": 29,
+        "spa": 18,
+        "spd": 12,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Kyogre-Primal",
+      "species": "Kyogre-Primal",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "mightycleave",
+        "magiccoat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Mightyena",
+      "species": "Mightyena",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "sleeptalk"
+      ],
+      "evs": {
+        "hp": 107,
+        "atk": 62,
+        "def": 92,
+        "spa": 87,
+        "spd": 67,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 27,
+        "def": 0,
+        "spa": 10,
+        "spd": 10,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Sandaconda-Gmax",
+      "species": "Sandaconda-Gmax",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "mudsport",
+        "crunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Comfey",
+      "species": "Comfey",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 83,
+        "def": 73,
+        "spa": 52,
+        "spd": 115,
+        "spe": 105
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 9,
+        "def": 2,
+        "spa": 6,
+        "spd": 19,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Staraptor",
+      "species": "Staraptor",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "magicpowder"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 68: JS=\"#68: turn=64, prng=189->190, P1=[Kyogre(58/235)], P2=[Staraptor(72/238)]\" vs Rust=\"#68: turn=64, prng=189->191, P1=[Kyogre(58/235)], P2=[Staraptor(72/238)]\""
+}

@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Scovillain-Mega",
+      "species": "Scovillain-Mega",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "screech"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Nincada",
+      "species": "Nincada",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "flatter"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Serperior",
+      "species": "Serperior",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 78,
+        "def": 80,
+        "spa": 127,
+        "spd": 88,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 15,
+        "def": 23,
+        "spa": 25,
+        "spd": 20,
+        "spe": 15
+      }
+    }
+  ],
+  "_bug": "Diverges at line 14: JS=\"#14: turn=14, prng=49->52, P1=[Nincada(179/209)], P2=[Serperior(147/214)]\" vs Rust=\"#14: turn=14, prng=49->52, P1=[Nincada(179/209)], P2=[Serperior(148/214)]\""
+}

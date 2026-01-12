@@ -1,0 +1,203 @@
+{
+  "p1": [
+    {
+      "name": "Walking Wake",
+      "species": "Walking Wake",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "dualchop"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Toxtricity-Gmax",
+      "species": "Toxtricity-Gmax",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "screech"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bibarel",
+      "species": "Bibarel",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "banefulbunker"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Steelix-Mega",
+      "species": "Steelix-Mega",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "metronome"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Vibrava",
+      "species": "Vibrava",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "extrasensory"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 81,
+        "def": 90,
+        "spa": 89,
+        "spd": 87,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 10,
+        "def": 22,
+        "spa": 21,
+        "spd": 28,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Gabite",
+      "species": "Gabite",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "astralbarrage"
+      ],
+      "evs": {
+        "hp": 114,
+        "atk": 99,
+        "def": 75,
+        "spa": 69,
+        "spd": 86,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 29,
+        "def": 28,
+        "spa": 21,
+        "spd": 3,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Quagsire",
+      "species": "Quagsire",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "confide"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 35: JS=\"#35: turn=31, prng=73->77, P1=[Steelix(176/176)], P2=[Quagsire(11/228)]\" vs Rust=\"#35: turn=31, prng=73->78, P1=[Steelix(176/176)], P2=[Quagsire(5/228)]\""
+}

@@ -1,0 +1,119 @@
+{
+  "p1": [
+    {
+      "name": "Tangrowth",
+      "species": "Tangrowth",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "steamroller"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Pidgeot",
+      "species": "Pidgeot",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "M",
+      "moves": [
+        "razorleaf"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 68,
+        "def": 80,
+        "spa": 88,
+        "spd": 91,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 6,
+        "def": 10,
+        "spa": 0,
+        "spd": 2,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Politoed",
+      "species": "Politoed",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "headlongrush"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 60,
+        "def": 111,
+        "spa": 94,
+        "spd": 78,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 23,
+        "def": 30,
+        "spa": 12,
+        "spd": 31,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Chromera",
+      "species": "Chromera",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "focuspunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 18: JS=\"#18: turn=17, prng=105->109, P1=[Tangrowth(55/288)], P2=[Chromera(34/212)]\" vs Rust=\"#18: turn=17, prng=105->110, P1=[Tangrowth(55/288)], P2=[Chromera(34/212)]\""
+}

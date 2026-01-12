@@ -1,0 +1,178 @@
+{
+  "p1": [
+    {
+      "name": "Chimecho-Mega",
+      "species": "Chimecho-Mega",
+      "level": 93,
+      "ability": "Levitate",
+      "item": "",
+      "nature": "adamant",
+      "gender": "F",
+      "moves": [
+        "healbell",
+        "dive",
+        "eruption",
+        "spore"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 131,
+        "def": 52,
+        "spa": 66,
+        "spd": 99,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 18,
+        "def": 13,
+        "spa": 30,
+        "spd": 9,
+        "spe": 15
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Voodoll",
+      "species": "Voodoll",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "hiddenpowerground"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Raticate-Alola-Totem",
+      "species": "Raticate-Alola-Totem",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Iron Bundle",
+      "species": "Iron Bundle",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "smokescreen"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Meganium",
+      "species": "Meganium",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "earthpower"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dewgong",
+      "species": "Dewgong",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "enigmaberry",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "stoneaxe"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 55: JS=\"#55: turn=52, prng=127->129, P1=[Chimecho(110/288)], P2=[Dewgong(3/202)]\" vs Rust=\"#55: turn=52, prng=127->129, P1=[Chimecho(110/288)], P2=[Dewgong(53/202)]\""
+}

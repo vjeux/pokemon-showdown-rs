@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Frosmoth",
+      "species": "Frosmoth",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "leaftornado"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Zygarde-Mega",
+      "species": "Zygarde-Mega",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "skydrop"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 10: JS=\"#10: turn=11, prng=33->38, P1=[Frosmoth(23/299)], P2=[Zygarde(89/488)]\" vs Rust=\"#10: turn=11, prng=33->35, P1=[Frosmoth(23/299)], P2=[Zygarde(170/488)]\""
+}

@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Arceus-Flying",
+      "species": "Arceus-Flying",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Darkrai-Mega",
+      "species": "Darkrai-Mega",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "liechiberry",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "fling"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=6->9, P1=[Arceus(259/268)], P2=[Darkrai(144/193)]\" vs Rust=\"#2: turn=3, prng=6->9, P1=[Arceus(259/268)], P2=[Darkrai(153/193)]\""
+}

@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Torterra",
+      "species": "Torterra",
+      "level": 78,
+      "ability": "Overgrow",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "revelationdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Draggalong",
+      "species": "Draggalong",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "extrasensory"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 4: JS=\"#4: turn=5, prng=18->25, P1=[Torterra(92/276)], P2=[Draggalong(102/174)]\" vs Rust=\"#4: turn=5, prng=18->25, P1=[Torterra(92/276)], P2=[Draggalong(112/174)]\""
+}

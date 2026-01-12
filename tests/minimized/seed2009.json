@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Moltres",
+      "species": "Moltres",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 93,
+        "def": 63,
+        "spa": 100,
+        "spd": 94,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 0,
+        "def": 13,
+        "spa": 31,
+        "spd": 6,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Oricorio",
+      "species": "Oricorio",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "revivalblessing"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Cranidos",
+      "species": "Cranidos",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 6: JS=\"#6: turn=5, prng=62->62, P1=[Oricorio(221/221)], P2=[Cranidos(247/287)]\" vs Rust=\"#6: turn=6, prng=62->65, P1=[Oricorio(162/221)], P2=[Cranidos(247/287)]\""
+}

@@ -1,0 +1,148 @@
+{
+  "p1": [
+    {
+      "name": "Gogoat",
+      "species": "Gogoat",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "sinisterarrowraid",
+        "protect"
+      ],
+      "evs": {
+        "hp": 67,
+        "atk": 90,
+        "def": 83,
+        "spa": 102,
+        "spd": 87,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 31,
+        "def": 9,
+        "spa": 15,
+        "spd": 15,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Spewpa",
+      "species": "Spewpa",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "powergem"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sandslash",
+      "species": "Sandslash",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "thunderfang"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Chansey",
+      "species": "Chansey",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "flareblitz"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 97,
+        "def": 83,
+        "spa": 71,
+        "spd": 80,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 13,
+        "def": 7,
+        "spa": 1,
+        "spd": 13,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Dhelmise",
+      "species": "Dhelmise",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "healbell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 17: JS=\"#17: turn=15, prng=60->65, P1=[Sandslash(260/275)], P2=[Dhelmise(257/299)]\" vs Rust=\"#17: turn=15, prng=60->66, P1=[Sandslash(260/275)], P2=[Dhelmise(257/299)]\""
+}

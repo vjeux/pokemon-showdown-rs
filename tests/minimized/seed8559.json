@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Tornadus-Therian",
+      "species": "Tornadus-Therian",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "adamant",
+      "gender": "M",
+      "moves": [
+        "matchagotcha"
+      ],
+      "evs": {
+        "hp": 115,
+        "atk": 94,
+        "def": 90,
+        "spa": 64,
+        "spd": 65,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 20,
+        "def": 9,
+        "spa": 13,
+        "spd": 7,
+        "spe": 19
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Arboliva",
+      "species": "Arboliva",
+      "level": 98,
+      "ability": "Seed Sower",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->7, P1=[Tornadus(226/253)], P2=[Arboliva(292/311)]\" vs Rust=\"#1: turn=2, prng=0->7, P1=[Tornadus(226/253)], P2=[Arboliva(294/311)]\""
+}

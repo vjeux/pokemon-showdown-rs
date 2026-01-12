@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Scolipede-Mega",
+      "species": "Scolipede-Mega",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "safeguard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Snorlax",
+      "species": "Snorlax",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "roleplay",
+        "combattorque"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 21: JS=\"#21: turn=22, prng=16->20, P1=[Scolipede(180/257)], P2=[Snorlax(467/467)]\" vs Rust=\"#21: turn=22, prng=16->21, P1=[Scolipede(180/257)], P2=[Snorlax(467/467)]\""
+}

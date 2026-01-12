@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Mr. Mime-Galar",
+      "species": "Mr. Mime-Galar",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "imprison",
+        "petalblizzard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Staryu",
+      "species": "Staryu",
+      "level": 71,
+      "ability": "Illuminate",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "petalblizzard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->0, P1=[Mr. Mime(231/231)], P2=[Staryu(160/160)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Mr. Mime(199/231)], P2=[Staryu(160/160)]\""
+}

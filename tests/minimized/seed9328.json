@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Floatzel",
+      "species": "Floatzel",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "psychoshift"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Tyrantrum",
+      "species": "Tyrantrum",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "sludge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 5: JS=\"#5: turn=6, prng=20->25, P1=[Floatzel(62/274)], P2=[Tyrantrum(105/168)]\" vs Rust=\"#5: turn=6, prng=20->25, P1=[Floatzel(96/274)], P2=[Tyrantrum(105/168)]\""
+}

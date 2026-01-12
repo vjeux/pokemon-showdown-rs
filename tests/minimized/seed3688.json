@@ -1,0 +1,289 @@
+{
+  "p1": [
+    {
+      "name": "Shox",
+      "species": "Shox",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "soulstealing7starstrike",
+        "seedflare"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Castform-Rainy",
+      "species": "Castform-Rainy",
+      "level": 81,
+      "ability": "Forecast",
+      "item": "",
+      "nature": "modest",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 83,
+        "def": 92,
+        "spa": 70,
+        "spd": 109,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 19,
+        "def": 6,
+        "spa": 25,
+        "spd": 29,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Gimmighoul-Roaming",
+      "species": "Gimmighoul-Roaming",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "gmaxstunshock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Golem",
+      "species": "Golem",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Cradily",
+      "species": "Cradily",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hardy",
+      "gender": "M",
+      "moves": [
+        "thunderfang"
+      ],
+      "evs": {
+        "hp": 99,
+        "atk": 76,
+        "def": 96,
+        "spa": 128,
+        "spd": 59,
+        "spe": 52
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 0,
+        "def": 22,
+        "spa": 12,
+        "spd": 27,
+        "spe": 11
+      }
+    },
+    {
+      "name": "Litten",
+      "species": "Litten",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "magiccoat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hattrem",
+      "species": "Hattrem",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 87,
+        "def": 87,
+        "spa": 91,
+        "spd": 72,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 24,
+        "def": 31,
+        "spa": 3,
+        "spd": 14,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Eevee",
+      "species": "Eevee",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "flail"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Crocalor",
+      "species": "Crocalor",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 101,
+        "def": 93,
+        "spa": 66,
+        "spd": 67,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 27,
+        "def": 2,
+        "spa": 15,
+        "spd": 9,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Dudunsparce-Three-Segment",
+      "species": "Dudunsparce-Three-Segment",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "overheat",
+        "smellingsalts"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 43: JS=\"#43: turn=35, prng=190->193, P1=[Golem(160/225)], P2=[Dudunsparce(0/267)]\" vs Rust=\"#43: turn=35, prng=190->196, P1=[Golem(138/225)], P2=[Dudunsparce(0/267)]\""
+}

@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Decidueye-Hisui",
+      "species": "Decidueye-Hisui",
+      "level": 53,
+      "ability": "Overgrow",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "revelationdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Burmy",
+      "species": "Burmy",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Eelektross",
+      "species": "Eelektross",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 8: JS=\"#8: turn=8, prng=36->42, P1=[Decidueye(28/183)], P2=[Eelektross(130/212)]\" vs Rust=\"#8: turn=8, prng=36->42, P1=[Decidueye(28/183)], P2=[Eelektross(157/212)]\""
+}

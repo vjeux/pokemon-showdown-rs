@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Kyogre-Primal",
+      "species": "Kyogre-Primal",
+      "level": 82,
+      "ability": "Primordial Sea",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "sandstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Melmetal-Gmax",
+      "species": "Melmetal-Gmax",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Bruxish",
+      "species": "Bruxish",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "hydrocannon"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 14: JS=\"#14: turn=14, prng=20->26, P1=[Melmetal(211/385)], P2=[Bruxish(168/266)]\" vs Rust=\"#14: turn=14, prng=20->26, P1=[Melmetal(124/385)], P2=[Bruxish(168/266)]\""
+}

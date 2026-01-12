@@ -1,0 +1,65 @@
+{
+  "p1": [
+    {
+      "name": "Sceptile-Mega",
+      "species": "Sceptile-Mega",
+      "level": 91,
+      "ability": "Lightning Rod",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "continentalcrush",
+        "sinisterarrowraid",
+        "electrify"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Silvally-Grass",
+      "species": "Silvally-Grass",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 3: JS=\"#3: turn=4, prng=10->10, P1=[Sceptile(192/275)], P2=[Silvally(219/348)]\" vs Rust=\"#3: turn=4, prng=10->13, P1=[Sceptile(183/275)], P2=[Silvally(219/348)]\""
+}

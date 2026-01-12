@@ -1,0 +1,121 @@
+{
+  "p1": [
+    {
+      "name": "Silicobra",
+      "species": "Silicobra",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "bloodmoon",
+        "frenzyplant",
+        "whirlwind"
+      ],
+      "evs": {
+        "hp": 116,
+        "atk": 107,
+        "def": 71,
+        "spa": 80,
+        "spd": 89,
+        "spe": 47
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 28,
+        "def": 5,
+        "spa": 1,
+        "spd": 23,
+        "spe": 23
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Drizzile",
+      "species": "Drizzile",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "soak"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Scolipede-Mega",
+      "species": "Scolipede-Mega",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "luckychant"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Skiploom",
+      "species": "Skiploom",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 91,
+        "def": 76,
+        "spa": 104,
+        "spd": 107,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 11,
+        "def": 6,
+        "spa": 13,
+        "spd": 1,
+        "spe": 27
+      }
+    }
+  ],
+  "_bug": "Diverges at line 26: JS=\"#26: turn=25, prng=107->119, P1=[Silicobra(185/243)], P2=[Skiploom(42/165)]\" vs Rust=\"#26: turn=25, prng=107->117, P1=[Silicobra(185/243)], P2=[Skiploom(42/165)]\""
+}

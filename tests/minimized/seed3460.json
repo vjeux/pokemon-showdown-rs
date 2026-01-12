@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Iron Valiant",
+      "species": "Iron Valiant",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 86,
+        "def": 74,
+        "spa": 98,
+        "spd": 79,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 25,
+        "def": 1,
+        "spa": 31,
+        "spd": 10,
+        "spe": 18
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sinistea",
+      "species": "Sinistea",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "transform"
+      ],
+      "evs": {
+        "hp": 72,
+        "atk": 98,
+        "def": 71,
+        "spa": 111,
+        "spd": 87,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 3,
+        "def": 5,
+        "spa": 30,
+        "spd": 20,
+        "spe": 29
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->4, P1=[Iron Valiant(206/206)], P2=[Sinistea(154/154)]\" vs Rust=\"#1: turn=2, prng=0->1, P1=[Iron Valiant(206/206)], P2=[Sinistea(154/154)]\""
+}

@@ -1,0 +1,148 @@
+{
+  "p1": [
+    {
+      "name": "Pansear",
+      "species": "Pansear",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "belch",
+        "heartstamp"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gigalith",
+      "species": "Gigalith",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "F",
+      "moves": [
+        "sleeppowder"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 88,
+        "def": 73,
+        "spa": 82,
+        "spd": 79,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 31,
+        "def": 19,
+        "spa": 27,
+        "spd": 11,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Greninja-Mega",
+      "species": "Greninja-Mega",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "flatter"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Meloetta",
+      "species": "Meloetta",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Smoochum",
+      "species": "Smoochum",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "metronome",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "ominouswind"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 111,
+        "def": 66,
+        "spa": 83,
+        "spd": 98,
+        "spe": 65
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 21,
+        "def": 14,
+        "spa": 11,
+        "spd": 13,
+        "spe": 25
+      }
+    }
+  ],
+  "_bug": "Diverges at line 36: JS=\"#36: turn=35, prng=100->103, P1=[Greninja(125/214)], P2=[Smoochum(94/187)]\" vs Rust=\"#36: turn=35, prng=100->103, P1=[Greninja(125/214)], P2=[Smoochum(95/187)]\""
+}

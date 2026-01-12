@@ -1,0 +1,237 @@
+{
+  "p1": [
+    {
+      "name": "Blastoise",
+      "species": "Blastoise",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "meanlook",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Chimecho",
+      "species": "Chimecho",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 90,
+        "def": 93,
+        "spa": 92,
+        "spd": 63,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 5,
+        "def": 10,
+        "spa": 25,
+        "spd": 21,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Pokestar Smeargle",
+      "species": "Pokestar Smeargle",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Xurkitree",
+      "species": "Xurkitree",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "",
+      "moves": [
+        "psychoshift",
+        "lockon"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 65,
+        "def": 99,
+        "spa": 82,
+        "spd": 98,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 21,
+        "def": 6,
+        "spa": 8,
+        "spd": 4,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Trapinch",
+      "species": "Trapinch",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "assist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Jolteon",
+      "species": "Jolteon",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "bleakwindstorm"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 103,
+        "def": 70,
+        "spa": 80,
+        "spd": 101,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 4,
+        "def": 31,
+        "spa": 19,
+        "spd": 9,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Pikachu-Starter",
+      "species": "Pikachu-Starter",
+      "level": 78,
+      "ability": "Static",
+      "item": "",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "ragingbull"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 74,
+        "def": 107,
+        "spa": 83,
+        "spd": 78,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 6,
+        "def": 15,
+        "spa": 10,
+        "spd": 16,
+        "spe": 11
+      }
+    },
+    {
+      "name": "Heracross",
+      "species": "Heracross",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 29: JS=\"#29: turn=25, prng=110->118, P1=[Trapinch(50/249)], P2=[Pikachu(3/181)]\" vs Rust=\"#29: turn=25, prng=110->119, P1=[Trapinch(50/249)], P2=[Pikachu(11/181)]\""
+}

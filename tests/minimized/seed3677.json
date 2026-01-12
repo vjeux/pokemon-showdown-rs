@@ -1,0 +1,204 @@
+{
+  "p1": [
+    {
+      "name": "Servine",
+      "species": "Servine",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "catastropika"
+      ],
+      "evs": {
+        "hp": 54,
+        "atk": 101,
+        "def": 92,
+        "spa": 74,
+        "spd": 98,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 6,
+        "def": 20,
+        "spa": 0,
+        "spd": 0,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Espathra",
+      "species": "Espathra",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "blazingtorque"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Phanpy",
+      "species": "Phanpy",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "naturalgift"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Jangmo-o",
+      "species": "Jangmo-o",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "flowershield"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Wooloo",
+      "species": "Wooloo",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "M",
+      "moves": [
+        "hiddenpowerflying"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 73,
+        "def": 89,
+        "spa": 84,
+        "spd": 89,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 14,
+        "def": 2,
+        "spa": 7,
+        "spd": 8,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Herdier",
+      "species": "Herdier",
+      "level": 64,
+      "ability": "Intimidate",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "thunderclap",
+        "icefang"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Snaelstrom",
+      "species": "Snaelstrom",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "bide"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 70: JS=\"#70: turn=66, prng=95->97, P1=[Jangmo-o(80/222)], P2=[Snaelstrom(194/257)]\" vs Rust=\"#70: turn=66, prng=95->99, P1=[Jangmo-o(50/222)], P2=[Snaelstrom(130/257)]\""
+}

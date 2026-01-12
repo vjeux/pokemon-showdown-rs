@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Basculegion-F",
+      "species": "Basculegion-F",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 92,
+        "def": 116,
+        "spa": 71,
+        "spd": 79,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 11,
+        "def": 23,
+        "spa": 28,
+        "spd": 2,
+        "spe": 8
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Goomy",
+      "species": "Goomy",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Groudon",
+      "species": "Groudon",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "",
+      "moves": [
+        "allyswitch"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 76,
+        "def": 116,
+        "spa": 82,
+        "spd": 92,
+        "spe": 62
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 3,
+        "def": 22,
+        "spa": 6,
+        "spd": 9,
+        "spe": 13
+      }
+    }
+  ],
+  "_bug": "Diverges at line 5: JS=\"#5: turn=5, prng=21->34, P1=[Basculegion(356/356)], P2=[Groudon(197/249)]\" vs Rust=\"#5: turn=5, prng=21->32, P1=[Basculegion(356/356)], P2=[Groudon(199/249)]\""
+}

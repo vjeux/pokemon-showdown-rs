@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Barbaracle",
+      "species": "Barbaracle",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 71,
+        "def": 77,
+        "spa": 76,
+        "spd": 118,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 14,
+        "def": 27,
+        "spa": 16,
+        "spd": 4,
+        "spe": 13
+      }
+    },
+    {
+      "name": "Dudunsparce",
+      "species": "Dudunsparce",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "bloomdoom",
+        "mistyterrain"
+      ],
+      "evs": {
+        "hp": 49,
+        "atk": 114,
+        "def": 73,
+        "spa": 111,
+        "spd": 79,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 18,
+        "def": 29,
+        "spa": 22,
+        "spd": 16,
+        "spe": 25
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Toxtricity-Low-Key",
+      "species": "Toxtricity-Low-Key",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "zapcannon"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 73,
+        "def": 85,
+        "spa": 72,
+        "spd": 101,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 31,
+        "def": 17,
+        "spa": 4,
+        "spd": 27,
+        "spe": 15
+      }
+    }
+  ],
+  "_bug": "Diverges at line 6: JS=\"#6: turn=6, prng=9->13, P1=[Dudunsparce(266/363)], P2=[Toxtricity(197/198)]\" vs Rust=\"#6: turn=6, prng=9->14, P1=[Dudunsparce(266/363)], P2=[Toxtricity(197/198)]\""
+}

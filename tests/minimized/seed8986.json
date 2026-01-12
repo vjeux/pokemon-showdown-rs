@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Greninja-Bond",
+      "species": "Greninja-Bond",
+      "level": 93,
+      "ability": "Battle Bond",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 75,
+        "def": 113,
+        "spa": 89,
+        "spd": 84,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 11,
+        "def": 8,
+        "spa": 6,
+        "spd": 17,
+        "spe": 15
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Floette-Eternal",
+      "species": "Floette-Eternal",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Toxel",
+      "species": "Toxel",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 5: JS=\"#5: turn=5, prng=15->21, P1=[Greninja(232/263)], P2=[Toxel(51/158)]\" vs Rust=\"#5: turn=5, prng=15->21, P1=[Greninja(232/263)], P2=[Toxel(86/158)]\""
+}

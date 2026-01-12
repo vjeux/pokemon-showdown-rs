@@ -1,0 +1,66 @@
+{
+  "p1": [
+    {
+      "name": "Shox",
+      "species": "Shox",
+      "level": 71,
+      "ability": "Electromorphosis",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "alloutpummeling",
+        "tidyup",
+        "overdrive"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Altaria-Mega",
+      "species": "Altaria-Mega",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "doubleteam",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 29: JS=\"#29: turn=30, prng=33->39, P1=[Shox(139/311)], P2=[Altaria(63/251)]\" vs Rust=\"#29: turn=30, prng=33->39, P1=[Shox(139/311)], P2=[Altaria(95/251)]\""
+}

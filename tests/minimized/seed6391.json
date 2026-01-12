@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Grumpig",
+      "species": "Grumpig",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 67,
+        "atk": 91,
+        "def": 72,
+        "spa": 82,
+        "spd": 88,
+        "spe": 110
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 2,
+        "def": 28,
+        "spa": 31,
+        "spd": 18,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Meloetta",
+      "species": "Meloetta",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "choicescarf",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "xscissor"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Kirlia",
+      "species": "Kirlia",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 86,
+        "def": 65,
+        "spa": 78,
+        "spd": 107,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 18,
+        "def": 29,
+        "spa": 1,
+        "spd": 24,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Cosmoem",
+      "species": "Cosmoem",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 103,
+        "atk": 76,
+        "def": 87,
+        "spa": 68,
+        "spd": 100,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 23,
+        "def": 26,
+        "spa": 18,
+        "spd": 0,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Typhlosion-Hisui",
+      "species": "Typhlosion-Hisui",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "bestow"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 48: JS=\"#48: turn=45, prng=184->188, P1=[Meloetta(0/259)], P2=[Typhlosion(0/290)]\" vs Rust=\"#48: turn=45, prng=184->186, P1=[Meloetta(55/259)], P2=[Typhlosion(0/290)]\""
+}

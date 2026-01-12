@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Wyrdeer",
+      "species": "Wyrdeer",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "adamant",
+      "gender": "M",
+      "moves": [
+        "metronome"
+      ],
+      "evs": {
+        "hp": 99,
+        "atk": 105,
+        "def": 118,
+        "spa": 67,
+        "spd": 55,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 9,
+        "def": 0,
+        "spa": 16,
+        "spd": 22,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Banette-Mega",
+      "species": "Banette-Mega",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "bide"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Monferno",
+      "species": "Monferno",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Yanma",
+      "species": "Yanma",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "aeroblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Swablu",
+      "species": "Swablu",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 53: JS=\"#53: turn=52, prng=28->28, P1=[Banette(83/253)], P2=[Swablu(157/157)]\" vs Rust=\"#53: turn=52, prng=28->30, P1=[Banette(20/253)], P2=[Swablu(51/157)]\""
+}

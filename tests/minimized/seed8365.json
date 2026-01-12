@@ -1,0 +1,120 @@
+{
+  "p1": [
+    {
+      "name": "Clawitzer",
+      "species": "Clawitzer",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "ragefist",
+        "poisonsting"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Butterfree-Gmax",
+      "species": "Butterfree-Gmax",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "clangoroussoul"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Protowatt",
+      "species": "Protowatt",
+      "level": 77,
+      "ability": "Trace",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "allyswitch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tapu Bulu",
+      "species": "Tapu Bulu",
+      "level": 97,
+      "ability": "Grassy Surge",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "lunarblessing"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 23: JS=\"#23: turn=22, prng=69->73, P1=[Clawitzer(177/177)], P2=[Tapu Bulu(257/293)]\" vs Rust=\"#23: turn=22, prng=69->73, P1=[Clawitzer(177/177)], P2=[Tapu Bulu(259/293)]\""
+}

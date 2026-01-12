@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Gyarados-Mega",
+      "species": "Gyarados-Mega",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quiet",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 98,
+        "def": 91,
+        "spa": 92,
+        "spd": 81,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 8,
+        "def": 1,
+        "spa": 29,
+        "spd": 31,
+        "spe": 2
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Toedscruel",
+      "species": "Toedscruel",
+      "level": 80,
+      "ability": "Mycelium Might",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "copycat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->6, P1=[Gyarados(309/327)], P2=[Toedscruel(189/259)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Gyarados(327/327)], P2=[Toedscruel(189/259)]\""
+}

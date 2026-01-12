@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Toedscruel",
+      "species": "Toedscruel",
+      "level": 70,
+      "ability": "Mycelium Might",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "poisonpowder"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Illumise",
+      "species": "Illumise",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 105,
+        "atk": 89,
+        "def": 78,
+        "spa": 56,
+        "spd": 102,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 18,
+        "def": 31,
+        "spa": 22,
+        "spd": 5,
+        "spe": 21
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->4, P1=[Toedscruel(205/228)], P2=[Illumise(205/234)]\" vs Rust=\"#1: turn=2, prng=0->4, P1=[Toedscruel(204/228)], P2=[Illumise(205/234)]\""
+}

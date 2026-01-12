@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Rhyhorn",
+      "species": "Rhyhorn",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cyclohm",
+      "species": "Cyclohm",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "magicpowder"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 93,
+        "def": 69,
+        "spa": 130,
+        "spd": 66,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 28,
+        "def": 0,
+        "spa": 14,
+        "spd": 26,
+        "spe": 11
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Tyranitar",
+      "species": "Tyranitar",
+      "level": 93,
+      "ability": "Sand Stream",
+      "item": "smoothrock",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "payback"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 6: JS=\"#6: turn=6, prng=17->21, P1=[Cyclohm(30/281)], P2=[Tyranitar(269/337)]\" vs Rust=\"#6: turn=6, prng=17->21, P1=[Cyclohm(47/281)], P2=[Tyranitar(290/337)]\""
+}

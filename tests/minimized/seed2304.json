@@ -1,0 +1,93 @@
+{
+  "p1": [
+    {
+      "name": "Caribolt",
+      "species": "Caribolt",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Croagunk",
+      "species": "Croagunk",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Rellor",
+      "species": "Rellor",
+      "level": 86,
+      "ability": "Compound Eyes",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "silktrap",
+        "splinteredstormshards",
+        "populationbomb"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 20: JS=\"#20: turn=20, prng=45->78, P1=[Croagunk(33/210)], P2=[Rellor(82/211)]\" vs Rust=\"#20: turn=20, prng=45->52, P1=[Croagunk(192/210)], P2=[Rellor(82/211)]\""
+}

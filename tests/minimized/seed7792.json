@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Bounsweet",
+      "species": "Bounsweet",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 96,
+        "def": 77,
+        "spa": 98,
+        "spd": 110,
+        "spe": 64
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 24,
+        "def": 11,
+        "spa": 18,
+        "spd": 12,
+        "spe": 27
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Clamperl",
+      "species": "Clamperl",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "mistyterrain"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 84,
+        "def": 68,
+        "spa": 76,
+        "spd": 108,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 3,
+        "def": 28,
+        "spa": 13,
+        "spd": 12,
+        "spe": 25
+      }
+    }
+  ],
+  "_bug": "Diverges at line 5: JS=\"#5: turn=6, prng=52->65, P1=[Bounsweet(220/220)], P2=[Clamperl(129/206)]\" vs Rust=\"#5: turn=6, prng=52->64, P1=[Bounsweet(220/220)], P2=[Clamperl(129/206)]\""
+}

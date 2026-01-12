@@ -1,0 +1,289 @@
+{
+  "p1": [
+    {
+      "name": "Garchomp-Mega-Z",
+      "species": "Garchomp-Mega-Z",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "smokescreen"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Espeon",
+      "species": "Espeon",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mareanie",
+      "species": "Mareanie",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Barboach",
+      "species": "Barboach",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "pursuit"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 80,
+        "def": 95,
+        "spa": 114,
+        "spd": 59,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 29,
+        "def": 8,
+        "spa": 13,
+        "spd": 18,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Oricorio-Pa'u",
+      "species": "Oricorio-Pa'u",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "sandstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dipplin",
+      "species": "Dipplin",
+      "level": 52,
+      "ability": "Supersweet Syrup",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "fissure"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Necrozma-Dawn-Wings",
+      "species": "Necrozma-Dawn-Wings",
+      "level": 93,
+      "ability": "Prism Armor",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "courtchange",
+        "rockwrecker",
+        "fairylock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Spectrier",
+      "species": "Spectrier",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "dragondance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Chuggon",
+      "species": "Chuggon",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quiet",
+      "gender": "M",
+      "moves": [
+        "toxicthread"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 80,
+        "def": 100,
+        "spa": 114,
+        "spd": 74,
+        "spe": 68
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 30,
+        "def": 22,
+        "spa": 23,
+        "spd": 3,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Plasmanta",
+      "species": "Plasmanta",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 66: JS=\"#66: turn=59, prng=131->135, P1=[Dipplin(151/172)], P2=[Plasmanta(119/146)]\" vs Rust=\"#66: turn=58, prng=131->135, P1=[Dipplin(161/172)], P2=[Plasmanta(0/146)]\""
+}

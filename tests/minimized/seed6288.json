@@ -1,0 +1,121 @@
+{
+  "p1": [
+    {
+      "name": "Sneasel-Hisui",
+      "species": "Sneasel-Hisui",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "clearsmog"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Duraludon-Gmax",
+      "species": "Duraludon-Gmax",
+      "level": 73,
+      "ability": "Light Metal",
+      "item": "",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "skillswap"
+      ],
+      "evs": {
+        "hp": 72,
+        "atk": 103,
+        "def": 78,
+        "spa": 94,
+        "spd": 102,
+        "spe": 61
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 22,
+        "def": 0,
+        "spa": 2,
+        "spd": 31,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Sceptile",
+      "species": "Sceptile",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Ramnarok",
+      "species": "Ramnarok",
+      "level": 68,
+      "ability": "No Guard",
+      "item": "",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "metalburst",
+        "bonemerang",
+        "heatcrash"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 94,
+        "def": 75,
+        "spa": 73,
+        "spd": 102,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 11,
+        "def": 30,
+        "spa": 26,
+        "spd": 25,
+        "spe": 21
+      }
+    }
+  ],
+  "_bug": "Diverges at line 35: JS=\"#35: turn=34, prng=92->98, P1=[Sceptile(12/237)], P2=[Ramnarok(120/242)]\" vs Rust=\"#35: turn=33, prng=92->98, P1=[Sceptile(0/237)], P2=[Ramnarok(120/242)]\""
+}

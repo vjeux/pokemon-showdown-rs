@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Taillow",
+      "species": "Taillow",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 66,
+        "atk": 70,
+        "def": 91,
+        "spa": 81,
+        "spd": 106,
+        "spe": 96
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 9,
+        "def": 12,
+        "spa": 23,
+        "spd": 29,
+        "spe": 9
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Silvally-Poison",
+      "species": "Silvally-Poison",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quiet",
+      "gender": "",
+      "moves": [
+        "pursuit"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 50,
+        "def": 92,
+        "spa": 71,
+        "spd": 100,
+        "spe": 121
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 16,
+        "def": 14,
+        "spa": 29,
+        "spd": 1,
+        "spe": 13
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=3->21, P1=[Taillow(140/208)], P2=[Silvally(278/308)]\" vs Rust=\"#1: turn=2, prng=3->22, P1=[Taillow(142/208)], P2=[Silvally(281/308)]\""
+}

@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Tapu Fini",
+      "species": "Tapu Fini",
+      "level": 90,
+      "ability": "Misty Surge",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "scorchingsands"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Cottonee",
+      "species": "Cottonee",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->7, P1=[Tapu Fini(259/272)], P2=[Cottonee(198/232)]\" vs Rust=\"#1: turn=2, prng=0->7, P1=[Tapu Fini(266/272)], P2=[Cottonee(184/232)]\""
+}

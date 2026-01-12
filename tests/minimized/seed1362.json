@@ -1,0 +1,149 @@
+{
+  "p1": [
+    {
+      "name": "Pinsir-Mega",
+      "species": "Pinsir-Mega",
+      "level": 56,
+      "ability": "Aerilate",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Foongus",
+      "species": "Foongus",
+      "level": 84,
+      "ability": "Effect Spore",
+      "item": "covertcloak",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "relicsong",
+        "burningbulwark"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Silvally-Flying",
+      "species": "Silvally-Flying",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "powerweight",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "echoedvoice"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Carbink",
+      "species": "Carbink",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "",
+      "moves": [
+        "cut"
+      ],
+      "evs": {
+        "hp": 103,
+        "atk": 75,
+        "def": 100,
+        "spa": 64,
+        "spd": 98,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 26,
+        "def": 21,
+        "spa": 5,
+        "spd": 7,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Blastoise-Mega",
+      "species": "Blastoise-Mega",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "eerieimpulse",
+        "hurricane"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 48: JS=\"#48: turn=46, prng=195->199, P1=[Silvally(175/283)], P2=[Blastoise(83/242)]\" vs Rust=\"#48: turn=46, prng=195->199, P1=[Silvally(175/283)], P2=[Blastoise(60/242)]\""
+}

@@ -1,0 +1,149 @@
+{
+  "p1": [
+    {
+      "name": "Darkrai",
+      "species": "Darkrai",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "noxioustorque",
+        "dynamicpunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hawlucha",
+      "species": "Hawlucha",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Amaura",
+      "species": "Amaura",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "recover",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lucario-Mega-Z",
+      "species": "Lucario-Mega-Z",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "gravity"
+      ],
+      "evs": {
+        "hp": 72,
+        "atk": 120,
+        "def": 83,
+        "spa": 71,
+        "spd": 58,
+        "spe": 106
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 31,
+        "def": 12,
+        "spa": 3,
+        "spd": 9,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Politoed",
+      "species": "Politoed",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "wonderroom"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 22: JS=\"#22: turn=21, prng=73->78, P1=[Darkrai(111/158)], P2=[Politoed(187/249)]\" vs Rust=\"#22: turn=21, prng=73->79, P1=[Darkrai(111/158)], P2=[Politoed(190/249)]\""
+}

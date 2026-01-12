@@ -1,0 +1,66 @@
+{
+  "p1": [
+    {
+      "name": "Metagross-Mega",
+      "species": "Metagross-Mega",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "yawn",
+        "mefirst",
+        "calmmind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Swadloon",
+      "species": "Swadloon",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "behemothblade",
+        "bide"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 85,
+        "def": 74,
+        "spa": 72,
+        "spd": 90,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 31,
+        "def": 2,
+        "spa": 14,
+        "spd": 22,
+        "spe": 4
+      }
+    }
+  ],
+  "_bug": "Diverges at line 64: JS=\"#64: turn=65, prng=27->27, P1=[Metagross(8/166)], P2=[Swadloon(181/181)]\" vs Rust=\"#64: turn=64, prng=27->29, P1=[Metagross(0/166)], P2=[Swadloon(136/181)]\""
+}

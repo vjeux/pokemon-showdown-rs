@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Aegislash-Blade",
+      "species": "Aegislash-Blade",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "lastrespects",
+        "liquidation"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Silvally-Bug",
+      "species": "Silvally-Bug",
+      "level": 68,
+      "ability": "RKS System",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Poliwag",
+      "species": "Poliwag",
+      "level": 50,
+      "ability": "Water Absorb",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "filletaway"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 27: JS=\"#27: turn=27, prng=12->12, P1=[Aegislash(235/235)], P2=[Poliwag(123/126)]\" vs Rust=\"#27: turn=27, prng=12->12, P1=[Aegislash(235/235)], P2=[Poliwag(60/126)]\""
+}

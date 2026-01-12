@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Leafeon",
+      "species": "Leafeon",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "magmastorm",
+        "eerieimpulse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Armarouge",
+      "species": "Armarouge",
+      "level": 57,
+      "ability": "Flash Fire",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "magiccoat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 9: JS=\"#9: turn=10, prng=0->1, P1=[Leafeon(210/210)], P2=[Armarouge(193/193)]\" vs Rust=\"#9: turn=10, prng=0->2, P1=[Leafeon(210/210)], P2=[Armarouge(193/193)]\""
+}

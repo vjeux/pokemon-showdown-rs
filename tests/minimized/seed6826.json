@@ -1,0 +1,209 @@
+{
+  "p1": [
+    {
+      "name": "Yamper",
+      "species": "Yamper",
+      "level": 89,
+      "ability": "Ball Fetch",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "focusblast"
+      ],
+      "evs": {
+        "hp": 63,
+        "atk": 81,
+        "def": 73,
+        "spa": 83,
+        "spd": 84,
+        "spe": 126
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 1,
+        "def": 4,
+        "spa": 0,
+        "spd": 21,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Zacian",
+      "species": "Zacian",
+      "level": 81,
+      "ability": "Intrepid Sword",
+      "item": "",
+      "nature": "naughty",
+      "gender": "",
+      "moves": [
+        "volttackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 71,
+        "spa": 100,
+        "spd": 93,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 0,
+        "def": 23,
+        "spa": 3,
+        "spd": 17,
+        "spe": 11
+      }
+    },
+    {
+      "name": "Flarelm",
+      "species": "Flarelm",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "obstruct",
+        "maxstrike"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Caribolt",
+      "species": "Caribolt",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Mumbao",
+      "species": "Mumbao",
+      "level": 83,
+      "ability": "Trace",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "syrupbomb",
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cutiefly",
+      "species": "Cutiefly",
+      "level": 72,
+      "ability": "Honey Gather",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "outrage",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zamazenta-Crowned",
+      "species": "Zamazenta-Crowned",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "solarblade",
+        "assist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 45: JS=\"#45: turn=41, prng=129->135, P1=[Caribolt(120/205)], P2=[Zamazenta(70/235)]\" vs Rust=\"#45: turn=41, prng=129->137, P1=[Caribolt(188/205)], P2=[Zamazenta(69/235)]\""
+}

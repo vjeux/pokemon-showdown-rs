@@ -1,0 +1,176 @@
+{
+  "p1": [
+    {
+      "name": "Reuniclus",
+      "species": "Reuniclus",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "machpunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bruxish",
+      "species": "Bruxish",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "drainingkiss"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 95,
+        "def": 99,
+        "spa": 71,
+        "spd": 83,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 17,
+        "def": 6,
+        "spa": 13,
+        "spd": 3,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Sandslash-Alola",
+      "species": "Sandslash-Alola",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 108,
+        "def": 66,
+        "spa": 103,
+        "spd": 63,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 19,
+        "def": 27,
+        "spa": 16,
+        "spd": 23,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Klink",
+      "species": "Klink",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Drifblim",
+      "species": "Drifblim",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sizzlipede",
+      "species": "Sizzlipede",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "glaciallance",
+        "metronome"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 19: JS=\"#19: turn=17, prng=96->99, P1=[Klink(46/149)], P2=[Sizzlipede(29/259)]\" vs Rust=\"#19: turn=16, prng=96->97, P1=[Klink(46/149)], P2=[Sizzlipede(0/259)]\""
+}

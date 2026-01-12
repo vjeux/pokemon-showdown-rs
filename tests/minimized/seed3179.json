@@ -1,0 +1,177 @@
+{
+  "p1": [
+    {
+      "name": "Corviknight-Gmax",
+      "species": "Corviknight-Gmax",
+      "level": 62,
+      "ability": "Pressure",
+      "item": "",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "bide"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 107,
+        "def": 72,
+        "spa": 97,
+        "spd": 64,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 9,
+        "def": 5,
+        "spa": 17,
+        "spd": 10,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Sharpedo-Mega",
+      "species": "Sharpedo-Mega",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "spikes"
+      ],
+      "evs": {
+        "hp": 102,
+        "atk": 95,
+        "def": 69,
+        "spa": 106,
+        "spd": 66,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 8,
+        "def": 5,
+        "spa": 25,
+        "spd": 8,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Hawlucha-Mega",
+      "species": "Hawlucha-Mega",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "relicsong"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 83,
+        "def": 54,
+        "spa": 121,
+        "spd": 92,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 14,
+        "def": 25,
+        "spa": 10,
+        "spd": 1,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Shroodle",
+      "species": "Shroodle",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Croconaw",
+      "species": "Croconaw",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "confuseray",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 72,
+        "def": 77,
+        "spa": 98,
+        "spd": 100,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 4,
+        "def": 11,
+        "spa": 30,
+        "spd": 12,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Alcremie-Matcha-Cream",
+      "species": "Alcremie-Matcha-Cream",
+      "level": 76,
+      "ability": "Sweet Veil",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 49: JS=\"#49: turn=47, prng=144->151, P1=[Hawlucha(41/170)], P2=[Alcremie(125/224)]\" vs Rust=\"#49: turn=47, prng=144->149, P1=[Hawlucha(62/170)], P2=[Alcremie(125/224)]\""
+}

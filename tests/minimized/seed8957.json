@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Toedscool",
+      "species": "Toedscool",
+      "level": 100,
+      "ability": "Mycelium Might",
+      "item": "",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "morningsun"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 88,
+        "def": 94,
+        "spa": 71,
+        "spd": 106,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 22,
+        "def": 24,
+        "spa": 6,
+        "spd": 19,
+        "spe": 23
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Xerneas",
+      "species": "Xerneas",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 96,
+        "def": 65,
+        "spa": 66,
+        "spd": 107,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 7,
+        "def": 7,
+        "spa": 5,
+        "spd": 26,
+        "spe": 3
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->3, P1=[Toedscool(208/208)], P2=[Xerneas(391/391)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Toedscool(130/208)], P2=[Xerneas(391/391)]\""
+}

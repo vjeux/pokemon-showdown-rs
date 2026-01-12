@@ -1,0 +1,175 @@
+{
+  "p1": [
+    {
+      "name": "Cyclizar",
+      "species": "Cyclizar",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "pyroball"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 71,
+        "def": 62,
+        "spa": 84,
+        "spd": 112,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 2,
+        "def": 6,
+        "spa": 18,
+        "spd": 21,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Eelektrik",
+      "species": "Eelektrik",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "mortalspin"
+      ],
+      "evs": {
+        "hp": 111,
+        "atk": 105,
+        "def": 87,
+        "spa": 57,
+        "spd": 87,
+        "spe": 63
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 30,
+        "def": 1,
+        "spa": 7,
+        "spd": 13,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Tapu Bulu",
+      "species": "Tapu Bulu",
+      "level": 73,
+      "ability": "Grassy Surge",
+      "item": "",
+      "nature": "timid",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 97,
+        "def": 107,
+        "spa": 74,
+        "spd": 61,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 0,
+        "def": 11,
+        "spa": 3,
+        "spd": 25,
+        "spe": 26
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Chatot",
+      "species": "Chatot",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Araquanid-Totem",
+      "species": "Araquanid-Totem",
+      "level": 61,
+      "ability": "Water Bubble",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Grimmsnarl-Gmax",
+      "species": "Grimmsnarl-Gmax",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "prismaticlaser"
+      ],
+      "evs": {
+        "hp": 99,
+        "atk": 91,
+        "def": 98,
+        "spa": 77,
+        "spd": 58,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 8,
+        "def": 3,
+        "spa": 16,
+        "spd": 3,
+        "spe": 20
+      }
+    }
+  ],
+  "_bug": "Diverges at line 17: JS=\"#17: turn=14, prng=74->77, P1=[Tapu Bulu(202/202)], P2=[Grimmsnarl(12/241)]\" vs Rust=\"#17: turn=13, prng=74->77, P1=[Tapu Bulu(202/202)], P2=[Grimmsnarl(0/241)]\""
+}

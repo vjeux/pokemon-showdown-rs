@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Necturine",
+      "species": "Necturine",
+      "level": 94,
+      "ability": "Anticipation",
+      "item": "",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 83,
+        "def": 85,
+        "spa": 68,
+        "spd": 82,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 18,
+        "def": 31,
+        "spa": 8,
+        "spd": 29,
+        "spe": 15
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Mightyena",
+      "species": "Mightyena",
+      "level": 73,
+      "ability": "Intimidate",
+      "item": "",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 72,
+        "atk": 114,
+        "def": 67,
+        "spa": 102,
+        "spd": 80,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 31,
+        "def": 19,
+        "spa": 2,
+        "spd": 3,
+        "spe": 23
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=3->15, P1=[Necturine(219/219)], P2=[Mightyena(191/214)]\" vs Rust=\"#1: turn=2, prng=4->16, P1=[Necturine(219/219)], P2=[Mightyena(191/214)]\""
+}

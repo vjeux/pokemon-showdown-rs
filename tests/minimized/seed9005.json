@@ -1,0 +1,264 @@
+{
+  "p1": [
+    {
+      "name": "Meloetta",
+      "species": "Meloetta",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Deoxys",
+      "species": "Deoxys",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "payback"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Flabébé",
+      "species": "Flabébé",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "forcepalm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dusknoir",
+      "species": "Dusknoir",
+      "level": 61,
+      "ability": "Pressure",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "supersonicskystrike",
+        "ingrain"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Quilladin",
+      "species": "Quilladin",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Copperajah-Gmax",
+      "species": "Copperajah-Gmax",
+      "level": 70,
+      "ability": "Sheer Force",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "blueflare",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 111,
+        "def": 75,
+        "spa": 74,
+        "spd": 85,
+        "spe": 69
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 18,
+        "def": 8,
+        "spa": 11,
+        "spd": 31,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Flittle",
+      "species": "Flittle",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "obstruct"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pikachu-Gmax",
+      "species": "Pikachu-Gmax",
+      "level": 54,
+      "ability": "Static",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Avalugg",
+      "species": "Avalugg",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "kingsrock",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "rockthrow",
+        "dragontail"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 38: JS=\"#38: turn=33, prng=157->162, P1=[Dusknoir(18/157)], P2=[Avalugg(55/232)]\" vs Rust=\"#38: turn=33, prng=157->163, P1=[Quilladin(188/188)], P2=[Avalugg(55/232)]\""
+}

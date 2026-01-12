@@ -1,0 +1,175 @@
+{
+  "p1": [
+    {
+      "name": "Rayquaza-Mega",
+      "species": "Rayquaza-Mega",
+      "level": 63,
+      "ability": "Delta Stream",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "shadowforce"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Vivillon-Sandstorm",
+      "species": "Vivillon-Sandstorm",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "F",
+      "moves": [
+        "ominouswind"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 92,
+        "def": 64,
+        "spa": 88,
+        "spd": 83,
+        "spe": 110
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 0,
+        "def": 3,
+        "spa": 19,
+        "spd": 10,
+        "spe": 4
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Corviknight-Gmax",
+      "species": "Corviknight-Gmax",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mienfoo",
+      "species": "Mienfoo",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Duraludon-Gmax",
+      "species": "Duraludon-Gmax",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "dragonrush"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Chespin",
+      "species": "Chespin",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "smackdown"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 20: JS=\"#20: turn=17, prng=48->55, P1=[Vivillon(182/258)], P2=[Chespin(28/142)]\" vs Rust=\"#20: turn=17, prng=48->55, P1=[Vivillon(220/258)], P2=[Chespin(28/142)]\""
+}

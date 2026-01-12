@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Skiddo",
+      "species": "Skiddo",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "echoedvoice"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Silvally",
+      "species": "Silvally",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "ingrain"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wooloo",
+      "species": "Wooloo",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "discharge"
+      ],
+      "evs": {
+        "hp": 60,
+        "atk": 70,
+        "def": 72,
+        "spa": 105,
+        "spd": 104,
+        "spe": 99
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 24,
+        "def": 24,
+        "spa": 12,
+        "spd": 23,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Registeel",
+      "species": "Registeel",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "defog"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Swadloon",
+      "species": "Swadloon",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "psychoshift"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 21: JS=\"#21: turn=19, prng=85->90, P1=[Skiddo(185/231)], P2=[Swadloon(232/264)]\" vs Rust=\"#21: turn=19, prng=85->90, P1=[Skiddo(185/231)], P2=[Swadloon(217/264)]\""
+}

@@ -1,0 +1,180 @@
+{
+  "p1": [
+    {
+      "name": "Yveltal",
+      "species": "Yveltal",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Castform-Sunny",
+      "species": "Castform-Sunny",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 87,
+        "def": 61,
+        "spa": 80,
+        "spd": 109,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 16,
+        "def": 7,
+        "spa": 24,
+        "spd": 19,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Silvally-Rock",
+      "species": "Silvally-Rock",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "detect",
+        "healblock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Arboliva",
+      "species": "Arboliva",
+      "level": 60,
+      "ability": "Seed Sower",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "vinewhip"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Fidough",
+      "species": "Fidough",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Chandelure-Mega",
+      "species": "Chandelure-Mega",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "aquatail",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 71: JS=\"#71: turn=68, prng=231->237, P1=[Arboliva(159/194)], P2=[Chandelure(128/184)]\" vs Rust=\"#71: turn=68, prng=231->237, P1=[Arboliva(159/194)], P2=[Chandelure(139/184)]\""
+}

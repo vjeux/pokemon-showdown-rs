@@ -1,0 +1,119 @@
+{
+  "p1": [
+    {
+      "name": "Simisear",
+      "species": "Simisear",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 107,
+        "def": 72,
+        "spa": 96,
+        "spd": 80,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 5,
+        "def": 6,
+        "spa": 24,
+        "spd": 26,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Weepinbell",
+      "species": "Weepinbell",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "strengthsap"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Drifblim",
+      "species": "Drifblim",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "conversion2"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Lucario-Mega",
+      "species": "Lucario-Mega",
+      "level": 85,
+      "ability": "Adaptability",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "shadowbone"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 19: JS=\"#19: turn=18, prng=68->70, P1=[Drifblim(124/326)], P2=[Lucario(182/258)]\" vs Rust=\"#19: turn=18, prng=68->71, P1=[Drifblim(124/326)], P2=[Lucario(182/258)]\""
+}

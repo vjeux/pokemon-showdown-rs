@@ -1,0 +1,176 @@
+{
+  "p1": [
+    {
+      "name": "Saharascal",
+      "species": "Saharascal",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 95,
+        "def": 101,
+        "spa": 70,
+        "spd": 77,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 5,
+        "def": 27,
+        "spa": 20,
+        "spd": 12,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Solosis",
+      "species": "Solosis",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "M",
+      "moves": [
+        "dragonbreath"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 97,
+        "def": 68,
+        "spa": 86,
+        "spd": 88,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 16,
+        "def": 21,
+        "spa": 31,
+        "spd": 20,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Lapras-Gmax",
+      "species": "Lapras-Gmax",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "subzeroslammer",
+        "throatchop"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Machamp",
+      "species": "Machamp",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Pupitar",
+      "species": "Pupitar",
+      "level": 98,
+      "ability": "Shed Skin",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "wringout"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Typhlosion",
+      "species": "Typhlosion",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "torchsong"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 15: JS=\"#15: turn=13, prng=72->78, P1=[Lapras(75/335)], P2=[Typhlosion(139/305)]\" vs Rust=\"#15: turn=12, prng=72->76, P1=[Lapras(0/335)], P2=[Typhlosion(261/305)]\""
+}

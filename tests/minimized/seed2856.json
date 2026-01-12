@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Tauros-Paldea-Blaze",
+      "species": "Tauros-Paldea-Blaze",
+      "level": 60,
+      "ability": "Intimidate",
+      "item": "",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 95,
+        "def": 94,
+        "spa": 89,
+        "spd": 77,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 30,
+        "def": 10,
+        "spa": 20,
+        "spd": 22,
+        "spe": 2
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Toxel",
+      "species": "Toxel",
+      "level": 95,
+      "ability": "Rattled",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=6->12, P1=[Tauros(139/173)], P2=[Toxel(164/230)]\" vs Rust=\"#2: turn=3, prng=6->12, P1=[Tauros(120/173)], P2=[Toxel(174/230)]\""
+}

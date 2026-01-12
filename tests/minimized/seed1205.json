@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Quilladin",
+      "species": "Quilladin",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "metronome",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "attract",
+        "iceburn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Necrozma-Dusk-Mane",
+      "species": "Necrozma-Dusk-Mane",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "safeguard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 26: JS=\"#26: turn=27, prng=0->4, P1=[Quilladin(240/240)], P2=[Necrozma(188/241)]\" vs Rust=\"#26: turn=27, prng=0->4, P1=[Quilladin(240/240)], P2=[Necrozma(181/241)]\""
+}

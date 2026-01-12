@@ -1,0 +1,148 @@
+{
+  "p1": [
+    {
+      "name": "Timburr",
+      "species": "Timburr",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "lightscreen"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Silvally-Dark",
+      "species": "Silvally-Dark",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "",
+      "moves": [
+        "gmaxfoamburst"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 70,
+        "def": 112,
+        "spa": 94,
+        "spd": 101,
+        "spe": 68
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 3,
+        "def": 1,
+        "spa": 11,
+        "spd": 3,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Wigglytuff",
+      "species": "Wigglytuff",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "pounce"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Amaura",
+      "species": "Amaura",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "counter"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Tinkatuff",
+      "species": "Tinkatuff",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "sludge",
+        "photongeyser"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 36: JS=\"#36: turn=34, prng=158->162, P1=[Amaura(40/309)], P2=[Tinkatuff(74/190)]\" vs Rust=\"#36: turn=34, prng=158->161, P1=[Amaura(40/309)], P2=[Tinkatuff(150/190)]\""
+}

@@ -1,0 +1,120 @@
+{
+  "p1": [
+    {
+      "name": "Iron Hands",
+      "species": "Iron Hands",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 96,
+        "def": 87,
+        "spa": 59,
+        "spd": 120,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 31,
+        "def": 20,
+        "spa": 1,
+        "spd": 31,
+        "spe": 9
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Wugtrio",
+      "species": "Wugtrio",
+      "level": 65,
+      "ability": "Gooey",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Floatoy",
+      "species": "Floatoy",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "telekinesis"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Silicobra",
+      "species": "Silicobra",
+      "level": 64,
+      "ability": "Sand Spit",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 7: JS=\"#7: turn=6, prng=18->23, P1=[Iron Hands(350/415)], P2=[Silicobra(101/173)]\" vs Rust=\"#7: turn=6, prng=18->23, P1=[Iron Hands(375/415)], P2=[Silicobra(101/173)]\""
+}

@@ -1,0 +1,148 @@
+{
+  "p1": [
+    {
+      "name": "Alcremie-Ruby-Cream",
+      "species": "Alcremie-Ruby-Cream",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "powershift",
+        "eruption"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 72,
+        "def": 78,
+        "spa": 81,
+        "spd": 107,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 23,
+        "def": 1,
+        "spa": 2,
+        "spd": 10,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Glalie-Mega",
+      "species": "Glalie-Mega",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Mienshao",
+      "species": "Mienshao",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "instruct"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Snover",
+      "species": "Snover",
+      "level": 64,
+      "ability": "Snow Warning",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "harden"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Minior-Orange",
+      "species": "Minior-Orange",
+      "level": 59,
+      "ability": "Shields Down",
+      "item": "",
+      "nature": "lonely",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 96,
+        "def": 91,
+        "spa": 112,
+        "spd": 67,
+        "spe": 51
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 3,
+        "def": 29,
+        "spa": 19,
+        "spd": 31,
+        "spe": 6
+      }
+    }
+  ],
+  "_bug": "Diverges at line 18: JS=\"#18: turn=17, prng=70->88, P1=[Alcremie(62/149)], P2=[Minior(89/161)]\" vs Rust=\"#18: turn=17, prng=70->87, P1=[Alcremie(62/149)], P2=[Minior(89/161)]\""
+}

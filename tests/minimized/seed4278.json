@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Drifloon",
+      "species": "Drifloon",
+      "level": 100,
+      "ability": "Aftermath",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Golem",
+      "species": "Golem",
+      "level": 100,
+      "ability": "Rock Head",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "playrough"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=2, prng=7->14, P1=[Drifloon(0/342)], P2=[Golem(226/322)]\" vs Rust=\"#2: turn=2, prng=7->15, P1=[Drifloon(0/342)], P2=[Golem(226/322)]\""
+}

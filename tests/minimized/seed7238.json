@@ -1,0 +1,66 @@
+{
+  "p1": [
+    {
+      "name": "Diancie",
+      "species": "Diancie",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "toxicspikes",
+        "mefirst"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Clefable",
+      "species": "Clefable",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "floralhealing",
+        "spikes",
+        "maxmindstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 49: JS=\"#49: turn=50, prng=0->2, P1=[Diancie(200/201)], P2=[Clefable(204/204)]\" vs Rust=\"#49: turn=50, prng=0->4, P1=[Diancie(199/201)], P2=[Clefable(203/204)]\""
+}

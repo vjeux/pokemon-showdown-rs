@@ -1,0 +1,178 @@
+{
+  "p1": [
+    {
+      "name": "Beartic",
+      "species": "Beartic",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "softboiled",
+        "irondefense"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Turtwig",
+      "species": "Turtwig",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "bouncybubble"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 99,
+        "def": 107,
+        "spa": 88,
+        "spd": 86,
+        "spe": 69
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 5,
+        "def": 8,
+        "spa": 22,
+        "spd": 10,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Gigalith",
+      "species": "Gigalith",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "pinmissile"
+      ],
+      "evs": {
+        "hp": 116,
+        "atk": 96,
+        "def": 61,
+        "spa": 68,
+        "spd": 56,
+        "spe": 113
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 10,
+        "def": 4,
+        "spa": 4,
+        "spd": 10,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Zorua",
+      "species": "Zorua",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "growl"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Frillish",
+      "species": "Frillish",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "headlongrush"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 78,
+        "def": 79,
+        "spa": 80,
+        "spd": 133,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 23,
+        "def": 17,
+        "spa": 13,
+        "spd": 6,
+        "spe": 14
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Hippowdon",
+      "species": "Hippowdon",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "technoblast",
+        "nihillight",
+        "flatter"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 79,
+        "def": 68,
+        "spa": 97,
+        "spd": 106,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 9,
+        "def": 0,
+        "spa": 5,
+        "spd": 21,
+        "spe": 22
+      }
+    }
+  ],
+  "_bug": "Diverges at line 29: JS=\"#29: turn=26, prng=99->103, P1=[Frillish(21/161)], P2=[Hippowdon(25/297)]\" vs Rust=\"#29: turn=26, prng=99->103, P1=[Frillish(22/161)], P2=[Hippowdon(25/297)]\""
+}

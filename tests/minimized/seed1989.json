@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Electrike",
+      "species": "Electrike",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kyogre",
+      "species": "Kyogre",
+      "level": 66,
+      "ability": "Drizzle",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ogerpon",
+      "species": "Ogerpon",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 92,
+        "def": 68,
+        "spa": 73,
+        "spd": 97,
+        "spe": 106
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 1,
+        "def": 14,
+        "spa": 12,
+        "spd": 3,
+        "spe": 17
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Wynaut",
+      "species": "Wynaut",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Giratina",
+      "species": "Giratina",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bold",
+      "gender": "",
+      "moves": [
+        "crushclaw"
+      ],
+      "evs": {
+        "hp": 63,
+        "atk": 85,
+        "def": 100,
+        "spa": 73,
+        "spd": 83,
+        "spe": 106
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 29,
+        "def": 3,
+        "spa": 9,
+        "spd": 21,
+        "spe": 23
+      }
+    }
+  ],
+  "_bug": "Diverges at line 18: JS=\"#18: turn=16, prng=83->92, P1=[Ogerpon(134/216)], P2=[Giratina(372/372)]\" vs Rust=\"#18: turn=16, prng=83->91, P1=[Ogerpon(134/216)], P2=[Giratina(372/372)]\""
+}

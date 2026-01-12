@@ -1,0 +1,66 @@
+{
+  "p1": [
+    {
+      "name": "Crucibelle-Mega",
+      "species": "Crucibelle-Mega",
+      "level": 87,
+      "ability": "Magic Guard",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "sketch",
+        "gastroacid",
+        "nuzzle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Nidoqueen",
+      "species": "Nidoqueen",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "dragoncheer",
+        "gmaxvinelash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 25: JS=\"#25: turn=26, prng=16->18, P1=[Crucibelle(325/326)], P2=[Nidoqueen(259/259)]\" vs Rust=\"#25: turn=26, prng=16->18, P1=[Crucibelle(271/326)], P2=[Nidoqueen(259/259)]\""
+}

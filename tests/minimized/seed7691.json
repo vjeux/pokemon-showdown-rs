@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Ho-Oh",
+      "species": "Ho-Oh",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "grassyterrain",
+        "gmaxsandblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Banette",
+      "species": "Banette",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "fairylock"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 80,
+        "def": 76,
+        "spa": 102,
+        "spd": 88,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 29,
+        "def": 20,
+        "spa": 12,
+        "spd": 3,
+        "spe": 29
+      }
+    }
+  ],
+  "_bug": "Diverges at line 19: JS=\"#19: turn=20, prng=9->13, P1=[Ho-Oh(153/293)], P2=[Banette(9/234)]\" vs Rust=\"#19: turn=19, prng=9->13, P1=[Ho-Oh(153/293)], P2=[Banette(0/234)]\""
+}

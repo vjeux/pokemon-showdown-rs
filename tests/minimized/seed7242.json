@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Yamask-Galar",
+      "species": "Yamask-Galar",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "enigmaberry",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "synthesis"
+      ],
+      "evs": {
+        "hp": 106,
+        "atk": 78,
+        "def": 79,
+        "spa": 99,
+        "spd": 69,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 31,
+        "def": 30,
+        "spa": 20,
+        "spd": 26,
+        "spe": 26
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Eelektrik",
+      "species": "Eelektrik",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "lavaplume"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->4, P1=[Yamask(127/138)], P2=[Eelektrik(235/235)]\" vs Rust=\"#1: turn=2, prng=0->4, P1=[Yamask(138/138)], P2=[Eelektrik(235/235)]\""
+}

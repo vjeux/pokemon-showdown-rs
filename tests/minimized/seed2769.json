@@ -1,0 +1,179 @@
+{
+  "p1": [
+    {
+      "name": "Privatyke",
+      "species": "Privatyke",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "powertrick",
+        "maxhailstorm",
+        "simplebeam"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 70,
+        "def": 100,
+        "spa": 87,
+        "spd": 87,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 12,
+        "def": 17,
+        "spa": 7,
+        "spd": 25,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Emolga",
+      "species": "Emolga",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "M",
+      "moves": [
+        "mistyterrain",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 116,
+        "atk": 81,
+        "def": 56,
+        "spa": 86,
+        "spd": 84,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 20,
+        "def": 23,
+        "spa": 6,
+        "spd": 20,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Shieldon",
+      "species": "Shieldon",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Pyroak",
+      "species": "Pyroak",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "magneticflux",
+        "reversal"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tornadus",
+      "species": "Tornadus",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Vanilluxe",
+      "species": "Vanilluxe",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 64: JS=\"#64: turn=62, prng=122->126, P1=[Shieldon(145/171)], P2=[Tornadus(198/217)]\" vs Rust=\"#64: turn=62, prng=122->124, P1=[Shieldon(145/171)], P2=[Tornadus(217/217)]\""
+}

@@ -1,0 +1,179 @@
+{
+  "p1": [
+    {
+      "name": "Stufful",
+      "species": "Stufful",
+      "level": 74,
+      "ability": "Fluffy",
+      "item": "",
+      "nature": "bashful",
+      "gender": "M",
+      "moves": [
+        "healorder",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 66,
+        "def": 97,
+        "spa": 83,
+        "spd": 97,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 13,
+        "def": 12,
+        "spa": 23,
+        "spd": 31,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Silvally-Ice",
+      "species": "Silvally-Ice",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "assist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gorebyss",
+      "species": "Gorebyss",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle",
+        "flipturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Kilowattrel",
+      "species": "Kilowattrel",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Finizen",
+      "species": "Finizen",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "mindblown"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Poliwhirl",
+      "species": "Poliwhirl",
+      "level": 59,
+      "ability": "Water Absorb",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 96,
+        "def": 111,
+        "spa": 64,
+        "spd": 63,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 25,
+        "def": 25,
+        "spa": 4,
+        "spd": 30,
+        "spe": 6
+      }
+    }
+  ],
+  "_bug": "Diverges at line 30: JS=\"#30: turn=28, prng=106->110, P1=[Silvally(137/259)], P2=[Poliwhirl(173/173)]\" vs Rust=\"#30: turn=27, prng=106->107, P1=[Silvally(149/259)], P2=[Poliwhirl(173/173)]\""
+}

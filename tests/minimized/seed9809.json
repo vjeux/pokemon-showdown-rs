@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Aggron",
+      "species": "Aggron",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "grudge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gossifleur",
+      "species": "Gossifleur",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "sleeppowder"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sandaconda-Gmax",
+      "species": "Sandaconda-Gmax",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "mountaingale",
+        "safeguard"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 73,
+        "def": 89,
+        "spa": 80,
+        "spd": 106,
+        "spe": 64
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 10,
+        "def": 4,
+        "spa": 27,
+        "spd": 27,
+        "spe": 27
+      }
+    }
+  ],
+  "_bug": "Diverges at line 11: JS=\"#11: turn=11, prng=30->31, P1=[Gossifleur(128/128)], P2=[Sandaconda(260/260)]\" vs Rust=\"#11: turn=11, prng=30->32, P1=[Gossifleur(128/128)], P2=[Sandaconda(260/260)]\""
+}

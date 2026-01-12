@@ -1,0 +1,66 @@
+{
+  "p1": [
+    {
+      "name": "Pincurchin",
+      "species": "Pincurchin",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "alluringvoice",
+        "grassyterrain",
+        "bide"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Arboliva",
+      "species": "Arboliva",
+      "level": 91,
+      "ability": "Seed Sower",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "entrainment",
+        "meditate"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 79: JS=\"#79: turn=80, prng=88->88, P1=[Pincurchin(148/148)], P2=[Arboliva(290/290)]\" vs Rust=\"#79: turn=80, prng=88->90, P1=[Pincurchin(120/148)], P2=[Arboliva(290/290)]\""
+}

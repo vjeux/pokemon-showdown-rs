@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Charizard-Mega-X",
+      "species": "Charizard-Mega-X",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "chillyreception"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 56,
+        "def": 94,
+        "spa": 106,
+        "spd": 103,
+        "spe": 65
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 15,
+        "def": 9,
+        "spa": 6,
+        "spd": 31,
+        "spe": 13
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Medicham",
+      "species": "Medicham",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 104,
+        "atk": 82,
+        "def": 75,
+        "spa": 92,
+        "spd": 90,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 1,
+        "def": 26,
+        "spa": 6,
+        "spd": 29,
+        "spe": 11
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=3->19, P1=[Charizard(203/220)], P2=[Medicham(229/229)]\" vs Rust=\"#1: turn=2, prng=3->20, P1=[Charizard(194/220)], P2=[Medicham(229/229)]\""
+}

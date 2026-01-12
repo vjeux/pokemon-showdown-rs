@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Deoxys",
+      "species": "Deoxys",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "",
+      "moves": [
+        "holdhands"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 52,
+        "def": 103,
+        "spa": 109,
+        "spd": 95,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 25,
+        "def": 7,
+        "spa": 23,
+        "spd": 13,
+        "spe": 7
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Ekans",
+      "species": "Ekans",
+      "level": 53,
+      "ability": "Intimidate",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gmaxdepletion",
+        "dynamicpunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 10: JS=\"#10: turn=11, prng=21->27, P1=[Deoxys(100/185)], P2=[Ekans(127/127)]\" vs Rust=\"#10: turn=11, prng=21->27, P1=[Deoxys(99/185)], P2=[Ekans(127/127)]\""
+}

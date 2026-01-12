@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Tapu Fini",
+      "species": "Tapu Fini",
+      "level": 99,
+      "ability": "Misty Surge",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "kingsshield"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Petilil",
+      "species": "Petilil",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "scald"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 4: JS=\"#4: turn=5, prng=5->10, P1=[Tapu Fini(290/299)], P2=[Petilil(164/164)]\" vs Rust=\"#4: turn=5, prng=5->10, P1=[Tapu Fini(272/299)], P2=[Petilil(164/164)]\""
+}

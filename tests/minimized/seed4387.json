@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Kangaskhan-Mega",
+      "species": "Kangaskhan-Mega",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "hyperspacefury",
+        "headlongrush"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Farfetch’d",
+      "species": "Farfetch’d",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "conversion"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 9: JS=\"#9: turn=10, prng=0->0, P1=[Kangaskhan(299/299)], P2=[Farfetch’d(258/258)]\" vs Rust=\"#9: turn=10, prng=0->4, P1=[Kangaskhan(299/299)], P2=[Farfetch’d(75/258)]\""
+}

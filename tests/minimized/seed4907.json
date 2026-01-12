@@ -1,0 +1,345 @@
+{
+  "p1": [
+    {
+      "name": "Eldegoss",
+      "species": "Eldegoss",
+      "level": 96,
+      "ability": "Cotton Down",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "gigatonhammer",
+        "mistyexplosion"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Geodude",
+      "species": "Geodude",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "machobrace",
+      "nature": "hardy",
+      "gender": "M",
+      "moves": [
+        "grassknot"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 59,
+        "def": 108,
+        "spa": 95,
+        "spd": 92,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 21,
+        "def": 12,
+        "spa": 13,
+        "spd": 31,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Bombirdier",
+      "species": "Bombirdier",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "hiddenpowerghost"
+      ],
+      "evs": {
+        "hp": 119,
+        "atk": 77,
+        "def": 87,
+        "spa": 89,
+        "spd": 53,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 6,
+        "def": 27,
+        "spa": 2,
+        "spd": 21,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Mienfoo",
+      "species": "Mienfoo",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "scald"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 85,
+        "def": 97,
+        "spa": 89,
+        "spd": 85,
+        "spe": 58
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 6,
+        "def": 16,
+        "spa": 1,
+        "spd": 25,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Medicham",
+      "species": "Medicham",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Banette",
+      "species": "Banette",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Darmanitan-Galar",
+      "species": "Darmanitan-Galar",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 70,
+        "def": 79,
+        "spa": 126,
+        "spd": 83,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 31,
+        "def": 18,
+        "spa": 30,
+        "spd": 5,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Dondozo",
+      "species": "Dondozo",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "scaleshot"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 98,
+        "def": 66,
+        "spa": 79,
+        "spd": 84,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 27,
+        "def": 20,
+        "spa": 22,
+        "spd": 25,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Qwilfish",
+      "species": "Qwilfish",
+      "level": 87,
+      "ability": "Poison Point",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gust"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 77,
+        "def": 122,
+        "spa": 73,
+        "spd": 87,
+        "spe": 64
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 12,
+        "def": 28,
+        "spa": 5,
+        "spd": 15,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ninetales",
+      "species": "Ninetales",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "leftovers",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "constrict"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sizzlipede",
+      "species": "Sizzlipede",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "continentalcrush"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Escavalier",
+      "species": "Escavalier",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "boltstrike",
+        "revivalblessing"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 45: JS=\"#45: turn=36, prng=235->238, P1=[Banette(49/206)], P2=[Escavalier(14/249)]\" vs Rust=\"#45: turn=36, prng=235->238, P1=[Banette(49/206)], P2=[Escavalier(0/249)]\""
+}
