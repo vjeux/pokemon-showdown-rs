@@ -99,9 +99,16 @@ function findDivergence(jsLines, rustLines) {
   return null;
 }
 
-// Find a Pokemon in the team by name
+// Find a Pokemon in the team by name (handles variants like "Chandelure" matching "Chandelure-Mega")
 function findPokemonByName(team, name) {
-  return team.find(p => p.name === name || p.species === name);
+  // Exact match first
+  let found = team.find(p => p.name === name || p.species === name);
+  if (found) return found;
+
+  // Try prefix match (e.g., "Chandelure" matches "Chandelure-Mega")
+  found = team.find(p => p.name.startsWith(name) || p.species.startsWith(name) ||
+                         name.startsWith(p.name) || name.startsWith(p.species));
+  return found;
 }
 
 // Deep clone
@@ -178,45 +185,41 @@ if (p1Active && p2Active) {
     console.log('  Success! Minimal 1v1 team still fails.');
     teams = minimalTeams;
   } else {
-    console.log('  Minimal team passes. Need to find required setup...');
+    console.log('  Minimal team passes. Trying to reduce full team...');
 
-    // Try to find what's needed - maybe the lead Pokemon that sets up the state
-    // Add back Pokemon one by one from the start
-    for (let i = 0; i < teams.p1.length; i++) {
-      const testTeams = {
-        p1: teams.p1.slice(0, i + 1).map(clone),
-        p2: [clone(p2Active)]
-      };
-      // Make sure active Pokemon is included
-      if (!testTeams.p1.find(p => p.name === p1Active.name)) {
-        testTeams.p1.push(clone(p1Active));
-      }
-
-      if (testFails(testTeams)) {
-        console.log(`  Found: Need P1[0..${i}] + active`);
-        teams = testTeams;
-        break;
-      }
-    }
-
-    // Similarly for P2
-    if (!testFails(teams)) {
-      for (let i = 0; i < teams.p2.length; i++) {
-        const testTeams = {
-          p1: teams.p1,
-          p2: teams.p2.slice(0, i + 1).map(clone)
-        };
-        if (!testTeams.p2.find(p => p.name === p2Active.name)) {
-          testTeams.p2.push(clone(p2Active));
-        }
-
+    // Try removing Pokemon one at a time from P1
+    let changed = true;
+    while (changed && teams.p1.length > 1) {
+      changed = false;
+      for (let i = teams.p1.length - 1; i >= 0; i--) {
+        const testTeams = clone(teams);
+        testTeams.p1.splice(i, 1);
         if (testFails(testTeams)) {
-          console.log(`  Found: Need P2[0..${i}] + active`);
+          console.log(`  Removed P1[${i}] (${teams.p1[i].name})`);
           teams = testTeams;
+          changed = true;
           break;
         }
       }
     }
+
+    // Try removing Pokemon one at a time from P2
+    changed = true;
+    while (changed && teams.p2.length > 1) {
+      changed = false;
+      for (let i = teams.p2.length - 1; i >= 0; i--) {
+        const testTeams = clone(teams);
+        testTeams.p2.splice(i, 1);
+        if (testFails(testTeams)) {
+          console.log(`  Removed P2[${i}] (${teams.p2[i].name})`);
+          teams = testTeams;
+          changed = true;
+          break;
+        }
+      }
+    }
+
+    console.log(`  Reduced to P1: ${teams.p1.length}, P2: ${teams.p2.length}`);
   }
 }
 

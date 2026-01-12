@@ -3,9 +3,14 @@
 # Minimize all failing seeds from the results files
 # Skips seeds that already have a minimized JSON file
 # Also verifies the seed still fails before minimizing
+#
+# Usage: ./minimize-all-failures.sh [start_seed]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MINIMIZED_DIR="$SCRIPT_DIR/minimized"
+START_SEED=${1:-1}
+
+echo "Starting from seed $START_SEED"
 
 # Build Rust binary once upfront
 echo "Building Rust binary (one-time)..."
@@ -32,6 +37,11 @@ echo "Found $total failing seeds to check"
 echo ""
 
 for seed in $FAILING_SEEDS; do
+    # Skip seeds below start seed
+    if [ "$seed" -lt "$START_SEED" ]; then
+        continue
+    fi
+
     current=$((current + 1))
 
     # Skip if already minimized
