@@ -255,7 +255,7 @@ Seed 245: ✓ PASS (100%) - 48/48 turns
 Seed 246: ✓ PASS (100%) - 37/37 turns
 Seed 247: ✓ PASS (100%) - 56/56 turns
 Seed 248: ✓ PASS (100%) - 68/68 turns
-Seed 249: ✗ FAIL (46%) - 37/79 turns
+Seed 249: ✓ PASS (100%) - 79/79 turns
 Seed 250: ✓ PASS (100%) - 47/47 turns
 Seed 251: ✗ FAIL (89%) - 89/100 turns
 Seed 252: ✓ PASS (100%) - 31/31 turns
@@ -512,8 +512,8 @@ Seed 500: ✓ PASS (100%) - 98/98 turns
 Summary
 =======================================
 Total seeds tested: 500
-Passed (100%): 478
-Failed (<100%): 22
+Passed (100%): 479
+Failed (<100%): 21
 
 Average pass rate: 99%
 

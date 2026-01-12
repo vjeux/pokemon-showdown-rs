@@ -141,6 +141,21 @@ impl Battle {
                     active_move_clone.as_ref()
                 )
             }
+            "TryBoost" => {
+                // Called when stat boosts are being applied
+                // Mist prevents negative boosts from opponent's moves
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id = self.event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|eff| eff.id.as_str().to_string());
+                condition_callbacks::dispatch_side_condition_on_try_boost(
+                    self,
+                    condition_id,
+                    Some(pokemon_pos),
+                    source_pos,
+                    effect_id.as_deref()
+                )
+            }
             "DamagingHit" => {
                 // Extract damage from relay_var, source from event, and move_id from active_move
                 let damage = self.event.as_ref().and_then(|e| match &e.relay_var {

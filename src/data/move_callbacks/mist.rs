@@ -63,6 +63,7 @@ pub mod condition {
             //     }
             // }
             let mut show_msg = false;
+            let mut modified_boosts = None;
             if let Some(ref mut event) = battle.event {
                 if let Some(EventResult::Boost(ref mut boosts)) = event.relay_var {
                     if boosts.atk < 0 { boosts.atk = 0; show_msg = true; }
@@ -72,6 +73,8 @@ pub mod condition {
                     if boosts.spe < 0 { boosts.spe = 0; show_msg = true; }
                     if boosts.accuracy < 0 { boosts.accuracy = 0; show_msg = true; }
                     if boosts.evasion < 0 { boosts.evasion = 0; show_msg = true; }
+                    // Clone the modified boosts to return them
+                    modified_boosts = Some(boosts.clone());
                 }
             }
 
@@ -94,6 +97,11 @@ pub mod condition {
 
                     battle.add("-activate", &[target_arg.into(), "move: Mist".into()]);
                 }
+            }
+
+            // Return the modified boosts so run_event uses them
+            if let Some(boosts) = modified_boosts {
+                return EventResult::Boost(boosts);
             }
         }
 

@@ -252,6 +252,21 @@ pub fn dispatch_side_condition_on_critical_hit(
         _ => EventResult::Continue,
     }
 }
+/// Dispatch side condition onTryBoost callbacks
+/// Called when a stat boost is being applied to check if it should be modified/prevented
+/// Mist prevents stat drops from opponent's moves
+pub fn dispatch_side_condition_on_try_boost(
+    battle: &mut Battle,
+    condition_id: &str,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    _effect_id: Option<&str>,
+) -> EventResult {
+    match condition_id {
+        "mist" => move_callbacks::mist::condition::on_try_boost(battle, target_pos, source_pos, _effect_id),
+        _ => EventResult::Continue,
+    }
+}
 /// Dispatch onDamagingHit callbacks
 pub fn dispatch_on_damaging_hit(
     battle: &mut Battle,
