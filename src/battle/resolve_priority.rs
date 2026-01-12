@@ -294,7 +294,9 @@ impl Battle {
             // Get Pokemon speed
             if let Some(side) = self.sides.get(effect_holder.0) {
                 if let Some(pokemon) = side.pokemon.get(effect_holder.1) {
-                    handler.speed = Some(pokemon.stored_stats.spe as f64);
+                    // JS: handler.speed = pokemon.speed;
+                    // Use pokemon.speed (the action speed) not stored_stats.spe (the base stat)
+                    handler.speed = Some(pokemon.speed as f64);
 
                     // JS: if (handler.effect.effectType === 'Ability' && handler.effect.name === 'Magic Bounce' && callbackName === 'onAllyTryHitSide')
                     if let Some(mb_speed) = magic_bounce_speed {

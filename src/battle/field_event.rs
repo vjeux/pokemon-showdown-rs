@@ -71,10 +71,12 @@ impl Battle {
             });
 
         // Get speed from holder Pokemon
+        // JS: handler.speed = pokemon.speed;
+        // Use pokemon.speed (the action speed) not stored_stats.spe (the base stat)
         let speed = if let Some((side_idx, poke_idx)) = holder {
             if let Some(side) = self.sides.get(side_idx) {
                 if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                    pokemon.stored_stats.spe
+                    pokemon.speed
                 } else {
                     0
                 }
