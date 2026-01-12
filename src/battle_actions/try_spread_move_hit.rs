@@ -207,6 +207,14 @@ pub fn try_spread_move_hit(
         prepare_hit_1.clone() // Propagate the falsy result
     };
 
+    // Sync active_move from battle.active_move after PrepareHit events
+    // This is necessary because abilities like Parental Bond modify battle.active_move
+    // during the PrepareHit event (e.g., setting multi_hit = 2)
+    if let Some(ref updated_move) = battle.active_move {
+        active_move.multi_hit = updated_move.multi_hit.clone();
+        active_move.multi_hit_type = updated_move.multi_hit_type.clone();
+    }
+
     // Final result check (same as before)
     // Stop represents "return null" in JavaScript - should be treated as falsy
     let hit_result = !matches!(prepare_hit_2, EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null | EventResult::NotFail | EventResult::Stop);

@@ -17,15 +17,28 @@ use crate::dex::Multihit;
 pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.category === 'Status' || move.multihit || move.flags['noparentalbond'] || move.flags['charge'] ||
     //     move.flags['futuremove'] || move.spreadHit || move.isZ || move.isMax) return;
-    let should_return = if let Some(am) = active_move {
-        am.category == "Status"
-            || am.multi_hit.is_some()
-            || am.flags.noparentalbond
-            || am.flags.charge
-            || am.flags.future_move
-            || am.spread_hit
-            || am.is_z.is_some()
-            || am.is_max.is_some()
+    let (should_return, reason) = if let Some(am) = active_move {
+        let reason = if am.category == "Status" {
+            "Status move"
+        } else if am.multi_hit.is_some() {
+            "Already multi_hit"
+        } else if am.flags.noparentalbond {
+            "noparentalbond flag"
+        } else if am.flags.charge {
+            "charge flag"
+        } else if am.flags.future_move {
+            "future_move flag"
+        } else if am.spread_hit {
+            "spread_hit"
+        } else if am.is_z.is_some() {
+            "is_z"
+        } else if am.is_max.is_some() {
+            "is_max"
+        } else {
+            ""
+        };
+        let should_return = !reason.is_empty();
+        (should_return, reason)
     } else {
         return EventResult::Continue;
     };
