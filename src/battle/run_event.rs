@@ -502,41 +502,44 @@ impl Battle {
 
             // JavaScript: Ability suppression check (lines 192-229)
             // Check if ability is suppressed by Mold Breaker, etc.
-            if let Some(ability_data) = self.dex.abilities().get(effect_id.as_str()) {
-                if let Some(handler_pos) = handler_target {
-                    // Check if ability is suppressed by Mold Breaker
-                    if self.suppressing_ability(Some(handler_pos)) {
-                        // JavaScript: if (effect.flags['breakable']) { continue; }
-                        let is_breakable = ability_data.flags.get("breakable").copied().unwrap_or(0) != 0;
+            // IMPORTANT: Only check for actual Ability handlers, not volatiles with the same name
+            if handler.effect.effect_type == EffectType::Ability {
+                if let Some(ability_data) = self.dex.abilities().get(effect_id.as_str()) {
+                    if let Some(handler_pos) = handler_target {
+                        // Check if ability is suppressed by Mold Breaker
+                        if self.suppressing_ability(Some(handler_pos)) {
+                            // JavaScript: if (effect.flags['breakable']) { continue; }
+                            let is_breakable = ability_data.flags.get("breakable").copied().unwrap_or(0) != 0;
 
-                        if is_breakable {
-                            self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
-                            continue;
-                        }
-
-                        // JavaScript: if (!effect.num) { ... check AttackingEvents ... }
-                        // Custom abilities (no num) have their attacking events suppressed
-                        if ability_data.num == 0 {
-                            // List of attacking events that get suppressed for custom abilities
-                            let attacking_events = [
-                                "BeforeMove", "BasePower", "Immunity", "RedirectTarget", "Heal", "SetStatus",
-                                "CriticalHit", "ModifyAtk", "ModifyDef", "ModifySpA", "ModifySpD", "ModifySpe",
-                                "ModifyAccuracy", "ModifyBoost", "ModifyDamage", "ModifySecondaries",
-                                "ModifyWeight", "TryAddVolatile", "TryHit", "TryHitSide", "TryMove",
-                                "Boost", "DragOut", "Effectiveness",
-                            ];
-
-                            if attacking_events.contains(&event_id) {
+                            if is_breakable {
                                 self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
                                 continue;
                             }
 
-                            // JavaScript: else if (eventid === 'Damage' && sourceEffect && sourceEffect.effectType === 'Move')
-                            if event_id == "Damage" {
-                                if let Some(source_eff) = source_effect {
-                                    if source_eff.effect_type == EffectType::Move {
-                                        self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
-                                        continue;
+                            // JavaScript: if (!effect.num) { ... check AttackingEvents ... }
+                            // Custom abilities (no num) have their attacking events suppressed
+                            if ability_data.num == 0 {
+                                // List of attacking events that get suppressed for custom abilities
+                                let attacking_events = [
+                                    "BeforeMove", "BasePower", "Immunity", "RedirectTarget", "Heal", "SetStatus",
+                                    "CriticalHit", "ModifyAtk", "ModifyDef", "ModifySpA", "ModifySpD", "ModifySpe",
+                                    "ModifyAccuracy", "ModifyBoost", "ModifyDamage", "ModifySecondaries",
+                                    "ModifyWeight", "TryAddVolatile", "TryHit", "TryHitSide", "TryMove",
+                                    "Boost", "DragOut", "Effectiveness",
+                                ];
+
+                                if attacking_events.contains(&event_id) {
+                                    self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
+                                    continue;
+                                }
+
+                                // JavaScript: else if (eventid === 'Damage' && sourceEffect && sourceEffect.effectType === 'Move')
+                                if event_id == "Damage" {
+                                    if let Some(source_eff) = source_effect {
+                                        if source_eff.effect_type == EffectType::Move {
+                                            self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
+                                            continue;
+                                        }
                                     }
                                 }
                             }
@@ -547,15 +550,18 @@ impl Battle {
 
             // JavaScript: Item suppression check (lines 230-235)
             // Check if item is being ignored
+            // IMPORTANT: Only check for actual Item handlers, not volatiles with the same name
             if event_id != "Start" && event_id != "SwitchIn" && event_id != "TakeItem" {
-                if let Some(_item_data) = self.dex.items().get(effect_id.as_str()) {
-                    if let Some(handler_pos) = handler_target {
-                        if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
-                            if pokemon.ignoring_item(self, false) {
-                                if event_id != "Update" {
-                                    self.debug(&format!("{} handler suppressed by Embargo, Klutz or Magic Room", event_id));
+                if handler.effect.effect_type == EffectType::Item {
+                    if let Some(_item_data) = self.dex.items().get(effect_id.as_str()) {
+                        if let Some(handler_pos) = handler_target {
+                            if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
+                                if pokemon.ignoring_item(self, false) {
+                                    if event_id != "Update" {
+                                        self.debug(&format!("{} handler suppressed by Embargo, Klutz or Magic Room", event_id));
+                                    }
+                                    continue;
                                 }
-                                continue;
                             }
                         }
                     }
@@ -564,15 +570,18 @@ impl Battle {
 
             // JavaScript: Ability ignoring check (lines 236-244)
             // Check if ability is being ignored
+            // IMPORTANT: Only check for actual Ability handlers, not volatiles with the same name
             if event_id != "End" {
-                if let Some(_ability_data) = self.dex.abilities().get(effect_id.as_str()) {
-                    if let Some(handler_pos) = handler_target {
-                        if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
-                            if pokemon.ignoring_ability(self) {
-                                if event_id != "Update" {
-                                    self.debug(&format!("{} handler suppressed by Gastro Acid or Neutralizing Gas", event_id));
+                if handler.effect.effect_type == EffectType::Ability {
+                    if let Some(_ability_data) = self.dex.abilities().get(effect_id.as_str()) {
+                        if let Some(handler_pos) = handler_target {
+                            if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
+                                if pokemon.ignoring_ability(self) {
+                                    if event_id != "Update" {
+                                        self.debug(&format!("{} handler suppressed by Gastro Acid or Neutralizing Gas", event_id));
+                                    }
+                                    continue;
                                 }
-                                continue;
                             }
                         }
                     }

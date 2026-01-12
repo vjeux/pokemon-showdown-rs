@@ -152,7 +152,12 @@ impl Battle {
                     },
                     target: Some(target),
                     index: None,
-                    state: None, // Don't clone - look up fresh in run_event
+                    // JavaScript passes volatileState in handler.state:
+                    // handlers.push(this.resolvePriority({
+                    //   effect: volatile, callback, state: volatileState, ...
+                    // }, callbackName));
+                    // This is critical for volatiles like "stall" which have counter state
+                    state: Some(volatile_state.clone()),
                     effect_holder: Some(target),
                     order: None,
                     priority: 0,

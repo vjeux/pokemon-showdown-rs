@@ -53,7 +53,9 @@ impl Battle {
 
         // Get sub_order: first try custom value, then fall back to default based on effect type
         // This matches JavaScript's resolvePriority effectTypeOrder
-        let sub_order = self.get_callback_sub_order(effect_type, effect_id.as_str(), callback_name)
+        // IMPORTANT: Use prefixed_callback (e.g., "onSideResidual") not callback_name (e.g., "onResidual")
+        // because side conditions have properties like onSideResidualSubOrder, not onResidualSubOrder
+        let sub_order = self.get_callback_sub_order(effect_type, effect_id.as_str(), &prefixed_callback)
             .unwrap_or_else(|| match effect_type {
                 crate::battle::EffectType::ZMove => 1,
                 crate::battle::EffectType::Condition => 2,
@@ -226,9 +228,12 @@ impl Battle {
                     let effect_id = handler.effect.id;
                     let holder = handler.effect_holder;
                     let effect_type = handler.effect.effect_type;  // Use effect_type from handler, not determine_effect_type
-                    // JavaScript: handler.effectOrder = handler.state?.effectOrder;
-                    // Use effectOrder from state for tie-breaking (effects created at different times have different effectOrders)
-                    let effect_order = handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0);
+                    // IMPORTANT: Do NOT propagate handler effect_order for Residual event handlers!
+                    // JavaScript fieldEvent() in resolvePriority only sets effectOrder for 'SwitchIn' and 'RedirectTarget' events.
+                    // For 'Residual' events, effectOrder is undefined, causing handlers with same priority/speed/subOrder to be tied and shuffled.
+                    // Rust was incorrectly propagating effect_order here, breaking ties that should exist.
+                    // Always use 0 to match JavaScript's undefined behavior.
+                    let effect_order = 0;
                     // JavaScript: handler.callback is set from getCallback() result
                     // For onSideResidual handlers, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &side_event, &effect_type);
