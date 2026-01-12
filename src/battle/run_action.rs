@@ -1130,25 +1130,58 @@ impl Battle {
             eprintln!("[RUN_ACTION] Side {}: switches[i]={}, can_switch={}",
                 i, switches[i], self.can_switch(i));
             if switches[i] && self.can_switch(i) == 0 {
-                eprintln!("[RUN_ACTION] Side {} has fainted Pokemon but no switches - checking win", i);
-                // When a side has fainted Pokemon but no Pokemon to switch to,
-                // we need to check if the battle should end
-                // JavaScript handles this through faintMessages() which calls checkWin()
-                if self.check_win(None) {
-                    eprintln!("[RUN_ACTION] check_win returned true, battle ended");
-                    return;
-                }
-                eprintln!("[RUN_ACTION] check_win returned false, continuing");
+                eprintln!("[RUN_ACTION] Side {} has fainted Pokemon but no switches - checking for revivalblessing", i);
 
-                // JS: for (const pokemon of this.sides[i].active) { pokemon.switchFlag = false; }
-                for poke_idx in self.sides[i].pokemon.iter_mut() {
-                    poke_idx.switch_flag = None;
-                }
+                // JS: let reviveSwitch = false;
+                // JS: for (const pokemon of this.sides[i].active) {
+                // JS:     if (this.sides[i].slotConditions[pokemon.position]['revivalblessing']) {
+                // JS:         reviveSwitch = true;
+                // JS:         continue;
+                // JS:     }
+                // JS:     pokemon.switchFlag = false;
+                // JS: }
                 // JS: if (!reviveSwitch) switches[i] = false;
-                switches[i] = false;
+                let revivalblessing_id = ID::new("revivalblessing");
+                let mut revive_switch = false;
+
+                // Get active positions first
+                let active_positions: Vec<usize> = self.sides[i].active.iter()
+                    .filter_map(|&opt_idx| opt_idx)
+                    .collect();
+
+                for poke_idx in &active_positions {
+                    let pokemon_position = self.sides[i].pokemon[*poke_idx].position;
+                    let has_revivalblessing = self.sides[i].slot_conditions
+                        .get(pokemon_position)
+                        .map(|conditions| conditions.contains_key(&revivalblessing_id))
+                        .unwrap_or(false);
+
+                    if has_revivalblessing {
+                        eprintln!("[RUN_ACTION] Side {} has revivalblessing slot condition at position {}", i, pokemon_position);
+                        revive_switch = true;
+                        continue;
+                    }
+                    self.sides[i].pokemon[*poke_idx].switch_flag = None;
+                }
+
+                if !revive_switch {
+                    eprintln!("[RUN_ACTION] No revive switch, checking win");
+                    // When a side has fainted Pokemon but no Pokemon to switch to,
+                    // we need to check if the battle should end
+                    // JavaScript handles this through faintMessages() which calls checkWin()
+                    if self.check_win(None) {
+                        eprintln!("[RUN_ACTION] check_win returned true, battle ended");
+                        return;
+                    }
+                    eprintln!("[RUN_ACTION] check_win returned false, continuing");
+                    switches[i] = false;
+                } else {
+                    eprintln!("[RUN_ACTION] revive_switch is true, keeping switches[{}] = true for revivalblessing", i);
+                }
             } else if switches[i] {
                 // JS: for (const pokemon of this.sides[i].active) {
-                //         if (pokemon.hp && pokemon.switchFlag && ... && !pokemon.skipBeforeSwitchOutEventFlag) {
+                //         if (pokemon.hp && pokemon.switchFlag && pokemon.switchFlag !== 'revivalblessing' &&
+                //             !pokemon.skipBeforeSwitchOutEventFlag) {
                 //             this.runEvent('BeforeSwitchOut', pokemon);
                 //             pokemon.skipBeforeSwitchOutEventFlag = true;
                 //             this.faintMessages();
@@ -1165,7 +1198,11 @@ impl Battle {
                 for poke_idx in active_positions {
                     let should_run_event = {
                         let pokemon = &self.sides[i].pokemon[poke_idx];
-                        pokemon.hp > 0 && pokemon.switch_flag.is_some() && !pokemon.skip_before_switch_out_event_flag
+                        // JS: pokemon.hp && pokemon.switchFlag && pokemon.switchFlag !== 'revivalblessing'
+                        let switch_flag_not_revival = pokemon.switch_flag.as_ref()
+                            .map(|flag| flag != "revivalblessing")
+                            .unwrap_or(false);
+                        pokemon.hp > 0 && switch_flag_not_revival && !pokemon.skip_before_switch_out_event_flag
                     };
 
                     if should_run_event {
