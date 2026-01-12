@@ -614,8 +614,11 @@ pub fn use_move_inner(
     //         pokemon.deductPP(callerMoveForPressure || moveOrMoveName, extraPP);
     //     }
     // }
+    // JavaScript: const callerMoveForPressure = sourceEffect && (sourceEffect as ActiveMove).pp ? sourceEffect as ActiveMove : null;
+    // Check if source_effect is a move (moves have PP). In JS, this checks if sourceEffect.pp exists and is > 0.
+    // In Rust, we check if source_effect is a Move effect type, which implies it has PP.
     let caller_move_for_pressure = source_effect.as_ref().and_then(|se| {
-        if battle.active_move.as_ref().map_or(false, |am| am.id == se.id && am.pp > 0) {
+        if se.effect_type == crate::battle::EffectType::Move {
             source_effect.clone()
         } else {
             None
