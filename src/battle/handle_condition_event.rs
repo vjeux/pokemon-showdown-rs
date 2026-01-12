@@ -129,6 +129,18 @@ impl Battle {
             "BeforeTurn" => {
                 condition_callbacks::dispatch_on_before_turn(self, condition_id, pokemon_pos)
             }
+            "CriticalHit" => {
+                // Called to check if a critical hit should occur
+                // Lucky Chant returns false to prevent critical hits
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                condition_callbacks::dispatch_side_condition_on_critical_hit(
+                    self,
+                    condition_id,
+                    Some(pokemon_pos),
+                    source_pos,
+                    active_move_clone.as_ref()
+                )
+            }
             "DamagingHit" => {
                 // Extract damage from relay_var, source from event, and move_id from active_move
                 let damage = self.event.as_ref().and_then(|e| match &e.relay_var {
