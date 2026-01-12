@@ -563,6 +563,20 @@ pub fn dispatch_on_modify_sp_d(
         _ => EventResult::Continue,
     }
 }
+/// Dispatch onModifyType callbacks
+/// Called when a Pokemon's move type may be modified by a condition (e.g., Electrify)
+pub fn dispatch_on_modify_type(
+    battle: &mut Battle,
+    condition_id: &str,
+    _pokemon_pos: (usize, usize),
+    active_move: Option<&ActiveMove>,
+) -> EventResult {
+    match condition_id {
+        "electrify" => move_callbacks::electrify::condition::on_modify_type(battle, active_move),
+        "iondeluge" => move_callbacks::iondeluge::condition::on_modify_type(battle, active_move),
+        _ => EventResult::Continue,
+    }
+}
 /// Dispatch onModifySpe callbacks
 pub fn dispatch_on_modify_spe(
     battle: &mut Battle,

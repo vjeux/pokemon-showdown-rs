@@ -255,6 +255,10 @@ impl Battle {
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 condition_callbacks::dispatch_on_modify_move(self, condition_id, pokemon_pos, target_pos)
             }
+            "ModifyType" => {
+                // Electrify and Ion Deluge modify move types
+                condition_callbacks::dispatch_on_modify_type(self, condition_id, pokemon_pos, active_move_clone.as_ref())
+            }
             "ModifySpD" => {
                 // Extract spd from relay_var, target, source, and move_id
                 let spd = self.event.as_ref().and_then(|e| match &e.relay_var {
