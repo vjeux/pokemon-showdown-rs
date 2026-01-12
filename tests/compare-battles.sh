@@ -3,7 +3,7 @@
 # Battle Comparison Test
 #
 # Compares JavaScript and Rust battle implementations by:
-# 1. Generating teams independently in each language
+# 1. Generating teams independently in each language (or using minimized seed files)
 # 2. Comparing team generation (should match exactly)
 # 3. Running battles with those teams
 # 4. Comparing battle state turn-by-turn
@@ -17,41 +17,60 @@ SEED=${1:-1}
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_DIR="$( cd "$SCRIPT_DIR/.." && pwd )"
 
+# Check if a minimized seed file exists
+MINIMIZED_FILE="$PROJECT_DIR/tests/minimized/seed${SEED}.json"
+
 echo "======================================"
 echo "Battle Comparison Test - Seed $SEED"
 echo "======================================"
 echo ""
 
-# Step 1: Generate teams in both languages
-echo "Step 1: Generating teams..."
-echo ""
+if [ -f "$MINIMIZED_FILE" ]; then
+    # Use minimized seed file
+    echo "Using minimized seed file: $MINIMIZED_FILE"
+    echo ""
 
-echo "  JavaScript team generation:"
-node $PROJECT_DIR/tests/generate-test-teams.js $SEED
+    # Copy minimized file to both JS and Rust team locations
+    cp "$MINIMIZED_FILE" /tmp/teams-seed${SEED}-js.json
+    cp "$MINIMIZED_FILE" /tmp/teams-seed${SEED}-rust.json
 
-echo ""
-echo "  Rust team generation:"
-docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example generate_test_teams_rust $SEED 2>&1" | grep -E '(✓|P1|P2|File)'
+    # Also copy to Docker container
+    docker cp "$MINIMIZED_FILE" pokemon-rust-dev:/tmp/teams-seed${SEED}-rust.json
 
-# Copy Rust teams from container to host /tmp
-docker cp pokemon-rust-dev:/tmp/teams-seed${SEED}-rust.json /tmp/teams-seed${SEED}-rust.json
-
-# Step 2: Compare team generation
-echo ""
-echo "Step 2: Comparing team generation..."
-echo ""
-
-if diff -q /tmp/teams-seed${SEED}-js.json /tmp/teams-seed${SEED}-rust.json > /dev/null 2>&1; then
-    echo "✅ PASS: Team generation matches!"
+    echo "✅ Teams loaded from minimized seed file"
+    echo ""
 else
-    echo "❌ FAIL: Team generation differs between JS and Rust!"
+    # Step 1: Generate teams in both languages
+    echo "Step 1: Generating teams..."
     echo ""
-    echo "This indicates the random team generation logic is not synchronized."
-    echo "Differences:"
-    diff /tmp/teams-seed${SEED}-js.json /tmp/teams-seed${SEED}-rust.json | head -20
+
+    echo "  JavaScript team generation:"
+    node $PROJECT_DIR/tests/generate-test-teams.js $SEED
+
     echo ""
-    echo "Stopping test. Fix team generation before testing battles."
-    exit 1
+    echo "  Rust team generation:"
+    docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --example generate_test_teams_rust $SEED 2>&1" | grep -E '(✓|P1|P2|File)'
+
+    # Copy Rust teams from container to host /tmp
+    docker cp pokemon-rust-dev:/tmp/teams-seed${SEED}-rust.json /tmp/teams-seed${SEED}-rust.json
+
+    # Step 2: Compare team generation
+    echo ""
+    echo "Step 2: Comparing team generation..."
+    echo ""
+
+    if diff -q /tmp/teams-seed${SEED}-js.json /tmp/teams-seed${SEED}-rust.json > /dev/null 2>&1; then
+        echo "✅ PASS: Team generation matches!"
+    else
+        echo "❌ FAIL: Team generation differs between JS and Rust!"
+        echo ""
+        echo "This indicates the random team generation logic is not synchronized."
+        echo "Differences:"
+        diff /tmp/teams-seed${SEED}-js.json /tmp/teams-seed${SEED}-rust.json | head -20
+        echo ""
+        echo "Stopping test. Fix team generation before testing battles."
+        exit 1
+    fi
 fi
 
 # Step 3: Run battles
