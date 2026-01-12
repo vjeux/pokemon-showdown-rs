@@ -104,7 +104,7 @@ pub mod condition {
         let move_type = battle.active_move.as_ref().map(|m| m.move_type.clone());
 
         if let Some(ref type_id) = move_type {
-            if type_id == "grass" {
+            if type_id == "Grass" {
                 let attacker_grounded = {
                     let attacker_pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
                         Some(p) => p,

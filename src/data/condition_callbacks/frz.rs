@@ -267,7 +267,7 @@ pub fn on_damaging_hit(
     };
 
     // if (move.type === 'Fire' && move.category !== 'Status' && move.id !== 'polarflare')
-    let should_thaw = active_move_ref.move_type.as_str() == "fire"
+    let should_thaw = active_move_ref.move_type.as_str() == "Fire"
         && active_move_ref.category != "status"
         && active_move_ref.id.as_str() != "polarflare";
 
