@@ -41,14 +41,19 @@ impl Pokemon {
     ) -> bool {
         // JS: if (this.fainted) return false;
         // ✅ NOW IMPLEMENTED: Fainted check
-        let hp = {
+        // IMPORTANT: Check the `fainted` flag, NOT `hp == 0`.
+        // In JS, the fainted flag is only set when faintMessages() runs, which
+        // happens AFTER onHit callbacks. So a Pokemon with hp=0 but fainted=false
+        // will pass this check. This is intentional - callbacks like gmaxsnooze's
+        // onHit should still run their PRNG calls even if the target just fainted.
+        let is_fainted = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return false,
             };
-            pokemon.hp
+            pokemon.fainted
         };
-        if hp == 0 {
+        if is_fainted {
             return false;
         }
 
