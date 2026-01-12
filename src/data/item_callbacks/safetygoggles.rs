@@ -70,7 +70,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
         );
 
         // return null;
-        return EventResult::Stop;
+        return EventResult::Null;
     }
 
     EventResult::Continue
