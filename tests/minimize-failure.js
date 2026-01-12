@@ -29,6 +29,19 @@ if (!fs.existsSync(MINIMIZED_DIR)) {
   fs.mkdirSync(MINIMIZED_DIR, { recursive: true });
 }
 
+// Build Rust binary once upfront for faster iteration
+console.log('Building Rust binary (one-time)...');
+try {
+  execSync(`docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo build --release --example test_battle_rust 2>&1"`, { stdio: 'pipe' });
+  console.log('Rust binary built successfully.\n');
+} catch (e) {
+  console.error('Failed to build Rust binary:', e.message);
+  process.exit(1);
+}
+
+// Path to pre-built binary
+const RUST_BINARY = '/home/builder/workspace/target/release/examples/test_battle_rust';
+
 // Simple abilities that have minimal effects
 const SIMPLE_ABILITIES = ['Run Away', 'Honey Gather', 'Illuminate', 'Ball Fetch'];
 
@@ -49,7 +62,7 @@ function runBattle(teams) {
 
   try {
     execSync(`node tests/test-battle-js.js ${seed} > /tmp/js-battle-seed${seed}.txt 2>&1`, { stdio: 'pipe' });
-    execSync(`docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --release --example test_battle_rust ${seed} 2>/dev/null" > /tmp/rust-battle-seed${seed}.txt`, { stdio: 'pipe' });
+    execSync(`docker exec pokemon-rust-dev bash -c "${RUST_BINARY} ${seed} 2>/dev/null" > /tmp/rust-battle-seed${seed}.txt`, { stdio: 'pipe' });
 
     const jsLines = fs.readFileSync(`/tmp/js-battle-seed${seed}.txt`, 'utf8')
       .split('\n').filter(l => /^#\d+:/.test(l));

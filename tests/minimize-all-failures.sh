@@ -7,6 +7,18 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MINIMIZED_DIR="$SCRIPT_DIR/minimized"
 
+# Build Rust binary once upfront
+echo "Building Rust binary (one-time)..."
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo build --release --example test_battle_rust 2>&1" > /dev/null
+if [ $? -ne 0 ]; then
+    echo "Failed to build Rust binary"
+    exit 1
+fi
+echo "Rust binary built successfully."
+echo ""
+
+RUST_BINARY="/home/builder/workspace/target/release/examples/test_battle_rust"
+
 # Get all failing seeds from results files
 FAILING_SEEDS=$(grep "FAIL" "$SCRIPT_DIR/../"*-seeds-results.txt 2>/dev/null | grep -o "Seed [0-9]*" | sed 's/Seed //' | sort -n | uniq)
 
@@ -36,7 +48,7 @@ for seed in $FAILING_SEEDS; do
 
     # Run quick comparison
     node "$SCRIPT_DIR/test-battle-js.js" "$seed" > /tmp/js-battle-seed${seed}.txt 2>&1
-    docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo run --release --example test_battle_rust $seed 2>/dev/null" > /tmp/rust-battle-seed${seed}.txt 2>&1
+    docker exec pokemon-rust-dev bash -c "$RUST_BINARY $seed 2>/dev/null" > /tmp/rust-battle-seed${seed}.txt 2>&1
 
     # Compare just the battle lines
     js_lines=$(grep "^#[0-9]" /tmp/js-battle-seed${seed}.txt 2>/dev/null)
