@@ -104,6 +104,11 @@ impl Side {
         effect_state.source = source_pos;
         effect_state.source_slot = source_slot;
 
+        // JavaScript: obj.effectOrder = this.effectOrder++;
+        // Set unique effect_order for tie-breaking when sorting handlers
+        effect_state.effect_order = battle.effect_order;
+        battle.effect_order += 1;
+
         // JavaScript: if (status.durationCallback) { ... }
         // Call durationCallback if it exists
         let target_pos = if !self.active.is_empty() {

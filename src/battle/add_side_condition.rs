@@ -69,6 +69,11 @@ impl Battle {
         state.source = source_pos;
         state.created_turn = Some(self.turn); // Track when condition was added
 
+        // JavaScript: obj.effectOrder = this.effectOrder++;
+        // Set unique effect_order for tie-breaking when sorting handlers
+        state.effect_order = self.effect_order;
+        self.effect_order += 1;
+
         // Set target to the side's first active position
         // This is used by side condition callbacks like Light Screen that check this.effectState.target.hasAlly(target)
         // In JS, effectState.target for side conditions refers to the side, and side.hasAlly() checks side membership

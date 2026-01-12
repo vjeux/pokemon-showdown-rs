@@ -25,20 +25,16 @@ pub fn on_after_move(
 
     let pokemon = source_pos;
 
-    // Get the current move data
+    // Get the current move data from active_move (NOT dex - the flag may have been cleared)
     let (mind_blown_recoil, is_multihit) = {
         let active_move = match &battle.active_move {
-            Some(active_move) => &active_move.id,
+            Some(active_move) => active_move,
             None => return EventResult::Continue,
         };
-        let move_data = battle.dex.moves().get_by_id(active_move);
-        if let Some(m) = move_data {
-            let mind_blown_recoil = m.flags.contains_key("mindBlownRecoil");
-            let is_multihit = m.multi_hit.is_some();
-            (mind_blown_recoil, is_multihit)
-        } else {
-            return EventResult::Continue;
-        }
+        // JS: if (move.mindBlownRecoil && !move.multihit)
+        // In JS, 'move' is the active move, which may have mindBlownRecoil set to false
+        // if the hit loop already applied recoil.
+        (active_move.mindblown_recoil, active_move.multi_hit.is_some())
     };
 
     // if (move.mindBlownRecoil && !move.multihit) {

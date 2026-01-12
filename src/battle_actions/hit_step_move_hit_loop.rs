@@ -454,6 +454,10 @@ pub fn hit_step_move_hit_loop(
             let recoil_damage = (maxhp as f64 / 2.0).round() as i32;
             battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::move_(active_move.id.clone())), false);
             active_move.mindblown_recoil = false;
+            // Also update battle.active_move since callbacks read from there, not the local active_move
+            if let Some(ref mut am) = battle.active_move {
+                am.mindblown_recoil = false;
+            }
 
             let hp_after = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
                 .map(|p| p.hp)

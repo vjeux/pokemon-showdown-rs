@@ -226,8 +226,9 @@ impl Battle {
                     let effect_id = handler.effect.id;
                     let holder = handler.effect_holder;
                     let effect_type = handler.effect.effect_type;  // Use effect_type from handler, not determine_effect_type
-                    // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
-                    let effect_order = 0;
+                    // JavaScript: handler.effectOrder = handler.state?.effectOrder;
+                    // Use effectOrder from state for tie-breaking (effects created at different times have different effectOrders)
+                    let effect_order = handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0);
                     // JavaScript: handler.callback is set from getCallback() result
                     // For onSideResidual handlers, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &side_event, &effect_type);
