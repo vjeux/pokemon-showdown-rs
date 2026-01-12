@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Test all minimized seed cases
-# These are minimal reproduction cases for known bugs
+# Test all minimized seed cases (fast batch version)
 # Usage: ./test-minimized-seeds.sh
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -16,39 +15,61 @@ log() {
     echo "$@" | tee -a "$RESULTS_FILE"
 }
 
-# Build Rust binary once upfront
-log "Building Rust binary..."
-docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo build --release --example test_battle_rust 2>&1" > /dev/null
-RUST_BINARY="/home/builder/workspace/target/release/examples/test_battle_rust"
-
-# Get all seed files
-SEED_FILES=$(ls "$MINIMIZED_DIR"/seed*.json 2>/dev/null | sort -t'd' -k2 -n)
-total_seeds=$(echo "$SEED_FILES" | wc -l | tr -d ' ')
+# Get all seed numbers and create seeds list file
+SEEDS_FILE="/tmp/minimized-seeds-list.txt"
+ls "$MINIMIZED_DIR"/seed*.json 2>/dev/null | sed 's/.*seed\([0-9]*\).json/\1/' | sort -n > "$SEEDS_FILE"
+total_seeds=$(wc -l < "$SEEDS_FILE" | tr -d ' ')
 
 log "======================================="
 log "Testing Minimized Seeds ($total_seeds tests)"
 log "======================================="
 log ""
 
+# Step 1: Copy all minimized files to /tmp
+log "Step 1: Copying team files..."
+for seed in $(cat "$SEEDS_FILE"); do
+    cp "$MINIMIZED_DIR/seed${seed}.json" "/tmp/teams-seed${seed}-js.json"
+    cp "$MINIMIZED_DIR/seed${seed}.json" "/tmp/teams-seed${seed}-rust.json"
+done
+
+# Copy to docker
+docker cp /tmp/teams-seed*-rust.json pokemon-rust-dev:/tmp/ 2>/dev/null || true
+# Copy files one by one if bulk copy fails
+for seed in $(cat "$SEEDS_FILE"); do
+    docker cp "/tmp/teams-seed${seed}-rust.json" "pokemon-rust-dev:/tmp/teams-seed${seed}-rust.json" 2>/dev/null
+done
+
+# Also copy seeds list to docker
+docker cp "$SEEDS_FILE" pokemon-rust-dev:/tmp/minimized-seeds-list.txt
+
+# Step 2: Build Rust binary
+log "Step 2: Building Rust binary..."
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo build --release --example test_minimized_batch 2>&1" > /dev/null
+
+# Step 3: Run JS batch
+log "Step 3: Running JavaScript battles..."
+node "$SCRIPT_DIR/test-minimized-batch-js.js"
+
+# Step 4: Run Rust batch
+log "Step 4: Running Rust battles..."
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && ./target/release/examples/test_minimized_batch /tmp/minimized-seeds-list.txt 2>/dev/null"
+
+# Step 5: Copy Rust output files from container
+log "Step 5: Copying results..."
+for seed in $(cat "$SEEDS_FILE"); do
+    docker cp "pokemon-rust-dev:/tmp/rust-battle-seed${seed}.txt" "/tmp/rust-battle-seed${seed}.txt" 2>/dev/null
+done
+
+# Step 6: Compare results
+log ""
+log "Step 6: Comparing results..."
+log ""
+
 passed_seeds=0
 failed_seeds=0
 
-for seed_file in $SEED_FILES; do
-    # Extract seed number from filename
-    seed=$(basename "$seed_file" | sed 's/seed\([0-9]*\).json/\1/')
-
-    # Copy team file to expected locations
-    cp "$seed_file" "/tmp/teams-seed${seed}-js.json"
-    cp "$seed_file" "/tmp/teams-seed${seed}-rust.json"
-    docker cp "/tmp/teams-seed${seed}-rust.json" "pokemon-rust-dev:/tmp/teams-seed${seed}-rust.json" 2>/dev/null
-
-    # Run JS battle
-    node "$SCRIPT_DIR/test-battle-js.js" "$seed" > "/tmp/js-battle-seed${seed}.txt" 2>&1
-
-    # Run Rust battle
-    docker exec pokemon-rust-dev bash -c "$RUST_BINARY $seed 2>/dev/null" > "/tmp/rust-battle-seed${seed}.txt" 2>&1
-
-    # Extract battle lines (lines like "#1: turn=2, prng=...")
+for seed in $(cat "$SEEDS_FILE"); do
+    # Extract battle lines
     js_lines=$(grep "^#[0-9]*:" "/tmp/js-battle-seed${seed}.txt" 2>/dev/null)
     rust_lines=$(grep "^#[0-9]*:" "/tmp/rust-battle-seed${seed}.txt" 2>/dev/null)
 
