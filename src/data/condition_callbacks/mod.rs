@@ -283,6 +283,7 @@ pub fn dispatch_on_damage(
     effect_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
+        "bide" => move_callbacks::bide::condition::on_damage(battle, damage, target_pos, source_pos, effect_id),
         "endure" => move_callbacks::endure::condition::on_damage(battle, damage, target_pos, source_pos, effect_id),
         _ => EventResult::Continue,
     }
