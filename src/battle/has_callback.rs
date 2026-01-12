@@ -63,6 +63,34 @@ impl Battle {
             }
         }
 
+        // Check item-embedded conditions
+        // Some items define a `condition` block with their own callbacks (e.g., Metronome item)
+        // When a volatile is added with the item's ID (e.g., "metronome"),
+        // its callbacks are in item.condition, not in conditions.json
+        if let Some(item_data) = self.dex.items().get(volatile_str) {
+            if let Some(condition_value) = item_data.extra.get("condition") {
+                if let Some(condition) = condition_value.as_object() {
+                    // Check if the condition has this callback
+                    let has_key = condition.contains_key(event_id);
+                    let priority_key = format!("{}Priority", event_id);
+                    let has_priority_key = condition.contains_key(&priority_key);
+
+                    if has_key || has_priority_key {
+                        return true;
+                    }
+
+                    // Try with "on" prefix
+                    if !event_id.starts_with("on") {
+                        let with_on = format!("on{}", event_id);
+                        let priority_with_on = format!("on{}Priority", event_id);
+                        if condition.contains_key(&with_on) || condition.contains_key(&priority_with_on) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
         false
     }
 

@@ -1684,6 +1684,14 @@ pub fn dispatch_condition_on_any_modify_damage(
             Some(target_pos),
             active_move,
         ),
+        // Item-embedded conditions
+        "metronome" => crate::data::item_callbacks::metronome::condition::on_modify_damage(
+            battle,
+            0,
+            Some(source_pos),
+            Some(target_pos),
+            active_move,
+        ),
         _ => EventResult::Continue,
     }
 }
@@ -2647,6 +2655,7 @@ pub fn dispatch_condition_on_start(
         "magiccoat" => magiccoat::condition::on_start(battle, pokemon_pos, source_pos, effect),
         "magnetrise" => magnetrise::condition::on_start(battle, pokemon_pos, source_pos, effect),
         "maxguard" => maxguard::condition::on_start(battle, pokemon_pos, source_pos, effect),
+        "metronome" => crate::data::item_callbacks::metronome::condition::on_start(battle, pokemon_pos),
         "miracleeye" => miracleeye::condition::on_start(battle, pokemon_pos, source_pos, effect),
         "mirrorcoat" => mirrorcoat::condition::on_start(battle, pokemon_pos, source_pos, effect),
         "nightmare" => nightmare::condition::on_start(battle, pokemon_pos, source_pos, effect),
@@ -2815,6 +2824,12 @@ pub fn dispatch_condition_on_try_move(
     condition_id_param: Option<&str>,
 ) -> EventResult {
     let condition_id = condition_id_param.unwrap_or(""); match condition_id {
+        "metronome" => crate::data::item_callbacks::metronome::condition::on_try_move(
+            battle,
+            source_pos,
+            target_pos,
+            _active_move,
+        ),
         "powder" => powder::condition::on_try_move(battle, source_pos, target_pos, condition_id_param),
         _ => EventResult::Continue,
     }

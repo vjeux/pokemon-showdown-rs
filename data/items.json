@@ -3257,7 +3257,10 @@
       "basePower": 30
     },
     "condition": {
-      "onTryMovePriority": -2
+      "onStart": true,
+      "onTryMovePriority": -2,
+      "onTryMove": true,
+      "onModifyDamage": true
     },
     "num": 277,
     "gen": 4,
