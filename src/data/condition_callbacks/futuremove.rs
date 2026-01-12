@@ -110,22 +110,23 @@ pub fn on_residual(
     eprintln!("[FUTUREMOVE::ON_RESIDUAL] Time to execute! Extracting data before removing condition...");
 
     // Extract the move data FIRST before removing the condition
-    let (move_id_str, source_pos_data) = {
+    let (move_id_str, source_pos_data, move_data) = {
         if let Some(side) = battle.sides.get(target_side_index) {
             if let Some(slot_conditions) = side.slot_conditions.get(target_position) {
                 if let Some(condition) = slot_conditions.get(&ID::from("futuremove")) {
                     let move_id = condition.move_id.clone().unwrap_or_default();
                     let source = condition.source;
-                    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Extracted move='{}', source={:?}", move_id, source);
-                    (move_id, source)
+                    let move_data = condition.move_data.clone();
+                    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Extracted move='{}', source={:?}, move_data={:?}", move_id, source, move_data);
+                    (move_id, source, move_data)
                 } else {
-                    (String::new(), None)
+                    (String::new(), None, None)
                 }
             } else {
-                (String::new(), None)
+                (String::new(), None, None)
             }
         } else {
-            (String::new(), None)
+            (String::new(), None, None)
         }
     };
 
@@ -144,7 +145,7 @@ pub fn on_residual(
     // Now call on_end to execute the future move
     // The condition is removed, so onTry won't fail due to condition already existing
     eprintln!("[FUTUREMOVE::ON_RESIDUAL] Calling on_end to execute future move");
-    on_end_with_data(battle, pokemon_pos, &move_id_str, source_pos_data);
+    on_end_with_data(battle, pokemon_pos, &move_id_str, source_pos_data, move_data);
 
     eprintln!("[FUTUREMOVE::ON_RESIDUAL] Returning Continue");
     EventResult::Continue
@@ -188,9 +189,10 @@ pub fn on_end_with_data(
     pokemon_pos: (usize, usize),
     move_id_str: &str,
     source_pos_data: Option<(usize, usize)>,
+    move_data: Option<std::collections::HashMap<String, serde_json::Value>>,
 ) -> EventResult {
-    eprintln!("[FUTUREMOVE::ON_END] ENTRY: pokemon_pos={:?}, turn={}, move={}, source={:?}",
-        pokemon_pos, battle.turn, move_id_str, source_pos_data);
+    eprintln!("[FUTUREMOVE::ON_END] ENTRY: pokemon_pos={:?}, turn={}, move={}, source={:?}, move_data={:?}",
+        pokemon_pos, battle.turn, move_id_str, source_pos_data, move_data);
 
     // const data = this.effectState;
     // Data has been pre-extracted and passed as parameters
@@ -265,6 +267,43 @@ pub fn on_end_with_data(
             }
         };
 
+        // Apply moveData overrides from stored condition
+        // JavaScript: const hitMove = new this.dex.Move(data.moveData) as ActiveMove;
+        // We need to apply the stored moveData fields, especially ignoreImmunity
+        if let Some(ref move_data_map) = move_data {
+            // Apply ignoreImmunity from moveData
+            if let Some(ignore_immunity_value) = move_data_map.get("ignoreImmunity") {
+                eprintln!("[FUTUREMOVE::ON_END] Found ignoreImmunity in moveData: {:?}", ignore_immunity_value);
+                match ignore_immunity_value {
+                    serde_json::Value::Bool(false) => {
+                        // ignoreImmunity: false means DO NOT ignore immunity
+                        // Set to None so type immunity is checked
+                        active_move.ignore_immunity = None;
+                        eprintln!("[FUTUREMOVE::ON_END] Set ignore_immunity = None (respect type immunity)");
+                    },
+                    serde_json::Value::Bool(true) => {
+                        // ignoreImmunity: true means ignore all immunities
+                        active_move.ignore_immunity = Some(crate::battle_actions::IgnoreImmunity::All);
+                        eprintln!("[FUTUREMOVE::ON_END] Set ignore_immunity = All");
+                    },
+                    serde_json::Value::Object(map) => {
+                        // ignoreImmunity: { Type: true, ... } means ignore specific type immunities
+                        let mut type_map = std::collections::HashMap::new();
+                        for (key, value) in map {
+                            if let serde_json::Value::Bool(b) = value {
+                                type_map.insert(key.clone(), *b);
+                            }
+                        }
+                        active_move.ignore_immunity = Some(crate::battle_actions::IgnoreImmunity::Specific(type_map));
+                        eprintln!("[FUTUREMOVE::ON_END] Set ignore_immunity = Specific");
+                    },
+                    _ => {
+                        eprintln!("[FUTUREMOVE::ON_END] Unexpected ignoreImmunity value type");
+                    }
+                }
+            }
+        }
+
         // Call trySpreadMoveHit directly, not use_move
         let targets = vec![pokemon_pos];
         let _result = crate::battle_actions::try_spread_move_hit(
@@ -299,7 +338,7 @@ pub fn on_end(
     eprintln!("[FUTUREMOVE::ON_END_WRAPPER] Extracting data from condition");
 
     // Extract data from the condition before it's removed
-    let (move_id_str, source_pos_data) = {
+    let (move_id_str, source_pos_data, move_data) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
@@ -312,17 +351,18 @@ pub fn on_end(
                 if let Some(condition) = slot_conditions.get(&ID::from("futuremove")) {
                     let move_id = condition.move_id.clone().unwrap_or_default();
                     let source = condition.source;
-                    (move_id, source)
+                    let move_data = condition.move_data.clone();
+                    (move_id, source, move_data)
                 } else {
-                    (String::new(), None)
+                    (String::new(), None, None)
                 }
             } else {
-                (String::new(), None)
+                (String::new(), None, None)
             }
         } else {
-            (String::new(), None)
+            (String::new(), None, None)
         }
     };
 
-    on_end_with_data(battle, pokemon_pos, &move_id_str, source_pos_data)
+    on_end_with_data(battle, pokemon_pos, &move_id_str, source_pos_data, move_data)
 }
