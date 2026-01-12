@@ -24,6 +24,12 @@ if (!seed) {
   process.exit(1);
 }
 
+// Output directory for minimized cases
+const MINIMIZED_DIR = path.join(__dirname, 'minimized');
+if (!fs.existsSync(MINIMIZED_DIR)) {
+  fs.mkdirSync(MINIMIZED_DIR, { recursive: true });
+}
+
 // Simple abilities that have minimal effects
 const SIMPLE_ABILITIES = ['Run Away', 'Honey Gather', 'Illuminate', 'Ball Fetch'];
 
@@ -314,7 +320,7 @@ while (changed) {
 console.log('\n=== Minimization complete ===\n');
 
 // Save minimized team
-const minFile = `/tmp/teams-seed${seed}-minimized.json`;
+const minFile = path.join(MINIMIZED_DIR, `seed${seed}.json`);
 fs.writeFileSync(minFile, JSON.stringify(teams, null, 2));
 console.log(`Minimized team saved to: ${minFile}`);
 
