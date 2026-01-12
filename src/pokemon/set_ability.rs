@@ -125,6 +125,13 @@ impl Pokemon {
             battle.single_event("End", &crate::battle::Effect::ability(old_ability_id.clone()), None, Some(pokemon_pos), source_pos, None, None);
         }
 
+        // Get source pokemon's active slot position before mutable borrow
+        // JavaScript: this.abilityState.sourceSlot = source.getSlot();
+        // getSlot() uses this.position (the active slot index: 0, 1, 2...)
+        let source_position = source_pos.and_then(|src_pos| {
+            battle.pokemon_at(src_pos.0, src_pos.1).map(|p| p.position)
+        });
+
         // Phase 2: Mutate pokemon to set new ability
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -137,9 +144,10 @@ impl Pokemon {
         pokemon_mut.ability_state = EffectState::new(ability_id.clone());
         pokemon_mut.ability_state.target = Some((pokemon_pos.0, pokemon_pos.1));
         // ✅ NOW IMPLEMENTED (Session 24 Part 29): source and source_effect assignments
+        // source_slot should be the active slot position (pokemon.position), not party index
         if let Some(src_pos) = source_pos {
             pokemon_mut.ability_state.source = Some(src_pos);
-            pokemon_mut.ability_state.source_slot = Some(src_pos.1);
+            pokemon_mut.ability_state.source_slot = source_position;
         }
         if let Some(src_effect) = source_effect {
             pokemon_mut.ability_state.source_effect = Some(src_effect.clone());

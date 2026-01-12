@@ -295,9 +295,18 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED: target assignment (Session 24 Part 21)
         state.target = Some(target_pos);
         // ✅ NOW IMPLEMENTED: source, sourceSlot assignments (Session 24 Part 20)
+        // source_slot should be the active slot position (pokemon.position), not party index
+        // JavaScript: this.volatiles[status.id].sourceSlot = source.getSlot();
+        // getSlot() uses this.position (the active slot index: 0, 1, 2...)
         if let Some(src_pos) = source_pos {
             state.source = Some(src_pos);
-            state.source_slot = Some(src_pos.1); // slot = position
+            // Get the source pokemon's active slot position
+            let source_position = if let Some(source_pokemon) = battle.pokemon_at(src_pos.0, src_pos.1) {
+                source_pokemon.position
+            } else {
+                0
+            };
+            state.source_slot = Some(source_position);
         }
         // ✅ NOW IMPLEMENTED: sourceEffect assignment (Session 24 Part 27)
         if let Some(src_effect) = source_effect {
