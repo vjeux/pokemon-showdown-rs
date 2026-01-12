@@ -257,7 +257,8 @@ impl<'a> DexSpecies<'a> {
     //     return species;
     // }
     pub fn get_by_id(&self, id: &ID) -> Option<&'a SpeciesData> {
-        self.dex.species.get(id)
+        // Use get() to ensure cosmetic forme fallback is applied
+        self.get(id.as_str())
     }
 
     /// Get all species data

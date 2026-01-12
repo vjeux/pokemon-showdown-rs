@@ -85,12 +85,15 @@ pub fn base_power_callback(
     };
 
     // const setSpecies = this.dex.species.get(move.allies!.shift()!.set.species);
-    let species_id = if let Some(pokemon) = battle.pokemon_at(ally_pos.0, ally_pos.1) {
-        pokemon.species_id.clone()
+    // Note: JavaScript uses the SET species (original team species), not the current battle species.
+    // This is important for form changes like Minior-Meteor which has different base stats.
+    let set_species = if let Some(pokemon) = battle.pokemon_at(ally_pos.0, ally_pos.1) {
+        pokemon.set.species.clone()
     } else {
         return EventResult::Continue;
     };
 
+    let species_id = ID::from(set_species.as_str());
     let species = match battle.dex.species().get_by_id(&species_id) {
         Some(s) => s,
         None => return EventResult::Continue,
