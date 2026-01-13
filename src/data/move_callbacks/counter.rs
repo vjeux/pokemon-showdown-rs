@@ -30,11 +30,14 @@ pub fn damage_callback(
     }
 
     // return pokemon.volatiles['counter'].damage || 1;
+    // Note: In JS, `damage || 1` treats 0 as falsy and returns 1
+    // So if damage is 0 (e.g., False Swipe couldn't deal damage), Counter still deals 1
     let damage = pokemon
         .volatiles
         .get(&counter_id)
         .and_then(|v| v.damage)
-        .unwrap_or(1);
+        .unwrap_or(0);
+    let damage = if damage == 0 { 1 } else { damage };
 
     EventResult::Number(damage)
 }

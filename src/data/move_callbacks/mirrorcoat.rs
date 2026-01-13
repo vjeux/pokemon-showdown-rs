@@ -30,7 +30,9 @@ pub fn damage_callback(
         match pokemon_pokemon.volatiles.get(&ID::from("mirrorcoat")) {
             Some(volatile) => {
                 // return pokemon.volatiles['mirrorcoat'].damage || 1;
-                volatile.damage.unwrap_or(1)
+                // Note: In JS, `damage || 1` treats 0 as falsy and returns 1
+                let d = volatile.damage.unwrap_or(0);
+                if d == 0 { 1 } else { d }
             }
             None => {
                 // return 0;
