@@ -87,12 +87,25 @@ battle.chain_modify(2.0);
 - forewarn.rs
 - myceliummight.rs (already checks active_move.category first)
 
-### 4. is_z/is_max property checks
-**Commit Reference:** `152ee3cb`, `26b88000`
+### 4. ✅ FIXED: is_z/is_max property checks
+**Commit Reference:** `152ee3cb`, `26b88000`, `830a410d`
 
-**Problem:** Moves like Me First, Mimic, Mirror Move should check `is_z` and `is_max` (dex properties) not `is_z_or_max_powered` (runtime flag).
+**Problem:** There are TWO related patterns:
+1. For checking if a move IS a Z/Max Move (static property), use `is_z.is_some()` / `is_max.is_some()` from dex
+2. For checking if a move is BEING USED as a powered-up move (runtime), use `is_z_or_max_powered` from ActiveMove
 
-**Already Fixed:** Me First, Mimic, Mirror Move
+**Key distinction:**
+- `move_data.is_z_or_max_powered` from dex = WRONG (static property doesn't reflect runtime state)
+- `active_move.is_z_or_max_powered` = CORRECT for runtime checks
+- `target_pokemon.last_move_used.is_z_or_max_powered` = CORRECT for checking last used move
+
+**Files Fixed:**
+- [x] Me First
+- [x] Mimic
+- [x] Mirror Move
+- [x] disable.rs - Use `last_move_used.is_z_or_max_powered` instead of dex lookup
+- [x] banefulbunker.rs - Use `active_move.is_z_or_max_powered` instead of dex lookup
+- [x] burningbulwark.rs - Use `active_move.is_z_or_max_powered` instead of dex lookup
 
 ### 5. Source/Target parameter order
 **Commit Reference:** `20ce3b23`, `e4cf9abc`
@@ -157,12 +170,14 @@ Pass rate: 362/723 -> 363/723
 
 **Fixed:** Cell Battery
 
-### 11. is_z vs is_z_or_max_powered
-**Commit Reference:** `26b88000`, `152ee3cb`
+### 11. ✅ FIXED: is_z vs is_z_or_max_powered
+**Commit Reference:** `26b88000`, `152ee3cb`, `830a410d`
 
 **Problem:** For checking if a move IS a Z/Max Move (static property), use `is_z.is_some()` / `is_max.is_some()` from dex. For checking if a move is BEING USED as a powered-up move (runtime), use `is_z_or_max_powered` from active_move.
 
-**Fixed:** Me First, Mimic, Mirror Move
+**Important:** Never use `move_data.is_z_or_max_powered` after a dex lookup - this is always wrong. Use `active_move.is_z_or_max_powered` or `last_move_used.is_z_or_max_powered`.
+
+**Fixed:** Me First, Mimic, Mirror Move, disable.rs, banefulbunker.rs, burningbulwark.rs (see Pattern #4)
 
 ### 12. onLockMove dispatch completeness
 **Commit Reference:** `85de5077`, `5ad3bd64`
@@ -396,6 +411,8 @@ pokemon.speed = pokemon.stored_stats.spe as i32;
 - 2026-01-13: Fixed Speed Swap to update speed field after stored_stats.spe change
 - 2026-01-13: Audited 100+ commits for additional patterns
 - 2026-01-13: Current pass rate: 395/723 (54%)
+- 2026-01-13: Fixed is_z_or_max_powered pattern in disable.rs, banefulbunker.rs, burningbulwark.rs
+- 2026-01-13: Verified slot position pattern is correctly implemented (wish, futuremove, etc.)
 
 ## Patterns Verified as Already Fixed
 
@@ -412,6 +429,13 @@ The following patterns were identified from commit history and verified to be al
 ### source_slot uses active slot position
 - add_volatile, set_status, set_ability correctly use pokemon.position (commit 615b7b41)
 - No remaining instances of incorrect party index usage
+
+### slot condition operations use pokemon.position
+- **Verified:** remove_slot_condition, add_slot_condition use `pokemon.position` (slot on field) not `target.1` (party index)
+- Lunar Dance and Healing Wish were fixed to use `pokemon.position` (commit `a508b21a`)
+- Wish was already correct - uses `pokemon.position` at line 52
+- Future Move was already correct - uses `pokemon.position` at line 87
+- Pattern applies to all slot condition operations in singles/doubles
 
 ### Contrary/Simple boost relay_var
 - run_event correctly updates event.relay_var when handlers return EventResult::Boost (commit 2adfbcf5)
