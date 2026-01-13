@@ -47,6 +47,24 @@ impl Battle {
                 }
                 None
             }
+            // Terrain effects are stored in moves dex as embedded conditions
+            EffectType::Terrain => {
+                // First check conditions dex (in case terrain was added there)
+                if let Some(condition_data) = self.dex.conditions().get(effect_id) {
+                    if let Some(value) = condition_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                // Fall back to move embedded condition data
+                if let Some(move_data) = self.dex.moves().get(effect_id) {
+                    if let Some(condition) = &move_data.condition {
+                        if let Some(value) = condition.extra.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32);
+                        }
+                    }
+                }
+                None
+            }
             _ => None,
         }
     }
@@ -89,6 +107,24 @@ impl Battle {
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                None
+            }
+            // Terrain effects are stored in moves dex as embedded conditions
+            EffectType::Terrain => {
+                // First check conditions dex (in case terrain was added there)
+                if let Some(condition_data) = self.dex.conditions().get(effect_id) {
+                    if let Some(value) = condition_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                // Fall back to move embedded condition data
+                if let Some(move_data) = self.dex.moves().get(effect_id) {
+                    if let Some(condition) = &move_data.condition {
+                        if let Some(value) = condition.extra.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32);
+                        }
                     }
                 }
                 None
@@ -136,6 +172,24 @@ impl Battle {
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                    }
+                }
+                0
+            }
+            // Terrain effects are stored in moves dex as embedded conditions
+            EffectType::Terrain => {
+                // First check conditions dex (in case terrain was added there)
+                if let Some(condition_data) = self.dex.conditions().get(effect_id) {
+                    if let Some(value) = condition_data.extra.get(&property_name) {
+                        return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                    }
+                }
+                // Fall back to move embedded condition data
+                if let Some(move_data) = self.dex.moves().get(effect_id) {
+                    if let Some(condition) = &move_data.condition {
+                        if let Some(value) = condition.extra.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                        }
                     }
                 }
                 0

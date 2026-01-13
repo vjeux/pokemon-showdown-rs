@@ -210,6 +210,49 @@ Pass rate: 362/723 -> 363/723
 - [x] comeuppance.rs (already correct)
 - [x] painsplit.rs (already correct - uses if/else)
 
+### 17. ✅ FIXED: Terrain condition data lookup in resolve_priority
+**Commit Reference:** (current)
+
+**Problem:** `get_callback_order`, `get_callback_priority`, and `get_callback_sub_order` were not handling `EffectType::Terrain`. Terrain conditions like Grassy Terrain are defined in moves.json as embedded `condition` blocks, not in conditions.json. This caused terrain residual callbacks to have wrong ordering (None/default instead of proper order).
+
+**JavaScript:** `dex.conditions.getByID('grassyterrain')` looks up the move's embedded condition:
+```js
+if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).condition) {
+    condition = new Condition({ name: found.name || id, ...found.condition });
+}
+```
+
+**Wrong Rust:** `EffectType::Terrain` was not in match arm, so returned None (default order)
+**Correct Rust:** Added `EffectType::Terrain` case that looks up move embedded condition data
+
+**Files Fixed:**
+- [x] resolve_priority.rs - Added Terrain handling to all three callback lookup functions
+
+**Impact:** Pass rate: 368/723 -> 387/723 (19 more seeds fixed - Grassy Terrain, Electric Terrain, Misty Terrain, Psychic Terrain related)
+
+### 16. ✅ FIXED: last_move_used stores full ActiveMove
+**Commit Reference:** `fc8a82bd`
+
+**Problem:** JavaScript stores the full ActiveMove object in `pokemon.lastMoveUsed`, including runtime type modifications (from abilities like Pixilate, etc.). Rust was storing just the ID, preventing access to runtime type via `last_move_used.type`.
+
+**JavaScript:** `pokemon.lastMoveUsed = move;` (full ActiveMove)
+**Wrong Rust:** `last_move_used: Option<ID>`
+**Correct Rust:** `last_move_used: Option<Box<ActiveMove>>`
+
+**Files Fixed:**
+- [x] pokemon_struct.rs - Changed type from Option<ID> to Option<Box<ActiveMove>>
+- [x] new.rs - Initialize as None
+- [x] clear_volatile.rs - Clear full object
+- [x] move_used.rs - Set full active_move
+- [x] use_move_inner.rs - Set after ModifyType
+- [x] run_move.rs - Remove early ID setting
+- [x] switch_in.rs - Clear on switch
+- [x] faint_messages.rs - Clear on faint
+- [x] conversion2.rs - Access move_type directly from last_move_used
+- [x] mysteryberry.rs - Access .id from last_move_used
+
+**Impact:** Pass rate: 363/723 -> 368/723 (5 more seeds fixed, mostly Conversion2 and Revival Blessing related)
+
 ## Progress Log
 
 - 2026-01-13: Created this file
@@ -223,4 +266,6 @@ Pass rate: 362/723 -> 363/723
 - 2026-01-13: Fixed terrain callbacks to use EventResult::Null - Pass rate stable at 363
 - 2026-01-13: Fixed ingrain on_drag_out to use EventResult::Null
 - 2026-01-13: Added myceliummight check to Quick Claw
-- 2026-01-13: Current pass rate: 363/723 (50%)
+- 2026-01-13: Changed last_move_used from ID to full ActiveMove - Pass rate 363 -> 368
+- 2026-01-13: Fixed Terrain condition data lookup in resolve_priority - Pass rate 368 -> 387
+- 2026-01-13: Current pass rate: 387/723 (53%)
