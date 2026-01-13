@@ -34,7 +34,7 @@ Seed 778: ✓ PASS
 Seed 823: ✗ FAIL - #2: turn=3, prng=5->8, P1=[Brattler(176/232)], P2=[Mimikyu(195/222)]
 Seed 873: ✓ PASS
 Seed 897: ✗ FAIL - #21: turn=19, prng=93->99, P1=[Pokestar F-00(248/319)], P2=[Diglett(81/171)]
-Seed 911: ✗ FAIL - #25: turn=26, prng=16->18, P1=[Crucibelle(325/326)], P2=[Nidoqueen(259/259)]
+Seed 911: ✓ PASS
 Seed 919: ✓ PASS
 Seed 939: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hoopa(122/200)], P2=[Latias(257/272)]
 Seed 943: ✗ FAIL - #60: turn=60, prng=67->71, P1=[Toxtricity(226/254)], P2=[Bramblin(144/144)]
@@ -361,7 +361,7 @@ Seed 5108: ✗ FAIL - #5: turn=4, prng=10->13, P1=[Minun(180/222)], P2=[Dwebble(
 Seed 5112: ✗ FAIL - #3: turn=4, prng=12->18, P1=[Pikachu(42/227)], P2=[Morpeko(65/192)]
 Seed 5123: ✗ FAIL - #57: turn=58, prng=0->5, P1=[Mimikyu(31/214)], P2=[Spectrier(293/330)]
 Seed 5125: ✓ PASS
-Seed 5131: ✗ FAIL - #29: turn=25, prng=124->124, P1=[Roserade(161/162)], P2=[Crucibelle(261/261)]
+Seed 5131: ✓ PASS
 Seed 5140: ✓ PASS
 Seed 5157: ✓ PASS
 Seed 5166: ✓ PASS
@@ -444,7 +444,7 @@ Seed 6289: ✗ FAIL - #9: turn=9, prng=25->29, P1=[Stunfisk(277/313)], P2=[Palki
 Seed 6302: ✗ FAIL - #44: turn=45, prng=191->196, P1=[Salamence(57/288)], P2=[Barbaracle(27/255)]
 Seed 6304: ✗ FAIL - #6: turn=7, prng=23->27, P1=[Pluffle(278/306)], P2=[Landorus(223/264)]
 Seed 6305: ✓ PASS
-Seed 6306: ✗ FAIL - #13: turn=13, prng=8->8, P1=[Happiny(36/337)], P2=[Crucibelle(374/374)]
+Seed 6306: ✓ PASS
 Seed 6345: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Eelektross(278/293)], P2=[Ferroseed(190/190)]
 Seed 6348: ✗ FAIL - #13: turn=14, prng=42->44, P1=[Abomasnow(15/275)], P2=[Basculin(37/237)]
 Seed 6349: ✓ PASS
@@ -720,7 +720,7 @@ Seed 9728: ✗ FAIL - #19: turn=16, prng=71->74, P1=[Zacian(3/329)], P2=[Baxcali
 Seed 9741: ✓ PASS
 Seed 9746: ✓ PASS
 Seed 9748: ✓ PASS
-Seed 9751: ✗ FAIL - #8: turn=7, prng=46->46, P1=[Crucibelle(352/352)], P2=[Palafin(58/221)]
+Seed 9751: ✓ PASS
 Seed 9765: ✗ FAIL - #62: turn=58, prng=84->89, P1=[Empoleon(0/260)], P2=[Melmetal(230/368)]
 Seed 9782: ✓ PASS
 Seed 9789: ✗ FAIL - #78: turn=76, prng=182->185, P1=[Palkia(145/335)], P2=[Mimikyu(121/175)]
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 280
-Failed: 443
+Passed: 284
+Failed: 439
 
-Pass rate: 38%
+Pass rate: 39%
 ✗ Some seeds still failing
