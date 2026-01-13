@@ -17,8 +17,8 @@ use crate::event::EventResult;
 ///         this.add('-start', source, 'typechange', type, '[from] ability: Protean');
 ///     }
 /// }
-pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    eprintln!("[PROTEAN] on_prepare_hit called: source_pos={:?}, move_id={}", source_pos, move_id);
+pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    eprintln!("[PROTEAN] on_prepare_hit called: source_pos={:?}, move_id={:?}", source_pos, active_move.map(|m| m.id.as_str()));
 
     // Get source position
     let source_pos = match source_pos {
@@ -26,13 +26,12 @@ pub fn on_prepare_hit(battle: &mut Battle, source_pos: Option<(usize, usize)>, _
         None => return EventResult::Continue,
     };
 
-    // Get move data to check type
-    let move_data = match battle.dex.moves().get(move_id) {
-        Some(m) => m.clone(),
+    // JavaScript checks move.type (the active move's type, not the dex type)
+    // This is important for type-changing abilities like Electrify, Pixilate, etc.
+    let move_type = match active_move {
+        Some(m) => &m.move_type,
         None => return EventResult::Continue,
     };
-
-    let move_type = &move_data.move_type;
 
     // JS: if (type && type !== '???' && source.getTypes().join() !== type)
     if move_type.is_empty() || move_type == "???" {
