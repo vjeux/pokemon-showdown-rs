@@ -73,7 +73,7 @@ pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battl
 /// onBasePower(basePower, pokemon, target, move) {
 ///     if (move.typeChangerBoosted === this.effect) return this.chainModify([4915, 4096]);
 /// }
-pub fn on_base_power(_battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     eprintln!("[PIXILATE on_base_power] CALLED! base_power={}", base_power);
 
     // Check if this move was boosted by Pixilate
@@ -91,10 +91,10 @@ pub fn on_base_power(_battle: &mut Battle, base_power: i32, _attacker_pos: (usiz
         return EventResult::Continue;
     }
 
-    // Return the modifier 4915/4096 (approximately 1.2x, used in Gen 8+)
-    // JavaScript: this.chainModify([4915, 4096])
-    // The event system will multiply: base_power * (4915 / 4096) = 90 * 1.1999... = 107.95
+    // Apply the modifier 4915/4096 (approximately 1.2x, used in Gen 8+)
+    // JavaScript: return this.chainModify([4915, 4096]);
     eprintln!("[PIXILATE] Applying power boost modifier 4915/4096 (≈1.2x)");
+    battle.chain_modify_fraction(4915, 4096);
 
-    EventResult::Number(4915)
+    EventResult::Continue
 }
