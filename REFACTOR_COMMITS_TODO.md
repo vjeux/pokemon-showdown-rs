@@ -32,13 +32,34 @@ This file tracks patterns found from auditing recent git commits that need to be
 - [x] wellbakedbody.rs
 - [x] sapsipper.rs
 - [x] steelyspirit.rs
+- [x] cellbattery.rs (item)
+- [x] dracoplate.rs (item)
+- [x] dreadplate.rs (item)
+- [x] charge.rs (move - 3 functions)
 
-### 2. EventResult after chain_modify
+### 2. ✅ FIXED: EventResult after chain_modify
 **Commit Reference:** `bfc1a9e2`, `233e99c0`
 
 **Problem:** `chain_modify()` in JS returns undefined, so `return this.chainModify(...)` returns undefined. The modifier accumulates in event.modifier. Rust callbacks should call `chain_modify` and return `EventResult::Continue`, NOT return the modifier value.
 
-**Files to check:** Already fixed in most places, verify no regressions.
+**Wrong Rust:**
+```rust
+let result = battle.chain_modify(2.0);
+return EventResult::Number(result);
+```
+
+**Correct Rust:**
+```rust
+battle.chain_modify(2.0);
+// Don't return - continue to EventResult::Continue
+```
+
+**Files Fixed:**
+- [x] charge.rs
+- [x] venoshock.rs
+- [x] bounce.rs
+- [x] thickclub.rs
+- [x] twistedspoon.rs
 
 ### 3. is_z/is_max property checks
 **Commit Reference:** `152ee3cb`, `26b88000`
@@ -65,3 +86,6 @@ This file tracks patterns found from auditing recent git commits that need to be
 
 - 2026-01-13: Created this file
 - 2026-01-13: Fixed move_data.move_type -> active_move.move_type in 18 ability callbacks
+- 2026-01-13: Fixed move_data.move_type -> active_move.move_type in 3 item callbacks + 3 move callbacks
+- 2026-01-13: Fixed EventResult::Number after chain_modify in 5 files
+- 2026-01-13: Current pass rate: 350/723 (48%)
