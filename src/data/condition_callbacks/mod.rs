@@ -527,6 +527,9 @@ pub fn dispatch_on_lock_move(
     match condition_id {
         "lockedmove" => lockedmove::on_lock_move(battle, pokemon_pos),
         "twoturnmove" => twoturnmove::on_lock_move(battle, pokemon_pos),
+        // Bide locks the user into using Bide
+        // JavaScript: onLockMove: 'bide'
+        "bide" => EventResult::String("bide".to_string()),
         // Uproar locks the user into using Uproar
         // JavaScript: onLockMove: 'uproar'
         "uproar" => EventResult::String("uproar".to_string()),

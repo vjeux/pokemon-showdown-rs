@@ -336,6 +336,13 @@ pub fn run_move_effects<'a>(
             if let Some(volatile_status) = hit_effect.volatile_status() {
                 //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                 let volatile_id = ID::new(volatile_status);
+
+                // Look up the move's embedded condition from dex
+                // Moves like bide have `condition: { duration: 3, ... }` embedded in them
+                // Clone to avoid borrow conflict
+                let embedded_condition = battle.dex.moves().get_by_id(&active_move.id)
+                    .and_then(|m| m.condition.clone());
+
                 let hit_result = Pokemon::add_volatile(
                     battle,
                     target_pos,
@@ -343,7 +350,7 @@ pub fn run_move_effects<'a>(
                     Some(source_pos),
                     Some(&crate::battle::Effect::move_(active_move.id.clone())),
                     None, // linked_status
-                    None, // embedded_condition
+                    embedded_condition.as_ref(), // embedded_condition from move's condition field
                 );
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
