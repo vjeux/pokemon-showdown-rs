@@ -141,8 +141,9 @@ pub mod condition {
 
         if source_has_move {
             // this.add('cant', attacker, 'move: Imprison', move);
-            // We need to get the attacker position from current_effect_state.target
-            let attacker_pos = match battle.with_effect_state_ref(|state| state.target).flatten() {
+            // Get the attacker from event.target (the Pokemon trying to move)
+            // NOT from effect_state.target (which is the Pokemon with the imprison volatile)
+            let attacker_pos = match battle.event.as_ref().and_then(|e| e.target) {
                 Some(pos) => pos,
                 None => return EventResult::Continue,
             };
@@ -154,6 +155,7 @@ pub mod condition {
                 };
                 pokemon.get_slot()
             };
+
             let move_arg = crate::battle::Arg::Str(move_id_obj.as_str());
             battle.add(
                 "cant",
