@@ -29,8 +29,10 @@ pub fn on_try_hit(
     };
 
     // Check if target has a last move
-    let last_move_id = match &target_pokemon.last_move {
-        Some(id) => id.clone(),
+    // JavaScript uses target.lastMove which is the full ActiveMove with runtime flags
+    // We use last_move_used which stores the full ActiveMove
+    let last_move = match &target_pokemon.last_move_used {
+        Some(m) => m,
         None => {
             // !target.lastMove
             return EventResult::Boolean(false);
@@ -38,17 +40,13 @@ pub fn on_try_hit(
     };
 
     // target.lastMove.id === 'struggle'
-    if last_move_id.as_str() == "struggle" {
+    if last_move.id.as_str() == "struggle" {
         return EventResult::Boolean(false);
     }
 
     // target.lastMove.isZOrMaxPowered || target.lastMove.isMax
-    let move_data = match battle.dex.moves().get_by_id(&last_move_id) {
-        Some(m) => m,
-        None => return EventResult::Continue,
-    };
-
-    if move_data.is_z_or_max_powered || move_data.is_max.is_some() {
+    // These are runtime flags from the ActiveMove, not dex properties
+    if last_move.is_z_or_max_powered || last_move.is_max.is_some() {
         return EventResult::Boolean(false);
     }
 

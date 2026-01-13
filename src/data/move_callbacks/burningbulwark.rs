@@ -227,22 +227,17 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        // Get the active move
-        let move_id = match &battle.active_move {
-            Some(active_move) => active_move.id.clone(),
-            None => return EventResult::Continue,
-        };
-
-        // Get the move data
-        let move_data = match battle.dex.moves().get_by_id(&move_id) {
-            Some(m) => m,
+        // Get the active move - use runtime flags, not dex lookup
+        let (move_id, is_z_or_max_powered) = match &battle.active_move {
+            Some(active_move) => (active_move.id.clone(), active_move.is_z_or_max_powered),
             None => return EventResult::Continue,
         };
 
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         //     source.trySetStatus('brn', target);
         // }
-        if move_data.is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
+        // Note: is_z_or_max_powered is a runtime flag on ActiveMove, not a dex property
+        if is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
             Pokemon::try_set_status(battle, source, ID::from("brn"), None, None);
         }
 
