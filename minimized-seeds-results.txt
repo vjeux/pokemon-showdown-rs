@@ -36,13 +36,13 @@ Seed 873: ✓ PASS
 Seed 897: ✗ FAIL - #21: turn=19, prng=93->99, P1=[Pokestar F-00(248/319)], P2=[Diglett(81/171)]
 Seed 911: ✓ PASS
 Seed 919: ✓ PASS
-Seed 939: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hoopa(122/200)], P2=[Latias(257/272)]
+Seed 939: ✓ PASS
 Seed 943: ✗ FAIL - #60: turn=60, prng=67->71, P1=[Toxtricity(226/254)], P2=[Bramblin(144/144)]
 Seed 948: ✓ PASS
 Seed 961: ✓ PASS
 Seed 967: ✗ FAIL - #25: turn=22, prng=72->72, P1=[Volbeat(153/244)], P2=[Vanillish(241/264)]
 Seed 972: ✗ FAIL - #45: turn=43, prng=388->388, P1=[Zoroark(237/237)], P2=[Deoxys(223/254)]
-Seed 1008: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Altaria(200/221)], P2=[Staraptor(158/203)]
+Seed 1008: ✓ PASS
 Seed 1031: ✓ PASS
 Seed 1053: ✓ PASS
 Seed 1067: ✓ PASS
@@ -728,7 +728,7 @@ Seed 9805: ✓ PASS
 Seed 9809: ✓ PASS
 Seed 9827: ✗ FAIL - #91: turn=87, prng=161->161, P1=[Ninetales(93/209)], P2=[Barbaracle(171/273)]
 Seed 9836: ✓ PASS
-Seed 9861: ✗ FAIL - #27: turn=27, prng=12->12, P1=[Aegislash(235/235)], P2=[Poliwag(123/126)]
+Seed 9861: ✓ PASS
 Seed 9914: ✗ FAIL - #21: turn=21, prng=57->63, P1=[Greninja(144/181)], P2=[Celesteela(198/210)]
 Seed 9926: ✓ PASS
 Seed 9931: ✗ FAIL - #9: turn=9, prng=42->49, P1=[Corphish(6/198)], P2=[Cinderace(168/200)]
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 296
-Failed: 427
+Passed: 299
+Failed: 424
 
-Pass rate: 40%
+Pass rate: 41%
 ✗ Some seeds still failing

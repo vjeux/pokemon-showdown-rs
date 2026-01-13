@@ -29,21 +29,9 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     // if (move.type === 'Electric')
     if move_type == "Electric" {
         // target.useItem();
-        // Phase 1: Use the item (remove it from the pokemon)
-        let item_id = {
-            let _pokemon = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            match Pokemon::use_item(battle, target_pos, None, None) {
-                Some(id) => id,
-                None => return EventResult::Continue,
-            }
-        };
-
-        // Phase 2: Apply the item's boosts (Cell Battery gives +1 Attack)
-        // In JavaScript, this is done automatically by useItem, but in Rust we do it manually
-        battle.boost(&[("atk", 1)], target_pos, None, Some(item_id.as_str()), false, false);
+        // use_item() automatically applies the item's boosts from data/items.json
+        // Cell Battery has boosts: {atk: 1}, so use_item() handles the +1 Attack boost
+        Pokemon::use_item(battle, target_pos, None, None);
     }
 
     EventResult::Continue
