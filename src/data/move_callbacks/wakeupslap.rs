@@ -53,16 +53,15 @@ pub fn base_power_callback(
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     use crate::dex_data::ID;
 
-    // Get the target position
-    let target_pos = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    // onHit(target) {
+    //     if (target.status === 'slp') target.cureStatus();
+    // }
+    // target_pos is the Pokemon that was hit (defender)
 
     // Check if target is asleep before getting mutable reference
     let is_asleep = {
