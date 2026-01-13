@@ -239,7 +239,7 @@ Seed 3456: ✓ PASS
 Seed 3460: ✓ PASS
 Seed 3465: ✗ FAIL - #4: turn=4, prng=18->28, P1=[Girafarig(144/193)], P2=[Starmie(160/214)]
 Seed 3469: ✗ FAIL - #8: turn=8, prng=33->39, P1=[Greninja(120/288)], P2=[Weezing(187/229)]
-Seed 3491: ✗ FAIL - #7: turn=7, prng=38->38, P1=[Solgaleo(342/397)], P2=[Zamazenta(190/282)]
+Seed 3491: ✓ PASS
 Seed 3492: ✗ FAIL - #3: turn=4, prng=15->22, P1=[Foongus(218/275)], P2=[Charjabug(62/156)]
 Seed 3507: ✗ FAIL - #9: turn=10, prng=24->32, P1=[Shroomish(139/219)], P2=[Cufant(57/187)]
 Seed 3517: ✗ FAIL - #1: turn=2, prng=0->5, P1=[Krookodile(297/297)], P2=[Venusaur(203/278)]
@@ -716,7 +716,7 @@ Seed 9681: ✓ PASS
 Seed 9711: ✓ PASS
 Seed 9712: ✓ PASS
 Seed 9716: ✓ PASS
-Seed 9728: ✗ FAIL - #19: turn=16, prng=71->74, P1=[Zacian(3/329)], P2=[Baxcalibur(191/258)]
+Seed 9728: ✓ PASS
 Seed 9741: ✓ PASS
 Seed 9746: ✓ PASS
 Seed 9748: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 294
-Failed: 429
+Passed: 296
+Failed: 427
 
 Pass rate: 40%
 ✗ Some seeds still failing

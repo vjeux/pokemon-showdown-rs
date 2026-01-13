@@ -6,7 +6,6 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
-use crate::dex_data::ID;
 
 /// onStart(pokemon) {
 ///     if (pokemon.swordBoost) return;
@@ -15,9 +14,10 @@ use crate::dex_data::ID;
 /// }
 pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // Check if boost was already applied
+    // JS: if (pokemon.swordBoost) return;
     let already_boosted = if let Some(side) = battle.sides.get(pokemon_pos.0) {
         if let Some(pokemon) = side.pokemon.get(pokemon_pos.1) {
-            pokemon.volatiles.contains_key(&ID::from("swordboost"))
+            pokemon.sword_boost
         } else {
             return EventResult::Continue;
         }
@@ -30,9 +30,10 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
     }
 
     // Mark as boosted
+    // JS: pokemon.swordBoost = true;
     if let Some(side) = battle.sides.get_mut(pokemon_pos.0) {
         if let Some(pokemon) = side.pokemon.get_mut(pokemon_pos.1) {
-            pokemon.volatiles.insert(ID::from("swordboost"), Default::default());
+            pokemon.sword_boost = true;
         }
     }
 

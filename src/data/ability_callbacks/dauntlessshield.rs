@@ -13,29 +13,29 @@ use crate::event::EventResult;
 ///     this.boost({ def: 1 }, pokemon);
 /// }
 pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // if (pokemon.shieldBoost) return;
+    // JS: if (pokemon.shieldBoost) return;
     let already_boosted = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.shield_boost.unwrap_or(false)
+        pokemon.shield_boost
     };
 
     if already_boosted {
         return EventResult::Continue;
     }
 
-    // pokemon.shieldBoost = true;
+    // JS: pokemon.shieldBoost = true;
     {
         let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.shield_boost = Some(true);
+        pokemon.shield_boost = true;
     }
 
-    // this.boost({ def: 1 }, pokemon);
+    // JS: this.boost({ def: 1 }, pokemon);
     battle.boost(&[("def", 1)], pokemon_pos, Some(pokemon_pos), None, false, true);
 
     EventResult::Continue
