@@ -23,26 +23,26 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
     use crate::battle::Arg;
     use crate::dex_data::ID;
 
-    // if (pokemon.syrupTriggered) return;
+    // JS: if (pokemon.syrupTriggered) return;
     let already_triggered = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.syrup_triggered.unwrap_or(false)
+        pokemon.syrup_triggered
     };
 
     if already_triggered {
         return EventResult::Continue;
     }
 
-    // pokemon.syrupTriggered = true;
+    // JS: pokemon.syrupTriggered = true;
     {
         let pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.syrup_triggered = Some(true);
+        pokemon.syrup_triggered = true;
     }
 
     // this.add('-ability', pokemon, 'Supersweet Syrup');
