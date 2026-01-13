@@ -108,6 +108,37 @@ battle.chain_modify(2.0);
 
 **Already Fixed.**
 
+### 7. ✅ FIXED: Missing onLockMove dispatch cases
+**Commit Reference:** `5ad3bd64`
+
+**Problem:** The dispatch_on_lock_move function was missing cases for moves with onLockMove callbacks.
+
+**JavaScript Pattern:** Moves with `condition: { onLockMove: 'movename' }` need dispatch cases.
+
+**Found and Fixed:**
+- [x] bide (already present)
+- [x] uproar (already present)
+- [x] iceball (added)
+- [x] rollout (added)
+
+**Audit Process:** Searched JS data/moves.ts for all onLockMove patterns, added missing cases to dispatch_on_lock_move.
+
+Pass rate: 351/723 (48%) -> 362/723 (50%)
+
+### 8. ✅ FIXED: Wake-Up Slap target/source confusion
+**Commit Reference:** `81acb188`
+
+**Problem:** Wake-Up Slap on_hit was using wrong position parameter (same issue as Smelling Salts fix d23c5313).
+
+**Pattern:** For move callbacks, on_hit signature is `(target_pos, source_pos)` where:
+- target_pos = Pokemon that was hit
+- source_pos = Pokemon that used the move
+
+**Wrong:** Used source_pos to check/cure status
+**Correct:** Use target_pos to check/cure status on hit Pokemon
+
+Pass rate: 362/723 -> 363/723
+
 ## Progress Log
 
 - 2026-01-13: Created this file
@@ -115,4 +146,7 @@ battle.chain_modify(2.0);
 - 2026-01-13: Fixed move_data.move_type -> active_move.move_type in 3 item callbacks + 3 move callbacks
 - 2026-01-13: Fixed EventResult::Number after chain_modify in 5 files
 - 2026-01-13: Fixed move_data.category -> active_move.category in 10 ability callbacks
-- 2026-01-13: Current pass rate: 351/723 (48%)
+- 2026-01-13: Fixed Protean to use active_move.move_type
+- 2026-01-13: Added missing onLockMove cases for iceball and rollout - Pass rate 351 -> 362
+- 2026-01-13: Fixed Wake-Up Slap target/source confusion - Pass rate 362 -> 363
+- 2026-01-13: Current pass rate: 363/723 (50%)
