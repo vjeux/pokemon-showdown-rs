@@ -93,6 +93,7 @@ pub mod condition {
         );
 
         // return null;
-        EventResult::Stop
+        // EventResult::Null prevents the Pokemon from being dragged out
+        EventResult::Null
     }
 }
