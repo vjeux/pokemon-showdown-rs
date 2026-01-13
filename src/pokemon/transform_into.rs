@@ -238,6 +238,10 @@ impl Pokemon {
         // Copy stats
         self_pokemon_mut.stored_stats = target_stored_stats;
 
+        // JS: setSpecies sets this.speed = this.storedStats.spe after updating storedStats
+        // Since we're copying storedStats directly (bypassing setSpecies), update speed to match
+        self_pokemon_mut.speed = self_pokemon_mut.stored_stats.spe as i32;
+
         // JS: if (this.modifiedStats) this.modifiedStats[statName] = pokemon.modifiedStats![statName];
         // Note: Missing modifiedStats copying for Gen 1
 
