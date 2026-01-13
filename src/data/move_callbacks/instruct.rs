@@ -41,38 +41,46 @@ pub fn on_hit(
     };
 
     // if (!target.lastMove || target.volatiles['dynamax']) return false;
-    let (has_last_move, last_move_id, has_dynamax) = {
+    // JavaScript uses target.lastMove which is the full ActiveMove with runtime flags
+    // We use last_move_used for the full ActiveMove, last_move for the ID
+    let (last_move_used, last_move_id, has_dynamax) = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
         (
-            target_pokemon.last_move.is_some(),
+            target_pokemon.last_move_used.clone(),
             target_pokemon.last_move.clone(),
             target_pokemon.volatiles.contains_key(&ID::from("dynamax")),
         )
     };
 
-    if !has_last_move || has_dynamax {
+    // !target.lastMove || target.volatiles['dynamax']
+    if last_move_used.is_none() || has_dynamax {
         return EventResult::Boolean(false);
     }
 
-    let last_move_id = last_move_id.unwrap();
+    let last_move_used = last_move_used.unwrap();
+    let last_move_id = last_move_id.unwrap_or_else(|| last_move_used.id.clone());
 
     // const lastMove = target.lastMove;
     // const moveSlot = target.getMoveData(lastMove.id);
+    // Check lastMove runtime flags from last_move_used (isZ, isMax)
+    // and dex flags (failinstruct, charge, recharge)
     let (has_failinstruct, is_z, is_max, has_charge, has_recharge, move_slot_pp) = {
-        let last_move = battle.dex.moves().get_by_id(&last_move_id);
-        let (has_failinstruct, is_z, is_max, has_charge, has_recharge) = match last_move {
+        let dex_move = battle.dex.moves().get_by_id(&last_move_id);
+        let (has_failinstruct, has_charge, has_recharge) = match dex_move {
             Some(m) => (
                 m.flags.get("failinstruct").unwrap_or(false),
-                m.is_z.is_some(),
-                m.is_max.is_some(),
                 m.flags.get("charge").unwrap_or(false),
                 m.flags.get("recharge").unwrap_or(false),
             ),
-            None => (false, false, false, false, false),
+            None => (false, false, false),
         };
+
+        // isZ and isMax are runtime flags from the ActiveMove (last_move_used)
+        let is_z = last_move_used.is_z.is_some();
+        let is_max = last_move_used.is_max.is_some();
 
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,

@@ -42,21 +42,25 @@ pub mod condition {
 
         // let move: Move | ActiveMove | null = target.lastMove;
         // if (!move || target.volatiles['dynamax']) return false;
-        let (last_move_id, has_dynamax) = {
+        // JavaScript uses target.lastMove which is the full ActiveMove with runtime flags
+        // We use last_move_used for the full ActiveMove, last_move for the ID
+        let (last_move_used, last_move_id, has_dynamax) = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
             (
+                target_pokemon.last_move_used.clone(),
                 target_pokemon.last_move.clone(),
                 target_pokemon.volatiles.contains_key(&ID::from("dynamax")),
             )
         };
 
-        let move_id = match last_move_id {
-            Some(id) => id,
+        let last_move_used = match last_move_used {
+            Some(m) => m,
             None => return EventResult::Boolean(false),
         };
+        let move_id = last_move_id.unwrap_or_else(|| last_move_used.id.clone());
 
         if has_dynamax {
             return EventResult::Boolean(false);
@@ -64,15 +68,11 @@ pub mod condition {
 
         // Encore only works on Max Moves if the base move is not itself a Max Move
         // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
+        // Check runtime isMax from last_move_used
         let actual_move_id = {
-            let move_data = battle.dex.moves().get_by_id(&move_id);
-            if let Some(m) = move_data {
-                if m.is_max.is_some() {
-                    if let Some(ref base_move) = m.base_move {
-                        base_move.clone()
-                    } else {
-                        move_id.clone()
-                    }
+            if last_move_used.is_max.is_some() {
+                if let Some(ref base_move) = last_move_used.base_move {
+                    base_move.clone()
                 } else {
                     move_id.clone()
                 }
@@ -85,22 +85,19 @@ pub mod condition {
         // if (move.isZ || move.isMax || move.flags['failencore'] || !moveSlot || moveSlot.pp <= 0) {
         //     return false;
         // }
+        // Check isZ and isMax from runtime ActiveMove (last_move_used)
         let (move_slot_valid, move_has_fail_encore, move_is_z_or_max) = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
 
-            // Check if move has failencore flag and if it's Z or Max
+            // Check if move has failencore flag from dex data
             let move_data = battle.dex.moves().get_by_id(&actual_move_id);
-            let (has_fail_encore, is_z_or_max) = if let Some(m) = move_data {
-                (
-                    m.flags.contains_key("failencore"),
-                    m.is_z.is_some() || m.is_max.is_some(),
-                )
-            } else {
-                (false, false)
-            };
+            let has_fail_encore = move_data.map(|m| m.flags.contains_key("failencore")).unwrap_or(false);
+
+            // isZ and isMax are runtime flags from the ActiveMove (last_move_used)
+            let is_z_or_max = last_move_used.is_z.is_some() || last_move_used.is_max.is_some();
 
             // Find the move slot
             let move_slot = target_pokemon
