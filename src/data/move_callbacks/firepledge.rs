@@ -62,10 +62,12 @@ pub fn base_power_callback(
 /// }
 pub fn on_prepare_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let source = pokemon_pos;
+    // JS: onPrepareHit(target, source, move)
+    // pokemon_pos is target, source_pos is the actual source (move user)
+    let source = source_pos.unwrap_or(_target_pos);
 
     // Find ally pledge move in queue
     // Store the indices to avoid borrow checker issues

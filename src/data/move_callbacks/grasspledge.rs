@@ -61,10 +61,12 @@ pub fn base_power_callback(
 /// }
 pub fn on_prepare_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let source = pokemon_pos;
+    // JS: onPrepareHit(target, source, move)
+    // First param is target, second is the actual source (move user)
+    let source = source_pos.unwrap_or(_target_pos);
 
     // for (const action of this.queue.list as MoveAction[]) {
     // We need to iterate through the queue to find ally pledge moves
@@ -152,7 +154,7 @@ pub fn on_prepare_hit(
         );
 
         // return null;
-        return EventResult::Stop;
+        return EventResult::Null;
     }
 
     EventResult::Continue
