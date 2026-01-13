@@ -258,6 +258,21 @@ if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).
 - onFoeMaybeTrapPokemon
 - (search for "onFoe" in moves.json and conditions.json to find all)
 
+### 19. ✅ FIXED: Item onHit triggered for status/self moves
+**Commit Reference:** `3f3a407d`
+
+**Problem:** Item onHit callbacks like Enigma Berry check move effectiveness using `run_effectiveness()`, but this doesn't match JavaScript's `getMoveHitData().typeMod`. JavaScript's getMoveHitData() only returns data for moves that dealt damage - status moves don't have hit data.
+
+**Example - Enigma Berry:**
+- JavaScript: `target.getMoveHitData(move).typeMod > 0` - only checks actual damage hits
+- Wrong Rust: `Pokemon::run_effectiveness(battle, target_pos, active_move)` - calculates for any move
+
+**The fix adds guards:**
+1. Skip if move category is "Status" (no damage dealt)
+2. Skip if source == target (self-targeting moves)
+
+**Impact:** Pass rate: 387/723 -> 392/723 (5 more seeds fixed)
+
 ### 16. ✅ FIXED: last_move_used stores full ActiveMove
 **Commit Reference:** `fc8a82bd`
 
