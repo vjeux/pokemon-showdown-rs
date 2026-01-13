@@ -187,7 +187,7 @@ Pass rate: 362/723 -> 363/723
 **Fixed:** bide, uproar, iceball, rollout
 
 ### 13. ✅ FIXED: EventResult::Null vs EventResult::Stop for preventing actions
-**Commit Reference:** `7d5a3192`, `cb374c85`, `ebcfd181`
+**Commit Reference:** `7d5a3192`, `cb374c85`, `ebcfd181`, `0732ff6e`
 
 **Problem:** In JavaScript, `return null` prevents an action (like adding a volatile or dragging out). The Rust translation should be `EventResult::Null`, NOT `EventResult::Stop`.
 
@@ -195,7 +195,53 @@ Pass rate: 362/723 -> 363/723
 **Wrong Rust:** `EventResult::Stop`
 **Correct Rust:** `EventResult::Null`
 
-**Files Fixed:**
+**Files Fixed (bulk fix 0732ff6e - 38 files):**
+
+Two-turn moves (return null during charge turn):
+- [x] bounce.rs
+- [x] dig.rs
+- [x] dive.rs
+- [x] electroshot.rs
+- [x] fly.rs
+- [x] freezeshock.rs
+- [x] geomancy.rs
+- [x] iceburn.rs
+- [x] meteorbeam.rs
+- [x] phantomforce.rs
+- [x] razorwind.rs
+- [x] shadowforce.rs
+- [x] skullbash.rs
+- [x] skyattack.rs
+- [x] solarbeam.rs
+- [x] solarblade.rs
+
+Other moves:
+- [x] aurawheel.rs (on_try)
+- [x] burnup.rs (on_try_move)
+- [x] clangoroussoul.rs (on_try_hit - boost fail)
+- [x] defensecurl.rs (on_restart)
+- [x] doubleshock.rs (on_try_move)
+- [x] focuspunch.rs (on_try_add_volatile - flinch prevention)
+- [x] gastroacid.rs (on_try_hit - Ability Shield block)
+- [x] grassknot.rs (on_try_hit - Dynamax fail)
+- [x] heatcrash.rs (on_try_hit - Dynamax fail)
+- [x] heavyslam.rs (on_try_hit - Dynamax fail)
+- [x] hyperspacefury.rs (on_try - form check)
+- [x] lowkick.rs (on_try_hit - Dynamax fail)
+- [x] magnetrise.rs (on_try - Gravity check)
+- [x] minimize.rs (on_restart)
+- [x] rest.rs (on_try - heal fail, insomnia, vital spirit)
+- [x] sappyseed.rs (on_hit - Grass type immunity)
+- [x] shelltrap.rs (on_try_move - not hit)
+- [x] snatch.rs (on_any_prepare_hit - snatched move)
+- [x] soak.rs (on_hit - already Water type)
+- [x] splash.rs (on_try - Gravity check)
+- [x] stuffcheeks.rs (on_hit - boost fail)
+
+Also fixed:
+- [x] throatchop.rs - Changed `// return false;` from Stop to Boolean(false)
+
+Condition callbacks (earlier fix):
 - [x] electricterrain.rs on_try_add_volatile (prevents yawn)
 - [x] mistyterrain.rs on_try_add_volatile (prevents confusion)
 - [x] ingrain.rs on_drag_out (prevents forced switch)
@@ -413,6 +459,7 @@ pokemon.speed = pokemon.stored_stats.spe as i32;
 - 2026-01-13: Current pass rate: 395/723 (54%)
 - 2026-01-13: Fixed is_z_or_max_powered pattern in disable.rs, banefulbunker.rs, burningbulwark.rs
 - 2026-01-13: Verified slot position pattern is correctly implemented (wish, futuremove, etc.)
+- 2026-01-13: Fixed EventResult::Stop to EventResult::Null in 38 move callbacks (bulk fix for return null pattern)
 
 ## Patterns Verified as Already Fixed
 
