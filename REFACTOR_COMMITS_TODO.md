@@ -171,6 +171,45 @@ Pass rate: 362/723 -> 363/723
 
 **Fixed:** bide, uproar, iceball, rollout
 
+### 13. ✅ FIXED: EventResult::Null vs EventResult::Stop for preventing actions
+**Commit Reference:** `7d5a3192`, `cb374c85`, `ebcfd181`
+
+**Problem:** In JavaScript, `return null` prevents an action (like adding a volatile or dragging out). The Rust translation should be `EventResult::Null`, NOT `EventResult::Stop`.
+
+**JavaScript:** `return null;` (prevents the action)
+**Wrong Rust:** `EventResult::Stop`
+**Correct Rust:** `EventResult::Null`
+
+**Files Fixed:**
+- [x] electricterrain.rs on_try_add_volatile (prevents yawn)
+- [x] mistyterrain.rs on_try_add_volatile (prevents confusion)
+- [x] ingrain.rs on_drag_out (prevents forced switch)
+- [x] magiccoat.rs (returns Null to prevent original move)
+
+### 14. ✅ FIXED: Quick Claw myceliummight check
+**Commit Reference:** `b05f97f7`
+
+**Problem:** Quick Claw should not activate for Status moves when the Pokemon has Mycelium Might ability.
+
+**JavaScript:** `if (move.category === "Status" && pokemon.hasAbility("myceliummight")) return;`
+**Fixed:** Added check in quickclaw.rs on_fractional_priority
+
+### 15. || 1 JS falsy pattern
+**Commit Reference:** `dedfe001`
+
+**Problem:** In JavaScript, `value || 1` returns 1 if value is 0 (falsy). In Rust, `.unwrap_or(1)` only applies for None.
+
+**JavaScript:** `(damage * 1.5) || 1`
+**Wrong Rust:** `(damage as f64 * 1.5) as i32` (returns 0 if damage is 0)
+**Correct Rust:** `((damage as f64 * 1.5) as i32).max(1)`
+
+**Files Fixed:**
+- [x] counter.rs
+- [x] mirrorcoat.rs
+- [x] metalburst.rs (already correct)
+- [x] comeuppance.rs (already correct)
+- [x] painsplit.rs (already correct - uses if/else)
+
 ## Progress Log
 
 - 2026-01-13: Created this file
@@ -181,4 +220,7 @@ Pass rate: 362/723 -> 363/723
 - 2026-01-13: Fixed Protean to use active_move.move_type
 - 2026-01-13: Added missing onLockMove cases for iceball and rollout - Pass rate 351 -> 362
 - 2026-01-13: Fixed Wake-Up Slap target/source confusion - Pass rate 362 -> 363
+- 2026-01-13: Fixed terrain callbacks to use EventResult::Null - Pass rate stable at 363
+- 2026-01-13: Fixed ingrain on_drag_out to use EventResult::Null
+- 2026-01-13: Added myceliummight check to Quick Claw
 - 2026-01-13: Current pass rate: 363/723 (50%)
