@@ -96,7 +96,7 @@ pub mod condition {
         };
 
         // if (!target.fainted && (target.hp < target.maxhp || target.status)) {
-        let (is_fainted, hp, maxhp, has_status, side_index, slot) = {
+        let (is_fainted, hp, maxhp, has_status, side_index, slot, slot_position) = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -108,6 +108,7 @@ pub mod condition {
                 !target_pokemon.status.is_empty(),
                 target_pokemon.side_index,
                 target_pokemon.get_slot(),
+                target_pokemon.position,  // Slot position (0 for singles), not party index
             )
         };
 
@@ -137,7 +138,9 @@ pub mod condition {
             );
 
             // target.side.removeSlotCondition(target, 'healingwish');
-            let _ = battle.sides[side_index].remove_slot_condition(target.1, &ID::from("healingwish"));
+            // JavaScript: if (target instanceof Pokemon) target = target.position
+            // We need to use the Pokemon's slot position, not the party index
+            let _ = battle.sides[side_index].remove_slot_condition(slot_position, &ID::from("healingwish"));
         }
 
         EventResult::Continue

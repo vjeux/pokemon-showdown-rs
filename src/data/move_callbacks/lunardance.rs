@@ -173,8 +173,17 @@ pub mod condition {
             );
 
             //     target.side.removeSlotCondition(target, 'lunardance');
+            // JavaScript: if (target instanceof Pokemon) target = target.position
+            // We need to use the Pokemon's slot position (position field), not the party index
+            let slot_position = {
+                let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target_pokemon.position
+            };
             if let Some(target_side) = battle.sides.get_mut(target.0) {
-                target_side.remove_slot_condition(target.1, &ID::from("lunardance"));
+                target_side.remove_slot_condition(slot_position, &ID::from("lunardance"));
             }
         }
 
