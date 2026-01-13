@@ -71,7 +71,8 @@ pub fn on_hit(
     let move_pp = move_data.pp;
     let move_target = move_data.target.clone();
     let move_flags_has_failmimic = move_data.flags.contains_key("failmimic");
-    let move_is_z_or_max = move_data.is_z_or_max_powered;
+    let move_is_z = move_data.is_z.is_some();
+    let move_is_max = move_data.is_max.is_some();
 
     let (source_transformed, source_has_move) = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -91,7 +92,7 @@ pub fn on_hit(
     }
 
     // if (move.isZ || move.isMax) return false;
-    if move_is_z_or_max {
+    if move_is_z || move_is_max {
         return EventResult::Boolean(false);
     }
 

@@ -52,7 +52,7 @@ pub fn on_try_hit(
     }
 
     // Check if move is Z or Max
-    if move_data.is_z_or_max_powered {
+    if move_data.is_z.is_some() || move_data.is_max.is_some() {
         return EventResult::Boolean(false);
     }
 
