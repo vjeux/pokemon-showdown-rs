@@ -139,6 +139,38 @@ Pass rate: 351/723 (48%) -> 362/723 (50%)
 
 Pass rate: 362/723 -> 363/723
 
+## Patterns Identified from Commit Audit
+
+### 9. event.target vs event.source confusion
+**Commit Reference:** `20ce3b23`, `e4cf9abc`
+
+**Problem:** In run_event, the parameter naming is swapped from JavaScript:
+- `event.target` = attacker (source in JS)
+- `event.source` = defender (target in JS)
+
+**Documentation:** Added comments to handlers noting this swap.
+
+### 10. use_item double boost
+**Commit Reference:** `dee359f5`
+
+**Problem:** `use_item()` automatically applies boosts from item data. Callbacks should NOT also call `battle.boost()` manually, or boosts will be applied twice.
+
+**Fixed:** Cell Battery
+
+### 11. is_z vs is_z_or_max_powered
+**Commit Reference:** `26b88000`, `152ee3cb`
+
+**Problem:** For checking if a move IS a Z/Max Move (static property), use `is_z.is_some()` / `is_max.is_some()` from dex. For checking if a move is BEING USED as a powered-up move (runtime), use `is_z_or_max_powered` from active_move.
+
+**Fixed:** Me First, Mimic, Mirror Move
+
+### 12. onLockMove dispatch completeness
+**Commit Reference:** `85de5077`, `5ad3bd64`
+
+**Problem:** dispatch_on_lock_move needs cases for all moves with `condition: { onLockMove: 'movename' }`.
+
+**Fixed:** bide, uproar, iceball, rollout
+
 ## Progress Log
 
 - 2026-01-13: Created this file
