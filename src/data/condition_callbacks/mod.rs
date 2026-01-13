@@ -980,3 +980,34 @@ pub fn dispatch_on_update(
         _ => EventResult::Continue,
     }
 }
+
+/// Dispatch onSetStatus callbacks for terrain/weather conditions
+/// Called when a status is being set on a Pokemon and terrain/weather might prevent it
+pub fn dispatch_on_set_status(
+    battle: &mut Battle,
+    condition_id: &str,
+    status: Option<&str>,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    effect_id: Option<&str>,
+) -> EventResult {
+    match condition_id {
+        "electricterrain" => {
+            crate::data::move_callbacks::electricterrain::condition::on_set_status(
+                battle, status, target_pos, source_pos, effect_id,
+            )
+        }
+        "mistyterrain" => {
+            crate::data::move_callbacks::mistyterrain::condition::on_set_status(
+                battle, status, target_pos, source_pos, effect_id,
+            )
+        }
+        "safeguard" => {
+            crate::data::move_callbacks::safeguard::condition::on_set_status(
+                battle, status, target_pos, source_pos, effect_id,
+            )
+        }
+        _ => EventResult::Continue,
+    }
+}
+

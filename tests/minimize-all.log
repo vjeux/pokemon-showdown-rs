@@ -1,0 +1,2716 @@
+Starting from seed 502
+Building Rust binary (one-time)...
+Rust binary built successfully.
+
+Found 1407 failing seeds to check
+
+[1/1407] Seed 502: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed502.json
+
+[2/1407] Seed 515: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed515.json
+
+[3/1407] Seed 517: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed517.json
+
+[4/1407] Seed 536: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed536.json
+
+[5/1407] Seed 546: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed546.json
+
+[6/1407] Seed 547: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed547.json
+
+[7/1407] Seed 576: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed576.json
+
+[8/1407] Seed 603: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed603.json
+
+[9/1407] Seed 611: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed611.json
+
+[10/1407] Seed 620: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed620.json
+
+[11/1407] Seed 621: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed621.json
+
+[12/1407] Seed 658: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed658.json
+
+[13/1407] Seed 670: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed670.json
+
+[14/1407] Seed 702: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed702.json
+
+[15/1407] Seed 713: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed713.json
+
+[16/1407] Seed 736: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed736.json
+
+[17/1407] Seed 740: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed740.json
+
+[18/1407] Seed 754: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed754.json
+
+[19/1407] Seed 761: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed761.json
+
+[20/1407] Seed 764: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed764.json
+
+[21/1407] Seed 778: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed778.json
+
+[22/1407] Seed 823: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed823.json
+
+[23/1407] Seed 873: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed873.json
+
+[24/1407] Seed 897: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed897.json
+
+[25/1407] Seed 911: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed911.json
+
+[26/1407] Seed 919: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed919.json
+
+[27/1407] Seed 939: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed939.json
+
+[28/1407] Seed 943: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed943.json
+
+[29/1407] Seed 948: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed948.json
+
+[30/1407] Seed 961: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed961.json
+
+[31/1407] Seed 967: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed967.json
+
+[32/1407] Seed 972: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed972.json
+
+[33/1407] Seed 1008: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1008.json
+
+[34/1407] Seed 1031: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1031.json
+
+[35/1407] Seed 1053: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1053.json
+
+[36/1407] Seed 1067: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1067.json
+
+[37/1407] Seed 1069: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1069.json
+
+[38/1407] Seed 1110: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1110.json
+
+[39/1407] Seed 1125: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1125.json
+
+[40/1407] Seed 1143: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1143.json
+
+[41/1407] Seed 1147: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1147.json
+
+[42/1407] Seed 1162: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1162.json
+
+[43/1407] Seed 1171: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1171.json
+
+[44/1407] Seed 1189: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1189.json
+
+[45/1407] Seed 1193: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1193.json
+
+[46/1407] Seed 1194: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1194.json
+
+[47/1407] Seed 1205: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1205.json
+
+[48/1407] Seed 1221: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1221.json
+
+[49/1407] Seed 1235: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1235.json
+
+[50/1407] Seed 1249: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1249.json
+
+[51/1407] Seed 1252: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1252.json
+
+[52/1407] Seed 1256: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1256.json
+
+[53/1407] Seed 1258: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1258.json
+
+[54/1407] Seed 1267: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1267.json
+
+[55/1407] Seed 1279: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1279.json
+
+[56/1407] Seed 1284: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1284.json
+
+[57/1407] Seed 1288: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1288.json
+
+[58/1407] Seed 1333: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1333.json
+
+[59/1407] Seed 1348: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1348.json
+
+[60/1407] Seed 1359: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1359.json
+
+[61/1407] Seed 1362: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1362.json
+
+[62/1407] Seed 1369: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1369.json
+
+[63/1407] Seed 1379: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1379.json
+
+[64/1407] Seed 1398: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1398.json
+
+[65/1407] Seed 1400: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1400.json
+
+[66/1407] Seed 1420: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1420.json
+
+[67/1407] Seed 1424: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1424.json
+
+[68/1407] Seed 1428: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1428.json
+
+[69/1407] Seed 1432: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1432.json
+
+[70/1407] Seed 1484: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1484.json
+
+[71/1407] Seed 1490: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1490.json
+
+[72/1407] Seed 1497: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1497.json
+
+[73/1407] Seed 1508: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1508.json
+
+[74/1407] Seed 1519: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1519.json
+
+[75/1407] Seed 1524: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1524.json
+
+[76/1407] Seed 1538: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1538.json
+
+[77/1407] Seed 1540: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1540.json
+
+[78/1407] Seed 1543: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1543.json
+
+[79/1407] Seed 1558: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1558.json
+
+[80/1407] Seed 1568: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1568.json
+
+[81/1407] Seed 1584: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1584.json
+
+[82/1407] Seed 1602: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1602.json
+
+[83/1407] Seed 1615: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1615.json
+
+[84/1407] Seed 1627: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1627.json
+
+[85/1407] Seed 1649: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1649.json
+
+[86/1407] Seed 1653: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1653.json
+
+[87/1407] Seed 1657: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1657.json
+
+[88/1407] Seed 1720: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1720.json
+
+[89/1407] Seed 1773: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1773.json
+
+[90/1407] Seed 1787: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1787.json
+
+[91/1407] Seed 1795: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1795.json
+
+[92/1407] Seed 1803: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1803.json
+
+[93/1407] Seed 1813: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1813.json
+
+[94/1407] Seed 1814: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1814.json
+
+[95/1407] Seed 1819: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1819.json
+
+[96/1407] Seed 1825: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1825.json
+
+[97/1407] Seed 1840: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1840.json
+
+[98/1407] Seed 1842: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1842.json
+
+[99/1407] Seed 1844: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1844.json
+
+[100/1407] Seed 1880: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1880.json
+
+[101/1407] Seed 1961: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1961.json
+
+[102/1407] Seed 1977: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1977.json
+
+[103/1407] Seed 1989: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1989.json
+
+[104/1407] Seed 1998: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed1998.json
+
+[105/1407] Seed 2000: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2000.json
+
+[106/1407] Seed 2009: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2009.json
+
+[107/1407] Seed 2026: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2026.json
+
+[108/1407] Seed 2027: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2027.json
+
+[109/1407] Seed 2030: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2030.json
+
+[110/1407] Seed 2054: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2054.json
+
+[111/1407] Seed 2086: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2086.json
+
+[112/1407] Seed 2095: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2095.json
+
+[113/1407] Seed 2139: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2139.json
+
+[114/1407] Seed 2166: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2166.json
+
+[115/1407] Seed 2169: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2169.json
+
+[116/1407] Seed 2178: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2178.json
+
+[117/1407] Seed 2188: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2188.json
+
+[118/1407] Seed 2190: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2190.json
+
+[119/1407] Seed 2201: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2201.json
+
+[120/1407] Seed 2208: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2208.json
+
+[121/1407] Seed 2212: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2212.json
+
+[122/1407] Seed 2214: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2214.json
+
+[123/1407] Seed 2232: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2232.json
+
+[124/1407] Seed 2261: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2261.json
+
+[125/1407] Seed 2266: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2266.json
+
+[126/1407] Seed 2303: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2303.json
+
+[127/1407] Seed 2304: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2304.json
+
+[128/1407] Seed 2329: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2329.json
+
+[129/1407] Seed 2338: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2338.json
+
+[130/1407] Seed 2341: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2341.json
+
+[131/1407] Seed 2351: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2351.json
+
+[132/1407] Seed 2358: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2358.json
+
+[133/1407] Seed 2366: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2366.json
+
+[134/1407] Seed 2388: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2388.json
+
+[135/1407] Seed 2394: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2394.json
+
+[136/1407] Seed 2397: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2397.json
+
+[137/1407] Seed 2403: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2403.json
+
+[138/1407] Seed 2440: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2440.json
+
+[139/1407] Seed 2447: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2447.json
+
+[140/1407] Seed 2452: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2452.json
+
+[141/1407] Seed 2453: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2453.json
+
+[142/1407] Seed 2455: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2455.json
+
+[143/1407] Seed 2460: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2460.json
+
+[144/1407] Seed 2469: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2469.json
+
+[145/1407] Seed 2535: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2535.json
+
+[146/1407] Seed 2541: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2541.json
+
+[147/1407] Seed 2545: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2545.json
+
+[148/1407] Seed 2549: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2549.json
+
+[149/1407] Seed 2553: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2553.json
+
+[150/1407] Seed 2579: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2579.json
+
+[151/1407] Seed 2597: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2597.json
+
+[152/1407] Seed 2609: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2609.json
+
+[153/1407] Seed 2618: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2618.json
+
+[154/1407] Seed 2622: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2622.json
+
+[155/1407] Seed 2633: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2633.json
+
+[156/1407] Seed 2651: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2651.json
+
+[157/1407] Seed 2655: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2655.json
+
+[158/1407] Seed 2665: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2665.json
+
+[159/1407] Seed 2674: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2674.json
+
+[160/1407] Seed 2687: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2687.json
+
+[161/1407] Seed 2719: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2719.json
+
+[162/1407] Seed 2729: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2729.json
+
+[163/1407] Seed 2733: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2733.json
+
+[164/1407] Seed 2741: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2741.json
+
+[165/1407] Seed 2750: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2750.json
+
+[166/1407] Seed 2762: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2762.json
+
+[167/1407] Seed 2769: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2769.json
+
+[168/1407] Seed 2787: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2787.json
+
+[169/1407] Seed 2788: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2788.json
+
+[170/1407] Seed 2802: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2802.json
+
+[171/1407] Seed 2803: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2803.json
+
+[172/1407] Seed 2807: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2807.json
+
+[173/1407] Seed 2814: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2814.json
+
+[174/1407] Seed 2819: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2819.json
+
+[175/1407] Seed 2833: Checking if still fails... Still fails, minimizing...
+
+[176/1407] Seed 2834: Checking if still fails... Now passes, skipping
+[177/1407] Seed 2835: Checking if still fails... Now passes, skipping
+[178/1407] Seed 2836: Checking if still fails... Now passes, skipping
+[179/1407] Seed 2837: Checking if still fails... Now passes, skipping
+[180/1407] Seed 2838: Checking if still fails... Now passes, skipping
+[181/1407] Seed 2839: Checking if still fails... Now passes, skipping
+[182/1407] Seed 2840: Checking if still fails... Now passes, skipping
+[183/1407] Seed 2841: Checking if still fails... Now passes, skipping
+[184/1407] Seed 2842: Checking if still fails... Now passes, skipping
+[185/1407] Seed 2843: Checking if still fails... Now passes, skipping
+[186/1407] Seed 2844: Checking if still fails... Now passes, skipping
+[187/1407] Seed 2845: Checking if still fails... Now passes, skipping
+[188/1407] Seed 2846: Checking if still fails... Now passes, skipping
+[189/1407] Seed 2847: Checking if still fails... Now passes, skipping
+[190/1407] Seed 2848: Checking if still fails... Now passes, skipping
+[191/1407] Seed 2849: Checking if still fails... Now passes, skipping
+[192/1407] Seed 2850: Checking if still fails... Now passes, skipping
+[193/1407] Seed 2851: Checking if still fails... Now passes, skipping
+[194/1407] Seed 2852: Checking if still fails... Now passes, skipping
+[195/1407] Seed 2853: Checking if still fails... Now passes, skipping
+[196/1407] Seed 2854: Checking if still fails... Now passes, skipping
+[197/1407] Seed 2855: Checking if still fails... Now passes, skipping
+[198/1407] Seed 2856: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2856.json
+
+[199/1407] Seed 2857: Checking if still fails... Now passes, skipping
+[200/1407] Seed 2858: Checking if still fails... Now passes, skipping
+[201/1407] Seed 2859: Checking if still fails... Now passes, skipping
+[202/1407] Seed 2860: Checking if still fails... Now passes, skipping
+[203/1407] Seed 2861: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2861.json
+
+[204/1407] Seed 2862: Checking if still fails... Now passes, skipping
+[205/1407] Seed 2863: Checking if still fails... Now passes, skipping
+[206/1407] Seed 2864: Checking if still fails... Now passes, skipping
+[207/1407] Seed 2865: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2865.json
+
+[208/1407] Seed 2866: Checking if still fails... Now passes, skipping
+[209/1407] Seed 2867: Checking if still fails... Now passes, skipping
+[210/1407] Seed 2868: Checking if still fails... Now passes, skipping
+[211/1407] Seed 2869: Checking if still fails... Now passes, skipping
+[212/1407] Seed 2870: Checking if still fails... Now passes, skipping
+[213/1407] Seed 2871: Checking if still fails... Now passes, skipping
+[214/1407] Seed 2872: Checking if still fails... Now passes, skipping
+[215/1407] Seed 2873: Checking if still fails... Now passes, skipping
+[216/1407] Seed 2874: Checking if still fails... Now passes, skipping
+[217/1407] Seed 2875: Checking if still fails... Now passes, skipping
+[218/1407] Seed 2876: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2876.json
+
+[219/1407] Seed 2877: Checking if still fails... Now passes, skipping
+[220/1407] Seed 2878: Checking if still fails... Now passes, skipping
+[221/1407] Seed 2879: Checking if still fails... Now passes, skipping
+[222/1407] Seed 2880: Checking if still fails... Now passes, skipping
+[223/1407] Seed 2881: Checking if still fails... Now passes, skipping
+[224/1407] Seed 2882: Checking if still fails... Now passes, skipping
+[225/1407] Seed 2883: Checking if still fails... Now passes, skipping
+[226/1407] Seed 2884: Checking if still fails... Now passes, skipping
+[227/1407] Seed 2885: Checking if still fails... Now passes, skipping
+[228/1407] Seed 2886: Checking if still fails... Now passes, skipping
+[229/1407] Seed 2887: Checking if still fails... Now passes, skipping
+[230/1407] Seed 2888: Checking if still fails... Now passes, skipping
+[231/1407] Seed 2889: Checking if still fails... Now passes, skipping
+[232/1407] Seed 2890: Checking if still fails... Now passes, skipping
+[233/1407] Seed 2891: Checking if still fails... Now passes, skipping
+[234/1407] Seed 2892: Checking if still fails... Now passes, skipping
+[235/1407] Seed 2893: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2893.json
+
+[236/1407] Seed 2894: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2894.json
+
+[237/1407] Seed 2895: Checking if still fails... Now passes, skipping
+[238/1407] Seed 2896: Checking if still fails... Now passes, skipping
+[239/1407] Seed 2897: Checking if still fails... Now passes, skipping
+[240/1407] Seed 2898: Checking if still fails... Now passes, skipping
+[241/1407] Seed 2899: Checking if still fails... Now passes, skipping
+[242/1407] Seed 2900: Checking if still fails... Now passes, skipping
+[243/1407] Seed 2901: Checking if still fails... Now passes, skipping
+[244/1407] Seed 2902: Checking if still fails... Now passes, skipping
+[245/1407] Seed 2903: Checking if still fails... Now passes, skipping
+[246/1407] Seed 2904: Checking if still fails... Now passes, skipping
+[247/1407] Seed 2905: Checking if still fails... Now passes, skipping
+[248/1407] Seed 2906: Checking if still fails... Now passes, skipping
+[249/1407] Seed 2907: Checking if still fails... Now passes, skipping
+[250/1407] Seed 2908: Checking if still fails... Now passes, skipping
+[251/1407] Seed 2909: Checking if still fails... Now passes, skipping
+[252/1407] Seed 2910: Checking if still fails... Now passes, skipping
+[253/1407] Seed 2911: Checking if still fails... Now passes, skipping
+[254/1407] Seed 2912: Checking if still fails... Now passes, skipping
+[255/1407] Seed 2913: Checking if still fails... Now passes, skipping
+[256/1407] Seed 2914: Checking if still fails... Now passes, skipping
+[257/1407] Seed 2915: Checking if still fails... Now passes, skipping
+[258/1407] Seed 2916: Checking if still fails... Now passes, skipping
+[259/1407] Seed 2917: Checking if still fails... Now passes, skipping
+[260/1407] Seed 2918: Checking if still fails... Now passes, skipping
+[261/1407] Seed 2919: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2919.json
+
+[262/1407] Seed 2920: Checking if still fails... Now passes, skipping
+[263/1407] Seed 2921: Checking if still fails... Now passes, skipping
+[264/1407] Seed 2922: Checking if still fails... Now passes, skipping
+[265/1407] Seed 2923: Checking if still fails... Now passes, skipping
+[266/1407] Seed 2924: Checking if still fails... Now passes, skipping
+[267/1407] Seed 2925: Checking if still fails... Now passes, skipping
+[268/1407] Seed 2926: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2926.json
+
+[269/1407] Seed 2927: Checking if still fails... Now passes, skipping
+[270/1407] Seed 2928: Checking if still fails... Now passes, skipping
+[271/1407] Seed 2929: Checking if still fails... Now passes, skipping
+[272/1407] Seed 2930: Checking if still fails... Now passes, skipping
+[273/1407] Seed 2931: Checking if still fails... Now passes, skipping
+[274/1407] Seed 2932: Checking if still fails... Now passes, skipping
+[275/1407] Seed 2933: Checking if still fails... Now passes, skipping
+[276/1407] Seed 2934: Checking if still fails... Now passes, skipping
+[277/1407] Seed 2935: Checking if still fails... Now passes, skipping
+[278/1407] Seed 2936: Checking if still fails... Now passes, skipping
+[279/1407] Seed 2937: Checking if still fails... Now passes, skipping
+[280/1407] Seed 2938: Checking if still fails... Now passes, skipping
+[281/1407] Seed 2939: Checking if still fails... Now passes, skipping
+[282/1407] Seed 2940: Checking if still fails... Now passes, skipping
+[283/1407] Seed 2941: Checking if still fails... Now passes, skipping
+[284/1407] Seed 2942: Checking if still fails... Now passes, skipping
+[285/1407] Seed 2943: Checking if still fails... Now passes, skipping
+[286/1407] Seed 2944: Checking if still fails... Now passes, skipping
+[287/1407] Seed 2945: Checking if still fails... Now passes, skipping
+[288/1407] Seed 2946: Checking if still fails... Now passes, skipping
+[289/1407] Seed 2947: Checking if still fails... Now passes, skipping
+[290/1407] Seed 2948: Checking if still fails... Now passes, skipping
+[291/1407] Seed 2949: Checking if still fails... Now passes, skipping
+[292/1407] Seed 2950: Checking if still fails... Now passes, skipping
+[293/1407] Seed 2951: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2951.json
+
+[294/1407] Seed 2952: Checking if still fails... Now passes, skipping
+[295/1407] Seed 2953: Checking if still fails... Now passes, skipping
+[296/1407] Seed 2954: Checking if still fails... Now passes, skipping
+[297/1407] Seed 2955: Checking if still fails... Now passes, skipping
+[298/1407] Seed 2956: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2956.json
+
+[299/1407] Seed 2957: Checking if still fails... Now passes, skipping
+[300/1407] Seed 2958: Checking if still fails... Now passes, skipping
+[301/1407] Seed 2959: Checking if still fails... Now passes, skipping
+[302/1407] Seed 2960: Checking if still fails... Now passes, skipping
+[303/1407] Seed 2961: Checking if still fails... Now passes, skipping
+[304/1407] Seed 2962: Checking if still fails... Now passes, skipping
+[305/1407] Seed 2963: Checking if still fails... Now passes, skipping
+[306/1407] Seed 2964: Checking if still fails... Now passes, skipping
+[307/1407] Seed 2965: Checking if still fails... Now passes, skipping
+[308/1407] Seed 2966: Checking if still fails... Now passes, skipping
+[309/1407] Seed 2967: Checking if still fails... Now passes, skipping
+[310/1407] Seed 2968: Checking if still fails... Now passes, skipping
+[311/1407] Seed 2969: Checking if still fails... Now passes, skipping
+[312/1407] Seed 2970: Checking if still fails... Now passes, skipping
+[313/1407] Seed 2971: Checking if still fails... Now passes, skipping
+[314/1407] Seed 2972: Checking if still fails... Now passes, skipping
+[315/1407] Seed 2973: Checking if still fails... Now passes, skipping
+[316/1407] Seed 2974: Checking if still fails... Now passes, skipping
+[317/1407] Seed 2975: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2975.json
+
+[318/1407] Seed 2976: Checking if still fails... Now passes, skipping
+[319/1407] Seed 2977: Checking if still fails... Now passes, skipping
+[320/1407] Seed 2978: Checking if still fails... Now passes, skipping
+[321/1407] Seed 2979: Checking if still fails... Now passes, skipping
+[322/1407] Seed 2980: Checking if still fails... Now passes, skipping
+[323/1407] Seed 2981: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2981.json
+
+[324/1407] Seed 2982: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed2982.json
+
+[325/1407] Seed 2983: Checking if still fails... Now passes, skipping
+[326/1407] Seed 2984: Checking if still fails... Now passes, skipping
+[327/1407] Seed 2985: Checking if still fails... Now passes, skipping
+[328/1407] Seed 2986: Checking if still fails... Now passes, skipping
+[329/1407] Seed 2987: Checking if still fails... Now passes, skipping
+[330/1407] Seed 2988: Checking if still fails... Now passes, skipping
+[331/1407] Seed 2989: Checking if still fails... Now passes, skipping
+[332/1407] Seed 2990: Checking if still fails... Now passes, skipping
+[333/1407] Seed 2991: Checking if still fails... Now passes, skipping
+[334/1407] Seed 2992: Checking if still fails... Now passes, skipping
+[335/1407] Seed 2993: Checking if still fails... Now passes, skipping
+[336/1407] Seed 2994: Checking if still fails... Now passes, skipping
+[337/1407] Seed 2995: Checking if still fails... Now passes, skipping
+[338/1407] Seed 2996: Checking if still fails... Now passes, skipping
+[339/1407] Seed 2997: Checking if still fails... Now passes, skipping
+[340/1407] Seed 2998: Checking if still fails... Now passes, skipping
+[341/1407] Seed 2999: Checking if still fails... Now passes, skipping
+[342/1407] Seed 3000: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3000.json
+
+[343/1407] Seed 3002: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3002.json
+
+[344/1407] Seed 3010: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3010.json
+
+[345/1407] Seed 3014: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3014.json
+
+[346/1407] Seed 3022: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3022.json
+
+[347/1407] Seed 3063: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3063.json
+
+[348/1407] Seed 3070: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3070.json
+
+[349/1407] Seed 3078: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3078.json
+
+[350/1407] Seed 3085: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3085.json
+
+[351/1407] Seed 3092: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3092.json
+
+[352/1407] Seed 3103: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3103.json
+
+[353/1407] Seed 3119: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3119.json
+
+[354/1407] Seed 3122: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3122.json
+
+[355/1407] Seed 3126: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3126.json
+
+[356/1407] Seed 3130: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3130.json
+
+[357/1407] Seed 3141: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3141.json
+
+[358/1407] Seed 3149: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3149.json
+
+[359/1407] Seed 3153: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3153.json
+
+[360/1407] Seed 3162: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3162.json
+
+[361/1407] Seed 3163: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3163.json
+
+[362/1407] Seed 3165: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3165.json
+
+[363/1407] Seed 3179: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3179.json
+
+[364/1407] Seed 3185: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3185.json
+
+[365/1407] Seed 3206: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3206.json
+
+[366/1407] Seed 3212: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3212.json
+
+[367/1407] Seed 3228: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3228.json
+
+[368/1407] Seed 3250: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3250.json
+
+[369/1407] Seed 3255: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3255.json
+
+[370/1407] Seed 3264: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3264.json
+
+[371/1407] Seed 3308: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3308.json
+
+[372/1407] Seed 3316: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3316.json
+
+[373/1407] Seed 3346: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3346.json
+
+[374/1407] Seed 3348: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3348.json
+
+[375/1407] Seed 3367: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3367.json
+
+[376/1407] Seed 3382: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3382.json
+
+[377/1407] Seed 3403: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3403.json
+
+[378/1407] Seed 3433: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3433.json
+
+[379/1407] Seed 3435: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3435.json
+
+[380/1407] Seed 3456: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3456.json
+
+[381/1407] Seed 3460: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3460.json
+
+[382/1407] Seed 3465: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3465.json
+
+[383/1407] Seed 3469: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3469.json
+
+[384/1407] Seed 3491: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3491.json
+
+[385/1407] Seed 3492: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3492.json
+
+[386/1407] Seed 3507: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3507.json
+
+[387/1407] Seed 3517: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3517.json
+
+[388/1407] Seed 3530: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3530.json
+
+[389/1407] Seed 3536: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3536.json
+
+[390/1407] Seed 3543: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3543.json
+
+[391/1407] Seed 3558: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3558.json
+
+[392/1407] Seed 3578: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3578.json
+
+[393/1407] Seed 3579: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3579.json
+
+[394/1407] Seed 3583: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3583.json
+
+[395/1407] Seed 3646: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3646.json
+
+[396/1407] Seed 3677: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3677.json
+
+[397/1407] Seed 3685: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3685.json
+
+[398/1407] Seed 3688: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3688.json
+
+[399/1407] Seed 3697: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3697.json
+
+[400/1407] Seed 3701: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3701.json
+
+[401/1407] Seed 3735: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3735.json
+
+[402/1407] Seed 3749: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3749.json
+
+[403/1407] Seed 3787: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3787.json
+
+[404/1407] Seed 3801: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3801.json
+
+[405/1407] Seed 3865: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3865.json
+
+[406/1407] Seed 3904: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3904.json
+
+[407/1407] Seed 3906: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3906.json
+
+[408/1407] Seed 3934: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3934.json
+
+[409/1407] Seed 3953: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3953.json
+
+[410/1407] Seed 3964: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3964.json
+
+[411/1407] Seed 3972: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3972.json
+
+[412/1407] Seed 3974: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3974.json
+
+[413/1407] Seed 3984: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3984.json
+
+[414/1407] Seed 3986: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed3986.json
+
+[415/1407] Seed 4016: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4016.json
+
+[416/1407] Seed 4025: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4025.json
+
+[417/1407] Seed 4044: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4044.json
+
+[418/1407] Seed 4055: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4055.json
+
+[419/1407] Seed 4071: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4071.json
+
+[420/1407] Seed 4082: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4082.json
+
+[421/1407] Seed 4112: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4112.json
+
+[422/1407] Seed 4123: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4123.json
+
+[423/1407] Seed 4126: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4126.json
+
+[424/1407] Seed 4130: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4130.json
+
+[425/1407] Seed 4141: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4141.json
+
+[426/1407] Seed 4142: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4142.json
+
+[427/1407] Seed 4157: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4157.json
+
+[428/1407] Seed 4162: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4162.json
+
+[429/1407] Seed 4165: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4165.json
+
+[430/1407] Seed 4170: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4170.json
+
+[431/1407] Seed 4186: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4186.json
+
+[432/1407] Seed 4193: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4193.json
+
+[433/1407] Seed 4202: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4202.json
+
+[434/1407] Seed 4257: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4257.json
+
+[435/1407] Seed 4264: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4264.json
+
+[436/1407] Seed 4278: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4278.json
+
+[437/1407] Seed 4301: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4301.json
+
+[438/1407] Seed 4315: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4315.json
+
+[439/1407] Seed 4317: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4317.json
+
+[440/1407] Seed 4333: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4333.json
+
+[441/1407] Seed 4357: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4357.json
+
+[442/1407] Seed 4370: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4370.json
+
+[443/1407] Seed 4378: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4378.json
+
+[444/1407] Seed 4383: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4383.json
+
+[445/1407] Seed 4387: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4387.json
+
+[446/1407] Seed 4397: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4397.json
+
+[447/1407] Seed 4409: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4409.json
+
+[448/1407] Seed 4430: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4430.json
+
+[449/1407] Seed 4458: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4458.json
+
+[450/1407] Seed 4460: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4460.json
+
+[451/1407] Seed 4479: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4479.json
+
+[452/1407] Seed 4515: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4515.json
+
+[453/1407] Seed 4567: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4567.json
+
+[454/1407] Seed 4594: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4594.json
+
+[455/1407] Seed 4616: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4616.json
+
+[456/1407] Seed 4634: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4634.json
+
+[457/1407] Seed 4648: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4648.json
+
+[458/1407] Seed 4651: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4651.json
+
+[459/1407] Seed 4652: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4652.json
+
+[460/1407] Seed 4660: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4660.json
+
+[461/1407] Seed 4661: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4661.json
+
+[462/1407] Seed 4664: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4664.json
+
+[463/1407] Seed 4668: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4668.json
+
+[464/1407] Seed 4670: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4670.json
+
+[465/1407] Seed 4675: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4675.json
+
+[466/1407] Seed 4682: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4682.json
+
+[467/1407] Seed 4703: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4703.json
+
+[468/1407] Seed 4711: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4711.json
+
+[469/1407] Seed 4716: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4716.json
+
+[470/1407] Seed 4727: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4727.json
+
+[471/1407] Seed 4743: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4743.json
+
+[472/1407] Seed 4745: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4745.json
+
+[473/1407] Seed 4747: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4747.json
+
+[474/1407] Seed 4750: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4750.json
+
+[475/1407] Seed 4754: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4754.json
+
+[476/1407] Seed 4760: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4760.json
+
+[477/1407] Seed 4762: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4762.json
+
+[478/1407] Seed 4764: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4764.json
+
+[479/1407] Seed 4767: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4767.json
+
+[480/1407] Seed 4773: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4773.json
+
+[481/1407] Seed 4813: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4813.json
+
+[482/1407] Seed 4858: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4858.json
+
+[483/1407] Seed 4883: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4883.json
+
+[484/1407] Seed 4893: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4893.json
+
+[485/1407] Seed 4905: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4905.json
+
+[486/1407] Seed 4907: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4907.json
+
+[487/1407] Seed 4917: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4917.json
+
+[488/1407] Seed 4947: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4947.json
+
+[489/1407] Seed 4949: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4949.json
+
+[490/1407] Seed 4966: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4966.json
+
+[491/1407] Seed 4969: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4969.json
+
+[492/1407] Seed 4990: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed4990.json
+
+[493/1407] Seed 5001: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5001.json
+
+[494/1407] Seed 5009: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5009.json
+
+[495/1407] Seed 5029: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5029.json
+
+[496/1407] Seed 5030: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5030.json
+
+[497/1407] Seed 5050: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5050.json
+
+[498/1407] Seed 5055: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5055.json
+
+[499/1407] Seed 5072: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5072.json
+
+[500/1407] Seed 5080: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5080.json
+
+[501/1407] Seed 5101: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5101.json
+
+[502/1407] Seed 5108: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5108.json
+
+[503/1407] Seed 5112: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5112.json
+
+[504/1407] Seed 5123: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5123.json
+
+[505/1407] Seed 5125: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5125.json
+
+[506/1407] Seed 5131: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5131.json
+
+[507/1407] Seed 5140: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5140.json
+
+[508/1407] Seed 5157: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5157.json
+
+[509/1407] Seed 5166: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5166.json
+
+[510/1407] Seed 5172: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5172.json
+
+[511/1407] Seed 5188: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5188.json
+
+[512/1407] Seed 5204: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5204.json
+
+[513/1407] Seed 5215: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5215.json
+
+[514/1407] Seed 5245: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5245.json
+
+[515/1407] Seed 5251: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5251.json
+
+[516/1407] Seed 5266: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5266.json
+
+[517/1407] Seed 5293: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5293.json
+
+[518/1407] Seed 5299: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5299.json
+
+[519/1407] Seed 5306: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5306.json
+
+[520/1407] Seed 5307: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5307.json
+
+[521/1407] Seed 5343: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5343.json
+
+[522/1407] Seed 5345: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5345.json
+
+[523/1407] Seed 5358: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5358.json
+
+[524/1407] Seed 5377: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5377.json
+
+[525/1407] Seed 5379: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5379.json
+
+[526/1407] Seed 5380: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5380.json
+
+[527/1407] Seed 5395: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5395.json
+
+[528/1407] Seed 5422: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5422.json
+
+[529/1407] Seed 5468: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5468.json
+
+[530/1407] Seed 5492: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5492.json
+
+[531/1407] Seed 5505: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5505.json
+
+[532/1407] Seed 5508: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5508.json
+
+[533/1407] Seed 5538: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5538.json
+
+[534/1407] Seed 5539: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5539.json
+
+[535/1407] Seed 5561: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5561.json
+
+[536/1407] Seed 5562: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5562.json
+
+[537/1407] Seed 5571: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5571.json
+
+[538/1407] Seed 5576: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5576.json
+
+[539/1407] Seed 5577: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5577.json
+
+[540/1407] Seed 5579: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5579.json
+
+[541/1407] Seed 5600: Checking if still fails... Still fails, minimizing...
+
+[542/1407] Seed 5601: Checking if still fails... Now passes, skipping
+[543/1407] Seed 5602: Checking if still fails... Now passes, skipping
+[544/1407] Seed 5603: Checking if still fails... Now passes, skipping
+[545/1407] Seed 5604: Checking if still fails... Now passes, skipping
+[546/1407] Seed 5605: Checking if still fails... Now passes, skipping
+[547/1407] Seed 5606: Checking if still fails... Now passes, skipping
+[548/1407] Seed 5607: Checking if still fails... Now passes, skipping
+[549/1407] Seed 5608: Checking if still fails... Now passes, skipping
+[550/1407] Seed 5609: Checking if still fails... Now passes, skipping
+[551/1407] Seed 5610: Checking if still fails... Now passes, skipping
+[552/1407] Seed 5611: Checking if still fails... Now passes, skipping
+[553/1407] Seed 5612: Checking if still fails... Now passes, skipping
+[554/1407] Seed 5613: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5613.json
+
+[555/1407] Seed 5614: Checking if still fails... Now passes, skipping
+[556/1407] Seed 5615: Checking if still fails... Now passes, skipping
+[557/1407] Seed 5616: Checking if still fails... Now passes, skipping
+[558/1407] Seed 5617: Checking if still fails... Now passes, skipping
+[559/1407] Seed 5618: Checking if still fails... Now passes, skipping
+[560/1407] Seed 5619: Checking if still fails... Now passes, skipping
+[561/1407] Seed 5620: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5620.json
+
+[562/1407] Seed 5621: Checking if still fails... Now passes, skipping
+[563/1407] Seed 5622: Checking if still fails... Now passes, skipping
+[564/1407] Seed 5623: Checking if still fails... Now passes, skipping
+[565/1407] Seed 5624: Checking if still fails... Now passes, skipping
+[566/1407] Seed 5625: Checking if still fails... Now passes, skipping
+[567/1407] Seed 5626: Checking if still fails... Now passes, skipping
+[568/1407] Seed 5627: Checking if still fails... Now passes, skipping
+[569/1407] Seed 5628: Checking if still fails... Now passes, skipping
+[570/1407] Seed 5629: Checking if still fails... Now passes, skipping
+[571/1407] Seed 5630: Checking if still fails... Now passes, skipping
+[572/1407] Seed 5631: Checking if still fails... Now passes, skipping
+[573/1407] Seed 5632: Checking if still fails... Now passes, skipping
+[574/1407] Seed 5633: Checking if still fails... Now passes, skipping
+[575/1407] Seed 5634: Checking if still fails... Now passes, skipping
+[576/1407] Seed 5635: Checking if still fails... Now passes, skipping
+[577/1407] Seed 5636: Checking if still fails... Now passes, skipping
+[578/1407] Seed 5637: Checking if still fails... Now passes, skipping
+[579/1407] Seed 5638: Checking if still fails... Now passes, skipping
+[580/1407] Seed 5639: Checking if still fails... Now passes, skipping
+[581/1407] Seed 5640: Checking if still fails... Now passes, skipping
+[582/1407] Seed 5641: Checking if still fails... Now passes, skipping
+[583/1407] Seed 5642: Checking if still fails... Now passes, skipping
+[584/1407] Seed 5643: Checking if still fails... Now passes, skipping
+[585/1407] Seed 5644: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5644.json
+
+[586/1407] Seed 5645: Checking if still fails... Now passes, skipping
+[587/1407] Seed 5646: Checking if still fails... Now passes, skipping
+[588/1407] Seed 5647: Checking if still fails... Now passes, skipping
+[589/1407] Seed 5648: Checking if still fails... Now passes, skipping
+[590/1407] Seed 5649: Checking if still fails... Now passes, skipping
+[591/1407] Seed 5650: Checking if still fails... Now passes, skipping
+[592/1407] Seed 5651: Checking if still fails... Now passes, skipping
+[593/1407] Seed 5652: Checking if still fails... Now passes, skipping
+[594/1407] Seed 5653: Checking if still fails... Now passes, skipping
+[595/1407] Seed 5654: Checking if still fails... Now passes, skipping
+[596/1407] Seed 5655: Checking if still fails... Now passes, skipping
+[597/1407] Seed 5656: Checking if still fails... Now passes, skipping
+[598/1407] Seed 5657: Checking if still fails... Now passes, skipping
+[599/1407] Seed 5658: Checking if still fails... Now passes, skipping
+[600/1407] Seed 5659: Checking if still fails... Now passes, skipping
+[601/1407] Seed 5660: Checking if still fails... Now passes, skipping
+[602/1407] Seed 5661: Checking if still fails... Now passes, skipping
+[603/1407] Seed 5662: Checking if still fails... Now passes, skipping
+[604/1407] Seed 5663: Checking if still fails... Now passes, skipping
+[605/1407] Seed 5664: Checking if still fails... Now passes, skipping
+[606/1407] Seed 5665: Checking if still fails... Now passes, skipping
+[607/1407] Seed 5666: Checking if still fails... Now passes, skipping
+[608/1407] Seed 5667: Checking if still fails... Now passes, skipping
+[609/1407] Seed 5668: Checking if still fails... Now passes, skipping
+[610/1407] Seed 5669: Checking if still fails... Now passes, skipping
+[611/1407] Seed 5670: Checking if still fails... Now passes, skipping
+[612/1407] Seed 5671: Checking if still fails... Now passes, skipping
+[613/1407] Seed 5672: Checking if still fails... Now passes, skipping
+[614/1407] Seed 5673: Checking if still fails... Now passes, skipping
+[615/1407] Seed 5674: Checking if still fails... Now passes, skipping
+[616/1407] Seed 5675: Checking if still fails... Now passes, skipping
+[617/1407] Seed 5676: Checking if still fails... Now passes, skipping
+[618/1407] Seed 5677: Checking if still fails... Now passes, skipping
+[619/1407] Seed 5678: Checking if still fails... Now passes, skipping
+[620/1407] Seed 5679: Checking if still fails... Now passes, skipping
+[621/1407] Seed 5680: Checking if still fails... Now passes, skipping
+[622/1407] Seed 5681: Checking if still fails... Now passes, skipping
+[623/1407] Seed 5682: Checking if still fails... Now passes, skipping
+[624/1407] Seed 5683: Checking if still fails... Now passes, skipping
+[625/1407] Seed 5684: Checking if still fails... Now passes, skipping
+[626/1407] Seed 5685: Checking if still fails... Now passes, skipping
+[627/1407] Seed 5686: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5686.json
+
+[628/1407] Seed 5687: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5687.json
+
+[629/1407] Seed 5688: Checking if still fails... Now passes, skipping
+[630/1407] Seed 5689: Checking if still fails... Now passes, skipping
+[631/1407] Seed 5690: Checking if still fails... Now passes, skipping
+[632/1407] Seed 5691: Checking if still fails... Now passes, skipping
+[633/1407] Seed 5692: Checking if still fails... Now passes, skipping
+[634/1407] Seed 5693: Checking if still fails... Now passes, skipping
+[635/1407] Seed 5694: Checking if still fails... Now passes, skipping
+[636/1407] Seed 5695: Checking if still fails... Now passes, skipping
+[637/1407] Seed 5696: Checking if still fails... Now passes, skipping
+[638/1407] Seed 5697: Checking if still fails... Now passes, skipping
+[639/1407] Seed 5698: Checking if still fails... Now passes, skipping
+[640/1407] Seed 5699: Checking if still fails... Now passes, skipping
+[641/1407] Seed 5700: Checking if still fails... Now passes, skipping
+[642/1407] Seed 5701: Checking if still fails... Now passes, skipping
+[643/1407] Seed 5702: Checking if still fails... Now passes, skipping
+[644/1407] Seed 5703: Checking if still fails... Now passes, skipping
+[645/1407] Seed 5704: Checking if still fails... Now passes, skipping
+[646/1407] Seed 5705: Checking if still fails... Now passes, skipping
+[647/1407] Seed 5706: Checking if still fails... Now passes, skipping
+[648/1407] Seed 5707: Checking if still fails... Now passes, skipping
+[649/1407] Seed 5708: Checking if still fails... Now passes, skipping
+[650/1407] Seed 5709: Checking if still fails... Now passes, skipping
+[651/1407] Seed 5710: Checking if still fails... Now passes, skipping
+[652/1407] Seed 5711: Checking if still fails... Now passes, skipping
+[653/1407] Seed 5712: Checking if still fails... Now passes, skipping
+[654/1407] Seed 5713: Checking if still fails... Now passes, skipping
+[655/1407] Seed 5714: Checking if still fails... Now passes, skipping
+[656/1407] Seed 5715: Checking if still fails... Now passes, skipping
+[657/1407] Seed 5716: Checking if still fails... Now passes, skipping
+[658/1407] Seed 5717: Checking if still fails... Now passes, skipping
+[659/1407] Seed 5718: Checking if still fails... Now passes, skipping
+[660/1407] Seed 5719: Checking if still fails... Now passes, skipping
+[661/1407] Seed 5720: Checking if still fails... Now passes, skipping
+[662/1407] Seed 5721: Checking if still fails... Now passes, skipping
+[663/1407] Seed 5722: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5722.json
+
+[664/1407] Seed 5723: Checking if still fails... Now passes, skipping
+[665/1407] Seed 5724: Checking if still fails... Now passes, skipping
+[666/1407] Seed 5725: Checking if still fails... Now passes, skipping
+[667/1407] Seed 5726: Checking if still fails... Now passes, skipping
+[668/1407] Seed 5727: Checking if still fails... Now passes, skipping
+[669/1407] Seed 5728: Checking if still fails... Now passes, skipping
+[670/1407] Seed 5729: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5729.json
+
+[671/1407] Seed 5730: Checking if still fails... Now passes, skipping
+[672/1407] Seed 5731: Checking if still fails... Now passes, skipping
+[673/1407] Seed 5732: Checking if still fails... Now passes, skipping
+[674/1407] Seed 5733: Checking if still fails... Now passes, skipping
+[675/1407] Seed 5734: Checking if still fails... Now passes, skipping
+[676/1407] Seed 5735: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5735.json
+
+[677/1407] Seed 5736: Checking if still fails... Now passes, skipping
+[678/1407] Seed 5737: Checking if still fails... Now passes, skipping
+[679/1407] Seed 5738: Checking if still fails... Now passes, skipping
+[680/1407] Seed 5739: Checking if still fails... Now passes, skipping
+[681/1407] Seed 5740: Checking if still fails... Now passes, skipping
+[682/1407] Seed 5741: Checking if still fails... Now passes, skipping
+[683/1407] Seed 5742: Checking if still fails... Now passes, skipping
+[684/1407] Seed 5743: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5743.json
+
+[685/1407] Seed 5744: Checking if still fails... Now passes, skipping
+[686/1407] Seed 5745: Checking if still fails... Now passes, skipping
+[687/1407] Seed 5746: Checking if still fails... Now passes, skipping
+[688/1407] Seed 5747: Checking if still fails... Now passes, skipping
+[689/1407] Seed 5748: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5748.json
+
+[690/1407] Seed 5749: Checking if still fails... Now passes, skipping
+[691/1407] Seed 5750: Checking if still fails... Now passes, skipping
+[692/1407] Seed 5751: Checking if still fails... Now passes, skipping
+[693/1407] Seed 5752: Checking if still fails... Now passes, skipping
+[694/1407] Seed 5753: Checking if still fails... Now passes, skipping
+[695/1407] Seed 5754: Checking if still fails... Now passes, skipping
+[696/1407] Seed 5755: Checking if still fails... Now passes, skipping
+[697/1407] Seed 5756: Checking if still fails... Now passes, skipping
+[698/1407] Seed 5757: Checking if still fails... Now passes, skipping
+[699/1407] Seed 5758: Checking if still fails... Now passes, skipping
+[700/1407] Seed 5759: Checking if still fails... Now passes, skipping
+[701/1407] Seed 5760: Checking if still fails... Now passes, skipping
+[702/1407] Seed 5761: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5761.json
+
+[703/1407] Seed 5762: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5762.json
+
+[704/1407] Seed 5763: Checking if still fails... Now passes, skipping
+[705/1407] Seed 5764: Checking if still fails... Now passes, skipping
+[706/1407] Seed 5765: Checking if still fails... Now passes, skipping
+[707/1407] Seed 5766: Checking if still fails... Now passes, skipping
+[708/1407] Seed 5767: Checking if still fails... Now passes, skipping
+[709/1407] Seed 5768: Checking if still fails... Now passes, skipping
+[710/1407] Seed 5769: Checking if still fails... Now passes, skipping
+[711/1407] Seed 5770: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5770.json
+
+[712/1407] Seed 5771: Checking if still fails... Now passes, skipping
+[713/1407] Seed 5772: Checking if still fails... Now passes, skipping
+[714/1407] Seed 5773: Checking if still fails... Now passes, skipping
+[715/1407] Seed 5774: Checking if still fails... Now passes, skipping
+[716/1407] Seed 5775: Checking if still fails... Now passes, skipping
+[717/1407] Seed 5776: Checking if still fails... Now passes, skipping
+[718/1407] Seed 5777: Checking if still fails... Now passes, skipping
+[719/1407] Seed 5778: Checking if still fails... Now passes, skipping
+[720/1407] Seed 5779: Checking if still fails... Now passes, skipping
+[721/1407] Seed 5780: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5780.json
+
+[722/1407] Seed 5781: Checking if still fails... Now passes, skipping
+[723/1407] Seed 5782: Checking if still fails... Now passes, skipping
+[724/1407] Seed 5783: Checking if still fails... Now passes, skipping
+[725/1407] Seed 5784: Checking if still fails... Now passes, skipping
+[726/1407] Seed 5785: Checking if still fails... Now passes, skipping
+[727/1407] Seed 5786: Checking if still fails... Now passes, skipping
+[728/1407] Seed 5787: Checking if still fails... Now passes, skipping
+[729/1407] Seed 5788: Checking if still fails... Now passes, skipping
+[730/1407] Seed 5789: Checking if still fails... Now passes, skipping
+[731/1407] Seed 5790: Checking if still fails... Now passes, skipping
+[732/1407] Seed 5791: Checking if still fails... Now passes, skipping
+[733/1407] Seed 5792: Checking if still fails... Now passes, skipping
+[734/1407] Seed 5793: Checking if still fails... Now passes, skipping
+[735/1407] Seed 5794: Checking if still fails... Now passes, skipping
+[736/1407] Seed 5795: Checking if still fails... Now passes, skipping
+[737/1407] Seed 5796: Checking if still fails... Now passes, skipping
+[738/1407] Seed 5797: Checking if still fails... Now passes, skipping
+[739/1407] Seed 5798: Checking if still fails... Now passes, skipping
+[740/1407] Seed 5799: Checking if still fails... Now passes, skipping
+[741/1407] Seed 5800: Checking if still fails... Now passes, skipping
+[742/1407] Seed 5801: Checking if still fails... Now passes, skipping
+[743/1407] Seed 5802: Checking if still fails... Now passes, skipping
+[744/1407] Seed 5803: Checking if still fails... Now passes, skipping
+[745/1407] Seed 5804: Checking if still fails... Now passes, skipping
+[746/1407] Seed 5805: Checking if still fails... Now passes, skipping
+[747/1407] Seed 5806: Checking if still fails... Now passes, skipping
+[748/1407] Seed 5807: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5807.json
+
+[749/1407] Seed 5808: Checking if still fails... Now passes, skipping
+[750/1407] Seed 5809: Checking if still fails... Now passes, skipping
+[751/1407] Seed 5810: Checking if still fails... Now passes, skipping
+[752/1407] Seed 5811: Checking if still fails... Now passes, skipping
+[753/1407] Seed 5812: Checking if still fails... Now passes, skipping
+[754/1407] Seed 5813: Checking if still fails... Now passes, skipping
+[755/1407] Seed 5814: Checking if still fails... Now passes, skipping
+[756/1407] Seed 5815: Checking if still fails... Now passes, skipping
+[757/1407] Seed 5816: Checking if still fails... Now passes, skipping
+[758/1407] Seed 5817: Checking if still fails... Now passes, skipping
+[759/1407] Seed 5818: Checking if still fails... Now passes, skipping
+[760/1407] Seed 5819: Checking if still fails... Now passes, skipping
+[761/1407] Seed 5820: Checking if still fails... Now passes, skipping
+[762/1407] Seed 5821: Checking if still fails... Now passes, skipping
+[763/1407] Seed 5822: Checking if still fails... Now passes, skipping
+[764/1407] Seed 5823: Checking if still fails... Now passes, skipping
+[765/1407] Seed 5824: Checking if still fails... Now passes, skipping
+[766/1407] Seed 5825: Checking if still fails... Now passes, skipping
+[767/1407] Seed 5826: Checking if still fails... Now passes, skipping
+[768/1407] Seed 5827: Checking if still fails... Now passes, skipping
+[769/1407] Seed 5828: Checking if still fails... Now passes, skipping
+[770/1407] Seed 5829: Checking if still fails... Now passes, skipping
+[771/1407] Seed 5830: Checking if still fails... Now passes, skipping
+[772/1407] Seed 5831: Checking if still fails... Now passes, skipping
+[773/1407] Seed 5832: Checking if still fails... Now passes, skipping
+[774/1407] Seed 5833: Checking if still fails... Now passes, skipping
+[775/1407] Seed 5834: Checking if still fails... Now passes, skipping
+[776/1407] Seed 5835: Checking if still fails... Now passes, skipping
+[777/1407] Seed 5836: Checking if still fails... Now passes, skipping
+[778/1407] Seed 5837: Checking if still fails... Now passes, skipping
+[779/1407] Seed 5838: Checking if still fails... Now passes, skipping
+[780/1407] Seed 5839: Checking if still fails... Now passes, skipping
+[781/1407] Seed 5840: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5840.json
+
+[782/1407] Seed 5841: Checking if still fails... Now passes, skipping
+[783/1407] Seed 5842: Checking if still fails... Now passes, skipping
+[784/1407] Seed 5843: Checking if still fails... Now passes, skipping
+[785/1407] Seed 5844: Checking if still fails... Now passes, skipping
+[786/1407] Seed 5845: Checking if still fails... Now passes, skipping
+[787/1407] Seed 5846: Checking if still fails... Now passes, skipping
+[788/1407] Seed 5847: Checking if still fails... Now passes, skipping
+[789/1407] Seed 5848: Checking if still fails... Now passes, skipping
+[790/1407] Seed 5849: Checking if still fails... Now passes, skipping
+[791/1407] Seed 5850: Checking if still fails... Now passes, skipping
+[792/1407] Seed 5851: Checking if still fails... Now passes, skipping
+[793/1407] Seed 5852: Checking if still fails... Now passes, skipping
+[794/1407] Seed 5853: Checking if still fails... Now passes, skipping
+[795/1407] Seed 5854: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5854.json
+
+[796/1407] Seed 5855: Checking if still fails... Now passes, skipping
+[797/1407] Seed 5856: Checking if still fails... Now passes, skipping
+[798/1407] Seed 5857: Checking if still fails... Now passes, skipping
+[799/1407] Seed 5858: Checking if still fails... Now passes, skipping
+[800/1407] Seed 5859: Checking if still fails... Now passes, skipping
+[801/1407] Seed 5860: Checking if still fails... Now passes, skipping
+[802/1407] Seed 5861: Checking if still fails... Now passes, skipping
+[803/1407] Seed 5862: Checking if still fails... Now passes, skipping
+[804/1407] Seed 5863: Checking if still fails... Now passes, skipping
+[805/1407] Seed 5864: Checking if still fails... Now passes, skipping
+[806/1407] Seed 5865: Checking if still fails... Now passes, skipping
+[807/1407] Seed 5866: Checking if still fails... Now passes, skipping
+[808/1407] Seed 5867: Checking if still fails... Now passes, skipping
+[809/1407] Seed 5868: Checking if still fails... Now passes, skipping
+[810/1407] Seed 5869: Checking if still fails... Now passes, skipping
+[811/1407] Seed 5870: Checking if still fails... Now passes, skipping
+[812/1407] Seed 5871: Checking if still fails... Now passes, skipping
+[813/1407] Seed 5872: Checking if still fails... Now passes, skipping
+[814/1407] Seed 5873: Checking if still fails... Now passes, skipping
+[815/1407] Seed 5874: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5874.json
+
+[816/1407] Seed 5875: Checking if still fails... Now passes, skipping
+[817/1407] Seed 5876: Checking if still fails... Now passes, skipping
+[818/1407] Seed 5877: Checking if still fails... Now passes, skipping
+[819/1407] Seed 5878: Checking if still fails... Now passes, skipping
+[820/1407] Seed 5879: Checking if still fails... Now passes, skipping
+[821/1407] Seed 5880: Checking if still fails... Now passes, skipping
+[822/1407] Seed 5881: Checking if still fails... Now passes, skipping
+[823/1407] Seed 5882: Checking if still fails... Now passes, skipping
+[824/1407] Seed 5883: Checking if still fails... Now passes, skipping
+[825/1407] Seed 5884: Checking if still fails... Now passes, skipping
+[826/1407] Seed 5885: Checking if still fails... Now passes, skipping
+[827/1407] Seed 5886: Checking if still fails... Now passes, skipping
+[828/1407] Seed 5887: Checking if still fails... Now passes, skipping
+[829/1407] Seed 5888: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5888.json
+
+[830/1407] Seed 5889: Checking if still fails... Now passes, skipping
+[831/1407] Seed 5890: Checking if still fails... Now passes, skipping
+[832/1407] Seed 5891: Checking if still fails... Now passes, skipping
+[833/1407] Seed 5892: Checking if still fails... Now passes, skipping
+[834/1407] Seed 5893: Checking if still fails... Now passes, skipping
+[835/1407] Seed 5894: Checking if still fails... Now passes, skipping
+[836/1407] Seed 5895: Checking if still fails... Now passes, skipping
+[837/1407] Seed 5896: Checking if still fails... Now passes, skipping
+[838/1407] Seed 5897: Checking if still fails... Now passes, skipping
+[839/1407] Seed 5898: Checking if still fails... Now passes, skipping
+[840/1407] Seed 5899: Checking if still fails... Now passes, skipping
+[841/1407] Seed 5900: Checking if still fails... Now passes, skipping
+[842/1407] Seed 5901: Checking if still fails... Now passes, skipping
+[843/1407] Seed 5902: Checking if still fails... Now passes, skipping
+[844/1407] Seed 5903: Checking if still fails... Now passes, skipping
+[845/1407] Seed 5904: Checking if still fails... Now passes, skipping
+[846/1407] Seed 5905: Checking if still fails... Now passes, skipping
+[847/1407] Seed 5906: Checking if still fails... Now passes, skipping
+[848/1407] Seed 5907: Checking if still fails... Now passes, skipping
+[849/1407] Seed 5908: Checking if still fails... Now passes, skipping
+[850/1407] Seed 5909: Checking if still fails... Now passes, skipping
+[851/1407] Seed 5910: Checking if still fails... Now passes, skipping
+[852/1407] Seed 5911: Checking if still fails... Now passes, skipping
+[853/1407] Seed 5912: Checking if still fails... Now passes, skipping
+[854/1407] Seed 5913: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5913.json
+
+[855/1407] Seed 5914: Checking if still fails... Now passes, skipping
+[856/1407] Seed 5915: Checking if still fails... Now passes, skipping
+[857/1407] Seed 5916: Checking if still fails... Now passes, skipping
+[858/1407] Seed 5917: Checking if still fails... Now passes, skipping
+[859/1407] Seed 5918: Checking if still fails... Now passes, skipping
+[860/1407] Seed 5919: Checking if still fails... Now passes, skipping
+[861/1407] Seed 5920: Checking if still fails... Now passes, skipping
+[862/1407] Seed 5921: Checking if still fails... Now passes, skipping
+[863/1407] Seed 5922: Checking if still fails... Now passes, skipping
+[864/1407] Seed 5923: Checking if still fails... Now passes, skipping
+[865/1407] Seed 5924: Checking if still fails... Now passes, skipping
+[866/1407] Seed 5925: Checking if still fails... Now passes, skipping
+[867/1407] Seed 5926: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5926.json
+
+[868/1407] Seed 5927: Checking if still fails... Now passes, skipping
+[869/1407] Seed 5928: Checking if still fails... Now passes, skipping
+[870/1407] Seed 5929: Checking if still fails... Now passes, skipping
+[871/1407] Seed 5930: Checking if still fails... Now passes, skipping
+[872/1407] Seed 5931: Checking if still fails... Now passes, skipping
+[873/1407] Seed 5932: Checking if still fails... Now passes, skipping
+[874/1407] Seed 5933: Checking if still fails... Now passes, skipping
+[875/1407] Seed 5934: Checking if still fails... Now passes, skipping
+[876/1407] Seed 5935: Checking if still fails... Now passes, skipping
+[877/1407] Seed 5936: Checking if still fails... Now passes, skipping
+[878/1407] Seed 5937: Checking if still fails... Now passes, skipping
+[879/1407] Seed 5938: Checking if still fails... Now passes, skipping
+[880/1407] Seed 5939: Checking if still fails... Now passes, skipping
+[881/1407] Seed 5940: Checking if still fails... Now passes, skipping
+[882/1407] Seed 5941: Checking if still fails... Now passes, skipping
+[883/1407] Seed 5942: Checking if still fails... Now passes, skipping
+[884/1407] Seed 5943: Checking if still fails... Now passes, skipping
+[885/1407] Seed 5944: Checking if still fails... Now passes, skipping
+[886/1407] Seed 5945: Checking if still fails... Now passes, skipping
+[887/1407] Seed 5946: Checking if still fails... Now passes, skipping
+[888/1407] Seed 5947: Checking if still fails... Now passes, skipping
+[889/1407] Seed 5948: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5948.json
+
+[890/1407] Seed 5949: Checking if still fails... Now passes, skipping
+[891/1407] Seed 5950: Checking if still fails... Now passes, skipping
+[892/1407] Seed 5951: Checking if still fails... Now passes, skipping
+[893/1407] Seed 5952: Checking if still fails... Now passes, skipping
+[894/1407] Seed 5953: Checking if still fails... Now passes, skipping
+[895/1407] Seed 5954: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5954.json
+
+[896/1407] Seed 5955: Checking if still fails... Now passes, skipping
+[897/1407] Seed 5956: Checking if still fails... Now passes, skipping
+[898/1407] Seed 5957: Checking if still fails... Now passes, skipping
+[899/1407] Seed 5958: Checking if still fails... Now passes, skipping
+[900/1407] Seed 5959: Checking if still fails... Now passes, skipping
+[901/1407] Seed 5960: Checking if still fails... Now passes, skipping
+[902/1407] Seed 5961: Checking if still fails... Now passes, skipping
+[903/1407] Seed 5962: Checking if still fails... Now passes, skipping
+[904/1407] Seed 5963: Checking if still fails... Now passes, skipping
+[905/1407] Seed 5964: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5964.json
+
+[906/1407] Seed 5965: Checking if still fails... Now passes, skipping
+[907/1407] Seed 5966: Checking if still fails... Now passes, skipping
+[908/1407] Seed 5967: Checking if still fails... Now passes, skipping
+[909/1407] Seed 5968: Checking if still fails... Now passes, skipping
+[910/1407] Seed 5969: Checking if still fails... Now passes, skipping
+[911/1407] Seed 5970: Checking if still fails... Now passes, skipping
+[912/1407] Seed 5971: Checking if still fails... Now passes, skipping
+[913/1407] Seed 5972: Checking if still fails... Now passes, skipping
+[914/1407] Seed 5973: Checking if still fails... Now passes, skipping
+[915/1407] Seed 5974: Checking if still fails... Now passes, skipping
+[916/1407] Seed 5975: Checking if still fails... Now passes, skipping
+[917/1407] Seed 5976: Checking if still fails... Now passes, skipping
+[918/1407] Seed 5977: Checking if still fails... Now passes, skipping
+[919/1407] Seed 5978: Checking if still fails... Now passes, skipping
+[920/1407] Seed 5979: Checking if still fails... Now passes, skipping
+[921/1407] Seed 5980: Checking if still fails... Now passes, skipping
+[922/1407] Seed 5981: Checking if still fails... Now passes, skipping
+[923/1407] Seed 5982: Checking if still fails... Now passes, skipping
+[924/1407] Seed 5983: Checking if still fails... Now passes, skipping
+[925/1407] Seed 5984: Checking if still fails... Now passes, skipping
+[926/1407] Seed 5985: Checking if still fails... Now passes, skipping
+[927/1407] Seed 5986: Checking if still fails... Now passes, skipping
+[928/1407] Seed 5987: Checking if still fails... Now passes, skipping
+[929/1407] Seed 5988: Checking if still fails... Now passes, skipping
+[930/1407] Seed 5989: Checking if still fails... Now passes, skipping
+[931/1407] Seed 5990: Checking if still fails... Now passes, skipping
+[932/1407] Seed 5991: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5991.json
+
+[933/1407] Seed 5992: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed5992.json
+
+[934/1407] Seed 5993: Checking if still fails... Now passes, skipping
+[935/1407] Seed 5994: Checking if still fails... Now passes, skipping
+[936/1407] Seed 5995: Checking if still fails... Now passes, skipping
+[937/1407] Seed 5996: Checking if still fails... Now passes, skipping
+[938/1407] Seed 5997: Checking if still fails... Now passes, skipping
+[939/1407] Seed 5998: Checking if still fails... Now passes, skipping
+[940/1407] Seed 5999: Checking if still fails... Now passes, skipping
+[941/1407] Seed 6000: Checking if still fails... Now passes, skipping
+[942/1407] Seed 6005: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6005.json
+
+[943/1407] Seed 6007: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6007.json
+
+[944/1407] Seed 6024: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6024.json
+
+[945/1407] Seed 6042: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6042.json
+
+[946/1407] Seed 6061: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6061.json
+
+[947/1407] Seed 6065: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6065.json
+
+[948/1407] Seed 6088: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6088.json
+
+[949/1407] Seed 6104: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6104.json
+
+[950/1407] Seed 6106: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6106.json
+
+[951/1407] Seed 6124: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6124.json
+
+[952/1407] Seed 6148: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6148.json
+
+[953/1407] Seed 6201: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6201.json
+
+[954/1407] Seed 6216: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6216.json
+
+[955/1407] Seed 6242: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6242.json
+
+[956/1407] Seed 6251: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6251.json
+
+[957/1407] Seed 6261: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6261.json
+
+[958/1407] Seed 6287: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6287.json
+
+[959/1407] Seed 6288: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6288.json
+
+[960/1407] Seed 6289: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6289.json
+
+[961/1407] Seed 6302: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6302.json
+
+[962/1407] Seed 6304: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6304.json
+
+[963/1407] Seed 6305: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6305.json
+
+[964/1407] Seed 6306: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6306.json
+
+[965/1407] Seed 6345: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6345.json
+
+[966/1407] Seed 6348: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6348.json
+
+[967/1407] Seed 6349: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6349.json
+
+[968/1407] Seed 6359: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6359.json
+
+[969/1407] Seed 6365: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6365.json
+
+[970/1407] Seed 6378: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6378.json
+
+[971/1407] Seed 6391: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6391.json
+
+[972/1407] Seed 6402: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6402.json
+
+[973/1407] Seed 6413: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6413.json
+
+[974/1407] Seed 6421: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6421.json
+
+[975/1407] Seed 6423: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6423.json
+
+[976/1407] Seed 6438: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6438.json
+
+[977/1407] Seed 6445: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6445.json
+
+[978/1407] Seed 6454: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6454.json
+
+[979/1407] Seed 6455: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6455.json
+
+[980/1407] Seed 6456: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6456.json
+
+[981/1407] Seed 6488: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6488.json
+
+[982/1407] Seed 6516: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6516.json
+
+[983/1407] Seed 6518: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6518.json
+
+[984/1407] Seed 6526: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6526.json
+
+[985/1407] Seed 6527: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6527.json
+
+[986/1407] Seed 6528: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6528.json
+
+[987/1407] Seed 6543: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6543.json
+
+[988/1407] Seed 6567: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6567.json
+
+[989/1407] Seed 6568: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6568.json
+
+[990/1407] Seed 6576: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6576.json
+
+[991/1407] Seed 6592: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6592.json
+
+[992/1407] Seed 6593: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6593.json
+
+[993/1407] Seed 6597: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6597.json
+
+[994/1407] Seed 6603: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6603.json
+
+[995/1407] Seed 6605: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6605.json
+
+[996/1407] Seed 6621: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6621.json
+
+[997/1407] Seed 6632: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6632.json
+
+[998/1407] Seed 6636: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6636.json
+
+[999/1407] Seed 6649: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6649.json
+
+[1000/1407] Seed 6650: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6650.json
+
+[1001/1407] Seed 6654: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6654.json
+
+[1002/1407] Seed 6669: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6669.json
+
+[1003/1407] Seed 6675: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6675.json
+
+[1004/1407] Seed 6685: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6685.json
+
+[1005/1407] Seed 6719: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6719.json
+
+[1006/1407] Seed 6724: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6724.json
+
+[1007/1407] Seed 6727: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6727.json
+
+[1008/1407] Seed 6738: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6738.json
+
+[1009/1407] Seed 6742: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6742.json
+
+[1010/1407] Seed 6756: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6756.json
+
+[1011/1407] Seed 6757: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6757.json
+
+[1012/1407] Seed 6764: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6764.json
+
+[1013/1407] Seed 6794: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6794.json
+
+[1014/1407] Seed 6815: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6815.json
+
+[1015/1407] Seed 6826: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6826.json
+
+[1016/1407] Seed 6832: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6832.json
+
+[1017/1407] Seed 6865: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6865.json
+
+[1018/1407] Seed 6891: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6891.json
+
+[1019/1407] Seed 6913: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6913.json
+
+[1020/1407] Seed 6919: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6919.json
+
+[1021/1407] Seed 6926: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6926.json
+
+[1022/1407] Seed 6935: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6935.json
+
+[1023/1407] Seed 6976: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6976.json
+
+[1024/1407] Seed 6978: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed6978.json
+
+[1025/1407] Seed 7000: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7000.json
+
+[1026/1407] Seed 7002: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7002.json
+
+[1027/1407] Seed 7006: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7006.json
+
+[1028/1407] Seed 7010: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7010.json
+
+[1029/1407] Seed 7012: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7012.json
+
+[1030/1407] Seed 7018: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7018.json
+
+[1031/1407] Seed 7028: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7028.json
+
+[1032/1407] Seed 7029: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7029.json
+
+[1033/1407] Seed 7042: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7042.json
+
+[1034/1407] Seed 7054: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7054.json
+
+[1035/1407] Seed 7055: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7055.json
+
+[1036/1407] Seed 7072: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7072.json
+
+[1037/1407] Seed 7077: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7077.json
+
+[1038/1407] Seed 7081: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7081.json
+
+[1039/1407] Seed 7082: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7082.json
+
+[1040/1407] Seed 7109: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7109.json
+
+[1041/1407] Seed 7121: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7121.json
+
+[1042/1407] Seed 7127: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7127.json
+
+[1043/1407] Seed 7131: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7131.json
+
+[1044/1407] Seed 7140: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7140.json
+
+[1045/1407] Seed 7149: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7149.json
+
+[1046/1407] Seed 7163: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7163.json
+
+[1047/1407] Seed 7169: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7169.json
+
+[1048/1407] Seed 7179: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7179.json
+
+[1049/1407] Seed 7213: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7213.json
+
+[1050/1407] Seed 7227: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7227.json
+
+[1051/1407] Seed 7238: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7238.json
+
+[1052/1407] Seed 7240: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7240.json
+
+[1053/1407] Seed 7242: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7242.json
+
+[1054/1407] Seed 7243: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7243.json
+
+[1055/1407] Seed 7249: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7249.json
+
+[1056/1407] Seed 7252: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7252.json
+
+[1057/1407] Seed 7268: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7268.json
+
+[1058/1407] Seed 7298: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7298.json
+
+[1059/1407] Seed 7306: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7306.json
+
+[1060/1407] Seed 7312: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7312.json
+
+[1061/1407] Seed 7314: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7314.json
+
+[1062/1407] Seed 7324: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7324.json
+
+[1063/1407] Seed 7371: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7371.json
+
+[1064/1407] Seed 7376: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7376.json
+
+[1065/1407] Seed 7379: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7379.json
+
+[1066/1407] Seed 7410: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7410.json
+
+[1067/1407] Seed 7415: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7415.json
+
+[1068/1407] Seed 7417: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7417.json
+
+[1069/1407] Seed 7427: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7427.json
+
+[1070/1407] Seed 7436: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7436.json
+
+[1071/1407] Seed 7441: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7441.json
+
+[1072/1407] Seed 7444: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7444.json
+
+[1073/1407] Seed 7461: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7461.json
+
+[1074/1407] Seed 7496: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7496.json
+
+[1075/1407] Seed 7504: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7504.json
+
+[1076/1407] Seed 7539: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7539.json
+
+[1077/1407] Seed 7556: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7556.json
+
+[1078/1407] Seed 7559: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7559.json
+
+[1079/1407] Seed 7563: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7563.json
+
+[1080/1407] Seed 7577: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7577.json
+
+[1081/1407] Seed 7589: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7589.json
+
+[1082/1407] Seed 7592: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7592.json
+
+[1083/1407] Seed 7601: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7601.json
+
+[1084/1407] Seed 7618: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7618.json
+
+[1085/1407] Seed 7623: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7623.json
+
+[1086/1407] Seed 7635: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7635.json
+
+[1087/1407] Seed 7656: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7656.json
+
+[1088/1407] Seed 7658: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7658.json
+
+[1089/1407] Seed 7662: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7662.json
+
+[1090/1407] Seed 7671: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7671.json
+
+[1091/1407] Seed 7691: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7691.json
+
+[1092/1407] Seed 7701: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7701.json
+
+[1093/1407] Seed 7705: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7705.json
+
+[1094/1407] Seed 7709: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7709.json
+
+[1095/1407] Seed 7744: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7744.json
+
+[1096/1407] Seed 7792: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7792.json
+
+[1097/1407] Seed 7797: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7797.json
+
+[1098/1407] Seed 7830: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7830.json
+
+[1099/1407] Seed 7846: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7846.json
+
+[1100/1407] Seed 7869: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7869.json
+
+[1101/1407] Seed 7877: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7877.json
+
+[1102/1407] Seed 7884: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7884.json
+
+[1103/1407] Seed 7887: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7887.json
+
+[1104/1407] Seed 7897: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7897.json
+
+[1105/1407] Seed 7960: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7960.json
+
+[1106/1407] Seed 7984: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7984.json
+
+[1107/1407] Seed 7996: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed7996.json
+
+[1108/1407] Seed 8008: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8008.json
+
+[1109/1407] Seed 8012: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8012.json
+
+[1110/1407] Seed 8013: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8013.json
+
+[1111/1407] Seed 8026: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8026.json
+
+[1112/1407] Seed 8031: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8031.json
+
+[1113/1407] Seed 8032: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8032.json
+
+[1114/1407] Seed 8042: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8042.json
+
+[1115/1407] Seed 8062: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8062.json
+
+[1116/1407] Seed 8070: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8070.json
+
+[1117/1407] Seed 8075: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8075.json
+
+[1118/1407] Seed 8076: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8076.json
+
+[1119/1407] Seed 8094: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8094.json
+
+[1120/1407] Seed 8121: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8121.json
+
+[1121/1407] Seed 8123: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8123.json
+
+[1122/1407] Seed 8125: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8125.json
+
+[1123/1407] Seed 8146: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8146.json
+
+[1124/1407] Seed 8152: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8152.json
+
+[1125/1407] Seed 8164: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8164.json
+
+[1126/1407] Seed 8170: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8170.json
+
+[1127/1407] Seed 8184: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8184.json
+
+[1128/1407] Seed 8186: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8186.json
+
+[1129/1407] Seed 8189: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8189.json
+
+[1130/1407] Seed 8263: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8263.json
+
+[1131/1407] Seed 8322: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8322.json
+
+[1132/1407] Seed 8326: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8326.json
+
+[1133/1407] Seed 8328: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8328.json
+
+[1134/1407] Seed 8342: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8342.json
+
+[1135/1407] Seed 8355: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8355.json
+
+[1136/1407] Seed 8365: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8365.json
+
+[1137/1407] Seed 8374: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8374.json
+
+[1138/1407] Seed 8405: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8405.json
+
+[1139/1407] Seed 8407: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8407.json
+
+[1140/1407] Seed 8414: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8414.json
+
+[1141/1407] Seed 8439: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8439.json
+
+[1142/1407] Seed 8445: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8445.json
+
+[1143/1407] Seed 8463: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8463.json
+
+[1144/1407] Seed 8476: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8476.json
+
+[1145/1407] Seed 8477: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8477.json
+
+[1146/1407] Seed 8490: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8490.json
+
+[1147/1407] Seed 8514: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8514.json
+
+[1148/1407] Seed 8532: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8532.json
+
+[1149/1407] Seed 8537: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8537.json
+
+[1150/1407] Seed 8541: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8541.json
+
+[1151/1407] Seed 8543: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8543.json
+
+[1152/1407] Seed 8544: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8544.json
+
+[1153/1407] Seed 8545: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8545.json
+
+[1154/1407] Seed 8553: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8553.json
+
+[1155/1407] Seed 8554: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8554.json
+
+[1156/1407] Seed 8555: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8555.json
+
+[1157/1407] Seed 8557: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8557.json
+
+[1158/1407] Seed 8559: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8559.json
+
+[1159/1407] Seed 8583: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8583.json
+
+[1160/1407] Seed 8602: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8602.json
+
+[1161/1407] Seed 8618: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8618.json
+
+[1162/1407] Seed 8619: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8619.json
+
+[1163/1407] Seed 8641: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8641.json
+
+[1164/1407] Seed 8690: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8690.json
+
+[1165/1407] Seed 8708: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8708.json
+
+[1166/1407] Seed 8766: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8766.json
+
+[1167/1407] Seed 8774: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8774.json
+
+[1168/1407] Seed 8784: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8784.json
+
+[1169/1407] Seed 8791: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8791.json
+
+[1170/1407] Seed 8799: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8799.json
+
+[1171/1407] Seed 8802: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8802.json
+
+[1172/1407] Seed 8817: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8817.json
+
+[1173/1407] Seed 8829: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8829.json
+
+[1174/1407] Seed 8832: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8832.json
+
+[1175/1407] Seed 8848: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8848.json
+
+[1176/1407] Seed 8849: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8849.json
+
+[1177/1407] Seed 8851: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8851.json
+
+[1178/1407] Seed 8873: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8873.json
+
+[1179/1407] Seed 8893: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8893.json
+
+[1180/1407] Seed 8895: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8895.json
+
+[1181/1407] Seed 8899: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8899.json
+
+[1182/1407] Seed 8916: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8916.json
+
+[1183/1407] Seed 8957: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8957.json
+
+[1184/1407] Seed 8974: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8974.json
+
+[1185/1407] Seed 8986: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8986.json
+
+[1186/1407] Seed 8999: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed8999.json
+
+[1187/1407] Seed 9005: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9005.json
+
+[1188/1407] Seed 9009: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9009.json
+
+[1189/1407] Seed 9033: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9033.json
+
+[1190/1407] Seed 9039: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9039.json
+
+[1191/1407] Seed 9048: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9048.json
+
+[1192/1407] Seed 9082: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9082.json
+
+[1193/1407] Seed 9089: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9089.json
+
+[1194/1407] Seed 9091: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9091.json
+
+[1195/1407] Seed 9107: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9107.json
+
+[1196/1407] Seed 9116: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9116.json
+
+[1197/1407] Seed 9124: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9124.json
+
+[1198/1407] Seed 9128: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9128.json
+
+[1199/1407] Seed 9159: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9159.json
+
+[1200/1407] Seed 9196: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9196.json
+
+[1201/1407] Seed 9213: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9213.json
+
+[1202/1407] Seed 9227: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9227.json
+
+[1203/1407] Seed 9314: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9314.json
+
+[1204/1407] Seed 9328: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9328.json
+
+[1205/1407] Seed 9331: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9331.json
+
+[1206/1407] Seed 9341: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9341.json
+
+[1207/1407] Seed 9350: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9350.json
+
+[1208/1407] Seed 9362: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9362.json
+
+[1209/1407] Seed 9390: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9390.json
+
+[1210/1407] Seed 9394: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9394.json
+
+[1211/1407] Seed 9400: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9400.json
+
+[1212/1407] Seed 9410: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9410.json
+
+[1213/1407] Seed 9415: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9415.json
+
+[1214/1407] Seed 9417: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9417.json
+
+[1215/1407] Seed 9420: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9420.json
+
+[1216/1407] Seed 9423: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9423.json
+
+[1217/1407] Seed 9425: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9425.json
+
+[1218/1407] Seed 9427: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9427.json
+
+[1219/1407] Seed 9485: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9485.json
+
+[1220/1407] Seed 9529: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9529.json
+
+[1221/1407] Seed 9540: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9540.json
+
+[1222/1407] Seed 9544: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9544.json
+
+[1223/1407] Seed 9563: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9563.json
+
+[1224/1407] Seed 9565: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9565.json
+
+[1225/1407] Seed 9567: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9567.json
+
+[1226/1407] Seed 9578: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9578.json
+
+[1227/1407] Seed 9600: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9600.json
+
+[1228/1407] Seed 9635: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9635.json
+
+[1229/1407] Seed 9638: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9638.json
+
+[1230/1407] Seed 9657: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9657.json
+
+[1231/1407] Seed 9661: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9661.json
+
+[1232/1407] Seed 9681: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9681.json
+
+[1233/1407] Seed 9711: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9711.json
+
+[1234/1407] Seed 9712: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9712.json
+
+[1235/1407] Seed 9716: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9716.json
+
+[1236/1407] Seed 9728: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9728.json
+
+[1237/1407] Seed 9741: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9741.json
+
+[1238/1407] Seed 9746: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9746.json
+
+[1239/1407] Seed 9748: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9748.json
+
+[1240/1407] Seed 9751: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9751.json
+
+[1241/1407] Seed 9765: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9765.json
+
+[1242/1407] Seed 9782: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9782.json
+
+[1243/1407] Seed 9789: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9789.json
+
+[1244/1407] Seed 9805: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9805.json
+
+[1245/1407] Seed 9809: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9809.json
+
+[1246/1407] Seed 9827: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9827.json
+
+[1247/1407] Seed 9836: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9836.json
+
+[1248/1407] Seed 9861: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9861.json
+
+[1249/1407] Seed 9914: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9914.json
+
+[1250/1407] Seed 9926: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9926.json
+
+[1251/1407] Seed 9931: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9931.json
+
+[1252/1407] Seed 9996: Checking if still fails... Still fails, minimizing...
+Minimized team saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized/seed9996.json
+
+
+=======================================
+Summary
+=======================================
+Total seeds checked: 1407
+Already minimized: 0
+Now pass (fixed): 527
+Newly minimized: 725
+
+Minimized files saved to: /Users/vjeux/random/showdown/pokemon-showdown-rs/tests/minimized

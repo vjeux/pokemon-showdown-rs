@@ -417,6 +417,26 @@ impl Battle {
                 // Then try standalone/move-embedded condition callbacks
                 condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos, source_pos, source_effect.as_ref())
             }
+            "SetStatus" => {
+                // SetStatus is called when a status is being set on the target
+                // Terrain conditions like Misty Terrain and Electric Terrain prevent status
+                // Extract status, target, source, and effect from event
+                // status is what's being set (par, brn, etc.) - but we match by condition_id (mistyterrain)
+                // target_pos is from the event (the Pokemon receiving status)
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let effect_id_owned = self.event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|eff| eff.id.to_string());
+                condition_callbacks::dispatch_on_set_status(
+                    self,
+                    condition_id,
+                    None, // status - not passed through for terrain checks
+                    target_pos,
+                    source_pos,
+                    effect_id_owned.as_deref(),
+                )
+            }
             "SwitchIn" => {
                 condition_callbacks::dispatch_on_switch_in(self, condition_id, pokemon_pos)
             }
