@@ -460,6 +460,7 @@ pokemon.speed = pokemon.stored_stats.spe as i32;
 - 2026-01-13: Fixed is_z_or_max_powered pattern in disable.rs, banefulbunker.rs, burningbulwark.rs
 - 2026-01-13: Verified slot position pattern is correctly implemented (wish, futuremove, etc.)
 - 2026-01-13: Fixed EventResult::Stop to EventResult::Null in 38 move callbacks (bulk fix for return null pattern)
+- 2026-01-13: Fixed on_hit parameter order in Max moves (9 files: genesissupernova, maxovergrowth, maxstarfall, maxmindstorm, maxflare, maxlightning, maxrockfall, maxgeyser, maxhailstorm) - they were using first param as source but dispatch passes target first
 
 ## Patterns Verified as Already Fixed
 
