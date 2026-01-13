@@ -35,7 +35,8 @@ impl Pokemon {
         // ✅ Otherwise return the move ID from the event result
         match event_result {
             EventResult::Boolean(true) => None, // true in JavaScript → null
-            EventResult::String(move_id) => Some(ID::from(move_id)), // Event handler returned move ID
+            EventResult::String(move_id) => Some(ID::from(move_id)), // Event handler returned move ID as string
+            EventResult::ID(move_id) => Some(move_id), // Event handler returned move ID directly
             EventResult::Continue => None, // No event handler fired, no locked move
             _ => None, // Other results treated as no lock
         }
