@@ -107,13 +107,14 @@ impl EventResult {
 
     /// Check if the result is truthy (for boolean-like event handling)
     /// Matches JavaScript truthiness semantics:
-    /// - Boolean(false), Number(0), Null => false
+    /// - Boolean(false), Number(0), Null, Stop => false
     /// - Everything else => true
     pub fn is_truthy(&self) -> bool {
         match self {
             EventResult::Boolean(b) => *b,
             EventResult::Number(n) => *n != 0,
             EventResult::Null => false,
+            EventResult::Stop => false,
             _ => true,
         }
     }

@@ -7,6 +7,27 @@
 use crate::battle::Battle;
 use crate::event::EventResult;
 
+/// Secondary onHit callback
+/// JavaScript: secondary: { chance: 100, onHit(target) { target.addVolatile('throatchop'); } }
+pub fn on_hit(
+    battle: &mut Battle,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
+) -> EventResult {
+    // target.addVolatile('throatchop');
+    crate::pokemon::Pokemon::add_volatile(
+        battle,
+        target_pos,
+        crate::dex_data::ID::from("throatchop"),
+        source_pos,
+        Some(&crate::battle::Effect::move_("throatchop")),
+        None, // linked_status
+        None, // embedded_condition - throatchop's condition data comes from dex.conditions
+    );
+
+    EventResult::Continue
+}
+
 pub mod condition {
     use super::*;
 
