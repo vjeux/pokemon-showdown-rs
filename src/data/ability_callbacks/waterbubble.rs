@@ -12,12 +12,11 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
-        if move_data.move_type == "Fire" {
-            battle.chain_modify(0.5);
-            return EventResult::Continue;
-        }
+pub fn on_source_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // JavaScript checks move.type (the active move's type, not the dex type)
+    // This is important for moves whose type is modified at runtime (e.g., Electrify)
+    if active_move.map(|m| m.move_type == "Fire").unwrap_or(false) {
+        battle.chain_modify(0.5);
     }
     EventResult::Continue
 }
@@ -27,12 +26,10 @@ pub fn on_source_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usiz
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
-        if move_data.move_type == "Fire" {
-            battle.chain_modify(0.5);
-            return EventResult::Continue;
-        }
+pub fn on_source_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // JavaScript checks move.type (the active move's type, not the dex type)
+    if active_move.map(|m| m.move_type == "Fire").unwrap_or(false) {
+        battle.chain_modify(0.5);
     }
     EventResult::Continue
 }
@@ -42,12 +39,10 @@ pub fn on_source_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usi
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
-        if move_data.move_type == "Water" {
-            battle.chain_modify(2.0);
-            return EventResult::Continue;
-        }
+pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // JavaScript checks move.type (the active move's type, not the dex type)
+    if active_move.map(|m| m.move_type == "Water").unwrap_or(false) {
+        battle.chain_modify(2.0);
     }
     EventResult::Continue
 }
@@ -57,12 +52,10 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usiz
 ///         return this.chainModify(2);
 ///     }
 /// }
-pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
-        if move_data.move_type == "Water" {
-            battle.chain_modify(2.0);
-            return EventResult::Continue;
-        }
+pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // JavaScript checks move.type (the active move's type, not the dex type)
+    if active_move.map(|m| m.move_type == "Water").unwrap_or(false) {
+        battle.chain_modify(2.0);
     }
     EventResult::Continue
 }

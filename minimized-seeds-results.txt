@@ -207,7 +207,7 @@ Seed 3070: ✗ FAIL - #9: turn=10, prng=44->52, P1=[Kangaskhan(180/306)], P2=[Hy
 Seed 3078: ✗ FAIL - #5: turn=5, prng=28->35, P1=[Golisopod(87/184)], P2=[Silvally(297/334)]
 Seed 3085: ✗ FAIL - #10: turn=10, prng=36->41, P1=[Toucannon(82/211)], P2=[Krilowatt(387/445)]
 Seed 3092: ✗ FAIL - #8: turn=8, prng=18->21, P1=[Grimer(190/190)], P2=[Banette(234/234)]
-Seed 3103: ✗ FAIL - #4: turn=5, prng=18->25, P1=[Torterra(92/276)], P2=[Draggalong(102/174)]
+Seed 3103: ✓ PASS
 Seed 3119: ✓ PASS
 Seed 3122: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Crucibelle(174/195)], P2=[Graveler(206/206)]
 Seed 3126: ✗ FAIL - #48: turn=46, prng=192->203, P1=[Alcremie(70/225)], P2=[Porygon-Z(194/194)]
@@ -408,7 +408,7 @@ Seed 5743: ✓ PASS
 Seed 5748: ✗ FAIL - #66: turn=65, prng=115->115, P1=[Shedinja(0/1)], P2=[Eelektross(133/177)]
 Seed 5761: ✗ FAIL - #40: turn=38, prng=123->127, P1=[Smokomodo(0/236)], P2=[Kyurem(17/367)]
 Seed 5762: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Alcremie(110/184)], P2=[Koraidon(295/305)]
-Seed 5770: ✗ FAIL - #7: turn=8, prng=36->42, P1=[Chikorita(56/218)], P2=[Hoppip(86/225)]
+Seed 5770: ✓ PASS
 Seed 5780: ✓ PASS
 Seed 5807: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Guzzlord(602/602)], P2=[Grimmsnarl(275/321)]
 Seed 5840: ✗ FAIL - #49: turn=44, prng=139->140, P1=[Tyranitar(261/261)], P2=[Swirlpool(4/182)]
@@ -491,7 +491,7 @@ Seed 6727: ✓ PASS
 Seed 6738: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Shox(361/417)], P2=[Cottonee(125/242)]
 Seed 6742: ✗ FAIL - #10: turn=10, prng=13->19, P1=[Blastoise(118/168)], P2=[Sneasel(0/264)]
 Seed 6756: ✓ PASS
-Seed 6757: ✗ FAIL - #4: turn=3, prng=9->15, P1=[Skeledirge(76/308)], P2=[Jolteon(0/229)]
+Seed 6757: ✓ PASS
 Seed 6764: ✗ FAIL - #43: turn=43, prng=17->29, P1=[Raticate(278/290)], P2=[Articuno(204/204)]
 Seed 6794: ✗ FAIL - #60: turn=57, prng=96->101, P1=[Pumpkaboo(174/218)], P2=[Metagross(53/234)]
 Seed 6815: ✗ FAIL - #62: turn=60, prng=106->112, P1=[Woobat(223/275)], P2=[Sinistea(125/177)]
@@ -561,7 +561,7 @@ Seed 7556: ✗ FAIL - #7: turn=8, prng=24->29, P1=[Copperajah(268/275)], P2=[Stu
 Seed 7559: ✗ FAIL - #12: turn=11, prng=53->57, P1=[Toucannon(76/228)], P2=[Volbeat(53/182)]
 Seed 7563: ✓ PASS
 Seed 7577: ✓ PASS
-Seed 7589: ✗ FAIL - #8: turn=8, prng=36->42, P1=[Decidueye(28/183)], P2=[Eelektross(130/212)]
+Seed 7589: ✓ PASS
 Seed 7592: ✗ FAIL - #2: turn=3, prng=5->10, P1=[Darmanitan(234/353)], P2=[Iron Crown(107/215)]
 Seed 7601: ✗ FAIL - #2: turn=3, prng=5->10, P1=[Nidoran-F(119/196)], P2=[Darmanitan(149/256)]
 Seed 7618: ✗ FAIL - #8: turn=8, prng=23->23, P1=[Glimmet(21/178)], P2=[Flareon(160/213)]
@@ -570,7 +570,7 @@ Seed 7635: ✗ FAIL - #1: turn=2, prng=0->5, P1=[Magnezone(254/269)], P2=[Exeggu
 Seed 7656: ✓ PASS
 Seed 7658: ✓ PASS
 Seed 7662: ✗ FAIL - #29: turn=28, prng=78->84, P1=[Meowth(196/256)], P2=[Staryu(117/222)]
-Seed 7671: ✗ FAIL - #4: turn=5, prng=18->24, P1=[Giratina(72/321)], P2=[Orbeetle(32/282)]
+Seed 7671: ✓ PASS
 Seed 7691: ✗ FAIL - #19: turn=20, prng=9->13, P1=[Ho-Oh(153/293)], P2=[Banette(9/234)]
 Seed 7701: ✓ PASS
 Seed 7705: ✗ FAIL - #8: turn=8, prng=28->31, P1=[Malaconda(203/353)], P2=[Gimmighoul(244/244)]
@@ -664,7 +664,7 @@ Seed 8895: ✓ PASS
 Seed 8899: ✓ PASS
 Seed 8916: ✗ FAIL - #6: turn=6, prng=25->30, P1=[Greavard(68/193)], P2=[Arceus(217/347)]
 Seed 8957: ✓ PASS
-Seed 8974: ✗ FAIL - #3: turn=4, prng=12->18, P1=[Dewott(7/170)], P2=[Yanmega(117/275)]
+Seed 8974: ✓ PASS
 Seed 8986: ✓ PASS
 Seed 8999: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Psyduck(134/168)], P2=[Diglett(123/147)]
 Seed 9005: ✗ FAIL - #38: turn=33, prng=157->162, P1=[Dusknoir(18/157)], P2=[Avalugg(55/232)]
@@ -685,7 +685,7 @@ Seed 9213: ✗ FAIL - #37: turn=32, prng=124->127, P1=[Ponyta(145/219)], P2=[Dew
 Seed 9227: ✗ FAIL - #11: turn=11, prng=27->33, P1=[Linoone(227/256)], P2=[Sobble(199/231)]
 Seed 9314: ✗ FAIL - #17: turn=14, prng=74->77, P1=[Tapu Bulu(202/202)], P2=[Grimmsnarl(12/241)]
 Seed 9328: ✗ FAIL - #5: turn=6, prng=20->25, P1=[Floatzel(62/274)], P2=[Tyrantrum(105/168)]
-Seed 9331: ✗ FAIL - #48: turn=46, prng=182->185, P1=[Treecko(36/160)], P2=[Klawf(85/241)]
+Seed 9331: ✓ PASS
 Seed 9341: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Arceus(292/292)], P2=[Zygarde(334/383)]
 Seed 9350: ✓ PASS
 Seed 9362: ✗ FAIL - #5: turn=5, prng=12->20, P1=[Froslass(235/266)], P2=[Jumpluff(121/203)]
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 341
-Failed: 382
+Passed: 348
+Failed: 375
 
-Pass rate: 47%
+Pass rate: 48%
 ✗ Some seeds still failing

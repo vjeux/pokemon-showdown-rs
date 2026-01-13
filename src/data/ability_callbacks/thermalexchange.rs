@@ -12,25 +12,23 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 1 });
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
-    // if (move.type === 'Fire')
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
-        if move_data.move_type == "Fire" {
-            // this.boost({ atk: 1 });
-            battle.boost(
-                &[("atk", 1)],
-                target_pos,
-                Some(target_pos),
-                None,
-                false,
-                false,
-            );
-        }
+    // JavaScript checks move.type (the active move's type, not the dex type)
+    if active_move.map(|m| m.move_type == "Fire").unwrap_or(false) {
+        // this.boost({ atk: 1 });
+        battle.boost(
+            &[("atk", 1)],
+            target_pos,
+            Some(target_pos),
+            None,
+            false,
+            false,
+        );
     }
 
     EventResult::Continue

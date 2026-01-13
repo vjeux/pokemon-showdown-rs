@@ -12,17 +12,11 @@ use crate::event::EventResult;
 ///         this.boost({ spe: 6 });
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Boost Speed by 6 stages when hit by a Water or Fire-type move
     if let Some(target) = target_pos {
-        // Check if the move is Water or Fire-type
-        let is_water_or_fire = {
-            let move_data = match battle.dex.moves().get(move_id) {
-                Some(m) => m,
-                None => return EventResult::Continue,
-            };
-            move_data.move_type == "Water" || move_data.move_type == "Fire"
-        };
+        // JavaScript checks move.type (the active move's type, not the dex type)
+        let is_water_or_fire = active_move.map(|m| m.move_type == "Water" || m.move_type == "Fire").unwrap_or(false);
 
         if is_water_or_fire {
             battle.boost(&[("spe", 6)], target, None, None, false, false);
@@ -30,4 +24,3 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     }
     EventResult::Continue
 }
-

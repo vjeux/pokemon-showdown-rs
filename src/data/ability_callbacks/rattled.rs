@@ -12,25 +12,27 @@ use crate::event::EventResult;
 ///         this.boost({ spe: 1 });
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
-    // if (['Dark', 'Bug', 'Ghost'].includes(move.type))
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
-        if move_data.move_type == "Dark" || move_data.move_type == "Bug" || move_data.move_type == "Ghost" {
-            // this.boost({ spe: 1 });
-            battle.boost(
-                &[("spe", 1)],
-                target_pos,
-                Some(target_pos),
-                None,
-                false,
-                false,
-            );
-        }
+    // JavaScript checks move.type (the active move's type, not the dex type)
+    let is_rattling_type = active_move.map(|m| {
+        m.move_type == "Dark" || m.move_type == "Bug" || m.move_type == "Ghost"
+    }).unwrap_or(false);
+
+    if is_rattling_type {
+        // this.boost({ spe: 1 });
+        battle.boost(
+            &[("spe", 1)],
+            target_pos,
+            Some(target_pos),
+            None,
+            false,
+            false,
+        );
     }
 
     EventResult::Continue

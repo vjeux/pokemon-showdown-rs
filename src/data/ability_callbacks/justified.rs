@@ -12,17 +12,11 @@ use crate::event::EventResult;
 ///         this.boost({ atk: 1 });
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Boost Attack by 1 stage when hit by a Dark-type move
     if let Some(target) = target_pos {
-        // Check if the move is Dark-type
-        let is_dark_type = {
-            let move_data = match battle.dex.moves().get(move_id) {
-                Some(m) => m,
-                None => return EventResult::Continue,
-            };
-            move_data.move_type == "Dark"
-        };
+        // JavaScript checks move.type (the active move's type, not the dex type)
+        let is_dark_type = active_move.map(|m| m.move_type == "Dark").unwrap_or(false);
 
         if is_dark_type {
             battle.boost(&[("atk", 1)], target, None, None, false, false);
@@ -30,4 +24,3 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     }
     EventResult::Continue
 }
-

@@ -15,17 +15,11 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Immune to Grass-type moves and boost Attack by 1
     if target_pos != source_pos {
-        // Check if the move is Grass-type
-        let is_grass = {
-            let move_data = match battle.dex.moves().get(move_id) {
-                Some(m) => m,
-                None => return EventResult::Continue,
-            };
-            move_data.move_type == "Grass"
-        };
+        // JavaScript checks move.type (the active move's type, not the dex type)
+        let is_grass = active_move.map(|m| m.move_type == "Grass").unwrap_or(false);
 
         if is_grass {
             // Try to boost Attack
