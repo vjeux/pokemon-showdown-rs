@@ -80,18 +80,22 @@ pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, source_pos: Opti
     }
 
     // return this.chainModify([move.hasAuraBreak ? 3072 : 5448, 4096]);
+    // IMPORTANT: In JavaScript, chainModify() returns undefined, not the new modifier!
+    // So "return this.chainModify(...)" actually returns undefined, keeping relay_var unchanged.
+    // The modifier is accumulated in event.modifier and applied at the end of runEvent.
     let has_aura_break = if let Some(ref active_move) = battle.active_move {
         active_move.has_aura_break.unwrap_or(false)
     } else {
         false
     };
 
-    let modifier = if has_aura_break {
-        battle.chain_modify_fraction(3072, 4096) // 0.75x with Aura Break
+    if has_aura_break {
+        battle.chain_modify_fraction(3072, 4096); // 0.75x with Aura Break
     } else {
-        battle.chain_modify_fraction(5448, 4096) // 1.33x normally
-    };
+        battle.chain_modify_fraction(5448, 4096); // 1.33x normally
+    }
 
-    EventResult::Number(modifier)
+    // Return Continue (undefined in JS) - the modifier is applied via event.modifier
+    EventResult::Continue
 }
 
