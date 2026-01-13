@@ -50,8 +50,7 @@ pub fn on_fractional_priority(
             battle.add("-activate", &[pokemon_ident.as_str().into(), "ability: Quick Draw".into()]);
         }
         // return 0.1;
-        // Fractional priority is multiplied by 10 internally, so 0.1 = 1
-        return EventResult::Number(1);
+        return EventResult::Float(0.1);
     }
 
     EventResult::Continue
