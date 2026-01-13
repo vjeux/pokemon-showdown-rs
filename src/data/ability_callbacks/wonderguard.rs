@@ -20,7 +20,7 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     use crate::battle::Arg;
 
     // if (target === source || move.category === 'Status' || move.id === 'struggle') return;
@@ -28,13 +28,11 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
         return EventResult::Continue;
     }
 
-    let (is_status, is_struggle, is_skydrop) = {
-        let move_data = match battle.dex.moves().get(move_id) {
-            Some(m) => m,
-            None => return EventResult::Continue,
-        };
-        (move_data.category == "Status", move_id == "struggle", move_id == "skydrop")
-    };
+    // JavaScript checks move.category (the active move's category, not the dex category)
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let is_status = active_move.map(|m| m.category == "Status").unwrap_or(false);
+    let is_struggle = move_id == "struggle";
+    let is_skydrop = move_id == "skydrop";
 
     if is_status || is_struggle {
         return EventResult::Continue;

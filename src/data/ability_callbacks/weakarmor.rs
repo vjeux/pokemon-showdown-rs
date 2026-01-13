@@ -12,17 +12,12 @@ use crate::event::EventResult;
 ///         this.boost({ def: -1, spe: 2 }, target, target);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // When hit by Physical move, lower Defense by 1 and boost Speed by 2
     if let Some(target) = target_pos {
-        // Check if the move is Physical category
-        let is_physical = {
-            let move_data = match battle.dex.moves().get(move_id) {
-                Some(m) => m,
-                None => return EventResult::Continue,
-            };
-            move_data.category == "Physical"
-        };
+        // JavaScript checks move.category (the active move's category, not the dex category)
+        // This is important for moves like Shell Side Arm which can change category
+        let is_physical = active_move.map(|m| m.category == "Physical").unwrap_or(false);
 
         if is_physical {
             // Lower Defense by 1 and boost Speed by 2
@@ -31,4 +26,3 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     }
     EventResult::Continue
 }
-
