@@ -360,6 +360,20 @@ pokemon.speed = pokemon.stored_stats.spe as i32;
 - [x] set_species.rs - Already fixed (lines 128, 288)
 - [x] speedswap.rs - Fixed to update speed for both Pokemon
 
+### 23. NEEDS INVESTIGATION: Imprison onFoeDisableMove/onFoeBeforeMove not triggering correctly
+**Commit Reference:** `d3293969`
+
+**Problem:** Imprison's onFoeDisableMove and onFoeBeforeMove callbacks are defined and detected, but Staryu still uses Petal Blizzard instead of being forced to Struggle.
+
+**Investigation Notes:**
+- The callbacks exist in moves.json (`condition.onFoeDisableMove: true`, `condition.onFoeBeforeMove: true`)
+- `has_volatile_callback` finds the callbacks correctly
+- But the actual handlers don't seem to be executed
+- Simply changing `prefixed_handlers=true` for BeforeMove/DisableMove causes regressions
+- Need to understand how JavaScript's event system runs foe handlers
+
+**Failing Seed:** 1249 (Mr. Mime-Galar with Imprison vs Staryu with Petal Blizzard)
+
 ## Progress Log
 
 - 2026-01-13: Created this file
