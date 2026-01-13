@@ -342,6 +342,24 @@ battle.dex.get_immunity("powder", &types)
 
 **Impact:** Pass rate: 393/723 -> 395/723 (+2 seeds)
 
+### 22. ✅ FIXED: stored_stats.spe changes must update speed field
+**Commit Reference:** `562cc3e9`, `c935293b`
+
+**Problem:** When `stored_stats.spe` is modified, the `pokemon.speed` field must also be updated for correct speed sorting during action resolution. Transform was fixed to do this, but Speed Swap was not.
+
+**JavaScript:** In JavaScript, the battle system reads `storedStats.spe` directly. In Rust, we have a separate `speed` field used for sorting.
+
+**Pattern:** Whenever `stored_stats.spe` is modified, immediately update `speed`:
+```rust
+pokemon.stored_stats.spe = new_value;
+pokemon.speed = pokemon.stored_stats.spe as i32;
+```
+
+**Files Fixed:**
+- [x] transform_into.rs - Already fixed (line 243)
+- [x] set_species.rs - Already fixed (lines 128, 288)
+- [x] speedswap.rs - Fixed to update speed for both Pokemon
+
 ## Progress Log
 
 - 2026-01-13: Created this file
@@ -361,4 +379,5 @@ battle.dex.get_immunity("powder", &types)
 - 2026-01-13: Fixed Enigma Berry to skip status/self moves - Pass rate 387 -> 392
 - 2026-01-13: Fixed Supersweet Syrup to use Pokemon field - Pass rate 392 -> 393
 - 2026-01-13: Fixed get_immunity to use get_types() - Pass rate 393 -> 395
+- 2026-01-13: Fixed Speed Swap to update speed field after stored_stats.spe change
 - 2026-01-13: Current pass rate: 395/723 (54%)
