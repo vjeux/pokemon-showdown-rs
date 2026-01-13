@@ -98,13 +98,11 @@ pub fn on_try_hit(
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    // onHit(target) - target is the first param (for self-targeting moves, target == source)
+    let target = target_pos;
 
     // this.directDamage(target.maxhp / 4);
     let damage = {
