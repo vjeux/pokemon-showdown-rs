@@ -19,14 +19,21 @@ use crate::event::EventResult;
 ///
 /// 		}
 /// ```
-pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    // if (!source.volatiles['dynamax']) return;
+pub fn on_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+    // onHit(source) { if (!source.volatiles['dynamax']) return; this.field.setWeather('sandstorm'); }
+    // target_pos = Pokemon hit by the move (not used)
+    // source_pos = Pokemon using the move (checked for dynamax)
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
+
     let has_dynamax = {
-        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source.has_volatile(&ID::from("dynamax"))
+        source_pokemon.has_volatile(&ID::from("dynamax"))
     };
 
     if !has_dynamax {

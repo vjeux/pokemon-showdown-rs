@@ -19,10 +19,12 @@ use crate::event::EventResult;
 ///
 /// 		}
 /// ```
-pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    // this.field.setTerrain('psychicterrain');
+pub fn on_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
+    // onHit() { this.field.setTerrain('psychicterrain'); }
+    // target_pos = Pokemon hit by the move (not used)
+    // source_pos = Pokemon using the move (used as terrain source)
     let source_effect = Some(crate::battle::Effect::move_("genesissupernova"));
-    battle.set_terrain(ID::from("psychicterrain"), Some(pokemon_pos), source_effect);
+    battle.set_terrain(ID::from("psychicterrain"), source_pos, source_effect);
 
     EventResult::Continue
 }
