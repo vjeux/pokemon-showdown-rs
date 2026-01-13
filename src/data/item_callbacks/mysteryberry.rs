@@ -33,7 +33,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         // if (moveSlot && moveSlot.pp === 0)
         if let Some(ref last_move) = pokemon.last_move_used {
             let move_slot_idx = pokemon.move_slots.iter()
-                .position(|m| &m.id == last_move);
+                .position(|m| m.id == last_move.id);
 
             if let Some(idx) = move_slot_idx {
                 let has_zero_pp = pokemon.move_slots[idx].pp == 0;

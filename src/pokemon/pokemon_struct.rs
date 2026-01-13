@@ -285,8 +285,8 @@ pub struct Pokemon {
     pub last_move_encore: Option<ID>, // Gen 2 only - for Encore tracking
     /// Last move used (for repetition tracking)
     /// JavaScript: lastMoveUsed: ActiveMove | null
-    // TODO: Change from Option<ID> to Option<ActiveMove>
-    pub last_move_used: Option<ID>,
+    /// Stores the full ActiveMove with runtime type modifications
+    pub last_move_used: Option<Box<crate::battle_actions::ActiveMove>>,
     /// Last move target location
     /// JavaScript: lastMoveTargetLoc?: number
     pub last_move_target_loc: Option<i8>,

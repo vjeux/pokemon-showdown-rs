@@ -46,20 +46,16 @@ pub fn on_hit(
     // if (!target.lastMoveUsed) {
     //     return false;
     // }
+    // const attackType = target.lastMoveUsed.type;
     let attack_type = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
+        // Use the stored ActiveMove which has runtime type modifications
         match &target_pokemon.last_move_used {
-            Some(move_id) => {
-                let move_data = match battle.dex.moves().get_by_id(move_id) {
-                    Some(m) => m,
-                    None => return EventResult::Boolean(false),
-                };
-                move_data.move_type.clone()
-            }
+            Some(last_move) => last_move.move_type.clone(),
             None => {
                 return EventResult::Boolean(false);
             }

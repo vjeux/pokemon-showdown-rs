@@ -25,8 +25,9 @@ impl Pokemon {
             self.last_move_encore = Some(move_id.clone());
         }
 
-        // Note: last_move_used field not in JavaScript - Rust-specific tracking
-        self.last_move_used = Some(move_id.clone());
+        // JS: this.lastMoveUsed = move;
+        // Store the full ActiveMove with runtime type modifications
+        self.last_move_used = Some(Box::new(active_move.clone()));
 
         // JS: this.lastMoveTargetLoc = targetLoc;
         self.last_move_target_loc = target_loc;

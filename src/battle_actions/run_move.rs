@@ -266,7 +266,7 @@ pub fn run_move(
             if gen == 2 {
                 pokemon.last_move_encore = Some(move_id.clone());
             }
-            pokemon.last_move_used = Some(move_id.clone());
+            // last_move_used is set in use_move_inner after ModifyType runs
             pokemon.last_move_target_loc = Some(target_loc);
             pokemon.move_this_turn = Some(move_id.clone());
         }

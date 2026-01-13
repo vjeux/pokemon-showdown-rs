@@ -10,7 +10,7 @@ Step 5: Copying results...
 
 Step 6: Comparing results...
 
-Seed 502: ✗ FAIL - #41: turn=42, prng=16->18, P1=[Chandelure(154/205)], P2=[Mudbray(243/269)]
+Seed 502: ✓ PASS
 Seed 515: ✗ FAIL - #10: turn=11, prng=4->10, P1=[Sirfetch’d(164/164)], P2=[Greninja(211/243)]
 Seed 517: ✓ PASS
 Seed 536: ✗ FAIL - #15: turn=15, prng=63->69, P1=[Whimsicott(154/181)], P2=[Goldeen(167/201)]
@@ -86,7 +86,7 @@ Seed 1508: ✗ FAIL - #5: turn=5, prng=15->22, P1=[Tauros(223/312)], P2=[Silvall
 Seed 1519: ✗ FAIL - #28: turn=27, prng=70->74, P1=[Sinistea(139/139)], P2=[Iron Valiant(80/187)]
 Seed 1524: ✓ PASS
 Seed 1538: ✗ FAIL - #15: turn=13, prng=94->94, P1=[Tyrantrum(231/281)], P2=[Weezing(228/260)]
-Seed 1540: ✗ FAIL - #33: turn=34, prng=32->34, P1=[Groudon(181/242)], P2=[Cherubi(149/210)]
+Seed 1540: ✓ PASS
 Seed 1543: ✗ FAIL - #4: turn=5, prng=15->20, P1=[Bombirdier(173/229)], P2=[Skeledirge(160/276)]
 Seed 1558: ✓ PASS
 Seed 1568: ✗ FAIL - #19: turn=18, prng=86->86, P1=[Scrafty(249/258)], P2=[Pikachu(120/179)]
@@ -198,7 +198,7 @@ Seed 2975: ✗ FAIL - #20: turn=18, prng=76->79, P1=[Scrafty(11/283)], P2=[Slowb
 Seed 2981: ✓ PASS
 Seed 2982: ✗ FAIL - #17: turn=15, prng=60->65, P1=[Sandslash(260/275)], P2=[Dhelmise(257/299)]
 Seed 3000: ✗ FAIL - #4: turn=5, prng=12->16, P1=[Miraidon(266/266)], P2=[Charizard(66/225)]
-Seed 3002: ✗ FAIL - #18: turn=19, prng=54->58, P1=[Arboliva(10/222)], P2=[Alcremie(69/286)]
+Seed 3002: ✓ PASS
 Seed 3010: ✓ PASS
 Seed 3014: ✓ PASS
 Seed 3022: ✓ PASS
@@ -233,7 +233,7 @@ Seed 3348: ✓ PASS
 Seed 3367: ✗ FAIL - #36: turn=35, prng=96->96, P1=[Grafaiai(212/212)], P2=[Porygon2(199/199)]
 Seed 3382: ✓ PASS
 Seed 3403: ✓ PASS
-Seed 3433: ✗ FAIL - #19: turn=18, prng=68->70, P1=[Drifblim(124/326)], P2=[Lucario(182/258)]
+Seed 3433: ✓ PASS
 Seed 3435: ✗ FAIL - #3: turn=3, prng=9->14, P1=[Meganium(0/231)], P2=[Dragalge(126/201)]
 Seed 3456: ✓ PASS
 Seed 3460: ✓ PASS
@@ -635,7 +635,7 @@ Seed 8543: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ferrothorn(242/250)], P2=[Simis
 Seed 8544: ✗ FAIL - #86: turn=79, prng=156->160, P1=[Venusaur(27/262)], P2=[Frogadier(181/181)]
 Seed 8545: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Sinistcha(134/221)], P2=[Kabuto(159/188)]
 Seed 8553: ✓ PASS
-Seed 8554: ✗ FAIL - #18: turn=19, prng=18->20, P1=[Basculegion(225/292)], P2=[Castform(99/199)]
+Seed 8554: ✓ PASS
 Seed 8555: ✓ PASS
 Seed 8557: ✗ FAIL - #36: turn=31, prng=138->141, P1=[Kyurem(222/283)], P2=[Jellicent(0/281)]
 Seed 8559: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Tornadus(226/253)], P2=[Arboliva(292/311)]
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 363
-Failed: 360
+Passed: 368
+Failed: 355
 
 Pass rate: 50%
 ✗ Some seeds still failing

@@ -213,7 +213,7 @@ pub fn use_move_inner(
     };
 
     // pokemon.lastMoveUsed = move;
-    battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].last_move_used = Some(active_move.id.clone());
+    // Note: We set this after ModifyType runs so we capture the runtime type
 
     // if (move.id === 'weatherball' && zMove) {
     //     this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
@@ -415,6 +415,9 @@ pub fn use_move_inner(
     if let Some(ref modified) = battle.active_move {
         active_move = modified.clone();
     }
+
+    // pokemon.lastMoveUsed = move; (after ModifyType to capture runtime modifications)
+    battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].last_move_used = Some(Box::new(active_move.clone()));
 
     // if (baseTarget !== move.target) {
     //     target = this.battle.getRandomTarget(pokemon, move);
