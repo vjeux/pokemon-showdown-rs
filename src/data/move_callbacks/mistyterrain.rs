@@ -173,7 +173,8 @@ pub mod condition {
             }
 
             // return null;
-            return EventResult::Stop;
+            // EventResult::Null prevents the volatile from being added
+            return EventResult::Null;
         }
 
         EventResult::Continue
