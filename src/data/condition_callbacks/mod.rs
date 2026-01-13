@@ -533,6 +533,12 @@ pub fn dispatch_on_lock_move(
         // Uproar locks the user into using Uproar
         // JavaScript: onLockMove: 'uproar'
         "uproar" => EventResult::String("uproar".to_string()),
+        // Ice Ball locks the user into using Ice Ball
+        // JavaScript: onLockMove: 'iceball'
+        "iceball" => EventResult::String("iceball".to_string()),
+        // Rollout locks the user into using Rollout
+        // JavaScript: onLockMove: 'rollout'
+        "rollout" => EventResult::String("rollout".to_string()),
         _ => EventResult::Continue,
     }
 }
