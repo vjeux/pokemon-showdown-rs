@@ -23,7 +23,10 @@ pub fn on_try_immunity(battle: &mut Battle, target_pos: Option<(usize, usize)>) 
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        battle.dex.get_immunity("trapped", &target_pokemon.types)
+        // Use get_types to get the actual types (handles Arceus/Silvally forme changes)
+        // JavaScript: dex.getImmunity('trapped', target) calls target.getTypes()
+        let types = target_pokemon.get_types(battle, false);
+        battle.dex.get_immunity("trapped", &types)
     };
 
     if immune {

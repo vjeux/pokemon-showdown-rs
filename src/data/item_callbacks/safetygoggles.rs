@@ -47,7 +47,10 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        battle.dex.get_immunity("powder", &pokemon.types)
+        // Use get_types to get the actual types (handles Arceus/Silvally forme changes)
+        // JavaScript: dex.getImmunity('powder', pokemon) calls pokemon.getTypes()
+        let types = pokemon.get_types(battle, false);
+        battle.dex.get_immunity("powder", &types)
     };
 
     if has_immunity {

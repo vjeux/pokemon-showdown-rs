@@ -56,7 +56,10 @@ pub fn hit_step_try_immunity(
                         Some(p) => p,
                         None => return vec![false; targets.len()],
                     };
-                    battle.dex.get_immunity("powder", &target_pokemon.types)
+                    // Use get_types to get the actual types (handles Arceus/Silvally forme changes)
+                    // JavaScript: dex.getImmunity('powder', target) calls target.getTypes()
+                    let types = target_pokemon.get_types(battle, false);
+                    battle.dex.get_immunity("powder", &types)
                 };
                 if !has_powder_immunity {
                     battle.debug("natural powder immunity");
@@ -130,7 +133,9 @@ fn self_check_try_immunity(
                         Some(p) => p,
                         None => return true,
                     };
-                    battle.dex.get_immunity("prankster", &target_pokemon.types)
+                    // Use get_types to get the actual types (handles Arceus/Silvally forme changes)
+                    let types = target_pokemon.get_types(battle, false);
+                    battle.dex.get_immunity("prankster", &types)
                 };
                 if !has_prankster_immunity {
                     //     this.battle.debug('natural prankster immunity');
@@ -151,7 +156,9 @@ fn self_check_try_immunity(
                                 Some(p) => p,
                                 None => return true,
                             };
-                            battle.dex.get_immunity(status.as_str(), &target_pokemon.types)
+                            // Use get_types to get the actual types (handles Arceus/Silvally forme changes)
+                            let types = target_pokemon.get_types(battle, false);
+                            battle.dex.get_immunity(status.as_str(), &types)
                         };
                         // !(move.status && !this.dex.getImmunity(move.status, target))
                         // = !(!status_immunity)
