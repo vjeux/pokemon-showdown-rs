@@ -32,11 +32,25 @@ impl Battle {
             self.turn, ability_id.as_str(), pokemon_name, event_id);
 
         // Extract context from event for parameter wiring
-        let (event_source_pos, event_target_pos, event_effect_id, event_status_id) = if let Some(ref event) = self.event {
+        // For SetStatus/AllySetStatus events, status ID comes from relay_var (String)
+        // For other events, effect_id comes from event.effect
+        let (event_source_pos, event_target_pos, event_effect_id) = if let Some(ref event) = self.event {
             let effect_str = event.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new());
-            (event.source, event.target, effect_str.clone(), effect_str)
+            (event.source, event.target, effect_str)
         } else {
-            (None, None, String::new(), String::new())
+            (None, None, String::new())
+        };
+
+        // For SetStatus events, the status ID is passed via relay_var as String
+        // JavaScript: runEvent('SetStatus', this, source, sourceEffect, status)
+        // where status (the 5th param) becomes relay_var
+        let event_status_id = if let Some(ref event) = self.event {
+            match &event.relay_var {
+                Some(EventResult::String(s)) => s.clone(),
+                _ => event_effect_id.clone(),  // Fallback to effect_id for backward compatibility
+            }
+        } else {
+            String::new()
         };
 
         // Clone active_move to pass to dispatch functions

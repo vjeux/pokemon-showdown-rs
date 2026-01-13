@@ -208,10 +208,9 @@ impl Pokemon {
         // JS:     }
         // JS: }
         // ✅ NOW IMPLEMENTED (Session 24 Part 78): runEvent('SetStatus')
-        // Note: JavaScript passes status as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
-        //       Passing None for now - handlers can check target pokemon's status field after it's set
+        // JavaScript passes status as 5th parameter (relayVar) for handlers like Sweet Veil to check
         if !status.as_str().is_empty() {
-            let set_status_result = battle.run_event("SetStatus", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, source_effect, EventResult::Continue, false, false);
+            let set_status_result = battle.run_event("SetStatus", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, source_effect, EventResult::String(status.to_string()), false, false);
             // Check if event returned a falsy value (Number(0), Boolean(false), or Null)
             let is_blocked = matches!(set_status_result,
                 EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null
