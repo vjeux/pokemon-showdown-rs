@@ -36,15 +36,18 @@ impl Pokemon {
         // JS: ));
 
         // Filter attackers by:
-        // 1. damage is a number (in Rust, damage is i32, always a number)
+        // 1. damage_value is Some (JavaScript: typeof damageValue === 'number')
         // 2. If filterOutSameSide, check !this.isAlly(attacker.source)
         let damaged_by: Vec<Attacker> = attacked_by
             .into_iter()
             .filter(|attacker| {
-                // In JavaScript: typeof attacker.damageValue === 'number'
-                // In Rust: damage is i32, so always a number (no check needed)
+                // JavaScript: typeof attacker.damageValue === 'number'
+                // In Rust: damage_value is Some for numeric damage, None for non-numeric
+                if attacker.damage_value.is_none() {
+                    return false;
+                }
 
-                // If filter_out_same_side is false, include all attackers
+                // If filter_out_same_side is false, include all attackers with numeric damage
                 if !filter_out_same_side {
                     return true;
                 }

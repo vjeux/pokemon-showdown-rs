@@ -619,13 +619,15 @@ pub fn hit_step_move_hit_loop(
         if let SpreadMoveTarget::Target(target_pos) = target {
             if *target_pos != attacker_pos {
                 let damage_value = move_damage.get(i).cloned();
-                // Extract i32 damage from DamageResult
-                let damage_int = match damage_value {
-                    Some(DamageResult::Damage(d)) => d,
-                    _ => 0,
+                // JavaScript: typeof attacker.damageValue === 'number'
+                // Only store Some(damage) if the move dealt numeric damage
+                // For status moves (Success/Failed/Undefined), store None
+                let (damage_int, damage_value_opt) = match damage_value {
+                    Some(DamageResult::Damage(d)) => (d, Some(d)),
+                    _ => (0, None),
                 };
                 if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-                    target_pokemon.got_attacked(active_move, damage_int, attacker_pos.0, attacker_pos.1);
+                    target_pokemon.got_attacked(active_move, damage_int, damage_value_opt, attacker_pos.0, attacker_pos.1);
                 }
 
                 if let Some(DamageResult::Damage(_)) = damage_value {
