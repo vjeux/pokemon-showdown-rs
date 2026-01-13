@@ -462,6 +462,7 @@ pokemon.speed = pokemon.stored_stats.spe as i32;
 - [x] skydrop.rs - Was using second param for target HP check
 - [x] afteryou.rs - Was using second param for queue prioritization
 - [x] substitute.rs - Was using second param for damage calculation
+- [x] quash.rs - Was using second param for queue delay
 
 **Note:** For self-targeting moves where target == source, the bug is masked. It only manifests for moves that actually hit a different Pokemon.
 
