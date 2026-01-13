@@ -50,7 +50,9 @@ pub fn on_try_hit(
 
     // if (action.zmove || move.isZ || move.isMax) return false;
     let zmove = action.zmove.is_some();
-    if zmove || move_data.is_z_or_max_powered {
+    let is_z = move_data.is_z.is_some();
+    let is_max = move_data.is_max.is_some();
+    if zmove || is_z || is_max {
         return EventResult::Boolean(false);
     }
 
