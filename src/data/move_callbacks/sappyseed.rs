@@ -34,7 +34,8 @@ pub fn on_hit(
     };
 
     if has_grass {
-        return EventResult::Stop;
+        // return null; - prevents further execution
+        return EventResult::Null;
     }
 
     // target.addVolatile('leechseed', source);

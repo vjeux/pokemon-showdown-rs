@@ -50,7 +50,8 @@ pub fn on_hit(
             target.get_slot()
         };
         battle.add("-fail", &[target_ident.into()]);
-        return EventResult::Stop;
+        // return null; - prevents further execution but shows animation
+        return EventResult::Null;
     }
 
     // this.add('-start', target, 'typechange', 'Water');

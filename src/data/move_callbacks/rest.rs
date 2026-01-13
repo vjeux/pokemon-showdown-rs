@@ -74,7 +74,8 @@ pub fn on_try(
         };
 
         battle.add("-fail", &[source_arg.into(), "heal".into()]);
-        return EventResult::Stop;
+        // return null; - prevents the move from executing
+        return EventResult::Null;
     }
 
     // insomnia and vital spirit checks are separate so that the message is accurate in multi-ability mods
@@ -109,7 +110,8 @@ pub fn on_try(
                 format!("[of] {}", source_str).into(),
             ],
         );
-        return EventResult::Stop;
+        // return null; - prevents the move from executing
+        return EventResult::Null;
     }
 
     // if (source.hasAbility('vitalspirit')) {
@@ -143,7 +145,8 @@ pub fn on_try(
                 format!("[of] {}", source_str).into(),
             ],
         );
-        return EventResult::Stop;
+        // return null; - prevents the move from executing
+        return EventResult::Null;
     }
 
     EventResult::Continue

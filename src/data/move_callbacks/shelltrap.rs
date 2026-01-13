@@ -76,8 +76,8 @@ pub fn on_try_move(
             &[pokemon_arg.into(), "Shell Trap".into(), "Shell Trap".into()],
         );
 
-        // return null;
-        return EventResult::Stop;
+        // return null; - prevents the move from executing
+        return EventResult::Null;
     }
 
     EventResult::Continue

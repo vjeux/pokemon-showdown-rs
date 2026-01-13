@@ -58,8 +58,8 @@ pub fn on_try(
             ],
         );
 
-        // return null;
-        return EventResult::Stop;
+        // return null; - prevents the move from executing
+        return EventResult::Null;
     }
 
     EventResult::Continue

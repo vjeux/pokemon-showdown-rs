@@ -72,8 +72,8 @@ pub fn on_try(
             ],
         );
 
-        // return null;
-        return EventResult::Stop;
+        // return null; - prevents the move from executing
+        return EventResult::Null;
     }
 
     // this.attrLastMove('[still]');
@@ -92,6 +92,6 @@ pub fn on_try(
         &[source_ident.as_str().into(), "move: Hyperspace Fury".into()],
     );
 
-    // return null;
-    EventResult::Stop
+    // return null; - prevents the move from executing
+    EventResult::Null
 }

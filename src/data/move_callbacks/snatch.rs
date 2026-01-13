@@ -147,7 +147,7 @@ pub mod condition {
             battle.use_move(&move_data, snatch_user, None, None, None, None);
         }
 
-        // return null;
-        EventResult::Stop
+        // return null; - prevents the move from executing
+        EventResult::Null
     }
 }

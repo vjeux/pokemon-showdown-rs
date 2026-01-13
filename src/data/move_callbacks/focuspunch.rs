@@ -139,10 +139,10 @@ pub mod condition {
         status: Option<&str>,
         _pokemon_pos: (usize, usize),
     ) -> EventResult {
-        // if (status.id === 'flinch') return null;
+        // if (status.id === 'flinch') return null; - prevents the volatile from being added
         if let Some(status_id) = status {
             if status_id == "flinch" {
-                return EventResult::Stop;
+                return EventResult::Null;
             }
         }
 

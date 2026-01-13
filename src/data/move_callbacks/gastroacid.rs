@@ -66,8 +66,8 @@ pub fn on_try_hit(
             &[target_ident.as_str().into(), "item: Ability Shield".into()],
         );
 
-        // return null;
-        return EventResult::Stop;
+        // return null; - prevents the hit
+        return EventResult::Null;
     }
 
     EventResult::Continue

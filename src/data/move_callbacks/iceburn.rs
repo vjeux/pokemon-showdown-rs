@@ -72,6 +72,6 @@ pub fn on_try_move(
     // attacker.addVolatile('twoturnmove', defender);
     Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&Effect::move_(move_id.id.clone())), None, None);
 
-    // return null;
-    EventResult::Stop
+    // return null; - prevents the move from executing during charge turn
+    EventResult::Null
 }

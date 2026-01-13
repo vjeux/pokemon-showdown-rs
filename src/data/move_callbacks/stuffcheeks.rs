@@ -90,7 +90,7 @@ pub fn on_hit(
     let boost_result = battle.boost(&[("def", 2)], pokemon, Some(pokemon), None, false, false);
 
     if !boost_result {
-        return EventResult::Stop; // return null
+        return EventResult::Null; // return null - prevents further execution
     }
 
     // pokemon.eatItem(true);

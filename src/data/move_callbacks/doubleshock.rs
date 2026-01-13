@@ -51,8 +51,8 @@ pub fn on_try_move(
     // this.attrLastMove('[still]');
     battle.attr_last_move(&["[still]"]);
 
-    // return null;
-    EventResult::Stop
+    // return null; - prevents the move from executing
+    EventResult::Null
 }
 
 /// Self-targeting callbacks

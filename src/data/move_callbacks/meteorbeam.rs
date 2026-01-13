@@ -107,6 +107,6 @@ pub fn on_try_move(
     Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&Effect::move_(move_id)), None, None);
     eprintln!("[METEORBEAM_ON_TRY_MOVE] Added twoturnmove volatile, returning Stop (charge turn)");
 
-    // return null;
-    EventResult::Stop
+    // return null; - prevents the move from executing during charge turn
+    EventResult::Null
 }

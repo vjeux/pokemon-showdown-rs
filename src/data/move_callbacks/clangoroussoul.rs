@@ -71,8 +71,8 @@ pub fn on_try_hit(
     let boost_success = battle.boost(&boost_vec, source_pos, None, None, false, false);
 
     if !boost_success {
-        // return null;
-        return EventResult::Stop;
+        // return null; - prevents the move from executing
+        return EventResult::Null;
     }
 
     // delete move.boosts;

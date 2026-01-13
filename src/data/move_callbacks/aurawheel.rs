@@ -70,8 +70,8 @@ pub fn on_try(
         None,
     );
 
-    // return null;
-    EventResult::Stop
+    // return null; - prevents the move from executing
+    EventResult::Null
 }
 
 /// onModifyType(move, pokemon) {

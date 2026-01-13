@@ -106,8 +106,8 @@ pub fn on_try_hit(
         // this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);
 
-        // return null;
-        return EventResult::Stop;
+        // return null; - prevents the move from executing
+        return EventResult::Null;
     }
 
     EventResult::Continue

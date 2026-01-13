@@ -77,7 +77,8 @@ pub fn on_try(
                 move_id.to_string().into(),
             ],
         );
-        return EventResult::Stop;
+        // return null; - prevents the move from executing
+        return EventResult::Null;
     }
 
     EventResult::Continue

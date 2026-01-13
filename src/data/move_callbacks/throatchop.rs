@@ -152,8 +152,8 @@ pub mod condition {
                 ],
             );
 
-            // return false;
-            return EventResult::Stop;
+            // return false; - prevents the move from executing
+            return EventResult::Boolean(false);
         }
 
         EventResult::Continue
@@ -200,8 +200,8 @@ pub mod condition {
                 ],
             );
 
-            // return false;
-            return EventResult::Stop;
+            // return false; - prevents the move from executing
+            return EventResult::Boolean(false);
         }
 
         EventResult::Continue
