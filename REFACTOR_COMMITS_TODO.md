@@ -296,6 +296,24 @@ if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).
 
 **Impact:** Pass rate: 363/723 -> 368/723 (5 more seeds fixed, mostly Conversion2 and Revival Blessing related)
 
+### 20. ✅ FIXED: Supersweet Syrup using ability_state instead of Pokemon field
+**Commit Reference:** `be64f55a`
+
+**Problem:** Once-per-battle ability flags must be stored as Pokemon struct fields, not in ability_state or volatiles. Intrepid Sword and Dauntless Shield use `pokemon.swordBoost` and `pokemon.shieldBoost` (Pokemon properties), but Supersweet Syrup was incorrectly using `ability_state.syrup_triggered`.
+
+**JavaScript:**
+- `pokemon.swordBoost` - Pokemon property, persists across switches and ability changes
+- `this.effectState.embodied` - Ability effect state, reset when ability changes
+
+**Pattern:**
+- Pokemon properties (like `pokemon.syrupTriggered`) must use Pokemon struct fields
+- Ability effect state (like `this.effectState.embodied`) correctly uses ability_state
+
+**Files Fixed:**
+- [x] supersweetsyrup.rs - Changed from `ability_state.syrup_triggered` to `pokemon.syrup_triggered`
+
+**Impact:** Pass rate: 392/723 -> 393/723 (+1 seed)
+
 ## Progress Log
 
 - 2026-01-13: Created this file
@@ -311,4 +329,7 @@ if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).
 - 2026-01-13: Added myceliummight check to Quick Claw
 - 2026-01-13: Changed last_move_used from ID to full ActiveMove - Pass rate 363 -> 368
 - 2026-01-13: Fixed Terrain condition data lookup in resolve_priority - Pass rate 368 -> 387
-- 2026-01-13: Current pass rate: 387/723 (53%)
+- 2026-01-13: Fixed FoeDisableMove/FoeBeforeMove dispatchers for Imprison
+- 2026-01-13: Fixed Enigma Berry to skip status/self moves - Pass rate 387 -> 392
+- 2026-01-13: Fixed Supersweet Syrup to use Pokemon field - Pass rate 392 -> 393
+- 2026-01-13: Current pass rate: 393/723 (54%)
