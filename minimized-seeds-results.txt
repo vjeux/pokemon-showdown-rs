@@ -31,7 +31,7 @@ Seed 754: ✓ PASS
 Seed 761: ✓ PASS
 Seed 764: ✗ FAIL - #14: turn=13, prng=56->56, P1=[Cosmog(192/219)], P2=[Lycanroc(42/312)]
 Seed 778: ✓ PASS
-Seed 823: ✗ FAIL - #2: turn=3, prng=5->8, P1=[Brattler(176/232)], P2=[Mimikyu(195/222)]
+Seed 823: ✓ PASS
 Seed 873: ✓ PASS
 Seed 897: ✗ FAIL - #21: turn=19, prng=93->99, P1=[Pokestar F-00(248/319)], P2=[Diglett(81/171)]
 Seed 911: ✓ PASS
@@ -69,7 +69,7 @@ Seed 1284: ✓ PASS
 Seed 1288: ✓ PASS
 Seed 1333: ✓ PASS
 Seed 1348: ✓ PASS
-Seed 1359: ✗ FAIL - #4: turn=5, prng=15->18, P1=[Mimikyu(185/211)], P2=[Skiploom(95/211)]
+Seed 1359: ✓ PASS
 Seed 1362: ✗ FAIL - #48: turn=46, prng=195->199, P1=[Silvally(175/283)], P2=[Blastoise(83/242)]
 Seed 1369: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Cubchoo(141/141)], P2=[Terrakion(340/340)]
 Seed 1379: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 339
-Failed: 384
+Passed: 341
+Failed: 382
 
-Pass rate: 46%
+Pass rate: 47%
 ✗ Some seeds still failing
