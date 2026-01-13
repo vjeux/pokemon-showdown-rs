@@ -76,22 +76,19 @@ pub fn base_power_callback(
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     use crate::dex_data::ID;
 
     // onHit(target) {
     //     if (target.status === 'par') target.cureStatus();
     // }
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    // target_pos is the Pokemon that was hit (defender)
 
     // if (target.status === 'par') target.cureStatus();
     let (has_paralysis, target_ident, target_name) = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+        let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -99,12 +96,12 @@ pub fn on_hit(
     };
 
     if has_paralysis {
-        let _target_mut = match battle.pokemon_at_mut(target.0, target.1) {
+        let _target_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        if let Some((status, removed_nightmare, _silent)) = Pokemon::cure_status(battle, target, false) {
+        if let Some((status, removed_nightmare, _silent)) = Pokemon::cure_status(battle, target_pos, false) {
             let full_name = format!("{}: {}", target_ident, target_name);
             battle.add("-curestatus", &[full_name.as_str().into(), status.as_str().into(), "[msg]".into()]);
             if removed_nightmare {
