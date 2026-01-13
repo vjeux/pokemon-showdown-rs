@@ -22,12 +22,26 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
         None => return EventResult::Continue,
     };
 
-    // Check if move is super effective
-    // Get active_move reference for run_effectiveness
+    // JavaScript: getMoveHitData only has data for moves that dealt damage
+    // Status moves (like Shore Up) don't deal damage, so they won't have hit data
+    // and typeMod will be undefined/0. We should skip status moves.
     let active_move_ref = match active_move {
         Some(m) => m,
         None => return EventResult::Continue,
     };
+
+    // Status moves don't have hit data - they didn't deal damage
+    if active_move_ref.category == "Status" {
+        return EventResult::Continue;
+    }
+
+    // Also skip if target is the same as source (self-targeting damaging moves shouldn't trigger)
+    if let Some(source) = source_pos {
+        if source == target_pos {
+            return EventResult::Continue;
+        }
+    }
+
     let move_id = active_move_ref.id.as_str();
 
     // target.getMoveHitData(move).typeMod > 0 means super effective
