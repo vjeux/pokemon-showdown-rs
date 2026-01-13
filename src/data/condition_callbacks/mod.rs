@@ -187,6 +187,7 @@ pub fn dispatch_on_foe_before_move(
     active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
+        "imprison" => move_callbacks::imprison::condition::on_foe_before_move(battle, active_move),
         "skydrop" => skydrop::on_foe_before_move(battle, pokemon_pos, target_pos, source_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
@@ -315,6 +316,17 @@ pub fn dispatch_on_disable_move(
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_disable_move(battle, condition_id, pokemon_pos)
         }
+    }
+}
+/// Dispatch onFoeDisableMove callbacks
+pub fn dispatch_on_foe_disable_move(
+    battle: &mut Battle,
+    condition_id: &str,
+    pokemon_pos: (usize, usize),
+) -> EventResult {
+    match condition_id {
+        "imprison" => move_callbacks::imprison::condition::on_foe_disable_move(battle, pokemon_pos),
+        _ => EventResult::Continue,
     }
 }
 /// Dispatch onDragOut callbacks

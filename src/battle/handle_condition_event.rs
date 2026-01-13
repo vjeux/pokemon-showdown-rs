@@ -191,6 +191,9 @@ impl Battle {
             "DisableMove" => {
                 condition_callbacks::dispatch_on_disable_move(self, condition_id, pokemon_pos)
             }
+            "FoeDisableMove" => {
+                condition_callbacks::dispatch_on_foe_disable_move(self, condition_id, pokemon_pos)
+            }
             "DragOut" => {
                 // Extract source from event and move_id from active_move
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
