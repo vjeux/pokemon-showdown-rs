@@ -649,6 +649,9 @@ impl Battle {
             active_move_clone.as_ref(),
             ),
             "ModifySTAB" => {
+                // ModifySTAB event: pokemon (attacker) is event.target, target (defender) is event.source
+                // The ability callback signature is: onModifySTAB(stab, source, target, move)
+                // where source is the Pokemon using the move (attacker)
                 let (stab, source_pos, target_pos, _move_id_str) = if let Some(ref event) = self.event {
                     let stab_value = match &event.relay_var {
                         Some(EventResult::Float(f)) => *f,
@@ -656,8 +659,8 @@ impl Battle {
                     };
                     (
                         stab_value,
-                        event.source,
-                        event.target,
+                        event.target,   // source in callback = attacker = event.target
+                        event.source,   // target in callback = defender = event.source
                         event.effect.as_ref().map(|eff| eff.id.as_str().to_string()).unwrap_or_default()
                     )
                 } else {

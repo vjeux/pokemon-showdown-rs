@@ -246,16 +246,48 @@ pub fn modify_damage(
         battle.turn, move_type, source_types);
 
     if &move_type != "???" {
-        let has_stab = source_types.iter().any(|t| t == &move_type);
+        // JavaScript: let stab = 1;
+        let mut stab = 1.0_f64;
+
+        // JavaScript: const isSTAB = move.forceSTAB || pokemon.hasType(type) || pokemon.getTypes(false, true).includes(type);
+        let force_stab = active_move.force_stab;
+        let has_stab = force_stab || source_types.iter().any(|t| t == &move_type);
         if battle.turn >= 64 && battle.turn <= 66 {
             eprintln!("[MODIFY_DAMAGE] Checking STAB: has_stab={}", has_stab);
         }
         eprintln!("[MODIFY_DAMAGE] turn={}, STAB check: has_stab={}, base_damage_before={}",
             battle.turn, has_stab, base_damage);
+
+        // JavaScript: if (isSTAB) { stab = 1.5; }
         if has_stab {
-            base_damage = battle.modify(base_damage, 3, 2);
-            eprintln!("[MODIFY_DAMAGE] turn={}, After STAB: base_damage={}", battle.turn, base_damage);
+            stab = 1.5;
         }
+
+        // TODO: Handle Terastallized/Stellar cases (pokemon.terastallized)
+        // For now, skip Stellar tera handling
+
+        // JavaScript: stab = this.battle.runEvent("ModifySTAB", pokemon, target, move, stab);
+        let stab_result = battle.run_event(
+            "ModifySTAB",
+            Some(crate::event::EventTarget::Pokemon(pokemon_pos)),  // pokemon = attacker
+            Some(target_pos),                                        // target = defender
+            Some(&crate::battle::Effect::move_(active_move.id.clone())),
+            EventResult::Float(stab),
+            false,
+            false
+        );
+        match stab_result {
+            EventResult::Float(modified_stab) => {
+                stab = modified_stab;
+            }
+            _ => {
+                // No modification
+            }
+        }
+
+        // JavaScript: baseDamage = this.battle.modify(baseDamage, stab);
+        base_damage = battle.modify_f(base_damage, stab);
+        eprintln!("[MODIFY_DAMAGE] turn={}, After STAB (stab={}): base_damage={}", battle.turn, stab, base_damage);
     } else {
         eprintln!("[MODIFY_DAMAGE] turn={}, Skipping STAB because move_type is ???", battle.turn);
     }
