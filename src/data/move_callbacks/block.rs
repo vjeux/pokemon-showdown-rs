@@ -14,26 +14,20 @@ use crate::pokemon::Pokemon;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),  // The target of the move (receives trapped)
+    source_pos: Option<(usize, usize)>,  // The source/attacker (receives trapper)
 ) -> EventResult {
-    // Get the target
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
-
     // return target.addVolatile('trapped', source, move, 'trapper');
     // JavaScript: target.addVolatile('trapped', source, move, 'trapper')
-    // source = pokemon_pos
+    // target = target_pos (the Pokemon that was hit by Block)
+    // source = source_pos (the Pokemon that used Block)
     // move = "block"
     // linkedStatus = 'trapper'
-    // ✅ NOW PASSING: source_pos = Some(pokemon_pos), source_effect = Some("block"), linked_status = Some("trapper")
     let result = Pokemon::add_volatile(
             battle,
-            target,
+            target_pos,  // Add "trapped" to the TARGET (the one hit by Block)
             ID::from("trapped"),
-            Some(pokemon_pos),
+            source_pos,  // Source is the attacker (who used Block)
             Some(&Effect::move_(ID::new("block"))),
             Some(ID::from("trapper")),
             None,
