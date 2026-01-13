@@ -2705,6 +2705,20 @@ pub fn dispatch_condition_on_swap(
     }
 }
 
+/// Dispatch condition onSwap callbacks by condition ID
+/// Takes condition_id directly to support routing from handle_condition_event
+pub fn dispatch_condition_on_swap_by_id(
+    battle: &mut Battle,
+    condition_id: &str,
+    source_pos: (usize, usize),
+) -> EventResult {
+    match condition_id {
+        "healingwish" => healingwish::condition::on_swap(battle, Some(source_pos)),
+        "lunardance" => lunardance::condition::on_swap(battle, Some(source_pos)),
+        _ => EventResult::Continue,
+    }
+}
+
 /// Dispatch condition onSwitchIn callbacks
 /// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_switch_in(

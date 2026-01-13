@@ -95,13 +95,61 @@ impl Battle {
     }
 
     /// Check if a slot condition has a callback for an event
-    /// Slot conditions: healingwish, lunardance, wish, etc.
+    /// Slot conditions: healingwish, lunardance, wish, futuremove, etc.
+    /// Many slot conditions are move-embedded (defined in moves.ts, not conditions.ts)
     pub fn has_slot_condition_callback(&self, slot_cond_id: &ID, event_id: &str) -> bool {
         if slot_cond_id.is_empty() {
             return false;
         }
-        eprintln!("[HAS_SLOT_CONDITION_CALLBACK] slot_cond_id={}, event_id={}", slot_cond_id.as_str(), event_id);
-        self.condition_has_callback(slot_cond_id.as_str(), event_id)
+        let slot_cond_str = slot_cond_id.as_str();
+        eprintln!("[HAS_SLOT_CONDITION_CALLBACK] slot_cond_id={}, event_id={}", slot_cond_str, event_id);
+
+        // First check conditions dex (for conditions defined in conditions.ts)
+        if self.condition_has_callback(slot_cond_str, event_id) {
+            return true;
+        }
+
+        // Slot conditions are often move-embedded (defined in moves.ts)
+        // Check if the move has a condition with this callback
+        // This mirrors the structure where lunardance, healingwish, etc. are moves
+        // that create slot conditions with their own callbacks
+        if let Some(move_data) = self.dex.moves().get(slot_cond_str) {
+            if let Some(ref condition_data) = move_data.condition {
+                // Check if the condition has this callback
+                if condition_data.extra.contains_key(event_id) {
+                    eprintln!("[HAS_SLOT_CONDITION_CALLBACK] Found {} in move condition extra", event_id);
+                    return true;
+                }
+                // Try with "on" prefix
+                if !event_id.starts_with("on") {
+                    let with_on = format!("on{}", event_id);
+                    if condition_data.extra.contains_key(&with_on) {
+                        eprintln!("[HAS_SLOT_CONDITION_CALLBACK] Found {} in move condition extra", with_on);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // Check against the move_callbacks dispatcher for known slot condition callbacks
+        // This is a hardcoded list that matches the dispatch_condition_on_* functions in move_callbacks/mod.rs
+        let has_hardcoded_callback = match (slot_cond_str, event_id) {
+            // onSwitchIn callbacks for slot conditions
+            ("healingwish", "onSwitchIn") | ("healingwish", "SwitchIn") => true,
+            ("lunardance", "onSwitchIn") | ("lunardance", "SwitchIn") => true,
+            ("wish", "onResidual") | ("wish", "Residual") => true,
+            ("futuremove", "onResidual") | ("futuremove", "Residual") => true,
+            // onSwap callbacks
+            ("healingwish", "onSwap") | ("healingwish", "Swap") => true,
+            ("lunardance", "onSwap") | ("lunardance", "Swap") => true,
+            _ => false,
+        };
+        if has_hardcoded_callback {
+            eprintln!("[HAS_SLOT_CONDITION_CALLBACK] Found hardcoded callback for {} {}", slot_cond_str, event_id);
+            return true;
+        }
+
+        false
     }
 
     /// Check if a side condition has a callback for an event

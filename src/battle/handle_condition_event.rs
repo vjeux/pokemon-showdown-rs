@@ -420,6 +420,12 @@ impl Battle {
             "SwitchIn" => {
                 condition_callbacks::dispatch_on_switch_in(self, condition_id, pokemon_pos)
             }
+            "Swap" => {
+                // Swap is called by slot conditions like lunardance/healingwish
+                // to trigger healing on the incoming Pokemon
+                use crate::data::move_callbacks;
+                move_callbacks::dispatch_condition_on_swap_by_id(self, condition_id, pokemon_pos)
+            }
             "TrapPokemon" => {
                 condition_callbacks::dispatch_on_trap_pokemon(self, condition_id, pokemon_pos)
             }

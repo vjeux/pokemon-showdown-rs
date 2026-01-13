@@ -723,11 +723,22 @@ impl Battle {
                     // For slot conditions, we need to pass the actual state so callbacks can access it
                     // Clone the state to avoid borrow checker issues with self.single_event
                     let state_owned = if handler._effect_type == crate::battle::EffectType::SlotCondition {
-                        if let Some((side_idx, slot)) = handler.holder {
-                            self.sides.get(side_idx)
-                                .and_then(|side| side.slot_conditions.get(slot))
-                                .and_then(|slot_conds| slot_conds.get(&handler.effect_id))
-                                .cloned()
+                        if let Some((side_idx, poke_idx)) = handler.holder {
+                            // IMPORTANT: handler.holder is (side_idx, poke_idx) which is the party index
+                            // But slot_conditions are indexed by pokemon.position (active slot: 0, 1, 2...)
+                            // We need to convert poke_idx to position first
+                            let position = self.sides.get(side_idx)
+                                .and_then(|side| side.pokemon.get(poke_idx))
+                                .map(|pokemon| pokemon.position);
+
+                            if let Some(pos) = position {
+                                self.sides.get(side_idx)
+                                    .and_then(|side| side.slot_conditions.get(pos))
+                                    .and_then(|slot_conds| slot_conds.get(&handler.effect_id))
+                                    .cloned()
+                            } else {
+                                None
+                            }
                         } else {
                             None
                         }

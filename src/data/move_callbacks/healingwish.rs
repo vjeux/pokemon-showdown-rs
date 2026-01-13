@@ -73,7 +73,8 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        battle.single_event("Swap", &crate::battle::Effect::side_condition(effect_id), None, Some(target), Some(target), None, None);
+        // Use SlotCondition effect type since healingwish is a slot condition
+        battle.single_event("Swap", &crate::battle::Effect::slot_condition(effect_id), None, Some(target), Some(target), None, None);
 
         EventResult::Continue
     }

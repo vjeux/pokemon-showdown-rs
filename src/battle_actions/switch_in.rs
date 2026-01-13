@@ -369,6 +369,10 @@ pub fn switch_in(
         // the pokemon Vec, only update the active array and position fields.
         let new_position = pos;
         battle.sides[side_index].pokemon[pokemon_index].position = new_position;
+    } else {
+        // No old active (e.g., previous Pokemon fainted)
+        // Still need to set the new Pokemon's position
+        battle.sides[side_index].pokemon[pokemon_index].position = pos;
     }
 
     // Set up new active Pokemon
