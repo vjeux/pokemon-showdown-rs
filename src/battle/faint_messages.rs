@@ -464,7 +464,8 @@ impl Battle {
                 Some(crate::event::EventTarget::Pokemon(faint_data.target)),
                     faint_data.source,
                     faint_data.effect.as_ref(),
-                    EventResult::Continue,
+                    // JavaScript passes length as relayVar - important for onSourceAfterFaint (Battle Bond, Moxie, etc.)
+                    EventResult::Number(length as i32),
                     false,
                     false,
                 );

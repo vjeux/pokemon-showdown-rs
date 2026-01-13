@@ -65,14 +65,22 @@ pub fn on_source_after_faint(_battle: &mut Battle, _length: i32, _target_pos: Op
     }
 
     // Check if foes have Pokemon left
+    // Note: Side.foe_pokemon_left() is a stub that always returns 0,
+    // so we calculate it directly here using Battle context
     let foe_pokemon_left = {
         if source.0 >= _battle.sides.len() {
             return EventResult::Continue;
         }
-        _battle.sides[source.0].foe_pokemon_left() > 0
+        // For standard 2-player battles, foe is the other side
+        let foe_idx = source.0 ^ 1;  // XOR with 1 to flip between 0 and 1
+        if foe_idx < _battle.sides.len() {
+            _battle.sides[foe_idx].pokemon_left
+        } else {
+            0
+        }
     };
 
-    if !foe_pokemon_left {
+    if foe_pokemon_left == 0 {
         return EventResult::Continue;
     }
 
@@ -150,4 +158,3 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
 
     EventResult::Continue
 }
-
