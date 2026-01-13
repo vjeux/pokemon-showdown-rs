@@ -20,20 +20,38 @@ pub fn on_modify_move(
     // move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
     // Build list of party members that are not fainted and not statused
     // IMPORTANT: This iterates over the ENTIRE party (pokemon.side.pokemon), not just active Pokemon
+    // CRITICAL: JavaScript swaps Pokemon positions in the array when switching, but Rust doesn't.
+    // We need to iterate in position order (the order JS would see them) to match JavaScript behavior.
     let mut allies = Vec::new();
 
     let side_index = pokemon_pos.0;
+    // pokemon_pos.1 is the PARTY INDEX of the user (not active slot index)
+    let user_party_index = pokemon_pos.1;
+
     let party_size = if let Some(side) = battle.sides.get(side_index) {
         side.pokemon.len()
     } else {
         return EventResult::Continue;
     };
 
+    // Create a list of (position, party_index) and sort by position to match JS iteration order
+    let mut position_order: Vec<(usize, usize)> = Vec::new();
     for poke_idx in 0..party_size {
+        if let Some(pokemon) = battle.pokemon_at(side_index, poke_idx) {
+            position_order.push((pokemon.position, poke_idx));
+        }
+    }
+    // Sort by position (the order JS would see them in pokemon.side.pokemon)
+    position_order.sort_by_key(|(pos, _)| *pos);
+
+    for (_pos, poke_idx) in position_order {
         let pos = (side_index, poke_idx);
         if let Some(pokemon) = battle.pokemon_at(pos.0, pos.1) {
             // ally === pokemon || !ally.fainted && !ally.status
-            if pos == pokemon_pos || (!pokemon.fainted && pokemon.status == ID::from("")) {
+            // Compare party indices - user is always included
+            let is_user = poke_idx == user_party_index;
+            let include = is_user || (!pokemon.fainted && pokemon.status == ID::from(""));
+            if include {
                 allies.push(pos);
             }
         }

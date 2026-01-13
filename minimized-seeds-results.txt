@@ -178,7 +178,7 @@ Seed 2750: ✗ FAIL - #20: turn=20, prng=89->94, P1=[Scizor(205/290)], P2=[Salam
 Seed 2762: ✗ FAIL - #21: turn=22, prng=20->21, P1=[Carnivine(199/199)], P2=[Spiritomb(199/206)]
 Seed 2769: ✓ PASS
 Seed 2787: ✗ FAIL - #3: turn=3, prng=14->18, P1=[Drifblim(0/330)], P2=[Golduck(205/247)]
-Seed 2788: ✗ FAIL - #32: turn=29, prng=163->174, P1=[Vikavolt(206/242)], P2=[Aegislash(8/184)]
+Seed 2788: ✓ PASS
 Seed 2802: ✓ PASS
 Seed 2803: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Barraskewda(41/223)], P2=[Lucario(246/261)]
 Seed 2807: ✗ FAIL - #25: turn=26, prng=0->2, P1=[Clodsire(356/356)], P2=[Xerneas(299/349)]
@@ -199,7 +199,7 @@ Seed 2981: ✗ FAIL - #1: turn=2, prng=0->2, P1=[Woobat(286/286)], P2=[Slurpuff(
 Seed 2982: ✗ FAIL - #17: turn=15, prng=60->65, P1=[Sandslash(260/275)], P2=[Dhelmise(257/299)]
 Seed 3000: ✗ FAIL - #4: turn=5, prng=12->16, P1=[Miraidon(266/266)], P2=[Charizard(66/225)]
 Seed 3002: ✗ FAIL - #18: turn=19, prng=54->58, P1=[Arboliva(10/222)], P2=[Alcremie(69/286)]
-Seed 3010: ✗ FAIL - #3: turn=3, prng=6->14, P1=[Misdreavus(140/248)], P2=[Yanmega(249/295)]
+Seed 3010: ✓ PASS
 Seed 3014: ✗ FAIL - #13: turn=11, prng=34->38, P1=[Greninja(220/220)], P2=[Fraxure(0/171)]
 Seed 3022: ✓ PASS
 Seed 3063: ✗ FAIL - #59: turn=54, prng=204->211, P1=[Seaking(54/256)], P2=[Hoopa(0/187)]
@@ -347,7 +347,7 @@ Seed 4947: ✓ PASS
 Seed 4949: ✗ FAIL - #15: turn=15, prng=56->59, P1=[Oshawott(126/245)], P2=[Sinistea(2/239)]
 Seed 4966: ✓ PASS
 Seed 4969: ✓ PASS
-Seed 4990: ✗ FAIL - #7: turn=6, prng=13->21, P1=[Saharascal(194/239)], P2=[Cyclizar(267/296)]
+Seed 4990: ✓ PASS
 Seed 5001: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gumshoos(201/285)], P2=[Heracross(263/309)]
 Seed 5009: ✗ FAIL - #7: turn=7, prng=30->37, P1=[Gabite(130/177)], P2=[Glastrier(208/347)]
 Seed 5029: ✗ FAIL - #1: turn=2, prng=0->2, P1=[Scatterbug(160/160)], P2=[Dondozo(403/403)]
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 131
-Failed: 592
+Passed: 134
+Failed: 589
 
 Pass rate: 18%
 ✗ Some seeds still failing
