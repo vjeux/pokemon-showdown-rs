@@ -394,4 +394,45 @@ pokemon.speed = pokemon.stored_stats.spe as i32;
 - 2026-01-13: Fixed Supersweet Syrup to use Pokemon field - Pass rate 392 -> 393
 - 2026-01-13: Fixed get_immunity to use get_types() - Pass rate 393 -> 395
 - 2026-01-13: Fixed Speed Swap to update speed field after stored_stats.spe change
+- 2026-01-13: Audited 100+ commits for additional patterns
 - 2026-01-13: Current pass rate: 395/723 (54%)
+
+## Patterns Verified as Already Fixed
+
+The following patterns were identified from commit history and verified to be already implemented correctly:
+
+### EventResult::Float for fractional priority
+- All on_fractional_priority callbacks correctly return EventResult::Float
+- Checked: quickclaw, laggingtail, fullincense, custapberry, myceliummight, quickdraw
+
+### EventResult::Stop is_truthy
+- EventResult::Stop correctly returns false in is_truthy() (commit 41c2b99a)
+- This enables move-blocking conditions like throatchop, taunt to work
+
+### source_slot uses active slot position
+- add_volatile, set_status, set_ability correctly use pokemon.position (commit 615b7b41)
+- No remaining instances of incorrect party index usage
+
+### Contrary/Simple boost relay_var
+- run_event correctly updates event.relay_var when handlers return EventResult::Boost (commit 2adfbcf5)
+- Infrastructure-level fix, no callback-level changes needed
+
+### Magic Guard event.effect.effect_type
+- Correctly checks battle.event.effect.effect_type for damage source (commit 78192710)
+- Other on_damage callbacks check effect_id, not effect_type - this is correct
+
+### ModifySTAB event for Adaptability
+- Adaptability correctly returns EventResult::Float for STAB modification (commit c492a0cb)
+- Only ability with onModifySTAB callback
+
+### target/source on_hit parameter order
+- dispatch_on_hit passes (target_pos, source_pos) - target first
+- Callbacks like clearsmog, worryseed, coreenforcer correctly fixed (commit e1b19666)
+- Audited Max move callbacks - they use self_callbacks with correct parameter handling
+
+## Still Needs Investigation
+
+### Pattern #23: Imprison onFoeDisableMove/onFoeBeforeMove
+- Callbacks exist and are detected but not executed
+- Simple prefixed_handlers=true change causes regressions
+- Need deeper investigation of foe handler execution
