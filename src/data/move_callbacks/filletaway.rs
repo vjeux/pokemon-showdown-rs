@@ -56,7 +56,8 @@ pub fn on_try_hit(
     );
 
     if !boost_result {
-        return EventResult::Stop;
+        // JS: return null; - prevents on_hit from running
+        return EventResult::Null;
     }
 
     // delete move.boosts;
