@@ -141,7 +141,7 @@ pub fn on_hit(
     // if (!oldAbility) return oldAbility as false | null;
     if old_ability.as_str().is_empty() {
         // oldAbility is empty (falsy in JS), return null
-        return EventResult::Stop;
+        return EventResult::Null;
     }
 
     // if (!target.isAlly(source)) target.volatileStaleness = 'external';
