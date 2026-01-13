@@ -436,3 +436,18 @@ The following patterns were identified from commit history and verified to be al
 - Callbacks exist and are detected but not executed
 - Simple prefixed_handlers=true change causes regressions
 - Need deeper investigation of foe handler execution
+
+### Pattern #24: Turn flow after faint switch (MAJOR BUG)
+- **Seed 9931**: When a Pokemon faints mid-turn and replacement switches in
+- **Bug**: Rust allows actions on the same turn as the switch, and also
+  calculates type effectiveness using wrong Pokemon's types
+- **Expected**: JS advances to a new turn before replacement can act
+- **Example**:
+  - JS Turn 8: Kyogre faints, Cinderace switches in (0 PRNG calls, switch only)
+  - JS Turn 9: Cinderace uses Surging Strikes against Corphish
+  - Rust Turn 8: Both switch AND attack happen (4 PRNG calls), and on subsequent
+    turns Surging Strikes calculates type effectiveness against Scraggy (Dark/Fighting)
+    instead of Corphish (Water) due to target resolution issues after fainting
+- **Root cause**: After faint switch, the target_pos for moves may be pointing to
+  wrong Pokemon in the party when the active slot changes
+
