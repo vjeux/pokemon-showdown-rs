@@ -301,12 +301,20 @@ pub fn run_move_effects<'a>(
             if let Some(status) = hit_effect.status() {
                 //     hitResult = target.trySetStatus(moveData.status, source, moveData.ability ? moveData.ability : move);
                 let status_id = ID::new(status);
+                // JavaScript: moveData.ability ? moveData.ability : move
+                // If the move has an ability (like Rest's Insomnia check), use that as the source effect
+                // Otherwise use the move itself as the source effect
+                let source_effect = if let Some(ref ability_id) = active_move.ability {
+                    crate::battle::Effect::ability(ability_id.clone())
+                } else {
+                    crate::battle::Effect::move_(active_move.id.clone())
+                };
                 let hit_result = Pokemon::try_set_status(
                     battle,
                     target_pos,
                     status_id,
                     Some(source_pos), // source
-                    None, // source_effect - using active_move effect instead
+                    Some(&source_effect), // source_effect - the move or ability causing the status
                 );
                 //     if (!hitResult && move.status) {
                 // Check if active_move also has status (primary status move)
