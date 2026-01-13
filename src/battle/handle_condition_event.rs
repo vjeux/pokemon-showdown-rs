@@ -89,16 +89,22 @@ impl Battle {
                 )
             }
             "BasePower" => {
-                // Extract base_power from relay_var, target from event, and move_id from active_move
+                // Extract base_power from relay_var and defender from event.source
+                // JavaScript: onBasePower(basePower, attacker, defender, move)
+                // In run_event:
+                //   event.target = attacker (from runEvent's 2nd param = source_pos in get_damage)
+                //   event.source = defender (from runEvent's 3rd param = target_pos in get_damage)
+                // Note: The parameter names in run_event are swapped from JavaScript convention
                 let base_power = self.event.as_ref().and_then(|e| match &e.relay_var {
                     Some(EventResult::Number(n)) => Some(*n),
                     _ => None
                 }).unwrap_or(0);
-                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                // Use event.source for defender (not event.target which is the attacker)
+                let defender_pos = self.event.as_ref().and_then(|e| e.source);
                 let _move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
-                condition_callbacks::dispatch_on_base_power(self, condition_id, base_power, pokemon_pos, target_pos, active_move_clone.as_ref())
+                condition_callbacks::dispatch_on_base_power(self, condition_id, base_power, pokemon_pos, defender_pos, active_move_clone.as_ref())
             }
             "BeforeMove" => {
                 // Extract target from event and move_id from active_move
