@@ -341,6 +341,7 @@ pub fn run_move_effects<'a>(
             // Need to add this field to ActiveMove struct
 
             // if (moveData.volatileStatus) {
+            eprintln!("[VOLATILE_STATUS] move_id={}, has volatile_status={:?}", active_move.id.as_str(), hit_effect.volatile_status());
             if let Some(volatile_status) = hit_effect.volatile_status() {
                 //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                 let volatile_id = ID::new(volatile_status);

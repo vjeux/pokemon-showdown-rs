@@ -15,22 +15,23 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Immune to Electric-type moves and boost Special Attack by 1
+    // if (target !== source && move.type === 'Electric') {
     if target_pos != source_pos {
         // Check if the move is Electric-type
-        let is_electric = {
-            let move_data = match battle.dex.moves().get(move_id) {
-                Some(m) => m,
-                None => return EventResult::Continue,
-            };
-            move_data.move_type == "Electric"
-        };
+        // JavaScript checks move.type (the active move's type, not the dex type)
+        // This is important for moves like Electrify which change the move type at runtime
+        let is_electric = active_move.map(|m| m.move_type == "Electric").unwrap_or(false);
 
         if is_electric {
             // Boost Special Attack by 1
+            // if (!this.boost({ spa: 1 })) {
+            //     this.add('-immune', target, '[from] ability: Lightning Rod');
+            // }
             battle.boost(&[("spa", 1)], target_pos, None, None, false, false);
             // Return Null to prevent the move from hitting
+            // return null;
             return EventResult::Null;
         }
     }

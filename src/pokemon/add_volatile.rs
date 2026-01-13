@@ -201,6 +201,7 @@ impl Pokemon {
         let can_be_volatile = Pokemon::run_status_immunity(battle, target_pos, volatile_id.as_str(), false);
 
         if !can_be_volatile {
+            eprintln!("[ADD_VOLATILE_FAIL] {} is immune to volatile '{}'", pokemon_name, volatile_id.as_str());
             // ✅ NOW IMPLEMENTED (Session 24 Part 37): sourceEffect.status check for -immune message
             if let Some(src_effect) = source_effect {
                 // Check if sourceEffect is a Move with a status property
@@ -241,6 +242,7 @@ impl Pokemon {
         );
         // runEvent returns EventResult, check if it's falsy (Boolean(false), Number(0), Null)
         if !try_add_result.is_truthy() {
+            eprintln!("[ADD_VOLATILE_FAIL] TryAddVolatile blocked for '{}' on {}", volatile_id.as_str(), pokemon_name);
             return false;
         }
 
@@ -323,6 +325,7 @@ impl Pokemon {
             None => return false,
         };
         pokemon_mut.volatiles.insert(volatile_id.clone(), state);
+        eprintln!("[ADD_VOLATILE_SUCCESS] Added volatile '{}' to {}", volatile_id.as_str(), pokemon_name);
 
         // JavaScript: result = this.battle.singleEvent("Start", status, this.volatiles[status.id], this, source, sourceEffect);
         // Call the Start event for the newly added volatile

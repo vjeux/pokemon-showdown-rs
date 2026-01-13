@@ -55,7 +55,7 @@ Seed 1162: ✗ FAIL - #17: turn=18, prng=0->2, P1=[Skeledirge(355/355)], P2=[Arc
 Seed 1171: ✓ PASS
 Seed 1189: ✓ PASS
 Seed 1193: ✗ FAIL - #77: turn=77, prng=224->228, P1=[Aegislash(168/196)], P2=[Fletchinder(101/230)]
-Seed 1194: ✗ FAIL - #1: turn=2, prng=0->0, P1=[Jolteon(286/286)], P2=[Saharascal(231/231)]
+Seed 1194: ✓ PASS
 Seed 1205: ✗ FAIL - #26: turn=27, prng=0->4, P1=[Quilladin(240/240)], P2=[Necrozma(188/241)]
 Seed 1221: ✗ FAIL - #39: turn=39, prng=95->101, P1=[Starmie(243/260)], P2=[Runerigus(170/205)]
 Seed 1235: ✗ FAIL - #5: turn=6, prng=14->16, P1=[Mamoswine(42/214)], P2=[Alcremie(180/269)]
@@ -186,7 +186,7 @@ Seed 2814: ✗ FAIL - #1: turn=2, prng=0->2, P1=[Squawkabilly(294/294)], P2=[Rev
 Seed 2819: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Rayquaza(295/295)], P2=[Rotom(195/229)]
 Seed 2856: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Tauros(139/173)], P2=[Toxel(164/230)]
 Seed 2861: ✗ FAIL - #71: turn=68, prng=109->109, P1=[Hatenna(161/161)], P2=[Ting-Lu(46/361)]
-Seed 2865: ✗ FAIL - #1: turn=2, prng=0->0, P1=[Magearna(306/306)], P2=[Zeraora(193/193)]
+Seed 2865: ✓ PASS
 Seed 2876: ✗ FAIL - #40: turn=36, prng=48->48, P1=[Vivillon(156/312)], P2=[Muk(357/357)]
 Seed 2893: ✓ PASS
 Seed 2894: ✓ PASS
@@ -269,7 +269,7 @@ Seed 3964: ✓ PASS
 Seed 3972: ✗ FAIL - #7: turn=6, prng=20->26, P1=[Ting-Lu(253/310)], P2=[Elekid(37/191)]
 Seed 3974: ✗ FAIL - #7: turn=6, prng=42->48, P1=[Hatterene(79/196)], P2=[Greninja(251/273)]
 Seed 3984: ✗ FAIL - #20: turn=17, prng=48->55, P1=[Vivillon(182/258)], P2=[Chespin(28/142)]
-Seed 3986: ✗ FAIL - #3: turn=4, prng=10->10, P1=[Sceptile(192/275)], P2=[Silvally(219/348)]
+Seed 3986: ✓ PASS
 Seed 4016: ✓ PASS
 Seed 4025: ✗ FAIL - #5: turn=6, prng=12->15, P1=[Hippowdon(326/326)], P2=[Spinda(104/249)]
 Seed 4044: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 291
-Failed: 432
+Passed: 294
+Failed: 429
 
 Pass rate: 40%
 ✗ Some seeds still failing

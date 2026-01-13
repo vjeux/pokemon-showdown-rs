@@ -15,20 +15,20 @@ use crate::event::EventResult;
 ///         return null;
 ///     }
 /// }
-pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Immune to Electric-type moves and heal 1/4 max HP
+    // if (target !== source && move.type === 'Electric') {
     if target_pos != source_pos {
         // Check if the move is Electric-type
-        let is_electric = {
-            let move_data = match battle.dex.moves().get(move_id) {
-                Some(m) => m,
-                None => return EventResult::Continue,
-            };
-            move_data.move_type == "Electric"
-        };
+        // JavaScript checks move.type (the active move's type, not the dex type)
+        // This is important for moves like Electrify which change the move type at runtime
+        let is_electric = active_move.map(|m| m.move_type == "Electric").unwrap_or(false);
 
         if is_electric {
             // Heal 1/4 max HP
+            // if (!this.heal(target.baseMaxhp / 4)) {
+            //     this.add('-immune', target, '[from] ability: Volt Absorb');
+            // }
             let heal_amount = {
                 let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
                     Some(p) => p,
@@ -38,6 +38,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
             };
             battle.heal(heal_amount, Some(target_pos), None, None);
             // Return Null to prevent the move from hitting
+            // return null;
             return EventResult::Null;
         }
     }
