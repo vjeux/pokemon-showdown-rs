@@ -435,6 +435,36 @@ pokemon.speed = pokemon.stored_stats.spe as i32;
 
 **Failing Seed:** 1249 (Mr. Mime-Galar with Imprison vs Staryu with Petal Blizzard)
 
+### 24. ✅ FIXED: last_move_used vs last_move for runtime flags
+**Commit Reference:** `df44f08b`
+
+**Problem:** JavaScript's `target.lastMove` is the full ActiveMove with runtime flags (isZ, isMax, isZOrMaxPowered). Some Rust callbacks were using `last_move` (just the ID) and looking up dex data, missing runtime flags.
+
+**JavaScript:** `target.lastMove.isZ || target.lastMove.isMax` (checks runtime flags)
+**Wrong Rust:** `battle.dex.moves().get_by_id(&last_move_id).is_z.is_some()` (checks dex static data)
+**Correct Rust:** `last_move_used.is_z.is_some() || last_move_used.is_max.is_some()` (checks runtime ActiveMove)
+
+**Files Fixed:**
+- [x] instruct.rs - Now uses last_move_used for is_z/is_max checks
+- [x] encore.rs - Now uses last_move_used for is_z/is_max checks
+
+### 25. ✅ FIXED: on_hit parameter order (target first, source second)
+**Commit Reference:** `30822986`, `81acb188`
+
+**Problem:** The dispatch_on_hit passes (target_pos, source_pos) matching JavaScript's onHit(target, source, move). Some callbacks had the parameters backwards, using the first param as source or the second param as target.
+
+**JavaScript:** `onHit(target, source, move)` - target is first param
+**Dispatch:** `dispatch_on_hit(battle, active_move, target_pos, source_pos)` - target first
+**Correct Rust:** First param is target (defender), second param is source (attacker)
+
+**Files Fixed:**
+- [x] wakeupslap.rs - Earlier fix
+- [x] skydrop.rs - Was using second param for target HP check
+- [x] afteryou.rs - Was using second param for queue prioritization
+- [x] substitute.rs - Was using second param for damage calculation
+
+**Note:** For self-targeting moves where target == source, the bug is masked. It only manifests for moves that actually hit a different Pokemon.
+
 ## Progress Log
 
 - 2026-01-13: Created this file
@@ -461,6 +491,8 @@ pokemon.speed = pokemon.stored_stats.spe as i32;
 - 2026-01-13: Verified slot position pattern is correctly implemented (wish, futuremove, etc.)
 - 2026-01-13: Fixed EventResult::Stop to EventResult::Null in 38 move callbacks (bulk fix for return null pattern)
 - 2026-01-13: Fixed on_hit parameter order in Max moves (9 files: genesissupernova, maxovergrowth, maxstarfall, maxmindstorm, maxflare, maxlightning, maxrockfall, maxgeyser, maxhailstorm) - they were using first param as source but dispatch passes target first
+- 2026-01-13: Fixed Instruct and Encore to use last_move_used for is_z/is_max runtime flags instead of dex lookup
+- 2026-01-13: Fixed on_hit parameter order in skydrop.rs, afteryou.rs, substitute.rs - they were using second param as target but dispatch passes target first
 
 ## Patterns Verified as Already Fixed
 
