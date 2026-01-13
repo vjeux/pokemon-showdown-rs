@@ -58,5 +58,6 @@ pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, s
     }
 
     // return null;
-    EventResult::Boolean(false)
+    // EventResult::Null prevents the ability from being changed
+    EventResult::Null
 }
