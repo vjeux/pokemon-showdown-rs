@@ -19,6 +19,25 @@ pub fn on_fractional_priority(
     pokemon_pos: (usize, usize),
     priority: f64,
 ) -> EventResult {
+    // if (move.category === "Status" && pokemon.hasAbility("myceliummight")) return;
+    let has_mycelium_might = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.has_ability(battle, &["myceliummight"])
+    };
+
+    let is_status = battle
+        .active_move
+        .as_ref()
+        .map(|m| m.category == "Status")
+        .unwrap_or(false);
+
+    if is_status && has_mycelium_might {
+        return EventResult::Continue;
+    }
+
     // if (priority <= 0 && this.randomChance(1, 5))
     if priority <= 0.0 {
         let activate = {
