@@ -230,6 +230,34 @@ if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).
 
 **Impact:** Pass rate: 368/723 -> 387/723 (19 more seeds fixed - Grassy Terrain, Electric Terrain, Misty Terrain, Psychic Terrain related)
 
+### 18. ✅ FIXED: Missing FoeDisableMove and FoeBeforeMove dispatchers
+**Commit Reference:** `d3293969`
+
+**Problem:** Condition callbacks like `onFoeDisableMove` and `onFoeBeforeMove` need dispatcher functions and handle_condition_event cases. When missing, the handlers are found by find_event_handlers but not executed, causing conditions like Imprison to silently fail.
+
+**When a condition has onFoe* callbacks:**
+1. Add dispatch_on_foe_* function in condition_callbacks/mod.rs
+2. Add "Foe*" case in handle_condition_event.rs
+3. Add condition_id case to the dispatch function
+
+**Example - Imprison:**
+- JavaScript: `onFoeDisableMove(pokemon) { ... pokemon.disableMove(moveSlot.id); }`
+- Missing: No dispatch_on_foe_disable_move or FoeDisableMove case
+- Fixed: Added both dispatcher and handler case
+
+**Files Fixed:**
+- [x] condition_callbacks/mod.rs - Added dispatch_on_foe_disable_move with imprison case
+- [x] handle_condition_event.rs - Added "FoeDisableMove" case
+- [x] condition_callbacks/mod.rs - Added imprison case to dispatch_on_foe_before_move
+
+**Impact:** Imprison now blocks moves (forces Struggle) but there's a separate Struggle damage calculation issue
+
+**Other Foe* callbacks to check:**
+- onFoeRedirectTarget
+- onFoeTrapPokemon
+- onFoeMaybeTrapPokemon
+- (search for "onFoe" in moves.json and conditions.json to find all)
+
 ### 16. ✅ FIXED: last_move_used stores full ActiveMove
 **Commit Reference:** `fc8a82bd`
 
