@@ -132,25 +132,18 @@ pub mod condition {
         _pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // Get the active move
-        let move_id = match &battle.active_move {
-            Some(active_move) => active_move.id.clone(),
-            None => return EventResult::Continue,
-        };
-
-        let move_data = match battle.dex.moves().get_by_id(&move_id) {
-            Some(m) => m,
-            None => return EventResult::Continue,
-        };
+        // JavaScript checks move.type (the active move's type, not the dex type)
+        let is_electric = battle.active_move.as_ref()
+            .map(|m| m.move_type == "Electric")
+            .unwrap_or(false);
 
         // if (move.type === 'Electric') {
-        if move_data.move_type == "Electric" {
+        if is_electric {
             // this.debug('charge boost');
             battle.debug("charge boost");
 
             // return this.chainModify(2);
-            let result = battle.chain_modify(2.0);
-            return EventResult::Number(result);
+            battle.chain_modify(2.0);
         }
 
         EventResult::Continue
@@ -167,15 +160,14 @@ pub mod condition {
         _target_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-        // Get the move data
-        let move_data = match battle.dex.moves().get_by_id(&ID::from(move_id)) {
-            Some(m) => m,
+        // JavaScript checks move.type (the active move's type, not the dex type)
+        let (is_electric, move_id) = match active_move {
+            Some(m) => (m.move_type == "Electric", m.id.as_str()),
             None => return EventResult::Continue,
         };
 
         // if (move.type === 'Electric' && move.id !== 'charge') {
-        if move_data.move_type == "Electric" && move_id != "charge" {
+        if is_electric && move_id != "charge" {
             // pokemon.removeVolatile('charge');
             Pokemon::remove_volatile(battle, pokemon_pos, &ID::from("charge"));
         }
@@ -193,19 +185,14 @@ pub mod condition {
         source_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // Get the active move
-        let move_id = match &battle.active_move {
-            Some(active_move) => active_move.id.clone(),
-            None => return EventResult::Continue,
-        };
-
-        let move_data = match battle.dex.moves().get_by_id(&move_id) {
-            Some(m) => m,
+        // JavaScript checks move.type (the active move's type, not the dex type)
+        let (is_electric, is_charge) = match &battle.active_move {
+            Some(m) => (m.move_type == "Electric", m.id.as_str() == "charge"),
             None => return EventResult::Continue,
         };
 
         // if (move.type === 'Electric' && move.id !== 'charge') {
-        if move_data.move_type == "Electric" && move_id.as_str() != "charge" {
+        if is_electric && !is_charge {
             // pokemon.removeVolatile('charge');
             Pokemon::remove_volatile(battle, source_pos, &ID::from("charge"));
         }

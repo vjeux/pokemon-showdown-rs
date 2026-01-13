@@ -14,20 +14,13 @@ use crate::Pokemon;
 ///     }
 /// }
 pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: (usize, usize)) -> EventResult {
-    // Get the active move
-    let move_type = match &battle.active_move {
-        Some(active_move) => {
-            // Get the move data to check its type
-            match battle.dex.moves().get_by_id(&active_move.id) {
-                Some(move_data) => move_data.move_type.clone(),
-                None => return EventResult::Continue,
-            }
-        }
-        None => return EventResult::Continue,
-    };
+    // JavaScript checks move.type (the active move's type, not the dex type)
+    let is_electric = battle.active_move.as_ref()
+        .map(|m| m.move_type == "Electric")
+        .unwrap_or(false);
 
     // if (move.type === 'Electric')
-    if move_type == "Electric" {
+    if is_electric {
         // target.useItem();
         // use_item() automatically applies the item's boosts from data/items.json
         // Cell Battery has boosts: {atk: 1}, so use_item() handles the +1 Attack boost
