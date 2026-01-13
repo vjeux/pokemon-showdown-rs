@@ -84,16 +84,13 @@ impl Battle {
         // JS: let callback = this.getCallback(pokemon, status, callbackName);
         // JS: if (callback !== undefined || (getKey && pokemon.statusState[getKey])) {
         if !pokemon.status.is_empty() {
-            eprintln!("[FIND_POKEMON_HANDLERS] Checking status {} for callback {}", pokemon.status.as_str(), callback_name);
             let has_callback = self.has_status_callback(&pokemon.status, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks statusState[getKey], which means checking if duration exists
                 key == "duration" && pokemon.status_state.duration.is_some()
             });
-            eprintln!("[FIND_POKEMON_HANDLERS] has_callback={}, has_get_key={}", has_callback, has_get_key);
 
             if has_callback || has_get_key {
-                eprintln!("[FIND_POKEMON_HANDLERS] Adding status handler for {} {}", pokemon.status.as_str(), callback_name);
                 // Get status name from dex
                 let status_name = self.dex.conditions().get_by_id(&pokemon.status)
                     .and_then(|c| c.name.clone())

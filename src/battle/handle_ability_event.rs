@@ -230,16 +230,16 @@ impl Battle {
                 self,
                 ability_id.as_str(),
                 relay_var_int,
-                Some(pokemon_pos),
-                event_target_pos,
+                event_target_pos,   // attacker = event.target (source in callback)
+                event_source_pos,   // defender = event.source (target in callback)
                 active_move_clone.as_ref(),
             ),
             "AnyBasePowerPriority" => ability_callbacks::dispatch_on_any_base_power_priority(
                 self,
                 ability_id.as_str(),
                 relay_var_int,
-                Some(pokemon_pos),
-                event_target_pos,
+                event_target_pos,   // attacker = event.target
+                event_source_pos,   // defender = event.source
                 active_move_clone.as_ref(),
             ),
             "AnyBeforeMove" => ability_callbacks::dispatch_on_any_before_move(

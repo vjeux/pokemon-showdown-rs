@@ -130,7 +130,6 @@ impl Battle {
                             .map(|p| p.hp == 0)
                             .unwrap_or(true); // If not found, treat as fainted
                         if ally_has_no_hp {
-                            eprintln!("[FIND_EVENT_HANDLERS] Skipping ally with 0 HP at position {:?}", ally_pos);
                             continue;
                         }
 
@@ -164,9 +163,6 @@ impl Battle {
                 // JavaScript: target.foes() filters out fainted Pokemon (!!ally.hp)
                 for (side_idx, side) in self.sides.iter().enumerate() {
                     if side_idx != target_side {
-                        eprintln!("[FIND_EVENT_HANDLERS] Looking for onFoe{} handlers, target_side={}, checking opposing side={}",
-                            event_name, target_side, side_idx);
-                        eprintln!("[FIND_EVENT_HANDLERS] Opposing side.active = {:?}", side.active);
                         for poke_idx in side.active.iter().flatten() {
                             let foe_pos = (side_idx, *poke_idx);
 
@@ -178,17 +174,13 @@ impl Battle {
                                 .map(|p| p.hp == 0)
                                 .unwrap_or(true); // If not found, treat as fainted
                             if foe_has_no_hp {
-                                eprintln!("[FIND_EVENT_HANDLERS] Skipping foe with 0 HP at position {:?}", foe_pos);
                                 continue;
                             }
 
-                            eprintln!("[FIND_EVENT_HANDLERS] Checking foe at position {:?} for onFoe{}", foe_pos, event_name);
                             // onFoe handlers
                             let foe_event = format!("onFoe{}", event_name);
                             let mut foe_handlers =
                                 self.find_pokemon_event_handlers(&foe_event, foe_pos, None);
-                            eprintln!("[FIND_EVENT_HANDLERS] Found {} onFoe{} handlers from position {:?}",
-                                foe_handlers.len(), event_name, foe_pos);
                             for handler in &mut foe_handlers {
                                 handler.callback_name = format!("Foe{}", event_name);
                             }
@@ -243,22 +235,17 @@ impl Battle {
         // When target is a Pokemon, convert to its side for side event handlers
         let target_side_idx = target.map(|(side, _)| side);
 
-        eprintln!("[FIND_EVENT_HANDLERS] About to check side handlers, target_side_idx={:?}, event_name={}", target_side_idx, event_name);
-
         // Loop through all sides to find side event handlers
         for side_idx in 0..self.sides.len() {
             // JavaScript: if (side.n < 2 || !side.allySide)
             // In Rust, we don't have allySide yet, so we just check all sides
 
             if let Some(target_side) = target_side_idx {
-                eprintln!("[FIND_EVENT_HANDLERS] Checking side {} (target_side={})", side_idx, target_side);
                 // JavaScript: if (side === target || side === target.allySide)
                 if side_idx == target_side {
                     // Find handlers for on${eventName}
                     let prefixed_event = format!("on{}", event_name);
-                    eprintln!("[FIND_EVENT_HANDLERS] Calling find_side_event_handlers for side {}, callback={}", side_idx, prefixed_event);
                     let mut side_handlers = self.find_side_event_handlers(&prefixed_event, side_idx, None, None);
-                    eprintln!("[FIND_EVENT_HANDLERS] Found {} side handlers for {}", side_handlers.len(), prefixed_event);
                     for handler in &mut side_handlers {
                         handler.callback_name = event_name.to_string();
                     }

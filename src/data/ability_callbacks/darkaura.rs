@@ -98,4 +98,3 @@ pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, source_pos: Opti
     // Return Continue (undefined in JS) - the modifier is applied via event.modifier
     EventResult::Continue
 }
-
