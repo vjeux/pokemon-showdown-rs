@@ -13,12 +13,15 @@ use crate::event::EventResult;
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
-        if move_data.move_type == "Fire" {
-            battle.chain_modify(0.5);
-            return EventResult::Continue;
-        }
+pub fn on_source_modify_atk(_battle: &mut Battle, _atk: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // JavaScript checks move.type which is the active move's current type (may be modified by abilities like Refrigerate)
+    let move_type = match active_move {
+        Some(m) => m.move_type.as_str(),
+        None => return EventResult::Continue,
+    };
+
+    if move_type == "Fire" {
+        _battle.chain_modify(0.5);
     }
     EventResult::Continue
 }
@@ -29,12 +32,15 @@ pub fn on_source_modify_atk(battle: &mut Battle, _atk: i32, _attacker_pos: (usiz
 ///         return this.chainModify(0.5);
 ///     }
 /// }
-pub fn on_source_modify_sp_a(battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-    if let Some(move_data) = battle.dex.moves().get(move_id) {
-        if move_data.move_type == "Fire" {
-            battle.chain_modify(0.5);
-            return EventResult::Continue;
-        }
+pub fn on_source_modify_sp_a(_battle: &mut Battle, _spa: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // JavaScript checks move.type which is the active move's current type (may be modified by abilities like Refrigerate)
+    let move_type = match active_move {
+        Some(m) => m.move_type.as_str(),
+        None => return EventResult::Continue,
+    };
+
+    if move_type == "Fire" {
+        _battle.chain_modify(0.5);
     }
     EventResult::Continue
 }

@@ -46,7 +46,7 @@ Seed 1008: ✓ PASS
 Seed 1031: ✓ PASS
 Seed 1053: ✓ PASS
 Seed 1067: ✓ PASS
-Seed 1069: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Glalie(259/268)], P2=[Azumarill(174/200)]
+Seed 1069: ✓ PASS
 Seed 1110: ✗ FAIL - #34: turn=29, prng=140->150, P1=[Oricorio(128/182)], P2=[Silvally(0/184)]
 Seed 1125: ✓ PASS
 Seed 1143: ✓ PASS
@@ -129,7 +129,7 @@ Seed 2178: ✗ FAIL - #62: turn=60, prng=158->163, P1=[Drednaw(24/312)], P2=[Kin
 Seed 2188: ✗ FAIL - #19: turn=19, prng=51->58, P1=[Solgaleo(232/278)], P2=[Horsea(103/141)]
 Seed 2190: ✓ PASS
 Seed 2201: ✓ PASS
-Seed 2208: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Wooloo(193/236)], P2=[Solrock(304/318)]
+Seed 2208: ✓ PASS
 Seed 2212: ✗ FAIL - #9: turn=10, prng=24->27, P1=[Greavard(211/211)], P2=[Shaymin(299/319)]
 Seed 2214: ✗ FAIL - #3: turn=4, prng=10->15, P1=[Foongus(245/282)], P2=[Drednaw(295/295)]
 Seed 2232: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 337
-Failed: 386
+Passed: 339
+Failed: 384
 
 Pass rate: 46%
 ✗ Some seeds still failing
