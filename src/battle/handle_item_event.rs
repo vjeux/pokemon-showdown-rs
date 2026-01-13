@@ -23,9 +23,6 @@ impl Battle {
         let pokemon_pos = target.and_then(|t| t.as_pokemon()).unwrap_or((0, 0));
         let target_opt = Some(pokemon_pos);
 
-        eprintln!("[HANDLE_ITEM_EVENT] event_id={}, item_id={}, target={:?}",
-            event_id, item_id.as_str(), target_opt);
-
         let source = self.event.as_ref().and_then(|e| e.source);
         let relay_var = self.event.as_ref().and_then(|e| e.relay_var.clone());
 

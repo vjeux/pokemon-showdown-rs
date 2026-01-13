@@ -21,11 +21,14 @@ use crate::Pokemon;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    pokemon_pos: (usize, usize),  // JS target (defender, has the berry)
+    target_pos: Option<(usize, usize)>,  // JS source (attacker, eats the berry)
 ) -> EventResult {
-    // Get target
-    let target = match target_pos {
+    // Map Rust params to JS semantics:
+    // pokemon_pos = JS target (defender)
+    // target_pos = JS source (attacker)
+    let target = pokemon_pos;  // Defender (has the berry)
+    let source = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -41,7 +44,7 @@ pub fn on_hit(
 
     // if (source.hp && item.isBerry && target.takeItem(source)) {
     let source_hp = {
-        let source_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -59,7 +62,7 @@ pub fn on_hit(
 
         if is_berry {
             // target.takeItem(source)
-            let taken_item = Pokemon::take_item(battle, target, Some(pokemon_pos));
+            let taken_item = Pokemon::take_item(battle, target, Some(source));
 
             if let Some(item_id) = taken_item {
                 // this.add('-enditem', target, item.name, '[from] stealeat', '[move] Bug Bite', `[of] ${source}`);
@@ -68,7 +71,7 @@ pub fn on_hit(
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    let source_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
@@ -103,15 +106,15 @@ pub fn on_hit(
                     "Eat",
                     &crate::battle::Effect::item(item_id.clone()),
                     None,
-                    Some(pokemon_pos),
-                    Some(pokemon_pos),
+                    Some(source),
+                    Some(source),
                     None,
                     None,
                 );
                 if matches!(eat_result, EventResult::Boolean(true))
                     || matches!(eat_result, EventResult::Continue)
                 {
-                    battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(pokemon_pos), None, EventResult::Continue, false, false);
+                    battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(source)), Some(source), None, EventResult::Continue, false, false);
 
                     // if (item.id === 'leppaberry') target.staleness = 'external';
                     if item_id.as_str() == "leppaberry" {
@@ -142,7 +145,7 @@ pub fn on_hit(
                     }
                 };
                 if has_on_eat {
-                    let source_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                    let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };

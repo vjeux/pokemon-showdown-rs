@@ -115,9 +115,6 @@ impl Battle {
         let effect_id = &effect.id;
         let effect_type = effect.effect_type;
 
-        eprintln!("[SINGLE_EVENT] event_id={}, effect_id={}, effect_type={:?}, target={:?}, depth={}",
-            event_id, effect_id.as_str(), effect_type, target, self.event_depth);
-
         // JavaScript: if (this.eventDepth >= 8) throw Error
         if self.event_depth >= 8 {
             self.add("message", &["STACK LIMIT EXCEEDED".into()]);
@@ -274,9 +271,7 @@ impl Battle {
 
         // Dispatch based on effect type
         let target_event = target.map(crate::event::EventTarget::Pokemon);
-        eprintln!("[SINGLE_EVENT] BEFORE dispatch_single_event: event_id={}, effect_id={}", event_id, effect_id.as_str());
         let result = self.dispatch_single_event(event_id, effect_id, target_event.as_ref(), source);
-        eprintln!("[SINGLE_EVENT] AFTER dispatch_single_event: event_id={}, effect_id={}, result={:?}", event_id, effect_id.as_str(), result);
 
         // Restore parent context
         // JavaScript: this.eventDepth--;
