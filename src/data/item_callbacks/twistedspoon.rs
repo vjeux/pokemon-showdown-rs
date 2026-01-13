@@ -23,8 +23,8 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, _pokemon_pos: (usize
     //     return this.chainModify([4915, 4096]);
     // }
     if active_move.move_type == "Psychic" {
-        let result = battle.chain_modify_fraction(4915, 4096);
-        return EventResult::Number(result);
+        // chain_modify accumulates the modifier - we return Continue, not the result
+        battle.chain_modify_fraction(4915, 4096);
     }
 
     EventResult::Continue

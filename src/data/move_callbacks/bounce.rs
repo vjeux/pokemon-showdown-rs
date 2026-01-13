@@ -137,8 +137,8 @@ pub mod condition {
         //     return this.chainModify(2);
         // }
         if move_id == "gust" || move_id == "twister" {
-            let result = battle.chain_modify(2.0);
-            return EventResult::Number(result);
+            // chain_modify accumulates the modifier - we return Continue, not the result
+            battle.chain_modify(2.0);
         }
 
         EventResult::Continue

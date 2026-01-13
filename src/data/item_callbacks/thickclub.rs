@@ -29,8 +29,8 @@ pub fn on_modify_atk(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
     //     return this.chainModify(2);
     // }
     if base_species_name == "Cubone" || base_species_name == "Marowak" {
-        let result = battle.chain_modify(2.0);
-        return EventResult::Number(result);
+        // chain_modify accumulates the modifier - we return Continue, not the result
+        battle.chain_modify(2.0);
     }
 
     EventResult::Continue

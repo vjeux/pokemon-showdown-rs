@@ -257,7 +257,7 @@ Seed 3688: ✓ PASS
 Seed 3697: ✗ FAIL - #14: turn=13, prng=59->62, P1=[Glalie(128/281)], P2=[Ninetales(201/242)]
 Seed 3701: ✓ PASS
 Seed 3735: ✓ PASS
-Seed 3749: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Magnezone(246/249)], P2=[Dedenne(52/167)]
+Seed 3749: ✓ PASS
 Seed 3787: ✗ FAIL - #2: turn=3, prng=11->22, P1=[Necrozma(250/300)], P2=[Dunsparce(221/302)]
 Seed 3801: ✗ FAIL - #29: turn=30, prng=33->39, P1=[Shox(139/311)], P2=[Altaria(63/251)]
 Seed 3865: ✗ FAIL - #13: turn=13, prng=33->39, P1=[Charizard(104/231)], P2=[Barbaracle(159/243)]
@@ -313,7 +313,7 @@ Seed 4594: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Tauros(256/272)], P2=[Honedge(1
 Seed 4616: ✓ PASS
 Seed 4634: ✗ FAIL - #6: turn=6, prng=17->21, P1=[Cyclohm(30/281)], P2=[Tyranitar(269/337)]
 Seed 4648: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Manectric(0/214)], P2=[Goodra(189/253)]
-Seed 4651: ✗ FAIL - #8: turn=7, prng=34->41, P1=[Chesnaught(259/275)], P2=[Blissey(159/619)]
+Seed 4651: ✓ PASS
 Seed 4652: ✗ FAIL - #27: turn=25, prng=113->127, P1=[Scorbunny(94/224)], P2=[Annihilape(324/324)]
 Seed 4660: ✓ PASS
 Seed 4661: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 348
-Failed: 375
+Passed: 350
+Failed: 373
 
 Pass rate: 48%
 ✗ Some seeds still failing

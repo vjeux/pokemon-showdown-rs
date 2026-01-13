@@ -36,8 +36,8 @@ pub fn on_base_power(
 
     if status == ID::from("psn") || status == ID::from("tox") {
         // return this.chainModify(2);
-        let result = battle.chain_modify(2.0);
-        return EventResult::Number(result);
+        // chain_modify accumulates the modifier - we return Continue, not the result
+        battle.chain_modify(2.0);
     }
 
     EventResult::Continue
