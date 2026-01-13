@@ -46,10 +46,14 @@ pub fn base_power_callback(
 /// }
 pub fn on_prepare_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let source = pokemon_pos;
+    // JS: onPrepareHit(target, source, move) - source is second param
+    let source = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
 
     // if (source.terastallized)
     let tera_type = {
