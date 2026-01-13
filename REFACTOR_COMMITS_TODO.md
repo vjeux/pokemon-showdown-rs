@@ -314,6 +314,34 @@ if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).
 
 **Impact:** Pass rate: 392/723 -> 393/723 (+1 seed)
 
+### 21. ✅ FIXED: get_immunity must use get_types() not .types
+**Commit Reference:** `0f09d77a`
+
+**Problem:** When calling `dex.getImmunity(source, target)` in JavaScript, if target is a Pokemon object, it internally calls `target.getTypes()` which runs the Type event. This allows Arceus/Silvally to change type based on held items.
+
+**JavaScript:**
+```javascript
+const targetTyping: string[] | string = target.getTypes?.() || target.types || target;
+```
+
+**Wrong Rust:**
+```rust
+battle.dex.get_immunity("powder", &target_pokemon.types)
+```
+
+**Correct Rust:**
+```rust
+let types = target_pokemon.get_types(battle, false);
+battle.dex.get_immunity("powder", &types)
+```
+
+**Files Fixed:**
+- [x] hit_step_try_immunity.rs - powder, prankster, and status immunity checks
+- [x] safetygoggles.rs - powder immunity check
+- [x] octolock.rs - trapped immunity check
+
+**Impact:** Pass rate: 393/723 -> 395/723 (+2 seeds)
+
 ## Progress Log
 
 - 2026-01-13: Created this file
@@ -332,4 +360,5 @@ if (this.dex.data.Moves.hasOwnProperty(id) && (found = this.dex.data.Moves[id]).
 - 2026-01-13: Fixed FoeDisableMove/FoeBeforeMove dispatchers for Imprison
 - 2026-01-13: Fixed Enigma Berry to skip status/self moves - Pass rate 387 -> 392
 - 2026-01-13: Fixed Supersweet Syrup to use Pokemon field - Pass rate 392 -> 393
-- 2026-01-13: Current pass rate: 393/723 (54%)
+- 2026-01-13: Fixed get_immunity to use get_types() - Pass rate 393 -> 395
+- 2026-01-13: Current pass rate: 395/723 (54%)
