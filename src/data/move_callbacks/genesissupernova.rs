@@ -19,10 +19,10 @@ use crate::event::EventResult;
 ///
 /// 		}
 /// ```
-pub fn on_hit(battle: &mut Battle, _pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
+pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // this.field.setTerrain('psychicterrain');
     let source_effect = Some(crate::battle::Effect::move_("genesissupernova"));
-    battle.set_terrain(ID::from("psychicterrain"), None, source_effect);
+    battle.set_terrain(ID::from("psychicterrain"), Some(pokemon_pos), source_effect);
 
     EventResult::Continue
 }

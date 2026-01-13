@@ -434,7 +434,7 @@ pub fn run_move_effects<'a>(
                 //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
                 let terrain_id = ID::new(terrain);
                 let terrain_effect = Some(Effect::move_(active_move.id.clone()));
-                let hit_result = battle.set_terrain(terrain_id, None, terrain_effect);
+                let hit_result = battle.set_terrain(terrain_id, Some(source_pos), terrain_effect);
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
                     DamageResult::Success

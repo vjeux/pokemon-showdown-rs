@@ -19,7 +19,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 
     // Try to set electric terrain (returns false if already set)
     let source_effect = Some(crate::battle::Effect::ability("hadronengine"));
-    let terrain_set = battle.set_terrain(crate::dex_data::ID::new("electricterrain"), None, source_effect);
+    let terrain_set = battle.set_terrain(crate::dex_data::ID::new("electricterrain"), Some(pokemon_pos), source_effect);
 
     // If terrain was already electric terrain (setTerrain returned false) and is still electric terrain
     if !terrain_set && battle.is_terrain("electricterrain") {

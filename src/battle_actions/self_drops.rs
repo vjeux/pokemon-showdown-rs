@@ -185,7 +185,7 @@ pub fn self_drops(
                             if let Some(ref terrain_name) = self_data.terrain {
                                 let terrain_id = crate::dex_data::ID::new(terrain_name);
                                 let terrain_effect = Some(Effect::move_(_move_id.clone()));
-                                let _applied = battle.set_terrain(terrain_id, None, terrain_effect);
+                                let _applied = battle.set_terrain(terrain_id, Some(source_pos), terrain_effect);
                             }
 
                             // Apply weather from self effect

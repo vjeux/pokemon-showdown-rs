@@ -35,7 +35,7 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 
     // this.field.setTerrain('mistyterrain');
     let source_effect = Some(crate::battle::Effect::move_("maxstarfall"));
-    battle.set_terrain(ID::from("mistyterrain"), None, source_effect);
+    battle.set_terrain(ID::from("mistyterrain"), Some(source_pos), source_effect);
 
     EventResult::Continue
 }
@@ -86,7 +86,7 @@ pub mod self_callbacks {
 
         // this.field.setTerrain("mistyterrain");
         let source_effect = Some(crate::battle::Effect::move_("maxstarfall"));
-        battle.set_terrain(ID::from("mistyterrain"), None, source_effect);
+        battle.set_terrain(ID::from("mistyterrain"), source_pos, source_effect);
 
         EventResult::Continue
     }

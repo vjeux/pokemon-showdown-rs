@@ -35,7 +35,7 @@ pub fn on_hit(battle: &mut Battle, source_pos: (usize, usize), _target_pos: Opti
 
     // this.field.setTerrain('grassyterrain');
     let source_effect = Some(crate::battle::Effect::move_("maxovergrowth"));
-    battle.set_terrain(ID::from("grassyterrain"), None, source_effect);
+    battle.set_terrain(ID::from("grassyterrain"), Some(source_pos), source_effect);
 
     EventResult::Continue
 }
@@ -86,7 +86,7 @@ pub mod self_callbacks {
 
         // this.field.setTerrain("grassyterrain");
         let source_effect = Some(crate::battle::Effect::move_("maxovergrowth"));
-        battle.set_terrain(ID::from("grassyterrain"), None, source_effect);
+        battle.set_terrain(ID::from("grassyterrain"), source_pos, source_effect);
 
         EventResult::Continue
     }
