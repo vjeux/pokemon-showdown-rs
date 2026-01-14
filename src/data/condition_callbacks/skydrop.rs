@@ -33,15 +33,24 @@ pub fn on_any_invulnerability(
     let attacking_move_id = attacking_active_move.map(|m| m.id.as_str()).unwrap_or("");
     println!("[SKYDROP_INVULN] Called for target={:?}, source={:?}, move='{}'", target_pos, source_pos, attacking_move_id);
 
-    // Get the Pokemon that has the skydrop volatile (could be target_pos from the event)
-    // We need to find which Pokemon has the skydrop condition to get effectState
-    // This is typically the pokemon_pos passed to the condition callback
-    // For now, check the target_pos for the skydrop volatile
+    // Get the Pokemon that has the skydrop volatile from effect_holder
+    // This is set by single_event to be the Pokemon that owns the volatile
+    // The volatile is on the SKY DROP USER (e.g., Zygarde), not the grabbed target
+    let effect_holder = match battle.effect.as_ref().and_then(|e| e.effect_holder) {
+        Some(pos) => pos,
+        None => {
+            println!("[SKYDROP_INVULN] No effect_holder, returning Continue");
+            return EventResult::Continue;
+        }
+    };
+
+    println!("[SKYDROP_INVULN] effect_holder={:?}", effect_holder);
+
     let (effectstate_target, effectstate_source) = {
-        let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
+        let pokemon = match battle.pokemon_at(effect_holder.0, effect_holder.1) {
             Some(p) => p,
             None => {
-                println!("[SKYDROP_INVULN] Pokemon not found at {:?}, returning Continue", target_pos);
+                println!("[SKYDROP_INVULN] Pokemon not found at effect_holder {:?}, returning Continue", effect_holder);
                 return EventResult::Continue;
             }
         };
@@ -50,7 +59,7 @@ pub fn on_any_invulnerability(
         let state = match pokemon.volatiles.get(&skydrop_id) {
             Some(s) => s,
             None => {
-                println!("[SKYDROP_INVULN] No skydrop volatile on pokemon, returning Continue");
+                println!("[SKYDROP_INVULN] No skydrop volatile on effect_holder, returning Continue");
                 return EventResult::Continue;
             }
         };

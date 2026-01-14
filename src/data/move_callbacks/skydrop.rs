@@ -43,6 +43,8 @@ pub fn on_modify_move(
         source_pokemon.volatiles.contains_key(&ID::from("skydrop"))
     };
 
+    eprintln!("[SKYDROP_MODIFY_MOVE] turn={}, source={:?}, has_skydrop={}", battle.turn, source, has_skydrop);
+
     // Set accuracy to true only on turn 1 (when no skydrop volatile exists)
     if !has_skydrop {
         // move.accuracy = true;
@@ -51,8 +53,11 @@ pub fn on_modify_move(
             Some(m) => m,
             None => return EventResult::Continue,
         };
+        eprintln!("[SKYDROP_MODIFY_MOVE] Setting accuracy=true (charge phase)");
         active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
         active_move.flags.contact = false;
+    } else {
+        eprintln!("[SKYDROP_MODIFY_MOVE] Keeping accuracy=100 (attack phase)");
     }
 
     EventResult::Continue
@@ -569,27 +574,17 @@ pub mod condition {
         };
         let source = source_pos;
 
-        // Get the skydrop volatile's effect state from the target Pokemon
+        // Get the skydrop volatile's effect state from the current handler
         // In JavaScript, 'this.effectState' refers to the volatile's effect state
-        let (effect_target, effect_source) = {
-            let pokemon = match battle.pokemon_at(target.0, target.1) {
-                Some(p) => p,
-                None => {
-                    eprintln!("[SKYDROP_ANY_INVULN] No Pokemon at target position, returning Continue");
-                    return EventResult::Continue;
-                }
-            };
-
-            let skydrop_id = ID::from("skydrop");
-            let effect_state = match pokemon.volatiles.get(&skydrop_id) {
-                Some(es) => es,
-                None => {
-                    eprintln!("[SKYDROP_ANY_INVULN] No skydrop volatile on target Pokemon, returning Continue");
-                    return EventResult::Continue;
-                }
-            };
-
-            (effect_state.target, effect_state.source)
+        // which is set by the event dispatch system for the handler that triggered this callback
+        let (effect_target, effect_source) = match battle.with_effect_state_ref(|state| {
+            (state.target, state.source)
+        }) {
+            Some((t, s)) => (t, s),
+            None => {
+                eprintln!("[SKYDROP_ANY_INVULN] No effect state available, returning Continue");
+                return EventResult::Continue;
+            }
         };
 
         eprintln!("[SKYDROP_ANY_INVULN] target={:?}, source={:?}, effect_target={:?}, effect_source={:?}", target, source, effect_target, effect_source);

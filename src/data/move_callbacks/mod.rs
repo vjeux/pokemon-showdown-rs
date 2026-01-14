@@ -1190,14 +1190,15 @@ pub fn dispatch_on_modify_type(
 pub fn dispatch_on_move_fail(
     battle: &mut Battle,
     active_move: Option<&ActiveMove>,
-    pokemon_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "axekick" => axekick::on_move_fail(battle, None, Some(pokemon_pos), active_move),
-        "highjumpkick" => highjumpkick::on_move_fail(battle, None, Some(pokemon_pos), active_move),
-        "jumpkick" => jumpkick::on_move_fail(battle, None, Some(pokemon_pos), active_move),
-        "skydrop" => skydrop::on_move_fail(battle, None, Some(pokemon_pos)),
-        "supercellslam" => supercellslam::on_move_fail(battle, None, Some(pokemon_pos), active_move),
+        "axekick" => axekick::on_move_fail(battle, target_pos, source_pos, active_move),
+        "highjumpkick" => highjumpkick::on_move_fail(battle, target_pos, source_pos, active_move),
+        "jumpkick" => jumpkick::on_move_fail(battle, target_pos, source_pos, active_move),
+        "skydrop" => skydrop::on_move_fail(battle, target_pos, source_pos),
+        "supercellslam" => supercellslam::on_move_fail(battle, target_pos, source_pos, active_move),
         _ => EventResult::Continue,
     }
 }

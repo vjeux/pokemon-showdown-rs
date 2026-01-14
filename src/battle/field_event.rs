@@ -627,8 +627,16 @@ impl Battle {
                         // JS: handler.end.call(this, target, pokemon.volatiles[handler.effectId]);
                         eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' calling End event before removal",
                             self.turn, handler.effect_id.as_str());
+
+                        // Get the volatile's state to pass to the End callback
+                        // This is critical for twoturnmove which stores move_id in effectState
+                        let volatile_state = self.sides.get(side_idx)
+                            .and_then(|s| s.pokemon.get(poke_idx))
+                            .and_then(|p| p.volatiles.get(&handler.effect_id))
+                            .cloned();
+
                         self.single_event("End", &crate::battle::Effect::condition(handler.effect_id.clone()),
-                            None, Some((side_idx, poke_idx)), None, None, None);
+                            volatile_state.as_ref(), Some((side_idx, poke_idx)), None, None, None);
 
                         // Actually remove the volatile
                         if let Some(pokemon) = self.sides.get_mut(side_idx)

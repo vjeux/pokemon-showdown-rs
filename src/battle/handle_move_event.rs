@@ -144,7 +144,7 @@ impl Battle {
             }
             "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0))),
             "ModifyType" => move_callbacks::dispatch_on_modify_type(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos),
-            "MoveFail" => move_callbacks::dispatch_on_move_fail(self, active_move_clone.as_ref(), source_pos.unwrap_or((0,0))),
+            "MoveFail" => move_callbacks::dispatch_on_move_fail(self, active_move_clone.as_ref(), target_pos, source_pos),
             "PrepareHit" => {
                 move_callbacks::dispatch_on_prepare_hit(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos)
             }

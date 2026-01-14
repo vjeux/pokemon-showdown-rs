@@ -71,7 +71,8 @@ pub fn on_start(
         // The source should be None, not copied from twoturnmove.
         // This is critical for Sky Drop's onFoeBeforeMove which checks:
         //   if (attacker === this.effectState.source) { return null; }
-        // If source is None, this check will always be false, allowing moves to execute.
+        // With source defaulting to self (Zygarde), this check is:
+        //   Frosmoth === Zygarde -> false, so Frosmoth can move
         eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}', source=None (matching JS)", move_id_val.as_str());
         crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), None, None, None, None);
         eprintln!("[TWOTURNMOVE_ONSTART] Returned from add_volatile");
@@ -181,16 +182,26 @@ pub fn on_end(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
+    eprintln!("[TWOTURNMOVE_ONEND] Called for pokemon=({},{}), turn={}",
+        pokemon_pos.0, pokemon_pos.1, battle.turn);
+
     // target.removeVolatile(this.effectState.move);
     // Get the move ID from effectState using with_effect_state_ref
     // JavaScript: this.effectState.move
     let move_id = battle.with_effect_state_ref(|state| {
+        eprintln!("[TWOTURNMOVE_ONEND] effect_state.move_id = {:?}", state.move_id);
         state.move_id.as_ref().map(|s| ID::from(s.as_str()))
     }).flatten();
 
+    eprintln!("[TWOTURNMOVE_ONEND] move_id to remove = {:?}", move_id.as_ref().map(|id| id.as_str()));
+
     // Remove the volatile for the specific move (e.g., "dig", "fly", "solarbeam")
     if let Some(id) = move_id {
+        eprintln!("[TWOTURNMOVE_ONEND] Calling remove_volatile for '{}'", id.as_str());
         crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &id);
+        eprintln!("[TWOTURNMOVE_ONEND] remove_volatile returned");
+    } else {
+        eprintln!("[TWOTURNMOVE_ONEND] No move_id found, not removing any volatile");
     }
 
     EventResult::Continue
