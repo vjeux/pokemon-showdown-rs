@@ -69,7 +69,8 @@ pub fn dispatch_duration_callback(
         "sunnyday" => sunnyday::duration_callback(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_duration_callback(battle, condition_id, pokemon_pos)
+            // Pass effect_id through so durationCallbacks can check the source effect
+            move_callbacks::dispatch_condition_duration_callback(battle, condition_id, pokemon_pos, effect_id)
         }
     }
 }

@@ -1492,65 +1492,69 @@ pub fn has_before_move_callback(active_move: Option<&ActiveMove>) -> bool {
 // Condition dispatch functions
 /// Dispatch condition durationCallback callbacks
 /// Takes condition_id directly to support fallback from condition_callbacks
+/// effect_id is the source effect that caused this condition (e.g., "psychicnoise" for healblock)
 pub fn dispatch_condition_duration_callback(
     battle: &mut Battle,
     condition_id: &str,
     source_pos: (usize, usize),
+    effect_id: Option<&str>,
 ) -> EventResult {
     match condition_id {
         "auroraveil" => {
-            auroraveil::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            auroraveil::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         "electricterrain" => electricterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            Some(condition_id),
+            effect_id,
         ),
         "grassyterrain" => grassyterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            Some(condition_id),
+            effect_id,
         ),
         "gravity" => {
-            gravity::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            gravity::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         "healblock" => {
-            healblock::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            // IMPORTANT: Pass effect_id (the source move like "psychicnoise"), not condition_id
+            // Healblock's durationCallback checks effect.name === "Psychic Noise" to return 2
+            healblock::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         "lightscreen" => {
-            lightscreen::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            lightscreen::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         "magicroom" => {
-            magicroom::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            magicroom::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         "mistyterrain" => mistyterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            Some(condition_id),
+            effect_id,
         ),
         "psychicterrain" => psychicterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            Some(condition_id),
+            effect_id,
         ),
         "reflect" => {
-            reflect::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            reflect::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         "safeguard" => {
-            safeguard::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            safeguard::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         "tailwind" => {
-            tailwind::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            tailwind::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         "trickroom" => {
-            trickroom::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            trickroom::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         "wonderroom" => {
-            wonderroom::condition::duration_callback(battle, None, Some(source_pos), Some(condition_id))
+            wonderroom::condition::duration_callback(battle, None, Some(source_pos), effect_id)
         }
         _ => EventResult::Continue,
     }
