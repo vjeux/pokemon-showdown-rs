@@ -1,4 +1,4 @@
-Analyzing 225 failing minimized seed files...
+Analyzing 222 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -37,8 +37,6 @@ dynamicpunch: 4 seeds
   Seeds: 3578, 4479, 4767, 8439
 stickyweb: 4 seeds
   Seeds: 4130, 5188, 5395, 764
-transform: 4 seeds
-  Seeds: 4157, 6061, 9341, 9485
 toxicspikes: 4 seeds
   Seeds: 5050, 6454, 8445, 8532
 telekinesis: 4 seeds
@@ -601,6 +599,8 @@ photongeyser: 1 seeds
   Seeds: 5992
 hiddenpowerflying: 1 seeds
   Seeds: 6061
+transform: 1 seeds
+  Seeds: 6061
 hypnosis: 1 seeds
   Seeds: 611
 stomp: 1 seeds
@@ -815,8 +815,6 @@ whirlwind: 1 seeds
   Seeds: 9425
 luckychant: 1 seeds
   Seeds: 9425
-springtidestorm: 1 seeds
-  Seeds: 9485
 drillrun: 1 seeds
   Seeds: 9563
 psychup: 1 seeds
@@ -873,8 +871,6 @@ lifedew: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-RKS System: 6 seeds
-  Seeds: 4157, 4745, 5395, 7213, 8032, 9485
 Emergency Exit: 5 seeds
   Seeds: 1147, 2609, 3078, 4383, 5299
 Zen Mode: 5 seeds
@@ -899,6 +895,8 @@ Electromorphosis: 4 seeds
   Seeds: 2956, 3801, 3953, 6738
 Sand Stream: 4 seeds
   Seeds: 4025, 4634, 5748, 7240
+RKS System: 4 seeds
+  Seeds: 4745, 5395, 7213, 8032
 Prankster: 4 seeds
   Seeds: 5807, 6654, 8152, 8799
 Toxic Debris: 3 seeds
@@ -1011,10 +1009,6 @@ Hustle: 1 seeds
   Seeds: 9048
 Stench: 1 seeds
   Seeds: 9213
-Multitype: 1 seeds
-  Seeds: 9341
-Shields Down: 1 seeds
-  Seeds: 9485
 Schooling: 1 seeds
   Seeds: 9567
 Stamina: 1 seeds
@@ -1115,9 +1109,9 @@ ganlonberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 225
-Unique moves: 434 (433 non-simple)
-Unique abilities: 78 (74 non-simple)
+Total minimized seeds: 222
+Unique moves: 433 (432 non-simple)
+Unique abilities: 76 (72 non-simple)
 Unique items: 43
 
 --- Most Common Moves (top 10) ---
@@ -1133,7 +1127,6 @@ Unique items: 43
   counter: 4 seeds
 
 --- Most Common Abilities (top 10) ---
-  RKS System: 6 seeds
   Emergency Exit: 5 seeds
   Zen Mode: 5 seeds
   Pressure: 5 seeds
@@ -1143,3 +1136,4 @@ Unique items: 43
   Snow Warning: 4 seeds
   Rock Head: 4 seeds
   No Guard: 4 seeds
+  Gluttony: 4 seeds

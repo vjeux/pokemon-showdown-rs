@@ -120,6 +120,8 @@ impl Pokemon {
         let gen = battle.gen;
 
         // Phase 1: Extract target data immutably
+        // Note: target_types uses get_types_full(true, true) to match JS pokemon.getTypes(true, true)
+        // This properly handles ability-based type changes (RKS System, Multitype) at the time of transform
         let (target_species_id, target_weight_hg, target_types, target_added_type, target_stored_stats,
              target_move_slots, target_boosts, target_ability, target_has_substitute, target_transformed,
              target_fainted, target_times_attacked, target_apparent_type, target_hp_type, target_hp_power) = {
@@ -128,10 +130,14 @@ impl Pokemon {
                 None => return false,
             };
 
+            // JS: const types = pokemon.getTypes(true, true);
+            // First param (excludeAdded) = true, second param (preterastallized) = true
+            let types = target.get_types_full(battle, true, true);
+
             (
                 target.species_id.clone(),
                 target.weight_hg,
-                target.types.clone(),
+                types,
                 target.added_type.clone(),
                 target.stored_stats,
                 target.move_slots.clone(),
@@ -231,7 +237,8 @@ impl Pokemon {
 
         // JS: const types = pokemon.getTypes(true, true);
         // JS: this.setType(pokemon.volatiles['roost'] ? pokemon.volatiles['roost'].typeWas : types, true);
-        // Note: setSpecies sets types from species data, but JS then copies target's types
+        // target_types was already computed via get_types_full(true, true) in Phase 1
+        // Note: roost volatile check is not implemented yet
         self_pokemon_mut.types = target_types;
 
         // JS: this.addedType = pokemon.addedType;

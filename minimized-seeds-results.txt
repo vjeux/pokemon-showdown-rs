@@ -282,7 +282,7 @@ Seed 4126: ✗ FAIL - #5: turn=6, prng=48->60, P1=[Swirlix(157/214)], P2=[Nincad
 Seed 4130: ✗ FAIL - #18: turn=18, prng=43->43, P1=[Darumaka(227/302)], P2=[Sableye(204/204)]
 Seed 4141: ✓ PASS
 Seed 4142: ✓ PASS
-Seed 4157: ✗ FAIL - #2: turn=3, prng=7->24, P1=[Silvally(216/252)], P2=[Pikachu(120/187)]
+Seed 4157: ✓ PASS
 Seed 4162: ✓ PASS
 Seed 4165: ✓ PASS
 Seed 4170: ✓ PASS
@@ -686,7 +686,7 @@ Seed 9227: ✗ FAIL - #11: turn=11, prng=27->33, P1=[Linoone(227/256)], P2=[Sobb
 Seed 9314: ✓ PASS
 Seed 9328: ✓ PASS
 Seed 9331: ✓ PASS
-Seed 9341: ✗ FAIL - #2: turn=3, prng=4->21, P1=[Arceus(262/292)], P2=[Zygarde(297/383)]
+Seed 9341: ✓ PASS
 Seed 9350: ✓ PASS
 Seed 9362: ✓ PASS
 Seed 9390: ✓ PASS
@@ -699,7 +699,7 @@ Seed 9420: ✓ PASS
 Seed 9423: ✗ FAIL - #12: turn=11, prng=53->56, P1=[Scraggy(209/251)], P2=[Rotom(0/204)]
 Seed 9425: ✗ FAIL - #26: turn=25, prng=107->119, P1=[Silicobra(185/243)], P2=[Skiploom(42/165)]
 Seed 9427: ✓ PASS
-Seed 9485: ✗ FAIL - #9: turn=10, prng=47->54, P1=[Minior(86/223)], P2=[Silvally(45/256)]
+Seed 9485: ✓ PASS
 Seed 9529: ✗ FAIL - #1: turn=2, prng=3->19, P1=[Charizard(203/220)], P2=[Medicham(229/229)]
 Seed 9540: ✓ PASS
 Seed 9544: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 498
-Failed: 225
+Passed: 501
+Failed: 222
 
-Pass rate: 68%
+Pass rate: 69%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...
