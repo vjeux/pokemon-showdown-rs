@@ -1047,51 +1047,8 @@ impl Battle {
             return;
         }
 
-        // JS: if (this.gen < 5) this.eachEvent('Update');
-        // Call Update event for all actions except "start" in Gen 1-4 only
+        // Determine if this is a "start" action (used for Update event filtering)
         let is_start_action = matches!(action, Action::Field(f) if matches!(f.choice, FieldActionType::Start));
-        if self.gen < 5 && !is_start_action {
-            self.each_event("Update", None, None);
-        }
-
-        // JS: if (this.gen >= 8 && (this.queue.peek()?.choice === "move" || this.queue.peek()?.choice === "runDynamax")) {
-        // JS:     this.updateSpeed();
-        // JS:     for (const queueAction of this.queue.list) {
-        // JS:         if (queueAction.pokemon) this.getActionSpeed(queueAction);
-        // JS:     }
-        // JS:     this.queue.sort();
-        // JS: }
-        if self.gen >= 8 {
-            let should_sort = if let Some(next_action) = self.queue.peek() {
-                let is_move_or_dynamax = match next_action {
-                    Action::Move(_) => true,
-                    Action::Pokemon(p) => matches!(p.choice, PokemonActionType::RunDynamax),
-                    _ => false,
-                };
-                is_move_or_dynamax
-            } else {
-                false
-            };
-
-            if should_sort {
-                // JS: this.updateSpeed();
-                self.update_speed();
-
-                // JS: for (const queueAction of this.queue.list) {
-                // JS:     if (queueAction.pokemon) this.getActionSpeed(queueAction);
-                // JS: }
-                let mut list = std::mem::take(&mut self.queue.list);
-                for action in &mut list {
-                    if action.has_pokemon() {
-                        self.get_action_speed(action);
-                    }
-                }
-                self.queue.list = list;
-
-                // JS: this.queue.sort();
-                self.sort_action_queue();
-            }
-        }
 
         // JS: if (!this.queue.peek() || (this.gen <= 3 && ['move', 'residual'].includes(this.queue.peek()!.choice))) {
         //         this.checkFainted();
@@ -1258,6 +1215,51 @@ impl Battle {
                 return;
             }
         }
+
+        // JS: if (this.gen < 5) this.eachEvent('Update');
+        if self.gen < 5 {
+            self.each_event("Update", None, None);
+        }
+
+        // JS: if (this.gen >= 8 && (this.queue.peek()?.choice === "move" || this.queue.peek()?.choice === "runDynamax")) {
+        // JS:     this.updateSpeed();
+        // JS:     for (const queueAction of this.queue.list) {
+        // JS:         if (queueAction.pokemon) this.getActionSpeed(queueAction);
+        // JS:     }
+        // JS:     this.queue.sort();
+        // JS: }
+        if self.gen >= 8 {
+            let should_sort = if let Some(next_action) = self.queue.peek() {
+                let is_move_or_dynamax = match next_action {
+                    Action::Move(_) => true,
+                    Action::Pokemon(p) => matches!(p.choice, PokemonActionType::RunDynamax),
+                    _ => false,
+                };
+                is_move_or_dynamax
+            } else {
+                false
+            };
+
+            if should_sort {
+                // JS: this.updateSpeed();
+                self.update_speed();
+
+                // JS: for (const queueAction of this.queue.list) {
+                // JS:     if (queueAction.pokemon) this.getActionSpeed(queueAction);
+                // JS: }
+                let mut list = std::mem::take(&mut self.queue.list);
+                for action in &mut list {
+                    if action.has_pokemon() {
+                        self.get_action_speed(action);
+                    }
+                }
+                self.queue.list = list;
+
+                // JS: this.queue.sort();
+                self.sort_action_queue();
+            }
+        }
+
         eprintln!("[RUN_ACTION] Completed, no switches needed");
     }
 }
