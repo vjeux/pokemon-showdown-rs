@@ -371,24 +371,28 @@ impl BattleQueue {
 
                 // JS: action.fractionalPriority = this.battle.runEvent('FractionalPriority', action.pokemon, null, action.move, 0);
                 // Run FractionalPriority event to get fractional priority modifier
-                let effect = Effect::move_(move_id.clone());
-                let frac_result = battle.run_event(
-                    "FractionalPriority",
-                    Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
-                    None,
-                    Some(&effect),
-                    crate::event::EventResult::Float(0.0),
-                    false,
-                    false,
-                );
-                // Handle both Float and Number results (fullincense returns Float(-0.1))
-                let frac_priority = match frac_result {
-                    crate::event::EventResult::Float(f) => f,
-                    crate::event::EventResult::Number(n) => n as f64,
-                    _ => 0.0,
-                };
-                if let Action::Move(ref mut m) = action {
-                    m.fractional_priority = frac_priority;
+                // IMPORTANT: Only run for main move actions (choice === 'move' in JS),
+                // not for beforeTurnMove, priorityChargeMove, etc.
+                if is_main_move_action {
+                    let effect = Effect::move_(move_id.clone());
+                    let frac_result = battle.run_event(
+                        "FractionalPriority",
+                        Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
+                        None,
+                        Some(&effect),
+                        crate::event::EventResult::Float(0.0),
+                        false,
+                        false,
+                    );
+                    // Handle both Float and Number results (fullincense returns Float(-0.1))
+                    let frac_priority = match frac_result {
+                        crate::event::EventResult::Float(f) => f,
+                        crate::event::EventResult::Number(n) => n as f64,
+                        _ => 0.0,
+                    };
+                    if let Action::Move(ref mut m) = action {
+                        m.fractional_priority = frac_priority;
+                    }
                 }
             } else if let Action::Switch(ref mut switch_action) = action {
                 // JS: else if (['switch', 'instaswitch'].includes(action.choice)) {

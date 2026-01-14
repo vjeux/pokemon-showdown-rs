@@ -1,12 +1,10 @@
-Analyzing 193 failing minimized seed files...
+Analyzing 189 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 skydrop: 6 seeds
   Seeds: 1490, 2166, 3536, 6456, 6576, 9213
-counter: 4 seeds
-  Seeds: 1615, 5992, 6065, 7028
 psychicnoise: 4 seeds
   Seeds: 1813, 5306, 8476, 8851
 flatter: 4 seeds
@@ -209,6 +207,8 @@ gmaxsteelsurge: 2 seeds
   Seeds: 5748, 8439
 lightscreen: 2 seeds
   Seeds: 5992, 8544
+counter: 2 seeds
+  Seeds: 5992, 6065
 xscissor: 2 seeds
   Seeds: 6391, 9213
 foresight: 2 seeds
@@ -295,8 +295,6 @@ encore: 1 seeds
   Seeds: 1813
 cottonguard: 1 seeds
   Seeds: 1825
-focuspunch: 1 seeds
-  Seeds: 1880
 octazooka: 1 seeds
   Seeds: 2166
 acid: 1 seeds
@@ -573,8 +571,6 @@ bonemerang: 1 seeds
   Seeds: 6288
 heatcrash: 1 seeds
   Seeds: 6288
-mirrorcoat: 1 seeds
-  Seeds: 6345
 dive: 1 seeds
   Seeds: 6348
 hiddenpowerbug: 1 seeds
@@ -841,8 +837,6 @@ RKS System: 3 seeds
   Seeds: 4745, 7213, 8032
 Hunger Switch: 2 seeds
   Seeds: 1256, 5112
-Quick Draw: 2 seeds
-  Seeds: 1825, 7028
 Compound Eyes: 2 seeds
   Seeds: 2304, 4126
 Gulp Missile: 2 seeds
@@ -869,6 +863,8 @@ Dancer: 1 seeds
   Seeds: 1110
 Aerilate: 1 seeds
   Seeds: 1362
+Quick Draw: 1 seeds
+  Seeds: 1825
 Mycelium Might: 1 seeds
   Seeds: 2388
 Sticky Hold: 1 seeds
@@ -953,8 +949,6 @@ metronome: 4 seeds
   Seeds: 1205, 2030, 2618, 6568
 kingsrock: 4 seeds
   Seeds: 1252, 4430, 7012, 9005
-quickclaw: 4 seeds
-  Seeds: 1615, 1880, 2388, 6345
 assaultvest: 3 seeds
   Seeds: 8514, 8999, 9107
 micleberry: 2 seeds
@@ -979,6 +973,8 @@ choiceband: 1 seeds
   Seeds: 1977
 mirrorherb: 1 seeds
   Seeds: 2169
+quickclaw: 1 seeds
+  Seeds: 2388
 aguavberry: 1 seeds
   Seeds: 2440
 blukberry: 1 seeds
@@ -1031,14 +1027,13 @@ ganlonberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 193
-Unique moves: 401 (400 non-simple)
+Total minimized seeds: 189
+Unique moves: 399 (398 non-simple)
 Unique abilities: 73 (69 non-simple)
 Unique items: 39
 
 --- Most Common Moves (top 10) ---
   skydrop: 6 seeds
-  counter: 4 seeds
   psychicnoise: 4 seeds
   flatter: 4 seeds
   blueflare: 4 seeds
@@ -1047,6 +1042,7 @@ Unique items: 39
   dynamicpunch: 4 seeds
   telekinesis: 4 seeds
   assist: 4 seeds
+  soak: 3 seeds
 
 --- Most Common Abilities (top 10) ---
   Emergency Exit: 5 seeds
