@@ -53,7 +53,8 @@ impl Pokemon {
     }
 
     /// Run the 'Type' event for this Pokemon
-    /// This handles species conditions like Arceus/Silvally that modify types based on held items.
+    /// This handles species conditions like Arceus/Silvally that modify types based on held items,
+    /// as well as volatiles like Roost that temporarily modify types.
     ///
     /// JavaScript uses runEvent('Type') which dispatches to conditions defined in data/conditions.ts.
     /// These conditions are keyed by the base species name (e.g., "arceus" for all Arceus formes).
@@ -75,11 +76,24 @@ impl Pokemon {
 
         // Check for species-specific type modifications
         // These are defined in data/conditions.ts and inherit to all formes
-        match base_species_name.as_str() {
+        let mut types = match base_species_name.as_str() {
             "arceus" => self.arceus_on_type(battle),
             "silvally" => self.silvally_on_type(battle),
             _ => self.types.clone(),
+        };
+
+        // Check for volatiles that modify types (e.g., Roost removes Flying type)
+        // JavaScript: runEvent('Type') also dispatches to volatile conditions
+        // Roost's onType callback:
+        //   onType(types, pokemon) {
+        //       this.effectState.typeWas = types;
+        //       return types.filter(type => type !== 'Flying');
+        //   }
+        if self.volatiles.contains_key(&ID::from("roost")) {
+            types.retain(|t| t != "Flying");
         }
+
+        types
     }
 
     /// Arceus onType callback
