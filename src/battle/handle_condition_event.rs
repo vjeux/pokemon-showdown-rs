@@ -703,6 +703,16 @@ impl Battle {
                     result, self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
                 result
             }
+            "NegateImmunity" => {
+                // onNegateImmunity callback for conditions (foresight, miracleeye)
+                // Returns false to negate type immunity (e.g., Normal/Fighting vs Ghost)
+                // pokemon_pos is the Pokemon with the volatile
+                crate::data::move_callbacks::dispatch_condition_on_negate_immunity(
+                    self,
+                    condition_id,
+                    pokemon_pos,
+                )
+            }
             "Update" => {
                 // onUpdate callback for conditions (volatiles like fling)
                 // pokemon_pos is the Pokemon with the volatile

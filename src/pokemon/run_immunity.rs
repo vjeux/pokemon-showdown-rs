@@ -54,15 +54,15 @@ impl Pokemon {
 
         // JS: const negateImmunity = !this.battle.runEvent('NegateImmunity', this, type);
         // NOTE: JavaScript NEGATES the result!
-        // If runEvent returns truthy → negateImmunity = false
-        // If runEvent returns falsy/undefined → negateImmunity = true
-        let negate_immunity_result = battle.run_event("NegateImmunity", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
+        // If runEvent returns false (handler explicitly said "negate immunity") → negateImmunity = !false = true
+        // If runEvent returns truthy/undefined (no handler or handler didn't negate) → negateImmunity = false
+        // Pass the move_type as relay_var so condition callbacks can check it
+        let negate_immunity_result = battle.run_event("NegateImmunity", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::String(move_type.to_string()), false, false);
         eprintln!("[RUN_IMMUNITY] pokemon={:?}, move_type={}, NegateImmunity result={:?}", pokemon_pos, move_type, negate_immunity_result);
-        let negate_immunity = match negate_immunity_result {
-            EventResult::Number(val) if val != 0 => false,  // Event returned truthy → DON'T negate (negateImmunity=false)
-            EventResult::Boolean(true) => false,  // Event returned true → DON'T negate
-            _ => true,  // Event returned falsy/Continue/Null → DO negate (negateImmunity=true)
-        };
+        // JavaScript: const negateImmunity = !runEvent(...);
+        // A handler returns false to indicate "negate the immunity" (like foresight does)
+        // If no handler runs or handlers return Continue/truthy, immunity is NOT negated
+        let negate_immunity = matches!(negate_immunity_result, EventResult::Boolean(false));
         eprintln!("[RUN_IMMUNITY] negate_immunity={}", negate_immunity);
 
         // JS: const notImmune = type === 'Ground' ?

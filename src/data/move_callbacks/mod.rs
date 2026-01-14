@@ -2232,10 +2232,10 @@ pub fn dispatch_condition_on_move_aborted(
 /// Dispatch condition onNegateImmunity callbacks
 pub fn dispatch_condition_on_negate_immunity(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "foresight" => foresight::condition::on_negate_immunity(battle, source_pos),
         "miracleeye" => miracleeye::condition::on_negate_immunity(battle, source_pos),
         _ => EventResult::Continue,

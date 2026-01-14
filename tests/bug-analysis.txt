@@ -1,12 +1,10 @@
-Analyzing 201 failing minimized seed files...
+Analyzing 199 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 skydrop: 6 seeds
   Seeds: 1490, 2166, 3536, 6456, 6576, 9213
-foresight: 4 seeds
-  Seeds: 1221, 2452, 6764, 9213
 echoedvoice: 4 seeds
   Seeds: 1279, 1362, 6543, 7169
 counter: 4 seeds
@@ -87,8 +85,6 @@ playrough: 2 seeds
   Seeds: 1147, 4278
 topsyturvy: 2 seeds
   Seeds: 1193, 7298
-hiddenpowerelectric: 2 seeds
-  Seeds: 1221, 9009
 electroshot: 2 seeds
   Seeds: 1235, 1252
 dragonenergy: 2 seeds
@@ -223,6 +219,8 @@ lightscreen: 2 seeds
   Seeds: 5992, 8544
 xscissor: 2 seeds
   Seeds: 6391, 9213
+foresight: 2 seeds
+  Seeds: 6764, 9213
 swallow: 2 seeds
   Seeds: 6926, 8439
 bouncybubble: 2 seeds
@@ -267,8 +265,6 @@ nobleroar: 1 seeds
   Seeds: 1193
 confuseray: 1 seeds
   Seeds: 1193
-maxflutterby: 1 seeds
-  Seeds: 1221
 fly: 1 seeds
   Seeds: 1235
 psychic: 1 seeds
@@ -747,6 +743,8 @@ rockthrow: 1 seeds
   Seeds: 9005
 maxdarkness: 1 seeds
   Seeds: 9009
+hiddenpowerelectric: 1 seeds
+  Seeds: 9009
 synthesis: 1 seeds
   Seeds: 9048
 guardswap: 1 seeds
@@ -1041,14 +1039,13 @@ ganlonberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 201
-Unique moves: 404 (403 non-simple)
+Total minimized seeds: 199
+Unique moves: 403 (402 non-simple)
 Unique abilities: 73 (69 non-simple)
 Unique items: 41
 
 --- Most Common Moves (top 10) ---
   skydrop: 6 seeds
-  foresight: 4 seeds
   echoedvoice: 4 seeds
   counter: 4 seeds
   psychicnoise: 4 seeds
@@ -1057,6 +1054,7 @@ Unique items: 41
   courtchange: 4 seeds
   blizzard: 4 seeds
   dynamicpunch: 4 seeds
+  telekinesis: 4 seeds
 
 --- Most Common Abilities (top 10) ---
   Emergency Exit: 5 seeds
