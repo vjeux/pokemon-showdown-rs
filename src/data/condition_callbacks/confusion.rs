@@ -214,26 +214,32 @@ pub fn on_before_move(
         };
 
         // const attack = pokemon.calculateStat('atk', pokemon.boosts['atk']);
-        // Inline boost calculation for attack
+        // JavaScript calculateStat:
+        //   if (boost >= 0) stat = Math.floor(stat * (2 + boost) / 2);
+        //   else stat = Math.floor(stat * 2 / (2 - boost));
         let attack = {
             let clamped_boost = atk_boost.clamp(-6, 6);
-            let boost_table: [f64; 7] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
             if clamped_boost >= 0 {
-                atk_stat as f64 * boost_table[clamped_boost as usize]
+                // Math.floor(stat * (2 + boost) / 2)
+                (atk_stat as f64 * (2.0 + clamped_boost as f64) / 2.0).floor()
             } else {
-                atk_stat as f64 / boost_table[(-clamped_boost) as usize]
+                // Math.floor(stat * 2 / (2 - boost))
+                (atk_stat as f64 * 2.0 / (2.0 - clamped_boost as f64)).floor()
             }
         };
 
         // const defense = pokemon.calculateStat('def', pokemon.boosts['def']);
-        // Inline boost calculation for defense
+        // JavaScript calculateStat:
+        //   if (boost >= 0) stat = Math.floor(stat * (2 + boost) / 2);
+        //   else stat = Math.floor(stat * 2 / (2 - boost));
         let defense = {
             let clamped_boost = def_boost.clamp(-6, 6);
-            let boost_table: [f64; 7] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0];
             if clamped_boost >= 0 {
-                def_stat as f64 * boost_table[clamped_boost as usize]
+                // Math.floor(stat * (2 + boost) / 2)
+                (def_stat as f64 * (2.0 + clamped_boost as f64) / 2.0).floor()
             } else {
-                def_stat as f64 / boost_table[(-clamped_boost) as usize]
+                // Math.floor(stat * 2 / (2 - boost))
+                (def_stat as f64 * 2.0 / (2.0 - clamped_boost as f64)).floor()
             }
         };
 
