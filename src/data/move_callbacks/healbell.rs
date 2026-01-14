@@ -58,37 +58,20 @@ pub fn on_hit(
     // Collect allies from both the target's side and the ally side (for multi battles)
     let mut allies: Vec<(usize, usize)> = Vec::new();
 
-    // Add target's side pokemon
-    let target_side_active: Vec<(usize, usize)> = battle.sides[target.0]
-        .active
-        .iter()
-        .enumerate()
-        .filter_map(|(i, &active)| {
-            if active.is_some() {
-                Some((target.0, i))
-            } else {
-                None
-            }
-        })
-        .collect();
-    allies.extend(target_side_active);
+    // Add target's side pokemon (ALL pokemon, not just active)
+    let target_side_idx = target.0;
+    let num_pokemon = battle.sides[target_side_idx].pokemon.len();
+    for ally_idx in 0..num_pokemon {
+        allies.push((target_side_idx, ally_idx));
+    }
 
-    // Add ally side pokemon (for multi battles)
+    // Add ally side pokemon (for multi battles) - ALL pokemon, not just active
     let ally_side_index = battle.sides[target.0].ally_index;
     if let Some(ally_idx) = ally_side_index {
-        let ally_side_active: Vec<(usize, usize)> = battle.sides[ally_idx]
-            .active
-            .iter()
-            .enumerate()
-            .filter_map(|(i, &active)| {
-                if active.is_some() {
-                    Some((ally_idx, i))
-                } else {
-                    None
-                }
-            })
-            .collect();
-        allies.extend(ally_side_active);
+        let num_ally_pokemon = battle.sides[ally_idx].pokemon.len();
+        for pokemon_idx in 0..num_ally_pokemon {
+            allies.push((ally_idx, pokemon_idx));
+        }
     }
 
     // for (const ally of allies) {

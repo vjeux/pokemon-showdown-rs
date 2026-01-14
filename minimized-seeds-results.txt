@@ -196,7 +196,7 @@ Seed 2951: ✓ PASS
 Seed 2956: ✗ FAIL - #1: turn=1, prng=0->5, P1=[Bellibolt(338/365)], P2=[Lucario(0/269)]
 Seed 2975: ✓ PASS
 Seed 2981: ✓ PASS
-Seed 2982: ✗ FAIL - #17: turn=15, prng=60->65, P1=[Sandslash(260/275)], P2=[Dhelmise(257/299)]
+Seed 2982: ✓ PASS
 Seed 3000: ✗ FAIL - #4: turn=5, prng=12->16, P1=[Miraidon(266/266)], P2=[Charizard(66/225)]
 Seed 3002: ✓ PASS
 Seed 3010: ✓ PASS
@@ -274,7 +274,7 @@ Seed 4016: ✓ PASS
 Seed 4025: ✗ FAIL - #5: turn=6, prng=12->15, P1=[Hippowdon(326/326)], P2=[Spinda(104/249)]
 Seed 4044: ✓ PASS
 Seed 4055: ✓ PASS
-Seed 4071: ✗ FAIL - #27: turn=25, prng=138->139, P1=[Lickilicky(68/251)], P2=[Slowbro(185/263)]
+Seed 4071: ✓ PASS
 Seed 4082: ✓ PASS
 Seed 4112: ✓ PASS
 Seed 4123: ✓ PASS
@@ -440,7 +440,7 @@ Seed 6251: ✗ FAIL - #1: turn=2, prng=3->14, P1=[Miasmaw(251/281)], P2=[Zapdos(
 Seed 6261: ✓ PASS
 Seed 6287: ✓ PASS
 Seed 6288: ✗ FAIL - #35: turn=34, prng=92->98, P1=[Sceptile(12/237)], P2=[Ramnarok(120/242)]
-Seed 6289: ✗ FAIL - #9: turn=9, prng=25->29, P1=[Stunfisk(277/313)], P2=[Palkia(189/189)]
+Seed 6289: ✓ PASS
 Seed 6302: ✓ PASS
 Seed 6304: ✗ FAIL - #6: turn=7, prng=23->27, P1=[Pluffle(278/306)], P2=[Landorus(223/264)]
 Seed 6305: ✓ PASS
@@ -565,7 +565,7 @@ Seed 7589: ✓ PASS
 Seed 7592: ✗ FAIL - #2: turn=3, prng=5->10, P1=[Darmanitan(234/353)], P2=[Iron Crown(107/215)]
 Seed 7601: ✗ FAIL - #2: turn=3, prng=5->10, P1=[Nidoran-F(119/196)], P2=[Darmanitan(149/256)]
 Seed 7618: ✗ FAIL - #8: turn=8, prng=23->23, P1=[Glimmet(21/178)], P2=[Flareon(160/213)]
-Seed 7623: ✗ FAIL - #30: turn=26, prng=73->74, P1=[Ogerpon(244/278)], P2=[Necrozma(352/352)]
+Seed 7623: ✓ PASS
 Seed 7635: ✗ FAIL - #1: turn=2, prng=0->5, P1=[Magnezone(254/269)], P2=[Exeggutor(281/341)]
 Seed 7656: ✓ PASS
 Seed 7658: ✓ PASS
@@ -648,7 +648,7 @@ Seed 8690: ✓ PASS
 Seed 8708: ✗ FAIL - #52: turn=43, prng=150->153, P1=[Togedemaru(110/151)], P2=[Yungoos(49/205)]
 Seed 8766: ✓ PASS
 Seed 8774: ✗ FAIL - #11: turn=8, prng=32->36, P1=[Flamigo(51/256)], P2=[Hoppip(142/209)]
-Seed 8784: ✗ FAIL - #18: turn=17, prng=56->60, P1=[Pokestar Spirit(196/196)], P2=[Zarude(277/343)]
+Seed 8784: ✓ PASS
 Seed 8791: ✓ PASS
 Seed 8799: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Incineroar(304/304)], P2=[Grimmsnarl(144/208)]
 Seed 8802: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 409
-Failed: 314
+Passed: 414
+Failed: 309
 
-Pass rate: 56%
+Pass rate: 57%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...
