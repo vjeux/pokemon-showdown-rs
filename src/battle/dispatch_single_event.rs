@@ -83,6 +83,16 @@ impl Battle {
             }
         }
 
+        // IMPORTANT: Check field weather/terrain BEFORE abilities
+        // Some effects like "deltastream" exist both as abilities AND as weather conditions
+        // When weather is active, field event handlers should route to the condition, not the ability
+        if !self.field.weather.is_empty() && self.field.weather.as_str() == effect_str {
+            return self.handle_condition_event(event_id, effect_str, target);
+        }
+        if !self.field.terrain.is_empty() && self.field.terrain.as_str() == effect_str {
+            return self.handle_condition_event(event_id, effect_str, target);
+        }
+
         // Handle ability events
         if self.dex.abilities().get(effect_id.as_str()).is_some() {
             return self.handle_ability_event(event_id, effect_id, target);
@@ -91,16 +101,6 @@ impl Battle {
         // Handle item events
         if self.dex.items().get(effect_id.as_str()).is_some() {
             return self.handle_item_event(event_id, effect_id, target);
-        }
-
-        // IMPORTANT: Check field weather/terrain BEFORE moves
-        // "sunnyday", "raindance", etc. exist both as moves AND as weather conditions
-        // When weather is active, handlers should route to the condition, not the move
-        if !self.field.weather.is_empty() && self.field.weather.as_str() == effect_str {
-            return self.handle_condition_event(event_id, effect_str, target);
-        }
-        if !self.field.terrain.is_empty() && self.field.terrain.as_str() == effect_str {
-            return self.handle_condition_event(event_id, effect_str, target);
         }
 
         // Handle move events

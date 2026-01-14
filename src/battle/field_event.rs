@@ -176,7 +176,6 @@ impl Battle {
     // 	}
     //
     pub fn field_event(&mut self, event_id: &str, targets: Option<&[(usize, usize)]>) {
-        eprintln!("[FIELD_EVENT ENTRY] event_id='{}', turn={}", event_id, self.turn);
         let callback_name = format!("on{}", event_id);
         // JS: if (eventid === 'Residual') { getKey = 'duration'; }
         let get_key = if event_id == "Residual" {

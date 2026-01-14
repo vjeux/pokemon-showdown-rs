@@ -196,7 +196,24 @@ impl Pokemon {
             self_pokemon.terastallized.clone()
         };
 
-        // Phase 3: Get mutable reference and apply transformation
+        // Phase 3: Call setSpecies FIRST (this sets speed from NEW species' calculated stats)
+        // JS: if (!this.setSpecies(species, effect, true)) return false;
+        // setSpecies calculates stats using NEW species' baseStats with THIS pokemon's EVs/IVs/nature
+        // It sets storedStats and speed from those calculated stats
+        // AFTER setSpecies returns, we'll copy target's storedStats (overwriting what setSpecies set)
+        // But speed will remain at the value setSpecies calculated
+        let effect_id_for_set_species = effect_id.map(|e| e.clone());
+        if !Pokemon::set_species_pos(
+            battle,
+            pokemon_pos,
+            &target_species_id,
+            effect_id_for_set_species.as_ref(),
+            true, // isTransform = true
+        ) {
+            return false;
+        }
+
+        // Phase 4: Get mutable reference and apply transformation
         let self_pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return false,
@@ -205,22 +222,16 @@ impl Pokemon {
         // JS: if (this.battle.dex.currentMod === 'gen1stadium' && ...) return false;
         // Note: Missing gen1stadium Ditto checks - would need Battle reference
 
-        // JS: if (!this.setSpecies(species, effect, true)) return false;
-        // Note: Not calling setSpecies - should update types, stats, weight from species data
-
-        // Copy species
-        self_pokemon_mut.species_id = target_species_id;
-
         // JS: this.transformed = true;
         self_pokemon_mut.transformed = true;
 
         // JS: this.weighthg = pokemon.weighthg;
+        // Note: setSpecies sets weight from species data, but JS then copies target's weight
         self_pokemon_mut.weight_hg = target_weight_hg;
 
         // JS: const types = pokemon.getTypes(true, true);
         // JS: this.setType(pokemon.volatiles['roost'] ? pokemon.volatiles['roost'].typeWas : types, true);
-        // Note: Missing roost volatile type handling
-        // Copy types
+        // Note: setSpecies sets types from species data, but JS then copies target's types
         self_pokemon_mut.types = target_types;
 
         // JS: this.addedType = pokemon.addedType;
@@ -235,14 +246,9 @@ impl Pokemon {
         self_pokemon_mut.apparent_type = target_apparent_type;
 
         // JS: for (statName in this.storedStats) { this.storedStats[statName] = pokemon.storedStats[statName]; }
-        // Copy stats
-        self_pokemon_mut.stored_stats = target_stored_stats;
-
-        // IMPORTANT: Do NOT update pokemon.speed here!
-        // JavaScript calls setSpecies() BEFORE copying storedStats, so pokemon.speed is set to the OLD storedStats.spe
-        // Then storedStats is copied, but pokemon.speed is NOT updated
-        // pokemon.speed is only updated when updateSpeed() is explicitly called (start of turn, etc.)
-        // This is critical for maintaining correct speed order during Transform execution
+        // Copy target's storedStats (overwrites what setSpecies calculated)
+        // NOTE: This does NOT update speed - speed remains at the value setSpecies set
+        self_pokemon_mut.stored_stats = target_stored_stats.clone();
 
         // JS: if (this.modifiedStats) this.modifiedStats[statName] = pokemon.modifiedStats![statName];
         // Note: Missing modifiedStats copying for Gen 1

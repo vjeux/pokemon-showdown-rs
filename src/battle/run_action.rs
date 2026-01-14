@@ -1047,10 +1047,10 @@ impl Battle {
             return;
         }
 
-        // JS: if (this.gen >= 5 && action.choice !== "start") { this.eachEvent("Update"); }
-        // Call Update event for all actions except "start" in Gen 5+
+        // JS: if (this.gen < 5) this.eachEvent('Update');
+        // Call Update event for all actions except "start" in Gen 1-4 only
         let is_start_action = matches!(action, Action::Field(f) if matches!(f.choice, FieldActionType::Start));
-        if self.gen >= 5 && !is_start_action {
+        if self.gen < 5 && !is_start_action {
             self.each_event("Update", None, None);
         }
 
@@ -1108,6 +1108,15 @@ impl Battle {
             should_check_fainted);
         if should_check_fainted {
             self.check_fainted();
+        }
+
+        // JS: if (this.gen >= 5 && action.choice !== "start") {
+        //         this.eachEvent("Update");
+        //         // ... EmergencyExit handling for residualPokemon (TODO: implement if needed)
+        //     }
+        // Call Update event for all actions except "start" in Gen 5+
+        if self.gen >= 5 && !is_start_action {
+            self.each_event("Update", None, None);
         }
 
         // JS: const switches = this.sides.map(side => side.active.some(pokemon => pokemon && !!pokemon.switchFlag));
