@@ -534,14 +534,26 @@ impl Battle {
                     );
 
                     // Clear weather
+                    // JavaScript (field.ts clearWeather):
+                    //   this.weather = '';
+                    //   this.battle.clearEffectState(this.weatherState);
+                    //   this.battle.eachEvent('WeatherChange');
                     if self.field.weather == handler.effect_id {
                         self.field.weather = ID::new("");
                         self.field.weather_state = crate::event_system::EffectState::new(ID::new(""));
+                        // JavaScript calls eachEvent('WeatherChange') after clearing weather
+                        self.each_event("WeatherChange", None, None);
                     }
                     // Clear terrain
+                    // JavaScript (field.ts clearTerrain):
+                    //   this.terrain = '';
+                    //   this.battle.clearEffectState(this.terrainState);
+                    //   this.battle.eachEvent('TerrainChange');
                     else if self.field.terrain == handler.effect_id {
                         self.field.terrain = ID::new("");
                         self.field.terrain_state = crate::event_system::EffectState::new(ID::new(""));
+                        // JavaScript calls eachEvent('TerrainChange') after clearing terrain
+                        self.each_event("TerrainChange", None, None);
                     }
                     // Clear pseudo-weather
                     else {
