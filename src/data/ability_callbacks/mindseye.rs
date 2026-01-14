@@ -93,7 +93,7 @@ pub fn on_modify_move(_battle: &mut Battle, active_move: Option<&mut crate::batt
                 map.insert("Fighting".to_string(), true);
                 map.insert("Normal".to_string(), true);
             }
-            None => {
+            Some(crate::battle_actions::IgnoreImmunity::NoIgnore) | None => {
                 // Create new map with Fighting and Normal
                 let mut map = std::collections::HashMap::new();
                 map.insert("Fighting".to_string(), true);

@@ -50,6 +50,8 @@ pub fn hit_step_type_immunity(
             Some(crate::battle_actions::IgnoreImmunity::Specific(map)) => {
                 map.get(&active_move.move_type).copied().unwrap_or(false)
             },
+            // NoIgnore explicitly means don't ignore immunity, same as None
+            Some(crate::battle_actions::IgnoreImmunity::NoIgnore) => false,
             None => false,
         };
         eprintln!("[HIT_STEP_TYPE_IMM] target={:?}, should_ignore={}", target_pos, should_ignore_immunity);

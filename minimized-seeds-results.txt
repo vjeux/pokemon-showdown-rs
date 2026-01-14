@@ -166,7 +166,7 @@ Seed 2618: ✗ FAIL - #36: turn=35, prng=100->103, P1=[Greninja(125/214)], P2=[S
 Seed 2622: ✓ PASS
 Seed 2633: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Bergmite(169/237)], P2=[Gastrodon(272/384)]
 Seed 2651: ✗ FAIL - #23: turn=20, prng=99->103, P1=[Ceruledge(120/167)], P2=[Pokestar UFO(145/249)]
-Seed 2655: ✗ FAIL - #9: turn=10, prng=24->27, P1=[Bruxish(191/234)], P2=[Smoguana(200/200)]
+Seed 2655: ✓ PASS
 Seed 2665: ✓ PASS
 Seed 2674: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Audino(270/303)], P2=[Medicham(135/208)]
 Seed 2687: ✓ PASS
@@ -185,7 +185,7 @@ Seed 2807: ✓ PASS
 Seed 2814: ✗ FAIL - #1: turn=2, prng=0->2, P1=[Squawkabilly(294/294)], P2=[Revenankh(202/202)]
 Seed 2819: ✗ FAIL - #6: turn=6, prng=82->90, P1=[Rayquaza(121/295)], P2=[Rotom(0/229)]
 Seed 2856: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Tauros(139/173)], P2=[Toxel(164/230)]
-Seed 2861: ✗ FAIL - #71: turn=68, prng=109->109, P1=[Hatenna(161/161)], P2=[Ting-Lu(46/361)]
+Seed 2861: ✓ PASS
 Seed 2865: ✓ PASS
 Seed 2876: ✗ FAIL - #40: turn=36, prng=48->48, P1=[Vivillon(156/312)], P2=[Muk(357/357)]
 Seed 2893: ✓ PASS
@@ -321,7 +321,7 @@ Seed 4664: ✗ FAIL - #18: turn=18, prng=1->2, P1=[Sunflora(0/188)], P2=[Silvall
 Seed 4668: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Burmy(163/163)], P2=[Florges(194/213)]
 Seed 4670: ✓ PASS
 Seed 4675: ✓ PASS
-Seed 4682: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Dialga(276/288)], P2=[Dugtrio(196/196)]
+Seed 4682: ✓ PASS
 Seed 4703: ✓ PASS
 Seed 4711: ✓ PASS
 Seed 4716: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Panpour(143/229)], P2=[Togedemaru(266/277)]
@@ -353,7 +353,7 @@ Seed 5009: ✗ FAIL - #7: turn=7, prng=30->37, P1=[Gabite(130/177)], P2=[Glastri
 Seed 5029: ✓ PASS
 Seed 5030: ✓ PASS
 Seed 5050: ✗ FAIL - #36: turn=33, prng=123->123, P1=[Nohface(181/206)], P2=[Revenankh(74/302)]
-Seed 5055: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Piloswine(245/245)], P2=[Primeape(138/176)]
+Seed 5055: ✓ PASS
 Seed 5072: ✗ FAIL - #2: turn=3, prng=3->6, P1=[Tapu Koko(247/284)], P2=[Leafeon(196/196)]
 Seed 5080: ✓ PASS
 Seed 5101: ✓ PASS
@@ -536,7 +536,7 @@ Seed 7240: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Vivillon(217/231)], P2=[Hippopo
 Seed 7242: ✓ PASS
 Seed 7243: ✗ FAIL - #1: turn=2, prng=3->18, P1=[Coalossal(321/340)], P2=[Ursaluna(296/323)]
 Seed 7249: ✗ FAIL - #56: turn=54, prng=142->147, P1=[Alcremie(137/258)], P2=[Nuzleaf(142/255)]
-Seed 7252: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Gastrodon(342/342)], P2=[Necrozma(302/324)]
+Seed 7252: ✓ PASS
 Seed 7268: ✓ PASS
 Seed 7298: ✗ FAIL - #1: turn=2, prng=3->15, P1=[Trevenant(204/204)], P2=[Darumaka(152/192)]
 Seed 7306: ✓ PASS
@@ -652,7 +652,7 @@ Seed 8784: ✓ PASS
 Seed 8791: ✓ PASS
 Seed 8799: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Incineroar(304/304)], P2=[Grimmsnarl(144/208)]
 Seed 8802: ✓ PASS
-Seed 8817: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Smoguana(234/234)], P2=[Capsakid(199/234)]
+Seed 8817: ✓ PASS
 Seed 8829: ✓ PASS
 Seed 8832: ✓ PASS
 Seed 8848: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 420
-Failed: 303
+Passed: 426
+Failed: 297
 
 Pass rate: 58%
 ✗ Some seeds still failing

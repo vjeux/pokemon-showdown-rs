@@ -1,4 +1,4 @@
-Analyzing 303 failing minimized seed files...
+Analyzing 297 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -9,8 +9,6 @@ skydrop: 6 seeds
   Seeds: 1490, 2166, 3536, 6456, 6576, 9213
 spikes: 6 seeds
   Seeds: 2394, 2719, 3000, 6454, 7618, 9827
-thunderwave: 6 seeds
-  Seeds: 2655, 2861, 4682, 5055, 7252, 8817
 gmaxsteelsurge: 6 seeds
   Seeds: 5050, 5395, 5748, 764, 8439, 967
 ceaselessedge: 5 seeds
@@ -33,16 +31,12 @@ foresight: 4 seeds
   Seeds: 1221, 2452, 6764, 9213
 echoedvoice: 4 seeds
   Seeds: 1279, 1362, 6543, 7169
-softboiled: 4 seeds
-  Seeds: 1400, 2861, 7830, 967
 counter: 4 seeds
   Seeds: 1615, 5992, 6065, 7028
 stoneaxe: 4 seeds
   Seeds: 2394, 2876, 7213, 8042
 flatter: 4 seeds
   Seeds: 2618, 6304, 7830, 9417
-synthesis: 4 seeds
-  Seeds: 2655, 3092, 3558, 9048
 blueflare: 4 seeds
   Seeds: 2719, 5306, 6919, 9005
 metronome: 4 seeds
@@ -79,6 +73,8 @@ eerieimpulse: 3 seeds
   Seeds: 1362, 4567, 8042
 instruct: 3 seeds
   Seeds: 1398, 3250, 8414
+softboiled: 3 seeds
+  Seeds: 1400, 7830, 967
 substitute: 3 seeds
   Seeds: 1400, 6603, 7213
 temperflare: 3 seeds
@@ -93,8 +89,6 @@ hiddenpowerfighting: 3 seeds
   Seeds: 2212, 5204, 5395
 gigavolthavoc: 3 seeds
   Seeds: 2388, 3646, 9996
-toxicthread: 3 seeds
-  Seeds: 2609, 2861, 3141
 technoblast: 3 seeds
   Seeds: 2674, 5123, 7830
 filletaway: 3 seeds
@@ -111,6 +105,8 @@ gmaxsmite: 3 seeds
   Seeds: 3070, 3085, 9213
 crushgrip: 3 seeds
   Seeds: 3070, 7131, 9423
+synthesis: 3 seeds
+  Seeds: 3092, 3558, 9048
 smokescreen: 3 seeds
   Seeds: 3141, 3536, 7249
 chillyreception: 3 seeds
@@ -229,6 +225,8 @@ glaciate: 2 seeds
   Seeds: 2440, 9789
 minimize: 2 seeds
   Seeds: 2535, 3904
+toxicthread: 2 seeds
+  Seeds: 2609, 3141
 ominouswind: 2 seeds
   Seeds: 2618, 3984
 knockoff: 2 seeds
@@ -241,10 +239,6 @@ painsplit: 2 seeds
   Seeds: 2762, 8170
 healblock: 2 seeds
   Seeds: 2814, 5613
-calmmind: 2 seeds
-  Seeds: 2861, 3063
-muddywater: 2 seeds
-  Seeds: 2861, 9765
 dreameater: 2 seeds
   Seeds: 2876, 5748
 wickedtorque: 2 seeds
@@ -517,16 +511,6 @@ teeterdance: 1 seeds
   Seeds: 2651
 present: 1 seeds
   Seeds: 2762
-strugglebug: 1 seeds
-  Seeds: 2861
-storedpower: 1 seeds
-  Seeds: 2861
-meanlook: 1 seeds
-  Seeds: 2861
-healpulse: 1 seeds
-  Seeds: 2861
-mudsport: 1 seeds
-  Seeds: 2861
 shedtail: 1 seeds
   Seeds: 2876
 captivate: 1 seeds
@@ -546,6 +530,8 @@ hyperbeam: 1 seeds
 bubblebeam: 1 seeds
   Seeds: 3063
 spectralthief: 1 seeds
+  Seeds: 3063
+calmmind: 1 seeds
   Seeds: 3063
 scorchingsands: 1 seeds
   Seeds: 3063
@@ -1015,6 +1001,8 @@ superpower: 1 seeds
   Seeds: 9765
 secretpower: 1 seeds
   Seeds: 9765
+muddywater: 1 seeds
+  Seeds: 9765
 sunsteelstrike: 1 seeds
   Seeds: 9765
 mindreader: 1 seeds
@@ -1099,8 +1087,6 @@ Slow Start: 2 seeds
   Seeds: 2469, 5613
 Damp: 2 seeds
   Seeds: 2787, 5913
-Trace: 2 seeds
-  Seeds: 2861, 5687
 Hustle: 2 seeds
   Seeds: 3130, 9048
 Quark Drive: 2 seeds
@@ -1169,6 +1155,8 @@ Misty Surge: 1 seeds
   Seeds: 5538
 Tough Claws: 1 seeds
   Seeds: 5644
+Trace: 1 seeds
+  Seeds: 5687
 Volt Absorb: 1 seeds
   Seeds: 5687
 Cotton Down: 1 seeds
@@ -1319,8 +1307,8 @@ ganlonberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 303
-Unique moves: 518 (517 non-simple)
+Total minimized seeds: 297
+Unique moves: 512 (511 non-simple)
 Unique abilities: 93 (89 non-simple)
 Unique items: 46
 
@@ -1328,13 +1316,13 @@ Unique items: 46
   transform: 11 seeds
   skydrop: 6 seeds
   spikes: 6 seeds
-  thunderwave: 6 seeds
   gmaxsteelsurge: 6 seeds
   ceaselessedge: 5 seeds
   dive: 5 seeds
   psychicnoise: 5 seeds
   roost: 5 seeds
   curse: 5 seeds
+  courtchange: 5 seeds
 
 --- Most Common Abilities (top 10) ---
   Primordial Sea: 27 seeds

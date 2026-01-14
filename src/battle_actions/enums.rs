@@ -11,6 +11,9 @@ pub enum IgnoreImmunity {
     All,
     /// Ignore specific type immunities ({ Type: true, ... })
     Specific(HashMap<String, bool>),
+    /// Explicitly don't ignore immunities (false) - different from undefined
+    /// This is used for moves like Thunder Wave that have ignoreImmunity: false
+    NoIgnore,
 }
 
 /// Fixed damage value for moves

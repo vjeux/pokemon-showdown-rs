@@ -175,6 +175,7 @@ pub fn get_damage(
         match ignore_imm {
             IgnoreImmunity::All => true,
             IgnoreImmunity::Specific(map) => map.contains_key(&move_type),
+            IgnoreImmunity::NoIgnore => false,
         }
     } else {
         false

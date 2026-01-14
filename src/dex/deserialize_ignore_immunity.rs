@@ -5,8 +5,9 @@ use std::collections::HashMap;
 
 /// Deserialize ignoreImmunity which can be:
 /// - boolean true -> IgnoreImmunity::All
+/// - boolean false -> IgnoreImmunity::NoIgnore (explicitly don't ignore)
 /// - object { Type: true, ... } -> IgnoreImmunity::Specific
-/// - false or missing -> None
+/// - missing -> None (will use default behavior based on category)
 pub fn deserialize_ignore_immunity<'de, D>(deserializer: D) -> Result<Option<IgnoreImmunity>, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -43,7 +44,8 @@ where
             if value {
                 Ok(Some(IgnoreImmunity::All))
             } else {
-                Ok(None)
+                // Explicitly set to false - use NoIgnore to distinguish from undefined
+                Ok(Some(IgnoreImmunity::NoIgnore))
             }
         }
 
