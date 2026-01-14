@@ -3,6 +3,10 @@
 /**
  * Analyze minimized seed files to find patterns in bugs
  *
+ * Usage:
+ *   node analyze-minimized.js                    # Analyze all seeds
+ *   node analyze-minimized.js --failing-only /tmp/failing-seeds.txt  # Analyze only failing seeds
+ *
  * Outputs:
  * - Unique moves with which seeds they appear in
  * - Unique items with which seeds they appear in
@@ -14,16 +18,43 @@ const path = require('path');
 
 const MINIMIZED_DIR = path.join(__dirname, 'minimized');
 
+// Parse command line args
+let failingOnlyFile = null;
+for (let i = 2; i < process.argv.length; i++) {
+  if (process.argv[i] === '--failing-only' && process.argv[i + 1]) {
+    failingOnlyFile = process.argv[i + 1];
+    i++;
+  }
+}
+
+// Get the set of seeds to analyze
+let seedsToAnalyze = null;
+if (failingOnlyFile && fs.existsSync(failingOnlyFile)) {
+  const content = fs.readFileSync(failingOnlyFile, 'utf8').trim();
+  if (content) {
+    seedsToAnalyze = new Set(content.split('\n').map(s => parseInt(s.trim())).filter(n => !isNaN(n)));
+  }
+}
+
 // Maps to track occurrences
 const moves = new Map();      // move -> [seeds]
 const items = new Map();      // item -> [seeds]
 const abilities = new Map();  // ability -> [seeds]
 
 // Read all minimized files
-const files = fs.readdirSync(MINIMIZED_DIR)
+let files = fs.readdirSync(MINIMIZED_DIR)
   .filter(f => f.endsWith('.json') && f.startsWith('seed'));
 
-console.log(`Analyzing ${files.length} minimized seed files...\n`);
+// Filter to only specified seeds if --failing-only was used
+if (seedsToAnalyze) {
+  files = files.filter(f => {
+    const seed = parseInt(f.replace('seed', '').replace('.json', ''));
+    return seedsToAnalyze.has(seed);
+  });
+}
+
+const analysisType = seedsToAnalyze ? 'failing' : 'all';
+console.log(`Analyzing ${files.length} ${analysisType} minimized seed files...\n`);
 
 for (const file of files) {
   const seed = parseInt(file.replace('seed', '').replace('.json', ''));

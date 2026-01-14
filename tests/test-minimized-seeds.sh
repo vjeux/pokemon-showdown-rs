@@ -68,6 +68,12 @@ log ""
 passed_seeds=0
 failed_seeds=0
 
+# Track passing and failing seeds for bug-analysis.txt update
+PASSING_SEEDS_FILE="/tmp/passing-seeds.txt"
+FAILING_SEEDS_FILE="/tmp/failing-seeds.txt"
+> "$PASSING_SEEDS_FILE"
+> "$FAILING_SEEDS_FILE"
+
 for seed in $(cat "$SEEDS_FILE"); do
     # Extract battle lines
     js_lines=$(grep "^#[0-9]*:" "/tmp/js-battle-seed${seed}.txt" 2>/dev/null)
@@ -78,17 +84,20 @@ for seed in $(cat "$SEEDS_FILE"); do
     if [ "$js_count" = "0" ]; then
         log "Seed $seed: ERROR - no JS output"
         failed_seeds=$((failed_seeds + 1))
+        echo "$seed" >> "$FAILING_SEEDS_FILE"
         continue
     fi
 
     if [ "$js_lines" = "$rust_lines" ]; then
         log "Seed $seed: ✓ PASS"
         passed_seeds=$((passed_seeds + 1))
+        echo "$seed" >> "$PASSING_SEEDS_FILE"
     else
         # Find first divergence
         first_diff=$(diff <(echo "$js_lines") <(echo "$rust_lines") 2>/dev/null | grep "^<" | head -1 | sed 's/^< //')
         log "Seed $seed: ✗ FAIL - $first_diff"
         failed_seeds=$((failed_seeds + 1))
+        echo "$seed" >> "$FAILING_SEEDS_FILE"
     fi
 done
 
@@ -103,10 +112,19 @@ log ""
 
 if [ "$passed_seeds" = "$total_seeds" ]; then
     log "✓ ALL MINIMIZED SEEDS PASSED!"
+    # Clear bug-analysis.txt since all tests pass
+    > "$SCRIPT_DIR/bug-analysis.txt"
     exit 0
 else
     pass_pct=$((passed_seeds * 100 / total_seeds))
     log "Pass rate: ${pass_pct}%"
     log "✗ Some seeds still failing"
+
+    # Regenerate bug-analysis.txt with only failing seeds
+    log ""
+    log "Updating bug-analysis.txt..."
+    node "$SCRIPT_DIR/analyze-minimized.js" --failing-only "$FAILING_SEEDS_FILE" > "$SCRIPT_DIR/bug-analysis.txt"
+    log "Done. See tests/bug-analysis.txt for patterns in failing seeds."
+
     exit 1
 fi
