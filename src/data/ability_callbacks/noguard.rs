@@ -10,7 +10,12 @@ use crate::event::EventResult;
 /// onAnyInvulnerability(target, source, move) {
 ///     if (move && (source === this.effectState.target || target === this.effectState.target)) return 0;
 /// }
-pub fn on_any_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+pub fn on_any_invulnerability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    // JavaScript checks "if (move && ...)" - move must be truthy
+    if active_move.is_none() {
+        return EventResult::Continue;
+    }
+
     // if (move && (source === this.effectState.target || target === this.effectState.target)) return 0;
     let noguard_user = match battle.effect_state.target {
         Some(pos) => pos,

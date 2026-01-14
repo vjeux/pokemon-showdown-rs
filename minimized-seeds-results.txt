@@ -99,7 +99,7 @@ Seed 1653: ✓ PASS
 Seed 1657: ✓ PASS
 Seed 1720: ✓ PASS
 Seed 1773: ✓ PASS
-Seed 1787: ✗ FAIL - #45: turn=42, prng=81->83, P1=[Lunala(0/380)], P2=[Pidgeot(0/194)]
+Seed 1787: ✓ PASS
 Seed 1795: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Abomasnow(59/182)], P2=[Magnezone(297/302)]
 Seed 1803: ✓ PASS
 Seed 1813: ✗ FAIL - #5: turn=5, prng=17->21, P1=[Magikarp(54/109)], P2=[Chimchar(205/242)]
@@ -309,7 +309,7 @@ Seed 4460: ✗ FAIL - #35: turn=30, prng=135->138, P1=[Hitmonlee(174/196)], P2=[
 Seed 4479: ✗ FAIL - #22: turn=21, prng=73->78, P1=[Darkrai(111/158)], P2=[Politoed(187/249)]
 Seed 4515: ✓ PASS
 Seed 4567: ✗ FAIL - #38: turn=35, prng=150->153, P1=[Slowking(304/304)], P2=[Darmanitan(334/350)]
-Seed 4594: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Tauros(256/272)], P2=[Honedge(176/176)]
+Seed 4594: ✓ PASS
 Seed 4616: ✓ PASS
 Seed 4634: ✗ FAIL - #6: turn=6, prng=17->21, P1=[Cyclohm(30/281)], P2=[Tyranitar(269/337)]
 Seed 4648: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Manectric(0/214)], P2=[Goodra(189/253)]
@@ -450,7 +450,7 @@ Seed 6348: ✗ FAIL - #13: turn=14, prng=42->44, P1=[Abomasnow(15/275)], P2=[Bas
 Seed 6349: ✓ PASS
 Seed 6359: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Mandibuzz(292/307)], P2=[Tyranitar(126/200)]
 Seed 6365: ✓ PASS
-Seed 6378: ✗ FAIL - #2: turn=3, prng=3->7, P1=[Pignite(299/338)], P2=[Ramnarok(205/296)]
+Seed 6378: ✓ PASS
 Seed 6391: ✗ FAIL - #48: turn=45, prng=184->188, P1=[Meloetta(0/259)], P2=[Typhlosion(0/290)]
 Seed 6402: ✓ PASS
 Seed 6413: ✓ PASS
@@ -641,7 +641,7 @@ Seed 8557: ✓ PASS
 Seed 8559: ✓ PASS
 Seed 8583: ✓ PASS
 Seed 8602: ✓ PASS
-Seed 8618: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Eiscue(191/191)], P2=[Scizor(212/217)]
+Seed 8618: ✓ PASS
 Seed 8619: ✓ PASS
 Seed 8641: ✓ PASS
 Seed 8690: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 494
-Failed: 229
+Passed: 498
+Failed: 225
 
 Pass rate: 68%
 ✗ Some seeds still failing

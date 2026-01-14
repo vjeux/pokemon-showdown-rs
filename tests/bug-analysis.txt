@@ -1,4 +1,4 @@
-Analyzing 229 failing minimized seed files...
+Analyzing 225 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -69,8 +69,6 @@ temperflare: 3 seeds
   Seeds: 1519, 5874, 6832
 stealthrock: 3 seeds
   Seeds: 1538, 967, 9827
-dive: 3 seeds
-  Seeds: 1787, 4594, 6348
 psyshock: 3 seeds
   Seeds: 1795, 7444, 8999
 forcepalm: 3 seeds
@@ -127,8 +125,6 @@ hornleech: 2 seeds
   Seeds: 1193, 7379
 topsyturvy: 2 seeds
   Seeds: 1193, 7298
-confuseray: 2 seeds
-  Seeds: 1193, 1787
 hiddenpowerelectric: 2 seeds
   Seeds: 1221, 9009
 electroshot: 2 seeds
@@ -155,8 +151,6 @@ leaftornado: 2 seeds
   Seeds: 1490, 8070
 populationbomb: 2 seeds
   Seeds: 1538, 2304
-refresh: 2 seeds
-  Seeds: 1787, 5395
 bestow: 2 seeds
   Seeds: 1977, 6391
 solarblade: 2 seeds
@@ -301,6 +295,8 @@ gmaxvoltcrash: 1 seeds
   Seeds: 1193
 nobleroar: 1 seeds
   Seeds: 1193
+confuseray: 1 seeds
+  Seeds: 1193
 maxflutterby: 1 seeds
   Seeds: 1221
 fly: 1 seeds
@@ -335,12 +331,6 @@ hiddenpowerghost: 1 seeds
   Seeds: 1519
 maxguard: 1 seeds
   Seeds: 1519
-acidarmor: 1 seeds
-  Seeds: 1787
-fireblast: 1 seeds
-  Seeds: 1787
-dragonascent: 1 seeds
-  Seeds: 1787
 encore: 1 seeds
   Seeds: 1813
 cottonguard: 1 seeds
@@ -573,6 +563,8 @@ brickbreak: 1 seeds
   Seeds: 5395
 gmaxchistrike: 1 seeds
   Seeds: 5395
+refresh: 1 seeds
+  Seeds: 5395
 skullbash: 1 seeds
   Seeds: 5395
 smackdown: 1 seeds
@@ -635,10 +627,10 @@ heatcrash: 1 seeds
   Seeds: 6288
 mirrorcoat: 1 seeds
   Seeds: 6345
+dive: 1 seeds
+  Seeds: 6348
 hiddenpowerbug: 1 seeds
   Seeds: 6359
-phantomforce: 1 seeds
-  Seeds: 6378
 coreenforcer: 1 seeds
   Seeds: 6454
 zippyzap: 1 seeds
@@ -881,8 +873,6 @@ lifedew: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-No Guard: 7 seeds
-  Seeds: 1787, 2535, 3904, 4594, 6288, 6378, 8708
 RKS System: 6 seeds
   Seeds: 4157, 4745, 5395, 7213, 8032, 9485
 Emergency Exit: 5 seeds
@@ -901,6 +891,8 @@ Snow Warning: 4 seeds
   Seeds: 1795, 4750, 4905, 7444
 Rock Head: 4 seeds
   Seeds: 2455, 4278, 6528, 7029
+No Guard: 4 seeds
+  Seeds: 2535, 3904, 6288, 8708
 Gluttony: 4 seeds
   Seeds: 2926, 4716, 6488, 8543
 Electromorphosis: 4 seeds
@@ -1011,8 +1003,6 @@ Tera Shell: 1 seeds
   Seeds: 8032
 Levitate: 1 seeds
   Seeds: 8544
-Ice Face: 1 seeds
-  Seeds: 8618
 Stakeout: 1 seeds
   Seeds: 8708
 Sheer Force: 1 seeds
@@ -1109,8 +1099,6 @@ oranberry: 1 seeds
   Seeds: 8146
 focussash: 1 seeds
   Seeds: 8544
-focusband: 1 seeds
-  Seeds: 8618
 berryjuice: 1 seeds
   Seeds: 8851
 kasibberry: 1 seeds
@@ -1127,10 +1115,10 @@ ganlonberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 229
-Unique moves: 438 (437 non-simple)
-Unique abilities: 79 (75 non-simple)
-Unique items: 44
+Total minimized seeds: 225
+Unique moves: 434 (433 non-simple)
+Unique abilities: 78 (74 non-simple)
+Unique items: 43
 
 --- Most Common Moves (top 10) ---
   skydrop: 6 seeds
@@ -1145,7 +1133,6 @@ Unique items: 44
   counter: 4 seeds
 
 --- Most Common Abilities (top 10) ---
-  No Guard: 7 seeds
   RKS System: 6 seeds
   Emergency Exit: 5 seeds
   Zen Mode: 5 seeds
@@ -1155,3 +1142,4 @@ Unique items: 44
   Effect Spore: 4 seeds
   Snow Warning: 4 seeds
   Rock Head: 4 seeds
+  No Guard: 4 seeds

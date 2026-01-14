@@ -372,11 +372,6 @@ impl Battle {
         // JavaScript: Sort handlers based on event type (lines 145-151)
         if matches!(event_id, "Invulnerability" | "TryHit" | "DamagingHit" | "EntryHazard") {
             // Left-to-right order
-            eprintln!("[RUN_EVENT] Sorting {} handlers for event '{}' using left-to-right order", handlers.len(), event_id);
-            for (i, handler) in handlers.iter().enumerate() {
-                eprintln!("[RUN_EVENT]   Handler {}: effect={}, effect_type={:?}, priority={:?}, order={:?}",
-                    i, handler.effect.id, handler.effect.effect_type, handler.priority, handler.order);
-            }
             handlers.sort_by(|a, b| {
                 let a_item = Self::event_listener_to_priority_item(a);
                 let b_item = Self::event_listener_to_priority_item(b);
@@ -699,11 +694,13 @@ impl Battle {
 
                     // JavaScript: if (!relayVar || fastExit) { ... break; }
                     // Check if we should stop processing
+                    // In JavaScript, falsy values are: false, null, undefined, 0, NaN, ""
                     let should_stop = match &relay_var {
                         EventResult::Boolean(false) => true,
                         EventResult::Null => true,
                         EventResult::Stop => true,
                         EventResult::NotFail => true,
+                        EventResult::Number(0) => true, // 0 is falsy in JavaScript
                         _ => false,
                     };
 
