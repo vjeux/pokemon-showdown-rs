@@ -336,7 +336,14 @@ impl Battle {
                 for handler in side_handlers_for_pokemon {
                     let effect_id = handler.effect.id;
                     let effect_type = handler.effect.effect_type;
-                    let effect_order = 0;
+                    // JavaScript fieldEvent() in resolvePriority only sets effectOrder for 'SwitchIn' and 'RedirectTarget' events.
+                    // For 'Residual' events, effectOrder is undefined (0), causing ties and shuffles.
+                    // For 'SwitchIn' events, use the stored effect_order to prevent unnecessary shuffles.
+                    let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
+                        handler.effect_order.unwrap_or(0)
+                    } else {
+                        0
+                    };
                     // For side condition handlers targeting Pokemon, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
                     let handler = self.create_field_handler(

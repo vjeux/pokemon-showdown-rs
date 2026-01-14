@@ -97,9 +97,9 @@ pub fn on_any_invulnerability(
 ///
 /// JavaScript source (data/moves.ts):
 /// ```js
-/// onFoeBeforeMove(target, source, move) {
-///     if (source === this.effectState.target && target === this.effectState.source) {
-///         target.removeMove(move.id);
+/// onFoeBeforeMove(attacker, defender, move) {
+///     if (attacker === this.effectState.source) {
+///         attacker.activeMoveActions--;
 ///         this.debug('Sky drop nullifying.');
 ///         return null;
 ///     }
@@ -108,11 +108,14 @@ pub fn on_any_invulnerability(
 pub fn on_foe_before_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
     _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    // Get effectState.source from the skydrop volatile
+    // target_pos = the attacker (Pokemon trying to move)
+    // We need to check if attacker === this.effectState.source
+
+    // Get effectState.source from the skydrop volatile on the pokemon with the handler
     let effect_source = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -128,9 +131,15 @@ pub fn on_foe_before_move(
         state.source
     };
 
-    if let Some(source) = effect_source {
-        battle.decrement_active_move_actions(source);
+    // JavaScript: if (attacker === this.effectState.source) {
+    // attacker is target_pos, effectState.source is effect_source
+    if target_pos == effect_source {
+        if let Some(attacker_pos) = target_pos {
+            // attacker.activeMoveActions--;
+            battle.decrement_active_move_actions(attacker_pos);
+        }
         battle.debug("Sky drop nullifying.");
+        // JavaScript returns null, which is falsy and prevents the move
         return EventResult::Null;
     }
 

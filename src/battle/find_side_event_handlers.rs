@@ -96,7 +96,9 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    effect_order: None,
+                    // Propagate effect_order from state for proper tie-breaking
+                    // JavaScript sets effectOrder during resolvePriority for SwitchIn/RedirectTarget events
+                    effect_order: Some(sc_state.effect_order),
                     speed: None,
                 });
             }

@@ -67,13 +67,13 @@ pub fn on_start(
 
         // attacker.addVolatile(effect.id);
         // Add a volatile for the specific move (e.g., "dig", "fly", "solarbeam")
-        // Need to copy the source from the twoturnmove volatile so that onFoeBeforeMove can access it
-        // JavaScript: this.effectState.source
-        let twoturnmove_source = battle.with_effect_state_ref(|state| {
-            state.source
-        }).flatten();
-        eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}', source={:?}", move_id_val.as_str(), twoturnmove_source);
-        crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), twoturnmove_source, None, None, None);
+        // IMPORTANT: JavaScript does NOT pass a source parameter here!
+        // The source should be None, not copied from twoturnmove.
+        // This is critical for Sky Drop's onFoeBeforeMove which checks:
+        //   if (attacker === this.effectState.source) { return null; }
+        // If source is None, this check will always be false, allowing moves to execute.
+        eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}', source=None (matching JS)", move_id_val.as_str());
+        crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), None, None, None, None);
         eprintln!("[TWOTURNMOVE_ONSTART] Returned from add_volatile");
 
         // JavaScript: let moveTargetLoc: number = attacker.lastMoveTargetLoc!;
