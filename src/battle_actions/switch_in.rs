@@ -264,14 +264,10 @@ pub fn switch_in(
 
             // Clear volatiles on old Pokemon
             // JS: oldActive.clearVolatile();
-            // Note: JavaScript's clearVolatile() calls moveSlots = baseMoveSlots.slice() which is a
-            // SHALLOW copy - the move slot objects are shared. So PP is NOT restored.
-            // In Rust, clone() is a DEEP copy which would restore PP incorrectly.
-            // So we manually call the parts of clear_volatile that don't reset moveSlots:
-            // 1. Clear boosts (JS does this)
-            // 2. Clear volatiles (JS does this)
-            // 3. Reset ability/species/etc (JS does this via set_species)
-            // But we must NOT reset move_slots because that would restore PP.
+            // This includes: this.moveSlots = this.baseMoveSlots.slice();
+            // JavaScript's slice() creates a shallow copy - the array is new but move slot objects
+            // are shared, so PP is preserved across the copy.
+            // In Rust, we need to restore move_slots while preserving current PP values.
 
             // Use unsafe to work around borrow checker for set_species call
             unsafe {
@@ -281,8 +277,56 @@ pub fn switch_in(
                 // Clear boosts (matches JS: this.boosts = { atk: 0, def: 0, ... })
                 (*pokemon).clear_boosts();
 
-                // Clear volatiles and reset other state, but preserve move slots
-                // This is a partial clear_volatile that doesn't reset moveSlots
+                // JS: if (this.battle.gen === 1 && this.baseMoves.includes('mimic' as ID) && !this.transformed)
+                // Handle Gen 1 Mimic PP preservation
+                let gen = (*battle_ptr).gen;
+                let (should_restore_mimic, mimic_pp): (bool, u8) = if gen == 1 {
+                    let has_mimic = (*pokemon).base_move_slots.iter().any(|slot| slot.id.as_str() == "mimic");
+                    if has_mimic && !(*pokemon).transformed {
+                        // Find Mimic slot and get current PP
+                        if let Some(mimic_slot) = (*pokemon).move_slots.iter().find(|slot| slot.id.as_str() == "mimic") {
+                            (true, mimic_slot.pp)
+                        } else {
+                            (false, 0)
+                        }
+                    } else {
+                        (false, 0)
+                    }
+                } else {
+                    (false, 0)
+                };
+
+                // Save current PP values before restoring move slots
+                // JS shares objects so PP is automatically preserved; Rust needs manual preservation
+                let current_pp: Vec<(usize, u8)> = (*pokemon).move_slots.iter()
+                    .enumerate()
+                    .map(|(idx, slot)| (idx, slot.pp))
+                    .collect();
+
+                // JS: this.moveSlots = this.baseMoveSlots.slice();
+                // Restore move slots from base (this fixes Transform persistence bug)
+                (*pokemon).move_slots = (*pokemon).base_move_slots.clone();
+
+                // Restore PP values to match JavaScript's shallow copy behavior
+                for (idx, pp) in current_pp {
+                    if idx < (*pokemon).move_slots.len() && idx < (*pokemon).base_move_slots.len() {
+                        // Only restore PP if the move ID matches (not transformed/Sketched)
+                        let move_id = &(&(*pokemon).move_slots)[idx].id;
+                        let base_move_id = &(&(*pokemon).base_move_slots)[idx].id;
+                        if move_id == base_move_id {
+                            (&mut (*pokemon).move_slots)[idx].pp = pp;
+                        }
+                    }
+                }
+
+                // Gen 1 Mimic special case
+                if should_restore_mimic {
+                    if let Some(mimic_slot) = (*pokemon).move_slots.iter_mut().find(|slot| slot.id.as_str() == "mimic") {
+                        mimic_slot.pp = mimic_pp;
+                    }
+                }
+
+                // JS: this.transformed = false;
                 (*pokemon).transformed = false;
                 (*pokemon).ability = (*pokemon).base_ability.clone();
                 (*pokemon).hp_type = (*pokemon).base_hp_type.clone();
