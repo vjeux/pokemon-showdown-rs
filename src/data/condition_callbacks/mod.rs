@@ -1048,3 +1048,20 @@ pub fn dispatch_on_set_status(
     }
 }
 
+/// Dispatch onAnyPrepareHit callbacks for volatiles like Snatch
+/// Called when any Pokemon is about to use a move that can be snatched
+pub fn dispatch_on_any_prepare_hit(
+    battle: &mut Battle,
+    condition_id: &str,
+    source_pos: Option<(usize, usize)>,
+    target_pos: Option<(usize, usize)>,
+    active_move: Option<&ActiveMove>,
+) -> EventResult {
+    match condition_id {
+        "snatch" => {
+            move_callbacks::snatch::condition::on_any_prepare_hit(battle, source_pos, target_pos, active_move)
+        }
+        _ => EventResult::Continue,
+    }
+}
+

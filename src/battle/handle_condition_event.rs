@@ -627,6 +627,21 @@ impl Battle {
                     active_move_clone.as_ref()
                 )
             }
+            "AnyPrepareHit" => {
+                // For AnyPrepareHit, called when any Pokemon is about to use a snatchable move
+                // Snatch intercepts the move and uses it for the snatch user instead
+                // source_pos is the Pokemon about to use the move
+                // target_pos is their target
+                let source_pos = self.event.as_ref().and_then(|e| e.target);
+                let target_pos = self.event.as_ref().and_then(|e| e.source);
+                condition_callbacks::dispatch_on_any_prepare_hit(
+                    self,
+                    condition_id,
+                    source_pos,
+                    target_pos,
+                    active_move_clone.as_ref()
+                )
+            }
             "Invulnerability" => {
                 // For onInvulnerability, call the regular dispatch for condition callbacks
                 // This handles two-turn moves like Dive, Fly, Dig, etc.

@@ -290,5 +290,12 @@
     "onSourceInvulnerabilityPriority": 1,
     "onSourceInvulnerability": true,
     "onSourceAccuracy": true
+  },
+  "snatch": {
+    "name": "Snatch",
+    "duration": 1,
+    "onAnyPrepareHitPriority": -1,
+    "onStart": true,
+    "onAnyPrepareHit": true
   }
 }
