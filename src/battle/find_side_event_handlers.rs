@@ -79,20 +79,27 @@ impl Battle {
                     .and_then(|c| c.name.clone())
                     .unwrap_or_else(|| sc_id.to_string());
 
+                // JavaScript: effectHolder: customHolder || side
+                // For side conditions, if no custom holder is provided, use a dummy position
+                // representing the side. We use (side_idx, 0) so that is_ally() checks work correctly.
+                // is_ally() compares the side index (first element), so this correctly identifies
+                // the side that owns this condition.
+                let effective_holder = custom_holder.or(Some((side_idx, 0)));
+
                 handlers.push(EventListener {
                     callback_name: String::new(),
                     effect: Effect {
                         id: sc_id.clone(),
                         name: sc_name,
                         effect_type: EffectType::SideCondition,
-                        effect_holder: custom_holder,
+                        effect_holder: effective_holder,
                         side_index: Some(side_idx),
                         prankster_boosted: false,
                     },
                     target: None,
                     index: None,
                     state: Some(sc_state.clone()),
-                    effect_holder: custom_holder, // JS: customHolder || side (side not representable as tuple)
+                    effect_holder: effective_holder,
                     order: None,
                     priority: 0,
                     sub_order: 0,

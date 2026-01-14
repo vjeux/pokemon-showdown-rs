@@ -386,19 +386,9 @@ impl Battle {
             });
         } else {
             // Speed sort (default)
-            eprintln!("[RUN_EVENT] Sorting {} handlers for event '{}' using speed_sort", handlers.len(), event_id);
-            for (i, handler) in handlers.iter().enumerate() {
-                eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}, sub_order={:?}, effect_order={:?}",
-                    i, handler.effect.id, handler.priority, handler.order, handler.speed, handler.sub_order, handler.effect_order);
-            }
             self.speed_sort(&mut handlers, |listener| {
                 Self::event_listener_to_priority_item(listener)
             });
-            eprintln!("[RUN_EVENT] After sorting:");
-            for (i, handler) in handlers.iter().enumerate() {
-                eprintln!("[RUN_EVENT]   Handler {}: effect={}, priority={:?}, order={:?}, speed={:?}, sub_order={:?}, effect_order={:?}",
-                    i, handler.effect.id, handler.priority, handler.order, handler.speed, handler.sub_order, handler.effect_order);
-            }
         }
 
         // JavaScript: let hasRelayVar = 1; (lines 152-160)
@@ -437,11 +427,6 @@ impl Battle {
         self.event = Some(event_info.clone());
         self.event = Some(event_info);
 
-        if event_id == "ModifyDamage" {
-            eprintln!("[RUN_EVENT] ModifyDamage - Created event with modifier={}",
-                self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
-        }
-
         // JavaScript: this.eventDepth++;
         self.event_depth += 1;
 
@@ -464,13 +449,18 @@ impl Battle {
             // Note: This checks .fainted (not hp==0) because faint queue processing
             // sets .fainted=true. The hp==0 check is only used in allies()/foes()
             // for finding handlers, not for executing them.
-            if let Some(handler_pos) = handler_target {
-                if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
-                    if pokemon.fainted {
-                        // TODO: Add isSlotCondition check when slot conditions are implemented
-                        // For now, skip all handlers from fainted Pokemon
-                        eprintln!("[RUN_EVENT] Skipping handler from fainted Pokemon at {:?}, effect={}", handler_pos, effect_id);
-                        continue;
+            //
+            // IMPORTANT: For side conditions (like Light Screen), the effect_holder is a
+            // dummy position (side_idx, 0) representing the side, not a specific Pokemon.
+            // We should NOT skip side condition handlers based on fainted Pokemon.
+            if handler.effect.effect_type != EffectType::SideCondition {
+                if let Some(handler_pos) = handler_target {
+                    if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
+                        if pokemon.fainted {
+                            // TODO: Add isSlotCondition check when slot conditions are implemented
+                            // For now, skip all handlers from fainted Pokemon (except side conditions)
+                            continue;
+                        }
                     }
                 }
             }
@@ -711,11 +701,6 @@ impl Battle {
             }
         }
 
-        if event_id == "ModifyDamage" {
-            eprintln!("[RUN_EVENT] ModifyDamage - After handler loop, event.modifier={}",
-                self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
-        }
-
         // JavaScript: this.eventDepth--;
         self.event_depth -= 1;
 
@@ -731,13 +716,7 @@ impl Battle {
             // Check if num is non-negative (matches JavaScript condition)
             if num >= 0 {
                 if let Some(ref event) = self.event {
-                    if event_id == "ModifyDamage" {
-                        eprintln!("[RUN_EVENT] ModifyDamage - Before modify: num={}, modifier={}, event_depth={}", num, event.modifier, self.event_depth);
-                    }
                     let modified = self.modify_internal(num, event.modifier);
-                    if event_id == "ModifyDamage" {
-                        eprintln!("[RUN_EVENT] ModifyDamage - After modify: modified={}, event_depth={}", modified, self.event_depth);
-                    }
                     relay_var = EventResult::Number(modified);
                 }
             }

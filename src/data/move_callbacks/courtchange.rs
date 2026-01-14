@@ -158,6 +158,9 @@ pub fn on_hit_field(
                 for (id, mut condition) in source_conditions {
                     // targetSide.sideConditions[id].target = targetSide;
                     condition.target_side = Some(target_side_n);
+                    // In Rust, for side conditions, we use (side_index, 0) as the effect_holder.
+                    // Update target to match the new side owner.
+                    condition.target = Some((target_side_n, 0));
                     target_side.side_conditions.insert(id, condition);
                 }
             }
@@ -225,6 +228,9 @@ pub fn on_hit_field(
             for (id, mut condition) in source_temp {
                 // targetSideConditions[id].target = source.side.foe;
                 condition.target_side = Some(target_side_index);
+                // In Rust, for side conditions, we use (side_index, 0) as the effect_holder.
+                // Update target to match the new side owner.
+                condition.target = Some((target_side_index, 0));
                 target_side.side_conditions.insert(id, condition);
             }
         }
@@ -237,6 +243,9 @@ pub fn on_hit_field(
             for (id, mut condition) in target_temp {
                 // sourceSideConditions[id].target = source.side;
                 condition.target_side = Some(source_side_index);
+                // In Rust, for side conditions, we use (side_index, 0) as the effect_holder.
+                // Update target to match the new side owner.
+                condition.target = Some((source_side_index, 0));
                 source_side.side_conditions.insert(id, condition);
             }
         }
