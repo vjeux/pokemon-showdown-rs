@@ -83,6 +83,19 @@ impl Battle {
             }
         }
 
+        // IMPORTANT: If we're explicitly in an Ability context, prioritize ability handler
+        // This handles cases where the ability ID matches the current weather/terrain
+        // (e.g., "primordialsea" is both an ability AND a weather condition)
+        // When calling single_event("End", ability("primordialsea"), ...), we want the
+        // ability's on_end to run (which clears the weather), not the condition's on_end
+        if let Some(ref effect) = self.effect {
+            if effect.effect_type == crate::battle::EffectType::Ability {
+                if self.dex.abilities().get(effect_id.as_str()).is_some() {
+                    return self.handle_ability_event(event_id, effect_id, target);
+                }
+            }
+        }
+
         // IMPORTANT: Check field weather/terrain BEFORE abilities
         // Some effects like "deltastream" exist both as abilities AND as weather conditions
         // When weather is active, field event handlers should route to the condition, not the ability

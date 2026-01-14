@@ -47,10 +47,20 @@ impl Pokemon {
             amount += self.hp; // self.hp is negative, so this subtracts from amount
             self.hp = 0;
 
+            // JS: this.faint(source, effect);
+            // Check if already queued or fainted
+            if self.fainted || self.faint_queued {
+                // Already queued/fainted, don't add again
+                return amount;
+            }
+
             eprintln!("[DAMAGE] Pokemon {} fainted! Adding to faint_queue. pokemon_pos={:?}, source={:?}",
                 self.name, pokemon_pos, source);
 
-            // JS equivalent: this.faint(source, effect) -> adds to faintQueue
+            // JS equivalent: this.faint(source, effect) -> sets faintQueued and adds to faintQueue
+            // Note: switch_flag clearing happens in faint() but not relevant here since we're in damage()
+            self.faint_queued = true;
+
             faint_queue.push(FaintData {
                 target: pokemon_pos,
                 source,

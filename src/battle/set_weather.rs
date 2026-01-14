@@ -73,6 +73,11 @@ impl Battle {
         source_pos: Option<(usize, usize)>,
         source_effect: Option<Effect>,
     ) -> Option<bool> {
+        // JavaScript: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
+        // JavaScript: if (!source && this.battle.event?.target) source = this.battle.event.target;
+        let source_effect = source_effect.or_else(|| self.effect.clone());
+        let source_pos = source_pos.or_else(|| self.event.as_ref().and_then(|e| e.target));
+
         // Get current weather for comparison
         let current_weather = self.field.weather.clone();
 
