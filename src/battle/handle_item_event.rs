@@ -126,10 +126,17 @@ impl Battle {
 
             // TypeScript: onBasePower(basePower:number, pokemon:Pokemon, target:Pokemon?)
             "BasePower" => {
-                let base_power = if let Some(ref active_move) = self.active_move {
-                    active_move.base_power
-                } else {
-                    0
+                // Use relay_var from the event - this contains the base power after
+                // basePowerCallback modifications (e.g., Echoed Voice multiplier)
+                let base_power = match &relay_var {
+                    Some(EventResult::Number(n)) => *n,
+                    _ => {
+                        if let Some(ref active_move) = self.active_move {
+                            active_move.base_power as i32
+                        } else {
+                            0
+                        }
+                    }
                 };
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 item_callbacks::dispatch_on_base_power(

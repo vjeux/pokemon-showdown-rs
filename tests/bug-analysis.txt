@@ -1,12 +1,10 @@
-Analyzing 199 failing minimized seed files...
+Analyzing 193 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 skydrop: 6 seeds
   Seeds: 1490, 2166, 3536, 6456, 6576, 9213
-echoedvoice: 4 seeds
-  Seeds: 1279, 1362, 6543, 7169
 counter: 4 seeds
   Seeds: 1615, 5992, 6065, 7028
 psychicnoise: 4 seeds
@@ -35,6 +33,8 @@ safeguard: 3 seeds
   Seeds: 1205, 2926, 8445
 burningbulwark: 3 seeds
   Seeds: 1362, 5576, 7081
+echoedvoice: 3 seeds
+  Seeds: 1362, 6543, 7169
 substitute: 3 seeds
   Seeds: 1400, 6603, 7213
 temperflare: 3 seeds
@@ -53,8 +53,6 @@ thunderpunch: 3 seeds
   Seeds: 2787, 3953, 8708
 crosschop: 3 seeds
   Seeds: 2926, 3578, 9996
-gmaxsmite: 3 seeds
-  Seeds: 3070, 3085, 9213
 chillyreception: 3 seeds
   Seeds: 3153, 4383, 9529
 hiddenpower: 3 seeds
@@ -77,8 +75,6 @@ fling: 3 seeds
   Seeds: 6242, 7054, 9789
 afteryou: 3 seeds
   Seeds: 6764, 6919, 9563
-veeveevolley: 3 seeds
-  Seeds: 7635, 7709, 8708
 helpinghand: 2 seeds
   Seeds: 1110, 8708
 playrough: 2 seeds
@@ -145,14 +141,12 @@ stoneaxe: 2 seeds
   Seeds: 2876, 7213
 wickedtorque: 2 seeds
   Seeds: 3000, 4745
-leafstorm: 2 seeds
-  Seeds: 3063, 3070
-crushgrip: 2 seeds
-  Seeds: 3070, 7131
 poisonsting: 2 seeds
   Seeds: 3078, 9567
 leer: 2 seeds
   Seeds: 3085, 9996
+gmaxsmite: 2 seeds
+  Seeds: 3085, 9213
 rocktomb: 2 seeds
   Seeds: 3126, 8121
 smokescreen: 2 seeds
@@ -211,8 +205,6 @@ mirrormove: 2 seeds
   Seeds: 5251, 8032
 bleakwindstorm: 2 seeds
   Seeds: 5266, 6926
-savagespinout: 2 seeds
-  Seeds: 5379, 7601
 gmaxsteelsurge: 2 seeds
   Seeds: 5748, 8439
 lightscreen: 2 seeds
@@ -360,6 +352,8 @@ pikapapow: 1 seeds
 hyperbeam: 1 seeds
   Seeds: 3063
 bubblebeam: 1 seeds
+  Seeds: 3063
+leafstorm: 1 seeds
   Seeds: 3063
 spectralthief: 1 seeds
   Seeds: 3063
@@ -517,8 +511,6 @@ spiderweb: 1 seeds
   Seeds: 5306
 lightthatburnsthesky: 1 seeds
   Seeds: 5306
-return: 1 seeds
-  Seeds: 5379
 smackdown: 1 seeds
   Seeds: 547
 bide: 1 seeds
@@ -679,6 +671,8 @@ mistball: 1 seeds
   Seeds: 7559
 glitzyglow: 1 seeds
   Seeds: 7559
+savagespinout: 1 seeds
+  Seeds: 7601
 pinmissile: 1 seeds
   Seeds: 7830
 growl: 1 seeds
@@ -732,6 +726,8 @@ thundershock: 1 seeds
 mefirst: 1 seeds
   Seeds: 8708
 voltswitch: 1 seeds
+  Seeds: 8708
+veeveevolley: 1 seeds
   Seeds: 8708
 batonpass: 1 seeds
   Seeds: 8774
@@ -957,8 +953,6 @@ metronome: 4 seeds
   Seeds: 1205, 2030, 2618, 6568
 kingsrock: 4 seeds
   Seeds: 1252, 4430, 7012, 9005
-pinkbow: 4 seeds
-  Seeds: 1279, 3070, 7635, 7709
 quickclaw: 4 seeds
   Seeds: 1615, 1880, 2388, 6345
 assaultvest: 3 seeds
@@ -971,8 +965,6 @@ bigroot: 2 seeds
   Seeds: 3185, 4357
 smoothrock: 2 seeds
   Seeds: 4025, 4634
-polkadotbow: 2 seeds
-  Seeds: 5379, 7131
 fullincense: 2 seeds
   Seeds: 6005, 7243
 redcard: 1 seeds
@@ -1039,14 +1031,13 @@ ganlonberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 199
-Unique moves: 403 (402 non-simple)
+Total minimized seeds: 193
+Unique moves: 401 (400 non-simple)
 Unique abilities: 73 (69 non-simple)
-Unique items: 41
+Unique items: 39
 
 --- Most Common Moves (top 10) ---
   skydrop: 6 seeds
-  echoedvoice: 4 seeds
   counter: 4 seeds
   psychicnoise: 4 seeds
   flatter: 4 seeds
@@ -1055,6 +1046,7 @@ Unique items: 41
   blizzard: 4 seeds
   dynamicpunch: 4 seeds
   telekinesis: 4 seeds
+  assist: 4 seeds
 
 --- Most Common Abilities (top 10) ---
   Emergency Exit: 5 seeds

@@ -64,7 +64,7 @@ Seed 1252: ✗ FAIL - #51: turn=42, prng=182->188, P1=[Mudbray(1/240)], P2=[Anni
 Seed 1256: ✗ FAIL - #3: turn=4, prng=7->10, P1=[Morpeko(152/152)], P2=[Galvantula(172/255)]
 Seed 1258: ✓ PASS
 Seed 1267: ✓ PASS
-Seed 1279: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Grubbin(207/241)], P2=[Raichu(6/148)]
+Seed 1279: ✓ PASS
 Seed 1284: ✓ PASS
 Seed 1288: ✓ PASS
 Seed 1333: ✓ PASS
@@ -203,7 +203,7 @@ Seed 3010: ✓ PASS
 Seed 3014: ✓ PASS
 Seed 3022: ✓ PASS
 Seed 3063: ✗ FAIL - #59: turn=54, prng=204->211, P1=[Seaking(54/256)], P2=[Hoopa(0/187)]
-Seed 3070: ✗ FAIL - #9: turn=10, prng=44->52, P1=[Kangaskhan(180/306)], P2=[Hydrapple(180/232)]
+Seed 3070: ✓ PASS
 Seed 3078: ✗ FAIL - #5: turn=5, prng=28->35, P1=[Golisopod(87/184)], P2=[Silvally(297/334)]
 Seed 3085: ✗ FAIL - #10: turn=10, prng=36->41, P1=[Toucannon(82/211)], P2=[Krilowatt(387/445)]
 Seed 3092: ✓ PASS
@@ -380,7 +380,7 @@ Seed 5343: ✓ PASS
 Seed 5345: ✓ PASS
 Seed 5358: ✓ PASS
 Seed 5377: ✓ PASS
-Seed 5379: ✗ FAIL - #2: turn=3, prng=5->11, P1=[Grimer(100/231)], P2=[Victreebel(189/231)]
+Seed 5379: ✓ PASS
 Seed 5380: ✓ PASS
 Seed 5395: ✓ PASS
 Seed 5422: ✓ PASS
@@ -523,7 +523,7 @@ Seed 7082: ✓ PASS
 Seed 7109: ✓ PASS
 Seed 7121: ✗ FAIL - #1: turn=2, prng=0->8, P1=[Miraidon(147/214)], P2=[Malamar(251/265)]
 Seed 7127: ✓ PASS
-Seed 7131: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Stunfisk(336/376)], P2=[Glimmora(186/203)]
+Seed 7131: ✓ PASS
 Seed 7140: ✓ PASS
 Seed 7149: ✗ FAIL - #3: turn=4, prng=8->13, P1=[Shaymin(295/333)], P2=[Caterpie(222/222)]
 Seed 7163: ✓ PASS
@@ -566,7 +566,7 @@ Seed 7592: ✗ FAIL - #2: turn=3, prng=5->10, P1=[Darmanitan(234/353)], P2=[Iron
 Seed 7601: ✗ FAIL - #2: turn=3, prng=5->10, P1=[Nidoran-F(119/196)], P2=[Darmanitan(149/256)]
 Seed 7618: ✓ PASS
 Seed 7623: ✓ PASS
-Seed 7635: ✗ FAIL - #1: turn=2, prng=0->5, P1=[Magnezone(254/269)], P2=[Exeggutor(281/341)]
+Seed 7635: ✓ PASS
 Seed 7656: ✓ PASS
 Seed 7658: ✓ PASS
 Seed 7662: ✓ PASS
@@ -574,7 +574,7 @@ Seed 7671: ✓ PASS
 Seed 7691: ✓ PASS
 Seed 7701: ✓ PASS
 Seed 7705: ✓ PASS
-Seed 7709: ✗ FAIL - #1: turn=2, prng=0->5, P1=[Steelix(182/200)], P2=[Beldum(208/218)]
+Seed 7709: ✓ PASS
 Seed 7744: ✓ PASS
 Seed 7792: ✓ PASS
 Seed 7797: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 524
-Failed: 199
+Passed: 530
+Failed: 193
 
-Pass rate: 72%
+Pass rate: 73%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...
