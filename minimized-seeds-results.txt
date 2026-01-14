@@ -141,7 +141,7 @@ Seed 2329: ✓ PASS
 Seed 2338: ✗ FAIL - #6: turn=5, prng=12->16, P1=[Wooper(179/227)], P2=[Shedinja(0/1)]
 Seed 2341: ✓ PASS
 Seed 2351: ✓ PASS
-Seed 2358: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Basculin(190/234)], P2=[Krookodile(297/314)]
+Seed 2358: ✓ PASS
 Seed 2366: ✓ PASS
 Seed 2388: ✗ FAIL - #2: turn=3, prng=6->10, P1=[Chromera(260/261)], P2=[Toedscool(98/216)]
 Seed 2394: ✗ FAIL - #38: turn=38, prng=70->70, P1=[Barboach(138/199)], P2=[Toxapex(123/136)]
@@ -184,7 +184,7 @@ Seed 2803: ✓ PASS
 Seed 2807: ✓ PASS
 Seed 2814: ✓ PASS
 Seed 2819: ✓ PASS
-Seed 2856: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Tauros(139/173)], P2=[Toxel(164/230)]
+Seed 2856: ✓ PASS
 Seed 2861: ✓ PASS
 Seed 2865: ✓ PASS
 Seed 2876: ✗ FAIL - #40: turn=36, prng=48->48, P1=[Vivillon(156/312)], P2=[Muk(357/357)]
@@ -245,7 +245,7 @@ Seed 3507: ✗ FAIL - #9: turn=10, prng=24->32, P1=[Shroomish(139/219)], P2=[Cuf
 Seed 3517: ✓ PASS
 Seed 3530: ✓ PASS
 Seed 3536: ✗ FAIL - #42: turn=42, prng=91->94, P1=[Golurk(213/250)], P2=[Tangrowth(0/270)]
-Seed 3543: ✗ FAIL - #2: turn=3, prng=3->8, P1=[Toxel(99/195)], P2=[Tomohawk(223/238)]
+Seed 3543: ✓ PASS
 Seed 3558: ✓ PASS
 Seed 3578: ✗ FAIL - #20: turn=17, prng=75->76, P1=[Mimikyu(80/159)], P2=[Horsea(128/128)]
 Seed 3579: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 491
-Failed: 232
+Passed: 494
+Failed: 229
 
-Pass rate: 67%
+Pass rate: 68%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

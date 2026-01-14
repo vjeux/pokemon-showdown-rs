@@ -84,7 +84,8 @@ impl Battle {
             "AfterBoost" => {
                 let default_boost = crate::dex_data::BoostsTable::new();
                 let boost = relay_var_boost.as_ref().unwrap_or(&default_boost);
-                ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), boost, Some(pokemon_pos), None, None)
+                // effect_id comes from event.effect (e.g., "intimidate" when boost was caused by Intimidate)
+                ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), boost, Some(pokemon_pos), event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
             }
             "AfterEachBoost" => {
                 let default_boost = crate::dex_data::BoostsTable::new();

@@ -1,4 +1,4 @@
-Analyzing 232 failing minimized seed files...
+Analyzing 229 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -103,8 +103,6 @@ tripleaxel: 3 seeds
   Seeds: 3465, 3787, 4383
 shellsidearm: 3 seeds
   Seeds: 3507, 5644, 8545
-sketch: 3 seeds
-  Seeds: 3543, 8355, 9009
 skillswap: 3 seeds
   Seeds: 3578, 6288, 6669
 clearsmog: 3 seeds
@@ -269,6 +267,8 @@ swallow: 2 seeds
   Seeds: 6926, 8439
 bouncybubble: 2 seeds
   Seeds: 7830, 8121
+sketch: 2 seeds
+  Seeds: 8355, 9009
 darkvoid: 2 seeds
   Seeds: 8439, 8544
 slackoff: 2 seeds
@@ -881,8 +881,6 @@ lifedew: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Intimidate: 8 seeds
-  Seeds: 2358, 2856, 3543, 4767, 6304, 6719, 7324, 9567
 No Guard: 7 seeds
   Seeds: 1787, 2535, 3904, 4594, 6288, 6378, 8708
 RKS System: 6 seeds
@@ -895,6 +893,8 @@ Pressure: 5 seeds
   Seeds: 2762, 5395, 9005, 9789, 9827
 Iron Barbs: 5 seeds
   Seeds: 4716, 5913, 7029, 7314, 8543
+Intimidate: 5 seeds
+  Seeds: 4767, 6304, 6719, 7324, 9567
 Effect Spore: 4 seeds
   Seeds: 1362, 2214, 3507, 6593
 Snow Warning: 4 seeds
@@ -913,8 +913,6 @@ Toxic Debris: 3 seeds
   Seeds: 1538, 7618, 972
 Poison Point: 3 seeds
   Seeds: 2338, 5266, 9159
-Rattled: 3 seeds
-  Seeds: 2358, 2856, 3543
 Aftermath: 3 seeds
   Seeds: 2787, 2926, 4278
 Hadron Engine: 3 seeds
@@ -1129,9 +1127,9 @@ ganlonberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 232
+Total minimized seeds: 229
 Unique moves: 438 (437 non-simple)
-Unique abilities: 80 (76 non-simple)
+Unique abilities: 79 (75 non-simple)
 Unique items: 44
 
 --- Most Common Moves (top 10) ---
@@ -1147,13 +1145,13 @@ Unique items: 44
   counter: 4 seeds
 
 --- Most Common Abilities (top 10) ---
-  Intimidate: 8 seeds
   No Guard: 7 seeds
   RKS System: 6 seeds
   Emergency Exit: 5 seeds
   Zen Mode: 5 seeds
   Pressure: 5 seeds
   Iron Barbs: 5 seeds
+  Intimidate: 5 seeds
   Effect Spore: 4 seeds
   Snow Warning: 4 seeds
   Rock Head: 4 seeds
