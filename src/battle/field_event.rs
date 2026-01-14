@@ -445,12 +445,19 @@ impl Battle {
             //     }
             // Skip fainted Pokemon UNLESS it's a slot condition
             // Slot conditions persist even when the Pokemon faints/switches out
-            if handler._effect_type != crate::battle::EffectType::SlotCondition {
-                if let Some((side_idx, poke_idx)) = handler.holder {
-                    if let Some(pokemon) = self.sides.get(side_idx)
-                        .and_then(|s| s.pokemon.get(poke_idx)) {
-                        if pokemon.fainted {
-                            continue;
+            // IMPORTANT: This check should ONLY apply when effectHolder is a Pokemon.
+            // For side conditions (is_side=true), effectHolder is the Side, not a Pokemon.
+            // For field conditions (is_field=true), effectHolder is the Field, not a Pokemon.
+            // JavaScript's (handler.effectHolder as Pokemon).fainted returns undefined (falsy)
+            // for non-Pokemon effectHolders, so the check doesn't skip those handlers.
+            if !handler.is_side && !handler.is_field {
+                if handler._effect_type != crate::battle::EffectType::SlotCondition {
+                    if let Some((side_idx, poke_idx)) = handler.holder {
+                        if let Some(pokemon) = self.sides.get(side_idx)
+                            .and_then(|s| s.pokemon.get(poke_idx)) {
+                            if pokemon.fainted {
+                                continue;
+                            }
                         }
                     }
                 }
