@@ -37,10 +37,10 @@ pub fn on_modify_move(
     if !source_has_ghost {
         // move.target = move.nonGhostTarget!;
         // Modify the active move's target to nonGhostTarget
-        // In the JavaScript data, Curse has nonGhostTarget: "normal"
+        // In the JavaScript data, Curse has nonGhostTarget: "self"
         if let Some(ref mut active_move) = battle.active_move {
-            // The nonGhostTarget for Curse is "normal"
-            active_move.target = "normal".to_string();
+            // The nonGhostTarget for Curse is "self" (targets the user, not an opponent)
+            active_move.target = "self".to_string();
         }
     } else if let Some(target) = target_pos {
         // else if (source.isAlly(target)) {
