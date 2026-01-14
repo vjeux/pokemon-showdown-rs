@@ -676,6 +676,11 @@ pub fn use_move_inner(
     //     move.mindBlownRecoil = false;
     //     return false;
     // }
+    // IMPORTANT: JavaScript uses short-circuit evaluation here!
+    // If singleEvent returns a falsy value (null, false), runEvent is NEVER called.
+    // This is critical for two-turn moves like Ice Burn where the move's onTryMove
+    // returns null on the charge turn to prevent the move from executing - in that case,
+    // we should NOT run other onTryMove callbacks (like Metronome's condition callback).
     let try_move_single = battle.single_event(
         "TryMove",
         &crate::battle::Effect::move_(active_move.id.clone()),
@@ -686,19 +691,29 @@ pub fn use_move_inner(
         None,
     );
 
-    let try_move_run = battle.run_event(
-                "TryMove",
-                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
-        Some(final_target),
-        Some(&Effect::move_(active_move.id.clone())),
-        crate::event::EventResult::Number(1),
-        false,
-        false,
-    ).is_truthy();
+    // Check if singleEvent succeeded (is truthy)
+    let try_move_single_success = !matches!(try_move_single, crate::event::EventResult::Boolean(false) |
+                                                              crate::event::EventResult::Null |
+                                                              crate::event::EventResult::Stop);
 
-    let try_move_success = !matches!(try_move_single, crate::event::EventResult::Boolean(false) |
-                                                       crate::event::EventResult::Null |
-                                                       crate::event::EventResult::Stop) && try_move_run;
+    // Only call runEvent if singleEvent succeeded - matching JavaScript short-circuit behavior
+    let try_move_run = if try_move_single_success {
+        battle.run_event(
+            "TryMove",
+            Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
+            Some(final_target),
+            Some(&Effect::move_(active_move.id.clone())),
+            crate::event::EventResult::Number(1),
+            false,
+            false,
+        ).is_truthy()
+    } else {
+        // singleEvent failed, so the overall result will be false anyway
+        // We skip runEvent to match JavaScript's short-circuit behavior
+        true
+    };
+
+    let try_move_success = try_move_single_success && try_move_run;
 
     if !try_move_success {
         if let Some(ref mut am) = battle.active_move {

@@ -68,12 +68,16 @@ impl Battle {
         // When a volatile is added with the item's ID (e.g., "metronome"),
         // its callbacks are in item.condition, not in conditions.json
         if let Some(item_data) = self.dex.items().get(volatile_str) {
+            eprintln!("[HAS_VOLATILE_CALLBACK] Found item_data for {}, checking condition block", volatile_str);
+            eprintln!("[HAS_VOLATILE_CALLBACK] item_data.extra keys: {:?}", item_data.extra.keys().collect::<Vec<_>>());
             if let Some(condition_value) = item_data.extra.get("condition") {
+                eprintln!("[HAS_VOLATILE_CALLBACK] Found condition block: {:?}", condition_value);
                 if let Some(condition) = condition_value.as_object() {
                     // Check if the condition has this callback
                     let has_key = condition.contains_key(event_id);
                     let priority_key = format!("{}Priority", event_id);
                     let has_priority_key = condition.contains_key(&priority_key);
+                    eprintln!("[HAS_VOLATILE_CALLBACK] Checking for event_id={}, has_key={}, has_priority_key={}", event_id, has_key, has_priority_key);
 
                     if has_key || has_priority_key {
                         return true;

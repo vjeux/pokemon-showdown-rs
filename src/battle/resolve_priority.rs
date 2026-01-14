@@ -40,9 +40,35 @@ impl Battle {
             // Weather, Condition, Status, and other effect types stored in conditions dex
             EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::FieldCondition |
             EffectType::SideCondition | EffectType::SlotCondition => {
+                // First check conditions dex
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                // JavaScript fallback: check if it's a move/ability/item with embedded condition
+                // (see dex-conditions.ts lines 687-690)
+                if let Some(move_data) = self.dex.moves().get(effect_id) {
+                    if let Some(condition) = &move_data.condition {
+                        if let Some(value) = condition.extra.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32);
+                        }
+                    }
+                }
+                if let Some(ability_data) = self.dex.abilities().get(effect_id) {
+                    // Ability condition is stored in extra["condition"] as JSON
+                    if let Some(condition) = ability_data.extra.get("condition") {
+                        if let Some(value) = condition.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32);
+                        }
+                    }
+                }
+                if let Some(item_data) = self.dex.items().get(effect_id) {
+                    // Item condition is stored in extra["condition"] as JSON
+                    if let Some(condition) = item_data.extra.get("condition") {
+                        if let Some(value) = condition.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32);
+                        }
                     }
                 }
                 None
@@ -104,9 +130,35 @@ impl Battle {
             // Weather, Condition, Status, and other effect types stored in conditions dex
             EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::FieldCondition |
             EffectType::SideCondition | EffectType::SlotCondition => {
+                // First check conditions dex
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32);
+                    }
+                }
+                // JavaScript fallback: check if it's a move/ability/item with embedded condition
+                // (see dex-conditions.ts lines 687-690)
+                if let Some(move_data) = self.dex.moves().get(effect_id) {
+                    if let Some(condition) = &move_data.condition {
+                        if let Some(value) = condition.extra.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32);
+                        }
+                    }
+                }
+                if let Some(ability_data) = self.dex.abilities().get(effect_id) {
+                    // Ability condition is stored in extra["condition"] as JSON
+                    if let Some(condition) = ability_data.extra.get("condition") {
+                        if let Some(value) = condition.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32);
+                        }
+                    }
+                }
+                if let Some(item_data) = self.dex.items().get(effect_id) {
+                    // Item condition is stored in extra["condition"] as JSON
+                    if let Some(condition) = item_data.extra.get("condition") {
+                        if let Some(value) = condition.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32);
+                        }
                     }
                 }
                 None
@@ -169,9 +221,38 @@ impl Battle {
             // Weather, Condition, Status, and other effect types stored in conditions dex
             EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::FieldCondition |
             EffectType::SideCondition | EffectType::SlotCondition => {
+                // First check conditions dex
                 if let Some(condition_data) = self.dex.conditions().get(effect_id) {
                     if let Some(value) = condition_data.extra.get(&property_name) {
                         return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                    }
+                }
+                // JavaScript fallback: check if it's a move/ability/item with embedded condition
+                // (see dex-conditions.ts lines 687-690)
+                if let Some(move_data) = self.dex.moves().get(effect_id) {
+                    if let Some(condition) = &move_data.condition {
+                        if let Some(value) = condition.extra.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                        }
+                    }
+                }
+                if let Some(ability_data) = self.dex.abilities().get(effect_id) {
+                    // Ability condition is stored in extra["condition"] as JSON
+                    if let Some(condition) = ability_data.extra.get("condition") {
+                        if let Some(value) = condition.get(&property_name) {
+                            return value.as_i64().map(|v| v as i32).unwrap_or(0);
+                        }
+                    }
+                }
+                if let Some(item_data) = self.dex.items().get(effect_id) {
+                    // Item condition is stored in extra["condition"] as JSON
+                    if let Some(condition) = item_data.extra.get("condition") {
+                        eprintln!("[GET_CALLBACK_PRIORITY] effect_id={}, property_name={}, condition={:?}", effect_id, property_name, condition);
+                        if let Some(value) = condition.get(&property_name) {
+                            let priority = value.as_i64().map(|v| v as i32).unwrap_or(0);
+                            eprintln!("[GET_CALLBACK_PRIORITY] Found priority={} for effect_id={}", priority, effect_id);
+                            return priority;
+                        }
                     }
                 }
                 0
