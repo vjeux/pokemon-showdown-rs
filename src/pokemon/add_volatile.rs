@@ -67,6 +67,12 @@ impl Pokemon {
     /// In Rust, this is an associated function (not a method) because it needs
     /// mutable access to Battle while operating on a Pokemon within that Battle.
     /// Call as: Pokemon::add_volatile(battle, target_pos, volatile_id, source_pos, source_effect, linked_status)
+    ///
+    /// Returns:
+    /// - Some(true): volatile was added successfully
+    /// - Some(false): volatile was blocked/prevented (immunity, TryAddVolatile, Start failed)
+    /// - None: volatile already existed and onRestart was called (neither success nor failure)
+    ///         This matches JavaScript's undefined return for the restart case
     pub fn add_volatile(
         battle: &mut Battle,
         target_pos: (usize, usize),
@@ -75,7 +81,7 @@ impl Pokemon {
         source_effect: Option<&Effect>,
         linked_status: Option<ID>,
         embedded_condition: Option<&crate::dex::ConditionData>,
-    ) -> bool {
+    ) -> Option<bool> {
         // Get Pokemon name for logging
         let pokemon_name = if let Some(pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
             pokemon.name.clone()
@@ -98,7 +104,7 @@ impl Pokemon {
         let (target_hp, affects_fainted) = {
             let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
-                None => return false,
+                None => return Some(false),
             };
 
             // Try dex.conditions first, then fall back to embedded condition
@@ -115,7 +121,7 @@ impl Pokemon {
         };
 
         if target_hp == 0 && !affects_fainted {
-            return false;
+            return Some(false);
         }
 
         // JS: if (linkedStatus && source && !source.hp) return false;
@@ -124,10 +130,10 @@ impl Pokemon {
         if let (Some(_linked_status_id), Some(src_pos)) = (linked_status.as_ref(), source_pos) {
             let source_pokemon = match battle.pokemon_at(src_pos.0, src_pos.1) {
                 Some(p) => p,
-                None => return false,
+                None => return Some(false),
             };
             if source_pokemon.hp == 0 {
-                return false;
+                return Some(false);
             }
         }
 
@@ -145,7 +151,7 @@ impl Pokemon {
         {
             let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
-                None => return false,
+                None => return Some(false),
             };
 
             // JS: if (this.volatiles[status.id]) {
@@ -156,7 +162,7 @@ impl Pokemon {
                 // JavaScript checks if onRestart callback EXISTS before calling singleEvent
                 // If no onRestart callback, return false immediately (no durationCallback called)
                 if !crate::data::condition_callbacks::has_on_restart_callback(volatile_id.as_str()) {
-                    return false;
+                    return Some(false);
                 }
 
                 // Call onRestart callback if the volatile already exists
@@ -181,11 +187,22 @@ impl Pokemon {
                     None,
                 );
 
-                // If onRestart returns false or Continue, return false (volatile not re-added)
+                // JavaScript behavior for restart case:
+                // - singleEvent('Restart') returns the callback's return value
+                // - If callback returns undefined (EventResult::Continue), singleEvent returns undefined
+                // - undefined is truthy-ish in combineResults but not a success/failure
+                // - This is why we return None for restart case: neither success nor explicit failure
                 use crate::event::EventResult;
                 match restart_result {
-                    EventResult::Boolean(false) | EventResult::Continue => return false,
-                    _ => return true,
+                    // Callback explicitly returned false - treat as failure
+                    EventResult::Boolean(false) => return Some(false),
+                    // Callback returned true - treat as success
+                    EventResult::Boolean(true) => return Some(true),
+                    // Callback returned undefined/Continue - restart happened but neither success nor failure
+                    // This matches JavaScript returning undefined from singleEvent when callback returns undefined
+                    EventResult::Continue => return None,
+                    // Other truthy values (Number, String, etc.) - treat as success
+                    _ => return Some(true),
                 }
             }
         }
@@ -211,7 +228,7 @@ impl Pokemon {
                         let target_arg = {
                             let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
                                 Some(p) => p,
-                                None => return false,
+                                None => return Some(false),
                             };
                             pokemon.get_slot()
                         };
@@ -219,7 +236,7 @@ impl Pokemon {
                     }
                 }
             }
-            return false;
+            return Some(false);
         }
 
         // JS: result = this.battle.runEvent('TryAddVolatile', this, source, sourceEffect, status);
@@ -243,7 +260,7 @@ impl Pokemon {
         // runEvent returns EventResult, check if it's falsy (Boolean(false), Number(0), Null)
         if !try_add_result.is_truthy() {
             eprintln!("[ADD_VOLATILE_FAIL] TryAddVolatile blocked for '{}' on {}", volatile_id.as_str(), pokemon_name);
-            return false;
+            return Some(false);
         }
 
         // Get default duration from dex.conditions or embedded condition
@@ -322,7 +339,7 @@ impl Pokemon {
         // Add the volatile to pokemon
         let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
             Some(p) => p,
-            None => return false,
+            None => return Some(false),
         };
         pokemon_mut.volatiles.insert(volatile_id.clone(), state);
         eprintln!("[ADD_VOLATILE_SUCCESS] Added volatile '{}' to {}", volatile_id.as_str(), pokemon_name);
@@ -359,10 +376,10 @@ impl Pokemon {
                 // 3. We shouldn't call singleEvent('End') for a volatile that failed Start
                 let pokemon_mut = match battle.pokemon_at_mut(target_pos.0, target_pos.1) {
                     Some(p) => p,
-                    None => return false,
+                    None => return Some(false),
                 };
                 pokemon_mut.volatiles.remove(&volatile_id);
-                return false;
+                return Some(false);
             }
             _ => {
                 // Start event succeeded or returned non-Boolean
@@ -384,7 +401,7 @@ impl Pokemon {
                     let source_has_volatile = {
                         let source_pokemon = match battle.pokemon_at(src_pos.0, src_pos.1) {
                             Some(p) => p,
-                            None => return true, // Target volatile was added successfully
+                            None => return Some(true), // Target volatile was added successfully
                         };
                         source_pokemon.volatiles.contains_key(&linked_status_id)
                     };
@@ -429,7 +446,7 @@ impl Pokemon {
                     }
                 }
 
-                return true;
+                return Some(true);
             }
         }
     }

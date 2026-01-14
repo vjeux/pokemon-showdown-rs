@@ -19,7 +19,14 @@ pub fn on_prepare_hit(
 ) -> EventResult {
     // return pokemon.addVolatile('allyswitch');
     let result = Pokemon::add_volatile(battle, pokemon_pos, ID::from("allyswitch"), None, None, None, None);
-    EventResult::Boolean(result)
+    // add_volatile returns Option<bool>:
+    // - Some(true) -> EventResult::Boolean(true)
+    // - Some(false) -> EventResult::Boolean(false)
+    // - None (restart) -> EventResult::Continue (undefined in JS)
+    match result {
+        Some(b) => EventResult::Boolean(b),
+        None => EventResult::Continue,
+    }
 }
 
 /// ```ignore

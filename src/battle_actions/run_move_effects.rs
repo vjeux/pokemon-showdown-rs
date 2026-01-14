@@ -378,10 +378,14 @@ pub fn run_move_effects<'a>(
                     embedded_condition.as_ref(), // embedded_condition from move's condition field
                 );
                 //     didSomething = this.combineResults(didSomething, hitResult);
-                let hit_result_dr = if hit_result {
-                    DamageResult::Success
-                } else {
-                    DamageResult::Failed
+                // add_volatile returns Option<bool>:
+                // - Some(true): success → DamageResult::Success
+                // - Some(false): failure → DamageResult::Failed
+                // - None: restart case → DamageResult::Undefined (matches JS undefined)
+                let hit_result_dr = match hit_result {
+                    Some(true) => DamageResult::Success,
+                    Some(false) => DamageResult::Failed,
+                    None => DamageResult::Undefined,
                 };
                 did_something = combine_results(did_something, hit_result_dr);
             }
