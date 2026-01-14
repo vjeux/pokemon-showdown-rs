@@ -39,9 +39,16 @@ pub fn on_hit(
     let source_side_index = source.0;
 
     // Add stealth rock to all foe sides (sides that are not the source's side)
-    for (side_idx, side) in battle.sides.iter_mut().enumerate() {
+    // Use battle.add_side_condition to properly set effect_order for sorting
+    let num_sides = battle.sides.len();
+    for side_idx in 0..num_sides {
         if side_idx != source_side_index {
-            side.add_side_condition(ID::from("stealthrock"), None);
+            battle.add_side_condition(
+                side_idx,
+                ID::from("stealthrock"),
+                Some(source),
+                None,
+            );
         }
     }
 
@@ -87,9 +94,16 @@ pub mod self_callbacks {
         let source_side_index = source.0;
 
         // Add stealth rock to all foe sides (sides that are not the source's side)
-        for (side_idx, side) in battle.sides.iter_mut().enumerate() {
+        // Use battle.add_side_condition to properly set effect_order for sorting
+        let num_sides = battle.sides.len();
+        for side_idx in 0..num_sides {
             if side_idx != source_side_index {
-                side.add_side_condition(ID::from("stealthrock"), None);
+                battle.add_side_condition(
+                    side_idx,
+                    ID::from("stealthrock"),
+                    Some(source),
+                    None,
+                );
             }
         }
 

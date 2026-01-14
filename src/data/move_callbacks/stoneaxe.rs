@@ -48,6 +48,7 @@ pub fn on_after_hit(
     // for (const side of source.side.foeSidesWithConditions()) {
     //     side.addSideCondition('stealthrock');
     // }
+    // Use battle.add_side_condition to properly set effect_order for sorting
     let foe_side_indices: Vec<usize> = battle.sides[source_side]
         .foe_sides_with_conditions(&battle.sides)
         .iter()
@@ -55,7 +56,7 @@ pub fn on_after_hit(
         .collect();
 
     for foe_side_idx in foe_side_indices {
-        let _ = battle.sides[foe_side_idx].add_side_condition(ID::from("stealthrock"), None);
+        battle.add_side_condition(foe_side_idx, ID::from("stealthrock"), Some(source), None);
     }
 
     EventResult::Continue
@@ -108,6 +109,7 @@ pub fn on_after_sub_damage(
     // for (const side of source.side.foeSidesWithConditions()) {
     //     side.addSideCondition('stealthrock');
     // }
+    // Use battle.add_side_condition to properly set effect_order for sorting
     let foe_side_indices: Vec<usize> = battle.sides[source_side]
         .foe_sides_with_conditions(&battle.sides)
         .iter()
@@ -115,7 +117,7 @@ pub fn on_after_sub_damage(
         .collect();
 
     for foe_side_idx in foe_side_indices {
-        let _ = battle.sides[foe_side_idx].add_side_condition(ID::from("stealthrock"), None);
+        battle.add_side_condition(foe_side_idx, ID::from("stealthrock"), Some(source), None);
     }
 
     EventResult::Continue
