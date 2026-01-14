@@ -298,7 +298,23 @@ pub fn run_move_effects<'a>(
             }
 
             // if (moveData.status) {
-            if let Some(status) = hit_effect.status() {
+            // IMPORTANT: Check active_move.status FIRST (can be set dynamically by moves like Psycho Shift)
+            // If not set, fall back to hit_effect.status() (static move data)
+            //
+            // EXCEPTION: For self effects (is_self=true), we should only use hit_effect.status()
+            // because moveData.self.status is separate from the dynamically-set move.status.
+            // The dynamically-set status (like from Psycho Shift's onTryHit) applies to the target,
+            // not to the source via self effects.
+            let status_to_apply = if is_self {
+                // For self effects, only use moveData.self.status (from hit_effect)
+                hit_effect.status().map(|s| s.as_str())
+            } else if let Some(ref dynamic_status) = active_move.status {
+                Some(dynamic_status.as_str())
+            } else {
+                hit_effect.status().map(|s| s.as_str())
+            };
+
+            if let Some(status) = status_to_apply {
                 //     hitResult = target.trySetStatus(moveData.status, source, moveData.ability ? moveData.ability : move);
                 let status_id = ID::new(status);
                 // JavaScript: moveData.ability ? moveData.ability : move
@@ -317,8 +333,8 @@ pub fn run_move_effects<'a>(
                     Some(&source_effect), // source_effect - the move or ability causing the status
                 );
                 //     if (!hitResult && move.status) {
-                // Check if active_move also has status (primary status move)
-                let move_has_status = active_move.status.is_some();
+                // Check if the move is a primary status move (status was set)
+                let move_has_status = active_move.status.is_some() || hit_effect.status().is_some();
                 if !hit_result && move_has_status {
                     //         damage[i] = this.combineResults(damage[i], false);
                     damages[i] = combine_results(damages[i], DamageResult::Failed);

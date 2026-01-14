@@ -87,7 +87,7 @@ Seed 1519: ✗ FAIL - #28: turn=27, prng=70->74, P1=[Sinistea(139/139)], P2=[Iro
 Seed 1524: ✓ PASS
 Seed 1538: ✗ FAIL - #15: turn=13, prng=94->94, P1=[Tyrantrum(231/281)], P2=[Weezing(228/260)]
 Seed 1540: ✓ PASS
-Seed 1543: ✗ FAIL - #4: turn=5, prng=15->20, P1=[Bombirdier(173/229)], P2=[Skeledirge(160/276)]
+Seed 1543: ✓ PASS
 Seed 1558: ✓ PASS
 Seed 1568: ✗ FAIL - #19: turn=18, prng=86->86, P1=[Scrafty(249/258)], P2=[Pikachu(120/179)]
 Seed 1584: ✓ PASS
@@ -381,7 +381,7 @@ Seed 5345: ✓ PASS
 Seed 5358: ✓ PASS
 Seed 5377: ✓ PASS
 Seed 5379: ✗ FAIL - #2: turn=3, prng=5->11, P1=[Grimer(100/231)], P2=[Victreebel(189/231)]
-Seed 5380: ✗ FAIL - #10: turn=9, prng=53->61, P1=[Sableye(2/246)], P2=[Dhelmise(117/229)]
+Seed 5380: ✓ PASS
 Seed 5395: ✗ FAIL - #24: turn=20, prng=61->61, P1=[Vibrava(5/221)], P2=[Chingling(161/184)]
 Seed 5422: ✗ FAIL - #2: turn=3, prng=1->4, P1=[Arceus(323/323)], P2=[Oricorio(274/308)]
 Seed 5468: ✓ PASS
@@ -597,7 +597,7 @@ Seed 8032: ✗ FAIL - #65: turn=57, prng=120->124, P1=[Basculegion(362/362)], P2
 Seed 8042: ✗ FAIL - #77: turn=74, prng=211->214, P1=[Mewtwo(95/220)], P2=[Kommo-o(22/221)]
 Seed 8062: ✓ PASS
 Seed 8070: ✗ FAIL - #12: turn=11, prng=64->69, P1=[Clobbopus(53/206)], P2=[Victreebel(8/200)]
-Seed 8075: ✗ FAIL - #3: turn=4, prng=16->24, P1=[Sobble(161/254)], P2=[Tactite(80/220)]
+Seed 8075: ✓ PASS
 Seed 8076: ✓ PASS
 Seed 8094: ✓ PASS
 Seed 8121: ✗ FAIL - #45: turn=42, prng=199->205, P1=[Skeledirge(8/346)], P2=[Darmanitan(89/248)]
@@ -674,7 +674,7 @@ Seed 9039: ✓ PASS
 Seed 9048: ✗ FAIL - #12: turn=13, prng=36->46, P1=[Darumaka(159/269)], P2=[Togedemaru(68/184)]
 Seed 9082: ✓ PASS
 Seed 9089: ✓ PASS
-Seed 9091: ✗ FAIL - #51: turn=50, prng=134->141, P1=[Pelipper(0/262)], P2=[Chatot(239/259)]
+Seed 9091: ✓ PASS
 Seed 9107: ✗ FAIL - #9: turn=10, prng=24->30, P1=[Mudsdale(315/344)], P2=[Pokestar Monster(145/245)]
 Seed 9116: ✓ PASS
 Seed 9124: ✓ PASS
@@ -684,7 +684,7 @@ Seed 9196: ✓ PASS
 Seed 9213: ✗ FAIL - #37: turn=32, prng=124->127, P1=[Ponyta(145/219)], P2=[Dewgong(74/275)]
 Seed 9227: ✗ FAIL - #11: turn=11, prng=27->33, P1=[Linoone(227/256)], P2=[Sobble(199/231)]
 Seed 9314: ✓ PASS
-Seed 9328: ✗ FAIL - #5: turn=6, prng=20->25, P1=[Floatzel(62/274)], P2=[Tyrantrum(105/168)]
+Seed 9328: ✓ PASS
 Seed 9331: ✓ PASS
 Seed 9341: ✗ FAIL - #2: turn=3, prng=4->21, P1=[Arceus(262/292)], P2=[Zygarde(297/383)]
 Seed 9350: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✗ FAIL - #41: turn=39, prng=161->164, P1=[Archaludon(69/282)], P2=[
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 408
-Failed: 315
+Passed: 413
+Failed: 310
 
-Pass rate: 56%
+Pass rate: 57%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

@@ -1,12 +1,10 @@
-Analyzing 315 failing minimized seed files...
+Analyzing 310 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 transform: 8 seeds
   Seeds: 2814, 2819, 3460, 4157, 6061, 6251, 9341, 9485
-psychoshift: 7 seeds
-  Seeds: 1543, 2729, 5380, 6543, 8075, 9091, 9328
 assist: 7 seeds
   Seeds: 2729, 5101, 6527, 8032, 8774, 8873, 9563
 healbell: 7 seeds
@@ -153,8 +151,6 @@ sappyseed: 3 seeds
   Seeds: 4383, 6603, 967
 headlongrush: 3 seeds
   Seeds: 4387, 7830, 9159
-twineedle: 3 seeds
-  Seeds: 5380, 6919, 8075
 lightscreen: 3 seeds
   Seeds: 5954, 5992, 8544
 fling: 3 seeds
@@ -251,8 +247,6 @@ electricterrain: 2 seeds
   Seeds: 2214, 4745
 esperwing: 2 seeds
   Seeds: 2261, 5954
-splishysplash: 2 seeds
-  Seeds: 2261, 9091
 maxooze: 2 seeds
   Seeds: 2394, 9765
 glaciate: 2 seeds
@@ -267,6 +261,8 @@ direclaw: 2 seeds
   Seeds: 2651, 7121
 meanlook: 2 seeds
   Seeds: 2729, 2861
+psychoshift: 2 seeds
+  Seeds: 2729, 6543
 strengthsap: 2 seeds
   Seeds: 2741, 5306
 painsplit: 2 seeds
@@ -311,8 +307,6 @@ neverendingnightmare: 2 seeds
   Seeds: 3163, 4264
 hiddenpowersteel: 2 seeds
   Seeds: 3212, 5101
-barrier: 2 seeds
-  Seeds: 3367, 9091
 lunardance: 2 seeds
   Seeds: 3367, 6456
 burnup: 2 seeds
@@ -341,8 +335,6 @@ poisongas: 2 seeds
   Seeds: 4071, 7055
 triplekick: 2 seeds
   Seeds: 4126, 9048
-subzeroslammer: 2 seeds
-  Seeds: 4186, 9091
 seedbomb: 2 seeds
   Seeds: 4186, 6124
 ancientpower: 2 seeds
@@ -385,8 +377,6 @@ dragontail: 2 seeds
   Seeds: 4905, 9005
 swagger: 2 seeds
   Seeds: 4949, 6603
-revivalblessing: 2 seeds
-  Seeds: 4949, 9091
 icepunch: 2 seeds
   Seeds: 5101, 5266
 maxairstream: 2 seeds
@@ -401,8 +391,6 @@ kingsshield: 2 seeds
   Seeds: 5299, 6454
 savagespinout: 2 seeds
   Seeds: 5379, 7601
-gmaxchistrike: 2 seeds
-  Seeds: 5395, 9091
 torment: 2 seeds
   Seeds: 5422, 8532
 mirrorshot: 2 seeds
@@ -417,8 +405,6 @@ furyswipes: 2 seeds
   Seeds: 5954, 9996
 torchsong: 2 seeds
   Seeds: 5954, 8170
-sludge: 2 seeds
-  Seeds: 5992, 9328
 recycle: 2 seeds
   Seeds: 611, 7877
 metalburst: 2 seeds
@@ -503,8 +489,6 @@ hiddenpowerghost: 1 seeds
   Seeds: 1519
 maxguard: 1 seeds
   Seeds: 1519
-barbbarrage: 1 seeds
-  Seeds: 1543
 acidarmor: 1 seeds
   Seeds: 1787
 dragonascent: 1 seeds
@@ -535,6 +519,8 @@ takeheart: 1 seeds
   Seeds: 2188
 constrict: 1 seeds
   Seeds: 2214
+splishysplash: 1 seeds
+  Seeds: 2261
 silktrap: 1 seeds
   Seeds: 2304
 splinteredstormshards: 1 seeds
@@ -631,6 +617,8 @@ absorb: 1 seeds
   Seeds: 3185
 healingwish: 1 seeds
   Seeds: 3367
+barrier: 1 seeds
+  Seeds: 3367
 reversal: 1 seeds
   Seeds: 3536
 eeriespell: 1 seeds
@@ -647,6 +635,8 @@ alloutpummeling: 1 seeds
   Seeds: 3801
 dragonrush: 1 seeds
   Seeds: 3984
+subzeroslammer: 1 seeds
+  Seeds: 4186
 hiddenpowerdragon: 1 seeds
   Seeds: 4186
 metalsound: 1 seeds
@@ -719,6 +709,8 @@ maxovergrowth: 1 seeds
   Seeds: 4949
 gmaxresonance: 1 seeds
   Seeds: 4949
+revivalblessing: 1 seeds
+  Seeds: 4949
 steelwing: 1 seeds
   Seeds: 5050
 endure: 1 seeds
@@ -753,6 +745,8 @@ return: 1 seeds
   Seeds: 5379
 brickbreak: 1 seeds
   Seeds: 5395
+gmaxchistrike: 1 seeds
+  Seeds: 5395
 skullbash: 1 seeds
   Seeds: 5395
 bide: 1 seeds
@@ -778,6 +772,8 @@ leechseed: 1 seeds
 matblock: 1 seeds
   Seeds: 5874
 pounce: 1 seeds
+  Seeds: 5992
+sludge: 1 seeds
   Seeds: 5992
 photongeyser: 1 seeds
   Seeds: 5992
@@ -867,6 +863,8 @@ drainingkiss: 1 seeds
   Seeds: 6913
 glaciallance: 1 seeds
   Seeds: 6913
+twineedle: 1 seeds
+  Seeds: 6919
 ember: 1 seeds
   Seeds: 6926
 happyhour: 1 seeds
@@ -979,8 +977,6 @@ rockthrow: 1 seeds
   Seeds: 9005
 maxdarkness: 1 seeds
   Seeds: 9009
-stringshot: 1 seeds
-  Seeds: 9091
 astralbarrage: 1 seeds
   Seeds: 9128
 guardswap: 1 seeds
@@ -1281,8 +1277,6 @@ boosterenergy: 1 seeds
   Seeds: 5215
 silkscarf: 1 seeds
   Seeds: 5266
-ejectbutton: 1 seeds
-  Seeds: 5380
 berserkgene: 1 seeds
   Seeds: 5926
 oddincense: 1 seeds
@@ -1327,14 +1321,13 @@ ganlonberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 315
-Unique moves: 522 (521 non-simple)
+Total minimized seeds: 310
+Unique moves: 520 (519 non-simple)
 Unique abilities: 91 (87 non-simple)
-Unique items: 48
+Unique items: 47
 
 --- Most Common Moves (top 10) ---
   transform: 8 seeds
-  psychoshift: 7 seeds
   assist: 7 seeds
   healbell: 7 seeds
   skydrop: 6 seeds
@@ -1343,6 +1336,7 @@ Unique items: 48
   thunderwave: 6 seeds
   gmaxstonesurge: 6 seeds
   gmaxsteelsurge: 6 seeds
+  ceaselessedge: 5 seeds
 
 --- Most Common Abilities (top 10) ---
   Primordial Sea: 28 seeds

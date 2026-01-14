@@ -64,7 +64,10 @@ pub fn self_drops(
     // for (const target of targets) {
     for target in targets {
         // if (target === false) continue;
-        if matches!(target, SpreadMoveTarget::Failed) {
+        // In JavaScript, targets[i] = false when the move fails against that target
+        // In Rust, this corresponds to SpreadMoveTarget::None (set by spread_move_hit filter loop)
+        // or SpreadMoveTarget::Failed (set earlier for other reasons)
+        if matches!(target, SpreadMoveTarget::Failed | SpreadMoveTarget::None) {
             continue;
         }
 
