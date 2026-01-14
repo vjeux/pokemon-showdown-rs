@@ -282,5 +282,13 @@
     "name": "rolloutstorage",
     "duration": 2,
     "onBasePower": true
+  },
+  "lockon": {
+    "name": "Lock-On",
+    "noCopy": true,
+    "duration": 2,
+    "onSourceInvulnerabilityPriority": 1,
+    "onSourceInvulnerability": true,
+    "onSourceAccuracy": true
   }
 }

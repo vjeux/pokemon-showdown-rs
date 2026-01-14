@@ -128,6 +128,25 @@ pub fn dispatch_on_accuracy(
         _ => EventResult::Continue,
     }
 }
+
+/// Dispatch onSourceAccuracy callbacks
+/// Called on volatiles of the SOURCE Pokemon during accuracy checks
+/// Lock-On/Mind Reader return true to bypass accuracy checks
+pub fn dispatch_on_source_accuracy(
+    battle: &mut Battle,
+    condition_id: &str,
+    accuracy: i32,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
+    active_move: Option<&ActiveMove>,
+) -> EventResult {
+    match condition_id {
+        "lockon" => {
+            move_callbacks::lockon::condition::on_source_accuracy(battle, accuracy, target_pos, source_pos, active_move)
+        }
+        _ => EventResult::Continue,
+    }
+}
 /// Dispatch onBasePower callbacks
 pub fn dispatch_on_base_power(
     battle: &mut Battle,
