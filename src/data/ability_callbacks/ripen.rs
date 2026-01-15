@@ -45,7 +45,9 @@ pub fn on_try_heal(battle: &mut Battle, _damage: i32, target_pos: Option<(usize,
     // if ((effect as Item).isBerry) return this.chainModify(2);
     if let Some(item_data) = battle.dex.items().get(effect_id) {
         if item_data.is_berry {
-            return EventResult::Number(2);
+            // chainModify multiplies the event.modifier in place
+            battle.chain_modify(2.0);
+            return EventResult::Continue;
         }
     }
 

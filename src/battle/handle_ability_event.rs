@@ -1012,7 +1012,8 @@ impl Battle {
                 ability_id.as_str(), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }, pokemon_pos
             ),
             "TryHeal" => {
-                ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), None, None)
+                // Pass the effect_id so abilities like Ripen can check if it's a berry
+                ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), None, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
             }
             "TryHit" => {
                 ability_callbacks::dispatch_on_try_hit(self, ability_id.as_str(), pokemon_pos, event_source_pos.unwrap_or((0, 0)), active_move_clone.as_ref())

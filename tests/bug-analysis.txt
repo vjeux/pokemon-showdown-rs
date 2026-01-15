@@ -1,4 +1,4 @@
-Analyzing 62 failing minimized seed files...
+Analyzing 60 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -179,8 +179,6 @@ heatcrash: 1 seeds
   Seeds: 6288
 dive: 1 seeds
   Seeds: 6348
-maxairstream: 1 seeds
-  Seeds: 6621
 nightshade: 1 seeds
   Seeds: 6794
 teatime: 1 seeds
@@ -307,8 +305,6 @@ Quark Drive: 2 seeds
   Seeds: 3165, 5215
 No Guard: 2 seeds
   Seeds: 6288, 8708
-Ripen: 2 seeds
-  Seeds: 6621, 8146
 Intimidate: 2 seeds
   Seeds: 6719, 7324
 Gorilla Tactics: 2 seeds
@@ -387,12 +383,8 @@ boosterenergy: 1 seeds
   Seeds: 5215
 enigmaberry: 1 seeds
   Seeds: 6065
-figyberry: 1 seeds
-  Seeds: 6621
 sitrusberry: 1 seeds
   Seeds: 7018
-oranberry: 1 seeds
-  Seeds: 8146
 focussash: 1 seeds
   Seeds: 8544
 kingsrock: 1 seeds
@@ -401,10 +393,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 62
-Unique moves: 149 (148 non-simple)
-Unique abilities: 32 (29 non-simple)
-Unique items: 16
+Total minimized seeds: 60
+Unique moves: 148 (147 non-simple)
+Unique abilities: 31 (28 non-simple)
+Unique items: 14
 
 --- Most Common Moves (top 10) ---
   instruct: 2 seeds
@@ -421,7 +413,6 @@ Unique items: 16
 --- Most Common Abilities (top 10) ---
   Quark Drive: 2 seeds
   No Guard: 2 seeds
-  Ripen: 2 seeds
   Intimidate: 2 seeds
   Gorilla Tactics: 2 seeds
   Poison Point: 1 seeds
@@ -429,3 +420,4 @@ Unique items: 16
   Sticky Hold: 1 seeds
   Liquid Ooze: 1 seeds
   Aftermath: 1 seeds
+  Damp: 1 seeds

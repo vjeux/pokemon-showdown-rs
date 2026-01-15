@@ -476,7 +476,7 @@ Seed 6593: ✓ PASS
 Seed 6597: ✓ PASS
 Seed 6603: ✓ PASS
 Seed 6605: ✓ PASS
-Seed 6621: ✗ FAIL - #3: turn=4, prng=10->15, P1=[Qwilfish(274/277)], P2=[Appletun(181/225)]
+Seed 6621: ✓ PASS
 Seed 6632: ✓ PASS
 Seed 6636: ✓ PASS
 Seed 6649: ✓ PASS
@@ -603,7 +603,7 @@ Seed 8094: ✓ PASS
 Seed 8121: ✓ PASS
 Seed 8123: ✓ PASS
 Seed 8125: ✓ PASS
-Seed 8146: ✗ FAIL - #5: turn=6, prng=24->30, P1=[Flygon(120/240)], P2=[Applin(122/228)]
+Seed 8146: ✓ PASS
 Seed 8152: ✓ PASS
 Seed 8164: ✓ PASS
 Seed 8170: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 661
-Failed: 62
+Passed: 663
+Failed: 60
 
 Pass rate: 91%
 ✗ Some seeds still failing
