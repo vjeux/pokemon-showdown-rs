@@ -131,7 +131,7 @@ Seed 2190: ✓ PASS
 Seed 2201: ✓ PASS
 Seed 2208: ✓ PASS
 Seed 2212: ✓ PASS
-Seed 2214: ✗ FAIL - #3: turn=4, prng=10->15, P1=[Foongus(245/282)], P2=[Drednaw(295/295)]
+Seed 2214: ✓ PASS
 Seed 2232: ✓ PASS
 Seed 2261: ✓ PASS
 Seed 2266: ✓ PASS
@@ -197,7 +197,7 @@ Seed 2956: ✓ PASS
 Seed 2975: ✓ PASS
 Seed 2981: ✓ PASS
 Seed 2982: ✓ PASS
-Seed 3000: ✗ FAIL - #4: turn=5, prng=12->16, P1=[Miraidon(266/266)], P2=[Charizard(66/225)]
+Seed 3000: ✓ PASS
 Seed 3002: ✓ PASS
 Seed 3010: ✓ PASS
 Seed 3014: ✓ PASS
@@ -327,7 +327,7 @@ Seed 4711: ✓ PASS
 Seed 4716: ✓ PASS
 Seed 4727: ✓ PASS
 Seed 4743: ✓ PASS
-Seed 4745: ✗ FAIL - #26: turn=22, prng=72->76, P1=[Golurk(175/175)], P2=[Froslass(76/278)]
+Seed 4745: ✓ PASS
 Seed 4747: ✓ PASS
 Seed 4750: ✓ PASS
 Seed 4754: ✓ PASS
@@ -354,7 +354,7 @@ Seed 5029: ✓ PASS
 Seed 5030: ✓ PASS
 Seed 5050: ✓ PASS
 Seed 5055: ✓ PASS
-Seed 5072: ✗ FAIL - #2: turn=3, prng=3->6, P1=[Tapu Koko(247/284)], P2=[Leafeon(196/196)]
+Seed 5072: ✓ PASS
 Seed 5080: ✓ PASS
 Seed 5101: ✓ PASS
 Seed 5108: ✓ PASS
@@ -521,7 +521,7 @@ Seed 7077: ✓ PASS
 Seed 7081: ✓ PASS
 Seed 7082: ✓ PASS
 Seed 7109: ✓ PASS
-Seed 7121: ✗ FAIL - #1: turn=2, prng=0->8, P1=[Miraidon(147/214)], P2=[Malamar(251/265)]
+Seed 7121: ✓ PASS
 Seed 7127: ✓ PASS
 Seed 7131: ✓ PASS
 Seed 7140: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 638
-Failed: 85
+Passed: 643
+Failed: 80
 
 Pass rate: 88%
 ✗ Some seeds still failing

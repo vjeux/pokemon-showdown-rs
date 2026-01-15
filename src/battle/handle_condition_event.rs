@@ -474,17 +474,24 @@ impl Battle {
                 // SetStatus is called when a status is being set on the target
                 // Terrain conditions like Misty Terrain and Electric Terrain prevent status
                 // Extract status, target, source, and effect from event
-                // status is what's being set (par, brn, etc.) - but we match by condition_id (mistyterrain)
+                // status is what's being set (par, brn, slp, etc.) - passed via relay_var
                 // target_pos is from the event (the Pokemon receiving status)
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let effect_id_owned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.to_string());
+                // Extract status from relay_var - passed as EventResult::String from set_status.rs
+                let status_owned = self.event.as_ref()
+                    .and_then(|e| e.relay_var.as_ref())
+                    .and_then(|rv| match rv {
+                        EventResult::String(s) => Some(s.clone()),
+                        _ => None,
+                    });
                 condition_callbacks::dispatch_on_set_status(
                     self,
                     condition_id,
-                    None, // status - not passed through for terrain checks
+                    status_owned.as_deref(),
                     target_pos,
                     source_pos,
                     effect_id_owned.as_deref(),

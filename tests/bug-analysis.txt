@@ -1,4 +1,4 @@
-Analyzing 85 failing minimized seed files...
+Analyzing 80 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -19,16 +19,12 @@ bestow: 2 seeds
   Seeds: 1977, 6391
 craftyshield: 2 seeds
   Seeds: 2169, 6794
-electricterrain: 2 seeds
-  Seeds: 2214, 4745
 technoblast: 2 seeds
   Seeds: 2674, 5123
 bloodmoon: 2 seeds
   Seeds: 2741, 9425
 thunderpunch: 2 seeds
   Seeds: 2787, 8708
-wickedtorque: 2 seeds
-  Seeds: 3000, 4745
 tripleaxel: 2 seeds
   Seeds: 3465, 3787
 jumpkick: 2 seeds
@@ -43,8 +39,6 @@ triplekick: 2 seeds
   Seeds: 4126, 9048
 trickortreat: 2 seeds
   Seeds: 4378, 4760
-risingvoltage: 2 seeds
-  Seeds: 4745, 6794
 dragontail: 2 seeds
   Seeds: 4905, 9005
 shellsidearm: 2 seeds
@@ -93,8 +87,6 @@ ragingbull: 1 seeds
   Seeds: 2169
 tailglow: 1 seeds
   Seeds: 2169
-constrict: 1 seeds
-  Seeds: 2214
 silktrap: 1 seeds
   Seeds: 2304
 splinteredstormshards: 1 seeds
@@ -109,8 +101,6 @@ knockoff: 1 seeds
   Seeds: 2633
 strengthsap: 1 seeds
   Seeds: 2741
-spikes: 1 seeds
-  Seeds: 3000
 hyperbeam: 1 seeds
   Seeds: 3063
 bubblebeam: 1 seeds
@@ -173,16 +163,12 @@ wonderroom: 1 seeds
   Seeds: 4479
 explosion: 1 seeds
   Seeds: 4648
-aircutter: 1 seeds
-  Seeds: 4745
 falseswipe: 1 seeds
   Seeds: 4893
 fishiousrend: 1 seeds
   Seeds: 4893
 eruption: 1 seeds
   Seeds: 4893
-rest: 1 seeds
-  Seeds: 5072
 doubleshock: 1 seeds
   Seeds: 5112
 buzzybuzz: 1 seeds
@@ -263,6 +249,8 @@ terablast: 1 seeds
   Seeds: 6794
 charge: 1 seeds
   Seeds: 6794
+risingvoltage: 1 seeds
+  Seeds: 6794
 wideguard: 1 seeds
   Seeds: 6832
 temperflare: 1 seeds
@@ -279,8 +267,6 @@ ember: 1 seeds
   Seeds: 6926
 poisongas: 1 seeds
   Seeds: 7055
-direclaw: 1 seeds
-  Seeds: 7121
 roost: 1 seeds
   Seeds: 7149
 freezedry: 1 seeds
@@ -373,12 +359,8 @@ roar: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Hadron Engine: 3 seeds
-  Seeds: 3000, 3165, 7121
 Hunger Switch: 2 seeds
   Seeds: 1256, 5112
-Effect Spore: 2 seeds
-  Seeds: 2214, 6593
 Compound Eyes: 2 seeds
   Seeds: 2304, 4126
 Quark Drive: 2 seeds
@@ -419,22 +401,22 @@ Magician: 1 seeds
   Seeds: 3063
 Magic Guard: 1 seeds
   Seeds: 3122
+Hadron Engine: 1 seeds
+  Seeds: 3165
 Disguise: 1 seeds
   Seeds: 3578
-RKS System: 1 seeds
-  Seeds: 4745
 Snow Warning: 1 seeds
   Seeds: 4905
 Teravolt: 1 seeds
   Seeds: 4905
-Electric Surge: 1 seeds
-  Seeds: 5072
 Tough Claws: 1 seeds
   Seeds: 5644
 Sand Stream: 1 seeds
   Seeds: 5748
 Light Metal: 1 seeds
   Seeds: 6288
+Effect Spore: 1 seeds
+  Seeds: 6593
 Primordial Sea: 1 seeds
   Seeds: 6926
 Unburden: 1 seeds
@@ -505,9 +487,9 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 85
-Unique moves: 184 (183 non-simple)
-Unique abilities: 43 (40 non-simple)
+Total minimized seeds: 80
+Unique moves: 177 (176 non-simple)
+Unique abilities: 41 (38 non-simple)
 Unique items: 22
 
 --- Most Common Moves (top 10) ---
@@ -519,13 +501,11 @@ Unique items: 22
   forcepalm: 2 seeds
   bestow: 2 seeds
   craftyshield: 2 seeds
-  electricterrain: 2 seeds
   technoblast: 2 seeds
+  bloodmoon: 2 seeds
 
 --- Most Common Abilities (top 10) ---
-  Hadron Engine: 3 seeds
   Hunger Switch: 2 seeds
-  Effect Spore: 2 seeds
   Compound Eyes: 2 seeds
   Quark Drive: 2 seeds
   Synchronize: 2 seeds
@@ -533,3 +513,5 @@ Unique items: 22
   Ripen: 2 seeds
   Intimidate: 2 seeds
   Merciless: 2 seeds
+  Gorilla Tactics: 2 seeds
+  Rivalry: 1 seeds
