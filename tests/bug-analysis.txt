@@ -1,4 +1,4 @@
-Analyzing 77 failing minimized seed files...
+Analyzing 72 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -23,8 +23,6 @@ bloodmoon: 2 seeds
   Seeds: 2741, 9425
 thunderpunch: 2 seeds
   Seeds: 2787, 8708
-tripleaxel: 2 seeds
-  Seeds: 3465, 3787
 jumpkick: 2 seeds
   Seeds: 3578, 5251
 dynamicpunch: 2 seeds
@@ -33,8 +31,6 @@ skillswap: 2 seeds
   Seeds: 3578, 6288
 thunder: 2 seeds
   Seeds: 3578, 8445
-triplekick: 2 seeds
-  Seeds: 4126, 9048
 trickortreat: 2 seeds
   Seeds: 4378, 4760
 dragontail: 2 seeds
@@ -83,12 +79,6 @@ ragingbull: 1 seeds
   Seeds: 2169
 tailglow: 1 seeds
   Seeds: 2169
-silktrap: 1 seeds
-  Seeds: 2304
-splinteredstormshards: 1 seeds
-  Seeds: 2304
-populationbomb: 1 seeds
-  Seeds: 2304
 gigavolthavoc: 1 seeds
   Seeds: 2388
 sing: 1 seeds
@@ -135,8 +125,6 @@ crosschop: 1 seeds
   Seeds: 3578
 chipaway: 1 seeds
   Seeds: 3578
-disarmingvoice: 1 seeds
-  Seeds: 3787
 aquaring: 1 seeds
   Seeds: 4357
 hiddenpowergrass: 1 seeds
@@ -331,8 +319,6 @@ maxdarkness: 1 seeds
   Seeds: 9009
 hiddenpowerelectric: 1 seeds
   Seeds: 9009
-synthesis: 1 seeds
-  Seeds: 9048
 grassyterrain: 1 seeds
   Seeds: 9227
 grassyglide: 1 seeds
@@ -359,8 +345,6 @@ ABILITIES (excluding simple ones)
 ============================================================
 Hunger Switch: 2 seeds
   Seeds: 1256, 5112
-Compound Eyes: 2 seeds
-  Seeds: 2304, 4126
 Quark Drive: 2 seeds
   Seeds: 3165, 5215
 Synchronize: 2 seeds
@@ -429,8 +413,6 @@ Sheer Force: 1 seeds
   Seeds: 9005
 Static: 1 seeds
   Seeds: 9005
-Hustle: 1 seeds
-  Seeds: 9048
 
 ============================================================
 ITEMS
@@ -453,12 +435,8 @@ blukberry: 1 seeds
   Seeds: 2633
 iapapaberry: 1 seeds
   Seeds: 3063
-brightpowder: 1 seeds
-  Seeds: 3465
 jabocaberry: 1 seeds
   Seeds: 3578
-zoomlens: 1 seeds
-  Seeds: 3787
 normalgem: 1 seeds
   Seeds: 4648
 boosterenergy: 1 seeds
@@ -481,10 +459,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 77
-Unique moves: 176 (175 non-simple)
-Unique abilities: 40 (37 non-simple)
-Unique items: 21
+Total minimized seeds: 72
+Unique moves: 169 (168 non-simple)
+Unique abilities: 38 (35 non-simple)
+Unique items: 19
 
 --- Most Common Moves (top 10) ---
   afteryou: 3 seeds
@@ -500,7 +478,6 @@ Unique items: 21
 
 --- Most Common Abilities (top 10) ---
   Hunger Switch: 2 seeds
-  Compound Eyes: 2 seeds
   Quark Drive: 2 seeds
   Synchronize: 2 seeds
   No Guard: 2 seeds
@@ -509,3 +486,4 @@ Unique items: 21
   Merciless: 2 seeds
   Gorilla Tactics: 2 seeds
   Rivalry: 1 seeds
+  Dancer: 1 seeds

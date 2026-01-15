@@ -330,7 +330,18 @@ pub fn hit_step_move_hit_loop(
             }
 
             // accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy);
-            // TODO: Implement ModifyAccuracy event if needed
+            // Run ModifyAccuracy event (items like Bright Powder reduce accuracy here)
+            if let crate::event::EventResult::Number(modified_acc) = battle.run_event(
+                "ModifyAccuracy",
+                Some(crate::event::EventTarget::Pokemon(target)),
+                Some(attacker_pos),
+                Some(&crate::battle::Effect::move_(active_move.id.clone())),
+                crate::event::EventResult::Number(accuracy_value as i32),
+                false,
+                false
+            ) {
+                accuracy_value = modified_acc as f64;
+            }
 
             // accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
             // This is critical for abilities like No Guard that bypass accuracy checks

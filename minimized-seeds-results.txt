@@ -136,7 +136,7 @@ Seed 2232: ✓ PASS
 Seed 2261: ✓ PASS
 Seed 2266: ✓ PASS
 Seed 2303: ✓ PASS
-Seed 2304: ✗ FAIL - #20: turn=20, prng=45->78, P1=[Croagunk(33/210)], P2=[Rellor(82/211)]
+Seed 2304: ✓ PASS
 Seed 2329: ✓ PASS
 Seed 2338: ✗ FAIL - #6: turn=5, prng=12->16, P1=[Wooper(179/227)], P2=[Shedinja(0/1)]
 Seed 2341: ✓ PASS
@@ -237,7 +237,7 @@ Seed 3433: ✓ PASS
 Seed 3435: ✓ PASS
 Seed 3456: ✓ PASS
 Seed 3460: ✓ PASS
-Seed 3465: ✗ FAIL - #4: turn=4, prng=18->28, P1=[Girafarig(144/193)], P2=[Starmie(160/214)]
+Seed 3465: ✓ PASS
 Seed 3469: ✓ PASS
 Seed 3491: ✓ PASS
 Seed 3492: ✓ PASS
@@ -258,7 +258,7 @@ Seed 3697: ✓ PASS
 Seed 3701: ✓ PASS
 Seed 3735: ✓ PASS
 Seed 3749: ✓ PASS
-Seed 3787: ✗ FAIL - #2: turn=3, prng=11->22, P1=[Necrozma(250/300)], P2=[Dunsparce(221/302)]
+Seed 3787: ✓ PASS
 Seed 3801: ✓ PASS
 Seed 3865: ✓ PASS
 Seed 3904: ✓ PASS
@@ -278,7 +278,7 @@ Seed 4071: ✓ PASS
 Seed 4082: ✓ PASS
 Seed 4112: ✓ PASS
 Seed 4123: ✓ PASS
-Seed 4126: ✗ FAIL - #5: turn=6, prng=48->60, P1=[Swirlix(157/214)], P2=[Nincada(65/153)]
+Seed 4126: ✓ PASS
 Seed 4130: ✓ PASS
 Seed 4141: ✓ PASS
 Seed 4142: ✓ PASS
@@ -671,7 +671,7 @@ Seed 9005: ✗ FAIL - #38: turn=33, prng=157->162, P1=[Dusknoir(18/157)], P2=[Av
 Seed 9009: ✗ FAIL - #21: turn=21, prng=89->92, P1=[Naviathan(169/314)], P2=[Smoguana(243/243)]
 Seed 9033: ✓ PASS
 Seed 9039: ✓ PASS
-Seed 9048: ✗ FAIL - #12: turn=13, prng=36->46, P1=[Darumaka(159/269)], P2=[Togedemaru(68/184)]
+Seed 9048: ✓ PASS
 Seed 9082: ✓ PASS
 Seed 9089: ✓ PASS
 Seed 9091: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 646
-Failed: 77
+Passed: 651
+Failed: 72
 
-Pass rate: 89%
+Pass rate: 90%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...
