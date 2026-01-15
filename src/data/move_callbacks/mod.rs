@@ -916,7 +916,7 @@ pub fn has_on_hit(move_id: &str) -> bool {
         "bellydrum" | "bestow" | "block" | "bugbite" | "burningbulwark" |
         "burningjealousy" | "camouflage" | "clangoroussoul" | "clearsmog" |
         "conversion" | "conversion2" | "copycat" | "coreenforcer" | "corrosivegas" |
-        "curse" | "defog" | "detect" | "direclaw" | "doodle" | "eeriespell" |
+        "curse" | "defog" | "detect" | "doodle" | "eeriespell" |
         "endure" | "entrainment" | "filletaway" | "fling" | "flameburst" |
         "floralhealing" | "forestscurse" | "freezyfrost" | "genesissupernova" |
         "gmaxsnooze" | "guardsplit" | "guardswap" | "healbell" | "healpulse" |
