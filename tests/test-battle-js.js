@@ -144,40 +144,6 @@ battle.findPokemonEventHandlers = function(pokemon, callbackName, getKey) {
     return handlers;
 };
 
-// Instrument speedSort to log shuffles
-const originalSpeedSort = battle.speedSort.bind(battle);
-battle.speedSort = function(list, comparator) {
-    if ((battle.turn === 1 || battle.turn === 2 || battle.turn === 14) && list.length > 0 && list[0].effect) {
-        console.error(`[SPEED_SORT_JS] turn=${battle.turn}, sorting ${list.length} handlers`);
-        list.forEach((h, i) => {
-            console.error(`[SPEED_SORT_JS]   [${i}] effect=${h.effect.id}, priority=${h.priority}, order=${h.order}, subOrder=${h.subOrder}, speed=${h.speed}, effectOrder=${h.effectOrder}`);
-        });
-    }
-    const originalShuffle = battle.prng.shuffle.bind(battle.prng);
-    battle.prng.shuffle = function(arr, start, end) {
-        if (battle.turn === 1 || battle.turn === 2 || battle.turn === 14) {
-            console.error(`[SHUFFLE_JS] turn=${battle.turn}, shuffling range [${start}, ${end}), arr.length=${arr.length}`);
-            if (arr[start] && arr[start].effect) {
-                const items = [];
-                for (let i = start; i < end && i < arr.length; i++) {
-                    items.push(arr[i].effect.id);
-                }
-                console.error(`[SHUFFLE_JS] items: ${items.join(', ')}`);
-            }
-        }
-        return originalShuffle(arr, start, end);
-    };
-    const result = originalSpeedSort(list, comparator);
-    battle.prng.shuffle = originalShuffle;
-    if ((battle.turn === 1 || battle.turn === 2 || battle.turn === 14) && list.length > 0 && list[0].effect) {
-        console.error(`[SPEED_SORT_JS] after sort:`);
-        list.forEach((h, i) => {
-            console.error(`[SPEED_SORT_JS]   [${i}] effect=${h.effect.id}`);
-        });
-    }
-    return result;
-};
-
 console.log(`# JavaScript Battle Test - Seed ${seedNum}`);
 console.log(`# P1: ${teams.p1[0].name} vs P2: ${teams.p2[0].name}`);
 

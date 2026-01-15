@@ -198,6 +198,11 @@ impl Pokemon {
                     EventResult::Boolean(false) => return Some(false),
                     // Callback returned true - treat as success
                     EventResult::Boolean(true) => return Some(true),
+                    // Callback returned null - in JavaScript, null has lower priority than boolean
+                    // in combineResults, so combineResults(bool, null) returns the bool.
+                    // Map to Some(false) so that combine_results(Success, Failed) returns Success
+                    // and combine_results(Failed, Failed) returns Failed.
+                    EventResult::Null => return Some(false),
                     // Callback returned undefined/Continue - restart happened but neither success nor failure
                     // This matches JavaScript returning undefined from singleEvent when callback returns undefined
                     EventResult::Continue => return None,

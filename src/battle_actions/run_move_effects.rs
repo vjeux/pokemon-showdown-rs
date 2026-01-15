@@ -357,7 +357,6 @@ pub fn run_move_effects<'a>(
             // Need to add this field to ActiveMove struct
 
             // if (moveData.volatileStatus) {
-            eprintln!("[VOLATILE_STATUS] move_id={}, has volatile_status={:?}", active_move.id.as_str(), hit_effect.volatile_status());
             if let Some(volatile_status) = hit_effect.volatile_status() {
                 //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                 let volatile_id = ID::new(volatile_status);
@@ -391,9 +390,7 @@ pub fn run_move_effects<'a>(
             }
 
             // if (moveData.sideCondition) {
-            eprintln!("[SIDE_CONDITION] move_id={}, has side_condition={}", active_move.id.as_str(), hit_effect.side_condition().is_some());
             if let Some(side_condition) = hit_effect.side_condition() {
-                eprintln!("[SIDE_CONDITION] Applying side condition '{}' to side {}", side_condition, target_pos.0);
                 //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
                 let condition_id = ID::new(side_condition);
                 let move_effect = Effect::move_(active_move.id.clone());
@@ -403,7 +400,6 @@ pub fn run_move_effects<'a>(
                     Some(source_pos),
                     Some(&move_effect),
                 );
-                eprintln!("[SIDE_CONDITION] add_side_condition returned: {}", hit_result);
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
                     DamageResult::Success
@@ -577,8 +573,6 @@ pub fn run_move_effects<'a>(
                 };
 
                 if has_hit_callback {
-                    eprintln!("[RUN_MOVE_EFFECTS] Found Hit callback for effect_id={}, is_self={}", effect_id, is_self);
-
                     if is_self {
                         // JavaScript: singleEvent('Hit', moveData.self, {}, source, source, move)
                         // For self effects, target is source (the move user)
