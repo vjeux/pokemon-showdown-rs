@@ -590,8 +590,14 @@ pub fn dispatch_on_modify_def(
     _source_pos: Option<(usize, usize)>,
     _active_move: Option<&ActiveMove>,
 ) -> EventResult {
+    use crate::data::ability_callbacks::protosynthesis;
+    use crate::data::ability_callbacks::quarkdrive;
+
     match condition_id {
         "snowscape" => snowscape::on_modify_def(battle, _def, pokemon_pos, _target_pos, _source_pos, _active_move),
+        // Quark Drive/Protosynthesis expect non-Option positions; attacker pos is unused
+        "quarkdrive" => quarkdrive::condition::on_modify_def(battle, _def, pokemon_pos, _source_pos.unwrap_or((0, 0)), _active_move),
+        "protosynthesis" => protosynthesis::condition::on_modify_def(battle, _def, pokemon_pos, _source_pos.unwrap_or((0, 0)), _active_move),
         _ => EventResult::Continue,
     }
 }
@@ -620,8 +626,14 @@ pub fn dispatch_on_modify_sp_d(
     _source_pos: Option<(usize, usize)>,
     _active_move: Option<&ActiveMove>,
 ) -> EventResult {
+    use crate::data::ability_callbacks::protosynthesis;
+    use crate::data::ability_callbacks::quarkdrive;
+
     match condition_id {
         "sandstorm" => sandstorm::on_modify_sp_d(battle, _spd, pokemon_pos, _target_pos, _source_pos, _active_move),
+        // Quark Drive/Protosynthesis expect non-Option positions; attacker pos is unused
+        "quarkdrive" => quarkdrive::condition::on_modify_sp_d(battle, _spd, pokemon_pos, _source_pos.unwrap_or((0, 0)), _active_move),
+        "protosynthesis" => protosynthesis::condition::on_modify_sp_d(battle, _spd, pokemon_pos, _source_pos.unwrap_or((0, 0)), _active_move),
         _ => EventResult::Continue,
     }
 }
