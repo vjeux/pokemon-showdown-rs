@@ -1,10 +1,8 @@
-Analyzing 27 failing minimized seed files...
+Analyzing 23 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-assist: 2 seeds
-  Seeds: 8774, 9563
 psyshieldbash: 1 seeds
   Seeds: 3126
 rocktomb: 1 seeds
@@ -13,22 +11,12 @@ shelltrap: 1 seeds
   Seeds: 3126
 reflect: 1 seeds
   Seeds: 3126
-instruct: 1 seeds
-  Seeds: 3250
-gigatonhammer: 1 seeds
-  Seeds: 3250
 healingwish: 1 seeds
   Seeds: 3367
 barrier: 1 seeds
   Seeds: 3367
 lunardance: 1 seeds
   Seeds: 3367
-hyperspacefury: 1 seeds
-  Seeds: 4387
-headlongrush: 1 seeds
-  Seeds: 4387
-conversion: 1 seeds
-  Seeds: 4387
 noxioustorque: 1 seeds
   Seeds: 4479
 dynamicpunch: 1 seeds
@@ -137,10 +125,6 @@ helpinghand: 1 seeds
   Seeds: 8708
 veeveevolley: 1 seeds
   Seeds: 8708
-batonpass: 1 seeds
-  Seeds: 8774
-struggle: 1 seeds
-  Seeds: 8774
 payback: 1 seeds
   Seeds: 9005
 forcepalm: 1 seeds
@@ -173,14 +157,6 @@ luckychant: 1 seeds
   Seeds: 9425
 chillyreception: 1 seeds
   Seeds: 9529
-drillrun: 1 seeds
-  Seeds: 9563
-gmaxstonesurge: 1 seeds
-  Seeds: 9563
-afteryou: 1 seeds
-  Seeds: 9563
-roar: 1 seeds
-  Seeds: 9563
 
 ============================================================
 ABILITIES (excluding simple ones)
@@ -215,22 +191,22 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 27
-Unique moves: 90 (89 non-simple)
+Total minimized seeds: 23
+Unique moves: 78 (77 non-simple)
 Unique abilities: 11 (10 non-simple)
 Unique items: 1
 
 --- Most Common Moves (top 10) ---
-  assist: 2 seeds
   psyshieldbash: 1 seeds
   rocktomb: 1 seeds
   shelltrap: 1 seeds
   reflect: 1 seeds
-  instruct: 1 seeds
-  gigatonhammer: 1 seeds
   healingwish: 1 seeds
   barrier: 1 seeds
   lunardance: 1 seeds
+  noxioustorque: 1 seeds
+  dynamicpunch: 1 seeds
+  recover: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   No Guard: 2 seeds

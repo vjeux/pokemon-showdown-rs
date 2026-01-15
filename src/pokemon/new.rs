@@ -213,6 +213,16 @@ impl Pokemon {
         let ability_id = ID::new(&set.ability);
         let item_id = ID::new(&set.item);
 
+        // JavaScript: this.types = this.baseSpecies.types;
+        // JavaScript: this.baseTypes = this.types;
+        // JavaScript: this.apparentType = this.baseSpecies.types.join('/');
+        // Get types from species data
+        let species_types: Vec<String> = if let Some(species_data) = dex.species().get(&set.species) {
+            species_data.types.clone()
+        } else {
+            vec!["Normal".to_string()] // Default fallback
+        };
+
         // JavaScript logic for Pokemon name:
         // if (set.name === set.species || !set.name) {
         //     set.name = this.baseSpecies.baseSpecies;
@@ -337,14 +347,13 @@ impl Pokemon {
             ate_berry: false,
             item_knocked_off: false,
 
-            types: Vec::new(),
+            types: species_types.clone(),
             // JavaScript: this.addedType = '';
             added_type: String::new(),
-            base_types: Vec::new(),
+            base_types: species_types.clone(),
             known_type: false, // Initially false, set to true when type becomes known
             // JavaScript: this.apparentType = this.baseSpecies.types.join('/');
-            // Initially set to empty, will be updated in set_species
-            apparent_type: String::new(),
+            apparent_type: species_types.join("/"),
 
             tera_type: set.tera_type.clone(),
             terastallized: None,

@@ -26,20 +26,27 @@ pub fn on_try(
     source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    use crate::dex_data::ID;
+
     let source = source_pos;
 
     // if (source.species.name === 'Hoopa-Unbound') {
     //     return;
     // }
-    let species_name = {
+    // Note: JavaScript checks source.species.name (formatted name like "Hoopa-Unbound")
+    // but we check species_id (lowercase ID like "hoopaunbound")
+    let (species_id, species_is_hoopa) = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.species_id.as_str().to_string()
+        (
+            source_pokemon.species_id.clone(),
+            source_pokemon.species_id == ID::from("hoopa"),
+        )
     };
 
-    if species_name == "Hoopa-Unbound" {
+    if species_id == ID::from("hoopaunbound") {
         return EventResult::Continue;
     }
 
@@ -51,7 +58,7 @@ pub fn on_try(
     );
 
     // if (source.species.name === 'Hoopa') {
-    if species_name == "Hoopa" {
+    if species_is_hoopa {
         // this.attrLastMove('[still]');
         battle.attr_last_move(&["[still]"]);
 

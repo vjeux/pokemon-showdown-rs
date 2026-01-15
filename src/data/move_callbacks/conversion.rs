@@ -53,11 +53,15 @@ pub fn on_hit(
         target_pokemon.has_type(battle, &move_type)
     };
 
+    // JavaScript: || short-circuits, so setType is only called if hasType is false
+    // If target already has the type, fail without calling setType
+    if has_type {
+        return EventResult::Boolean(false);
+    }
+
     // Try to set the type and check if it succeeded
     let set_type_succeeded = Pokemon::set_type(battle, target, vec![move_type.clone()], false);
-
-    // Check if it failed (either already has type or setType returned false)
-    if has_type || !set_type_succeeded {
+    if !set_type_succeeded {
         return EventResult::Boolean(false);
     }
 
