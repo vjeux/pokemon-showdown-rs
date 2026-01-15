@@ -342,33 +342,32 @@ pub fn spread_move_hit<'a>(
         }
     };
 
-    // Get active_move pointer (for 'move' parameter)
-    let active_move_ptr = {
-        match &battle.active_move {
-            Some(am) => am as *const _,
-            None => panic!("active_move must be set when calling run_move_effects"),
-        }
+    // IMPORTANT: Use the cloned move_data, not a raw pointer to battle.active_move!
+    // The on_hit callback (e.g., for Assist, Metronome) may call use_move for a different move,
+    // which replaces battle.active_move. If we used a raw pointer, it would become invalid.
+    // JavaScript passes move/moveData as explicit parameters, avoiding this issue.
+    let move_data_for_run = match &move_data_clone {
+        Some(m) => m,
+        None => panic!("active_move must be set when calling run_move_effects"),
     };
 
-    // For moveData, use hit_effect if provided, otherwise wrap active_move in HitEffect::Move
+    // For moveData, use hit_effect if provided, otherwise wrap the cloned move in HitEffect::Move
     // JS: let moveData = hitEffect as ActiveMove; if (!moveData) moveData = move;
     let hit_effect_for_run = match &hit_effect {
         Some(he) => he.clone(),
-        None => HitEffect::Move(unsafe { &*active_move_ptr }),
+        None => HitEffect::Move(move_data_for_run),
     };
 
-    damage = unsafe {
-        crate::battle_actions::run_move_effects(
-            battle,
-            damage,
-            &targets_mut,
-            source_pos,
-            &*active_move_ptr,
-            hit_effect_for_run,
-            is_secondary,
-            is_self,
-        )
-    };
+    damage = crate::battle_actions::run_move_effects(
+        battle,
+        damage,
+        &targets_mut,
+        source_pos,
+        move_data_for_run,
+        hit_effect_for_run,
+        is_secondary,
+        is_self,
+    );
 
     for i in 0..targets_mut.len() {
         // JS: if (!damage[i] && damage[i] !== 0) targets[i] = false;
