@@ -66,6 +66,18 @@ impl Battle {
             }
         }
 
+        // IMPORTANT: If we're explicitly in an Ability context, prioritize ability handler
+        // This MUST be checked BEFORE volatiles, because an ability like Zen Mode creates
+        // a volatile with the same name ("zenmode"). When the ability's onResidual fires,
+        // we want to call the ability's callback, not the volatile's callback.
+        if let Some(ref effect) = self.effect {
+            if effect.effect_type == crate::battle::EffectType::Ability {
+                if self.dex.abilities().get(effect_id.as_str()).is_some() {
+                    return self.handle_ability_event(event_id, effect_id, target);
+                }
+            }
+        }
+
         // Check if effect is a condition (volatile, status, etc.) on the target Pokemon
         // This handles cases where a volatile needs to be checked before other effect types
         if let Some(target_pokemon_pos) = target_pos {
@@ -79,19 +91,6 @@ impl Battle {
                 // Check if effect is target's status
                 if !pokemon.status.is_empty() && pokemon.status.as_str() == effect_str {
                     return self.handle_condition_event(event_id, effect_str, target);
-                }
-            }
-        }
-
-        // IMPORTANT: If we're explicitly in an Ability context, prioritize ability handler
-        // This handles cases where the ability ID matches the current weather/terrain
-        // (e.g., "primordialsea" is both an ability AND a weather condition)
-        // When calling single_event("End", ability("primordialsea"), ...), we want the
-        // ability's on_end to run (which clears the weather), not the condition's on_end
-        if let Some(ref effect) = self.effect {
-            if effect.effect_type == crate::battle::EffectType::Ability {
-                if self.dex.abilities().get(effect_id.as_str()).is_some() {
-                    return self.handle_ability_event(event_id, effect_id, target);
                 }
             }
         }
