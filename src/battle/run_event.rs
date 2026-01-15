@@ -439,6 +439,12 @@ impl Battle {
 
         // JavaScript: Loop through handlers (lines 174-282)
         // Execute each handler and accumulate results
+        if event_id.contains("DamagingHit") {
+            eprintln!("[RUN_EVENT] event_id={}, handlers.len()={}", event_id, handlers.len());
+            for (idx, h) in handlers.iter().enumerate() {
+                eprintln!("[RUN_EVENT]   handler[{}]: effect_id={}, effect_type={:?}", idx, h.effect.id.as_str(), h.effect.effect_type);
+            }
+        }
         for handler in handlers {
             let effect_id = handler.effect.id.clone();
             let handler_target = handler.effect_holder;
@@ -644,6 +650,9 @@ impl Battle {
                 }
                 EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain
                 | EffectType::SideCondition | EffectType::SlotCondition => {
+                    if event_id.contains("DamagingHit") {
+                        eprintln!("[RUN_EVENT] Calling handle_condition_event: callback={}, effect_id={}", callback_name_for_dispatch, effect_id.as_str());
+                    }
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
                     // Set up effect_state so condition callbacks can access it
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
@@ -654,6 +663,11 @@ impl Battle {
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
                     let result = self.handle_condition_event(&callback_name_for_dispatch, effect_id.as_str(), handler_target_event.as_ref());
+
+                    // NOTE: Do NOT copy self.effect_state back to the volatile here.
+                    // The with_effect_state function modifies the volatile DIRECTLY in pokemon.volatiles.
+                    // If we were to copy self.effect_state back, we would overwrite those changes
+                    // because self.effect_state is not updated by with_effect_state.
 
                     // Restore parent effect context
                     self.restore_effect_context(parent_effect);

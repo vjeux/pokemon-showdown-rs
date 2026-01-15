@@ -44,8 +44,14 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
 
     let move_id = active_move_ref.id.as_str();
 
-    // target.getMoveHitData(move).typeMod > 0 means super effective
-    let type_effectiveness = Pokemon::run_effectiveness(battle, target_pos, active_move_ref);
+    // JavaScript: target.getMoveHitData(move).typeMod > 0
+    // IMPORTANT: Use the stored type_mod from move hit data, NOT recalculated run_effectiveness!
+    // For moves with damageCallback (like Counter), modify_damage is never called,
+    // so type_mod is never set and defaults to 0. This correctly prevents Enigma Berry
+    // from triggering for these fixed-damage moves.
+    let type_effectiveness = battle.get_move_hit_data(target_pos)
+        .map(|hit_data| hit_data.type_mod as i32)
+        .unwrap_or(0);
 
     let (is_super_effective, target_base_maxhp, target_hp) = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {

@@ -421,13 +421,13 @@ Seed 5948: ✓ PASS
 Seed 5954: ✓ PASS
 Seed 5964: ✓ PASS
 Seed 5991: ✓ PASS
-Seed 5992: ✗ FAIL - #36: turn=34, prng=158->162, P1=[Amaura(40/309)], P2=[Tinkatuff(74/190)]
+Seed 5992: ✓ PASS
 Seed 6005: ✓ PASS
 Seed 6007: ✓ PASS
 Seed 6024: ✓ PASS
 Seed 6042: ✓ PASS
 Seed 6061: ✓ PASS
-Seed 6065: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Crustle(270/275)], P2=[Krookodile(184/194)]
+Seed 6065: ✓ PASS
 Seed 6088: ✓ PASS
 Seed 6104: ✓ PASS
 Seed 6106: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 691
-Failed: 32
+Passed: 693
+Failed: 30
 
 Pass rate: 95%
 ✗ Some seeds still failing

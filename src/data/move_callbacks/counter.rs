@@ -18,6 +18,7 @@ pub fn damage_callback(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    eprintln!("[COUNTER] damage_callback called for pokemon_pos={:?}", pokemon_pos);
     // if (!pokemon.volatiles['counter']) return 0;
     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,
@@ -26,6 +27,7 @@ pub fn damage_callback(
 
     let counter_id = ID::from("counter");
     if !pokemon.volatiles.contains_key(&counter_id) {
+        eprintln!("[COUNTER] damage_callback: no counter volatile, returning 0");
         return EventResult::Number(0);
     }
 
@@ -37,8 +39,10 @@ pub fn damage_callback(
         .get(&counter_id)
         .and_then(|v| v.damage)
         .unwrap_or(0);
+    eprintln!("[COUNTER] damage_callback: volatile damage={}", damage);
     let damage = if damage == 0 { 1 } else { damage };
 
+    eprintln!("[COUNTER] damage_callback: returning {}", damage);
     EventResult::Number(damage)
 }
 
@@ -61,6 +65,7 @@ pub fn on_try(
     source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    eprintln!("[COUNTER] on_try called for source_pos={:?}", source_pos);
     // if (!source.volatiles['counter']) return false;
     let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
         Some(p) => p,
@@ -69,6 +74,7 @@ pub fn on_try(
 
     let counter_id = ID::from("counter");
     if !source.volatiles.contains_key(&counter_id) {
+        eprintln!("[COUNTER] on_try: no counter volatile, returning false");
         return EventResult::Boolean(false);
     }
 
@@ -78,9 +84,18 @@ pub fn on_try(
         .get(&counter_id)
         .and_then(|v| v.slot);
 
+    eprintln!("[COUNTER] on_try: volatile slot={:?}, damage={:?}",
+        slot, source.volatiles.get(&counter_id).and_then(|v| v.damage));
+
     match slot {
-        None => EventResult::Boolean(false),
-        _ => EventResult::Continue,
+        None => {
+            eprintln!("[COUNTER] on_try: slot is None, returning false");
+            EventResult::Boolean(false)
+        },
+        _ => {
+            eprintln!("[COUNTER] on_try: slot is set, returning Continue");
+            EventResult::Continue
+        },
     }
 }
 
@@ -161,6 +176,7 @@ pub mod condition {
         source_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
+        eprintln!("[COUNTER] on_damaging_hit called: damage={}, target_pos={:?}, source_pos={:?}", damage, target_pos, source_pos);
         // Get target and source
         let target = match target_pos {
             Some(pos) => pos,
@@ -180,6 +196,8 @@ pub mod condition {
         let category = active_move.map(|m| m.category.as_str()).unwrap_or("");
 
         if !is_ally && category == "Physical" {
+            eprintln!("[COUNTER] on_damaging_hit: is_ally=false, category=Physical - storing damage * 2 = {}", 2 * damage);
+            eprintln!("[COUNTER] battle.effect = {:?}", battle.effect);
             // this.effectState.slot = source.getSlot();
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,
@@ -188,7 +206,7 @@ pub mod condition {
             let _slot = source_pokemon.get_slot();
 
             // this.effectState.damage = 2 * damage;
-            battle.with_effect_state(|state| {
+            let update_result = battle.with_effect_state(|state| {
                 // Store slot as integer (parse from slot string like "a: Pikachu" -> position)
                 // Actually, slot is the string identifier, but we need to store it
                 // The slot field is i32, but Pokemon::get_slot() returns a string
@@ -199,7 +217,11 @@ pub mod condition {
                 // Let me store the numeric position
                 state.slot = Some(source.1 as i32);
                 state.damage = Some(2 * damage);
+                eprintln!("[COUNTER] on_damaging_hit: set effect_state: slot={:?}, damage={:?}", state.slot, state.damage);
             });
+            eprintln!("[COUNTER] with_effect_state returned: {:?}", update_result);
+        } else {
+            eprintln!("[COUNTER] on_damaging_hit: is_ally={}, category='{}' - NOT storing damage", is_ally, category);
         }
 
         EventResult::Continue

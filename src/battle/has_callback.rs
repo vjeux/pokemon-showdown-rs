@@ -95,6 +95,32 @@ impl Battle {
             }
         }
 
+        // Check move-embedded conditions
+        // Some moves define a `condition` block with their own callbacks (e.g., Counter, Mirror Coat)
+        // When a volatile is added with the move's ID (e.g., "counter"),
+        // its callbacks are in move.condition, not in conditions.json
+        if let Some(move_data) = self.dex.moves().get(volatile_str) {
+            if let Some(ref condition_data) = move_data.condition {
+                // Check if the condition has this callback
+                let has_key = condition_data.extra.contains_key(event_id);
+                let priority_key = format!("{}Priority", event_id);
+                let has_priority_key = condition_data.extra.contains_key(&priority_key);
+
+                if has_key || has_priority_key {
+                    return true;
+                }
+
+                // Try with "on" prefix
+                if !event_id.starts_with("on") {
+                    let with_on = format!("on{}", event_id);
+                    let priority_with_on = format!("on{}Priority", event_id);
+                    if condition_data.extra.contains_key(&with_on) || condition_data.extra.contains_key(&priority_with_on) {
+                        return true;
+                    }
+                }
+            }
+        }
+
         false
     }
 

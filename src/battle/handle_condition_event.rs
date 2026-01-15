@@ -206,6 +206,7 @@ impl Battle {
                 let _move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
+                eprintln!("[HANDLE_CONDITION_EVENT] DamagingHit: condition_id={}, damage={}, pokemon_pos={:?}, source_pos={:?}", condition_id, damage, pokemon_pos, source_pos);
                 condition_callbacks::dispatch_on_damaging_hit(self, condition_id, damage, pokemon_pos, source_pos, active_move_clone.as_ref())
             }
             "Damage" => {

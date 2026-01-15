@@ -120,6 +120,11 @@ impl Battle {
         }
 
         // JS: for (const id in pokemon.volatiles) {
+        if callback_name.contains("Damaging") {
+            eprintln!("[FIND_POKEMON_EVENT_HANDLERS] callback_name={}, pokemon={}, volatiles count={}, volatiles={:?}",
+                callback_name, pokemon.species_id.as_str(), pokemon.volatiles.len(),
+                pokemon.volatiles.keys().map(|k| k.as_str()).collect::<Vec<_>>());
+        }
         for (volatile_id, volatile_state) in &pokemon.volatiles {
             // JS: const volatileState = pokemon.volatiles[id];
             // JS: const volatile = this.dex.conditions.getByID(id as ID);
@@ -132,6 +137,7 @@ impl Battle {
             });
 
             if has_callback || has_get_key {
+                eprintln!("[FIND_POKEMON_EVENT_HANDLERS] Adding handler for volatile={} with callback={}", volatile_id.as_str(), callback_name);
                 // Get volatile name from dex
                 let volatile_name = self.dex.conditions().get_by_id(volatile_id)
                     .and_then(|c| c.name.clone())

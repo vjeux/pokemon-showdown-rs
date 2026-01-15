@@ -1,12 +1,8 @@
-Analyzing 32 failing minimized seed files...
+Analyzing 30 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-lightscreen: 2 seeds
-  Seeds: 5992, 8544
-counter: 2 seeds
-  Seeds: 5992, 6065
 courtchange: 2 seeds
   Seeds: 7559, 8544
 obstruct: 2 seeds
@@ -79,14 +75,6 @@ dreameater: 1 seeds
   Seeds: 5748
 gmaxsteelsurge: 1 seeds
   Seeds: 5748
-gmaxfoamburst: 1 seeds
-  Seeds: 5992
-pounce: 1 seeds
-  Seeds: 5992
-sludge: 1 seeds
-  Seeds: 5992
-photongeyser: 1 seeds
-  Seeds: 5992
 clearsmog: 1 seeds
   Seeds: 6288
 skillswap: 1 seeds
@@ -144,6 +132,8 @@ toxicspikes: 1 seeds
 liquidation: 1 seeds
   Seeds: 8544
 filletaway: 1 seeds
+  Seeds: 8544
+lightscreen: 1 seeds
   Seeds: 8544
 aromaticmist: 1 seeds
   Seeds: 8544
@@ -247,8 +237,6 @@ Static: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-enigmaberry: 1 seeds
-  Seeds: 6065
 focussash: 1 seeds
   Seeds: 8544
 kingsrock: 1 seeds
@@ -257,14 +245,12 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 32
-Unique moves: 108 (107 non-simple)
+Total minimized seeds: 30
+Unique moves: 103 (102 non-simple)
 Unique abilities: 13 (11 non-simple)
-Unique items: 3
+Unique items: 2
 
 --- Most Common Moves (top 10) ---
-  lightscreen: 2 seeds
-  counter: 2 seeds
   courtchange: 2 seeds
   obstruct: 2 seeds
   assist: 2 seeds
@@ -273,6 +259,8 @@ Unique items: 3
   shelltrap: 1 seeds
   reflect: 1 seeds
   instruct: 1 seeds
+  gigatonhammer: 1 seeds
+  healingwish: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   No Guard: 2 seeds
