@@ -226,6 +226,9 @@ impl Battle {
         let mut stats_raised = false;
         let mut stats_lowered = false;
         let mut boosted = is_secondary; // JS: let boosted = isSecondary;
+        // Track the actual applied boosts (after capping) for AfterBoost event
+        // JavaScript: boost = target.getCappedBoost(boost); then passes capped boost to AfterBoost
+        let mut actual_boost_table = crate::dex_data::BoostsTable::new();
 
         // Get Pokemon name for logging
         let pokemon_name = if let Some(side) = self.sides.get(target_side) {
@@ -258,6 +261,19 @@ impl Battle {
                     // JS: boostBy = target.boostBy(currentBoost);
                     *current = (*current + amount).clamp(-6, 6);
                     let actual = *current - old;
+
+                    // Track the actual applied boost (after capping) for AfterBoost event
+                    // JavaScript: boost = target.getCappedBoost(boost); modifies boost in place
+                    match *stat {
+                        "atk" => actual_boost_table.atk = actual,
+                        "def" => actual_boost_table.def = actual,
+                        "spa" => actual_boost_table.spa = actual,
+                        "spd" => actual_boost_table.spd = actual,
+                        "spe" => actual_boost_table.spe = actual,
+                        "accuracy" => actual_boost_table.accuracy = actual,
+                        "evasion" => actual_boost_table.evasion = actual,
+                        _ => {}
+                    }
 
                     // JS: if (boostBy) { success = true; ... }
                     if actual != 0 {
@@ -416,8 +432,9 @@ impl Battle {
         }
 
         // JS: this.runEvent('AfterBoost', target, source, effect, boost);
-        // Reuse effect_obj from earlier
-        self.run_event("AfterBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_obj.as_ref(), EventResult::Boost(boost_table), false, false);
+        // Pass the actual applied boosts (after capping), not the original intended boosts
+        // JavaScript: boost = target.getCappedBoost(boost); then passes capped boost to AfterBoost
+        self.run_event("AfterBoost", Some(crate::event::EventTarget::Pokemon(target)), source, effect_obj.as_ref(), EventResult::Boost(actual_boost_table), false, false);
 
         // JS: if (Object.values(boost).some(x => x > 0)) target.statsRaisedThisTurn = true;
         // JS: if (Object.values(boost).some(x => x < 0)) target.statsLoweredThisTurn = true;
