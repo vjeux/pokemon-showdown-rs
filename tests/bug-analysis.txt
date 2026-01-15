@@ -1,4 +1,4 @@
-Analyzing 88 failing minimized seed files...
+Analyzing 85 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -13,10 +13,6 @@ instruct: 2 seeds
   Seeds: 1398, 3250
 hiddenpowerwater: 2 seeds
   Seeds: 1398, 547
-substitute: 2 seeds
-  Seeds: 1400, 7213
-twinbeam: 2 seeds
-  Seeds: 1400, 5576
 forcepalm: 2 seeds
   Seeds: 1825, 9005
 bestow: 2 seeds
@@ -31,12 +27,6 @@ bloodmoon: 2 seeds
   Seeds: 2741, 9425
 thunderpunch: 2 seeds
   Seeds: 2787, 8708
-hydrovortex: 2 seeds
-  Seeds: 2876, 7592
-dreameater: 2 seeds
-  Seeds: 2876, 5748
-stoneaxe: 2 seeds
-  Seeds: 2876, 7213
 wickedtorque: 2 seeds
   Seeds: 3000, 4745
 tripleaxel: 2 seeds
@@ -91,14 +81,6 @@ spinout: 1 seeds
   Seeds: 1398
 hiddenpowerpsychic: 1 seeds
   Seeds: 1398
-softboiled: 1 seeds
-  Seeds: 1400
-wrap: 1 seeds
-  Seeds: 1400
-psyblade: 1 seeds
-  Seeds: 1400
-ceaselessedge: 1 seeds
-  Seeds: 1400
 cottonguard: 1 seeds
   Seeds: 1825
 acid: 1 seeds
@@ -127,12 +109,6 @@ knockoff: 1 seeds
   Seeds: 2633
 strengthsap: 1 seeds
   Seeds: 2741
-shedtail: 1 seeds
-  Seeds: 2876
-captivate: 1 seeds
-  Seeds: 2876
-psystrike: 1 seeds
-  Seeds: 2876
 spikes: 1 seeds
   Seeds: 3000
 hyperbeam: 1 seeds
@@ -225,11 +201,15 @@ firespin: 1 seeds
   Seeds: 547
 victorydance: 1 seeds
   Seeds: 5576
+twinbeam: 1 seeds
+  Seeds: 5576
 burningbulwark: 1 seeds
   Seeds: 5576
 camouflage: 1 seeds
   Seeds: 5748
 haze: 1 seeds
+  Seeds: 5748
+dreameater: 1 seeds
   Seeds: 5748
 gmaxsteelsurge: 1 seeds
   Seeds: 5748
@@ -311,6 +291,8 @@ mistball: 1 seeds
   Seeds: 7559
 glitzyglow: 1 seeds
   Seeds: 7559
+hydrovortex: 1 seeds
+  Seeds: 7592
 savagespinout: 1 seeds
   Seeds: 7601
 pursuit: 1 seeds
@@ -401,8 +383,6 @@ Compound Eyes: 2 seeds
   Seeds: 2304, 4126
 Quark Drive: 2 seeds
   Seeds: 3165, 5215
-RKS System: 2 seeds
-  Seeds: 4745, 7213
 Synchronize: 2 seeds
   Seeds: 5576, 6593
 No Guard: 2 seeds
@@ -441,6 +421,8 @@ Magic Guard: 1 seeds
   Seeds: 3122
 Disguise: 1 seeds
   Seeds: 3578
+RKS System: 1 seeds
+  Seeds: 4745
 Snow Warning: 1 seeds
   Seeds: 4905
 Teravolt: 1 seeds
@@ -485,8 +467,6 @@ fullincense: 2 seeds
   Seeds: 6005, 7243
 redcard: 1 seeds
   Seeds: 1256
-stickybarb: 1 seeds
-  Seeds: 1400
 choiceband: 1 seeds
   Seeds: 1977
 mirrorherb: 1 seeds
@@ -525,10 +505,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 88
-Unique moves: 193 (192 non-simple)
+Total minimized seeds: 85
+Unique moves: 184 (183 non-simple)
 Unique abilities: 43 (40 non-simple)
-Unique items: 23
+Unique items: 22
 
 --- Most Common Moves (top 10) ---
   afteryou: 3 seeds
@@ -536,11 +516,11 @@ Unique items: 23
   guardsplit: 2 seeds
   instruct: 2 seeds
   hiddenpowerwater: 2 seeds
-  substitute: 2 seeds
-  twinbeam: 2 seeds
   forcepalm: 2 seeds
   bestow: 2 seeds
   craftyshield: 2 seeds
+  electricterrain: 2 seeds
+  technoblast: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Hadron Engine: 3 seeds
@@ -548,8 +528,8 @@ Unique items: 23
   Effect Spore: 2 seeds
   Compound Eyes: 2 seeds
   Quark Drive: 2 seeds
-  RKS System: 2 seeds
   Synchronize: 2 seeds
   No Guard: 2 seeds
   Ripen: 2 seeds
   Intimidate: 2 seeds
+  Merciless: 2 seeds

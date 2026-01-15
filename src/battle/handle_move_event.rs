@@ -43,7 +43,18 @@ impl Battle {
                     .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
                     .unwrap_or(0);
 
-                move_callbacks::dispatch_on_after_sub_damage(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), damage, source_pos)
+                // JavaScript: onAfterSubDamage(damage, target, source, move)
+                // - target = the Pokemon with Substitute (receiving damage)
+                // - source = the attacker (using the move)
+                //
+                // dispatch_on_after_sub_damage expects:
+                // - pokemon_pos = the source/attacker
+                // - target_pos = the target/substitute owner
+                //
+                // In this context:
+                // - source_pos = the attacker (passed to this function)
+                // - target_pos = extracted from EventTarget (the target)
+                move_callbacks::dispatch_on_after_sub_damage(self, active_move_clone.as_ref(), source_pos.unwrap_or((0,0)), damage, target_pos)
             }
             "BasePower" => {
                 // Get base_power from relay_var

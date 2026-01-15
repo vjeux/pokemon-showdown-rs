@@ -74,7 +74,7 @@ Seed 1362: ✓ PASS
 Seed 1369: ✓ PASS
 Seed 1379: ✓ PASS
 Seed 1398: ✗ FAIL - #33: turn=32, prng=128->131, P1=[Duraludon(47/217)], P2=[Xerneas(68/280)]
-Seed 1400: ✗ FAIL - #43: turn=38, prng=179->179, P1=[Litleo(194/258)], P2=[Throh(139/362)]
+Seed 1400: ✓ PASS
 Seed 1420: ✓ PASS
 Seed 1424: ✓ PASS
 Seed 1428: ✓ PASS
@@ -187,7 +187,7 @@ Seed 2819: ✓ PASS
 Seed 2856: ✓ PASS
 Seed 2861: ✓ PASS
 Seed 2865: ✓ PASS
-Seed 2876: ✗ FAIL - #40: turn=36, prng=48->48, P1=[Vivillon(156/312)], P2=[Muk(357/357)]
+Seed 2876: ✓ PASS
 Seed 2893: ✓ PASS
 Seed 2894: ✓ PASS
 Seed 2919: ✓ PASS
@@ -529,7 +529,7 @@ Seed 7149: ✗ FAIL - #3: turn=4, prng=8->13, P1=[Shaymin(295/333)], P2=[Caterpi
 Seed 7163: ✓ PASS
 Seed 7169: ✓ PASS
 Seed 7179: ✓ PASS
-Seed 7213: ✗ FAIL - #20: turn=19, prng=83->83, P1=[Naganadel(242/242)], P2=[Silvally(17/198)]
+Seed 7213: ✓ PASS
 Seed 7227: ✓ PASS
 Seed 7238: ✓ PASS
 Seed 7240: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 635
-Failed: 88
+Passed: 638
+Failed: 85
 
-Pass rate: 87%
+Pass rate: 88%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

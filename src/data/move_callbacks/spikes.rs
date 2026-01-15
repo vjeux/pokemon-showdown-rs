@@ -20,10 +20,13 @@ pub mod condition {
         //     this.effectState.layers = 1;
         // }
 
+        // Get the side from the effect context (Effect.side_index), not EffectState.side
+        let effect_side_index = battle.effect.as_ref().and_then(|e| e.side_index);
+
         // this.add('-sidestart', side, 'Spikes');
         let side_index = battle.with_effect_state_ref(|state| state.side).flatten();
 
-        if let Some(side_idx) = side_index {
+        if let Some(side_idx) = effect_side_index.or(side_index) {
             let side_id = if side_idx == 0 { "p1" } else { "p2" };
             let side_arg = crate::battle::Arg::Str(side_id);
             battle.add("-sidestart", &[side_arg, "Spikes".into()]);
@@ -49,6 +52,9 @@ pub mod condition {
         //     this.effectState.layers++;
         // }
 
+        // Get the side from the effect context
+        let effect_side_index = battle.effect.as_ref().and_then(|e| e.side_index);
+
         // if (this.effectState.layers >= 3) return false;
         let layers = battle
             .with_effect_state_ref(|state| state.layers.unwrap_or(0))
@@ -61,15 +67,16 @@ pub mod condition {
         // this.add('-sidestart', side, 'Spikes');
         let side_index = battle.with_effect_state_ref(|state| state.side).flatten();
 
-        if let Some(side_idx) = side_index {
+        if let Some(side_idx) = effect_side_index.or(side_index) {
             let side_id = if side_idx == 0 { "p1" } else { "p2" };
             let side_arg = crate::battle::Arg::Str(side_id);
             battle.add("-sidestart", &[side_arg, "Spikes".into()]);
         }
 
         // this.effectState.layers++;
+        let new_layers = layers + 1;
         battle.with_effect_state(|state| {
-            state.layers = Some(layers + 1);
+            state.layers = Some(new_layers);
         });
 
         EventResult::Continue
