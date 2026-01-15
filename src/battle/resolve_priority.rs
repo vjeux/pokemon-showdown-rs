@@ -412,6 +412,17 @@ impl Battle {
             }
         }
 
+        // For field handlers (pseudo weather, weather, terrain) that don't have an effectHolder (pokemon),
+        // always use effect_order from state to maintain insertion order and prevent unnecessary shuffling.
+        // This ensures field conditions added earlier always execute before those added later.
+        if handler.effect_holder.is_none() {
+            if let Some(state) = &handler.state {
+                if handler.effect_order.is_none() {
+                    handler.effect_order = Some(state.effect_order);
+                }
+            }
+        }
+
         // JS: if (handler.effectHolder && (handler.effectHolder as Pokemon).getStat)
         if let Some(effect_holder) = handler.effect_holder {
             // Check if we need special handling for Magic Bounce

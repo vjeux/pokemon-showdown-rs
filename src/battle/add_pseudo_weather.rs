@@ -70,6 +70,10 @@ impl Battle {
         // });
         let mut state = EffectState::new(pseudo_weather_id.clone());
         state.source = source_pos;
+        // Set unique effect_order for tie-breaking when sorting handlers
+        // JavaScript: initEffectState increments effectOrder counter
+        state.effect_order = self.effect_order;
+        self.effect_order += 1;
 
         // ✅ IMPLEMENTED: Look up duration from dex
         // JavaScript: duration: status.duration

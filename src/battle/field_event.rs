@@ -591,7 +591,7 @@ impl Battle {
                     }
                     // Clear pseudo-weather
                     else {
-                        self.field.pseudo_weather.remove(&handler.effect_id);
+                        self.field.pseudo_weather.shift_remove(&handler.effect_id);
                     }
 
                     if self.ended {

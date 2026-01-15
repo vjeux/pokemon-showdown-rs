@@ -5,7 +5,7 @@
 //! Represents the battle field - weather, terrain, and pseudo-weather conditions.
 
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use indexmap::IndexMap;
 
 use crate::dex_data::ID;
 use crate::event_system::EffectState;
@@ -37,7 +37,8 @@ pub struct Field {
 
     /// Pseudo-weather conditions (like Trick Room, Magic Room, etc.)
     /// JavaScript: pseudoWeather: { [id: string]: EffectState }
-    pub pseudo_weather: HashMap<ID, EffectState>,
+    /// Uses IndexMap to preserve insertion order like JavaScript objects
+    pub pseudo_weather: IndexMap<ID, EffectState>,
 }
 
 impl Default for Field {
@@ -55,7 +56,7 @@ impl Field {
             weather_state: EffectState::new(ID::empty()),
             terrain: ID::empty(),
             terrain_state: EffectState::new(ID::empty()),
-            pseudo_weather: HashMap::new(),
+            pseudo_weather: IndexMap::new(),
         }
     }
 

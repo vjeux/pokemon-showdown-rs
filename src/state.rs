@@ -10,6 +10,7 @@ use crate::event_system::EffectState;
 use crate::prng::PRNGSeed;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use indexmap::IndexMap;
 
 /// Serializable battle state
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -250,7 +251,8 @@ pub struct FieldState {
     pub terrain_state: Option<EffectState>,
     /// Pseudo-weather conditions
     /// JavaScript: pseudoWeather: { [id: string]: EffectState }
-    pub pseudo_weather: HashMap<ID, EffectState>,
+    /// Uses IndexMap to preserve insertion order like JavaScript objects
+    pub pseudo_weather: IndexMap<ID, EffectState>,
 }
 
 /// Input log entry for replay
@@ -298,7 +300,7 @@ impl Default for FieldState {
             weather_state: None,
             terrain: ID::empty(),
             terrain_state: None,
-            pseudo_weather: HashMap::new(),
+            pseudo_weather: IndexMap::new(),
         }
     }
 }

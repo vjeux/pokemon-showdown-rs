@@ -154,12 +154,12 @@ impl Battle {
             match result {
                 crate::event::EventResult::Boolean(false) => {
                     eprintln!("[ADD_PSEUDOWEATHER] FieldStart returned false, removing pseudoweather");
-                    self.field.pseudo_weather.remove(&id);
+                    self.field.pseudo_weather.shift_remove(&id);
                     false
                 }
                 crate::event::EventResult::Null => {
                     eprintln!("[ADD_PSEUDOWEATHER] FieldStart returned null, removing pseudoweather");
-                    self.field.pseudo_weather.remove(&id);
+                    self.field.pseudo_weather.shift_remove(&id);
                     false
                 }
                 _ => {

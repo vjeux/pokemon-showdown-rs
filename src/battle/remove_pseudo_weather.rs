@@ -34,7 +34,7 @@ impl Battle {
         );
 
         // delete this.pseudoWeather[status.id];
-        self.field.pseudo_weather.remove(id);
+        self.field.pseudo_weather.shift_remove(id);
 
         true
     }
