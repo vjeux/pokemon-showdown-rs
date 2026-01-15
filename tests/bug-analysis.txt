@@ -1,4 +1,4 @@
-Analyzing 33 failing minimized seed files...
+Analyzing 32 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -55,8 +55,6 @@ fishiousrend: 1 seeds
   Seeds: 4893
 eruption: 1 seeds
   Seeds: 4893
-buzzybuzz: 1 seeds
-  Seeds: 5215
 mirrormove: 1 seeds
   Seeds: 5251
 jumpkick: 1 seeds
@@ -227,8 +225,6 @@ No Guard: 2 seeds
   Seeds: 6288, 8708
 Intimidate: 2 seeds
   Seeds: 6719, 7324
-Quark Drive: 1 seeds
-  Seeds: 5215
 Sand Stream: 1 seeds
   Seeds: 5748
 Light Metal: 1 seeds
@@ -251,8 +247,6 @@ Static: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-boosterenergy: 1 seeds
-  Seeds: 5215
 enigmaberry: 1 seeds
   Seeds: 6065
 focussash: 1 seeds
@@ -263,10 +257,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 33
-Unique moves: 109 (108 non-simple)
-Unique abilities: 14 (12 non-simple)
-Unique items: 4
+Total minimized seeds: 32
+Unique moves: 108 (107 non-simple)
+Unique abilities: 13 (11 non-simple)
+Unique items: 3
 
 --- Most Common Moves (top 10) ---
   lightscreen: 2 seeds
@@ -283,7 +277,6 @@ Unique items: 4
 --- Most Common Abilities (top 10) ---
   No Guard: 2 seeds
   Intimidate: 2 seeds
-  Quark Drive: 1 seeds
   Sand Stream: 1 seeds
   Light Metal: 1 seeds
   Primordial Sea: 1 seeds
@@ -291,3 +284,4 @@ Unique items: 4
   Levitate: 1 seeds
   Stakeout: 1 seeds
   Pressure: 1 seeds
+  Sheer Force: 1 seeds

@@ -368,7 +368,7 @@ Seed 5166: ✓ PASS
 Seed 5172: ✓ PASS
 Seed 5188: ✓ PASS
 Seed 5204: ✓ PASS
-Seed 5215: ✗ FAIL - #1: turn=2, prng=0->8, P1=[Iron Moth(255/312)], P2=[Emboar(297/367)]
+Seed 5215: ✓ PASS
 Seed 5245: ✓ PASS
 Seed 5251: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Saharascal(115/224)], P2=[Landorus(248/280)]
 Seed 5266: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 690
-Failed: 33
+Passed: 691
+Failed: 32
 
 Pass rate: 95%
 ✗ Some seeds still failing
