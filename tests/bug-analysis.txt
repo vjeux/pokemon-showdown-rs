@@ -1,4 +1,4 @@
-Analyzing 43 failing minimized seed files...
+Analyzing 42 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -21,20 +21,6 @@ gigavolthavoc: 1 seeds
   Seeds: 2388
 sing: 1 seeds
   Seeds: 2388
-hyperbeam: 1 seeds
-  Seeds: 3063
-bubblebeam: 1 seeds
-  Seeds: 3063
-leafstorm: 1 seeds
-  Seeds: 3063
-spectralthief: 1 seeds
-  Seeds: 3063
-calmmind: 1 seeds
-  Seeds: 3063
-scorchingsands: 1 seeds
-  Seeds: 3063
-glare: 1 seeds
-  Seeds: 3063
 psyshieldbash: 1 seeds
   Seeds: 3126
 rocktomb: 1 seeds
@@ -259,10 +245,6 @@ Poison Point: 1 seeds
   Seeds: 2338
 Mycelium Might: 1 seeds
   Seeds: 2388
-Dauntless Shield: 1 seeds
-  Seeds: 3063
-Magician: 1 seeds
-  Seeds: 3063
 Hadron Engine: 1 seeds
   Seeds: 3165
 Snow Warning: 1 seeds
@@ -297,8 +279,6 @@ ITEMS
 ============================================================
 quickclaw: 1 seeds
   Seeds: 2388
-iapapaberry: 1 seeds
-  Seeds: 3063
 normalgem: 1 seeds
   Seeds: 4648
 boosterenergy: 1 seeds
@@ -315,10 +295,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 43
-Unique moves: 121 (120 non-simple)
-Unique abilities: 24 (22 non-simple)
-Unique items: 8
+Total minimized seeds: 42
+Unique moves: 114 (113 non-simple)
+Unique abilities: 22 (20 non-simple)
+Unique items: 7
 
 --- Most Common Moves (top 10) ---
   dragontail: 2 seeds
@@ -330,7 +310,7 @@ Unique items: 8
   assist: 2 seeds
   gigavolthavoc: 1 seeds
   sing: 1 seeds
-  hyperbeam: 1 seeds
+  psyshieldbash: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   Quark Drive: 2 seeds
@@ -339,7 +319,7 @@ Unique items: 8
   Gorilla Tactics: 2 seeds
   Poison Point: 1 seeds
   Mycelium Might: 1 seeds
-  Dauntless Shield: 1 seeds
-  Magician: 1 seeds
   Hadron Engine: 1 seeds
   Snow Warning: 1 seeds
+  Teravolt: 1 seeds
+  Tough Claws: 1 seeds

@@ -202,7 +202,7 @@ Seed 3002: ✓ PASS
 Seed 3010: ✓ PASS
 Seed 3014: ✓ PASS
 Seed 3022: ✓ PASS
-Seed 3063: ✗ FAIL - #59: turn=54, prng=204->211, P1=[Seaking(54/256)], P2=[Hoopa(0/187)]
+Seed 3063: ✓ PASS
 Seed 3070: ✓ PASS
 Seed 3078: ✓ PASS
 Seed 3085: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 680
-Failed: 43
+Passed: 681
+Failed: 42
 
 Pass rate: 94%
 ✗ Some seeds still failing

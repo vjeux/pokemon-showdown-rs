@@ -431,6 +431,13 @@ pub fn try_spread_move_hit(
     // JS: move.hitTargets = targets;
     active_move.hit_targets = target_list.clone();
 
+    // Sync hit_targets to battle.active_move so ability callbacks like Magician can see it
+    // We only update hit_targets, not the entire active_move, to avoid the nested move issue
+    // described below.
+    if let Some(ref mut battle_active_move) = battle.active_move {
+        battle_active_move.hit_targets = target_list.clone();
+    }
+
     // NOTE: Do NOT restore battle.active_move here!
     // When nested moves are called (e.g., Copycat calling useMove(Swift)),
     // the nested move sets battle.active_move. Restoring it here would
