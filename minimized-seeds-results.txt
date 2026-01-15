@@ -62,7 +62,7 @@ Seed 1235: ✗ FAIL - #5: turn=6, prng=14->16, P1=[Mamoswine(42/214)], P2=[Alcre
 Seed 1249: ✓ PASS
 Seed 1252: ✗ FAIL - #51: turn=42, prng=182->188, P1=[Mudbray(1/240)], P2=[Annihilape(155/230)]
 Seed 1256: ✗ FAIL - #3: turn=4, prng=7->10, P1=[Morpeko(152/152)], P2=[Galvantula(172/255)]
-Seed 1258: ✓ PASS
+Seed 1258: ✗ FAIL - #10: turn=9, prng=49->56, P1=[Rotom(159/171)], P2=[Darmanitan(38/228)]
 Seed 1267: ✓ PASS
 Seed 1279: ✓ PASS
 Seed 1284: ✓ PASS
@@ -165,7 +165,7 @@ Seed 2609: ✓ PASS
 Seed 2618: ✓ PASS
 Seed 2622: ✓ PASS
 Seed 2633: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Bergmite(169/237)], P2=[Gastrodon(272/384)]
-Seed 2651: ✓ PASS
+Seed 2651: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Piplup(178/208)], P2=[Dartrix(137/237)]
 Seed 2655: ✓ PASS
 Seed 2665: ✓ PASS
 Seed 2674: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Audino(270/303)], P2=[Medicham(135/208)]
@@ -435,7 +435,7 @@ Seed 6124: ✓ PASS
 Seed 6148: ✓ PASS
 Seed 6201: ✓ PASS
 Seed 6216: ✓ PASS
-Seed 6242: ✗ FAIL - #2: turn=3, prng=6->9, P1=[Arceus(259/268)], P2=[Darkrai(144/193)]
+Seed 6242: ✓ PASS
 Seed 6251: ✓ PASS
 Seed 6261: ✓ PASS
 Seed 6287: ✓ PASS
@@ -514,7 +514,7 @@ Seed 7018: ✗ FAIL - #3: turn=3, prng=12->18, P1=[Grafaiai(0/162)], P2=[Chariza
 Seed 7028: ✓ PASS
 Seed 7029: ✓ PASS
 Seed 7042: ✓ PASS
-Seed 7054: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Passimian(270/270)], P2=[Equilibra(180/198)]
+Seed 7054: ✓ PASS
 Seed 7055: ✗ FAIL - #4: turn=4, prng=28->34, P1=[Machamp(186/323)], P2=[Toxapex(89/138)]
 Seed 7072: ✓ PASS
 Seed 7077: ✓ PASS
@@ -723,7 +723,7 @@ Seed 9748: ✓ PASS
 Seed 9751: ✓ PASS
 Seed 9765: ✓ PASS
 Seed 9782: ✓ PASS
-Seed 9789: ✗ FAIL - #78: turn=76, prng=182->185, P1=[Palkia(145/335)], P2=[Mimikyu(121/175)]
+Seed 9789: ✓ PASS
 Seed 9805: ✓ PASS
 Seed 9809: ✓ PASS
 Seed 9827: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 625
-Failed: 98
+Passed: 626
+Failed: 97
 
 Pass rate: 86%
 ✗ Some seeds still failing

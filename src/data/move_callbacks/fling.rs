@@ -116,9 +116,11 @@ pub fn on_prepare_hit(
     //     ... secondaries logic ...
     // }
     //
-    // Store the item ID in the battle state so on_hit can access it
-    // The item will be removed by the fling volatile's onUpdate
-    battle.effect = Some(Effect::item(item_id.clone()));
+    // Store the item ID in the active_move so on_hit can access it
+    // (battle.effect gets overwritten, but active_move persists)
+    if let Some(ref mut active_move) = battle.active_move {
+        active_move.flung_item = Some(item_id.clone());
+    }
 
     // Get item.isBerry to handle berry case
     let is_berry = {
@@ -208,26 +210,26 @@ pub fn on_prepare_hit(
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    _pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    let target = target_pos;
 
     let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
-    // Get the flung item ID from battle.effect (set in on_prepare_hit)
-    let item_effect = match &battle.effect {
-        Some(effect) => effect.clone(),
+    // Get the flung item ID from active_move.flung_item (set in on_prepare_hit)
+    let item_id = match &battle.active_move {
+        Some(active_move) => match &active_move.flung_item {
+            Some(id) => id.clone(),
+            None => return EventResult::Continue,
+        },
         None => return EventResult::Continue,
     };
-    let item_id = item_effect.id.clone();
+
+    let item_effect = Effect::item(item_id.clone());
 
     // Get item data
     let (is_berry, has_on_eat) = {

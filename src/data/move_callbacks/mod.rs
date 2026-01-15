@@ -907,6 +907,36 @@ pub fn has_secondary_on_hit(move_id: &str) -> bool {
     }
 }
 
+/// Check if a move has an on_hit callback registered in dispatch
+/// This is needed because some moves (like Fling) dynamically set onHit in JS
+pub fn has_on_hit(move_id: &str) -> bool {
+    match move_id {
+        "acupressure" | "afteryou" | "alluringvoice" | "allyswitch" | "anchorshot" |
+        "aromatherapy" | "assist" | "autotomize" | "banefulbunker" | "batonpass" |
+        "bellydrum" | "bestow" | "block" | "bugbite" | "burningbulwark" |
+        "burningjealousy" | "camouflage" | "clangoroussoul" | "clearsmog" |
+        "conversion" | "conversion2" | "copycat" | "coreenforcer" | "corrosivegas" |
+        "curse" | "defog" | "detect" | "direclaw" | "doodle" | "eeriespell" |
+        "endure" | "entrainment" | "filletaway" | "fling" | "flameburst" |
+        "floralhealing" | "forestscurse" | "freezyfrost" | "genesissupernova" |
+        "gmaxsnooze" | "guardsplit" | "guardswap" | "healbell" | "healpulse" |
+        "heartswap" | "incinerate" | "instruct" | "jawlock" | "junglehealing" |
+        "kingsshield" | "lockon" | "lunarblessing" | "magicpowder" | "maxguard" |
+        "meanlook" | "metronome" | "mimic" | "mindreader" | "moonlight" |
+        "morningsun" | "naturepower" | "nightshade" | "obstruct" | "painsplit" |
+        "partingshot" | "pluck" | "powder" | "powersplit" | "powerswap" |
+        "powertrick" | "protect" | "psychup" | "psychoshift" | "psywave" |
+        "pursuit" | "quash" | "reflect" | "reflecttype" | "rest" | "roleplay" |
+        "sappyseed" | "seismictoss" | "shoreup" | "silktrap" | "simplebeam" |
+        "sketch" | "skillswap" | "sleeptalk" | "snatch" | "soak" |
+        "spectralthief" | "speedswap" | "spiderweb" | "spikycacoon" | "spikyshield" |
+        "spite" | "splash" | "stompingtantrum" | "storedpower" | "struggle" |
+        "substitute" | "superfang" | "synthesis" | "telekinesis" | "transform" |
+        "trickortreat" | "venomdrench" | "wakeupslap" | "worryseed" => true,
+        _ => false,
+    }
+}
+
 /// Dispatch onHit callbacks
 /// JavaScript: onHit(target, source, move) - TARGET FIRST
 pub fn dispatch_on_hit(
@@ -949,6 +979,7 @@ pub fn dispatch_on_hit(
         "endure" => endure::on_hit(battle, target_pos, source_pos),
         "entrainment" => entrainment::on_hit(battle, target_pos, source_pos),
         "filletaway" => filletaway::on_hit(battle, target_pos, source_pos),
+        "fling" => fling::on_hit(battle, target_pos, source_pos),
         "flameburst" => flameburst::on_hit(battle, target_pos, source_pos),
         "floralhealing" => floralhealing::on_hit(battle, target_pos, source_pos),
         "forestscurse" => forestscurse::on_hit(battle, target_pos, source_pos),

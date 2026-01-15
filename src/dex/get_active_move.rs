@@ -144,6 +144,7 @@ impl Dex {
             aura_booster: None,
             caused_crash_damage: None,
             self_dropped: false,
+            flung_item: None,
             stellar_boosted: false,
             type_changer_boosted: None,
             magnitude: None,

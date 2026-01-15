@@ -565,7 +565,9 @@ pub fn run_move_effects<'a>(
                             // For self effects, check for self.onHit callbacks
                             battle.move_has_self_callback(active_move.id.as_str(), "Hit")
                         } else {
-                            battle.has_move_id_callback(effect_id, "Hit")
+                            // Check both dex data AND dispatch registry (for dynamically set callbacks like Fling)
+                            battle.has_move_id_callback(effect_id, "Hit") ||
+                            crate::data::move_callbacks::has_on_hit(effect_id.as_str())
                         }
                     },
                 };

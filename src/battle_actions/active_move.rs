@@ -240,6 +240,8 @@ pub struct ActiveMove {
     pub caused_crash_damage: Option<bool>,
     /// User dropped its item (Fling, etc.)
     pub self_dropped: bool,
+    /// Item being flung (for Fling move callback)
+    pub flung_item: Option<ID>,
     /// Move is Stellar type boosted
     pub stellar_boosted: bool,
     /// Effect ID that changed this move's type

@@ -1,10 +1,10 @@
-Analyzing 98 failing minimized seed files...
+Analyzing 97 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-fling: 3 seeds
-  Seeds: 6242, 7054, 9789
+direclaw: 3 seeds
+  Seeds: 1258, 2651, 7121
 afteryou: 3 seeds
   Seeds: 6764, 6919, 9563
 helpinghand: 2 seeds
@@ -115,6 +115,10 @@ headcharge: 1 seeds
   Seeds: 1252
 gust: 1 seeds
   Seeds: 1252
+lowsweep: 1 seeds
+  Seeds: 1258
+ficklebeam: 1 seeds
+  Seeds: 1258
 spinout: 1 seeds
   Seeds: 1398
 hiddenpowerpsychic: 1 seeds
@@ -153,6 +157,14 @@ sing: 1 seeds
   Seeds: 2388
 knockoff: 1 seeds
   Seeds: 2633
+aromatherapy: 1 seeds
+  Seeds: 2651
+closecombat: 1 seeds
+  Seeds: 2651
+lusterpurge: 1 seeds
+  Seeds: 2651
+teeterdance: 1 seeds
+  Seeds: 2651
 strengthsap: 1 seeds
   Seeds: 2741
 shedtail: 1 seeds
@@ -343,8 +355,6 @@ shelter: 1 seeds
   Seeds: 7012
 poisongas: 1 seeds
   Seeds: 7055
-direclaw: 1 seeds
-  Seeds: 7121
 roost: 1 seeds
   Seeds: 7149
 freezedry: 1 seeds
@@ -433,12 +443,6 @@ gmaxstonesurge: 1 seeds
   Seeds: 9563
 roar: 1 seeds
   Seeds: 9563
-slam: 1 seeds
-  Seeds: 9789
-attackorder: 1 seeds
-  Seeds: 9789
-glaciate: 1 seeds
-  Seeds: 9789
 
 ============================================================
 ABILITIES (excluding simple ones)
@@ -469,12 +473,14 @@ Merciless: 2 seeds
   Seeds: 6919, 7055
 Gorilla Tactics: 2 seeds
   Seeds: 7592, 7601
-Pressure: 2 seeds
-  Seeds: 9005, 9789
 Rivalry: 1 seeds
   Seeds: 1110
 Dancer: 1 seeds
   Seeds: 1110
+Zen Mode: 1 seeds
+  Seeds: 1258
+Vital Spirit: 1 seeds
+  Seeds: 1258
 Quick Draw: 1 seeds
   Seeds: 1825
 Poison Point: 1 seeds
@@ -517,6 +523,8 @@ Levitate: 1 seeds
   Seeds: 8544
 Stakeout: 1 seeds
   Seeds: 8708
+Pressure: 1 seeds
+  Seeds: 9005
 Sheer Force: 1 seeds
   Seeds: 9005
 Static: 1 seeds
@@ -565,35 +573,29 @@ boosterenergy: 1 seeds
   Seeds: 5215
 enigmaberry: 1 seeds
   Seeds: 6065
-liechiberry: 1 seeds
-  Seeds: 6242
 choicescarf: 1 seeds
   Seeds: 6391
 figyberry: 1 seeds
   Seeds: 6621
 sitrusberry: 1 seeds
   Seeds: 7018
-goldberry: 1 seeds
-  Seeds: 7054
 razorfang: 1 seeds
   Seeds: 8070
 oranberry: 1 seeds
   Seeds: 8146
 focussash: 1 seeds
   Seeds: 8544
-lansatberry: 1 seeds
-  Seeds: 9789
 
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 98
-Unique moves: 219 (218 non-simple)
-Unique abilities: 43 (40 non-simple)
-Unique items: 28
+Total minimized seeds: 97
+Unique moves: 221 (220 non-simple)
+Unique abilities: 45 (42 non-simple)
+Unique items: 25
 
 --- Most Common Moves (top 10) ---
-  fling: 3 seeds
+  direclaw: 3 seeds
   afteryou: 3 seeds
   helpinghand: 2 seeds
   electroshot: 2 seeds
