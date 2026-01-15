@@ -1846,9 +1846,10 @@ pub fn dispatch_condition_on_damage(
     source_pos: (usize, usize),
     target_pos: (usize, usize),
 ) -> EventResult {
+    // This is called from move context, so is_move_effect is true
     let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "bide" => bide::condition::on_damage(battle, 0, target_pos, Some(source_pos), None),
-        "endure" => endure::condition::on_damage(battle, 0, target_pos, Some(source_pos), None),
+        "bide" => bide::condition::on_damage(battle, 0, target_pos, Some(source_pos), None, true),
+        "endure" => endure::condition::on_damage(battle, 0, target_pos, Some(source_pos), None, true),
         _ => EventResult::Continue,
     }
 }

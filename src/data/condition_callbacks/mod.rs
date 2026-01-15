@@ -323,10 +323,11 @@ pub fn dispatch_on_damage(
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
+    is_move_effect: bool,
 ) -> EventResult {
     match condition_id {
-        "bide" => move_callbacks::bide::condition::on_damage(battle, damage, target_pos, source_pos, effect_id),
-        "endure" => move_callbacks::endure::condition::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "bide" => move_callbacks::bide::condition::on_damage(battle, damage, target_pos, source_pos, effect_id, is_move_effect),
+        "endure" => move_callbacks::endure::condition::on_damage(battle, damage, target_pos, source_pos, effect_id, is_move_effect),
         _ => EventResult::Continue,
     }
 }

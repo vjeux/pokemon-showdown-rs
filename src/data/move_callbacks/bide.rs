@@ -72,10 +72,12 @@ pub mod condition {
         _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
         effect_id: Option<&str>,
+        is_move_effect: bool,
     ) -> EventResult {
         // if (!move || move.effectType !== 'Move' || !source) return;
         // effect_id represents the move, source_pos is the source
-        if effect_id.is_none() || source_pos.is_none() {
+        // is_move_effect checks that effectType === 'Move'
+        if effect_id.is_none() || source_pos.is_none() || !is_move_effect {
             return EventResult::Continue;
         }
 

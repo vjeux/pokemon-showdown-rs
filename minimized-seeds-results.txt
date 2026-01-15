@@ -15,7 +15,7 @@ Seed 515: ✓ PASS
 Seed 517: ✓ PASS
 Seed 536: ✓ PASS
 Seed 546: ✓ PASS
-Seed 547: ✗ FAIL - #29: turn=28, prng=106->107, P1=[Latios(16/228)], P2=[Gible(260/278)]
+Seed 547: ✓ PASS
 Seed 576: ✓ PASS
 Seed 603: ✓ PASS
 Seed 611: ✓ PASS
@@ -210,7 +210,7 @@ Seed 3092: ✓ PASS
 Seed 3103: ✓ PASS
 Seed 3119: ✓ PASS
 Seed 3122: ✓ PASS
-Seed 3126: ✗ FAIL - #48: turn=46, prng=192->203, P1=[Alcremie(70/225)], P2=[Porygon-Z(194/194)]
+Seed 3126: ✓ PASS
 Seed 3130: ✓ PASS
 Seed 3141: ✓ PASS
 Seed 3149: ✓ PASS
@@ -583,7 +583,7 @@ Seed 7846: ✓ PASS
 Seed 7869: ✓ PASS
 Seed 7877: ✓ PASS
 Seed 7884: ✓ PASS
-Seed 7887: ✗ FAIL - #1: turn=2, prng=3->21, P1=[Taillow(140/208)], P2=[Silvally(278/308)]
+Seed 7887: ✓ PASS
 Seed 7897: ✓ PASS
 Seed 7960: ✓ PASS
 Seed 7984: ✓ PASS
@@ -700,7 +700,7 @@ Seed 9423: ✓ PASS
 Seed 9425: ✗ FAIL - #26: turn=25, prng=107->119, P1=[Silicobra(185/243)], P2=[Skiploom(42/165)]
 Seed 9427: ✓ PASS
 Seed 9485: ✓ PASS
-Seed 9529: ✗ FAIL - #1: turn=2, prng=3->19, P1=[Charizard(203/220)], P2=[Medicham(229/229)]
+Seed 9529: ✓ PASS
 Seed 9540: ✓ PASS
 Seed 9544: ✓ PASS
 Seed 9563: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 700
-Failed: 23
+Passed: 704
+Failed: 19
 
-Pass rate: 96%
+Pass rate: 97%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

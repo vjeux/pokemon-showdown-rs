@@ -1,16 +1,8 @@
-Analyzing 23 failing minimized seed files...
+Analyzing 19 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-psyshieldbash: 1 seeds
-  Seeds: 3126
-rocktomb: 1 seeds
-  Seeds: 3126
-shelltrap: 1 seeds
-  Seeds: 3126
-reflect: 1 seeds
-  Seeds: 3126
 healingwish: 1 seeds
   Seeds: 3367
 barrier: 1 seeds
@@ -35,18 +27,6 @@ fishiousrend: 1 seeds
   Seeds: 4893
 eruption: 1 seeds
   Seeds: 4893
-smackdown: 1 seeds
-  Seeds: 547
-bide: 1 seeds
-  Seeds: 547
-mirrorshot: 1 seeds
-  Seeds: 547
-hiddenpowerwater: 1 seeds
-  Seeds: 547
-moonlight: 1 seeds
-  Seeds: 547
-firespin: 1 seeds
-  Seeds: 547
 camouflage: 1 seeds
   Seeds: 5748
 haze: 1 seeds
@@ -97,8 +77,6 @@ freezedry: 1 seeds
   Seeds: 7149
 topsyturvy: 1 seeds
   Seeds: 7298
-pursuit: 1 seeds
-  Seeds: 7887
 thunder: 1 seeds
   Seeds: 8445
 safeguard: 1 seeds
@@ -155,8 +133,6 @@ soak: 1 seeds
   Seeds: 9425
 luckychant: 1 seeds
   Seeds: 9425
-chillyreception: 1 seeds
-  Seeds: 9529
 
 ============================================================
 ABILITIES (excluding simple ones)
@@ -191,22 +167,22 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 23
-Unique moves: 78 (77 non-simple)
+Total minimized seeds: 19
+Unique moves: 66 (65 non-simple)
 Unique abilities: 11 (10 non-simple)
 Unique items: 1
 
 --- Most Common Moves (top 10) ---
-  psyshieldbash: 1 seeds
-  rocktomb: 1 seeds
-  shelltrap: 1 seeds
-  reflect: 1 seeds
   healingwish: 1 seeds
   barrier: 1 seeds
   lunardance: 1 seeds
   noxioustorque: 1 seeds
   dynamicpunch: 1 seeds
   recover: 1 seeds
+  gravity: 1 seeds
+  wonderroom: 1 seeds
+  trickortreat: 1 seeds
+  falseswipe: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   No Guard: 2 seeds

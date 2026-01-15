@@ -221,7 +221,13 @@ impl Battle {
                 let effect_id = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
                     .map(|eff| eff.id.as_str().to_string());
-                condition_callbacks::dispatch_on_damage(self, condition_id, damage, pokemon_pos, source_pos, effect_id.as_deref())
+                // Check if the effect is a Move type
+                // JavaScript: if (!move || move.effectType !== 'Move' || !source) return;
+                let is_move_effect = self.event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|eff| eff.effect_type == crate::battle::EffectType::Move)
+                    .unwrap_or(false);
+                condition_callbacks::dispatch_on_damage(self, condition_id, damage, pokemon_pos, source_pos, effect_id.as_deref(), is_move_effect)
             }
             "DisableMove" => {
                 condition_callbacks::dispatch_on_disable_move(self, condition_id, pokemon_pos)

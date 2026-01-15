@@ -96,47 +96,42 @@ pub mod condition {
         damage: i32,
         target_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        _effect_id: Option<&str>,
+        is_move_effect: bool,
     ) -> EventResult {
-        use crate::dex_data::ID;
-
         let target = target_pos;
 
         // if (effect?.effectType === 'Move' && damage >= target.hp) {
         //     this.add('-activate', target, 'move: Endure');
         //     return target.hp - 1;
         // }
-        if let Some(effect) = effect_id {
-            // Check if effect is a Move
-            let is_move = battle.dex.moves().get_by_id(&ID::from(effect)).is_some();
+        // JavaScript checks effect.effectType === 'Move', we use is_move_effect parameter
+        if is_move_effect {
+            let target_hp = {
+                let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target_pokemon.hp
+            };
 
-            if is_move {
-                let target_hp = {
+            if damage >= target_hp {
+                // this.add('-activate', target, 'move: Endure');
+                let target_ident = {
                     let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
-                    target_pokemon.hp
+                    target_pokemon.get_slot()
                 };
 
-                if damage >= target_hp {
-                    // this.add('-activate', target, 'move: Endure');
-                    let target_ident = {
-                        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                            Some(p) => p,
-                            None => return EventResult::Continue,
-                        };
-                        target_pokemon.get_slot()
-                    };
+                battle.add(
+                    "-activate",
+                    &[target_ident.as_str().into(), "move: Endure".into()],
+                );
 
-                    battle.add(
-                        "-activate",
-                        &[target_ident.as_str().into(), "move: Endure".into()],
-                    );
-
-                    // return target.hp - 1;
-                    return EventResult::Number(target_hp - 1);
-                }
+                // return target.hp - 1;
+                return EventResult::Number(target_hp - 1);
             }
         }
 
