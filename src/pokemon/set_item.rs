@@ -129,17 +129,21 @@ impl Pokemon {
             (pokemon.item.clone(), pokemon.item_state.clone())
         };
 
+        // JS: this.item = item.id;
+        // JS: this.itemState = this.battle.initEffectState({ id: item.id, target: this });
+        // MUST call init_effect_state for unique effect_order
+        let mut new_item_state = EffectState::new(item_id.clone());
+        new_item_state.target = Some((pokemon_pos.0, pokemon_pos.1));
+        let new_item_state = battle.init_effect_state(new_item_state, None);
+
         // Phase 2: Mutate pokemon to set new item
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return false,
         };
 
-        // JS: this.item = item.id;
-        // JS: this.itemState = this.battle.initEffectState({ id: item.id, target: this });
         pokemon_mut.item = item_id.clone();
-        pokemon_mut.item_state = EffectState::new(item_id.clone());
-        pokemon_mut.item_state.target = Some((pokemon_pos.0, pokemon_pos.1));
+        pokemon_mut.item_state = new_item_state;
 
         // JS: if (oldItem.exists) this.battle.singleEvent('End', oldItem, oldItemState, this);
         // ✅ NOW IMPLEMENTED (Session 24 Part 74): singleEvent('End') for old item

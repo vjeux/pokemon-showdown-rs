@@ -1,4 +1,4 @@
-Analyzing 18 failing minimized seed files...
+Analyzing 16 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -133,16 +133,12 @@ ABILITIES (excluding simple ones)
 ============================================================
 No Guard: 2 seeds
   Seeds: 6288, 8708
-Intimidate: 2 seeds
-  Seeds: 6719, 7324
 Sand Stream: 1 seeds
   Seeds: 5748
 Light Metal: 1 seeds
   Seeds: 6288
 Primordial Sea: 1 seeds
   Seeds: 6926
-Anticipation: 1 seeds
-  Seeds: 7324
 Stakeout: 1 seeds
   Seeds: 8708
 Pressure: 1 seeds
@@ -161,9 +157,9 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 18
+Total minimized seeds: 16
 Unique moves: 63 (62 non-simple)
-Unique abilities: 11 (10 non-simple)
+Unique abilities: 9 (8 non-simple)
 Unique items: 1
 
 --- Most Common Moves (top 10) ---
@@ -180,11 +176,9 @@ Unique items: 1
 
 --- Most Common Abilities (top 10) ---
   No Guard: 2 seeds
-  Intimidate: 2 seeds
   Sand Stream: 1 seeds
   Light Metal: 1 seeds
   Primordial Sea: 1 seeds
-  Anticipation: 1 seeds
   Stakeout: 1 seeds
   Pressure: 1 seeds
   Sheer Force: 1 seeds

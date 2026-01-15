@@ -438,14 +438,31 @@ pub fn switch_in(
         for move_slot in &mut pokemon.move_slots {
             move_slot.used = false;
         }
+    }
 
-        // Initialize ability and item state
-        // JS: pokemon.abilityState = this.battle.initEffectState({ id: pokemon.ability, target: pokemon });
-        // JS: pokemon.itemState = this.battle.initEffectState({ id: pokemon.item, target: pokemon });
-        pokemon.ability_state = EffectState::new(pokemon.ability.clone());
-        pokemon.ability_state.target = Some((side_index, pokemon_index));
-        pokemon.item_state = EffectState::new(pokemon.item.clone());
-        pokemon.item_state.target = Some((side_index, pokemon_index));
+    // Initialize ability and item state - MUST call init_effect_state for unique effect_order
+    // JS: pokemon.abilityState = this.battle.initEffectState({ id: pokemon.ability, target: pokemon });
+    // JS: pokemon.itemState = this.battle.initEffectState({ id: pokemon.item, target: pokemon });
+    {
+        let (ability_id, item_id) = {
+            let pokemon = &battle.sides[side_index].pokemon[pokemon_index];
+            (pokemon.ability.clone(), pokemon.item.clone())
+        };
+
+        // Create ability state with id and target, then call init_effect_state for effect_order
+        let mut ability_state = EffectState::new(ability_id);
+        ability_state.target = Some((side_index, pokemon_index));
+        let ability_state = battle.init_effect_state(ability_state, None);
+
+        // Create item state with id and target, then call init_effect_state for effect_order
+        let mut item_state = EffectState::new(item_id);
+        item_state.target = Some((side_index, pokemon_index));
+        let item_state = battle.init_effect_state(item_state, None);
+
+        // Assign the initialized states
+        let pokemon = &mut battle.sides[side_index].pokemon[pokemon_index];
+        pokemon.ability_state = ability_state;
+        pokemon.item_state = item_state;
     }
 
     // Run BeforeSwitchIn event

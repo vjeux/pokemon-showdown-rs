@@ -132,26 +132,32 @@ impl Pokemon {
             battle.pokemon_at(src_pos.0, src_pos.1).map(|p| p.position)
         });
 
+        // JS: this.ability = ability.id;
+        // JS: this.abilityState = this.battle.initEffectState({ id: ability.id, target: this });
+        // MUST call init_effect_state for unique effect_order
+        let mut new_ability_state = EffectState::new(ability_id.clone());
+        new_ability_state.target = Some(pokemon_pos);
+        let mut new_ability_state = battle.init_effect_state(new_ability_state, None);
+
+        // Set source and source_effect on the ability state
+        // ✅ NOW IMPLEMENTED (Session 24 Part 29): source and source_effect assignments
+        // source_slot should be the active slot position (pokemon.position), not party index
+        if let Some(src_pos) = source_pos {
+            new_ability_state.source = Some(src_pos);
+            new_ability_state.source_slot = source_position;
+        }
+        if let Some(src_effect) = source_effect {
+            new_ability_state.source_effect = Some(src_effect.clone());
+        }
+
         // Phase 2: Mutate pokemon to set new ability
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return ID::default(),
         };
 
-        // JS: this.ability = ability.id;
-        // JS: this.abilityState = this.battle.initEffectState({ id: ability.id, target: this });
         pokemon_mut.ability = ability_id.clone();
-        pokemon_mut.ability_state = EffectState::new(ability_id.clone());
-        pokemon_mut.ability_state.target = Some((pokemon_pos.0, pokemon_pos.1));
-        // ✅ NOW IMPLEMENTED (Session 24 Part 29): source and source_effect assignments
-        // source_slot should be the active slot position (pokemon.position), not party index
-        if let Some(src_pos) = source_pos {
-            pokemon_mut.ability_state.source = Some(src_pos);
-            pokemon_mut.ability_state.source_slot = source_position;
-        }
-        if let Some(src_effect) = source_effect {
-            pokemon_mut.ability_state.source_effect = Some(src_effect.clone());
-        }
+        pokemon_mut.ability_state = new_ability_state;
 
         // JS: if (sourceEffect && !isFromFormeChange && !isTransform) {
         // JS:     if (source) {
