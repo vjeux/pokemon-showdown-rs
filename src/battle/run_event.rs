@@ -334,39 +334,46 @@ impl Battle {
 
             // JavaScript: const callback = (sourceEffect as any)[`on${eventid}`];
             // JavaScript: if (callback !== undefined) { ... }
-            // In Rust, we use static dispatch, so we don't check if callback exists
-            // Instead, we create an EventListener and let dispatch_single_event handle it
-            // If the move doesn't have a handler, it will return EventResult::Continue
-
-            // JavaScript: if (Array.isArray(target)) throw new Error("");
-            // We don't support array targets in this path
-
-            // JavaScript: handlers.unshift(this.resolvePriority({
-            // JavaScript:     effect: sourceEffect, callback, state: this.initEffectState({}), end: null, effectHolder: target,
-            // JavaScript: }, `on${eventid}`));
-
-            // Create EventListener for the sourceEffect
-            let mut source_handler = EventListener {
-                effect: source_eff.clone(),
-                callback_name: event_id.to_string(),
-                target: None,
-                index: None,
-                state: None, // JavaScript: state: this.initEffectState({})
-                effect_holder: target_pos, // JavaScript: effectHolder: target
-                order: None,
-                priority: 0,
-                sub_order: 0,
-                effect_order: None,
-                speed: None,
+            // IMPORTANT: Only add the handler if the sourceEffect actually has the callback!
+            let callback_name = format!("on{}", event_id);
+            let has_callback = match source_eff.effect_type {
+                crate::battle::EffectType::Move => self.move_has_callback(source_eff.id.as_str(), &callback_name),
+                crate::battle::EffectType::Ability => self.ability_has_callback(source_eff.id.as_str(), &callback_name),
+                crate::battle::EffectType::Item => self.item_has_callback(source_eff.id.as_str(), &callback_name),
+                crate::battle::EffectType::Status => self.condition_has_callback(source_eff.id.as_str(), &callback_name),
+                _ => false,
             };
 
-            // JavaScript: handlers.unshift(this.resolvePriority(handler, `on${eventid}`));
-            // Call resolve_priority to enrich the handler with priority/order/subOrder
-            let callback_name = format!("on{}", event_id);
-            self.resolve_priority(&mut source_handler, &callback_name);
+            if has_callback {
+                // JavaScript: if (Array.isArray(target)) throw new Error("");
+                // We don't support array targets in this path
 
-            // Insert at the front of handlers (JavaScript unshift)
-            handlers.insert(0, source_handler);
+                // JavaScript: handlers.unshift(this.resolvePriority({
+                // JavaScript:     effect: sourceEffect, callback, state: this.initEffectState({}), end: null, effectHolder: target,
+                // JavaScript: }, `on${eventid}`));
+
+                // Create EventListener for the sourceEffect
+                let mut source_handler = EventListener {
+                    effect: source_eff.clone(),
+                    callback_name: event_id.to_string(),
+                    target: None,
+                    index: None,
+                    state: None, // JavaScript: state: this.initEffectState({})
+                    effect_holder: target_pos, // JavaScript: effectHolder: target
+                    order: None,
+                    priority: 0,
+                    sub_order: 0,
+                    effect_order: None,
+                    speed: None,
+                };
+
+                // JavaScript: handlers.unshift(this.resolvePriority(handler, `on${eventid}`));
+                // Call resolve_priority to enrich the handler with priority/order/subOrder
+                self.resolve_priority(&mut source_handler, &callback_name);
+
+                // Insert at the front of handlers (JavaScript unshift)
+                handlers.insert(0, source_handler);
+            }
         }
 
         // JavaScript: Sort handlers based on event type (lines 145-151)
