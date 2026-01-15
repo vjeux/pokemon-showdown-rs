@@ -22,11 +22,11 @@ use crate::Pokemon;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // Get target
-    let target = match target_pos {
+    // Get source (the Pokemon using Bestow, who gives their item)
+    let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -34,8 +34,9 @@ pub fn on_hit(
     // if (target.item) {
     //     return false;
     // }
+    // Check if target already has an item - if so, fail
     {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+        let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -46,8 +47,9 @@ pub fn on_hit(
     }
 
     // const myItem = source.takeItem();
+    // Take item from source (the one using Bestow)
     let my_item = {
-        Pokemon::take_item(battle, pokemon_pos, None)
+        Pokemon::take_item(battle, source, None)
     };
 
     // if (!myItem) return false;
@@ -58,13 +60,15 @@ pub fn on_hit(
 
     // if (!this.singleEvent('TakeItem', myItem, source.itemState, target, source, move, myItem) || !target.setItem(myItem)) {
     let take_item_event =
-        battle.single_event("TakeItem", &crate::battle::Effect::item(my_item.clone()), None, Some(target), Some(pokemon_pos), None, None);
+        battle.single_event("TakeItem", &crate::battle::Effect::item(my_item.clone()), None, Some(target_pos), Some(source), None, None);
 
-    let set_item_success = Pokemon::set_item(battle, target, my_item.clone(), None, None);
+    // Give item to target (the one receiving via Bestow)
+    let set_item_success = Pokemon::set_item(battle, target_pos, my_item.clone(), None, None);
 
     if matches!(take_item_event, EventResult::Boolean(false)) || !set_item_success {
         // source.item = myItem.id;
-        let source_pokemon = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+        // Restore item to source if transfer failed
+        let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
@@ -76,12 +80,12 @@ pub fn on_hit(
 
     // this.add('-item', target, myItem.name, '[from] move: Bestow', `[of] ${source}`);
     let (item_name, target_ident, source_ident) = {
-        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+        let target_pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        let source_pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
