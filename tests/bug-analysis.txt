@@ -1,14 +1,8 @@
-Analyzing 19 failing minimized seed files...
+Analyzing 18 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-healingwish: 1 seeds
-  Seeds: 3367
-barrier: 1 seeds
-  Seeds: 3367
-lunardance: 1 seeds
-  Seeds: 3367
 noxioustorque: 1 seeds
   Seeds: 4479
 dynamicpunch: 1 seeds
@@ -167,15 +161,12 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 19
-Unique moves: 66 (65 non-simple)
+Total minimized seeds: 18
+Unique moves: 63 (62 non-simple)
 Unique abilities: 11 (10 non-simple)
 Unique items: 1
 
 --- Most Common Moves (top 10) ---
-  healingwish: 1 seeds
-  barrier: 1 seeds
-  lunardance: 1 seeds
   noxioustorque: 1 seeds
   dynamicpunch: 1 seeds
   recover: 1 seeds
@@ -183,6 +174,9 @@ Unique items: 1
   wonderroom: 1 seeds
   trickortreat: 1 seeds
   falseswipe: 1 seeds
+  fishiousrend: 1 seeds
+  eruption: 1 seeds
+  camouflage: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   No Guard: 2 seeds

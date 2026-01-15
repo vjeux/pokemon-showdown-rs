@@ -230,7 +230,7 @@ Seed 3308: ✓ PASS
 Seed 3316: ✓ PASS
 Seed 3346: ✓ PASS
 Seed 3348: ✓ PASS
-Seed 3367: ✗ FAIL - #36: turn=35, prng=96->96, P1=[Grafaiai(212/212)], P2=[Porygon2(199/199)]
+Seed 3367: ✓ PASS
 Seed 3382: ✓ PASS
 Seed 3403: ✓ PASS
 Seed 3433: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 704
-Failed: 19
+Passed: 705
+Failed: 18
 
 Pass rate: 97%
 ✗ Some seeds still failing

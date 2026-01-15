@@ -100,6 +100,10 @@ impl Battle {
         state.source = source_pos;
         state.source_slot = source_slot;
         state.target = Some(target_pos);
+        // Set unique effect_order for tie-breaking when sorting handlers
+        // JavaScript: initEffectState increments effectOrder counter
+        state.effect_order = self.effect_order;
+        self.effect_order += 1;
 
         // Insert the condition
         if let Some(side) = self.sides.get_mut(side_idx) {
