@@ -407,10 +407,9 @@ pub fn switch_in(
             battle.sides[side_index].pokemon[old_idx].last_item = ID::empty();
         }
 
-        // Swap positions in active array
-        // Note: JavaScript swaps pokemon in the pokemon array to maintain index=position invariant.
-        // Rust uses an index-based architecture (borrow-checker workaround), so we don't swap
-        // the pokemon Vec, only update the active array and position fields.
+        // Update position (without swapping the array)
+        // Note: JavaScript swaps pokemon in the array, but we don't to avoid breaking index references.
+        // Instead, we just update the position fields and fix iteration order in move callbacks like Assist.
         let new_position = pos;
         battle.sides[side_index].pokemon[pokemon_index].position = new_position;
     } else {

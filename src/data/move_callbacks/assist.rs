@@ -31,31 +31,42 @@ use crate::event::EventResult;
 /// }
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    target_pos: Option<(usize, usize)>,
+    target_pos: (usize, usize),
+    _source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // Get the target position
-    let target = match target_pos {
-        Some(pos) => pos,
-        None => return EventResult::Continue,
-    };
+    // JavaScript: onHit(target) - target is the first argument
+    // For Assist which targets "self", target is the Assist user
+    let target = target_pos;
 
     // const moves = [];
     let mut moves: Vec<ID> = Vec::new();
 
     // for (const pokemon of target.side.pokemon) {
+    // In JavaScript, side.pokemon is reordered when switching so that iterating it
+    // gives pokemon in position order. In Rust, we keep the original array order but
+    // track position separately. We need to iterate in position order to match JS.
     let target_side_idx = target.0;
     let num_pokemon = battle.sides[target_side_idx].pokemon.len();
 
-    for poke_idx in 0..num_pokemon {
-        let poke_pos = (target_side_idx, poke_idx);
+    // Get the target's position (from position field, not array index)
+    let target_position = battle.sides[target_side_idx].pokemon[target.1].position;
 
+    // Collect (array_index, position) pairs and sort by position
+    let mut pokemon_by_position: Vec<(usize, usize)> = (0..num_pokemon)
+        .map(|idx| (idx, battle.sides[target_side_idx].pokemon[idx].position))
+        .collect();
+    pokemon_by_position.sort_by_key(|&(_, pos)| pos);
+
+    // Iterate in position order
+    for (poke_idx, poke_position) in pokemon_by_position {
         // if (pokemon === target) continue;
-        if poke_pos == target {
+        // In JS, this compares pokemon objects. Since we're iterating by position,
+        // we need to skip the pokemon at the target's position.
+        if poke_position == target_position {
             continue;
         }
 
-        let pokemon = match battle.pokemon_at(poke_pos.0, poke_pos.1) {
+        let pokemon = match battle.pokemon_at(target_side_idx, poke_idx) {
             Some(p) => p,
             None => continue,
         };
@@ -71,10 +82,11 @@ pub fn on_hit(
             // if (move.flags['noassist'] || move.isZ || move.isMax) {
             //     continue;
             // }
-            if move_data.flags.contains_key("noassist")
-                || move_data.is_z.is_some()
-                || move_data.is_max.is_some()
-            {
+            let has_noassist = move_data.flags.contains_key("noassist");
+            let is_z = move_data.is_z.is_some();
+            let is_max = move_data.is_max.is_some();
+
+            if has_noassist || is_z || is_max {
                 continue;
             }
 
