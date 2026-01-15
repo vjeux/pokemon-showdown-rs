@@ -412,13 +412,20 @@ impl Battle {
             }
         }
 
-        // For field handlers (pseudo weather, weather, terrain) that don't have an effectHolder (pokemon),
-        // always use effect_order from state to maintain insertion order and prevent unnecessary shuffling.
+        // For field conditions (pseudo weather, weather, terrain) that don't have an effectHolder,
+        // use effect_order from state to maintain insertion order and prevent unnecessary shuffling.
         // This ensures field conditions added earlier always execute before those added later.
+        // Note: This only applies to Weather, Terrain, and FieldCondition types, NOT SideCondition.
         if handler.effect_holder.is_none() {
-            if let Some(state) = &handler.state {
-                if handler.effect_order.is_none() {
-                    handler.effect_order = Some(state.effect_order);
+            let is_field_condition = matches!(
+                handler.effect.effect_type,
+                EffectType::Weather | EffectType::Terrain | EffectType::FieldCondition
+            );
+            if is_field_condition {
+                if let Some(state) = &handler.state {
+                    if handler.effect_order.is_none() {
+                        handler.effect_order = Some(state.effect_order);
+                    }
                 }
             }
         }
