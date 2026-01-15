@@ -1,4 +1,4 @@
-Analyzing 42 failing minimized seed files...
+Analyzing 39 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -17,10 +17,6 @@ obstruct: 2 seeds
   Seeds: 8544, 9005
 assist: 2 seeds
   Seeds: 8774, 9563
-gigavolthavoc: 1 seeds
-  Seeds: 2388
-sing: 1 seeds
-  Seeds: 2388
 psyshieldbash: 1 seeds
   Seeds: 3126
 rocktomb: 1 seeds
@@ -55,8 +51,6 @@ gravity: 1 seeds
   Seeds: 4479
 wonderroom: 1 seeds
   Seeds: 4479
-explosion: 1 seeds
-  Seeds: 4648
 trickortreat: 1 seeds
   Seeds: 4760
 falseswipe: 1 seeds
@@ -241,10 +235,6 @@ Intimidate: 2 seeds
   Seeds: 6719, 7324
 Gorilla Tactics: 2 seeds
   Seeds: 7592, 7601
-Poison Point: 1 seeds
-  Seeds: 2338
-Mycelium Might: 1 seeds
-  Seeds: 2388
 Hadron Engine: 1 seeds
   Seeds: 3165
 Snow Warning: 1 seeds
@@ -277,10 +267,6 @@ Static: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-quickclaw: 1 seeds
-  Seeds: 2388
-normalgem: 1 seeds
-  Seeds: 4648
 boosterenergy: 1 seeds
   Seeds: 5215
 enigmaberry: 1 seeds
@@ -295,10 +281,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 42
-Unique moves: 114 (113 non-simple)
-Unique abilities: 22 (20 non-simple)
-Unique items: 7
+Total minimized seeds: 39
+Unique moves: 111 (110 non-simple)
+Unique abilities: 20 (18 non-simple)
+Unique items: 5
 
 --- Most Common Moves (top 10) ---
   dragontail: 2 seeds
@@ -308,18 +294,18 @@ Unique items: 7
   courtchange: 2 seeds
   obstruct: 2 seeds
   assist: 2 seeds
-  gigavolthavoc: 1 seeds
-  sing: 1 seeds
   psyshieldbash: 1 seeds
+  rocktomb: 1 seeds
+  shelltrap: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   Quark Drive: 2 seeds
   No Guard: 2 seeds
   Intimidate: 2 seeds
   Gorilla Tactics: 2 seeds
-  Poison Point: 1 seeds
-  Mycelium Might: 1 seeds
   Hadron Engine: 1 seeds
   Snow Warning: 1 seeds
   Teravolt: 1 seeds
   Tough Claws: 1 seeds
+  Sand Stream: 1 seeds
+  Light Metal: 1 seeds

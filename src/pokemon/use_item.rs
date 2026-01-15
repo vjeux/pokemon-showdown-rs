@@ -60,7 +60,9 @@ impl Pokemon {
         let (hp, is_active, item_id, is_gem) = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
-                None => return None,
+                None => {
+                    return None;
+                }
             };
 
             // JS: if (!this.item) return false;
@@ -73,8 +75,7 @@ impl Pokemon {
                 .dex
                 .items()
                 .get_by_id(&pokemon.item)
-                .and_then(|item_data| item_data.extra.get("isGem"))
-                .and_then(|v| v.as_bool())
+                .map(|item_data| item_data.is_gem)
                 .unwrap_or(false);
 
             (pokemon.hp, pokemon.is_active, pokemon.item.clone(), is_gem)

@@ -138,12 +138,12 @@ Seed 2266: ✓ PASS
 Seed 2303: ✓ PASS
 Seed 2304: ✓ PASS
 Seed 2329: ✓ PASS
-Seed 2338: ✗ FAIL - #6: turn=5, prng=12->16, P1=[Wooper(179/227)], P2=[Shedinja(0/1)]
+Seed 2338: ✓ PASS
 Seed 2341: ✓ PASS
 Seed 2351: ✓ PASS
 Seed 2358: ✓ PASS
 Seed 2366: ✓ PASS
-Seed 2388: ✗ FAIL - #2: turn=3, prng=6->10, P1=[Chromera(260/261)], P2=[Toedscool(98/216)]
+Seed 2388: ✓ PASS
 Seed 2394: ✓ PASS
 Seed 2397: ✓ PASS
 Seed 2403: ✓ PASS
@@ -312,7 +312,7 @@ Seed 4567: ✓ PASS
 Seed 4594: ✓ PASS
 Seed 4616: ✓ PASS
 Seed 4634: ✓ PASS
-Seed 4648: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Manectric(0/214)], P2=[Goodra(189/253)]
+Seed 4648: ✓ PASS
 Seed 4651: ✓ PASS
 Seed 4652: ✓ PASS
 Seed 4660: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 681
-Failed: 42
+Passed: 684
+Failed: 39
 
 Pass rate: 94%
 ✗ Some seeds still failing

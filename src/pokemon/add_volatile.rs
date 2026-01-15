@@ -109,12 +109,10 @@ impl Pokemon {
 
             // Try dex.conditions first, then fall back to embedded condition
             let affects_fainted = battle.dex.conditions().get_by_id(&volatile_id)
-                .and_then(|cond| cond.extra.get("affectsFainted"))
-                .and_then(|v| v.as_bool())
+                .map(|cond| cond.affects_fainted)
                 .or_else(|| {
                     embedded_condition
-                        .and_then(|cond| cond.extra.get("affectsFainted"))
-                        .and_then(|v| v.as_bool())
+                        .map(|cond| cond.affects_fainted)
                 })
                 .unwrap_or(false);
             (pokemon.hp, affects_fainted)
