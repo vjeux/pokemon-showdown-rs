@@ -32,11 +32,14 @@ pub fn on_move_fail(
         source_pokemon.base_maxhp / 2
     };
 
+    // this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('Supercell Slam'));
+    // JavaScript passes a CONDITION effect, not a MOVE effect. This prevents Disguise from
+    // blocking the crash damage (Disguise only blocks damage from effectType === 'Move').
     battle.damage(
         damage_amount,
         Some(source),
         Some(source),
-        Some(&Effect::move_(ID::from("supercellslam"))),
+        Some(&Effect::condition(ID::from("supercellslam"))),
         false,
     );
 

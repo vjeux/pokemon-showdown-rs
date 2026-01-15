@@ -209,7 +209,7 @@ Seed 3085: ✓ PASS
 Seed 3092: ✓ PASS
 Seed 3103: ✓ PASS
 Seed 3119: ✓ PASS
-Seed 3122: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Crucibelle(174/195)], P2=[Graveler(206/206)]
+Seed 3122: ✓ PASS
 Seed 3126: ✗ FAIL - #48: turn=46, prng=192->203, P1=[Alcremie(70/225)], P2=[Porygon-Z(194/194)]
 Seed 3130: ✓ PASS
 Seed 3141: ✓ PASS
@@ -247,7 +247,7 @@ Seed 3530: ✓ PASS
 Seed 3536: ✓ PASS
 Seed 3543: ✓ PASS
 Seed 3558: ✓ PASS
-Seed 3578: ✗ FAIL - #20: turn=17, prng=75->76, P1=[Mimikyu(80/159)], P2=[Horsea(128/128)]
+Seed 3578: ✓ PASS
 Seed 3579: ✓ PASS
 Seed 3583: ✓ PASS
 Seed 3646: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 675
-Failed: 48
+Passed: 677
+Failed: 46
 
 Pass rate: 93%
 ✗ Some seeds still failing

@@ -1,18 +1,10 @@
-Analyzing 48 failing minimized seed files...
+Analyzing 46 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 thunderpunch: 2 seeds
   Seeds: 2787, 8708
-jumpkick: 2 seeds
-  Seeds: 3578, 5251
-dynamicpunch: 2 seeds
-  Seeds: 3578, 4479
-skillswap: 2 seeds
-  Seeds: 3578, 6288
-thunder: 2 seeds
-  Seeds: 3578, 8445
 dragontail: 2 seeds
   Seeds: 4905, 9005
 shellsidearm: 2 seeds
@@ -45,8 +37,6 @@ scorchingsands: 1 seeds
   Seeds: 3063
 glare: 1 seeds
   Seeds: 3063
-supercellslam: 1 seeds
-  Seeds: 3122
 psyshieldbash: 1 seeds
   Seeds: 3126
 rocktomb: 1 seeds
@@ -67,10 +57,6 @@ barrier: 1 seeds
   Seeds: 3367
 lunardance: 1 seeds
   Seeds: 3367
-crosschop: 1 seeds
-  Seeds: 3578
-chipaway: 1 seeds
-  Seeds: 3578
 aquaring: 1 seeds
   Seeds: 4357
 hyperspacefury: 1 seeds
@@ -80,6 +66,8 @@ headlongrush: 1 seeds
 conversion: 1 seeds
   Seeds: 4387
 noxioustorque: 1 seeds
+  Seeds: 4479
+dynamicpunch: 1 seeds
   Seeds: 4479
 recover: 1 seeds
   Seeds: 4479
@@ -100,6 +88,8 @@ eruption: 1 seeds
 buzzybuzz: 1 seeds
   Seeds: 5215
 mirrormove: 1 seeds
+  Seeds: 5251
+jumpkick: 1 seeds
   Seeds: 5251
 smackdown: 1 seeds
   Seeds: 547
@@ -130,6 +120,8 @@ sludge: 1 seeds
 photongeyser: 1 seeds
   Seeds: 5992
 clearsmog: 1 seeds
+  Seeds: 6288
+skillswap: 1 seeds
   Seeds: 6288
 metalburst: 1 seeds
   Seeds: 6288
@@ -179,6 +171,8 @@ savagespinout: 1 seeds
   Seeds: 7601
 pursuit: 1 seeds
   Seeds: 7887
+thunder: 1 seeds
+  Seeds: 8445
 safeguard: 1 seeds
   Seeds: 8445
 toxicspikes: 1 seeds
@@ -277,12 +271,8 @@ Dauntless Shield: 1 seeds
   Seeds: 3063
 Magician: 1 seeds
   Seeds: 3063
-Magic Guard: 1 seeds
-  Seeds: 3122
 Hadron Engine: 1 seeds
   Seeds: 3165
-Disguise: 1 seeds
-  Seeds: 3578
 Snow Warning: 1 seeds
   Seeds: 4905
 Teravolt: 1 seeds
@@ -319,8 +309,6 @@ quickclaw: 1 seeds
   Seeds: 2388
 iapapaberry: 1 seeds
   Seeds: 3063
-jabocaberry: 1 seeds
-  Seeds: 3578
 normalgem: 1 seeds
   Seeds: 4648
 boosterenergy: 1 seeds
@@ -337,22 +325,22 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 48
-Unique moves: 126 (125 non-simple)
-Unique abilities: 28 (26 non-simple)
-Unique items: 10
+Total minimized seeds: 46
+Unique moves: 123 (122 non-simple)
+Unique abilities: 26 (24 non-simple)
+Unique items: 9
 
 --- Most Common Moves (top 10) ---
   thunderpunch: 2 seeds
-  jumpkick: 2 seeds
-  dynamicpunch: 2 seeds
-  skillswap: 2 seeds
-  thunder: 2 seeds
   dragontail: 2 seeds
   shellsidearm: 2 seeds
   lightscreen: 2 seeds
   counter: 2 seeds
   courtchange: 2 seeds
+  obstruct: 2 seeds
+  assist: 2 seeds
+  gigavolthavoc: 1 seeds
+  sing: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   Quark Drive: 2 seeds
