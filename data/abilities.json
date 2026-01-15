@@ -1748,10 +1748,17 @@
     "onSwitchInPriority": -2,
     "condition": {
       "noCopy": true,
+      "onStart": true,
       "onModifyAtkPriority": 5,
+      "onModifyAtk": true,
       "onModifyDefPriority": 6,
+      "onModifyDef": true,
       "onModifySpAPriority": 5,
-      "onModifySpDPriority": 6
+      "onModifySpA": true,
+      "onModifySpDPriority": 6,
+      "onModifySpD": true,
+      "onModifySpe": true,
+      "onEnd": true
     },
     "flags": {
       "failroleplay": 1,
@@ -1812,10 +1819,17 @@
     "onSwitchInPriority": -2,
     "condition": {
       "noCopy": true,
+      "onStart": true,
       "onModifyAtkPriority": 5,
+      "onModifyAtk": true,
       "onModifyDefPriority": 6,
+      "onModifyDef": true,
       "onModifySpAPriority": 5,
-      "onModifySpDPriority": 6
+      "onModifySpA": true,
+      "onModifySpDPriority": 6,
+      "onModifySpD": true,
+      "onModifySpe": true,
+      "onEnd": true
     },
     "flags": {
       "failroleplay": 1,
