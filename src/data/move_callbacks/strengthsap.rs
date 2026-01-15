@@ -46,7 +46,11 @@ pub fn on_hit(
     let success = battle.boost(&[("atk", -1)], target, Some(source), None, false, false);
 
     // return !!(this.heal(atk, source, target) || success);
-    let heal_result = battle.heal(atk, Some(source), None, None);
+    // JS: this.heal(atk, source, target) where:
+    //   - source = Pokemon using Strength Sap (being healed)
+    //   - target = Pokemon whose attack was drained (source of HP drain)
+    // Rust heal signature: heal(damage, target_to_heal, source_of_heal, effect)
+    let heal_result = battle.heal(atk, Some(source), Some(target), None);
 
     if heal_result.is_some() || success {
         EventResult::Continue
