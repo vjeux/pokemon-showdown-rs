@@ -83,6 +83,9 @@ pub fn on_residual(
     _effect_id: Option<&str>,
 ) -> EventResult {
     // this.damage(pokemon.baseMaxhp / 8);
+    // JavaScript uses float division: 1/8 = 0.125, then clampIntRange(0.125, 1) = 1
+    // Rust integer division: 1/8 = 0, which wouldn't get clamped
+    // Fix: ensure minimum damage of 1 when base_maxhp > 0
     let base_maxhp = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -91,7 +94,11 @@ pub fn on_residual(
         pokemon.base_maxhp
     };
 
-    let damage = base_maxhp / 8;
+    let damage = if base_maxhp > 0 {
+        (base_maxhp / 8).max(1)
+    } else {
+        0
+    };
 
     battle.damage(damage, Some(pokemon_pos), None, None, false);
 
