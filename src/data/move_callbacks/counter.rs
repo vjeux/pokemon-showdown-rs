@@ -161,7 +161,6 @@ pub mod condition {
         source_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         // Get target and source
         let target = match target_pos {
             Some(pos) => pos,
@@ -175,12 +174,12 @@ pub mod condition {
         // if (!source.isAlly(target) && this.getCategory(move) === 'Physical') {
         let is_ally = battle.is_ally(source, target);
 
-        let move_data = match battle.dex.moves().get_by_id(&ID::from(move_id)) {
-            Some(m) => m,
-            None => return EventResult::Continue,
-        };
+        // Use active_move category (runtime) instead of static dex data
+        // JS uses this.getCategory(move) which returns the effective category
+        // Moves like Photon Geyser can change category based on stats
+        let category = active_move.map(|m| m.category.as_str()).unwrap_or("");
 
-        if !is_ally && move_data.category == "Physical" {
+        if !is_ally && category == "Physical" {
             // this.effectState.slot = source.getSlot();
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
                 Some(p) => p,

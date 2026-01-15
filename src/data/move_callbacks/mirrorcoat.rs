@@ -165,9 +165,6 @@ pub mod condition {
         source_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        use crate::dex_data::ID;
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-
         let source = match source_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -185,8 +182,10 @@ pub mod condition {
             return EventResult::Continue;
         }
 
-        let move_data = battle.dex.moves().get_by_id(&ID::from(move_id));
-        let is_special = move_data.map(|m| m.category == "Special").unwrap_or(false);
+        // Use active_move category (runtime) instead of static dex data
+        // JS uses this.getCategory(move) which returns the effective category
+        // Moves like Photon Geyser can change category based on stats
+        let is_special = active_move.map(|m| m.category == "Special").unwrap_or(false);
 
         if !is_special {
             return EventResult::Continue;

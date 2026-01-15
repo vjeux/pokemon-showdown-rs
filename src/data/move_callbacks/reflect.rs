@@ -59,9 +59,6 @@ pub mod condition {
         target_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        use crate::dex_data::ID;
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-
         let source = match source_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
@@ -80,13 +77,9 @@ pub mod condition {
 
             let has_ally = battle.is_ally(effect_target, target);
 
-            let category = {
-                let move_data = match battle.dex.moves().get_by_id(&ID::from(move_id)) {
-                    Some(m) => m,
-                    None => return EventResult::Continue,
-                };
-                move_data.category.clone()
-            };
+            // Use active_move category (runtime) instead of static dex data
+            // JS uses this.getCategory(move) which returns the effective category
+            let category = active_move.map(|m| m.category.as_str()).unwrap_or("");
 
             if has_ally && category == "Physical" {
                 // if (!target.getMoveHitData(move).crit && !move.infiltrates) {
