@@ -74,7 +74,8 @@ pub fn on_hit(
 
     // if (!success) return false;
     if !success {
-        return EventResult::NotFail;
+        // JavaScript returns false here - the hit failed, not "didn't fail"
+        return EventResult::Boolean(false);
     }
 
     // this.add('-invertboost', target, '[from] move: Topsy-Turvy');

@@ -1115,11 +1115,11 @@ pub fn dispatch_on_hit_side(
 /// Dispatch onModifyMove callbacks
 pub fn dispatch_on_modify_move(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    let move_id = battle.active_move.as_ref().map(|m| m.id.as_str()).unwrap_or("");
+    match move_id {
         "beatup" => beatup::on_modify_move(battle, pokemon_pos, target_pos),
         "bleakwindstorm" => bleakwindstorm::on_modify_move(battle, pokemon_pos, target_pos),
         "blizzard" => blizzard::on_modify_move(battle, pokemon_pos, target_pos),

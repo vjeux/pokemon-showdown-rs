@@ -34,10 +34,9 @@ pub fn on_modify_move(
 
     if effective_weather == "raindance" || effective_weather == "primordialsea" {
         // move.accuracy = true;
-        // Store accuracy override in current effect state
-        battle.with_effect_state(|state| {
-            state.accuracy = Some(true);
-        });
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
+        }
     }
 
     EventResult::Continue

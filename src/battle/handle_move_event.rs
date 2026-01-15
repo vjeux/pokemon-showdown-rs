@@ -148,7 +148,7 @@ impl Battle {
             "HitField" => move_callbacks::dispatch_on_hit_field(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos),
             "HitSide" => move_callbacks::dispatch_on_hit_side(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0))),
             "ModifyMove" => {
-                move_callbacks::dispatch_on_modify_move(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos)
+                move_callbacks::dispatch_on_modify_move(self, target_pos.unwrap_or((0,0)), source_pos)
             }
             "ModifyPriority" => {
                 move_callbacks::dispatch_on_modify_priority(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)))
