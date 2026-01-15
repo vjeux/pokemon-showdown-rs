@@ -214,7 +214,7 @@ Seed 3126: ✗ FAIL - #48: turn=46, prng=192->203, P1=[Alcremie(70/225)], P2=[Po
 Seed 3130: ✓ PASS
 Seed 3141: ✓ PASS
 Seed 3149: ✓ PASS
-Seed 3153: ✗ FAIL - #3: turn=3, prng=3->9, P1=[Omastar(210/264)], P2=[Darkrai(194/231)]
+Seed 3153: ✓ PASS
 Seed 3162: ✓ PASS
 Seed 3163: ✓ PASS
 Seed 3165: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Miraidon(263/284)], P2=[Iron Bundle(152/178)]
@@ -318,7 +318,7 @@ Seed 4652: ✓ PASS
 Seed 4660: ✓ PASS
 Seed 4661: ✓ PASS
 Seed 4664: ✓ PASS
-Seed 4668: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Burmy(163/163)], P2=[Florges(194/213)]
+Seed 4668: ✓ PASS
 Seed 4670: ✓ PASS
 Seed 4675: ✓ PASS
 Seed 4682: ✓ PASS
@@ -329,7 +329,7 @@ Seed 4727: ✓ PASS
 Seed 4743: ✓ PASS
 Seed 4745: ✗ FAIL - #26: turn=22, prng=72->76, P1=[Golurk(175/175)], P2=[Froslass(76/278)]
 Seed 4747: ✓ PASS
-Seed 4750: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Medicham(85/211)], P2=[Abomasnow(276/292)]
+Seed 4750: ✓ PASS
 Seed 4754: ✓ PASS
 Seed 4760: ✗ FAIL - #2: turn=3, prng=18->31, P1=[Litten(89/153)], P2=[Nidorina(190/190)]
 Seed 4762: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 618
-Failed: 105
+Passed: 621
+Failed: 102
 
 Pass rate: 85%
 ✗ Some seeds still failing

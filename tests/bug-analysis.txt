@@ -1,10 +1,8 @@
-Analyzing 105 failing minimized seed files...
+Analyzing 102 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-blizzard: 3 seeds
-  Seeds: 3153, 4668, 4750
 hiddenpower: 3 seeds
   Seeds: 3212, 5204, 6359
 shellsidearm: 3 seeds
@@ -53,8 +51,6 @@ stoneaxe: 2 seeds
   Seeds: 2876, 7213
 wickedtorque: 2 seeds
   Seeds: 3000, 4745
-chillyreception: 2 seeds
-  Seeds: 3153, 9529
 tripleaxel: 2 seeds
   Seeds: 3465, 3787
 jumpkick: 2 seeds
@@ -251,8 +247,6 @@ magicpowder: 1 seeds
   Seeds: 4634
 explosion: 1 seeds
   Seeds: 4648
-snowscape: 1 seeds
-  Seeds: 4668
 aircutter: 1 seeds
   Seeds: 4745
 falseswipe: 1 seeds
@@ -441,6 +435,8 @@ soak: 1 seeds
   Seeds: 9425
 luckychant: 1 seeds
   Seeds: 9425
+chillyreception: 1 seeds
+  Seeds: 9529
 drillrun: 1 seeds
   Seeds: 9563
 gmaxstonesurge: 1 seeds
@@ -471,8 +467,6 @@ Quark Drive: 2 seeds
   Seeds: 3165, 5215
 RKS System: 2 seeds
   Seeds: 4745, 7213
-Snow Warning: 2 seeds
-  Seeds: 4750, 4905
 Synchronize: 2 seeds
   Seeds: 5576, 6593
 No Guard: 2 seeds
@@ -513,6 +507,8 @@ Magic Guard: 1 seeds
   Seeds: 3122
 Disguise: 1 seeds
   Seeds: 3578
+Snow Warning: 1 seeds
+  Seeds: 4905
 Teravolt: 1 seeds
   Seeds: 4905
 Electric Surge: 1 seeds
@@ -601,13 +597,12 @@ lansatberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 105
-Unique moves: 226 (225 non-simple)
+Total minimized seeds: 102
+Unique moves: 224 (223 non-simple)
 Unique abilities: 43 (40 non-simple)
 Unique items: 28
 
 --- Most Common Moves (top 10) ---
-  blizzard: 3 seeds
   hiddenpower: 3 seeds
   shellsidearm: 3 seeds
   fling: 3 seeds
@@ -617,6 +612,7 @@ Unique items: 28
   dragonenergy: 2 seeds
   aromaticmist: 2 seeds
   guardsplit: 2 seeds
+  instruct: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Effect Spore: 3 seeds
@@ -626,6 +622,6 @@ Unique items: 28
   Compound Eyes: 2 seeds
   Quark Drive: 2 seeds
   RKS System: 2 seeds
-  Snow Warning: 2 seeds
   Synchronize: 2 seeds
   No Guard: 2 seeds
+  Ripen: 2 seeds
