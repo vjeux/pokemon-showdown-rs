@@ -295,11 +295,11 @@ pub struct Pokemon {
     // TODO: Change from Option<ID> to support both string and boolean
     pub move_this_turn: Option<ID>,
     /// Move result this turn
-    /// JavaScript: moveThisTurnResult?: boolean
-    pub move_this_turn_result: Option<bool>,
+    /// JavaScript: moveThisTurnResult?: boolean | null | undefined
+    pub move_this_turn_result: crate::battle_actions::MoveResult,
     /// Move result last turn
-    /// JavaScript: moveLastTurnResult?: boolean
-    pub move_last_turn_result: Option<bool>,
+    /// JavaScript: moveLastTurnResult?: boolean | null | undefined
+    pub move_last_turn_result: crate::battle_actions::MoveResult,
     /// Hurt this turn (damage taken)
     /// JavaScript: hurtThisTurn?: number
     pub hurt_this_turn: Option<i32>,

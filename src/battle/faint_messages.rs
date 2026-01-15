@@ -278,8 +278,8 @@ impl Battle {
                     }
                     (*pokemon).last_move_used = None;
                     (*pokemon).move_this_turn = None;
-                    (*pokemon).move_last_turn_result = None;
-                    (*pokemon).move_this_turn_result = None;
+                    (*pokemon).move_last_turn_result = crate::battle_actions::MoveResult::Undefined;
+                    (*pokemon).move_this_turn_result = crate::battle_actions::MoveResult::Undefined;
                     (*pokemon).last_damage = 0;
                     (*pokemon).attacked_by.clear();
                     (*pokemon).hurt_this_turn = None;

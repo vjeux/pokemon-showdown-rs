@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::battle_actions::MoveResult;
 
 /// onStart(pokemon) {
 ///     pokemon.removeVolatile('truant');
@@ -31,11 +32,11 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 
     // Check if activeTurns > 0 (JavaScript treats 0 as falsy)
     if active_turns > 0 {
-        // Check if moveThisTurnResult !== undefined (in Rust: is Some)
+        // Check if moveThisTurnResult !== undefined (in Rust: not MoveResult::Undefined)
         // OR !this.queue.willMove(pokemon)
-        // Note: We don't have access to queue.willMove yet, but moveThisTurnResult being Some
+        // Note: We don't have access to queue.willMove yet, but moveThisTurnResult being not Undefined
         // should cover the main case (Pokemon moved this turn)
-        if move_this_turn_result.is_some() {
+        if move_this_turn_result != MoveResult::Undefined {
             // pokemon.addVolatile('truant');
             Pokemon::add_volatile(battle, pokemon_pos, ID::from("truant"), None, None, None, None);
         }

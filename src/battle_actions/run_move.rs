@@ -111,7 +111,8 @@ pub fn run_move(
 
         // pokemon.moveThisTurnResult = willTryMove;
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            pokemon.move_this_turn_result = Some(will_try_move);
+            // willTryMove is false here (since we're in !will_try_move branch)
+            pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Failed;
         }
         return;
     }
@@ -243,7 +244,7 @@ pub fn run_move(
 
                 // JS: pokemon.moveThisTurnResult = false;
                 if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                    pokemon.move_this_turn_result = Some(false);
+                    pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Failed;
                 }
 
                 return;

@@ -785,7 +785,7 @@ pub fn use_move_inner(
         if hit_result.is_not_fail() {
             // Set pokemon.moveThisTurnResult to null
             if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-                pokemon.move_this_turn_result = None;
+                pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Null;
             }
         }
 

@@ -5,6 +5,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle_actions::ActiveMove;
+use crate::battle_actions::HitResult;
 use crate::battle::Effect;
 
 /// Fire TryHit event and handle failures
@@ -27,7 +28,7 @@ pub fn hit_step_try_hit_event(
     targets: &[(usize, usize)],
     attacker_pos: (usize, usize),
     active_move: &ActiveMove,
-) -> Vec<bool> {
+) -> Vec<HitResult> {
     // const hitResults = this.battle.runEvent('TryHit', targets, pokemon, move);
     let mut hit_results = Vec::new();
     for &target_pos in targets {
@@ -57,25 +58,19 @@ pub fn hit_step_try_hit_event(
     // }
     // return hitResults;
 
-    // Convert Option<i32> results to bool
-    // Battle::NOT_FAIL = "" (empty string), which is falsy in JavaScript
-    // In Rust, EventResult::NotFail becomes None in run_event
-    //
+    // Convert EventResult to HitResult
     // JavaScript semantics:
-    // - If result is NOT_FAIL (''): leave as NOT_FAIL (falsy, becomes false in boolean)
-    // - If result is truthy: stays true
-    // - If result is falsy but not NOT_FAIL: becomes false
+    // - If result is NOT_FAIL (''): leave as NOT_FAIL (blocks but not a failure)
+    // - If result is truthy: Success
+    // - If result is falsy but not NOT_FAIL: Failed
     //
-    // Rust mapping:
-    // - None (from EventResult::NotFail) = NOT_FAIL -> false (falsy)
-    // - Some(0) (from EventResult::Boolean(false)) -> false
-    // - Some(non-zero) (from EventResult::Boolean(true)) -> true
+    // Critical: NOT_FAIL must NOT count as "atLeastOneFailure" for Temper Flare
     hit_results.iter().map(|r| {
         match r {
-            EventResult::NotFail => false,        // NOT_FAIL is falsy
-            EventResult::Number(0) | EventResult::Boolean(false) => false,     // 0/false is falsy
-            EventResult::Null => false,           // null is falsy in JavaScript (immunity)
-            _ => true,      // anything else is truthy
+            EventResult::NotFail => HitResult::NotFail,  // Blocked but not a failure
+            EventResult::Number(0) | EventResult::Boolean(false) => HitResult::Failed,  // Explicitly failed
+            EventResult::Null => HitResult::Failed,      // null is falsy in JavaScript (immunity)
+            _ => HitResult::Success,                     // anything else is truthy (success)
         }
     }).collect()
 }

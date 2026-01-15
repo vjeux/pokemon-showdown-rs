@@ -117,7 +117,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            source_pokemon.move_this_turn_result = Some(true);
+            source_pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Success;
         }
 
         EventResult::Continue
@@ -491,8 +491,8 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            if source_pokemon.move_this_turn_result.is_none() {
-                source_pokemon.move_this_turn_result = Some(false);
+            if source_pokemon.move_this_turn_result == crate::battle_actions::MoveResult::Undefined {
+                source_pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Failed;
             }
         }
 

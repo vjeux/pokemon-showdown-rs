@@ -94,7 +94,7 @@ pub mod condition {
             if let Some(side) = battle.sides.get(pokemon_pos.0) {
                 if let Some(pokemon) = side.pokemon.get(pokemon_pos.1) {
                     let has_item = pokemon.item == ID::new("metronome");
-                    let move_result = pokemon.move_last_turn_result.unwrap_or(false);
+                    let move_result = pokemon.move_last_turn_result == crate::battle_actions::MoveResult::Success;
                     let has_ttm = pokemon.volatiles.contains_key(&ID::new("twoturnmove"));
 
                     // Get metronome volatile state

@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::battle_actions::MoveResult;
 
 /// basePowerCallback(pokemon, target, move) {
 ///     if (pokemon.moveLastTurnResult === false) {
@@ -32,7 +33,10 @@ pub fn base_power_callback(
     };
 
     // if (pokemon.moveLastTurnResult === false)
-    if pokemon.move_last_turn_result == Some(false) {
+    // IMPORTANT: In JavaScript, `moveLastTurnResult === false` only matches explicit false,
+    // NOT null or undefined. MoveResult::Failed represents explicit false.
+    // MoveResult::Null (from moves blocked by Protect) does NOT trigger this.
+    if pokemon.move_last_turn_result == MoveResult::Failed {
         let bp = active_move.base_power * 2;
         // this.debug('doubling Stomping Tantrum BP due to previous move failure');
         battle.debug("doubling Stomping Tantrum BP due to previous move failure");

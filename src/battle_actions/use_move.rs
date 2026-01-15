@@ -1,5 +1,6 @@
 use crate::battle::Effect;
 use crate::dex::MoveData;
+use crate::battle_actions::MoveResult;
 use super::use_move_inner::use_move_inner;
 
 
@@ -48,7 +49,7 @@ pub fn use_move(
         move_data.id.as_str(), pokemon_pos.0, pokemon_pos.1, battle.turn, battle.prng.call_count);
     // pokemon.moveThisTurnResult = undefined;
     let (side_idx, poke_idx) = pokemon_pos;
-    battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result = None;
+    battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result = MoveResult::Undefined;
 
     // const oldMoveResult: boolean | null | undefined = pokemon.moveThisTurnResult;
     let old_move_result = battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result;
@@ -67,8 +68,10 @@ pub fn use_move(
     eprintln!("[USE_MOVE] use_move_inner returned {}, PRNG={}", move_result, battle.prng.call_count);
 
     // if (oldMoveResult === pokemon.moveThisTurnResult) pokemon.moveThisTurnResult = moveResult;
-    if old_move_result == battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result {
-        battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result = Some(move_result);
+    let current_move_result = battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result;
+    if old_move_result == current_move_result {
+        let new_result = if move_result { MoveResult::Success } else { MoveResult::Failed };
+        battle.sides[side_idx].pokemon[poke_idx].move_this_turn_result = new_result;
     }
 
     // return moveResult;

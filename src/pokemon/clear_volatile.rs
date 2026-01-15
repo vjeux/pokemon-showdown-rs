@@ -175,8 +175,8 @@ impl Pokemon {
         }
         self.last_move_used = None;
         self.move_this_turn = None;
-        self.move_last_turn_result = None;
-        self.move_this_turn_result = None;
+        self.move_last_turn_result = crate::battle_actions::MoveResult::Undefined;
+        self.move_this_turn_result = crate::battle_actions::MoveResult::Undefined;
 
         // JS: this.lastDamage = 0;
         // JS: this.attackedBy = [];

@@ -71,7 +71,7 @@ pub use damage_result::DamageResult;
 pub use active_move::ActiveMove;
 pub use move_flags::MoveFlags;
 pub use move_data::{MoveHitData, MaxMoveData, ZMoveData, ZMoveOption};
-pub use enums::{IgnoreImmunity, Damage, DamageValue, SwitchCopyFlag, SpreadMoveTarget};
+pub use enums::{IgnoreImmunity, Damage, DamageValue, SwitchCopyFlag, SpreadMoveTarget, HitResult, MoveResult};
 pub use effects::{SecondaryEffect, SelfEffect, HitEffect};
 pub use params::{ZMoveParams, CanZMoveParams, DamageCalcParams};
 pub use options::{AfterMoveResult, MoveEffects, RunMoveOptions, UseMoveOptions};

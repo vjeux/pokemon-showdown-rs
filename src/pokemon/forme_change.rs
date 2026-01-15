@@ -296,7 +296,7 @@ impl Pokemon {
                         pokemon.can_terastallize = None; // National Dex behavior
 
                         if is_zmove || !is_primal {
-                            pokemon.move_this_turn_result = Some(true); // Ultra Burst/Mega counts as an action for Truant
+                            pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Success; // Ultra Burst/Mega counts as an action for Truant
                         }
                         pokemon.forme_regression = true;
                     }

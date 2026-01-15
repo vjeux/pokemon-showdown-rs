@@ -423,7 +423,7 @@ impl Battle {
                 // JS: pokemon.moveLastTurnResult = pokemon.moveThisTurnResult;
                 // JS: pokemon.moveThisTurnResult = undefined;
                 pokemon.move_last_turn_result = pokemon.move_this_turn_result;
-                pokemon.move_this_turn_result = None;
+                pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Undefined;
 
                 if self.turn != 1 {
                     // JS: pokemon.usedItemThisTurn = false;

@@ -257,7 +257,14 @@ pub fn try_spread_move_hit(
     for &step_idx in &step_order {
         // Call the appropriate step function
         // JS: const hitResults: (number | boolean | "" | undefined)[] | undefined = step.call(this, targets, pokemon, move);
-        let hit_results: Option<Vec<bool>> = match step_idx {
+        //
+        // Use HitResult to distinguish between:
+        // - HitResult::Success: hit succeeded (truthy in JS)
+        // - HitResult::Failed: explicitly failed (counts as atLeastOneFailure, val === false in JS)
+        // - HitResult::NotFail: blocked but not a failure (NOT_FAIL / "" in JS, does NOT count as atLeastOneFailure)
+        use crate::battle_actions::HitResult;
+
+        let hit_results: Option<Vec<HitResult>> = match step_idx {
             0 => {
                 // hitStepInvulnerabilityEvent
                 let results = crate::battle_actions::hit_step_invulnerability_event(
@@ -267,10 +274,11 @@ pub fn try_spread_move_hit(
                     active_move,
                 );
                 eprintln!("[TRY_SPREAD] Step 0 (Invuln): results={:?}, target_list.len()={}", results, target_list.len());
-                Some(results)
+                // Convert Vec<bool> to Vec<HitResult>
+                Some(results.into_iter().map(|b| if b { HitResult::Success } else { HitResult::Failed }).collect())
             }
             1 => {
-                // hitStepTryHitEvent
+                // hitStepTryHitEvent - already returns Vec<HitResult>
                 let results = crate::battle_actions::hit_step_try_hit_event(
                     battle,
                     &target_list,
@@ -287,7 +295,8 @@ pub fn try_spread_move_hit(
                     pokemon_pos,
                     active_move,
                 );
-                Some(results)
+                // Convert Vec<bool> to Vec<HitResult>
+                Some(results.into_iter().map(|b| if b { HitResult::Success } else { HitResult::Failed }).collect())
             }
             3 => {
                 // hitStepTryImmunity
@@ -297,7 +306,8 @@ pub fn try_spread_move_hit(
                     pokemon_pos,
                     active_move,
                 );
-                Some(results)
+                // Convert Vec<bool> to Vec<HitResult>
+                Some(results.into_iter().map(|b| if b { HitResult::Success } else { HitResult::Failed }).collect())
             }
             4 => {
                 // hitStepAccuracy
@@ -307,7 +317,8 @@ pub fn try_spread_move_hit(
                     pokemon_pos,
                     active_move,
                 );
-                Some(results)
+                // Convert Vec<bool> to Vec<HitResult>
+                Some(results.into_iter().map(|b| if b { HitResult::Success } else { HitResult::Failed }).collect())
             }
             5 => {
                 // hitStepBreakProtect
@@ -318,7 +329,7 @@ pub fn try_spread_move_hit(
                     active_move,
                 );
                 // This function doesn't return results, so treat as success
-                Some(vec![true; target_list.len()])
+                Some(vec![HitResult::Success; target_list.len()])
             }
             6 => {
                 // hitStepStealBoosts
@@ -329,12 +340,12 @@ pub fn try_spread_move_hit(
                     active_move,
                 );
                 // This function doesn't return results, so treat as success
-                Some(vec![true; target_list.len()])
+                Some(vec![HitResult::Success; target_list.len()])
             }
             7 => {
                 // hitStepMoveHitLoop
-                // This returns SpreadMoveDamage instead of Vec<bool>
-                // We need to convert the damage results to boolean results
+                // This returns SpreadMoveDamage instead of Vec<HitResult>
+                // We need to convert the damage results to HitResult
                 use crate::battle_actions::{SpreadMoveTarget, SpreadMoveTargets, DamageResult};
                 let mut spread_targets: SpreadMoveTargets = target_list.iter().map(|&t| SpreadMoveTarget::Target(t)).collect();
 
@@ -346,10 +357,14 @@ pub fn try_spread_move_hit(
                     active_move,
                 );
 
-                // Convert SpreadMoveDamage to Vec<bool>
-                // Damage, Success, or HitSubstitute = true; Failed or Undefined = false
-                let bool_results: Vec<bool> = damage_results.iter().map(|dmg| {
-                    matches!(dmg, DamageResult::Damage(_) | DamageResult::Success | DamageResult::HitSubstitute)
+                // Convert SpreadMoveDamage to Vec<HitResult>
+                // Damage, Success, or HitSubstitute = Success; Failed or Undefined = Failed
+                let hit_results: Vec<HitResult> = damage_results.iter().map(|dmg| {
+                    if matches!(dmg, DamageResult::Damage(_) | DamageResult::Success | DamageResult::HitSubstitute) {
+                        HitResult::Success
+                    } else {
+                        HitResult::Failed
+                    }
                 }).collect();
 
                 // Update target_list from spread_targets
@@ -360,7 +375,7 @@ pub fn try_spread_move_hit(
                     }
                 }).collect();
 
-                Some(bool_results)
+                Some(hit_results)
             }
             _ => None,
         };
@@ -377,18 +392,28 @@ pub fn try_spread_move_hit(
         // In JavaScript, hitResults[i] can be number | boolean | "" | undefined
         // - truthy values (true, non-zero numbers) pass
         // - 0 also passes (hitResults[i] === 0)
-        // - false, undefined, "" fail
-        // In Rust, we only have bool, so we filter by true
+        // - "" (NOT_FAIL) is falsy, so it REMOVES the target from the list
+        // - false, undefined fail and remove
+        //
+        // In Rust with HitResult:
+        // - Success: keep in list
+        // - NotFail: remove from list (blocked, but not a failure)
+        // - Failed: remove from list (explicitly failed)
         target_list = target_list
             .iter()
             .enumerate()
-            .filter(|(i, _)| hit_results.get(*i).copied().unwrap_or(false))
+            .filter(|(i, _)| {
+                matches!(hit_results.get(*i), Some(HitResult::Success))
+            })
             .map(|(_, &t)| t)
             .collect();
         eprintln!("[TRY_SPREAD] After filter: target_list.len()={}", target_list.len());
 
         // JS: atLeastOneFailure = atLeastOneFailure || hitResults.some(val => val === false);
-        at_least_one_failure = at_least_one_failure || hit_results.iter().any(|&val| !val);
+        // CRITICAL: Only HitResult::Failed counts as a failure, NOT HitResult::NotFail
+        // This is important for Temper Flare: a move blocked by Protect (NotFail) should NOT
+        // be considered a failure that triggers Temper Flare's damage doubling
+        at_least_one_failure = at_least_one_failure || hit_results.iter().any(|&val| val == HitResult::Failed);
 
         // JS: if (move.smartTarget && atLeastOneFailure) move.smartTarget = false;
         if at_least_one_failure {
@@ -418,7 +443,7 @@ pub fn try_spread_move_hit(
     // JS: if (!moveResult && !atLeastOneFailure) pokemon.moveThisTurnResult = null;
     if !move_result && !at_least_one_failure {
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            pokemon.move_this_turn_result = None;
+            pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Null;
         }
     }
 
