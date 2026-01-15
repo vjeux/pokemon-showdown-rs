@@ -1,12 +1,8 @@
-Analyzing 71 failing minimized seed files...
+Analyzing 66 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-afteryou: 3 seeds
-  Seeds: 6764, 6919, 9563
-guardsplit: 2 seeds
-  Seeds: 1256, 1398
 instruct: 2 seeds
   Seeds: 1398, 3250
 hiddenpowerwater: 2 seeds
@@ -39,8 +35,6 @@ lightscreen: 2 seeds
   Seeds: 5992, 8544
 counter: 2 seeds
   Seeds: 5992, 6065
-blueflare: 2 seeds
-  Seeds: 6919, 9005
 courtchange: 2 seeds
   Seeds: 7559, 8544
 sketch: 2 seeds
@@ -53,6 +47,8 @@ electroshot: 1 seeds
   Seeds: 1235
 fly: 1 seeds
   Seeds: 1235
+guardsplit: 1 seeds
+  Seeds: 1398
 spinout: 1 seeds
   Seeds: 1398
 hiddenpowerpsychic: 1 seeds
@@ -141,8 +137,6 @@ fishiousrend: 1 seeds
   Seeds: 4893
 eruption: 1 seeds
   Seeds: 4893
-doubleshock: 1 seeds
-  Seeds: 5112
 buzzybuzz: 1 seeds
   Seeds: 5215
 mirrormove: 1 seeds
@@ -201,14 +195,6 @@ iceshard: 1 seeds
   Seeds: 6593
 maxairstream: 1 seeds
   Seeds: 6621
-foresight: 1 seeds
-  Seeds: 6764
-defensecurl: 1 seeds
-  Seeds: 6764
-ragefist: 1 seeds
-  Seeds: 6764
-flamecharge: 1 seeds
-  Seeds: 6764
 nightshade: 1 seeds
   Seeds: 6794
 teatime: 1 seeds
@@ -227,18 +213,12 @@ wideguard: 1 seeds
   Seeds: 6832
 temperflare: 1 seeds
   Seeds: 6832
-twineedle: 1 seeds
-  Seeds: 6919
-spite: 1 seeds
-  Seeds: 6919
 swallow: 1 seeds
   Seeds: 6926
 bleakwindstorm: 1 seeds
   Seeds: 6926
 ember: 1 seeds
   Seeds: 6926
-poisongas: 1 seeds
-  Seeds: 7055
 roost: 1 seeds
   Seeds: 7149
 freezedry: 1 seeds
@@ -303,6 +283,8 @@ supersonicskystrike: 1 seeds
   Seeds: 9005
 ingrain: 1 seeds
   Seeds: 9005
+blueflare: 1 seeds
+  Seeds: 9005
 rockthrow: 1 seeds
   Seeds: 9005
 maxdarkness: 1 seeds
@@ -327,14 +309,14 @@ drillrun: 1 seeds
   Seeds: 9563
 gmaxstonesurge: 1 seeds
   Seeds: 9563
+afteryou: 1 seeds
+  Seeds: 9563
 roar: 1 seeds
   Seeds: 9563
 
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Hunger Switch: 2 seeds
-  Seeds: 1256, 5112
 Quark Drive: 2 seeds
   Seeds: 3165, 5215
 Synchronize: 2 seeds
@@ -345,8 +327,6 @@ Ripen: 2 seeds
   Seeds: 6621, 8146
 Intimidate: 2 seeds
   Seeds: 6719, 7324
-Merciless: 2 seeds
-  Seeds: 6919, 7055
 Gorilla Tactics: 2 seeds
   Seeds: 7592, 7601
 Poison Point: 1 seeds
@@ -409,8 +389,6 @@ dousedrive: 2 seeds
   Seeds: 2674, 5123
 bigroot: 2 seeds
   Seeds: 3185, 4357
-redcard: 1 seeds
-  Seeds: 1256
 choiceband: 1 seeds
   Seeds: 1977
 mirrorherb: 1 seeds
@@ -445,14 +423,12 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 71
-Unique moves: 164 (163 non-simple)
-Unique abilities: 36 (33 non-simple)
-Unique items: 19
+Total minimized seeds: 66
+Unique moves: 156 (155 non-simple)
+Unique abilities: 34 (31 non-simple)
+Unique items: 18
 
 --- Most Common Moves (top 10) ---
-  afteryou: 3 seeds
-  guardsplit: 2 seeds
   instruct: 2 seeds
   hiddenpowerwater: 2 seeds
   bestow: 2 seeds
@@ -461,15 +437,17 @@ Unique items: 19
   bloodmoon: 2 seeds
   thunderpunch: 2 seeds
   jumpkick: 2 seeds
+  dynamicpunch: 2 seeds
+  skillswap: 2 seeds
 
 --- Most Common Abilities (top 10) ---
-  Hunger Switch: 2 seeds
   Quark Drive: 2 seeds
   Synchronize: 2 seeds
   No Guard: 2 seeds
   Ripen: 2 seeds
   Intimidate: 2 seeds
-  Merciless: 2 seeds
   Gorilla Tactics: 2 seeds
   Poison Point: 1 seeds
   Mycelium Might: 1 seeds
+  Sticky Hold: 1 seeds
+  Liquid Ooze: 1 seeds

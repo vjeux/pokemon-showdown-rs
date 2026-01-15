@@ -29,7 +29,8 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
         };
 
         (
-            species_data.base_species.clone().unwrap_or_default(),
+            // JavaScript: species.baseSpecies defaults to species.name if not set
+            species_data.base_species.clone().unwrap_or_else(|| species_data.name.clone()),
             pokemon.terastallized.clone(),
             species_data.name.clone(),
         )

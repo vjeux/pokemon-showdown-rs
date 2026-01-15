@@ -43,7 +43,8 @@ pub fn on_any_after_set_status(battle: &mut Battle, status: Option<&str>, target
             None => return EventResult::Continue,
         };
 
-        species_data.base_species.clone().unwrap_or_default()
+        // JavaScript: species.baseSpecies defaults to species.name if not set
+        species_data.base_species.clone().unwrap_or_else(|| species_data.name.clone())
     };
 
     if source_base_species_name != "Pecharunt" {
