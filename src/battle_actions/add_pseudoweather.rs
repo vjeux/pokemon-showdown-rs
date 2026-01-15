@@ -108,8 +108,18 @@ impl Battle {
             eprintln!("[ADD_PSEUDOWEATHER] Creating new pseudoweather");
 
             let mut state = EffectState::new(id.clone());
-            // TODO: Set duration from condition data
-            state.duration = None;
+
+            // Get duration from condition data
+            // Check both standalone conditions and conditions embedded in moves
+            let duration = self.dex.conditions().get_by_id(&id)
+                .and_then(|c| c.duration)
+                .or_else(|| {
+                    self.dex.moves().get(id.as_str())
+                        .and_then(|m| m.condition.as_ref())
+                        .and_then(|c| c.duration)
+                });
+            state.duration = duration;
+            eprintln!("[ADD_PSEUDOWEATHER] Set initial duration: {:?}", duration);
 
             // JavaScript: if (!this.battle.singleEvent('FieldStart', status, state, this, source, sourceEffect)) {
             //     delete this.pseudoWeather[status.id];

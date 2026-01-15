@@ -70,7 +70,7 @@ Seed 1288: ✓ PASS
 Seed 1333: ✓ PASS
 Seed 1348: ✓ PASS
 Seed 1359: ✓ PASS
-Seed 1362: ✗ FAIL - #48: turn=46, prng=195->199, P1=[Silvally(175/283)], P2=[Blastoise(83/242)]
+Seed 1362: ✓ PASS
 Seed 1369: ✓ PASS
 Seed 1379: ✓ PASS
 Seed 1398: ✗ FAIL - #33: turn=32, prng=128->131, P1=[Duraludon(47/217)], P2=[Xerneas(68/280)]
@@ -467,7 +467,7 @@ Seed 6518: ✓ PASS
 Seed 6526: ✓ PASS
 Seed 6527: ✓ PASS
 Seed 6528: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Geodude(189/228)], P2=[Sharpedo(188/240)]
-Seed 6543: ✗ FAIL - #21: turn=19, prng=85->90, P1=[Skiddo(185/231)], P2=[Swadloon(232/264)]
+Seed 6543: ✓ PASS
 Seed 6567: ✓ PASS
 Seed 6568: ✓ PASS
 Seed 6576: ✓ PASS
@@ -527,7 +527,7 @@ Seed 7131: ✓ PASS
 Seed 7140: ✓ PASS
 Seed 7149: ✗ FAIL - #3: turn=4, prng=8->13, P1=[Shaymin(295/333)], P2=[Caterpie(222/222)]
 Seed 7163: ✓ PASS
-Seed 7169: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Colossoil(364/400)], P2=[Keldeo(55/277)]
+Seed 7169: ✓ PASS
 Seed 7179: ✓ PASS
 Seed 7213: ✗ FAIL - #20: turn=19, prng=83->83, P1=[Naganadel(242/242)], P2=[Silvally(17/198)]
 Seed 7227: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 578
-Failed: 145
+Passed: 581
+Failed: 142
 
-Pass rate: 79%
+Pass rate: 80%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

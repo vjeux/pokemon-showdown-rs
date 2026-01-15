@@ -1,10 +1,8 @@
-Analyzing 145 failing minimized seed files...
+Analyzing 142 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-echoedvoice: 3 seeds
-  Seeds: 1362, 6543, 7169
 temperflare: 3 seeds
   Seeds: 1519, 5874, 6832
 psyshock: 3 seeds
@@ -23,8 +21,6 @@ shellsidearm: 3 seeds
   Seeds: 3507, 5644, 8545
 skillswap: 3 seeds
   Seeds: 3578, 6288, 6669
-ingrain: 3 seeds
-  Seeds: 5926, 6543, 9005
 fling: 3 seeds
   Seeds: 6242, 7054, 9789
 afteryou: 3 seeds
@@ -41,10 +37,6 @@ aromaticmist: 2 seeds
   Seeds: 1252, 8544
 guardsplit: 2 seeds
   Seeds: 1256, 1398
-burningbulwark: 2 seeds
-  Seeds: 1362, 5576
-eerieimpulse: 2 seeds
-  Seeds: 1362, 4567
 instruct: 2 seeds
   Seeds: 1398, 3250
 hiddenpowerwater: 2 seeds
@@ -109,6 +101,8 @@ dragontail: 2 seeds
   Seeds: 4905, 9005
 filletaway: 2 seeds
   Seeds: 5926, 8544
+ingrain: 2 seeds
+  Seeds: 5926, 9005
 lightscreen: 2 seeds
   Seeds: 5992, 8544
 counter: 2 seeds
@@ -161,12 +155,6 @@ headcharge: 1 seeds
   Seeds: 1252
 gust: 1 seeds
   Seeds: 1252
-relicsong: 1 seeds
-  Seeds: 1362
-cut: 1 seeds
-  Seeds: 1362
-hurricane: 1 seeds
-  Seeds: 1362
 spinout: 1 seeds
   Seeds: 1398
 hiddenpowerpsychic: 1 seeds
@@ -329,6 +317,8 @@ vinewhip: 1 seeds
   Seeds: 4567
 doubleironbash: 1 seeds
   Seeds: 4567
+eerieimpulse: 1 seeds
+  Seeds: 4567
 magicpowder: 1 seeds
   Seeds: 4634
 explosion: 1 seeds
@@ -371,6 +361,8 @@ firespin: 1 seeds
   Seeds: 547
 victorydance: 1 seeds
   Seeds: 5576
+burningbulwark: 1 seeds
+  Seeds: 5576
 camouflage: 1 seeds
   Seeds: 5748
 haze: 1 seeds
@@ -405,12 +397,6 @@ hiddenpowerbug: 1 seeds
   Seeds: 6359
 xscissor: 1 seeds
   Seeds: 6391
-discharge: 1 seeds
-  Seeds: 6543
-defog: 1 seeds
-  Seeds: 6543
-psychoshift: 1 seeds
-  Seeds: 6543
 throatchop: 1 seeds
   Seeds: 6593
 iceshard: 1 seeds
@@ -461,8 +447,6 @@ direclaw: 1 seeds
   Seeds: 7121
 freezedry: 1 seeds
   Seeds: 7149
-plasmafists: 1 seeds
-  Seeds: 7169
 topsyturvy: 1 seeds
   Seeds: 7298
 mistball: 1 seeds
@@ -557,8 +541,6 @@ Emergency Exit: 5 seeds
   Seeds: 1147, 2609, 3078, 4383, 5299
 Iron Barbs: 5 seeds
   Seeds: 4716, 5913, 7029, 7314, 8543
-Effect Spore: 4 seeds
-  Seeds: 1362, 2214, 3507, 6593
 Snow Warning: 4 seeds
   Seeds: 1795, 4750, 4905, 7444
 Zen Mode: 4 seeds
@@ -573,6 +555,8 @@ Electromorphosis: 4 seeds
   Seeds: 2956, 3801, 3953, 6738
 Prankster: 4 seeds
   Seeds: 5807, 6654, 8152, 8799
+Effect Spore: 3 seeds
+  Seeds: 2214, 3507, 6593
 Aftermath: 3 seeds
   Seeds: 2787, 2926, 4278
 Hadron Engine: 3 seeds
@@ -607,8 +591,6 @@ Rivalry: 1 seeds
   Seeds: 1110
 Dancer: 1 seeds
   Seeds: 1110
-Aerilate: 1 seeds
-  Seeds: 1362
 Quick Draw: 1 seeds
   Seeds: 1825
 Poison Point: 1 seeds
@@ -677,10 +659,6 @@ fullincense: 2 seeds
   Seeds: 6005, 7243
 redcard: 1 seeds
   Seeds: 1256
-covertcloak: 1 seeds
-  Seeds: 1362
-powerweight: 1 seeds
-  Seeds: 1362
 stickybarb: 1 seeds
   Seeds: 1400
 choiceband: 1 seeds
@@ -731,13 +709,12 @@ lansatberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 145
-Unique moves: 274 (273 non-simple)
-Unique abilities: 55 (52 non-simple)
-Unique items: 33
+Total minimized seeds: 142
+Unique moves: 266 (265 non-simple)
+Unique abilities: 54 (51 non-simple)
+Unique items: 31
 
 --- Most Common Moves (top 10) ---
-  echoedvoice: 3 seeds
   temperflare: 3 seeds
   psyshock: 3 seeds
   thunderpunch: 3 seeds
@@ -747,11 +724,11 @@ Unique items: 33
   tripleaxel: 3 seeds
   shellsidearm: 3 seeds
   skillswap: 3 seeds
+  fling: 3 seeds
 
 --- Most Common Abilities (top 10) ---
   Emergency Exit: 5 seeds
   Iron Barbs: 5 seeds
-  Effect Spore: 4 seeds
   Snow Warning: 4 seeds
   Zen Mode: 4 seeds
   Rock Head: 4 seeds
@@ -759,3 +736,4 @@ Unique items: 33
   Gluttony: 4 seeds
   Electromorphosis: 4 seeds
   Prankster: 4 seeds
+  Effect Spore: 3 seeds
