@@ -1,4 +1,4 @@
-Analyzing 95 failing minimized seed files...
+Analyzing 92 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -61,8 +61,6 @@ clearsmog: 2 seeds
   Seeds: 4186, 6288
 trickortreat: 2 seeds
   Seeds: 4378, 4760
-triattack: 2 seeds
-  Seeds: 4430, 7012
 payback: 2 seeds
   Seeds: 4634, 9005
 risingvoltage: 2 seeds
@@ -337,8 +335,6 @@ bleakwindstorm: 1 seeds
   Seeds: 6926
 ember: 1 seeds
   Seeds: 6926
-shelter: 1 seeds
-  Seeds: 7012
 poisongas: 1 seeds
   Seeds: 7055
 direclaw: 1 seeds
@@ -357,12 +353,6 @@ savagespinout: 1 seeds
   Seeds: 7601
 pursuit: 1 seeds
   Seeds: 7887
-leaftornado: 1 seeds
-  Seeds: 8070
-armorcannon: 1 seeds
-  Seeds: 8070
-naturepower: 1 seeds
-  Seeds: 8070
 hiddenpowerice: 1 seeds
   Seeds: 8355
 safeguard: 1 seeds
@@ -519,10 +509,10 @@ Hustle: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-kingsrock: 4 seeds
-  Seeds: 1252, 4430, 7012, 9005
 micleberry: 2 seeds
   Seeds: 1235, 6348
+kingsrock: 2 seeds
+  Seeds: 1252, 9005
 dousedrive: 2 seeds
   Seeds: 2674, 5123
 bigroot: 2 seeds
@@ -563,8 +553,6 @@ figyberry: 1 seeds
   Seeds: 6621
 sitrusberry: 1 seeds
   Seeds: 7018
-razorfang: 1 seeds
-  Seeds: 8070
 oranberry: 1 seeds
   Seeds: 8146
 focussash: 1 seeds
@@ -573,10 +561,10 @@ focussash: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 95
-Unique moves: 215 (214 non-simple)
+Total minimized seeds: 92
+Unique moves: 210 (209 non-simple)
 Unique abilities: 43 (40 non-simple)
-Unique items: 25
+Unique items: 24
 
 --- Most Common Moves (top 10) ---
   afteryou: 3 seeds

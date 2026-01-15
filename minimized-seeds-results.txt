@@ -303,7 +303,7 @@ Seed 4383: ✓ PASS
 Seed 4387: ✗ FAIL - #9: turn=10, prng=0->0, P1=[Kangaskhan(299/299)], P2=[Farfetch’d(258/258)]
 Seed 4397: ✓ PASS
 Seed 4409: ✓ PASS
-Seed 4430: ✗ FAIL - #3: turn=3, prng=16->21, P1=[Gible(191/253)], P2=[Koffing(0/181)]
+Seed 4430: ✓ PASS
 Seed 4458: ✓ PASS
 Seed 4460: ✓ PASS
 Seed 4479: ✗ FAIL - #22: turn=21, prng=73->78, P1=[Darkrai(111/158)], P2=[Politoed(187/249)]
@@ -509,7 +509,7 @@ Seed 7000: ✓ PASS
 Seed 7002: ✓ PASS
 Seed 7006: ✓ PASS
 Seed 7010: ✓ PASS
-Seed 7012: ✗ FAIL - #1: turn=2, prng=0->5, P1=[Hatterene(270/270)], P2=[Relicanth(271/330)]
+Seed 7012: ✓ PASS
 Seed 7018: ✗ FAIL - #3: turn=3, prng=12->18, P1=[Grafaiai(0/162)], P2=[Charizard(234/281)]
 Seed 7028: ✓ PASS
 Seed 7029: ✓ PASS
@@ -596,7 +596,7 @@ Seed 8031: ✓ PASS
 Seed 8032: ✓ PASS
 Seed 8042: ✓ PASS
 Seed 8062: ✓ PASS
-Seed 8070: ✗ FAIL - #12: turn=11, prng=64->69, P1=[Clobbopus(53/206)], P2=[Victreebel(8/200)]
+Seed 8070: ✓ PASS
 Seed 8075: ✓ PASS
 Seed 8076: ✓ PASS
 Seed 8094: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 628
-Failed: 95
+Passed: 631
+Failed: 92
 
-Pass rate: 86%
+Pass rate: 87%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

@@ -549,16 +549,20 @@ pub fn run_move_effects<'a>(
                 //     if (moveData.onHit) {
                 // For secondary effects, the onHit callback is defined in the secondary object,
                 // not directly on the move. We need to check if the hit_effect is a Secondary
-                // and if the parent move has a secondary.onHit callback.
+                // and if THIS SPECIFIC secondary has an onHit callback (has_on_hit flag).
+                //
+                // IMPORTANT: Only the move's original secondaries have has_on_hit=true.
+                // Item-added secondaries (like King's Rock flinch) have has_on_hit=false.
+                // This prevents calling the move's secondary.onHit for item-added secondaries.
                 //
                 // IMPORTANT: For self effects (is_self=true), we need to check for self.onHit
                 // callbacks and dispatch to them directly. The normal has_callback check
                 // doesn't find self.onHit callbacks.
                 let has_hit_callback = match &hit_effect {
-                    HitEffect::Secondary(_) => {
-                        // For secondaries, check if the parent move has a secondary onHit
-                        // by looking at the dispatch function
-                        crate::data::move_callbacks::has_secondary_on_hit(active_move.id.as_str())
+                    HitEffect::Secondary(secondary) => {
+                        // For secondaries, check if THIS specific secondary has an onHit callback
+                        // This distinguishes move's original secondaries from item-added ones
+                        secondary.has_on_hit
                     },
                     _ => {
                         if is_self {

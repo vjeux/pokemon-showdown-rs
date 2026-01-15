@@ -74,12 +74,24 @@ impl Dex {
             secondary: move_data.secondary.clone(),
             // If there's a singular secondary and no secondaries array, create one with the singular
             // If there's a secondaries array, use it (JavaScript behavior: secondaries takes precedence)
-            secondaries: if move_data.secondaries.is_some() {
-                move_data.secondaries.clone().unwrap_or_default()
-            } else if let Some(ref sec) = move_data.secondary {
-                vec![sec.clone()]
-            } else {
-                Vec::new()
+            // IMPORTANT: Set has_on_hit flag for moves that have secondary.onHit callbacks
+            // This distinguishes original move secondaries from item-added secondaries (like King's Rock)
+            secondaries: {
+                let has_secondary_callback = crate::data::move_callbacks::has_secondary_on_hit(move_data.id.as_str());
+                let mut secs = if move_data.secondaries.is_some() {
+                    move_data.secondaries.clone().unwrap_or_default()
+                } else if let Some(ref sec) = move_data.secondary {
+                    vec![sec.clone()]
+                } else {
+                    Vec::new()
+                };
+                // Mark original secondaries as having onHit callbacks if the move has them
+                if has_secondary_callback {
+                    for sec in &mut secs {
+                        sec.has_on_hit = true;
+                    }
+                }
+                secs
             },
             self_effect: move_data.self_effect.clone(),
             has_sheer_force: move_data.has_sheer_force,

@@ -55,4 +55,8 @@ pub struct MoveSecondary {
     /// JavaScript: kingsrock?: boolean
     #[serde(default)]
     pub kingsrock: Option<bool>,
+    /// Whether this secondary has an onHit callback (runtime only, not from JSON)
+    /// Used to distinguish move's original secondaries (with onHit) from item-added secondaries (without onHit)
+    #[serde(default)]
+    pub has_on_hit: bool,
 }
