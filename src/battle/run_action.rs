@@ -670,8 +670,19 @@ impl Battle {
                         self.update_speed();
 
                         // JS: residualPokemon = this.getAllActive().map(pokemon => [pokemon, pokemon.getUndynamaxedHP()] as const);
-                        // Note: We don't track residualPokemon yet for EmergencyExit handling
-                        // This will be needed when implementing EmergencyExit abilities
+                        // Track all active pokemon and their current HP before residual effects
+                        self.residual_pokemon.clear();
+                        for (side_idx, side) in self.sides.iter().enumerate() {
+                            for &opt_idx in &side.active {
+                                if let Some(poke_idx) = opt_idx {
+                                    if let Some(pokemon) = side.pokemon.get(poke_idx) {
+                                        if pokemon.hp > 0 {
+                                            self.residual_pokemon.push((side_idx, poke_idx, pokemon.hp));
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
                         // JS: this.fieldEvent('Residual');
                         // NOTE: JavaScript ONLY calls fieldEvent, NOT eachEvent!
@@ -1069,11 +1080,42 @@ impl Battle {
 
         // JS: if (this.gen >= 5 && action.choice !== "start") {
         //         this.eachEvent("Update");
-        //         // ... EmergencyExit handling for residualPokemon (TODO: implement if needed)
+        //         for (const [pokemon, originalHP] of residualPokemon) {
+        //             const maxhp = pokemon.getUndynamaxedHP(pokemon.maxhp);
+        //             if (pokemon.hp && pokemon.getUndynamaxedHP() <= maxhp / 2 && originalHP > maxhp / 2) {
+        //                 this.runEvent('EmergencyExit', pokemon);
+        //             }
+        //         }
         //     }
         // Call Update event for all actions except "start" in Gen 5+
         if self.gen >= 5 && !is_start_action {
             self.each_event("Update", None, None);
+
+            // Check if any residual pokemon dropped below 50% HP and trigger Emergency Exit
+            // Take ownership of residual_pokemon to avoid borrow issues
+            let residual_pokemon = std::mem::take(&mut self.residual_pokemon);
+            for (side_idx, poke_idx, original_hp) in residual_pokemon {
+                let (current_hp, max_hp) = {
+                    if let Some(pokemon) = self.pokemon_at(side_idx, poke_idx) {
+                        (pokemon.hp, pokemon.maxhp)
+                    } else {
+                        continue;
+                    }
+                };
+
+                // JS: if (pokemon.hp && pokemon.getUndynamaxedHP() <= maxhp / 2 && originalHP > maxhp / 2)
+                if current_hp > 0 && current_hp <= max_hp / 2 && original_hp > max_hp / 2 {
+                    self.run_event(
+                        "EmergencyExit",
+                        Some(crate::event::EventTarget::Pokemon((side_idx, poke_idx))),
+                        None,
+                        None,
+                        EventResult::Continue,
+                        false,
+                        false,
+                    );
+                }
+            }
         }
 
         // JS: const switches = this.sides.map(side => side.active.some(pokemon => pokemon && !!pokemon.switchFlag));

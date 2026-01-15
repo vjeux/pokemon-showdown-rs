@@ -107,6 +107,7 @@ impl Battle {
             hints: HashSet::new(),
             events: std::collections::HashMap::new(),
             faint_queue: Vec::new(),
+            residual_pokemon: Vec::new(),
         };
 
         // JS: this.add('t:', Math.floor(Date.now() / 1000));

@@ -221,6 +221,11 @@ pub struct Battle {
     /// Faint queue - Pokemon waiting to faint
     /// JavaScript: faintQueue: FaintData[]
     pub faint_queue: Vec<FaintData>,
+
+    /// Residual pokemon HP tracking for Emergency Exit
+    /// JavaScript: residualPokemon (local variable in runAction)
+    /// Stores (side_index, pokemon_index, original_hp) for all active pokemon before residual
+    pub residual_pokemon: Vec<(usize, usize, i32)>,
 }
 
 impl Battle {
