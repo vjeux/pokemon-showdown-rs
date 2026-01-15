@@ -371,7 +371,7 @@ Seed 5204: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Magearna(223/256)], P2=[Delibir
 Seed 5215: ✗ FAIL - #1: turn=2, prng=0->8, P1=[Iron Moth(255/312)], P2=[Emboar(297/367)]
 Seed 5245: ✓ PASS
 Seed 5251: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Saharascal(115/224)], P2=[Landorus(248/280)]
-Seed 5266: ✗ FAIL - #51: turn=46, prng=224->228, P1=[Basculin(29/225)], P2=[Pinsir(160/204)]
+Seed 5266: ✓ PASS
 Seed 5293: ✓ PASS
 Seed 5299: ✗ FAIL - #11: turn=10, prng=29->32, P1=[Cyclohm(321/333)], P2=[Golisopod(100/272)]
 Seed 5306: ✓ PASS
@@ -406,8 +406,8 @@ Seed 5729: ✓ PASS
 Seed 5735: ✓ PASS
 Seed 5743: ✓ PASS
 Seed 5748: ✗ FAIL - #66: turn=65, prng=115->115, P1=[Shedinja(0/1)], P2=[Eelektross(133/177)]
-Seed 5761: ✗ FAIL - #40: turn=38, prng=123->127, P1=[Smokomodo(0/236)], P2=[Kyurem(17/367)]
-Seed 5762: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Alcremie(110/184)], P2=[Koraidon(295/305)]
+Seed 5761: ✓ PASS
+Seed 5762: ✓ PASS
 Seed 5770: ✓ PASS
 Seed 5780: ✓ PASS
 Seed 5807: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Guzzlord(602/602)], P2=[Grimmsnarl(275/321)]
@@ -532,7 +532,7 @@ Seed 7179: ✓ PASS
 Seed 7213: ✗ FAIL - #20: turn=19, prng=83->83, P1=[Naganadel(242/242)], P2=[Silvally(17/198)]
 Seed 7227: ✓ PASS
 Seed 7238: ✓ PASS
-Seed 7240: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Vivillon(217/231)], P2=[Hippopotas(171/191)]
+Seed 7240: ✓ PASS
 Seed 7242: ✓ PASS
 Seed 7243: ✗ FAIL - #1: turn=2, prng=3->18, P1=[Coalossal(321/340)], P2=[Ursaluna(296/323)]
 Seed 7249: ✓ PASS
@@ -550,7 +550,7 @@ Seed 7410: ✓ PASS
 Seed 7415: ✓ PASS
 Seed 7417: ✓ PASS
 Seed 7427: ✓ PASS
-Seed 7436: ✗ FAIL - #7: turn=6, prng=18->23, P1=[Iron Hands(350/415)], P2=[Silicobra(101/173)]
+Seed 7436: ✓ PASS
 Seed 7441: ✓ PASS
 Seed 7444: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Happiny(115/231)], P2=[Abomasnow(279/288)]
 Seed 7461: ✓ PASS
@@ -679,7 +679,7 @@ Seed 9107: ✗ FAIL - #9: turn=10, prng=24->30, P1=[Mudsdale(315/344)], P2=[Poke
 Seed 9116: ✓ PASS
 Seed 9124: ✓ PASS
 Seed 9128: ✓ PASS
-Seed 9159: ✗ FAIL - #28: turn=27, prng=79->84, P1=[Rotom(172/241)], P2=[Nidoking(134/220)]
+Seed 9159: ✓ PASS
 Seed 9196: ✓ PASS
 Seed 9213: ✓ PASS
 Seed 9227: ✗ FAIL - #11: turn=11, prng=27->33, P1=[Linoone(227/256)], P2=[Sobble(199/231)]
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 567
-Failed: 156
+Passed: 573
+Failed: 150
 
-Pass rate: 78%
+Pass rate: 79%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

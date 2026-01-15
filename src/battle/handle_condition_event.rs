@@ -286,9 +286,15 @@ impl Battle {
                 condition_callbacks::dispatch_on_field_restart(self, condition_id, pokemon_pos, target_pos, source_pos)
             }
             "Immunity" => {
-                // Extract immunity type from event type_param
+                // Extract immunity type from event relay_var (passed by run_status_immunity)
+                // JavaScript: runEvent('Immunity', this, null, null, type)
+                // The type is passed as the relay_var (5th parameter)
                 let immunity_type = self.event.as_ref()
-                    .and_then(|e| e.type_param.clone())
+                    .and_then(|e| e.relay_var.as_ref())
+                    .and_then(|rv| match rv {
+                        EventResult::String(s) => Some(s.clone()),
+                        _ => None
+                    })
                     .unwrap_or_default();
                 condition_callbacks::dispatch_on_immunity(self, condition_id, &immunity_type, pokemon_pos)
             }
