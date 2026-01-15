@@ -39,7 +39,8 @@ pub fn on_hit(
     };
 
     if already_has_ghost {
-        return EventResult::NotFail;
+        // JavaScript: return false - the hit failed
+        return EventResult::Boolean(false);
     }
 
     // if (!target.addType('Ghost')) return false;

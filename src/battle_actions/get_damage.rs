@@ -251,14 +251,24 @@ pub fn get_damage(
     // JavaScript: if (move.basePowerCallback) { basePower = move.basePowerCallback.call(this.battle, source, target, move); }
     // CRITICAL: Always check for basePowerCallback, regardless of initial base_power!
     // Max/G-Max moves have non-zero base_power in move data but use callback to calculate actual damage
-    if let crate::event::EventResult::Number(bp) = move_callbacks::dispatch_base_power_callback(
+    let bp_result = move_callbacks::dispatch_base_power_callback(
         battle,
         Some(active_move),
         source_pos,
         Some(target_pos),
-    ) {
-        base_power = bp;
-        eprintln!("[GET_DAMAGE] basePowerCallback set basePower to {}", base_power);
+    );
+    match bp_result {
+        crate::event::EventResult::Number(bp) => {
+            base_power = bp;
+            eprintln!("[GET_DAMAGE] basePowerCallback set basePower to {} (Number)", base_power);
+        }
+        crate::event::EventResult::Float(bp) => {
+            // JavaScript returns floating-point for moves like Eruption with low HP
+            // Clamp to at least 1 for non-zero values (JavaScript truthy check)
+            base_power = if bp > 0.0 && bp < 1.0 { 1 } else { bp as i32 };
+            eprintln!("[GET_DAMAGE] basePowerCallback set basePower to {} (Float: {})", base_power, bp);
+        }
+        _ => {}
     }
 
     // JavaScript: if (!basePower) return basePower === 0 ? void 0 : basePower;

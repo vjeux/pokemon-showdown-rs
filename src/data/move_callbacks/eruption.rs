@@ -26,17 +26,21 @@ pub fn base_power_callback(
     };
 
     // const bp = move.basePower * pokemon.hp / pokemon.maxhp;
+    // JavaScript uses floating-point math, so we need to do the same
     let bp = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        base_power * pokemon_pokemon.hp / pokemon_pokemon.maxhp
+        // Use floating-point math like JavaScript
+        let bp_float = (base_power as f64) * (pokemon_pokemon.hp as f64) / (pokemon_pokemon.maxhp as f64);
+        bp_float
     };
 
     // this.debug(`BP: ${bp}`);
     battle.debug(&format!("BP: {}", bp));
 
     // return bp;
-    EventResult::Number(bp)
+    // Return as Float since JavaScript returns a floating-point value
+    EventResult::Float(bp)
 }

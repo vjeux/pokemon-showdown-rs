@@ -74,7 +74,12 @@ pub fn on_start(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.set.species == "Shaymin-Sky" && pokemon.base_species.as_str() == "shaymin"
+        // JavaScript: target.species.name === 'Shaymin-Sky'
+        // JavaScript: target.baseSpecies.baseSpecies === 'Shaymin'
+        // The base_species field is an ID (lowercase), so we compare with lowercase
+        // OR we can use get_base_species_base_species which returns the proper name
+        let base_species_base_species = pokemon.get_base_species_base_species(&battle.dex);
+        pokemon.set.species == "Shaymin-Sky" && base_species_base_species.as_deref() == Some("Shaymin")
     };
 
     if is_shaymin_sky {
