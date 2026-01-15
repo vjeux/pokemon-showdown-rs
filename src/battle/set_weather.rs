@@ -232,8 +232,9 @@ impl Battle {
         self.field.weather_state.duration = weather_duration;
 
         // Call durationCallback if it exists
-        eprintln!("[SET_WEATHER] Checking if has_callback for DurationCallback");
-        if self.has_weather_callback(&weather_id, "DurationCallback") {
+        // Note: The callback name is "durationCallback" (lowercase d) in conditions.json
+        eprintln!("[SET_WEATHER] Checking if has_callback for durationCallback");
+        if self.has_weather_callback(&weather_id, "durationCallback") {
             eprintln!("[SET_WEATHER] Calling duration callback for '{}'", weather_id.as_str());
             let result = self.call_duration_callback(
                 &weather_id,

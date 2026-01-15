@@ -1,4 +1,4 @@
-Analyzing 92 failing minimized seed files...
+Analyzing 90 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -61,8 +61,6 @@ clearsmog: 2 seeds
   Seeds: 4186, 6288
 trickortreat: 2 seeds
   Seeds: 4378, 4760
-payback: 2 seeds
-  Seeds: 4634, 9005
 risingvoltage: 2 seeds
   Seeds: 4745, 6794
 dragontail: 2 seeds
@@ -199,8 +197,6 @@ chipaway: 1 seeds
   Seeds: 3578
 disarmingvoice: 1 seeds
   Seeds: 3787
-irondefense: 1 seeds
-  Seeds: 4025
 subzeroslammer: 1 seeds
   Seeds: 4186
 hiddenpowerdragon: 1 seeds
@@ -233,8 +229,6 @@ gravity: 1 seeds
   Seeds: 4479
 wonderroom: 1 seeds
   Seeds: 4479
-magicpowder: 1 seeds
-  Seeds: 4634
 explosion: 1 seeds
   Seeds: 4648
 aircutter: 1 seeds
@@ -389,6 +383,8 @@ batonpass: 1 seeds
   Seeds: 8774
 struggle: 1 seeds
   Seeds: 8774
+payback: 1 seeds
+  Seeds: 9005
 supersonicskystrike: 1 seeds
   Seeds: 9005
 ingrain: 1 seeds
@@ -427,8 +423,6 @@ ABILITIES (excluding simple ones)
 ============================================================
 Hadron Engine: 3 seeds
   Seeds: 3000, 3165, 7121
-Sand Stream: 3 seeds
-  Seeds: 4025, 4634, 5748
 Hunger Switch: 2 seeds
   Seeds: 1256, 5112
 Effect Spore: 2 seeds
@@ -485,6 +479,8 @@ Electric Surge: 1 seeds
   Seeds: 5072
 Tough Claws: 1 seeds
   Seeds: 5644
+Sand Stream: 1 seeds
+  Seeds: 5748
 Light Metal: 1 seeds
   Seeds: 6288
 Primordial Sea: 1 seeds
@@ -517,8 +513,6 @@ dousedrive: 2 seeds
   Seeds: 2674, 5123
 bigroot: 2 seeds
   Seeds: 3185, 4357
-smoothrock: 2 seeds
-  Seeds: 4025, 4634
 fullincense: 2 seeds
   Seeds: 6005, 7243
 redcard: 1 seeds
@@ -561,10 +555,10 @@ focussash: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 92
-Unique moves: 210 (209 non-simple)
+Total minimized seeds: 90
+Unique moves: 208 (207 non-simple)
 Unique abilities: 43 (40 non-simple)
-Unique items: 24
+Unique items: 23
 
 --- Most Common Moves (top 10) ---
   afteryou: 3 seeds
@@ -580,7 +574,6 @@ Unique items: 24
 
 --- Most Common Abilities (top 10) ---
   Hadron Engine: 3 seeds
-  Sand Stream: 3 seeds
   Hunger Switch: 2 seeds
   Effect Spore: 2 seeds
   Compound Eyes: 2 seeds
@@ -589,3 +582,4 @@ Unique items: 24
   Synchronize: 2 seeds
   No Guard: 2 seeds
   Ripen: 2 seeds
+  Intimidate: 2 seeds

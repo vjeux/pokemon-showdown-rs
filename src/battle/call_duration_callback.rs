@@ -151,6 +151,47 @@ impl Battle {
                     effect_id_str,
                 )
             }
+            // Weather duration callbacks
+            "hail" => {
+                crate::data::condition_callbacks::hail::duration_callback(
+                    self,
+                    target_pos.unwrap_or((0, 0)),
+                    source_pos,
+                    effect_id_str,
+                )
+            }
+            "raindance" => {
+                crate::data::condition_callbacks::raindance::duration_callback(
+                    self,
+                    target_pos.unwrap_or((0, 0)),
+                    source_pos,
+                    effect_id_str,
+                )
+            }
+            "sandstorm" => {
+                crate::data::condition_callbacks::sandstorm::duration_callback(
+                    self,
+                    target_pos.unwrap_or((0, 0)),
+                    source_pos,
+                    effect_id_str,
+                )
+            }
+            "snowscape" => {
+                crate::data::condition_callbacks::snowscape::duration_callback(
+                    self,
+                    target_pos.unwrap_or((0, 0)),
+                    source_pos,
+                    effect_id_str,
+                )
+            }
+            "sunnyday" => {
+                crate::data::condition_callbacks::sunnyday::duration_callback(
+                    self,
+                    target_pos.unwrap_or((0, 0)),
+                    source_pos,
+                    effect_id_str,
+                )
+            }
             _ => EventResult::Continue,
         }
     }

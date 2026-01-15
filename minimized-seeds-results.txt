@@ -271,7 +271,7 @@ Seed 3974: ✓ PASS
 Seed 3984: ✓ PASS
 Seed 3986: ✓ PASS
 Seed 4016: ✓ PASS
-Seed 4025: ✗ FAIL - #5: turn=6, prng=12->15, P1=[Hippowdon(326/326)], P2=[Spinda(104/249)]
+Seed 4025: ✓ PASS
 Seed 4044: ✓ PASS
 Seed 4055: ✓ PASS
 Seed 4071: ✓ PASS
@@ -311,7 +311,7 @@ Seed 4515: ✓ PASS
 Seed 4567: ✓ PASS
 Seed 4594: ✓ PASS
 Seed 4616: ✓ PASS
-Seed 4634: ✗ FAIL - #6: turn=6, prng=17->21, P1=[Cyclohm(30/281)], P2=[Tyranitar(269/337)]
+Seed 4634: ✓ PASS
 Seed 4648: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Manectric(0/214)], P2=[Goodra(189/253)]
 Seed 4651: ✓ PASS
 Seed 4652: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 631
-Failed: 92
+Passed: 633
+Failed: 90
 
 Pass rate: 87%
 ✗ Some seeds still failing
