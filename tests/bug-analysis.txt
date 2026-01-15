@@ -1,4 +1,4 @@
-Analyzing 109 failing minimized seed files...
+Analyzing 105 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -87,16 +87,12 @@ blueflare: 2 seeds
   Seeds: 6919, 9005
 courtchange: 2 seeds
   Seeds: 7559, 8544
-soak: 2 seeds
-  Seeds: 8152, 9425
 sketch: 2 seeds
   Seeds: 8355, 9009
 obstruct: 2 seeds
   Seeds: 8544, 9005
 assist: 2 seeds
   Seeds: 8774, 9563
-roar: 2 seeds
-  Seeds: 8799, 9563
 diamondstorm: 1 seeds
   Seeds: 1110
 taunt: 1 seeds
@@ -295,8 +291,6 @@ haze: 1 seeds
   Seeds: 5748
 gmaxsteelsurge: 1 seeds
   Seeds: 5748
-leechseed: 1 seeds
-  Seeds: 5807
 gmaxfoamburst: 1 seeds
   Seeds: 5992
 pounce: 1 seeds
@@ -327,8 +321,6 @@ iceshard: 1 seeds
   Seeds: 6593
 maxairstream: 1 seeds
   Seeds: 6621
-playnice: 1 seeds
-  Seeds: 6654
 foresight: 1 seeds
   Seeds: 6764
 defensecurl: 1 seeds
@@ -445,11 +437,15 @@ frenzyplant: 1 seeds
   Seeds: 9425
 whirlwind: 1 seeds
   Seeds: 9425
+soak: 1 seeds
+  Seeds: 9425
 luckychant: 1 seeds
   Seeds: 9425
 drillrun: 1 seeds
   Seeds: 9563
 gmaxstonesurge: 1 seeds
+  Seeds: 9563
+roar: 1 seeds
   Seeds: 9563
 slam: 1 seeds
   Seeds: 9789
@@ -461,8 +457,6 @@ glaciate: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Prankster: 4 seeds
-  Seeds: 5807, 6654, 8152, 8799
 Effect Spore: 3 seeds
   Seeds: 2214, 3507, 6593
 Hadron Engine: 3 seeds
@@ -607,9 +601,9 @@ lansatberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 109
-Unique moves: 228 (227 non-simple)
-Unique abilities: 44 (41 non-simple)
+Total minimized seeds: 105
+Unique moves: 226 (225 non-simple)
+Unique abilities: 43 (40 non-simple)
 Unique items: 28
 
 --- Most Common Moves (top 10) ---
@@ -625,7 +619,6 @@ Unique items: 28
   guardsplit: 2 seeds
 
 --- Most Common Abilities (top 10) ---
-  Prankster: 4 seeds
   Effect Spore: 3 seeds
   Hadron Engine: 3 seeds
   Sand Stream: 3 seeds
@@ -635,3 +628,4 @@ Unique items: 28
   RKS System: 2 seeds
   Snow Warning: 2 seeds
   Synchronize: 2 seeds
+  No Guard: 2 seeds

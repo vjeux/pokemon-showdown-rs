@@ -371,6 +371,7 @@ impl Battle {
                                 false, // external_move
                                 move_action.max_move.clone(), // max_move
                                 None, // original_target
+                                move_action.prankster_boosted, // prankster_boosted flag from action queue
                             );
                             eprintln!("[RUN_ACTION] After run_move, move={}", move_id.as_str());
                         }

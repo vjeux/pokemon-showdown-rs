@@ -410,7 +410,7 @@ Seed 5761: ✓ PASS
 Seed 5762: ✓ PASS
 Seed 5770: ✓ PASS
 Seed 5780: ✓ PASS
-Seed 5807: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Guzzlord(602/602)], P2=[Grimmsnarl(275/321)]
+Seed 5807: ✓ PASS
 Seed 5840: ✓ PASS
 Seed 5854: ✓ PASS
 Seed 5874: ✓ PASS
@@ -481,7 +481,7 @@ Seed 6632: ✓ PASS
 Seed 6636: ✓ PASS
 Seed 6649: ✓ PASS
 Seed 6650: ✓ PASS
-Seed 6654: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Chi-Yu(219/219)], P2=[Morgrem(145/190)]
+Seed 6654: ✓ PASS
 Seed 6669: ✓ PASS
 Seed 6675: ✓ PASS
 Seed 6685: ✓ PASS
@@ -604,7 +604,7 @@ Seed 8121: ✓ PASS
 Seed 8123: ✓ PASS
 Seed 8125: ✓ PASS
 Seed 8146: ✗ FAIL - #5: turn=6, prng=24->30, P1=[Flygon(120/240)], P2=[Applin(122/228)]
-Seed 8152: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Tornadus(243/270)], P2=[Pawniard(201/201)]
+Seed 8152: ✓ PASS
 Seed 8164: ✓ PASS
 Seed 8170: ✓ PASS
 Seed 8184: ✓ PASS
@@ -650,7 +650,7 @@ Seed 8766: ✓ PASS
 Seed 8774: ✗ FAIL - #11: turn=8, prng=32->36, P1=[Flamigo(51/256)], P2=[Hoppip(142/209)]
 Seed 8784: ✓ PASS
 Seed 8791: ✓ PASS
-Seed 8799: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Incineroar(304/304)], P2=[Grimmsnarl(144/208)]
+Seed 8799: ✓ PASS
 Seed 8802: ✓ PASS
 Seed 8817: ✓ PASS
 Seed 8829: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 614
-Failed: 109
+Passed: 618
+Failed: 105
 
-Pass rate: 84%
+Pass rate: 85%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

@@ -28,6 +28,7 @@ pub fn run_move(
     external_move: bool,
     max_move: Option<String>,
     _original_target: Option<(usize, usize)>,
+    prankster_boosted: bool,
 ) {
     let move_id = &move_data.id;
     // Log on turns 15-17 for debugging
@@ -89,6 +90,16 @@ pub fn run_move(
     // Set active move
     // this.battle.setActiveMove(move, pokemon, target);
     battle.set_active_move(Some(move_id.clone()), Some(pokemon_pos), target_pos);
+
+    // CRITICAL: Propagate prankster_boosted flag from the move action to the active_move
+    // In JavaScript, the move object carries pranksterBoosted from when it was set by Prankster's
+    // onModifyPriority callback during action speed calculation. We need to restore this flag
+    // since set_active_move creates a fresh active_move.
+    if prankster_boosted {
+        if let Some(ref mut active_move) = battle.active_move {
+            active_move.prankster_boosted = true;
+        }
+    }
 
     // Run BeforeMove event
     // const willTryMove = this.battle.runEvent('BeforeMove', pokemon, target, move);
@@ -498,6 +509,7 @@ pub fn run_move(
                 true, // external_move
                 None, // max_move
                 None, // original_target
+                false, // prankster_boosted - Dancer copies don't get Prankster boost
             );
         }
     }
