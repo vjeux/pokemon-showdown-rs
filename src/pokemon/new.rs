@@ -253,6 +253,33 @@ impl Pokemon {
             })
             .collect();
 
+        // JavaScript logic: if a Hidden Power type variant move is in the set, use its type as hpType
+        // This happens in the Pokemon constructor loop:
+        //   if (!set.hpType) set.hpType = move.type;
+        // where move is a Hidden Power variant like "hiddenpowersteel"
+        let hp_type_from_moves: Option<String> = if set.hptype.is_none() {
+            let mut found_type: Option<String> = None;
+            for move_id in &set.moves {
+                let move_lower = move_id.to_lowercase();
+                if move_lower.starts_with("hiddenpower") && move_lower.len() > 11 {
+                    // Extract the type from the move ID (e.g., "hiddenpowersteel" -> "Steel")
+                    let type_part = &move_lower[11..]; // Everything after "hiddenpower"
+                    // Remove any numeric suffix (e.g., "steel60" -> "steel")
+                    let type_str: String = type_part.chars().take_while(|c| c.is_alphabetic()).collect();
+                    if !type_str.is_empty() {
+                        // Capitalize the first letter
+                        let capitalized = type_str.chars().next().unwrap().to_uppercase().to_string()
+                            + &type_str[1..];
+                        found_type = Some(capitalized);
+                        break;
+                    }
+                }
+            }
+            found_type
+        } else {
+            None
+        };
+
         Self {
             set: set.clone(),
             name,
@@ -314,9 +341,14 @@ impl Pokemon {
             // JavaScript: const hpData = this.battle.dex.getHiddenPower(this.set.ivs);
             //             this.hpType = set.hpType || hpData.type;
             //             this.hpPower = hpData.power;
+            // Note: In JavaScript, if a Hidden Power type variant move is in the set,
+            // the move.type is used to set set.hpType during Pokemon construction
             hp_type: {
                 let (hp_type_from_ivs, _) = crate::dex::Dex::get_hidden_power(&set.ivs);
-                set.hptype.clone().unwrap_or_else(|| hp_type_from_ivs.to_string())
+                // Priority: explicit set.hptype > type from HP move variant > IV-calculated type
+                set.hptype.clone()
+                    .or_else(|| hp_type_from_moves.clone())
+                    .unwrap_or_else(|| hp_type_from_ivs.to_string())
             },
             hp_power: {
                 let (_, hp_power_from_ivs) = crate::dex::Dex::get_hidden_power(&set.ivs);
@@ -324,7 +356,10 @@ impl Pokemon {
             },
             base_hp_type: {
                 let (hp_type_from_ivs, _) = crate::dex::Dex::get_hidden_power(&set.ivs);
-                set.hptype.clone().unwrap_or_else(|| hp_type_from_ivs.to_string())
+                // Priority: explicit set.hptype > type from HP move variant > IV-calculated type
+                set.hptype.clone()
+                    .or_else(|| hp_type_from_moves.clone())
+                    .unwrap_or_else(|| hp_type_from_ivs.to_string())
             },
             base_hp_power: {
                 let (_, hp_power_from_ivs) = crate::dex::Dex::get_hidden_power(&set.ivs);

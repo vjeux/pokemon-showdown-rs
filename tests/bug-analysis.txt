@@ -1,10 +1,8 @@
-Analyzing 102 failing minimized seed files...
+Analyzing 99 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-hiddenpower: 3 seeds
-  Seeds: 3212, 5204, 6359
 shellsidearm: 3 seeds
   Seeds: 3507, 5644, 8545
 fling: 3 seeds
@@ -191,8 +189,6 @@ reflect: 1 seeds
   Seeds: 3126
 absorb: 1 seeds
   Seeds: 3185
-hiddenpowersteel: 1 seeds
-  Seeds: 3212
 gigatonhammer: 1 seeds
   Seeds: 3250
 healingwish: 1 seeds
@@ -259,8 +255,6 @@ rest: 1 seeds
   Seeds: 5072
 doubleshock: 1 seeds
   Seeds: 5112
-hiddenpowerfighting: 1 seeds
-  Seeds: 5204
 buzzybuzz: 1 seeds
   Seeds: 5215
 mirrormove: 1 seeds
@@ -305,8 +299,6 @@ heatcrash: 1 seeds
   Seeds: 6288
 dive: 1 seeds
   Seeds: 6348
-hiddenpowerbug: 1 seeds
-  Seeds: 6359
 xscissor: 1 seeds
   Seeds: 6391
 throatchop: 1 seeds
@@ -597,13 +589,12 @@ lansatberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 102
-Unique moves: 224 (223 non-simple)
+Total minimized seeds: 99
+Unique moves: 220 (219 non-simple)
 Unique abilities: 43 (40 non-simple)
 Unique items: 28
 
 --- Most Common Moves (top 10) ---
-  hiddenpower: 3 seeds
   shellsidearm: 3 seeds
   fling: 3 seeds
   afteryou: 3 seeds
@@ -613,6 +604,7 @@ Unique items: 28
   aromaticmist: 2 seeds
   guardsplit: 2 seeds
   instruct: 2 seeds
+  hiddenpowerwater: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Effect Spore: 3 seeds

@@ -112,6 +112,22 @@ battle.runEvent = function(eventid, target, ...args) {
     return originalRunEvent(eventid, target, ...args);
 };
 
+// Instrument modifyDamage to log STAB check
+const originalModifyDamage = battle.actions.modifyDamage.bind(battle.actions);
+battle.actions.modifyDamage = function(baseDamage, pokemon, target, move, suppressMessages) {
+    // Log move type and pokemon types for STAB calculation
+    const moveType = move.type;
+    const pokemonTypes = pokemon.getTypes ? pokemon.getTypes() : pokemon.types;
+    const hasType = pokemon.hasType ? pokemon.hasType(moveType) : pokemonTypes.includes(moveType);
+    const isSTAB = move.forceSTAB || hasType;
+    console.error(`[STAB_CHECK_JS] turn=${battle.turn}, move=${move.id}, move.type=${moveType}, pokemon.types=${JSON.stringify(pokemonTypes)}, hasType=${hasType}, forceSTAB=${move.forceSTAB || false}, isSTAB=${isSTAB}, baseDamage=${baseDamage}`);
+    // Also log hpType if available
+    if (pokemon.hpType) {
+        console.error(`[STAB_CHECK_JS] pokemon.hpType=${pokemon.hpType}`);
+    }
+    return originalModifyDamage(baseDamage, pokemon, target, move, suppressMessages);
+};
+
 // Instrument findPokemonEventHandlers to log what volatiles are checked
 const originalFindPokemonEventHandlers = battle.findPokemonEventHandlers.bind(battle);
 battle.findPokemonEventHandlers = function(pokemon, callbackName, getKey) {

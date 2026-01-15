@@ -221,7 +221,7 @@ Seed 3165: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Miraidon(263/284)], P2=[Iron Bu
 Seed 3179: ✓ PASS
 Seed 3185: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hatterene(201/217)], P2=[Linoone(237/259)]
 Seed 3206: ✓ PASS
-Seed 3212: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Scrafty(247/255)], P2=[Foongus(123/184)]
+Seed 3212: ✓ PASS
 Seed 3228: ✓ PASS
 Seed 3250: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lurantis(187/293)], P2=[Victini(221/221)]
 Seed 3255: ✓ PASS
@@ -367,7 +367,7 @@ Seed 5157: ✓ PASS
 Seed 5166: ✓ PASS
 Seed 5172: ✓ PASS
 Seed 5188: ✓ PASS
-Seed 5204: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Magearna(223/256)], P2=[Delibird(176/232)]
+Seed 5204: ✓ PASS
 Seed 5215: ✗ FAIL - #1: turn=2, prng=0->8, P1=[Iron Moth(255/312)], P2=[Emboar(297/367)]
 Seed 5245: ✓ PASS
 Seed 5251: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Saharascal(115/224)], P2=[Landorus(248/280)]
@@ -448,7 +448,7 @@ Seed 6306: ✓ PASS
 Seed 6345: ✓ PASS
 Seed 6348: ✗ FAIL - #13: turn=14, prng=42->44, P1=[Abomasnow(15/275)], P2=[Basculin(37/237)]
 Seed 6349: ✓ PASS
-Seed 6359: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Mandibuzz(292/307)], P2=[Tyranitar(126/200)]
+Seed 6359: ✓ PASS
 Seed 6365: ✓ PASS
 Seed 6378: ✓ PASS
 Seed 6391: ✗ FAIL - #48: turn=45, prng=184->188, P1=[Meloetta(0/259)], P2=[Typhlosion(0/290)]
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 621
-Failed: 102
+Passed: 624
+Failed: 99
 
-Pass rate: 85%
+Pass rate: 86%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...
