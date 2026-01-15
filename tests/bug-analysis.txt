@@ -1,12 +1,8 @@
-Analyzing 39 failing minimized seed files...
+Analyzing 34 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-dragontail: 2 seeds
-  Seeds: 4905, 9005
-shellsidearm: 2 seeds
-  Seeds: 5644, 8545
 lightscreen: 2 seeds
   Seeds: 5992, 8544
 counter: 2 seeds
@@ -139,10 +135,6 @@ mistball: 1 seeds
   Seeds: 7559
 glitzyglow: 1 seeds
   Seeds: 7559
-hydrovortex: 1 seeds
-  Seeds: 7592
-savagespinout: 1 seeds
-  Seeds: 7601
 pursuit: 1 seeds
   Seeds: 7887
 thunder: 1 seeds
@@ -166,6 +158,8 @@ icywind: 1 seeds
 shockwave: 1 seeds
   Seeds: 8544
 beakblast: 1 seeds
+  Seeds: 8545
+shellsidearm: 1 seeds
   Seeds: 8545
 sandattack: 1 seeds
   Seeds: 8708
@@ -199,6 +193,8 @@ blueflare: 1 seeds
   Seeds: 9005
 rockthrow: 1 seeds
   Seeds: 9005
+dragontail: 1 seeds
+  Seeds: 9005
 grassyterrain: 1 seeds
   Seeds: 9227
 grassyglide: 1 seeds
@@ -227,22 +223,12 @@ roar: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Quark Drive: 2 seeds
-  Seeds: 3165, 5215
 No Guard: 2 seeds
   Seeds: 6288, 8708
 Intimidate: 2 seeds
   Seeds: 6719, 7324
-Gorilla Tactics: 2 seeds
-  Seeds: 7592, 7601
-Hadron Engine: 1 seeds
-  Seeds: 3165
-Snow Warning: 1 seeds
-  Seeds: 4905
-Teravolt: 1 seeds
-  Seeds: 4905
-Tough Claws: 1 seeds
-  Seeds: 5644
+Quark Drive: 1 seeds
+  Seeds: 5215
 Sand Stream: 1 seeds
   Seeds: 5748
 Light Metal: 1 seeds
@@ -281,14 +267,12 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 39
-Unique moves: 111 (110 non-simple)
-Unique abilities: 20 (18 non-simple)
+Total minimized seeds: 34
+Unique moves: 109 (108 non-simple)
+Unique abilities: 15 (13 non-simple)
 Unique items: 5
 
 --- Most Common Moves (top 10) ---
-  dragontail: 2 seeds
-  shellsidearm: 2 seeds
   lightscreen: 2 seeds
   counter: 2 seeds
   courtchange: 2 seeds
@@ -297,15 +281,17 @@ Unique items: 5
   psyshieldbash: 1 seeds
   rocktomb: 1 seeds
   shelltrap: 1 seeds
+  reflect: 1 seeds
+  instruct: 1 seeds
 
 --- Most Common Abilities (top 10) ---
-  Quark Drive: 2 seeds
   No Guard: 2 seeds
   Intimidate: 2 seeds
-  Gorilla Tactics: 2 seeds
-  Hadron Engine: 1 seeds
-  Snow Warning: 1 seeds
-  Teravolt: 1 seeds
-  Tough Claws: 1 seeds
+  Quark Drive: 1 seeds
   Sand Stream: 1 seeds
   Light Metal: 1 seeds
+  Primordial Sea: 1 seeds
+  Unburden: 1 seeds
+  Anticipation: 1 seeds
+  Levitate: 1 seeds
+  Stakeout: 1 seeds

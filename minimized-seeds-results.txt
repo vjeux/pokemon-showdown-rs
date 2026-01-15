@@ -217,7 +217,7 @@ Seed 3149: ✓ PASS
 Seed 3153: ✓ PASS
 Seed 3162: ✓ PASS
 Seed 3163: ✓ PASS
-Seed 3165: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Miraidon(263/284)], P2=[Iron Bundle(152/178)]
+Seed 3165: ✓ PASS
 Seed 3179: ✓ PASS
 Seed 3185: ✓ PASS
 Seed 3206: ✓ PASS
@@ -340,7 +340,7 @@ Seed 4813: ✓ PASS
 Seed 4858: ✓ PASS
 Seed 4883: ✓ PASS
 Seed 4893: ✗ FAIL - #17: turn=18, prng=96->102, P1=[Suicune(49/291)], P2=[Axew(1/171)]
-Seed 4905: ✗ FAIL - #2: turn=3, prng=7->14, P1=[Gourgeist(253/253)], P2=[Kyurem(300/347)]
+Seed 4905: ✓ PASS
 Seed 4907: ✓ PASS
 Seed 4917: ✓ PASS
 Seed 4947: ✓ PASS
@@ -398,7 +398,7 @@ Seed 5577: ✓ PASS
 Seed 5579: ✓ PASS
 Seed 5613: ✓ PASS
 Seed 5620: ✓ PASS
-Seed 5644: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Iron Jugulis(231/309)], P2=[Aerodactyl(146/169)]
+Seed 5644: ✓ PASS
 Seed 5686: ✓ PASS
 Seed 5687: ✓ PASS
 Seed 5722: ✓ PASS
@@ -562,8 +562,8 @@ Seed 7559: ✗ FAIL - #12: turn=11, prng=53->57, P1=[Toucannon(76/228)], P2=[Vol
 Seed 7563: ✓ PASS
 Seed 7577: ✓ PASS
 Seed 7589: ✓ PASS
-Seed 7592: ✗ FAIL - #2: turn=3, prng=5->10, P1=[Darmanitan(234/353)], P2=[Iron Crown(107/215)]
-Seed 7601: ✗ FAIL - #2: turn=3, prng=5->10, P1=[Nidoran-F(119/196)], P2=[Darmanitan(149/256)]
+Seed 7592: ✓ PASS
+Seed 7601: ✓ PASS
 Seed 7618: ✓ PASS
 Seed 7623: ✓ PASS
 Seed 7635: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 684
-Failed: 39
+Passed: 689
+Failed: 34
 
-Pass rate: 94%
+Pass rate: 95%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

@@ -36,13 +36,13 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
     use crate::battle::Arg;
 
     // Get move info from passed parameter
-    let (move_id, is_z, is_max) = match active_move {
-        Some(m) => (m.id.as_str(), m.is_z.is_some(), m.is_max.is_some()),
+    let (move_id, is_z_or_max_powered) = match active_move {
+        Some(m) => (m.id.as_str(), m.is_z_or_max_powered),
         None => return EventResult::Continue,
     };
 
     // if (move.isZOrMaxPowered || move.id === 'struggle') return;
-    if move_id == "struggle" || is_z || is_max {
+    if move_id == "struggle" || is_z_or_max_powered {
         return EventResult::Continue;
     }
 
@@ -99,8 +99,8 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
 /// }
 pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, pokemon_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
     // Get move info from passed parameter
-    let (move_id, is_z, is_max) = match &active_move {
-        Some(m) => (m.id.as_str(), m.is_z.is_some(), m.is_max.is_some()),
+    let (move_id, is_z_or_max_powered) = match &active_move {
+        Some(m) => (m.id.as_str(), m.is_z_or_max_powered),
         None => return EventResult::Continue,
     };
 
@@ -121,7 +121,7 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
     }
 
     // If Z/Max move or Struggle, return
-    if move_id == "struggle" || is_z || is_max {
+    if move_id == "struggle" || is_z_or_max_powered {
         return EventResult::Continue;
     }
 
@@ -185,7 +185,9 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
 
     let lock = match choice_lock {
         Some(ref l) if !l.is_empty() => l.clone(),
-        _ => return EventResult::Continue,
+        _ => {
+            return EventResult::Continue;
+        }
     };
 
     // if (pokemon.volatiles['dynamax']) return;
