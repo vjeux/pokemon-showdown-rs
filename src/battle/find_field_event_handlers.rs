@@ -74,6 +74,8 @@ impl Battle {
                 .unwrap_or_else(|| pw_id.to_string());
 
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
+            // Set effect_order from state to preserve insertion order and prevent unnecessary shuffling.
+            // JavaScript objects maintain insertion order, and initEffectState assigns incrementing effectOrder.
             let mut handler = EventListener {
                 callback_name: String::new(),
                 effect: Effect {
@@ -86,12 +88,12 @@ impl Battle {
                 },
                 target: None,
                 index: None,
-                state: Some(pw_state),
+                state: Some(pw_state.clone()),
                 effect_holder: custom_holder, // JS: customHolder || field (field not representable as tuple)
                 order: None,
                 priority: 0,
                 sub_order: 0,
-                effect_order: None,
+                effect_order: Some(pw_state.effect_order),
                 speed: None,
             };
 
@@ -132,6 +134,7 @@ impl Battle {
                 .unwrap_or_else(|| weather_id.to_string());
 
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
+            // Set effect_order from state to preserve insertion order
             let mut handler = EventListener {
                 callback_name: String::new(),
                 effect: Effect {
@@ -144,12 +147,12 @@ impl Battle {
                 },
                 target: None,
                 index: None,
-                state: Some(weather_state),
+                state: Some(weather_state.clone()),
                 effect_holder: custom_holder, // JS: customHolder || field (field not representable as tuple)
                 order: None,
                 priority: 0,
                 sub_order: 0,
-                effect_order: None,
+                effect_order: Some(weather_state.effect_order),
                 speed: None,
             };
 
@@ -184,6 +187,7 @@ impl Battle {
                 .unwrap_or_else(|| terrain_id.to_string());
 
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
+            // Set effect_order from state to preserve insertion order
             let mut handler = EventListener {
                 callback_name: String::new(),
                 effect: Effect {
@@ -196,12 +200,12 @@ impl Battle {
                 },
                 target: None,
                 index: None,
-                state: Some(terrain_state),
+                state: Some(terrain_state.clone()),
                 effect_holder: custom_holder, // JS: customHolder || field (field not representable as tuple)
                 order: None,
                 priority: 0,
                 sub_order: 0,
-                effect_order: None,
+                effect_order: Some(terrain_state.effect_order),
                 speed: None,
             };
 
