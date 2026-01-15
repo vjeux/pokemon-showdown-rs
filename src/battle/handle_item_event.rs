@@ -197,6 +197,18 @@ impl Battle {
                 item_callbacks::dispatch_on_disable_move(self, item_id.as_str(), pokemon_pos)
             }
 
+            // onDrive is a static string value, not a callback function
+            // JavaScript: item.onDrive = "Water" (for Douse Drive, etc.)
+            // Used by Technoblast to determine move type based on held Drive item
+            "Drive" => {
+                if let Some(item_data) = self.dex.items().get_by_id(item_id) {
+                    if let Some(ref drive_type) = item_data.on_drive {
+                        return EventResult::String(drive_type.clone());
+                    }
+                }
+                EventResult::Continue
+            }
+
             // TypeScript: onEat(pokemon:Pokemon)
             "Eat" => item_callbacks::dispatch_on_eat(self, item_id.as_str(), pokemon_pos),
 

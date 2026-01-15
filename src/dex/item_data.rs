@@ -72,6 +72,10 @@ pub struct ItemData {
     /// JavaScript: onMemory?: string
     #[serde(rename = "onMemory", default)]
     pub on_memory: Option<String>,
+    /// Type for Drive items (e.g., "Water" for Douse Drive)
+    /// JavaScript: onDrive?: string
+    #[serde(rename = "onDrive", default)]
+    pub on_drive: Option<String>,
     /// Z-Move compatibility
     /// JavaScript: zMove?: string | true | ZMoveOptions
     /// TODO: Rust uses Option<serde_json::Value>, JavaScript uses union type

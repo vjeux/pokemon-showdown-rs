@@ -73,7 +73,7 @@ Seed 1359: ✓ PASS
 Seed 1362: ✓ PASS
 Seed 1369: ✓ PASS
 Seed 1379: ✓ PASS
-Seed 1398: ✗ FAIL - #33: turn=32, prng=128->131, P1=[Duraludon(47/217)], P2=[Xerneas(68/280)]
+Seed 1398: ✓ PASS
 Seed 1400: ✓ PASS
 Seed 1420: ✓ PASS
 Seed 1424: ✓ PASS
@@ -124,7 +124,7 @@ Seed 2086: ✓ PASS
 Seed 2095: ✓ PASS
 Seed 2139: ✓ PASS
 Seed 2166: ✓ PASS
-Seed 2169: ✗ FAIL - #31: turn=30, prng=56->59, P1=[Dewott(248/248)], P2=[Bronzong(24/187)]
+Seed 2169: ✓ PASS
 Seed 2178: ✓ PASS
 Seed 2188: ✓ PASS
 Seed 2190: ✓ PASS
@@ -168,7 +168,7 @@ Seed 2633: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Bergmite(169/237)], P2=[Gastro
 Seed 2651: ✓ PASS
 Seed 2655: ✓ PASS
 Seed 2665: ✓ PASS
-Seed 2674: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Audino(270/303)], P2=[Medicham(135/208)]
+Seed 2674: ✓ PASS
 Seed 2687: ✓ PASS
 Seed 2719: ✓ PASS
 Seed 2729: ✓ PASS
@@ -298,7 +298,7 @@ Seed 4317: ✓ PASS
 Seed 4333: ✓ PASS
 Seed 4357: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Reuniclus(308/308)], P2=[Lapras(214/228)]
 Seed 4370: ✓ PASS
-Seed 4378: ✗ FAIL - #25: turn=26, prng=96->97, P1=[Arceus(343/343)], P2=[Lugia(25/370)]
+Seed 4378: ✓ PASS
 Seed 4383: ✓ PASS
 Seed 4387: ✗ FAIL - #9: turn=10, prng=0->0, P1=[Kangaskhan(299/299)], P2=[Farfetch’d(258/258)]
 Seed 4397: ✓ PASS
@@ -359,7 +359,7 @@ Seed 5080: ✓ PASS
 Seed 5101: ✓ PASS
 Seed 5108: ✓ PASS
 Seed 5112: ✓ PASS
-Seed 5123: ✗ FAIL - #57: turn=58, prng=0->5, P1=[Mimikyu(31/214)], P2=[Spectrier(293/330)]
+Seed 5123: ✓ PASS
 Seed 5125: ✓ PASS
 Seed 5131: ✓ PASS
 Seed 5140: ✓ PASS
@@ -426,7 +426,7 @@ Seed 6005: ✓ PASS
 Seed 6007: ✓ PASS
 Seed 6024: ✓ PASS
 Seed 6042: ✓ PASS
-Seed 6061: ✗ FAIL - #2: turn=3, prng=4->21, P1=[Silvally(259/290)], P2=[Yamper(139/193)]
+Seed 6061: ✓ PASS
 Seed 6065: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Crustle(270/275)], P2=[Krookodile(184/194)]
 Seed 6088: ✓ PASS
 Seed 6104: ✓ PASS
@@ -615,7 +615,7 @@ Seed 8322: ✓ PASS
 Seed 8326: ✓ PASS
 Seed 8328: ✓ PASS
 Seed 8342: ✓ PASS
-Seed 8355: ✗ FAIL - #12: turn=12, prng=30->36, P1=[Marowak(189/241)], P2=[Whiscash(180/259)]
+Seed 8355: ✓ PASS
 Seed 8365: ✓ PASS
 Seed 8374: ✓ PASS
 Seed 8405: ✓ PASS
@@ -668,7 +668,7 @@ Seed 8974: ✓ PASS
 Seed 8986: ✓ PASS
 Seed 8999: ✓ PASS
 Seed 9005: ✗ FAIL - #38: turn=33, prng=157->162, P1=[Dusknoir(18/157)], P2=[Avalugg(55/232)]
-Seed 9009: ✗ FAIL - #21: turn=21, prng=89->92, P1=[Naviathan(169/314)], P2=[Smoguana(243/243)]
+Seed 9009: ✓ PASS
 Seed 9033: ✓ PASS
 Seed 9039: ✓ PASS
 Seed 9048: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 666
-Failed: 57
+Passed: 674
+Failed: 49
 
-Pass rate: 92%
+Pass rate: 93%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...
