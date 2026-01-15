@@ -244,12 +244,28 @@ impl Pokemon {
 
         // Convert moves to move slots
         // PP will be calculated later by Dex based on move data
+        // JavaScript: this.id = data.realMove ? toID(data.realMove) : toID(this.name); // Hidden Power hack
+        // If a move has realMove set (like hiddenpowerpsychic -> "Hidden Power"),
+        // use toID(realMove) as the slot id instead of the move name
         let move_slots: Vec<MoveSlot> = set
             .moves
             .iter()
             .map(|m| {
-                let id = ID::new(m);
-                MoveSlot::new(id, m.clone(), 5, 5) // Default PP, will be set by Dex
+                let move_id = ID::new(m);
+                // Check if this move has a realMove field (Hidden Power hack)
+                // Use direct HashMap lookup, NOT get_by_id, because get_by_id normalizes
+                // hiddenpower variants to the base move (which doesn't have realMove)
+                let slot_id = if let Some(move_data) = dex.moves.get(&move_id) {
+                    if let Some(ref real_move) = move_data.real_move {
+                        // Use realMove for the slot ID (e.g., hiddenpowerpsychic -> hiddenpower)
+                        ID::new(real_move)
+                    } else {
+                        move_id
+                    }
+                } else {
+                    move_id
+                };
+                MoveSlot::new(slot_id, m.clone(), 5, 5) // Default PP, will be set by Dex
             })
             .collect();
 
