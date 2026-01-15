@@ -1,4 +1,4 @@
-Analyzing 45 failing minimized seed files...
+Analyzing 43 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -43,8 +43,6 @@ shelltrap: 1 seeds
   Seeds: 3126
 reflect: 1 seeds
   Seeds: 3126
-absorb: 1 seeds
-  Seeds: 3185
 instruct: 1 seeds
   Seeds: 3250
 gigatonhammer: 1 seeds
@@ -55,8 +53,6 @@ barrier: 1 seeds
   Seeds: 3367
 lunardance: 1 seeds
   Seeds: 3367
-aquaring: 1 seeds
-  Seeds: 4357
 hyperspacefury: 1 seeds
   Seeds: 4387
 headlongrush: 1 seeds
@@ -299,8 +295,6 @@ Static: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-bigroot: 2 seeds
-  Seeds: 3185, 4357
 quickclaw: 1 seeds
   Seeds: 2388
 iapapaberry: 1 seeds
@@ -321,10 +315,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 45
-Unique moves: 123 (122 non-simple)
+Total minimized seeds: 43
+Unique moves: 121 (120 non-simple)
 Unique abilities: 24 (22 non-simple)
-Unique items: 9
+Unique items: 8
 
 --- Most Common Moves (top 10) ---
   dragontail: 2 seeds

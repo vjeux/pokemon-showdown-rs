@@ -546,7 +546,11 @@ impl Battle {
             // TypeScript: onTryHeal(damage:number, target:Pokemon?, source:Pokemon?, effect:Effect?)
             "TryHeal" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
-                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
+                // JS passes the original effect from the event (e.g., "drain" from heal()),
+                // not the item's own ID. Use event.effect instead of current_effect_id().
+                let effect_id_owned = self.event.as_ref()
+                    .and_then(|e| e.effect.as_ref())
+                    .map(|eff| eff.id.as_str().to_string());
                 let effect_id_str = effect_id_owned.as_deref();
                 item_callbacks::dispatch_on_try_heal(
                     self,

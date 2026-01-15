@@ -219,7 +219,7 @@ Seed 3162: ✓ PASS
 Seed 3163: ✓ PASS
 Seed 3165: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Miraidon(263/284)], P2=[Iron Bundle(152/178)]
 Seed 3179: ✓ PASS
-Seed 3185: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hatterene(201/217)], P2=[Linoone(237/259)]
+Seed 3185: ✓ PASS
 Seed 3206: ✓ PASS
 Seed 3212: ✓ PASS
 Seed 3228: ✓ PASS
@@ -296,7 +296,7 @@ Seed 4301: ✓ PASS
 Seed 4315: ✓ PASS
 Seed 4317: ✓ PASS
 Seed 4333: ✓ PASS
-Seed 4357: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Reuniclus(308/308)], P2=[Lapras(214/228)]
+Seed 4357: ✓ PASS
 Seed 4370: ✓ PASS
 Seed 4378: ✓ PASS
 Seed 4383: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 678
-Failed: 45
+Passed: 680
+Failed: 43
 
-Pass rate: 93%
+Pass rate: 94%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...
