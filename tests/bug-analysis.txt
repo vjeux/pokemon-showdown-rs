@@ -1,4 +1,4 @@
-Analyzing 34 failing minimized seed files...
+Analyzing 33 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -235,8 +235,6 @@ Light Metal: 1 seeds
   Seeds: 6288
 Primordial Sea: 1 seeds
   Seeds: 6926
-Unburden: 1 seeds
-  Seeds: 7018
 Anticipation: 1 seeds
   Seeds: 7324
 Levitate: 1 seeds
@@ -257,8 +255,6 @@ boosterenergy: 1 seeds
   Seeds: 5215
 enigmaberry: 1 seeds
   Seeds: 6065
-sitrusberry: 1 seeds
-  Seeds: 7018
 focussash: 1 seeds
   Seeds: 8544
 kingsrock: 1 seeds
@@ -267,10 +263,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 34
+Total minimized seeds: 33
 Unique moves: 109 (108 non-simple)
-Unique abilities: 15 (13 non-simple)
-Unique items: 5
+Unique abilities: 14 (12 non-simple)
+Unique items: 4
 
 --- Most Common Moves (top 10) ---
   lightscreen: 2 seeds
@@ -291,7 +287,7 @@ Unique items: 5
   Sand Stream: 1 seeds
   Light Metal: 1 seeds
   Primordial Sea: 1 seeds
-  Unburden: 1 seeds
   Anticipation: 1 seeds
   Levitate: 1 seeds
   Stakeout: 1 seeds
+  Pressure: 1 seeds

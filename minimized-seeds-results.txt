@@ -510,7 +510,7 @@ Seed 7002: ✓ PASS
 Seed 7006: ✓ PASS
 Seed 7010: ✓ PASS
 Seed 7012: ✓ PASS
-Seed 7018: ✗ FAIL - #3: turn=3, prng=12->18, P1=[Grafaiai(0/162)], P2=[Charizard(234/281)]
+Seed 7018: ✓ PASS
 Seed 7028: ✓ PASS
 Seed 7029: ✓ PASS
 Seed 7042: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 689
-Failed: 34
+Passed: 690
+Failed: 33
 
 Pass rate: 95%
 ✗ Some seeds still failing

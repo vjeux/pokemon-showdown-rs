@@ -2716,7 +2716,9 @@
     "onAnyModifyBoost": true
   },
   "unburden": {
-    "condition": {},
+    "condition": {
+      "onModifySpe": true
+    },
     "flags": {},
     "name": "Unburden",
     "rating": 3.5,

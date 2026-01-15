@@ -66,7 +66,7 @@ pub mod condition {
 
         if has_no_item && !ignoring_ability {
             // return this.chainModify(2);
-            return EventResult::Number(2);
+            battle.chain_modify(2.0);
         }
 
         EventResult::Continue

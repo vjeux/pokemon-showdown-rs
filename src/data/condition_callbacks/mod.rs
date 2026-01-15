@@ -650,6 +650,7 @@ pub fn dispatch_on_modify_spe(
         "par" => par::on_modify_spe(battle, spe, pokemon_pos),
         "quarkdrive" => ability_callbacks::quarkdrive::condition::on_modify_spe(battle, spe, pokemon_pos),
         "protosynthesis" => ability_callbacks::protosynthesis::condition::on_modify_spe(battle, spe, pokemon_pos),
+        "unburden" => ability_callbacks::unburden::condition::on_modify_spe(battle, spe, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
             // dispatch_condition_on_modify_spe takes (battle, move_id, spe, source_pos)
