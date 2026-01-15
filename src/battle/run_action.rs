@@ -1,6 +1,7 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::battle::{PriorityItem, BattleRequestState};
+use crate::battle_queue::MoveActionType;
 use crate::pokemon::MoveSlot;
 
 impl Battle {
@@ -1274,8 +1275,11 @@ impl Battle {
         // JS: }
         if self.gen >= 8 {
             let should_sort = if let Some(next_action) = self.queue.peek() {
+                // JS: this.queue.peek()?.choice === 'move' || this.queue.peek()?.choice === 'runDynamax'
+                // IMPORTANT: JavaScript only checks for choice === 'move', NOT 'priorityChargeMove' or 'beforeTurnMove'
+                // So we must only match MoveActionType::Move, not all MoveActions
                 let is_move_or_dynamax = match next_action {
-                    Action::Move(_) => true,
+                    Action::Move(m) => matches!(m.choice, MoveActionType::Move),
                     Action::Pokemon(p) => matches!(p.choice, PokemonActionType::RunDynamax),
                     _ => false,
                 };
