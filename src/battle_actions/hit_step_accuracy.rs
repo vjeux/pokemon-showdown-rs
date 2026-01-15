@@ -192,77 +192,78 @@ pub fn hit_step_accuracy(
             ) {
                 accuracy = modified_acc;
             }
-        }
 
-        // JavaScript: if (accuracy !== true) { apply boosts }
-        // In Rust, accuracy=0 represents true
-        if accuracy != 0 {
-            // JavaScript: let boost = 0;
-            let mut boost = 0;
+            // JavaScript: if (accuracy !== true) { apply boosts }
+            // NOTE: This is inside the else block - OHKO moves bypass accuracy modifiers including boosts
+            // In Rust, accuracy=0 represents true
+            if accuracy != 0 {
+                // JavaScript: let boost = 0;
+                let mut boost = 0;
 
-            // if (!move.ignoreAccuracy)
-            if !active_move.ignore_accuracy {
-                // const boosts = this.battle.runEvent('ModifyBoost', pokemon, null, null, { ...pokemon.boosts });
-                // boost = this.battle.clampIntRange(boosts['accuracy'], -6, 6);
+                // if (!move.ignoreAccuracy)
+                if !active_move.ignore_accuracy {
+                    // const boosts = this.battle.runEvent('ModifyBoost', pokemon, null, null, { ...pokemon.boosts });
+                    // boost = this.battle.clampIntRange(boosts['accuracy'], -6, 6);
 
-                // Create boosts table from pokemon's boosts
-                let boosts_table = {
-                    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                        Some(p) => p,
-                        None => return hit_results,
+                    // Create boosts table from pokemon's boosts
+                    let boosts_table = {
+                        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                            Some(p) => p,
+                            None => return hit_results,
+                        };
+                        pokemon.boosts.clone()
                     };
-                    pokemon.boosts.clone()
-                };
 
-                // Run ModifyBoost event - returns modified boosts table
-                let modified_boosts = battle.run_event(
-                "ModifyBoost",
-                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
-                    None,
-                    None,
-                    crate::event::EventResult::Boost(boosts_table),
-                    false,
-                    false,
-                ).boost().unwrap_or(boosts_table);
+                    // Run ModifyBoost event - returns modified boosts table
+                    let modified_boosts = battle.run_event(
+                    "ModifyBoost",
+                    Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
+                        None,
+                        None,
+                        crate::event::EventResult::Boost(boosts_table),
+                        false,
+                        false,
+                    ).boost().unwrap_or(boosts_table);
 
-                // Extract accuracy boost and clamp to [-6, 6]
-                boost = modified_boosts.accuracy.max(-6).min(6);
-            }
+                    // Extract accuracy boost and clamp to [-6, 6]
+                    boost = modified_boosts.accuracy.max(-6).min(6);
+                }
 
-            // if (!move.ignoreEvasion)
-            if !active_move.ignore_evasion {
-                // const boosts = this.battle.runEvent('ModifyBoost', target, null, null, { ...target.boosts });
-                // boost = this.battle.clampIntRange(boost - boosts['evasion'], -6, 6);
+                // if (!move.ignoreEvasion)
+                if !active_move.ignore_evasion {
+                    // const boosts = this.battle.runEvent('ModifyBoost', target, null, null, { ...target.boosts });
+                    // boost = this.battle.clampIntRange(boost - boosts['evasion'], -6, 6);
 
-                // Create boosts table from target's boosts
-                let boosts_table = {
-                    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-                        Some(t) => t,
-                        None => continue,
+                    // Create boosts table from target's boosts
+                    let boosts_table = {
+                        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                            Some(t) => t,
+                            None => continue,
+                        };
+                        target.boosts.clone()
                     };
-                    target.boosts.clone()
-                };
 
-                // Run ModifyBoost event - returns modified boosts table
-                let modified_boosts = battle.run_event(
-                "ModifyBoost",
-                Some(crate::event::EventTarget::Pokemon(target_pos)),
-                    None,
-                    None,
-                    crate::event::EventResult::Boost(boosts_table),
-                    false,
-                    false,
-                ).boost().unwrap_or(boosts_table);
+                    // Run ModifyBoost event - returns modified boosts table
+                    let modified_boosts = battle.run_event(
+                    "ModifyBoost",
+                    Some(crate::event::EventTarget::Pokemon(target_pos)),
+                        None,
+                        None,
+                        crate::event::EventResult::Boost(boosts_table),
+                        false,
+                        false,
+                    ).boost().unwrap_or(boosts_table);
 
-                // Extract evasion boost, subtract from accuracy boost, and clamp to [-6, 6]
-                boost = (boost - modified_boosts.evasion).max(-6).min(6);
-            }
+                    // Extract evasion boost, subtract from accuracy boost, and clamp to [-6, 6]
+                    boost = (boost - modified_boosts.evasion).max(-6).min(6);
+                }
 
-            // Apply boost to accuracy
-            if boost > 0 {
-                accuracy = battle.trunc(accuracy as f64 * (3.0 + boost as f64) / 3.0, None) as i32;
-            } else if boost < 0 {
-                accuracy = battle.trunc(accuracy as f64 * 3.0 / (3.0 - boost as f64), None) as i32;
+                // Apply boost to accuracy
+                if boost > 0 {
+                    accuracy = battle.trunc(accuracy as f64 * (3.0 + boost as f64) / 3.0, None) as i32;
+                } else if boost < 0 {
+                    accuracy = battle.trunc(accuracy as f64 * 3.0 / (3.0 - boost as f64), None) as i32;
+                }
             }
         }
 
