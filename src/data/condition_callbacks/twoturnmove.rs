@@ -67,14 +67,29 @@ pub fn on_start(
 
         // attacker.addVolatile(effect.id);
         // Add a volatile for the specific move (e.g., "dig", "fly", "solarbeam")
-        // IMPORTANT: JavaScript does NOT pass a source parameter here!
-        // The source should be None, not copied from twoturnmove.
+        //
+        // IMPORTANT: JavaScript does NOT pass a source parameter explicitly here,
+        // BUT in JavaScript's addVolatile, when source is not passed, it inherits
+        // from this.battle.event.source (see pokemon.ts lines 1945-1949):
+        //   if (this.battle.event) {
+        //       if (!source) source = this.battle.event.source;
+        //   }
+        //   if (!source) source = this;
+        //
+        // When twoturnmove.onStart runs, this.battle.event.source = the source
+        // passed to the original addVolatile('twoturnmove', target) call, which
+        // is the grabbed target (e.g., Ribombee for Sky Drop).
+        //
         // This is critical for Sky Drop's onFoeBeforeMove which checks:
         //   if (attacker === this.effectState.source) { return null; }
-        // With source defaulting to self (Zygarde), this check is:
-        //   Frosmoth === Zygarde -> false, so Frosmoth can move
-        eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}', source=None (matching JS)", move_id_val.as_str());
-        crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), None, None, None, None);
+        // The grabbed Pokemon (Ribombee) is stored as effectState.source,
+        // so when Ribombee tries to move, attacker === Ribombee is TRUE,
+        // and the move is nullified.
+        //
+        // Get the event source (the grabbed target) to pass to add_volatile
+        let event_source = battle.event.as_ref().and_then(|e| e.source);
+        eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}', source={:?} (inherited from event)", move_id_val.as_str(), event_source);
+        crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), event_source, None, None, None);
         eprintln!("[TWOTURNMOVE_ONSTART] Returned from add_volatile");
 
         // JavaScript: let moveTargetLoc: number = attacker.lastMoveTargetLoc!;

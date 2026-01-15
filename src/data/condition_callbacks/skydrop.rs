@@ -121,6 +121,8 @@ pub fn on_foe_before_move(
     _source_pos: Option<(usize, usize)>,
     _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
+    eprintln!("[SKYDROP_FOE_BEFORE_MOVE] Called: pokemon_pos={:?}, target_pos={:?}", pokemon_pos, target_pos);
+
     // target_pos = the attacker (Pokemon trying to move)
     // We need to check if attacker === this.effectState.source
 
@@ -128,21 +130,31 @@ pub fn on_foe_before_move(
     let effect_source = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
-            None => return EventResult::Continue,
+            None => {
+                eprintln!("[SKYDROP_FOE_BEFORE_MOVE] No pokemon at {:?}", pokemon_pos);
+                return EventResult::Continue;
+            }
         };
 
         let skydrop_id = crate::dex_data::ID::from("skydrop");
         let state = match pokemon.volatiles.get(&skydrop_id) {
             Some(s) => s,
-            None => return EventResult::Continue,
+            None => {
+                eprintln!("[SKYDROP_FOE_BEFORE_MOVE] No skydrop volatile on {:?}", pokemon_pos);
+                return EventResult::Continue;
+            }
         };
 
+        eprintln!("[SKYDROP_FOE_BEFORE_MOVE] Found skydrop volatile, source={:?}", state.source);
         state.source
     };
+
+    eprintln!("[SKYDROP_FOE_BEFORE_MOVE] Comparing target_pos={:?} with effect_source={:?}", target_pos, effect_source);
 
     // JavaScript: if (attacker === this.effectState.source) {
     // attacker is target_pos, effectState.source is effect_source
     if target_pos == effect_source {
+        eprintln!("[SKYDROP_FOE_BEFORE_MOVE] MATCH! Nullifying attacker's move");
         if let Some(attacker_pos) = target_pos {
             // attacker.activeMoveActions--;
             battle.decrement_active_move_actions(attacker_pos);
@@ -152,5 +164,6 @@ pub fn on_foe_before_move(
         return EventResult::Null;
     }
 
+    eprintln!("[SKYDROP_FOE_BEFORE_MOVE] No match, returning Continue");
     EventResult::Continue
 }

@@ -231,7 +231,15 @@ pub mod condition {
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     this.damage(source.baseMaxhp / 8, source, target);
         // }
-        let makes_contact = battle.check_move_makes_contact(&move_id, source, target, false);
+        // Use check_move_makes_contact_with_active_move to check the active move's flags
+        // (which may have been modified by onModifyMove, e.g., Sky Drop removes contact on charge turn)
+        let active_move_clone = battle.active_move.clone();
+        let makes_contact = battle.check_move_makes_contact_with_active_move(
+            active_move_clone.as_ref(),
+            source,
+            target,
+            false,
+        );
         if makes_contact {
             let base_max_hp = {
                 let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -270,15 +278,23 @@ pub mod condition {
         let source = pokemon_pos;
 
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
-        let (is_z_or_max_powered, move_id) = {
+        let is_z_or_max_powered = {
             let active_move = match &battle.active_move {
                 Some(active_move) => active_move,
                 None => return EventResult::Continue,
             };
-            (active_move.is_z_or_max_powered, active_move.id.clone())
+            active_move.is_z_or_max_powered
         };
 
-        let makes_contact = battle.check_move_makes_contact(&move_id, source, target, false);
+        // Use check_move_makes_contact_with_active_move to check the active move's flags
+        // (which may have been modified by onModifyMove, e.g., Sky Drop removes contact on charge turn)
+        let active_move_clone = battle.active_move.clone();
+        let makes_contact = battle.check_move_makes_contact_with_active_move(
+            active_move_clone.as_ref(),
+            source,
+            target,
+            false,
+        );
 
         if is_z_or_max_powered && makes_contact {
             // this.damage(source.baseMaxhp / 8, source, target);
