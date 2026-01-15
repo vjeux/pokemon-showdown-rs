@@ -320,6 +320,18 @@ pub fn run_move(
         }
     }
 
+    // Dancer Petal Dance hack
+    // JavaScript: const noLock = externalMove && !pokemon.volatiles['lockedmove'];
+    // If this is an external move (like Dancer copy) and the Pokemon doesn't already have lockedmove,
+    // we need to remove any lockedmove that gets added during the move execution.
+    let no_lock = external_move && {
+        if let Some(p) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            !p.volatiles.contains_key(&ID::new("lockedmove"))
+        } else {
+            false
+        }
+    };
+
     // Call useMove
     // const moveDidSomething = this.useMove(baseMove, pokemon, { target, sourceEffect, zMove, maxMove });
     let move_did_something = crate::battle_actions::use_move(
@@ -511,6 +523,18 @@ pub fn run_move(
                 None, // original_target
                 false, // prankster_boosted - Dancer copies don't get Prankster boost
             );
+        }
+    }
+
+    // Dancer Petal Dance hack cleanup
+    // JavaScript: if (noLock && pokemon.volatiles['lockedmove']) delete pokemon.volatiles['lockedmove'];
+    // If this was an external move that didn't originally have lockedmove,
+    // remove any lockedmove that was added during the move execution.
+    if no_lock {
+        if let Some(p) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            if p.volatiles.contains_key(&ID::new("lockedmove")) {
+                Pokemon::remove_volatile(battle, pokemon_pos, &ID::new("lockedmove"));
+            }
         }
     }
 

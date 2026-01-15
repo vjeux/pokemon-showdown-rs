@@ -1,12 +1,10 @@
-Analyzing 72 failing minimized seed files...
+Analyzing 71 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 afteryou: 3 seeds
   Seeds: 6764, 6919, 9563
-helpinghand: 2 seeds
-  Seeds: 1110, 8708
 guardsplit: 2 seeds
   Seeds: 1256, 1398
 instruct: 2 seeds
@@ -51,16 +49,6 @@ obstruct: 2 seeds
   Seeds: 8544, 9005
 assist: 2 seeds
   Seeds: 8774, 9563
-diamondstorm: 1 seeds
-  Seeds: 1110
-taunt: 1 seeds
-  Seeds: 1110
-clangoroussoul: 1 seeds
-  Seeds: 1110
-iciclecrash: 1 seeds
-  Seeds: 1110
-petaldance: 1 seeds
-  Seeds: 1110
 electroshot: 1 seeds
   Seeds: 1235
 fly: 1 seeds
@@ -299,6 +287,8 @@ mefirst: 1 seeds
   Seeds: 8708
 voltswitch: 1 seeds
   Seeds: 8708
+helpinghand: 1 seeds
+  Seeds: 8708
 veeveevolley: 1 seeds
   Seeds: 8708
 batonpass: 1 seeds
@@ -359,10 +349,6 @@ Merciless: 2 seeds
   Seeds: 6919, 7055
 Gorilla Tactics: 2 seeds
   Seeds: 7592, 7601
-Rivalry: 1 seeds
-  Seeds: 1110
-Dancer: 1 seeds
-  Seeds: 1110
 Poison Point: 1 seeds
   Seeds: 2338
 Mycelium Might: 1 seeds
@@ -459,14 +445,13 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 72
-Unique moves: 169 (168 non-simple)
-Unique abilities: 38 (35 non-simple)
+Total minimized seeds: 71
+Unique moves: 164 (163 non-simple)
+Unique abilities: 36 (33 non-simple)
 Unique items: 19
 
 --- Most Common Moves (top 10) ---
   afteryou: 3 seeds
-  helpinghand: 2 seeds
   guardsplit: 2 seeds
   instruct: 2 seeds
   hiddenpowerwater: 2 seeds
@@ -475,6 +460,7 @@ Unique items: 19
   technoblast: 2 seeds
   bloodmoon: 2 seeds
   thunderpunch: 2 seeds
+  jumpkick: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Hunger Switch: 2 seeds
@@ -485,5 +471,5 @@ Unique items: 19
   Intimidate: 2 seeds
   Merciless: 2 seeds
   Gorilla Tactics: 2 seeds
-  Rivalry: 1 seeds
-  Dancer: 1 seeds
+  Poison Point: 1 seeds
+  Mycelium Might: 1 seeds
