@@ -164,7 +164,7 @@ Seed 2597: ✓ PASS
 Seed 2609: ✓ PASS
 Seed 2618: ✓ PASS
 Seed 2622: ✓ PASS
-Seed 2633: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Bergmite(169/237)], P2=[Gastrodon(272/384)]
+Seed 2633: ✓ PASS
 Seed 2651: ✓ PASS
 Seed 2655: ✓ PASS
 Seed 2665: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 674
-Failed: 49
+Passed: 675
+Failed: 48
 
 Pass rate: 93%
 ✗ Some seeds still failing

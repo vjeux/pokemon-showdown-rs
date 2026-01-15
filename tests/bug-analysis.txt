@@ -1,4 +1,4 @@
-Analyzing 49 failing minimized seed files...
+Analyzing 48 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -31,8 +31,6 @@ gigavolthavoc: 1 seeds
   Seeds: 2388
 sing: 1 seeds
   Seeds: 2388
-knockoff: 1 seeds
-  Seeds: 2633
 hyperbeam: 1 seeds
   Seeds: 3063
 bubblebeam: 1 seeds
@@ -271,8 +269,6 @@ Poison Point: 1 seeds
   Seeds: 2338
 Mycelium Might: 1 seeds
   Seeds: 2388
-Sticky Hold: 1 seeds
-  Seeds: 2633
 Aftermath: 1 seeds
   Seeds: 2787
 Damp: 1 seeds
@@ -321,8 +317,6 @@ bigroot: 2 seeds
   Seeds: 3185, 4357
 quickclaw: 1 seeds
   Seeds: 2388
-blukberry: 1 seeds
-  Seeds: 2633
 iapapaberry: 1 seeds
   Seeds: 3063
 jabocaberry: 1 seeds
@@ -343,10 +337,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 49
-Unique moves: 127 (126 non-simple)
-Unique abilities: 29 (27 non-simple)
-Unique items: 11
+Total minimized seeds: 48
+Unique moves: 126 (125 non-simple)
+Unique abilities: 28 (26 non-simple)
+Unique items: 10
 
 --- Most Common Moves (top 10) ---
   thunderpunch: 2 seeds
@@ -367,7 +361,7 @@ Unique items: 11
   Gorilla Tactics: 2 seeds
   Poison Point: 1 seeds
   Mycelium Might: 1 seeds
-  Sticky Hold: 1 seeds
   Aftermath: 1 seeds
   Damp: 1 seeds
   Dauntless Shield: 1 seeds
+  Magician: 1 seeds

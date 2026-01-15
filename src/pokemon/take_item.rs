@@ -87,8 +87,12 @@ impl Pokemon {
         // Note: JavaScript passes item as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's item field before it's cleared
         let take_item_result = battle.run_event("TakeItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(source_pos), None, EventResult::Continue, false, false);
-        // runEvent returns Option<i32>, None or Some(0) means failure
-        if matches!(take_item_result, EventResult::Number(0)) || matches!(take_item_result, EventResult::Null) {
+        // runEvent returns truthy/falsy value - falsy means item cannot be taken
+        // JavaScript: falsy values are false, 0, null, undefined, NaN, ""
+        // Check for all falsy EventResult variants:
+        if matches!(take_item_result, EventResult::Number(0))
+            || matches!(take_item_result, EventResult::Null)
+            || matches!(take_item_result, EventResult::Boolean(false)) {
             return None; // false in JavaScript
         }
 
