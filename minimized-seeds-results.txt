@@ -177,7 +177,7 @@ Seed 2741: ✓ PASS
 Seed 2750: ✓ PASS
 Seed 2762: ✓ PASS
 Seed 2769: ✓ PASS
-Seed 2787: ✗ FAIL - #3: turn=3, prng=14->18, P1=[Drifblim(0/330)], P2=[Golduck(205/247)]
+Seed 2787: ✓ PASS
 Seed 2788: ✓ PASS
 Seed 2802: ✓ PASS
 Seed 2803: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 677
-Failed: 46
+Passed: 678
+Failed: 45
 
 Pass rate: 93%
 ✗ Some seeds still failing

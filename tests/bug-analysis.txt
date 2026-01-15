@@ -1,10 +1,8 @@
-Analyzing 46 failing minimized seed files...
+Analyzing 45 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-thunderpunch: 2 seeds
-  Seeds: 2787, 8708
 dragontail: 2 seeds
   Seeds: 4905, 9005
 shellsidearm: 2 seeds
@@ -203,6 +201,8 @@ mefirst: 1 seeds
   Seeds: 8708
 voltswitch: 1 seeds
   Seeds: 8708
+thunderpunch: 1 seeds
+  Seeds: 8708
 helpinghand: 1 seeds
   Seeds: 8708
 veeveevolley: 1 seeds
@@ -263,10 +263,6 @@ Poison Point: 1 seeds
   Seeds: 2338
 Mycelium Might: 1 seeds
   Seeds: 2388
-Aftermath: 1 seeds
-  Seeds: 2787
-Damp: 1 seeds
-  Seeds: 2787
 Dauntless Shield: 1 seeds
   Seeds: 3063
 Magician: 1 seeds
@@ -325,13 +321,12 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 46
+Total minimized seeds: 45
 Unique moves: 123 (122 non-simple)
-Unique abilities: 26 (24 non-simple)
+Unique abilities: 24 (22 non-simple)
 Unique items: 9
 
 --- Most Common Moves (top 10) ---
-  thunderpunch: 2 seeds
   dragontail: 2 seeds
   shellsidearm: 2 seeds
   lightscreen: 2 seeds
@@ -341,6 +336,7 @@ Unique items: 9
   assist: 2 seeds
   gigavolthavoc: 1 seeds
   sing: 1 seeds
+  hyperbeam: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   Quark Drive: 2 seeds
@@ -349,7 +345,7 @@ Unique items: 9
   Gorilla Tactics: 2 seeds
   Poison Point: 1 seeds
   Mycelium Might: 1 seeds
-  Aftermath: 1 seeds
-  Damp: 1 seeds
   Dauntless Shield: 1 seeds
   Magician: 1 seeds
+  Hadron Engine: 1 seeds
+  Snow Warning: 1 seeds

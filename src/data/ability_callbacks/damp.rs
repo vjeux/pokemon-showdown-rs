@@ -83,8 +83,9 @@ pub fn on_any_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 ///     }
 /// }
 pub fn on_any_damage(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    // JavaScript checks effect.name === 'Aftermath', but in Rust we get the effect ID (lowercase)
     if let Some(effect) = effect_id {
-        if effect == "Aftermath" {
+        if effect == "aftermath" {
             return EventResult::Boolean(false);
         }
     }

@@ -13,6 +13,8 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    use crate::battle::Effect;
+
     // If target fainted and move makes contact, damage the attacker
     if let (Some(target), Some(source)) = (target_pos, source_pos) {
         // Check if target has 0 HP
@@ -34,7 +36,9 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
                 };
                 source_pokemon.base_maxhp / 4
             };
-            battle.damage(damage_amount, Some(source), Some(target), None, false);
+            // Pass the Aftermath ability effect so Damp's onAnyDamage can detect and block it
+            // JavaScript: this.damage() uses the current ability effect (this.effect) implicitly
+            battle.damage(damage_amount, Some(source), Some(target), Some(&Effect::ability("aftermath")), false);
         }
     }
     EventResult::Continue
