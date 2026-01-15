@@ -154,9 +154,16 @@ impl Battle {
         }
 
         // JavaScript: if (eventid === 'SwitchIn' && effect.effectType === 'Ability' && effect.flags['breakable'] && this.suppressingAbility(target))
-        if event_id == "SwitchIn" && effect_type == EffectType::Ability && self.suppressing_ability(target) {
-            self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
-            return EventResult::Continue;
+        if event_id == "SwitchIn" && effect_type == EffectType::Ability {
+            // Check if the ability has the breakable flag
+            let is_breakable = self.dex.abilities().get(effect_id.as_str())
+                .map(|ability_data| ability_data.flags.get("breakable").copied().unwrap_or(0) != 0)
+                .unwrap_or(false);
+
+            if is_breakable && self.suppressing_ability(target) {
+                self.debug(&format!("{} handler suppressed by Mold Breaker", event_id));
+                return EventResult::Continue;
+            }
         }
 
         // JavaScript: if (eventid !== 'Start' && eventid !== 'TakeItem' && effect.effectType === 'Item' && target.ignoringItem())
