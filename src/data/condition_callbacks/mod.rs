@@ -158,6 +158,7 @@ pub fn dispatch_on_base_power(
     active_move: Option<&ActiveMove>,
 ) -> EventResult {
     match condition_id {
+        "charge" => move_callbacks::charge::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "electricterrain" => move_callbacks::electricterrain::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),
         "gem" => gem::on_base_power(battle, base_power, pokemon_pos, target_pos, active_move),
         "grassyterrain" => move_callbacks::grassyterrain::condition::on_base_power(battle, base_power, pokemon_pos, target_pos),

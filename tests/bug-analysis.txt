@@ -1,18 +1,14 @@
-Analyzing 120 failing minimized seed files...
+Analyzing 109 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-thunderpunch: 3 seeds
-  Seeds: 2787, 3953, 8708
 blizzard: 3 seeds
   Seeds: 3153, 4668, 4750
 hiddenpower: 3 seeds
   Seeds: 3212, 5204, 6359
 shellsidearm: 3 seeds
   Seeds: 3507, 5644, 8545
-skillswap: 3 seeds
-  Seeds: 3578, 6288, 6669
 fling: 3 seeds
   Seeds: 6242, 7054, 9789
 afteryou: 3 seeds
@@ -43,14 +39,12 @@ craftyshield: 2 seeds
   Seeds: 2169, 6794
 electricterrain: 2 seeds
   Seeds: 2214, 4745
-glaciate: 2 seeds
-  Seeds: 2440, 9789
-minimize: 2 seeds
-  Seeds: 2535, 3904
 technoblast: 2 seeds
   Seeds: 2674, 5123
 bloodmoon: 2 seeds
   Seeds: 2741, 9425
+thunderpunch: 2 seeds
+  Seeds: 2787, 8708
 hydrovortex: 2 seeds
   Seeds: 2876, 7592
 dreameater: 2 seeds
@@ -59,8 +53,6 @@ stoneaxe: 2 seeds
   Seeds: 2876, 7213
 wickedtorque: 2 seeds
   Seeds: 3000, 4745
-rocktomb: 2 seeds
-  Seeds: 3126, 8121
 chillyreception: 2 seeds
   Seeds: 3153, 9529
 tripleaxel: 2 seeds
@@ -69,6 +61,8 @@ jumpkick: 2 seeds
   Seeds: 3578, 5251
 dynamicpunch: 2 seeds
   Seeds: 3578, 4479
+skillswap: 2 seeds
+  Seeds: 3578, 6288
 thunder: 2 seeds
   Seeds: 3578, 8445
 triplekick: 2 seeds
@@ -79,18 +73,12 @@ trickortreat: 2 seeds
   Seeds: 4378, 4760
 triattack: 2 seeds
   Seeds: 4430, 7012
-roost: 2 seeds
-  Seeds: 4567, 7149
 payback: 2 seeds
   Seeds: 4634, 9005
 risingvoltage: 2 seeds
   Seeds: 4745, 6794
 dragontail: 2 seeds
   Seeds: 4905, 9005
-filletaway: 2 seeds
-  Seeds: 5926, 8544
-ingrain: 2 seeds
-  Seeds: 5926, 9005
 lightscreen: 2 seeds
   Seeds: 5992, 8544
 counter: 2 seeds
@@ -173,8 +161,6 @@ gigavolthavoc: 1 seeds
   Seeds: 2388
 sing: 1 seeds
   Seeds: 2388
-swordsdance: 1 seeds
-  Seeds: 2440
 knockoff: 1 seeds
   Seeds: 2633
 strengthsap: 1 seeds
@@ -185,8 +171,6 @@ captivate: 1 seeds
   Seeds: 2876
 psystrike: 1 seeds
   Seeds: 2876
-pikapapow: 1 seeds
-  Seeds: 2956
 spikes: 1 seeds
   Seeds: 3000
 hyperbeam: 1 seeds
@@ -206,6 +190,8 @@ glare: 1 seeds
 supercellslam: 1 seeds
   Seeds: 3122
 psyshieldbash: 1 seeds
+  Seeds: 3126
+rocktomb: 1 seeds
   Seeds: 3126
 shelltrap: 1 seeds
   Seeds: 3126
@@ -231,14 +217,6 @@ chipaway: 1 seeds
   Seeds: 3578
 disarmingvoice: 1 seeds
   Seeds: 3787
-alloutpummeling: 1 seeds
-  Seeds: 3801
-tidyup: 1 seeds
-  Seeds: 3801
-overdrive: 1 seeds
-  Seeds: 3801
-doubleteam: 1 seeds
-  Seeds: 3801
 irondefense: 1 seeds
   Seeds: 4025
 subzeroslammer: 1 seeds
@@ -273,14 +251,6 @@ gravity: 1 seeds
   Seeds: 4479
 wonderroom: 1 seeds
   Seeds: 4479
-gmaxfinale: 1 seeds
-  Seeds: 4567
-vinewhip: 1 seeds
-  Seeds: 4567
-doubleironbash: 1 seeds
-  Seeds: 4567
-eerieimpulse: 1 seeds
-  Seeds: 4567
 magicpowder: 1 seeds
   Seeds: 4634
 explosion: 1 seeds
@@ -359,8 +329,6 @@ maxairstream: 1 seeds
   Seeds: 6621
 playnice: 1 seeds
   Seeds: 6654
-volttackle: 1 seeds
-  Seeds: 6738
 foresight: 1 seeds
   Seeds: 6764
 defensecurl: 1 seeds
@@ -401,6 +369,8 @@ poisongas: 1 seeds
   Seeds: 7055
 direclaw: 1 seeds
   Seeds: 7121
+roost: 1 seeds
+  Seeds: 7149
 freezedry: 1 seeds
   Seeds: 7149
 topsyturvy: 1 seeds
@@ -419,14 +389,6 @@ armorcannon: 1 seeds
   Seeds: 8070
 naturepower: 1 seeds
   Seeds: 8070
-furyattack: 1 seeds
-  Seeds: 8121
-curse: 1 seeds
-  Seeds: 8121
-firepunch: 1 seeds
-  Seeds: 8121
-bouncybubble: 1 seeds
-  Seeds: 8121
 hiddenpowerice: 1 seeds
   Seeds: 8355
 safeguard: 1 seeds
@@ -434,6 +396,8 @@ safeguard: 1 seeds
 toxicspikes: 1 seeds
   Seeds: 8445
 liquidation: 1 seeds
+  Seeds: 8544
+filletaway: 1 seeds
   Seeds: 8544
 hyperspacehole: 1 seeds
   Seeds: 8544
@@ -463,6 +427,8 @@ struggle: 1 seeds
   Seeds: 8774
 supersonicskystrike: 1 seeds
   Seeds: 9005
+ingrain: 1 seeds
+  Seeds: 9005
 rockthrow: 1 seeds
   Seeds: 9005
 maxdarkness: 1 seeds
@@ -489,16 +455,12 @@ slam: 1 seeds
   Seeds: 9789
 attackorder: 1 seeds
   Seeds: 9789
+glaciate: 1 seeds
+  Seeds: 9789
 
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Zen Mode: 4 seeds
-  Seeds: 2440, 4567, 5926, 8121
-No Guard: 4 seeds
-  Seeds: 2535, 3904, 6288, 8708
-Electromorphosis: 4 seeds
-  Seeds: 2956, 3801, 3953, 6738
 Prankster: 4 seeds
   Seeds: 5807, 6654, 8152, 8799
 Effect Spore: 3 seeds
@@ -519,6 +481,8 @@ Snow Warning: 2 seeds
   Seeds: 4750, 4905
 Synchronize: 2 seeds
   Seeds: 5576, 6593
+No Guard: 2 seeds
+  Seeds: 6288, 8708
 Ripen: 2 seeds
   Seeds: 6621, 8146
 Intimidate: 2 seeds
@@ -563,8 +527,6 @@ Tough Claws: 1 seeds
   Seeds: 5644
 Light Metal: 1 seeds
   Seeds: 6288
-Truant: 1 seeds
-  Seeds: 6669
 Primordial Sea: 1 seeds
   Seeds: 6926
 Unburden: 1 seeds
@@ -607,8 +569,6 @@ mirrorherb: 1 seeds
   Seeds: 2169
 quickclaw: 1 seeds
   Seeds: 2388
-aguavberry: 1 seeds
-  Seeds: 2440
 blukberry: 1 seeds
   Seeds: 2633
 iapapaberry: 1 seeds
@@ -623,8 +583,6 @@ normalgem: 1 seeds
   Seeds: 4648
 boosterenergy: 1 seeds
   Seeds: 5215
-berserkgene: 1 seeds
-  Seeds: 5926
 enigmaberry: 1 seeds
   Seeds: 6065
 liechiberry: 1 seeds
@@ -649,27 +607,24 @@ lansatberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 120
-Unique moves: 244 (243 non-simple)
-Unique abilities: 47 (44 non-simple)
-Unique items: 30
+Total minimized seeds: 109
+Unique moves: 228 (227 non-simple)
+Unique abilities: 44 (41 non-simple)
+Unique items: 28
 
 --- Most Common Moves (top 10) ---
-  thunderpunch: 3 seeds
   blizzard: 3 seeds
   hiddenpower: 3 seeds
   shellsidearm: 3 seeds
-  skillswap: 3 seeds
   fling: 3 seeds
   afteryou: 3 seeds
   helpinghand: 2 seeds
   electroshot: 2 seeds
   dragonenergy: 2 seeds
+  aromaticmist: 2 seeds
+  guardsplit: 2 seeds
 
 --- Most Common Abilities (top 10) ---
-  Zen Mode: 4 seeds
-  No Guard: 4 seeds
-  Electromorphosis: 4 seeds
   Prankster: 4 seeds
   Effect Spore: 3 seeds
   Hadron Engine: 3 seeds
@@ -677,3 +632,6 @@ Unique items: 30
   Hunger Switch: 2 seeds
   Compound Eyes: 2 seeds
   Quark Drive: 2 seeds
+  RKS System: 2 seeds
+  Snow Warning: 2 seeds
+  Synchronize: 2 seeds
