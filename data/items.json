@@ -3314,7 +3314,8 @@
       "type": "Rock"
     },
     "condition": {
-      "duration": 2
+      "duration": 2,
+      "onSourceAccuracy": true
     },
     "num": 209,
     "gen": 4,

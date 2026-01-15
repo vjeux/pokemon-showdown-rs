@@ -1,4 +1,4 @@
-Analyzing 60 failing minimized seed files...
+Analyzing 57 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -11,8 +11,6 @@ craftyshield: 2 seeds
   Seeds: 2169, 6794
 technoblast: 2 seeds
   Seeds: 2674, 5123
-bloodmoon: 2 seeds
-  Seeds: 2741, 9425
 thunderpunch: 2 seeds
   Seeds: 2787, 8708
 jumpkick: 2 seeds
@@ -41,10 +39,6 @@ obstruct: 2 seeds
   Seeds: 8544, 9005
 assist: 2 seeds
   Seeds: 8774, 9563
-electroshot: 1 seeds
-  Seeds: 1235
-fly: 1 seeds
-  Seeds: 1235
 guardsplit: 1 seeds
   Seeds: 1398
 spinout: 1 seeds
@@ -67,8 +61,6 @@ sing: 1 seeds
   Seeds: 2388
 knockoff: 1 seeds
   Seeds: 2633
-strengthsap: 1 seeds
-  Seeds: 2741
 hyperbeam: 1 seeds
   Seeds: 3063
 bubblebeam: 1 seeds
@@ -177,8 +169,6 @@ bonemerang: 1 seeds
   Seeds: 6288
 heatcrash: 1 seeds
   Seeds: 6288
-dive: 1 seeds
-  Seeds: 6348
 nightshade: 1 seeds
   Seeds: 6794
 teatime: 1 seeds
@@ -279,6 +269,8 @@ grassyterrain: 1 seeds
   Seeds: 9227
 grassyglide: 1 seeds
   Seeds: 9227
+bloodmoon: 1 seeds
+  Seeds: 9425
 frenzyplant: 1 seeds
   Seeds: 9425
 whirlwind: 1 seeds
@@ -315,8 +307,6 @@ Mycelium Might: 1 seeds
   Seeds: 2388
 Sticky Hold: 1 seeds
   Seeds: 2633
-Liquid Ooze: 1 seeds
-  Seeds: 2741
 Aftermath: 1 seeds
   Seeds: 2787
 Damp: 1 seeds
@@ -361,8 +351,6 @@ Static: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-micleberry: 2 seeds
-  Seeds: 1235, 6348
 dousedrive: 2 seeds
   Seeds: 2674, 5123
 bigroot: 2 seeds
@@ -393,22 +381,22 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 60
-Unique moves: 148 (147 non-simple)
-Unique abilities: 31 (28 non-simple)
-Unique items: 14
+Total minimized seeds: 57
+Unique moves: 144 (143 non-simple)
+Unique abilities: 30 (27 non-simple)
+Unique items: 13
 
 --- Most Common Moves (top 10) ---
   instruct: 2 seeds
   hiddenpowerwater: 2 seeds
   craftyshield: 2 seeds
   technoblast: 2 seeds
-  bloodmoon: 2 seeds
   thunderpunch: 2 seeds
   jumpkick: 2 seeds
   dynamicpunch: 2 seeds
   skillswap: 2 seeds
   thunder: 2 seeds
+  trickortreat: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Quark Drive: 2 seeds
@@ -418,6 +406,6 @@ Unique items: 14
   Poison Point: 1 seeds
   Mycelium Might: 1 seeds
   Sticky Hold: 1 seeds
-  Liquid Ooze: 1 seeds
   Aftermath: 1 seeds
   Damp: 1 seeds
+  Dauntless Shield: 1 seeds

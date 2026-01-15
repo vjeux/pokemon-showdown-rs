@@ -268,11 +268,22 @@ impl Pokemon {
             return Some(false);
         }
 
-        // Get default duration from dex.conditions or embedded condition
+        // Get default duration from dex.conditions, embedded condition, or item's condition block
         // JS: if (status.duration) this.volatiles[status.id].duration = status.duration;
+        // JavaScript dex.conditions.get() also checks items for their condition blocks
         let default_duration = battle.dex.conditions().get_by_id(&volatile_id)
             .and_then(|cond| cond.duration)
-            .or_else(|| embedded_condition.and_then(|cond| cond.duration));
+            .or_else(|| embedded_condition.and_then(|cond| cond.duration))
+            .or_else(|| {
+                // Check if this volatile comes from an item's condition block
+                // JavaScript: dex.conditions.get() checks items[id].condition if not found in conditions
+                battle.dex.items().get_by_id(&volatile_id)
+                    .and_then(|item| item.extra.get("condition"))
+                    .and_then(|cond| cond.as_object())
+                    .and_then(|cond| cond.get("duration"))
+                    .and_then(|d| d.as_i64())
+                    .map(|d| d as i32)
+            });
 
         if battle.turn == 17 && volatile_id.as_str() == "skydrop" {
             let from_dex = battle.dex.conditions().get_by_id(&volatile_id)

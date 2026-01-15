@@ -26,6 +26,7 @@ pub mod hail;
 pub mod healreplacement;
 pub mod lockedmove;
 pub mod luckychant;
+pub mod micleberry;
 pub mod mustrecharge;
 pub mod par;
 pub mod partiallytrapped;
@@ -144,6 +145,9 @@ pub fn dispatch_on_source_accuracy(
     match condition_id {
         "lockon" => {
             move_callbacks::lockon::condition::on_source_accuracy(battle, accuracy, target_pos, source_pos, active_move)
+        }
+        "micleberry" => {
+            micleberry::on_source_accuracy(battle, accuracy, target_pos, source_pos, active_move)
         }
         _ => EventResult::Continue,
     }

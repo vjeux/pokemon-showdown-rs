@@ -25,13 +25,20 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
             let quarter_hp = pokemon.maxhp / 4;
             let half_hp = pokemon.maxhp / 2;
 
+            eprintln!("[MICLEBERRY_RESIDUAL] pokemon={:?}, hp={}, maxhp={}, quarter_hp={}, half_hp={}",
+                      pokemon_pos, pokemon.hp, pokemon.maxhp, quarter_hp, half_hp);
+
             if pokemon.hp <= quarter_hp {
+                eprintln!("[MICLEBERRY_RESIDUAL] hp <= quarter_hp, should_eat=true");
                 true
             } else if pokemon.hp <= half_hp {
                 let has_gluttony = pokemon.has_ability(battle, &["gluttony"]);
                 let gluttony_active = pokemon.ability_state.gluttony.unwrap_or(false);
+                eprintln!("[MICLEBERRY_RESIDUAL] hp <= half_hp, has_gluttony={}, gluttony_active={}",
+                          has_gluttony, gluttony_active);
                 has_gluttony && gluttony_active
             } else {
+                eprintln!("[MICLEBERRY_RESIDUAL] hp > half_hp, should_eat=false");
                 false
             }
         } else {

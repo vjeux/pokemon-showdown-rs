@@ -58,7 +58,7 @@ Seed 1193: ✓ PASS
 Seed 1194: ✓ PASS
 Seed 1205: ✓ PASS
 Seed 1221: ✓ PASS
-Seed 1235: ✗ FAIL - #5: turn=6, prng=14->16, P1=[Mamoswine(42/214)], P2=[Alcremie(180/269)]
+Seed 1235: ✓ PASS
 Seed 1249: ✓ PASS
 Seed 1252: ✓ PASS
 Seed 1256: ✓ PASS
@@ -173,7 +173,7 @@ Seed 2687: ✓ PASS
 Seed 2719: ✓ PASS
 Seed 2729: ✓ PASS
 Seed 2733: ✓ PASS
-Seed 2741: ✗ FAIL - #2: turn=3, prng=6->10, P1=[Mewtwo(91/286)], P2=[Swalot(151/288)]
+Seed 2741: ✓ PASS
 Seed 2750: ✓ PASS
 Seed 2762: ✓ PASS
 Seed 2769: ✓ PASS
@@ -446,7 +446,7 @@ Seed 6304: ✓ PASS
 Seed 6305: ✓ PASS
 Seed 6306: ✓ PASS
 Seed 6345: ✓ PASS
-Seed 6348: ✗ FAIL - #13: turn=14, prng=42->44, P1=[Abomasnow(15/275)], P2=[Basculin(37/237)]
+Seed 6348: ✓ PASS
 Seed 6349: ✓ PASS
 Seed 6359: ✓ PASS
 Seed 6365: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 663
-Failed: 60
+Passed: 666
+Failed: 57
 
-Pass rate: 91%
+Pass rate: 92%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...
