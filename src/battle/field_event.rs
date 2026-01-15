@@ -194,8 +194,12 @@ impl Battle {
             let effect_id = handler.effect.id;
             let holder = handler.effect_holder;
             let effect_type = handler.effect.effect_type;  // Use effect_type from handler, not determine_effect_type
-            // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
-            let effect_order = 0;
+            // JavaScript sets effectOrder for SwitchIn/RedirectTarget events, undefined for others
+            let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
+                handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+            } else {
+                0
+            };
             // JavaScript: handler.callback is set from getCallback() result
             // If getCallback returns undefined, callback is undefined even if handler exists
             let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &field_event, &effect_type);
@@ -227,12 +231,16 @@ impl Battle {
                     let effect_id = handler.effect.id;
                     let holder = handler.effect_holder;
                     let effect_type = handler.effect.effect_type;  // Use effect_type from handler, not determine_effect_type
-                    // IMPORTANT: Do NOT propagate handler effect_order for Residual event handlers!
                     // JavaScript fieldEvent() in resolvePriority only sets effectOrder for 'SwitchIn' and 'RedirectTarget' events.
-                    // For 'Residual' events, effectOrder is undefined, causing handlers with same priority/speed/subOrder to be tied and shuffled.
-                    // Rust was incorrectly propagating effect_order here, breaking ties that should exist.
-                    // Always use 0 to match JavaScript's undefined behavior.
-                    let effect_order = 0;
+                    // For these events, effectOrder comes from handler.state.effectOrder to ensure hazards activate
+                    // in the order they were created (e.g., Spikes before Stealth Rock if Spikes was set first).
+                    // For other events like 'Residual', effectOrder is undefined, causing handlers with same
+                    // priority/speed/subOrder to be tied and shuffled.
+                    let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
+                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                    } else {
+                        0
+                    };
                     // JavaScript: handler.callback is set from getCallback() result
                     // For onSideResidual handlers, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &side_event, &effect_type);
@@ -273,8 +281,9 @@ impl Battle {
                         let effect_id = handler.effect.id;
                         let holder = handler.effect_holder;
                         let effect_type = handler.effect.effect_type;
-                        // IMPORTANT: Do NOT propagate handler effect_order - always use 0 to match JavaScript undefined
-                        let effect_order = 0;
+                        // JavaScript sets effectOrder for SwitchIn and RedirectTarget events from handler.state.effectOrder
+                        // onAnySwitchIn ends with "SwitchIn" so it should also get effectOrder
+                        let effect_order = handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0);
                         // For any event handlers, check if the effect has this callback
                         let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &any_event, &effect_type);
                         let handler = self.create_field_handler(
@@ -307,12 +316,13 @@ impl Battle {
                     let effect_id = handler.effect.id;
                     let holder = handler.effect_holder;
                     let effect_type = handler.effect.effect_type;
-                    // IMPORTANT: Do NOT use handler.effect_order for field event handlers!
-                    // JavaScript fieldEvent() creates handlers with effectOrder=undefined for volatiles.
-                    // This causes volatiles with the same priority/speed/subOrder to be tied and shuffled.
-                    // Rust was incorrectly propagating volatile effect_order, breaking ties that should exist.
-                    // Always use 0 to match JavaScript's undefined behavior.
-                    let effect_order = 0;
+                    // JavaScript fieldEvent() in resolvePriority only sets effectOrder for 'SwitchIn' and 'RedirectTarget' events.
+                    // For other events like 'Residual', effectOrder is undefined (0), causing ties and shuffles.
+                    let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
+                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                    } else {
+                        0
+                    };
                     // For Pokemon handlers, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
                     let handler = self.create_field_handler(
@@ -338,9 +348,9 @@ impl Battle {
                     let effect_type = handler.effect.effect_type;
                     // JavaScript fieldEvent() in resolvePriority only sets effectOrder for 'SwitchIn' and 'RedirectTarget' events.
                     // For 'Residual' events, effectOrder is undefined (0), causing ties and shuffles.
-                    // For 'SwitchIn' events, use the stored effect_order to prevent unnecessary shuffles.
+                    // For 'SwitchIn' events, use the stored effect_order from state to prevent unnecessary shuffles.
                     let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
-                        handler.effect_order.unwrap_or(0)
+                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
                     } else {
                         0
                     };
@@ -368,7 +378,12 @@ impl Battle {
                 for handler in field_handlers_for_pokemon {
                     let effect_id = handler.effect.id;
                     let effect_type = handler.effect.effect_type;
-                    let effect_order = 0;
+                    // JavaScript sets effectOrder for SwitchIn/RedirectTarget events, undefined for others
+                    let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
+                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                    } else {
+                        0
+                    };
                     // For field handlers targeting Pokemon, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
                     let handler = self.create_field_handler(
@@ -392,7 +407,12 @@ impl Battle {
                 for handler in battle_handlers_for_pokemon {
                     let effect_id = handler.effect.id;
                     let effect_type = handler.effect.effect_type;
-                    let effect_order = 0;
+                    // JavaScript sets effectOrder for SwitchIn/RedirectTarget events, undefined for others
+                    let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
+                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                    } else {
+                        0
+                    };
                     // For battle handlers targeting Pokemon, check if the effect has this callback
                     let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &callback_name, &effect_type);
                     let handler = self.create_field_handler(

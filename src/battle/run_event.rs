@@ -439,12 +439,6 @@ impl Battle {
 
         // JavaScript: Loop through handlers (lines 174-282)
         // Execute each handler and accumulate results
-        if event_id.contains("DamagingHit") {
-            eprintln!("[RUN_EVENT] event_id={}, handlers.len()={}", event_id, handlers.len());
-            for (idx, h) in handlers.iter().enumerate() {
-                eprintln!("[RUN_EVENT]   handler[{}]: effect_id={}, effect_type={:?}", idx, h.effect.id.as_str(), h.effect.effect_type);
-            }
-        }
         for handler in handlers {
             let effect_id = handler.effect.id.clone();
             let handler_target = handler.effect_holder;

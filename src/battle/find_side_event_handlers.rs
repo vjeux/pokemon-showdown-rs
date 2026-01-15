@@ -73,11 +73,12 @@ impl Battle {
                     .unwrap_or_else(|| sc_id.to_string());
 
                 // JavaScript: effectHolder: customHolder || side
-                // For side conditions, if no custom holder is provided, use a dummy position
-                // representing the side. We use (side_idx, 0) so that is_ally() checks work correctly.
-                // is_ally() compares the side index (first element), so this correctly identifies
-                // the side that owns this condition.
-                let effective_holder = custom_holder.or(Some((side_idx, 0)));
+                // For side conditions, if no custom holder is provided, effectHolder is the Side itself (not a Pokemon).
+                // JavaScript checks (handler.effectHolder as Pokemon).getStat to determine if it's a Pokemon.
+                // Only Pokemon have getStat, so Side objects don't set handler.speed.
+                // In Rust, we use None to represent "holder is Side, not Pokemon" so speed stays at 0.
+                // The side_index field on the Effect struct already tracks which side owns this condition.
+                let effective_holder = custom_holder;
 
                 handlers.push(EventListener {
                     callback_name: String::new(),
@@ -96,9 +97,9 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    // Propagate effect_order from state for proper tie-breaking
-                    // JavaScript sets effectOrder during resolvePriority for SwitchIn/RedirectTarget events
-                    effect_order: Some(sc_state.effect_order),
+                    // JavaScript only sets effectOrder for SwitchIn/RedirectTarget events (see resolve_priority)
+                    // For other events, effectOrder should be None so handlers with same priority can be shuffled
+                    effect_order: None,
                     speed: None,
                 });
             }

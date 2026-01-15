@@ -558,7 +558,7 @@ Seed 7496: ✓ PASS
 Seed 7504: ✓ PASS
 Seed 7539: ✓ PASS
 Seed 7556: ✓ PASS
-Seed 7559: ✗ FAIL - #12: turn=11, prng=53->57, P1=[Toucannon(76/228)], P2=[Volbeat(53/182)]
+Seed 7559: ✓ PASS
 Seed 7563: ✓ PASS
 Seed 7577: ✓ PASS
 Seed 7589: ✓ PASS
@@ -632,7 +632,7 @@ Seed 8532: ✓ PASS
 Seed 8537: ✓ PASS
 Seed 8541: ✓ PASS
 Seed 8543: ✓ PASS
-Seed 8544: ✗ FAIL - #83: turn=77, prng=148->152, P1=[Venusaur(60/262)], P2=[Marowak(25/252)]
+Seed 8544: ✓ PASS
 Seed 8545: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Sinistcha(134/221)], P2=[Kabuto(159/188)]
 Seed 8553: ✓ PASS
 Seed 8554: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 694
-Failed: 29
+Passed: 696
+Failed: 27
 
-Pass rate: 95%
+Pass rate: 96%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

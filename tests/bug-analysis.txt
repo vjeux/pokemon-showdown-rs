@@ -1,12 +1,8 @@
-Analyzing 29 failing minimized seed files...
+Analyzing 27 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-courtchange: 2 seeds
-  Seeds: 7559, 8544
-obstruct: 2 seeds
-  Seeds: 8544, 9005
 assist: 2 seeds
   Seeds: 8774, 9563
 psyshieldbash: 1 seeds
@@ -113,10 +109,6 @@ freezedry: 1 seeds
   Seeds: 7149
 topsyturvy: 1 seeds
   Seeds: 7298
-mistball: 1 seeds
-  Seeds: 7559
-glitzyglow: 1 seeds
-  Seeds: 7559
 pursuit: 1 seeds
   Seeds: 7887
 thunder: 1 seeds
@@ -125,22 +117,6 @@ safeguard: 1 seeds
   Seeds: 8445
 toxicspikes: 1 seeds
   Seeds: 8445
-liquidation: 1 seeds
-  Seeds: 8544
-filletaway: 1 seeds
-  Seeds: 8544
-lightscreen: 1 seeds
-  Seeds: 8544
-aromaticmist: 1 seeds
-  Seeds: 8544
-hyperspacehole: 1 seeds
-  Seeds: 8544
-darkvoid: 1 seeds
-  Seeds: 8544
-icywind: 1 seeds
-  Seeds: 8544
-shockwave: 1 seeds
-  Seeds: 8544
 beakblast: 1 seeds
   Seeds: 8545
 shellsidearm: 1 seeds
@@ -174,6 +150,8 @@ supersonicskystrike: 1 seeds
 ingrain: 1 seeds
   Seeds: 9005
 blueflare: 1 seeds
+  Seeds: 9005
+obstruct: 1 seeds
   Seeds: 9005
 rockthrow: 1 seeds
   Seeds: 9005
@@ -219,8 +197,6 @@ Primordial Sea: 1 seeds
   Seeds: 6926
 Anticipation: 1 seeds
   Seeds: 7324
-Levitate: 1 seeds
-  Seeds: 8544
 Stakeout: 1 seeds
   Seeds: 8708
 Pressure: 1 seeds
@@ -233,22 +209,18 @@ Static: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-focussash: 1 seeds
-  Seeds: 8544
 kingsrock: 1 seeds
   Seeds: 9005
 
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 29
-Unique moves: 101 (100 non-simple)
-Unique abilities: 13 (11 non-simple)
-Unique items: 2
+Total minimized seeds: 27
+Unique moves: 90 (89 non-simple)
+Unique abilities: 11 (10 non-simple)
+Unique items: 1
 
 --- Most Common Moves (top 10) ---
-  courtchange: 2 seeds
-  obstruct: 2 seeds
   assist: 2 seeds
   psyshieldbash: 1 seeds
   rocktomb: 1 seeds
@@ -257,6 +229,8 @@ Unique items: 2
   instruct: 1 seeds
   gigatonhammer: 1 seeds
   healingwish: 1 seeds
+  barrier: 1 seeds
+  lunardance: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   No Guard: 2 seeds
@@ -265,7 +239,7 @@ Unique items: 2
   Light Metal: 1 seeds
   Primordial Sea: 1 seeds
   Anticipation: 1 seeds
-  Levitate: 1 seeds
   Stakeout: 1 seeds
   Pressure: 1 seeds
   Sheer Force: 1 seeds
+  Static: 1 seeds
