@@ -622,7 +622,7 @@ impl Battle {
                 0, pokemon_pos, pokemon_pos,
             active_move_clone.as_ref(),
             ),
-            "ModifyCritRatio" => ability_callbacks::dispatch_on_modify_crit_ratio(self, ability_id.as_str(), relay_var_int, pokemon_pos, None, active_move_clone.as_ref()),
+            "ModifyCritRatio" => ability_callbacks::dispatch_on_modify_crit_ratio(self, ability_id.as_str(), relay_var_int, pokemon_pos, event_source_pos, active_move_clone.as_ref()),
             "ModifyDamage" => {
                 ability_callbacks::dispatch_on_modify_damage(self, ability_id.as_str(), relay_var_int, pokemon_pos, event_source_pos.unwrap_or((0, 0)), active_move_clone.as_ref())
             }
