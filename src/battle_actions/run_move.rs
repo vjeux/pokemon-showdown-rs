@@ -129,7 +129,11 @@ pub fn run_move(
     }
 
     // Check for 'cantusetwice' flag
-    // if (move.flags['cantusetwice'] && pokemon.lastMove?.id === move.id)
+    // JavaScript: if (move.flags['cantusetwice'] && pokemon.lastMove?.id === move.id) {
+    //     pokemon.addVolatile(move.id);
+    // }
+    // NOTE: This does NOT fail/return - it just adds a volatile for tracking purposes.
+    // The actual disable happens at end_turn in DisableMove event.
     let has_cantusetwice_flag = base_move.flags.contains_key("cantusetwice");
     if has_cantusetwice_flag {
         let last_move_matches = {
@@ -141,18 +145,9 @@ pub fn run_move(
         };
 
         if last_move_matches {
-            // Move can't be used twice in a row
-            // JavaScript typically shows a fail message and returns
-            let pokemon_ident = {
-                let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-                    Some(p) => p,
-                    None => return,
-                };
-                pokemon.get_slot()
-            };
-            battle.add("-fail", &[crate::battle::Arg::String(pokemon_ident)]);
-            battle.attr_last_move(&["[still]"]);
-            return;
+            // Add volatile with move ID - allows tracking that this move was used via Instruct/etc.
+            // The volatile is removed after the move completes (with a hint message)
+            Pokemon::add_volatile(battle, pokemon_pos, move_id.clone(), None, None, None, None);
         }
     }
 
@@ -359,9 +354,22 @@ pub fn run_move(
     battle.run_event("AfterMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
 
     // Handle 'cantusetwice' hint
-    // if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id))
+    // JavaScript: if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id)) {
+    //     this.battle.add('-hint', `Some effects can force a Pokemon to use ${move.name} again in a row.`);
+    // }
     if has_cantusetwice_flag {
-        Pokemon::remove_volatile(battle, pokemon_pos, move_id);
+        let had_volatile = {
+            let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+                Some(p) => p,
+                None => return,
+            };
+            pokemon.volatiles.contains_key(move_id)
+        };
+        if had_volatile {
+            Pokemon::remove_volatile(battle, pokemon_pos, move_id);
+            // Show the hint
+            battle.add("-hint", &[crate::battle::Arg::String(format!("Some effects can force a Pokemon to use {} again in a row.", base_move.name))]);
+        }
     }
 
     // Handle Dancer ability
