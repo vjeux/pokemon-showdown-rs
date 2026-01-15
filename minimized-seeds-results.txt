@@ -370,7 +370,7 @@ Seed 5188: ✓ PASS
 Seed 5204: ✓ PASS
 Seed 5215: ✓ PASS
 Seed 5245: ✓ PASS
-Seed 5251: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Saharascal(115/224)], P2=[Landorus(248/280)]
+Seed 5251: ✓ PASS
 Seed 5266: ✓ PASS
 Seed 5293: ✓ PASS
 Seed 5299: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 693
-Failed: 30
+Passed: 694
+Failed: 29
 
 Pass rate: 95%
 ✗ Some seeds still failing

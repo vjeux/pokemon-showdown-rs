@@ -1,4 +1,4 @@
-Analyzing 30 failing minimized seed files...
+Analyzing 29 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -51,10 +51,6 @@ fishiousrend: 1 seeds
   Seeds: 4893
 eruption: 1 seeds
   Seeds: 4893
-mirrormove: 1 seeds
-  Seeds: 5251
-jumpkick: 1 seeds
-  Seeds: 5251
 smackdown: 1 seeds
   Seeds: 547
 bide: 1 seeds
@@ -245,8 +241,8 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 30
-Unique moves: 103 (102 non-simple)
+Total minimized seeds: 29
+Unique moves: 101 (100 non-simple)
 Unique abilities: 13 (11 non-simple)
 Unique items: 2
 

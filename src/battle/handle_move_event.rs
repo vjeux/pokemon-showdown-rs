@@ -155,7 +155,17 @@ impl Battle {
             }
             "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0))),
             "ModifyType" => move_callbacks::dispatch_on_modify_type(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos),
-            "MoveFail" => move_callbacks::dispatch_on_move_fail(self, active_move_clone.as_ref(), target_pos, source_pos),
+            "MoveFail" => {
+                // CRITICAL: Use move_id to look up the move, NOT self.active_move!
+                // When nested moves are called (e.g., Mirror Move calling Jump Kick),
+                // self.active_move is set to the inner move (Jump Kick).
+                // But when MoveFail is called for the outer move (Mirror Move),
+                // we need to call Mirror Move's onMoveFail, not Jump Kick's.
+                // JavaScript passes the move directly to singleEvent, so we must use move_id.
+                let move_for_callback = self.dex.get_active_move(move_id.as_str());
+                move_callbacks::dispatch_on_move_fail(self, move_for_callback.as_ref(), target_pos, source_pos)
+            }
+
             "PrepareHit" => {
                 move_callbacks::dispatch_on_prepare_hit(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos)
             }
