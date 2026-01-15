@@ -43,6 +43,14 @@ impl Battle {
             return priority_cmp;
         }
 
+        // 2.5. Fractional priority, high to low (default 0)
+        // In JavaScript, priority field includes fractionalPriority (priority + fractionalPriority)
+        // In Rust, we store them separately and compare fractional_priority after integer priority
+        let frac_cmp = b.fractional_priority.total_cmp(&a.fractional_priority);
+        if frac_cmp != std::cmp::Ordering::Equal {
+            return frac_cmp;
+        }
+
         // 3. Speed, high to low (default 0)
         let speed_cmp = b.speed.total_cmp(&a.speed);
         if speed_cmp != std::cmp::Ordering::Equal {

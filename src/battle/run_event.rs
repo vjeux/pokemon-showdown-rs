@@ -757,6 +757,7 @@ impl Battle {
         PriorityItem {
             order: listener.order,
             priority: listener.priority,
+            fractional_priority: 0.0,
             speed: listener.speed.unwrap_or(0.0),
             sub_order: listener.sub_order,
             effect_order: listener.effect_order.unwrap_or(0),

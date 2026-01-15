@@ -278,6 +278,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         PriorityItem {
             order: None,
             priority: 0,
+            fractional_priority: 0.0,
             speed,
             sub_order: 0,
             effect_order: 0,

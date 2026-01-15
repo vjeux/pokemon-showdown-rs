@@ -54,6 +54,7 @@ impl Battle {
         self.speed_sort(&mut actives, |item| PriorityItem {
             order: None,
             priority: 0,
+            fractional_priority: 0.0,
             speed: item.2 as f64,  // Speed is the third element of the tuple
             sub_order: 0,
             effect_order: 0,

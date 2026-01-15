@@ -425,6 +425,7 @@ impl Battle {
             PriorityItem {
                 order: h.order,
                 priority: h.priority,
+                fractional_priority: 0.0,
                 speed: h.speed as f64,
                 sub_order: h.sub_order,
                 effect_order: h.effect_order, // JavaScript: effectOrder for tie-breaking

@@ -105,7 +105,7 @@ Seed 1803: ✓ PASS
 Seed 1813: ✓ PASS
 Seed 1814: ✓ PASS
 Seed 1819: ✓ PASS
-Seed 1825: ✗ FAIL - #19: turn=20, prng=65->78, P1=[Latios(156/222)], P2=[Slowbro(188/314)]
+Seed 1825: ✓ PASS
 Seed 1840: ✓ PASS
 Seed 1842: ✓ PASS
 Seed 1844: ✓ PASS
@@ -422,7 +422,7 @@ Seed 5954: ✓ PASS
 Seed 5964: ✓ PASS
 Seed 5991: ✓ PASS
 Seed 5992: ✗ FAIL - #36: turn=34, prng=158->162, P1=[Amaura(40/309)], P2=[Tinkatuff(74/190)]
-Seed 6005: ✗ FAIL - #1: turn=2, prng=3->18, P1=[Silvally(251/278)], P2=[Rotom(227/250)]
+Seed 6005: ✓ PASS
 Seed 6007: ✓ PASS
 Seed 6024: ✓ PASS
 Seed 6042: ✓ PASS
@@ -534,7 +534,7 @@ Seed 7227: ✓ PASS
 Seed 7238: ✓ PASS
 Seed 7240: ✓ PASS
 Seed 7242: ✓ PASS
-Seed 7243: ✗ FAIL - #1: turn=2, prng=3->18, P1=[Coalossal(321/340)], P2=[Ursaluna(296/323)]
+Seed 7243: ✓ PASS
 Seed 7249: ✓ PASS
 Seed 7252: ✓ PASS
 Seed 7268: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 643
-Failed: 80
+Passed: 646
+Failed: 77
 
-Pass rate: 88%
+Pass rate: 89%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

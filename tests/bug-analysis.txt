@@ -1,4 +1,4 @@
-Analyzing 80 failing minimized seed files...
+Analyzing 77 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -13,8 +13,6 @@ instruct: 2 seeds
   Seeds: 1398, 3250
 hiddenpowerwater: 2 seeds
   Seeds: 1398, 547
-forcepalm: 2 seeds
-  Seeds: 1825, 9005
 bestow: 2 seeds
   Seeds: 1977, 6391
 craftyshield: 2 seeds
@@ -75,8 +73,6 @@ spinout: 1 seeds
   Seeds: 1398
 hiddenpowerpsychic: 1 seeds
   Seeds: 1398
-cottonguard: 1 seeds
-  Seeds: 1825
 acid: 1 seeds
   Seeds: 2169
 infernooverdrive: 1 seeds
@@ -323,6 +319,8 @@ struggle: 1 seeds
   Seeds: 8774
 payback: 1 seeds
   Seeds: 9005
+forcepalm: 1 seeds
+  Seeds: 9005
 supersonicskystrike: 1 seeds
   Seeds: 9005
 ingrain: 1 seeds
@@ -381,8 +379,6 @@ Rivalry: 1 seeds
   Seeds: 1110
 Dancer: 1 seeds
   Seeds: 1110
-Quick Draw: 1 seeds
-  Seeds: 1825
 Poison Point: 1 seeds
   Seeds: 2338
 Mycelium Might: 1 seeds
@@ -445,8 +441,6 @@ dousedrive: 2 seeds
   Seeds: 2674, 5123
 bigroot: 2 seeds
   Seeds: 3185, 4357
-fullincense: 2 seeds
-  Seeds: 6005, 7243
 redcard: 1 seeds
   Seeds: 1256
 choiceband: 1 seeds
@@ -487,10 +481,10 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 80
-Unique moves: 177 (176 non-simple)
-Unique abilities: 41 (38 non-simple)
-Unique items: 22
+Total minimized seeds: 77
+Unique moves: 176 (175 non-simple)
+Unique abilities: 40 (37 non-simple)
+Unique items: 21
 
 --- Most Common Moves (top 10) ---
   afteryou: 3 seeds
@@ -498,11 +492,11 @@ Unique items: 22
   guardsplit: 2 seeds
   instruct: 2 seeds
   hiddenpowerwater: 2 seeds
-  forcepalm: 2 seeds
   bestow: 2 seeds
   craftyshield: 2 seeds
   technoblast: 2 seeds
   bloodmoon: 2 seeds
+  thunderpunch: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Hunger Switch: 2 seeds

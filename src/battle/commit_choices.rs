@@ -103,6 +103,7 @@ impl Battle {
             PriorityItem {
                 order: Some(action.order()),
                 priority: action.priority() as i32,
+                fractional_priority: action.fractional_priority(),
                 speed: action.speed(),
                 sub_order: 0,
                 effect_order: 0,
