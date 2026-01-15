@@ -1,4 +1,4 @@
-Analyzing 66 failing minimized seed files...
+Analyzing 62 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -7,8 +7,6 @@ instruct: 2 seeds
   Seeds: 1398, 3250
 hiddenpowerwater: 2 seeds
   Seeds: 1398, 547
-bestow: 2 seeds
-  Seeds: 1977, 6391
 craftyshield: 2 seeds
   Seeds: 2169, 6794
 technoblast: 2 seeds
@@ -151,12 +149,6 @@ moonlight: 1 seeds
   Seeds: 547
 firespin: 1 seeds
   Seeds: 547
-victorydance: 1 seeds
-  Seeds: 5576
-twinbeam: 1 seeds
-  Seeds: 5576
-burningbulwark: 1 seeds
-  Seeds: 5576
 camouflage: 1 seeds
   Seeds: 5748
 haze: 1 seeds
@@ -187,12 +179,6 @@ heatcrash: 1 seeds
   Seeds: 6288
 dive: 1 seeds
   Seeds: 6348
-xscissor: 1 seeds
-  Seeds: 6391
-throatchop: 1 seeds
-  Seeds: 6593
-iceshard: 1 seeds
-  Seeds: 6593
 maxairstream: 1 seeds
   Seeds: 6621
 nightshade: 1 seeds
@@ -319,8 +305,6 @@ ABILITIES (excluding simple ones)
 ============================================================
 Quark Drive: 2 seeds
   Seeds: 3165, 5215
-Synchronize: 2 seeds
-  Seeds: 5576, 6593
 No Guard: 2 seeds
   Seeds: 6288, 8708
 Ripen: 2 seeds
@@ -361,8 +345,6 @@ Sand Stream: 1 seeds
   Seeds: 5748
 Light Metal: 1 seeds
   Seeds: 6288
-Effect Spore: 1 seeds
-  Seeds: 6593
 Primordial Sea: 1 seeds
   Seeds: 6926
 Unburden: 1 seeds
@@ -389,8 +371,6 @@ dousedrive: 2 seeds
   Seeds: 2674, 5123
 bigroot: 2 seeds
   Seeds: 3185, 4357
-choiceband: 1 seeds
-  Seeds: 1977
 mirrorherb: 1 seeds
   Seeds: 2169
 quickclaw: 1 seeds
@@ -407,8 +387,6 @@ boosterenergy: 1 seeds
   Seeds: 5215
 enigmaberry: 1 seeds
   Seeds: 6065
-choicescarf: 1 seeds
-  Seeds: 6391
 figyberry: 1 seeds
   Seeds: 6621
 sitrusberry: 1 seeds
@@ -423,15 +401,14 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 66
-Unique moves: 156 (155 non-simple)
-Unique abilities: 34 (31 non-simple)
-Unique items: 18
+Total minimized seeds: 62
+Unique moves: 149 (148 non-simple)
+Unique abilities: 32 (29 non-simple)
+Unique items: 16
 
 --- Most Common Moves (top 10) ---
   instruct: 2 seeds
   hiddenpowerwater: 2 seeds
-  bestow: 2 seeds
   craftyshield: 2 seeds
   technoblast: 2 seeds
   bloodmoon: 2 seeds
@@ -439,10 +416,10 @@ Unique items: 18
   jumpkick: 2 seeds
   dynamicpunch: 2 seeds
   skillswap: 2 seeds
+  thunder: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Quark Drive: 2 seeds
-  Synchronize: 2 seeds
   No Guard: 2 seeds
   Ripen: 2 seeds
   Intimidate: 2 seeds
@@ -451,3 +428,4 @@ Unique items: 18
   Mycelium Might: 1 seeds
   Sticky Hold: 1 seeds
   Liquid Ooze: 1 seeds
+  Aftermath: 1 seeds

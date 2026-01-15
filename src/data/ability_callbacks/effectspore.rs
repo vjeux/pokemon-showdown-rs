@@ -66,16 +66,19 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     // JavaScript: const r = this.random(100);
     let r = battle.random(100) as i32;
 
+    // Note: target_pos (the Effect Spore Pokemon) is the source of the status
+    // This is important for Synchronize to know who to pass the status back to
+
     // Apply status based on random roll
     if r < 11 {
         // JavaScript: source.setStatus('slp', target);
-        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("slp"), None, None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("slp"), target_pos, None);
     } else if r < 21 {
         // JavaScript: source.setStatus('par', target);
-        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("par"), None, None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("par"), target_pos, None);
     } else if r < 30 {
         // JavaScript: source.setStatus('psn', target);
-        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("psn"), None, None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("psn"), target_pos, None);
     }
 
     EventResult::Continue

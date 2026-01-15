@@ -111,7 +111,7 @@ Seed 1842: ✓ PASS
 Seed 1844: ✓ PASS
 Seed 1880: ✓ PASS
 Seed 1961: ✓ PASS
-Seed 1977: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Tinkatink(156/156)], P2=[Leafeon(216/227)]
+Seed 1977: ✓ PASS
 Seed 1989: ✓ PASS
 Seed 1998: ✓ PASS
 Seed 2000: ✓ PASS
@@ -393,7 +393,7 @@ Seed 5539: ✓ PASS
 Seed 5561: ✓ PASS
 Seed 5562: ✓ PASS
 Seed 5571: ✓ PASS
-Seed 5576: ✗ FAIL - #91: turn=90, prng=85->86, P1=[Umbreon(272/290)], P2=[Mismagius(191/203)]
+Seed 5576: ✓ PASS
 Seed 5577: ✓ PASS
 Seed 5579: ✓ PASS
 Seed 5613: ✓ PASS
@@ -451,7 +451,7 @@ Seed 6349: ✓ PASS
 Seed 6359: ✓ PASS
 Seed 6365: ✓ PASS
 Seed 6378: ✓ PASS
-Seed 6391: ✗ FAIL - #48: turn=45, prng=184->188, P1=[Meloetta(0/259)], P2=[Typhlosion(0/290)]
+Seed 6391: ✓ PASS
 Seed 6402: ✓ PASS
 Seed 6413: ✓ PASS
 Seed 6421: ✓ PASS
@@ -472,7 +472,7 @@ Seed 6567: ✓ PASS
 Seed 6568: ✓ PASS
 Seed 6576: ✓ PASS
 Seed 6592: ✓ PASS
-Seed 6593: ✗ FAIL - #11: turn=10, prng=48->57, P1=[Gardevoir(154/274)], P2=[Breloom(131/167)]
+Seed 6593: ✓ PASS
 Seed 6597: ✓ PASS
 Seed 6603: ✓ PASS
 Seed 6605: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 657
-Failed: 66
+Passed: 661
+Failed: 62
 
-Pass rate: 90%
+Pass rate: 91%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

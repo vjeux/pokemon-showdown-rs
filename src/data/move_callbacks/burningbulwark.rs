@@ -201,8 +201,10 @@ pub mod condition {
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     source.trySetStatus('brn', target);
         // }
+        // Note: target_pos (the Burning Bulwark user) is the source of the burn status
+        // This is important for Synchronize to know who to pass the status back to
         if battle.check_move_makes_contact(&move_id, source_pos, target_pos, false) {
-            Pokemon::try_set_status(battle, source_pos, ID::from("brn"), None, None);
+            Pokemon::try_set_status(battle, source_pos, ID::from("brn"), Some(target_pos), None);
         }
 
         // return this.NOT_FAIL;
@@ -237,8 +239,9 @@ pub mod condition {
         //     source.trySetStatus('brn', target);
         // }
         // Note: is_z_or_max_powered is a runtime flag on ActiveMove, not a dex property
+        // pokemon_pos (the Burning Bulwark user) is the source of the burn status
         if is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
-            Pokemon::try_set_status(battle, source, ID::from("brn"), None, None);
+            Pokemon::try_set_status(battle, source, ID::from("brn"), Some(pokemon_pos), None);
         }
 
         EventResult::Continue

@@ -204,8 +204,10 @@ pub mod condition {
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     source.trySetStatus('psn', target);
         // }
+        // Note: target_pos (the Baneful Bunker user) is the source of the poison status
+        // This is important for Synchronize to know who to pass the status back to
         if battle.check_move_makes_contact(&move_id, source_pos, target_pos, false) {
-            Pokemon::try_set_status(battle, source_pos, ID::from("psn"), None, None);
+            Pokemon::try_set_status(battle, source_pos, ID::from("psn"), Some(target_pos), None);
         }
 
         // return this.NOT_FAIL;
@@ -238,12 +240,9 @@ pub mod condition {
         //     source.trySetStatus('psn', target);
         // }
         // Note: is_z_or_max_powered is a runtime flag on ActiveMove, not a dex property
+        // pokemon_pos (the Baneful Bunker user) is the source of the poison status
         if is_z_or_max_powered && battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
-            let _source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), None, None);
+            Pokemon::try_set_status(battle, source, ID::from("psn"), Some(pokemon_pos), None);
         }
 
         EventResult::Continue

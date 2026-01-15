@@ -20,8 +20,10 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
         if battle.check_move_makes_contact_with_active_move(active_move, source, target, false) {
             if battle.random_chance(3, 10) {
-                // Try to set poison status on the attacker
-                crate::pokemon::Pokemon::try_set_status(battle, source, crate::ID::from("psn"), None, None);
+                // source.trySetStatus('psn', target);
+                // Note: target (the Poison Point Pokemon) is the source of the poison status
+                // This is important for Synchronize to know who to pass the status back to
+                crate::pokemon::Pokemon::try_set_status(battle, source, crate::ID::from("psn"), Some(target), None);
             }
         }
     }

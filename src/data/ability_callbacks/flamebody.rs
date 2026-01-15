@@ -32,7 +32,9 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         // if (this.randomChance(3, 10))
         if battle.random_chance(3, 10) {
             // source.trySetStatus('brn', target);
-            crate::pokemon::Pokemon::try_set_status(battle, source_pos, crate::ID::from("brn"), None, None);
+            // Note: target_pos (the Flame Body Pokemon) is the source of the burn status
+            // This is important for Synchronize to know who to pass the status back to
+            crate::pokemon::Pokemon::try_set_status(battle, source_pos, crate::ID::from("brn"), Some(target_pos), None);
         }
     }
 
