@@ -677,16 +677,14 @@ impl Battle {
                     // Handler returned a value, update relay_var
                     relay_var = return_val.clone();
 
-                    // CRITICAL: When a handler returns EventResult::Boost, also update event.relay_var
-                    // This ensures:
-                    // 1. Subsequent handlers see the modified boosts (like Contrary's inverted values)
-                    // 2. The final read at the end of run_event returns the correct modified value
-                    // Without this, handlers that return new boost values (like Contrary) get overwritten
-                    // by the original event.relay_var at the end of run_event.
-                    if let EventResult::Boost(ref boosts) = relay_var {
-                        if let Some(ref mut event) = self.event {
-                            event.relay_var = Some(EventResult::Boost(boosts.clone()));
-                        }
+                    // CRITICAL: Update event.relay_var so subsequent handlers receive the updated value
+                    // In JavaScript, handlers receive the current relayVar as their first argument.
+                    // When No Guard returns true, subsequent handlers (like Minimize) should receive
+                    // true as their accuracy parameter, not the original numeric value.
+                    // Without this, handlers like Minimize's onAccuracy return Number(original_accuracy)
+                    // which overwrites the Boolean(true) from No Guard.
+                    if let Some(ref mut event) = self.event {
+                        event.relay_var = Some(relay_var.clone());
                     }
 
                     // JavaScript: if (!relayVar || fastExit) { ... break; }

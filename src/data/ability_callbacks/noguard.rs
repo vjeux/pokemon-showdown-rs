@@ -44,30 +44,22 @@ pub fn on_any_accuracy(battle: &mut Battle, accuracy: i32, target_pos: Option<(u
 
     // JavaScript checks "if (move && ...)" - move must be truthy
     if active_move.is_none() {
-        eprintln!("[NOGUARD_ACCURACY] active_move is None, returning Continue");
         return EventResult::Continue;
     }
 
     let noguard_user = match battle.effect_state.target {
         Some(pos) => pos,
-        None => {
-            eprintln!("[NOGUARD_ACCURACY] effect_state.target is None, returning Continue");
-            return EventResult::Continue;
-        }
+        None => return EventResult::Continue,
     };
-
-    eprintln!("[NOGUARD_ACCURACY] noguard_user={:?}, target_pos={:?}, source_pos={:?}", noguard_user, target_pos, source_pos);
 
     // Check if source or target is the No Guard user
     let is_involved = source_pos == Some(noguard_user) || target_pos == Some(noguard_user);
 
     if is_involved {
-        eprintln!("[NOGUARD_ACCURACY] is_involved=true, returning Boolean(true)");
         // return true; - makes moves always hit
         return EventResult::Boolean(true);
     }
 
-    eprintln!("[NOGUARD_ACCURACY] is_involved=false, returning Number({})", accuracy);
     // return accuracy;
     EventResult::Number(accuracy)
 }

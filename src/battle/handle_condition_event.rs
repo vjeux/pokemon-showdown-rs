@@ -74,10 +74,19 @@ impl Battle {
                 // Extract accuracy from relay_var, source from event
                 // onAccuracy is called on volatiles of the target to check if move hits
                 // Glaiverush returns true to make moves always hit
-                let accuracy = self.event.as_ref().and_then(|e| match &e.relay_var {
-                    Some(EventResult::Number(n)) => Some(*n),
-                    _ => None
-                }).unwrap_or(0);
+                //
+                // CRITICAL: If relay_var is Boolean(true), a previous handler (like No Guard)
+                // has already determined the move will hit. In JavaScript, the handler would
+                // receive `true` as the accuracy parameter and return it unchanged.
+                // We should preserve this behavior by returning Boolean(true) immediately.
+                let relay_var = self.event.as_ref().and_then(|e| e.relay_var.clone());
+                if matches!(relay_var, Some(EventResult::Boolean(true))) {
+                    return EventResult::Boolean(true);
+                }
+                let accuracy = match &relay_var {
+                    Some(EventResult::Number(n)) => *n,
+                    _ => 0
+                };
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
                 condition_callbacks::dispatch_on_accuracy(
                     self,
@@ -92,10 +101,17 @@ impl Battle {
                 // Extract accuracy from relay_var, target from event
                 // onSourceAccuracy is called on volatiles of the SOURCE Pokemon
                 // Lock-On/Mind Reader return true to bypass accuracy checks
-                let accuracy = self.event.as_ref().and_then(|e| match &e.relay_var {
-                    Some(EventResult::Number(n)) => Some(*n),
-                    _ => None
-                }).unwrap_or(0);
+                //
+                // CRITICAL: If relay_var is Boolean(true), a previous handler (like No Guard)
+                // has already determined the move will hit. Return Boolean(true) immediately.
+                let relay_var = self.event.as_ref().and_then(|e| e.relay_var.clone());
+                if matches!(relay_var, Some(EventResult::Boolean(true))) {
+                    return EventResult::Boolean(true);
+                }
+                let accuracy = match &relay_var {
+                    Some(EventResult::Number(n)) => *n,
+                    _ => 0
+                };
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 condition_callbacks::dispatch_on_source_accuracy(
                     self,
