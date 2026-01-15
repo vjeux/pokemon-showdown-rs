@@ -560,56 +560,58 @@ pub fn get_damage(
         return None;
     }
 
-    // JavaScript: attack = this.battle.runEvent('ModifyAtk', source, target, move, attack);
-    // JavaScript: defense = this.battle.runEvent('ModifyDef', target, source, move, defense);
-    // Apply stat modifier events
-    if is_physical {
-        // Debug: log pokemon info
-        if let Some(pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
-            eprintln!("[GET_DAMAGE] ModifyAtk for Pokemon: {}, Ability: {}, attack={}",
-                pokemon.name, pokemon.ability, attack);
+    // JavaScript: attackStat = (category === 'Physical' ? 'atk' : 'spa');
+    // JavaScript: attack = this.battle.runEvent('Modify' + statTable[attackStat], source, target, move, attack);
+    // JavaScript: defense = this.battle.runEvent('Modify' + statTable[defenseStat], target, source, move, defense);
+    //
+    // IMPORTANT: The attack modifier event is based on category (Physical -> ModifyAtk, Special -> ModifySpA)
+    // But the defense modifier event is based on the ACTUAL defenseStat (which respects overrideDefensiveStat)
+    // This is important for moves like Psyshock that use the target's Defense despite being Special moves
+
+    // Determine which modifier events to run based on JavaScript behavior
+    let attack_modifier_event = if is_physical { "ModifyAtk" } else { "ModifySpA" };
+    let defense_modifier_event = match defense_stat {
+        "def" => "ModifyDef",
+        "spd" => "ModifySpD",
+        "atk" => "ModifyAtk",
+        "spa" => "ModifySpA",
+        "spe" => "ModifySpe",
+        _ => if is_physical { "ModifyDef" } else { "ModifySpD" }
+    };
+
+    eprintln!("[GET_DAMAGE] attack_modifier_event={}, defense_modifier_event={}", attack_modifier_event, defense_modifier_event);
+
+    // Apply attack modifier event
+    eprintln!("[GET_DAMAGE] BEFORE {}: attack={}", attack_modifier_event, attack);
+    match battle.run_event(attack_modifier_event, Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(attack), false, false) {
+        EventResult::Number(n) => {
+            eprintln!("[GET_DAMAGE] AFTER {}: attack changed from {} to {}", attack_modifier_event, attack, n);
+            attack = n;
+        },
+        EventResult::Float(multiplier) => {
+            let old_attack = attack;
+            attack = battle.modify_f(attack, multiplier);
+            eprintln!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, attack changed from {} to {}", attack_modifier_event, multiplier, old_attack, attack);
         }
-        eprintln!("[GET_DAMAGE] BEFORE ModifyAtk: attack={}", attack);
-        match battle.run_event("ModifyAtk", Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(attack), false, false) {
-            EventResult::Number(n) => attack = n,
-            EventResult::Float(multiplier) => {
-                attack = battle.modify_f(attack, multiplier);
-                eprintln!("[GET_DAMAGE] ModifyAtk Float multiplier {}x applied: attack={}", multiplier, attack);
-            }
-            _ => {}
+        _ => {
+            eprintln!("[GET_DAMAGE] AFTER {}: no change, attack={}", attack_modifier_event, attack);
         }
-        eprintln!("[GET_DAMAGE] AFTER ModifyAtk: attack={}", attack);
-        match battle.run_event("ModifyDef", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(defense), false, false) {
-            EventResult::Number(n) => defense = n,
-            EventResult::Float(multiplier) => {
-                defense = battle.modify_f(defense, multiplier);
-                eprintln!("[GET_DAMAGE] ModifyDef Float multiplier {}x applied: defense={}", multiplier, defense);
-            }
-            _ => {}
+    }
+
+    // Apply defense modifier event
+    eprintln!("[GET_DAMAGE] BEFORE {}: defense={}", defense_modifier_event, defense);
+    match battle.run_event(defense_modifier_event, Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(defense), false, false) {
+        EventResult::Number(n) => {
+            eprintln!("[GET_DAMAGE] AFTER {}: defense changed from {} to {}", defense_modifier_event, defense, n);
+            defense = n;
+        },
+        EventResult::Float(multiplier) => {
+            let old_defense = defense;
+            defense = battle.modify_f(defense, multiplier);
+            eprintln!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, defense changed from {} to {}", defense_modifier_event, multiplier, old_defense, defense);
         }
-    } else {
-        eprintln!("[GET_DAMAGE] BEFORE ModifySpA: attack={}", attack);
-        match battle.run_event("ModifySpA", Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(attack), false, false) {
-            EventResult::Number(n) => {
-                eprintln!("[GET_DAMAGE] AFTER ModifySpA: attack changed from {} to {}", attack, n);
-                attack = n;
-            },
-            EventResult::Float(multiplier) => {
-                let old_attack = attack;
-                attack = battle.modify_f(attack, multiplier);
-                eprintln!("[GET_DAMAGE] AFTER ModifySpA: Float multiplier {}x applied, attack changed from {} to {}", multiplier, old_attack, attack);
-            }
-            _ => {
-                eprintln!("[GET_DAMAGE] AFTER ModifySpA: no change, attack={}", attack);
-            }
-        }
-        match battle.run_event("ModifySpD", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(defense), false, false) {
-            EventResult::Number(n) => defense = n,
-            EventResult::Float(multiplier) => {
-                defense = battle.modify_f(defense, multiplier);
-                eprintln!("[GET_DAMAGE] ModifySpD Float multiplier {}x applied: defense={}", multiplier, defense);
-            }
-            _ => {}
+        _ => {
+            eprintln!("[GET_DAMAGE] AFTER {}: no change, defense={}", defense_modifier_event, defense);
         }
     }
 
