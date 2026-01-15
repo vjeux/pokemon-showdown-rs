@@ -241,7 +241,7 @@ Seed 3465: ✗ FAIL - #4: turn=4, prng=18->28, P1=[Girafarig(144/193)], P2=[Star
 Seed 3469: ✓ PASS
 Seed 3491: ✓ PASS
 Seed 3492: ✓ PASS
-Seed 3507: ✗ FAIL - #9: turn=10, prng=24->32, P1=[Shroomish(139/219)], P2=[Cufant(57/187)]
+Seed 3507: ✓ PASS
 Seed 3517: ✓ PASS
 Seed 3530: ✓ PASS
 Seed 3536: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 624
-Failed: 99
+Passed: 625
+Failed: 98
 
 Pass rate: 86%
 ✗ Some seeds still failing

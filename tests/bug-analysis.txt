@@ -1,10 +1,8 @@
-Analyzing 99 failing minimized seed files...
+Analyzing 98 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-shellsidearm: 3 seeds
-  Seeds: 3507, 5644, 8545
 fling: 3 seeds
   Seeds: 6242, 7054, 9789
 afteryou: 3 seeds
@@ -73,6 +71,8 @@ risingvoltage: 2 seeds
   Seeds: 4745, 6794
 dragontail: 2 seeds
   Seeds: 4905, 9005
+shellsidearm: 2 seeds
+  Seeds: 5644, 8545
 lightscreen: 2 seeds
   Seeds: 5992, 8544
 counter: 2 seeds
@@ -197,8 +197,6 @@ barrier: 1 seeds
   Seeds: 3367
 lunardance: 1 seeds
   Seeds: 3367
-burnup: 1 seeds
-  Seeds: 3507
 crosschop: 1 seeds
   Seeds: 3578
 chipaway: 1 seeds
@@ -445,14 +443,14 @@ glaciate: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Effect Spore: 3 seeds
-  Seeds: 2214, 3507, 6593
 Hadron Engine: 3 seeds
   Seeds: 3000, 3165, 7121
 Sand Stream: 3 seeds
   Seeds: 4025, 4634, 5748
 Hunger Switch: 2 seeds
   Seeds: 1256, 5112
+Effect Spore: 2 seeds
+  Seeds: 2214, 6593
 Compound Eyes: 2 seeds
   Seeds: 2304, 4126
 Quark Drive: 2 seeds
@@ -589,13 +587,12 @@ lansatberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 99
-Unique moves: 220 (219 non-simple)
+Total minimized seeds: 98
+Unique moves: 219 (218 non-simple)
 Unique abilities: 43 (40 non-simple)
 Unique items: 28
 
 --- Most Common Moves (top 10) ---
-  shellsidearm: 3 seeds
   fling: 3 seeds
   afteryou: 3 seeds
   helpinghand: 2 seeds
@@ -605,12 +602,13 @@ Unique items: 28
   guardsplit: 2 seeds
   instruct: 2 seeds
   hiddenpowerwater: 2 seeds
+  substitute: 2 seeds
 
 --- Most Common Abilities (top 10) ---
-  Effect Spore: 3 seeds
   Hadron Engine: 3 seeds
   Sand Stream: 3 seeds
   Hunger Switch: 2 seeds
+  Effect Spore: 2 seeds
   Compound Eyes: 2 seeds
   Quark Drive: 2 seeds
   RKS System: 2 seeds

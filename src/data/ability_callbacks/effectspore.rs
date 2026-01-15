@@ -20,7 +20,7 @@ use crate::Pokemon;
 ///         }
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Check if move makes contact
     let _target_pos = match target_pos {
         Some(pos) => pos,
@@ -32,14 +32,15 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         None => return EventResult::Continue,
     };
 
-    // Get move to check if it makes contact
-    let move_data = match battle.dex.moves().get(move_id) {
-        Some(m) => m,
+    // Get active_move to check if it makes contact (use runtime flags, not dex data)
+    // Shell Side Arm dynamically adds contact flag via onModifyMove when it uses physical attack
+    let has_contact = match active_move {
+        Some(m) => m.flags.contact,
         None => return EventResult::Continue,
     };
 
     // JavaScript: if (this.checkMoveMakesContact(move, source, target) && !source.status && source.runStatusImmunity('powder'))
-    if !move_data.flags.contains_key("contact") {
+    if !has_contact {
         return EventResult::Continue;
     }
 
