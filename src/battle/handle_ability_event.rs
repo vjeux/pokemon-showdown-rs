@@ -605,10 +605,13 @@ impl Battle {
             active_move_clone.as_ref(),
             ),
             "ModifyAtk" => {
+                // JavaScript: onModifyAtk(atk, attacker, defender)
+                // In runEvent call: runEvent('ModifyAtk', source, target, move, attack)
+                // So event.target = source (attacker) and event.source = target (defender)
                 let (atk, defender_pos, _move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
-                        event.target.unwrap_or((0, 0)),
+                        event.source.unwrap_or((0, 0)),  // defender is event.source, not event.target
                         event.effect.as_ref().map(|eff| eff.id.as_str().to_string()).unwrap_or_default()
                     )
                 } else {
@@ -685,10 +688,13 @@ impl Battle {
             }
             "ModifySecondaries" => ability_callbacks::dispatch_on_modify_secondaries(self, ability_id.as_str()),
             "ModifySpA" => {
+                // JavaScript: onModifySpA(atk, attacker, defender)
+                // In runEvent call: runEvent('ModifySpA', source, target, move, attack)
+                // So event.target = source (attacker) and event.source = target (defender)
                 let (spa, defender_pos, _move_id_str) = if let Some(ref event) = self.event {
                     (
                         match &event.relay_var { Some(EventResult::Number(n)) => *n, _ => 0 },
-                        event.target.unwrap_or((0, 0)),
+                        event.source.unwrap_or((0, 0)),  // defender is event.source, not event.target
                         event.effect.as_ref().map(|eff| eff.id.as_str().to_string()).unwrap_or_default()
                     )
                 } else {
