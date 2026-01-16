@@ -493,7 +493,7 @@ Seed 6742: ✓ PASS
 Seed 6756: ✓ PASS
 Seed 6757: ✓ PASS
 Seed 6764: ✓ PASS
-Seed 6794: ✗ FAIL - #61: turn=58, prng=101->106, P1=[Pumpkaboo(151/218)], P2=[Metagross(47/234)]
+Seed 6794: ✓ PASS
 Seed 6815: ✓ PASS
 Seed 6826: ✓ PASS
 Seed 6832: ✗ FAIL - #17: turn=18, prng=48->54, P1=[Steelix(198/284)], P2=[Venusaur(122/244)]
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 715
-Failed: 8
+Passed: 716
+Failed: 7
 
-Pass rate: 98%
+Pass rate: 99%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

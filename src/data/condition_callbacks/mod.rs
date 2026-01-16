@@ -86,6 +86,8 @@ pub fn dispatch_on_after_move(
 ) -> EventResult {
     match condition_id {
         "lockedmove" => lockedmove::on_after_move(battle, pokemon_pos, target_pos, active_move),
+        // Charge volatile: remove after using Electric move (not the Charge move itself)
+        "charge" => move_callbacks::charge::condition::on_after_move(battle, pokemon_pos, target_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
             // dispatch_condition_on_after_move takes (battle, move_id, source_pos, target_pos)

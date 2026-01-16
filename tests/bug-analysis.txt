@@ -1,24 +1,8 @@
-Analyzing 8 failing minimized seed files...
+Analyzing 7 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-nightshade: 1 seeds
-  Seeds: 6794
-teatime: 1 seeds
-  Seeds: 6794
-craftyshield: 1 seeds
-  Seeds: 6794
-magicalleaf: 1 seeds
-  Seeds: 6794
-solarblade: 1 seeds
-  Seeds: 6794
-terablast: 1 seeds
-  Seeds: 6794
-charge: 1 seeds
-  Seeds: 6794
-risingvoltage: 1 seeds
-  Seeds: 6794
 wideguard: 1 seeds
   Seeds: 6832
 temperflare: 1 seeds
@@ -103,22 +87,22 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 8
-Unique moves: 39 (38 non-simple)
+Total minimized seeds: 7
+Unique moves: 31 (30 non-simple)
 Unique abilities: 6 (5 non-simple)
 Unique items: 1
 
 --- Most Common Moves (top 10) ---
-  nightshade: 1 seeds
-  teatime: 1 seeds
-  craftyshield: 1 seeds
-  magicalleaf: 1 seeds
-  solarblade: 1 seeds
-  terablast: 1 seeds
-  charge: 1 seeds
-  risingvoltage: 1 seeds
   wideguard: 1 seeds
   temperflare: 1 seeds
+  thunder: 1 seeds
+  safeguard: 1 seeds
+  toxicspikes: 1 seeds
+  beakblast: 1 seeds
+  shellsidearm: 1 seeds
+  sandattack: 1 seeds
+  strangesteam: 1 seeds
+  thundershock: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   No Guard: 1 seeds
