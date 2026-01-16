@@ -1,0 +1,177 @@
+{
+  "p1": [
+    {
+      "name": "Pidgey",
+      "species": "Pidgey",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "skullbash"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 90,
+        "def": 69,
+        "spa": 95,
+        "spd": 87,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 6,
+        "def": 22,
+        "spa": 18,
+        "spd": 21,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Loudred",
+      "species": "Loudred",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "lightofruin",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Rockruff",
+      "species": "Rockruff",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 64,
+        "def": 79,
+        "spa": 90,
+        "spd": 114,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 21,
+        "def": 24,
+        "spa": 5,
+        "spd": 16,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Garbodor",
+      "species": "Garbodor",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Probopass",
+      "species": "Probopass",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tentacool",
+      "species": "Tentacool",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "yawn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 29: JS=\"#29: turn=26, prng=89->89, P1=[Loudred(43/301)], P2=[Tentacool(56/232)]\" vs Rust=\"#29: turn=25, prng=89->91, P1=[Loudred(6/301)], P2=[Tentacool(0/232)]\""
+}

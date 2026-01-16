@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Musharna",
+      "species": "Musharna",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 59,
+        "atk": 96,
+        "def": 101,
+        "spa": 59,
+        "spd": 98,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 26,
+        "def": 4,
+        "spa": 30,
+        "spd": 0,
+        "spe": 19
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Audino",
+      "species": "Audino",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "adamant",
+      "gender": "M",
+      "moves": [
+        "focusenergy"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 78,
+        "def": 97,
+        "spa": 89,
+        "spd": 85,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 8,
+        "def": 3,
+        "spa": 14,
+        "spd": 14,
+        "spe": 10
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=17->29, P1=[Musharna(340/340)], P2=[Audino(199/258)]\" vs Rust=\"#2: turn=3, prng=17->31, P1=[Musharna(340/340)], P2=[Audino(199/258)]\""
+}

@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Blastoise-Gmax",
+      "species": "Blastoise-Gmax",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "adamant",
+      "gender": "M",
+      "moves": [
+        "naturepower"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 87,
+        "def": 86,
+        "spa": 85,
+        "spd": 76,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 10,
+        "def": 25,
+        "spa": 9,
+        "spd": 22,
+        "spe": 0
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Orbeetle-Gmax",
+      "species": "Orbeetle-Gmax",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cursola",
+      "species": "Cursola",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "iondeluge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 16: JS=\"#16: turn=16, prng=74->75, P1=[Blastoise(72/211)], P2=[Cursola(36/224)]\" vs Rust=\"#16: turn=16, prng=74->77, P1=[Blastoise(19/211)], P2=[Cursola(4/224)]\""
+}

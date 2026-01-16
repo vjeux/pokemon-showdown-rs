@@ -1,0 +1,175 @@
+{
+  "p1": [
+    {
+      "name": "Pidove",
+      "species": "Pidove",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "choiceband",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "sacredfire"
+      ],
+      "evs": {
+        "hp": 112,
+        "atk": 56,
+        "def": 91,
+        "spa": 74,
+        "spd": 89,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 18,
+        "def": 17,
+        "spa": 9,
+        "spd": 2,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Kingler-Gmax",
+      "species": "Kingler-Gmax",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "struggle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Stakataka",
+      "species": "Stakataka",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "rockyhelmet",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "steelroller"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Absol-Mega-Z",
+      "species": "Absol-Mega-Z",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "spotlight"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Growlithe",
+      "species": "Growlithe",
+      "level": 83,
+      "ability": "Intimidate",
+      "item": "",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "lastrespects"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 86,
+        "def": 72,
+        "spa": 97,
+        "spd": 89,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 8,
+        "def": 17,
+        "spa": 4,
+        "spd": 15,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Drilbur",
+      "species": "Drilbur",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "circlethrow"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 61,
+        "def": 95,
+        "spa": 103,
+        "spd": 87,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 3,
+        "def": 6,
+        "spa": 11,
+        "spd": 31,
+        "spe": 7
+      }
+    }
+  ],
+  "_bug": "Diverges at line 15: JS=\"#15: turn=13, prng=60->65, P1=[Pidove(68/238)], P2=[Drilbur(0/184)]\" vs Rust=\"#15: turn=13, prng=60->64, P1=[Pidove(68/238)], P2=[Drilbur(0/184)]\""
+}

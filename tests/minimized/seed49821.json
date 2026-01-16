@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Gourgeist-Large",
+      "species": "Gourgeist-Large",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "telekinesis"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 81,
+        "def": 82,
+        "spa": 102,
+        "spd": 90,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 24,
+        "def": 11,
+        "spa": 29,
+        "spd": 1,
+        "spe": 4
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Tyrunt",
+      "species": "Tyrunt",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bastiodon",
+      "species": "Bastiodon",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 64,
+        "def": 83,
+        "spa": 103,
+        "spd": 85,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 5,
+        "def": 3,
+        "spa": 5,
+        "spd": 25,
+        "spe": 27
+      }
+    }
+  ],
+  "_bug": "Diverges at line 59: JS=\"#59: turn=59, prng=333->340, P1=[Gourgeist(170/170)], P2=[Bastiodon(188/223)]\" vs Rust=\"#59: turn=59, prng=333->342, P1=[Gourgeist(170/170)], P2=[Bastiodon(188/223)]\""
+}

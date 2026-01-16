@@ -1,0 +1,119 @@
+{
+  "p1": [
+    {
+      "name": "Arceus-Fairy",
+      "species": "Arceus-Fairy",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 97,
+        "def": 91,
+        "spa": 86,
+        "spd": 70,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 5,
+        "def": 14,
+        "spa": 16,
+        "spd": 15,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Silvally-Ground",
+      "species": "Silvally-Ground",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "partingshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Garchomp",
+      "species": "Garchomp",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Metang",
+      "species": "Metang",
+      "level": 80,
+      "ability": "Clear Body",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 9: JS=\"#9: turn=9, prng=42->46, P1=[Silvally(174/204)], P2=[Metang(189/227)]\" vs Rust=\"#9: turn=8, prng=42->43, P1=[Silvally(204/204)], P2=[Metang(189/227)]\""
+}

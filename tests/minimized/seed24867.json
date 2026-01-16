@@ -1,0 +1,205 @@
+{
+  "p1": [
+    {
+      "name": "Garganacl",
+      "species": "Garganacl",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 109,
+        "atk": 64,
+        "def": 85,
+        "spa": 92,
+        "spd": 89,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 4,
+        "def": 9,
+        "spa": 30,
+        "spd": 0,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Clamperl",
+      "species": "Clamperl",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "obstruct"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pheromosa",
+      "species": "Pheromosa",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "mudsport"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Chatot",
+      "species": "Chatot",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Onix",
+      "species": "Onix",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "meditate"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Nidoking",
+      "species": "Nidoking",
+      "level": 69,
+      "ability": "Poison Point",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "aquatail"
+      ],
+      "evs": {
+        "hp": 63,
+        "atk": 123,
+        "def": 79,
+        "spa": 69,
+        "spd": 83,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 21,
+        "def": 7,
+        "spa": 29,
+        "spd": 4,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Swablu",
+      "species": "Swablu",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "absorb",
+        "hiddenpowerelectric"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 65: JS=\"#65: turn=61, prng=199->202, P1=[Pheromosa(85/239)], P2=[Swablu(203/203)]\" vs Rust=\"#65: turn=61, prng=199->202, P1=[Pheromosa(56/239)], P2=[Swablu(203/203)]\""
+}

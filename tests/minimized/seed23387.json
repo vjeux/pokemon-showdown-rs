@@ -1,0 +1,151 @@
+{
+  "p1": [
+    {
+      "name": "Poliwhirl",
+      "species": "Poliwhirl",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 99,
+        "atk": 86,
+        "def": 60,
+        "spa": 71,
+        "spd": 100,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 30,
+        "def": 5,
+        "spa": 4,
+        "spd": 20,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Snivy",
+      "species": "Snivy",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 87,
+        "def": 101,
+        "spa": 82,
+        "spd": 86,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 0,
+        "def": 25,
+        "spa": 25,
+        "spd": 21,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Alcremie-Ruby-Swirl",
+      "species": "Alcremie-Ruby-Swirl",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "substitute"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Murkrow",
+      "species": "Murkrow",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pajantom",
+      "species": "Pajantom",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "electroweb",
+        "memento"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 96,
+        "def": 69,
+        "spa": 72,
+        "spd": 100,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 9,
+        "def": 13,
+        "spa": 0,
+        "spd": 7,
+        "spe": 28
+      }
+    }
+  ],
+  "_bug": "Diverges at line 31: JS=\"#31: turn=29, prng=105->106, P1=[Alcremie(94/227)], P2=[Pajantom(289/289)]\" vs Rust=\"#31: turn=28, prng=105->106, P1=[Alcremie(94/227)], P2=[Pajantom(0/289)]\""
+}

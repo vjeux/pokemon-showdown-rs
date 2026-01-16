@@ -1,0 +1,66 @@
+{
+  "p1": [
+    {
+      "name": "Cinderace",
+      "species": "Cinderace",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tailslap",
+        "babydolleyes",
+        "substitute"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Froslass",
+      "species": "Froslass",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "metalsound",
+        "frenzyplant"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 66: JS=\"#66: turn=67, prng=115->115, P1=[Cinderace(242/322)], P2=[Froslass(167/167)]\" vs Rust=\"#66: turn=67, prng=115->118, P1=[Cinderace(242/322)], P2=[Froslass(167/167)]\""
+}

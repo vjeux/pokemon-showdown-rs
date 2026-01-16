@@ -1,0 +1,264 @@
+{
+  "p1": [
+    {
+      "name": "Slowking",
+      "species": "Slowking",
+      "level": 80,
+      "ability": "Oblivious",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "spiderweb",
+        "sandsearstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Aurumoth",
+      "species": "Aurumoth",
+      "level": 51,
+      "ability": "Weak Armor",
+      "item": "",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "hiddenpower",
+        "guardswap"
+      ],
+      "evs": {
+        "hp": 104,
+        "atk": 79,
+        "def": 68,
+        "spa": 86,
+        "spd": 75,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 10,
+        "def": 14,
+        "spa": 6,
+        "spd": 4,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Audino-Mega",
+      "species": "Audino-Mega",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "M",
+      "moves": [
+        "mirrormove"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 78,
+        "def": 108,
+        "spa": 90,
+        "spd": 83,
+        "spe": 64
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 8,
+        "def": 12,
+        "spa": 10,
+        "spd": 29,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Regidrago",
+      "species": "Regidrago",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "lowkick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Heliolisk",
+      "species": "Heliolisk",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "copycat"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 80,
+        "def": 80,
+        "spa": 90,
+        "spd": 94,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 30,
+        "def": 8,
+        "spa": 18,
+        "spd": 2,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Sableye-Mega",
+      "species": "Sableye-Mega",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "taunt"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Garbodor-Gmax",
+      "species": "Garbodor-Gmax",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "finalgambit"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Vivillon-Jungle",
+      "species": "Vivillon-Jungle",
+      "level": 84,
+      "ability": "Shield Dust",
+      "item": "",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "aquaring",
+        "detect",
+        "closecombat",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 112,
+        "def": 84,
+        "spa": 100,
+        "spd": 65,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 15,
+        "def": 23,
+        "spa": 3,
+        "spd": 29,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Petilil",
+      "species": "Petilil",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 81: JS=\"#81: turn=77, prng=184->191, P1=[Regidrago(11/440)], P2=[Vivillon(40/264)]\" vs Rust=\"#81: turn=77, prng=184->188, P1=[Regidrago(11/440)], P2=[Vivillon(98/264)]\""
+}

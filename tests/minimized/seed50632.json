@@ -1,0 +1,119 @@
+{
+  "p1": [
+    {
+      "name": "Barraskewda",
+      "species": "Barraskewda",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hardy",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 107,
+        "atk": 66,
+        "def": 72,
+        "spa": 79,
+        "spd": 91,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 8,
+        "def": 23,
+        "spa": 24,
+        "spd": 0,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Indeedee",
+      "species": "Indeedee",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "bestow"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tinkatink",
+      "species": "Tinkatink",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Combusken",
+      "species": "Combusken",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "F",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 84,
+        "def": 83,
+        "spa": 90,
+        "spd": 101,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 12,
+        "def": 10,
+        "spa": 13,
+        "spd": 9,
+        "spe": 13
+      }
+    }
+  ],
+  "_bug": "Diverges at line 10: JS=\"#10: turn=9, prng=44->46, P1=[Indeedee(0/173)], P2=[Combusken(0/238)]\" vs Rust=\"#10: turn=9, prng=44->46, P1=[Indeedee(0/173)], P2=[Combusken(13/238)]\""
+}

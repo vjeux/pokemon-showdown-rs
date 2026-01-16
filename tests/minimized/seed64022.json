@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Makuhita",
+      "species": "Makuhita",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 81,
+        "def": 76,
+        "spa": 102,
+        "spd": 74,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 3,
+        "def": 10,
+        "spa": 2,
+        "spd": 30,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Audino-Mega",
+      "species": "Audino-Mega",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "psychicterrain"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 80,
+        "def": 91,
+        "spa": 97,
+        "spd": 95,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 1,
+        "def": 11,
+        "spa": 23,
+        "spd": 24,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Melmetal-Gmax",
+      "species": "Melmetal-Gmax",
+      "level": 68,
+      "ability": "Iron Fist",
+      "item": "",
+      "nature": "adamant",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 80,
+        "def": 81,
+        "spa": 106,
+        "spd": 81,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 19,
+        "def": 17,
+        "spa": 31,
+        "spd": 12,
+        "spe": 10
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Stufful",
+      "species": "Stufful",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "fusionbolt"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 104,
+        "def": 72,
+        "spa": 87,
+        "spd": 82,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 1,
+        "def": 11,
+        "spa": 8,
+        "spd": 28,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Grimmsnarl-Gmax",
+      "species": "Grimmsnarl-Gmax",
+      "level": 94,
+      "ability": "Prankster",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "flatter"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 14: JS=\"#14: turn=12, prng=94->97, P1=[Melmetal(240/292)], P2=[Grimmsnarl(302/331)]\" vs Rust=\"#14: turn=12, prng=94->100, P1=[Melmetal(240/292)], P2=[Grimmsnarl(300/331)]\""
+}

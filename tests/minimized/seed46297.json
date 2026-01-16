@@ -1,0 +1,204 @@
+{
+  "p1": [
+    {
+      "name": "Herdier",
+      "species": "Herdier",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 73,
+        "def": 85,
+        "spa": 80,
+        "spd": 87,
+        "spe": 117
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 11,
+        "def": 14,
+        "spa": 30,
+        "spd": 17,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Plasmanta",
+      "species": "Plasmanta",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "maxflutterby"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Slowpoke",
+      "species": "Slowpoke",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 67,
+        "atk": 99,
+        "def": 73,
+        "spa": 101,
+        "spd": 87,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 31,
+        "def": 13,
+        "spa": 24,
+        "spd": 27,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Crucibelle-Mega",
+      "species": "Crucibelle-Mega",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 72,
+        "def": 58,
+        "spa": 89,
+        "spd": 104,
+        "spe": 108
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 6,
+        "def": 15,
+        "spa": 18,
+        "spd": 13,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Magikarp",
+      "species": "Magikarp",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "metronome"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Xerneas",
+      "species": "Xerneas",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "psychoboost",
+        "icespinner"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gimmighoul",
+      "species": "Gimmighoul",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 30: JS=\"#30: turn=26, prng=128->136, P1=[Magikarp(57/182)], P2=[Gimmighoul(60/147)]\" vs Rust=\"#30: turn=26, prng=128->136, P1=[Magikarp(53/182)], P2=[Gimmighoul(60/147)]\""
+}

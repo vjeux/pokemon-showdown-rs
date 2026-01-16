@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Machamp",
+      "species": "Machamp",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "apicotberry",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "gmaxfinale",
+        "drillrun"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 94,
+        "def": 80,
+        "spa": 78,
+        "spd": 87,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 7,
+        "def": 10,
+        "spa": 17,
+        "spd": 2,
+        "spe": 21
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Lombre",
+      "species": "Lombre",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 6: JS=\"#6: turn=6, prng=33->38, P1=[Machamp(0/305)], P2=[Lombre(50/214)]\" vs Rust=\"#6: turn=6, prng=33->35, P1=[Machamp(0/305)], P2=[Lombre(0/214)]\""
+}

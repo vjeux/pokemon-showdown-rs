@@ -1,0 +1,149 @@
+{
+  "p1": [
+    {
+      "name": "Tyranitar-Mega",
+      "species": "Tyranitar-Mega",
+      "level": 74,
+      "ability": "Sand Stream",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "wavecrash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dhelmise",
+      "species": "Dhelmise",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "ominouswind",
+        "metalburst",
+        "prismaticlaser"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 80,
+        "def": 72,
+        "spa": 96,
+        "spd": 85,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 31,
+        "def": 6,
+        "spa": 9,
+        "spd": 15,
+        "spe": 2
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Lanturn",
+      "species": "Lanturn",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "F",
+      "moves": [
+        "bulletpunch"
+      ],
+      "evs": {
+        "hp": 54,
+        "atk": 79,
+        "def": 110,
+        "spa": 120,
+        "spd": 70,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 2,
+        "def": 29,
+        "spa": 10,
+        "spd": 1,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Fennekin",
+      "species": "Fennekin",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "strengthsap"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Melmetal",
+      "species": "Melmetal",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "substitute"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 35: JS=\"#35: turn=33, prng=80->82, P1=[Dhelmise(167/234)], P2=[Melmetal(61/246)]\" vs Rust=\"#35: turn=32, prng=80->85, P1=[Dhelmise(168/234)], P2=[Melmetal(0/246)]\""
+}

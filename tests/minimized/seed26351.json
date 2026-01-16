@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Kingambit",
+      "species": "Kingambit",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 70,
+        "def": 83,
+        "spa": 119,
+        "spd": 84,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 2,
+        "def": 8,
+        "spa": 2,
+        "spd": 0,
+        "spe": 28
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Dracovish",
+      "species": "Dracovish",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "venomdrench"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 88,
+        "def": 70,
+        "spa": 88,
+        "spd": 90,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 16,
+        "def": 29,
+        "spa": 31,
+        "spd": 21,
+        "spe": 27
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=3->16, P1=[Kingambit(302/302)], P2=[Dracovish(145/200)]\" vs Rust=\"#1: turn=2, prng=3->18, P1=[Kingambit(302/302)], P2=[Dracovish(146/200)]\""
+}

@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Yveltal",
+      "species": "Yveltal",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "glaciate",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Jirachi",
+      "species": "Jirachi",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "",
+      "moves": [
+        "charm"
+      ],
+      "evs": {
+        "hp": 108,
+        "atk": 86,
+        "def": 80,
+        "spa": 105,
+        "spd": 75,
+        "spe": 56
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 4,
+        "def": 7,
+        "spa": 8,
+        "spd": 22,
+        "spe": 26
+      }
+    }
+  ],
+  "_bug": "Diverges at line 19: JS=\"#19: turn=20, prng=87->92, P1=[Yveltal(337/337)], P2=[Jirachi(12/364)]\" vs Rust=\"#19: turn=20, prng=87->91, P1=[Yveltal(337/337)], P2=[Jirachi(12/364)]\""
+}

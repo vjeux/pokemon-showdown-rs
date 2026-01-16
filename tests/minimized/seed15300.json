@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Urshifu",
+      "species": "Urshifu",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 128,
+        "atk": 88,
+        "def": 72,
+        "spa": 58,
+        "spd": 76,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 14,
+        "def": 2,
+        "spa": 26,
+        "spd": 20,
+        "spe": 17
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Buneary",
+      "species": "Buneary",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "powder"
+      ],
+      "evs": {
+        "hp": 102,
+        "atk": 54,
+        "def": 96,
+        "spa": 82,
+        "spd": 94,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 2,
+        "def": 2,
+        "spa": 4,
+        "spd": 26,
+        "spe": 3
+      }
+    }
+  ],
+  "_bug": "Diverges at line 6: JS=\"#6: turn=6, prng=25->30, P1=[Urshifu(300/300)], P2=[Buneary(0/270)]\" vs Rust=\"#6: turn=6, prng=25->29, P1=[Urshifu(300/300)], P2=[Buneary(0/270)]\""
+}

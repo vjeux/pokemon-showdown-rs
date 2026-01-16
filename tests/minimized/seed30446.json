@@ -1,0 +1,261 @@
+{
+  "p1": [
+    {
+      "name": "Oricorio-Pa'u",
+      "species": "Oricorio-Pa'u",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 124,
+        "def": 85,
+        "spa": 87,
+        "spd": 67,
+        "spe": 60
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 29,
+        "def": 6,
+        "spa": 2,
+        "spd": 21,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Darmanitan-Galar",
+      "species": "Darmanitan-Galar",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "shadowforce"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 85,
+        "def": 87,
+        "spa": 65,
+        "spd": 84,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 18,
+        "def": 24,
+        "spa": 15,
+        "spd": 11,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Stonjourner",
+      "species": "Stonjourner",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "torchsong"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 93,
+        "def": 74,
+        "spa": 66,
+        "spd": 80,
+        "spe": 115
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 3,
+        "def": 9,
+        "spa": 17,
+        "spd": 13,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Silvally",
+      "species": "Silvally",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 95,
+        "def": 76,
+        "spa": 79,
+        "spd": 83,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 22,
+        "def": 23,
+        "spa": 30,
+        "spd": 7,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Cherrim-Sunshine",
+      "species": "Cherrim-Sunshine",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "berryjuice",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "miracleeye"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 120,
+        "def": 70,
+        "spa": 81,
+        "spd": 99,
+        "spe": 64
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 16,
+        "def": 1,
+        "spa": 25,
+        "spd": 18,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Roggenrola",
+      "species": "Roggenrola",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sawk",
+      "species": "Sawk",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "blackholeeclipse",
+        "saltcure"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Prinplup",
+      "species": "Prinplup",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Exploud",
+      "species": "Exploud",
+      "level": 90,
+      "ability": "Soundproof",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "disarmingvoice",
+        "minimize"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 65,
+        "def": 111,
+        "spa": 65,
+        "spd": 90,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 19,
+        "def": 31,
+        "spa": 30,
+        "spd": 2,
+        "spe": 13
+      }
+    }
+  ],
+  "_bug": "Diverges at line 41: JS=\"#41: turn=35, prng=97->100, P1=[Roggenrola(35/188)], P2=[Exploud(185/329)]\" vs Rust=\"#41: turn=35, prng=97->98, P1=[Roggenrola(35/188)], P2=[Exploud(203/329)]\""
+}

@@ -1,0 +1,287 @@
+{
+  "p1": [
+    {
+      "name": "Grapploct",
+      "species": "Grapploct",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "quash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gourgeist-Small",
+      "species": "Gourgeist-Small",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "crunch"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 111,
+        "def": 82,
+        "spa": 80,
+        "spd": 68,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 23,
+        "def": 28,
+        "spa": 23,
+        "spd": 6,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Urshifu-Rapid-Strike-Gmax",
+      "species": "Urshifu-Rapid-Strike-Gmax",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 108,
+        "atk": 78,
+        "def": 107,
+        "spa": 80,
+        "spd": 60,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 30,
+        "def": 0,
+        "spa": 29,
+        "spd": 21,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Runerigus",
+      "species": "Runerigus",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "twineedle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lanturn",
+      "species": "Lanturn",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "powergem"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 83,
+        "def": 92,
+        "spa": 68,
+        "spd": 77,
+        "spe": 122
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 16,
+        "def": 14,
+        "spa": 9,
+        "spd": 2,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Silvally-Rock",
+      "species": "Silvally-Rock",
+      "level": 55,
+      "ability": "RKS System",
+      "item": "",
+      "nature": "naive",
+      "gender": "",
+      "moves": [
+        "triattack"
+      ],
+      "evs": {
+        "hp": 111,
+        "atk": 55,
+        "def": 75,
+        "spa": 84,
+        "spd": 78,
+        "spe": 107
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 8,
+        "def": 23,
+        "spa": 26,
+        "spd": 6,
+        "spe": 25
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Iron Crown",
+      "species": "Iron Crown",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "",
+      "moves": [
+        "heartstamp"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 102,
+        "def": 74,
+        "spa": 71,
+        "spd": 84,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 1,
+        "def": 18,
+        "spa": 3,
+        "spd": 13,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Grubbin",
+      "species": "Grubbin",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "burnup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Falinks-Mega",
+      "species": "Falinks-Mega",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "",
+      "moves": [
+        "sparklingaria"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 50,
+        "def": 68,
+        "spa": 103,
+        "spd": 117,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 0,
+        "def": 10,
+        "spa": 2,
+        "spd": 10,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Gliscor",
+      "species": "Gliscor",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hardy",
+      "gender": "F",
+      "moves": [
+        "waterspout"
+      ],
+      "evs": {
+        "hp": 109,
+        "atk": 108,
+        "def": 74,
+        "spa": 66,
+        "spd": 73,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 19,
+        "def": 22,
+        "spa": 2,
+        "spd": 31,
+        "spe": 29
+      }
+    }
+  ],
+  "_bug": "Diverges at line 35: JS=\"#35: turn=28, prng=150->157, P1=[Silvally(2/190)], P2=[Gliscor(1/179)]\" vs Rust=\"#35: turn=28, prng=150->155, P1=[Silvally(3/190)], P2=[Gliscor(1/179)]\""
+}

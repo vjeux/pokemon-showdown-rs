@@ -1,0 +1,261 @@
+{
+  "p1": [
+    {
+      "name": "Blacephalon",
+      "species": "Blacephalon",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "aquaring"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Shaymin-Sky",
+      "species": "Shaymin-Sky",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "geargrind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Maschiff",
+      "species": "Maschiff",
+      "level": 88,
+      "ability": "Intimidate",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "entrainment"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Xatu",
+      "species": "Xatu",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "snarl"
+      ],
+      "evs": {
+        "hp": 99,
+        "atk": 98,
+        "def": 70,
+        "spa": 87,
+        "spd": 70,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 13,
+        "def": 15,
+        "spa": 0,
+        "spd": 28,
+        "spe": 14
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Landorus",
+      "species": "Landorus",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sableye-Mega",
+      "species": "Sableye-Mega",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sunflora",
+      "species": "Sunflora",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 76,
+        "def": 90,
+        "spa": 101,
+        "spd": 56,
+        "spe": 101
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 23,
+        "def": 8,
+        "spa": 11,
+        "spd": 29,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Espathra",
+      "species": "Espathra",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Reshiram",
+      "species": "Reshiram",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "",
+      "moves": [
+        "pyroball",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 74,
+        "def": 96,
+        "spa": 83,
+        "spd": 81,
+        "spe": 105
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 6,
+        "def": 23,
+        "spa": 25,
+        "spd": 25,
+        "spe": 5
+      }
+    }
+  ],
+  "_bug": "Diverges at line 60: JS=\"#60: turn=54, prng=115->119, P1=[Xatu(30/270)], P2=[Reshiram(0/254)]\" vs Rust=\"#60: turn=54, prng=115->117, P1=[Xatu(0/270)], P2=[Reshiram(0/254)]\""
+}

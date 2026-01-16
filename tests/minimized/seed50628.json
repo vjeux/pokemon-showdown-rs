@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Pangoro",
+      "species": "Pangoro",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "M",
+      "moves": [
+        "focusenergy"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 83,
+        "def": 77,
+        "spa": 105,
+        "spd": 82,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 26,
+        "def": 23,
+        "spa": 20,
+        "spd": 19,
+        "spe": 26
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Melmetal",
+      "species": "Melmetal",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 83,
+        "def": 88,
+        "spa": 100,
+        "spd": 82,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 19,
+        "def": 30,
+        "spa": 14,
+        "spd": 17,
+        "spe": 23
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=17->29, P1=[Pangoro(66/178)], P2=[Melmetal(327/327)]\" vs Rust=\"#2: turn=3, prng=17->31, P1=[Pangoro(68/178)], P2=[Melmetal(327/327)]\""
+}

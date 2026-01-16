@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Magearna",
+      "species": "Magearna",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "shoreup"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 77,
+        "def": 77,
+        "spa": 85,
+        "spd": 93,
+        "spe": 105
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 2,
+        "def": 2,
+        "spa": 8,
+        "spd": 31,
+        "spe": 29
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Alcremie",
+      "species": "Alcremie",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 93,
+        "def": 93,
+        "spa": 76,
+        "spd": 79,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 13,
+        "def": 10,
+        "spa": 4,
+        "spd": 31,
+        "spe": 28
+      }
+    }
+  ],
+  "_bug": "Diverges at line 3: JS=\"#3: turn=4, prng=31->45, P1=[Magearna(169/175)], P2=[Alcremie(157/157)]\" vs Rust=\"#3: turn=4, prng=31->43, P1=[Magearna(165/175)], P2=[Alcremie(157/157)]\""
+}

@@ -1,0 +1,122 @@
+{
+  "p1": [
+    {
+      "name": "Meloetta",
+      "species": "Meloetta",
+      "level": 73,
+      "ability": "Serene Grace",
+      "item": "",
+      "nature": "modest",
+      "gender": "",
+      "moves": [
+        "icefang",
+        "mindreader",
+        "mudslap"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 71,
+        "def": 95,
+        "spa": 99,
+        "spd": 96,
+        "spe": 73
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 5,
+        "def": 1,
+        "spa": 10,
+        "spd": 10,
+        "spe": 20
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Alomomola",
+      "species": "Alomomola",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "F",
+      "moves": [
+        "cometpunch"
+      ],
+      "evs": {
+        "hp": 116,
+        "atk": 91,
+        "def": 69,
+        "spa": 86,
+        "spd": 67,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 31,
+        "def": 18,
+        "spa": 3,
+        "spd": 28,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Houndoom-Mega",
+      "species": "Houndoom-Mega",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "takeheart"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Minior-Green",
+      "species": "Minior-Green",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "upperhand",
+        "relicsong"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 50: JS=\"#50: turn=49, prng=164->168, P1=[Meloetta(80/245)], P2=[Minior(133/203)]\" vs Rust=\"#50: turn=49, prng=164->172, P1=[Meloetta(80/245)], P2=[Minior(113/203)]\""
+}

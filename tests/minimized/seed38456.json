@@ -1,0 +1,291 @@
+{
+  "p1": [
+    {
+      "name": "Froslass",
+      "species": "Froslass",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "guardianofalola",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 80,
+        "def": 100,
+        "spa": 102,
+        "spd": 54,
+        "spe": 96
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 7,
+        "def": 16,
+        "spa": 26,
+        "spd": 25,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Alcremie",
+      "species": "Alcremie",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "furycutter"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Swoobat",
+      "species": "Swoobat",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "outrage"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 103,
+        "def": 53,
+        "spa": 72,
+        "spd": 99,
+        "spe": 105
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 26,
+        "def": 18,
+        "spa": 5,
+        "spd": 14,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Zapdos",
+      "species": "Zapdos",
+      "level": 90,
+      "ability": "Pressure",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "acupressure"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Gyarados",
+      "species": "Gyarados",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "powder"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Frillish",
+      "species": "Frillish",
+      "level": 89,
+      "ability": "Water Absorb",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "barbbarrage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sewaddle",
+      "species": "Sewaddle",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "doublehit"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 80,
+        "def": 120,
+        "spa": 71,
+        "spd": 74,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 16,
+        "def": 0,
+        "spa": 28,
+        "spd": 8,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Gabite",
+      "species": "Gabite",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "sassy",
+      "gender": "M",
+      "moves": [
+        "infernooverdrive"
+      ],
+      "evs": {
+        "hp": 60,
+        "atk": 85,
+        "def": 85,
+        "spa": 92,
+        "spd": 87,
+        "spe": 101
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 12,
+        "def": 6,
+        "spa": 27,
+        "spd": 2,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Onix",
+      "species": "Onix",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "bugbuzz",
+        "baddybad",
+        "imprison",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ogerpon",
+      "species": "Ogerpon",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 68: JS=\"#68: turn=61, prng=210->211, P1=[Zapdos(250/308)], P2=[Ogerpon(293/293)]\" vs Rust=\"#68: turn=61, prng=210->213, P1=[Zapdos(173/308)], P2=[Ogerpon(138/293)]\""
+}

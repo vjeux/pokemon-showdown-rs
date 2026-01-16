@@ -1,0 +1,176 @@
+{
+  "p1": [
+    {
+      "name": "Wartortle",
+      "species": "Wartortle",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "strangesteam"
+      ],
+      "evs": {
+        "hp": 103,
+        "atk": 83,
+        "def": 96,
+        "spa": 65,
+        "spd": 89,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 12,
+        "def": 25,
+        "spa": 2,
+        "spd": 20,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Slither Wing",
+      "species": "Slither Wing",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "noretreat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gabite",
+      "species": "Gabite",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "strengthsap"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Zarude-Dada",
+      "species": "Zarude-Dada",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "baddybad"
+      ],
+      "evs": {
+        "hp": 55,
+        "atk": 108,
+        "def": 94,
+        "spa": 93,
+        "spd": 74,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 14,
+        "def": 12,
+        "spa": 3,
+        "spd": 0,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Floatzel",
+      "species": "Floatzel",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "venoshock",
+        "hail"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 74,
+        "def": 103,
+        "spa": 78,
+        "spd": 87,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 19,
+        "def": 4,
+        "spa": 18,
+        "spd": 18,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Shedinja",
+      "species": "Shedinja",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 27: JS=\"#27: turn=23, prng=92->96, P1=[Gabite(182/205)], P2=[Shedinja(0/1)]\" vs Rust=\"#27: turn=24, prng=92->96, P1=[Gabite(182/205)], P2=[Shedinja(1/1)]\""
+}

@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Cramorant-Gorging",
+      "species": "Cramorant-Gorging",
+      "level": 89,
+      "ability": "Gulp Missile",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Kirlia",
+      "species": "Kirlia",
+      "level": 75,
+      "ability": "Synchronize",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=6->11, P1=[Cramorant(253/269)], P2=[Kirlia(18/181)]\" vs Rust=\"#2: turn=3, prng=6->10, P1=[Cramorant(253/269)], P2=[Kirlia(22/181)]\""
+}

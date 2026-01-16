@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Pecharunt",
+      "species": "Pecharunt",
+      "level": 50,
+      "ability": "Poison Puppeteer",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "inferno",
+        "shellsidearm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Marowak-Alola-Totem",
+      "species": "Marowak-Alola-Totem",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 9: JS=\"#9: turn=10, prng=20->25, P1=[Pecharunt(174/174)], P2=[Marowak(168/268)]\" vs Rust=\"#9: turn=10, prng=20->24, P1=[Pecharunt(174/174)], P2=[Marowak(168/268)]\""
+}

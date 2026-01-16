@@ -1,0 +1,319 @@
+{
+  "p1": [
+    {
+      "name": "Hawlucha",
+      "species": "Hawlucha",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mudkip",
+      "species": "Mudkip",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "irontail"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 86,
+        "def": 88,
+        "spa": 71,
+        "spd": 93,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 19,
+        "def": 11,
+        "spa": 17,
+        "spd": 13,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Chuggon",
+      "species": "Chuggon",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "hornleech"
+      ],
+      "evs": {
+        "hp": 100,
+        "atk": 90,
+        "def": 78,
+        "spa": 88,
+        "spd": 59,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 26,
+        "def": 22,
+        "spa": 16,
+        "spd": 12,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Combusken",
+      "species": "Combusken",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "chloroblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Golisopod",
+      "species": "Golisopod",
+      "level": 75,
+      "ability": "Emergency Exit",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Baxcalibur",
+      "species": "Baxcalibur",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "guardianofalola",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lycanroc-Midnight",
+      "species": "Lycanroc-Midnight",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "foulplay"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 64,
+        "def": 68,
+        "spa": 92,
+        "spd": 77,
+        "spe": 113
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 0,
+        "def": 1,
+        "spa": 23,
+        "spd": 31,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Spheal",
+      "species": "Spheal",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "acidarmor"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Eevee",
+      "species": "Eevee",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 82,
+        "def": 62,
+        "spa": 93,
+        "spd": 81,
+        "spe": 109
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 2,
+        "def": 30,
+        "spa": 18,
+        "spd": 9,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Yanmega",
+      "species": "Yanmega",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "lightthatburnsthesky",
+        "transform"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lurantis-Totem",
+      "species": "Lurantis-Totem",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "magiccoat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 51: JS=\"#51: turn=42, prng=202->209, P1=[Golisopod(17/236)], P2=[Yanmega(86/256)]\" vs Rust=\"#51: turn=41, prng=202->204, P1=[Golisopod(0/236)], P2=[Yanmega(109/256)]\""
+}

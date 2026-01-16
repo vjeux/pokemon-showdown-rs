@@ -1,0 +1,119 @@
+{
+  "p1": [
+    {
+      "name": "Fennekin",
+      "species": "Fennekin",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Crucibelle",
+      "species": "Crucibelle",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "adamant",
+      "gender": "M",
+      "moves": [
+        "endure"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 105,
+        "def": 57,
+        "spa": 89,
+        "spd": 115,
+        "spe": 63
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 24,
+        "def": 4,
+        "spa": 0,
+        "spd": 26,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Spidops",
+      "species": "Spidops",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Lycanroc-Midnight",
+      "species": "Lycanroc-Midnight",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "bodyslam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 15: JS=\"#15: turn=13, prng=76->80, P1=[Spidops(0/279)], P2=[Lycanroc(134/303)]\" vs Rust=\"#15: turn=13, prng=76->78, P1=[Spidops(0/279)], P2=[Lycanroc(58/303)]\""
+}

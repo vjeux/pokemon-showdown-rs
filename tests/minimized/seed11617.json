@@ -1,0 +1,175 @@
+{
+  "p1": [
+    {
+      "name": "Vivillon-Continental",
+      "species": "Vivillon-Continental",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 93,
+        "def": 86,
+        "spa": 76,
+        "spd": 93,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 21,
+        "def": 17,
+        "spa": 12,
+        "spd": 25,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Chewtle",
+      "species": "Chewtle",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 67,
+        "atk": 110,
+        "def": 112,
+        "spa": 93,
+        "spd": 70,
+        "spe": 58
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 7,
+        "def": 27,
+        "spa": 23,
+        "spd": 30,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Horsea",
+      "species": "Horsea",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Delibird",
+      "species": "Delibird",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zamazenta",
+      "species": "Zamazenta",
+      "level": 99,
+      "ability": "Dauntless Shield",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Annihilape",
+      "species": "Annihilape",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "lick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 35: JS=\"#35: turn=32, prng=149->154, P1=[Zamazenta(14/342)], P2=[Annihilape(208/326)]\" vs Rust=\"#35: turn=32, prng=149->152, P1=[Zamazenta(11/342)], P2=[Annihilape(126/326)]\""
+}

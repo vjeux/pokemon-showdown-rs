@@ -1,0 +1,232 @@
+{
+  "p1": [
+    {
+      "name": "Azurill",
+      "species": "Azurill",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "searingshot"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 88,
+        "def": 104,
+        "spa": 84,
+        "spd": 74,
+        "spe": 62
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 10,
+        "def": 29,
+        "spa": 15,
+        "spd": 9,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Giratina",
+      "species": "Giratina",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "hyperdrill",
+        "chargebeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Pidgey",
+      "species": "Pidgey",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "psystrike"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 94,
+        "def": 79,
+        "spa": 66,
+        "spd": 85,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 17,
+        "def": 18,
+        "spa": 9,
+        "spd": 16,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Kangaskhan-Mega",
+      "species": "Kangaskhan-Mega",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quiet",
+      "gender": "F",
+      "moves": [
+        "mistyexplosion"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 91,
+        "def": 100,
+        "spa": 79,
+        "spd": 86,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 25,
+        "def": 12,
+        "spa": 17,
+        "spd": 29,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Solotl",
+      "species": "Solotl",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "gmaxsmite"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gothorita",
+      "species": "Gothorita",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Chimecho",
+      "species": "Chimecho",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Castform-Sunny",
+      "species": "Castform-Sunny",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "alluringvoice"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 29: JS=\"#29: turn=24, prng=102->111, P1=[Giratina(87/421)], P2=[Castform(7/214)]\" vs Rust=\"#29: turn=23, prng=102->106, P1=[Giratina(137/421)], P2=[Castform(0/214)]\""
+}

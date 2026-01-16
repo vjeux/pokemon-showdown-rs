@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Masquerain",
+      "species": "Masquerain",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "adamant",
+      "gender": "F",
+      "moves": [
+        "agility"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 83,
+        "def": 74,
+        "spa": 104,
+        "spd": 76,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 2,
+        "def": 13,
+        "spa": 25,
+        "spd": 8,
+        "spe": 13
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Tandemaus",
+      "species": "Tandemaus",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "",
+      "moves": [
+        "alluringvoice"
+      ],
+      "evs": {
+        "hp": 56,
+        "atk": 103,
+        "def": 90,
+        "spa": 66,
+        "spd": 108,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 2,
+        "def": 23,
+        "spa": 9,
+        "spd": 31,
+        "spe": 30
+      }
+    }
+  ],
+  "_bug": "Diverges at line 6: JS=\"#6: turn=6, prng=25->27, P1=[Masquerain(0/212)], P2=[Tandemaus(212/212)]\" vs Rust=\"#6: turn=6, prng=25->29, P1=[Masquerain(0/212)], P2=[Tandemaus(212/212)]\""
+}

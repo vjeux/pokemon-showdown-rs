@@ -1,0 +1,231 @@
+{
+  "p1": [
+    {
+      "name": "Flabébé",
+      "species": "Flabébé",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Stantler",
+      "species": "Stantler",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "moonblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zoroark",
+      "species": "Zoroark",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 105,
+        "atk": 83,
+        "def": 92,
+        "spa": 77,
+        "spd": 75,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 21,
+        "def": 1,
+        "spa": 3,
+        "spd": 21,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Latias-Mega",
+      "species": "Latias-Mega",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "partingshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Greninja-Ash",
+      "species": "Greninja-Ash",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Natu",
+      "species": "Natu",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cawdet",
+      "species": "Cawdet",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 67,
+        "atk": 87,
+        "def": 91,
+        "spa": 104,
+        "spd": 86,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 24,
+        "def": 5,
+        "spa": 14,
+        "spd": 25,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Yamask-Galar",
+      "species": "Yamask-Galar",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "outrage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 33: JS=\"#33: turn=27, prng=133->139, P1=[Latias(217/247)], P2=[Yamask(49/181)]\" vs Rust=\"#33: turn=27, prng=133->137, P1=[Latias(240/247)], P2=[Yamask(4/181)]\""
+}

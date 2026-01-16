@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Tangela",
+      "species": "Tangela",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "blueorb",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "ancientpower"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Miltank",
+      "species": "Miltank",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "blueflare"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Solotl",
+      "species": "Solotl",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sandygast",
+      "species": "Sandygast",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "adamant",
+      "gender": "F",
+      "moves": [
+        "smartstrike"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 79,
+        "def": 105,
+        "spa": 66,
+        "spd": 83,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 11,
+        "def": 21,
+        "spa": 15,
+        "spd": 23,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Cryogonal",
+      "species": "Cryogonal",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 15: JS=\"#15: turn=13, prng=64->68, P1=[Miltank(35/187)], P2=[Cryogonal(198/234)]\" vs Rust=\"#15: turn=12, prng=64->70, P1=[Miltank(0/187)], P2=[Cryogonal(178/234)]\""
+}

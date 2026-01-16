@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Arghonaut",
+      "species": "Arghonaut",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sunkern",
+      "species": "Sunkern",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kingler",
+      "species": "Kingler",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 73,
+        "def": 100,
+        "spa": 97,
+        "spd": 70,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 0,
+        "def": 7,
+        "spa": 4,
+        "spd": 25,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Quilava",
+      "species": "Quilava",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tidyup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Hydrapple",
+      "species": "Hydrapple",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "F",
+      "moves": [
+        "alluringvoice"
+      ],
+      "evs": {
+        "hp": 67,
+        "atk": 80,
+        "def": 71,
+        "spa": 92,
+        "spd": 121,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 20,
+        "def": 17,
+        "spa": 4,
+        "spd": 5,
+        "spe": 28
+      }
+    }
+  ],
+  "_bug": "Diverges at line 13: JS=\"#13: turn=10, prng=57->62, P1=[Quilava(0/165)], P2=[Hydrapple(145/320)]\" vs Rust=\"#13: turn=10, prng=57->61, P1=[Quilava(0/165)], P2=[Hydrapple(145/320)]\""
+}

@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Flygon",
+      "species": "Flygon",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Scratchet",
+      "species": "Scratchet",
+      "level": 60,
+      "ability": "Scrappy",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "eerieimpulse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Gastrodon-East",
+      "species": "Gastrodon-East",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 11: JS=\"#11: turn=11, prng=54->58, P1=[Scratchet(117/167)], P2=[Gastrodon(57/380)]\" vs Rust=\"#11: turn=11, prng=54->57, P1=[Scratchet(117/167)], P2=[Gastrodon(57/380)]\""
+}

@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Grovyle",
+      "species": "Grovyle",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "fireblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Electabuzz",
+      "species": "Electabuzz",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cinderace",
+      "species": "Cinderace",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Embirch",
+      "species": "Embirch",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Cresceidon",
+      "species": "Cresceidon",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "crunch"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 86,
+        "def": 75,
+        "spa": 84,
+        "spd": 91,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 3,
+        "def": 21,
+        "spa": 29,
+        "spd": 24,
+        "spe": 12
+      }
+    }
+  ],
+  "_bug": "Diverges at line 20: JS=\"#20: turn=17, prng=107->111, P1=[Embirch(0/156)], P2=[Cresceidon(89/290)]\" vs Rust=\"#20: turn=17, prng=107->113, P1=[Embirch(19/156)], P2=[Cresceidon(0/290)]\""
+}

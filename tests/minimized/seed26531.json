@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Noibat",
+      "species": "Noibat",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 106,
+        "def": 96,
+        "spa": 93,
+        "spd": 69,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 13,
+        "def": 8,
+        "spa": 7,
+        "spd": 27,
+        "spe": 3
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Dragalge",
+      "species": "Dragalge",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "focusenergy"
+      ],
+      "evs": {
+        "hp": 109,
+        "atk": 76,
+        "def": 96,
+        "spa": 52,
+        "spd": 74,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 15,
+        "def": 22,
+        "spa": 28,
+        "spd": 27,
+        "spe": 29
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=17->29, P1=[Noibat(226/226)], P2=[Dragalge(239/268)]\" vs Rust=\"#2: turn=3, prng=17->31, P1=[Noibat(226/226)], P2=[Dragalge(238/268)]\""
+}

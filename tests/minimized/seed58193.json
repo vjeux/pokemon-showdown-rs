@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Shedinja",
+      "species": "Shedinja",
+      "level": 89,
+      "ability": "Wonder Guard",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "guillotine",
+        "hail"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Magnemite",
+      "species": "Magnemite",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 9: JS=\"#9: turn=9, prng=0->0, P1=[Shedinja(0/1)], P2=[Magnemite(189/201)]\" vs Rust=\"#9: turn=10, prng=0->0, P1=[Shedinja(1/1)], P2=[Magnemite(189/201)]\""
+}

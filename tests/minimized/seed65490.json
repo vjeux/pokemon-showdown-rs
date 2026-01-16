@@ -1,0 +1,151 @@
+{
+  "p1": [
+    {
+      "name": "Silvally-Dragon",
+      "species": "Silvally-Dragon",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "protectivepads",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "maxstarfall",
+        "horndrill",
+        "flipturn"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Inteleon",
+      "species": "Inteleon",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "infernooverdrive"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Alcremie-Rainbow-Swirl",
+      "species": "Alcremie-Rainbow-Swirl",
+      "level": 56,
+      "ability": "Sweet Veil",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "hydrovortex",
+        "rest",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Nacli",
+      "species": "Nacli",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Parasect",
+      "species": "Parasect",
+      "level": 63,
+      "ability": "Effect Spore",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 34: JS=\"#34: turn=31, prng=101->107, P1=[Silvally(45/245)], P2=[Parasect(160/181)]\" vs Rust=\"#34: turn=31, prng=101->108, P1=[Silvally(14/245)], P2=[Parasect(160/181)]\""
+}

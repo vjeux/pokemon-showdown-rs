@@ -1,0 +1,119 @@
+{
+  "p1": [
+    {
+      "name": "Cherrim",
+      "species": "Cherrim",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hardy",
+      "gender": "M",
+      "moves": [
+        "stealthrock"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 106,
+        "def": 66,
+        "spa": 110,
+        "spd": 62,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 4,
+        "def": 23,
+        "spa": 31,
+        "spd": 0,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Metang",
+      "species": "Metang",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "rollingkick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Whiscash",
+      "species": "Whiscash",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Brute Bonnet",
+      "species": "Brute Bonnet",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 9: JS=\"#9: turn=9, prng=41->49, P1=[Metang(51/175)], P2=[Brute Bonnet(264/384)]\" vs Rust=\"#9: turn=9, prng=41->45, P1=[Metang(51/175)], P2=[Brute Bonnet(294/384)]\""
+}

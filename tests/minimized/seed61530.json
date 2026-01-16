@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Keldeo-Resolute",
+      "species": "Keldeo-Resolute",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 98,
+        "def": 94,
+        "spa": 55,
+        "spd": 91,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 0,
+        "def": 25,
+        "spa": 25,
+        "spd": 21,
+        "spe": 0
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Chi-Yu",
+      "species": "Chi-Yu",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "",
+      "moves": [
+        "guardianofalola",
+        "batonpass"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 78,
+        "def": 103,
+        "spa": 77,
+        "spd": 89,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 2,
+        "def": 12,
+        "spa": 18,
+        "spd": 23,
+        "spe": 10
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=17->29, P1=[Keldeo(74/294)], P2=[Chi-Yu(183/238)]\" vs Rust=\"#2: turn=3, prng=17->31, P1=[Keldeo(74/294)], P2=[Chi-Yu(186/238)]\""
+}

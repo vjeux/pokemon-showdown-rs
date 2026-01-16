@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Excadrill",
+      "species": "Excadrill",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "metronome",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "magicroom"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Slaking",
+      "species": "Slaking",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "sludge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 18: JS=\"#18: turn=19, prng=2->4, P1=[Excadrill(134/270)], P2=[Slaking(247/321)]\" vs Rust=\"#18: turn=19, prng=2->4, P1=[Excadrill(134/270)], P2=[Slaking(240/321)]\""
+}

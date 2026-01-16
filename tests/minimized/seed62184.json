@@ -1,0 +1,120 @@
+{
+  "p1": [
+    {
+      "name": "Forretress",
+      "species": "Forretress",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 88,
+        "def": 109,
+        "spa": 74,
+        "spd": 57,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 1,
+        "def": 15,
+        "spa": 21,
+        "spd": 15,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Illumise",
+      "species": "Illumise",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sliggoo",
+      "species": "Sliggoo",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Centiskorch-Gmax",
+      "species": "Centiskorch-Gmax",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "menacingmoonrazemaelstrom",
+        "bonerush"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 15: JS=\"#15: turn=14, prng=83->99, P1=[Illumise(124/204)], P2=[Centiskorch(79/281)]\" vs Rust=\"#15: turn=14, prng=83->87, P1=[Illumise(181/204)], P2=[Centiskorch(79/281)]\""
+}

@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Mienshao",
+      "species": "Mienshao",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "dragonenergy",
+        "speedswap"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 86,
+        "def": 106,
+        "spa": 88,
+        "spd": 68,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 17,
+        "def": 15,
+        "spa": 2,
+        "spd": 11,
+        "spe": 11
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Ferrothorn",
+      "species": "Ferrothorn",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "acupressure"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 59,
+        "def": 91,
+        "spa": 92,
+        "spd": 103,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 15,
+        "def": 29,
+        "spa": 27,
+        "spd": 11,
+        "spe": 28
+      }
+    }
+  ],
+  "_bug": "Diverges at line 11: JS=\"#11: turn=12, prng=23->34, P1=[Mienshao(149/149)], P2=[Ferrothorn(121/169)]\" vs Rust=\"#11: turn=12, prng=23->31, P1=[Mienshao(149/149)], P2=[Ferrothorn(121/169)]\""
+}

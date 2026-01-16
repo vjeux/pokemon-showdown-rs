@@ -1,0 +1,176 @@
+{
+  "p1": [
+    {
+      "name": "Elekid",
+      "species": "Elekid",
+      "level": 96,
+      "ability": "Static",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "teeterdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pokestar Black Door",
+      "species": "Pokestar Black Door",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "F",
+      "moves": [
+        "bleakwindstorm"
+      ],
+      "evs": {
+        "hp": 53,
+        "atk": 110,
+        "def": 83,
+        "spa": 65,
+        "spd": 94,
+        "spe": 105
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 31,
+        "def": 0,
+        "spa": 27,
+        "spd": 11,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Arceus-Rock",
+      "species": "Arceus-Rock",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "sheercold",
+        "gmaxcannonade"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Iron Crown",
+      "species": "Iron Crown",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "focuspunch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Slugma",
+      "species": "Slugma",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "shedtail"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Charizard-Mega-Y",
+      "species": "Charizard-Mega-Y",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "quickguard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 28: JS=\"#28: turn=25, prng=73->75, P1=[Arceus(358/358)], P2=[Charizard(226/271)]\" vs Rust=\"#28: turn=25, prng=73->75, P1=[Arceus(358/358)], P2=[Charizard(271/271)]\""
+}

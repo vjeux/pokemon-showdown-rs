@@ -1,0 +1,205 @@
+{
+  "p1": [
+    {
+      "name": "Pincurchin",
+      "species": "Pincurchin",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hitmontop",
+      "species": "Hitmontop",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Magearna-Original",
+      "species": "Magearna-Original",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Igglybuff",
+      "species": "Igglybuff",
+      "level": 97,
+      "ability": "Cute Charm",
+      "item": "",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 46,
+        "atk": 125,
+        "def": 68,
+        "spa": 94,
+        "spd": 68,
+        "spe": 109
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 31,
+        "def": 27,
+        "spa": 6,
+        "spd": 0,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Regigigas",
+      "species": "Regigigas",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "",
+      "moves": [
+        "tearfullook"
+      ],
+      "evs": {
+        "hp": 112,
+        "atk": 65,
+        "def": 81,
+        "spa": 81,
+        "spd": 84,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 22,
+        "def": 19,
+        "spa": 21,
+        "spd": 9,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Sprigatito",
+      "species": "Sprigatito",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "reflecttype"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Glalie-Mega",
+      "species": "Glalie-Mega",
+      "level": 73,
+      "ability": "Refrigerate",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "surgingstrikes",
+        "eeriespell",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 31: JS=\"#31: turn=27, prng=107->110, P1=[Sprigatito(5/216)], P2=[Glalie(113/237)]\" vs Rust=\"#31: turn=26, prng=107->112, P1=[Sprigatito(0/216)], P2=[Glalie(76/237)]\""
+}

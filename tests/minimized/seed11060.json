@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Eevee-Starter",
+      "species": "Eevee-Starter",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "M",
+      "moves": [
+        "copycat"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 78,
+        "def": 103,
+        "spa": 89,
+        "spd": 73,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 8,
+        "def": 19,
+        "spa": 0,
+        "spd": 20,
+        "spe": 13
+      }
+    },
+    {
+      "name": "Miasmite",
+      "species": "Miasmite",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "doomdesire"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Minior-Violet",
+      "species": "Minior-Violet",
+      "level": 65,
+      "ability": "Shields Down",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "chillyreception"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Floragato",
+      "species": "Floragato",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wobbuffet",
+      "species": "Wobbuffet",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 23: JS=\"#23: turn=19, prng=71->77, P1=[Eevee(66/203)], P2=[Wobbuffet(62/355)]\" vs Rust=\"#23: turn=19, prng=71->74, P1=[Eevee(66/203)], P2=[Wobbuffet(108/355)]\""
+}

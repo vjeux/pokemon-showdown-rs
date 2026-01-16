@@ -1,0 +1,119 @@
+{
+  "p1": [
+    {
+      "name": "Emboar",
+      "species": "Emboar",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Minior-Indigo",
+      "species": "Minior-Indigo",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 116,
+        "def": 79,
+        "spa": 93,
+        "spd": 63,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 11,
+        "def": 20,
+        "spa": 8,
+        "spd": 7,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Reuniclus",
+      "species": "Reuniclus",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Ledian",
+      "species": "Ledian",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "strangesteam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 9: JS=\"#9: turn=8, prng=40->49, P1=[Reuniclus(118/303)], P2=[Ledian(51/269)]\" vs Rust=\"#9: turn=7, prng=40->47, P1=[Reuniclus(146/303)], P2=[Ledian(0/269)]\""
+}

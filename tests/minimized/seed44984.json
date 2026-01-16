@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Golduck",
+      "species": "Golduck",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "focusenergy"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 95,
+        "def": 103,
+        "spa": 56,
+        "spd": 73,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 30,
+        "def": 7,
+        "spa": 23,
+        "spd": 24,
+        "spe": 12
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Pumpkaboo",
+      "species": "Pumpkaboo",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hardy",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 97,
+        "def": 74,
+        "spa": 71,
+        "spd": 81,
+        "spe": 106
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 23,
+        "def": 21,
+        "spa": 7,
+        "spd": 10,
+        "spe": 18
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=17->29, P1=[Golduck(114/177)], P2=[Pumpkaboo(196/196)]\" vs Rust=\"#2: turn=3, prng=17->31, P1=[Golduck(112/177)], P2=[Pumpkaboo(196/196)]\""
+}

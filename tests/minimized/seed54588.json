@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Morgrem",
+      "species": "Morgrem",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "supersonic"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Oinkologne-F",
+      "species": "Oinkologne-F",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gmaxwindrage",
+        "wonderroom"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 24: JS=\"#24: turn=25, prng=73->76, P1=[Morgrem(159/176)], P2=[Oinkologne(251/342)]\" vs Rust=\"#24: turn=25, prng=73->76, P1=[Morgrem(159/176)], P2=[Oinkologne(245/342)]\""
+}

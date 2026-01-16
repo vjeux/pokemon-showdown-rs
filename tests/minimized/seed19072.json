@@ -1,0 +1,204 @@
+{
+  "p1": [
+    {
+      "name": "Excadrill-Mega",
+      "species": "Excadrill-Mega",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 88,
+        "def": 78,
+        "spa": 103,
+        "spd": 61,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 0,
+        "def": 6,
+        "spa": 22,
+        "spd": 4,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Snorunt",
+      "species": "Snorunt",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "dragonrage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gible",
+      "species": "Gible",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 99,
+        "def": 57,
+        "spa": 87,
+        "spd": 107,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 1,
+        "def": 14,
+        "spa": 2,
+        "spd": 2,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Treecko",
+      "species": "Treecko",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "hex",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 98,
+        "def": 76,
+        "spa": 58,
+        "spd": 109,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 11,
+        "def": 11,
+        "spa": 20,
+        "spd": 21,
+        "spe": 0
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Pachirisu",
+      "species": "Pachirisu",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "blastburn"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 89,
+        "def": 83,
+        "spa": 88,
+        "spd": 71,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 27,
+        "def": 1,
+        "spa": 11,
+        "spd": 4,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Yveltal",
+      "species": "Yveltal",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "gearup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Minior-Green",
+      "species": "Minior-Green",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "guardswap"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 35: JS=\"#35: turn=30, prng=92->96, P1=[Treecko(210/210)], P2=[Minior(0/252)]\" vs Rust=\"#35: turn=30, prng=92->94, P1=[Treecko(126/210)], P2=[Minior(0/252)]\""
+}

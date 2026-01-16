@@ -1,0 +1,322 @@
+{
+  "p1": [
+    {
+      "name": "Swellow",
+      "species": "Swellow",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "outrage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Rotom-Wash",
+      "species": "Rotom-Wash",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "sharpen"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Milcery",
+      "species": "Milcery",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "guardsplit"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Silcoon",
+      "species": "Silcoon",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "courtchange",
+        "synchronoise",
+        "flash",
+        "doublehit"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dudunsparce",
+      "species": "Dudunsparce",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "synchronoise"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Blastoise-Gmax",
+      "species": "Blastoise-Gmax",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "F",
+      "moves": [
+        "lusterpurge",
+        "waterspout"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 75,
+        "def": 114,
+        "spa": 68,
+        "spd": 101,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 8,
+        "def": 20,
+        "spa": 9,
+        "spd": 13,
+        "spe": 2
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Stratagem",
+      "species": "Stratagem",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "",
+      "moves": [
+        "endeavor"
+      ],
+      "evs": {
+        "hp": 66,
+        "atk": 82,
+        "def": 92,
+        "spa": 94,
+        "spd": 88,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 5,
+        "def": 14,
+        "spa": 31,
+        "spd": 27,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Comfey",
+      "species": "Comfey",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "sacredfire",
+        "pulverizingpancake",
+        "grassyterrain",
+        "sharpen"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Arctibax",
+      "species": "Arctibax",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tickle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Eternatus",
+      "species": "Eternatus",
+      "level": 87,
+      "ability": "Pressure",
+      "item": "",
+      "nature": "serious",
+      "gender": "",
+      "moves": [
+        "extrasensory"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 75,
+        "def": 76,
+        "spa": 88,
+        "spd": 94,
+        "spe": 101
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 27,
+        "def": 19,
+        "spa": 9,
+        "spd": 7,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Zygarde-Complete",
+      "species": "Zygarde-Complete",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 98: JS=\"#98: turn=90, prng=139->145, P1=[Blastoise(0/263)], P2=[Zygarde(411/412)]\" vs Rust=\"#98: turn=90, prng=139->143, P1=[Blastoise(0/263)], P2=[Zygarde(412/412)]\""
+}

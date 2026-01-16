@@ -1,0 +1,120 @@
+{
+  "p1": [
+    {
+      "name": "Iron Boulder",
+      "species": "Iron Boulder",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Heliolisk",
+      "species": "Heliolisk",
+      "level": 63,
+      "ability": "Dry Skin",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "icehammer",
+        "speedswap"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Tatsugiri-Stretchy-Mega",
+      "species": "Tatsugiri-Stretchy-Mega",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "shadowforce"
+      ],
+      "evs": {
+        "hp": 106,
+        "atk": 68,
+        "def": 73,
+        "spa": 79,
+        "spd": 97,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 7,
+        "def": 0,
+        "spa": 14,
+        "spd": 13,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Morpeko",
+      "species": "Morpeko",
+      "level": 70,
+      "ability": "Hunger Switch",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "autotomize"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 24: JS=\"#24: turn=23, prng=55->55, P1=[Heliolisk(137/183)], P2=[Morpeko(109/197)]\" vs Rust=\"#24: turn=23, prng=55->58, P1=[Heliolisk(137/183)], P2=[Morpeko(109/197)]\""
+}

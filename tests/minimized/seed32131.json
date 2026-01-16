@@ -1,0 +1,261 @@
+{
+  "p1": [
+    {
+      "name": "Abomasnow-Mega",
+      "species": "Abomasnow-Mega",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "F",
+      "moves": [
+        "bide"
+      ],
+      "evs": {
+        "hp": 103,
+        "atk": 72,
+        "def": 83,
+        "spa": 104,
+        "spd": 77,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 4,
+        "def": 31,
+        "spa": 9,
+        "spd": 14,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Araquanid",
+      "species": "Araquanid",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "healorder",
+        "gmaxfinale"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 89,
+        "def": 83,
+        "spa": 85,
+        "spd": 92,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 26,
+        "def": 6,
+        "spa": 13,
+        "spd": 18,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Charizard-Gmax",
+      "species": "Charizard-Gmax",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "aurawheel"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Milcery",
+      "species": "Milcery",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Basculin",
+      "species": "Basculin",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "gearup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Persian-Alola",
+      "species": "Persian-Alola",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 92,
+        "def": 103,
+        "spa": 81,
+        "spd": 70,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 25,
+        "def": 17,
+        "spa": 15,
+        "spd": 7,
+        "spe": 8
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Nickit",
+      "species": "Nickit",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "coreenforcer"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 116,
+        "def": 61,
+        "spa": 96,
+        "spd": 74,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 7,
+        "def": 18,
+        "spa": 25,
+        "spd": 20,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Wishiwashi",
+      "species": "Wishiwashi",
+      "level": 65,
+      "ability": "Schooling",
+      "item": "",
+      "nature": "hardy",
+      "gender": "M",
+      "moves": [
+        "cottonguard",
+        "aquajet"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 78,
+        "def": 87,
+        "spa": 91,
+        "spd": 82,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 31,
+        "def": 22,
+        "spa": 2,
+        "spd": 12,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Pikachu-Unova",
+      "species": "Pikachu-Unova",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "thundercage"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 68: JS=\"#68: turn=62, prng=151->158, P1=[Persian(37/236)], P2=[Pikachu(17/194)]\" vs Rust=\"#68: turn=62, prng=151->155, P1=[Persian(106/236)], P2=[Pikachu(17/194)]\""
+}

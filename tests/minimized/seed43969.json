@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Meowth",
+      "species": "Meowth",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "lightofruin"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Arceus-Dragon",
+      "species": "Arceus-Dragon",
+      "level": 51,
+      "ability": "Multitype",
+      "item": "",
+      "nature": "lax",
+      "gender": "",
+      "moves": [
+        "continentalcrush",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 107,
+        "atk": 84,
+        "def": 85,
+        "spa": 67,
+        "spd": 85,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 11,
+        "def": 0,
+        "spa": 26,
+        "spd": 5,
+        "spe": 1
+      }
+    }
+  ],
+  "_bug": "Diverges at line 3: JS=\"#3: turn=3, prng=12->19, P1=[Meowth(0/149)], P2=[Arceus(71/206)]\" vs Rust=\"#3: turn=3, prng=12->18, P1=[Meowth(0/149)], P2=[Arceus(102/206)]\""
+}

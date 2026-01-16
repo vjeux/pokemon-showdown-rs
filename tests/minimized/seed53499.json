@@ -1,0 +1,290 @@
+{
+  "p1": [
+    {
+      "name": "Litwick",
+      "species": "Litwick",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "maxphantasm"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 77,
+        "def": 88,
+        "spa": 70,
+        "spd": 90,
+        "spe": 114
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 20,
+        "def": 27,
+        "spa": 10,
+        "spd": 16,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Butterfree-Gmax",
+      "species": "Butterfree-Gmax",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "recover",
+        "mindreader"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 94,
+        "def": 83,
+        "spa": 77,
+        "spd": 68,
+        "spe": 109
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 21,
+        "def": 12,
+        "spa": 7,
+        "spd": 8,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Emboar",
+      "species": "Emboar",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Groudon",
+      "species": "Groudon",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "bulletseed"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Persian",
+      "species": "Persian",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gmaxwildfire"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Araquanid",
+      "species": "Araquanid",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 111,
+        "atk": 86,
+        "def": 110,
+        "spa": 72,
+        "spd": 56,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 1,
+        "def": 12,
+        "spa": 10,
+        "spd": 20,
+        "spe": 1
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Alcremie-Caramel-Swirl",
+      "species": "Alcremie-Caramel-Swirl",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "clearsmog",
+        "dragontail"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 93,
+        "def": 83,
+        "spa": 73,
+        "spd": 82,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 13,
+        "def": 10,
+        "spa": 1,
+        "spd": 24,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Great Tusk",
+      "species": "Great Tusk",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "revelationdance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Palafin",
+      "species": "Palafin",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "stokedsparksurfer",
+        "aquajet"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Whimsicott",
+      "species": "Whimsicott",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "shadowforce"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 54: JS=\"#54: turn=48, prng=192->195, P1=[Butterfree(0/222)], P2=[Whimsicott(112/167)]\" vs Rust=\"#54: turn=49, prng=192->193, P1=[Butterfree(13/222)], P2=[Whimsicott(140/167)]\""
+}

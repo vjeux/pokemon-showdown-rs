@@ -1,0 +1,209 @@
+{
+  "p1": [
+    {
+      "name": "Ducklett",
+      "species": "Ducklett",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 108,
+        "atk": 67,
+        "def": 104,
+        "spa": 85,
+        "spd": 59,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 4,
+        "def": 31,
+        "spa": 24,
+        "spd": 14,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Komala",
+      "species": "Komala",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "struggle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bronzor",
+      "species": "Bronzor",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "gmaxchistrike",
+        "hydrovortex"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kangaskhan",
+      "species": "Kangaskhan",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "burningbulwark"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Vibrava",
+      "species": "Vibrava",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "icehammer"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 71,
+        "def": 98,
+        "spa": 90,
+        "spd": 87,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 22,
+        "def": 17,
+        "spa": 14,
+        "spd": 28,
+        "spe": 16
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Rotom-Fan",
+      "species": "Rotom-Fan",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "nightmare",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Slowpoke",
+      "species": "Slowpoke",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "F",
+      "moves": [
+        "octazooka",
+        "terastarstorm",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 79,
+        "def": 107,
+        "spa": 91,
+        "spd": 68,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 7,
+        "def": 25,
+        "spa": 30,
+        "spd": 0,
+        "spe": 13
+      }
+    }
+  ],
+  "_bug": "Diverges at line 50: JS=\"#50: turn=45, prng=202->210, P1=[Vibrava(0/227)], P2=[Slowpoke(6/257)]\" vs Rust=\"#50: turn=45, prng=202->204, P1=[Vibrava(0/227)], P2=[Slowpoke(0/257)]\""
+}

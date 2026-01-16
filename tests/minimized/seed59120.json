@@ -1,0 +1,177 @@
+{
+  "p1": [
+    {
+      "name": "Barboach",
+      "species": "Barboach",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "firespin",
+        "batonpass"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 89,
+        "def": 80,
+        "spa": 80,
+        "spd": 100,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 14,
+        "def": 21,
+        "spa": 12,
+        "spd": 10,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Frogadier",
+      "species": "Frogadier",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sunflora",
+      "species": "Sunflora",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Seedot",
+      "species": "Seedot",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "shatteredpsyche",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kyurem",
+      "species": "Kyurem",
+      "level": 54,
+      "ability": "Pressure",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "spikyshield"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zapdos-Galar",
+      "species": "Zapdos-Galar",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "saltcure"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 24: JS=\"#24: turn=20, prng=65->65, P1=[Sunflora(305/305)], P2=[Zapdos(291/325)]\" vs Rust=\"#24: turn=20, prng=65->65, P1=[Sunflora(267/305)], P2=[Zapdos(291/325)]\""
+}

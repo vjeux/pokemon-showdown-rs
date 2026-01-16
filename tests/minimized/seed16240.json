@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Rufflet",
+      "species": "Rufflet",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "micleberry",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "mindreader"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Crabominable",
+      "species": "Crabominable",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "superfang"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 3: JS=\"#3: turn=4, prng=2->3, P1=[Rufflet(26/208)], P2=[Crabominable(331/331)]\" vs Rust=\"#3: turn=4, prng=2->4, P1=[Rufflet(26/208)], P2=[Crabominable(331/331)]\""
+}

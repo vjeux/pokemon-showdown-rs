@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Klawf",
+      "species": "Klawf",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "poltergeist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kingler-Gmax",
+      "species": "Kingler-Gmax",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 78,
+        "def": 86,
+        "spa": 87,
+        "spd": 85,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 12,
+        "def": 28,
+        "spa": 21,
+        "spd": 23,
+        "spe": 15
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Tatsugiri",
+      "species": "Tatsugiri",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "przcureberry",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Alcremie-Caramel-Swirl",
+      "species": "Alcremie-Caramel-Swirl",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Scream Tail",
+      "species": "Scream Tail",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "dreameater"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 19: JS=\"#19: turn=18, prng=60->64, P1=[Kingler(133/133)], P2=[Scream Tail(324/349)]\" vs Rust=\"#19: turn=18, prng=60->66, P1=[Kingler(94/133)], P2=[Scream Tail(237/349)]\""
+}

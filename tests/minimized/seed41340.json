@@ -1,0 +1,294 @@
+{
+  "p1": [
+    {
+      "name": "Tsareena",
+      "species": "Tsareena",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "F",
+      "moves": [
+        "ficklebeam",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 98,
+        "def": 65,
+        "spa": 94,
+        "spd": 80,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 25,
+        "def": 30,
+        "spa": 29,
+        "spd": 22,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Corvisquire",
+      "species": "Corvisquire",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "assist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Talonflame",
+      "species": "Talonflame",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "scaleshot",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cobalion",
+      "species": "Cobalion",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Dratini",
+      "species": "Dratini",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "floatyfall"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 75,
+        "def": 110,
+        "spa": 95,
+        "spd": 51,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 23,
+        "def": 28,
+        "spa": 30,
+        "spd": 27,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Ducklett",
+      "species": "Ducklett",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quiet",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 84,
+        "def": 95,
+        "spa": 96,
+        "spd": 63,
+        "spe": 104
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 20,
+        "def": 16,
+        "spa": 5,
+        "spd": 7,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Ogerpon",
+      "species": "Ogerpon",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Weavile",
+      "species": "Weavile",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 70,
+        "def": 76,
+        "spa": 84,
+        "spd": 118,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 14,
+        "def": 3,
+        "spa": 18,
+        "spd": 28,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Voodoom",
+      "species": "Voodoom",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pokestar Black Belt",
+      "species": "Pokestar Black Belt",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 14: JS=\"#14: turn=12, prng=64->71, P1=[Corvisquire(26/171)], P2=[Ogerpon(50/250)]\" vs Rust=\"#14: turn=11, prng=64->76, P1=[Corvisquire(0/171)], P2=[Ogerpon(39/250)]\""
+}

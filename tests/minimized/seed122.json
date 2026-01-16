@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Slowbro-Galar",
+      "species": "Slowbro-Galar",
+      "level": 98,
+      "ability": "Quick Draw",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "hyperbeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Arceus-Electric",
+      "species": "Arceus-Electric",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=7->11, P1=[Slowbro(276/345)], P2=[Arceus(278/386)]\" vs Rust=\"#2: turn=3, prng=7->10, P1=[Slowbro(274/345)], P2=[Arceus(278/386)]\""
+}

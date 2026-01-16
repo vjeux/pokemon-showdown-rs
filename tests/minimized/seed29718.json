@@ -1,0 +1,234 @@
+{
+  "p1": [
+    {
+      "name": "Chingling",
+      "species": "Chingling",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "F",
+      "moves": [
+        "secretpower",
+        "toxicspikes",
+        "ragingbull"
+      ],
+      "evs": {
+        "hp": 107,
+        "atk": 78,
+        "def": 70,
+        "spa": 104,
+        "spd": 95,
+        "spe": 56
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 28,
+        "def": 10,
+        "spa": 21,
+        "spd": 24,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Porygon",
+      "species": "Porygon",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "polarflare"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Smoliv",
+      "species": "Smoliv",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 88,
+        "def": 77,
+        "spa": 87,
+        "spd": 106,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 12,
+        "def": 11,
+        "spa": 26,
+        "spd": 6,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Mothim",
+      "species": "Mothim",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hardy",
+      "gender": "M",
+      "moves": [
+        "magnetrise"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 97,
+        "def": 94,
+        "spa": 78,
+        "spd": 65,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 28,
+        "def": 11,
+        "spa": 25,
+        "spd": 15,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Ambipom",
+      "species": "Ambipom",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "metalsound"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 99,
+        "def": 111,
+        "spa": 75,
+        "spd": 98,
+        "spe": 57
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 17,
+        "def": 8,
+        "spa": 13,
+        "spd": 15,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Pawmot",
+      "species": "Pawmot",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "recycle"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 90,
+        "def": 131,
+        "spa": 67,
+        "spd": 89,
+        "spe": 68
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 27,
+        "def": 7,
+        "spa": 22,
+        "spd": 13,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Reshiram",
+      "species": "Reshiram",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "gmaxstunshock",
+        "lightscreen"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Meloetta-Pirouette",
+      "species": "Meloetta-Pirouette",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 99: JS=\"#99: turn=94, prng=345->352, P1=[Porygon(255/283)], P2=[Meloetta(19/224)]\" vs Rust=\"#99: turn=94, prng=345->352, P1=[Porygon(255/283)], P2=[Meloetta(66/224)]\""
+}

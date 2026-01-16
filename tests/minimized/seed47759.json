@@ -1,0 +1,68 @@
+{
+  "p1": [
+    {
+      "name": "Lurantis-Totem",
+      "species": "Lurantis-Totem",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tearfullook",
+        "nightmare",
+        "grudge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Blipbug",
+      "species": "Blipbug",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "karatechop",
+        "shatteredpsyche",
+        "healpulse",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 59: JS=\"#59: turn=60, prng=150->154, P1=[Lurantis(223/231)], P2=[Blipbug(125/125)]\" vs Rust=\"#59: turn=60, prng=150->156, P1=[Lurantis(165/231)], P2=[Blipbug(21/125)]\""
+}

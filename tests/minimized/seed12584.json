@@ -1,0 +1,203 @@
+{
+  "p1": [
+    {
+      "name": "Mime Jr.",
+      "species": "Mime Jr.",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sinistea-Antique",
+      "species": "Sinistea-Antique",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quiet",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 80,
+        "def": 87,
+        "spa": 90,
+        "spd": 94,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 10,
+        "def": 28,
+        "spa": 0,
+        "spd": 24,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Cinderace",
+      "species": "Cinderace",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Mimikyu-Totem",
+      "species": "Mimikyu-Totem",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 90,
+        "def": 74,
+        "spa": 110,
+        "spd": 83,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 24,
+        "def": 23,
+        "spa": 24,
+        "spd": 13,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Lapras-Gmax",
+      "species": "Lapras-Gmax",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tearfullook"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sceptile",
+      "species": "Sceptile",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "partingshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Farfetch’d-Galar",
+      "species": "Farfetch’d-Galar",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 92: JS=\"#92: turn=89, prng=103->107, P1=[Cinderace(155/244)], P2=[Sceptile(280/287)]\" vs Rust=\"#92: turn=88, prng=103->104, P1=[Cinderace(155/244)], P2=[Sceptile(287/287)]\""
+}

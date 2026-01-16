@@ -1,0 +1,204 @@
+{
+  "p1": [
+    {
+      "name": "Sharpedo-Mega",
+      "species": "Sharpedo-Mega",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 74,
+        "def": 101,
+        "spa": 79,
+        "spd": 84,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 9,
+        "def": 20,
+        "spa": 7,
+        "spd": 23,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Dracovish",
+      "species": "Dracovish",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "alluringvoice"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Qwilfish",
+      "species": "Qwilfish",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kerfluffle",
+      "species": "Kerfluffle",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Heatmor",
+      "species": "Heatmor",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 113,
+        "atk": 68,
+        "def": 80,
+        "spa": 80,
+        "spd": 79,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 11,
+        "def": 23,
+        "spa": 26,
+        "spd": 28,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Honedge",
+      "species": "Honedge",
+      "level": 61,
+      "ability": "No Guard",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Minior-Violet",
+      "species": "Minior-Violet",
+      "level": 97,
+      "ability": "Shields Down",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "belch",
+        "chargebeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 25: JS=\"#25: turn=23, prng=90->99, P1=[Dracovish(15/219)], P2=[Minior(192/273)]\" vs Rust=\"#25: turn=23, prng=90->99, P1=[Dracovish(14/219)], P2=[Minior(193/273)]\""
+}

@@ -1,0 +1,120 @@
+{
+  "p1": [
+    {
+      "name": "Vullaby",
+      "species": "Vullaby",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "guardswap"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 90,
+        "def": 99,
+        "spa": 72,
+        "spd": 100,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 6,
+        "def": 12,
+        "spa": 12,
+        "spd": 28,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Suicune",
+      "species": "Suicune",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "hammerarm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Electrike",
+      "species": "Electrike",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "shedtail"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pyroar",
+      "species": "Pyroar",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 8: JS=\"#8: turn=7, prng=12->19, P1=[Suicune(338/362)], P2=[Pyroar(291/291)]\" vs Rust=\"#8: turn=7, prng=12->18, P1=[Suicune(338/362)], P2=[Pyroar(291/291)]\""
+}

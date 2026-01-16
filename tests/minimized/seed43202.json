@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Swalot",
+      "species": "Swalot",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wooper",
+      "species": "Wooper",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Slowbro-Galar",
+      "species": "Slowbro-Galar",
+      "level": 72,
+      "ability": "Quick Draw",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "clangoroussoul",
+        "gigaimpact"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 11: JS=\"#11: turn=11, prng=28->32, P1=[Wooper(161/161)], P2=[Slowbro(11/256)]\" vs Rust=\"#11: turn=11, prng=28->31, P1=[Wooper(161/161)], P2=[Slowbro(11/256)]\""
+}

@@ -1,0 +1,119 @@
+{
+  "p1": [
+    {
+      "name": "Eiscue-Noice",
+      "species": "Eiscue-Noice",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "bugbite"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Slowpoke",
+      "species": "Slowpoke",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 74,
+        "def": 121,
+        "spa": 92,
+        "spd": 82,
+        "spe": 54
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 31,
+        "def": 31,
+        "spa": 12,
+        "spd": 13,
+        "spe": 7
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Arrokuda",
+      "species": "Arrokuda",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Grubbin",
+      "species": "Grubbin",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "fireblast"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 9: JS=\"#9: turn=7, prng=36->44, P1=[Slowpoke(183/301)], P2=[Grubbin(0/209)]\" vs Rust=\"#9: turn=7, prng=36->42, P1=[Slowpoke(213/301)], P2=[Grubbin(0/209)]\""
+}

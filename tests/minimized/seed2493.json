@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Arcanine",
+      "species": "Arcanine",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "mountaingale"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 59,
+        "def": 91,
+        "spa": 88,
+        "spd": 111,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 4,
+        "def": 2,
+        "spa": 17,
+        "spd": 4,
+        "spe": 8
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Iron Treads",
+      "species": "Iron Treads",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 5: JS=\"#5: turn=6, prng=25->33, P1=[Arcanine(62/213)], P2=[Iron Treads(4/199)]\" vs Rust=\"#5: turn=6, prng=25->31, P1=[Arcanine(8/213)], P2=[Iron Treads(24/199)]\""
+}

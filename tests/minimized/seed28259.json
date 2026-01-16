@@ -1,0 +1,65 @@
+{
+  "p1": [
+    {
+      "name": "Tinkatink",
+      "species": "Tinkatink",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "healingwish",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 85,
+        "def": 87,
+        "spa": 94,
+        "spd": 83,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 2,
+        "def": 11,
+        "spa": 11,
+        "spd": 12,
+        "spe": 28
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Vivillon-Ocean",
+      "species": "Vivillon-Ocean",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "malignantchain",
+        "lifedew"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 18: JS=\"#18: turn=19, prng=4->8, P1=[Tinkatink(207/207)], P2=[Vivillon(131/166)]\" vs Rust=\"#18: turn=19, prng=4->8, P1=[Tinkatink(207/207)], P2=[Vivillon(89/166)]\""
+}

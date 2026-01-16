@@ -1,0 +1,232 @@
+{
+  "p1": [
+    {
+      "name": "Spritzee",
+      "species": "Spritzee",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "sappyseed"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 81,
+        "def": 94,
+        "spa": 100,
+        "spd": 90,
+        "spe": 52
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 20,
+        "def": 31,
+        "spa": 28,
+        "spd": 8,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Tauros-Paldea-Aqua",
+      "species": "Tauros-Paldea-Aqua",
+      "level": 96,
+      "ability": "Intimidate",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "geomancy",
+        "overheat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Arbok",
+      "species": "Arbok",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "darkpulse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ribombee",
+      "species": "Ribombee",
+      "level": 80,
+      "ability": "Honey Gather",
+      "item": "",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 84,
+        "def": 81,
+        "spa": 76,
+        "spd": 81,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 4,
+        "def": 2,
+        "spa": 11,
+        "spd": 30,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Squirtle",
+      "species": "Squirtle",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Appletun-Gmax",
+      "species": "Appletun-Gmax",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "leer"
+      ],
+      "evs": {
+        "hp": 106,
+        "atk": 74,
+        "def": 61,
+        "spa": 119,
+        "spd": 86,
+        "spe": 64
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 10,
+        "def": 8,
+        "spa": 13,
+        "spd": 26,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Rayquaza-Mega",
+      "species": "Rayquaza-Mega",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "shedtail"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mr. Rime",
+      "species": "Mr. Rime",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 58: JS=\"#58: turn=53, prng=141->148, P1=[Tauros(214/299)], P2=[Mr. Rime(293/293)]\" vs Rust=\"#58: turn=53, prng=141->147, P1=[Tauros(206/299)], P2=[Mr. Rime(293/293)]\""
+}

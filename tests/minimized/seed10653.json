@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Kingler",
+      "species": "Kingler",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 103,
+        "def": 92,
+        "spa": 89,
+        "spd": 66,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 24,
+        "def": 18,
+        "spa": 3,
+        "spd": 21,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Sceptile-Mega",
+      "species": "Sceptile-Mega",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "metronome",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Cramorant",
+      "species": "Cramorant",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "F",
+      "moves": [
+        "lightscreen"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 101,
+        "def": 92,
+        "spa": 71,
+        "spd": 74,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 6,
+        "def": 19,
+        "spa": 20,
+        "spd": 16,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Beedrill-Mega",
+      "species": "Beedrill-Mega",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "ragingfury"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Whismur",
+      "species": "Whismur",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "fullincense",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "trick"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 13: JS=\"#13: turn=11, prng=45->49, P1=[Sceptile(19/208)], P2=[Whismur(204/287)]\" vs Rust=\"#13: turn=11, prng=45->49, P1=[Sceptile(19/208)], P2=[Whismur(211/287)]\""
+}

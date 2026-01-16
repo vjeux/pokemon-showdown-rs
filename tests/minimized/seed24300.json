@@ -1,0 +1,231 @@
+{
+  "p1": [
+    {
+      "name": "Necrozma-Dawn-Wings",
+      "species": "Necrozma-Dawn-Wings",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "maxmindstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Shieldon",
+      "species": "Shieldon",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 58,
+        "def": 78,
+        "spa": 105,
+        "spd": 70,
+        "spe": 105
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 30,
+        "def": 1,
+        "spa": 28,
+        "spd": 3,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Necrozma",
+      "species": "Necrozma",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "",
+      "moves": [
+        "gmaxfoamburst"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 88,
+        "def": 87,
+        "spa": 82,
+        "spd": 94,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 31,
+        "def": 15,
+        "spa": 14,
+        "spd": 15,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Mantine",
+      "species": "Mantine",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "F",
+      "moves": [
+        "wrap"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 67,
+        "def": 98,
+        "spa": 83,
+        "spd": 79,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 27,
+        "def": 7,
+        "spa": 30,
+        "spd": 2,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Silvally-Bug",
+      "species": "Silvally-Bug",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "",
+      "moves": [
+        "waterspout"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 77,
+        "def": 81,
+        "spa": 83,
+        "spd": 101,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 26,
+        "def": 27,
+        "spa": 8,
+        "spd": 3,
+        "spe": 1
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Stakataka",
+      "species": "Stakataka",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "smackdown"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Falinks-Mega",
+      "species": "Falinks-Mega",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 107,
+        "def": 67,
+        "spa": 79,
+        "spd": 78,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 3,
+        "def": 16,
+        "spa": 23,
+        "spd": 7,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Naganadel",
+      "species": "Naganadel",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "",
+      "moves": [
+        "hiddenpowersteel"
+      ],
+      "evs": {
+        "hp": 66,
+        "atk": 98,
+        "def": 106,
+        "spa": 75,
+        "spd": 82,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 30,
+        "def": 19,
+        "spa": 26,
+        "spd": 9,
+        "spe": 4
+      }
+    }
+  ],
+  "_bug": "Diverges at line 32: JS=\"#32: turn=27, prng=134->140, P1=[Silvally(2/303)], P2=[Naganadel(105/257)]\" vs Rust=\"#32: turn=27, prng=134->138, P1=[Silvally(2/303)], P2=[Naganadel(106/257)]\""
+}

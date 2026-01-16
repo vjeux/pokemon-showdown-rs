@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Vivillon-Tundra",
+      "species": "Vivillon-Tundra",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 46,
+        "atk": 98,
+        "def": 90,
+        "spa": 78,
+        "spd": 99,
+        "spe": 99
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 30,
+        "def": 16,
+        "spa": 5,
+        "spd": 22,
+        "spe": 14
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Malamar",
+      "species": "Malamar",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "soak"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 83,
+        "def": 99,
+        "spa": 75,
+        "spd": 82,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 21,
+        "def": 14,
+        "spa": 30,
+        "spd": 31,
+        "spe": 29
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=18->31, P1=[Vivillon(282/282)], P2=[Malamar(283/323)]\" vs Rust=\"#2: turn=3, prng=18->33, P1=[Vivillon(282/282)], P2=[Malamar(283/323)]\""
+}

@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Rellor",
+      "species": "Rellor",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "stormthrow"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 115,
+        "def": 76,
+        "spa": 96,
+        "spd": 71,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 18,
+        "def": 13,
+        "spa": 6,
+        "spd": 29,
+        "spe": 9
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Timburr",
+      "species": "Timburr",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "breakneckblitz",
+        "poisongas"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wooloo",
+      "species": "Wooloo",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 8: JS=\"#8: turn=7, prng=22->28, P1=[Rellor(27/174)], P2=[Wooloo(0/128)]\" vs Rust=\"#8: turn=8, prng=22->26, P1=[Rellor(6/174)], P2=[Wooloo(2/128)]\""
+}

@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Arceus-Steel",
+      "species": "Arceus-Steel",
+      "level": 67,
+      "ability": "Multitype",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Scratchet",
+      "species": "Scratchet",
+      "level": 85,
+      "ability": "Scrappy",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tectonicrage",
+        "confuseray"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=5->10, P1=[Arceus(271/272)], P2=[Scratchet(166/232)]\" vs Rust=\"#2: turn=3, prng=5->8, P1=[Arceus(271/272)], P2=[Scratchet(166/232)]\""
+}

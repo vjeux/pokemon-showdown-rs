@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Raikou",
+      "species": "Raikou",
+      "level": 72,
+      "ability": "Pressure",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "eerieimpulse"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Duraludon-Gmax",
+      "species": "Duraludon-Gmax",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "hiddenpowerelectric",
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 15: JS=\"#15: turn=16, prng=58->63, P1=[Raikou(103/249)], P2=[Duraludon(258/258)]\" vs Rust=\"#15: turn=16, prng=58->64, P1=[Raikou(40/249)], P2=[Duraludon(227/258)]\""
+}

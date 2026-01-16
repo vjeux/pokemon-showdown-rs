@@ -1,0 +1,65 @@
+{
+  "p1": [
+    {
+      "name": "Jolteon",
+      "species": "Jolteon",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "luckychant"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Pokestar Monster",
+      "species": "Pokestar Monster",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "minimize",
+        "takeheart",
+        "stompingtantrum"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 41: JS=\"#41: turn=41, prng=0->3, P1=[Jolteon(0/204)], P2=[Pokestar Monster(266/266)]\" vs Rust=\"#41: turn=42, prng=0->3, P1=[Jolteon(62/204)], P2=[Pokestar Monster(266/266)]\""
+}

@@ -1,0 +1,121 @@
+{
+  "p1": [
+    {
+      "name": "Golduck",
+      "species": "Golduck",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "metronome",
+        "tarshot"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Medicham-Mega",
+      "species": "Medicham-Mega",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 107,
+        "def": 95,
+        "spa": 68,
+        "spd": 81,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 23,
+        "def": 11,
+        "spa": 26,
+        "spd": 2,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Granbull",
+      "species": "Granbull",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Wimpod",
+      "species": "Wimpod",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 4: JS=\"#4: turn=5, prng=26->30, P1=[Golduck(134/281)], P2=[Medicham(24/214)]\" vs Rust=\"#4: turn=5, prng=26->30, P1=[Golduck(120/281)], P2=[Medicham(24/214)]\""
+}

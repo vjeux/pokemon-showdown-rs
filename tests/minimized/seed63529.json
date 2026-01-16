@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Samurott",
+      "species": "Samurott",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "leechlife",
+        "dive"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Hemogoblin",
+      "species": "Hemogoblin",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "telekinesis"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 88,
+        "def": 73,
+        "spa": 79,
+        "spd": 115,
+        "spe": 58
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 26,
+        "def": 29,
+        "spa": 26,
+        "spd": 22,
+        "spe": 7
+      }
+    }
+  ],
+  "_bug": "Diverges at line 17: JS=\"#17: turn=18, prng=48->49, P1=[Samurott(317/317)], P2=[Hemogoblin(5/277)]\" vs Rust=\"#17: turn=18, prng=48->50, P1=[Samurott(317/317)], P2=[Hemogoblin(5/277)]\""
+}

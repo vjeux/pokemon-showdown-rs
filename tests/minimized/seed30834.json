@@ -1,0 +1,149 @@
+{
+  "p1": [
+    {
+      "name": "Beheeyem",
+      "species": "Beheeyem",
+      "level": 56,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ho-Oh",
+      "species": "Ho-Oh",
+      "level": 68,
+      "ability": "Pressure",
+      "item": "",
+      "nature": "quiet",
+      "gender": "",
+      "moves": [
+        "snarl"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 100,
+        "def": 89,
+        "spa": 82,
+        "spd": 70,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 16,
+        "def": 22,
+        "spa": 12,
+        "spd": 21,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Volbeat",
+      "species": "Volbeat",
+      "level": 92,
+      "ability": "Illuminate",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "shoreup",
+        "temperflare"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Meltan",
+      "species": "Meltan",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "",
+      "moves": [
+        "furyattack"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 83,
+        "def": 74,
+        "spa": 73,
+        "spd": 113,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 21,
+        "def": 9,
+        "spa": 16,
+        "spd": 7,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Electrode-Hisui",
+      "species": "Electrode-Hisui",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "feint",
+        "guardswap"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 29: JS=\"#29: turn=27, prng=127->130, P1=[Volbeat(269/269)], P2=[Electrode(23/276)]\" vs Rust=\"#29: turn=26, prng=127->130, P1=[Volbeat(269/269)], P2=[Electrode(0/276)]\""
+}

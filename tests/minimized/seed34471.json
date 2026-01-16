@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Durant",
+      "species": "Durant",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "powerbracer",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 100,
+        "def": 61,
+        "spa": 91,
+        "spd": 91,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 11,
+        "def": 9,
+        "spa": 26,
+        "spd": 4,
+        "spe": 18
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Minior-Violet",
+      "species": "Minior-Violet",
+      "level": 93,
+      "ability": "Shields Down",
+      "item": "",
+      "nature": "quiet",
+      "gender": "M",
+      "moves": [
+        "speedswap"
+      ],
+      "evs": {
+        "hp": 72,
+        "atk": 70,
+        "def": 104,
+        "spa": 97,
+        "spd": 89,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 14,
+        "def": 23,
+        "spa": 26,
+        "spd": 10,
+        "spe": 24
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->3, P1=[Durant(149/149)], P2=[Minior(248/254)]\" vs Rust=\"#1: turn=2, prng=0->6, P1=[Durant(149/149)], P2=[Minior(247/254)]\""
+}

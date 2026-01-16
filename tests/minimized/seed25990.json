@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Slakoth",
+      "species": "Slakoth",
+      "level": 87,
+      "ability": "Truant",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Volkritter",
+      "species": "Volkritter",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "skillswap"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 85,
+        "def": 72,
+        "spa": 122,
+        "spd": 97,
+        "spe": 65
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 12,
+        "def": 17,
+        "spa": 22,
+        "spd": 20,
+        "spe": 3
+      }
+    }
+  ],
+  "_bug": "Diverges at line 3: JS=\"#3: turn=3, prng=6->9, P1=[Slakoth(246/246)], P2=[Volkritter(0/156)]\" vs Rust=\"#3: turn=4, prng=6->6, P1=[Slakoth(246/246)], P2=[Volkritter(9/156)]\""
+}

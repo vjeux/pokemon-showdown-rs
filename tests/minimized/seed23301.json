@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Greedent",
+      "species": "Greedent",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "custapberry",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "mefirst"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Oricorio-Pa'u",
+      "species": "Oricorio-Pa'u",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 104,
+        "atk": 68,
+        "def": 101,
+        "spa": 84,
+        "spd": 87,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 29,
+        "def": 10,
+        "spa": 9,
+        "spd": 11,
+        "spe": 21
+      }
+    }
+  ],
+  "_bug": "Diverges at line 4: JS=\"#4: turn=4, prng=12->20, P1=[Greedent(0/347)], P2=[Oricorio(244/278)]\" vs Rust=\"#4: turn=5, prng=12->16, P1=[Greedent(8/347)], P2=[Oricorio(244/278)]\""
+}

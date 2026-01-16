@@ -1,0 +1,122 @@
+{
+  "p1": [
+    {
+      "name": "Sewaddle",
+      "species": "Sewaddle",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "gmaxmeltdown",
+        "maxsteelspike",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 107,
+        "atk": 65,
+        "def": 93,
+        "spa": 99,
+        "spd": 71,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 20,
+        "def": 31,
+        "spa": 4,
+        "spd": 6,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Snugglow",
+      "species": "Snugglow",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Avalugg",
+      "species": "Avalugg",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "destinybond"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Saharaja",
+      "species": "Saharaja",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "attract",
+        "sappyseed"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 37: JS=\"#37: turn=35, prng=96->99, P1=[Avalugg(0/276)], P2=[Saharaja(284/284)]\" vs Rust=\"#37: turn=35, prng=96->99, P1=[Avalugg(0/276)], P2=[Saharaja(0/284)]\""
+}

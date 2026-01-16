@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Zekrom",
+      "species": "Zekrom",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "",
+      "moves": [
+        "powertrip"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 112,
+        "def": 99,
+        "spa": 67,
+        "spd": 79,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 2,
+        "def": 22,
+        "spa": 5,
+        "spd": 6,
+        "spe": 23
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Vivillon-Jungle",
+      "species": "Vivillon-Jungle",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "eeriespell"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 4: JS=\"#4: turn=5, prng=21->28, P1=[Zekrom(163/286)], P2=[Vivillon(50/203)]\" vs Rust=\"#4: turn=4, prng=21->23, P1=[Zekrom(122/286)], P2=[Vivillon(0/203)]\""
+}
