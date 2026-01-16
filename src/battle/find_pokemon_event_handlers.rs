@@ -113,7 +113,9 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    effect_order: Some(pokemon.status_state.effect_order),
+                    // JavaScript: handler.effectOrder is NOT set in findPokemonEventHandlers
+                    // Only resolve_priority sets it for SwitchIn/RedirectTarget events
+                    effect_order: None,
                     speed: None,
                 });
             }
@@ -214,7 +216,9 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    effect_order: Some(pokemon.ability_state.effect_order),
+                    // JavaScript: handler.effectOrder is NOT set in findPokemonEventHandlers
+                    // Only resolve_priority sets it for SwitchIn/RedirectTarget events
+                    effect_order: None,
                     speed: None,
                 });
             }
@@ -253,7 +257,9 @@ impl Battle {
                     order: None,
                     priority: 0,
                     sub_order: 0,
-                    effect_order: Some(pokemon.item_state.effect_order),
+                    // JavaScript: handler.effectOrder is NOT set in findPokemonEventHandlers
+                    // Only resolve_priority sets it for SwitchIn/RedirectTarget events
+                    effect_order: None,
                     speed: None,
                 });
             }

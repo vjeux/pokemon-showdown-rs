@@ -30,24 +30,59 @@ pub fn base_power_callback(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    // Get the pokemon (user of the move)
-    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
+    use crate::event::EventTarget;
+
+    // Get the target position
+    let target = match target_pos {
+        Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
-    // Get the target
-    let target = match target_pos {
-        Some(pos) => match battle.pokemon_at(pos.0, pos.1) {
+    // Get base weights - getWeight() runs ModifyWeight event
+    // JavaScript: const pokemonWeight = pokemon.getWeight();
+    // getWeight() { const weighthg = this.battle.runEvent('ModifyWeight', this, null, null, this.weighthg); return Math.max(1, weighthg); }
+    let pokemon_base_weight = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
-        },
-        None => return EventResult::Continue,
+        };
+        pokemon.weight_hg
+    };
+    let pokemon_weight_result = battle.run_event(
+        "ModifyWeight",
+        Some(EventTarget::Pokemon(pokemon_pos)),
+        None,
+        None,
+        EventResult::Number(pokemon_base_weight),
+        false,
+        false,
+    );
+    let pokemon_weight = match pokemon_weight_result {
+        EventResult::Number(w) => w.max(1),
+        _ => pokemon_base_weight.max(1),
     };
 
-    // Get weights
-    let pokemon_weight = pokemon.get_weight();
-    let target_weight = target.get_weight();
+    // JavaScript: const targetWeight = target.getWeight();
+    let target_base_weight = {
+        let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        target_pokemon.weight_hg
+    };
+    let target_weight_result = battle.run_event(
+        "ModifyWeight",
+        Some(EventTarget::Pokemon(target)),
+        None,
+        None,
+        EventResult::Number(target_base_weight),
+        false,
+        false,
+    );
+    let target_weight = match target_weight_result {
+        EventResult::Number(w) => w.max(1),
+        _ => target_base_weight.max(1),
+    };
 
     // Calculate base power based on weight ratio
     let bp = if pokemon_weight >= target_weight * 5 {

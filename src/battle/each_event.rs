@@ -51,7 +51,7 @@ impl Battle {
 
         // JS: this.speedSort(actives, (a, b) => b.speed - a.speed);
         // Sort by speed (highest first) using speed_sort to handle ties with PRNG
-        self.speed_sort(&mut actives, |item| PriorityItem {
+        self.speed_sort_with_callsite(&mut actives, |item| PriorityItem {
             order: None,
             priority: 0,
             fractional_priority: 0.0,
@@ -59,7 +59,7 @@ impl Battle {
             sub_order: 0,
             effect_order: 0,
             index: 0,
-        });
+        }, &format!("each_event:{}", event_id));
 
         // JS: for (const pokemon of actives) {
         // JS:     this.runEvent(eventid, pokemon, null, effect, relayVar);

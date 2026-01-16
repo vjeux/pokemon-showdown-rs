@@ -60,7 +60,7 @@ pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
 
     eprintln!("[RUN_SWITCH DEBUG] All active count: {}, calling speed_sort...", all_active.len());
     // Sort all active Pokemon using speed_sort (which uses PRNG for ties)
-    battle.speed_sort(&mut all_active, |item| PriorityItem {
+    battle.speed_sort_with_callsite(&mut all_active, |item| PriorityItem {
         order: None,
         priority: 0,
         fractional_priority: 0.0,
@@ -68,7 +68,7 @@ pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
         sub_order: 0,
         effect_order: 0,
         index: 0,
-    });
+    }, "run_switch:all_active");
     eprintln!("[RUN_SWITCH DEBUG] speed_sort done");
 
     // JS: this.battle.speedOrder = allActive.map(a => a.side.n * a.battle.sides.length + a.position);

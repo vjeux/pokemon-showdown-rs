@@ -31,18 +31,34 @@ pub fn base_power_callback(
     _pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    use crate::event::EventTarget;
+
     let target = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
 
     // const targetWeight = target.getWeight();
-    let target_weight = {
+    // getWeight() { const weighthg = this.battle.runEvent('ModifyWeight', this, null, null, this.weighthg); return Math.max(1, weighthg); }
+    let target_base_weight = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target_pokemon.get_weight()
+        target_pokemon.weight_hg
+    };
+    let target_weight_result = battle.run_event(
+        "ModifyWeight",
+        Some(EventTarget::Pokemon(target)),
+        None,
+        None,
+        EventResult::Number(target_base_weight),
+        false,
+        false,
+    );
+    let target_weight = match target_weight_result {
+        EventResult::Number(w) => w.max(1),
+        _ => target_base_weight.max(1),
     };
 
     // let bp;

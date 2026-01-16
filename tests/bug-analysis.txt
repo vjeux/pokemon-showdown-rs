@@ -1,44 +1,8 @@
-Analyzing 16 failing minimized seed files...
+Analyzing 8 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-noxioustorque: 1 seeds
-  Seeds: 4479
-dynamicpunch: 1 seeds
-  Seeds: 4479
-recover: 1 seeds
-  Seeds: 4479
-gravity: 1 seeds
-  Seeds: 4479
-wonderroom: 1 seeds
-  Seeds: 4479
-trickortreat: 1 seeds
-  Seeds: 4760
-falseswipe: 1 seeds
-  Seeds: 4893
-fishiousrend: 1 seeds
-  Seeds: 4893
-eruption: 1 seeds
-  Seeds: 4893
-camouflage: 1 seeds
-  Seeds: 5748
-haze: 1 seeds
-  Seeds: 5748
-dreameater: 1 seeds
-  Seeds: 5748
-gmaxsteelsurge: 1 seeds
-  Seeds: 5748
-clearsmog: 1 seeds
-  Seeds: 6288
-skillswap: 1 seeds
-  Seeds: 6288
-metalburst: 1 seeds
-  Seeds: 6288
-bonemerang: 1 seeds
-  Seeds: 6288
-heatcrash: 1 seeds
-  Seeds: 6288
 nightshade: 1 seeds
   Seeds: 6794
 teatime: 1 seeds
@@ -59,18 +23,6 @@ wideguard: 1 seeds
   Seeds: 6832
 temperflare: 1 seeds
   Seeds: 6832
-swallow: 1 seeds
-  Seeds: 6926
-bleakwindstorm: 1 seeds
-  Seeds: 6926
-ember: 1 seeds
-  Seeds: 6926
-roost: 1 seeds
-  Seeds: 7149
-freezedry: 1 seeds
-  Seeds: 7149
-topsyturvy: 1 seeds
-  Seeds: 7298
 thunder: 1 seeds
   Seeds: 8445
 safeguard: 1 seeds
@@ -131,14 +83,8 @@ luckychant: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-No Guard: 2 seeds
-  Seeds: 6288, 8708
-Sand Stream: 1 seeds
-  Seeds: 5748
-Light Metal: 1 seeds
-  Seeds: 6288
-Primordial Sea: 1 seeds
-  Seeds: 6926
+No Guard: 1 seeds
+  Seeds: 8708
 Stakeout: 1 seeds
   Seeds: 8708
 Pressure: 1 seeds
@@ -157,28 +103,25 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 16
-Unique moves: 63 (62 non-simple)
-Unique abilities: 9 (8 non-simple)
+Total minimized seeds: 8
+Unique moves: 39 (38 non-simple)
+Unique abilities: 6 (5 non-simple)
 Unique items: 1
 
 --- Most Common Moves (top 10) ---
-  noxioustorque: 1 seeds
-  dynamicpunch: 1 seeds
-  recover: 1 seeds
-  gravity: 1 seeds
-  wonderroom: 1 seeds
-  trickortreat: 1 seeds
-  falseswipe: 1 seeds
-  fishiousrend: 1 seeds
-  eruption: 1 seeds
-  camouflage: 1 seeds
+  nightshade: 1 seeds
+  teatime: 1 seeds
+  craftyshield: 1 seeds
+  magicalleaf: 1 seeds
+  solarblade: 1 seeds
+  terablast: 1 seeds
+  charge: 1 seeds
+  risingvoltage: 1 seeds
+  wideguard: 1 seeds
+  temperflare: 1 seeds
 
 --- Most Common Abilities (top 10) ---
-  No Guard: 2 seeds
-  Sand Stream: 1 seeds
-  Light Metal: 1 seeds
-  Primordial Sea: 1 seeds
+  No Guard: 1 seeds
   Stakeout: 1 seeds
   Pressure: 1 seeds
   Sheer Force: 1 seeds

@@ -308,12 +308,28 @@ pub fn on_try_hit(
         //     this.add('-fail', target, 'move: Sky Drop', '[heavy]');
         //     return null;
         // }
+        // getWeight() runs ModifyWeight event: const weighthg = this.battle.runEvent('ModifyWeight', this, null, null, this.weighthg);
         let weight = {
-            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
+            let target_base_weight = {
+                let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+                    Some(p) => p,
+                    None => return EventResult::Continue,
+                };
+                target_pokemon.weight_hg
             };
-            target_pokemon.get_weight()
+            let target_weight_result = battle.run_event(
+                "ModifyWeight",
+                Some(crate::event::EventTarget::Pokemon(target)),
+                None,
+                None,
+                EventResult::Number(target_base_weight),
+                false,
+                false,
+            );
+            match target_weight_result {
+                EventResult::Number(w) => w.max(1),
+                _ => target_base_weight.max(1),
+            }
         };
 
         if weight >= 2000 {

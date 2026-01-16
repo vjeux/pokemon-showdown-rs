@@ -99,7 +99,7 @@ impl Battle {
             self.get_action_speed(action);
         }
 
-        self.speed_sort(&mut list, |action| {
+        self.speed_sort_with_callsite(&mut list, |action| {
             PriorityItem {
                 order: Some(action.order()),
                 priority: action.priority() as i32,
@@ -109,7 +109,7 @@ impl Battle {
                 effect_order: 0,
                 index: 0,
             }
-        });
+        }, "commit_choices:queue");
 
         eprintln!("[COMMIT_CHOICES] Queue after sorting: list has {} actions, self.queue.list has {} actions", list.len(), self.queue.list.len());
         for (i, action) in list.iter().enumerate() {

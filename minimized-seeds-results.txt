@@ -306,7 +306,7 @@ Seed 4409: ✓ PASS
 Seed 4430: ✓ PASS
 Seed 4458: ✓ PASS
 Seed 4460: ✓ PASS
-Seed 4479: ✗ FAIL - #22: turn=21, prng=73->78, P1=[Darkrai(111/158)], P2=[Politoed(187/249)]
+Seed 4479: ✓ PASS
 Seed 4515: ✓ PASS
 Seed 4567: ✓ PASS
 Seed 4594: ✓ PASS
@@ -331,7 +331,7 @@ Seed 4745: ✓ PASS
 Seed 4747: ✓ PASS
 Seed 4750: ✓ PASS
 Seed 4754: ✓ PASS
-Seed 4760: ✗ FAIL - #2: turn=3, prng=18->31, P1=[Litten(89/153)], P2=[Nidorina(190/190)]
+Seed 4760: ✓ PASS
 Seed 4762: ✓ PASS
 Seed 4764: ✓ PASS
 Seed 4767: ✓ PASS
@@ -339,7 +339,7 @@ Seed 4773: ✓ PASS
 Seed 4813: ✓ PASS
 Seed 4858: ✓ PASS
 Seed 4883: ✓ PASS
-Seed 4893: ✗ FAIL - #17: turn=18, prng=96->102, P1=[Suicune(49/291)], P2=[Axew(1/171)]
+Seed 4893: ✓ PASS
 Seed 4905: ✓ PASS
 Seed 4907: ✓ PASS
 Seed 4917: ✓ PASS
@@ -405,7 +405,7 @@ Seed 5722: ✓ PASS
 Seed 5729: ✓ PASS
 Seed 5735: ✓ PASS
 Seed 5743: ✓ PASS
-Seed 5748: ✗ FAIL - #66: turn=65, prng=115->115, P1=[Shedinja(0/1)], P2=[Eelektross(133/177)]
+Seed 5748: ✓ PASS
 Seed 5761: ✓ PASS
 Seed 5762: ✓ PASS
 Seed 5770: ✓ PASS
@@ -439,7 +439,7 @@ Seed 6242: ✓ PASS
 Seed 6251: ✓ PASS
 Seed 6261: ✓ PASS
 Seed 6287: ✓ PASS
-Seed 6288: ✗ FAIL - #35: turn=34, prng=92->98, P1=[Sceptile(12/237)], P2=[Ramnarok(120/242)]
+Seed 6288: ✓ PASS
 Seed 6289: ✓ PASS
 Seed 6302: ✓ PASS
 Seed 6304: ✓ PASS
@@ -501,7 +501,7 @@ Seed 6865: ✓ PASS
 Seed 6891: ✓ PASS
 Seed 6913: ✓ PASS
 Seed 6919: ✓ PASS
-Seed 6926: ✗ FAIL - #17: turn=18, prng=0->3, P1=[Kyogre(252/252)], P2=[Butterfree(83/249)]
+Seed 6926: ✓ PASS
 Seed 6935: ✓ PASS
 Seed 6976: ✓ PASS
 Seed 6978: ✓ PASS
@@ -525,7 +525,7 @@ Seed 7121: ✓ PASS
 Seed 7127: ✓ PASS
 Seed 7131: ✓ PASS
 Seed 7140: ✓ PASS
-Seed 7149: ✗ FAIL - #3: turn=4, prng=8->13, P1=[Shaymin(295/333)], P2=[Caterpie(222/222)]
+Seed 7149: ✓ PASS
 Seed 7163: ✓ PASS
 Seed 7169: ✓ PASS
 Seed 7179: ✓ PASS
@@ -538,7 +538,7 @@ Seed 7243: ✓ PASS
 Seed 7249: ✓ PASS
 Seed 7252: ✓ PASS
 Seed 7268: ✓ PASS
-Seed 7298: ✗ FAIL - #1: turn=2, prng=3->15, P1=[Trevenant(204/204)], P2=[Darumaka(152/192)]
+Seed 7298: ✓ PASS
 Seed 7306: ✓ PASS
 Seed 7312: ✓ PASS
 Seed 7314: ✓ PASS
@@ -738,10 +738,10 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 707
-Failed: 16
+Passed: 715
+Failed: 8
 
-Pass rate: 97%
+Pass rate: 98%
 ✗ Some seeds still failing
 
 Updating bug-analysis.txt...

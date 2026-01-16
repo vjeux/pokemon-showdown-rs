@@ -21,7 +21,8 @@ impl Battle {
     pub fn get_pokemon_action_speed(&mut self, side_idx: usize, poke_idx: usize) -> i32 {
         if let Some(_pokemon) = self.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
             // let speed = this.getStat('spe', false, false);
-            let mut speed = self.get_pokemon_stat((side_idx, poke_idx), StatID::Spe, false, false);
+            let speed = self.get_pokemon_stat((side_idx, poke_idx), StatID::Spe, false, false);
+            eprintln!("[GET_POKEMON_ACTION_SPEED] turn={}, pokemon=({}, {}), speed={}", self.turn, side_idx, poke_idx, speed);
 
             // const trickRoomCheck = this.battle.ruleTable.has('twisteddimensionmod') ?
             //     !this.battle.field.getPseudoWeather('trickroom') : this.battle.field.getPseudoWeather('trickroom');
@@ -34,9 +35,11 @@ impl Battle {
             };
 
             // if (trickRoomCheck) { speed = 10000 - speed; }
-            if trick_room_check {
-                speed = 10000 - speed;
-            }
+            let speed = if trick_room_check {
+                10000 - speed
+            } else {
+                speed
+            };
 
             // return this.battle.trunc(speed, 13);
             self.trunc(speed as f64, Some(13)) as i32

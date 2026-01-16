@@ -441,7 +441,7 @@ impl Battle {
             eprintln!("  [{}] id={}, order={:?}, priority={}, speed={}, sub_order={}, effect_order={}",
                 i, h.effect_id.as_str(), h.order, h.priority, h.speed, h.sub_order, h.effect_order);
         }
-        self.speed_sort(&mut handlers, |h| {
+        self.speed_sort_with_callsite(&mut handlers, |h| {
             PriorityItem {
                 order: h.order,
                 priority: h.priority,
@@ -451,7 +451,7 @@ impl Battle {
                 effect_order: h.effect_order, // JavaScript: effectOrder for tie-breaking
                 index: 0,
             }
-        });
+        }, &format!("field_event:{}", event_id));
 
         eprintln!("[FIELD_EVENT] event='{}', turn={}, AFTER speed_sort, handler IDs: {:?}",
             event_id, self.turn,

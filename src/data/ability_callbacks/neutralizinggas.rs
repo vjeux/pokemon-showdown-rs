@@ -270,7 +270,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     let speed_map: std::collections::HashMap<(usize, usize), f64> = speeds.into_iter().collect();
 
     // Speed sort using pre-calculated speeds
-    battle.speed_sort(&mut sorted_active, |&pos| {
+    battle.speed_sort_with_callsite(&mut sorted_active, |&pos| {
         use crate::battle::PriorityItem;
 
         let speed = speed_map.get(&pos).copied().unwrap_or(0.0);
@@ -284,7 +284,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             effect_order: 0,
             index: 0,
         }
-    });
+    }, "neutralizinggas:on_pre_start");
 
     // for (const pokemon of sortedActive) {
     for target_pos in sorted_active {

@@ -74,8 +74,8 @@ impl Battle {
                 .unwrap_or_else(|| pw_id.to_string());
 
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
-            // Set effect_order from state to preserve insertion order and prevent unnecessary shuffling.
-            // JavaScript objects maintain insertion order, and initEffectState assigns incrementing effectOrder.
+            // JavaScript does NOT set handler.effectOrder in findFieldEventHandlers
+            // Only resolve_priority sets it for SwitchIn/RedirectTarget events
             let mut handler = EventListener {
                 callback_name: String::new(),
                 effect: Effect {
@@ -93,7 +93,7 @@ impl Battle {
                 order: None,
                 priority: 0,
                 sub_order: 0,
-                effect_order: Some(pw_state.effect_order),
+                effect_order: None,
                 speed: None,
             };
 
@@ -134,7 +134,8 @@ impl Battle {
                 .unwrap_or_else(|| weather_id.to_string());
 
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
-            // Set effect_order from state to preserve insertion order
+            // JavaScript does NOT set handler.effectOrder in findFieldEventHandlers
+            // Only resolve_priority sets it for SwitchIn/RedirectTarget events
             let mut handler = EventListener {
                 callback_name: String::new(),
                 effect: Effect {
@@ -152,7 +153,7 @@ impl Battle {
                 order: None,
                 priority: 0,
                 sub_order: 0,
-                effect_order: Some(weather_state.effect_order),
+                effect_order: None,
                 speed: None,
             };
 
@@ -187,7 +188,8 @@ impl Battle {
                 .unwrap_or_else(|| terrain_id.to_string());
 
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
-            // Set effect_order from state to preserve insertion order
+            // JavaScript does NOT set handler.effectOrder in findFieldEventHandlers
+            // Only resolve_priority sets it for SwitchIn/RedirectTarget events
             let mut handler = EventListener {
                 callback_name: String::new(),
                 effect: Effect {
@@ -205,7 +207,7 @@ impl Battle {
                 order: None,
                 priority: 0,
                 sub_order: 0,
-                effect_order: Some(terrain_state.effect_order),
+                effect_order: None,
                 speed: None,
             };
 

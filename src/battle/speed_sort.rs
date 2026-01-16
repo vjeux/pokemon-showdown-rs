@@ -42,7 +42,14 @@ impl Battle {
     // 		}
     // 	}
     //
-    pub fn speed_sort<T, F>(&mut self, list: &mut [T], mut get_priority: F)
+    pub fn speed_sort<T, F>(&mut self, list: &mut [T], get_priority: F)
+    where
+        F: FnMut(&T) -> PriorityItem,
+    {
+        self.speed_sort_with_callsite(list, get_priority, "unknown");
+    }
+
+    pub fn speed_sort_with_callsite<T, F>(&mut self, list: &mut [T], mut get_priority: F, callsite: &str)
     where
         F: FnMut(&T) -> PriorityItem,
     {
@@ -79,6 +86,13 @@ impl Battle {
 
             // If there were ties, shuffle them randomly
             if next_indexes.len() > 1 {
+                // Debug: print the priority items that are tying
+                let priorities: Vec<_> = next_indexes.iter().map(|&i| get_priority(&list[i])).collect();
+                eprintln!("[SPEED_SORT] {} items tying at positions {:?}, turn={}, callsite={}", next_indexes.len(), next_indexes, self.turn, callsite);
+                for (i, priority) in priorities.iter().enumerate() {
+                    eprintln!("[SPEED_SORT]   Item {}: order={:?}, priority={}, speed={}, sub_order={}, effect_order={}",
+                        i, priority.order, priority.priority, priority.speed, priority.sub_order, priority.effect_order);
+                }
                 let end = sorted + next_indexes.len();
                 self.shuffle_range(list, sorted, end);
             }

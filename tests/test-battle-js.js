@@ -51,6 +51,27 @@ battle.prng.rng.next = function() {
     return result;
 };
 
+// Wrap speedSort to track shuffles
+const originalSpeedSort = battle.speedSort.bind(battle);
+battle.speedSort = function(list, comparator) {
+    const startPrng = totalPrngCalls;
+    // Log all speedSort calls with 2+ handlers when turn is 20
+    if (battle.turn === 20 && list.length >= 2) {
+        console.error(`[SPEED_SORT_JS_ALL] turn=${battle.turn}, list.length=${list.length}, BEFORE sort, PRNG=${totalPrngCalls}`);
+        for (let i = 0; i < Math.min(list.length, 5); i++) {
+            const h = list[i];
+            const stateTarget = h.state?.target;
+            const stateTargetType = stateTarget?.constructor?.name || 'undefined';
+            console.error(`[SPEED_SORT_JS_ALL]   [${i}] effect=${h.effect?.id || 'unknown'}, effectType=${h.effect?.effectType || 'unknown'}, subOrder=${h.subOrder}, speed=${h.speed}, priority=${h.priority}, state.target=${stateTargetType}`);
+        }
+    }
+    originalSpeedSort(list, comparator);
+    const endPrng = totalPrngCalls;
+    if (endPrng > startPrng) {
+        console.error(`[SPEED_SORT_JS] turn=${battle.turn}, shuffled ${list.length} items, PRNG calls: ${endPrng - startPrng}`);
+    }
+};
+
 battle.setPlayer('p1', {
     name: 'Player 1',
     team: teams.p1.map(p => ({

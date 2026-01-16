@@ -973,7 +973,7 @@ impl Battle {
                             .zip(speeds.iter())
                             .collect();
 
-                        self.speed_sort(&mut all_active_with_speeds, |(_, speed)| PriorityItem {
+                        self.speed_sort_with_callsite(&mut all_active_with_speeds, |(_, speed)| PriorityItem {
                             order: None,
                             priority: 0,
                             fractional_priority: 0.0,
@@ -981,7 +981,7 @@ impl Battle {
                             sub_order: 0,
                             effect_order: 0,
                             index: 0,
-                        });
+                        }, "run_action:switch");
 
                         // JS: this.battle.speedOrder = allActive.map((a) => a.side.n * a.battle.sides.length + a.position);
                         self.speed_order = all_active_with_speeds
