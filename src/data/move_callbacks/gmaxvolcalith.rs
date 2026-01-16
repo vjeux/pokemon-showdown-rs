@@ -105,10 +105,15 @@ pub mod self_callbacks {
     ///     },
     /// }
     /// ```
+    ///
+    /// NOTE: For self callbacks, the FIRST parameter receives the move USER (source),
+    /// and the SECOND parameter receives the move TARGET (or None).
+    /// The naming convention in dispatch_self_on_hit is misleading - it names them
+    /// target_pos and source_pos, but actually passes source as first, target as second.
     pub fn on_hit(
         battle: &mut Battle,
-        _target_pos: (usize, usize),
-        source_pos: Option<(usize, usize)>,
+        source_pos: (usize, usize),          // ACTUAL SOURCE (move user)
+        _target_pos: Option<(usize, usize)>, // ACTUAL TARGET (move target)
         _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] Called with source_pos={:?}", source_pos);
@@ -116,15 +121,7 @@ pub mod self_callbacks {
         //     side.addSideCondition("gmaxvolcalith");
         // }
 
-        let source = match source_pos {
-            Some(pos) => pos,
-            None => {
-                debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] No source, returning Continue");
-                return EventResult::Continue;
-            }
-        };
-
-        let source_side_idx = source.0;
+        let source_side_idx = source_pos.0;
         debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] source_side_idx={}", source_side_idx);
 
         // Get foe sides (in singles, just the opposite side)
@@ -136,7 +133,7 @@ pub mod self_callbacks {
                 battle.add_side_condition(
                     side_idx,
                     condition_id,
-                    Some(source),
+                    Some(source_pos),
                     None,
                 );
                 debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] Added gmaxvolcalith to side {}", side_idx);

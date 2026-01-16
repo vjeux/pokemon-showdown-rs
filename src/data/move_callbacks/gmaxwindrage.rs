@@ -208,18 +208,18 @@ pub mod self_callbacks {
     ///     },
     /// }
     /// ```
+    ///
+    /// NOTE: For self callbacks, the FIRST parameter receives the move USER (source),
+    /// and the SECOND parameter receives the move TARGET (or None).
+    /// The naming convention in dispatch_self_on_hit is misleading - it names them
+    /// target_pos and source_pos, but actually passes source as first, target as second.
     pub fn on_hit(
         battle: &mut Battle,
-        _target_pos: (usize, usize),
-        source_pos: Option<(usize, usize)>,
+        source_pos: (usize, usize),          // ACTUAL SOURCE (move user)
+        _target_pos: Option<(usize, usize)>, // ACTUAL TARGET (move target)
         _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         use crate::dex_data::ID;
-
-        let source = match source_pos {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        };
 
         let mut success = false;
 
@@ -230,7 +230,7 @@ pub mod self_callbacks {
         let mut remove_target = vec!["reflect", "lightscreen", "auroraveil", "safeguard", "mist"];
         remove_target.extend(remove_all.iter());
 
-        let source_side_idx = source.0;
+        let source_side_idx = source_pos.0;
         let foe_side_idx = if source_side_idx == 0 { 1 } else { 0 };
 
         // for (const targetCondition of removeTarget) {
@@ -249,7 +249,7 @@ pub mod self_callbacks {
 
                 // this.add("-sideend", source.side.foe, this.dex.conditions.get(targetCondition).name, "[from] move: G-Max Wind Rage", `[of] ${source}`);
                 let (foe_side_arg, source_ident, condition_name) = {
-                    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                    let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };
@@ -288,7 +288,7 @@ pub mod self_callbacks {
             if battle.sides[source_side_idx].remove_side_condition(&condition_id) {
                 // this.add("-sideend", source.side, this.dex.conditions.get(sideCondition).name, "[from] move: G-Max Wind Rage", `[of] ${source}`);
                 let (source_side_arg, source_ident, condition_name) = {
-                    let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+                    let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
                         Some(p) => p,
                         None => return EventResult::Continue,
                     };

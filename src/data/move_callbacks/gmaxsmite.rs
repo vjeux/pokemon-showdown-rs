@@ -71,23 +71,23 @@ pub mod self_callbacks {
     ///     },
     /// }
     /// ```
+    ///
+    /// NOTE: For self callbacks, the FIRST parameter receives the move USER (source),
+    /// and the SECOND parameter receives the move TARGET (or None).
+    /// The naming convention in dispatch_self_on_hit is misleading - it names them
+    /// target_pos and source_pos, but actually passes source as first, target as second.
     pub fn on_hit(
         battle: &mut Battle,
-        _target_pos: (usize, usize),
-        source_pos: Option<(usize, usize)>,
+        source_pos: (usize, usize),          // ACTUAL SOURCE (move user)
+        _target_pos: Option<(usize, usize)>, // ACTUAL TARGET (move target)
         _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // for (const pokemon of source.foes()) {
         //     pokemon.addVolatile("confusion", source);
         // }
 
-        let source = match source_pos {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        };
-
         let foe_positions = {
-            let source_pokemon = match battle.pokemon_at(source.0, source.1) {
+            let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
@@ -95,7 +95,7 @@ pub mod self_callbacks {
         };
 
         for foe_pos in foe_positions {
-            Pokemon::add_volatile(battle, foe_pos, ID::from("confusion"), Some(source), None, None, None);
+            Pokemon::add_volatile(battle, foe_pos, ID::from("confusion"), Some(source_pos), None, None, None);
         }
 
         EventResult::Continue

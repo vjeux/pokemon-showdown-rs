@@ -74,24 +74,24 @@ pub mod self_callbacks {
     ///     },
     /// }
     /// ```
+    ///
+    /// NOTE: For self callbacks, the FIRST parameter receives the move USER (source),
+    /// and the SECOND parameter receives the move TARGET (or None).
+    /// The naming convention in dispatch_self_on_hit is misleading - it names them
+    /// target_pos and source_pos, but actually passes source as first, target as second.
     pub fn on_hit(
         battle: &mut Battle,
-        _target_pos: (usize, usize),
-        source_pos: Option<(usize, usize)>,
+        source_pos: (usize, usize),          // ACTUAL SOURCE (move user)
+        _target_pos: Option<(usize, usize)>, // ACTUAL TARGET (move target)
         _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         use crate::dex_data::ID;
-
-        let source = match source_pos {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        };
 
         // for (const side of source.side.foeSidesWithConditions()) {
         //     side.addSideCondition("stealthrock");
         // }
 
-        let source_side_index = source.0;
+        let source_side_index = source_pos.0;
 
         // Add stealth rock to all foe sides (sides that are not the source's side)
         // Use battle.add_side_condition to properly set effect_order for sorting
@@ -101,7 +101,7 @@ pub mod self_callbacks {
                 battle.add_side_condition(
                     side_idx,
                     ID::from("stealthrock"),
-                    Some(source),
+                    Some(source_pos),
                     None,
                 );
             }

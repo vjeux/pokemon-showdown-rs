@@ -94,22 +94,22 @@ pub mod self_callbacks {
     ///     },
     /// }
     /// ```
+    ///
+    /// NOTE: For self callbacks, the FIRST parameter receives the move USER (source),
+    /// and the SECOND parameter receives the move TARGET (or None).
+    /// The naming convention in dispatch_self_on_hit is misleading - it names them
+    /// target_pos and source_pos, but actually passes source as first, target as second.
     pub fn on_hit(
         battle: &mut Battle,
-        _target_pos: (usize, usize),
-        source_pos: Option<(usize, usize)>,
+        source_pos: (usize, usize),          // ACTUAL SOURCE (move user)
+        _target_pos: Option<(usize, usize)>, // ACTUAL TARGET (move target)
         _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // for (const side of source.side.foeSidesWithConditions()) {
         //     side.addSideCondition("gmaxwildfire");
         // }
 
-        let source = match source_pos {
-            Some(pos) => pos,
-            None => return EventResult::Continue,
-        };
-
-        let source_side = source.0;
+        let source_side = source_pos.0;
 
         // foeSidesWithConditions() returns sides that have active pokemon
         // In most cases, this is just the opponent's side
@@ -128,7 +128,7 @@ pub mod self_callbacks {
                 battle.add_side_condition(
                     side_idx,
                     crate::dex_data::ID::from("gmaxwildfire"),
-                    Some(source),
+                    Some(source_pos),
                     None,
                 );
             }

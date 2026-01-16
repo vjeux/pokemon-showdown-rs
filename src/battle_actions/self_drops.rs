@@ -64,10 +64,12 @@ pub fn self_drops(
     // for (const target of targets) {
     for target in targets {
         // if (target === false) continue;
-        // In JavaScript, targets[i] = false when the move fails against that target
-        // In Rust, this corresponds to SpreadMoveTarget::None (set by spread_move_hit filter loop)
-        // or SpreadMoveTarget::Failed (set earlier for other reasons)
-        if matches!(target, SpreadMoveTarget::Failed | SpreadMoveTarget::None) {
+        // In JavaScript, targets[i] = false when the move FAILS against that target
+        // But targets[i] = null when substitute was hit (HIT_SUBSTITUTE)
+        // JavaScript: `if (target === false) continue;` - this ONLY skips false, not null
+        // In Rust, SpreadMoveTarget::Failed = false, SpreadMoveTarget::None = null
+        // So we should ONLY skip Failed, NOT None (which represents substitute was hit)
+        if matches!(target, SpreadMoveTarget::Failed) {
             continue;
         }
 
