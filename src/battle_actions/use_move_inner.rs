@@ -790,8 +790,18 @@ pub fn use_move_inner(
         }
 
         // if (damage || damage === 0 || damage === undefined) moveResult = true;
-        // Move succeeds if it dealt damage, or if it's NOT_FAIL or undefined
-        move_result = hit_result;
+        // In JavaScript: damage (truthy), damage === 0, or damage === undefined all result in moveResult = true
+        // Only damage === false or damage === '' (NOT_FAIL) result in moveResult staying false
+        // DamageResult::Undefined corresponds to JS undefined, which makes moveResult = true
+        // DamageResult::Damage(0) corresponds to JS 0, which makes moveResult = true
+        // DamageResult::Success/Damage(>0) are truthy, moveResult = true
+        // DamageResult::Failed corresponds to JS false, moveResult stays false
+        // DamageResult::NotFail corresponds to JS '' (NOT_FAIL), moveResult stays false
+        move_result = match hit_result {
+            DamageResult::Undefined => DamageResult::Success,  // undefined in JS → moveResult = true
+            DamageResult::Damage(0) => DamageResult::Success,  // 0 in JS → moveResult = true
+            other => other,  // truthy values stay truthy, false/NOT_FAIL stay falsy
+        };
     } else {
         eprintln!("[USE_MOVE_INNER] turn={}, move={}, taking trySpreadMoveHit branch (target={})",
             battle.turn, active_move.id, active_move.target);

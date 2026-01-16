@@ -1,12 +1,8 @@
-Analyzing 7 failing minimized seed files...
+Analyzing 6 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-wideguard: 1 seeds
-  Seeds: 6832
-temperflare: 1 seeds
-  Seeds: 6832
 thunder: 1 seeds
   Seeds: 8445
 safeguard: 1 seeds
@@ -87,14 +83,12 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 7
-Unique moves: 31 (30 non-simple)
+Total minimized seeds: 6
+Unique moves: 29 (28 non-simple)
 Unique abilities: 6 (5 non-simple)
 Unique items: 1
 
 --- Most Common Moves (top 10) ---
-  wideguard: 1 seeds
-  temperflare: 1 seeds
   thunder: 1 seeds
   safeguard: 1 seeds
   toxicspikes: 1 seeds
@@ -103,6 +97,8 @@ Unique items: 1
   sandattack: 1 seeds
   strangesteam: 1 seeds
   thundershock: 1 seeds
+  mefirst: 1 seeds
+  voltswitch: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   No Guard: 1 seeds
