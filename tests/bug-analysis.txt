@@ -1,48 +1,8 @@
-Analyzing 5 failing minimized seed files...
+Analyzing 1 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-beakblast: 1 seeds
-  Seeds: 8545
-shellsidearm: 1 seeds
-  Seeds: 8545
-sandattack: 1 seeds
-  Seeds: 8708
-strangesteam: 1 seeds
-  Seeds: 8708
-thundershock: 1 seeds
-  Seeds: 8708
-mefirst: 1 seeds
-  Seeds: 8708
-voltswitch: 1 seeds
-  Seeds: 8708
-thunderpunch: 1 seeds
-  Seeds: 8708
-helpinghand: 1 seeds
-  Seeds: 8708
-veeveevolley: 1 seeds
-  Seeds: 8708
-payback: 1 seeds
-  Seeds: 9005
-forcepalm: 1 seeds
-  Seeds: 9005
-supersonicskystrike: 1 seeds
-  Seeds: 9005
-ingrain: 1 seeds
-  Seeds: 9005
-blueflare: 1 seeds
-  Seeds: 9005
-obstruct: 1 seeds
-  Seeds: 9005
-rockthrow: 1 seeds
-  Seeds: 9005
-dragontail: 1 seeds
-  Seeds: 9005
-grassyterrain: 1 seeds
-  Seeds: 9227
-grassyglide: 1 seeds
-  Seeds: 9227
 bloodmoon: 1 seeds
   Seeds: 9425
 frenzyplant: 1 seeds
@@ -57,46 +17,25 @@ luckychant: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-No Guard: 1 seeds
-  Seeds: 8708
-Stakeout: 1 seeds
-  Seeds: 8708
-Pressure: 1 seeds
-  Seeds: 9005
-Sheer Force: 1 seeds
-  Seeds: 9005
-Static: 1 seeds
-  Seeds: 9005
 
 ============================================================
 ITEMS
 ============================================================
-kingsrock: 1 seeds
-  Seeds: 9005
+(no items found in minimized tests)
 
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 5
-Unique moves: 26 (25 non-simple)
-Unique abilities: 6 (5 non-simple)
-Unique items: 1
+Total minimized seeds: 1
+Unique moves: 6 (5 non-simple)
+Unique abilities: 1 (0 non-simple)
+Unique items: 0
 
 --- Most Common Moves (top 10) ---
-  beakblast: 1 seeds
-  shellsidearm: 1 seeds
-  sandattack: 1 seeds
-  strangesteam: 1 seeds
-  thundershock: 1 seeds
-  mefirst: 1 seeds
-  voltswitch: 1 seeds
-  thunderpunch: 1 seeds
-  helpinghand: 1 seeds
-  veeveevolley: 1 seeds
+  bloodmoon: 1 seeds
+  frenzyplant: 1 seeds
+  whirlwind: 1 seeds
+  soak: 1 seeds
+  luckychant: 1 seeds
 
 --- Most Common Abilities (top 10) ---
-  No Guard: 1 seeds
-  Stakeout: 1 seeds
-  Pressure: 1 seeds
-  Sheer Force: 1 seeds
-  Static: 1 seeds

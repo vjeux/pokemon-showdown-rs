@@ -108,8 +108,9 @@ impl Battle {
                 // Allows move-specific priority modification (e.g., Grassy Glide in Grassy Terrain)
                 let move_id_ref = &move_action.move_id.clone();
                 let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
+                // Pass priority as relay_var so callbacks can modify it (e.g., Grassy Glide adds +1)
                 let result =
-                    self.single_event("ModifyPriority", &crate::battle::Effect::move_(move_id_ref.clone()), None, Some(pokemon_pos), None, None, None);
+                    self.single_event("ModifyPriority", &crate::battle::Effect::move_(move_id_ref.clone()), None, Some(pokemon_pos), None, None, Some(EventResult::Number(priority as i32)));
                 if let Some(new_priority) = result.number() {
                     priority = new_priority as i8;
                 }

@@ -633,7 +633,7 @@ Seed 8537: ✓ PASS
 Seed 8541: ✓ PASS
 Seed 8543: ✓ PASS
 Seed 8544: ✓ PASS
-Seed 8545: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Sinistcha(134/221)], P2=[Kabuto(159/188)]
+Seed 8545: ✓ PASS
 Seed 8553: ✓ PASS
 Seed 8554: ✓ PASS
 Seed 8555: ✓ PASS
@@ -645,7 +645,7 @@ Seed 8618: ✓ PASS
 Seed 8619: ✓ PASS
 Seed 8641: ✓ PASS
 Seed 8690: ✓ PASS
-Seed 8708: ✗ FAIL - #52: turn=43, prng=150->153, P1=[Togedemaru(110/151)], P2=[Yungoos(49/205)]
+Seed 8708: ✓ PASS
 Seed 8766: ✓ PASS
 Seed 8774: ✓ PASS
 Seed 8784: ✓ PASS
@@ -667,7 +667,7 @@ Seed 8957: ✓ PASS
 Seed 8974: ✓ PASS
 Seed 8986: ✓ PASS
 Seed 8999: ✓ PASS
-Seed 9005: ✗ FAIL - #38: turn=33, prng=157->162, P1=[Dusknoir(18/157)], P2=[Avalugg(55/232)]
+Seed 9005: ✓ PASS
 Seed 9009: ✓ PASS
 Seed 9033: ✓ PASS
 Seed 9039: ✓ PASS
@@ -682,7 +682,7 @@ Seed 9128: ✓ PASS
 Seed 9159: ✓ PASS
 Seed 9196: ✓ PASS
 Seed 9213: ✓ PASS
-Seed 9227: ✗ FAIL - #11: turn=11, prng=27->33, P1=[Linoone(227/256)], P2=[Sobble(199/231)]
+Seed 9227: ✓ PASS
 Seed 9314: ✓ PASS
 Seed 9328: ✓ PASS
 Seed 9331: ✓ PASS
@@ -738,8 +738,8 @@ Seed 9996: ✓ PASS
 Summary
 =======================================
 Total minimized seeds: 723
-Passed: 718
-Failed: 5
+Passed: 722
+Failed: 1
 
 Pass rate: 99%
 ✗ Some seeds still failing

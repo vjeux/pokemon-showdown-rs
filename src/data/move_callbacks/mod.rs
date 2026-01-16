@@ -1165,9 +1165,10 @@ pub fn dispatch_on_modify_priority(
     battle: &mut Battle,
     active_move: Option<&ActiveMove>,
     pokemon_pos: (usize, usize),
+    priority: i32,
 ) -> EventResult {
     let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "grassyglide" => grassyglide::on_modify_priority(battle, Some(pokemon_pos), None, active_move),
+        "grassyglide" => grassyglide::on_modify_priority(battle, Some(pokemon_pos), None, active_move, priority),
         _ => EventResult::Continue,
     }
 }

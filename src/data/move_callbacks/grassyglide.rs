@@ -17,6 +17,7 @@ pub fn on_modify_priority(
     source_pos: Option<(usize, usize)>,
     _target_pos: Option<(usize, usize)>,
     _active_move: Option<&crate::battle_actions::ActiveMove>,
+    priority: i32,
 ) -> EventResult {
     let source = match source_pos {
         Some(pos) => pos,
@@ -36,7 +37,7 @@ pub fn on_modify_priority(
 
     if is_grassy_terrain && is_grounded {
         // return priority + 1;
-        return EventResult::Number(1);
+        return EventResult::Number(priority + 1);
     }
 
     EventResult::Continue

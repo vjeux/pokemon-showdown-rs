@@ -151,7 +151,16 @@ impl Battle {
                 move_callbacks::dispatch_on_modify_move(self, target_pos.unwrap_or((0,0)), source_pos)
             }
             "ModifyPriority" => {
-                move_callbacks::dispatch_on_modify_priority(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)))
+                // Get priority from relay_var
+                let priority = self
+                    .event
+                    .as_ref()
+                    .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
+                    .unwrap_or(0);
+                // IMPORTANT: Use move_id parameter to get the move, NOT active_move_clone
+                // This is called from get_action_speed before self.active_move is set
+                let move_for_callback = self.dex.get_active_move(move_id.as_str());
+                move_callbacks::dispatch_on_modify_priority(self, move_for_callback.as_ref(), target_pos.unwrap_or((0,0)), priority)
             }
             "ModifyTarget" => move_callbacks::dispatch_on_modify_target(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0))),
             "ModifyType" => move_callbacks::dispatch_on_modify_type(self, active_move_clone.as_ref(), target_pos.unwrap_or((0,0)), source_pos),
