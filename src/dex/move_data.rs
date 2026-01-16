@@ -17,7 +17,7 @@ use super::default_crit_ratio::default_crit_ratio;
 use super::{Accuracy, ConditionData, IsMax, MoveSecondary, Multihit, Ohko};
 
 /// Move data from the Dex
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 /// JavaScript equivalent: MoveData (sim/dex-moves.ts)
 /// 49 fields in Rust (matching JavaScript fields)

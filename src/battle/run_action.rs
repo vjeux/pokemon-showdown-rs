@@ -355,11 +355,32 @@ impl Battle {
                             // JS:     break;
                             eprintln!("[RUN_ACTION] About to call run_move, move={}", move_id.as_str());
                             // Look up move data before calling run_move
+                            // JavaScript creates a dummy move with exists: false for unknown moves
+                            // This is needed for virtual moves like 'recharge' which don't have
+                            // actual move data but need to be processed (e.g., for mustrecharge's onBeforeMove)
                             let move_data_for_run = match self.dex.moves().get(move_id.as_str()) {
                                 Some(m) => m.clone(),
                                 None => {
-                                    eprintln!("[RUN_ACTION] Could not find move data for: {}", move_id.as_str());
-                                    return;
+                                    eprintln!("[RUN_ACTION] Creating dummy move for: {}", move_id.as_str());
+                                    // Create a minimal dummy move like JavaScript does
+                                    // JavaScript: move = new DataMove({ name: id, exists: false })
+                                    // Note: MoveData doesn't have exists field - that's only on ActiveMove
+                                    // run_move will convert this to ActiveMove
+                                    crate::dex::MoveData {
+                                        id: crate::dex_data::ID::from(move_id.as_str()),
+                                        name: move_id.to_string(),
+                                        // Default values for required fields
+                                        num: 0,
+                                        base_power: 0,
+                                        accuracy: crate::dex::Accuracy::Percent(100),
+                                        pp: 0,
+                                        category: "Status".to_string(),
+                                        move_type: "Normal".to_string(),
+                                        priority: 0,
+                                        target: "self".to_string(),
+                                        flags: crate::battle_actions::MoveFlags::default(),
+                                        ..Default::default()
+                                    }
                                 }
                             };
                             crate::battle_actions::run_move(

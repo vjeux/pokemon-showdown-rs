@@ -581,6 +581,9 @@ pub fn dispatch_on_lock_move(
         // Rollout locks the user into using Rollout
         // JavaScript: onLockMove: 'rollout'
         "rollout" => EventResult::String("rollout".to_string()),
+        // Mustrecharge locks the user into using Recharge
+        // JavaScript: onLockMove: 'recharge'
+        "mustrecharge" => EventResult::String("recharge".to_string()),
         _ => EventResult::Continue,
     }
 }
