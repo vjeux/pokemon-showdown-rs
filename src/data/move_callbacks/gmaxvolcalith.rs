@@ -29,11 +29,11 @@ pub mod condition {
     ///     if (!target.hasType('Rock')) this.damage(target.baseMaxhp / 6, target);
     /// }
     pub fn on_residual(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
-        eprintln!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] Called with target_pos={:?}", target_pos);
+        debug_elog!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] Called with target_pos={:?}", target_pos);
         let target = match target_pos {
             Some(pos) => pos,
             None => {
-                eprintln!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] No target, returning Continue");
+                debug_elog!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] No target, returning Continue");
                 return EventResult::Continue;
             }
         };
@@ -43,12 +43,12 @@ pub mod condition {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => {
-                    eprintln!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] No pokemon at {:?}, returning Continue", target);
+                    debug_elog!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] No pokemon at {:?}, returning Continue", target);
                     return EventResult::Continue;
                 }
             };
             let result = target_pokemon.has_type(battle, "rock");
-            eprintln!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] has_rock_type={}", result);
+            debug_elog!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] has_rock_type={}", result);
             result
         };
 
@@ -62,11 +62,11 @@ pub mod condition {
                 target_pokemon.base_maxhp / 6
             };
 
-            eprintln!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] Dealing {} damage to {:?}", damage_amount, target);
+            debug_elog!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] Dealing {} damage to {:?}", damage_amount, target);
             battle.damage(damage_amount, Some(target), None, None, false);
         }
 
-        eprintln!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] Returning Continue");
+        debug_elog!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] Returning Continue");
         EventResult::Continue
     }
 
@@ -111,7 +111,7 @@ pub mod self_callbacks {
         source_pos: Option<(usize, usize)>,
         _source_effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
-        eprintln!("[GMAXVOLCALITH::SELF::ON_HIT] Called with source_pos={:?}", source_pos);
+        debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] Called with source_pos={:?}", source_pos);
         // for (const side of source.side.foeSidesWithConditions()) {
         //     side.addSideCondition("gmaxvolcalith");
         // }
@@ -119,19 +119,19 @@ pub mod self_callbacks {
         let source = match source_pos {
             Some(pos) => pos,
             None => {
-                eprintln!("[GMAXVOLCALITH::SELF::ON_HIT] No source, returning Continue");
+                debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] No source, returning Continue");
                 return EventResult::Continue;
             }
         };
 
         let source_side_idx = source.0;
-        eprintln!("[GMAXVOLCALITH::SELF::ON_HIT] source_side_idx={}", source_side_idx);
+        debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] source_side_idx={}", source_side_idx);
 
         // Get foe sides (in singles, just the opposite side)
         for side_idx in 0..battle.sides.len() {
             if side_idx != source_side_idx {
                 // This is a foe side, add the condition
-                eprintln!("[GMAXVOLCALITH::SELF::ON_HIT] Adding gmaxvolcalith to side {}", side_idx);
+                debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] Adding gmaxvolcalith to side {}", side_idx);
                 let condition_id = crate::dex_data::ID::new("gmaxvolcalith");
                 battle.add_side_condition(
                     side_idx,
@@ -139,11 +139,11 @@ pub mod self_callbacks {
                     Some(source),
                     None,
                 );
-                eprintln!("[GMAXVOLCALITH::SELF::ON_HIT] Added gmaxvolcalith to side {}", side_idx);
+                debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] Added gmaxvolcalith to side {}", side_idx);
             }
         }
 
-        eprintln!("[GMAXVOLCALITH::SELF::ON_HIT] Returning Continue");
+        debug_elog!("[GMAXVOLCALITH::SELF::ON_HIT] Returning Continue");
         EventResult::Continue
     }
 }

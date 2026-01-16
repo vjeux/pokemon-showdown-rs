@@ -34,7 +34,7 @@ impl Battle {
             .unwrap_or((0, 0));
 
         if event_id.contains("Invulnerability") {
-            eprintln!("[HANDLE_CONDITION_EVENT] event_id={}, condition_id={}, target={:?}",
+            debug_elog!("[HANDLE_CONDITION_EVENT] event_id={}, condition_id={}, target={:?}",
                 event_id, condition_id, Some(pokemon_pos));
         }
 
@@ -46,7 +46,7 @@ impl Battle {
         };
 
         if event_id.contains("Invulnerability") {
-            eprintln!("[HANDLE_CONDITION_EVENT] normalized_event={}", normalized_event);
+            debug_elog!("[HANDLE_CONDITION_EVENT] normalized_event={}", normalized_event);
         }
 
         // Try condition_callbacks first
@@ -206,7 +206,7 @@ impl Battle {
                 let _move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
-                eprintln!("[HANDLE_CONDITION_EVENT] DamagingHit: condition_id={}, damage={}, pokemon_pos={:?}, source_pos={:?}", condition_id, damage, pokemon_pos, source_pos);
+                debug_elog!("[HANDLE_CONDITION_EVENT] DamagingHit: condition_id={}, damage={}, pokemon_pos={:?}, source_pos={:?}", condition_id, damage, pokemon_pos, source_pos);
                 condition_callbacks::dispatch_on_damaging_hit(self, condition_id, damage, pokemon_pos, source_pos, active_move_clone.as_ref())
             }
             "Damage" => {
@@ -693,12 +693,12 @@ impl Battle {
                 // For side conditions like Aurora Veil, Light Screen, and Reflect
                 // Extract damage from relay_var, source and target from event
                 // Side condition callbacks are in move_callbacks module (move-embedded conditions)
-                eprintln!("[HANDLE_CONDITION_EVENT] AnyModifyDamage case: condition_id={}, event.modifier BEFORE callback={}",
+                debug_elog!("[HANDLE_CONDITION_EVENT] AnyModifyDamage case: condition_id={}, event.modifier BEFORE callback={}",
                     condition_id, self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
 
                 // Debug: print event details
                 if let Some(ref curr_ev) = self.event {
-                    eprintln!("[HANDLE_CONDITION_EVENT] event: source={:?}, target={:?}, effect={:?}",
+                    debug_elog!("[HANDLE_CONDITION_EVENT] event: source={:?}, target={:?}, effect={:?}",
                         curr_ev.source, curr_ev.target, curr_ev.effect);
                 }
 
@@ -723,7 +723,7 @@ impl Battle {
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
 
-                eprintln!("[HANDLE_CONDITION_EVENT] Calling dispatch_condition_on_any_modify_damage for condition={}, move={}, source(attacker)={:?}, target(defender)={:?}",
+                debug_elog!("[HANDLE_CONDITION_EVENT] Calling dispatch_condition_on_any_modify_damage for condition={}, move={}, source(attacker)={:?}, target(defender)={:?}",
                     condition_id, move_id_for_log, callback_source, callback_target);
 
                 // Call dispatcher in move_callbacks (for move-embedded conditions like auroraveil)
@@ -735,7 +735,7 @@ impl Battle {
                     callback_target, // defender
                     active_move_clone.as_ref(),
                 );
-                eprintln!("[HANDLE_CONDITION_EVENT] Result: {:?}, event.modifier AFTER callback={}",
+                debug_elog!("[HANDLE_CONDITION_EVENT] Result: {:?}, event.modifier AFTER callback={}",
                     result, self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
                 result
             }

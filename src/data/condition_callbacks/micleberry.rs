@@ -26,7 +26,7 @@ pub fn on_source_accuracy(
     source_pos: Option<(usize, usize)>,
     active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    eprintln!("[MICLEBERRY_ON_SOURCE_ACCURACY] Called with accuracy={:?}, source_pos={:?}", accuracy, source_pos);
+    debug_elog!("[MICLEBERRY_ON_SOURCE_ACCURACY] Called with accuracy={:?}, source_pos={:?}", accuracy, source_pos);
 
     let source = match source_pos {
         Some(pos) => pos,

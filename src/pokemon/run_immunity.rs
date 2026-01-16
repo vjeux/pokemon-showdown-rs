@@ -58,12 +58,12 @@ impl Pokemon {
         // If runEvent returns truthy/undefined (no handler or handler didn't negate) → negateImmunity = false
         // Pass the move_type as relay_var so condition callbacks can check it
         let negate_immunity_result = battle.run_event("NegateImmunity", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::String(move_type.to_string()), false, false);
-        eprintln!("[RUN_IMMUNITY] pokemon={:?}, move_type={}, NegateImmunity result={:?}", pokemon_pos, move_type, negate_immunity_result);
+        debug_elog!("[RUN_IMMUNITY] pokemon={:?}, move_type={}, NegateImmunity result={:?}", pokemon_pos, move_type, negate_immunity_result);
         // JavaScript: const negateImmunity = !runEvent(...);
         // A handler returns false to indicate "negate the immunity" (like foresight does)
         // If no handler runs or handlers return Continue/truthy, immunity is NOT negated
         let negate_immunity = matches!(negate_immunity_result, EventResult::Boolean(false));
-        eprintln!("[RUN_IMMUNITY] negate_immunity={}", negate_immunity);
+        debug_elog!("[RUN_IMMUNITY] negate_immunity={}", negate_immunity);
 
         // JS: const notImmune = type === 'Ground' ?
         // JS:     this.isGrounded(negateImmunity) :
@@ -80,7 +80,7 @@ impl Pokemon {
         } else {
             // For other types, check type immunity via Dex
             if negate_immunity {
-                eprintln!("[RUN_IMMUNITY] negate_immunity=true, returning true (not immune)");
+                debug_elog!("[RUN_IMMUNITY] negate_immunity=true, returning true (not immune)");
                 true
             } else {
                 let pokemon_types = {
@@ -90,9 +90,9 @@ impl Pokemon {
                     };
                     pokemon.get_types(battle, false)
                 };
-                eprintln!("[RUN_IMMUNITY] pokemon_types={:?}", pokemon_types);
+                debug_elog!("[RUN_IMMUNITY] pokemon_types={:?}", pokemon_types);
                 let immunity_result = battle.dex.get_immunity(move_type, &pokemon_types);
-                eprintln!("[RUN_IMMUNITY] get_immunity({}, {:?}) = {}", move_type, pokemon_types, immunity_result);
+                debug_elog!("[RUN_IMMUNITY] get_immunity({}, {:?}) = {}", move_type, pokemon_types, immunity_result);
                 immunity_result
             }
         };

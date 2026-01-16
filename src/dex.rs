@@ -61,6 +61,7 @@ mod formats_helper;
 mod natures_helper;
 mod types_helper;
 mod load_default;
+mod global_dex;
 
 // Re-export types from submodules
 pub use gender_ratio::GenderRatio;

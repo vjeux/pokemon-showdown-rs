@@ -214,7 +214,7 @@ pub fn get_damage(
         source_pos,
         Some(target_pos),
     ) {
-        eprintln!("[GET_DAMAGE] damageCallback returned {}", custom_damage);
+        debug_elog!("[GET_DAMAGE] damageCallback returned {}", custom_damage);
         return Some(custom_damage);
     }
 
@@ -232,18 +232,18 @@ pub fn get_damage(
         };
         match damage_value {
             crate::battle_actions::Damage::Level => {
-                eprintln!("[GET_DAMAGE] Fixed damage move (damage='level'), returning source.level={}", source_level);
+                debug_elog!("[GET_DAMAGE] Fixed damage move (damage='level'), returning source.level={}", source_level);
                 return Some(source_level);
             }
             crate::battle_actions::Damage::Fixed(damage_num) => {
-                eprintln!("[GET_DAMAGE] Fixed damage move (damage={}), returning {}", damage_num, damage_num);
+                debug_elog!("[GET_DAMAGE] Fixed damage move (damage={}), returning {}", damage_num, damage_num);
                 return Some(*damage_num);
             }
         }
     }
 
     // Use active_move.base_power directly
-    eprintln!("[GET_DAMAGE] move_id={}, active_move.base_power={}",
+    debug_elog!("[GET_DAMAGE] move_id={}, active_move.base_power={}",
         active_move.id,
         active_move.base_power);
     let mut base_power = active_move.base_power;
@@ -260,13 +260,13 @@ pub fn get_damage(
     match bp_result {
         crate::event::EventResult::Number(bp) => {
             base_power = bp;
-            eprintln!("[GET_DAMAGE] basePowerCallback set basePower to {} (Number)", base_power);
+            debug_elog!("[GET_DAMAGE] basePowerCallback set basePower to {} (Number)", base_power);
         }
         crate::event::EventResult::Float(bp) => {
             // JavaScript returns floating-point for moves like Eruption with low HP
             // Clamp to at least 1 for non-zero values (JavaScript truthy check)
             base_power = if bp > 0.0 && bp < 1.0 { 1 } else { bp as i32 };
-            eprintln!("[GET_DAMAGE] basePowerCallback set basePower to {} (Float: {})", base_power, bp);
+            debug_elog!("[GET_DAMAGE] basePowerCallback set basePower to {} (Float: {})", base_power, bp);
         }
         _ => {}
     }
@@ -275,7 +275,7 @@ pub fn get_damage(
     // If basePower is 0, return undefined (None)
     // This is critical for Status moves - they should not trigger DamagingHit
     if base_power == 0 {
-        eprintln!("[GET_DAMAGE] basePower is 0, returning None (undefined - Status move)");
+        debug_elog!("[GET_DAMAGE] basePower is 0, returning None (undefined - Status move)");
         return None; // undefined - Status move, no damage calculation
     }
 
@@ -321,7 +321,7 @@ pub fn get_damage(
             let crit_chance = crit_mult[crit_ratio as usize];
             if crit_chance > 0 {
                 is_crit = battle.random_chance(1, crit_chance);
-                eprintln!("[GET_DAMAGE CRIT] crit_ratio={}, crit_chance=1/{}, is_crit={}", crit_ratio, crit_chance, is_crit);
+                debug_elog!("[GET_DAMAGE CRIT] crit_ratio={}, crit_chance=1/{}, is_crit={}", crit_ratio, crit_chance, is_crit);
             }
         }
     }
@@ -329,7 +329,7 @@ pub fn get_damage(
     // Trigger CriticalHit event to allow abilities to prevent/modify crit
     // JavaScript: if (moveHit.crit) moveHit.crit = this.battle.runEvent('CriticalHit', target, null, move);
     if is_crit {
-        eprintln!("[GET_DAMAGE CRIT] Critical hit confirmed before CriticalHit event");
+        debug_elog!("[GET_DAMAGE CRIT] Critical hit confirmed before CriticalHit event");
         is_crit = battle.run_event(
                 "CriticalHit",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
@@ -339,14 +339,14 @@ pub fn get_damage(
             false,
             false,
         ).is_truthy();
-        eprintln!("[GET_DAMAGE CRIT] Critical hit after CriticalHit event: {}", is_crit);
+        debug_elog!("[GET_DAMAGE CRIT] Critical hit after CriticalHit event: {}", is_crit);
     }
 
     // Store crit in move_hit_data for other effects (e.g., Aurora Veil, Reflect, Light Screen)
     // JavaScript: moveHit.crit = ...
     if let Some(hit_data) = battle.get_move_hit_data_mut(target_pos) {
         hit_data.crit = is_crit;
-        eprintln!("[GET_DAMAGE] Stored crit={} in move_hit_data for target {:?}", is_crit, target_pos);
+        debug_elog!("[GET_DAMAGE] Stored crit={} in move_hit_data for target {:?}", is_crit, target_pos);
     }
 
     // Trigger BasePower event to allow abilities/items/moves to modify base power
@@ -354,7 +354,7 @@ pub fn get_damage(
     //                                                                                          ^^^^
     //                                                                                      on_effect=true
     // When on_effect is true, the move's onBasePower handler is called (e.g., Knock Off's 1.5x boost)
-    eprintln!("[GET_DAMAGE] basePower BEFORE BasePower event: {}", base_power);
+    debug_elog!("[GET_DAMAGE] basePower BEFORE BasePower event: {}", base_power);
     if let EventResult::Number(modified_bp) = battle.run_event(
                 "BasePower",
                 Some(crate::event::EventTarget::Pokemon(source_pos)),
@@ -365,21 +365,21 @@ pub fn get_damage(
         false
     ) {
         base_power = modified_bp;
-        eprintln!("[GET_DAMAGE] basePower AFTER BasePower event: {}", base_power);
+        debug_elog!("[GET_DAMAGE] basePower AFTER BasePower event: {}", base_power);
     } else {
-        eprintln!("[GET_DAMAGE] No BasePower event modification");
+        debug_elog!("[GET_DAMAGE] No BasePower event modification");
     }
 
     // JavaScript: if (!basePower) return 0;
     // If basePower is 0 after the BasePower event, return 0 (this is different from the early return above)
     if base_power == 0 {
-        eprintln!("[GET_DAMAGE] basePower is 0 after BasePower event, returning Some(0)");
+        debug_elog!("[GET_DAMAGE] basePower is 0 after BasePower event, returning Some(0)");
         return Some(0);
     }
 
     // JavaScript: basePower = this.battle.clampIntRange(basePower, 1);
     base_power = base_power.max(1);
-    eprintln!("[GET_DAMAGE] basePower after clamp to min 1: {}", base_power);
+    debug_elog!("[GET_DAMAGE] basePower after clamp to min 1: {}", base_power);
 
     // JavaScript (lines 1653-1654): Hacked Max Moves have 0 base power, even if you Dynamax
     // if ((!source.volatiles['dynamax'] && move.isMax) || (move.isMax && this.dex.moves.get(move.baseMove).isMax)) {
@@ -401,9 +401,9 @@ pub fn get_damage(
         // Check first condition: !source.volatiles["dynamax"] && move.isMax
         if !has_dynamax_volatile {
             if active_move.id.as_str() == "gmaxterror" {
-                eprintln!("[gmaxterror {}] Max move check: no dynamax volatile, setting basePower=0 and continuing (minimum damage will be 1)", battle.turn);
+                debug_elog!("[gmaxterror {}] Max move check: no dynamax volatile, setting basePower=0 and continuing (minimum damage will be 1)", battle.turn);
             }
-            eprintln!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower=0 and continuing");
+            debug_elog!("[GET_DAMAGE] Max/G-Max move used without dynamax volatile, setting basePower=0 and continuing");
             base_power = 0; // Set basePower to 0, but continue calculation (minimum damage will be 1)
         } else if let Some(ref base_move_id) = active_move.base_move {
             // Check second condition: move.isMax && this.dex.moves.get(move.baseMove).isMax
@@ -411,7 +411,7 @@ pub fn get_damage(
             if let Some(base_move_data) = battle.dex.moves().get(base_move_id.as_str()) {
                 if base_move_data.is_max.is_some() {
                     // Hacked Max Move: the base move is itself a Max move
-                    eprintln!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower=0 and continuing");
+                    debug_elog!("[GET_DAMAGE] Hacked Max Move detected (base move is also Max move), setting basePower=0 and continuing");
                     base_power = 0; // Set basePower to 0, but continue calculation (minimum damage will be 1)
                 }
             }
@@ -457,7 +457,7 @@ pub fn get_damage(
     let defense_stat = active_move.override_defensive_stat.as_deref()
         .unwrap_or(if is_physical { "def" } else { "spd" });
 
-    eprintln!("[GET_DAMAGE] is_physical={}, attack_stat={}, defense_stat={}", is_physical, attack_stat, defense_stat);
+    debug_elog!("[GET_DAMAGE] is_physical={}, attack_stat={}, defense_stat={}", is_physical, attack_stat, defense_stat);
 
     // Get attacker and defender boosts based on the stat being used
     // JavaScript: let atkBoosts = attacker.boosts[attackStat];
@@ -515,7 +515,7 @@ pub fn get_damage(
     // JavaScript:     atkBoosts = 0;
     // JavaScript: }
     if ignore_offensive {
-        eprintln!("[GET_DAMAGE] Negating (sp)atk boost/penalty. (was {})", atk_boost);
+        debug_elog!("[GET_DAMAGE] Negating (sp)atk boost/penalty. (was {})", atk_boost);
         atk_boost = 0;
     }
 
@@ -524,7 +524,7 @@ pub fn get_damage(
     // JavaScript:     defBoosts = 0;
     // JavaScript: }
     if ignore_defensive {
-        eprintln!("[GET_DAMAGE] Negating (sp)def boost/penalty. (was {})", def_boost);
+        debug_elog!("[GET_DAMAGE] Negating (sp)def boost/penalty. (was {})", def_boost);
         def_boost = 0;
     }
 
@@ -543,7 +543,7 @@ pub fn get_damage(
         .map(|p| p.name.clone())
         .unwrap_or_default();
     let mut attack = battle.calculate_stat(attacker_pos, attack_stat_id, atk_boost as i8, 1.0, Some(source_pos));
-    eprintln!("[GET_DAMAGE] Attack calc (stat={:?}): pokemon={}, boost={}, attack={}",
+    debug_elog!("[GET_DAMAGE] Attack calc (stat={:?}): pokemon={}, boost={}, attack={}",
         attack_stat_id, attacker_name, atk_boost, attack);
     if attack == 0 {
         return None;
@@ -564,7 +564,7 @@ pub fn get_damage(
         .map(|p| p.name.clone())
         .unwrap_or_default();
     let mut defense = battle.calculate_stat(defender_pos, defense_stat_id, def_boost as i8, 1.0, Some(target_pos));
-    eprintln!("[GET_DAMAGE] Defense calc (stat={:?}): pokemon={}, boost={}, defense={}",
+    debug_elog!("[GET_DAMAGE] Defense calc (stat={:?}): pokemon={}, boost={}, defense={}",
         defense_stat_id, defender_name, def_boost, defense);
     if defense == 0 {
         return None;
@@ -589,39 +589,39 @@ pub fn get_damage(
         _ => if is_physical { "ModifyDef" } else { "ModifySpD" }
     };
 
-    eprintln!("[GET_DAMAGE] attack_modifier_event={}, defense_modifier_event={}", attack_modifier_event, defense_modifier_event);
+    debug_elog!("[GET_DAMAGE] attack_modifier_event={}, defense_modifier_event={}", attack_modifier_event, defense_modifier_event);
 
     // Apply attack modifier event
-    eprintln!("[GET_DAMAGE] BEFORE {}: attack={}", attack_modifier_event, attack);
+    debug_elog!("[GET_DAMAGE] BEFORE {}: attack={}", attack_modifier_event, attack);
     match battle.run_event(attack_modifier_event, Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(attack), false, false) {
         EventResult::Number(n) => {
-            eprintln!("[GET_DAMAGE] AFTER {}: attack changed from {} to {}", attack_modifier_event, attack, n);
+            debug_elog!("[GET_DAMAGE] AFTER {}: attack changed from {} to {}", attack_modifier_event, attack, n);
             attack = n;
         },
         EventResult::Float(multiplier) => {
             let old_attack = attack;
             attack = battle.modify_f(attack, multiplier);
-            eprintln!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, attack changed from {} to {}", attack_modifier_event, multiplier, old_attack, attack);
+            debug_elog!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, attack changed from {} to {}", attack_modifier_event, multiplier, old_attack, attack);
         }
         _ => {
-            eprintln!("[GET_DAMAGE] AFTER {}: no change, attack={}", attack_modifier_event, attack);
+            debug_elog!("[GET_DAMAGE] AFTER {}: no change, attack={}", attack_modifier_event, attack);
         }
     }
 
     // Apply defense modifier event
-    eprintln!("[GET_DAMAGE] BEFORE {}: defense={}", defense_modifier_event, defense);
+    debug_elog!("[GET_DAMAGE] BEFORE {}: defense={}", defense_modifier_event, defense);
     match battle.run_event(defense_modifier_event, Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(defense), false, false) {
         EventResult::Number(n) => {
-            eprintln!("[GET_DAMAGE] AFTER {}: defense changed from {} to {}", defense_modifier_event, defense, n);
+            debug_elog!("[GET_DAMAGE] AFTER {}: defense changed from {} to {}", defense_modifier_event, defense, n);
             defense = n;
         },
         EventResult::Float(multiplier) => {
             let old_defense = defense;
             defense = battle.modify_f(defense, multiplier);
-            eprintln!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, defense changed from {} to {}", defense_modifier_event, multiplier, old_defense, defense);
+            debug_elog!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, defense changed from {} to {}", defense_modifier_event, multiplier, old_defense, defense);
         }
         _ => {
-            eprintln!("[GET_DAMAGE] AFTER {}: no change, defense={}", defense_modifier_event, defense);
+            debug_elog!("[GET_DAMAGE] AFTER {}: no change, defense={}", defense_modifier_event, defense);
         }
     }
 
@@ -634,8 +634,8 @@ pub fn get_damage(
     let step4 = battle.trunc(step3 as f64 / defense.max(1) as f64, None) as i32;
     let base_damage = battle.trunc(step4 as f64 / 50.0, None) as i32;
 
-    eprintln!("[GET_DAMAGE] level={}, basePower={}, attack={}, defense={}", level, base_power, attack, defense);
-    eprintln!("[GET_DAMAGE] step1={}, step2={}, step3={}, step4={}, base_damage={}", step1, step2, step3, step4, base_damage);
+    debug_elog!("[GET_DAMAGE] level={}, basePower={}, attack={}, defense={}", level, base_power, attack, defense);
+    debug_elog!("[GET_DAMAGE] step1={}, step2={}, step3={}, step4={}, base_damage={}", step1, step2, step3, step4, base_damage);
 
     // Call modifyDamage for the full calculation (pass is_crit for damage multiplier)
     let damage = crate::battle_actions::modify_damage(battle, base_damage, source_pos, target_pos, active_move, is_crit);

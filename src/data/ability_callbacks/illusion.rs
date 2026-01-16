@@ -138,7 +138,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
     if has_illusion {
         // this.debug('illusion cleared');
-        eprintln!("DEBUG: illusion cleared");
+        debug_elog!("DEBUG: illusion cleared");
 
         // pokemon.illusion = null;
         // const details = pokemon.getUpdatedDetails();

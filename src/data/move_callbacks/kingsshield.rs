@@ -15,22 +15,22 @@ pub fn on_prepare_hit(
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Called for pokemon {:?}", pokemon_pos);
+    debug_elog!("[KINGSSHIELD::ON_PREPARE_HIT] Called for pokemon {:?}", pokemon_pos);
 
     let pokemon = pokemon_pos;
 
     // return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
     let will_act = battle.queue.will_act().is_some();
-    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] will_act={}", will_act);
+    debug_elog!("[KINGSSHIELD::ON_PREPARE_HIT] will_act={}", will_act);
 
     if !will_act {
-        eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Returning false (will_act=false)");
+        debug_elog!("[KINGSSHIELD::ON_PREPARE_HIT] Returning false (will_act=false)");
         return EventResult::Boolean(false);
     }
 
-    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Calling run_event StallMove");
+    debug_elog!("[KINGSSHIELD::ON_PREPARE_HIT] Calling run_event StallMove");
     let stall_result = battle.run_event("StallMove", Some(crate::event::EventTarget::Pokemon(pokemon)), None, None, EventResult::Continue, false, false);
-    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] StallMove result: {:?}", stall_result);
+    debug_elog!("[KINGSSHIELD::ON_PREPARE_HIT] StallMove result: {:?}", stall_result);
 
     // Convert stall_result to boolean: Boolean(true/false) or Number(!=0) means success
     let stall_success = match stall_result {
@@ -39,7 +39,7 @@ pub fn on_prepare_hit(
         _ => false,
     };
     let result = will_act && stall_success;
-    eprintln!("[KINGSSHIELD::ON_PREPARE_HIT] Returning {}", result);
+    debug_elog!("[KINGSSHIELD::ON_PREPARE_HIT] Returning {}", result);
     EventResult::Boolean(result)
 }
 
@@ -54,7 +54,7 @@ pub fn on_hit(
     use crate::dex_data::ID;
     use crate::pokemon::Pokemon;
 
-    eprintln!("[KINGSSHIELD::ON_HIT] Called with pokemon_pos={:?}", pokemon_pos);
+    debug_elog!("[KINGSSHIELD::ON_HIT] Called with pokemon_pos={:?}", pokemon_pos);
 
     let pokemon = pokemon_pos;
     let stall_id = ID::from("stall");
@@ -132,7 +132,7 @@ pub mod condition {
     ) -> EventResult {
         use crate::dex_data::ID;
 
-        eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] Called with source={:?}, target={:?}", source_pos, target_pos);
+        debug_elog!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] Called with source={:?}, target={:?}", source_pos, target_pos);
 
         let source = source_pos;
         let target = target_pos;
@@ -140,7 +140,7 @@ pub mod condition {
         // if (!move.flags['protect'] || move.category === 'Status') {
         let (has_protect, is_status, move_id, is_z, is_max) = {
             if let Some(ref active_move) = battle.active_move {
-                eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] active_move exists: {}", active_move.id);
+                debug_elog!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] active_move exists: {}", active_move.id);
                 (
                     active_move.flags.protect,
                     active_move.category == "Status",
@@ -149,12 +149,12 @@ pub mod condition {
                     active_move.is_max.is_some(),
                 )
             } else {
-                eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] No active_move, returning Continue");
+                debug_elog!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] No active_move, returning Continue");
                 return EventResult::Continue;
             }
         };
 
-        eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] has_protect={}, is_status={}", has_protect, is_status);
+        debug_elog!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] has_protect={}, is_status={}", has_protect, is_status);
 
         if !has_protect || is_status {
             //     if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
@@ -246,7 +246,7 @@ pub mod condition {
             battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"), false, false);
         }
 
-        eprintln!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] Returning NotFail");
+        debug_elog!("[KINGSSHIELD::CONDITION::ON_TRY_HIT] Returning NotFail");
         //     return this.NOT_FAIL;
         EventResult::NotFail
     }
@@ -263,7 +263,7 @@ pub mod condition {
     ) -> EventResult {
         use crate::dex_data::ID;
 
-        eprintln!("[KINGSSHIELD::CONDITION::ON_HIT] Called with pokemon_pos={:?}, target_pos={:?}", pokemon_pos, target_pos);
+        debug_elog!("[KINGSSHIELD::CONDITION::ON_HIT] Called with pokemon_pos={:?}, target_pos={:?}", pokemon_pos, target_pos);
 
         let target = pokemon_pos;
         let source = match target_pos {

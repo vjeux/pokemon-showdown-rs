@@ -28,7 +28,7 @@ pub fn on_start(
     let active_move = match &battle.active_move {
         Some(m) => m,
         None => {
-            eprintln!("[ERROR] Battle.activeMove is null in choicelock onStart");
+            debug_elog!("[ERROR] Battle.activeMove is null in choicelock onStart");
             return EventResult::Continue;
         }
     };

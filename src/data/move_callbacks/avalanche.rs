@@ -59,7 +59,7 @@ pub fn base_power_callback(
     //     return move.basePower * 2;
     // }
     if damaged_by_target {
-        eprintln!("[AVALANCHE] BP doubled for getting hit by {:?}", target);
+        debug_elog!("[AVALANCHE] BP doubled for getting hit by {:?}", target);
         return EventResult::Number(move_data.base_power * 2);
     }
 

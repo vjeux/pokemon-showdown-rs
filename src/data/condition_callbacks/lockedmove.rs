@@ -25,7 +25,7 @@ pub fn on_residual(
     _source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[LOCKEDMOVE_RESIDUAL ENTRY] turn={}, pokemon=({}, {})",
+    debug_elog!("[LOCKEDMOVE_RESIDUAL ENTRY] turn={}, pokemon=({}, {})",
         battle.turn, pokemon_pos.0, pokemon_pos.1);
 
     // if (target.status === 'slp')
@@ -48,7 +48,7 @@ pub fn on_residual(
     battle.with_effect_state(|state| {
         if let Some(true_duration) = state.true_duration {
             let new_duration = true_duration - 1;
-            eprintln!("[LOCKEDMOVE_RESIDUAL] trueDuration {} -> {}", true_duration, new_duration);
+            debug_elog!("[LOCKEDMOVE_RESIDUAL] trueDuration {} -> {}", true_duration, new_duration);
             state.true_duration = Some(new_duration);
         }
     });
@@ -73,7 +73,7 @@ pub fn on_start(
     // this.effectState.trueDuration = this.random(2, 4);
     let true_duration = battle.random_with_range(2, 4);
 
-    eprintln!("[LOCKEDMOVE_START] turn={}, pokemon=({}, {}), trueDuration={}",
+    debug_elog!("[LOCKEDMOVE_START] turn={}, pokemon=({}, {}), trueDuration={}",
         battle.turn, pokemon_pos.0, pokemon_pos.1, true_duration);
 
     // this.effectState.move = effect.id;
@@ -86,7 +86,7 @@ pub fn on_start(
     let move_id = match move_id {
         Some(id) => id,
         None => {
-            eprintln!("[LOCKEDMOVE_START] No source_effect or current_effect!");
+            debug_elog!("[LOCKEDMOVE_START] No source_effect or current_effect!");
             return EventResult::Continue;
         }
     };
@@ -95,7 +95,7 @@ pub fn on_start(
     battle.with_effect_state(|state| {
         state.true_duration = Some(true_duration);
         state.move_id = Some(move_id);
-        eprintln!("[LOCKEDMOVE_START] Set trueDuration={} and move", true_duration);
+        debug_elog!("[LOCKEDMOVE_START] Set trueDuration={} and move", true_duration);
     });
 
     EventResult::Continue
@@ -149,14 +149,14 @@ pub fn on_after_move(
     // JavaScript: this.effectState.duration
     let duration_is_1 = battle.with_effect_state_ref(|state| {
         state.duration.map(|d| {
-            eprintln!("[LOCKEDMOVE_AFTERMOVE] turn={}, pokemon=({}, {}), duration={}, checking if == 1",
+            debug_elog!("[LOCKEDMOVE_AFTERMOVE] turn={}, pokemon=({}, {}), duration={}, checking if == 1",
                 battle.turn, pokemon_pos.0, pokemon_pos.1, d);
             d == 1
         }).unwrap_or(false)
     }).unwrap_or(false);
 
     if duration_is_1 {
-        eprintln!("[LOCKEDMOVE_AFTERMOVE] Removing lockedmove volatile, will trigger onEnd");
+        debug_elog!("[LOCKEDMOVE_AFTERMOVE] Removing lockedmove volatile, will trigger onEnd");
         // pokemon.removeVolatile('lockedmove');
         let lockedmove_id = ID::from("lockedmove");
         crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &lockedmove_id);
@@ -183,15 +183,15 @@ pub fn on_end(
         state.true_duration.unwrap_or(0)
     }).unwrap_or(0);
 
-    eprintln!("[LOCKEDMOVE_END] turn={}, pokemon=({}, {}), trueDuration={}",
+    debug_elog!("[LOCKEDMOVE_END] turn={}, pokemon=({}, {}), trueDuration={}",
         battle.turn, pokemon_pos.0, pokemon_pos.1, true_duration);
 
     if true_duration > 1 {
-        eprintln!("[LOCKEDMOVE_END] trueDuration > 1, NOT adding confusion");
+        debug_elog!("[LOCKEDMOVE_END] trueDuration > 1, NOT adding confusion");
         return EventResult::Continue;
     }
 
-    eprintln!("[LOCKEDMOVE_END] trueDuration <= 1, adding confusion");
+    debug_elog!("[LOCKEDMOVE_END] trueDuration <= 1, adding confusion");
     // target.addVolatile('confusion');
     let confusion_id = ID::from("confusion");
     crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, confusion_id, Some(pokemon_pos), None, None, None);

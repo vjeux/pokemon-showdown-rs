@@ -33,11 +33,11 @@ pub fn run_move(
     let move_id = &move_data.id;
     // Log on turns 15-17 for debugging
     if battle.turn >= 15 && battle.turn <= 17 {
-        eprintln!("[RUN_MOVE] turn={}, move={}, pokemon={:?}, external_move={}",
+        debug_elog!("[RUN_MOVE] turn={}, move={}, pokemon={:?}, external_move={}",
             battle.turn, move_id.as_str(), pokemon_pos, external_move);
     }
 
-    eprintln!("[RUN_MOVE] ENTRY: move={}, pokemon=({}, {}), target_loc={}, turn={}",
+    debug_elog!("[RUN_MOVE] ENTRY: move={}, pokemon=({}, {}), target_loc={}, turn={}",
         move_id.as_str(), pokemon_pos.0, pokemon_pos.1, target_loc, battle.turn);
     // Gen 4 compatibility: save old active move
     // if (this.battle.gen <= 4) oldActiveMove = this.battle.activeMove;
@@ -186,7 +186,7 @@ pub fn run_move(
         // JavaScript: if (!lockedMove) { ... deduct PP ... }
         let locked_move_result = battle.run_event("LockMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
 
-        eprintln!("[RUN_MOVE] LockMove result: {:?}, turn={}, move={}", locked_move_result, battle.turn, move_id.as_str());
+        debug_elog!("[RUN_MOVE] LockMove result: {:?}, turn={}, move={}", locked_move_result, battle.turn, move_id.as_str());
 
         // In JavaScript, LockMove can return:
         // - undefined/false/Continue: not locked
@@ -225,7 +225,7 @@ pub fn run_move(
             //         return;
             //     }
             if pp_deducted == 0 && move_id.as_str() != "struggle" {
-                eprintln!("[RUN_MOVE] No PP left for {}, adding 'cant' message and returning", move_id);
+                debug_elog!("[RUN_MOVE] No PP left for {}, adding 'cant' message and returning", move_id);
                 // Get pokemon ident for the 'cant' message
                 let pokemon_ident = {
                     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -261,7 +261,7 @@ pub fn run_move(
             // Set sourceEffect to 'lockedmove' condition so that use_move knows this is a locked move
             // This is important for skipping Pressure PP deduction on the attack turn
             source_effect_for_use_move = Some(Effect::condition(ID::from("lockedmove")));
-            eprintln!("[RUN_MOVE] Move is locked, setting source_effect to 'lockedmove'");
+            debug_elog!("[RUN_MOVE] Move is locked, setting source_effect to 'lockedmove'");
         }
 
         // pokemon.moveUsed(move, targetLoc);
@@ -281,7 +281,7 @@ pub fn run_move(
 
     // Handle Z-Move
     if let Some(zmove_name) = &z_move {
-        eprintln!("[RUN_MOVE] Z-move detected: {}", zmove_name);
+        debug_elog!("[RUN_MOVE] Z-move detected: {}", zmove_name);
         // if (pokemon.illusion) {
         //     this.battle.singleEvent('End', this.dex.abilities.get('Illusion'), pokemon.abilityState, pokemon);
         // }
@@ -297,18 +297,18 @@ pub fn run_move(
 
         // pokemon.side.zMoveUsed = true;
         battle.sides[pokemon_pos.0].z_move_used = true;
-        eprintln!("[RUN_MOVE] Set z_move_used = true for side {}", pokemon_pos.0);
+        debug_elog!("[RUN_MOVE] Set z_move_used = true for side {}", pokemon_pos.0);
 
         // Disable the Z-move in the pokemon's move_slots
         // Find and disable the move that was used as a Z-move
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             let zmove_id = ID::new(zmove_name);
-            eprintln!("[RUN_MOVE] Looking for move {} in {} move_slots", zmove_id, pokemon.move_slots.len());
+            debug_elog!("[RUN_MOVE] Looking for move {} in {} move_slots", zmove_id, pokemon.move_slots.len());
             for move_slot in &mut pokemon.move_slots {
-                eprintln!("[RUN_MOVE]   Checking move_slot: {} vs {}", move_slot.id, zmove_id);
+                debug_elog!("[RUN_MOVE]   Checking move_slot: {} vs {}", move_slot.id, zmove_id);
                 if move_slot.id == zmove_id {
                     move_slot.disabled = true;
-                    eprintln!("[RUN_MOVE] Disabled Z-move: {}", zmove_id);
+                    debug_elog!("[RUN_MOVE] Disabled Z-move: {}", zmove_id);
                     break;
                 }
             }

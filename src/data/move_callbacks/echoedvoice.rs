@@ -28,23 +28,23 @@ pub fn base_power_callback(
         None => return EventResult::Continue,
     };
 
-    eprintln!("[ECHOED_VOICE] base_power_callback called! base_power={}", base_power);
+    debug_elog!("[ECHOED_VOICE] base_power_callback called! base_power={}", base_power);
 
     let mut bp = base_power;
 
     // if (this.field.pseudoWeather.echoedvoice) {
     //     bp = move.basePower * this.field.pseudoWeather.echoedvoice.multiplier;
     // }
-    eprintln!("[ECHOED_VOICE] Checking for echoedvoice pseudoweather. pseudo_weather map size: {}", battle.field.pseudo_weather.len());
+    debug_elog!("[ECHOED_VOICE] Checking for echoedvoice pseudoweather. pseudo_weather map size: {}", battle.field.pseudo_weather.len());
     if let Some(echoedvoice_condition) = battle.field.pseudo_weather.get(&ID::from("echoedvoice")) {
         // Get multiplier from effect state
         let multiplier = echoedvoice_condition.multiplier.unwrap_or(1);
 
-        eprintln!("[ECHOED_VOICE] Found echoedvoice pseudoweather! multiplier={}", multiplier);
+        debug_elog!("[ECHOED_VOICE] Found echoedvoice pseudoweather! multiplier={}", multiplier);
         bp = base_power * multiplier;
-        eprintln!("[ECHOED_VOICE] Multiplied base power: {} * {} = {}", base_power, multiplier, bp);
+        debug_elog!("[ECHOED_VOICE] Multiplied base power: {} * {} = {}", base_power, multiplier, bp);
     } else {
-        eprintln!("[ECHOED_VOICE] No echoedvoice pseudoweather found!");
+        debug_elog!("[ECHOED_VOICE] No echoedvoice pseudoweather found!");
     }
 
     // this.debug(`BP: ${move.basePower}`);
@@ -62,12 +62,12 @@ pub fn on_try_move(
     source_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    eprintln!("[ECHOED_VOICE] on_try_move called! Adding pseudoweather via Battle method");
+    debug_elog!("[ECHOED_VOICE] on_try_move called! Adding pseudoweather via Battle method");
 
     // this.field.addPseudoWeather('echoedvoice');
     battle.add_pseudoweather("echoedvoice", Some(source_pos), None);
 
-    eprintln!("[ECHOED_VOICE] Pseudoweather added via Battle.add_pseudoweather");
+    debug_elog!("[ECHOED_VOICE] Pseudoweather added via Battle.add_pseudoweather");
 
     EventResult::Continue
 }
@@ -79,14 +79,14 @@ pub mod condition {
     ///     this.effectState.multiplier = 1;
     /// }
     pub fn on_field_start(battle: &mut Battle) -> EventResult {
-        eprintln!("[ECHOED_VOICE] on_field_start called!");
+        debug_elog!("[ECHOED_VOICE] on_field_start called!");
 
         // this.effectState.multiplier = 1;
         battle.with_effect_state(|state| {
-            eprintln!("[ECHOED_VOICE] Found current_effect_state, setting multiplier to 1");
+            debug_elog!("[ECHOED_VOICE] Found current_effect_state, setting multiplier to 1");
             state.multiplier = Some(1);
         }).unwrap_or_else(|| {
-            eprintln!("[ECHOED_VOICE] WARNING: current_effect_state is None!");
+            debug_elog!("[ECHOED_VOICE] WARNING: current_effect_state is None!");
         });
 
         EventResult::Continue
@@ -101,7 +101,7 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_field_restart(battle: &mut Battle) -> EventResult {
-        eprintln!("[ECHOED_VOICE] on_field_restart called!");
+        debug_elog!("[ECHOED_VOICE] on_field_restart called!");
 
         // if (this.effectState.duration !== 2) {
         //     this.effectState.duration = 2;
@@ -110,31 +110,31 @@ pub mod condition {
         //     }
         // }
         let duration = battle.with_effect_state_ref(|state| state.duration.unwrap_or(0)).unwrap_or(0);
-        eprintln!("[ECHOED_VOICE] Current duration: {:?}", duration);
+        debug_elog!("[ECHOED_VOICE] Current duration: {:?}", duration);
 
         if duration != 2 {
             battle.with_effect_state(|state| {
                 // this.effectState.duration = 2;
                 state.duration = Some(2);
-                eprintln!("[ECHOED_VOICE] Set duration to 2");
+                debug_elog!("[ECHOED_VOICE] Set duration to 2");
 
                 // if (this.effectState.multiplier < 5) {
                 //     this.effectState.multiplier++;
                 // }
                 let current_multiplier = state.multiplier.unwrap_or(1);
-                eprintln!("[ECHOED_VOICE] Current multiplier: {}", current_multiplier);
+                debug_elog!("[ECHOED_VOICE] Current multiplier: {}", current_multiplier);
 
                 if current_multiplier < 5 {
                     state.multiplier = Some(current_multiplier + 1);
-                    eprintln!("[ECHOED_VOICE] Incremented multiplier to {}", current_multiplier + 1);
+                    debug_elog!("[ECHOED_VOICE] Incremented multiplier to {}", current_multiplier + 1);
                 } else {
-                    eprintln!("[ECHOED_VOICE] Multiplier already at max (5)");
+                    debug_elog!("[ECHOED_VOICE] Multiplier already at max (5)");
                 }
             }).unwrap_or_else(|| {
-                eprintln!("[ECHOED_VOICE] WARNING: current_effect_state is None!");
+                debug_elog!("[ECHOED_VOICE] WARNING: current_effect_state is None!");
             });
         } else {
-            eprintln!("[ECHOED_VOICE] Duration is already 2, not incrementing");
+            debug_elog!("[ECHOED_VOICE] Duration is already 2, not incrementing");
         }
 
         EventResult::Continue

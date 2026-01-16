@@ -32,16 +32,16 @@ impl Battle {
                 let pos = ctx.effect_holder?;
                 let pokemon = self.pokemon_at_mut(pos.0, pos.1)?;
                 if ctx.id.as_str() == "counter" {
-                    eprintln!("[WITH_EFFECT_STATE] Condition: id={}, pos={:?}, found volatile={}",
+                    debug_elog!("[WITH_EFFECT_STATE] Condition: id={}, pos={:?}, found volatile={}",
                         ctx.id.as_str(), pos, pokemon.volatiles.contains_key(&ctx.id));
                     if let Some(state) = pokemon.volatiles.get(&ctx.id) {
-                        eprintln!("[WITH_EFFECT_STATE] BEFORE: slot={:?}, damage={:?}", state.slot, state.damage);
+                        debug_elog!("[WITH_EFFECT_STATE] BEFORE: slot={:?}, damage={:?}", state.slot, state.damage);
                     }
                 }
                 let state = pokemon.volatiles.get_mut(&ctx.id)?;
                 let result = f(state);
                 if ctx.id.as_str() == "counter" {
-                    eprintln!("[WITH_EFFECT_STATE] AFTER: slot={:?}, damage={:?}", state.slot, state.damage);
+                    debug_elog!("[WITH_EFFECT_STATE] AFTER: slot={:?}, damage={:?}", state.slot, state.damage);
                 }
                 Some(result)
             }

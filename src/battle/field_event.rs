@@ -434,11 +434,11 @@ impl Battle {
 
         // JS: this.speedSort(handlers);
         // Sort handlers by Pokemon speed
-        eprintln!("[FIELD_EVENT] event='{}', turn={}, BEFORE speed_sort, handlers.len()={}, handler IDs: {:?}",
+        debug_elog!("[FIELD_EVENT] event='{}', turn={}, BEFORE speed_sort, handlers.len()={}, handler IDs: {:?}",
             event_id, self.turn, handlers.len(),
             handlers.iter().map(|h| h.effect_id.as_str()).collect::<Vec<_>>());
         for (i, h) in handlers.iter().enumerate() {
-            eprintln!("  [{}] id={}, order={:?}, priority={}, speed={}, sub_order={}, effect_order={}",
+            debug_elog!("  [{}] id={}, order={:?}, priority={}, speed={}, sub_order={}, effect_order={}",
                 i, h.effect_id.as_str(), h.order, h.priority, h.speed, h.sub_order, h.effect_order);
         }
         self.speed_sort_with_callsite(&mut handlers, |h| {
@@ -453,7 +453,7 @@ impl Battle {
             }
         }, &format!("field_event:{}", event_id));
 
-        eprintln!("[FIELD_EVENT] event='{}', turn={}, AFTER speed_sort, handler IDs: {:?}",
+        debug_elog!("[FIELD_EVENT] event='{}', turn={}, AFTER speed_sort, handler IDs: {:?}",
             event_id, self.turn,
             handlers.iter().map(|h| h.effect_id.as_str()).collect::<Vec<_>>());
 
@@ -508,36 +508,36 @@ impl Battle {
             // Note: handler.end is the end callback (clearWeather, clearTerrain, removePseudoWeather)
             // This is different from handler.callback (the onFieldResidual callback).
             // Duration is decremented and effects are cleared based on handler.end, NOT handler.callback.
-            eprintln!("[FIELD_EVENT HANDLER] event={}, effect_id={}, is_field={}, is_side={}",
+            debug_elog!("[FIELD_EVENT HANDLER] event={}, effect_id={}, is_field={}, is_side={}",
                 event_id, handler.effect_id.as_str(), handler.is_field, handler.is_side);
             if event_id == "Residual" && handler.is_field {
-                eprintln!("[FIELD_EVENT RESIDUAL FIELD] effect_id={}, weather={}, terrain={}",
+                debug_elog!("[FIELD_EVENT RESIDUAL FIELD] effect_id={}, weather={}, terrain={}",
                     handler.effect_id.as_str(), self.field.weather.as_str(), self.field.terrain.as_str());
 
                 let should_clear = {
                     // Check weather
                     if self.field.weather == handler.effect_id {
-                        eprintln!("[WEATHER DURATION] Checking sandstorm duration, current={:?}", self.field.weather_state.duration);
+                        debug_elog!("[WEATHER DURATION] Checking sandstorm duration, current={:?}", self.field.weather_state.duration);
                         if let Some(duration) = self.field.weather_state.duration.as_mut() {
-                            eprintln!("[WEATHER DURATION] BEFORE decrement: duration={}", *duration);
+                            debug_elog!("[WEATHER DURATION] BEFORE decrement: duration={}", *duration);
                             *duration -= 1;
-                            eprintln!("[WEATHER DURATION] AFTER decrement: duration={}", *duration);
+                            debug_elog!("[WEATHER DURATION] AFTER decrement: duration={}", *duration);
                             *duration == 0
                         } else {
-                            eprintln!("[WEATHER DURATION] No duration set (permanent weather)");
+                            debug_elog!("[WEATHER DURATION] No duration set (permanent weather)");
                             false
                         }
                     }
                     // Check terrain
                     else if self.field.terrain == handler.effect_id {
-                        eprintln!("[TERRAIN DURATION] Checking terrain duration, current={:?}", self.field.terrain_state.duration);
+                        debug_elog!("[TERRAIN DURATION] Checking terrain duration, current={:?}", self.field.terrain_state.duration);
                         if let Some(duration) = self.field.terrain_state.duration.as_mut() {
-                            eprintln!("[TERRAIN DURATION] BEFORE decrement: duration={}", *duration);
+                            debug_elog!("[TERRAIN DURATION] BEFORE decrement: duration={}", *duration);
                             *duration -= 1;
-                            eprintln!("[TERRAIN DURATION] AFTER decrement: duration={}", *duration);
+                            debug_elog!("[TERRAIN DURATION] AFTER decrement: duration={}", *duration);
                             *duration == 0
                         } else {
-                            eprintln!("[TERRAIN DURATION] No duration set (permanent terrain)");
+                            debug_elog!("[TERRAIN DURATION] No duration set (permanent terrain)");
                             false
                         }
                     }
@@ -618,13 +618,13 @@ impl Battle {
                                     //     handler.state.duration--;
                                     //     if (!handler.state.duration) { /* remove volatile */ }
                                     // }
-                                    eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}', pokemon=({},{}), duration BEFORE decrement={}",
+                                    debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}', pokemon=({},{}), duration BEFORE decrement={}",
                                         self.turn, handler.effect_id.as_str(), side_idx, poke_idx, *duration);
                                     *duration -= 1;
-                                    eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}', pokemon=({},{}), duration AFTER decrement={}",
+                                    debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}', pokemon=({},{}), duration AFTER decrement={}",
                                         self.turn, handler.effect_id.as_str(), side_idx, poke_idx, *duration);
                                     if *duration == 0 {
-                                        eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' EXPIRED, removing and skipping handler",
+                                        debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' EXPIRED, removing and skipping handler",
                                             self.turn, handler.effect_id.as_str());
                                         true
                                     } else {
@@ -646,7 +646,7 @@ impl Battle {
                     if should_remove {
                         // Call End event before removing (this is what faints Pokemon for Perish Song, etc.)
                         // JS: handler.end.call(this, target, pokemon.volatiles[handler.effectId]);
-                        eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' calling End event before removal",
+                        debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' calling End event before removal",
                             self.turn, handler.effect_id.as_str());
 
                         // Get the volatile's state to pass to the End callback
@@ -663,7 +663,7 @@ impl Battle {
                         if let Some(pokemon) = self.sides.get_mut(side_idx)
                             .and_then(|s| s.pokemon.get_mut(poke_idx)) {
                             pokemon.volatiles.remove(&handler.effect_id);
-                            eprintln!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' REMOVED from pokemon ({}, {})",
+                            debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, volatile='{}' REMOVED from pokemon ({}, {})",
                                 self.turn, handler.effect_id.as_str(), side_idx, poke_idx);
                         }
                         // Skip calling the residual handler for expired effects
@@ -683,13 +683,13 @@ impl Battle {
                             if let Some(condition_state) = side.side_conditions.get_mut(&handler.effect_id) {
                                 if let Some(duration) = condition_state.duration.as_mut() {
                                     // JavaScript: handler.state.duration--; if (!handler.state.duration) { handler.end.call(...); }
-                                    eprintln!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}', side={}, duration BEFORE decrement={}",
+                                    debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}', side={}, duration BEFORE decrement={}",
                                         self.turn, handler.effect_id.as_str(), side_idx, *duration);
                                     *duration -= 1;
-                                    eprintln!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}', side={}, duration AFTER decrement={}",
+                                    debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}', side={}, duration AFTER decrement={}",
                                         self.turn, handler.effect_id.as_str(), side_idx, *duration);
                                     if *duration == 0 {
-                                        eprintln!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}' EXPIRED on side {}, calling SideEnd",
+                                        debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}' EXPIRED on side {}, calling SideEnd",
                                             self.turn, handler.effect_id.as_str(), side_idx);
                                         true
                                     } else {
@@ -715,7 +715,7 @@ impl Battle {
                         // Actually remove the side condition
                         if let Some(side) = self.sides.get_mut(side_idx) {
                             side.side_conditions.remove(&handler.effect_id);
-                            eprintln!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}' REMOVED from side {}",
+                            debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}' REMOVED from side {}",
                                 self.turn, handler.effect_id.as_str(), side_idx);
                         }
 
@@ -755,7 +755,7 @@ impl Battle {
                             // Call the callback for each active Pokemon on this side
                             for poke_idx in active_positions {
                                 let target_pos = (side_idx, poke_idx);
-                                eprintln!("[FIELD_EVENT] Calling side condition {} Residual for Pokemon {:?}",
+                                debug_elog!("[FIELD_EVENT] Calling side condition {} Residual for Pokemon {:?}",
                                     handler.effect_id.as_str(), target_pos);
                                 self.single_event(&handler_event_id, &crate::battle::Effect::side_condition(handler.effect_id.clone()), None, Some(target_pos), None, None, None);
 
@@ -771,7 +771,7 @@ impl Battle {
                     }
                 } else {
                     // Normal handling for non-side-Residual events
-                    eprintln!("[FIELD_EVENT] Calling single_event for event='{}', effect='{}', turn={}",
+                    debug_elog!("[FIELD_EVENT] Calling single_event for event='{}', effect='{}', turn={}",
                         handler_event_id, handler.effect_id.as_str(), self.turn);
 
                     // For slot conditions, we need to pass the actual state so callbacks can access it

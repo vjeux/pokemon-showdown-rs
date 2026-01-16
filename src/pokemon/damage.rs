@@ -54,7 +54,7 @@ impl Pokemon {
                 return amount;
             }
 
-            eprintln!("[DAMAGE] Pokemon {} fainted! Adding to faint_queue. pokemon_pos={:?}, source={:?}",
+            debug_elog!("[DAMAGE] Pokemon {} fainted! Adding to faint_queue. pokemon_pos={:?}, source={:?}",
                 self.name, pokemon_pos, source);
 
             // JS equivalent: this.faint(source, effect) -> sets faintQueued and adds to faintQueue
@@ -67,7 +67,7 @@ impl Pokemon {
                 effect: effect.cloned(),
             });
 
-            eprintln!("[DAMAGE] faint_queue now has {} entries", faint_queue.len());
+            debug_elog!("[DAMAGE] faint_queue now has {} entries", faint_queue.len());
         }
 
         // JS: return d;

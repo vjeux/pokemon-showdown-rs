@@ -25,7 +25,7 @@ use crate::battle::PriorityItem;
 ///     return true;
 /// }
 pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
-    eprintln!("[RUN_SWITCH DEBUG] Called for side {} pokemon {}", side_idx, poke_idx);
+    debug_elog!("[RUN_SWITCH DEBUG] Called for side {} pokemon {}", side_idx, poke_idx);
     // Collect all switchers - consume all consecutive runSwitch actions
     let mut switchers_in: Vec<(usize, usize)> = vec![(side_idx, poke_idx)];
 
@@ -33,7 +33,7 @@ pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
     while let Some(action) = battle.queue.peek() {
         if action.is_run_switch() {
             if let Some((s, p)) = action.get_switch_target() {
-                eprintln!("[RUN_SWITCH DEBUG] Found additional switcher: side {} pokemon {}", s, p);
+                debug_elog!("[RUN_SWITCH DEBUG] Found additional switcher: side {} pokemon {}", s, p);
                 switchers_in.push((s, p));
             }
             battle.queue.shift();
@@ -42,7 +42,7 @@ pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
         }
     }
 
-    eprintln!("[RUN_SWITCH DEBUG] Total switchers: {}", switchers_in.len());
+    debug_elog!("[RUN_SWITCH DEBUG] Total switchers: {}", switchers_in.len());
 
     // JS: const allActive = this.battle.getAllActive(true);
     // JS: this.battle.speedSort(allActive);
@@ -58,7 +58,7 @@ pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
         }
     }
 
-    eprintln!("[RUN_SWITCH DEBUG] All active count: {}, calling speed_sort...", all_active.len());
+    debug_elog!("[RUN_SWITCH DEBUG] All active count: {}, calling speed_sort...", all_active.len());
     // Sort all active Pokemon using speed_sort (which uses PRNG for ties)
     battle.speed_sort_with_callsite(&mut all_active, |item| PriorityItem {
         order: None,
@@ -69,7 +69,7 @@ pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
         effect_order: 0,
         index: 0,
     }, "run_switch:all_active");
-    eprintln!("[RUN_SWITCH DEBUG] speed_sort done");
+    debug_elog!("[RUN_SWITCH DEBUG] speed_sort done");
 
     // JS: this.battle.speedOrder = allActive.map(a => a.side.n * a.battle.sides.length + a.position);
     battle.speed_order = all_active.iter().map(|(side_idx, poke_idx, _speed)| {

@@ -40,16 +40,16 @@ use crate::battle::SwitchResult;
 ///     return true;
 ///   }
 pub fn drag_in(battle: &mut Battle, side_idx: usize, slot: usize) -> bool {
-    eprintln!("[DRAG_IN] Entry: side={}, slot={}", side_idx, slot);
+    debug_elog!("[DRAG_IN] Entry: side={}, slot={}", side_idx, slot);
     // const pokemon = this.battle.getRandomSwitchable(side);
     // if (!pokemon || pokemon.isActive) return false;
     let switch_target = match battle.get_random_switchable(side_idx) {
         Some(idx) => {
-            eprintln!("[DRAG_IN] Found random switchable: pokemon index {}", idx);
+            debug_elog!("[DRAG_IN] Found random switchable: pokemon index {}", idx);
             idx
         }
         None => {
-            eprintln!("[DRAG_IN] No random switchable found, returning false");
+            debug_elog!("[DRAG_IN] No random switchable found, returning false");
             return false;
         }
     };
@@ -59,35 +59,35 @@ pub fn drag_in(battle: &mut Battle, side_idx: usize, slot: usize) -> bool {
         .active
         .iter()
         .any(|&slot_idx| slot_idx == Some(switch_target));
-    eprintln!("[DRAG_IN] is_active check: {}", is_active);
+    debug_elog!("[DRAG_IN] is_active check: {}", is_active);
     if is_active {
-        eprintln!("[DRAG_IN] Pokemon is already active, returning false");
+        debug_elog!("[DRAG_IN] Pokemon is already active, returning false");
         return false;
     }
 
     // const oldActive = side.active[pos];
     // if (!oldActive) throw new Error(`nothing to drag out`);
     let old_active = battle.sides[side_idx].active.get(slot).copied().flatten();
-    eprintln!("[DRAG_IN] old_active: {:?}", old_active);
+    debug_elog!("[DRAG_IN] old_active: {:?}", old_active);
     if old_active.is_none() {
         // JavaScript throws error, but we'll just return false
-        eprintln!("[DRAG_IN] No old active pokemon, returning false");
+        debug_elog!("[DRAG_IN] No old active pokemon, returning false");
         return false;
     }
 
     // if (!oldActive.hp) return false;
     let old_poke_idx = old_active.unwrap();
     let old_poke_hp = battle.sides[side_idx].pokemon[old_poke_idx].hp;
-    eprintln!("[DRAG_IN] old_poke hp: {}", old_poke_hp);
+    debug_elog!("[DRAG_IN] old_poke hp: {}", old_poke_hp);
     if old_poke_hp == 0 {
-        eprintln!("[DRAG_IN] Old pokemon has 0 HP, returning false");
+        debug_elog!("[DRAG_IN] Old pokemon has 0 HP, returning false");
         return false;
     }
 
     // if (!this.battle.runEvent('DragOut', oldActive)) {
     //   return false;
     // }
-    eprintln!("[DRAG_IN] Calling runEvent DragOut for old pokemon");
+    debug_elog!("[DRAG_IN] Calling runEvent DragOut for old pokemon");
     if !battle.run_event(
                 "DragOut",
                 Some(crate::event::EventTarget::Pokemon((side_idx, old_poke_idx))),
@@ -97,15 +97,15 @@ pub fn drag_in(battle: &mut Battle, side_idx: usize, slot: usize) -> bool {
         false,
         false,
     ).is_truthy() {
-        eprintln!("[DRAG_IN] DragOut event returned false, returning false");
+        debug_elog!("[DRAG_IN] DragOut event returned false, returning false");
         return false;
     }
 
     // if (!this.switchIn(pokemon, pos, null, true)) return false;
     // return true;
-    eprintln!("[DRAG_IN] Calling switchIn for pokemon {} to slot {}", switch_target, slot);
+    debug_elog!("[DRAG_IN] Calling switchIn for pokemon {} to slot {}", switch_target, slot);
     let result = crate::battle_actions::switch_in(battle, side_idx, slot, switch_target, None, true);
-    eprintln!("[DRAG_IN] switchIn result: {:?}", result);
+    debug_elog!("[DRAG_IN] switchIn result: {:?}", result);
     matches!(
         result,
         SwitchResult::Success

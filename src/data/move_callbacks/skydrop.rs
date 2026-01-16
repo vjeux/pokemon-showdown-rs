@@ -43,7 +43,7 @@ pub fn on_modify_move(
         source_pokemon.volatiles.contains_key(&ID::from("skydrop"))
     };
 
-    eprintln!("[SKYDROP_MODIFY_MOVE] turn={}, source={:?}, has_skydrop={}", battle.turn, source, has_skydrop);
+    debug_elog!("[SKYDROP_MODIFY_MOVE] turn={}, source={:?}, has_skydrop={}", battle.turn, source, has_skydrop);
 
     // Set accuracy to true only on turn 1 (when no skydrop volatile exists)
     if !has_skydrop {
@@ -53,11 +53,11 @@ pub fn on_modify_move(
             Some(m) => m,
             None => return EventResult::Continue,
         };
-        eprintln!("[SKYDROP_MODIFY_MOVE] Setting accuracy=true (charge phase)");
+        debug_elog!("[SKYDROP_MODIFY_MOVE] Setting accuracy=true (charge phase)");
         active_move.accuracy = crate::dex::Accuracy::AlwaysHits;
         active_move.flags.contact = false;
     } else {
-        eprintln!("[SKYDROP_MODIFY_MOVE] Keeping accuracy=100 (attack phase)");
+        debug_elog!("[SKYDROP_MODIFY_MOVE] Keeping accuracy=100 (attack phase)");
     }
 
     EventResult::Continue
@@ -567,7 +567,7 @@ pub mod condition {
         use crate::dex_data::ID;
         let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
 
-        eprintln!("[SKYDROP_ANY_INVULN] Called with target_pos={:?}, source_pos={:?}, move_id={}", target_pos, source_pos, move_id);
+        debug_elog!("[SKYDROP_ANY_INVULN] Called with target_pos={:?}, source_pos={:?}, move_id={}", target_pos, source_pos, move_id);
 
         // onAnyInvulnerability(target, source, move) {
         //     if (target !== this.effectState.target && target !== this.effectState.source) {
@@ -584,7 +584,7 @@ pub mod condition {
         let target = match target_pos {
             Some(pos) => pos,
             None => {
-                eprintln!("[SKYDROP_ANY_INVULN] No target_pos, returning Continue");
+                debug_elog!("[SKYDROP_ANY_INVULN] No target_pos, returning Continue");
                 return EventResult::Continue;
             }
         };
@@ -598,18 +598,18 @@ pub mod condition {
         }) {
             Some((t, s)) => (t, s),
             None => {
-                eprintln!("[SKYDROP_ANY_INVULN] No effect state available, returning Continue");
+                debug_elog!("[SKYDROP_ANY_INVULN] No effect state available, returning Continue");
                 return EventResult::Continue;
             }
         };
 
-        eprintln!("[SKYDROP_ANY_INVULN] target={:?}, source={:?}, effect_target={:?}, effect_source={:?}", target, source, effect_target, effect_source);
+        debug_elog!("[SKYDROP_ANY_INVULN] target={:?}, source={:?}, effect_target={:?}, effect_source={:?}", target, source, effect_target, effect_source);
 
         // if (target !== this.effectState.target && target !== this.effectState.source) {
         //     return;
         // }
         if Some(target) != effect_target && Some(target) != effect_source {
-            eprintln!("[SKYDROP_ANY_INVULN] Target check failed: target not in effect_state, returning Continue");
+            debug_elog!("[SKYDROP_ANY_INVULN] Target check failed: target not in effect_state, returning Continue");
             return EventResult::Continue;
         }
 
@@ -617,7 +617,7 @@ pub mod condition {
         //     return;
         // }
         if source == effect_target && Some(target) == effect_source {
-            eprintln!("[SKYDROP_ANY_INVULN] Source/target swap check failed, returning Continue");
+            debug_elog!("[SKYDROP_ANY_INVULN] Source/target swap check failed, returning Continue");
             return EventResult::Continue;
         }
 
@@ -633,11 +633,11 @@ pub mod condition {
             || move_id == ID::from("smackdown")
             || move_id == ID::from("thousandarrows")
         {
-            eprintln!("[SKYDROP_ANY_INVULN] Move can hit Sky Drop user, returning Continue");
+            debug_elog!("[SKYDROP_ANY_INVULN] Move can hit Sky Drop user, returning Continue");
             return EventResult::Continue;
         }
 
-        eprintln!("[SKYDROP_ANY_INVULN] All checks passed, returning Boolean(false)");
+        debug_elog!("[SKYDROP_ANY_INVULN] All checks passed, returning Boolean(false)");
         // return false;
         EventResult::Boolean(false)
     }

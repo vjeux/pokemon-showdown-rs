@@ -28,11 +28,11 @@ pub fn on_hit(
     // if (!move) return;
     let move_id = match &battle.last_move {
         Some(active_move) => {
-            eprintln!("[COPYCAT] Found last_move: id={}, turn={}", active_move.id.as_str(), battle.turn);
+            debug_elog!("[COPYCAT] Found last_move: id={}, turn={}", active_move.id.as_str(), battle.turn);
             active_move.id.clone()
         },
         None => {
-            eprintln!("[COPYCAT] No last_move found, returning Continue");
+            debug_elog!("[COPYCAT] No last_move found, returning Continue");
             // return;
             return EventResult::Continue;
         }
@@ -68,11 +68,11 @@ pub fn on_hit(
         || move_data.is_z.is_some()
         || move_data.is_max.is_some()
     {
-        eprintln!("[COPYCAT] Move {} has failcopycat/isZ/isMax flag, returning false", actual_move_id.as_str());
+        debug_elog!("[COPYCAT] Move {} has failcopycat/isZ/isMax flag, returning false", actual_move_id.as_str());
         return EventResult::Boolean(false);
     }
 
-    eprintln!("[COPYCAT] Using move: {}", move_data.name);
+    debug_elog!("[COPYCAT] Using move: {}", move_data.name);
     // this.actions.useMove(move.id, pokemon);
     battle.use_move(&move_data, _pokemon_pos, None, None, None, None);
 

@@ -121,14 +121,14 @@ pub fn try_spread_move_hit(
     if targets.len() > 1 || is_multi_target {
         if active_move.smart_target != Some(true) {
             if battle.turn >= 64 && battle.turn <= 66 {
-                eprintln!("[TRY_SPREAD_MOVE_HIT] Setting spread_hit=true for move={}, targets.len()={}, is_multi_target={}",
+                debug_elog!("[TRY_SPREAD_MOVE_HIT] Setting spread_hit=true for move={}, targets.len()={}, is_multi_target={}",
                     active_move.id, targets.len(), is_multi_target);
             }
             active_move.spread_hit = true;
         }
     } else {
         if battle.turn >= 64 && battle.turn <= 66 {
-            eprintln!("[TRY_SPREAD_MOVE_HIT] NOT setting spread_hit for move={}, targets.len()={}, is_multi_target={}",
+            debug_elog!("[TRY_SPREAD_MOVE_HIT] NOT setting spread_hit for move={}, targets.len()={}, is_multi_target={}",
                 active_move.id, targets.len(), is_multi_target);
         }
     }
@@ -273,7 +273,7 @@ pub fn try_spread_move_hit(
                     pokemon_pos,
                     active_move,
                 );
-                eprintln!("[TRY_SPREAD] Step 0 (Invuln): results={:?}, target_list.len()={}", results, target_list.len());
+                debug_elog!("[TRY_SPREAD] Step 0 (Invuln): results={:?}, target_list.len()={}", results, target_list.len());
                 // Convert Vec<bool> to Vec<HitResult>
                 Some(results.into_iter().map(|b| if b { HitResult::Success } else { HitResult::Failed }).collect())
             }
@@ -386,7 +386,7 @@ pub fn try_spread_move_hit(
         }
 
         let hit_results = hit_results.unwrap();
-        eprintln!("[TRY_SPREAD] Step {}: Before filter: target_list.len()={}, hit_results={:?}", step_idx, target_list.len(), hit_results);
+        debug_elog!("[TRY_SPREAD] Step {}: Before filter: target_list.len()={}, hit_results={:?}", step_idx, target_list.len(), hit_results);
 
         // JS: targets = targets.filter((val, i) => hitResults[i] || hitResults[i] === 0);
         // In JavaScript, hitResults[i] can be number | boolean | "" | undefined
@@ -407,7 +407,7 @@ pub fn try_spread_move_hit(
             })
             .map(|(_, &t)| t)
             .collect();
-        eprintln!("[TRY_SPREAD] After filter: target_list.len()={}", target_list.len());
+        debug_elog!("[TRY_SPREAD] After filter: target_list.len()={}", target_list.len());
 
         // JS: atLeastOneFailure = atLeastOneFailure || hitResults.some(val => val === false);
         // CRITICAL: Only HitResult::Failed counts as a failure, NOT HitResult::NotFail

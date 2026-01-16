@@ -328,17 +328,17 @@ impl Battle {
                 let can_act = if let Some(side) = self.sides.get(side_idx) {
                     if let Some(pokemon) = side.pokemon.get(poke_idx) {
                         if pokemon.is_fainted() {
-                            eprintln!("[RUN_ACTION] Pokemon is already fainted, skipping move execution: side={}, poke={}, move={}", side_idx, poke_idx, move_id.as_str());
+                            debug_elog!("[RUN_ACTION] Pokemon is already fainted, skipping move execution: side={}, poke={}, move={}", side_idx, poke_idx, move_id.as_str());
                             false  // Don't execute move, but continue to check_fainted
                         } else {
                             true  // Pokemon can act
                         }
                     } else {
-                        eprintln!("[RUN_ACTION] Pokemon doesn't exist, returning early: side={}, poke={}, move={}", side_idx, poke_idx, move_id.as_str());
+                        debug_elog!("[RUN_ACTION] Pokemon doesn't exist, returning early: side={}, poke={}, move={}", side_idx, poke_idx, move_id.as_str());
                         return;
                     }
                 } else {
-                    eprintln!("[RUN_ACTION] Side doesn't exist, returning early: side={}, move={}", side_idx, move_id.as_str());
+                    debug_elog!("[RUN_ACTION] Side doesn't exist, returning early: side={}, move={}", side_idx, move_id.as_str());
                     return;
                 };
 
@@ -353,7 +353,7 @@ impl Battle {
                             // JS:         maxMove: action.maxMove, originalTarget: action.originalTarget,
                             // JS:     });
                             // JS:     break;
-                            eprintln!("[RUN_ACTION] About to call run_move, move={}", move_id.as_str());
+                            debug_elog!("[RUN_ACTION] About to call run_move, move={}", move_id.as_str());
                             // Look up move data before calling run_move
                             // JavaScript creates a dummy move with exists: false for unknown moves
                             // This is needed for virtual moves like 'recharge' which don't have
@@ -361,7 +361,7 @@ impl Battle {
                             let move_data_for_run = match self.dex.moves().get(move_id.as_str()) {
                                 Some(m) => m.clone(),
                                 None => {
-                                    eprintln!("[RUN_ACTION] Creating dummy move for: {}", move_id.as_str());
+                                    debug_elog!("[RUN_ACTION] Creating dummy move for: {}", move_id.as_str());
                                     // Create a minimal dummy move like JavaScript does
                                     // JavaScript: move = new DataMove({ name: id, exists: false })
                                     // Note: MoveData doesn't have exists field - that's only on ActiveMove
@@ -395,7 +395,7 @@ impl Battle {
                                 None, // original_target
                                 move_action.prankster_boosted, // prankster_boosted flag from action queue
                             );
-                            eprintln!("[RUN_ACTION] After run_move, move={}", move_id.as_str());
+                            debug_elog!("[RUN_ACTION] After run_move, move={}", move_id.as_str());
                         }
                         MoveActionType::BeforeTurnMove => {
                             // JS: case 'beforeTurnMove':
@@ -407,7 +407,7 @@ impl Battle {
                             // JS:     if (!action.move.beforeTurnCallback) throw new Error(`beforeTurnMove has no beforeTurnCallback`);
                             // JS:     action.move.beforeTurnCallback.call(this, action.pokemon, target);
                             // JS:     break;
-                            eprintln!("[RUN_ACTION] Executing beforeTurnMove callback for move={}", move_id.as_str());
+                            debug_elog!("[RUN_ACTION] Executing beforeTurnMove callback for move={}", move_id.as_str());
 
                             // Note: JavaScript gets the target and checks if it's valid, but the current Rust
                             // dispatch function doesn't take a target parameter. The callbacks that need the
@@ -424,7 +424,7 @@ impl Battle {
                                 temp_active_move.as_ref(),
                                 (side_idx, poke_idx)
                             );
-                            eprintln!("[RUN_ACTION] beforeTurnMove callback returned {:?}", result);
+                            debug_elog!("[RUN_ACTION] beforeTurnMove callback returned {:?}", result);
                         }
                         MoveActionType::PriorityChargeMove => {
                             // JS: case 'priorityChargeMove':
@@ -434,7 +434,7 @@ impl Battle {
                             // JS:     if (!action.move.priorityChargeCallback) throw new Error(`priorityChargeMove has no priorityChargeCallback`);
                             // JS:     action.move.priorityChargeCallback.call(this, action.pokemon);
                             // JS:     break;
-                            eprintln!("[RUN_ACTION] Executing priorityChargeMove callback for move={}", move_id.as_str());
+                            debug_elog!("[RUN_ACTION] Executing priorityChargeMove callback for move={}", move_id.as_str());
 
                             // Create temporary ActiveMove for the dispatch
                             let temp_active_move = self.dex.get_active_move(move_id.as_str());
@@ -445,7 +445,7 @@ impl Battle {
                                 temp_active_move.as_ref(),
                                 (side_idx, poke_idx)
                             );
-                            eprintln!("[RUN_ACTION] priorityChargeMove callback returned {:?}", result);
+                            debug_elog!("[RUN_ACTION] priorityChargeMove callback returned {:?}", result);
                         }
                     }
                 }
@@ -673,7 +673,7 @@ impl Battle {
             Action::Field(field_action) => {
                 match field_action.choice {
                     FieldActionType::Residual => {
-                        eprintln!("[RUN_ACTION] Executing RESIDUAL action, turn={}", self.turn);
+                        debug_elog!("[RUN_ACTION] Executing RESIDUAL action, turn={}", self.turn);
                         // JS: case 'residual':
                         // JS:     this.add('');
                         // JS:     this.clearActiveMove(true);
@@ -710,9 +710,9 @@ impl Battle {
                         // JS: this.fieldEvent('Residual');
                         // NOTE: JavaScript ONLY calls fieldEvent, NOT eachEvent!
                         // fieldEvent handles all residual effects including items/abilities
-                        eprintln!("[RUN_ACTION] About to call field_event('Residual'), turn={}", self.turn);
+                        debug_elog!("[RUN_ACTION] About to call field_event('Residual'), turn={}", self.turn);
                         self.field_event("Residual", None);
-                        eprintln!("[RUN_ACTION] Returned from field_event('Residual'), turn={}", self.turn);
+                        debug_elog!("[RUN_ACTION] Returned from field_event('Residual'), turn={}", self.turn);
 
                         // JS: if (!this.ended) this.add('upkeep');
                         if !self.ended {
@@ -1090,7 +1090,7 @@ impl Battle {
         //     }
         // In gen 3 or earlier, switching in fainted pokemon is done after every move
         let should_check_fainted = self.queue.peek().is_none() || self.gen <= 3;
-        eprintln!("[RUN_ACTION] After action, queue.peek()={:?}, should_check_fainted={}",
+        debug_elog!("[RUN_ACTION] After action, queue.peek()={:?}, should_check_fainted={}",
             self.queue.peek().as_ref().map(|a| match a {
                 Action::Move(m) => format!("Move({})", m.move_id.as_str()),
                 Action::Switch(s) => format!("Switch({})", s.pokemon_index),
@@ -1159,10 +1159,10 @@ impl Battle {
         for i in 0..self.sides.len() {
             // JS: if (switches[i] && !this.canSwitch(this.sides[i])) {
             // Note: canSwitch returns number of possible switches, 0 is falsy in JS
-            eprintln!("[RUN_ACTION] Side {}: switches[i]={}, can_switch={}",
+            debug_elog!("[RUN_ACTION] Side {}: switches[i]={}, can_switch={}",
                 i, switches[i], self.can_switch(i));
             if switches[i] && self.can_switch(i) == 0 {
-                eprintln!("[RUN_ACTION] Side {} has fainted Pokemon but no switches - checking for revivalblessing", i);
+                debug_elog!("[RUN_ACTION] Side {} has fainted Pokemon but no switches - checking for revivalblessing", i);
 
                 // JS: let reviveSwitch = false;
                 // JS: for (const pokemon of this.sides[i].active) {
@@ -1189,7 +1189,7 @@ impl Battle {
                         .unwrap_or(false);
 
                     if has_revivalblessing {
-                        eprintln!("[RUN_ACTION] Side {} has revivalblessing slot condition at position {}", i, pokemon_position);
+                        debug_elog!("[RUN_ACTION] Side {} has revivalblessing slot condition at position {}", i, pokemon_position);
                         revive_switch = true;
                         continue;
                     }
@@ -1197,18 +1197,18 @@ impl Battle {
                 }
 
                 if !revive_switch {
-                    eprintln!("[RUN_ACTION] No revive switch, checking win");
+                    debug_elog!("[RUN_ACTION] No revive switch, checking win");
                     // When a side has fainted Pokemon but no Pokemon to switch to,
                     // we need to check if the battle should end
                     // JavaScript handles this through faintMessages() which calls checkWin()
                     if self.check_win(None) {
-                        eprintln!("[RUN_ACTION] check_win returned true, battle ended");
+                        debug_elog!("[RUN_ACTION] check_win returned true, battle ended");
                         return;
                     }
-                    eprintln!("[RUN_ACTION] check_win returned false, continuing");
+                    debug_elog!("[RUN_ACTION] check_win returned false, continuing");
                     switches[i] = false;
                 } else {
-                    eprintln!("[RUN_ACTION] revive_switch is true, keeping switches[{}] = true for revivalblessing", i);
+                    debug_elog!("[RUN_ACTION] revive_switch is true, keeping switches[{}] = true for revivalblessing", i);
                 }
             } else if switches[i] {
                 // JS: for (const pokemon of this.sides[i].active) {
@@ -1273,10 +1273,10 @@ impl Battle {
         //             return true;
         //         }
         //     }
-        eprintln!("[RUN_ACTION] Switches array: {:?}", switches);
+        debug_elog!("[RUN_ACTION] Switches array: {:?}", switches);
         for (i, &player_switch) in switches.iter().enumerate() {
             if player_switch {
-                eprintln!("[RUN_ACTION] Side {} needs to switch, calling make_request(Switch)", i);
+                debug_elog!("[RUN_ACTION] Side {} needs to switch, calling make_request(Switch)", i);
                 self.make_request(Some(BattleRequestState::Switch));
                 return;
             }
@@ -1329,6 +1329,6 @@ impl Battle {
             }
         }
 
-        eprintln!("[RUN_ACTION] Completed, no switches needed");
+        debug_elog!("[RUN_ACTION] Completed, no switches needed");
     }
 }

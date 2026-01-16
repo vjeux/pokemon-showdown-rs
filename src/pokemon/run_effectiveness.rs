@@ -69,11 +69,11 @@ impl Pokemon {
             total_type_mod = 1;
         } else {
             // JS: for (const type of this.getTypes()) {
-            eprintln!("[RUN_EFFECTIVENESS] move_type={}, defender_types={:?}", move_type, pokemon_types);
+            debug_elog!("[RUN_EFFECTIVENESS] move_type={}, defender_types={:?}", move_type, pokemon_types);
             for defender_type in &pokemon_types {
                 // JS: let typeMod = this.battle.dex.getEffectiveness(move, type);
                 let mut type_mod = battle.dex.get_effectiveness(&move_type, defender_type);
-                eprintln!("[RUN_EFFECTIVENESS] defender_type={}, initial_type_mod={}", defender_type, type_mod);
+                debug_elog!("[RUN_EFFECTIVENESS] defender_type={}, initial_type_mod={}", defender_type, type_mod);
 
                 // Set type_param BEFORE calling singleEvent so move callbacks (like Flying Press) can access it
                 // JS: singleEvent('Effectiveness', move, null, this, type, move, typeMod)
@@ -101,7 +101,7 @@ impl Pokemon {
 
                 // Extract modified type_mod from event result
                 if let crate::event::EventResult::Number(modified_mod) = single_event_result {
-                    eprintln!("[RUN_EFFECTIVENESS] after_singleEvent, typeMod={}", modified_mod);
+                    debug_elog!("[RUN_EFFECTIVENESS] after_singleEvent, typeMod={}", modified_mod);
                     type_mod = modified_mod;
                 }
 
@@ -120,17 +120,17 @@ impl Pokemon {
 
                 match event_result {
                     EventResult::Number(modified_mod) => {
-                        eprintln!("[RUN_EFFECTIVENESS] After Effectiveness event: modified_mod={}, adding to total (was {})", modified_mod, total_type_mod);
+                        debug_elog!("[RUN_EFFECTIVENESS] After Effectiveness event: modified_mod={}, adding to total (was {})", modified_mod, total_type_mod);
                         total_type_mod += modified_mod;
                     }
                     _ => {
                         // Event didn't modify, use base type_mod
-                        eprintln!("[RUN_EFFECTIVENESS] No event modification, adding type_mod={} to total (was {})", type_mod, total_type_mod);
+                        debug_elog!("[RUN_EFFECTIVENESS] No event modification, adding type_mod={} to total (was {})", type_mod, total_type_mod);
                         total_type_mod += type_mod;
                     }
                 }
             }
-            eprintln!("[RUN_EFFECTIVENESS] Final total_type_mod={}", total_type_mod);
+            debug_elog!("[RUN_EFFECTIVENESS] Final total_type_mod={}", total_type_mod);
         }
 
         // JS: if (this.species.name === 'Terapagos-Terastal' && this.hasAbility('Tera Shell') &&

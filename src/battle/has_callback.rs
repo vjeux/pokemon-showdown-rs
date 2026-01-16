@@ -16,7 +16,7 @@ impl Battle {
         if status_id.is_empty() {
             return false;
         }
-        eprintln!("[HAS_STATUS_CALLBACK] status_id={}, event_id={}", status_id.as_str(), event_id);
+        debug_elog!("[HAS_STATUS_CALLBACK] status_id={}, event_id={}", status_id.as_str(), event_id);
         self.condition_has_callback(status_id.as_str(), event_id)
     }
 
@@ -28,7 +28,7 @@ impl Battle {
             return false;
         }
         let volatile_str = volatile_id.as_str();
-        eprintln!("[HAS_VOLATILE_CALLBACK] volatile_id={}, event_id={}", volatile_str, event_id);
+        debug_elog!("[HAS_VOLATILE_CALLBACK] volatile_id={}, event_id={}", volatile_str, event_id);
 
         // First check conditions dex
         if self.condition_has_callback(volatile_str, event_id) {
@@ -68,16 +68,16 @@ impl Battle {
         // When a volatile is added with the item's ID (e.g., "metronome"),
         // its callbacks are in item.condition, not in conditions.json
         if let Some(item_data) = self.dex.items().get(volatile_str) {
-            eprintln!("[HAS_VOLATILE_CALLBACK] Found item_data for {}, checking condition block", volatile_str);
-            eprintln!("[HAS_VOLATILE_CALLBACK] item_data.extra keys: {:?}", item_data.extra.keys().collect::<Vec<_>>());
+            debug_elog!("[HAS_VOLATILE_CALLBACK] Found item_data for {}, checking condition block", volatile_str);
+            debug_elog!("[HAS_VOLATILE_CALLBACK] item_data.extra keys: {:?}", item_data.extra.keys().collect::<Vec<_>>());
             if let Some(condition_value) = item_data.extra.get("condition") {
-                eprintln!("[HAS_VOLATILE_CALLBACK] Found condition block: {:?}", condition_value);
+                debug_elog!("[HAS_VOLATILE_CALLBACK] Found condition block: {:?}", condition_value);
                 if let Some(condition) = condition_value.as_object() {
                     // Check if the condition has this callback
                     let has_key = condition.contains_key(event_id);
                     let priority_key = format!("{}Priority", event_id);
                     let has_priority_key = condition.contains_key(&priority_key);
-                    eprintln!("[HAS_VOLATILE_CALLBACK] Checking for event_id={}, has_key={}, has_priority_key={}", event_id, has_key, has_priority_key);
+                    debug_elog!("[HAS_VOLATILE_CALLBACK] Checking for event_id={}, has_key={}, has_priority_key={}", event_id, has_key, has_priority_key);
 
                     if has_key || has_priority_key {
                         return true;
@@ -132,7 +132,7 @@ impl Battle {
             return false;
         }
         let slot_cond_str = slot_cond_id.as_str();
-        eprintln!("[HAS_SLOT_CONDITION_CALLBACK] slot_cond_id={}, event_id={}", slot_cond_str, event_id);
+        debug_elog!("[HAS_SLOT_CONDITION_CALLBACK] slot_cond_id={}, event_id={}", slot_cond_str, event_id);
 
         // First check conditions dex (for conditions defined in conditions.ts)
         if self.condition_has_callback(slot_cond_str, event_id) {
@@ -147,14 +147,14 @@ impl Battle {
             if let Some(ref condition_data) = move_data.condition {
                 // Check if the condition has this callback
                 if condition_data.extra.contains_key(event_id) {
-                    eprintln!("[HAS_SLOT_CONDITION_CALLBACK] Found {} in move condition extra", event_id);
+                    debug_elog!("[HAS_SLOT_CONDITION_CALLBACK] Found {} in move condition extra", event_id);
                     return true;
                 }
                 // Try with "on" prefix
                 if !event_id.starts_with("on") {
                     let with_on = format!("on{}", event_id);
                     if condition_data.extra.contains_key(&with_on) {
-                        eprintln!("[HAS_SLOT_CONDITION_CALLBACK] Found {} in move condition extra", with_on);
+                        debug_elog!("[HAS_SLOT_CONDITION_CALLBACK] Found {} in move condition extra", with_on);
                         return true;
                     }
                 }
@@ -175,7 +175,7 @@ impl Battle {
             _ => false,
         };
         if has_hardcoded_callback {
-            eprintln!("[HAS_SLOT_CONDITION_CALLBACK] Found hardcoded callback for {} {}", slot_cond_str, event_id);
+            debug_elog!("[HAS_SLOT_CONDITION_CALLBACK] Found hardcoded callback for {} {}", slot_cond_str, event_id);
             return true;
         }
 
@@ -189,7 +189,7 @@ impl Battle {
             return false;
         }
         let side_cond_str = side_cond_id.as_str();
-        eprintln!("[HAS_SIDE_CONDITION_CALLBACK] side_cond_id={}, event_id={}", side_cond_str, event_id);
+        debug_elog!("[HAS_SIDE_CONDITION_CALLBACK] side_cond_id={}, event_id={}", side_cond_str, event_id);
 
         // Check conditions dex first
         if self.condition_has_callback(side_cond_str, event_id) {
@@ -222,7 +222,7 @@ impl Battle {
         if weather_id.is_empty() {
             return false;
         }
-        eprintln!("[HAS_WEATHER_CALLBACK] weather_id={}, event_id={}", weather_id.as_str(), event_id);
+        debug_elog!("[HAS_WEATHER_CALLBACK] weather_id={}, event_id={}", weather_id.as_str(), event_id);
         self.condition_has_callback(weather_id.as_str(), event_id)
     }
 
@@ -232,7 +232,7 @@ impl Battle {
         if terrain_id.is_empty() {
             return false;
         }
-        eprintln!("[HAS_TERRAIN_CALLBACK] terrain_id={}, event_id={}", terrain_id.as_str(), event_id);
+        debug_elog!("[HAS_TERRAIN_CALLBACK] terrain_id={}, event_id={}", terrain_id.as_str(), event_id);
         self.condition_has_callback(terrain_id.as_str(), event_id)
     }
 
@@ -242,7 +242,7 @@ impl Battle {
         if pw_id.is_empty() {
             return false;
         }
-        eprintln!("[HAS_PSEUDO_WEATHER_CALLBACK] pw_id={}, event_id={}", pw_id.as_str(), event_id);
+        debug_elog!("[HAS_PSEUDO_WEATHER_CALLBACK] pw_id={}, event_id={}", pw_id.as_str(), event_id);
         self.condition_has_callback(pw_id.as_str(), event_id)
     }
 
@@ -252,7 +252,7 @@ impl Battle {
         if item_id.is_empty() {
             return false;
         }
-        eprintln!("[HAS_ITEM_ID_CALLBACK] item_id={}, event_id={}", item_id.as_str(), event_id);
+        debug_elog!("[HAS_ITEM_ID_CALLBACK] item_id={}, event_id={}", item_id.as_str(), event_id);
         self.item_has_callback(item_id.as_str(), event_id)
     }
 
@@ -262,7 +262,7 @@ impl Battle {
         if species_id.is_empty() {
             return false;
         }
-        eprintln!("[HAS_SPECIES_ID_CALLBACK] species_id={}, event_id={}", species_id.as_str(), event_id);
+        debug_elog!("[HAS_SPECIES_ID_CALLBACK] species_id={}, event_id={}", species_id.as_str(), event_id);
         self.species_has_callback(species_id.as_str(), event_id)
     }
 
@@ -273,7 +273,7 @@ impl Battle {
         if move_id.is_empty() {
             return false;
         }
-        eprintln!("[HAS_MOVE_ID_CALLBACK] move_id={}, event_id={}", move_id.as_str(), event_id);
+        debug_elog!("[HAS_MOVE_ID_CALLBACK] move_id={}, event_id={}", move_id.as_str(), event_id);
         self.move_has_callback(move_id.as_str(), event_id)
     }
 
@@ -283,7 +283,7 @@ impl Battle {
         if ability_id.is_empty() {
             return false;
         }
-        eprintln!("[HAS_ABILITY_ID_CALLBACK] ability_id={}, event_id={}", ability_id.as_str(), event_id);
+        debug_elog!("[HAS_ABILITY_ID_CALLBACK] ability_id={}, event_id={}", ability_id.as_str(), event_id);
         self.ability_has_callback(ability_id.as_str(), event_id)
     }
 
@@ -344,7 +344,7 @@ impl Battle {
             let has_callback = ability_data.extra.contains_key(event_id);
 
             if has_callback {
-                eprintln!("[ABILITY_HAS_CALLBACK] FOUND callback for ability_id={}, event_id={}", ability_id, event_id);
+                debug_elog!("[ABILITY_HAS_CALLBACK] FOUND callback for ability_id={}, event_id={}", ability_id, event_id);
                 true
             } else if !event_id.starts_with("on") {
                 // Try with "on" prefix for backward compatibility
@@ -454,7 +454,7 @@ impl Battle {
     /// Self callbacks are in the self: { } object and target the move user, not the target
     // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn move_has_self_callback(&self, move_id: &str, event_id: &str) -> bool {
-        eprintln!("[MOVE_HAS_SELF_CALLBACK] move_id={}, event_id={}", move_id, event_id);
+        debug_elog!("[MOVE_HAS_SELF_CALLBACK] move_id={}, event_id={}", move_id, event_id);
         // Look up the move in dex data and check its extra field for callback boolean
         if let Some(move_data) = self.dex.moves().get(move_id) {
             // Check move.self callbacks (like gmaxmalodor)
@@ -467,14 +467,14 @@ impl Battle {
                 format!("self.on{}", event_id)
             };
 
-            eprintln!("[MOVE_HAS_SELF_CALLBACK] Checking for key: {}", self_key);
+            debug_elog!("[MOVE_HAS_SELF_CALLBACK] Checking for key: {}", self_key);
             if let Some(has_self_callback) = move_data.extra.get(&self_key).and_then(|v| v.as_bool()) {
-                eprintln!("[MOVE_HAS_SELF_CALLBACK] Found! value={}", has_self_callback);
+                debug_elog!("[MOVE_HAS_SELF_CALLBACK] Found! value={}", has_self_callback);
                 if has_self_callback {
                     return true;
                 }
             } else {
-                eprintln!("[MOVE_HAS_SELF_CALLBACK] Not found in extra fields");
+                debug_elog!("[MOVE_HAS_SELF_CALLBACK] Not found in extra fields");
             }
 
             // Also try without "on" prefix if event_id doesn't have it
@@ -503,19 +503,19 @@ impl Battle {
     /// This prevents false positives where we'd add handlers for callbacks
     /// that don't exist, which would cause incorrect speed_sort shuffling.
     pub fn condition_has_callback(&self, condition_id: &str, event_id: &str) -> bool {
-        eprintln!("[CONDITION_HAS_CALLBACK] condition_id={}, event_id={}", condition_id, event_id);
+        debug_elog!("[CONDITION_HAS_CALLBACK] condition_id={}, event_id={}", condition_id, event_id);
 
         // Special case: conditions don't have onAnySwitchIn
         if event_id == "onAnySwitchIn" || event_id == "AnySwitchIn" {
-            eprintln!("[CONDITION_HAS_CALLBACK] Returning false for AnySwitchIn");
+            debug_elog!("[CONDITION_HAS_CALLBACK] Returning false for AnySwitchIn");
             return false;
         }
 
         // Look up the condition in dex data and check its extra field for callback boolean
         let id = ID::from(condition_id);
         if let Some(condition_data) = self.dex.conditions().get_by_id(&id) {
-            eprintln!("[CONDITION_HAS_CALLBACK] Found condition in dex");
-            eprintln!("[CONDITION_HAS_CALLBACK] condition_data.extra keys: {:?}", condition_data.extra.keys().collect::<Vec<_>>());
+            debug_elog!("[CONDITION_HAS_CALLBACK] Found condition in dex");
+            debug_elog!("[CONDITION_HAS_CALLBACK] condition_data.extra keys: {:?}", condition_data.extra.keys().collect::<Vec<_>>());
             // IMPORTANT: In JavaScript, conditions can have callbacks that are static values (not functions)
             // Example: phantomforce has onInvulnerability: false
             // These static values create handlers that return the static value
@@ -528,7 +528,7 @@ impl Battle {
             let has_priority_key = condition_data.extra.contains_key(&priority_key);
 
             if has_key || has_priority_key {
-                eprintln!("[CONDITION_HAS_CALLBACK] Found match: {} (has_key={}, has_priority_key={})", event_id, has_key, has_priority_key);
+                debug_elog!("[CONDITION_HAS_CALLBACK] Found match: {} (has_key={}, has_priority_key={})", event_id, has_key, has_priority_key);
                 true
             } else if !event_id.starts_with("on") {
                 // Try with "on" prefix for backward compatibility
@@ -536,10 +536,10 @@ impl Battle {
                 let priority_with_on = format!("on{}Priority", event_id);
                 let has_key_with_on = condition_data.extra.contains_key(&with_on);
                 let has_priority_with_on = condition_data.extra.contains_key(&priority_with_on);
-                eprintln!("[CONDITION_HAS_CALLBACK] Tried with 'on' prefix: {}={}, {}Priority={}", with_on, has_key_with_on, with_on, has_priority_with_on);
+                debug_elog!("[CONDITION_HAS_CALLBACK] Tried with 'on' prefix: {}={}, {}Priority={}", with_on, has_key_with_on, with_on, has_priority_with_on);
                 has_key_with_on || has_priority_with_on
             } else {
-                eprintln!("[CONDITION_HAS_CALLBACK] No match found in condition data, checking if move-embedded");
+                debug_elog!("[CONDITION_HAS_CALLBACK] No match found in condition data, checking if move-embedded");
                 // NOTE: onSideResidual and onResidual are DIFFERENT callbacks:
                 // - onSideResidual: called once per side, no Pokemon target
                 // - onResidual: called once per Pokemon on the side
@@ -558,12 +558,12 @@ impl Battle {
                 // Even though the condition exists in the dex, the callback might be in the move dispatcher
                 if let Some(move_data) = self.dex.moves().get(condition_id) {
                     if let Some(ref condition_data) = move_data.condition {
-                        eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition (from dex branch), checking condition callbacks");
-                        eprintln!("[CONDITION_HAS_CALLBACK] condition_data.extra keys: {:?}, looking for event_id={}", condition_data.extra.keys().collect::<Vec<_>>(), event_id);
+                        debug_elog!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition (from dex branch), checking condition callbacks");
+                        debug_elog!("[CONDITION_HAS_CALLBACK] condition_data.extra keys: {:?}, looking for event_id={}", condition_data.extra.keys().collect::<Vec<_>>(), event_id);
                         // Check if the key exists in the condition data (not just if it's true)
                         // This was populated by scripts/update-move-callbacks.js
                         if condition_data.extra.contains_key(event_id) {
-                            eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
+                            debug_elog!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
                             return true;
                         }
 
@@ -572,7 +572,7 @@ impl Battle {
                         if !event_id.starts_with("on") {
                             let with_on = format!("on{}", event_id);
                             if condition_data.extra.contains_key(&with_on) {
-                                eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", with_on);
+                                debug_elog!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", with_on);
                                 return true;
                             }
                         }
@@ -581,11 +581,11 @@ impl Battle {
                         // They are different callbacks (per-side vs per-Pokemon).
                     }
                 }
-                eprintln!("[CONDITION_HAS_CALLBACK] Returning false - not found");
+                debug_elog!("[CONDITION_HAS_CALLBACK] Returning false - not found");
                 false
             }
         } else {
-            eprintln!("[CONDITION_HAS_CALLBACK] Not found in conditions dex, checking move-embedded");
+            debug_elog!("[CONDITION_HAS_CALLBACK] Not found in conditions dex, checking move-embedded");
             // If not found in conditions dex, check if this is a move-embedded condition
             // Some moves like "kingsshield" create volatile conditions with their own callbacks
             // that are hardcoded in the move_callbacks dispatcher
@@ -593,11 +593,11 @@ impl Battle {
             // Check if this is a move with an embedded condition
             if let Some(move_data) = self.dex.moves().get(condition_id) {
                 if let Some(ref condition_data) = move_data.condition {
-                    eprintln!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition, checking condition callbacks");
+                    debug_elog!("[CONDITION_HAS_CALLBACK] Found as move with embedded condition, checking condition callbacks");
                     // Check if the key exists in the condition data (not just if it's true)
                     // This was populated by scripts/update-move-callbacks.js
                     if condition_data.extra.contains_key(event_id) {
-                        eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
+                        debug_elog!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", event_id);
                         return true;
                     }
 
@@ -606,14 +606,14 @@ impl Battle {
                     if !event_id.starts_with("on") {
                         let with_on = format!("on{}", event_id);
                         if condition_data.extra.contains_key(&with_on) {
-                            eprintln!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", with_on);
+                            debug_elog!("[CONDITION_HAS_CALLBACK] Found {} in condition.extra, returning true", with_on);
                             return true;
                         }
                     }
                 }
             }
 
-            eprintln!("[CONDITION_HAS_CALLBACK] Returning false - not found");
+            debug_elog!("[CONDITION_HAS_CALLBACK] Returning false - not found");
             false
         }
     }

@@ -144,13 +144,13 @@ pub fn on_before_move(
     _target_pos: Option<(usize, usize)>,
     active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
-    eprintln!("[SLP_BEFORE_MOVE] Called for pokemon {:?}", pokemon_pos);
+    debug_elog!("[SLP_BEFORE_MOVE] Called for pokemon {:?}", pokemon_pos);
 
     // Get active_move from parameter
     let active_move_ref = match active_move {
         Some(m) => m,
         None => {
-            eprintln!("[SLP_BEFORE_MOVE] No active_move, returning Continue");
+            debug_elog!("[SLP_BEFORE_MOVE] No active_move, returning Continue");
             return EventResult::Continue;
         }
     };
@@ -184,7 +184,7 @@ pub fn on_before_move(
 
     // Debug: read the time value after decrement
     let time_after_decrement = battle.with_effect_state_ref(|state| state.time).flatten();
-    eprintln!("[SLP_BEFORE_MOVE] After decrement, time={:?}", time_after_decrement);
+    debug_elog!("[SLP_BEFORE_MOVE] After decrement, time={:?}", time_after_decrement);
 
     // if (pokemon.statusState.time <= 0)
     // JavaScript: this.effectState.time <= 0

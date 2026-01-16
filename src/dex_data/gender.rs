@@ -30,7 +30,7 @@ impl<'de> Deserialize<'de> for Gender {
             _ => {
                 // JavaScript: genders[set.gender] returns undefined for "Male", "Female", "None"
                 // This triggers randomization via battle.sample(['M', 'F'])
-                eprintln!("[GENDER_DESERIALIZE] Unrecognized gender '{}', will need randomization", s);
+                debug_elog!("[GENDER_DESERIALIZE] Unrecognized gender '{}', will need randomization", s);
                 Gender::None
             }
         })

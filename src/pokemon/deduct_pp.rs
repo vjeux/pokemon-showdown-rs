@@ -39,7 +39,7 @@ impl Pokemon {
 
         // Debug logging
         let old_pp = self.move_slots[slot_index].pp;
-        eprintln!("[DEDUCT_PP] Pokemon={}, move={}, old_pp={}, amount={:?}",
+        debug_elog!("[DEDUCT_PP] Pokemon={}, move={}, old_pp={}, amount={:?}",
             self.species_id.as_str(), move_id.as_str(), old_pp, amount);
 
         // JS: ppData.used = true;
@@ -47,7 +47,7 @@ impl Pokemon {
 
         // JS: if (!ppData.pp && gen > 1) return 0;
         if self.move_slots[slot_index].pp == 0 && gen > 1 {
-            eprintln!("[DEDUCT_PP] PP already 0, not deducting");
+            debug_elog!("[DEDUCT_PP] PP already 0, not deducting");
             return 0;
         }
 
@@ -70,7 +70,7 @@ impl Pokemon {
             self.move_slots[slot_index].pp = 0;
         }
 
-        eprintln!("[DEDUCT_PP] new_pp={}, actual_amount={}", self.move_slots[slot_index].pp, amount);
+        debug_elog!("[DEDUCT_PP] new_pp={}, actual_amount={}", self.move_slots[slot_index].pp, amount);
 
         // JS: return amount;
         amount

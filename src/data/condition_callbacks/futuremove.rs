@@ -25,7 +25,7 @@ pub fn on_start(
     _source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[FUTUREMOVE::ON_START] ENTRY: pokemon_pos={:?}, turn={}", pokemon_pos, battle.turn);
+    debug_elog!("[FUTUREMOVE::ON_START] ENTRY: pokemon_pos={:?}, turn={}", pokemon_pos, battle.turn);
 
     // this.effectState.targetSlot = target.getSlot();
     let (target_position, target_side_index) = {
@@ -74,7 +74,7 @@ pub fn on_residual(
     _source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[FUTUREMOVE::ON_RESIDUAL] ENTRY: pokemon_pos={:?}, turn={}", pokemon_pos, battle.turn);
+    debug_elog!("[FUTUREMOVE::ON_RESIDUAL] ENTRY: pokemon_pos={:?}, turn={}", pokemon_pos, battle.turn);
 
     // if (this.getOverflowedTurnCount() < this.effectState.endingTurn) return;
     // Get the ending turn from the slot condition data
@@ -96,18 +96,18 @@ pub fn on_residual(
         (ending_turn, position, side_index)
     };
 
-    eprintln!("[FUTUREMOVE::ON_RESIDUAL] ending_turn={}, battle.turn={}, overflowed_turn={}, should_execute={}",
+    debug_elog!("[FUTUREMOVE::ON_RESIDUAL] ending_turn={}, battle.turn={}, overflowed_turn={}, should_execute={}",
         ending_turn, battle.turn, battle.turn - 1, (battle.turn - 1) >= ending_turn as i32);
 
     // Check if it's time to execute the future move
     // In JavaScript: if (this.getOverflowedTurnCount() < this.effectState.endingTurn) return;
     // getOverflowedTurnCount() returns (this.turn - 1) for gen 8+
     if (battle.turn - 1) < ending_turn as i32 {
-        eprintln!("[FUTUREMOVE::ON_RESIDUAL] Returning early, not time yet");
+        debug_elog!("[FUTUREMOVE::ON_RESIDUAL] Returning early, not time yet");
         return EventResult::Continue;
     }
 
-    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Time to execute! Extracting data before removing condition...");
+    debug_elog!("[FUTUREMOVE::ON_RESIDUAL] Time to execute! Extracting data before removing condition...");
 
     // Extract the move data FIRST before removing the condition
     let (move_id_str, source_pos_data, move_data) = {
@@ -117,7 +117,7 @@ pub fn on_residual(
                     let move_id = condition.move_id.clone().unwrap_or_default();
                     let source = condition.source;
                     let move_data = condition.move_data.clone();
-                    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Extracted move='{}', source={:?}, move_data={:?}", move_id, source, move_data);
+                    debug_elog!("[FUTUREMOVE::ON_RESIDUAL] Extracted move='{}', source={:?}, move_data={:?}", move_id, source, move_data);
                     (move_id, source, move_data)
                 } else {
                     (String::new(), None, None)
@@ -135,19 +135,19 @@ pub fn on_residual(
     // Note: For futuremove, we intentionally call the side method directly to avoid
     // triggering the End event here since on_end_with_data handles the move execution
     if let Some(side) = battle.sides.get_mut(target_side_index) {
-        eprintln!("[FUTUREMOVE::ON_RESIDUAL] Removing slot condition before calling on_end");
+        debug_elog!("[FUTUREMOVE::ON_RESIDUAL] Removing slot condition before calling on_end");
         side.remove_slot_condition(target_position, &ID::from("futuremove"));
-        eprintln!("[FUTUREMOVE::ON_RESIDUAL] remove_slot_condition returned");
+        debug_elog!("[FUTUREMOVE::ON_RESIDUAL] remove_slot_condition returned");
     } else {
-        eprintln!("[FUTUREMOVE::ON_RESIDUAL] Failed to get side {}", target_side_index);
+        debug_elog!("[FUTUREMOVE::ON_RESIDUAL] Failed to get side {}", target_side_index);
     }
 
     // Now call on_end to execute the future move
     // The condition is removed, so onTry won't fail due to condition already existing
-    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Calling on_end to execute future move");
+    debug_elog!("[FUTUREMOVE::ON_RESIDUAL] Calling on_end to execute future move");
     on_end_with_data(battle, pokemon_pos, &move_id_str, source_pos_data, move_data);
 
-    eprintln!("[FUTUREMOVE::ON_RESIDUAL] Returning Continue");
+    debug_elog!("[FUTUREMOVE::ON_RESIDUAL] Returning Continue");
     EventResult::Continue
 }
 
@@ -191,7 +191,7 @@ pub fn on_end_with_data(
     source_pos_data: Option<(usize, usize)>,
     move_data: Option<std::collections::HashMap<String, serde_json::Value>>,
 ) -> EventResult {
-    eprintln!("[FUTUREMOVE::ON_END] ENTRY: pokemon_pos={:?}, turn={}, move={}, source={:?}, move_data={:?}",
+    debug_elog!("[FUTUREMOVE::ON_END] ENTRY: pokemon_pos={:?}, turn={}, move={}, source={:?}, move_data={:?}",
         pokemon_pos, battle.turn, move_id_str, source_pos_data, move_data);
 
     // const data = this.effectState;
@@ -249,10 +249,10 @@ pub fn on_end_with_data(
     // this.actions.trySpreadMoveHit([target], data.source, hitMove, true);
     // JavaScript creates a new Move object from stored moveData and calls trySpreadMoveHit directly
     // For now, call trySpreadMoveHit with the move_id and not_active=true
-    eprintln!("[FUTUREMOVE::ON_END] About to execute move: move_id={:?}, source_pos={:?}, target_pos={:?}",
+    debug_elog!("[FUTUREMOVE::ON_END] About to execute move: move_id={:?}, source_pos={:?}, target_pos={:?}",
         move_id, source_pos, pokemon_pos);
     if let Some(src) = source_pos {
-        eprintln!("[FUTUREMOVE::ON_END] Calling try_spread_move_hit");
+        debug_elog!("[FUTUREMOVE::ON_END] Calling try_spread_move_hit");
         // Set flag to indicate we're executing a future move
         // This prevents the move's onTry from queuing another future move
         battle.executing_future_move = true;
@@ -261,7 +261,7 @@ pub fn on_end_with_data(
         let mut active_move = match battle.dex.get_active_move(move_id.as_str()) {
             Some(am) => am,
             None => {
-                eprintln!("[FUTUREMOVE::ON_END] Failed to get ActiveMove for move_id={}", move_id);
+                debug_elog!("[FUTUREMOVE::ON_END] Failed to get ActiveMove for move_id={}", move_id);
                 battle.executing_future_move = false;
                 return EventResult::Continue;
             }
@@ -273,18 +273,18 @@ pub fn on_end_with_data(
         if let Some(ref move_data_map) = move_data {
             // Apply ignoreImmunity from moveData
             if let Some(ignore_immunity_value) = move_data_map.get("ignoreImmunity") {
-                eprintln!("[FUTUREMOVE::ON_END] Found ignoreImmunity in moveData: {:?}", ignore_immunity_value);
+                debug_elog!("[FUTUREMOVE::ON_END] Found ignoreImmunity in moveData: {:?}", ignore_immunity_value);
                 match ignore_immunity_value {
                     serde_json::Value::Bool(false) => {
                         // ignoreImmunity: false means DO NOT ignore immunity
                         // Set to None so type immunity is checked
                         active_move.ignore_immunity = None;
-                        eprintln!("[FUTUREMOVE::ON_END] Set ignore_immunity = None (respect type immunity)");
+                        debug_elog!("[FUTUREMOVE::ON_END] Set ignore_immunity = None (respect type immunity)");
                     },
                     serde_json::Value::Bool(true) => {
                         // ignoreImmunity: true means ignore all immunities
                         active_move.ignore_immunity = Some(crate::battle_actions::IgnoreImmunity::All);
-                        eprintln!("[FUTUREMOVE::ON_END] Set ignore_immunity = All");
+                        debug_elog!("[FUTUREMOVE::ON_END] Set ignore_immunity = All");
                     },
                     serde_json::Value::Object(map) => {
                         // ignoreImmunity: { Type: true, ... } means ignore specific type immunities
@@ -295,10 +295,10 @@ pub fn on_end_with_data(
                             }
                         }
                         active_move.ignore_immunity = Some(crate::battle_actions::IgnoreImmunity::Specific(type_map));
-                        eprintln!("[FUTUREMOVE::ON_END] Set ignore_immunity = Specific");
+                        debug_elog!("[FUTUREMOVE::ON_END] Set ignore_immunity = Specific");
                     },
                     _ => {
-                        eprintln!("[FUTUREMOVE::ON_END] Unexpected ignoreImmunity value type");
+                        debug_elog!("[FUTUREMOVE::ON_END] Unexpected ignoreImmunity value type");
                     }
                 }
             }
@@ -315,12 +315,12 @@ pub fn on_end_with_data(
         );
         // Clear the flag
         battle.executing_future_move = false;
-        eprintln!("[FUTUREMOVE::ON_END] try_spread_move_hit returned");
+        debug_elog!("[FUTUREMOVE::ON_END] try_spread_move_hit returned");
     } else {
-        eprintln!("[FUTUREMOVE::ON_END] No source position, cannot execute move");
+        debug_elog!("[FUTUREMOVE::ON_END] No source position, cannot execute move");
     }
 
-    eprintln!("[FUTUREMOVE::ON_END] Returning Continue");
+    debug_elog!("[FUTUREMOVE::ON_END] Returning Continue");
 
     // TODO: Handle Life Orb damage
     // TODO: this.checkWin();
@@ -335,7 +335,7 @@ pub fn on_end(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[FUTUREMOVE::ON_END_WRAPPER] Extracting data from condition");
+    debug_elog!("[FUTUREMOVE::ON_END_WRAPPER] Extracting data from condition");
 
     // Extract data from the condition before it's removed
     let (move_id_str, source_pos_data, move_data) = {

@@ -94,7 +94,7 @@ pub mod condition {
     pub fn on_end(battle: &mut Battle, target_pos: Option<(usize, usize)>) -> EventResult {
         use crate::dex_data::ID;
 
-        eprintln!("[YAWN_END] Called for target {:?}", target_pos);
+        debug_elog!("[YAWN_END] Called for target {:?}", target_pos);
 
         let target = match target_pos {
             Some(pos) => pos,
@@ -107,7 +107,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            eprintln!("[YAWN_END] Target {} current status={:?}", target_pokemon.get_slot(), target_pokemon.status.as_str());
+            debug_elog!("[YAWN_END] Target {} current status={:?}", target_pokemon.get_slot(), target_pokemon.status.as_str());
         }
 
         // this.add('-end', target, 'move: Yawn', '[silent]');

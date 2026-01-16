@@ -30,7 +30,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
     };
 
     if has_status && (effective_weather == "raindance" || effective_weather == "primordialsea") {
-        eprintln!("hydration");
+        debug_elog!("hydration");
 
         let pokemon_id = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

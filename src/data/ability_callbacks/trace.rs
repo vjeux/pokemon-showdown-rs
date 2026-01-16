@@ -178,12 +178,12 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     }
 
     // const target = this.sample(possibleTargets);
-    println!("[TRACE] About to sample from {} possible targets, PRNG={}", possible_targets.len(), battle.prng.call_count);
+    debug_log!("[TRACE] About to sample from {} possible targets, PRNG={}", possible_targets.len(), battle.prng.call_count);
     let target_pos = match battle.sample(&possible_targets) {
         Some(&pos) => pos,
         None => return EventResult::Continue,
     };
-    println!("[TRACE] After sample, PRNG={}", battle.prng.call_count);
+    debug_log!("[TRACE] After sample, PRNG={}", battle.prng.call_count);
 
     // const ability = target.getAbility();
     let target_ability = {

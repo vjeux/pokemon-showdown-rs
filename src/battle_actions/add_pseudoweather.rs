@@ -56,7 +56,7 @@ impl Battle {
     ) -> bool {
         let id = ID::from(condition_id);
 
-        eprintln!("[ADD_PSEUDOWEATHER] Attempting to add pseudoweather: {}", condition_id);
+        debug_elog!("[ADD_PSEUDOWEATHER] Attempting to add pseudoweather: {}", condition_id);
 
         // JavaScript: let state = this.pseudoWeather[status.id];
         // JavaScript: if (state) {
@@ -64,7 +64,7 @@ impl Battle {
         //     return this.battle.singleEvent('FieldRestart', status, state, this, source, sourceEffect);
         // }
         if self.field.pseudo_weather.contains_key(&id) {
-            eprintln!("[ADD_PSEUDOWEATHER] Pseudoweather already exists, calling FieldRestart event");
+            debug_elog!("[ADD_PSEUDOWEATHER] Pseudoweather already exists, calling FieldRestart event");
 
             // Look up condition name from dex
             let condition_name = self.dex.conditions().get_by_id(&id)
@@ -91,21 +91,21 @@ impl Battle {
 
             match result {
                 crate::event::EventResult::Boolean(false) => {
-                    eprintln!("[ADD_PSEUDOWEATHER] FieldRestart returned false");
+                    debug_elog!("[ADD_PSEUDOWEATHER] FieldRestart returned false");
                     false
                 }
                 crate::event::EventResult::Null => {
-                    eprintln!("[ADD_PSEUDOWEATHER] FieldRestart returned null");
+                    debug_elog!("[ADD_PSEUDOWEATHER] FieldRestart returned null");
                     false
                 }
                 _ => {
-                    eprintln!("[ADD_PSEUDOWEATHER] FieldRestart succeeded");
+                    debug_elog!("[ADD_PSEUDOWEATHER] FieldRestart succeeded");
                     true
                 }
             }
         } else {
             // JavaScript: state = this.pseudoWeather[status.id] = this.battle.initEffectState({ ... });
-            eprintln!("[ADD_PSEUDOWEATHER] Creating new pseudoweather");
+            debug_elog!("[ADD_PSEUDOWEATHER] Creating new pseudoweather");
 
             let mut state = EffectState::new(id.clone());
 
@@ -119,7 +119,7 @@ impl Battle {
                         .and_then(|c| c.duration)
                 });
             state.duration = duration;
-            eprintln!("[ADD_PSEUDOWEATHER] Set initial duration: {:?}", duration);
+            debug_elog!("[ADD_PSEUDOWEATHER] Set initial duration: {:?}", duration);
 
             // JavaScript: if (!this.battle.singleEvent('FieldStart', status, state, this, source, sourceEffect)) {
             //     delete this.pseudoWeather[status.id];
@@ -145,7 +145,7 @@ impl Battle {
                 prankster_boosted: false,
             });
 
-            eprintln!("[ADD_PSEUDOWEATHER] Calling FieldStart event");
+            debug_elog!("[ADD_PSEUDOWEATHER] Calling FieldStart event");
             let result = self.handle_condition_event("FieldStart", condition_id, None);
 
             // Restore previous context
@@ -153,17 +153,17 @@ impl Battle {
 
             match result {
                 crate::event::EventResult::Boolean(false) => {
-                    eprintln!("[ADD_PSEUDOWEATHER] FieldStart returned false, removing pseudoweather");
+                    debug_elog!("[ADD_PSEUDOWEATHER] FieldStart returned false, removing pseudoweather");
                     self.field.pseudo_weather.shift_remove(&id);
                     false
                 }
                 crate::event::EventResult::Null => {
-                    eprintln!("[ADD_PSEUDOWEATHER] FieldStart returned null, removing pseudoweather");
+                    debug_elog!("[ADD_PSEUDOWEATHER] FieldStart returned null, removing pseudoweather");
                     self.field.pseudo_weather.shift_remove(&id);
                     false
                 }
                 _ => {
-                    eprintln!("[ADD_PSEUDOWEATHER] FieldStart succeeded");
+                    debug_elog!("[ADD_PSEUDOWEATHER] FieldStart succeeded");
                     // JavaScript: this.battle.runEvent('PseudoWeatherChange', source, source, status);
                     // TODO: Implement PseudoWeatherChange event
                     true

@@ -289,7 +289,7 @@ pub mod condition {
             return EventResult::Continue;
         }
 
-        eprintln!("[SUBSTITUTE onTryPrimaryHit] move={}, bypasssub={}, sound={}, infiltrates={}",
+        debug_elog!("[SUBSTITUTE onTryPrimaryHit] move={}, bypasssub={}, sound={}, infiltrates={}",
             active_move_ref.name, active_move_ref.flags.bypasssub, active_move_ref.flags.sound, active_move_ref.infiltrates);
 
         if active_move_ref.flags.bypasssub || active_move_ref.infiltrates {

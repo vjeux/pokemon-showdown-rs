@@ -32,8 +32,8 @@ impl Battle {
 
         let sides = Vec::new(); // Sides will be added via set_player
 
-        // Load dex
-        let dex = crate::dex::Dex::load_default().expect("Failed to load Dex");
+        // Load dex from global cache (parsed once, cloned for each battle)
+        let dex = crate::dex::Dex::global();
 
         // Load rule_table from format
         // JavaScript: this.ruleTable = this.dex.formats.getRuleTable(this.format);

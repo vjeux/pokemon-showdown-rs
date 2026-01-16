@@ -208,7 +208,7 @@ pub mod condition {
         };
 
         if battle.turn >= 66 && pokemon_name.to_lowercase().contains("groudon") {
-            eprintln!("[GRASSY_TERRAIN_RESIDUAL] turn={}, pokemon={}, active_turns={}",
+            debug_elog!("[GRASSY_TERRAIN_RESIDUAL] turn={}, pokemon={}, active_turns={}",
                 battle.turn, pokemon_name, active_turns_val);
         }
 
@@ -224,7 +224,7 @@ pub mod condition {
         let is_semi_invuln = Pokemon::is_semi_invulnerable(battle, pokemon);
 
         if battle.turn >= 66 && pokemon_name.to_lowercase().contains("groudon") {
-            eprintln!("[GRASSY_TERRAIN_RESIDUAL] groudon is_grounded={}, is_semi_invuln={}",
+            debug_elog!("[GRASSY_TERRAIN_RESIDUAL] groudon is_grounded={}, is_semi_invuln={}",
                 is_grounded, is_semi_invuln);
         }
 
@@ -239,7 +239,7 @@ pub mod condition {
             };
 
             if battle.turn >= 66 && pokemon_name.to_lowercase().contains("groudon") {
-                eprintln!("[GRASSY_TERRAIN_RESIDUAL] HEALING groudon for {} HP", heal_amount);
+                debug_elog!("[GRASSY_TERRAIN_RESIDUAL] HEALING groudon for {} HP", heal_amount);
             }
 
             battle.heal(heal_amount, Some(pokemon), Some(pokemon), None);

@@ -77,13 +77,13 @@ pub mod condition {
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
         let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
-        eprintln!("[AURORAVEIL] on_any_modify_damage called: source={:?}, target={:?}, move={}", source_pos, target_pos, move_id);
+        debug_elog!("[AURORAVEIL] on_any_modify_damage called: source={:?}, target={:?}, move={}", source_pos, target_pos, move_id);
 
         // Get target and source positions
         let target = match target_pos {
             Some(pos) => pos,
             None => {
-                eprintln!("[AURORAVEIL] No target_pos, returning Continue");
+                debug_elog!("[AURORAVEIL] No target_pos, returning Continue");
                 return EventResult::Continue;
             }
         };
@@ -91,14 +91,14 @@ pub mod condition {
         let source = match source_pos {
             Some(pos) => pos,
             None => {
-                eprintln!("[AURORAVEIL] No source_pos, returning Continue");
+                debug_elog!("[AURORAVEIL] No source_pos, returning Continue");
                 return EventResult::Continue;
             }
         };
 
         // if (target !== source && this.effectState.target.hasAlly(target)) {
         if target == source {
-            eprintln!("[AURORAVEIL] target == source, returning Continue");
+            debug_elog!("[AURORAVEIL] target == source, returning Continue");
             return EventResult::Continue;
         }
 
@@ -106,7 +106,7 @@ pub mod condition {
         let target_side_idx = target.0;
         let auroraveil_id = ID::from("auroraveil");
         if !battle.sides[target_side_idx].has_side_condition(&auroraveil_id) {
-            eprintln!("[AURORAVEIL] Target side {} doesn't have aurora veil, returning Continue", target_side_idx);
+            debug_elog!("[AURORAVEIL] Target side {} doesn't have aurora veil, returning Continue", target_side_idx);
             return EventResult::Continue;
         }
 
@@ -123,12 +123,12 @@ pub mod condition {
         let has_reflect = battle.sides[target_side_idx].has_side_condition(&reflect_id);
         let has_lightscreen = battle.sides[target_side_idx].has_side_condition(&lightscreen_id);
 
-        eprintln!("[AURORAVEIL] category={}, has_reflect={}, has_lightscreen={}", category, has_reflect, has_lightscreen);
+        debug_elog!("[AURORAVEIL] category={}, has_reflect={}, has_lightscreen={}", category, has_reflect, has_lightscreen);
 
         if (has_reflect && category == "Physical")
             || (has_lightscreen && category == "Special")
         {
-            eprintln!("[AURORAVEIL] Reflect/Lightscreen already active for this category, returning Continue");
+            debug_elog!("[AURORAVEIL] Reflect/Lightscreen already active for this category, returning Continue");
             return EventResult::Continue;
         }
 
@@ -145,24 +145,24 @@ pub mod condition {
             .map(|hit_data| hit_data.crit)
             .unwrap_or(false);
 
-        eprintln!("[AURORAVEIL] crit={}, infiltrates={}", crit, infiltrates);
+        debug_elog!("[AURORAVEIL] crit={}, infiltrates={}", crit, infiltrates);
 
         if crit || infiltrates {
-            eprintln!("[AURORAVEIL] Crit or infiltrates, returning Continue");
+            debug_elog!("[AURORAVEIL] Crit or infiltrates, returning Continue");
             return EventResult::Continue;
         }
 
         // this.debug('Aurora Veil weaken');
         battle.debug("Aurora Veil weaken");
-        eprintln!("[AURORAVEIL] Applying damage reduction, active_per_half={}", battle.active_per_half);
+        debug_elog!("[AURORAVEIL] Applying damage reduction, active_per_half={}", battle.active_per_half);
 
         // if (this.activePerHalf > 1) return this.chainModify([2732, 4096]);
         // return this.chainModify(0.5);
         if battle.active_per_half > 1 {
-            eprintln!("[AURORAVEIL] Calling chain_modify_fraction(2732, 4096)");
+            debug_elog!("[AURORAVEIL] Calling chain_modify_fraction(2732, 4096)");
             battle.chain_modify_fraction(2732, 4096);
         } else {
-            eprintln!("[AURORAVEIL] Calling chain_modify(0.5)");
+            debug_elog!("[AURORAVEIL] Calling chain_modify(0.5)");
             battle.chain_modify(0.5);
         }
 

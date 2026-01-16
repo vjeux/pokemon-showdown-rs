@@ -31,7 +31,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     let makes_contact = battle.check_move_makes_contact_with_active_move(active_move, source_pos, target_pos, false);
 
     // Debug logging
-    eprintln!("[CUTECHARM_DEBUG] turn={}, active_move={:?}, move_id={:?}, contact_flag={:?}, makes_contact={}",
+    debug_elog!("[CUTECHARM_DEBUG] turn={}, active_move={:?}, move_id={:?}, contact_flag={:?}, makes_contact={}",
         battle.turn,
         active_move.is_some(),
         active_move.map(|m| m.id.as_str()),

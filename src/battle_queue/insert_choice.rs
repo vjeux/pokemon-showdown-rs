@@ -52,9 +52,9 @@ impl BattleQueue {
     /// This matches the JavaScript logic 1-to-1 but adapts to Rust's ownership model
     /// by taking Battle as a parameter instead of storing a reference.
     pub fn insert_choice(&mut self, battle: &mut Battle, action: Action) {
-        eprintln!("[QUEUE.INSERT_CHOICE] Queue BEFORE insert:");
+        debug_elog!("[QUEUE.INSERT_CHOICE] Queue BEFORE insert:");
         for (i, act) in self.list.iter().enumerate() {
-            eprintln!("  Index {}: priority={}, speed={}, order={:?}",
+            debug_elog!("  Index {}: priority={}, speed={}, order={:?}",
                 i, act.priority(), act.speed(), act.order());
         }
 
@@ -94,14 +94,14 @@ impl BattleQueue {
                 battle.random_with_range(first as i32, (last + 1) as i32) as usize
             };
 
-            eprintln!("[QUEUE.INSERT_CHOICE] Inserting at index {} (first={}, last={})", index, first, last);
+            debug_elog!("[QUEUE.INSERT_CHOICE] Inserting at index {} (first={}, last={})", index, first, last);
             // JS: this.list.splice(index, 0, ...actions);
             self.list.insert(index, action);
         }
 
-        eprintln!("[QUEUE.INSERT_CHOICE] Queue AFTER insert:");
+        debug_elog!("[QUEUE.INSERT_CHOICE] Queue AFTER insert:");
         for (i, act) in self.list.iter().enumerate() {
-            eprintln!("  Index {}: priority={}, speed={}, order={:?}",
+            debug_elog!("  Index {}: priority={}, speed={}, order={:?}",
                 i, act.priority(), act.speed(), act.order());
         }
     }

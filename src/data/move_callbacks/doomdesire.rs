@@ -45,7 +45,7 @@ pub fn on_try(
     // The futuremove::on_end_with_data sets this flag before executing the move
     // In that case, just return Continue to let the move deal damage normally
     if battle.executing_future_move {
-        eprintln!("[DOOMDESIRE::ON_TRY] executing_future_move is true, this is a future move execution - returning Continue to deal damage");
+        debug_elog!("[DOOMDESIRE::ON_TRY] executing_future_move is true, this is a future move execution - returning Continue to deal damage");
         return EventResult::Continue;
     }
 
@@ -70,11 +70,11 @@ pub fn on_try(
 
     if !added {
         // addSlotCondition returned false - condition already exists, can't queue another
-        eprintln!("[DOOMDESIRE::ON_TRY] add_slot_condition returned false, cannot queue another future move");
+        debug_elog!("[DOOMDESIRE::ON_TRY] add_slot_condition returned false, cannot queue another future move");
         return EventResult::Boolean(false);
     }
 
-    eprintln!("[DOOMDESIRE::ON_TRY] add_slot_condition succeeded, turn={}, source={:?}, target={:?}", battle.turn, source, target);
+    debug_elog!("[DOOMDESIRE::ON_TRY] add_slot_condition succeeded, turn={}, source={:?}, target={:?}", battle.turn, source, target);
 
     // Manually call the condition's onStart since add_slot_condition doesn't do it
     // JavaScript: this.battle.singleEvent('Start', status, conditionState, this.active[target], source, sourceEffect)
@@ -98,19 +98,19 @@ pub fn on_try(
             target_pokemon.position
         };
 
-        eprintln!("[DOOMDESIRE::ON_TRY] About to store move data: side_index={}, position={}", target_side_index, target_position);
+        debug_elog!("[DOOMDESIRE::ON_TRY] About to store move data: side_index={}, position={}", target_side_index, target_position);
 
         if let Some(target_side) = battle.sides.get_mut(target_side_index) {
             if let Some(slot_conditions) = target_side.slot_conditions.get_mut(target_position) {
                 if let Some(future_move_condition) =
                     slot_conditions.get_mut(&ID::from("futuremove"))
                 {
-                    eprintln!("[DOOMDESIRE::ON_TRY] Found futuremove condition, storing data...");
+                    debug_elog!("[DOOMDESIRE::ON_TRY] Found futuremove condition, storing data...");
                     // Set move data
                     future_move_condition.move_id = Some("doomdesire".to_string());
-                    eprintln!("[DOOMDESIRE::ON_TRY] Stored move='doomdesire'");
+                    debug_elog!("[DOOMDESIRE::ON_TRY] Stored move='doomdesire'");
                     future_move_condition.source = Some(source);
-                    eprintln!("[DOOMDESIRE::ON_TRY] Stored source={:?}", source);
+                    debug_elog!("[DOOMDESIRE::ON_TRY] Stored source={:?}", source);
 
                     // Set moveData object
                     let mut move_data_map = std::collections::HashMap::new();
@@ -154,15 +154,15 @@ pub fn on_try(
                     );
 
                     future_move_condition.move_data = Some(move_data_map);
-                    eprintln!("[DOOMDESIRE::ON_TRY] Successfully stored all move data");
+                    debug_elog!("[DOOMDESIRE::ON_TRY] Successfully stored all move data");
                 } else {
-                    eprintln!("[DOOMDESIRE::ON_TRY] ERROR: Could not find futuremove condition after add_slot_condition!");
+                    debug_elog!("[DOOMDESIRE::ON_TRY] ERROR: Could not find futuremove condition after add_slot_condition!");
                 }
             } else {
-                eprintln!("[DOOMDESIRE::ON_TRY] ERROR: Could not find slot_conditions for position {}", target_position);
+                debug_elog!("[DOOMDESIRE::ON_TRY] ERROR: Could not find slot_conditions for position {}", target_position);
             }
         } else {
-            eprintln!("[DOOMDESIRE::ON_TRY] ERROR: Could not find side {}", target_side_index);
+            debug_elog!("[DOOMDESIRE::ON_TRY] ERROR: Could not find side {}", target_side_index);
         }
     }
 

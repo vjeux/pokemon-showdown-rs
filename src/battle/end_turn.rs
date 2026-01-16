@@ -405,14 +405,14 @@ impl Battle {
             let mut side_staleness: Option<String> = None;
 
             for (poke_idx, pokemon) in side.pokemon.iter_mut().enumerate() {
-                eprintln!("[END_TURN] Checking Pokemon {} (array_idx {}, side {}), is_active={}, fainted={}",
+                debug_elog!("[END_TURN] Checking Pokemon {} (array_idx {}, side {}), is_active={}, fainted={}",
                     pokemon.set.species, poke_idx, side_idx, pokemon.is_active, pokemon.fainted);
 
                 if !pokemon.is_active {
                     continue;
                 }
 
-                eprintln!("[END_TURN] Processing active Pokemon {} for DisableMove", pokemon.set.species);
+                debug_elog!("[END_TURN] Processing active Pokemon {} for DisableMove", pokemon.set.species);
 
                 // JS: pokemon.moveThisTurn = '';
                 pokemon.move_this_turn = None;

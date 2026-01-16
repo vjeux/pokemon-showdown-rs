@@ -41,17 +41,17 @@ impl Battle {
         let call_id = CALL_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
 
         // Debug immediately at entry
-        eprintln!("[TURN_LOOP_ENTRY #{}] Queue contents at very start:", call_id);
+        debug_elog!("[TURN_LOOP_ENTRY #{}] Queue contents at very start:", call_id);
         for (i, action) in self.queue.list.iter().enumerate() {
             match action {
-                Action::Move(m) => eprintln!("[TURN_LOOP_ENTRY]   [{}] Move: {} from ({}, {})", i, m.move_id.as_str(), m.side_index, m.pokemon_index),
-                Action::Switch(s) => eprintln!("[TURN_LOOP_ENTRY]   [{}] Switch: pokemon {}", i, s.pokemon_index),
-                Action::Field(f) => eprintln!("[TURN_LOOP_ENTRY]   [{}] Field: {:?}", i, f.choice),
-                _ => eprintln!("[TURN_LOOP_ENTRY]   [{}] Other", i),
+                Action::Move(m) => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Move: {} from ({}, {})", i, m.move_id.as_str(), m.side_index, m.pokemon_index),
+                Action::Switch(s) => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Switch: pokemon {}", i, s.pokemon_index),
+                Action::Field(f) => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Field: {:?}", i, f.choice),
+                _ => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Other", i),
             }
         }
 
-        eprintln!("[TURN_LOOP #{}] Entry: turn={}, mid_turn={}, request_state={:?}, queue_size={}",
+        debug_elog!("[TURN_LOOP #{}] Entry: turn={}, mid_turn={}, request_state={:?}, queue_size={}",
             call_id, self.turn, self.mid_turn, self.request_state, self.queue.list.len());
 
         self.add("", &[]);
@@ -64,23 +64,23 @@ impl Battle {
         self.add("t:", &[timestamp.to_string().into()]);
 
         if self.request_state != BattleRequestState::None {
-            eprintln!("[TURN_LOOP] Clearing request_state from {:?} to None", self.request_state);
+            debug_elog!("[TURN_LOOP] Clearing request_state from {:?} to None", self.request_state);
             self.request_state = BattleRequestState::None;
         }
 
         if !self.mid_turn {
-            eprintln!("[TURN_LOOP] mid_turn is false, adding beforeTurn and residual actions");
+            debug_elog!("[TURN_LOOP] mid_turn is false, adding beforeTurn and residual actions");
             // JS: this.queue.insertChoice({ choice: "beforeTurn" });
             // JS: this.queue.addChoice({ choice: "residual" });
             use crate::battle_queue::{Action, FieldAction, FieldActionType};
 
-            eprintln!("[TURN_LOOP] Queue BEFORE adding beforeTurn/residual:");
+            debug_elog!("[TURN_LOOP] Queue BEFORE adding beforeTurn/residual:");
             for (i, action) in self.queue.list.iter().enumerate() {
                 match action {
-                    Action::Move(m) => eprintln!("  [{}] Move: {}", i, m.move_id.as_str()),
-                    Action::Switch(s) => eprintln!("  [{}] Switch: pokemon {}", i, s.pokemon_index),
-                    Action::Field(f) => eprintln!("  [{}] Field: {:?}", i, f.choice),
-                    _ => eprintln!("  [{}] Other", i),
+                    Action::Move(m) => debug_elog!("  [{}] Move: {}", i, m.move_id.as_str()),
+                    Action::Switch(s) => debug_elog!("  [{}] Switch: pokemon {}", i, s.pokemon_index),
+                    Action::Field(f) => debug_elog!("  [{}] Field: {:?}", i, f.choice),
+                    _ => debug_elog!("  [{}] Other", i),
                 }
             }
 
@@ -102,19 +102,19 @@ impl Battle {
             });
             self.queue.list.push(residual_action);
 
-            eprintln!("[TURN_LOOP] Queue AFTER adding beforeTurn/residual:");
+            debug_elog!("[TURN_LOOP] Queue AFTER adding beforeTurn/residual:");
             for (i, action) in self.queue.list.iter().enumerate() {
                 match action {
-                    Action::Move(m) => eprintln!("  [{}] Move: {}", i, m.move_id.as_str()),
-                    Action::Switch(s) => eprintln!("  [{}] Switch: pokemon {}", i, s.pokemon_index),
-                    Action::Field(f) => eprintln!("  [{}] Field: {:?}", i, f.choice),
-                    _ => eprintln!("  [{}] Other", i),
+                    Action::Move(m) => debug_elog!("  [{}] Move: {}", i, m.move_id.as_str()),
+                    Action::Switch(s) => debug_elog!("  [{}] Switch: pokemon {}", i, s.pokemon_index),
+                    Action::Field(f) => debug_elog!("  [{}] Field: {:?}", i, f.choice),
+                    _ => debug_elog!("  [{}] Other", i),
                 }
             }
 
             self.mid_turn = true;
         } else {
-            eprintln!("[TURN_LOOP] mid_turn is true, NOT adding beforeTurn/residual, continuing with existing queue");
+            debug_elog!("[TURN_LOOP] mid_turn is true, NOT adding beforeTurn/residual, continuing with existing queue");
         }
 
         // Process the action queue
@@ -132,17 +132,17 @@ impl Battle {
                 Action::Pokemon(p) => format!("Pokemon({:?})", p.choice),
                 Action::Team(_) => "Team".to_string(),
             };
-            eprintln!("[TURN_LOOP] Processing action #{}: {}, queue remaining: {}", action_count, action_desc, self.queue.list.len());
+            debug_elog!("[TURN_LOOP] Processing action #{}: {}, queue remaining: {}", action_count, action_desc, self.queue.list.len());
 
             self.run_action(&action);
 
             if self.ended {
-                eprintln!("[TURN_LOOP] Battle ended, returning early");
+                debug_elog!("[TURN_LOOP] Battle ended, returning early");
                 return;
             }
 
             if self.request_state != BattleRequestState::None {
-                eprintln!("[TURN_LOOP] request_state is now {:?}, returning early WITHOUT calling end_turn()", self.request_state);
+                debug_elog!("[TURN_LOOP] request_state is now {:?}, returning early WITHOUT calling end_turn()", self.request_state);
                 return;
             }
         }
@@ -151,13 +151,13 @@ impl Battle {
         // after EACH action is processed, not here after all actions.
         // See run_action.rs for the implementation matching battle.ts:2820-2828
 
-        eprintln!("[TURN_LOOP] All actions processed, calling end_turn()");
+        debug_elog!("[TURN_LOOP] All actions processed, calling end_turn()");
         self.end_turn();
-        eprintln!("[TURN_LOOP] After end_turn(), turn is now {}", self.turn);
+        debug_elog!("[TURN_LOOP] After end_turn(), turn is now {}", self.turn);
 
         // JavaScript ALWAYS sets midTurn=false at the end of turnLoop() (line 35 of JS source)
         // This is NOT conditional - it happens whether we added beforeTurn/residual or not
-        eprintln!("[TURN_LOOP] Setting mid_turn=false (matches JavaScript line 35)");
+        debug_elog!("[TURN_LOOP] Setting mid_turn=false (matches JavaScript line 35)");
         self.mid_turn = false;
         self.queue.clear();
     }

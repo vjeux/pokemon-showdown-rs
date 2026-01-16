@@ -24,7 +24,7 @@ pub fn duration_callback(
     source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Called for source_pos={:?}", source_pos);
+    debug_elog!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Called for source_pos={:?}", source_pos);
 
     // if (source?.hasItem('gripclaw')) return 8;
     let has_grip_claw = if let Some(pos) = source_pos {
@@ -38,12 +38,12 @@ pub fn duration_callback(
     };
 
     if has_grip_claw {
-        eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Source has Grip Claw, duration=8");
+        debug_elog!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Source has Grip Claw, duration=8");
         EventResult::Number(8)
     } else {
         // this.random(5, 7) returns a number from 5 to 6 inclusive
         let duration = battle.prng.random_range(5, 7);
-        eprintln!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Duration={}", duration);
+        debug_elog!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Duration={}", duration);
         EventResult::Number(duration)
     }
 }
@@ -141,7 +141,7 @@ pub fn on_residual(
     _source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Called for {:?}", pokemon_pos);
+    debug_elog!("[PARTIALLYTRAPPED_ON_RESIDUAL] Called for {:?}", pokemon_pos);
 
     // Get source, effect information, and boundDivisor from volatile state using with_effect_state_ref
     // JavaScript: this.effectState.source, this.effectState.sourceEffect, this.effectState.boundDivisor
@@ -156,7 +156,7 @@ pub fn on_residual(
             .map(|id| {
                 let id_str = id.as_str();
                 let is_gmax = id_str == "gmaxcentiferno" || id_str == "gmaxsandblast";
-                eprintln!("[PARTIALLYTRAPPED_DEBUG] source_effect='{}', is_gmax={}", id_str, is_gmax);
+                debug_elog!("[PARTIALLYTRAPPED_DEBUG] source_effect='{}', is_gmax={}", id_str, is_gmax);
                 is_gmax
             })
             .unwrap_or(false);
@@ -199,7 +199,7 @@ pub fn on_residual(
         // Only remove trap if source is invalid AND it's not a G-Max effect
         if source_invalid && !is_gmax_effect {
             // Remove the trap volatile without dealing damage
-            eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Source Pokemon fainted/inactive, removing trap without damage");
+            debug_elog!("[PARTIALLYTRAPPED_ON_RESIDUAL] Source Pokemon fainted/inactive, removing trap without damage");
 
             // Remove the volatile
             if let Some(pokemon_mut) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
@@ -226,7 +226,7 @@ pub fn on_residual(
     // JavaScript: this.damage(pokemon.baseMaxhp / this.effectState.boundDivisor);
     let damage = std::cmp::max(1, base_maxhp / bound_divisor);
 
-    eprintln!("[PARTIALLYTRAPPED_ON_RESIDUAL] Dealing {} damage (maxhp={}, divisor={})",
+    debug_elog!("[PARTIALLYTRAPPED_ON_RESIDUAL] Dealing {} damage (maxhp={}, divisor={})",
         damage, base_maxhp, bound_divisor);
 
     // Deal damage

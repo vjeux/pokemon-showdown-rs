@@ -4,6 +4,10 @@
 //! battle simulator, designed to be compatible with the original TypeScript
 //! implementation.
 
+// Debug logging macros - must be declared first so other modules can use them
+#[macro_use]
+pub mod debug_log;
+
 pub mod abilities;
 pub mod battle;
 pub mod battle_actions;

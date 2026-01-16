@@ -38,12 +38,12 @@ impl Battle {
         let side = match self.sides.get(side_idx) {
             Some(s) => s,
             None => {
-                eprintln!("[FIND_SIDE_HANDLERS] Side {} not found", side_idx);
+                debug_elog!("[FIND_SIDE_HANDLERS] Side {} not found", side_idx);
                 return handlers;
             }
         };
 
-        eprintln!("[FIND_SIDE_HANDLERS] side_idx={}, callback_name={}, side_conditions count={}",
+        debug_elog!("[FIND_SIDE_HANDLERS] side_idx={}, callback_name={}, side_conditions count={}",
             side_idx, callback_name, side.side_conditions.len());
 
         // JS: for (const id in side.sideConditions) {

@@ -102,7 +102,7 @@ pub fn secondaries(
 
         // for (const secondary of secondaries) {
         for secondary in secondaries {
-            eprintln!("[SECONDARIES] Processing secondary: chance={:?}, volatile_status={:?}, target={:?}",
+            debug_elog!("[SECONDARIES] Processing secondary: chance={:?}, volatile_status={:?}, target={:?}",
                 secondary.chance, secondary.volatile_status, target_pos);
 
             // const secondaryRoll = this.battle.random(100);

@@ -65,14 +65,14 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize
         pokemon.effective_weather(battle, field_weather)
     };
 
-    eprintln!("[ORICHALCUM] effective_weather={}", effective_weather);
+    debug_elog!("[ORICHALCUM] effective_weather={}", effective_weather);
 
     if effective_weather == "sunnyday" || effective_weather == "desolateland" {
         battle.debug("Orichalcum boost");
         // Call chain_modify_fraction to set the modifier, then return Continue
         // The event system will apply the modifier automatically
         battle.chain_modify_fraction(5461, 4096);
-        eprintln!("[ORICHALCUM] Applied boost!");
+        debug_elog!("[ORICHALCUM] Applied boost!");
         return EventResult::Continue;
     }
 

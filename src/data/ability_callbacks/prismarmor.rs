@@ -22,7 +22,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
     // Check if the move is super-effective
     if let Some(move_hit_data) = battle.get_move_hit_data(target_pos) {
         if move_hit_data.type_mod > 0 {
-            eprintln!("Prism Armor neutralize");
+            debug_elog!("Prism Armor neutralize");
             battle.chain_modify(0.75); return EventResult::Continue;
         }
     }

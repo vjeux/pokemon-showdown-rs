@@ -86,7 +86,7 @@ pub fn hit_step_accuracy(
     active_move: &mut ActiveMove,
 ) -> Vec<bool> {
     let move_id = active_move.id.clone();
-    eprintln!("[HIT_STEP_ACCURACY] Called for move {:?} from {:?} targeting {:?}", move_id, pokemon_pos, targets);
+    debug_elog!("[HIT_STEP_ACCURACY] Called for move {:?} from {:?} targeting {:?}", move_id, pokemon_pos, targets);
     let mut hit_results = vec![false; targets.len()];
 
     // Get pokemon
@@ -98,7 +98,7 @@ pub fn hit_step_accuracy(
     };
 
     for (i, &target_pos) in targets.iter().enumerate() {
-        eprintln!("[HIT_STEP_ACCURACY] Processing target {} of {}: {:?}", i, targets.len(), target_pos);
+        debug_elog!("[HIT_STEP_ACCURACY] Processing target {} of {}: {:?}", i, targets.len(), target_pos);
         // Get base accuracy from move
         // Use the passed active_move parameter directly
         let mut accuracy = match active_move.accuracy {
@@ -371,16 +371,16 @@ pub fn hit_step_accuracy(
                 }
             }
 
-            eprintln!("[HIT_STEP_ACCURACY] Miss! accuracy check failed");
+            debug_elog!("[HIT_STEP_ACCURACY] Miss! accuracy check failed");
             hit_results[i] = false;
             continue;
         }
 
         // Hit!
-        eprintln!("[HIT_STEP_ACCURACY] Hit! target {} succeeded", i);
+        debug_elog!("[HIT_STEP_ACCURACY] Hit! target {} succeeded", i);
         hit_results[i] = true;
     }
 
-    eprintln!("[HIT_STEP_ACCURACY] Returning results: {:?}", hit_results);
+    debug_elog!("[HIT_STEP_ACCURACY] Returning results: {:?}", hit_results);
     hit_results
 }

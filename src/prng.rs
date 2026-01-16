@@ -440,8 +440,8 @@ impl PRNG {
                     .collect();
 
                 let compact = frames.join(" <- ");
-                eprintln!("[Rust PRNG #{}] raw={}", self.call_count, value);
-                eprintln!("  Stack: {}", compact);
+                debug_elog!("[Rust PRNG #{}] raw={}", self.call_count, value);
+                debug_elog!("  Stack: {}", compact);
             }
         }
 
@@ -503,7 +503,7 @@ impl PRNG {
                     Some(t) => format!("{}", t),
                     None => "None".to_string(),
                 };
-                eprintln!("  [random(from={}, to={})]", from_val, to_val);
+                debug_elog!("  [random(from={}, to={})]", from_val, to_val);
             }
         }
 
@@ -555,7 +555,7 @@ impl PRNG {
         // JS: return this.random(denominator) < numerator;
         let roll = self.random(Some(denominator), None) as i32;
         let result = roll < numerator;
-        eprintln!("[RANDOM_CHANCE] numerator={}, denominator={}, roll={}, result={}", numerator, denominator, roll, result);
+        debug_elog!("[RANDOM_CHANCE] numerator={}, denominator={}, roll={}, result={}", numerator, denominator, roll, result);
         result
     }
 

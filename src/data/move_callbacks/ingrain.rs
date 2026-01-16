@@ -53,7 +53,7 @@ pub mod condition {
             (pokemon_pokemon.base_maxhp / 16, pokemon_pokemon.name.clone())
         };
 
-        eprintln!("[INGRAIN RESIDUAL] turn={}, pokemon={}, healing {} HP",
+        debug_elog!("[INGRAIN RESIDUAL] turn={}, pokemon={}, healing {} HP",
             battle.turn, pokemon_name, heal_amount);
         battle.heal(heal_amount, Some(pokemon), None, None);
 

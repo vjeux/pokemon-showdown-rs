@@ -549,14 +549,14 @@ pub fn hit_step_move_hit_loop(
         };
 
         if battle.turn >= 64 && battle.turn <= 66 {
-            eprintln!("[RECOIL] turn={}, pokemon={}, move={}, total_damage={}, recoil_fraction={:?}, calculated_recoil={}",
+            debug_elog!("[RECOIL] turn={}, pokemon={}, move={}, total_damage={}, recoil_fraction={:?}, calculated_recoil={}",
                 battle.turn, pokemon_name, active_move.id.as_str(), active_move.total_damage,
                 active_move.recoil, recoil_damage);
         }
 
         if recoil_damage > 0 {
             if battle.turn >= 64 && battle.turn <= 66 {
-                eprintln!("[RECOIL] Applying {} recoil damage to {} on turn {}", recoil_damage, pokemon_name, battle.turn);
+                debug_elog!("[RECOIL] Applying {} recoil damage to {} on turn {}", recoil_damage, pokemon_name, battle.turn);
             }
             battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::condition("recoil")), false);
 
@@ -582,7 +582,7 @@ pub fn hit_step_move_hit_loop(
     //         this.battle.runEvent('EmergencyExit', pokemon, pokemon);
     //     }
     // }
-    eprintln!("[STRUGGLE_RECOIL_CHECK] turn={}, move_id={}, struggle_recoil={}",
+    debug_elog!("[STRUGGLE_RECOIL_CHECK] turn={}, move_id={}, struggle_recoil={}",
         battle.turn, active_move.id.as_str(), active_move.struggle_recoil);
     if active_move.struggle_recoil {
         let (hp_before_recoil, max_hp, base_max_hp) = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
@@ -596,7 +596,7 @@ pub fn hit_step_move_hit_loop(
             ((max_hp / 4) as i32).max(1)
         };
 
-        eprintln!("[STRUGGLE_RECOIL] turn={}, attacker={:?}, hp_before={}, max_hp={}, base_max_hp={}, recoil_damage={}",
+        debug_elog!("[STRUGGLE_RECOIL] turn={}, attacker={:?}, hp_before={}, max_hp={}, base_max_hp={}, recoil_damage={}",
             battle.turn, attacker_pos, hp_before_recoil, max_hp, base_max_hp, recoil_damage);
 
         battle.direct_damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::condition("strugglerecoil")));
@@ -604,7 +604,7 @@ pub fn hit_step_move_hit_loop(
         let hp_after = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
             .map(|p| p.hp)
             .unwrap_or(0);
-        eprintln!("[STRUGGLE_RECOIL] hp_after={}", hp_after);
+        debug_elog!("[STRUGGLE_RECOIL] hp_after={}", hp_after);
         if hp_after <= max_hp / 2 && hp_before_recoil > max_hp / 2 {
             battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(attacker_pos)), Some(attacker_pos), None, EventResult::Continue, false, false);
         }

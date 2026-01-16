@@ -194,7 +194,7 @@ impl Pokemon {
             }
             _ => {
                 // Default case - single target moves
-                eprintln!("[GET_MOVE_TARGETS] Default case: move_id={}, move_target={}, target={:?}", move_id, move_target, target);
+                debug_elog!("[GET_MOVE_TARGETS] Default case: move_id={}, move_target={}, target={:?}", move_id, move_target, target);
                 let selected_target = target;
 
                 // JS: if (!target || (target.fainted && !target.isAlly(this)) && this.battle.gameType !== 'freeforall')
@@ -304,7 +304,7 @@ impl Pokemon {
             }
         }
 
-        eprintln!("[GET_MOVE_TARGETS] Returning targets={:?}", targets);
+        debug_elog!("[GET_MOVE_TARGETS] Returning targets={:?}", targets);
 
         // Resolve apparent targets for Pressure
         // JS: let pressureTargets = targets;

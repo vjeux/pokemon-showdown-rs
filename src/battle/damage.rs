@@ -30,14 +30,14 @@ impl Battle {
         effect: Option<&Effect>,
         instafaint: bool,
     ) -> Option<i32> {
-        eprintln!("[BATTLE_DAMAGE] Called with damage={}, target={:?}, source={:?}, effect={:?}",
+        debug_elog!("[BATTLE_DAMAGE] Called with damage={}, target={:?}, source={:?}, effect={:?}",
             damage, target, source, effect.map(|e| e.id.as_str()));
 
         // JS: if (this.event) { target ||= this.event.target; source ||= this.event.source; effect ||= this.effect; }
         // Extract event context values first to avoid borrow checker issues
         let (event_target, event_source) = if let Some(ref event) = self.event
         {
-            eprintln!("[BATTLE_DAMAGE] event exists: target={:?}, source={:?}",
+            debug_elog!("[BATTLE_DAMAGE] event exists: target={:?}, source={:?}",
                 event.target, event.source);
             (event.target, event.source)
         } else {
@@ -46,12 +46,12 @@ impl Battle {
 
         // JS uses this.effect (current handler's effect), NOT this.event.effect
         let current_effect = self.effect.clone();
-        eprintln!("[BATTLE_DAMAGE] current effect (self.effect): {:?}",
+        debug_elog!("[BATTLE_DAMAGE] current effect (self.effect): {:?}",
             current_effect.as_ref().map(|e| e.id.as_str()));
 
         let target = target.or(event_target);
         let source = source.or(event_source);
-        eprintln!("[BATTLE_DAMAGE] After merging with event: target={:?}, source={:?}", target, source);
+        debug_elog!("[BATTLE_DAMAGE] After merging with event: target={:?}, source={:?}", target, source);
         let effect_owned: Option<Effect>;
         let effect = if effect.is_none() {
             // Use self.effect (current handler's effect) as fallback, not self.event.effect

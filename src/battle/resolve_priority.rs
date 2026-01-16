@@ -247,10 +247,10 @@ impl Battle {
                 if let Some(item_data) = self.dex.items().get(effect_id) {
                     // Item condition is stored in extra["condition"] as JSON
                     if let Some(condition) = item_data.extra.get("condition") {
-                        eprintln!("[GET_CALLBACK_PRIORITY] effect_id={}, property_name={}, condition={:?}", effect_id, property_name, condition);
+                        debug_elog!("[GET_CALLBACK_PRIORITY] effect_id={}, property_name={}, condition={:?}", effect_id, property_name, condition);
                         if let Some(value) = condition.get(&property_name) {
                             let priority = value.as_i64().map(|v| v as i32).unwrap_or(0);
-                            eprintln!("[GET_CALLBACK_PRIORITY] Found priority={} for effect_id={}", priority, effect_id);
+                            debug_elog!("[GET_CALLBACK_PRIORITY] Found priority={} for effect_id={}", priority, effect_id);
                             return priority;
                         }
                     }

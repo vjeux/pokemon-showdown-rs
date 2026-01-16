@@ -153,16 +153,16 @@ impl BattleQueue {
         // Call resolve_action with mid_turn=false (not mid-turn)
         let resolved_actions = BattleQueue::resolve_action(basic_action, battle, false);
 
-        eprintln!("[ADD_CHOICE] Resolved {} actions for side {}", resolved_actions.len(), side_idx);
+        debug_elog!("[ADD_CHOICE] Resolved {} actions for side {}", resolved_actions.len(), side_idx);
 
         // JS: this.list.push(...resolvedChoices);
         for action in resolved_actions {
             if let Action::Move(ref m) = action {
-                eprintln!("[ADD_CHOICE] Adding move={} to queue (before: {})", m.move_id.as_str(), self.list.len());
+                debug_elog!("[ADD_CHOICE] Adding move={} to queue (before: {})", m.move_id.as_str(), self.list.len());
             }
             self.list.push(action.clone());
             if let Action::Move(ref m) = action {
-                eprintln!("[ADD_CHOICE] Added move={} to queue (after: {})", m.move_id.as_str(), self.list.len());
+                debug_elog!("[ADD_CHOICE] Added move={} to queue (after: {})", m.move_id.as_str(), self.list.len());
             }
 
             // JS: if (resolvedChoice && resolvedChoice.choice === 'move' && resolvedChoice.move.id !== 'recharge') {

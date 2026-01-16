@@ -20,7 +20,7 @@ impl BattleStream {
     pub fn receive_line(&mut self, line: &str) {
         // JS: if (this.debug) console.log(line);
         if self.debug {
-            eprintln!("[BattleStream] {}", line);
+            debug_elog!("[BattleStream] {}", line);
         }
 
         // JS: if (!line.startsWith('|')) return;

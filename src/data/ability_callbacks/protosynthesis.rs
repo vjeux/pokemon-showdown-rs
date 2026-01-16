@@ -32,12 +32,12 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
     // Check if it's sunny day
     let is_sunny = battle.is_weather("sunnyday");
-    eprintln!("[PROTOSYNTHESIS] on_weather_change called, is_sunny={}", is_sunny);
+    debug_elog!("[PROTOSYNTHESIS] on_weather_change called, is_sunny={}", is_sunny);
 
     if is_sunny {
         // Add protosynthesis volatile
         let volatile_id = ID::from("protosynthesis");
-        eprintln!("[PROTOSYNTHESIS] Adding volatile");
+        debug_elog!("[PROTOSYNTHESIS] Adding volatile");
         Pokemon::add_volatile(battle, pokemon_pos, volatile_id, None, None, None, None);
     } else {
         // Check if pokemon has protosynthesis volatile and if it's not from Booster Energy
@@ -47,7 +47,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
         } else {
             false
         };
-        eprintln!("[PROTOSYNTHESIS] Not sunny, has_volatile={}", has_volatile);
+        debug_elog!("[PROTOSYNTHESIS] Not sunny, has_volatile={}", has_volatile);
 
         if has_volatile {
             // Check if fromBooster is set

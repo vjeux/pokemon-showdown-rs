@@ -21,14 +21,14 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize
     let base_power_after_multiplier = battle.modify_f(base_power, modifier as f64 / 4096.0);
 
     // this.debug(`Base Power: ${basePowerAfterMultiplier}`);
-    eprintln!("Base Power: {}", base_power_after_multiplier);
+    debug_elog!("Base Power: {}", base_power_after_multiplier);
 
     // if (basePowerAfterMultiplier <= 60) {
     //     this.debug('Technician boost');
     //     return this.chainModify(1.5);
     // }
     if base_power_after_multiplier <= 60 {
-        eprintln!("Technician boost");
+        debug_elog!("Technician boost");
         battle.chain_modify(1.5); return EventResult::Continue;
     }
 

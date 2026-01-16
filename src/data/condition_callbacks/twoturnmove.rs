@@ -42,7 +42,7 @@ pub fn on_start(
     _source_pos: Option<(usize, usize)>,
     _effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[TWOTURNMOVE_ONSTART] turn={}, pokemon=({},{})", battle.turn, pokemon_pos.0, pokemon_pos.1);
+    debug_elog!("[TWOTURNMOVE_ONSTART] turn={}, pokemon=({},{})", battle.turn, pokemon_pos.0, pokemon_pos.1);
 
     // this.effectState.move = effect.id;
     // Get the move ID from battle.event.effect
@@ -50,19 +50,19 @@ pub fn on_start(
         .and_then(|e| e.effect.as_ref())
         .map(|eff| eff.id.clone());
 
-    eprintln!("[TWOTURNMOVE_ONSTART] move_id={:?}", move_id.as_ref().map(|id| id.as_str()));
+    debug_elog!("[TWOTURNMOVE_ONSTART] move_id={:?}", move_id.as_ref().map(|id| id.as_str()));
 
     if let Some(ref move_id_val) = move_id {
         // Store move ID in twoturnmove volatile's effectState.data
         // JavaScript: this.effectState.move = effect.id;
         // In Rust, current_effect_state is the volatile's state (set by dispatch_single_event)
         // We must modify current_effect_state, which will be copied back to the volatile
-        eprintln!("[TWOTURNMOVE_ONSTART] Storing move_id={} in effect_state", move_id_val.as_str());
+        debug_elog!("[TWOTURNMOVE_ONSTART] Storing move_id={} in effect_state", move_id_val.as_str());
         battle.with_effect_state(|state| {
             state.move_id = Some(move_id_val.to_string());
-            eprintln!("[TWOTURNMOVE_ONSTART] Stored successfully");
+            debug_elog!("[TWOTURNMOVE_ONSTART] Stored successfully");
         }).unwrap_or_else(|| {
-            eprintln!("[TWOTURNMOVE_ONSTART] WARNING: current_effect_state is None!");
+            debug_elog!("[TWOTURNMOVE_ONSTART] WARNING: current_effect_state is None!");
         });
 
         // attacker.addVolatile(effect.id);
@@ -88,9 +88,9 @@ pub fn on_start(
         //
         // Get the event source (the grabbed target) to pass to add_volatile
         let event_source = battle.event.as_ref().and_then(|e| e.source);
-        eprintln!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}', source={:?} (inherited from event)", move_id_val.as_str(), event_source);
+        debug_elog!("[TWOTURNMOVE_ONSTART] About to add_volatile for move='{}', source={:?} (inherited from event)", move_id_val.as_str(), event_source);
         crate::pokemon::Pokemon::add_volatile(battle, pokemon_pos, move_id_val.clone(), event_source, None, None, None);
-        eprintln!("[TWOTURNMOVE_ONSTART] Returned from add_volatile");
+        debug_elog!("[TWOTURNMOVE_ONSTART] Returned from add_volatile");
 
         // JavaScript: let moveTargetLoc: number = attacker.lastMoveTargetLoc!;
         let mut move_target_loc = {
@@ -197,26 +197,26 @@ pub fn on_end(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[TWOTURNMOVE_ONEND] Called for pokemon=({},{}), turn={}",
+    debug_elog!("[TWOTURNMOVE_ONEND] Called for pokemon=({},{}), turn={}",
         pokemon_pos.0, pokemon_pos.1, battle.turn);
 
     // target.removeVolatile(this.effectState.move);
     // Get the move ID from effectState using with_effect_state_ref
     // JavaScript: this.effectState.move
     let move_id = battle.with_effect_state_ref(|state| {
-        eprintln!("[TWOTURNMOVE_ONEND] effect_state.move_id = {:?}", state.move_id);
+        debug_elog!("[TWOTURNMOVE_ONEND] effect_state.move_id = {:?}", state.move_id);
         state.move_id.as_ref().map(|s| ID::from(s.as_str()))
     }).flatten();
 
-    eprintln!("[TWOTURNMOVE_ONEND] move_id to remove = {:?}", move_id.as_ref().map(|id| id.as_str()));
+    debug_elog!("[TWOTURNMOVE_ONEND] move_id to remove = {:?}", move_id.as_ref().map(|id| id.as_str()));
 
     // Remove the volatile for the specific move (e.g., "dig", "fly", "solarbeam")
     if let Some(id) = move_id {
-        eprintln!("[TWOTURNMOVE_ONEND] Calling remove_volatile for '{}'", id.as_str());
+        debug_elog!("[TWOTURNMOVE_ONEND] Calling remove_volatile for '{}'", id.as_str());
         crate::pokemon::Pokemon::remove_volatile(battle, pokemon_pos, &id);
-        eprintln!("[TWOTURNMOVE_ONEND] remove_volatile returned");
+        debug_elog!("[TWOTURNMOVE_ONEND] remove_volatile returned");
     } else {
-        eprintln!("[TWOTURNMOVE_ONEND] No move_id found, not removing any volatile");
+        debug_elog!("[TWOTURNMOVE_ONEND] No move_id found, not removing any volatile");
     }
 
     EventResult::Continue
@@ -233,26 +233,26 @@ pub fn on_lock_move(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
 ) -> EventResult {
-    eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Called for pokemon=({},{}), turn={}", pokemon_pos.0, pokemon_pos.1, battle.turn);
+    debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] Called for pokemon=({},{}), turn={}", pokemon_pos.0, pokemon_pos.1, battle.turn);
 
     // return this.effectState.move;
     // Get the move ID from effectState using with_effect_state_ref
     // JavaScript: this.effectState.move
     let move_id = battle.with_effect_state_ref(|state| {
-        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Found effect state!");
-        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] State move_id: {:?}", state.move_id);
-        eprintln!("[TWOTURNMOVE_ONLOCKMOVE] State duration: {:?}", state.duration);
+        debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] Found effect state!");
+        debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] State move_id: {:?}", state.move_id);
+        debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] State duration: {:?}", state.duration);
         state.move_id.clone()
     }).flatten();
 
-    eprintln!("[TWOTURNMOVE_ONLOCKMOVE] move_id={:?}", move_id);
+    debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] move_id={:?}", move_id);
     match move_id {
         Some(id) => {
-            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] Returning String({})", id);
+            debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] Returning String({})", id);
             EventResult::String(id)
         }
         None => {
-            eprintln!("[TWOTURNMOVE_ONLOCKMOVE] No move_id, returning Continue");
+            debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] No move_id, returning Continue");
             EventResult::Continue
         }
     }

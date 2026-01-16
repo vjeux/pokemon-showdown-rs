@@ -65,7 +65,7 @@ pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battl
     // Convert to Fairy type and mark as boosted
     active_move.move_type = "Fairy".to_string();
     active_move.type_changer_boosted = Some(Effect::ability("pixilate"));
-    eprintln!("[PIXILATE] Changed {} from Normal to Fairy", active_move.name);
+    debug_elog!("[PIXILATE] Changed {} from Normal to Fairy", active_move.name);
 
     EventResult::Continue
 }
@@ -74,18 +74,18 @@ pub fn on_modify_type(battle: &mut Battle, active_move: Option<&mut crate::battl
 ///     if (move.typeChangerBoosted === this.effect) return this.chainModify([4915, 4096]);
 /// }
 pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
-    eprintln!("[PIXILATE on_base_power] CALLED! base_power={}", base_power);
+    debug_elog!("[PIXILATE on_base_power] CALLED! base_power={}", base_power);
 
     // Check if this move was boosted by Pixilate
     let should_boost = active_move
         .and_then(|m| m.type_changer_boosted.as_ref())
         .map(|booster| {
-            eprintln!("[PIXILATE on_base_power] booster={}, checking if pixilate", booster.as_str());
+            debug_elog!("[PIXILATE on_base_power] booster={}, checking if pixilate", booster.as_str());
             booster.as_str() == "pixilate"
         })
         .unwrap_or(false);
 
-    eprintln!("[PIXILATE on_base_power] should_boost={}", should_boost);
+    debug_elog!("[PIXILATE on_base_power] should_boost={}", should_boost);
 
     if !should_boost {
         return EventResult::Continue;
@@ -93,7 +93,7 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, _attacker_pos: (usize
 
     // Apply the modifier 4915/4096 (approximately 1.2x, used in Gen 8+)
     // JavaScript: return this.chainModify([4915, 4096]);
-    eprintln!("[PIXILATE] Applying power boost modifier 4915/4096 (≈1.2x)");
+    debug_elog!("[PIXILATE] Applying power boost modifier 4915/4096 (≈1.2x)");
     battle.chain_modify_fraction(4915, 4096);
 
     EventResult::Continue

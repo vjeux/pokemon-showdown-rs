@@ -22,7 +22,7 @@ impl Battle {
         if let Some(_pokemon) = self.sides.get(side_idx).and_then(|s| s.pokemon.get(poke_idx)) {
             // let speed = this.getStat('spe', false, false);
             let speed = self.get_pokemon_stat((side_idx, poke_idx), StatID::Spe, false, false);
-            eprintln!("[GET_POKEMON_ACTION_SPEED] turn={}, pokemon=({}, {}), speed={}", self.turn, side_idx, poke_idx, speed);
+            debug_elog!("[GET_POKEMON_ACTION_SPEED] turn={}, pokemon=({}, {}), speed={}", self.turn, side_idx, poke_idx, speed);
 
             // const trickRoomCheck = this.battle.ruleTable.has('twisteddimensionmod') ?
             //     !this.battle.field.getPseudoWeather('trickroom') : this.battle.field.getPseudoWeather('trickroom');

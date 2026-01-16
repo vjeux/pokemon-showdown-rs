@@ -44,7 +44,7 @@ pub fn base_power_callback(
     // if (damagedByTarget) {
     if damaged_by_target {
         // this.debug(`BP doubled for getting hit by ${target}`);
-        eprintln!("[REVENGE] BP doubled for getting hit by {:?}", target);
+        debug_elog!("[REVENGE] BP doubled for getting hit by {:?}", target);
 
         // return move.basePower * 2;
         let base_power = {

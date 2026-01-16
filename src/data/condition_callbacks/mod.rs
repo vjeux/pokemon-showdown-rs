@@ -386,13 +386,13 @@ pub fn dispatch_on_effectiveness(
     pokemon_pos: (usize, usize),
     active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    eprintln!("[DISPATCH_ON_EFFECTIVENESS] condition_id={}, type_mod={}, target_type={}, pokemon_pos={:?}, active_move={:?}",
+    debug_elog!("[DISPATCH_ON_EFFECTIVENESS] condition_id={}, type_mod={}, target_type={}, pokemon_pos={:?}, active_move={:?}",
         condition_id, type_mod, target_type, pokemon_pos, active_move);
 
     match condition_id {
         "deltastream" => deltastream::on_effectiveness(battle, type_mod, target_type, pokemon_pos, active_move),
         "tarshot" => {
-            eprintln!("[DISPATCH_ON_EFFECTIVENESS] Calling tarshot callback with type_mod={}, target_type={}", type_mod, target_type);
+            debug_elog!("[DISPATCH_ON_EFFECTIVENESS] Calling tarshot callback with type_mod={}, target_type={}", type_mod, target_type);
             // Call tarshot's on_effectiveness directly (not through move_callbacks dispatcher
             // which would match on active_move.id instead of condition_id)
             move_callbacks::tarshot::condition::on_effectiveness(
@@ -542,22 +542,22 @@ pub fn dispatch_on_any_invulnerability(
     source_pos: (usize, usize),
     attacking_active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    println!("[DISPATCH_INVULN] Called with condition_id='{}', target_pos={:?}, source_pos={:?}, attacking_active_move='{:?}'",
+    debug_log!("[DISPATCH_INVULN] Called with condition_id='{}', target_pos={:?}, source_pos={:?}, attacking_active_move='{:?}'",
         condition_id, target_pos, source_pos, attacking_active_move);
 
     let result = match condition_id {
         "skydrop" => {
-            println!("[DISPATCH_INVULN] Routing to skydrop callback");
+            debug_log!("[DISPATCH_INVULN] Routing to skydrop callback");
             skydrop::on_any_invulnerability(battle, target_pos, source_pos, attacking_active_move)
         },
         _ => {
-            println!("[DISPATCH_INVULN] No match for '{}', trying fallback", condition_id);
+            debug_log!("[DISPATCH_INVULN] No match for '{}', trying fallback", condition_id);
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_any_invulnerability(battle, condition_id, target_pos, source_pos, attacking_active_move)
         },
     };
 
-    println!("[DISPATCH_INVULN] Returning {:?}", result);
+    debug_log!("[DISPATCH_INVULN] Returning {:?}", result);
     result
 }
 /// Dispatch onLockMove callbacks
@@ -764,7 +764,7 @@ pub fn dispatch_on_residual(
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
 ) -> EventResult {
-    eprintln!("[DISPATCH_ON_RESIDUAL] condition_id='{}', pokemon_pos={:?}, turn={}",
+    debug_elog!("[DISPATCH_ON_RESIDUAL] condition_id='{}', pokemon_pos={:?}, turn={}",
         condition_id, pokemon_pos, battle.turn);
     match condition_id {
         "brn" => brn::on_residual(battle, pokemon_pos, source_pos, effect_id),

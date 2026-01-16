@@ -5,6 +5,11 @@ edition = "2021"
 description = "A Rust port of the Pokemon Showdown battle simulator"
 license = "MIT"
 
+[features]
+default = []
+# Enable verbose debug logging (significantly impacts performance)
+debug-logging = []
+
 [dependencies]
 # ChaCha20 for sodium-compatible PRNG
 chacha20 = "0.9"

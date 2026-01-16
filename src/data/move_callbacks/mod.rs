@@ -1677,19 +1677,19 @@ pub fn dispatch_condition_on_any_invulnerability(
     attacking_active_move: Option<&ActiveMove>,
 ) -> EventResult {
     let attacking_move_id = attacking_active_move.map(|m| m.id.as_str()).unwrap_or("");
-    eprintln!("[DISPATCH_COND_ANY_INVULN] condition_id='{}', attacking_move_id='{}', target_pos={:?}, source_pos={:?}",
+    debug_elog!("[DISPATCH_COND_ANY_INVULN] condition_id='{}', attacking_move_id='{}', target_pos={:?}, source_pos={:?}",
         condition_id, attacking_move_id, target_pos, source_pos);
     let result = match condition_id {
         "skydrop" => {
-            eprintln!("[DISPATCH_COND_ANY_INVULN] Matched skydrop, calling callback with attacking_move_id={}", attacking_move_id);
+            debug_elog!("[DISPATCH_COND_ANY_INVULN] Matched skydrop, calling callback with attacking_move_id={}", attacking_move_id);
             skydrop::condition::on_any_invulnerability(battle, Some(target_pos), Some(source_pos), attacking_active_move)
         }
         _ => {
-            eprintln!("[DISPATCH_COND_ANY_INVULN] No match, returning Continue");
+            debug_elog!("[DISPATCH_COND_ANY_INVULN] No match, returning Continue");
             EventResult::Continue
         }
     };
-    eprintln!("[DISPATCH_COND_ANY_INVULN] Returning {:?}", result);
+    debug_elog!("[DISPATCH_COND_ANY_INVULN] Returning {:?}", result);
     result
 }
 

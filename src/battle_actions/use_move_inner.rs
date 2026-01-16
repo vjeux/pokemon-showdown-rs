@@ -179,7 +179,7 @@ pub fn use_move_inner(
     z_move_param: Option<&str>,
     max_move_param: Option<&str>,
 ) -> bool {
-    eprintln!("[USE_MOVE_INNER] ENTRY: move={}, pokemon=({}, {}), target={:?}, PRNG={}",
+    debug_elog!("[USE_MOVE_INNER] ENTRY: move={}, pokemon=({}, {}), target={:?}, PRNG={}",
         move_data.id.as_str(), pokemon_pos.0, pokemon_pos.1, target_pos, battle.prng.call_count);
 
     // let target = options?.target;
@@ -207,7 +207,7 @@ pub fn use_move_inner(
     let mut active_move = match battle.dex.get_active_move(move_data.id.as_str()) {
         Some(m) => m,
         None => {
-            eprintln!("[USE_MOVE_INNER] Move not found: {}", move_data.id.as_str());
+            debug_elog!("[USE_MOVE_INNER] Move not found: {}", move_data.id.as_str());
             return false;
         }
     };
@@ -343,7 +343,7 @@ pub fn use_move_inner(
     //     target = pokemon;
     // }
     if active_move.target == "self" || active_move.target == "allies" {
-        eprintln!("[USE_MOVE_INNER] Setting target to self for move {}, target={:?}", active_move.id, active_move.target);
+        debug_elog!("[USE_MOVE_INNER] Setting target to self for move {}, target={:?}", active_move.id, active_move.target);
         target_pos = Some(pokemon_pos);
     }
 
@@ -398,11 +398,11 @@ pub fn use_move_inner(
     // if (baseTarget !== move.target) {
     //     target = this.battle.getRandomTarget(pokemon, move);
     // }
-    eprintln!("[USE_MOVE_INNER] After ModifyMove: base_target={}, active_move.target={}, target_pos={:?}", base_target, active_move.target, target_pos);
+    debug_elog!("[USE_MOVE_INNER] After ModifyMove: base_target={}, active_move.target={}, target_pos={:?}", base_target, active_move.target, target_pos);
     if base_target != active_move.target {
-        eprintln!("[USE_MOVE_INNER] Target changed! Getting new random target");
+        debug_elog!("[USE_MOVE_INNER] Target changed! Getting new random target");
         target_pos = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &active_move.target);
-        eprintln!("[USE_MOVE_INNER] New target_pos={:?}", target_pos);
+        debug_elog!("[USE_MOVE_INNER] New target_pos={:?}", target_pos);
     }
 
     // move = this.battle.runEvent('ModifyType', pokemon, target, move, move);
@@ -422,11 +422,11 @@ pub fn use_move_inner(
     // if (baseTarget !== move.target) {
     //     target = this.battle.getRandomTarget(pokemon, move);
     // }
-    eprintln!("[USE_MOVE_INNER] After ModifyMove: base_target={}, active_move.target={}, target_pos={:?}", base_target, active_move.target, target_pos);
+    debug_elog!("[USE_MOVE_INNER] After ModifyMove: base_target={}, active_move.target={}, target_pos={:?}", base_target, active_move.target, target_pos);
     if base_target != active_move.target {
-        eprintln!("[USE_MOVE_INNER] Target changed! Getting new random target");
+        debug_elog!("[USE_MOVE_INNER] Target changed! Getting new random target");
         target_pos = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &active_move.target);
-        eprintln!("[USE_MOVE_INNER] New target_pos={:?}", target_pos);
+        debug_elog!("[USE_MOVE_INNER] New target_pos={:?}", target_pos);
     }
 
     // if (!move || pokemon.fainted) {
@@ -434,7 +434,7 @@ pub fn use_move_inner(
     // }
     let pokemon_fainted = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].is_fainted();
     if pokemon_fainted {
-        eprintln!("[USE_MOVE_INNER] Pokemon fainted, returning false");
+        debug_elog!("[USE_MOVE_INNER] Pokemon fainted, returning false");
         return false;
     }
 
@@ -719,7 +719,7 @@ pub fn use_move_inner(
         if let Some(ref mut am) = battle.active_move {
             am.mindblown_recoil = false;
         }
-        eprintln!("[USE_MOVE_INNER] TryMove failed, returning false");
+        debug_elog!("[USE_MOVE_INNER] TryMove failed, returning false");
         return false;
     }
 
@@ -750,10 +750,10 @@ pub fn use_move_inner(
     // }
     if battle.gen != 4 {
         if let Some(ref am) = battle.active_move {
-            eprintln!("[SELFDESTRUCT] Checking selfdestruct for move={}, self_destruct={:?}",
+            debug_elog!("[SELFDESTRUCT] Checking selfdestruct for move={}, self_destruct={:?}",
                 am.id, am.self_destruct);
             if am.self_destruct.as_deref() == Some("always") {
-                eprintln!("[SELFDESTRUCT] Calling battle.faint() for pokemon_pos={:?}", pokemon_pos);
+                debug_elog!("[SELFDESTRUCT] Calling battle.faint() for pokemon_pos={:?}", pokemon_pos);
                 battle.faint(pokemon_pos, Some(pokemon_pos), Some(active_move.id.as_str()));
             }
         }
@@ -769,7 +769,7 @@ pub fn use_move_inner(
     // }
     if active_move.target == "all" || active_move.target == "foeSide" ||
        active_move.target == "allySide" || active_move.target == "allyTeam" {
-        eprintln!("[USE_MOVE_INNER] turn={}, move={}, taking tryMoveHit branch (target={})",
+        debug_elog!("[USE_MOVE_INNER] turn={}, move={}, taking tryMoveHit branch (target={})",
             battle.turn, active_move.id, active_move.target);
         // damage = this.tryMoveHit(targets, pokemon, move);
         let hit_result = crate::battle_actions::try_move_hit(
@@ -803,7 +803,7 @@ pub fn use_move_inner(
             other => other,  // truthy values stay truthy, false/NOT_FAIL stay falsy
         };
     } else {
-        eprintln!("[USE_MOVE_INNER] turn={}, move={}, taking trySpreadMoveHit branch (target={})",
+        debug_elog!("[USE_MOVE_INNER] turn={}, move={}, taking trySpreadMoveHit branch (target={})",
             battle.turn, active_move.id, active_move.target);
         // if (!targets.length) {
         //     this.battle.attrLastMove('[notarget]');
@@ -892,7 +892,7 @@ pub fn use_move_inner(
             Some(&Effect::move_(active_move.id.clone())),
             None,
         );
-        eprintln!("[USE_MOVE_INNER] Move failed, returning false");
+        debug_elog!("[USE_MOVE_INNER] Move failed, returning false");
         return false;
     }
 
@@ -936,7 +936,7 @@ pub fn use_move_inner(
         }
     }
 
-    eprintln!("[USE_MOVE_INNER] SUCCESS, returning true, PRNG={}", battle.prng.call_count);
+    debug_elog!("[USE_MOVE_INNER] SUCCESS, returning true, PRNG={}", battle.prng.call_count);
     // return true;
     true
 }

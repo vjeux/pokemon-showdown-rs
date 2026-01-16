@@ -92,18 +92,18 @@ pub mod condition {
 
         // if (this.getOverflowedTurnCount() <= this.effectState.startingTurn) return;
         let (starting_turn, target_pos, source_slot) = battle.with_effect_state_ref(|state| {
-            eprintln!("[WISH_ON_RESIDUAL] effect_state: starting_turn={:?}, target={:?}, source_slot={:?}, hp={:?}",
+            debug_elog!("[WISH_ON_RESIDUAL] effect_state: starting_turn={:?}, target={:?}, source_slot={:?}, hp={:?}",
                 state.starting_turn, state.target, state.source_slot, state.hp);
             let starting_turn = state.starting_turn.unwrap_or(0);
             (starting_turn, state.target, state.source_slot)
         }).unwrap_or_else(|| {
-            eprintln!("[WISH_ON_RESIDUAL] ERROR: with_effect_state_ref returned None");
+            debug_elog!("[WISH_ON_RESIDUAL] ERROR: with_effect_state_ref returned None");
             (0, None, None)
         });
 
         let current_turn = battle.get_overflowed_turn_count();
 
-        eprintln!("[WISH_ON_RESIDUAL] current_turn={}, starting_turn={}, should_proceed={}",
+        debug_elog!("[WISH_ON_RESIDUAL] current_turn={}, starting_turn={}, should_proceed={}",
             current_turn, starting_turn, current_turn > starting_turn);
 
         if current_turn <= starting_turn {

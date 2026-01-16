@@ -206,12 +206,12 @@ impl Battle {
         if let Some(source_pos) = source {
             if prefixed_handlers {
                 let source_event = format!("onSource{}", event_name);
-                eprintln!("[FIND_EVENT_HANDLERS] Looking for source event '{}' on source {:?}", source_event, source_pos);
+                debug_elog!("[FIND_EVENT_HANDLERS] Looking for source event '{}' on source {:?}", source_event, source_pos);
                 let mut source_handlers =
                     self.find_pokemon_event_handlers(&source_event, source_pos, None);
-                eprintln!("[FIND_EVENT_HANDLERS] Found {} source handlers for {}", source_handlers.len(), source_event);
+                debug_elog!("[FIND_EVENT_HANDLERS] Found {} source handlers for {}", source_handlers.len(), source_event);
                 for handler in &mut source_handlers {
-                    eprintln!("[FIND_EVENT_HANDLERS] Source handler: {:?}", handler.effect.id);
+                    debug_elog!("[FIND_EVENT_HANDLERS] Source handler: {:?}", handler.effect.id);
                     handler.callback_name = format!("Source{}", event_name);
                 }
                 handlers.extend(source_handlers);

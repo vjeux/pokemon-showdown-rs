@@ -41,7 +41,7 @@ pub fn hit_step_type_immunity(
     //     hitResults[i] = targets[i].runImmunity(move, !move.smartTarget);
     // }
     let mut hit_results = Vec::new();
-    eprintln!("[HIT_STEP_TYPE_IMM] move={}, move_type={}", active_move.id, active_move.move_type);
+    debug_elog!("[HIT_STEP_TYPE_IMM] move={}, move_type={}", active_move.id, active_move.move_type);
     for &target_pos in targets {
         // JavaScript runImmunity checks: if (source.ignoreImmunity && (source.ignoreImmunity === true || source.ignoreImmunity[type]))
         // Check if move should ignore immunity for this type
@@ -54,7 +54,7 @@ pub fn hit_step_type_immunity(
             Some(crate::battle_actions::IgnoreImmunity::NoIgnore) => false,
             None => false,
         };
-        eprintln!("[HIT_STEP_TYPE_IMM] target={:?}, should_ignore={}", target_pos, should_ignore_immunity);
+        debug_elog!("[HIT_STEP_TYPE_IMM] target={:?}, should_ignore={}", target_pos, should_ignore_immunity);
 
         let hit_result = if should_ignore_immunity {
             // Bypass immunity check - move hits regardless of type immunity
@@ -67,7 +67,7 @@ pub fn hit_step_type_immunity(
                 &active_move.move_type,
                 !active_move.smart_target.unwrap_or(false),
             );
-            eprintln!("[HIT_STEP_TYPE_IMM] run_immunity returned: {}", result);
+            debug_elog!("[HIT_STEP_TYPE_IMM] run_immunity returned: {}", result);
             result
         };
         hit_results.push(hit_result);

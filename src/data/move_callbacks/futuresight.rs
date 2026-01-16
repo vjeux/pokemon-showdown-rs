@@ -46,7 +46,7 @@ pub fn on_try(
     // The futuremove::on_end_with_data sets this flag before executing the move
     // In that case, just return Continue to let the move deal damage normally
     if battle.executing_future_move {
-        eprintln!("[FUTURESIGHT::ON_TRY] executing_future_move is true, this is a future move execution - returning Continue to deal damage");
+        debug_elog!("[FUTURESIGHT::ON_TRY] executing_future_move is true, this is a future move execution - returning Continue to deal damage");
         return EventResult::Continue;
     }
 

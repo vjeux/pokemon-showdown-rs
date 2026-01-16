@@ -102,7 +102,7 @@ impl BattleQueue {
                 // CRITICAL: Shuffle tied elements using PRNG!
                 // This randomizes the order of actions with the same priority/speed,
                 // which is essential for matching JavaScript behavior.
-                eprintln!("[SPEED_SORT] {} items tying at positions {:?}, turn={}, callsite=BattleQueue::sort",
+                debug_elog!("[SPEED_SORT] {} items tying at positions {:?}, turn={}, callsite=BattleQueue::sort",
                     next_indexes.len(), next_indexes, battle.turn);
                 battle.shuffle_range(&mut self.list, sorted, sorted + next_indexes.len());
             }

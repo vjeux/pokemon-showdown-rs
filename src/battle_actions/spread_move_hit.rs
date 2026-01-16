@@ -133,7 +133,7 @@ pub fn spread_move_hit<'a>(
     is_self: bool,
 ) -> SpreadMoveHitResult {
     let move_id = &active_move.id;
-    eprintln!("[SPREAD_MOVE_HIT] ENTRY: move_id={}, targets.len()={}, is_secondary={}, is_self={}",
+    debug_elog!("[SPREAD_MOVE_HIT] ENTRY: move_id={}, targets.len()={}, is_secondary={}, is_self={}",
         move_id, targets.len(), is_secondary, is_self);
     // Initialize damage array with Success (true) for all targets
     // In JS: damage[i] = true for all targets
@@ -203,10 +203,10 @@ pub fn spread_move_hit<'a>(
 
     // Check if hit failed
     // JS: if (!hitResult) { if (hitResult === false) { ... } return [[false], targets]; }
-    eprintln!("[SPREAD_MOVE_HIT] After TryHit events: hit_result={:?}", hit_result);
+    debug_elog!("[SPREAD_MOVE_HIT] After TryHit events: hit_result={:?}", hit_result);
     match hit_result {
         event::EventResult::Boolean(false) => {
-            eprintln!("[SPREAD_MOVE_HIT] TryHit returned false, returning Failed");
+            debug_elog!("[SPREAD_MOVE_HIT] TryHit returned false, returning Failed");
             let pokemon_ident = {
                 let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
                     Some(p) => p,
@@ -224,7 +224,7 @@ pub fn spread_move_hit<'a>(
         event::EventResult::NotFail => {
             // JS: NOT_FAIL means move failed but without the fail message
             // The target is removed from processing but no -fail message is added
-            eprintln!("[SPREAD_MOVE_HIT] TryHit returned NotFail, returning Failed (silently)");
+            debug_elog!("[SPREAD_MOVE_HIT] TryHit returned NotFail, returning Failed (silently)");
             return (vec![DamageResult::Failed], targets_mut);
         }
         _ => {}
@@ -237,7 +237,7 @@ pub fn spread_move_hit<'a>(
            move_target != "allyTeam" &&
            move_target != "allySide" &&
            move_target != "foeSide" {
-            eprintln!("[SPREAD_MOVE_HIT] Before try_primary_hit_event: damage={:?}", damage);
+            debug_elog!("[SPREAD_MOVE_HIT] Before try_primary_hit_event: damage={:?}", damage);
             damage = crate::battle_actions::try_primary_hit_event(
                 battle,
                 damage,
@@ -246,7 +246,7 @@ pub fn spread_move_hit<'a>(
                 move_data,
                 is_secondary,
             );
-            eprintln!("[SPREAD_MOVE_HIT] After try_primary_hit_event: damage={:?}", damage);
+            debug_elog!("[SPREAD_MOVE_HIT] After try_primary_hit_event: damage={:?}", damage);
         }
     }
 
@@ -276,11 +276,11 @@ pub fn spread_move_hit<'a>(
             targets_mut[i] = SpreadMoveTarget::None;
         }
     }
-    eprintln!("[SPREAD_MOVE_HIT] After damage loop: damage={:?}, targets={:?}", damage, targets_mut);
+    debug_elog!("[SPREAD_MOVE_HIT] After damage loop: damage={:?}, targets={:?}", damage, targets_mut);
 
     // 1. call to getDamage
     // JS: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
-    eprintln!("[SPREAD_MOVE_HIT] About to call get_spread_damage");
+    debug_elog!("[SPREAD_MOVE_HIT] About to call get_spread_damage");
     // Get the active move for damage calculation - JavaScript passes ActiveMove directly
     let active_move_for_damage = battle.active_move.clone();
     if let Some(ref active_move) = active_move_for_damage {
@@ -295,7 +295,7 @@ pub fn spread_move_hit<'a>(
             is_self,
         );
     } else {
-        eprintln!("[SPREAD_MOVE_HIT] WARNING: No active_move available for get_spread_damage");
+        debug_elog!("[SPREAD_MOVE_HIT] WARNING: No active_move available for get_spread_damage");
     }
 
     // JS: for (const i of targets.keys()) { if (damage[i] === false) targets[i] = false; }
@@ -333,11 +333,11 @@ pub fn spread_move_hit<'a>(
     let (has_self_effect, self_dropped, move_data_clone) = {
         if let Some(ref active_move) = battle.active_move {
             let has_self = active_move.self_effect.is_some();
-            eprintln!("[SPREAD_MOVE_HIT] BEFORE run_move_effects: move_id={}, has_self_effect={}, self_dropped={}, secondaries.len()={}",
+            debug_elog!("[SPREAD_MOVE_HIT] BEFORE run_move_effects: move_id={}, has_self_effect={}, self_dropped={}, secondaries.len()={}",
                 active_move.id, has_self, active_move.self_dropped, active_move.secondaries.len());
             (has_self, active_move.self_dropped, Some(active_move.clone()))
         } else {
-            eprintln!("[SPREAD_MOVE_HIT] No active_move when extracting info BEFORE run_move_effects!");
+            debug_elog!("[SPREAD_MOVE_HIT] No active_move when extracting info BEFORE run_move_effects!");
             (false, false, None)
         }
     };
@@ -403,7 +403,7 @@ pub fn spread_move_hit<'a>(
         );
     }
 
-    eprintln!("[SPREAD_MOVE_HIT] Reached secondaries section for move_id={}", move_id);
+    debug_elog!("[SPREAD_MOVE_HIT] Reached secondaries section for move_id={}", move_id);
 
     // 5. secondary effects
     // JS: if (moveData.secondaries) this.secondaries(targets, pokemon, move, moveData, isSelf);
@@ -413,7 +413,7 @@ pub fn spread_move_hit<'a>(
     if is_hit_effect_move {
         if let Some(ref move_data) = move_data_clone {
             if !move_data.secondaries.is_empty() {
-                eprintln!("[SPREAD_MOVE_HIT] Calling secondaries for move_id={}", move_id);
+                debug_elog!("[SPREAD_MOVE_HIT] Calling secondaries for move_id={}", move_id);
                 crate::battle_actions::secondaries(
                     battle,
                     &targets_mut,
@@ -434,12 +434,12 @@ pub fn spread_move_hit<'a>(
     // JS: if (moveData.forceSwitch) damage = this.forceSwitch(damage, targets, pokemon, move);
     let has_force_switch = {
         let move_data = battle.dex.moves.get(move_data_id).expect("Move not found");
-        eprintln!("[SPREAD_MOVE_HIT] move={}, force_switch={}", move_data_id, move_data.force_switch);
+        debug_elog!("[SPREAD_MOVE_HIT] move={}, force_switch={}", move_data_id, move_data.force_switch);
         move_data.force_switch
     };
 
     if has_force_switch {
-        eprintln!("[SPREAD_MOVE_HIT] Calling force_switch for move={}", move_data_id);
+        debug_elog!("[SPREAD_MOVE_HIT] Calling force_switch for move={}", move_data_id);
         // force_switch needs ActiveMove - get pointer to avoid borrow issues
         let active_move_ptr = battle.active_move.as_ref().map(|am| am as *const _);
 
@@ -453,9 +453,9 @@ pub fn spread_move_hit<'a>(
                     &*ptr,
                 )
             };
-            eprintln!("[SPREAD_MOVE_HIT] force_switch completed");
+            debug_elog!("[SPREAD_MOVE_HIT] force_switch completed");
         } else {
-            eprintln!("[SPREAD_MOVE_HIT] No active_move ptr, skipping force_switch");
+            debug_elog!("[SPREAD_MOVE_HIT] No active_move ptr, skipping force_switch");
         }
     }
 
@@ -494,7 +494,7 @@ pub fn spread_move_hit<'a>(
 
     // DamagingHit and AfterHit events
     // JS: if (damagedDamage.length && !isSecondary && !isSelf) { ... }
-    eprintln!("[SPREAD_MOVE_HIT] DamagingHit check: move_id={}, damaged_damage.len()={}, is_secondary={}, is_self={}",
+    debug_elog!("[SPREAD_MOVE_HIT] DamagingHit check: move_id={}, damaged_damage.len()={}, is_secondary={}, is_self={}",
         move_id.as_str(), damaged_damage.len(), is_secondary, is_self);
     if !damaged_damage.is_empty() && !is_secondary && !is_self {
         // JS: this.battle.runEvent('DamagingHit', damagedTargets, pokemon, move, damagedDamage);

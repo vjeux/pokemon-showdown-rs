@@ -45,7 +45,7 @@ pub fn trace_boosts_enabled() -> bool {
 macro_rules! trace_event {
     ($($arg:tt)*) => {
         if $crate::trace::trace_events_enabled() {
-            eprintln!("[EVENT] {}", format!($($arg)*));
+            debug_elog!("[EVENT] {}", format!($($arg)*));
         }
     };
 }
@@ -55,7 +55,7 @@ macro_rules! trace_event {
 macro_rules! trace_ability {
     ($($arg:tt)*) => {
         if $crate::trace::trace_abilities_enabled() {
-            eprintln!("[ABILITY] {}", format!($($arg)*));
+            debug_elog!("[ABILITY] {}", format!($($arg)*));
         }
     };
 }
@@ -65,7 +65,7 @@ macro_rules! trace_ability {
 macro_rules! trace_item {
     ($($arg:tt)*) => {
         if $crate::trace::trace_items_enabled() {
-            eprintln!("[ITEM] {}", format!($($arg)*));
+            debug_elog!("[ITEM] {}", format!($($arg)*));
         }
     };
 }
@@ -75,7 +75,7 @@ macro_rules! trace_item {
 macro_rules! trace_volatile {
     ($($arg:tt)*) => {
         if $crate::trace::trace_volatiles_enabled() {
-            eprintln!("[VOLATILE] {}", format!($($arg)*));
+            debug_elog!("[VOLATILE] {}", format!($($arg)*));
         }
     };
 }
@@ -85,7 +85,7 @@ macro_rules! trace_volatile {
 macro_rules! trace_boost {
     ($($arg:tt)*) => {
         if $crate::trace::trace_boosts_enabled() {
-            eprintln!("[BOOST] {}", format!($($arg)*));
+            debug_elog!("[BOOST] {}", format!($($arg)*));
         }
     };
 }

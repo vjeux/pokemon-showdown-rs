@@ -12,7 +12,7 @@ use crate::Pokemon;
 ///     pokemon.trySetStatus('tox', pokemon);
 /// }
 pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    eprintln!("[TOXIC_ORB DEBUG] on_residual called for Pokemon at {:?}", pokemon_pos);
+    debug_elog!("[TOXIC_ORB DEBUG] on_residual called for Pokemon at {:?}", pokemon_pos);
 
     // Get pokemon name and status for logging
     let (name, status_before) = {
@@ -23,7 +23,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
         (pokemon.name.clone(), pokemon.status.clone())
     };
 
-    eprintln!("[TOXIC_ORB DEBUG] Pokemon {} status before: {}", name, status_before);
+    debug_elog!("[TOXIC_ORB DEBUG] Pokemon {} status before: {}", name, status_before);
 
     // pokemon.trySetStatus('tox', pokemon);
     Pokemon::try_set_status(battle, pokemon_pos, crate::dex_data::ID::new("tox"), None, None);
@@ -36,7 +36,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
         pokemon.status.clone()
     };
 
-    eprintln!("[TOXIC_ORB DEBUG] Pokemon {} status after: {}", name, status_after);
+    debug_elog!("[TOXIC_ORB DEBUG] Pokemon {} status after: {}", name, status_after);
 
     EventResult::Continue
 }
