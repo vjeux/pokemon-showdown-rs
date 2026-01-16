@@ -80,23 +80,26 @@ pub mod condition {
         };
 
         // this.damage(pokemon.maxhp * (2 ** typeMod) / 8);
+        // JavaScript uses floating-point math here, so 1 * (2 ** 0) / 8 = 0.125
+        // Then spreadDamage clamps non-zero values to minimum 1
+        // We need to use floating-point to match this behavior
         let damage_amount = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let power = if type_mod >= 0 {
-                2i32.pow(type_mod as u32)
+            // JavaScript: pokemon.maxhp * (2 ** typeMod) / 8
+            let maxhp = pokemon_pokemon.maxhp as f64;
+            let multiplier = 2f64.powi(type_mod);
+            let damage = maxhp * multiplier / 8.0;
+            // Convert to i32 - spreadDamage will handle clamping non-zero to min 1
+            // But we need to preserve fractional values as non-zero for the clamp to work
+            // So if damage > 0 but < 1, we should pass it as a small positive value
+            // that will be clamped to 1 by spreadDamage
+            if damage > 0.0 && damage < 1.0 {
+                1 // Pass 1 so the damage is applied
             } else {
-                // For negative type mods, we use 1/2^abs(typeMod)
-                // which is equivalent to dividing by 2^abs(typeMod)
-                1
-            };
-
-            if type_mod >= 0 {
-                pokemon_pokemon.maxhp * power / 8
-            } else {
-                pokemon_pokemon.maxhp / (2i32.pow((-type_mod) as u32) * 8)
+                damage as i32
             }
         };
 
