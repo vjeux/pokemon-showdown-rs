@@ -370,6 +370,7 @@ pub fn dispatch_on_drag_out(
         "commanded" => commanded::on_drag_out(battle, pokemon_pos, source_pos, active_move),
         "commanding" => commanding::on_drag_out(battle, pokemon_pos, source_pos, active_move),
         "dynamax" => dynamax::on_drag_out(battle, pokemon_pos, source_pos, active_move),
+        "ingrain" => move_callbacks::ingrain::condition::on_drag_out(battle, pokemon_pos),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_drag_out(battle, active_move, pokemon_pos)
