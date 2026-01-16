@@ -364,6 +364,15 @@ pub fn use_move_inner(
     // let moveResult = false;
     let move_result;
 
+    // Preserve has_bounced flag from old active_move if it was set
+    // This is needed for Magic Bounce/Magic Coat - they set has_bounced = true on the
+    // current active_move before calling use_move, and we need to preserve that flag
+    // on the new active_move to prevent infinite recursion
+    let old_has_bounced = battle.active_move.as_ref().map_or(false, |m| m.has_bounced);
+    if old_has_bounced {
+        active_move.has_bounced = true;
+    }
+
     // this.battle.setActiveMove(move, pokemon, target);
     battle.set_active_move(Some(active_move.id.clone()), Some(pokemon_pos), target_pos);
     battle.active_move = Some(active_move.clone());
