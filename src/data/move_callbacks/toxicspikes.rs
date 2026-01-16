@@ -146,6 +146,17 @@ pub mod condition {
                 return EventResult::Continue;
             }
 
+            // Get the foe's active Pokemon as the source (pokemon.side.foe.active[0])
+            let foe_side = if pokemon.0 == 0 { 1 } else { 0 };
+            let foe_source = if !battle.sides[foe_side].pokemon.is_empty()
+                && battle.sides[foe_side].active[0].is_some()
+            {
+                let foe_poke_idx = battle.sides[foe_side].active[0].unwrap();
+                Some((foe_side, foe_poke_idx))
+            } else {
+                None
+            };
+
             // else if (this.effectState.layers >= 2)
             let layers = battle
                 .with_effect_state_ref(|state| state.layers.unwrap_or(0))
@@ -158,7 +169,7 @@ pub mod condition {
                     None => return EventResult::Continue,
                 };
                 let move_effect = crate::battle::Effect::move_("toxicspikes");
-                Pokemon::try_set_status(battle, pokemon_pos, ID::from("tox"), None, Some(&move_effect));
+                Pokemon::try_set_status(battle, pokemon_pos, ID::from("tox"), foe_source, Some(&move_effect));
             } else {
                 // pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
                 let _pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
@@ -166,7 +177,7 @@ pub mod condition {
                     None => return EventResult::Continue,
                 };
                 let move_effect = crate::battle::Effect::move_("toxicspikes");
-                Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), None, Some(&move_effect));
+                Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), foe_source, Some(&move_effect));
             }
         }
 

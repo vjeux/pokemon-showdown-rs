@@ -1,14 +1,8 @@
-Analyzing 6 failing minimized seed files...
+Analyzing 5 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-thunder: 1 seeds
-  Seeds: 8445
-safeguard: 1 seeds
-  Seeds: 8445
-toxicspikes: 1 seeds
-  Seeds: 8445
 beakblast: 1 seeds
   Seeds: 8545
 shellsidearm: 1 seeds
@@ -83,15 +77,12 @@ kingsrock: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 6
-Unique moves: 29 (28 non-simple)
+Total minimized seeds: 5
+Unique moves: 26 (25 non-simple)
 Unique abilities: 6 (5 non-simple)
 Unique items: 1
 
 --- Most Common Moves (top 10) ---
-  thunder: 1 seeds
-  safeguard: 1 seeds
-  toxicspikes: 1 seeds
   beakblast: 1 seeds
   shellsidearm: 1 seeds
   sandattack: 1 seeds
@@ -99,6 +90,9 @@ Unique items: 1
   thundershock: 1 seeds
   mefirst: 1 seeds
   voltswitch: 1 seeds
+  thunderpunch: 1 seeds
+  helpinghand: 1 seeds
+  veeveevolley: 1 seeds
 
 --- Most Common Abilities (top 10) ---
   No Guard: 1 seeds
