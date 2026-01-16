@@ -26,6 +26,8 @@ unicode-normalization = "0.1"
 regex = "1.10"
 # Ordered hashmap (preserves insertion order like JavaScript objects)
 indexmap = { version = "2.0", features = ["serde"] }
+# Parallel iteration
+rayon = "1.10"
 
 [profile.release]
 lto = true
