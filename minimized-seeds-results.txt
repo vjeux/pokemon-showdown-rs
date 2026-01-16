@@ -1,743 +1,8 @@
 =======================================
-Testing Minimized Seeds (723 tests)
+Testing Minimized Seeds (1893 tests)
 =======================================
 
 Step 1: Copying team files...
-
-Step 6: Comparing results...
-
-Seed 502: ✓ PASS
-Seed 515: ✓ PASS
-Seed 517: ✓ PASS
-Seed 536: ✓ PASS
-Seed 546: ✓ PASS
-Seed 547: ✓ PASS
-Seed 576: ✓ PASS
-Seed 603: ✓ PASS
-Seed 611: ✓ PASS
-Seed 620: ✓ PASS
-Seed 621: ✓ PASS
-Seed 658: ✓ PASS
-Seed 670: ✓ PASS
-Seed 702: ✓ PASS
-Seed 713: ✓ PASS
-Seed 736: ✓ PASS
-Seed 740: ✓ PASS
-Seed 754: ✓ PASS
-Seed 761: ✓ PASS
-Seed 764: ✓ PASS
-Seed 778: ✓ PASS
-Seed 823: ✓ PASS
-Seed 873: ✓ PASS
-Seed 897: ✓ PASS
-Seed 911: ✓ PASS
-Seed 919: ✓ PASS
-Seed 939: ✓ PASS
-Seed 943: ✓ PASS
-Seed 948: ✓ PASS
-Seed 961: ✓ PASS
-Seed 967: ✓ PASS
-Seed 972: ✓ PASS
-Seed 1008: ✓ PASS
-Seed 1031: ✓ PASS
-Seed 1053: ✓ PASS
-Seed 1067: ✓ PASS
-Seed 1069: ✓ PASS
-Seed 1110: ✓ PASS
-Seed 1125: ✓ PASS
-Seed 1143: ✓ PASS
-Seed 1147: ✓ PASS
-Seed 1162: ✓ PASS
-Seed 1171: ✓ PASS
-Seed 1189: ✓ PASS
-Seed 1193: ✓ PASS
-Seed 1194: ✓ PASS
-Seed 1205: ✓ PASS
-Seed 1221: ✓ PASS
-Seed 1235: ✓ PASS
-Seed 1249: ✓ PASS
-Seed 1252: ✓ PASS
-Seed 1256: ✓ PASS
-Seed 1258: ✓ PASS
-Seed 1267: ✓ PASS
-Seed 1279: ✓ PASS
-Seed 1284: ✓ PASS
-Seed 1288: ✓ PASS
-Seed 1333: ✓ PASS
-Seed 1348: ✓ PASS
-Seed 1359: ✓ PASS
-Seed 1362: ✓ PASS
-Seed 1369: ✓ PASS
-Seed 1379: ✓ PASS
-Seed 1398: ✓ PASS
-Seed 1400: ✓ PASS
-Seed 1420: ✓ PASS
-Seed 1424: ✓ PASS
-Seed 1428: ✓ PASS
-Seed 1432: ✓ PASS
-Seed 1484: ✓ PASS
-Seed 1490: ✓ PASS
-Seed 1497: ✓ PASS
-Seed 1508: ✓ PASS
-Seed 1519: ✓ PASS
-Seed 1524: ✓ PASS
-Seed 1538: ✓ PASS
-Seed 1540: ✓ PASS
-Seed 1543: ✓ PASS
-Seed 1558: ✓ PASS
-Seed 1568: ✓ PASS
-Seed 1584: ✓ PASS
-Seed 1602: ✓ PASS
-Seed 1615: ✓ PASS
-Seed 1627: ✓ PASS
-Seed 1649: ✓ PASS
-Seed 1653: ✓ PASS
-Seed 1657: ✓ PASS
-Seed 1720: ✓ PASS
-Seed 1773: ✓ PASS
-Seed 1787: ✓ PASS
-Seed 1795: ✓ PASS
-Seed 1803: ✓ PASS
-Seed 1813: ✓ PASS
-Seed 1814: ✓ PASS
-Seed 1819: ✓ PASS
-Seed 1825: ✓ PASS
-Seed 1840: ✓ PASS
-Seed 1842: ✓ PASS
-Seed 1844: ✓ PASS
-Seed 1880: ✓ PASS
-Seed 1961: ✓ PASS
-Seed 1977: ✓ PASS
-Seed 1989: ✓ PASS
-Seed 1998: ✓ PASS
-Seed 2000: ✓ PASS
-Seed 2009: ✓ PASS
-Seed 2026: ✓ PASS
-Seed 2027: ✓ PASS
-Seed 2030: ✓ PASS
-Seed 2054: ✓ PASS
-Seed 2086: ✓ PASS
-Seed 2095: ✓ PASS
-Seed 2139: ✓ PASS
-Seed 2166: ✓ PASS
-Seed 2169: ✓ PASS
-Seed 2178: ✓ PASS
-Seed 2188: ✓ PASS
-Seed 2190: ✓ PASS
-Seed 2201: ✓ PASS
-Seed 2208: ✓ PASS
-Seed 2212: ✓ PASS
-Seed 2214: ✓ PASS
-Seed 2232: ✓ PASS
-Seed 2261: ✓ PASS
-Seed 2266: ✓ PASS
-Seed 2303: ✓ PASS
-Seed 2304: ✓ PASS
-Seed 2329: ✓ PASS
-Seed 2338: ✓ PASS
-Seed 2341: ✓ PASS
-Seed 2351: ✓ PASS
-Seed 2358: ✓ PASS
-Seed 2366: ✓ PASS
-Seed 2388: ✓ PASS
-Seed 2394: ✓ PASS
-Seed 2397: ✓ PASS
-Seed 2403: ✓ PASS
-Seed 2440: ✓ PASS
-Seed 2447: ✓ PASS
-Seed 2452: ✓ PASS
-Seed 2453: ✓ PASS
-Seed 2455: ✓ PASS
-Seed 2460: ✓ PASS
-Seed 2469: ✓ PASS
-Seed 2535: ✓ PASS
-Seed 2541: ✓ PASS
-Seed 2545: ✓ PASS
-Seed 2549: ✓ PASS
-Seed 2553: ✓ PASS
-Seed 2579: ✓ PASS
-Seed 2597: ✓ PASS
-Seed 2609: ✓ PASS
-Seed 2618: ✓ PASS
-Seed 2622: ✓ PASS
-Seed 2633: ✓ PASS
-Seed 2651: ✓ PASS
-Seed 2655: ✓ PASS
-Seed 2665: ✓ PASS
-Seed 2674: ✓ PASS
-Seed 2687: ✓ PASS
-Seed 2719: ✓ PASS
-Seed 2729: ✓ PASS
-Seed 2733: ✓ PASS
-Seed 2741: ✓ PASS
-Seed 2750: ✓ PASS
-Seed 2762: ✓ PASS
-Seed 2769: ✓ PASS
-Seed 2787: ✓ PASS
-Seed 2788: ✓ PASS
-Seed 2802: ✓ PASS
-Seed 2803: ✓ PASS
-Seed 2807: ✓ PASS
-Seed 2814: ✓ PASS
-Seed 2819: ✓ PASS
-Seed 2856: ✓ PASS
-Seed 2861: ✓ PASS
-Seed 2865: ✓ PASS
-Seed 2876: ✓ PASS
-Seed 2893: ✓ PASS
-Seed 2894: ✓ PASS
-Seed 2919: ✓ PASS
-Seed 2926: ✓ PASS
-Seed 2951: ✓ PASS
-Seed 2956: ✓ PASS
-Seed 2975: ✓ PASS
-Seed 2981: ✓ PASS
-Seed 2982: ✓ PASS
-Seed 3000: ✓ PASS
-Seed 3002: ✓ PASS
-Seed 3010: ✓ PASS
-Seed 3014: ✓ PASS
-Seed 3022: ✓ PASS
-Seed 3063: ✓ PASS
-Seed 3070: ✓ PASS
-Seed 3078: ✓ PASS
-Seed 3085: ✓ PASS
-Seed 3092: ✓ PASS
-Seed 3103: ✓ PASS
-Seed 3119: ✓ PASS
-Seed 3122: ✓ PASS
-Seed 3126: ✓ PASS
-Seed 3130: ✓ PASS
-Seed 3141: ✓ PASS
-Seed 3149: ✓ PASS
-Seed 3153: ✓ PASS
-Seed 3162: ✓ PASS
-Seed 3163: ✓ PASS
-Seed 3165: ✓ PASS
-Seed 3179: ✓ PASS
-Seed 3185: ✓ PASS
-Seed 3206: ✓ PASS
-Seed 3212: ✓ PASS
-Seed 3228: ✓ PASS
-Seed 3250: ✓ PASS
-Seed 3255: ✓ PASS
-Seed 3264: ✓ PASS
-Seed 3308: ✓ PASS
-Seed 3316: ✓ PASS
-Seed 3346: ✓ PASS
-Seed 3348: ✓ PASS
-Seed 3367: ✓ PASS
-Seed 3382: ✓ PASS
-Seed 3403: ✓ PASS
-Seed 3433: ✓ PASS
-Seed 3435: ✓ PASS
-Seed 3456: ✓ PASS
-Seed 3460: ✓ PASS
-Seed 3465: ✓ PASS
-Seed 3469: ✓ PASS
-Seed 3491: ✓ PASS
-Seed 3492: ✓ PASS
-Seed 3507: ✓ PASS
-Seed 3517: ✓ PASS
-Seed 3530: ✓ PASS
-Seed 3536: ✓ PASS
-Seed 3543: ✓ PASS
-Seed 3558: ✓ PASS
-Seed 3578: ✓ PASS
-Seed 3579: ✓ PASS
-Seed 3583: ✓ PASS
-Seed 3646: ✓ PASS
-Seed 3677: ✓ PASS
-Seed 3685: ✓ PASS
-Seed 3688: ✓ PASS
-Seed 3697: ✓ PASS
-Seed 3701: ✓ PASS
-Seed 3735: ✓ PASS
-Seed 3749: ✓ PASS
-Seed 3787: ✓ PASS
-Seed 3801: ✓ PASS
-Seed 3865: ✓ PASS
-Seed 3904: ✓ PASS
-Seed 3906: ✓ PASS
-Seed 3934: ✓ PASS
-Seed 3953: ✓ PASS
-Seed 3964: ✓ PASS
-Seed 3972: ✓ PASS
-Seed 3974: ✓ PASS
-Seed 3984: ✓ PASS
-Seed 3986: ✓ PASS
-Seed 4016: ✓ PASS
-Seed 4025: ✓ PASS
-Seed 4044: ✓ PASS
-Seed 4055: ✓ PASS
-Seed 4071: ✓ PASS
-Seed 4082: ✓ PASS
-Seed 4112: ✓ PASS
-Seed 4123: ✓ PASS
-Seed 4126: ✓ PASS
-Seed 4130: ✓ PASS
-Seed 4141: ✓ PASS
-Seed 4142: ✓ PASS
-Seed 4157: ✓ PASS
-Seed 4162: ✓ PASS
-Seed 4165: ✓ PASS
-Seed 4170: ✓ PASS
-Seed 4186: ✓ PASS
-Seed 4193: ✓ PASS
-Seed 4202: ✓ PASS
-Seed 4257: ✓ PASS
-Seed 4264: ✓ PASS
-Seed 4278: ✓ PASS
-Seed 4301: ✓ PASS
-Seed 4315: ✓ PASS
-Seed 4317: ✓ PASS
-Seed 4333: ✓ PASS
-Seed 4357: ✓ PASS
-Seed 4370: ✓ PASS
-Seed 4378: ✓ PASS
-Seed 4383: ✓ PASS
-Seed 4387: ✓ PASS
-Seed 4397: ✓ PASS
-Seed 4409: ✓ PASS
-Seed 4430: ✓ PASS
-Seed 4458: ✓ PASS
-Seed 4460: ✓ PASS
-Seed 4479: ✓ PASS
-Seed 4515: ✓ PASS
-Seed 4567: ✓ PASS
-Seed 4594: ✓ PASS
-Seed 4616: ✓ PASS
-Seed 4634: ✓ PASS
-Seed 4648: ✓ PASS
-Seed 4651: ✓ PASS
-Seed 4652: ✓ PASS
-Seed 4660: ✓ PASS
-Seed 4661: ✓ PASS
-Seed 4664: ✓ PASS
-Seed 4668: ✓ PASS
-Seed 4670: ✓ PASS
-Seed 4675: ✓ PASS
-Seed 4682: ✓ PASS
-Seed 4703: ✓ PASS
-Seed 4711: ✓ PASS
-Seed 4716: ✓ PASS
-Seed 4727: ✓ PASS
-Seed 4743: ✓ PASS
-Seed 4745: ✓ PASS
-Seed 4747: ✓ PASS
-Seed 4750: ✓ PASS
-Seed 4754: ✓ PASS
-Seed 4760: ✓ PASS
-Seed 4762: ✓ PASS
-Seed 4764: ✓ PASS
-Seed 4767: ✓ PASS
-Seed 4773: ✓ PASS
-Seed 4813: ✓ PASS
-Seed 4858: ✓ PASS
-Seed 4883: ✓ PASS
-Seed 4893: ✓ PASS
-Seed 4905: ✓ PASS
-Seed 4907: ✓ PASS
-Seed 4917: ✓ PASS
-Seed 4947: ✓ PASS
-Seed 4949: ✓ PASS
-Seed 4966: ✓ PASS
-Seed 4969: ✓ PASS
-Seed 4990: ✓ PASS
-Seed 5001: ✓ PASS
-Seed 5009: ✓ PASS
-Seed 5029: ✓ PASS
-Seed 5030: ✓ PASS
-Seed 5050: ✓ PASS
-Seed 5055: ✓ PASS
-Seed 5072: ✓ PASS
-Seed 5080: ✓ PASS
-Seed 5101: ✓ PASS
-Seed 5108: ✓ PASS
-Seed 5112: ✓ PASS
-Seed 5123: ✓ PASS
-Seed 5125: ✓ PASS
-Seed 5131: ✓ PASS
-Seed 5140: ✓ PASS
-Seed 5157: ✓ PASS
-Seed 5166: ✓ PASS
-Seed 5172: ✓ PASS
-Seed 5188: ✓ PASS
-Seed 5204: ✓ PASS
-Seed 5215: ✓ PASS
-Seed 5245: ✓ PASS
-Seed 5251: ✓ PASS
-Seed 5266: ✓ PASS
-Seed 5293: ✓ PASS
-Seed 5299: ✓ PASS
-Seed 5306: ✓ PASS
-Seed 5307: ✓ PASS
-Seed 5343: ✓ PASS
-Seed 5345: ✓ PASS
-Seed 5358: ✓ PASS
-Seed 5377: ✓ PASS
-Seed 5379: ✓ PASS
-Seed 5380: ✓ PASS
-Seed 5395: ✓ PASS
-Seed 5422: ✓ PASS
-Seed 5468: ✓ PASS
-Seed 5492: ✓ PASS
-Seed 5505: ✓ PASS
-Seed 5508: ✓ PASS
-Seed 5538: ✓ PASS
-Seed 5539: ✓ PASS
-Seed 5561: ✓ PASS
-Seed 5562: ✓ PASS
-Seed 5571: ✓ PASS
-Seed 5576: ✓ PASS
-Seed 5577: ✓ PASS
-Seed 5579: ✓ PASS
-Seed 5613: ✓ PASS
-Seed 5620: ✓ PASS
-Seed 5644: ✓ PASS
-Seed 5686: ✓ PASS
-Seed 5687: ✓ PASS
-Seed 5722: ✓ PASS
-Seed 5729: ✓ PASS
-Seed 5735: ✓ PASS
-Seed 5743: ✓ PASS
-Seed 5748: ✓ PASS
-Seed 5761: ✓ PASS
-Seed 5762: ✓ PASS
-Seed 5770: ✓ PASS
-Seed 5780: ✓ PASS
-Seed 5807: ✓ PASS
-Seed 5840: ✓ PASS
-Seed 5854: ✓ PASS
-Seed 5874: ✓ PASS
-Seed 5888: ✓ PASS
-Seed 5913: ✓ PASS
-Seed 5926: ✓ PASS
-Seed 5948: ✓ PASS
-Seed 5954: ✓ PASS
-Seed 5964: ✓ PASS
-Seed 5991: ✓ PASS
-Seed 5992: ✓ PASS
-Seed 6005: ✓ PASS
-Seed 6007: ✓ PASS
-Seed 6024: ✓ PASS
-Seed 6042: ✓ PASS
-Seed 6061: ✓ PASS
-Seed 6065: ✓ PASS
-Seed 6088: ✓ PASS
-Seed 6104: ✓ PASS
-Seed 6106: ✓ PASS
-Seed 6124: ✓ PASS
-Seed 6148: ✓ PASS
-Seed 6201: ✓ PASS
-Seed 6216: ✓ PASS
-Seed 6242: ✓ PASS
-Seed 6251: ✓ PASS
-Seed 6261: ✓ PASS
-Seed 6287: ✓ PASS
-Seed 6288: ✓ PASS
-Seed 6289: ✓ PASS
-Seed 6302: ✓ PASS
-Seed 6304: ✓ PASS
-Seed 6305: ✓ PASS
-Seed 6306: ✓ PASS
-Seed 6345: ✓ PASS
-Seed 6348: ✓ PASS
-Seed 6349: ✓ PASS
-Seed 6359: ✓ PASS
-Seed 6365: ✓ PASS
-Seed 6378: ✓ PASS
-Seed 6391: ✓ PASS
-Seed 6402: ✓ PASS
-Seed 6413: ✓ PASS
-Seed 6421: ✓ PASS
-Seed 6423: ✓ PASS
-Seed 6438: ✓ PASS
-Seed 6445: ✓ PASS
-Seed 6454: ✓ PASS
-Seed 6455: ✓ PASS
-Seed 6456: ✓ PASS
-Seed 6488: ✓ PASS
-Seed 6516: ✓ PASS
-Seed 6518: ✓ PASS
-Seed 6526: ✓ PASS
-Seed 6527: ✓ PASS
-Seed 6528: ✓ PASS
-Seed 6543: ✓ PASS
-Seed 6567: ✓ PASS
-Seed 6568: ✓ PASS
-Seed 6576: ✓ PASS
-Seed 6592: ✓ PASS
-Seed 6593: ✓ PASS
-Seed 6597: ✓ PASS
-Seed 6603: ✓ PASS
-Seed 6605: ✓ PASS
-Seed 6621: ✓ PASS
-Seed 6632: ✓ PASS
-Seed 6636: ✓ PASS
-Seed 6649: ✓ PASS
-Seed 6650: ✓ PASS
-Seed 6654: ✓ PASS
-Seed 6669: ✓ PASS
-Seed 6675: ✓ PASS
-Seed 6685: ✓ PASS
-Seed 6719: ✓ PASS
-Seed 6724: ✓ PASS
-Seed 6727: ✓ PASS
-Seed 6738: ✓ PASS
-Seed 6742: ✓ PASS
-Seed 6756: ✓ PASS
-Seed 6757: ✓ PASS
-Seed 6764: ✓ PASS
-Seed 6794: ✓ PASS
-Seed 6815: ✓ PASS
-Seed 6826: ✓ PASS
-Seed 6832: ✓ PASS
-Seed 6865: ✓ PASS
-Seed 6891: ✓ PASS
-Seed 6913: ✓ PASS
-Seed 6919: ✓ PASS
-Seed 6926: ✓ PASS
-Seed 6935: ✓ PASS
-Seed 6976: ✓ PASS
-Seed 6978: ✓ PASS
-Seed 7000: ✓ PASS
-Seed 7002: ✓ PASS
-Seed 7006: ✓ PASS
-Seed 7010: ✓ PASS
-Seed 7012: ✓ PASS
-Seed 7018: ✓ PASS
-Seed 7028: ✓ PASS
-Seed 7029: ✓ PASS
-Seed 7042: ✓ PASS
-Seed 7054: ✓ PASS
-Seed 7055: ✓ PASS
-Seed 7072: ✓ PASS
-Seed 7077: ✓ PASS
-Seed 7081: ✓ PASS
-Seed 7082: ✓ PASS
-Seed 7109: ✓ PASS
-Seed 7121: ✓ PASS
-Seed 7127: ✓ PASS
-Seed 7131: ✓ PASS
-Seed 7140: ✓ PASS
-Seed 7149: ✓ PASS
-Seed 7163: ✓ PASS
-Seed 7169: ✓ PASS
-Seed 7179: ✓ PASS
-Seed 7213: ✓ PASS
-Seed 7227: ✓ PASS
-Seed 7238: ✓ PASS
-Seed 7240: ✓ PASS
-Seed 7242: ✓ PASS
-Seed 7243: ✓ PASS
-Seed 7249: ✓ PASS
-Seed 7252: ✓ PASS
-Seed 7268: ✓ PASS
-Seed 7298: ✓ PASS
-Seed 7306: ✓ PASS
-Seed 7312: ✓ PASS
-Seed 7314: ✓ PASS
-Seed 7324: ✓ PASS
-Seed 7371: ✓ PASS
-Seed 7376: ✓ PASS
-Seed 7379: ✓ PASS
-Seed 7410: ✓ PASS
-Seed 7415: ✓ PASS
-Seed 7417: ✓ PASS
-Seed 7427: ✓ PASS
-Seed 7436: ✓ PASS
-Seed 7441: ✓ PASS
-Seed 7444: ✓ PASS
-Seed 7461: ✓ PASS
-Seed 7496: ✓ PASS
-Seed 7504: ✓ PASS
-Seed 7539: ✓ PASS
-Seed 7556: ✓ PASS
-Seed 7559: ✓ PASS
-Seed 7563: ✓ PASS
-Seed 7577: ✓ PASS
-Seed 7589: ✓ PASS
-Seed 7592: ✓ PASS
-Seed 7601: ✓ PASS
-Seed 7618: ✓ PASS
-Seed 7623: ✓ PASS
-Seed 7635: ✓ PASS
-Seed 7656: ✓ PASS
-Seed 7658: ✓ PASS
-Seed 7662: ✓ PASS
-Seed 7671: ✓ PASS
-Seed 7691: ✓ PASS
-Seed 7701: ✓ PASS
-Seed 7705: ✓ PASS
-Seed 7709: ✓ PASS
-Seed 7744: ✓ PASS
-Seed 7792: ✓ PASS
-Seed 7797: ✓ PASS
-Seed 7830: ✓ PASS
-Seed 7846: ✓ PASS
-Seed 7869: ✓ PASS
-Seed 7877: ✓ PASS
-Seed 7884: ✓ PASS
-Seed 7887: ✓ PASS
-Seed 7897: ✓ PASS
-Seed 7960: ✓ PASS
-Seed 7984: ✓ PASS
-Seed 7996: ✓ PASS
-Seed 8008: ✓ PASS
-Seed 8012: ✓ PASS
-Seed 8013: ✓ PASS
-Seed 8026: ✓ PASS
-Seed 8031: ✓ PASS
-Seed 8032: ✓ PASS
-Seed 8042: ✓ PASS
-Seed 8062: ✓ PASS
-Seed 8070: ✓ PASS
-Seed 8075: ✓ PASS
-Seed 8076: ✓ PASS
-Seed 8094: ✓ PASS
-Seed 8121: ✓ PASS
-Seed 8123: ✓ PASS
-Seed 8125: ✓ PASS
-Seed 8146: ✓ PASS
-Seed 8152: ✓ PASS
-Seed 8164: ✓ PASS
-Seed 8170: ✓ PASS
-Seed 8184: ✓ PASS
-Seed 8186: ✓ PASS
-Seed 8189: ✓ PASS
-Seed 8263: ✓ PASS
-Seed 8322: ✓ PASS
-Seed 8326: ✓ PASS
-Seed 8328: ✓ PASS
-Seed 8342: ✓ PASS
-Seed 8355: ✓ PASS
-Seed 8365: ✓ PASS
-Seed 8374: ✓ PASS
-Seed 8405: ✓ PASS
-Seed 8407: ✓ PASS
-Seed 8414: ✓ PASS
-Seed 8439: ✓ PASS
-Seed 8445: ✓ PASS
-Seed 8463: ✓ PASS
-Seed 8476: ✓ PASS
-Seed 8477: ✓ PASS
-Seed 8490: ✓ PASS
-Seed 8514: ✓ PASS
-Seed 8532: ✓ PASS
-Seed 8537: ✓ PASS
-Seed 8541: ✓ PASS
-Seed 8543: ✓ PASS
-Seed 8544: ✓ PASS
-Seed 8545: ✓ PASS
-Seed 8553: ✓ PASS
-Seed 8554: ✓ PASS
-Seed 8555: ✓ PASS
-Seed 8557: ✓ PASS
-Seed 8559: ✓ PASS
-Seed 8583: ✓ PASS
-Seed 8602: ✓ PASS
-Seed 8618: ✓ PASS
-Seed 8619: ✓ PASS
-Seed 8641: ✓ PASS
-Seed 8690: ✓ PASS
-Seed 8708: ✓ PASS
-Seed 8766: ✓ PASS
-Seed 8774: ✓ PASS
-Seed 8784: ✓ PASS
-Seed 8791: ✓ PASS
-Seed 8799: ✓ PASS
-Seed 8802: ✓ PASS
-Seed 8817: ✓ PASS
-Seed 8829: ✓ PASS
-Seed 8832: ✓ PASS
-Seed 8848: ✓ PASS
-Seed 8849: ✓ PASS
-Seed 8851: ✓ PASS
-Seed 8873: ✓ PASS
-Seed 8893: ✓ PASS
-Seed 8895: ✓ PASS
-Seed 8899: ✓ PASS
-Seed 8916: ✓ PASS
-Seed 8957: ✓ PASS
-Seed 8974: ✓ PASS
-Seed 8986: ✓ PASS
-Seed 8999: ✓ PASS
-Seed 9005: ✓ PASS
-Seed 9009: ✓ PASS
-Seed 9033: ✓ PASS
-Seed 9039: ✓ PASS
-Seed 9048: ✓ PASS
-Seed 9082: ✓ PASS
-Seed 9089: ✓ PASS
-Seed 9091: ✓ PASS
-Seed 9107: ✓ PASS
-Seed 9116: ✓ PASS
-Seed 9124: ✓ PASS
-Seed 9128: ✓ PASS
-Seed 9159: ✓ PASS
-Seed 9196: ✓ PASS
-Seed 9213: ✓ PASS
-Seed 9227: ✓ PASS
-Seed 9314: ✓ PASS
-Seed 9328: ✓ PASS
-Seed 9331: ✓ PASS
-Seed 9341: ✓ PASS
-Seed 9350: ✓ PASS
-Seed 9362: ✓ PASS
-Seed 9390: ✓ PASS
-Seed 9394: ✓ PASS
-Seed 9400: ✓ PASS
-Seed 9410: ✓ PASS
-Seed 9415: ✓ PASS
-Seed 9417: ✓ PASS
-Seed 9420: ✓ PASS
-Seed 9423: ✓ PASS
-Seed 9425: ✓ PASS
-Seed 9427: ✓ PASS
-Seed 9485: ✓ PASS
-Seed 9529: ✓ PASS
-Seed 9540: ✓ PASS
-Seed 9544: ✓ PASS
-Seed 9563: ✓ PASS
-Seed 9565: ✓ PASS
-Seed 9567: ✓ PASS
-Seed 9578: ✓ PASS
-Seed 9600: ✓ PASS
-Seed 9635: ✓ PASS
-Seed 9638: ✓ PASS
-Seed 9657: ✓ PASS
-Seed 9661: ✓ PASS
-Seed 9681: ✓ PASS
-Seed 9711: ✓ PASS
-Seed 9712: ✓ PASS
-Seed 9716: ✓ PASS
-Seed 9728: ✓ PASS
-Seed 9741: ✓ PASS
-Seed 9746: ✓ PASS
-Seed 9748: ✓ PASS
-Seed 9751: ✓ PASS
-Seed 9765: ✓ PASS
-Seed 9782: ✓ PASS
-Seed 9789: ✓ PASS
-Seed 9805: ✓ PASS
-Seed 9809: ✓ PASS
-Seed 9827: ✓ PASS
-Seed 9836: ✓ PASS
-Seed 9861: ✓ PASS
-Seed 9914: ✓ PASS
-Seed 9926: ✓ PASS
-Seed 9931: ✓ PASS
-Seed 9996: ✓ PASS
-
-=======================================
-Summary
-=======================================
-Total minimized seeds: 723
-Passed: 723
-Failed: 0
-
-✓ ALL MINIMIZED SEEDS PASSED!
 Step 2: Building Rust binary...
 Step 3: Running JavaScript battles...
 Step 4: Running Rust battles...
@@ -745,13 +10,21 @@ Step 5: Copying results...
 
 Step 6: Comparing results...
 
+Seed 65: ✓ PASS
+Seed 122: ✗ FAIL - #2: turn=3, prng=7->11, P1=[Slowbro(276/345)], P2=[Arceus(278/386)]
+Seed 207: ✗ FAIL - #11: turn=12, prng=20->22, P1=[Skorupi(50/200)], P2=[Persian(136/272)]
+Seed 245: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Tyranitar(288/288)], P2=[Shedinja(0/1)]
 Seed 502: ✓ PASS
+Seed 509: ✗ FAIL - #25: turn=26, prng=48->52, P1=[Raging Bolt(219/291)], P2=[Raboot(159/159)]
 Seed 515: ✓ PASS
 Seed 517: ✓ PASS
+Seed 518: ✓ PASS
 Seed 536: ✓ PASS
 Seed 546: ✓ PASS
 Seed 547: ✓ PASS
+Seed 565: ✗ FAIL - #24: turn=21, prng=43->49, P1=[Ceruledge(194/221)], P2=[Mr. Rime(227/259)]
 Seed 576: ✓ PASS
+Seed 589: ✓ PASS
 Seed 603: ✓ PASS
 Seed 611: ✓ PASS
 Seed 620: ✓ PASS
@@ -777,8 +50,10 @@ Seed 948: ✓ PASS
 Seed 961: ✓ PASS
 Seed 967: ✓ PASS
 Seed 972: ✓ PASS
+Seed 987: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Toxel(147/200)], P2=[Beheeyem(197/215)]
 Seed 1008: ✓ PASS
 Seed 1031: ✓ PASS
+Seed 1051: ✓ PASS
 Seed 1053: ✓ PASS
 Seed 1067: ✓ PASS
 Seed 1069: ✓ PASS
@@ -788,6 +63,7 @@ Seed 1143: ✓ PASS
 Seed 1147: ✓ PASS
 Seed 1162: ✓ PASS
 Seed 1171: ✓ PASS
+Seed 1184: ✓ PASS
 Seed 1189: ✓ PASS
 Seed 1193: ✓ PASS
 Seed 1194: ✓ PASS
@@ -832,19 +108,24 @@ Seed 1627: ✓ PASS
 Seed 1649: ✓ PASS
 Seed 1653: ✓ PASS
 Seed 1657: ✓ PASS
+Seed 1658: ✗ FAIL - #2: turn=3, prng=17->29, P1=[Musharna(340/340)], P2=[Audino(199/258)]
 Seed 1720: ✓ PASS
 Seed 1773: ✓ PASS
 Seed 1787: ✓ PASS
 Seed 1795: ✓ PASS
 Seed 1803: ✓ PASS
+Seed 1808: ✓ PASS
 Seed 1813: ✓ PASS
 Seed 1814: ✓ PASS
 Seed 1819: ✓ PASS
+Seed 1821: ✓ PASS
 Seed 1825: ✓ PASS
 Seed 1840: ✓ PASS
 Seed 1842: ✓ PASS
 Seed 1844: ✓ PASS
 Seed 1880: ✓ PASS
+Seed 1884: ✗ FAIL - #9: turn=9, prng=100->103, P1=[Wishiwashi(14/215)], P2=[Donphan(233/265)]
+Seed 1905: ✗ FAIL - #2: turn=2, prng=0->4, P1=[Pignite(182/182)], P2=[Eiscue(239/239)]
 Seed 1961: ✓ PASS
 Seed 1977: ✓ PASS
 Seed 1989: ✓ PASS
@@ -855,6 +136,8 @@ Seed 2026: ✓ PASS
 Seed 2027: ✓ PASS
 Seed 2030: ✓ PASS
 Seed 2054: ✓ PASS
+Seed 2057: ✓ PASS
+Seed 2063: ✓ PASS
 Seed 2086: ✓ PASS
 Seed 2095: ✓ PASS
 Seed 2139: ✓ PASS
@@ -868,7 +151,9 @@ Seed 2208: ✓ PASS
 Seed 2212: ✓ PASS
 Seed 2214: ✓ PASS
 Seed 2232: ✓ PASS
+Seed 2244: ✓ PASS
 Seed 2261: ✓ PASS
+Seed 2264: ✓ PASS
 Seed 2266: ✓ PASS
 Seed 2303: ✓ PASS
 Seed 2304: ✓ PASS
@@ -889,11 +174,15 @@ Seed 2453: ✓ PASS
 Seed 2455: ✓ PASS
 Seed 2460: ✓ PASS
 Seed 2469: ✓ PASS
+Seed 2493: ✓ PASS
+Seed 2495: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Shedinja(0/1)], P2=[Grookey(204/204)]
+Seed 2516: ✓ PASS
 Seed 2535: ✓ PASS
 Seed 2541: ✓ PASS
 Seed 2545: ✓ PASS
 Seed 2549: ✓ PASS
 Seed 2553: ✓ PASS
+Seed 2578: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Ampharos(180/209)], P2=[Necrozma(183/183)]
 Seed 2579: ✓ PASS
 Seed 2597: ✓ PASS
 Seed 2609: ✓ PASS
@@ -923,12 +212,16 @@ Seed 2856: ✓ PASS
 Seed 2861: ✓ PASS
 Seed 2865: ✓ PASS
 Seed 2876: ✓ PASS
+Seed 2891: ✓ PASS
 Seed 2893: ✓ PASS
 Seed 2894: ✓ PASS
 Seed 2919: ✓ PASS
 Seed 2926: ✓ PASS
+Seed 2931: ✓ PASS
 Seed 2951: ✓ PASS
 Seed 2956: ✓ PASS
+Seed 2961: ✓ PASS
+Seed 2969: ✓ PASS
 Seed 2975: ✓ PASS
 Seed 2981: ✓ PASS
 Seed 2982: ✓ PASS
@@ -961,6 +254,8 @@ Seed 3228: ✓ PASS
 Seed 3250: ✓ PASS
 Seed 3255: ✓ PASS
 Seed 3264: ✓ PASS
+Seed 3275: ✓ PASS
+Seed 3276: ✓ PASS
 Seed 3308: ✓ PASS
 Seed 3316: ✓ PASS
 Seed 3346: ✓ PASS
@@ -987,13 +282,17 @@ Seed 3579: ✓ PASS
 Seed 3583: ✓ PASS
 Seed 3646: ✓ PASS
 Seed 3677: ✓ PASS
+Seed 3680: ✓ PASS
 Seed 3685: ✓ PASS
 Seed 3688: ✓ PASS
+Seed 3693: ✓ PASS
 Seed 3697: ✓ PASS
 Seed 3701: ✓ PASS
+Seed 3718: ✗ FAIL - #14: turn=12, prng=58->62, P1=[Golem(207/231)], P2=[Scrafty(229/229)]
 Seed 3735: ✓ PASS
 Seed 3749: ✓ PASS
 Seed 3787: ✓ PASS
+Seed 3800: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Rebble(231/247)], P2=[Tropius(334/360)]
 Seed 3801: ✓ PASS
 Seed 3865: ✓ PASS
 Seed 3904: ✓ PASS
@@ -1021,12 +320,15 @@ Seed 4157: ✓ PASS
 Seed 4162: ✓ PASS
 Seed 4165: ✓ PASS
 Seed 4170: ✓ PASS
+Seed 4171: ✓ PASS
 Seed 4186: ✓ PASS
 Seed 4193: ✓ PASS
 Seed 4202: ✓ PASS
+Seed 4232: ✗ FAIL - #4: turn=5, prng=6->6, P1=[Marshadow(209/209)], P2=[Coalossal(13/337)]
 Seed 4257: ✓ PASS
 Seed 4264: ✓ PASS
 Seed 4278: ✓ PASS
+Seed 4285: ✓ PASS
 Seed 4301: ✓ PASS
 Seed 4315: ✓ PASS
 Seed 4317: ✓ PASS
@@ -1043,10 +345,13 @@ Seed 4458: ✓ PASS
 Seed 4460: ✓ PASS
 Seed 4479: ✓ PASS
 Seed 4515: ✓ PASS
+Seed 4561: ✗ FAIL - #1: turn=1, prng=0->6, P1=[Clobbopus(91/158)], P2=[Shedinja(0/1)]
 Seed 4567: ✓ PASS
+Seed 4590: ✓ PASS
 Seed 4594: ✓ PASS
 Seed 4616: ✓ PASS
 Seed 4634: ✓ PASS
+Seed 4635: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Metagross(237/237)], P2=[Syclar(95/158)]
 Seed 4648: ✓ PASS
 Seed 4651: ✓ PASS
 Seed 4652: ✓ PASS
@@ -1101,16 +406,20 @@ Seed 5140: ✓ PASS
 Seed 5157: ✓ PASS
 Seed 5166: ✓ PASS
 Seed 5172: ✓ PASS
+Seed 5176: ✓ PASS
 Seed 5188: ✓ PASS
+Seed 5197: ✓ PASS
 Seed 5204: ✓ PASS
 Seed 5215: ✓ PASS
 Seed 5245: ✓ PASS
 Seed 5251: ✓ PASS
 Seed 5266: ✓ PASS
+Seed 5273: ✗ FAIL - #12: turn=12, prng=48->53, P1=[Vibrava(87/173)], P2=[Electrode(216/238)]
 Seed 5293: ✓ PASS
 Seed 5299: ✓ PASS
 Seed 5306: ✓ PASS
 Seed 5307: ✓ PASS
+Seed 5325: ✓ PASS
 Seed 5343: ✓ PASS
 Seed 5345: ✓ PASS
 Seed 5358: ✓ PASS
@@ -1134,6 +443,7 @@ Seed 5579: ✓ PASS
 Seed 5613: ✓ PASS
 Seed 5620: ✓ PASS
 Seed 5644: ✓ PASS
+Seed 5672: ✓ PASS
 Seed 5686: ✓ PASS
 Seed 5687: ✓ PASS
 Seed 5722: ✓ PASS
@@ -1154,6 +464,7 @@ Seed 5913: ✓ PASS
 Seed 5926: ✓ PASS
 Seed 5948: ✓ PASS
 Seed 5954: ✓ PASS
+Seed 5957: ✓ PASS
 Seed 5964: ✓ PASS
 Seed 5991: ✓ PASS
 Seed 5992: ✓ PASS
@@ -1170,6 +481,7 @@ Seed 6124: ✓ PASS
 Seed 6148: ✓ PASS
 Seed 6201: ✓ PASS
 Seed 6216: ✓ PASS
+Seed 6224: ✓ PASS
 Seed 6242: ✓ PASS
 Seed 6251: ✓ PASS
 Seed 6261: ✓ PASS
@@ -1232,12 +544,14 @@ Seed 6794: ✓ PASS
 Seed 6815: ✓ PASS
 Seed 6826: ✓ PASS
 Seed 6832: ✓ PASS
+Seed 6837: ✓ PASS
 Seed 6865: ✓ PASS
 Seed 6891: ✓ PASS
 Seed 6913: ✓ PASS
 Seed 6919: ✓ PASS
 Seed 6926: ✓ PASS
 Seed 6935: ✓ PASS
+Seed 6944: ✗ FAIL - #2: turn=3, prng=4->8, P1=[Alakazam(42/237)], P2=[Manectric(243/243)]
 Seed 6976: ✓ PASS
 Seed 6978: ✓ PASS
 Seed 7000: ✓ PASS
@@ -1251,7 +565,9 @@ Seed 7029: ✓ PASS
 Seed 7042: ✓ PASS
 Seed 7054: ✓ PASS
 Seed 7055: ✓ PASS
+Seed 7062: ✗ FAIL - #9: turn=9, prng=42->46, P1=[Silvally(174/204)], P2=[Metang(189/227)]
 Seed 7072: ✓ PASS
+Seed 7074: ✗ FAIL - #21: turn=20, prng=38->42, P1=[Iron Thorns(209/252)], P2=[Pikachu(123/123)]
 Seed 7077: ✓ PASS
 Seed 7081: ✓ PASS
 Seed 7082: ✓ PASS
@@ -1284,6 +600,7 @@ Seed 7379: ✓ PASS
 Seed 7410: ✓ PASS
 Seed 7415: ✓ PASS
 Seed 7417: ✓ PASS
+Seed 7422: ✓ PASS
 Seed 7427: ✓ PASS
 Seed 7436: ✓ PASS
 Seed 7441: ✓ PASS
@@ -1291,6 +608,7 @@ Seed 7444: ✓ PASS
 Seed 7461: ✓ PASS
 Seed 7496: ✓ PASS
 Seed 7504: ✓ PASS
+Seed 7534: ✓ PASS
 Seed 7539: ✓ PASS
 Seed 7556: ✓ PASS
 Seed 7559: ✓ PASS
@@ -1335,6 +653,7 @@ Seed 8070: ✓ PASS
 Seed 8075: ✓ PASS
 Seed 8076: ✓ PASS
 Seed 8094: ✓ PASS
+Seed 8119: ✓ PASS
 Seed 8121: ✓ PASS
 Seed 8123: ✓ PASS
 Seed 8125: ✓ PASS
@@ -1346,6 +665,7 @@ Seed 8184: ✓ PASS
 Seed 8186: ✓ PASS
 Seed 8189: ✓ PASS
 Seed 8263: ✓ PASS
+Seed 8299: ✓ PASS
 Seed 8322: ✓ PASS
 Seed 8326: ✓ PASS
 Seed 8328: ✓ PASS
@@ -1362,7 +682,9 @@ Seed 8463: ✓ PASS
 Seed 8476: ✓ PASS
 Seed 8477: ✓ PASS
 Seed 8490: ✓ PASS
+Seed 8506: ✓ PASS
 Seed 8514: ✓ PASS
+Seed 8520: ✓ PASS
 Seed 8532: ✓ PASS
 Seed 8537: ✓ PASS
 Seed 8541: ✓ PASS
@@ -1381,6 +703,7 @@ Seed 8619: ✓ PASS
 Seed 8641: ✓ PASS
 Seed 8690: ✓ PASS
 Seed 8708: ✓ PASS
+Seed 8722: ✗ FAIL - #73: turn=62, prng=6->7, P1=[Rhyhorn(247/247)], P2=[Houndstone(208/208)]
 Seed 8766: ✓ PASS
 Seed 8774: ✓ PASS
 Seed 8784: ✓ PASS
@@ -1398,6 +721,7 @@ Seed 8893: ✓ PASS
 Seed 8895: ✓ PASS
 Seed 8899: ✓ PASS
 Seed 8916: ✓ PASS
+Seed 8954: ✗ FAIL - #3: turn=3, prng=1->8, P1=[Vanilluxe(273/283)], P2=[Corviknight(194/194)]
 Seed 8957: ✓ PASS
 Seed 8974: ✓ PASS
 Seed 8986: ✓ PASS
@@ -1407,6 +731,7 @@ Seed 9009: ✓ PASS
 Seed 9033: ✓ PASS
 Seed 9039: ✓ PASS
 Seed 9048: ✓ PASS
+Seed 9079: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Arceus(214/253)], P2=[Astrolotl(307/344)]
 Seed 9082: ✓ PASS
 Seed 9089: ✓ PASS
 Seed 9091: ✓ PASS
@@ -1416,6 +741,7 @@ Seed 9124: ✓ PASS
 Seed 9128: ✓ PASS
 Seed 9159: ✓ PASS
 Seed 9196: ✓ PASS
+Seed 9212: ✗ FAIL - #18: turn=18, prng=46->52, P1=[Zigzagoon(197/228)], P2=[Rotom(172/214)]
 Seed 9213: ✓ PASS
 Seed 9227: ✓ PASS
 Seed 9314: ✓ PASS
@@ -1443,11 +769,14 @@ Seed 9565: ✓ PASS
 Seed 9567: ✓ PASS
 Seed 9578: ✓ PASS
 Seed 9600: ✓ PASS
+Seed 9604: ✗ FAIL - #17: turn=14, prng=67->76, P1=[Pokestar UFO(305/305)], P2=[Ramnarok(298/344)]
 Seed 9635: ✓ PASS
 Seed 9638: ✓ PASS
 Seed 9657: ✓ PASS
 Seed 9661: ✓ PASS
 Seed 9681: ✓ PASS
+Seed 9691: ✓ PASS
+Seed 9697: ✓ PASS
 Seed 9711: ✓ PASS
 Seed 9712: ✓ PASS
 Seed 9716: ✓ PASS
@@ -1455,6 +784,7 @@ Seed 9728: ✓ PASS
 Seed 9741: ✓ PASS
 Seed 9746: ✓ PASS
 Seed 9748: ✓ PASS
+Seed 9750: ✓ PASS
 Seed 9751: ✓ PASS
 Seed 9765: ✓ PASS
 Seed 9782: ✓ PASS
@@ -1462,18 +792,1127 @@ Seed 9789: ✓ PASS
 Seed 9805: ✓ PASS
 Seed 9809: ✓ PASS
 Seed 9827: ✓ PASS
+Seed 9833: ✓ PASS
 Seed 9836: ✓ PASS
 Seed 9861: ✓ PASS
 Seed 9914: ✓ PASS
 Seed 9926: ✓ PASS
 Seed 9931: ✓ PASS
+Seed 9939: ✓ PASS
 Seed 9996: ✓ PASS
+Seed 10025: ✗ FAIL - #10: turn=8, prng=52->52, P1=[Pikachu(40/205)], P2=[Shedinja(0/1)]
+Seed 10101: ✗ FAIL - #15: turn=14, prng=39->42, P1=[Latios(47/290)], P2=[Shedinja(0/1)]
+Seed 10488: ✗ FAIL - #2: turn=3, prng=4->14, P1=[Espathra(352/352)], P2=[Gible(267/267)]
+Seed 10504: ✓ PASS
+Seed 10538: ✓ PASS
+Seed 10543: ✗ FAIL - #1: turn=2, prng=3->16, P1=[Kabutops(253/253)], P2=[Wormadam(97/154)]
+Seed 10653: ✗ FAIL - #13: turn=11, prng=45->49, P1=[Sceptile(19/208)], P2=[Whismur(204/287)]
+Seed 10839: ✓ PASS
+Seed 10865: ✓ PASS
+Seed 10916: ✗ FAIL - #20: turn=19, prng=54->57, P1=[Hoothoot(141/184)], P2=[Shedinja(0/1)]
+Seed 11060: ✗ FAIL - #23: turn=19, prng=71->77, P1=[Eevee(66/203)], P2=[Wobbuffet(62/355)]
+Seed 11177: ✓ PASS
+Seed 11246: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Aegislash(252/252)], P2=[Shedinja(0/1)]
+Seed 11464: ✓ PASS
+Seed 11617: ✓ PASS
+Seed 12074: ✓ PASS
+Seed 12449: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Garbodor(256/256)], P2=[Regieleki(155/206)]
+Seed 12584: ✗ FAIL - #92: turn=89, prng=103->107, P1=[Cinderace(155/244)], P2=[Sceptile(280/287)]
+Seed 12688: ✓ PASS
+Seed 12733: ✗ FAIL - #64: turn=62, prng=28->31, P1=[Pokestar Giant(179/249)], P2=[Xerneas(59/284)]
+Seed 12774: ✗ FAIL - #22: turn=21, prng=127->132, P1=[Silvally(62/207)], P2=[Lapras(89/394)]
+Seed 12832: ✗ FAIL - #20: turn=20, prng=92->98, P1=[Whirlipede(45/172)], P2=[Flapple(289/302)]
+Seed 12923: ✓ PASS
+Seed 12932: ✗ FAIL - #1: turn=1, prng=0->0, P1=[Kerfluffle(310/330)], P2=[Shedinja(0/1)]
+Seed 12933: ✓ PASS
+Seed 13008: ✓ PASS
+Seed 13119: ✗ FAIL - #2: turn=3, prng=4->8, P1=[Scream Tail(14/201)], P2=[Serperior(230/230)]
+Seed 13305: ✓ PASS
+Seed 13576: ✓ PASS
+Seed 13587: ✓ PASS
+Seed 13693: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Bombirdier(187/293)], P2=[Pecharunt(334/334)]
+Seed 14018: ✓ PASS
+Seed 14038: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Bibarel(106/214)], P2=[Pachirisu(273/273)]
+Seed 14287: ✗ FAIL - #3: turn=4, prng=3->7, P1=[Misdreavus(205/205)], P2=[Vulpix(74/144)]
+Seed 14322: ✓ PASS
+Seed 14462: ✓ PASS
+Seed 14715: ✓ PASS
+Seed 14796: ✗ FAIL - #74: turn=60, prng=371->373, P1=[Huntail(4/206)], P2=[Dwebble(173/173)]
+Seed 14860: ✗ FAIL - #6: turn=6, prng=17->22, P1=[Kommo-o(225/293)], P2=[Squawkabilly(37/202)]
+Seed 14901: ✓ PASS
+Seed 14967: ✓ PASS
+Seed 14976: ✓ PASS
+Seed 15080: ✗ FAIL - #39: turn=38, prng=108->114, P1=[Poliwag(216/242)], P2=[Stunfisk(245/272)]
+Seed 15291: ✓ PASS
+Seed 15300: ✓ PASS
+Seed 15480: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Pecharunt(180/180)], P2=[Chewtle(113/153)]
+Seed 15605: ✓ PASS
+Seed 15699: ✓ PASS
+Seed 15759: ✗ FAIL - #41: turn=42, prng=128->133, P1=[Duraludon(40/275)], P2=[Seviper(188/188)]
+Seed 15935: ✗ FAIL - #9: turn=8, prng=47->56, P1=[Ribombee(140/243)], P2=[Calyrex(319/344)]
+Seed 15974: ✗ FAIL - #7: turn=8, prng=57->66, P1=[Glalie(178/178)], P2=[Zorua(166/166)]
+Seed 15985: ✓ PASS
+Seed 16082: ✓ PASS
+Seed 16095: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Shedinja(0/1)], P2=[Dragapult(265/265)]
+Seed 16129: ✓ PASS
+Seed 16158: ✗ FAIL - #37: turn=34, prng=131->136, P1=[Morpeko(2/269)], P2=[Petilil(85/145)]
+Seed 16240: ✗ FAIL - #3: turn=4, prng=2->3, P1=[Rufflet(26/208)], P2=[Crabominable(331/331)]
+Seed 16251: ✓ PASS
+Seed 16318: ✓ PASS
+Seed 16338: ✗ FAIL - #19: turn=19, prng=34->40, P1=[Arceus(249/279)], P2=[Vivillon(1/297)]
+Seed 16507: ✓ PASS
+Seed 16559: ✗ FAIL - #2: turn=3, prng=1->5, P1=[Tropius(213/213)], P2=[Vivillon(248/306)]
+Seed 16683: ✓ PASS
+Seed 16770: ✗ FAIL - #17: turn=15, prng=51->56, P1=[Xatu(44/238)], P2=[Centiskorch(192/228)]
+Seed 16779: ✓ PASS
+Seed 16796: ✗ FAIL - #49: turn=49, prng=23->26, P1=[Metagross(181/181)], P2=[Snaelstrom(98/230)]
+Seed 16802: ✓ PASS
+Seed 16855: ✓ PASS
+Seed 16879: ✗ FAIL - #8: turn=7, prng=12->19, P1=[Suicune(338/362)], P2=[Pyroar(291/291)]
+Seed 16908: ✗ FAIL - #25: turn=22, prng=164->177, P1=[Pikachu(60/132)], P2=[Noibat(93/209)]
+Seed 17206: ✓ PASS
+Seed 17373: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Shedinja(0/1)], P2=[Carkol(184/200)]
+Seed 17433: ✗ FAIL - #12: turn=12, prng=48->55, P1=[Pikachu(126/165)], P2=[Skorupi(121/142)]
+Seed 17535: ✗ FAIL - #5: turn=5, prng=6->9, P1=[Salamence(284/328)], P2=[Zamazenta(332/332)]
+Seed 17585: ✗ FAIL - #11: turn=11, prng=54->58, P1=[Scratchet(117/167)], P2=[Gastrodon(57/380)]
+Seed 17626: ✗ FAIL - #2: turn=2, prng=20->33, P1=[Aipom(0/189)], P2=[Charmander(0/175)]
+Seed 17644: ✗ FAIL - #32: turn=30, prng=43->48, P1=[Stunfisk(196/283)], P2=[Zygarde(36/252)]
+Seed 17650: ✓ PASS
+Seed 17769: ✓ PASS
+Seed 17853: ✗ FAIL - #2: turn=2, prng=0->4, P1=[Jumbao(325/325)], P2=[Saharascal(226/226)]
+Seed 17901: ✓ PASS
+Seed 18011: ✓ PASS
+Seed 18085: ✓ PASS
+Seed 18153: ✓ PASS
+Seed 18219: ✗ FAIL - #3: turn=2, prng=2->5, P1=[Arceus(402/402)], P2=[Pyroar(152/314)]
+Seed 18223: ✓ PASS
+Seed 18367: ✗ FAIL - #5: turn=6, prng=17->19, P1=[Whirlipede(117/158)], P2=[Alakazam(146/209)]
+Seed 18468: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Shedinja(0/1)], P2=[Ferrothorn(285/292)]
+Seed 18657: ✗ FAIL - #1: turn=2, prng=0->1, P1=[Pecharunt(236/236)], P2=[Voltorb(175/186)]
+Seed 18709: ✗ FAIL - #35: turn=33, prng=80->82, P1=[Dhelmise(167/234)], P2=[Melmetal(61/246)]
+Seed 18761: ✓ PASS
+Seed 18770: ✓ PASS
+Seed 18802: ✓ PASS
+Seed 19072: ✓ PASS
+Seed 19169: ✗ FAIL - #56: turn=55, prng=166->166, P1=[Piloswine(2/298)], P2=[Zacian(29/335)]
+Seed 19220: ✓ PASS
+Seed 19242: ✓ PASS
+Seed 19309: ✓ PASS
+Seed 19405: ✗ FAIL - #2: turn=3, prng=3->9, P1=[Rapidash(219/275)], P2=[Popplio(63/191)]
+Seed 19549: ✓ PASS
+Seed 19552: ✓ PASS
+Seed 19591: ✓ PASS
+Seed 19765: ✓ PASS
+Seed 19895: ✗ FAIL - #35: turn=29, prng=122->128, P1=[Sprigatito(4/209)], P2=[Beartic(1/329)]
+Seed 19928: ✗ FAIL - #33: turn=29, prng=86->90, P1=[Metagross(152/256)], P2=[Onix(199/209)]
+Seed 20038: ✓ PASS
+Seed 20165: ✗ FAIL - #30: turn=27, prng=101->103, P1=[Litten(54/215)], P2=[Metagross(43/300)]
+Seed 20191: ✗ FAIL - #6: turn=6, prng=16->19, P1=[Floette(182/226)], P2=[Sandile(262/262)]
+Seed 20356: ✗ FAIL - #40: turn=38, prng=153->159, P1=[Lechonk(10/142)], P2=[Arceus(0/311)]
+Seed 20401: ✓ PASS
+Seed 20710: ✗ FAIL - #1: turn=1, prng=0->0, P1=[Sableye(139/148)], P2=[Shedinja(0/1)]
+Seed 20875: ✗ FAIL - #2: turn=3, prng=3->6, P1=[Registeel(244/244)], P2=[Klang(169/189)]
+Seed 21016: ✗ FAIL - #1: turn=2, prng=0->2, P1=[Caribolt(230/230)], P2=[Magnezone(196/196)]
+Seed 21068: ✓ PASS
+Seed 21107: ✗ FAIL - #18: turn=19, prng=4->9, P1=[Flygon(79/318)], P2=[Arbok(76/205)]
+Seed 21165: ✓ PASS
+Seed 21183: ✓ PASS
+Seed 21203: ✓ PASS
+Seed 21218: ✓ PASS
+Seed 21237: ✓ PASS
+Seed 21295: ✓ PASS
+Seed 21366: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Ogerpon(297/297)], P2=[Victini(0/266)]
+Seed 21393: ✓ PASS
+Seed 21400: ✓ PASS
+Seed 21443: ✗ FAIL - #25: turn=26, prng=83->86, P1=[Snorlax(207/444)], P2=[Grovyle(14/201)]
+Seed 21504: ✓ PASS
+Seed 21555: ✓ PASS
+Seed 21692: ✓ PASS
+Seed 21766: ✗ FAIL - #14: turn=12, prng=57->64, P1=[Duohm(239/239)], P2=[Magikarp(81/196)]
+Seed 21801: ✗ FAIL - #2: turn=2, prng=0->4, P1=[Huntail(201/201)], P2=[Smogecko(161/161)]
+Seed 21914: ✗ FAIL - #3: turn=4, prng=10->14, P1=[Piloswine(317/319)], P2=[Togedemaru(20/162)]
+Seed 21977: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Mew(261/362)], P2=[Cramorant(107/182)]
+Seed 22025: ✗ FAIL - #5: turn=6, prng=28->33, P1=[Arbok(33/197)], P2=[Cawmodore(199/199)]
+Seed 22137: ✓ PASS
+Seed 22148: ✗ FAIL - #10: turn=9, prng=24->27, P1=[Brattler(306/306)], P2=[Shedinja(0/1)]
+Seed 22251: ✓ PASS
+Seed 22350: ✓ PASS
+Seed 22366: ✗ FAIL - #18: turn=15, prng=94->107, P1=[Litten(0/144)], P2=[Caimanoe(0/282)]
+Seed 22436: ✗ FAIL - #49: turn=50, prng=0->3, P1=[Toucannon(200/275)], P2=[Ogerpon(197/197)]
+Seed 22464: ✗ FAIL - #3: turn=3, prng=3->6, P1=[Stufful(156/156)], P2=[Drampa(240/253)]
+Seed 22537: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Rotom(229/229)], P2=[Aggron(206/246)]
+Seed 22582: ✓ PASS
+Seed 22715: ✓ PASS
+Seed 23230: ✓ PASS
+Seed 23300: ✓ PASS
+Seed 23301: ✓ PASS
+Seed 23363: ✗ FAIL - #2: turn=3, prng=18->31, P1=[Wobbuffet(463/506)], P2=[Celesteela(202/202)]
+Seed 23387: ✗ FAIL - #31: turn=29, prng=105->106, P1=[Alcremie(94/227)], P2=[Pajantom(289/289)]
+Seed 23389: ✓ PASS
+Seed 23542: ✗ FAIL - #2: turn=3, prng=3->6, P1=[Crawdaunt(154/282)], P2=[Garchomp(293/293)]
+Seed 23812: ✓ PASS
+Seed 23918: ✓ PASS
+Seed 24025: ✓ PASS
+Seed 24141: ✓ PASS
+Seed 24169: ✓ PASS
+Seed 24200: ✓ PASS
+Seed 24205: ✗ FAIL - #2: turn=3, prng=1->5, P1=[Pecharunt(328/328)], P2=[Burmy(185/239)]
+Seed 24207: ✗ FAIL - #74: turn=73, prng=78->81, P1=[Politoed(223/265)], P2=[Slaking(50/389)]
+Seed 24300: ✗ FAIL - #32: turn=27, prng=134->140, P1=[Silvally(2/303)], P2=[Naganadel(105/257)]
+Seed 24332: ✓ PASS
+Seed 24458: ✓ PASS
+Seed 24575: ✗ FAIL - #12: turn=11, prng=50->56, P1=[Stunfisk(128/320)], P2=[Magby(114/160)]
+Seed 24600: ✓ PASS
+Seed 24717: ✓ PASS
+Seed 24786: ✓ PASS
+Seed 24867: ✗ FAIL - #65: turn=61, prng=199->202, P1=[Pheromosa(85/239)], P2=[Swablu(203/203)]
+Seed 24945: ✗ FAIL - #7: turn=7, prng=25->32, P1=[Scrafty(202/252)], P2=[Arceus(208/241)]
+Seed 25074: ✓ PASS
+Seed 25078: ✓ PASS
+Seed 25177: ✗ FAIL - #22: turn=17, prng=90->93, P1=[Kingambit(270/270)], P2=[Squawkabilly(78/294)]
+Seed 25266: ✓ PASS
+Seed 25294: ✓ PASS
+Seed 25317: ✓ PASS
+Seed 25451: ✓ PASS
+Seed 25574: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Arboliva(204/228)], P2=[Rattata(181/181)]
+Seed 25582: ✓ PASS
+Seed 25990: ✗ FAIL - #3: turn=3, prng=6->9, P1=[Slakoth(246/246)], P2=[Volkritter(0/156)]
+Seed 26073: ✓ PASS
+Seed 26095: ✗ FAIL - #2: turn=3, prng=3->6, P1=[Corvisquire(226/226)], P2=[Minun(101/162)]
+Seed 26232: ✓ PASS
+Seed 26299: ✗ FAIL - #17: turn=16, prng=56->59, P1=[Lanturn(178/263)], P2=[Urshifu(270/270)]
+Seed 26303: ✗ FAIL - #25: turn=22, prng=83->89, P1=[Talonflame(235/250)], P2=[Greninja(52/158)]
+Seed 26351: ✗ FAIL - #1: turn=2, prng=3->16, P1=[Kingambit(302/302)], P2=[Dracovish(145/200)]
+Seed 26373: ✓ PASS
+Seed 26531: ✗ FAIL - #2: turn=3, prng=17->29, P1=[Noibat(226/226)], P2=[Dragalge(239/268)]
+Seed 26621: ✓ PASS
+Seed 26681: ✓ PASS
+Seed 26712: ✓ PASS
+Seed 26715: ✗ FAIL - #21: turn=19, prng=138->145, P1=[Cleffa(38/146)], P2=[Torterra(70/208)]
+Seed 26776: ✗ FAIL - #5: turn=5, prng=6->6, P1=[Arceus(366/366)], P2=[Torchic(116/232)]
+Seed 26868: ✗ FAIL - #26: turn=25, prng=24->30, P1=[Sneasler(300/300)], P2=[Greninja(72/166)]
+Seed 27198: ✓ PASS
+Seed 27298: ✓ PASS
+Seed 27320: ✓ PASS
+Seed 27400: ✗ FAIL - #86: turn=84, prng=66->69, P1=[Zygarde(535/535)], P2=[Timburr(312/312)]
+Seed 27586: ✗ FAIL - #68: turn=68, prng=45->48, P1=[Goodra(246/281)], P2=[Arcanine(211/242)]
+Seed 27631: ✗ FAIL - #39: turn=32, prng=136->140, P1=[Coalossal(139/311)], P2=[Feraligatr(81/290)]
+Seed 27637: ✓ PASS
+Seed 27687: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Ninetales(186/248)], P2=[Silvally(184/184)]
+Seed 27743: ✗ FAIL - #48: turn=48, prng=151->155, P1=[Zorua(190/190)], P2=[Growlithe(100/257)]
+Seed 27766: ✗ FAIL - #33: turn=33, prng=0->0, P1=[Sinistcha(266/283)], P2=[Shedinja(0/1)]
+Seed 27791: ✓ PASS
+Seed 27805: ✓ PASS
+Seed 27996: ✓ PASS
+Seed 27999: ✗ FAIL - #2: turn=3, prng=20->32, P1=[Maractus(99/221)], P2=[Carnivine(177/285)]
+Seed 28052: ✓ PASS
+Seed 28067: ✗ FAIL - #2: turn=3, prng=3->3, P1=[Cherubi(138/138)], P2=[Lilligant(85/167)]
+Seed 28078: ✓ PASS
+Seed 28137: ✓ PASS
+Seed 28200: ✗ FAIL - #2: turn=3, prng=3->6, P1=[Pikachu(163/163)], P2=[Spidops(94/173)]
+Seed 28206: ✗ FAIL - #6: turn=5, prng=9->12, P1=[Latias(277/318)], P2=[Hawlucha(237/237)]
+Seed 28259: ✓ PASS
+Seed 28272: ✗ FAIL - #10: turn=9, prng=51->60, P1=[Fearow(53/167)], P2=[Barbaracle(258/258)]
+Seed 28366: ✗ FAIL - #19: turn=19, prng=47->47, P1=[Conkeldurr(148/267)], P2=[Wiglett(138/157)]
+Seed 28590: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Stufful(40/202)], P2=[Pecharunt(334/334)]
+Seed 28619: ✗ FAIL - #3: turn=3, prng=4->11, P1=[Genesect(242/242)], P2=[Pheromosa(104/177)]
+Seed 28696: ✗ FAIL - #2: turn=2, prng=3->6, P1=[Magnemite(156/171)], P2=[Shedinja(0/1)]
+Seed 28712: ✓ PASS
+Seed 28887: ✗ FAIL - #41: turn=41, prng=0->3, P1=[Jolteon(0/204)], P2=[Pokestar Monster(266/266)]
+Seed 28930: ✓ PASS
+Seed 29014: ✓ PASS
+Seed 29161: ✗ FAIL - #11: turn=12, prng=3->9, P1=[Archeops(276/312)], P2=[Sandaconda(166/166)]
+Seed 29296: ✗ FAIL - #34: turn=27, prng=122->126, P1=[Pikachu(137/183)], P2=[Chien-Pao(21/228)]
+Seed 29383: ✓ PASS
+Seed 29434: ✗ FAIL - #13: turn=8, prng=24->28, P1=[Numel(224/224)], P2=[Ogerpon(267/290)]
+Seed 29482: ✓ PASS
+Seed 29611: ✗ FAIL - #2: turn=3, prng=4->8, P1=[Pokestar UFO(159/235)], P2=[Aron(158/158)]
+Seed 29697: ✗ FAIL - #12: turn=11, prng=36->43, P1=[Thundurus(316/316)], P2=[Palkia(213/275)]
+Seed 29712: ✓ PASS
+Seed 29718: ✗ FAIL - #99: turn=94, prng=345->352, P1=[Porygon(255/283)], P2=[Meloetta(19/224)]
+Seed 29730: ✓ PASS
+Seed 29777: ✗ FAIL - #25: turn=21, prng=109->113, P1=[Darmanitan(332/332)], P2=[Luxio(176/178)]
+Seed 29923: ✗ FAIL - #17: turn=18, prng=0->2, P1=[Toxtricity(287/287)], P2=[Burmy(77/132)]
+Seed 29962: ✓ PASS
+Seed 30020: ✗ FAIL - #17: turn=18, prng=48->52, P1=[Equilibra(202/202)], P2=[Scratchet(135/269)]
+Seed 30076: ✓ PASS
+Seed 30232: ✗ FAIL - #34: turn=31, prng=146->152, P1=[Onix(0/212)], P2=[Zoroark(250/256)]
+Seed 30300: ✗ FAIL - #2: turn=3, prng=4->7, P1=[Vivillon(290/290)], P2=[Sunflora(224/312)]
+Seed 30446: ✗ FAIL - #41: turn=35, prng=97->100, P1=[Roggenrola(35/188)], P2=[Exploud(185/329)]
+Seed 30458: ✗ FAIL - #25: turn=21, prng=108->114, P1=[Virizion(166/323)], P2=[Vileplume(47/179)]
+Seed 30503: ✗ FAIL - #2: turn=3, prng=3->3, P1=[Bewear(378/378)], P2=[Sinistcha(228/304)]
+Seed 30530: ✗ FAIL - #40: turn=37, prng=102->109, P1=[Hitmontop(75/249)], P2=[Latias(95/209)]
+Seed 30637: ✗ FAIL - #12: turn=12, prng=55->62, P1=[Arceus(120/331)], P2=[Diancie(150/209)]
+Seed 30649: ✓ PASS
+Seed 30831: ✗ FAIL - #27: turn=15, prng=6->10, P1=[Hawlucha(196/204)], P2=[Vikavolt(239/239)]
+Seed 30834: ✗ FAIL - #29: turn=27, prng=127->130, P1=[Volbeat(269/269)], P2=[Electrode(23/276)]
+Seed 30853: ✗ FAIL - #36: turn=30, prng=109->113, P1=[Maushold(277/277)], P2=[Dondozo(0/290)]
+Seed 31028: ✓ PASS
+Seed 31111: ✗ FAIL - #25: turn=14, prng=48->52, P1=[Gardevoir(292/292)], P2=[Dolliv(33/204)]
+Seed 31161: ✓ PASS
+Seed 31834: ✗ FAIL - #13: turn=14, prng=121->140, P1=[Iron Hands(253/382)], P2=[Impidimp(170/237)]
+Seed 32035: ✗ FAIL - #46: turn=41, prng=61->64, P1=[Ribombee(0/186)], P2=[Basculin(281/281)]
+Seed 32118: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Dragonite(284/300)], P2=[Shedinja(0/1)]
+Seed 32131: ✓ PASS
+Seed 32221: ✗ FAIL - #17: turn=18, prng=15->22, P1=[Spearow(157/209)], P2=[Articuno(163/325)]
+Seed 32255: ✓ PASS
+Seed 32517: ✗ FAIL - #2: turn=3, prng=7->14, P1=[Ramnarok(204/337)], P2=[Crocalor(261/302)]
+Seed 32597: ✓ PASS
+Seed 32793: ✓ PASS
+Seed 32939: ✗ FAIL - #15: turn=13, prng=60->65, P1=[Pidove(68/238)], P2=[Drilbur(0/184)]
+Seed 33325: ✗ FAIL - #1: turn=2, prng=0->2, P1=[Pecharunt(213/213)], P2=[Tatsugiri(173/197)]
+Seed 33337: ✓ PASS
+Seed 33360: ✓ PASS
+Seed 33576: ✗ FAIL - #2: turn=2, prng=0->4, P1=[Pancham(267/267)], P2=[Clawitzer(301/301)]
+Seed 33681: ✗ FAIL - #14: turn=13, prng=51->51, P1=[Kingdra(290/290)], P2=[Dwebble(226/226)]
+Seed 33826: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Audino(213/282)], P2=[Meloetta(253/284)]
+Seed 33847: ✗ FAIL - #7: turn=7, prng=24->34, P1=[Roaring Moon(328/328)], P2=[Volbeat(210/210)]
+Seed 33996: ✗ FAIL - #2: turn=3, prng=5->10, P1=[Arceus(271/272)], P2=[Scratchet(166/232)]
+Seed 34174: ✓ PASS
+Seed 34182: ✓ PASS
+Seed 34204: ✓ PASS
+Seed 34206: ✗ FAIL - #9: turn=10, prng=20->25, P1=[Pecharunt(174/174)], P2=[Marowak(168/268)]
+Seed 34248: ✗ FAIL - #20: turn=20, prng=52->55, P1=[Victreebel(38/281)], P2=[Cubone(161/161)]
+Seed 34273: ✗ FAIL - #41: turn=23, prng=123->128, P1=[Trevenant(152/311)], P2=[Venipede(32/207)]
+Seed 34457: ✗ FAIL - #11: turn=11, prng=43->50, P1=[Rockruff(104/155)], P2=[Avalugg(273/334)]
+Seed 34471: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Durant(149/149)], P2=[Minior(248/254)]
+Seed 34629: ✓ PASS
+Seed 34776: ✓ PASS
+Seed 34825: ✓ PASS
+Seed 34858: ✗ FAIL - #17: turn=18, prng=0->3, P1=[Greedent(334/362)], P2=[Naviathan(214/214)]
+Seed 35027: ✓ PASS
+Seed 35039: ✗ FAIL - #68: turn=63, prng=229->233, P1=[Pokestar F-002(184/303)], P2=[Ogerpon(27/262)]
+Seed 35042: ✓ PASS
+Seed 35203: ✗ FAIL - #1: turn=2, prng=4->21, P1=[Rayquaza(175/211)], P2=[Goodra(231/242)]
+Seed 35243: ✗ FAIL - #49: turn=45, prng=145->147, P1=[Chandelure(88/170)], P2=[Bonsly(145/193)]
+Seed 35386: ✓ PASS
+Seed 35406: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Cramorant(147/182)], P2=[Gardevoir(148/223)]
+Seed 35477: ✓ PASS
+Seed 35489: ✗ FAIL - #1: turn=2, prng=0->5, P1=[Arceus(257/378)], P2=[Pecharunt(206/206)]
+Seed 35564: ✓ PASS
+Seed 35571: ✗ FAIL - #7: turn=7, prng=35->36, P1=[Lairon(252/252)], P2=[Regirock(207/259)]
+Seed 35620: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Uxie(271/305)], P2=[Croagunk(250/250)]
+Seed 35649: ✓ PASS
+Seed 35671: ✗ FAIL - #2: turn=3, prng=3->6, P1=[Slowking(168/245)], P2=[Darmanitan(274/274)]
+Seed 35708: ✓ PASS
+Seed 35781: ✓ PASS
+Seed 35869: ✓ PASS
+Seed 35876: ✗ FAIL - #27: turn=27, prng=14->15, P1=[Copperajah(223/223)], P2=[Grovyle(251/251)]
+Seed 35923: ✓ PASS
+Seed 35981: ✓ PASS
+Seed 35989: ✗ FAIL - #2: turn=3, prng=3->3, P1=[Servine(173/173)], P2=[Latias(162/215)]
+Seed 36107: ✓ PASS
+Seed 36116: ✓ PASS
+Seed 36201: ✓ PASS
+Seed 36314: ✓ PASS
+Seed 36401: ✓ PASS
+Seed 36482: ✓ PASS
+Seed 36529: ✗ FAIL - #3: turn=4, prng=3->7, P1=[Pokestar White Door(193/193)], P2=[Capsakid(109/138)]
+Seed 36737: ✗ FAIL - #9: turn=9, prng=23->29, P1=[Mantine(270/303)], P2=[Uxie(252/296)]
+Seed 36754: ✓ PASS
+Seed 36776: ✓ PASS
+Seed 36975: ✓ PASS
+Seed 37137: ✗ FAIL - #35: turn=28, prng=150->157, P1=[Silvally(2/190)], P2=[Gliscor(1/179)]
+Seed 37343: ✓ PASS
+Seed 37514: ✗ FAIL - #34: turn=35, prng=161->165, P1=[Falinks(73/280)], P2=[Mimikyu(77/154)]
+Seed 37520: ✓ PASS
+Seed 37570: ✓ PASS
+Seed 37581: ✗ FAIL - #4: turn=5, prng=6->6, P1=[Ogerpon(41/234)], P2=[Genesect(251/251)]
+Seed 37661: ✗ FAIL - #3: turn=4, prng=6->9, P1=[Slaking(394/394)], P2=[Mollux(88/293)]
+Seed 37665: ✓ PASS
+Seed 37747: ✗ FAIL - #3: turn=3, prng=4->11, P1=[Sinistcha(262/262)], P2=[Zamazenta(235/251)]
+Seed 37928: ✓ PASS
+Seed 37975: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Shedinja(0/1)], P2=[Ferrothorn(299/307)]
+Seed 37980: ✓ PASS
+Seed 38162: ✓ PASS
+Seed 38456: ✓ PASS
+Seed 38539: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Raichu(165/208)], P2=[Shedinja(0/1)]
+Seed 38711: ✓ PASS
+Seed 38728: ✓ PASS
+Seed 38902: ✗ FAIL - #22: turn=19, prng=82->86, P1=[Rayquaza(305/305)], P2=[Vivillon(132/254)]
+Seed 38988: ✗ FAIL - #27: turn=26, prng=24->31, P1=[Veluza(176/243)], P2=[Finizen(8/246)]
+Seed 39099: ✓ PASS
+Seed 39174: ✓ PASS
+Seed 39290: ✗ FAIL - #24: turn=23, prng=55->55, P1=[Heliolisk(137/183)], P2=[Morpeko(109/197)]
+Seed 39361: ✗ FAIL - #13: turn=11, prng=56->56, P1=[Ribombee(238/279)], P2=[Shedinja(0/1)]
+Seed 39386: ✓ PASS
+Seed 39435: ✗ FAIL - #29: turn=23, prng=133->136, P1=[Iron Moth(101/200)], P2=[Petilil(119/208)]
+Seed 39483: ✓ PASS
+Seed 39514: ✓ PASS
+Seed 39690: ✓ PASS
+Seed 39824: ✗ FAIL - #49: turn=48, prng=126->126, P1=[Cufant(232/232)], P2=[Mamoswine(259/259)]
+Seed 39860: ✗ FAIL - #19: turn=15, prng=69->74, P1=[Espeon(201/229)], P2=[Porygon(210/210)]
+Seed 39892: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Urshifu(347/347)], P2=[Slakoth(230/279)]
+Seed 40056: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Ursaluna(328/350)], P2=[Magneton(256/256)]
+Seed 40097: ✗ FAIL - #11: turn=11, prng=33->37, P1=[Surskit(114/130)], P2=[Aron(209/209)]
+Seed 40106: ✓ PASS
+Seed 40192: ✗ FAIL - #1: turn=1, prng=0->0, P1=[Revenankh(196/209)], P2=[Shedinja(0/1)]
+Seed 40395: ✓ PASS
+Seed 40678: ✗ FAIL - #50: turn=49, prng=164->168, P1=[Meloetta(80/245)], P2=[Minior(133/203)]
+Seed 40910: ✗ FAIL - #1: turn=2, prng=0->8, P1=[Abomasnow(212/302)], P2=[Kyogre(158/281)]
+Seed 41023: ✓ PASS
+Seed 41173: ✓ PASS
+Seed 41212: ✓ PASS
+Seed 41340: ✗ FAIL - #14: turn=12, prng=64->71, P1=[Corvisquire(26/171)], P2=[Ogerpon(50/250)]
+Seed 41457: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Naganadel(293/293)], P2=[Ursaluna(352/372)]
+Seed 41606: ✓ PASS
+Seed 41644: ✗ FAIL - #22: turn=22, prng=64->68, P1=[Beedrill(218/218)], P2=[Spinda(73/148)]
+Seed 41732: ✗ FAIL - #66: turn=67, prng=115->115, P1=[Cinderace(242/322)], P2=[Froslass(167/167)]
+Seed 41917: ✗ FAIL - #3: turn=3, prng=4->11, P1=[Meowth(128/165)], P2=[Zoroark(167/167)]
+Seed 42063: ✗ FAIL - #23: turn=22, prng=76->81, P1=[Mienshao(57/170)], P2=[Octillery(144/284)]
+Seed 42282: ✗ FAIL - #1: turn=2, prng=3->17, P1=[Hippowdon(318/330)], P2=[Pokestar Giant(176/176)]
+Seed 42290: ✓ PASS
+Seed 42302: ✓ PASS
+Seed 42347: ✓ PASS
+Seed 42438: ✗ FAIL - #18: turn=19, prng=2->4, P1=[Excadrill(134/270)], P2=[Slaking(247/321)]
+Seed 42455: ✓ PASS
+Seed 42548: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Drampa(86/170)], P2=[Pawmo(222/246)]
+Seed 42590: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Kingler(205/232)], P2=[Ogerpon(147/200)]
+Seed 42601: ✓ PASS
+Seed 42617: ✓ PASS
+Seed 42636: ✗ FAIL - #2: turn=3, prng=17->29, P1=[Herdier(157/197)], P2=[Steenee(213/213)]
+Seed 42654: ✗ FAIL - #5: turn=5, prng=12->16, P1=[Haunter(152/203)], P2=[Darmanitan(189/292)]
+Seed 42661: ✓ PASS
+Seed 42715: ✓ PASS
+Seed 43153: ✗ FAIL - #38: turn=38, prng=69->78, P1=[Pokestar MT(262/277)], P2=[Kubfu(147/249)]
+Seed 43202: ✗ FAIL - #11: turn=11, prng=28->32, P1=[Wooper(161/161)], P2=[Slowbro(11/256)]
+Seed 43394: ✗ FAIL - #29: turn=24, prng=116->121, P1=[Hawlucha(146/293)], P2=[Regirock(154/259)]
+Seed 43455: ✓ PASS
+Seed 43462: ✗ FAIL - #9: turn=10, prng=16->20, P1=[Pincurchin(215/215)], P2=[Rillaboom(177/259)]
+Seed 43551: ✓ PASS
+Seed 43581: ✗ FAIL - #7: turn=8, prng=93->106, P1=[Pokestar UFO(206/206)], P2=[Servine(182/193)]
+Seed 43584: ✗ FAIL - #2: turn=2, prng=0->4, P1=[Rillaboom(295/295)], P2=[Necturine(225/225)]
+Seed 43602: ✗ FAIL - #1: turn=1, prng=0->4, P1=[Binacle(211/217)], P2=[Shedinja(0/1)]
+Seed 43605: ✗ FAIL - #5: turn=5, prng=9->14, P1=[Finneon(175/245)], P2=[Snorlax(336/477)]
+Seed 43606: ✓ PASS
+Seed 43750: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Overqwil(264/286)], P2=[Shedinja(0/1)]
+Seed 43782: ✗ FAIL - #9: turn=7, prng=30->33, P1=[Dragonair(113/179)], P2=[Walking Wake(268/353)]
+Seed 43796: ✗ FAIL - #69: turn=68, prng=186->188, P1=[Genesect(289/289)], P2=[Kommo-o(2/308)]
+Seed 43837: ✓ PASS
+Seed 43873: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Meloetta(205/256)], P2=[Solgaleo(359/380)]
+Seed 43878: ✗ FAIL - #2: turn=3, prng=6->11, P1=[Cramorant(253/269)], P2=[Kirlia(18/181)]
+Seed 43891: ✗ FAIL - #51: turn=47, prng=170->171, P1=[Pumpkaboo(86/250)], P2=[Cobalion(13/279)]
+Seed 43969: ✓ PASS
+Seed 43980: ✗ FAIL - #11: turn=12, prng=23->34, P1=[Mienshao(149/149)], P2=[Ferrothorn(121/169)]
+Seed 44135: ✗ FAIL - #20: turn=19, prng=66->71, P1=[Wailmer(257/347)], P2=[Calyrex(105/245)]
+Seed 44176: ✓ PASS
+Seed 44371: ✓ PASS
+Seed 44409: ✓ PASS
+Seed 44420: ✗ FAIL - #14: turn=13, prng=56->67, P1=[Iron Bundle(128/252)], P2=[Bouffalant(84/245)]
+Seed 44573: ✓ PASS
+Seed 44727: ✓ PASS
+Seed 44764: ✗ FAIL - #12: turn=12, prng=36->36, P1=[Infernape(55/280)], P2=[Rillaboom(298/298)]
+Seed 44976: ✗ FAIL - #4: turn=5, prng=6->6, P1=[Swalot(3/312)], P2=[Pokestar Giant(291/291)]
+Seed 44984: ✗ FAIL - #2: turn=3, prng=17->29, P1=[Golduck(114/177)], P2=[Pumpkaboo(196/196)]
+Seed 44990: ✗ FAIL - #3: turn=4, prng=8->13, P1=[Venusaur(278/278)], P2=[Groudon(34/221)]
+Seed 45311: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ogerpon(133/222)], P2=[Scovillain(241/263)]
+Seed 45475: ✓ PASS
+Seed 45682: ✓ PASS
+Seed 45726: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Giratina(287/339)], P2=[Lopunny(256/277)]
+Seed 45980: ✗ FAIL - #51: turn=50, prng=123->127, P1=[Barbaracle(173/237)], P2=[Dubwool(195/205)]
+Seed 46140: ✗ FAIL - #9: turn=7, prng=15->18, P1=[Toxicroak(175/175)], P2=[Hoopa(239/290)]
+Seed 46162: ✗ FAIL - #12: turn=11, prng=29->33, P1=[Fidgit(321/321)], P2=[Dhelmise(121/243)]
+Seed 46194: ✓ PASS
+Seed 46233: ✓ PASS
+Seed 46244: ✗ FAIL - #62: turn=61, prng=81->84, P1=[Weezing(193/238)], P2=[Chandelure(238/238)]
+Seed 46297: ✗ FAIL - #30: turn=26, prng=128->136, P1=[Magikarp(57/182)], P2=[Gimmighoul(60/147)]
+Seed 46326: ✓ PASS
+Seed 46383: ✓ PASS
+Seed 46397: ✓ PASS
+Seed 46508: ✗ FAIL - #3: turn=4, prng=12->16, P1=[Geodude(193/193)], P2=[Lopunny(129/190)]
+Seed 46513: ✓ PASS
+Seed 46589: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Metang(238/238)], P2=[Piplup(189/226)]
+Seed 46733: ✗ FAIL - #4: turn=5, prng=6->9, P1=[Heatran(327/327)], P2=[Slakoth(126/254)]
+Seed 46835: ✗ FAIL - #5: turn=5, prng=8->10, P1=[Thundurus(320/320)], P2=[Machop(0/234)]
+Seed 46898: ✓ PASS
+Seed 46972: ✓ PASS
+Seed 46990: ✓ PASS
+Seed 47054: ✗ FAIL - #2: turn=3, prng=3->6, P1=[Ogerpon(291/291)], P2=[Nacli(54/154)]
+Seed 47130: ✗ FAIL - #2: turn=3, prng=4->14, P1=[Celebi(362/362)], P2=[Iron Bundle(263/263)]
+Seed 47179: ✓ PASS
+Seed 47274: ✓ PASS
+Seed 47457: ✓ PASS
+Seed 47579: ✓ PASS
+Seed 47759: ✓ PASS
+Seed 47808: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Goomy(174/174)], P2=[Pikachu(157/209)]
+Seed 48064: ✓ PASS
+Seed 48094: ✓ PASS
+Seed 48117: ✓ PASS
+Seed 48121: ✗ FAIL - #18: turn=18, prng=3->8, P1=[Tangela(188/188)], P2=[Kabuto(57/147)]
+Seed 48133: ✗ FAIL - #17: turn=15, prng=72->78, P1=[Greninja(103/209)], P2=[Pyukumuku(67/167)]
+Seed 48145: ✗ FAIL - #4: turn=5, prng=26->30, P1=[Golduck(134/281)], P2=[Medicham(24/214)]
+Seed 48178: ✗ FAIL - #2: turn=3, prng=3->6, P1=[Boltund(224/224)], P2=[Dialga(271/288)]
+Seed 48318: ✗ FAIL - #2: turn=2, prng=3->7, P1=[Gible(0/245)], P2=[Morpeko(249/278)]
+Seed 48407: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Shedinja(0/1)], P2=[Cramorant(229/258)]
+Seed 48454: ✓ PASS
+Seed 48537: ✓ PASS
+Seed 48574: ✓ PASS
+Seed 48575: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Rookidee(173/217)], P2=[Toxtricity(218/242)]
+Seed 48664: ✓ PASS
+Seed 48818: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Pidgeot(299/299)], P2=[Eternatus(218/321)]
+Seed 48869: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Foongus(154/233)], P2=[Indeedee(260/279)]
+Seed 48906: ✓ PASS
+Seed 49003: ✗ FAIL - #9: turn=10, prng=16->19, P1=[Copperajah(108/330)], P2=[Kerfluffle(244/285)]
+Seed 49089: ✓ PASS
+Seed 49229: ✗ FAIL - #3: turn=4, prng=31->45, P1=[Magearna(169/175)], P2=[Alcremie(157/157)]
+Seed 49285: ✗ FAIL - #12: turn=12, prng=50->57, P1=[Typhlosion(131/179)], P2=[Oranguru(216/232)]
+Seed 49341: ✗ FAIL - #2: turn=3, prng=18->31, P1=[Vivillon(282/282)], P2=[Malamar(283/323)]
+Seed 49437: ✗ FAIL - #2: turn=2, prng=0->3, P1=[Arceus(323/323)], P2=[Shellos(277/277)]
+Seed 49637: ✗ FAIL - #2: turn=2, prng=0->4, P1=[Numel(151/151)], P2=[Wynaut(276/276)]
+Seed 49695: ✓ PASS
+Seed 49769: ✓ PASS
+Seed 49821: ✗ FAIL - #59: turn=59, prng=333->340, P1=[Gourgeist(170/170)], P2=[Bastiodon(188/223)]
+Seed 49840: ✓ PASS
+Seed 49858: ✗ FAIL - #25: turn=14, prng=42->46, P1=[Stufful(244/244)], P2=[Houndoom(166/188)]
+Seed 49907: ✓ PASS
+Seed 49972: ✓ PASS
+Seed 50063: ✗ FAIL - #2: turn=3, prng=4->14, P1=[Ogerpon(178/178)], P2=[Groudon(210/210)]
+Seed 50162: ✗ FAIL - #19: turn=17, prng=75->78, P1=[Shedinja(0/1)], P2=[Minior(22/188)]
+Seed 50471: ✓ PASS
+Seed 50535: ✓ PASS
+Seed 50628: ✗ FAIL - #2: turn=3, prng=17->29, P1=[Pangoro(66/178)], P2=[Melmetal(327/327)]
+Seed 50632: ✓ PASS
+Seed 50645: ✗ FAIL - #9: turn=9, prng=0->0, P1=[Iron Valiant(271/271)], P2=[Fennekin(137/137)]
+Seed 50805: ✓ PASS
+Seed 50820: ✓ PASS
+Seed 50821: ✗ FAIL - #57: turn=31, prng=130->134, P1=[Roaring Moon(130/317)], P2=[Tornadus(206/316)]
+Seed 50996: ✓ PASS
+Seed 51087: ✓ PASS
+Seed 51150: ✗ FAIL - #3: turn=4, prng=5->8, P1=[Vivillon(195/303)], P2=[Skuntank(160/214)]
+Seed 51151: ✓ PASS
+Seed 51252: ✗ FAIL - #3: turn=4, prng=8->9, P1=[Chesnaught(193/233)], P2=[Indeedee(189/189)]
+Seed 51308: ✓ PASS
+Seed 51374: ✗ FAIL - #59: turn=56, prng=116->116, P1=[Scattervein(167/167)], P2=[Scizor(23/223)]
+Seed 51424: ✗ FAIL - #27: turn=26, prng=101->108, P1=[Scizor(158/158)], P2=[Alcremie(130/156)]
+Seed 51926: ✓ PASS
+Seed 52074: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Meloetta(278/326)], P2=[Spectrier(305/305)]
+Seed 52111: ✗ FAIL - #1: turn=1, prng=0->6, P1=[Greninja(112/226)], P2=[Chinchou(185/245)]
+Seed 52401: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Bruxish(272/272)], P2=[Morgrem(140/207)]
+Seed 52589: ✗ FAIL - #58: turn=53, prng=141->148, P1=[Tauros(214/299)], P2=[Mr. Rime(293/293)]
+Seed 52766: ✗ FAIL - #27: turn=23, prng=92->96, P1=[Gabite(182/205)], P2=[Shedinja(0/1)]
+Seed 52836: ✓ PASS
+Seed 52866: ✗ FAIL - #5: turn=5, prng=8->10, P1=[Hatterene(0/249)], P2=[Floette(265/265)]
+Seed 52892: ✗ FAIL - #11: turn=9, prng=36->36, P1=[Inteleon(202/202)], P2=[Minccino(90/180)]
+Seed 52895: ✗ FAIL - #11: turn=12, prng=20->21, P1=[Oricorio(13/167)], P2=[Glalie(300/300)]
+Seed 52901: ✗ FAIL - #25: turn=14, prng=42->46, P1=[Joltik(236/236)], P2=[Scratchet(155/232)]
+Seed 52983: ✓ PASS
+Seed 52994: ✗ FAIL - #28: turn=27, prng=97->97, P1=[Zoroark(90/276)], P2=[Grapploct(100/200)]
+Seed 53148: ✗ FAIL - #3: turn=4, prng=9->16, P1=[Lycanroc(296/308)], P2=[Toxel(33/153)]
+Seed 53181: ✓ PASS
+Seed 53209: ✗ FAIL - #47: turn=45, prng=115->120, P1=[Scrafty(1/244)], P2=[Blastoise(47/258)]
+Seed 53334: ✓ PASS
+Seed 53360: ✗ FAIL - #11: turn=9, prng=54->67, P1=[Obstagoon(0/269)], P2=[Scorbunny(90/250)]
+Seed 53396: ✗ FAIL - #15: turn=13, prng=52->54, P1=[Golbat(0/173)], P2=[Arcanine(177/305)]
+Seed 53451: ✓ PASS
+Seed 53499: ✗ FAIL - #54: turn=48, prng=192->195, P1=[Butterfree(0/222)], P2=[Whimsicott(112/167)]
+Seed 53537: ✗ FAIL - #13: turn=13, prng=33->39, P1=[Medicham(216/230)], P2=[Great Tusk(260/277)]
+Seed 53603: ✓ PASS
+Seed 53747: ✗ FAIL - #27: turn=23, prng=104->112, P1=[Gothitelle(0/237)], P2=[Kecleon(169/238)]
+Seed 53755: ✗ FAIL - #10: turn=11, prng=34->37, P1=[Garbodor(197/197)], P2=[Snaelstrom(74/290)]
+Seed 53814: ✓ PASS
+Seed 53815: ✗ FAIL - #1: turn=2, prng=0->0, P1=[Tapu Lele(290/290)], P2=[Banette(222/222)]
+Seed 53854: ✓ PASS
+Seed 53857: ✗ FAIL - #24: turn=18, prng=21->23, P1=[Chinchou(302/302)], P2=[Tatsugiri(72/263)]
+Seed 53949: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Morgrem(105/179)], P2=[Tapu Lele(281/281)]
+Seed 54056: ✓ PASS
+Seed 54089: ✓ PASS
+Seed 54133: ✗ FAIL - #41: turn=38, prng=145->147, P1=[Barraskewda(126/278)], P2=[Claydol(17/184)]
+Seed 54183: ✗ FAIL - #3: turn=3, prng=4->11, P1=[Heracross(253/253)], P2=[Archaludon(208/229)]
+Seed 54222: ✗ FAIL - #31: turn=32, prng=341->354, P1=[Frillish(210/210)], P2=[Ursaluna(309/319)]
+Seed 54293: ✓ PASS
+Seed 54295: ✓ PASS
+Seed 54465: ✓ PASS
+Seed 54503: ✓ PASS
+Seed 54523: ✗ FAIL - #98: turn=90, prng=139->145, P1=[Blastoise(0/263)], P2=[Zygarde(411/412)]
+Seed 54588: ✗ FAIL - #24: turn=25, prng=73->76, P1=[Morgrem(159/176)], P2=[Oinkologne(251/342)]
+Seed 54875: ✗ FAIL - #2: turn=3, prng=2->6, P1=[Bellossom(33/161)], P2=[Vulpix(169/169)]
+Seed 55039: ✓ PASS
+Seed 55113: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Draggalong(232/232)], P2=[Tornadus(132/165)]
+Seed 55162: ✗ FAIL - #25: turn=26, prng=24->25, P1=[Ho-Oh(195/195)], P2=[Hippowdon(271/271)]
+Seed 55508: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Scratchet(219/258)], P2=[Loudred(320/320)]
+Seed 55554: ✓ PASS
+Seed 55581: ✓ PASS
+Seed 55609: ✓ PASS
+Seed 55617: ✓ PASS
+Seed 55736: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Corvisquire(36/191)], P2=[Cramorant(199/220)]
+Seed 55811: ✓ PASS
+Seed 55874: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Tadbulb(212/212)], P2=[Privatyke(153/210)]
+Seed 55954: ✗ FAIL - #21: turn=18, prng=77->81, P1=[Ogerpon(128/219)], P2=[Flareon(129/173)]
+Seed 55967: ✗ FAIL - #25: turn=14, prng=42->46, P1=[Heatmor(203/203)], P2=[Krilowatt(292/350)]
+Seed 56089: ✗ FAIL - #12: turn=13, prng=33->36, P1=[Porygon2(183/183)], P2=[Klawf(120/191)]
+Seed 56137: ✓ PASS
+Seed 56170: ✗ FAIL - #2: turn=3, prng=4->8, P1=[Slowbro(53/245)], P2=[Darumaka(290/290)]
+Seed 56264: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Revenankh(65/202)], P2=[Cramorant(198/223)]
+Seed 56297: ✗ FAIL - #1: turn=1, prng=0->1, P1=[Munna(216/216)], P2=[Shedinja(0/1)]
+Seed 56825: ✗ FAIL - #36: turn=36, prng=33->33, P1=[Salazzle(156/208)], P2=[Typhlosion(236/236)]
+Seed 56833: ✗ FAIL - #21: turn=22, prng=73->73, P1=[Eternatus(460/532)], P2=[Squirtle(247/247)]
+Seed 56925: ✓ PASS
+Seed 57069: ✓ PASS
+Seed 57149: ✓ PASS
+Seed 57333: ✗ FAIL - #2: turn=2, prng=0->4, P1=[Surskit(165/165)], P2=[Piloswine(252/252)]
+Seed 57368: ✗ FAIL - #41: turn=30, prng=6->7, P1=[Dubwool(208/208)], P2=[Wormadam(151/151)]
+Seed 57377: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Fidough(211/211)], P2=[Cetitan(306/487)]
+Seed 57481: ✓ PASS
+Seed 57489: ✗ FAIL - #88: turn=87, prng=125->126, P1=[Gourgeist(257/257)], P2=[Carbink(206/219)]
+Seed 57522: ✗ FAIL - #18: turn=15, prng=89->89, P1=[Shedinja(0/1)], P2=[Sudowoodo(256/266)]
+Seed 57574: ✓ PASS
+Seed 57597: ✗ FAIL - #24: turn=20, prng=75->77, P1=[Pelipper(146/166)], P2=[Garbodor(200/200)]
+Seed 57812: ✓ PASS
+Seed 57829: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Shedinja(0/1)], P2=[Silicobra(131/155)]
+Seed 57868: ✓ PASS
+Seed 57902: ✓ PASS
+Seed 57928: ✓ PASS
+Seed 58010: ✓ PASS
+Seed 58075: ✗ FAIL - #9: turn=9, prng=24->27, P1=[Shedinja(0/1)], P2=[Morpeko(47/176)]
+Seed 58193: ✗ FAIL - #9: turn=9, prng=0->0, P1=[Shedinja(0/1)], P2=[Magnemite(189/201)]
+Seed 58320: ✓ PASS
+Seed 58383: ✗ FAIL - #4: turn=4, prng=9->14, P1=[Gligar(252/252)], P2=[Garbodor(253/253)]
+Seed 58440: ✓ PASS
+Seed 58474: ✗ FAIL - #12: turn=10, prng=41->44, P1=[Salazzle(108/280)], P2=[Quagsire(256/256)]
+Seed 58651: ✓ PASS
+Seed 58699: ✓ PASS
+Seed 58880: ✗ FAIL - #11: turn=11, prng=44->51, P1=[Darmanitan(177/295)], P2=[Wormadam(208/276)]
+Seed 59120: ✗ FAIL - #24: turn=20, prng=65->65, P1=[Sunflora(305/305)], P2=[Zapdos(291/325)]
+Seed 59171: ✓ PASS
+Seed 59222: ✗ FAIL - #28: turn=25, prng=73->75, P1=[Arceus(358/358)], P2=[Charizard(226/271)]
+Seed 59251: ✓ PASS
+Seed 59309: ✓ PASS
+Seed 59347: ✓ PASS
+Seed 59381: ✓ PASS
+Seed 59421: ✗ FAIL - #1: turn=2, prng=0->2, P1=[Kyurem(215/215)], P2=[Equilibra(179/305)]
+Seed 59436: ✓ PASS
+Seed 59561: ✗ FAIL - #6: turn=6, prng=20->24, P1=[Silicobra(167/260)], P2=[Solgaleo(395/406)]
+Seed 59646: ✗ FAIL - #17: turn=17, prng=0->0, P1=[Rotom(181/181)], P2=[Shedinja(0/1)]
+Seed 59784: ✓ PASS
+Seed 59881: ✓ PASS
+Seed 59916: ✓ PASS
+Seed 59964: ✓ PASS
+Seed 60118: ✓ PASS
+Seed 60296: ✓ PASS
+Seed 60349: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Foongus(203/230)], P2=[Muk(195/223)]
+Seed 60401: ✓ PASS
+Seed 60467: ✓ PASS
+Seed 60668: ✗ FAIL - #18: turn=17, prng=46->50, P1=[Meloetta(330/330)], P2=[Vanilluxe(95/198)]
+Seed 60818: ✗ FAIL - #47: turn=44, prng=183->187, P1=[Duraludon(125/278)], P2=[Drifblim(67/391)]
+Seed 60872: ✗ FAIL - #23: turn=20, prng=99->105, P1=[Copperajah(226/295)], P2=[Heracross(71/275)]
+Seed 60885: ✗ FAIL - #35: turn=32, prng=103->106, P1=[Solgaleo(284/320)], P2=[Grafaiai(0/251)]
+Seed 60890: ✓ PASS
+Seed 61140: ✓ PASS
+Seed 61146: ✓ PASS
+Seed 61283: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Shedinja(0/1)], P2=[Kadabra(143/184)]
+Seed 61343: ✗ FAIL - #1: turn=2, prng=0->14, P1=[Arghonaut(241/241)], P2=[Garchomp(227/252)]
+Seed 61388: ✓ PASS
+Seed 61420: ✗ FAIL - #2: turn=3, prng=17->29, P1=[Salamence(306/306)], P2=[Thundurus(128/250)]
+Seed 61431: ✗ FAIL - #17: turn=17, prng=40->43, P1=[Arceus(39/354)], P2=[Electrode(260/260)]
+Seed 61530: ✗ FAIL - #2: turn=3, prng=17->29, P1=[Keldeo(74/294)], P2=[Chi-Yu(183/238)]
+Seed 61659: ✗ FAIL - #15: turn=15, prng=126->135, P1=[Tatsugiri(192/269)], P2=[Sneasler(0/200)]
+Seed 61701: ✓ PASS
+Seed 61833: ✗ FAIL - #27: turn=27, prng=35->38, P1=[Shedinja(0/1)], P2=[Snorlax(191/279)]
+Seed 62070: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Bouffalant(301/338)], P2=[Eternatus(658/658)]
+Seed 62090: ✓ PASS
+Seed 62122: ✓ PASS
+Seed 62184: ✓ PASS
+Seed 62217: ✗ FAIL - #24: turn=22, prng=32->36, P1=[Gligar(66/224)], P2=[Starly(146/146)]
+Seed 62235: ✗ FAIL - #46: turn=41, prng=83->85, P1=[Toxtricity(59/263)], P2=[Spectrier(333/333)]
+Seed 62330: ✓ PASS
+Seed 62344: ✓ PASS
+Seed 62390: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Wormadam(112/162)], P2=[Scovillain(243/255)]
+Seed 62499: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Salamence(264/321)], P2=[Urshifu(271/344)]
+Seed 62661: ✗ FAIL - #57: turn=55, prng=195->198, P1=[Stakataka(215/256)], P2=[Ramnarok(225/225)]
+Seed 62718: ✓ PASS
+Seed 62883: ✗ FAIL - #4: turn=5, prng=20->24, P1=[Cresceidon(261/272)], P2=[Tandemaus(3/171)]
+Seed 62958: ✗ FAIL - #3: turn=3, prng=4->11, P1=[Glalie(190/190)], P2=[Dustox(186/208)]
+Seed 63094: ✗ FAIL - #40: turn=39, prng=127->140, P1=[Zigzagoon(0/210)], P2=[Rayquaza(126/203)]
+Seed 63107: ✓ PASS
+Seed 63203: ✓ PASS
+Seed 63234: ✓ PASS
+Seed 63248: ✓ PASS
+Seed 63249: ✗ FAIL - #35: turn=23, prng=110->111, P1=[Pikachu(223/223)], P2=[Lunala(295/295)]
+Seed 63455: ✗ FAIL - #9: turn=10, prng=40->46, P1=[Victreebel(168/265)], P2=[Coribalis(156/234)]
+Seed 63529: ✗ FAIL - #17: turn=18, prng=48->49, P1=[Samurott(317/317)], P2=[Hemogoblin(5/277)]
+Seed 63603: ✗ FAIL - #38: turn=34, prng=116->119, P1=[Heatran(189/217)], P2=[Mudkip(146/166)]
+Seed 63707: ✓ PASS
+Seed 63858: ✗ FAIL - #4: turn=5, prng=6->6, P1=[Raticate(209/209)], P2=[Shaymin(67/259)]
+Seed 63940: ✗ FAIL - #2: turn=2, prng=0->4, P1=[Tatsugiri(220/220)], P2=[Cosmog(240/240)]
+Seed 63958: ✗ FAIL - #33: turn=33, prng=45->52, P1=[Vaporeon(278/298)], P2=[Gurdurr(129/171)]
+Seed 63988: ✗ FAIL - #62: turn=60, prng=159->163, P1=[Braviary(231/274)], P2=[Genesect(115/168)]
+Seed 64004: ✗ FAIL - #51: turn=42, prng=202->209, P1=[Golisopod(17/236)], P2=[Yanmega(86/256)]
+Seed 64022: ✗ FAIL - #14: turn=12, prng=94->97, P1=[Melmetal(240/292)], P2=[Grimmsnarl(302/331)]
+Seed 64025: ✓ PASS
+Seed 64149: ✗ FAIL - #4: turn=5, prng=15->22, P1=[Pecharunt(246/246)], P2=[Gligar(23/196)]
+Seed 64286: ✗ FAIL - #37: turn=35, prng=96->99, P1=[Avalugg(0/276)], P2=[Saharaja(284/284)]
+Seed 64457: ✗ FAIL - #2: turn=2, prng=0->3, P1=[Arceus(208/237)], P2=[Ivysaur(148/148)]
+Seed 64548: ✗ FAIL - #3: turn=4, prng=6->10, P1=[Terapagos(199/340)], P2=[Pangoro(317/317)]
+Seed 64566: ✗ FAIL - #2: turn=3, prng=4->42, P1=[Swoobat(176/193)], P2=[Wishiwashi(71/138)]
+Seed 64605: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Ramnarok(202/259)], P2=[Regidrago(511/528)]
+Seed 64637: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Scolipede(239/276)], P2=[Cetitan(309/369)]
+Seed 64639: ✓ PASS
+Seed 64920: ✗ FAIL - #1: turn=2, prng=0->7, P1=[Stunfisk(317/317)], P2=[Vivillon(280/306)]
+Seed 64961: ✓ PASS
+Seed 65119: ✗ FAIL - #59: turn=56, prng=98->101, P1=[Urshifu(238/238)], P2=[Varoom(159/247)]
+Seed 65202: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Shedinja(0/1)], P2=[Sandaconda(189/220)]
+Seed 65204: ✗ FAIL - #9: turn=9, prng=33->37, P1=[Magearna(252/297)], P2=[Chandelure(186/186)]
+Seed 65327: ✓ PASS
+Seed 65355: ✓ PASS
+Seed 65428: ✓ PASS
+Seed 65475: ✗ FAIL - #2: turn=3, prng=17->29, P1=[Colossoil(367/367)], P2=[Frogadier(56/196)]
+Seed 65490: ✗ FAIL - #34: turn=31, prng=101->107, P1=[Silvally(45/245)], P2=[Parasect(160/181)]
+Seed 65503: ✗ FAIL - #16: turn=16, prng=23->29, P1=[Raichu(39/154)], P2=[Leafeon(128/269)]
+Seed 65552: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Heatran(149/180)], P2=[Kingler(207/216)]
+Seed 65577: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Manaphy(189/217)], P2=[Wiglett(137/166)]
+Seed 65586: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Silvally(175/211)], P2=[Sableye(239/239)]
+Seed 65635: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Poipole(87/158)], P2=[Slurpuff(317/326)]
+Seed 65722: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gulpin(253/281)], P2=[Darkrai(204/226)]
+Seed 65760: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Draggalong(206/218)], P2=[Lombre(182/208)]
+Seed 65919: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Deino(198/230)], P2=[Dedenne(230/258)]
+Seed 65957: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Aurorus(330/340)], P2=[Slowking(235/263)]
+Seed 66004: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dartrix(238/259)], P2=[Articuno(199/229)]
+Seed 66148: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Regirock(287/297)], P2=[Zacian(282/295)]
+Seed 66276: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hatenna(221/238)], P2=[Probopass(189/192)]
+Seed 66851: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Arceus(280/280)], P2=[Gardevoir(263/289)]
+Seed 67064: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Reshiram(221/249)], P2=[Doduo(118/163)]
+Seed 67170: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Greavard(216/216)], P2=[Ogerpon(189/215)]
+Seed 67273: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Unown(141/205)], P2=[Houndstone(303/303)]
+Seed 67363: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Samurott(280/304)], P2=[Swadloon(216/245)]
+Seed 67389: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dialga(225/242)], P2=[Pinsir(209/224)]
+Seed 67422: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Durant(130/146)], P2=[Pumpkaboo(196/196)]
+Seed 67430: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Colossoil(316/344)], P2=[Steenee(226/266)]
+Seed 67436: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Gouging Fire(233/241)], P2=[Spectrier(186/186)]
+Seed 67453: ✗ FAIL - #1: turn=2, prng=0->6, P1=[MissingNo.(105/212)], P2=[Scream Tail(319/376)]
+Seed 67475: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Necrozma(287/300)], P2=[Pokestar Smeargle(116/206)]
+Seed 67594: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Weavile(247/264)], P2=[Meowstic(187/229)]
+Seed 67652: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Cacnea(176/214)], P2=[Carkol(257/275)]
+Seed 67758: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Shedinja(1/1)], P2=[Hoothoot(188/254)]
+Seed 67846: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Swadloon(119/156)], P2=[Mandibuzz(346/355)]
+Seed 67961: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Silvally(223/252)], P2=[Sandygast(264/264)]
+Seed 68136: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ogerpon(208/240)], P2=[Silicobra(240/263)]
+Seed 68212: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Froslass(208/208)], P2=[Ariados(227/246)]
+Seed 68294: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Delibird(174/244)], P2=[Ogerpon(297/322)]
+Seed 68351: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Zacian(221/238)], P2=[Qwilfish(246/272)]
+Seed 68360: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Eternatus(461/466)], P2=[Spewpa(155/189)]
+Seed 68491: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Arceus(345/362)], P2=[Electrode(216/260)]
+Seed 68525: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Klang(272/279)], P2=[Xerneas(200/244)]
+Seed 68529: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gastrodon(288/316)], P2=[Servine(223/249)]
+Seed 68531: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Phantump(205/205)], P2=[Pikachu(147/183)]
+Seed 68626: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Emboar(166/196)], P2=[Slowbro(178/208)]
+Seed 68755: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Foongus(217/233)], P2=[Alcremie(129/159)]
+Seed 68764: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Noibat(123/190)], P2=[Pikipek(179/203)]
+Seed 68916: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Abomasnow(214/232)], P2=[Roselia(163/206)]
+Seed 69007: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Cufant(277/297)], P2=[Scolipede(196/222)]
+Seed 69050: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tatsugiri(136/168)], P2=[Minior(198/205)]
+Seed 69121: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Sentret(185/207)], P2=[Slowbro(196/218)]
+Seed 69124: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Swadloon(96/154)], P2=[Swellow(213/227)]
+Seed 69169: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Electrike(125/146)], P2=[Chespin(133/149)]
+Seed 69186: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Latias(264/284)], P2=[Kilowattrel(226/266)]
+Seed 69337: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Meganium(170/181)], P2=[Kirlia(118/151)]
+Seed 69453: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Snivy(196/232)], P2=[Swalot(327/344)]
+Seed 69538: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Smeargle(227/240)], P2=[Chinchou(131/176)]
+Seed 69728: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Blaziken(218/240)], P2=[Iron Treads(187/202)]
+Seed 69739: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Braviary(247/270)], P2=[Scream Tail(260/281)]
+Seed 69794: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Clauncher(237/254)], P2=[Cleffa(203/249)]
+Seed 69869: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Manectric(201/211)], P2=[Pikachu(73/121)]
+Seed 69889: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Skiddo(171/191)], P2=[Rolycoly(137/149)]
+Seed 70028: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lumineon(134/195)], P2=[Kyurem(367/379)]
+Seed 70065: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Wigglytuff(377/398)], P2=[Pelipper(180/219)]
+Seed 70109: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Aggron(212/217)], P2=[Quaquaval(235/261)]
+Seed 70236: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Genesect(148/162)], P2=[Meowstic(257/271)]
+Seed 70260: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Basculin(212/266)], P2=[Necrozma(270/300)]
+Seed 70293: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Bulbasaur(133/189)], P2=[Golem(273/278)]
+Seed 70379: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Liepard(245/267)], P2=[Nacli(199/216)]
+Seed 70572: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Starmie(244/271)], P2=[Latios(254/284)]
+Seed 70601: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Iron Leaves(298/315)], P2=[Alcremie(193/241)]
+Seed 70719: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Klinklang(203/208)], P2=[Abra(114/175)]
+Seed 70792: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Minccino(114/216)], P2=[Silvally(322/341)]
+Seed 70918: ✗ FAIL - #57: turn=58, prng=0->4, P1=[Zorua(79/145)], P2=[Pumpkaboo(87/149)]
+Seed 70952: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Houndoom(192/218)], P2=[Absol(144/176)]
+Seed 71148: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tarountula(179/209)], P2=[Archaludon(231/239)]
+Seed 71155: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Jirachi(339/347)], P2=[Clobbopus(173/226)]
+Seed 71372: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Minior(219/241)], P2=[Hatterene(246/270)]
+Seed 71505: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Arceus(180/206)], P2=[Sawk(173/203)]
+Seed 71842: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Uxie(196/209)], P2=[Gothitelle(206/223)]
+Seed 71847: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Scizor(221/234)], P2=[Frosmoth(245/284)]
+Seed 71854: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Floette(238/259)], P2=[Hawlucha(165/200)]
+Seed 72090: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gothitelle(260/290)], P2=[Rattata(171/209)]
+Seed 72196: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Zorua(140/140)], P2=[Lilligant(169/193)]
+Seed 72250: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Raichu(112/177)], P2=[Stonjourner(303/309)]
+Seed 72390: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Sandygast(235/235)], P2=[Dragalge(136/162)]
+Seed 72469: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Minior(264/276)], P2=[Meowscarada(151/210)]
+Seed 72568: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pinsir(149/165)], P2=[Corvisquire(155/185)]
+Seed 72706: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Weavile(217/252)], P2=[Tepig(238/286)]
+Seed 72752: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Sandshrew(151/156)], P2=[Toedscool(95/130)]
+Seed 72782: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Pumpkaboo(210/210)], P2=[Reshiram(215/238)]
+Seed 72785: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Gastly(188/188)], P2=[Alcremie(185/204)]
+Seed 72791: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Vulpix(152/187)], P2=[Perrserker(196/205)]
+Seed 72825: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Grafaiai(225/249)], P2=[Galvantula(163/226)]
+Seed 73093: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Beartic(162/222)], P2=[Heracross(237/256)]
+Seed 73135: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hitmonlee(230/259)], P2=[Vivillon(222/318)]
+Seed 73171: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Melmetal(197/225)], P2=[Kabutops(226/233)]
+Seed 73182: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Metagross(310/315)], P2=[Jumbao(195/255)]
+Seed 73254: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Silvally(165/187)], P2=[Koffing(164/177)]
+Seed 73324: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Froslass(193/193)], P2=[Flabébé(143/175)]
+Seed 73406: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Delphox(262/290)], P2=[Mienshao(187/227)]
+Seed 73448: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Meowscarada(223/250)], P2=[Tapu Lele(208/240)]
+Seed 73585: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lucario(238/255)], P2=[Marowak(255/282)]
+Seed 73614: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Arctovish(249/278)], P2=[Rockruff(227/252)]
+Seed 73730: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Goodra(199/219)], P2=[Dachsbun(165/201)]
+Seed 73810: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Melmetal(189/225)], P2=[Aipom(234/253)]
+Seed 73880: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Arceus(227/253)], P2=[Pansear(229/256)]
+Seed 73934: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Salazzle(180/200)], P2=[Oricorio(173/194)]
+Seed 73964: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Primeape(234/252)], P2=[Maractus(142/194)]
+Seed 74033: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Squawkabilly(196/243)], P2=[Pokestar MT(274/291)]
+Seed 74072: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Argalis(228/265)], P2=[Metagross(281/290)]
+Seed 74102: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Zamazenta(178/218)], P2=[Duraludon(293/299)]
+Seed 74291: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tsareena(183/237)], P2=[Palafin(309/333)]
+Seed 74337: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Purugly(120/165)], P2=[Revenankh(245/245)]
+Seed 74343: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Tatsugiri(226/260)], P2=[Misdreavus(273/273)]
+Seed 74374: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Corviknight(276/281)], P2=[Kirlia(119/169)]
+Seed 74439: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tauros(209/245)], P2=[Avalugg(313/328)]
+Seed 74460: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Metang(259/271)], P2=[Manectric(84/202)]
+Seed 74538: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Wiglett(132/156)], P2=[Bunnelby(87/135)]
+Seed 74809: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Silvally(260/276)], P2=[Dragalge(249/269)]
+Seed 74868: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Florges(267/299)], P2=[Geodude(209/221)]
+Seed 74876: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Diggersby(234/241)], P2=[Darmanitan(170/198)]
+Seed 74979: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Sigilyph(175/214)], P2=[Phione(297/309)]
+Seed 75007: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Xerneas(373/389)], P2=[Dudunsparce(159/231)]
+Seed 75147: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Araquanid(150/197)], P2=[Quaquaval(264/286)]
+Seed 75167: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Gengar(175/175)], P2=[Delphox(255/269)]
+Seed 75202: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Blacephalon(247/247)], P2=[Gastrodon(153/230)]
+Seed 75224: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Burmy(186/202)], P2=[Smogecko(113/146)]
+Seed 75287: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Beldum(206/214)], P2=[Plasmanta(198/216)]
+Seed 75574: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hitmonlee(188/200)], P2=[Spewpa(118/162)]
+Seed 75599: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Stunfisk(358/361)], P2=[Cyndaquil(46/129)]
+Seed 75643: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Togekiss(238/254)], P2=[Raikou(187/209)]
+Seed 75686: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Naganadel(244/263)], P2=[Galvantula(173/211)]
+Seed 75689: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Poliwhirl(56/156)], P2=[Mew(311/319)]
+Seed 75729: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Dusclops(228/228)], P2=[Komala(246/280)]
+Seed 75742: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Yanmega(268/282)], P2=[Passimian(148/186)]
+Seed 75816: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Wiglett(65/154)], P2=[Aurumoth(325/344)]
+Seed 75898: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tatsugiri(164/188)], P2=[Protowatt(154/182)]
+Seed 75939: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Sobble(166/204)], P2=[Mabosstiff(198/215)]
+Seed 76150: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Serperior(245/257)], P2=[Braixen(154/193)]
+Seed 76162: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Arceus(255/276)], P2=[Scyther(167/199)]
+Seed 76224: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Sawk(200/257)], P2=[Snorlax(377/415)]
+Seed 76276: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pidgey(228/239)], P2=[Wurmple(37/140)]
+Seed 76341: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Hypno(268/306)], P2=[Giratina(412/412)]
+Seed 76381: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Yanmega(257/278)], P2=[Lapras(286/314)]
+Seed 76433: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Vivillon(265/300)], P2=[Lunala(312/312)]
+Seed 76499: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Aggron(188/196)], P2=[Cramorant(229/261)]
+Seed 76545: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Simisage(260/284)], P2=[Raichu(156/214)]
+Seed 76593: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Flamigo(185/202)], P2=[Swadloon(136/161)]
+Seed 76603: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Vikavolt(250/267)], P2=[Darumaka(162/205)]
+Seed 76622: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tapu Bulu(128/176)], P2=[Krabby(199/213)]
+Seed 76672: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Bounsweet(150/179)], P2=[Deoxys(138/153)]
+Seed 76734: ✗ FAIL - #2: turn=2, prng=0->1, P1=[Regidrago(313/313)], P2=[Rhyperior(330/330)]
+Seed 76850: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Zorua(183/223)], P2=[Tatsugiri(239/274)]
+Seed 76861: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Aegislash(246/246)], P2=[Lunatone(252/265)]
+Seed 76907: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Silvally(192/225)], P2=[Nidorino(235/256)]
+Seed 76995: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Tauros(230/236)], P2=[Gimmighoul(143/143)]
+Seed 77081: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Drakloak(277/277)], P2=[Koffing(196/221)]
+Seed 77291: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Slowbro(234/269)], P2=[Serperior(290/312)]
+Seed 77336: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dewpider(141/190)], P2=[Tyrunt(243/251)]
+Seed 77380: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Eiscue(150/191)], P2=[Vivillon(284/303)]
+Seed 77615: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Latias(244/268)], P2=[Pyroak(361/394)]
+Seed 77624: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dragalge(105/153)], P2=[Pokestar MT(240/245)]
+Seed 77833: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Kingler(156/172)], P2=[Fraxure(130/166)]
+Seed 77834: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Skwovet(216/258)], P2=[Greninja(234/270)]
+Seed 77930: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Slowbro(246/266)], P2=[Pinsir(148/179)]
+Seed 77934: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Elgyem(143/177)], P2=[Medicham(176/192)]
+Seed 77955: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Urshifu(288/302)], P2=[Snover(130/194)]
+Seed 77962: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lokix(257/271)], P2=[Salandit(122/183)]
+Seed 77981: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Houndour(112/160)], P2=[Medicham(176/192)]
+Seed 78126: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Eternatus(400/424)], P2=[Minior(210/233)]
+Seed 78136: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ursaluna(260/270)], P2=[Nuzleaf(106/167)]
+Seed 78311: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Sableye(188/188)], P2=[Vivillon(186/219)]
+Seed 78320: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Absol(213/213)], P2=[Slaking(428/452)]
+Seed 78382: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pawmo(66/156)], P2=[Eevee(248/261)]
+Seed 78459: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ramnarok(262/277)], P2=[Dorsoil(321/339)]
+Seed 78607: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pokestar UFO(246/263)], P2=[Rolycoly(160/177)]
+Seed 78875: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Haunter(249/249)], P2=[Meowth(159/207)]
+Seed 78910: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Chespin(196/218)], P2=[Lickitung(194/222)]
+Seed 79070: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lycanroc(292/302)], P2=[Toxtricity(135/200)]
+Seed 79106: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pancham(263/296)], P2=[Cacturne(196/243)]
+Seed 79156: ✗ FAIL - #1: turn=2, prng=0->4, P1=[Stonjourner(228/235)], P2=[Beedrill(151/151)]
+Seed 79325: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lileep(233/245)], P2=[Dewgong(245/265)]
+Seed 79370: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Teddiursa(225/246)], P2=[Zamazenta(145/194)]
+Seed 79415: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Feraligatr(284/299)], P2=[Golbat(174/221)]
+Seed 79421: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Litten(117/189)], P2=[Salamence(287/300)]
+Seed 79449: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pyroak(388/398)], P2=[Heatran(181/200)]
+Seed 79574: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Electrelk(202/242)], P2=[Golisopod(243/263)]
+Seed 79606: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Venomicon(320/332)], P2=[Pupitar(177/196)]
+Seed 79624: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Magearna(136/166)], P2=[Hakamo-o(234/245)]
+Seed 79721: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tadbulb(139/185)], P2=[Toxtricity(206/218)]
+Seed 79803: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Sewaddle(226/235)], P2=[Treecko(70/132)]
+Seed 79831: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Blitzle(200/237)], P2=[Gible(195/232)]
+Seed 79835: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Karrablast(107/151)], P2=[Paras(162/178)]
+Seed 79890: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Luxio(213/235)], P2=[Shelmet(195/221)]
+Seed 79942: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Krabby(176/205)], P2=[Xerneas(299/337)]
+Seed 79959: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pikipek(128/167)], P2=[Terapagos(162/202)]
+Seed 79977: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Delibird(136/184)], P2=[Golduck(268/284)]
+Seed 80129: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pidove(147/166)], P2=[Floette(147/178)]
+Seed 80299: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Walking Wake(145/195)], P2=[Floette(282/292)]
+Seed 80359: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Magnemite(180/193)], P2=[Castform(231/252)]
+Seed 80374: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Weedle(111/184)], P2=[Zebstrika(258/272)]
+Seed 80412: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Sobble(161/193)], P2=[Salamence(171/191)]
+Seed 80482: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Golurk(287/287)], P2=[Dialga(317/330)]
+Seed 80621: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Anorith(195/213)], P2=[Linoone(197/237)]
+Seed 80795: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Wartortle(196/234)], P2=[Quaxwell(262/287)]
+Seed 80862: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Trubbish(111/153)], P2=[Toucannon(170/184)]
+Seed 81224: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Trapinch(181/203)], P2=[Venonat(156/203)]
+Seed 81290: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Whirlipede(110/128)], P2=[Slakoth(129/151)]
+Seed 81307: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Conkeldurr(276/303)], P2=[Ponyta(174/226)]
+Seed 81543: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Doduo(192/218)], P2=[Flapple(124/188)]
+Seed 81643: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Quaquaval(227/245)], P2=[Melmetal(211/225)]
+Seed 81757: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Eelektross(171/219)], P2=[Meowth(200/232)]
+Seed 81764: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Slowbro(229/256)], P2=[Sandshrew(208/229)]
+Seed 81775: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Sneasler(148/219)], P2=[Eelektross(297/319)]
+Seed 81865: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pikachu(118/174)], P2=[Gastrodon(345/361)]
+Seed 81924: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Chi-Yu(223/245)], P2=[Scattervein(212/245)]
+Seed 81929: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Whirlipede(95/128)], P2=[Drifblim(290/290)]
+Seed 81936: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Meloetta(153/210)], P2=[Ambipom(212/248)]
+Seed 82182: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Doduo(200/216)], P2=[Dreepy(128/128)]
+Seed 82222: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Slowking(289/300)], P2=[Remoraid(76/134)]
+Seed 82251: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Hatterene(216/228)], P2=[Kitsunoh(175/175)]
+Seed 82263: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Seedot(207/242)], P2=[Deino(213/245)]
+Seed 82323: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pikachu(182/203)], P2=[Zamazenta(170/181)]
+Seed 82347: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Heatran(238/250)], P2=[Lopunny(130/162)]
+Seed 82372: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Manaphy(235/291)], P2=[Heracross(286/306)]
+Seed 82476: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Jumpluff(281/308)], P2=[Crawdaunt(173/207)]
+Seed 82527: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Alcremie(219/255)], P2=[Rhyhorn(280/290)]
+Seed 82547: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gallade(198/246)], P2=[Primeape(226/266)]
+Seed 82556: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ogerpon(217/253)], P2=[Cramorant(252/287)]
+Seed 82706: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Finizen(204/237)], P2=[Absol(136/165)]
+Seed 82834: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Walking Wake(278/297)], P2=[Arceus(220/245)]
+Seed 82840: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Chimecho(203/209)], P2=[Pikachu(136/158)]
+Seed 83046: ✗ FAIL - #1: turn=2, prng=3->20, P1=[Elgyem(123/164)], P2=[Appletun(214/229)]
+Seed 83139: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Cosmoem(199/209)], P2=[Aromatisse(218/236)]
+Seed 83169: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Cacnea(95/141)], P2=[Loudred(186/208)]
+Seed 83469: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Manectric(226/281)], P2=[Necrozma(267/297)]
+Seed 83489: ✗ FAIL - #1: turn=2, prng=0->5, P1=[Skeledirge(330/330)], P2=[Revenankh(298/312)]
+Seed 83690: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Bisharp(204/210)], P2=[Rhyhorn(161/178)]
+Seed 83864: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Mewtwo(87/192)], P2=[Archen(249/258)]
+Seed 83914: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Shedinja(1/1)], P2=[Torkoal(210/226)]
+Seed 83966: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Rotom(179/199)], P2=[Skiploom(219/243)]
+Seed 83967: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Blastoise(298/313)], P2=[Scyther(151/205)]
+Seed 83971: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Minior(227/246)], P2=[Lillipup(112/174)]
+Seed 84159: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Brattler(200/256)], P2=[Sliggoo(254/264)]
+Seed 84179: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hitmonchan(172/199)], P2=[Chinchou(277/312)]
+Seed 84226: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Metagross(233/237)], P2=[Silicobra(120/166)]
+Seed 84274: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Applin(201/228)], P2=[Stratagem(317/328)]
+Seed 84362: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Carbink(144/151)], P2=[Typhlosion(191/191)]
+Seed 84471: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tangrowth(304/316)], P2=[Silvally(199/235)]
+Seed 84480: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Chien-Pao(268/284)], P2=[Shaymin(157/214)]
+Seed 84487: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Raticate(271/293)], P2=[Caribolt(173/230)]
+Seed 84571: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Gholdengo(225/225)], P2=[Burmy(143/167)]
+Seed 84627: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Scolipede(164/186)], P2=[Nacli(206/216)]
+Seed 84650: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Chandelure(222/222)], P2=[Orthworm(232/240)]
+Seed 84760: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dugtrio(126/189)], P2=[Trumbeak(191/235)]
+Seed 84765: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Bagon(199/235)], P2=[Kricketune(235/276)]
+Seed 84837: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gastrodon(350/380)], P2=[Gouging Fire(254/285)]
+Seed 84900: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Flapple(136/164)], P2=[Enamorus(167/190)]
+Seed 85010: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Houndstone(175/175)], P2=[Dratini(220/239)]
+Seed 85048: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ekans(94/127)], P2=[Spinda(142/159)]
+Seed 85063: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Rowlet(241/263)], P2=[Fuecoco(227/253)]
+Seed 85189: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Porygon-Z(307/325)], P2=[Greedent(162/229)]
+Seed 85281: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Diggersby(311/332)], P2=[Dunsparce(180/238)]
+Seed 85480: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Silvally(267/307)], P2=[Castform(253/287)]
+Seed 85606: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Roserade(213/273)], P2=[Necrozma(259/272)]
+Seed 85738: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Swampert(317/326)], P2=[Tangela(137/190)]
+Seed 85792: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Minior(239/268)], P2=[Kangaskhan(281/314)]
+Seed 85973: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Mimikyu(222/222)], P2=[Gossifleur(100/146)]
+Seed 86046: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Clobbopus(108/156)], P2=[Loudred(229/250)]
+Seed 86115: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gastrodon(356/372)], P2=[Chewtle(110/173)]
+Seed 86170: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gurdurr(208/245)], P2=[Kangaskhan(241/270)]
+Seed 86184: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lumineon(231/259)], P2=[Beheeyem(187/221)]
+Seed 86213: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ariados(232/252)], P2=[Kerfluffle(208/237)]
+Seed 86282: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Dhelmise(217/217)], P2=[Pikachu(72/136)]
+Seed 86285: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Froslass(266/266)], P2=[Drilbur(152/208)]
+Seed 86286: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Primeape(159/179)], P2=[Meowstic(161/199)]
+Seed 86401: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Oshawott(183/206)], P2=[Growlithe(155/173)]
+Seed 86811: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Bronzor(172/188)], P2=[Nidoking(255/264)]
+Seed 86949: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Justyke(275/291)], P2=[Flygon(221/253)]
+Seed 86982: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lapras(294/343)], P2=[Farigiraf(337/362)]
+Seed 87166: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Minior(231/238)], P2=[Shiinotic(142/186)]
+Seed 87270: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Litleo(101/156)], P2=[Nidoqueen(272/285)]
+Seed 87303: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Manectric(249/269)], P2=[Venusaur(200/234)]
+Seed 87304: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Braixen(194/271)], P2=[Ferrothorn(267/289)]
+Seed 87363: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hattrem(154/214)], P2=[Diancie(229/234)]
+Seed 87375: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Seel(265/277)], P2=[Beautifly(100/151)]
+Seed 87442: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Crustle(265/269)], P2=[Larvitar(129/163)]
+Seed 87631: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Brionne(102/154)], P2=[Stunfisk(346/350)]
+Seed 87633: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Squawkabilly(301/319)], P2=[Bulbasaur(86/183)]
+Seed 87668: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ogerpon(204/253)], P2=[Ursaluna(350/372)]
+Seed 87683: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Electrode(217/262)], P2=[Monferno(239/270)]
+Seed 87776: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Wishiwashi(194/220)], P2=[Kingdra(269/302)]
+Seed 87809: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ababo(103/179)], P2=[Hitmontop(235/244)]
+Seed 87850: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ogerpon(169/209)], P2=[Raging Bolt(360/379)]
+Seed 87967: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pawmot(254/290)], P2=[Minior(225/252)]
+Seed 88000: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pokestar Brycen-Man(272/298)], P2=[Jirachi(289/302)]
+Seed 88038: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Marill(222/240)], P2=[Lampent(197/197)]
+Seed 88096: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pokestar MT2(258/263)], P2=[Tactite(192/208)]
+Seed 88138: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Walking Wake(216/227)], P2=[Steenee(133/161)]
+Seed 88167: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Minior(146/159)], P2=[Salamence(165/187)]
+Seed 88193: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Amaura(266/273)], P2=[Diglett(71/116)]
+Seed 88203: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Primeape(148/173)], P2=[Barbaracle(160/169)]
+Seed 88259: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Blipbug(100/125)], P2=[Oddish(121/133)]
+Seed 88332: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Reuniclus(305/326)], P2=[Jellicent(284/284)]
+Seed 88364: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Happiny(304/358)], P2=[Farfetch’d(114/148)]
+Seed 88497: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tauros(176/203)], P2=[Registeel(259/265)]
+Seed 88732: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Muk(163/209)], P2=[Floette(273/289)]
+Seed 88828: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Musharna(365/378)], P2=[Phanpy(197/239)]
+Seed 88886: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Rillaboom(288/323)], P2=[Snaelstrom(312/340)]
+Seed 88904: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Farfetch’d(218/242)], P2=[Mewtwo(189/235)]
+Seed 89097: ✗ FAIL - #13: turn=14, prng=36->39, P1=[Pokestar Giant(266/344)], P2=[Snom(135/135)]
+Seed 89211: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dolliv(215/232)], P2=[Toxicroak(130/184)]
+Seed 89279: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Alakazam(133/146)], P2=[Happiny(166/203)]
+Seed 89312: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Archen(233/243)], P2=[Lugia(188/224)]
+Seed 89313: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Iron Leaves(157/212)], P2=[Ogerpon(297/306)]
+Seed 89410: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Silvally(247/263)], P2=[Nidoran-M(142/188)]
+Seed 89420: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Kecleon(246/273)], P2=[Claydol(179/243)]
+Seed 89432: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Slowking(183/228)], P2=[Golem(256/262)]
+Seed 89510: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Duraludon(153/167)], P2=[Klang(224/230)]
+Seed 89630: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Zorua(187/187)], P2=[Armaldo(247/260)]
+Seed 89804: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Kubfu(109/173)], P2=[Dugtrio(211/220)]
+Seed 89817: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Cubchoo(229/272)], P2=[Throh(319/351)]
+Seed 89873: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Palafin(337/358)], P2=[Taillow(77/197)]
+Seed 89880: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Clodsire(190/232)], P2=[Chewtle(212/226)]
+Seed 89945: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Taillow(62/135)], P2=[Hydreigon(253/268)]
+Seed 90013: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pokestar MT2(255/259)], P2=[Vivillon(111/166)]
+Seed 90030: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Swinub(198/262)], P2=[Enamorus(280/304)]
+Seed 90088: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Zygarde(328/352)], P2=[Trapinch(178/227)]
+Seed 90109: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Politoed(158/212)], P2=[Swampert(296/309)]
+Seed 90193: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Flamigo(258/278)], P2=[Hoopa(108/175)]
+Seed 90248: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Golisopod(184/194)], P2=[Emboar(221/255)]
+Seed 90294: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Capsakid(195/229)], P2=[Blastoise(221/242)]
+Seed 90308: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dorsoil(328/364)], P2=[Eiscue(268/293)]
+Seed 90325: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Persian(179/249)], P2=[Ursaring(254/278)]
+Seed 90577: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Fuecoco(262/290)], P2=[Zoroark(169/169)]
+Seed 90587: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Voltorb(139/172)], P2=[Simipour(193/209)]
+Seed 90687: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Jellicent(186/186)], P2=[Furfrou(233/251)]
+Seed 90739: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Hatterene(141/169)], P2=[Eiscue(106/164)]
+Seed 90764: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Magmortar(184/212)], P2=[Scovillain(167/196)]
+Seed 90934: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Luvdisc(128/148)], P2=[Wishiwashi(187/203)]
+Seed 91012: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Vanilluxe(282/298)], P2=[Magnemite(165/187)]
+Seed 91076: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Electrode(192/214)], P2=[Melmetal(226/233)]
+Seed 91397: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Froslass(252/252)], P2=[Larvesta(230/261)]
+Seed 91469: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Mudkip(221/234)], P2=[Magby(66/135)]
+Seed 91472: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pokestar Monster(173/203)], P2=[Embirch(258/273)]
+Seed 91571: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Seadra(151/175)], P2=[Tyrunt(184/192)]
+Seed 91674: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Drakloak(263/263)], P2=[Weezing(268/289)]
+Seed 91687: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Arctovish(98/176)], P2=[Persian(242/255)]
+Seed 91722: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Snaelstrom(267/280)], P2=[Gouging Fire(178/209)]
+Seed 91767: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dondozo(373/389)], P2=[Unfezant(110/166)]
+Seed 91957: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Mandibuzz(252/274)], P2=[Celebi(248/266)]
+Seed 91978: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Cleffa(199/236)], P2=[Mollux(288/304)]
+Seed 91997: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Blacephalon(172/172)], P2=[Ampharos(174/199)]
+Seed 92012: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Morpeko(263/272)], P2=[Protowatt(56/154)]
+Seed 92022: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Deerling(159/200)], P2=[Nidoran-M(203/239)]
+Seed 92064: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Meganium(172/187)], P2=[Coalossal(199/207)]
+Seed 92390: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hemogoblin(244/265)], P2=[Tandemaus(135/181)]
+Seed 92391: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Scratchet(254/269)], P2=[Vulpix(122/203)]
+Seed 92457: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Snorlax(297/345)], P2=[Appletun(333/367)]
+Seed 92615: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Kecleon(245/265)], P2=[Quagsire(195/252)]
+Seed 92723: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Smogecko(87/138)], P2=[Orthworm(213/217)]
+Seed 92725: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Mime Jr.(123/196)], P2=[Calyrex(337/347)]
+Seed 92863: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Syclar(145/181)], P2=[Steelix(188/194)]
+Seed 92894: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Coalossal(237/241)], P2=[Lechonk(104/140)]
+Seed 92928: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Mr. Rime(219/240)], P2=[Duraludon(182/193)]
+Seed 92938: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Delcatty(273/293)], P2=[Grimer(171/240)]
+Seed 92977: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Kakuna(121/169)], P2=[Landorus(232/241)]
+Seed 93014: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ursaluna(338/357)], P2=[Floragato(196/245)]
+Seed 93127: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Carracosta(169/193)], P2=[Eelektross(313/328)]
+Seed 93180: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Krokorok(253/265)], P2=[Burmy(103/165)]
+Seed 93229: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Garbodor(259/278)], P2=[Grafaiai(99/160)]
+Seed 93299: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pikipek(77/140)], P2=[Raticate(196/221)]
+Seed 93318: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Shellos(170/225)], P2=[Minccino(231/251)]
+Seed 93354: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Torkoal(211/223)], P2=[Tauros(159/182)]
+Seed 93428: ✗ FAIL - #1: turn=2, prng=3->20, P1=[Tentacruel(215/240)], P2=[Elekid(162/196)]
+Seed 93496: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Porygon2(281/299)], P2=[Cyclizar(94/170)]
+Seed 93499: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Shellder(108/128)], P2=[Jirachi(207/214)]
+Seed 93523: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Medicham(229/260)], P2=[Heatmor(253/296)]
+Seed 93566: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Darkrai(83/156)], P2=[Charizard(299/311)]
+Seed 93750: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Tatsugiri(158/191)], P2=[Hippowdon(181/194)]
+Seed 93900: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Dusknoir(198/198)], P2=[Octillery(274/299)]
+Seed 93975: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Gimmighoul(181/181)], P2=[Floragato(200/215)]
+Seed 94239: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ogerpon(145/190)], P2=[Slowking(322/338)]
+Seed 94255: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Kricketune(194/230)], P2=[Psyduck(208/236)]
+Seed 94256: ✗ FAIL - #57: turn=58, prng=0->4, P1=[Sinistea(126/214)], P2=[Revenankh(144/229)]
+Seed 94497: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Poochyena(104/147)], P2=[Iron Thorns(201/207)]
+Seed 94562: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Grovyle(144/163)], P2=[Plasmanta(150/165)]
+Seed 94616: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Astrolotl(226/249)], P2=[Kingler(131/154)]
+Seed 94672: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lugia(229/242)], P2=[Florges(196/219)]
+Seed 94674: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Delphox(147/185)], P2=[Medicham(240/252)]
+Seed 94729: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Elgyem(207/232)], P2=[Gastly(200/200)]
+Seed 94734: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Binacle(225/238)], P2=[Zygarde(264/286)]
+Seed 94819: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Beedrill(250/272)], P2=[Zoroark(79/165)]
+Seed 95041: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Ampharos(300/318)], P2=[Darumaka(159/211)]
+Seed 95061: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gastrodon(302/342)], P2=[Mightyena(268/299)]
+Seed 95066: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Chesnaught(155/174)], P2=[Golurk(175/175)]
+Seed 95088: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Combusken(247/257)], P2=[Dedenne(87/158)]
+Seed 95129: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Calyrex(138/203)], P2=[Heracross(290/306)]
+Seed 95236: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Cetitan(445/457)], P2=[Smoochum(52/176)]
+Seed 95307: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Alcremie(178/218)], P2=[Raticate(182/206)]
+Seed 95354: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Clefable(218/256)], P2=[Honchkrow(275/302)]
+Seed 95435: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Raikou(235/272)], P2=[Buzzwole(258/277)]
+Seed 95476: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pikipek(184/216)], P2=[Luvdisc(194/243)]
+Seed 95510: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Arceus(196/209)], P2=[Snom(124/166)]
+Seed 95527: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Drowzee(187/227)], P2=[Goodra(242/250)]
+Seed 95573: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Aegislash(162/162)], P2=[Masquerain(241/252)]
+Seed 95741: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Delphox(256/278)], P2=[Cramorant(180/217)]
+Seed 95970: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Shroodle(123/146)], P2=[Polteageist(146/146)]
+Seed 96101: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Milotic(259/283)], P2=[Klawf(198/208)]
+Seed 96152: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Chansey(236/446)], P2=[Copperajah(387/390)]
+Seed 96183: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Klawf(166/179)], P2=[Squawkabilly(164/196)]
+Seed 96257: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Jolteon(140/176)], P2=[Tapu Bulu(184/196)]
+Seed 96312: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Loudred(204/285)], P2=[Munchlax(364/415)]
+Seed 96371: ✗ FAIL - #1: turn=1, prng=0->3, P1=[Yungoos(0/136)], P2=[Loudred(298/298)]
+Seed 96405: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Heliolisk(113/172)], P2=[Electivire(169/194)]
+Seed 96447: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Rayquaza(339/357)], P2=[Nymble(121/206)]
+Seed 96490: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hatterene(136/153)], P2=[Sunflora(162/185)]
+Seed 96507: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Nidorino(217/240)], P2=[Slowbro(184/204)]
+Seed 96631: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Skarmory(285/289)], P2=[Sharpedo(93/173)]
+Seed 96673: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Buneary(217/235)], P2=[Charizard(134/185)]
+Seed 96709: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Drednaw(292/305)], P2=[Jumbao(294/325)]
+Seed 96738: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Slurpuff(248/278)], P2=[Pignite(269/302)]
+Seed 96755: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Abomasnow(211/222)], P2=[Froakie(91/136)]
+Seed 97137: ✗ FAIL - #2: turn=3, prng=6->12, P1=[Floette(169/225)], P2=[Steelix(205/215)]
+Seed 97217: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Lillipup(147/169)], P2=[Fezandipiti(149/180)]
+Seed 97294: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Minior(211/238)], P2=[Crabominable(278/300)]
+Seed 97357: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Medicham(224/252)], P2=[Bellossom(252/284)]
+Seed 97358: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Thundurus(133/196)], P2=[Sableye(262/262)]
+Seed 97455: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dustox(183/211)], P2=[Zigzagoon(179/203)]
+Seed 97470: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Rolycoly(110/132)], P2=[Stonjourner(232/235)]
+Seed 97549: ✗ FAIL - #1: turn=2, prng=3->20, P1=[Meowth(133/172)], P2=[Moltres(223/242)]
+Seed 97575: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Zygarde(583/594)], P2=[Rillaboom(140/193)]
+Seed 97641: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Basculegion(288/288)], P2=[Braixen(249/274)]
+Seed 97658: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Espeon(85/151)], P2=[Minun(259/271)]
+Seed 97721: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Dudunsparce(197/231)], P2=[Torterra(230/252)]
+Seed 97845: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Larvesta(169/196)], P2=[Clefable(222/249)]
+Seed 97982: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Iron Bundle(192/210)], P2=[Ampharos(223/245)]
+Seed 98032: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Pikipek(140/212)], P2=[Gouging Fire(302/335)]
+Seed 98074: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Vullaby(184/234)], P2=[Mabosstiff(280/303)]
+Seed 98130: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Hakamo-o(184/209)], P2=[Impidimp(212/247)]
+Seed 98346: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Charizard(276/296)], P2=[Mudkip(98/171)]
+Seed 98874: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Poliwrath(211/232)], P2=[Horsea(177/198)]
+Seed 98892: ✗ FAIL - #3: turn=4, prng=6->9, P1=[Dragalge(166/201)], P2=[Gourgeist(143/143)]
+Seed 99002: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Glimmet(169/186)], P2=[Carvanha(144/176)]
+Seed 99106: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Electabuzz(233/266)], P2=[Revavroom(227/244)]
+Seed 99109: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Gothorita(133/165)], P2=[Sobble(237/251)]
+Seed 99161: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Galvantula(170/205)], P2=[Baltoy(215/235)]
+Seed 99368: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Sirfetch’d(206/239)], P2=[Calyrex(252/281)]
+Seed 99388: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Bibarel(224/254)], P2=[Sandy Shocks(233/267)]
+Seed 99481: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Zarude(175/198)], P2=[Manectric(189/208)]
+Seed 99976: ✗ FAIL - #1: turn=2, prng=0->6, P1=[Machoke(264/293)], P2=[Dustox(247/279)]
+Seed 99979: ✗ FAIL - #1: turn=2, prng=0->3, P1=[Ninjask(137/166)], P2=[Gastly(177/177)]
 
 =======================================
 Summary
 =======================================
-Total minimized seeds: 723
-Passed: 723
-Failed: 0
+Total minimized seeds: 1893
+Passed: 1073
+Failed: 820
 
-✓ ALL MINIMIZED SEEDS PASSED!
+Pass rate: 56%
+✗ Some seeds still failing
+
+Updating bug-analysis.txt...
+Done. See tests/bug-analysis.txt for patterns in failing seeds.

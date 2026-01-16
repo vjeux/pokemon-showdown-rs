@@ -909,16 +909,17 @@ pub fn has_secondary_on_hit(move_id: &str) -> bool {
 
 /// Check if a move has an on_hit callback registered in dispatch
 /// This is needed because some moves (like Fling) dynamically set onHit in JS
+/// NOTE: Moves with secondary.onHit should be in has_secondary_on_hit, NOT here
 pub fn has_on_hit(move_id: &str) -> bool {
     match move_id {
-        "acupressure" | "afteryou" | "alluringvoice" | "allyswitch" | "anchorshot" |
+        "acupressure" | "afteryou" | "allyswitch" |
         "aromatherapy" | "assist" | "autotomize" | "banefulbunker" | "batonpass" |
         "bellydrum" | "bestow" | "block" | "bugbite" | "burningbulwark" |
-        "burningjealousy" | "camouflage" | "clangoroussoul" | "clearsmog" |
+        "camouflage" | "clangoroussoul" | "clearsmog" |
         "conversion" | "conversion2" | "copycat" | "coreenforcer" | "corrosivegas" |
-        "curse" | "defog" | "detect" | "doodle" | "eeriespell" |
+        "curse" | "defog" | "detect" | "doodle" |
         "endure" | "entrainment" | "filletaway" | "fling" | "flameburst" |
-        "floralhealing" | "forestscurse" | "freezyfrost" | "genesissupernova" |
+        "floralhealing" | "forestscurse" | "freezyfrost" |
         "gmaxsnooze" | "guardsplit" | "guardswap" | "healbell" | "healpulse" |
         "heartswap" | "incinerate" | "instruct" | "jawlock" | "junglehealing" |
         "kingsshield" | "lockon" | "lunarblessing" | "magicpowder" | "maxguard" |
