@@ -78,18 +78,28 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        // Get the active move
-        let move_id = match &battle.active_move {
-            Some(active_move) => active_move.id.clone(),
-            None => return EventResult::Continue,
-        };
-
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     source.trySetStatus('brn', target);
         // }
+        // Note: In JavaScript, checkMoveMakesContact takes the active move object (not move_id)
+        // so we need to check the active move's flags directly
+        // This is important for moves like Shell Side Arm that dynamically set contact in onModifyMove
         // Note: pokemon_pos (the Beak Blast user) is the source of the burn status
         // This is important for Synchronize to know who to pass the status back to
-        if battle.check_move_makes_contact(&move_id, source, pokemon_pos, false) {
+
+        // Check if the active move has contact flag set (using two-phase borrow)
+        let has_contact = battle.active_move.as_ref().map(|m| m.flags.contact).unwrap_or(false);
+
+        // Check for Protective Pads on the attacker
+        let has_protective_pads = {
+            battle.pokemon_at(source.0, source.1)
+                .map(|p| p.item.as_str() == "protectivepads")
+                .unwrap_or(false)
+        };
+
+        let makes_contact = has_contact && !has_protective_pads;
+
+        if makes_contact {
             Pokemon::try_set_status(battle, source, ID::from("brn"), Some(pokemon_pos), None);
         }
 
