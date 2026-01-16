@@ -393,9 +393,9 @@ impl Battle {
             });
         } else {
             // Speed sort (default)
-            self.speed_sort(&mut handlers, |listener| {
+            self.speed_sort_with_callsite(&mut handlers, |listener| {
                 Self::event_listener_to_priority_item(listener)
-            });
+            }, &format!("run_event:{}", event_id));
         }
 
         // JavaScript: let hasRelayVar = 1; (lines 152-160)
@@ -653,6 +653,17 @@ impl Battle {
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
                     // JavaScript: this.effectState.target = effectHolder;
                     self.effect_state.target = handler_target;
+
+                    // For pseudo-weather (Condition effectType with effectHolder=None, i.e. Field),
+                    // update target_is_field on the ORIGINAL state in field.pseudo_weather.
+                    // JavaScript: this.effectState.target = effectHolder modifies the original state
+                    // because JS uses references. In Rust we cloned, so we need to update the original.
+                    // This affects future resolve_priority calls which check state.target instanceof Field.
+                    if handler.effect.effect_type == EffectType::Condition && handler.effect_holder.is_none() {
+                        if let Some(pw_state) = self.field.pseudo_weather.get_mut(&effect_id) {
+                            pw_state.target_is_field = true;
+                        }
+                    }
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 

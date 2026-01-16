@@ -375,7 +375,17 @@ impl Battle {
             // https://www.smogon.com/forums/threads/sword-shield-battle-mechanics-research.3655528/page-59#post-8685465
             handler.sub_order = match handler.effect.effect_type {
                 EffectType::ZMove => 1,
-                EffectType::Condition | EffectType::Status => 2,
+                EffectType::Condition => {
+                    // JS: if (handler.effect.effectType === 'Condition' && handler.state?.target instanceof Field)
+                    // If the condition's target is a Field (pseudo-weather), use sub_order 5
+                    // This happens after the first event has executed on the field condition
+                    if handler.state.as_ref().is_some_and(|s| s.target_is_field) {
+                        5
+                    } else {
+                        2
+                    }
+                }
+                EffectType::Status => 2,
                 EffectType::SlotCondition => 3,
                 EffectType::SideCondition => 4,
                 EffectType::FieldCondition => 5,
@@ -412,23 +422,10 @@ impl Battle {
             }
         }
 
-        // For field conditions (pseudo weather, weather, terrain) that don't have an effectHolder,
-        // use effect_order from state to maintain insertion order and prevent unnecessary shuffling.
-        // This ensures field conditions added earlier always execute before those added later.
-        // Note: This only applies to Weather, Terrain, and FieldCondition types, NOT SideCondition.
-        if handler.effect_holder.is_none() {
-            let is_field_condition = matches!(
-                handler.effect.effect_type,
-                EffectType::Weather | EffectType::Terrain | EffectType::FieldCondition
-            );
-            if is_field_condition {
-                if let Some(state) = &handler.state {
-                    if handler.effect_order.is_none() {
-                        handler.effect_order = Some(state.effect_order);
-                    }
-                }
-            }
-        }
+        // NOTE: JavaScript does NOT set handler.effectOrder for field conditions
+        // (weather, terrain, pseudo-weather). All handlers tie on effectOrder and
+        // get shuffled. This is intentional for PRNG synchronization.
+        // Do NOT add a workaround here - let the shuffle happen as in JavaScript.
 
         // JS: if (handler.effectHolder && (handler.effectHolder as Pokemon).getStat)
         if let Some(effect_holder) = handler.effect_holder {

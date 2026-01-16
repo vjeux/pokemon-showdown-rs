@@ -14,6 +14,10 @@ pub struct EffectState {
     /// Target of the effect
     /// JavaScript: target?: Pokemon
     pub target: Option<(usize, usize)>,
+    /// Whether the target is a Field (for pseudo-weather/weather/terrain sub_order calculation)
+    /// JavaScript: In JS, target can be Pokemon, Side, or Field. When it's Field, effectType=Condition gets sub_order=5
+    /// This flag is set when an event is executed on a field condition (during runEvent handler execution)
+    pub target_is_field: bool,
     /// Source of the effect
     /// JavaScript: source?: Pokemon
     pub source: Option<(usize, usize)>,
