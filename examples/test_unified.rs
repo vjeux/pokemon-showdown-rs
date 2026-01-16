@@ -13,13 +13,17 @@ use pokemon_showdown::dex::Dex;
 use rayon::prelude::*;
 use std::env;
 
-fn run_battle(seed_num: u16, dex: &Dex) -> (u16, String) {
+fn run_battle(seed_num: u32, dex: &Dex) -> (u32, String) {
     (seed_num, run_battle_inner(seed_num, dex))
 }
 
-fn run_battle_inner(seed_num: u16, dex: &Dex) -> String {
+fn run_battle_inner(seed_num: u32, dex: &Dex) -> String {
+    // Split u32 seed into two u16 values for PRNGSeed::Gen5
+    let seed_lo = (seed_num & 0xFFFF) as u16;
+    let seed_hi = ((seed_num >> 16) & 0xFFFF) as u16;
+
     // Generate teams using the seed
-    let mut prng = PRNG::new(Some(PRNGSeed::Gen5([0, 0, 0, seed_num])));
+    let mut prng = PRNG::new(Some(PRNGSeed::Gen5([0, 0, seed_hi, seed_lo])));
 
     let team1 = team_generator::generate_random_team(&mut prng, dex);
     let team2 = team_generator::generate_random_team(&mut prng, dex);
@@ -27,7 +31,7 @@ fn run_battle_inner(seed_num: u16, dex: &Dex) -> String {
     // Create battle with fresh PRNG (same seed)
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9randombattle"),
-        seed: Some(PRNGSeed::Gen5([0, 0, 0, seed_num])),
+        seed: Some(PRNGSeed::Gen5([0, 0, seed_hi, seed_lo])),
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             team: TeamFormat::Sets(team1),
@@ -74,11 +78,11 @@ fn run_battle_inner(seed_num: u16, dex: &Dex) -> String {
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let start_seed: u16 = args.get(1)
+    let start_seed: u32 = args.get(1)
         .and_then(|s| s.parse().ok())
         .unwrap_or(1);
 
-    let end_seed: u16 = args.get(2)
+    let end_seed: u32 = args.get(2)
         .and_then(|s| s.parse().ok())
         .unwrap_or(start_seed);
 
@@ -93,7 +97,7 @@ fn main() {
     let dex = Dex::global();
 
     // Run battles in parallel, collect results
-    let mut results: Vec<(u16, String)> = (start_seed..=end_seed)
+    let mut results: Vec<(u32, String)> = (start_seed..=end_seed)
         .into_par_iter()
         .map(|seed_num| run_battle(seed_num, &dex))
         .collect();
