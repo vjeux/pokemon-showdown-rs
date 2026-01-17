@@ -32,7 +32,7 @@ pub mod condition {
         };
 
         if is_terastallized {
-            return EventResult::NotFail;
+            return EventResult::Boolean(false);
         }
 
         // this.add('-start', pokemon, 'Tar Shot');

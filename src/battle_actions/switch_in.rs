@@ -296,28 +296,19 @@ pub fn switch_in(
                     (false, 0)
                 };
 
-                // Save current PP values before restoring move slots
-                // JS shares objects so PP is automatically preserved; Rust needs manual preservation
-                let current_pp: Vec<(usize, u8)> = (*pokemon).move_slots.iter()
-                    .enumerate()
-                    .map(|(idx, slot)| (idx, slot.pp))
-                    .collect();
-
                 // JS: this.moveSlots = this.baseMoveSlots.slice();
-                // Restore move slots from base (this fixes Transform persistence bug)
+                // In JavaScript, slice() creates a shallow copy - the array is new but
+                // the MoveSlot objects are shared between moveSlots and baseMoveSlots.
+                // This means PP changes to moveSlots[i] also affect baseMoveSlots[i].
+                //
+                // In Rust, we sync PP to base_move_slots in deduct_pp(), so base_move_slots
+                // already has the correct PP values. We just need to clone it.
+                //
+                // IMPORTANT: For transformed Pokemon, move_slots has different moves
+                // (e.g., tackle, uturn) than base_move_slots (e.g., transform).
+                // We should NOT try to restore PP from the transformed moves, as the
+                // indices don't correspond. The base_move_slots already has correct PP.
                 (*pokemon).move_slots = (*pokemon).base_move_slots.clone();
-
-                // Restore PP values to match JavaScript's shallow copy behavior
-                for (idx, pp) in current_pp {
-                    if idx < (*pokemon).move_slots.len() && idx < (*pokemon).base_move_slots.len() {
-                        // Only restore PP if the move ID matches (not transformed/Sketched)
-                        let move_id = &(&(*pokemon).move_slots)[idx].id;
-                        let base_move_id = &(&(*pokemon).base_move_slots)[idx].id;
-                        if move_id == base_move_id {
-                            (&mut (*pokemon).move_slots)[idx].pp = pp;
-                        }
-                    }
-                }
 
                 // Gen 1 Mimic special case
                 if should_restore_mimic {
