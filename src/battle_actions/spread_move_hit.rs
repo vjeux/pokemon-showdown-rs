@@ -272,8 +272,9 @@ pub fn spread_move_hit<'a>(
         }
 
         // JS: if (!damage[i]) targets[i] = false;
+        // IMPORTANT: Use Failed (not None) because JS uses false (not null) when damage is falsy
         if matches!(damage[i], DamageResult::Failed | DamageResult::Undefined) {
-            targets_mut[i] = SpreadMoveTarget::None;
+            targets_mut[i] = SpreadMoveTarget::Failed;
         }
     }
     debug_elog!("[SPREAD_MOVE_HIT] After damage loop: damage={:?}, targets={:?}", damage, targets_mut);
@@ -301,7 +302,7 @@ pub fn spread_move_hit<'a>(
     // JS: for (const i of targets.keys()) { if (damage[i] === false) targets[i] = false; }
     for i in 0..targets_mut.len() {
         if matches!(damage[i], DamageResult::Failed) {
-            targets_mut[i] = SpreadMoveTarget::None;
+            targets_mut[i] = SpreadMoveTarget::Failed;
         }
     }
 
@@ -317,7 +318,7 @@ pub fn spread_move_hit<'a>(
 
     for i in 0..targets_mut.len() {
         if matches!(damage[i], DamageResult::Failed) {
-            targets_mut[i] = SpreadMoveTarget::None;
+            targets_mut[i] = SpreadMoveTarget::Failed;
         }
     }
 
@@ -373,7 +374,7 @@ pub fn spread_move_hit<'a>(
         // JS: if (!damage[i] && damage[i] !== 0) targets[i] = false;
         match damage[i] {
             DamageResult::Failed | DamageResult::Undefined => {
-                targets_mut[i] = SpreadMoveTarget::None;
+                targets_mut[i] = SpreadMoveTarget::Failed;
             }
             _ => {}
         }
@@ -462,7 +463,7 @@ pub fn spread_move_hit<'a>(
     for i in 0..targets_mut.len() {
         match damage[i] {
             DamageResult::Failed | DamageResult::Undefined => {
-                targets_mut[i] = SpreadMoveTarget::None;
+                targets_mut[i] = SpreadMoveTarget::Failed;
             }
             _ => {}
         }
