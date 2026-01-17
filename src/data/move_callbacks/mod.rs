@@ -932,7 +932,7 @@ pub fn has_on_hit(move_id: &str) -> bool {
         "sketch" | "skillswap" | "sleeptalk" | "snatch" | "soak" |
         "spectralthief" | "speedswap" | "spiderweb" | "spikycacoon" | "spikyshield" |
         "spite" | "splash" | "stompingtantrum" | "storedpower" | "struggle" |
-        "substitute" | "superfang" | "synthesis" | "telekinesis" | "transform" |
+        "substitute" | "superfang" | "synthesis" | "transform" |
         "trickortreat" | "venomdrench" | "wakeupslap" | "worryseed" => true,
         _ => false,
     }

@@ -1,12 +1,10 @@
-Analyzing 191 failing minimized seed files...
+Analyzing 183 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-transform: 14 seeds
-  Seeds: 10488, 20165, 21016, 26715, 27400, 2814, 43796, 47130, 50063, 61343, 61659, 64004, 64566, 64920
-telekinesis: 10 seeds
-  Seeds: 10488, 20165, 42636, 46508, 47130, 49821, 50063, 52895, 63529, 65475
+transform: 10 seeds
+  Seeds: 21016, 26715, 27400, 2814, 43796, 61343, 61659, 64004, 64566, 64920
 takeheart: 6 seeds
   Seeds: 12774, 28887, 40678, 43796, 48121, 61659
 sandstorm: 5 seeds
@@ -59,8 +57,6 @@ scaleshot: 3 seeds
   Seeds: 15935, 39435, 41340
 flipturn: 3 seeds
   Seeds: 18219, 6527, 65490
-guardianofalola: 3 seeds
-  Seeds: 20165, 61530, 64004
 miracleeye: 3 seeds
   Seeds: 20191, 30446, 58474
 ivycudgel: 3 seeds
@@ -209,6 +205,8 @@ kinesis: 2 seeds
   Seeds: 43796, 53209
 baddybad: 2 seeds
   Seeds: 52766, 62499
+telekinesis: 2 seeds
+  Seeds: 52895, 63529
 sharpen: 2 seeds
   Seeds: 54523, 63094
 spore: 2 seeds
@@ -217,6 +215,8 @@ catastropika: 2 seeds
   Seeds: 55954, 60818
 magiccoat: 2 seeds
   Seeds: 56825, 64004
+guardianofalola: 2 seeds
+  Seeds: 61530, 64004
 lightscreen: 1 seeds
   Seeds: 10653
 ragingfury: 1 seeds
@@ -263,12 +263,6 @@ glaciate: 1 seeds
   Seeds: 19895
 boneclub: 1 seeds
   Seeds: 19895
-subzeroslammer: 1 seeds
-  Seeds: 20165
-dragonrage: 1 seeds
-  Seeds: 20165
-fireblast: 1 seeds
-  Seeds: 20165
 morningsun: 1 seeds
   Seeds: 20356
 icespinner: 1 seeds
@@ -739,8 +733,6 @@ Limber: 1 seeds
   Seeds: 43394
 As One (Glastrier): 1 seeds
   Seeds: 44135
-Cute Charm: 1 seeds
-  Seeds: 46508
 Dazzling: 1 seeds
   Seeds: 52401
 Color Change: 1 seeds
@@ -807,14 +799,13 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 191
-Unique moves: 329 (328 non-simple)
-Unique abilities: 55 (52 non-simple)
+Total minimized seeds: 183
+Unique moves: 326 (325 non-simple)
+Unique abilities: 54 (51 non-simple)
 Unique items: 16
 
 --- Most Common Moves (top 10) ---
-  transform: 14 seeds
-  telekinesis: 10 seeds
+  transform: 10 seeds
   takeheart: 6 seeds
   sandstorm: 5 seeds
   copycat: 5 seeds
@@ -823,6 +814,7 @@ Unique items: 16
   fairylock: 5 seeds
   curse: 5 seeds
   shoreup: 5 seeds
+  assist: 5 seeds
 
 --- Most Common Abilities (top 10) ---
   Poison Puppeteer: 9 seeds
