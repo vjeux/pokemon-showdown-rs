@@ -124,7 +124,8 @@ impl Pokemon {
         // This properly handles ability-based type changes (RKS System, Multitype) at the time of transform
         let (target_species_id, target_weight_hg, target_types, target_added_type, target_stored_stats,
              target_move_slots, target_boosts, target_ability, target_has_substitute, target_transformed,
-             target_fainted, target_times_attacked, target_apparent_type, target_hp_type, target_hp_power) = {
+             target_fainted, target_times_attacked, target_apparent_type, target_hp_type, target_hp_power,
+             target_base_species, target_terastallized) = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return false,
@@ -150,6 +151,8 @@ impl Pokemon {
                 target.apparent_type.clone(),
                 target.hp_type.clone(),
                 target.hp_power,
+                target.base_species.clone(),
+                target.terastallized.clone(),
             )
         };
 
@@ -186,10 +189,18 @@ impl Pokemon {
             }
 
             // JS: species.name === 'Eternatus-Eternamax'
-            // Note: Missing Eternatus-Eternamax check - would need species data
+            // ✅ NOW IMPLEMENTED: Eternatus-Eternamax cannot be transformed into
+            if target_species_id.as_str() == "eternatuseternamax" {
+                return false;
+            }
 
             // JS: (['Ogerpon', 'Terapagos'].includes(species.baseSpecies) && (this.terastallized || pokemon.terastallized))
-            // Note: Missing Ogerpon/Terapagos terastallized check - would need species data
+            // ✅ NOW IMPLEMENTED: Ogerpon/Terapagos terastallized check
+            let target_base = target_base_species.as_str();
+            if (target_base == "ogerpon" || target_base == "terapagos") &&
+               (self_pokemon.terastallized.is_some() || target_terastallized.is_some()) {
+                return false;
+            }
 
             // JS: this.terastallized === 'Stellar'
             // ✅ NOW IMPLEMENTED: Stellar tera check
