@@ -42,10 +42,10 @@ pub fn on_hit(
         if success {
             return EventResult::Continue;
         } else {
-            return EventResult::NotFail;
+            return EventResult::Boolean(false);
         }
     }
 
     // return false;
-    EventResult::NotFail
+    EventResult::Boolean(false)
 }

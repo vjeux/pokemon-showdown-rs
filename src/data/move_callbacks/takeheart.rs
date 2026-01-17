@@ -50,6 +50,6 @@ pub fn on_hit(
     if cure_success || boost_success {
         EventResult::Continue
     } else {
-        EventResult::NotFail
+        EventResult::Boolean(false)
     }
 }
