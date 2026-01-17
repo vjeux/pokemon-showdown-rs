@@ -306,6 +306,12 @@ pub fn on_end_with_data(
 
         // Call trySpreadMoveHit directly, not use_move
         let targets = vec![pokemon_pos];
+
+        // Save last_move before executing future move
+        // Future moves should NOT update battle.last_move since they are delayed damage,
+        // not player actions. Copycat should copy the last actual move used, not future move damage.
+        let saved_last_move = battle.last_move.clone();
+
         let _result = crate::battle_actions::try_spread_move_hit(
             battle,
             &targets,
@@ -316,6 +322,13 @@ pub fn on_end_with_data(
         // Clear the flag
         battle.executing_future_move = false;
         debug_elog!("[FUTUREMOVE::ON_END] try_spread_move_hit returned");
+
+        // JavaScript explicitly sets this.activeMove = null; after trySpreadMoveHit
+        // This prevents clearActiveMove from updating last_move
+        battle.active_move = None;
+
+        // Restore last_move to what it was before the future move executed
+        battle.last_move = saved_last_move;
     } else {
         debug_elog!("[FUTUREMOVE::ON_END] No source position, cannot execute move");
     }
