@@ -214,10 +214,11 @@ impl Battle {
                 }
 
                 // JS: pokemon.clearVolatile(false);
-                // Note: JavaScript's clearVolatile() calls moveSlots = baseMoveSlots.slice() which is a
-                // SHALLOW copy - the move slot objects are shared. So PP is NOT restored.
-                // In Rust, clone() is a DEEP copy which would restore PP incorrectly.
-                // So we manually call the parts of clear_volatile that don't reset moveSlots:
+                // Note: JavaScript's clearVolatile() calls moveSlots = baseMoveSlots.slice()
+                // This resets the move IDs back to the base moves (important for Assist, Copycat, etc.
+                // to see original moves instead of transformed moves from a fainted Pokemon).
+                // In JavaScript, the shallow copy shares the MoveSlot objects, so PP changes
+                // to moveSlots also affect baseMoveSlots. In Rust we use clone() which copies IDs.
                 // Use unsafe pointer split to allow pokemon to access battle for set_species call
                 unsafe {
                     let pokemon = &mut self.sides[side_idx].pokemon[poke_idx] as *mut Pokemon;
@@ -226,8 +227,11 @@ impl Battle {
                     // Clear boosts (matches JS: this.boosts = { atk: 0, def: 0, ... })
                     (*pokemon).clear_boosts();
 
-                    // Clear volatiles and reset other state, but preserve move slots
-                    // This is a partial clear_volatile that doesn't reset moveSlots
+                    // JS: this.moveSlots = this.baseMoveSlots.slice();
+                    // Reset moveSlots to baseMoveSlots (important for Assist, Copycat, etc.)
+                    (*pokemon).move_slots = (*pokemon).base_move_slots.clone();
+
+                    // Clear volatiles and reset other state
                     (*pokemon).transformed = false;
                     (*pokemon).ability = (*pokemon).base_ability.clone();
                     (*pokemon).hp_type = (*pokemon).base_hp_type.clone();

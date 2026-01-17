@@ -59,6 +59,15 @@ impl Pokemon {
         let new_pp = current_pp.wrapping_sub(amount);
         self.move_slots[slot_index].pp = new_pp;
 
+        // JS: In JavaScript, baseMoveSlots and moveSlots share the same MoveSlot objects
+        // (until Transform is used), so PP changes affect both arrays.
+        // In Rust, they're separate clones, so we need to sync manually.
+        // Find the same move in base_move_slots and update its PP too.
+        if let Some(base_slot_idx) = self.base_move_slots.iter().position(|s| &s.id == move_id) {
+            self.base_move_slots[base_slot_idx].pp = new_pp;
+            self.base_move_slots[base_slot_idx].used = true;
+        }
+
         // JS: if (ppData.pp < 0 && gen > 1) {
         //         amount += ppData.pp;
         //         ppData.pp = 0;
@@ -68,6 +77,10 @@ impl Pokemon {
             // Wraparound occurred (went negative)
             amount = current_pp; // Actual amount deducted is just current_pp
             self.move_slots[slot_index].pp = 0;
+            // Also sync to base_move_slots
+            if let Some(base_slot_idx) = self.base_move_slots.iter().position(|s| &s.id == move_id) {
+                self.base_move_slots[base_slot_idx].pp = 0;
+            }
         }
 
         debug_elog!("[DEDUCT_PP] new_pp={}, actual_amount={}", self.move_slots[slot_index].pp, amount);
