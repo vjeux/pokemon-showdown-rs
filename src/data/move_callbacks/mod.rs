@@ -1749,13 +1749,16 @@ pub fn dispatch_condition_on_any_prepare_hit(
 }
 
 /// Dispatch condition onAnySetStatus callbacks
+/// Called when any Pokemon in battle is about to have a status set
+/// This allows volatiles like uproar to prevent sleep from being applied
 pub fn dispatch_condition_on_any_set_status(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
-    source_pos: (usize, usize),
+    condition_id: &str,
+    status: Option<&str>,
+    pokemon_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "uproar" => uproar::condition::on_any_set_status(battle, None, source_pos),
+    match condition_id {
+        "uproar" => uproar::condition::on_any_set_status(battle, status, pokemon_pos),
         _ => EventResult::Continue,
     }
 }

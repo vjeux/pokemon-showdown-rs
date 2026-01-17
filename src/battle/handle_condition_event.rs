@@ -507,6 +507,23 @@ impl Battle {
             "SwitchIn" => {
                 condition_callbacks::dispatch_on_switch_in(self, condition_id, pokemon_pos)
             }
+            "AnySetStatus" => {
+                // AnySetStatus is called when any Pokemon is about to have a status set
+                // Volatiles like Uproar can prevent sleep from being applied
+                // Extract status from relay_var - passed as EventResult::String from set_status.rs
+                let status_owned = self.event.as_ref()
+                    .and_then(|e| e.relay_var.as_ref())
+                    .and_then(|rv| match rv {
+                        EventResult::String(s) => Some(s.clone()),
+                        _ => None,
+                    });
+                crate::data::move_callbacks::dispatch_condition_on_any_set_status(
+                    self,
+                    condition_id,
+                    status_owned.as_deref(),
+                    pokemon_pos,
+                )
+            }
             "Swap" => {
                 // Swap is called by slot conditions like lunardance/healingwish
                 // to trigger healing on the incoming Pokemon
