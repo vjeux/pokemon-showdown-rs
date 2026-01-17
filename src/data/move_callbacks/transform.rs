@@ -34,7 +34,7 @@ pub fn on_hit(
     let success = Pokemon::transform_into(battle, pokemon, target, None);
 
     if !success {
-        return EventResult::NotFail;
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

@@ -1,10 +1,10 @@
-Analyzing 183 failing minimized seed files...
+Analyzing 182 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-transform: 10 seeds
-  Seeds: 21016, 26715, 27400, 2814, 43796, 61343, 61659, 64004, 64566, 64920
+transform: 9 seeds
+  Seeds: 26715, 27400, 2814, 43796, 61343, 61659, 64004, 64566, 64920
 takeheart: 6 seeds
   Seeds: 12774, 28887, 40678, 43796, 48121, 61659
 sandstorm: 5 seeds
@@ -799,13 +799,13 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 183
+Total minimized seeds: 182
 Unique moves: 326 (325 non-simple)
 Unique abilities: 54 (51 non-simple)
 Unique items: 16
 
 --- Most Common Moves (top 10) ---
-  transform: 10 seeds
+  transform: 9 seeds
   takeheart: 6 seeds
   sandstorm: 5 seeds
   copycat: 5 seeds
