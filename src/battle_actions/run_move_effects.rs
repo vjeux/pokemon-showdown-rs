@@ -627,7 +627,10 @@ pub fn run_move_effects<'a>(
         }
 
         // if (moveData.selfSwitch) {
-        if hit_effect.self_switch().is_some() {
+        // IMPORTANT: Use battle.active_move, not hit_effect!
+        // The on_hit callback (e.g., partingshot) can delete move.selfSwitch by setting
+        // battle.active_move.self_switch = None. We need to check the updated value.
+        if battle.active_move.as_ref().map(|m| m.self_switch.is_some()).unwrap_or(false) {
             //     if (this.battle.canSwitch(source.side) && !source.volatiles['commanded']) {
             let can_switch_count = battle.can_switch(source_pos.0);
             let has_commanded = {
@@ -689,7 +692,10 @@ pub fn run_move_effects<'a>(
         battle.debug("move failed because it did nothing");
     }
     // else if (move.selfSwitch && source.hp && !source.volatiles['commanded']) {
-    else if active_move.self_switch.is_some() {
+    // IMPORTANT: Use battle.active_move, not the local active_move parameter!
+    // The on_hit callback (e.g., partingshot) can delete move.selfSwitch by setting
+    // battle.active_move.self_switch = None. We need to check the updated value.
+    else if battle.active_move.as_ref().map(|m| m.self_switch.is_some()).unwrap_or(false) {
         //     source.switchFlag = move.id;
         // Check source.hp and source.volatiles['commanded']
         let (source_hp, has_commanded) = {

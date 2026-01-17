@@ -30,7 +30,9 @@ pub fn on_fractional_priority(
             if let Some(move_data) = battle.dex.moves().get(effect.id.as_str()) {
                 move_data.category == "Status"
             } else {
-                return EventResult::Continue;
+                // In JS, nonexistent move has category: undefined
+                // undefined !== "Status" is true, so treat as non-Status
+                false
             }
         } else {
             return EventResult::Continue;
