@@ -465,7 +465,7 @@ pub fn run_move(
         // for (const dancer of dancers)
         for dancer_pos in dancers {
             // if (this.battle.faintMessages()) break;
-            if battle.faint_messages(false, false, false) {
+            if battle.faint_messages(false, false, true) {
                 break;
             }
 
@@ -548,9 +548,11 @@ pub fn run_move(
 
     // Faint messages and check win
     // this.battle.faintMessages();
-    battle.faint_messages(false, false, false);
+    battle.faint_messages(false, false, true);
 
     // this.battle.checkWin();
+    // NOTE: In JS, faintMessages() is called with checkWin=true by default,
+    // so if it determines a winner, checkWin() below will return early due to ended=true
     battle.check_win(None);
 
     // Gen 4 compatibility: restore old active move
