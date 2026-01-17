@@ -211,7 +211,7 @@ impl Dex {
                             status: None,
                             volatile_status: None,
                         });
-                    } else if v.extra.contains_key("onDrive") {
+                    } else if v.on_drive.is_some() {
                         v.fling = Some(crate::dex::FlingData {
                             base_power: 70,
                             effect: None,
