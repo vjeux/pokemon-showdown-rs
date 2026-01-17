@@ -1,10 +1,8 @@
-Analyzing 155 failing minimized seed files...
+Analyzing 151 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-waterspout: 5 seeds
-  Seeds: 19895, 24300, 37137, 39435, 54523
 uproar: 5 seeds
   Seeds: 22537, 30458, 48818, 55874, 64548
 fairylock: 5 seeds
@@ -65,8 +63,6 @@ leechseed: 3 seeds
   Seeds: 30530, 40097, 44135
 shellsidearm: 3 seeds
   Seeds: 34206, 53209, 64149
-synchronoise: 3 seeds
-  Seeds: 39435, 54523, 56089
 grudge: 3 seeds
   Seeds: 40097, 42063, 43605
 ceaselessedge: 2 seeds
@@ -93,10 +89,6 @@ obstruct: 2 seeds
   Seeds: 17535, 24867
 maliciousmoonsault: 2 seeds
   Seeds: 18219, 60885
-gmaxwildfire: 2 seeds
-  Seeds: 19895, 53499
-absorb: 2 seeds
-  Seeds: 19895, 24867
 zippyzap: 2 seeds
   Seeds: 20191, 30530
 maxknuckle: 2 seeds
@@ -113,8 +105,6 @@ doubleteam: 2 seeds
   Seeds: 24207, 30232
 chatter: 2 seeds
   Seeds: 25177, 43153
-outrage: 2 seeds
-  Seeds: 25177, 54523
 noxioustorque: 2 seeds
   Seeds: 25177, 35489
 pursuit: 2 seeds
@@ -135,8 +125,6 @@ odorsleuth: 2 seeds
   Seeds: 30530, 30853
 polarflare: 2 seeds
   Seeds: 32517, 64605
-sacredfire: 2 seeds
-  Seeds: 32939, 54523
 circlethrow: 2 seeds
   Seeds: 32939, 62883
 confuseray: 2 seeds
@@ -149,20 +137,18 @@ wonderroom: 2 seeds
   Seeds: 35876, 65503
 celebrate: 2 seeds
   Seeds: 36737, 43394
-heartstamp: 2 seeds
-  Seeds: 37137, 43394
 maxphantasm: 2 seeds
   Seeds: 39435, 53499
 corkscrewcrash: 2 seeds
   Seeds: 39435, 53148
+synchronoise: 2 seeds
+  Seeds: 39435, 56089
 ragefist: 2 seeds
   Seeds: 40910, 60885
 bounce: 2 seeds
   Seeds: 42063, 53148
 partingshot: 2 seeds
   Seeds: 42063, 53949
-grassyterrain: 2 seeds
-  Seeds: 43153, 54523
 strengthsap: 2 seeds
   Seeds: 43581, 54222
 voltswitch: 2 seeds
@@ -171,8 +157,6 @@ healorder: 2 seeds
   Seeds: 46244, 6527
 telekinesis: 2 seeds
   Seeds: 52895, 63529
-sharpen: 2 seeds
-  Seeds: 54523, 63094
 spore: 2 seeds
   Seeds: 55113, 55874
 catastropika: 2 seeds
@@ -197,18 +181,6 @@ eerieimpulse: 1 seeds
   Seeds: 17585
 toxic: 1 seeds
   Seeds: 18657
-punishment: 1 seeds
-  Seeds: 19895
-milkdrink: 1 seeds
-  Seeds: 19895
-headsmash: 1 seeds
-  Seeds: 19895
-karatechop: 1 seeds
-  Seeds: 19895
-glaciate: 1 seeds
-  Seeds: 19895
-boneclub: 1 seeds
-  Seeds: 19895
 morningsun: 1 seeds
   Seeds: 20356
 icespinner: 1 seeds
@@ -239,19 +211,13 @@ spikes: 1 seeds
   Seeds: 24207
 sandattack: 1 seeds
   Seeds: 24207
-maxmindstorm: 1 seeds
-  Seeds: 24300
-gmaxfoamburst: 1 seeds
-  Seeds: 24300
-wrap: 1 seeds
-  Seeds: 24300
-smackdown: 1 seeds
-  Seeds: 24300
-hiddenpowersteel: 1 seeds
-  Seeds: 24300
 meditate: 1 seeds
   Seeds: 24867
+absorb: 1 seeds
+  Seeds: 24867
 bellydrum: 1 seeds
+  Seeds: 25177
+outrage: 1 seeds
   Seeds: 25177
 stickyweb: 1 seeds
   Seeds: 25177
@@ -325,6 +291,8 @@ closecombat: 1 seeds
   Seeds: 30853
 drainpunch: 1 seeds
   Seeds: 30853
+sacredfire: 1 seeds
+  Seeds: 32939
 struggle: 1 seeds
   Seeds: 32939
 steelroller: 1 seeds
@@ -349,20 +317,6 @@ wideguard: 1 seeds
   Seeds: 35620
 coaching: 1 seeds
   Seeds: 35876
-quash: 1 seeds
-  Seeds: 37137
-crunch: 1 seeds
-  Seeds: 37137
-twineedle: 1 seeds
-  Seeds: 37137
-powergem: 1 seeds
-  Seeds: 37137
-triattack: 1 seeds
-  Seeds: 37137
-burnup: 1 seeds
-  Seeds: 37137
-sparklingaria: 1 seeds
-  Seeds: 37137
 gigavolthavoc: 1 seeds
   Seeds: 37514
 nuzzle: 1 seeds
@@ -380,6 +334,8 @@ autotomize: 1 seeds
 gmaxstonesurge: 1 seeds
   Seeds: 39361
 hyperdrill: 1 seeds
+  Seeds: 39435
+waterspout: 1 seeds
   Seeds: 39435
 menacingmoonrazemaelstrom: 1 seeds
   Seeds: 39435
@@ -415,6 +371,10 @@ thundercage: 1 seeds
   Seeds: 43153
 waterpledge: 1 seeds
   Seeds: 43153
+grassyterrain: 1 seeds
+  Seeds: 43153
+heartstamp: 1 seeds
+  Seeds: 43394
 mistyexplosion: 1 seeds
   Seeds: 43394
 accelerock: 1 seeds
@@ -463,6 +423,8 @@ recover: 1 seeds
   Seeds: 53499
 bulletseed: 1 seeds
   Seeds: 53499
+gmaxwildfire: 1 seeds
+  Seeds: 53499
 clearsmog: 1 seeds
   Seeds: 53499
 dragontail: 1 seeds
@@ -483,24 +445,6 @@ roost: 1 seeds
   Seeds: 54222
 doubleedge: 1 seeds
   Seeds: 54222
-guardsplit: 1 seeds
-  Seeds: 54523
-courtchange: 1 seeds
-  Seeds: 54523
-flash: 1 seeds
-  Seeds: 54523
-doublehit: 1 seeds
-  Seeds: 54523
-lusterpurge: 1 seeds
-  Seeds: 54523
-endeavor: 1 seeds
-  Seeds: 54523
-pulverizingpancake: 1 seeds
-  Seeds: 54523
-tickle: 1 seeds
-  Seeds: 54523
-extrasensory: 1 seeds
-  Seeds: 54523
 tailwind: 1 seeds
   Seeds: 55162
 banefulbunker: 1 seeds
@@ -555,6 +499,8 @@ baddybad: 1 seeds
   Seeds: 62499
 pounce: 1 seeds
   Seeds: 62883
+sharpen: 1 seeds
+  Seeds: 63094
 leechlife: 1 seeds
   Seeds: 63529
 psychicterrain: 1 seeds
@@ -595,12 +541,12 @@ Truant: 4 seeds
   Seeds: 24207, 25990, 37661, 46733
 Synchronize: 3 seeds
   Seeds: 21977, 35406, 43878
-Pressure: 3 seeds
-  Seeds: 30834, 54523, 59120
 Poison Point: 2 seeds
   Seeds: 24867, 30458
 Levitate: 2 seeds
   Seeds: 30530, 34248
+Pressure: 2 seeds
+  Seeds: 30834, 59120
 Air Lock: 2 seeds
   Seeds: 35203, 38902
 Hunger Switch: 2 seeds
@@ -613,8 +559,6 @@ Psychic Surge: 2 seeds
   Seeds: 53815, 53949
 Unaware: 2 seeds
   Seeds: 61343, 64566
-Stench: 1 seeds
-  Seeds: 19895
 Plus: 1 seeds
   Seeds: 20875
 Iron Barbs: 1 seeds
@@ -639,8 +583,6 @@ Multitype: 1 seeds
   Seeds: 33996
 Shields Down: 1 seeds
   Seeds: 34471
-RKS System: 1 seeds
-  Seeds: 37137
 Disguise: 1 seeds
   Seeds: 37514
 Victory Star: 1 seeds
@@ -717,13 +659,12 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 155
-Unique moves: 289 (288 non-simple)
-Unique abilities: 52 (49 non-simple)
+Total minimized seeds: 151
+Unique moves: 262 (261 non-simple)
+Unique abilities: 50 (47 non-simple)
 Unique items: 14
 
 --- Most Common Moves (top 10) ---
-  waterspout: 5 seeds
   uproar: 5 seeds
   fairylock: 5 seeds
   curse: 5 seeds
@@ -733,6 +674,7 @@ Unique items: 14
   skydrop: 4 seeds
   mindblown: 4 seeds
   mindreader: 4 seeds
+  mudsport: 4 seeds
 
 --- Most Common Abilities (top 10) ---
   Poison Puppeteer: 9 seeds
@@ -741,7 +683,7 @@ Unique items: 14
   Gulp Missile: 4 seeds
   Truant: 4 seeds
   Synchronize: 3 seeds
-  Pressure: 3 seeds
   Poison Point: 2 seeds
   Levitate: 2 seeds
+  Pressure: 2 seeds
   Air Lock: 2 seeds
