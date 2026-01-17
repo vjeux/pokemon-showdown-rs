@@ -282,6 +282,7 @@ pub fn spread_move_hit<'a>(
     // 1. call to getDamage
     // JS: damage = this.getSpreadDamage(damage, targets, pokemon, move, moveData, isSecondary, isSelf);
     debug_elog!("[SPREAD_MOVE_HIT] About to call get_spread_damage");
+    debug_elog!("[SPREAD_MOVE_HIT] BEFORE get_spread_damage: damage={:?}", damage);
     // Get the active move for damage calculation - JavaScript passes ActiveMove directly
     let active_move_for_damage = battle.active_move.clone();
     if let Some(ref active_move) = active_move_for_damage {
@@ -298,6 +299,7 @@ pub fn spread_move_hit<'a>(
     } else {
         debug_elog!("[SPREAD_MOVE_HIT] WARNING: No active_move available for get_spread_damage");
     }
+    debug_elog!("[SPREAD_MOVE_HIT] AFTER get_spread_damage: damage={:?}", damage);
 
     // JS: for (const i of targets.keys()) { if (damage[i] === false) targets[i] = false; }
     for i in 0..targets_mut.len() {
@@ -369,6 +371,7 @@ pub fn spread_move_hit<'a>(
         is_secondary,
         is_self,
     );
+    debug_elog!("[SPREAD_MOVE_HIT] AFTER run_move_effects: damage={:?}", damage);
 
     for i in 0..targets_mut.len() {
         // JS: if (!damage[i] && damage[i] !== 0) targets[i] = false;

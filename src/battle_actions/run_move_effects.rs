@@ -313,6 +313,8 @@ pub fn run_move_effects<'a>(
             } else {
                 hit_effect.status().map(|s| s.as_str())
             };
+            debug_elog!("[RUN_MOVE_EFFECTS] Status check: is_self={}, is_secondary={}, target_pos={:?}, hit_effect.status()={:?}, active_move.status={:?}, status_to_apply={:?}",
+                is_self, is_secondary, target_pos, hit_effect.status(), active_move.status, status_to_apply);
 
             if let Some(status) = status_to_apply {
                 //     hitResult = target.trySetStatus(moveData.status, source, moveData.ability ? moveData.ability : move);
@@ -328,10 +330,11 @@ pub fn run_move_effects<'a>(
                 let hit_result = Pokemon::try_set_status(
                     battle,
                     target_pos,
-                    status_id,
+                    status_id.clone(),
                     Some(source_pos), // source
                     Some(&source_effect), // source_effect - the move or ability causing the status
                 );
+                debug_elog!("[RUN_MOVE_EFFECTS] try_set_status result: target={:?}, status={:?}, result={}", target_pos, status_id, hit_result);
                 //     if (!hitResult && move.status) {
                 // Check if the move is a primary status move (status was set)
                 let move_has_status = active_move.status.is_some() || hit_effect.status().is_some();
@@ -360,6 +363,7 @@ pub fn run_move_effects<'a>(
             if let Some(volatile_status) = hit_effect.volatile_status() {
                 //     hitResult = target.addVolatile(moveData.volatileStatus, source, move);
                 let volatile_id = ID::new(volatile_status);
+                debug_elog!("[RUN_MOVE_EFFECTS] volatileStatus: volatile_id={}, target_pos={:?}", volatile_id, target_pos);
 
                 // Look up the move's embedded condition from dex
                 // Moves like bide have `condition: { duration: 3, ... }` embedded in them
@@ -370,7 +374,7 @@ pub fn run_move_effects<'a>(
                 let hit_result = Pokemon::add_volatile(
                     battle,
                     target_pos,
-                    volatile_id,
+                    volatile_id.clone(),
                     Some(source_pos),
                     Some(&crate::battle::Effect::move_(active_move.id.clone())),
                     None, // linked_status
@@ -654,6 +658,9 @@ pub fn run_move_effects<'a>(
         if matches!(did_something, DamageResult::Undefined) {
             did_something = DamageResult::Success;
         }
+
+        debug_elog!("[RUN_MOVE_EFFECTS] move_id={}, i={}, damages[i]={:?}, did_something={:?}",
+            active_move.id, i, damages[i], did_something);
 
         // damage[i] = this.combineResults(damage[i], didSomething === null ? false : didSomething);
         // Note: JavaScript null doesn't have a direct DamageResult equivalent

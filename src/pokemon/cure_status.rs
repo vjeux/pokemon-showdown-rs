@@ -32,8 +32,11 @@ impl Pokemon {
             (pokemon.hp, pokemon.status.clone())
         };
 
+        debug_elog!("[CURE_STATUS] pokemon={:?}, hp={}, status={:?}", pokemon_pos, hp, status);
+
         // JS: if (!this.hp || !this.status) return false;
         if hp == 0 || status.is_empty() {
+            debug_elog!("[CURE_STATUS] Returning None early: hp=0 or status empty");
             return None;
         }
 

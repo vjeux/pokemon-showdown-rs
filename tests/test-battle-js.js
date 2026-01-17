@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// Enable debug logging
+global.POKEMON_DEBUG = true;
+
 /**
  * JavaScript Battle Test Runner
  *

@@ -143,7 +143,14 @@ fn run_battle_inner(seed_num: u32, minimized_dir: &str) -> String {
         Some(w) if w == "Player 1" => "p1",
         Some(w) if w == "Player 2" => "p2",
         Some(w) if w.is_empty() => "tie",
-        _ => "none",
+        Some(w) => {
+            eprintln!("[DEBUG seed {}] Unexpected winner value: {:?}", seed_num, w);
+            "none"
+        }
+        None => {
+            eprintln!("[DEBUG seed {}] Winner is None, ended={}", seed_num, battle.ended);
+            "none"
+        }
     };
 
     format!(

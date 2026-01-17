@@ -787,8 +787,24 @@ pub fn has_on_restart_callback(condition_id: &str) -> bool {
     match condition_id {
         "lockedmove" | "stall" => true,
         // Move-embedded conditions with onRestart
-        "rollout" | "iceball" | "uproar" | "focusenergy" | "laserfocus" | "stockpile" |
-        "gmaxchistrike" | "minimize" | "charge" | "healblock" | "smackdown" |
+        // NOTE: These must match JavaScript exactly - only include conditions that have onRestart defined
+        // Verified against Pokemon Showdown's data/moves.ts:
+        // - laserfocus: onRestart extends duration
+        // - stockpile: onRestart increments layers
+        // - gmaxchistrike: onRestart increments layers
+        // - minimize: onRestart returns null (restarts silently)
+        // - charge: onRestart extends duration
+        // - smackdown: onRestart extends/refreshes
+        // - powertrick: onRestart swaps stats back
+        // - powershift: onRestart swaps stats back
+        // - helpinghand: onRestart extends
+        // - furycutter: onRestart refreshes
+        // - defensecurl: onRestart returns null (restarts silently)
+        // - allyswitch: onRestart refreshes
+        //
+        // NOT in this list (no onRestart, so addVolatile returns false):
+        // - rollout, iceball, uproar, focusenergy, healblock
+        "laserfocus" | "stockpile" | "gmaxchistrike" | "minimize" | "charge" | "smackdown" |
         "powertrick" | "powershift" | "helpinghand" | "furycutter" | "defensecurl" | "allyswitch" => true,
         _ => false,
     }
