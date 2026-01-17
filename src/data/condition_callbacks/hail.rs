@@ -149,7 +149,8 @@ pub fn on_weather(
         pokemon.base_maxhp
     };
 
-    let damage = base_maxhp / 16;
+    // JavaScript uses floating point division, then spreadDamage clamps to at least 1
+    let damage = (base_maxhp / 16).max(1);
     battle.damage(damage, Some(pokemon_pos), None, None, false);
 
     EventResult::Continue

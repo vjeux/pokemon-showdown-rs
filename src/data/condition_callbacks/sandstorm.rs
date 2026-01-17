@@ -196,7 +196,9 @@ pub fn on_weather(
     };
 
     // Calculate damage as 1/16 of max HP
-    let damage_amount = base_maxhp / 16;
+    // JavaScript uses floating point division (e.g., 1/16 = 0.0625), then spreadDamage
+    // clamps to at least 1 if non-zero. We must use .max(1) to match.
+    let damage_amount = (base_maxhp / 16).max(1);
 
     // Apply damage through the battle's damage function
     // JavaScript doesn't pass effect explicitly - it comes from this.effect in the event context
