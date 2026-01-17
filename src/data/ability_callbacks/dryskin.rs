@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onTryHit(target, source, move) {
@@ -31,7 +31,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target.base_maxhp / 4
+            hp_fraction(target.base_maxhp, 4)
         };
 
         let healed = battle.heal(heal_amount, Some(target_pos), None, None);
@@ -105,7 +105,7 @@ pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, us
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.base_maxhp / 8
+            hp_fraction(pokemon.base_maxhp, 8)
         };
         battle.heal(heal_amount, Some(pokemon_pos), None, None);
     } else if weather_id == "sunnyday" || weather_id == "desolateland" {
@@ -115,7 +115,7 @@ pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, us
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.base_maxhp / 8
+            hp_fraction(pokemon.base_maxhp, 8)
         };
         battle.damage(damage, Some(pokemon_pos), Some(pokemon_pos), None, false);
     }

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onResidual(pokemon) {
@@ -53,7 +53,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
         if is_asleep || has_comatose {
             // this.damage(target.baseMaxhp / 8, target, pokemon);
             battle.damage(
-                base_maxhp / 8,
+                hp_fraction(base_maxhp, 8),
                 Some(target_pos),
                 Some(pokemon_pos),
                 None,

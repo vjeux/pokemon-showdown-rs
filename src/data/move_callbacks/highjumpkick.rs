@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::{hp_fraction, Battle, Effect};
 use crate::event::EventResult;
 
 /// onMoveFail(target, source, move) {
@@ -29,7 +29,7 @@ pub fn on_move_fail(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.base_maxhp / 2
+        hp_fraction(source_pokemon.base_maxhp, 2)
     };
 
     // this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('High Jump Kick'));

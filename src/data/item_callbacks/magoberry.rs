@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
 
@@ -57,7 +57,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize,
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.base_maxhp / 3
+        hp_fraction(pokemon.base_maxhp, 3)
     };
 
     let result = battle.run_event("TryHeal", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Number(heal_amount), false, false);
@@ -87,7 +87,7 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.base_maxhp / 3, pokemon.get_nature().to_string())
+        (hp_fraction(pokemon.base_maxhp, 3), pokemon.get_nature().to_string())
     };
 
     // Phase 2: Heal

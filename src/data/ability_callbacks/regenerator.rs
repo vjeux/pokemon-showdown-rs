@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onSwitchOut(pokemon) {
@@ -17,7 +17,7 @@ pub fn on_switch_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.base_maxhp / 3
+        hp_fraction(pokemon.base_maxhp, 3)
     };
 
     battle.heal(heal_amount, Some(pokemon_pos), None, None);

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onTryHit(target, source, move) {
@@ -34,7 +34,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                target_pokemon.base_maxhp / 4
+                hp_fraction(target_pokemon.base_maxhp, 4)
             };
             battle.heal(heal_amount, Some(target_pos), None, None);
             // Return Null to prevent the move from hitting

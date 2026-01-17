@@ -186,6 +186,7 @@ mod on_event;
 mod on_event_priority;
 mod run_custom_event_handlers;
 mod use_move;
+mod hp_fraction;
 
 // Re-export types from submodules
 pub use split_message::SplitMessage;
@@ -204,3 +205,4 @@ pub use battle_request_state::BattleRequestState;
 pub use priority_item::PriorityItem;
 pub use spread_move_hit_result::SpreadMoveHitResult;
 pub use battle_struct::Battle;
+pub use hp_fraction::hp_fraction;

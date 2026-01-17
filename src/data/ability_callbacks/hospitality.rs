@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
@@ -29,7 +29,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                 Some(p) => p,
                 None => continue,
             };
-            ally.base_maxhp / 4
+            hp_fraction(ally.base_maxhp, 4)
         };
 
         // this.heal(ally.baseMaxhp / 4, ally, pokemon);

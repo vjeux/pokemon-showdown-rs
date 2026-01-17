@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onDamagingHit(damage, target, source, move) {
@@ -34,7 +34,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                source_pokemon.base_maxhp / 4
+                hp_fraction(source_pokemon.base_maxhp, 4)
             };
             // Pass the Aftermath ability effect so Damp's onAnyDamage can detect and block it
             // JavaScript: this.damage() uses the current ability effect (this.effect) implicitly

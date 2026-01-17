@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onDamagingHit(damage, target, source, move) {
@@ -23,7 +23,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                source_pokemon.base_maxhp / 8
+                hp_fraction(source_pokemon.base_maxhp, 8)
             };
             battle.damage(damage_amount, Some(source), Some(target), None, false);
         }

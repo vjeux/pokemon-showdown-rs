@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onModifyDamage(damage, source, target, move) {
@@ -71,9 +71,9 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usi
         return EventResult::Continue;
     }
 
-    battle.debug(&format!("[LIFE ORB] Applying recoil damage: {} HP", base_maxhp / 10));
+    battle.debug(&format!("[LIFE ORB] Applying recoil damage: {} HP", hp_fraction(base_maxhp, 10)));
     // this.damage(source.baseMaxhp / 10, source, source, this.dex.items.get('lifeorb'));
-    battle.damage(base_maxhp / 10, Some(source_pos), Some(source_pos), None, false);
+    battle.damage(hp_fraction(base_maxhp, 10), Some(source_pos), Some(source_pos), None, false);
 
     EventResult::Continue
 }

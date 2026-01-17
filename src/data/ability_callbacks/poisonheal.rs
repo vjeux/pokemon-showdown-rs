@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onDamage(damage, target, source, effect) {
@@ -23,7 +23,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
                     Some(p) => p,
                     None => return EventResult::Boolean(false),
                 };
-                target.base_maxhp / 8
+                hp_fraction(target.base_maxhp, 8)
             };
 
             battle.heal(heal_amount, Some(target_pos), None, None);

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -81,7 +81,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
 
     if item_eaten {
         // this.heal(target.baseMaxhp / 4);
-        let heal_amount = target_base_maxhp / 4;
+        let heal_amount = hp_fraction(target_base_maxhp, 4);
         debug_elog!("[ENIGMABERRY] Turn {}: Berry eaten! Healing {} HP", battle.turn, heal_amount);
         battle.heal(heal_amount, Some(target_pos), source_pos, Some(&Effect::item(crate::dex_data::ID::from("enigmaberry"))));
     } else {
@@ -101,7 +101,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize,
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.base_maxhp / 4
+        hp_fraction(pokemon.base_maxhp, 4)
     };
 
     use crate::dex_data::ID;

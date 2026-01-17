@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onResidual(pokemon) {
@@ -23,7 +23,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
         pokemon.base_maxhp
     };
 
-    let heal_amount = base_maxhp / 16;
+    let heal_amount = hp_fraction(base_maxhp, 16);
     debug_elog!("[LEFTOVERS DEBUG] Healing {} HP ({} / 16)", heal_amount, base_maxhp);
 
     // this.heal(pokemon.baseMaxhp / 16);

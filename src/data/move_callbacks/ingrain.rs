@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -50,7 +50,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            (pokemon_pokemon.base_maxhp / 16, pokemon_pokemon.name.clone())
+            (hp_fraction(pokemon_pokemon.base_maxhp, 16), pokemon_pokemon.name.clone())
         };
 
         debug_elog!("[INGRAIN RESIDUAL] turn={}, pokemon={}, healing {} HP",

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
@@ -65,7 +65,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
     if item_eaten {
         // this.damage(source.baseMaxhp / (target.hasAbility('ripen') ? 4 : 8), source, target);
         let divisor = if target_has_ripen { 4 } else { 8 };
-        let damage_amount = source_base_maxhp / divisor;
+        let damage_amount = hp_fraction(source_base_maxhp, divisor);
 
         battle.damage(damage_amount, Some(source_pos), Some(target_pos), Some(&Effect::item(ID::from("rowapberry"))), false);
     }

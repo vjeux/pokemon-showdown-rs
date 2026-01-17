@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 pub mod condition {
@@ -45,7 +45,7 @@ pub mod condition {
         };
 
         // this.heal(pokemon.baseMaxhp / 16);
-        battle.heal(base_maxhp / 16, Some(pokemon_pos), None, None);
+        battle.heal(hp_fraction(base_maxhp, 16), Some(pokemon_pos), None, None);
 
         EventResult::Continue
     }

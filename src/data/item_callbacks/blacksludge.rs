@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onResidual(pokemon) {
@@ -26,10 +26,10 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 
     if has_poison {
         // this.heal(pokemon.baseMaxhp / 16);
-        battle.heal(base_maxhp / 16, Some(pokemon_pos), None, None);
+        battle.heal(hp_fraction(base_maxhp, 16), Some(pokemon_pos), None, None);
     } else {
         // this.damage(pokemon.baseMaxhp / 8);
-        battle.damage(base_maxhp / 8, Some(pokemon_pos), None, None, false);
+        battle.damage(hp_fraction(base_maxhp, 8), Some(pokemon_pos), None, None, false);
     }
 
     EventResult::Continue

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 
 /// onDamage(damage, target, source, effect) {
@@ -269,7 +269,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
     // so passing them prevents the fallback to self.effect (which would be Disguise).
     // We create a species Effect to match JavaScript behavior.
     let species_effect = Effect::species(new_species_id);
-    let damage_amount = base_maxhp / 8;
+    let damage_amount = hp_fraction(base_maxhp, 8);
     battle.damage(damage_amount, Some(pokemon_pos), Some(pokemon_pos), Some(&species_effect), false);
 
     EventResult::Continue

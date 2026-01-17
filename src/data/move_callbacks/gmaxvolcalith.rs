@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 pub mod condition {
@@ -59,7 +59,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                target_pokemon.base_maxhp / 6
+                hp_fraction(target_pokemon.base_maxhp, 6)
             };
 
             debug_elog!("[GMAXVOLCALITH::CONDITION::ON_RESIDUAL] Dealing {} damage to {:?}", damage_amount, target);

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -70,9 +70,9 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
 
         // this.damage(source.baseMaxhp / (target.hasAbility('ripen') ? 4 : 8), source, target);
         let damage_amount = if target_has_ripen {
-            source_base_maxhp / 4
+            hp_fraction(source_base_maxhp, 4)
         } else {
-            source_base_maxhp / 8
+            hp_fraction(source_base_maxhp, 8)
         };
 
         battle.damage(damage_amount, Some(source_pos), Some(target_pos), None, false);

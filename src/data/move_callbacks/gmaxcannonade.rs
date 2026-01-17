@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
@@ -52,7 +52,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                target_pokemon.base_maxhp / 6
+                hp_fraction(target_pokemon.base_maxhp, 6)
             };
 
             battle.damage(damage_amount, Some(target), None, None, false);

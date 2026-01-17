@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onModifySpA(spa, pokemon) {
@@ -58,7 +58,7 @@ pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, us
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.base_maxhp / 8
+            hp_fraction(pokemon.base_maxhp, 8)
         };
 
         // Damage the pokemon

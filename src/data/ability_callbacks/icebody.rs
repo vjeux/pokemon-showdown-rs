@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onWeather(target, source, effect) {
@@ -20,7 +20,7 @@ pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, us
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            pokemon.base_maxhp / 16
+            hp_fraction(pokemon.base_maxhp, 16)
         };
 
         // Heal the pokemon

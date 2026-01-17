@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -22,7 +22,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
     };
 
     // this.damage(pokemon.baseMaxhp / 8);
-    battle.damage(base_maxhp / 8, Some(pokemon_pos), None, None, false);
+    battle.damage(hp_fraction(base_maxhp, 8), Some(pokemon_pos), None, None, false);
 
     EventResult::Continue
 }

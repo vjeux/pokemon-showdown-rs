@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onTryHit(target, source, move) {
@@ -143,7 +143,7 @@ pub fn on_hit(
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.base_maxhp / 2
+            hp_fraction(target_pokemon.base_maxhp, 2)
         };
 
         let healed = battle.heal(heal_amount, Some(target), None, None);

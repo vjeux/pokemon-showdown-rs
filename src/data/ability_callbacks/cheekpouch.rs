@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 
 /// onEatItem(item, pokemon) {
@@ -17,7 +17,7 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.base_maxhp / 3, pokemon.hp, pokemon.base_maxhp)
+        (hp_fraction(pokemon.base_maxhp, 3), pokemon.hp, pokemon.base_maxhp)
     };
 
     debug_elog!("[CHEEKPOUCH] Turn {}: on_eat_item called! Healing {} HP (current {}/{})",
