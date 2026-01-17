@@ -69,13 +69,9 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     let type_effectiveness = Pokemon::run_effectiveness(battle, target_pos, active_move_ref);
 
     // Check immunity: runImmunity returns true if NOT immune, false if immune
-    let move_type = {
-        let move_data = match battle.dex.moves().get(move_id) {
-            Some(m) => m.move_type.clone(),
-            None => return EventResult::Continue,
-        };
-        move_data
-    };
+    // IMPORTANT: Use active_move.move_type instead of dex move type
+    // For moves like Hidden Power, the type is dynamically determined and stored in active_move
+    let move_type = active_move_ref.move_type.clone();
     let is_immune = !Pokemon::run_immunity(battle, target_pos, &move_type, false);
 
     // Wonder Guard blocks if not super effective OR if immune
