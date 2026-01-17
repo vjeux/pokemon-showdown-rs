@@ -45,7 +45,9 @@ pub fn on_hit(
     };
 
     for foe_pos in foe_positions {
-        Pokemon::add_volatile(battle, foe_pos, ID::from("trapped"), Some(source), None, None, None);
+        // JS: pokemon.addVolatile('trapped', source, null, 'trapper');
+        // The 'trapper' parameter is the linkedStatus that links trapped/trapper volatiles
+        Pokemon::add_volatile(battle, foe_pos, ID::from("trapped"), Some(source), None, Some(ID::from("trapper")), None);
     }
 
     EventResult::Continue
@@ -94,7 +96,9 @@ pub mod self_callbacks {
         };
 
         for foe_pos in foe_positions {
-            Pokemon::add_volatile(battle, foe_pos, ID::from("trapped"), Some(source_pos), None, None, None);
+            // JS: pokemon.addVolatile("trapped", source, null, "trapper");
+            // The 'trapper' parameter is the linkedStatus that links trapped/trapper volatiles
+            Pokemon::add_volatile(battle, foe_pos, ID::from("trapped"), Some(source_pos), None, Some(ID::from("trapper")), None);
         }
 
         EventResult::Continue
