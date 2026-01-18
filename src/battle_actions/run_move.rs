@@ -103,7 +103,8 @@ pub fn run_move(
 
     // Run BeforeMove event
     // const willTryMove = this.battle.runEvent('BeforeMove', pokemon, target, move);
-    let will_try_move = battle.run_event(
+    // Keep the full result so we can distinguish null vs false for moveThisTurnResult
+    let will_try_move_result = battle.run_event(
                 "BeforeMove",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         target_pos,
@@ -111,7 +112,8 @@ pub fn run_move(
         crate::event::EventResult::Number(1),
         false,
         false,
-    ).is_truthy();
+    );
+    let will_try_move = will_try_move_result.is_truthy();
 
     if !will_try_move {
         // this.battle.runEvent('MoveAborted', pokemon, target, move);
@@ -121,9 +123,15 @@ pub fn run_move(
         battle.clear_active_move(true);
 
         // pokemon.moveThisTurnResult = willTryMove;
+        // IMPORTANT: JavaScript sets this to the actual value (null or false),
+        // which matters for moves like Temper Flare that check `=== false`.
+        // If BeforeMove returned null (e.g., Sky Drop blocking), use MoveResult::Null.
+        // If it returned false, use MoveResult::Failed.
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-            // willTryMove is false here (since we're in !will_try_move branch)
-            pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Failed;
+            pokemon.move_this_turn_result = match will_try_move_result {
+                EventResult::Null => crate::battle_actions::MoveResult::Null,
+                _ => crate::battle_actions::MoveResult::Failed,
+            };
         }
         return;
     }
