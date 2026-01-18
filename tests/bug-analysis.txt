@@ -1,10 +1,8 @@
-Analyzing 68 failing minimized seed files...
+Analyzing 64 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-skydrop: 3 seeds
-  Seeds: 17535, 35876, 55162
 flipturn: 3 seeds
   Seeds: 18219, 6527, 65490
 ivycudgel: 3 seeds
@@ -15,8 +13,6 @@ transform: 3 seeds
   Seeds: 61343, 64566, 64920
 ceaselessedge: 2 seeds
   Seeds: 10025, 57522
-playrough: 2 seeds
-  Seeds: 10025, 53209
 stompingtantrum: 2 seeds
   Seeds: 14287, 36529
 silktrap: 2 seeds
@@ -27,8 +23,6 @@ charge: 2 seeds
   Seeds: 15974, 43153
 maliciousmoonsault: 2 seeds
   Seeds: 18219, 60885
-maxknuckle: 2 seeds
-  Seeds: 20356, 53209
 magneticflux: 2 seeds
   Seeds: 20875, 26095
 soak: 2 seeds
@@ -41,10 +35,6 @@ reflect: 2 seeds
   Seeds: 28200, 34858
 magicroom: 2 seeds
   Seeds: 35671, 48178
-burningbulwark: 2 seeds
-  Seeds: 35876, 39892
-wonderroom: 2 seeds
-  Seeds: 35876, 65503
 mindblown: 2 seeds
   Seeds: 37514, 6527
 grudge: 2 seeds
@@ -67,6 +57,8 @@ copycat: 2 seeds
   Seeds: 53747, 60885
 catastropika: 2 seeds
   Seeds: 55954, 60818
+playrough: 1 seeds
+  Seeds: 10025
 lightscreen: 1 seeds
   Seeds: 10653
 ragingfury: 1 seeds
@@ -83,8 +75,6 @@ mightycleave: 1 seeds
   Seeds: 15759
 comeuppance: 1 seeds
   Seeds: 15974
-obstruct: 1 seeds
-  Seeds: 17535
 morningsun: 1 seeds
   Seeds: 20356
 icespinner: 1 seeds
@@ -94,6 +84,8 @@ gmaxvolcalith: 1 seeds
 meanlook: 1 seeds
   Seeds: 20356
 lastresort: 1 seeds
+  Seeds: 20356
+maxknuckle: 1 seeds
   Seeds: 20356
 howl: 1 seeds
   Seeds: 22436
@@ -147,10 +139,6 @@ recycle: 1 seeds
   Seeds: 34858
 wideguard: 1 seeds
   Seeds: 35620
-coaching: 1 seeds
-  Seeds: 35876
-shoreup: 1 seeds
-  Seeds: 35876
 gigavolthavoc: 1 seeds
   Seeds: 37514
 nuzzle: 1 seeds
@@ -163,6 +151,8 @@ wish: 1 seeds
   Seeds: 38902
 gmaxstonesurge: 1 seeds
   Seeds: 39361
+burningbulwark: 1 seeds
+  Seeds: 39892
 technoblast: 1 seeds
   Seeds: 40097
 dragondarts: 1 seeds
@@ -191,16 +181,6 @@ gust: 1 seeds
   Seeds: 53148
 corkscrewcrash: 1 seeds
   Seeds: 53148
-kinesis: 1 seeds
-  Seeds: 53209
-breakneckblitz: 1 seeds
-  Seeds: 53209
-secretpower: 1 seeds
-  Seeds: 53209
-shellsidearm: 1 seeds
-  Seeds: 53209
-kingsshield: 1 seeds
-  Seeds: 53209
 playnice: 1 seeds
   Seeds: 53747
 vcreate: 1 seeds
@@ -211,12 +191,6 @@ roost: 1 seeds
   Seeds: 54222
 doubleedge: 1 seeds
   Seeds: 54222
-tailwind: 1 seeds
-  Seeds: 55162
-healblock: 1 seeds
-  Seeds: 55162
-banefulbunker: 1 seeds
-  Seeds: 55162
 metronome: 1 seeds
   Seeds: 55954
 blastburn: 1 seeds
@@ -279,6 +253,8 @@ hydrovortex: 1 seeds
   Seeds: 65490
 rest: 1 seeds
   Seeds: 65490
+wonderroom: 1 seeds
+  Seeds: 65503
 magicaltorque: 1 seeds
   Seeds: 65503
 superfang: 1 seeds
@@ -363,22 +339,22 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 68
-Unique moves: 141 (140 non-simple)
+Total minimized seeds: 64
+Unique moves: 129 (128 non-simple)
 Unique abilities: 25 (23 non-simple)
 Unique items: 11
 
 --- Most Common Moves (top 10) ---
-  skydrop: 3 seeds
   flipturn: 3 seeds
   ivycudgel: 3 seeds
   ragingbull: 3 seeds
   transform: 3 seeds
   ceaselessedge: 2 seeds
-  playrough: 2 seeds
   stompingtantrum: 2 seeds
   silktrap: 2 seeds
   encore: 2 seeds
+  charge: 2 seeds
+  maliciousmoonsault: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds

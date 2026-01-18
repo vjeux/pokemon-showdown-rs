@@ -236,14 +236,15 @@ pub mod condition {
         // if (this.checkMoveMakesContact(move, source, target)) {
         //     this.boost({ spe: -1 }, source, target, this.dex.getActiveMove("Silk Trap"));
         // }
-        let move_id = {
-            let active_move = match &battle.active_move {
-                Some(active_move) => active_move,
-                None => return EventResult::Boolean(false),
-            };
-            active_move.id.clone()
-        };
-        let makes_contact = battle.check_move_makes_contact(&move_id, source, target, false);
+        // Use check_move_makes_contact_with_active_move to check the active move's flags
+        // (which may have been modified by onModifyMove, e.g., skydrop removing contact)
+        let active_move = battle.active_move.clone();
+        let makes_contact = battle.check_move_makes_contact_with_active_move(
+            active_move.as_ref(),
+            source,
+            target,
+            false,
+        );
         if makes_contact {
             battle.boost(&[("spe", -1)], source, Some(target), Some("silktrap"), false, false);
         }
@@ -283,14 +284,14 @@ pub mod condition {
         };
 
         if is_z_or_max_powered {
-            let move_id = {
-                let active_move = match &battle.active_move {
-                    Some(active_move) => active_move,
-                    None => return EventResult::Continue,
-                };
-                active_move.id.clone()
-            };
-            let makes_contact = battle.check_move_makes_contact(&move_id, source, target, false);
+            // Use check_move_makes_contact_with_active_move to check the active move's flags
+            let active_move = battle.active_move.clone();
+            let makes_contact = battle.check_move_makes_contact_with_active_move(
+                active_move.as_ref(),
+                source,
+                target,
+                false,
+            );
             if makes_contact {
                 // this.boost({ spe: -1 }, source, target, this.dex.getActiveMove("Silk Trap"));
                 battle.boost(&[("spe", -1)], source, Some(target), Some("silktrap"), false, false);

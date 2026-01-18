@@ -235,13 +235,15 @@ pub mod condition {
         //     if (this.checkMoveMakesContact(move, source, target)) {
         //         this.boost({ atk: -1 }, source, target, this.dex.getActiveMove("King's Shield"));
         //     }
-        let empty_id = ID::from("");
-        let move_id = battle
-            .active_move
-            .as_ref()
-            .map(|m| m.id.clone())
-            .unwrap_or(empty_id);
-        let makes_contact = battle.check_move_makes_contact(&move_id, source, target, false);
+        // Use check_move_makes_contact_with_active_move to check the active move's flags
+        // (which may have been modified by onModifyMove, e.g., skydrop removing contact)
+        let active_move = battle.active_move.clone();
+        let makes_contact = battle.check_move_makes_contact_with_active_move(
+            active_move.as_ref(),
+            source,
+            target,
+            false,
+        );
         if makes_contact {
             battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"), false, false);
         }
@@ -281,13 +283,14 @@ pub mod condition {
             .unwrap_or(false);
 
         if is_z_or_max_powered {
-            let empty_id = ID::from("");
-            let move_id = battle
-                .active_move
-                .as_ref()
-                .map(|m| m.id.clone())
-                .unwrap_or(empty_id);
-            let makes_contact = battle.check_move_makes_contact(&move_id, source, target, false);
+            // Use check_move_makes_contact_with_active_move to check the active move's flags
+            let active_move = battle.active_move.clone();
+            let makes_contact = battle.check_move_makes_contact_with_active_move(
+                active_move.as_ref(),
+                source,
+                target,
+                false,
+            );
             if makes_contact {
                 battle.boost(&[("atk", -1)], source, Some(target), Some("kingsshield"), false, false);
             }

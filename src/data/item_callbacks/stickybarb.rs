@@ -35,7 +35,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 ///         // no message for Sticky Barb changing hands
 ///     }
 /// }
-pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (source && source !== target && !source.item && move && this.checkMoveMakesContact(move, source, target)) {
     //     const barb = target.takeItem();
     //     if (!barb) return;
@@ -71,7 +71,9 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
     }
 
     // Check if move makes contact
-    if !battle.check_move_makes_contact(&move_id.into(), source_pos, target_pos, false) {
+    // Use check_move_makes_contact_with_active_move to check the active move's flags
+    // (which may have been modified by onModifyMove, e.g., skydrop removing contact)
+    if !battle.check_move_makes_contact_with_active_move(active_move, source_pos, target_pos, false) {
         return EventResult::Continue;
     }
 
