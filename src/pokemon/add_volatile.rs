@@ -380,9 +380,10 @@ impl Pokemon {
         );
 
         // JavaScript: if (!result) { delete this.volatiles[status.id]; return result; }
-        // If Start event returns false/failure, remove the volatile
+        // If Start event returns false/null/failure, remove the volatile
+        // In JavaScript, !null is true, so null also triggers volatile removal
         match start_result {
-            EventResult::Boolean(false) => {
+            EventResult::Boolean(false) | EventResult::Null => {
                 // Start event failed, remove the volatile
                 // NOTE: Direct removal is correct here (not Pokemon::remove_volatile) because:
                 // 1. JavaScript does direct `delete this.volatiles[status.id]` (not removeVolatile)

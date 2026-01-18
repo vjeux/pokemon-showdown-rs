@@ -61,12 +61,13 @@ pub fn on_any_after_set_status(battle: &mut Battle, status: Option<&str>, target
         return EventResult::Continue;
     }
 
-    // Check if effect is a Move
-    let is_move_effect = if let Some(effect_id_str) = effect_id {
-        battle.dex.moves().get_by_id(&ID::from(effect_id_str)).is_some()
-    } else {
-        false
-    };
+    // Check if effect is a Move - JavaScript: effect.effectType !== 'Move'
+    // We need to check the actual effect type, not just if the ID exists in moves dex
+    // When Baneful Bunker's onTryHit poisons, the effect is the Bunker CONDITION (effectType='Condition'), not the Move
+    let is_move_effect = battle.effect
+        .as_ref()
+        .map(|e| e.effect_type == crate::battle::EffectType::Move)
+        .unwrap_or(false);
 
     if !is_move_effect {
         return EventResult::Continue;
