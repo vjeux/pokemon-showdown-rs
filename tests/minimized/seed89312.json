@@ -4,68 +4,77 @@
       "name": "Archen",
       "species": "Archen",
       "level": 89,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Defeatist",
+      "item": "solganiumz",
+      "nature": "lax",
       "gender": "F",
       "moves": [
-        "tackle"
+        "secretsword",
+        "revenge",
+        "protect",
+        "gmaxsmite"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 91,
+        "atk": 94,
+        "def": 81,
+        "spa": 73,
+        "spd": 91,
+        "spe": 80
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 7,
+        "atk": 21,
+        "def": 10,
+        "spa": 18,
+        "spd": 7,
+        "spe": 19
       }
     },
     {
       "name": "Mudsdale",
       "species": "Mudsdale",
       "level": 95,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Own Tempo",
+      "item": "berry",
+      "nature": "hasty",
       "gender": "F",
       "moves": [
-        "tackle"
+        "maxrockfall",
+        "mudbomb",
+        "razorshell",
+        "captivate"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 106,
+        "atk": 79,
+        "def": 76,
+        "spa": 105,
+        "spd": 80,
+        "spe": 64
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 26,
+        "atk": 0,
+        "def": 3,
+        "spa": 4,
+        "spd": 8,
+        "spe": 20
       }
     },
     {
       "name": "Terapagos-Stellar",
       "species": "Terapagos-Stellar",
       "level": 62,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Teraform Zero",
+      "item": "electricseed",
       "nature": "naive",
       "gender": "F",
       "moves": [
-        "tackle"
+        "incinerate",
+        "hiddenpowerground",
+        "mysticalpower",
+        "tectonicrage"
       ],
       "evs": {
         "hp": 95,
@@ -88,12 +97,15 @@
       "name": "Bounsweet",
       "species": "Bounsweet",
       "level": 80,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Leaf Guard",
+      "item": "tr91",
       "nature": "impish",
       "gender": "F",
       "moves": [
-        "tackle"
+        "brutalswing",
+        "helpinghand",
+        "bulletseed",
+        "furyattack"
       ],
       "evs": {
         "hp": 121,
@@ -116,28 +128,62 @@
       "name": "Silvally-Electric",
       "species": "Silvally-Electric",
       "level": 92,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "RKS System",
+      "item": "levelball",
+      "nature": "mild",
       "gender": "",
       "moves": [
-        "sketch"
+        "sketch",
+        "buzzybuzz",
+        "collisioncourse",
+        "sharpen"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 83,
+        "atk": 90,
+        "def": 114,
+        "spa": 83,
+        "spd": 65,
+        "spe": 75
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 29,
+        "atk": 13,
+        "def": 1,
+        "spa": 7,
+        "spd": 21,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Capsakid",
+      "species": "Capsakid",
+      "level": 51,
+      "ability": "Chlorophyll",
+      "item": "tr50",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "gmaxfoamburst",
+        "amnesia",
+        "spiritbreak",
+        "quickattack"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 85,
+        "def": 103,
+        "spa": 57,
+        "spd": 84,
+        "spe": 110
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 15,
+        "def": 14,
+        "spa": 4,
+        "spd": 14,
+        "spe": 15
       }
     }
   ],
@@ -146,58 +192,188 @@
       "name": "Lugia",
       "species": "Lugia",
       "level": 59,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Pressure",
+      "item": "expertbelt",
+      "nature": "naive",
       "gender": "",
       "moves": [
-        "perishsong"
+        "perishsong",
+        "suckerpunch",
+        "sandsearstorm",
+        "guardsplit"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 93,
+        "atk": 94,
+        "def": 61,
+        "spa": 72,
+        "spd": 92,
+        "spe": 98
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 3,
+        "atk": 11,
+        "def": 4,
+        "spa": 29,
+        "spd": 16,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Squawkabilly-White",
+      "species": "Squawkabilly-White",
+      "level": 81,
+      "ability": "Intimidate",
+      "item": "rockgem",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "rapidspin",
+        "twinbeam",
+        "maxlightning",
+        "chargebeam"
+      ],
+      "evs": {
+        "hp": 64,
+        "atk": 87,
+        "def": 84,
+        "spa": 63,
+        "spd": 112,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 18,
+        "def": 14,
+        "spa": 6,
+        "spd": 16,
+        "spe": 26
       }
     },
     {
       "name": "Revenankh",
       "species": "Revenankh",
       "level": 87,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Air Lock",
+      "item": "tr22",
+      "nature": "gentle",
       "gender": "M",
       "moves": [
-        "round"
+        "round",
+        "gearup",
+        "twineedle",
+        "supersonic"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 97,
+        "atk": 75,
+        "def": 100,
+        "spa": 91,
+        "spd": 72,
+        "spe": 75
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 20,
+        "atk": 14,
+        "def": 2,
+        "spa": 22,
+        "spd": 12,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Draggalong",
+      "species": "Draggalong",
+      "level": 65,
+      "ability": "Armor Tail",
+      "item": "dubiousdisc",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "gearup",
+        "raindance",
+        "slackoff",
+        "refresh"
+      ],
+      "evs": {
+        "hp": 109,
+        "atk": 69,
+        "def": 89,
+        "spa": 59,
+        "spd": 108,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 1,
+        "def": 3,
+        "spa": 21,
+        "spd": 0,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Arceus-Fighting",
+      "species": "Arceus-Fighting",
+      "level": 89,
+      "ability": "Multitype",
+      "item": "protector",
+      "nature": "lonely",
+      "gender": "",
+      "moves": [
+        "fleurcannon",
+        "sleeptalk",
+        "watersport",
+        "gmaxdepletion"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 86,
+        "def": 92,
+        "spa": 60,
+        "spd": 105,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 6,
+        "def": 23,
+        "spa": 25,
+        "spd": 15,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Bronzong",
+      "species": "Bronzong",
+      "level": 76,
+      "ability": "Levitate",
+      "item": "decidiumz",
+      "nature": "bold",
+      "gender": "",
+      "moves": [
+        "headsmash",
+        "grasspledge",
+        "storedpower",
+        "transform"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 96,
+        "def": 97,
+        "spa": 70,
+        "spd": 82,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 27,
+        "def": 23,
+        "spa": 24,
+        "spd": 20,
+        "spe": 15
       }
     }
   ],
-  "_bug": "Diverges at line 32: JS=\"#32: turn=29, prng=81->84, P1=[Silvally(241/324)], P2=[Revenankh(298/298)]\" vs Rust=\"#32: turn=29, prng=81->84, P1=[Silvally(268/324)], P2=[Revenankh(298/298)]\""
+  "_bug": "Diverges at line 27: JS=\"#27: turn=23, prng=110->113, P1=[Silvally(228/321)], P2=[Revenankh(291/291)]\" vs Rust=\"#27: turn=23, prng=110->113, P1=[Silvally(260/321)], P2=[Revenankh(291/291)]\""
 }

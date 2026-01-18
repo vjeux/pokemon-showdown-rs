@@ -4,56 +4,93 @@
       "name": "Nidorino",
       "species": "Nidorino",
       "level": 75,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Poison Point",
+      "item": "manectite",
+      "nature": "modest",
       "gender": "M",
       "moves": [
-        "boltbeak"
+        "boltbeak",
+        "gmaxterror",
+        "allyswitch",
+        "spinout"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
+        "hp": 70,
+        "atk": 103,
+        "def": 99,
+        "spa": 78,
+        "spd": 75,
         "spe": 85
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 19,
+        "atk": 14,
+        "def": 11,
+        "spa": 4,
+        "spd": 11,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Silvally-Ghost",
+      "species": "Silvally-Ghost",
+      "level": 71,
+      "ability": "RKS System",
+      "item": "ribbonsweet",
+      "nature": "bashful",
+      "gender": "",
+      "moves": [
+        "filletaway",
+        "leaftornado",
+        "bellydrum",
+        "round"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 77,
+        "def": 95,
+        "spa": 94,
+        "spd": 74,
+        "spe": 69
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 30,
+        "def": 30,
+        "spa": 13,
+        "spd": 16,
+        "spe": 2
       }
     },
     {
       "name": "Nihilego",
       "species": "Nihilego",
       "level": 59,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Beast Boost",
+      "item": "scizorite",
+      "nature": "gentle",
       "gender": "",
       "moves": [
-        "tackle"
+        "thunderbolt",
+        "aeroblast",
+        "leechseed",
+        "gmaxwildfire"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 101,
+        "atk": 103,
+        "def": 91,
+        "spa": 89,
+        "spd": 72,
+        "spe": 54
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 18,
+        "atk": 28,
+        "def": 13,
+        "spa": 13,
+        "spd": 20,
+        "spe": 2
       }
     },
     {
@@ -61,27 +98,92 @@
       "species": "Stunfisk-Galar",
       "level": 74,
       "ability": "Mimicry",
-      "item": "",
-      "nature": "docile",
+      "item": "stickybarb",
+      "nature": "timid",
       "gender": "F",
       "moves": [
-        "tackle"
+        "sizzlyslide",
+        "electricterrain",
+        "defendorder",
+        "swagger"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 80,
+        "atk": 84,
+        "def": 94,
+        "spa": 100,
+        "spd": 83,
+        "spe": 69
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
+        "hp": 15,
+        "atk": 11,
+        "def": 6,
+        "spa": 26,
+        "spd": 14,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Nuzleaf",
+      "species": "Nuzleaf",
+      "level": 94,
+      "ability": "Chlorophyll",
+      "item": "medichamite",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "lockon",
+        "vitalthrow",
+        "hail",
+        "gmaxfireball"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 77,
+        "def": 90,
+        "spa": 80,
+        "spd": 108,
+        "spe": 68
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 10,
+        "def": 11,
+        "spa": 11,
+        "spd": 30,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Machamp",
+      "species": "Machamp",
+      "level": 61,
+      "ability": "Guts",
+      "item": "tr31",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "maxlightning",
+        "silktrap",
+        "poweruppunch",
+        "gravapple"
+      ],
+      "evs": {
+        "hp": 119,
+        "atk": 84,
+        "def": 80,
+        "spa": 75,
+        "spd": 105,
+        "spe": 47
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 18,
         "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spa": 26,
+        "spd": 25,
+        "spe": 0
       }
     }
   ],
@@ -90,12 +192,15 @@
       "name": "Lillipup",
       "species": "Lillipup",
       "level": 75,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Vital Spirit",
+      "item": "belueberry",
       "nature": "hasty",
       "gender": "F",
       "moves": [
-        "tackle"
+        "painsplit",
+        "strengthsap",
+        "clangoroussoulblaze",
+        "burnup"
       ],
       "evs": {
         "hp": 78,
@@ -115,35 +220,160 @@
       }
     },
     {
+      "name": "Wooper",
+      "species": "Wooper",
+      "level": 51,
+      "ability": "Damp",
+      "item": "brightpowder",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "facade",
+        "dragonbreath",
+        "falsesurrender",
+        "maxflutterby"
+      ],
+      "evs": {
+        "hp": 64,
+        "atk": 121,
+        "def": 76,
+        "spa": 92,
+        "spd": 77,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 8,
+        "def": 18,
+        "spa": 18,
+        "spd": 2,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Silvally-Fire",
+      "species": "Silvally-Fire",
+      "level": 61,
+      "ability": "RKS System",
+      "item": "ultraball",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "subzeroslammer",
+        "charm",
+        "sweetkiss",
+        "metronome"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 82,
+        "def": 105,
+        "spa": 91,
+        "spd": 55,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 19,
+        "def": 11,
+        "spa": 20,
+        "spd": 12,
+        "spe": 6
+      }
+    },
+    {
       "name": "Zygarde",
       "species": "Zygarde",
       "level": 66,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Aura Break",
+      "item": "scovillainite",
+      "nature": "naughty",
       "gender": "",
       "moves": [
         "moonlight",
         "electricterrain",
-        "glaiverush"
+        "glaiverush",
+        "blazingtorque"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 84,
+        "atk": 102,
+        "def": 72,
+        "spa": 98,
+        "spd": 105,
+        "spe": 49
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 30,
+        "atk": 11,
+        "def": 21,
+        "spa": 2,
+        "spd": 26,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Floatzel",
+      "species": "Floatzel",
+      "level": 80,
+      "ability": "Swift Swim",
+      "item": "solganiumz",
+      "nature": "quiet",
+      "gender": "M",
+      "moves": [
+        "paleowave",
+        "snarl",
+        "minimize",
+        "stockpile"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 101,
+        "def": 91,
+        "spa": 81,
+        "spd": 99,
+        "spe": 65
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 28,
+        "def": 0,
+        "spa": 25,
+        "spd": 3,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Heatran-Mega",
+      "species": "Heatran-Mega",
+      "level": 70,
+      "ability": "Flash Fire",
+      "item": "berserkgene",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "poisonfang",
+        "populationbomb",
+        "subzeroslammer",
+        "hiddenpowerpoison"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 90,
+        "def": 79,
+        "spa": 80,
+        "spd": 96,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 20,
+        "def": 3,
+        "spa": 8,
+        "spd": 29,
+        "spe": 30
       }
     }
   ],
-  "_bug": "Diverges at line 32: JS=\"#32: turn=30, prng=43->48, P1=[Stunfisk(196/283)], P2=[Zygarde(36/252)]\" vs Rust=\"#32: turn=30, prng=43->48, P1=[Stunfisk(240/283)], P2=[Zygarde(36/252)]\""
+  "_bug": "Diverges at line 50: JS=\"#50: turn=46, prng=82->88, P1=[Stunfisk(138/271)], P2=[Zygarde(23/252)]\" vs Rust=\"#50: turn=46, prng=82->88, P1=[Stunfisk(188/271)], P2=[Zygarde(23/252)]\""
 }

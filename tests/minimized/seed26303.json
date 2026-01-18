@@ -4,142 +4,312 @@
       "name": "Venusaur-Gmax",
       "species": "Venusaur-Gmax",
       "level": 67,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Overgrow",
+      "item": "widelens",
+      "nature": "impish",
       "gender": "M",
       "moves": [
-        "shockwave"
+        "shockwave",
+        "hornleech",
+        "rest",
+        "psychoshift"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 73,
+        "atk": 96,
+        "def": 65,
+        "spa": 76,
+        "spd": 102,
+        "spe": 98
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 7,
+        "atk": 17,
+        "def": 23,
+        "spa": 6,
+        "spd": 22,
+        "spe": 20
       }
     },
     {
       "name": "Gastrodon-East",
       "species": "Gastrodon-East",
       "level": 72,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Sticky Hold",
+      "item": "keeberry",
+      "nature": "relaxed",
       "gender": "F",
       "moves": [
-        "tackle"
+        "freezingglare",
+        "crushclaw",
+        "bounce",
+        "supercellslam"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 86,
+        "atk": 76,
+        "def": 101,
+        "spa": 87,
+        "spd": 69,
+        "spe": 91
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 0,
+        "atk": 17,
+        "def": 3,
+        "spa": 16,
+        "spd": 1,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Snorlax-Gmax",
+      "species": "Snorlax-Gmax",
+      "level": 53,
+      "ability": "Immunity",
+      "item": "darkmemory",
+      "nature": "lonely",
+      "gender": "F",
+      "moves": [
+        "darkvoid",
+        "naturesmadness",
+        "hydrovortex",
+        "firelash"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 94,
+        "def": 70,
+        "spa": 74,
+        "spd": 96,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 5,
+        "def": 3,
+        "spa": 14,
+        "spd": 29,
+        "spe": 30
       }
     },
     {
       "name": "Jirachi",
       "species": "Jirachi",
       "level": 69,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Serene Grace",
+      "item": "normalgem",
+      "nature": "jolly",
       "gender": "",
       "moves": [
-        "scald"
+        "scald",
+        "psywave",
+        "machpunch",
+        "playnice"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 77,
+        "atk": 93,
+        "def": 89,
+        "spa": 73,
+        "spd": 90,
+        "spe": 88
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 27,
+        "atk": 13,
+        "def": 15,
+        "spa": 5,
+        "spd": 7,
+        "spe": 0
       }
     },
     {
       "name": "Talonflame",
       "species": "Talonflame",
       "level": 78,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Flame Body",
+      "item": "choiceband",
+      "nature": "mild",
       "gender": "F",
       "moves": [
-        "tackle"
+        "block",
+        "sandtomb",
+        "burnup",
+        "glare"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
+        "hp": 76,
+        "atk": 86,
+        "def": 75,
         "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "spd": 93,
+        "spe": 95
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 28,
+        "atk": 2,
+        "def": 20,
+        "spa": 23,
+        "spd": 7,
+        "spe": 11
+      }
+    },
+    {
+      "name": "Roaring Moon",
+      "species": "Roaring Moon",
+      "level": 67,
+      "ability": "Protosynthesis",
+      "item": "firestone",
+      "nature": "bold",
+      "gender": "",
+      "moves": [
+        "furyattack",
+        "helpinghand",
+        "hiddenpowerghost",
+        "scratch"
+      ],
+      "evs": {
+        "hp": 106,
+        "atk": 92,
+        "def": 66,
+        "spa": 88,
+        "spd": 70,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 12,
+        "def": 17,
+        "spa": 22,
+        "spd": 8,
+        "spe": 19
       }
     }
   ],
   "p2": [
     {
+      "name": "Pokestar UFO-PropU2",
+      "species": "Pokestar UFO-PropU2",
+      "level": 51,
+      "ability": "Levitate",
+      "item": "stick",
+      "nature": "bashful",
+      "gender": "",
+      "moves": [
+        "cut",
+        "vcreate",
+        "brutalswing",
+        "counter"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 117,
+        "def": 74,
+        "spa": 72,
+        "spd": 88,
+        "spe": 73
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 24,
+        "def": 13,
+        "spa": 23,
+        "spd": 15,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Comfey",
+      "species": "Comfey",
+      "level": 78,
+      "ability": "Flower Veil",
+      "item": "gardevoirite",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "shelter",
+        "tripledive",
+        "dragonrush",
+        "telekinesis"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 75,
+        "def": 85,
+        "spa": 101,
+        "spd": 69,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 13,
+        "def": 23,
+        "spa": 18,
+        "spd": 26,
+        "spe": 13
+      }
+    },
+    {
       "name": "Drilbur",
       "species": "Drilbur",
       "level": 86,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Sand Rush",
+      "item": "pikaniumz",
+      "nature": "jolly",
       "gender": "F",
       "moves": [
-        "sappyseed"
+        "sappyseed",
+        "maxdarkness",
+        "ragingfury",
+        "maxflutterby"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 75,
+        "atk": 113,
+        "def": 89,
+        "spa": 81,
+        "spd": 97,
+        "spe": 55
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 28,
+        "atk": 18,
+        "def": 26,
+        "spa": 12,
+        "spd": 29,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Meowth",
+      "species": "Meowth",
+      "level": 64,
+      "ability": "Pickup",
+      "item": "burndrive",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "poisonpowder",
+        "forcepalm",
+        "blizzard",
+        "eternabeam"
+      ],
+      "evs": {
+        "hp": 63,
+        "atk": 63,
+        "def": 94,
+        "spa": 99,
+        "spd": 101,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 18,
+        "def": 16,
+        "spa": 18,
+        "spd": 1,
+        "spe": 4
       }
     },
     {
@@ -147,29 +317,63 @@
       "species": "Greninja-Bond",
       "level": 50,
       "ability": "Battle Bond",
-      "item": "",
-      "nature": "docile",
+      "item": "kangaskhanite",
+      "nature": "impish",
       "gender": "M",
       "moves": [
-        "tackle"
+        "zingzap",
+        "mudshot",
+        "naturesmadness",
+        "flashcannon"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 88,
+        "atk": 101,
+        "def": 96,
+        "spa": 69,
+        "spd": 83,
+        "spe": 73
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
+        "hp": 8,
+        "atk": 12,
+        "def": 13,
+        "spa": 10,
+        "spd": 15,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Sandy Shocks",
+      "species": "Sandy Shocks",
+      "level": 70,
+      "ability": "Protosynthesis",
+      "item": "emboarite",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "afteryou",
+        "lightthatburnsthesky",
+        "corkscrewcrash",
+        "skillswap"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 100,
+        "def": 64,
+        "spa": 93,
+        "spd": 88,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 13,
         "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spa": 9,
+        "spd": 19,
+        "spe": 0
       }
     }
   ],
-  "_bug": "Diverges at line 25: JS=\"#25: turn=22, prng=83->89, P1=[Talonflame(235/250)], P2=[Greninja(52/158)]\" vs Rust=\"#25: turn=22, prng=83->89, P1=[Talonflame(228/250)], P2=[Greninja(52/158)]\""
+  "_bug": "Diverges at line 43: JS=\"#43: turn=36, prng=132->137, P1=[Talonflame(214/246)], P2=[Greninja(110/147)]\" vs Rust=\"#43: turn=36, prng=132->137, P1=[Talonflame(199/246)], P2=[Greninja(110/147)]\""
 }

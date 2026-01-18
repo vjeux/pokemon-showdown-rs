@@ -5,11 +5,14 @@
       "species": "Rapidash",
       "level": 95,
       "ability": "Run Away",
-      "item": "",
+      "item": "cloversweet",
       "nature": "naive",
       "gender": "M",
       "moves": [
-        "round"
+        "round",
+        "headsmash",
+        "vinewhip",
+        "gastroacid"
       ],
       "evs": {
         "hp": 91,
@@ -27,37 +30,350 @@
         "spd": 12,
         "spe": 26
       }
+    },
+    {
+      "name": "Terapagos-Stellar",
+      "species": "Terapagos-Stellar",
+      "level": 54,
+      "ability": "Teraform Zero",
+      "item": "watermemory",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "bravebird",
+        "highjumpkick",
+        "aromaticmist",
+        "gmaxsandblast"
+      ],
+      "evs": {
+        "hp": 109,
+        "atk": 79,
+        "def": 111,
+        "spa": 76,
+        "spd": 45,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 18,
+        "def": 13,
+        "spa": 18,
+        "spd": 14,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Slowbro-Mega",
+      "species": "Slowbro-Mega",
+      "level": 91,
+      "ability": "Shell Armor",
+      "item": "armorfossil",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "barrier",
+        "hyperspacefury",
+        "horndrill",
+        "branchpoke"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 82,
+        "def": 86,
+        "spa": 89,
+        "spd": 92,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 23,
+        "def": 27,
+        "spa": 6,
+        "spd": 22,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Parasect",
+      "species": "Parasect",
+      "level": 85,
+      "ability": "Effect Spore",
+      "item": "belueberry",
+      "nature": "careful",
+      "gender": "F",
+      "moves": [
+        "floralhealing",
+        "avalanche",
+        "bonerush",
+        "milkdrink"
+      ],
+      "evs": {
+        "hp": 103,
+        "atk": 98,
+        "def": 79,
+        "spa": 68,
+        "spd": 81,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 22,
+        "def": 0,
+        "spa": 11,
+        "spd": 20,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Girafarig",
+      "species": "Girafarig",
+      "level": 98,
+      "ability": "Inner Focus",
+      "item": "tr14",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "howl",
+        "encore",
+        "freezyfrost",
+        "powder"
+      ],
+      "evs": {
+        "hp": 72,
+        "atk": 119,
+        "def": 93,
+        "spa": 54,
+        "spd": 66,
+        "spe": 106
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 1,
+        "def": 3,
+        "spa": 25,
+        "spd": 4,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Fidough",
+      "species": "Fidough",
+      "level": 71,
+      "ability": "Own Tempo",
+      "item": "cameruptite",
+      "nature": "modest",
+      "gender": "F",
+      "moves": [
+        "guardswap",
+        "speedswap",
+        "scaryface",
+        "hypervoice"
+      ],
+      "evs": {
+        "hp": 57,
+        "atk": 103,
+        "def": 92,
+        "spa": 78,
+        "spd": 96,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 10,
+        "def": 15,
+        "spa": 27,
+        "spd": 30,
+        "spe": 12
+      }
     }
   ],
   "p2": [
     {
+      "name": "Nickit",
+      "species": "Nickit",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "tr56",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "swordsdance",
+        "tailwind",
+        "outrage",
+        "aromatherapy"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 57,
+        "def": 103,
+        "spa": 74,
+        "spd": 80,
+        "spe": 116
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 10,
+        "def": 9,
+        "spa": 3,
+        "spd": 24,
+        "spe": 12
+      }
+    },
+    {
       "name": "Popplio",
       "species": "Popplio",
       "level": 72,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Torrent",
+      "item": "eeviumz",
+      "nature": "lonely",
       "gender": "M",
       "moves": [
-        "sketch"
+        "sketch",
+        "anchorshot",
+        "powershift",
+        "gmaxcuddle"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 89,
+        "atk": 91,
+        "def": 103,
+        "spa": 65,
+        "spd": 61,
+        "spe": 101
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 8,
+        "atk": 24,
+        "def": 10,
+        "spa": 25,
+        "spd": 4,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Vivillon-High Plains",
+      "species": "Vivillon-High Plains",
+      "level": 95,
+      "ability": "Shield Dust",
+      "item": "steeliumz",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "gmaxoneblow",
+        "powergem",
+        "strangesteam",
+        "gravapple"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 94,
+        "def": 78,
+        "spa": 79,
+        "spd": 86,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 22,
+        "def": 9,
+        "spa": 1,
+        "spd": 3,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Electrike",
+      "species": "Electrike",
+      "level": 56,
+      "ability": "Static",
+      "item": "masterball",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "rocksmash",
+        "bravebird",
+        "waterpledge",
+        "spinout"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 74,
+        "def": 74,
+        "spa": 94,
+        "spd": 75,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 0,
+        "def": 16,
+        "spa": 2,
+        "spd": 26,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Timburr",
+      "species": "Timburr",
+      "level": 93,
+      "ability": "Guts",
+      "item": "firegem",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "rocksmash",
+        "dynamaxcannon",
+        "sludgewave",
+        "assist"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 99,
+        "def": 109,
+        "spa": 69,
+        "spd": 96,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 0,
+        "def": 9,
+        "spa": 16,
+        "spd": 16,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Diglett-Alola",
+      "species": "Diglett-Alola",
+      "level": 94,
+      "ability": "Sand Veil",
+      "item": "chesnaughtite",
+      "nature": "adamant",
+      "gender": "F",
+      "moves": [
+        "moongeistbeam",
+        "seedflare",
+        "psychup",
+        "mudbomb"
+      ],
+      "evs": {
+        "hp": 107,
+        "atk": 80,
+        "def": 74,
+        "spa": 95,
+        "spd": 60,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 12,
+        "def": 11,
+        "spa": 17,
+        "spd": 8,
+        "spe": 17
       }
     }
   ],
-  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=3->9, P1=[Rapidash(219/275)], P2=[Popplio(63/191)]\" vs Rust=\"#2: turn=3, prng=3->9, P1=[Rapidash(247/275)], P2=[Popplio(63/191)]\""
+  "_bug": "Diverges at line 5: JS=\"#5: turn=5, prng=9->15, P1=[Rapidash(223/275)], P2=[Popplio(11/175)]\" vs Rust=\"#5: turn=5, prng=9->15, P1=[Rapidash(249/275)], P2=[Popplio(11/175)]\""
 }

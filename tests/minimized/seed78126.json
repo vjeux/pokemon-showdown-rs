@@ -1,64 +1,379 @@
 {
   "p1": [
     {
+      "name": "Eternatus",
+      "species": "Eternatus",
+      "level": 96,
+      "ability": "Pressure",
+      "item": "garchompite",
+      "nature": "timid",
+      "gender": "",
+      "moves": [
+        "detect",
+        "feint",
+        "maliciousmoonsault",
+        "maxrockfall"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 104,
+        "def": 84,
+        "spa": 71,
+        "spd": 119,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 26,
+        "def": 1,
+        "spa": 6,
+        "spd": 3,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Dragalge-Mega",
+      "species": "Dragalge-Mega",
+      "level": 80,
+      "ability": "Poison Point",
+      "item": "nestball",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "psybeam",
+        "temperflare",
+        "gust",
+        "ivycudgel"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 84,
+        "def": 81,
+        "spa": 67,
+        "spd": 125,
+        "spe": 60
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 19,
+        "def": 3,
+        "spa": 1,
+        "spd": 10,
+        "spe": 11
+      }
+    },
+    {
+      "name": "Inteleon-Gmax",
+      "species": "Inteleon-Gmax",
+      "level": 82,
+      "ability": "Torrent",
+      "item": "psychicseed",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "fling",
+        "extrasensory",
+        "afteryou",
+        "gravapple"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 89,
+        "def": 84,
+        "spa": 81,
+        "spd": 87,
+        "spe": 99
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 10,
+        "def": 3,
+        "spa": 17,
+        "spd": 13,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Naviathan",
+      "species": "Naviathan",
+      "level": 88,
+      "ability": "Guts",
+      "item": "muscleband",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "flamethrower",
+        "kowtowcleave",
+        "drainpunch",
+        "storedpower"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 72,
+        "def": 78,
+        "spa": 95,
+        "spd": 80,
+        "spe": 111
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 16,
+        "def": 6,
+        "spa": 10,
+        "spd": 25,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Smogecko",
+      "species": "Smogecko",
+      "level": 92,
+      "ability": "Blaze",
+      "item": "rarebone",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "swift",
+        "wildcharge",
+        "firefang",
+        "cottonguard"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 77,
+        "def": 93,
+        "spa": 102,
+        "spd": 79,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 27,
+        "def": 6,
+        "spa": 20,
+        "spd": 23,
+        "spe": 3
+      }
+    },
+    {
       "name": "Pokestar MT2",
       "species": "Pokestar MT2",
       "level": 97,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Flash Fire",
+      "item": "cheriberry",
+      "nature": "impish",
       "gender": "",
       "moves": [
-        "tackle"
+        "hydrosteam",
+        "whirlwind",
+        "ironhead",
+        "protect"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 84,
+        "atk": 71,
+        "def": 71,
+        "spa": 99,
+        "spd": 76,
+        "spe": 109
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
+        "hp": 12,
+        "atk": 8,
+        "def": 22,
         "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spd": 12,
+        "spe": 6
       }
     }
   ],
   "p2": [
+    {
+      "name": "Minior-Orange",
+      "species": "Minior-Orange",
+      "level": 82,
+      "ability": "Shields Down",
+      "item": "salacberry",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "revenge",
+        "sing",
+        "lightofruin",
+        "falsesurrender"
+      ],
+      "evs": {
+        "hp": 63,
+        "atk": 121,
+        "def": 94,
+        "spa": 93,
+        "spd": 72,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 30,
+        "def": 6,
+        "spa": 28,
+        "spd": 17,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Chewtle",
+      "species": "Chewtle",
+      "level": 53,
+      "ability": "Strong Jaw",
+      "item": "burndrive",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "iondeluge",
+        "trickroom",
+        "magiccoat",
+        "lastrespects"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 70,
+        "def": 70,
+        "spa": 98,
+        "spd": 93,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 8,
+        "def": 5,
+        "spa": 4,
+        "spd": 17,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Miasmite",
+      "species": "Miasmite",
+      "level": 77,
+      "ability": "Neutralizing Gas",
+      "item": "fairygem",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "flyingpress",
+        "nihillight",
+        "mistyexplosion",
+        "roar"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 103,
+        "def": 65,
+        "spa": 67,
+        "spd": 118,
+        "spe": 63
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 30,
+        "def": 20,
+        "spa": 20,
+        "spd": 4,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Wailord",
+      "species": "Wailord",
+      "level": 79,
+      "ability": "Water Veil",
+      "item": "clawfossil",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "mysticalpower",
+        "psybeam",
+        "foresight",
+        "frenzyplant"
+      ],
+      "evs": {
+        "hp": 57,
+        "atk": 85,
+        "def": 77,
+        "spa": 105,
+        "spd": 86,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 10,
+        "def": 8,
+        "spa": 4,
+        "spd": 31,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Sinistea-Antique",
+      "species": "Sinistea-Antique",
+      "level": 51,
+      "ability": "Weak Armor",
+      "item": "absolite",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "flameburst",
+        "powder",
+        "rockpolish",
+        "kingsshield"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 79,
+        "def": 86,
+        "spa": 83,
+        "spd": 83,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 2,
+        "def": 4,
+        "spa": 29,
+        "spd": 24,
+        "spe": 21
+      }
+    },
     {
       "name": "Cramorant-Gulping",
       "species": "Cramorant-Gulping",
       "level": 57,
       "ability": "Gulp Missile",
       "item": "assaultvest",
-      "nature": "docile",
+      "nature": "timid",
       "gender": "M",
       "moves": [
         "hypnosis",
-        "surf"
+        "surf",
+        "clangingscales",
+        "gmaxcuddle"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 84,
+        "atk": 114,
+        "def": 50,
+        "spa": 82,
+        "spd": 79,
+        "spe": 101
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 6,
+        "atk": 15,
+        "def": 0,
+        "spa": 7,
+        "spd": 14,
+        "spe": 5
       }
     }
   ],
-  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=6->12, P1=[Pokestar MT2(109/351)], P2=[Cramorant(22/176)]\" vs Rust=\"#2: turn=3, prng=6->12, P1=[Pokestar MT2(196/351)], P2=[Cramorant(22/176)]\""
+  "_bug": "Diverges at line 57: JS=\"#57: turn=48, prng=190->196, P1=[Pokestar MT2(100/333)], P2=[Cramorant(97/162)]\" vs Rust=\"#57: turn=48, prng=190->196, P1=[Pokestar MT2(183/333)], P2=[Cramorant(97/162)]\""
 }

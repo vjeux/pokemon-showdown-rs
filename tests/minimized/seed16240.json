@@ -1,63 +1,379 @@
 {
   "p1": [
     {
+      "name": "Pikachu-Kalos",
+      "species": "Pikachu-Kalos",
+      "level": 67,
+      "ability": "Static",
+      "item": "fossilizedbird",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "gmaxoneblow",
+        "retaliate",
+        "meditate",
+        "seismictoss"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 84,
+        "def": 103,
+        "spa": 85,
+        "spd": 51,
+        "spe": 96
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 24,
+        "def": 27,
+        "spa": 1,
+        "spd": 28,
+        "spe": 15
+      }
+    },
+    {
       "name": "Rufflet",
       "species": "Rufflet",
       "level": 68,
-      "ability": "Run Away",
+      "ability": "Keen Eye",
       "item": "micleberry",
-      "nature": "docile",
+      "nature": "modest",
       "gender": "M",
       "moves": [
-        "mindreader"
+        "mindreader",
+        "followme",
+        "zenheadbutt",
+        "barrier"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 87,
+        "def": 66,
+        "spa": 92,
+        "spd": 97,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 19,
+        "def": 5,
+        "spa": 8,
+        "spd": 1,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Reshiram",
+      "species": "Reshiram",
+      "level": 66,
+      "ability": "Turboblaze",
+      "item": "fightinggem",
+      "nature": "modest",
+      "gender": "",
+      "moves": [
+        "electrodrift",
+        "afteryou",
+        "meditate",
+        "gmaxcentiferno"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 54,
+        "def": 93,
+        "spa": 82,
+        "spd": 124,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 13,
+        "def": 14,
+        "spa": 7,
+        "spd": 28,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Articuno-Galar",
+      "species": "Articuno-Galar",
+      "level": 83,
+      "ability": "Competitive",
+      "item": "mewtwonitex",
+      "nature": "jolly",
+      "gender": "",
+      "moves": [
+        "punishment",
+        "fleurcannon",
+        "steelwing",
+        "hiddenpowerice"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 121,
+        "def": 67,
+        "spa": 65,
+        "spd": 108,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 0,
+        "def": 30,
+        "spa": 18,
+        "spd": 15,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Patrat",
+      "species": "Patrat",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "tr37",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "venomdrench",
+        "soulstealing7starstrike",
+        "gmaxfireball",
+        "gigavolthavoc"
+      ],
+      "evs": {
+        "hp": 109,
+        "atk": 68,
+        "def": 87,
+        "spa": 75,
+        "spd": 69,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 29,
+        "def": 9,
+        "spa": 21,
+        "spd": 0,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Brionne",
+      "species": "Brionne",
+      "level": 90,
+      "ability": "Torrent",
+      "item": "lansatberry",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "dualchop",
+        "kingsshield",
+        "snaptrap",
+        "wickedtorque"
       ],
       "evs": {
         "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "atk": 74,
+        "def": 75,
+        "spa": 104,
+        "spd": 81,
+        "spe": 91
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 8,
+        "atk": 28,
+        "def": 27,
+        "spa": 30,
+        "spd": 20,
+        "spe": 28
       }
     }
   ],
   "p2": [
     {
+      "name": "Cherubi",
+      "species": "Cherubi",
+      "level": 90,
+      "ability": "Chlorophyll",
+      "item": "metalalloy",
+      "nature": "naughty",
+      "gender": "F",
+      "moves": [
+        "sleeppowder",
+        "junglehealing",
+        "gearup",
+        "roost"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 75,
+        "def": 87,
+        "spa": 87,
+        "spd": 84,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 22,
+        "def": 9,
+        "spa": 28,
+        "spd": 0,
+        "spe": 18
+      }
+    },
+    {
       "name": "Crabominable",
       "species": "Crabominable",
       "level": 93,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Hyper Cutter",
+      "item": "normalgem",
+      "nature": "sassy",
       "gender": "M",
       "moves": [
-        "superfang"
+        "superfang",
+        "healbell",
+        "forestscurse",
+        "throatchop"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 73,
+        "atk": 81,
+        "def": 97,
+        "spa": 71,
+        "spd": 90,
+        "spe": 98
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 30,
+        "atk": 21,
+        "def": 27,
+        "spa": 14,
+        "spd": 21,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Orthworm",
+      "species": "Orthworm",
+      "level": 78,
+      "ability": "Earth Eater",
+      "item": "poisoniumz",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "buzzybuzz",
+        "healblock",
+        "nihillight",
+        "bleakwindstorm"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 93,
+        "def": 76,
+        "spa": 79,
+        "spd": 89,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 5,
+        "def": 24,
+        "spa": 5,
+        "spd": 1,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Minun",
+      "species": "Minun",
+      "level": 89,
+      "ability": "Minus",
+      "item": "custapberry",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "hiddenpowerground",
+        "sweetscent",
+        "gmaxsandblast",
+        "skydrop"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 103,
+        "def": 91,
+        "spa": 86,
+        "spd": 71,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 1,
+        "def": 6,
+        "spa": 6,
+        "spd": 26,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Pikachu-Sinnoh",
+      "species": "Pikachu-Sinnoh",
+      "level": 80,
+      "ability": "Static",
+      "item": "firememory",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "encore",
+        "blackholeeclipse",
+        "shelter",
+        "dreameater"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 68,
+        "def": 89,
+        "spa": 87,
+        "spd": 74,
+        "spe": 101
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 4,
+        "def": 5,
+        "spa": 26,
+        "spd": 12,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Pokestar UFO-2",
+      "species": "Pokestar UFO-2",
+      "level": 100,
+      "ability": "Levitate",
+      "item": "cornnberry",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "selfdestruct",
+        "mightycleave",
+        "meteorassault",
+        "scald"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 111,
+        "def": 88,
+        "spa": 88,
+        "spd": 82,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 9,
+        "def": 17,
+        "spa": 11,
+        "spd": 5,
+        "spe": 5
       }
     }
   ],
-  "_bug": "Diverges at line 3: JS=\"#3: turn=4, prng=2->3, P1=[Rufflet(26/208)], P2=[Crabominable(331/331)]\" vs Rust=\"#3: turn=4, prng=2->4, P1=[Rufflet(26/208)], P2=[Crabominable(331/331)]\""
+  "_bug": "Diverges at line 92: JS=\"#92: turn=91, prng=91->92, P1=[Rufflet(19/195)], P2=[Crabominable(328/328)]\" vs Rust=\"#92: turn=91, prng=91->93, P1=[Rufflet(19/195)], P2=[Crabominable(328/328)]\""
 }

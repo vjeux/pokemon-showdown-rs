@@ -5,14 +5,14 @@
       "species": "Bewear",
       "level": 71,
       "ability": "Fluffy",
-      "item": "",
+      "item": "heavyball",
       "nature": "gentle",
       "gender": "F",
       "moves": [
         "clangoroussoul",
-        "tackle",
-        "tackle",
-        "tackle"
+        "purify",
+        "relicsong",
+        "pollenpuff"
       ],
       "evs": {
         "hp": 82,
@@ -36,45 +36,45 @@
       "species": "Protowatt",
       "level": 63,
       "ability": "Trace",
-      "item": "",
-      "nature": "docile",
+      "item": "tr64",
+      "nature": "jolly",
       "gender": "F",
       "moves": [
         "psychup",
         "breakneckblitz",
-        "tackle",
-        "tackle"
+        "cosmicpower",
+        "pluck"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 89,
+        "atk": 100,
+        "def": 89,
+        "spa": 72,
+        "spd": 66,
+        "spe": 94
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
+        "hp": 11,
+        "atk": 8,
         "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spa": 4,
+        "spd": 23,
+        "spe": 1
       }
     },
     {
       "name": "Jolteon",
       "species": "Jolteon",
       "level": 53,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Volt Absorb",
+      "item": "tr16",
       "nature": "mild",
       "gender": "F",
       "moves": [
-        "tackle",
-        "tackle",
+        "hiddenpowerdragon",
+        "storedpower",
         "savagespinout",
-        "tackle"
+        "voltswitch"
       ],
       "evs": {
         "hp": 104,
@@ -98,42 +98,44 @@
       "species": "Nidoking",
       "level": 74,
       "ability": "Poison Point",
-      "item": "",
-      "nature": "docile",
+      "item": "psychiumz",
+      "nature": "gentle",
       "gender": "M",
       "moves": [
-        "tackle",
-        "highjumpkick"
+        "featherdance",
+        "highjumpkick",
+        "lusterpurge",
+        "maxdarkness"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
+        "hp": 84,
+        "atk": 100,
+        "def": 84,
+        "spa": 75,
+        "spd": 82,
         "spe": 85
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 24,
+        "atk": 9,
+        "def": 19,
+        "spa": 9,
+        "spd": 12,
+        "spe": 7
       }
     },
     {
       "name": "Ferroseed",
       "species": "Ferroseed",
       "level": 86,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Iron Barbs",
+      "item": "cherishball",
       "nature": "jolly",
       "gender": "M",
       "moves": [
         "blackholeeclipse",
         "gravity",
-        "tackle",
+        "dizzypunch",
         "tackle"
       ],
       "evs": {
@@ -157,28 +159,31 @@
       "name": "Pumpkaboo-Small",
       "species": "Pumpkaboo-Small",
       "level": 100,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Pickup",
+      "item": "decidiumz",
+      "nature": "hardy",
       "gender": "F",
       "moves": [
-        "assist"
+        "assist",
+        "flipturn",
+        "toxicthread",
+        "sizzlyslide"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 115,
+        "atk": 65,
+        "def": 82,
+        "spa": 106,
+        "spd": 68,
+        "spe": 74
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 22,
+        "atk": 9,
+        "def": 27,
+        "spa": 25,
+        "spd": 8,
+        "spe": 24
       }
     }
   ],
@@ -188,11 +193,14 @@
       "species": "Cobalion",
       "level": 88,
       "ability": "Justified",
-      "item": "",
+      "item": "lustrousglobe",
       "nature": "bashful",
       "gender": "",
       "moves": [
-        "tackle"
+        "wavecrash",
+        "woodhammer",
+        "hail",
+        "scald"
       ],
       "evs": {
         "hp": 92,
@@ -215,30 +223,157 @@
       "name": "Raticate-Alola-Totem",
       "species": "Raticate-Alola-Totem",
       "level": 88,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Thick Fat",
+      "item": "leek",
+      "nature": "bashful",
       "gender": "F",
       "moves": [
-        "tackle"
+        "lunge",
+        "brine",
+        "gmaxsandblast",
+        "reflecttype"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 92,
+        "atk": 78,
+        "def": 80,
+        "spa": 88,
+        "spd": 96,
+        "spe": 76
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 24,
+        "atk": 26,
+        "def": 4,
+        "spa": 10,
+        "spd": 9,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Zigzagoon-Galar",
+      "species": "Zigzagoon-Galar",
+      "level": 82,
+      "ability": "Pickup",
+      "item": "rockgem",
+      "nature": "lonely",
+      "gender": "F",
+      "moves": [
+        "aeroblast",
+        "confide",
+        "hiddenpowerflying",
+        "mudsport"
+      ],
+      "evs": {
+        "hp": 105,
+        "atk": 87,
+        "def": 93,
+        "spa": 80,
+        "spd": 74,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 4,
+        "def": 29,
+        "spa": 0,
+        "spd": 7,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Inkay",
+      "species": "Inkay",
+      "level": 58,
+      "ability": "Contrary",
+      "item": "toxicorb",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "soulstealing7starstrike",
+        "triplearrows",
+        "ragefist",
+        "swift"
+      ],
+      "evs": {
+        "hp": 109,
+        "atk": 65,
+        "def": 77,
+        "spa": 80,
+        "spd": 90,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 15,
+        "def": 20,
+        "spa": 29,
+        "spd": 16,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Marowak-Alola",
+      "species": "Marowak-Alola",
+      "level": 51,
+      "ability": "Cursed Body",
+      "item": "banettite",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "metalclaw",
+        "razorwind",
+        "terablast",
+        "mirrorshot"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 60,
+        "def": 90,
+        "spa": 75,
+        "spd": 88,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 10,
+        "def": 8,
+        "spa": 17,
+        "spd": 1,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Volkritter",
+      "species": "Volkritter",
+      "level": 77,
+      "ability": "Anticipation",
+      "item": "icestone",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "visegrip",
+        "confuseray",
+        "dragonhammer",
+        "purify"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 105,
+        "def": 94,
+        "spa": 49,
+        "spd": 75,
+        "spe": 109
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 12,
+        "def": 23,
+        "spa": 19,
+        "spd": 3,
+        "spe": 10
       }
     }
   ],
-  "_bug": "Diverges at line 51: JS=\"#51: turn=47, prng=170->171, P1=[Pumpkaboo(86/250)], P2=[Cobalion(13/279)]\" vs Rust=\"#51: turn=46, prng=170->174, P1=[Pumpkaboo(86/250)], P2=[Cobalion(0/279)]\""
+  "_bug": "Diverges at line 21: JS=\"#21: turn=16, prng=54->59, P1=[Pumpkaboo(151/248)], P2=[Raticate(98/271)]\" vs Rust=\"#21: turn=15, prng=54->62, P1=[Pumpkaboo(151/248)], P2=[Raticate(0/271)]\""
 }

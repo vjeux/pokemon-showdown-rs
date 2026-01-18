@@ -4,12 +4,15 @@
       "name": "Electrelk",
       "species": "Electrelk",
       "level": 86,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Overgrow",
+      "item": "delphoxite",
       "nature": "quirky",
       "gender": "F",
       "moves": [
-        "tackle"
+        "rockwrecker",
+        "tailslap",
+        "encore",
+        "bittermalice"
       ],
       "evs": {
         "hp": 77,
@@ -27,6 +30,161 @@
         "spd": 13,
         "spe": 1
       }
+    },
+    {
+      "name": "Kommo-o",
+      "species": "Kommo-o",
+      "level": 82,
+      "ability": "Bulletproof",
+      "item": "heavydutyboots",
+      "nature": "timid",
+      "gender": "F",
+      "moves": [
+        "screech",
+        "nightmare",
+        "gmaxfireball",
+        "firepunch"
+      ],
+      "evs": {
+        "hp": 104,
+        "atk": 65,
+        "def": 92,
+        "spa": 98,
+        "spd": 52,
+        "spe": 99
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 28,
+        "def": 28,
+        "spa": 15,
+        "spd": 8,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Dustox",
+      "species": "Dustox",
+      "level": 88,
+      "ability": "Shield Dust",
+      "item": "fairymemory",
+      "nature": "quiet",
+      "gender": "M",
+      "moves": [
+        "pyroball",
+        "gmaxcannonade",
+        "weatherball",
+        "struggle"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 90,
+        "def": 85,
+        "spa": 88,
+        "spd": 110,
+        "spe": 59
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 9,
+        "def": 4,
+        "spa": 27,
+        "spd": 25,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Tactite",
+      "species": "Tactite",
+      "level": 88,
+      "ability": "Levitate",
+      "item": "raichunitey",
+      "nature": "mild",
+      "gender": "",
+      "moves": [
+        "steamroller",
+        "springtidestorm",
+        "gmaxstonesurge",
+        "snipeshot"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 83,
+        "def": 92,
+        "spa": 96,
+        "spd": 83,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 20,
+        "def": 20,
+        "spa": 30,
+        "spd": 18,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Genesect-Burn",
+      "species": "Genesect-Burn",
+      "level": 51,
+      "ability": "Download",
+      "item": "psychicmemory",
+      "nature": "timid",
+      "gender": "",
+      "moves": [
+        "snore",
+        "lifedew",
+        "oceanicoperetta",
+        "firespin"
+      ],
+      "evs": {
+        "hp": 100,
+        "atk": 94,
+        "def": 73,
+        "spa": 92,
+        "spd": 62,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 5,
+        "def": 6,
+        "spa": 22,
+        "spd": 27,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Runerigus",
+      "species": "Runerigus",
+      "level": 96,
+      "ability": "Wandering Spirit",
+      "item": "tr09",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "partingshot",
+        "skillswap",
+        "batonpass",
+        "tripledive"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 88,
+        "def": 77,
+        "spa": 91,
+        "spd": 93,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 21,
+        "def": 23,
+        "spa": 24,
+        "spd": 30,
+        "spe": 29
+      }
     }
   ],
   "p2": [
@@ -35,57 +193,187 @@
       "species": "Golisopod",
       "level": 84,
       "ability": "Emergency Exit",
-      "item": "",
-      "nature": "docile",
+      "item": "dragonscale",
+      "nature": "impish",
       "gender": "F",
       "moves": [
-        "filletaway"
+        "filletaway",
+        "meteorbeam",
+        "thunderbolt",
+        "razorleaf"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 60,
+        "atk": 112,
+        "def": 80,
+        "spa": 116,
+        "spd": 65,
+        "spe": 77
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
+        "hp": 19,
+        "atk": 12,
+        "def": 28,
         "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spd": 12,
+        "spe": 15
       }
     },
     {
       "name": "Floragato",
       "species": "Floragato",
       "level": 77,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Overgrow",
+      "item": "absolite",
+      "nature": "bashful",
       "gender": "F",
       "moves": [
-        "tackle"
+        "dracometeor",
+        "freezeshock",
+        "moongeistbeam",
+        "spiderweb"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
+        "hp": 78,
+        "atk": 58,
+        "def": 95,
+        "spa": 76,
+        "spd": 90,
+        "spe": 113
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 11,
+        "def": 23,
+        "spa": 4,
+        "spd": 11,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Cramorant",
+      "species": "Cramorant",
+      "level": 100,
+      "ability": "Gulp Missile",
+      "item": "enigmaberry",
+      "nature": "gentle",
+      "gender": "M",
+      "moves": [
+        "maxovergrowth",
+        "trumpcard",
+        "hyperspacefury",
+        "tarshot"
+      ],
+      "evs": {
+        "hp": 64,
+        "atk": 90,
+        "def": 90,
+        "spa": 74,
+        "spd": 81,
+        "spe": 111
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 6,
+        "def": 23,
+        "spa": 17,
+        "spd": 3,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Cramorant-Gulping",
+      "species": "Cramorant-Gulping",
+      "level": 56,
+      "ability": "Gulp Missile",
+      "item": "tr51",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "playrough",
+        "matblock",
+        "gmaxfireball",
+        "iondeluge"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 81,
+        "def": 86,
+        "spa": 84,
+        "spd": 79,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 24,
+        "def": 28,
+        "spa": 15,
+        "spd": 29,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Ninjask",
+      "species": "Ninjask",
+      "level": 70,
+      "ability": "Speed Boost",
+      "item": "latiasite",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "gmaxwildfire",
+        "triplekick",
+        "painsplit",
+        "energyball"
+      ],
+      "evs": {
+        "hp": 50,
+        "atk": 107,
+        "def": 84,
+        "spa": 99,
         "spd": 85,
         "spe": 85
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
+        "hp": 7,
+        "atk": 21,
+        "def": 26,
+        "spa": 6,
+        "spd": 23,
         "spe": 31
+      }
+    },
+    {
+      "name": "Nidorina",
+      "species": "Nidorina",
+      "level": 72,
+      "ability": "Poison Point",
+      "item": "steelgem",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "icespinner",
+        "eruption",
+        "drainingkiss",
+        "menacingmoonrazemaelstrom"
+      ],
+      "evs": {
+        "hp": 103,
+        "atk": 83,
+        "def": 109,
+        "spa": 72,
+        "spd": 94,
+        "spe": 49
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 6,
+        "def": 31,
+        "spa": 0,
+        "spd": 19,
+        "spe": 16
       }
     }
   ],
-  "_bug": "Diverges at line 1: JS=\"#1: turn=1, prng=0->3, P1=[Electrelk(221/221)], P2=[Golisopod(114/263)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Electrelk(221/221)], P2=[Golisopod(114/263)]\""
+  "_bug": "Diverges at line 1: JS=\"#1: turn=1, prng=0->3, P1=[Electrelk(221/221)], P2=[Golisopod(6/248)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Electrelk(221/221)], P2=[Golisopod(6/248)]\""
 }

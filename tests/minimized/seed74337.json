@@ -4,12 +4,15 @@
       "name": "Purugly",
       "species": "Purugly",
       "level": 53,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Thick Fat",
+      "item": "feraligite",
       "nature": "careful",
       "gender": "M",
       "moves": [
-        "tackle"
+        "flamewheel",
+        "gmaxwildfire",
+        "frostbreath",
+        "icefang"
       ],
       "evs": {
         "hp": 92,
@@ -27,6 +30,161 @@
         "spd": 17,
         "spe": 9
       }
+    },
+    {
+      "name": "Cramorant-Gulping",
+      "species": "Cramorant-Gulping",
+      "level": 88,
+      "ability": "Gulp Missile",
+      "item": "falinksite",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "blackholeeclipse",
+        "precipiceblades",
+        "boltbeak",
+        "spicyextract"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 92,
+        "def": 105,
+        "spa": 98,
+        "spd": 66,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 18,
+        "def": 2,
+        "spa": 28,
+        "spd": 13,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Garchomp",
+      "species": "Garchomp",
+      "level": 52,
+      "ability": "Sand Veil",
+      "item": "tr48",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "sleeptalk",
+        "whirlwind",
+        "thousandwaves",
+        "electricterrain"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 85,
+        "def": 92,
+        "spa": 85,
+        "spd": 73,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 20,
+        "def": 8,
+        "spa": 8,
+        "spd": 30,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Basculin-White-Striped",
+      "species": "Basculin-White-Striped",
+      "level": 82,
+      "ability": "Rattled",
+      "item": "gripclaw",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "synthesis",
+        "drillpeck",
+        "protect",
+        "firefang"
+      ],
+      "evs": {
+        "hp": 108,
+        "atk": 81,
+        "def": 60,
+        "spa": 67,
+        "spd": 100,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 5,
+        "def": 15,
+        "spa": 2,
+        "spd": 3,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Dragapult",
+      "species": "Dragapult",
+      "level": 72,
+      "ability": "Clear Body",
+      "item": "strangeball",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "vcreate",
+        "lunarblessing",
+        "wingattack",
+        "dragonhammer"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 83,
+        "def": 78,
+        "spa": 77,
+        "spd": 98,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 21,
+        "def": 18,
+        "spa": 17,
+        "spd": 20,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Lickitung",
+      "species": "Lickitung",
+      "level": 51,
+      "ability": "Own Tempo",
+      "item": "lightclay",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "oblivionwing",
+        "soak",
+        "flatter",
+        "populationbomb"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 94,
+        "def": 84,
+        "spa": 86,
+        "spd": 62,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 15,
+        "def": 4,
+        "spa": 5,
+        "spd": 24,
+        "spe": 17
+      }
     }
   ],
   "p2": [
@@ -35,11 +193,14 @@
       "species": "Revenankh",
       "level": 71,
       "ability": "Air Lock",
-      "item": "",
+      "item": "waveincense",
       "nature": "jolly",
       "gender": "F",
       "moves": [
-        "tackle"
+        "dynamaxcannon",
+        "pounce",
+        "toxicthread",
+        "circlethrow"
       ],
       "evs": {
         "hp": 84,
@@ -57,7 +218,162 @@
         "spd": 2,
         "spe": 20
       }
+    },
+    {
+      "name": "Ogerpon-Wellspring",
+      "species": "Ogerpon-Wellspring",
+      "level": 88,
+      "ability": "Water Absorb",
+      "item": "tr02",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "fairywind",
+        "firstimpression",
+        "sweetscent",
+        "trickroom"
+      ],
+      "evs": {
+        "hp": 96,
+        "atk": 80,
+        "def": 79,
+        "spa": 88,
+        "spd": 86,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 29,
+        "def": 2,
+        "spa": 24,
+        "spd": 21,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Cryogonal",
+      "species": "Cryogonal",
+      "level": 50,
+      "ability": "Levitate",
+      "item": "meowsticite",
+      "nature": "bold",
+      "gender": "",
+      "moves": [
+        "brine",
+        "waterpulse",
+        "rockpolish",
+        "signalbeam"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 82,
+        "def": 68,
+        "spa": 107,
+        "spd": 83,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 19,
+        "def": 25,
+        "spa": 7,
+        "spd": 13,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Grubbin",
+      "species": "Grubbin",
+      "level": 86,
+      "ability": "Swarm",
+      "item": "przcureberry",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "appleacid",
+        "flamewheel",
+        "acrobatics",
+        "moonlight"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 89,
+        "def": 102,
+        "spa": 96,
+        "spd": 81,
+        "spe": 73
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 23,
+        "def": 31,
+        "spa": 17,
+        "spd": 28,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Oddish",
+      "species": "Oddish",
+      "level": 99,
+      "ability": "Chlorophyll",
+      "item": "mysteryberry",
+      "nature": "adamant",
+      "gender": "M",
+      "moves": [
+        "aurawheel",
+        "spiderweb",
+        "crushclaw",
+        "constrict"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 69,
+        "def": 101,
+        "spa": 87,
+        "spd": 85,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 1,
+        "def": 21,
+        "spa": 25,
+        "spd": 31,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Charjabug",
+      "species": "Charjabug",
+      "level": 53,
+      "ability": "Battery",
+      "item": "focusband",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "torchsong",
+        "speedswap",
+        "substitute",
+        "branchpoke"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 88,
+        "def": 94,
+        "spa": 97,
+        "spd": 46,
+        "spe": 99
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 12,
+        "def": 18,
+        "spa": 13,
+        "spd": 8,
+        "spe": 8
+      }
     }
   ],
-  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=4->16, P1=[Purugly(110/152)], P2=[Revenankh(236/236)]\" vs Rust=\"#1: turn=2, prng=5->17, P1=[Purugly(107/152)], P2=[Revenankh(236/236)]\""
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=4->22, P1=[Purugly(95/152)], P2=[Revenankh(215/236)]\" vs Rust=\"#1: turn=2, prng=5->23, P1=[Purugly(93/152)], P2=[Revenankh(218/236)]\""
 }

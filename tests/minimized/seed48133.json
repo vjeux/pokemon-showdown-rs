@@ -4,28 +4,93 @@
       "name": "Swanna",
       "species": "Swanna",
       "level": 66,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Keen Eye",
+      "item": "tr34",
+      "nature": "lax",
+      "gender": "M",
+      "moves": [
+        "technoblast",
+        "ficklebeam",
+        "paleowave",
+        "gmaxcannonade"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 84,
+        "def": 90,
+        "spa": 82,
+        "spd": 92,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 11,
+        "def": 4,
+        "spa": 3,
+        "spd": 18,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Tarountula",
+      "species": "Tarountula",
+      "level": 52,
+      "ability": "Insomnia",
+      "item": "tr25",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "leaftornado",
+        "geomancy",
+        "nastyplot",
+        "gmaxvoltcrash"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 96,
+        "def": 80,
+        "spa": 90,
+        "spd": 79,
+        "spe": 68
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 14,
+        "def": 21,
+        "spa": 26,
+        "spd": 1,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Archeops",
+      "species": "Archeops",
+      "level": 58,
+      "ability": "Defeatist",
+      "item": "tartapple",
       "nature": "docile",
       "gender": "M",
       "moves": [
-        "tackle"
+        "foulplay",
+        "gmaxwildfire",
+        "noretreat",
+        "breakingswipe"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 113,
+        "atk": 100,
+        "def": 77,
+        "spa": 65,
+        "spd": 81,
+        "spe": 74
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 4,
+        "atk": 24,
+        "def": 28,
+        "spa": 21,
+        "spd": 18,
+        "spe": 26
       }
     },
     {
@@ -33,11 +98,14 @@
       "species": "Greninja-Bond",
       "level": 68,
       "ability": "Battle Bond",
-      "item": "",
+      "item": "heracronite",
       "nature": "bashful",
       "gender": "M",
       "moves": [
-        "sappyseed"
+        "sappyseed",
+        "aquacutter",
+        "auroraveil",
+        "belch"
       ],
       "evs": {
         "hp": 105,
@@ -55,6 +123,68 @@
         "spd": 5,
         "spe": 16
       }
+    },
+    {
+      "name": "Clauncher",
+      "species": "Clauncher",
+      "level": 81,
+      "ability": "Mega Launcher",
+      "item": "choicescarf",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "mindblown",
+        "round",
+        "paraboliccharge",
+        "rapidspin"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 66,
+        "def": 80,
+        "spa": 89,
+        "spd": 111,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 12,
+        "def": 16,
+        "spa": 13,
+        "spd": 4,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Thundurus-Therian",
+      "species": "Thundurus-Therian",
+      "level": 60,
+      "ability": "Volt Absorb",
+      "item": "heatrock",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "torment",
+        "gmaxgoldrush",
+        "magicaltorque",
+        "rockthrow"
+      ],
+      "evs": {
+        "hp": 66,
+        "atk": 91,
+        "def": 75,
+        "spa": 82,
+        "spd": 105,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 27,
+        "def": 17,
+        "spa": 22,
+        "spd": 25,
+        "spe": 26
+      }
     }
   ],
   "p2": [
@@ -62,86 +192,188 @@
       "name": "Dorsoil",
       "species": "Dorsoil",
       "level": 50,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Oblivious",
+      "item": "tr67",
+      "nature": "bashful",
       "gender": "M",
       "moves": [
-        "tackle"
+        "tarshot",
+        "camouflage",
+        "powersplit",
+        "stoneaxe"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 79,
+        "atk": 103,
+        "def": 84,
+        "spa": 77,
+        "spd": 74,
+        "spe": 93
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
+        "hp": 2,
+        "atk": 12,
+        "def": 25,
+        "spa": 20,
+        "spd": 10,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Combee",
+      "species": "Combee",
+      "level": 95,
+      "ability": "Honey Gather",
+      "item": "aerodactylite",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "guardsplit",
+        "megapunch",
+        "triplekick",
+        "highjumpkick"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 122,
+        "def": 84,
+        "spa": 64,
+        "spd": 92,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 15,
+        "def": 20,
+        "spa": 3,
         "spd": 31,
-        "spe": 31
+        "spe": 16
       }
     },
     {
       "name": "Magmortar",
       "species": "Magmortar",
       "level": 86,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Flame Body",
+      "item": "magnet",
+      "nature": "timid",
       "gender": "F",
       "moves": [
-        "tackle"
+        "heatcrash",
+        "simplebeam",
+        "confusion",
+        "telekinesis"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 86,
+        "atk": 81,
+        "def": 94,
+        "spa": 95,
+        "spd": 70,
+        "spe": 84
       },
       "ivs": {
-        "hp": 31,
+        "hp": 2,
         "atk": 31,
-        "def": 31,
-        "spa": 31,
+        "def": 24,
+        "spa": 3,
         "spd": 31,
-        "spe": 31
+        "spe": 22
       }
     },
     {
       "name": "Pyukumuku",
       "species": "Pyukumuku",
       "level": 60,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Innards Out",
+      "item": "gripclaw",
+      "nature": "lonely",
       "gender": "M",
       "moves": [
-        "tackle"
+        "poisontail",
+        "wish",
+        "gigaimpact",
+        "steamroller"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 64,
+        "atk": 59,
+        "def": 97,
+        "spa": 128,
+        "spd": 66,
+        "spe": 96
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 21,
+        "atk": 18,
+        "def": 21,
+        "spa": 19,
+        "spd": 19,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Dewpider",
+      "species": "Dewpider",
+      "level": 90,
+      "ability": "Water Bubble",
+      "item": "hardstone",
+      "nature": "bashful",
+      "gender": "F",
+      "moves": [
+        "dazzlinggleam",
+        "boltbeak",
+        "rocktomb",
+        "laserfocus"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 106,
+        "def": 99,
+        "spa": 78,
+        "spd": 69,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 4,
+        "def": 12,
+        "spa": 14,
+        "spd": 11,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Leavanny",
+      "species": "Leavanny",
+      "level": 52,
+      "ability": "Swarm",
+      "item": "dragoninite",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "afteryou",
+        "throatchop",
+        "venomdrench",
+        "shadowforce"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 91,
+        "def": 67,
+        "spa": 112,
+        "spd": 95,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 14,
+        "def": 9,
+        "spa": 4,
+        "spd": 1,
+        "spe": 16
       }
     }
   ],
-  "_bug": "Diverges at line 17: JS=\"#17: turn=15, prng=72->78, P1=[Greninja(103/209)], P2=[Pyukumuku(67/167)]\" vs Rust=\"#17: turn=15, prng=72->78, P1=[Greninja(103/209)], P2=[Pyukumuku(27/167)]\""
+  "_bug": "Diverges at line 20: JS=\"#20: turn=15, prng=61->68, P1=[Greninja(180/209)], P2=[Pyukumuku(45/158)]\" vs Rust=\"#20: turn=15, prng=61->68, P1=[Greninja(180/209)], P2=[Pyukumuku(1/158)]\""
 }

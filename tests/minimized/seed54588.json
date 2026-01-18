@@ -4,28 +4,186 @@
       "name": "Morgrem",
       "species": "Morgrem",
       "level": 59,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Prankster",
+      "item": "falinksite",
+      "nature": "sassy",
       "gender": "M",
       "moves": [
-        "supersonic"
+        "supersonic",
+        "hornattack",
+        "flail",
+        "thunderfang"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 54,
+        "def": 69,
+        "spa": 111,
+        "spd": 101,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 3,
+        "def": 8,
+        "spa": 24,
+        "spd": 15,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Lucario-Mega",
+      "species": "Lucario-Mega",
+      "level": 69,
+      "ability": "Adaptability",
+      "item": "garchompite",
+      "nature": "rash",
+      "gender": "F",
+      "moves": [
+        "poisontail",
+        "autotomize",
+        "landswrath",
+        "happyhour"
+      ],
+      "evs": {
+        "hp": 58,
+        "atk": 101,
+        "def": 110,
+        "spa": 80,
+        "spd": 67,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 13,
+        "def": 9,
+        "spa": 17,
+        "spd": 25,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Genesect-Douse",
+      "species": "Genesect-Douse",
+      "level": 62,
+      "ability": "Download",
+      "item": "fairiumz",
+      "nature": "lax",
+      "gender": "",
+      "moves": [
+        "batonpass",
+        "gmaxoneblow",
+        "relicsong",
+        "alluringvoice"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 93,
+        "def": 83,
+        "spa": 62,
+        "spd": 88,
+        "spe": 101
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 5,
+        "def": 14,
+        "spa": 23,
+        "spd": 18,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Gastly",
+      "species": "Gastly",
+      "level": 89,
+      "ability": "Levitate",
+      "item": "scopelens",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "decorate",
+        "freezyfrost",
+        "grasswhistle",
+        "powergem"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 105,
+        "def": 78,
+        "spa": 95,
+        "spd": 63,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 5,
+        "def": 11,
+        "spa": 25,
+        "spd": 13,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Cranidos",
+      "species": "Cranidos",
+      "level": 98,
+      "ability": "Mold Breaker",
+      "item": "apicotberry",
+      "nature": "quiet",
+      "gender": "F",
+      "moves": [
+        "lunarblessing",
+        "razorleaf",
+        "zippyzap",
+        "ember"
       ],
       "evs": {
         "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "atk": 72,
+        "def": 111,
+        "spa": 51,
+        "spd": 84,
+        "spe": 107
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 22,
+        "atk": 23,
+        "def": 18,
+        "spa": 21,
+        "spd": 28,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Syclant",
+      "species": "Syclant",
+      "level": 85,
+      "ability": "Compound Eyes",
+      "item": "tr71",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "toxicspikes",
+        "brickbreak",
+        "behemothbash",
+        "doublekick"
+      ],
+      "evs": {
+        "hp": 100,
+        "atk": 100,
+        "def": 74,
+        "spa": 95,
+        "spd": 89,
+        "spe": 52
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 20,
+        "def": 11,
+        "spa": 22,
+        "spd": 29,
+        "spe": 16
       }
     }
   ],
@@ -34,31 +192,188 @@
       "name": "Oinkologne-F",
       "species": "Oinkologne-F",
       "level": 87,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Aroma Veil",
+      "item": "chopleberry",
+      "nature": "bashful",
       "gender": "F",
       "moves": [
         "gmaxwindrage",
-        "wonderroom"
+        "wonderroom",
+        "vcreate",
+        "gmaxfoamburst"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 93,
+        "def": 112,
+        "spa": 74,
+        "spd": 79,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 19,
+        "def": 12,
+        "spa": 18,
+        "spd": 22,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Luxray",
+      "species": "Luxray",
+      "level": 58,
+      "ability": "Rivalry",
+      "item": "tr51",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "dragontail",
+        "falseswipe",
+        "volttackle",
+        "attract"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 67,
+        "def": 112,
+        "spa": 84,
+        "spd": 89,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 13,
+        "def": 23,
+        "spa": 25,
+        "spd": 9,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Zoroark",
+      "species": "Zoroark",
+      "level": 55,
+      "ability": "Illusion",
+      "item": "fightingmemory",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "lightscreen",
+        "spotlight",
+        "protect",
+        "sunsteelstrike"
+      ],
+      "evs": {
+        "hp": 100,
+        "atk": 86,
+        "def": 101,
+        "spa": 75,
+        "spd": 83,
+        "spe": 65
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 10,
+        "def": 29,
+        "spa": 23,
+        "spd": 20,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Trubbish",
+      "species": "Trubbish",
+      "level": 80,
+      "ability": "Stench",
+      "item": "crackedpot",
+      "nature": "sassy",
+      "gender": "M",
+      "moves": [
+        "makeitrain",
+        "splinteredstormshards",
+        "hiddenpowerground",
+        "aquajet"
       ],
       "evs": {
         "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "atk": 78,
+        "def": 92,
+        "spa": 82,
+        "spd": 87,
+        "spe": 86
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 13,
+        "atk": 30,
+        "def": 4,
+        "spa": 6,
+        "spd": 4,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Heracross-Mega",
+      "species": "Heracross-Mega",
+      "level": 97,
+      "ability": "Skill Link",
+      "item": "mindplate",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "sunsteelstrike",
+        "hail",
+        "powder",
+        "dazzlinggleam"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 96,
+        "def": 82,
+        "spa": 58,
+        "spd": 83,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 18,
+        "def": 16,
+        "spa": 6,
+        "spd": 0,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Shelgon",
+      "species": "Shelgon",
+      "level": 76,
+      "ability": "Rock Head",
+      "item": "diveball",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "paleowave",
+        "dracometeor",
+        "flatter",
+        "slam"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 73,
+        "def": 82,
+        "spa": 81,
+        "spd": 80,
+        "spe": 120
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 23,
+        "def": 16,
+        "spa": 8,
+        "spd": 15,
+        "spe": 20
       }
     }
   ],
-  "_bug": "Diverges at line 24: JS=\"#24: turn=25, prng=73->76, P1=[Morgrem(159/176)], P2=[Oinkologne(251/342)]\" vs Rust=\"#24: turn=25, prng=73->76, P1=[Morgrem(159/176)], P2=[Oinkologne(245/342)]\""
+  "_bug": "Diverges at line 24: JS=\"#24: turn=25, prng=76->80, P1=[Morgrem(143/160)], P2=[Oinkologne(171/331)]\" vs Rust=\"#24: turn=25, prng=76->80, P1=[Morgrem(143/160)], P2=[Oinkologne(164/331)]\""
 }

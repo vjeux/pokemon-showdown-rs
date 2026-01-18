@@ -4,29 +4,186 @@
       "name": "Poliwag",
       "species": "Poliwag",
       "level": 100,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Water Absorb",
+      "item": "flameplate",
+      "nature": "calm",
       "gender": "F",
       "moves": [
-        "tackle",
-        "tackle"
+        "icehammer",
+        "retaliate",
+        "tickle",
+        "gmaxwildfire"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
+        "hp": 77,
+        "atk": 89,
+        "def": 76,
+        "spa": 95,
+        "spd": 88,
         "spe": 85
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
+        "hp": 26,
+        "atk": 18,
+        "def": 16,
         "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spd": 21,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Poliwrath",
+      "species": "Poliwrath",
+      "level": 73,
+      "ability": "Water Absorb",
+      "item": "tr65",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "wingattack",
+        "darkpulse",
+        "swordsdance",
+        "firstimpression"
+      ],
+      "evs": {
+        "hp": 66,
+        "atk": 112,
+        "def": 83,
+        "spa": 80,
+        "spd": 81,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 9,
+        "def": 18,
+        "spa": 28,
+        "spd": 23,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Phantump",
+      "species": "Phantump",
+      "level": 99,
+      "ability": "Natural Cure",
+      "item": "healball",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "silverwind",
+        "round",
+        "eerieimpulse",
+        "roost"
+      ],
+      "evs": {
+        "hp": 110,
+        "atk": 102,
+        "def": 87,
+        "spa": 70,
+        "spd": 72,
+        "spe": 69
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 9,
+        "def": 10,
+        "spa": 31,
+        "spd": 23,
+        "spe": 0
+      }
+    },
+    {
+      "name": "Klang",
+      "species": "Klang",
+      "level": 79,
+      "ability": "Plus",
+      "item": "decidiumz",
+      "nature": "lax",
+      "gender": "",
+      "moves": [
+        "trailblaze",
+        "gmaxdepletion",
+        "sleeptalk",
+        "barbbarrage"
+      ],
+      "evs": {
+        "hp": 126,
+        "atk": 64,
+        "def": 66,
+        "spa": 68,
+        "spd": 103,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 17,
+        "def": 19,
+        "spa": 28,
+        "spd": 26,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Deoxys-Speed",
+      "species": "Deoxys-Speed",
+      "level": 51,
+      "ability": "Pressure",
+      "item": "tr89",
+      "nature": "careful",
+      "gender": "",
+      "moves": [
+        "powdersnow",
+        "powershift",
+        "feintattack",
+        "landswrath"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 74,
+        "def": 79,
+        "spa": 103,
+        "spd": 63,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 24,
+        "def": 31,
+        "spa": 3,
+        "spd": 25,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Basculin",
+      "species": "Basculin",
+      "level": 98,
+      "ability": "Reckless",
+      "item": "meganiumite",
+      "nature": "naughty",
+      "gender": "F",
+      "moves": [
+        "psychup",
+        "magnetrise",
+        "guillotine",
+        "tailwind"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 74,
+        "def": 95,
+        "spa": 55,
+        "spd": 108,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 0,
+        "def": 14,
+        "spa": 10,
+        "spd": 0,
+        "spe": 8
       }
     }
   ],
@@ -35,56 +192,62 @@
       "name": "Pokestar F-00",
       "species": "Pokestar F-00",
       "level": 89,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Volt Absorb",
+      "item": "passhoberry",
+      "nature": "mild",
       "gender": "M",
       "moves": [
-        "conversion"
+        "conversion",
+        "hiddenpowerghost",
+        "letssnuggleforever",
+        "doublehit"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 123,
+        "atk": 66,
+        "def": 60,
+        "spa": 102,
+        "spd": 86,
+        "spe": 73
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 0,
+        "atk": 1,
+        "def": 8,
+        "spa": 8,
+        "spd": 18,
+        "spe": 19
       }
     },
     {
       "name": "Mewtwo",
       "species": "Mewtwo",
       "level": 58,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Pressure",
+      "item": "powerband",
+      "nature": "careful",
       "gender": "",
       "moves": [
-        "mistyterrain"
+        "mistyterrain",
+        "coil",
+        "hail",
+        "cottonguard"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 87,
+        "atk": 98,
+        "def": 88,
+        "spa": 70,
+        "spd": 84,
+        "spe": 83
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 12,
+        "atk": 25,
+        "def": 8,
+        "spa": 16,
+        "spd": 21,
+        "spe": 21
       }
     },
     {
@@ -92,29 +255,125 @@
       "species": "Stunfisk-Galar",
       "level": 71,
       "ability": "Mimicry",
-      "item": "",
-      "nature": "docile",
+      "item": "glimmoranite",
+      "nature": "calm",
       "gender": "M",
       "moves": [
-        "tackle"
+        "pikapapow",
+        "astralbarrage",
+        "craftyshield",
+        "magicaltorque"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 88,
+        "atk": 83,
+        "def": 78,
+        "spa": 88,
+        "spd": 68,
+        "spe": 105
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 30,
+        "atk": 28,
+        "def": 0,
+        "spa": 8,
+        "spd": 7,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Sliggoo-Hisui",
+      "species": "Sliggoo-Hisui",
+      "level": 76,
+      "ability": "Sap Sipper",
+      "item": "quickball",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "gmaxwindrage",
+        "courtchange",
+        "bide",
+        "kingsshield"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 83,
+        "def": 85,
+        "spa": 93,
+        "spd": 87,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 11,
+        "def": 2,
+        "spa": 0,
+        "spd": 19,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Purrloin",
+      "species": "Purrloin",
+      "level": 53,
+      "ability": "Limber",
+      "item": "chartiberry",
+      "nature": "rash",
+      "gender": "M",
+      "moves": [
+        "flash",
+        "junglehealing",
+        "shatteredpsyche",
+        "dynamicpunch"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 74,
+        "def": 78,
+        "spa": 114,
+        "spd": 60,
+        "spe": 113
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 17,
+        "def": 23,
+        "spa": 22,
+        "spd": 30,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Servine",
+      "species": "Servine",
+      "level": 64,
+      "ability": "Overgrow",
+      "item": "rustedshield",
+      "nature": "relaxed",
+      "gender": "F",
+      "moves": [
+        "bloomdoom",
+        "substitute",
+        "clamp",
+        "aromatherapy"
+      ],
+      "evs": {
+        "hp": 115,
+        "atk": 86,
+        "def": 84,
+        "spa": 70,
+        "spd": 93,
+        "spe": 62
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 16,
+        "def": 11,
+        "spa": 29,
+        "spd": 23,
+        "spe": 8
       }
     }
   ],
-  "_bug": "Diverges at line 39: JS=\"#39: turn=38, prng=108->114, P1=[Poliwag(216/242)], P2=[Stunfisk(245/272)]\" vs Rust=\"#39: turn=38, prng=108->114, P1=[Poliwag(216/242)], P2=[Stunfisk(259/272)]\""
+  "_bug": "Diverges at line 21: JS=\"#21: turn=20, prng=60->65, P1=[Poliwag(137/235)], P2=[Stunfisk(226/272)]\" vs Rust=\"#21: turn=20, prng=60->65, P1=[Poliwag(137/235)], P2=[Stunfisk(249/272)]\""
 }

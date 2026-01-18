@@ -4,151 +4,186 @@
       "name": "Tarountula",
       "species": "Tarountula",
       "level": 90,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Insomnia",
+      "item": "rindoberry",
+      "nature": "lonely",
       "gender": "F",
       "moves": [
-        "tackle",
+        "wingattack",
         "healbell",
-        "tackle",
-        "tackle"
+        "triplekick",
+        "bellydrum"
       ],
       "evs": {
-        "hp": 85,
+        "hp": 97,
         "atk": 85,
         "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "spa": 50,
+        "spd": 107,
+        "spe": 86
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 13,
+        "atk": 5,
+        "def": 11,
+        "spa": 19,
+        "spd": 7,
+        "spe": 28
       }
     },
     {
       "name": "Pangoro",
       "species": "Pangoro",
       "level": 85,
-      "ability": "Run Away",
+      "ability": "Iron Fist",
       "item": "throatspray",
-      "nature": "docile",
+      "nature": "brave",
       "gender": "M",
       "moves": [
-        "assist"
+        "assist",
+        "volttackle",
+        "stuffcheeks",
+        "flameburst"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 101,
+        "atk": 64,
+        "def": 98,
+        "spa": 65,
+        "spd": 106,
+        "spe": 76
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 15,
+        "atk": 0,
+        "def": 19,
+        "spa": 6,
+        "spd": 7,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Heracross",
+      "species": "Heracross",
+      "level": 77,
+      "ability": "Swarm",
+      "item": "shellbell",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "mysticalpower",
+        "gigadrain",
+        "celebrate",
+        "belch"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 79,
+        "def": 68,
+        "spa": 102,
+        "spd": 67,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 8,
+        "def": 21,
+        "spa": 20,
+        "spd": 4,
+        "spe": 4
       }
     },
     {
       "name": "Gogoat",
       "species": "Gogoat",
       "level": 97,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Sap Sipper",
+      "item": "waterstone",
+      "nature": "brave",
       "gender": "M",
       "moves": [
-        "tackle",
-        "tackle",
-        "tackle"
+        "bubble",
+        "hiddenpowerbug",
+        "moongeistbeam",
+        "megahorn"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 86,
+        "atk": 93,
+        "def": 61,
+        "spa": 74,
+        "spd": 87,
+        "spe": 109
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
+        "hp": 26,
+        "atk": 3,
         "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spa": 10,
+        "spd": 20,
+        "spe": 2
       }
     },
     {
       "name": "Dustox",
       "species": "Dustox",
       "level": 54,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Shield Dust",
+      "item": "falinksite",
+      "nature": "careful",
       "gender": "M",
       "moves": [
-        "tackle",
-        "tackle",
-        "tackle",
-        "tackle"
+        "icepunch",
+        "shockwave",
+        "waterfall",
+        "gigaimpact"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 82,
+        "atk": 67,
+        "def": 93,
+        "spa": 60,
+        "spd": 93,
+        "spe": 115
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 16,
+        "atk": 10,
+        "def": 5,
+        "spa": 12,
+        "spd": 12,
+        "spe": 8
       }
     },
     {
       "name": "Shox",
       "species": "Shox",
       "level": 56,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Electromorphosis",
+      "item": "tr64",
+      "nature": "brave",
       "gender": "M",
       "moves": [
-        "tackle",
-        "tackle",
+        "hypervoice",
+        "tachyoncutter",
         "wringout",
-        "tackle"
+        "cut"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 74,
+        "atk": 94,
+        "def": 75,
+        "spa": 106,
+        "spd": 88,
+        "spe": 73
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 3,
+        "atk": 1,
+        "def": 3,
+        "spa": 13,
+        "spd": 29,
+        "spe": 12
       }
     }
   ],
@@ -158,31 +193,187 @@
       "species": "Archaludon",
       "level": 69,
       "ability": "Stamina",
-      "item": "",
+      "item": "durinberry",
       "nature": "docile",
       "gender": "F",
       "moves": [
         "forestscurse",
         "kinesis",
-        "blastburn"
+        "blastburn",
+        "ceaselessedge"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
+        "hp": 86,
+        "atk": 84,
+        "def": 98,
+        "spa": 75,
+        "spd": 81,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 21,
+        "def": 14,
+        "spa": 5,
+        "spd": 0,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Poliwhirl",
+      "species": "Poliwhirl",
+      "level": 73,
+      "ability": "Water Absorb",
+      "item": "rockmemory",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "headlongrush",
+        "embargo",
+        "sunsteelstrike",
+        "twinkletackle"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 91,
+        "def": 83,
+        "spa": 90,
+        "spd": 73,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 5,
+        "def": 25,
+        "spa": 20,
+        "spd": 27,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Tatsugiri-Stretchy-Mega",
+      "species": "Tatsugiri-Stretchy-Mega",
+      "level": 81,
+      "ability": "Commander",
+      "item": "adrenalineorb",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "gearup",
+        "cosmicpower",
+        "defog",
+        "leafage"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 91,
+        "def": 72,
+        "spa": 90,
+        "spd": 98,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 10,
+        "def": 8,
+        "spa": 17,
+        "spd": 4,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Toxtricity-Gmax",
+      "species": "Toxtricity-Gmax",
+      "level": 75,
+      "ability": "Punk Rock",
+      "item": "tr99",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "maxguard",
+        "tidyup",
+        "gmaxhydrosnipe",
+        "bellydrum"
+      ],
+      "evs": {
+        "hp": 112,
+        "atk": 94,
+        "def": 87,
+        "spa": 54,
+        "spd": 78,
         "spe": 85
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 25,
+        "atk": 22,
+        "def": 9,
+        "spa": 30,
+        "spd": 1,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Ledyba",
+      "species": "Ledyba",
+      "level": 74,
+      "ability": "Swarm",
+      "item": "scolipite",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "maxgeyser",
+        "behemothbash",
+        "chillingwater",
+        "armorcannon"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 89,
+        "def": 60,
+        "spa": 79,
+        "spd": 116,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 13,
+        "def": 24,
+        "spa": 6,
+        "spd": 10,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Weezing",
+      "species": "Weezing",
+      "level": 97,
+      "ability": "Levitate",
+      "item": "powerband",
+      "nature": "quiet",
+      "gender": "M",
+      "moves": [
+        "dreameater",
+        "electroweb",
+        "acidarmor",
+        "shatteredpsyche"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 77,
+        "def": 91,
+        "spa": 107,
+        "spd": 82,
+        "spe": 60
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 17,
+        "def": 9,
+        "spa": 25,
+        "spd": 28,
+        "spe": 8
       }
     }
   ],
-  "_bug": "Diverges at line 63: JS=\"#63: turn=63, prng=216->221, P1=[Pangoro(203/300)], P2=[Archaludon(86/239)]\" vs Rust=\"#63: turn=63, prng=216->221, P1=[Pangoro(203/300)], P2=[Archaludon(74/239)]\""
+  "_bug": "Diverges at line 61: JS=\"#61: turn=61, prng=205->213, P1=[Pangoro(193/290)], P2=[Archaludon(16/223)]\" vs Rust=\"#61: turn=61, prng=205->213, P1=[Pangoro(193/290)], P2=[Archaludon(1/223)]\""
 }

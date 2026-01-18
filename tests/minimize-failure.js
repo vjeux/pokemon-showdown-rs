@@ -49,7 +49,7 @@ const SIMPLE_ABILITIES = ['Run Away', 'Honey Gather', 'Illuminate', 'Ball Fetch'
 const STANDARD_EVS = { hp: 85, atk: 85, def: 85, spa: 85, spd: 85, spe: 85 };
 const STANDARD_IVS = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
 
-// Run a battle and return the output lines
+// Run a battle and return summary info (turns, prng, winner)
 function runBattle(teams) {
   const tempFile = `/tmp/teams-seed${seed}-test.json`;
   fs.writeFileSync(tempFile, JSON.stringify(teams, null, 2));
@@ -64,14 +64,20 @@ function runBattle(teams) {
     execSync(`node tests/test-battle-js.js ${seed} > /tmp/js-battle-seed${seed}.txt 2>&1`, { stdio: 'pipe' });
     execSync(`docker exec pokemon-rust-dev bash -c "${RUST_BINARY} ${seed} 2>/dev/null" > /tmp/rust-battle-seed${seed}.txt`, { stdio: 'pipe' });
 
-    const jsLines = fs.readFileSync(`/tmp/js-battle-seed${seed}.txt`, 'utf8')
-      .split('\n').filter(l => /^#\d+:/.test(l));
-    const rustLines = fs.readFileSync(`/tmp/rust-battle-seed${seed}.txt`, 'utf8')
-      .split('\n').filter(l => /^#\d+:/.test(l));
+    const jsOutput = fs.readFileSync(`/tmp/js-battle-seed${seed}.txt`, 'utf8');
+    const rustOutput = fs.readFileSync(`/tmp/rust-battle-seed${seed}.txt`, 'utf8');
 
-    return { jsLines, rustLines };
+    // Extract detailed lines for divergence finding
+    const jsLines = jsOutput.split('\n').filter(l => /^#\d+:/.test(l));
+    const rustLines = rustOutput.split('\n').filter(l => /^#\d+:/.test(l));
+
+    // Extract summary from last line (format: SEED N: turns=T, prng=P, winner=W)
+    const jsSummaryLine = jsOutput.split('\n').find(l => l.startsWith('SEED '));
+    const rustSummaryLine = rustOutput.split('\n').find(l => l.startsWith('SEED '));
+
+    return { jsLines, rustLines, jsSummary: jsSummaryLine, rustSummary: rustSummaryLine };
   } catch (e) {
-    return { jsLines: [], rustLines: [], error: e.message };
+    return { jsLines: [], rustLines: [], jsSummary: null, rustSummary: null, error: e.message };
   }
 }
 
@@ -124,17 +130,13 @@ function simplifyStats(pokemon) {
   return pokemon;
 }
 
-// Test if teams still fail
+// Test if teams still fail (compares summary: turns, prng, winner)
 function testFails(teams) {
-  const { jsLines, rustLines } = runBattle(teams);
-  if (jsLines.length === 0) return false;
+  const { jsSummary, rustSummary } = runBattle(teams);
+  if (!jsSummary || !rustSummary) return false;
 
-  for (let i = 0; i < Math.max(jsLines.length, rustLines.length); i++) {
-    if (jsLines[i] !== rustLines[i]) {
-      return true;
-    }
-  }
-  return false;
+  // Compare summaries - if they differ, the test fails
+  return jsSummary !== rustSummary;
 }
 
 console.log(`\n=== Minimizing seed ${seed} ===\n`);

@@ -1,63 +1,379 @@
 {
   "p1": [
     {
+      "name": "Hawlucha-Mega",
+      "species": "Hawlucha-Mega",
+      "level": 73,
+      "ability": "Limber",
+      "item": "eelektrossite",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "mistball",
+        "sunsteelstrike",
+        "iceburn",
+        "meteorassault"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 97,
+        "def": 76,
+        "spa": 69,
+        "spd": 71,
+        "spe": 113
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 30,
+        "def": 13,
+        "spa": 17,
+        "spd": 14,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Beedrill",
+      "species": "Beedrill",
+      "level": 69,
+      "ability": "Swarm",
+      "item": "quickpowder",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "psychup",
+        "secretpower",
+        "craftyshield",
+        "surf"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 95,
+        "def": 107,
+        "spa": 62,
+        "spd": 81,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 16,
+        "def": 7,
+        "spa": 20,
+        "spd": 1,
+        "spe": 5
+      }
+    },
+    {
       "name": "Drampa-Mega",
       "species": "Drampa-Mega",
       "level": 52,
       "ability": "Berserk",
       "item": "enigmaberry",
-      "nature": "docile",
+      "nature": "gentle",
       "gender": "M",
       "moves": [
-        "tackle"
+        "rockblast",
+        "clangoroussoul",
+        "savagespinout",
+        "fairywind"
       ],
       "evs": {
         "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "atk": 72,
+        "def": 120,
+        "spa": 57,
+        "spd": 92,
+        "spe": 84
       },
       "ivs": {
-        "hp": 31,
+        "hp": 22,
         "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "def": 9,
+        "spa": 13,
+        "spd": 21,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Arceus-Poison",
+      "species": "Arceus-Poison",
+      "level": 83,
+      "ability": "Multitype",
+      "item": "beastball",
+      "nature": "lax",
+      "gender": "",
+      "moves": [
+        "featherdance",
+        "blastburn",
+        "skullbash",
+        "closecombat"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 68,
+        "def": 78,
+        "spa": 65,
+        "spd": 93,
+        "spe": 119
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 22,
+        "def": 16,
+        "spa": 25,
+        "spd": 20,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Pikachu-Libre",
+      "species": "Pikachu-Libre",
+      "level": 83,
+      "ability": "Lightning Rod",
+      "item": "sablenite",
+      "nature": "modest",
+      "gender": "F",
+      "moves": [
+        "miracleeye",
+        "uproar",
+        "powertrip",
+        "wringout"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 98,
+        "def": 73,
+        "spa": 90,
+        "spd": 87,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 10,
+        "def": 0,
+        "spa": 21,
+        "spd": 5,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Passimian",
+      "species": "Passimian",
+      "level": 95,
+      "ability": "Receiver",
+      "item": "dousedrive",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "ember",
+        "imprison",
+        "photongeyser",
+        "firstimpression"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 82,
+        "def": 73,
+        "spa": 73,
+        "spd": 99,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 29,
+        "def": 3,
+        "spa": 14,
+        "spd": 6,
+        "spe": 15
       }
     }
   ],
   "p2": [
     {
+      "name": "Boltund",
+      "species": "Boltund",
+      "level": 78,
+      "ability": "Strong Jaw",
+      "item": "victreebelite",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "terastarstorm",
+        "powersplit",
+        "skydrop",
+        "hypnosis"
+      ],
+      "evs": {
+        "hp": 111,
+        "atk": 91,
+        "def": 69,
+        "spa": 98,
+        "spd": 73,
+        "spe": 68
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 17,
+        "def": 16,
+        "spa": 5,
+        "spd": 25,
+        "spe": 16
+      }
+    },
+    {
       "name": "Pawmo",
       "species": "Pawmo",
       "level": 87,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Volt Absorb",
+      "item": "sceptilite",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "glaciate",
+        "harden",
+        "waterpulse",
+        "ingrain"
+      ],
+      "evs": {
+        "hp": 103,
+        "atk": 94,
+        "def": 99,
+        "spa": 92,
+        "spd": 64,
+        "spe": 58
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 0,
+        "def": 11,
+        "spa": 10,
+        "spd": 21,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Mankey",
+      "species": "Mankey",
+      "level": 96,
+      "ability": "Vital Spirit",
+      "item": "eeviumz",
       "nature": "docile",
       "gender": "F",
       "moves": [
-        "glaciate"
+        "slash",
+        "relicsong",
+        "zingzap",
+        "razorshell"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 92,
+        "atk": 68,
+        "def": 87,
+        "spa": 96,
+        "spd": 74,
+        "spe": 93
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 9,
+        "atk": 10,
+        "def": 8,
+        "spa": 3,
+        "spd": 16,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Magearna",
+      "species": "Magearna",
+      "level": 74,
+      "ability": "Soul-Heart",
+      "item": "powerweight",
+      "nature": "gentle",
+      "gender": "",
+      "moves": [
+        "moonlight",
+        "mirrorshot",
+        "spite",
+        "filletaway"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 92,
+        "def": 83,
+        "spa": 97,
+        "spd": 53,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 11,
+        "def": 21,
+        "spa": 28,
+        "spd": 17,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Tirtouga",
+      "species": "Tirtouga",
+      "level": 65,
+      "ability": "Solid Rock",
+      "item": "tr96",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "hornleech",
+        "horndrill",
+        "hiddenpowerflying",
+        "flamethrower"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 67,
+        "def": 109,
+        "spa": 79,
+        "spd": 71,
+        "spe": 96
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 26,
+        "def": 22,
+        "spa": 1,
+        "spd": 6,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Rattata-Alola",
+      "species": "Rattata-Alola",
+      "level": 83,
+      "ability": "Gluttony",
+      "item": "manectite",
+      "nature": "bashful",
+      "gender": "M",
+      "moves": [
+        "maxrockfall",
+        "fissure",
+        "crosschop",
+        "airslash"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 105,
+        "def": 70,
+        "spa": 115,
+        "spd": 68,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 20,
+        "def": 21,
+        "spa": 4,
+        "spd": 25,
+        "spe": 15
       }
     }
   ],
-  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->7, P1=[Drampa(86/170)], P2=[Pawmo(222/246)]\" vs Rust=\"#1: turn=2, prng=0->7, P1=[Drampa(128/170)], P2=[Pawmo(222/246)]\""
+  "_bug": "Diverges at line 18: JS=\"#18: turn=16, prng=72->82, P1=[Drampa(121/165)], P2=[Pawmo(95/240)]\" vs Rust=\"#18: turn=16, prng=72->82, P1=[Drampa(162/165)], P2=[Pawmo(95/240)]\""
 }

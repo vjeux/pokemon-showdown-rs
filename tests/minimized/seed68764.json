@@ -4,89 +4,376 @@
       "name": "Noibat",
       "species": "Noibat",
       "level": 78,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Frisk",
+      "item": "wateriumz",
+      "nature": "modest",
       "gender": "M",
       "moves": [
-        "tackle"
+        "boneclub",
+        "attackorder",
+        "dragonrage",
+        "kinesis"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 65,
+        "atk": 101,
+        "def": 84,
+        "spa": 77,
+        "spd": 107,
+        "spe": 76
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
+        "hp": 21,
+        "atk": 16,
+        "def": 2,
+        "spa": 9,
+        "spd": 20,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Pyroar",
+      "species": "Pyroar",
+      "level": 58,
+      "ability": "Rivalry",
+      "item": "spelltag",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "gearup",
+        "hurricane",
+        "thief",
+        "gmaxterror"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 75,
+        "def": 96,
+        "spa": 71,
+        "spd": 75,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 6,
         "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spa": 20,
+        "spd": 6,
+        "spe": 24
       }
     },
     {
       "name": "Chromera",
       "species": "Chromera",
       "level": 97,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Color Change",
+      "item": "tr80",
+      "nature": "mild",
       "gender": "",
       "moves": [
-        "round"
+        "round",
+        "punishment",
+        "multiattack",
+        "hiddenpowerdragon"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 77,
+        "atk": 74,
+        "def": 69,
+        "spa": 91,
+        "spd": 102,
+        "spe": 97
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
+        "hp": 27,
+        "atk": 4,
         "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spa": 17,
+        "spd": 5,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Regirock",
+      "species": "Regirock",
+      "level": 71,
+      "ability": "Clear Body",
+      "item": "oldamber",
+      "nature": "rash",
+      "gender": "",
+      "moves": [
+        "sunsteelstrike",
+        "headcharge",
+        "flamethrower",
+        "powerswap"
+      ],
+      "evs": {
+        "hp": 60,
+        "atk": 91,
+        "def": 70,
+        "spa": 88,
+        "spd": 93,
+        "spe": 108
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 22,
+        "def": 18,
+        "spa": 12,
+        "spd": 15,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Chien-Pao",
+      "species": "Chien-Pao",
+      "level": 53,
+      "ability": "Sword of Ruin",
+      "item": "mindplate",
+      "nature": "jolly",
+      "gender": "",
+      "moves": [
+        "skyattack",
+        "trickroom",
+        "relicsong",
+        "shadowpunch"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 84,
+        "def": 89,
+        "spa": 99,
+        "spd": 59,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 12,
+        "def": 14,
+        "spa": 1,
+        "spd": 19,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Gyarados",
+      "species": "Gyarados",
+      "level": 79,
+      "ability": "Intimidate",
+      "item": "grepaberry",
+      "nature": "adamant",
+      "gender": "M",
+      "moves": [
+        "odorsleuth",
+        "shadowstrike",
+        "landswrath",
+        "gmaxsteelsurge"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 105,
+        "def": 79,
+        "spa": 70,
+        "spd": 68,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 19,
+        "def": 28,
+        "spa": 5,
+        "spd": 25,
+        "spe": 29
       }
     }
   ],
   "p2": [
     {
+      "name": "Pikipek",
+      "species": "Pikipek",
+      "level": 87,
+      "ability": "Keen Eye",
+      "item": "lansatberry",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "spotlight",
+        "chloroblast",
+        "octolock",
+        "entrainment"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 87,
+        "def": 99,
+        "spa": 98,
+        "spd": 67,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 6,
+        "def": 20,
+        "spa": 23,
+        "spd": 11,
+        "spe": 16
+      }
+    },
+    {
       "name": "Togekiss",
       "species": "Togekiss",
       "level": 78,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Hustle",
+      "item": "heracronite",
+      "nature": "bold",
       "gender": "M",
       "moves": [
         "ingrain",
-        "round"
+        "round",
+        "flowershield",
+        "spark"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 94,
+        "atk": 93,
+        "def": 73,
+        "spa": 84,
+        "spd": 84,
+        "spe": 82
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 3,
+        "atk": 7,
+        "def": 19,
+        "spa": 2,
+        "spd": 20,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Decidueye",
+      "species": "Decidueye",
+      "level": 72,
+      "ability": "Overgrow",
+      "item": "loveball",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "brickbreak",
+        "attract",
+        "conversion2",
+        "flamecharge"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 100,
+        "def": 79,
+        "spa": 85,
+        "spd": 70,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 3,
+        "def": 15,
+        "spa": 19,
+        "spd": 26,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Pumpkaboo-Small",
+      "species": "Pumpkaboo-Small",
+      "level": 91,
+      "ability": "Pickup",
+      "item": "lumberry",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "brutalswing",
+        "irontail",
+        "horndrill",
+        "teeterdance"
+      ],
+      "evs": {
+        "hp": 74,
+        "atk": 104,
+        "def": 109,
+        "spa": 69,
+        "spd": 75,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 5,
+        "def": 10,
+        "spa": 1,
+        "spd": 17,
+        "spe": 9
+      }
+    },
+    {
+      "name": "Rhyperior",
+      "species": "Rhyperior",
+      "level": 93,
+      "ability": "Lightning Rod",
+      "item": "nanabberry",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "maxgeyser",
+        "freezeshock",
+        "lovelykiss",
+        "defog"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 85,
+        "def": 90,
+        "spa": 95,
+        "spd": 87,
+        "spe": 55
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 15,
+        "def": 4,
+        "spa": 8,
+        "spd": 22,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Excadrill",
+      "species": "Excadrill",
+      "level": 92,
+      "ability": "Sand Rush",
+      "item": "galaricacuff",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "superpower",
+        "pursuit",
+        "furycutter",
+        "icehammer"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 81,
+        "def": 103,
+        "spa": 94,
+        "spd": 99,
+        "spe": 57
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 0,
+        "def": 0,
+        "spa": 22,
+        "spd": 29,
+        "spe": 24
       }
     }
   ],
-  "_bug": "Diverges at line 37: JS=\"#37: turn=37, prng=111->117, P1=[Chromera(247/322)], P2=[Togekiss(189/261)]\" vs Rust=\"#37: turn=37, prng=111->117, P1=[Chromera(284/322)], P2=[Togekiss(189/261)]\""
+  "_bug": "Diverges at line 66: JS=\"#66: turn=64, prng=111->117, P1=[Chromera(242/316)], P2=[Togekiss(159/240)]\" vs Rust=\"#66: turn=64, prng=111->117, P1=[Chromera(278/316)], P2=[Togekiss(159/240)]\""
 }

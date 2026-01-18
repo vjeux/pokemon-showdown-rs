@@ -4,14 +4,15 @@
       "name": "Sewaddle",
       "species": "Sewaddle",
       "level": 70,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Swarm",
+      "item": "tr64",
       "nature": "docile",
       "gender": "M",
       "moves": [
         "gmaxmeltdown",
         "maxsteelspike",
-        "tackle"
+        "hurricane",
+        "brickbreak"
       ],
       "evs": {
         "hp": 107,
@@ -31,92 +32,348 @@
       }
     },
     {
+      "name": "Regigigas",
+      "species": "Regigigas",
+      "level": 83,
+      "ability": "Slow Start",
+      "item": "banettite",
+      "nature": "quiet",
+      "gender": "",
+      "moves": [
+        "afteryou",
+        "rockthrow",
+        "counter",
+        "polarflare"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 85,
+        "def": 69,
+        "spa": 86,
+        "spd": 103,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 16,
+        "def": 27,
+        "spa": 12,
+        "spd": 14,
+        "spe": 30
+      }
+    },
+    {
       "name": "Snugglow",
       "species": "Snugglow",
       "level": 80,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Storm Drain",
+      "item": "goldbottlecap",
+      "nature": "mild",
       "gender": "M",
       "moves": [
-        "tackle"
+        "thundershock",
+        "floralhealing",
+        "tarshot",
+        "snaptrap"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
+        "hp": 71,
+        "atk": 82,
+        "def": 59,
+        "spa": 123,
+        "spd": 90,
         "spe": 85
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 26,
+        "atk": 9,
+        "def": 16,
+        "spa": 6,
+        "spd": 2,
+        "spe": 13
+      }
+    },
+    {
+      "name": "Cherubi",
+      "species": "Cherubi",
+      "level": 77,
+      "ability": "Chlorophyll",
+      "item": "wellspringmask",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "matchagotcha",
+        "metronome",
+        "thunderpunch",
+        "firepledge"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 91,
+        "def": 69,
+        "spa": 109,
+        "spd": 73,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 22,
+        "def": 13,
+        "spa": 24,
+        "spd": 16,
+        "spe": 23
       }
     },
     {
       "name": "Avalugg",
       "species": "Avalugg",
       "level": 78,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Own Tempo",
+      "item": "sailfossil",
+      "nature": "careful",
       "gender": "F",
       "moves": [
-        "destinybond"
+        "destinybond",
+        "crushgrip",
+        "aurasphere",
+        "blazekick"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 104,
+        "atk": 79,
+        "def": 73,
+        "spa": 97,
+        "spd": 77,
+        "spe": 80
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
+        "hp": 14,
+        "atk": 6,
+        "def": 22,
+        "spa": 25,
+        "spd": 28,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Tatsugiri-Droopy",
+      "species": "Tatsugiri-Droopy",
+      "level": 97,
+      "ability": "Commander",
+      "item": "tyranitarite",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "spite",
+        "dragoncheer",
+        "earthquake",
+        "gust"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 95,
+        "def": 65,
+        "spa": 88,
+        "spd": 88,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 9,
+        "def": 25,
         "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spd": 10,
+        "spe": 24
       }
     }
   ],
   "p2": [
     {
+      "name": "Sandshrew-Alola",
+      "species": "Sandshrew-Alola",
+      "level": 57,
+      "ability": "Snow Cloak",
+      "item": "galaricawreath",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "submission",
+        "overheat",
+        "hex",
+        "healorder"
+      ],
+      "evs": {
+        "hp": 55,
+        "atk": 70,
+        "def": 103,
+        "spa": 86,
+        "spd": 108,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 12,
+        "def": 6,
+        "spa": 15,
+        "spd": 8,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Argalis",
+      "species": "Argalis",
+      "level": 50,
+      "ability": "Shed Skin",
+      "item": "hearthflamemask",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "meteorassault",
+        "originpulse",
+        "recover",
+        "sharpen"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 72,
+        "def": 94,
+        "spa": 63,
+        "spd": 105,
+        "spe": 111
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 21,
+        "def": 8,
+        "spa": 2,
+        "spd": 29,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Medicham",
+      "species": "Medicham",
+      "level": 68,
+      "ability": "Pure Power",
+      "item": "cobaberry",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "morningsun",
+        "megahorn",
+        "lightofruin",
+        "lunge"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 84,
+        "def": 88,
+        "spa": 93,
+        "spd": 73,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 17,
+        "def": 9,
+        "spa": 14,
+        "spd": 7,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Wishiwashi",
+      "species": "Wishiwashi",
+      "level": 70,
+      "ability": "Schooling",
+      "item": "petayaberry",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "gmaxhydrosnipe",
+        "headcharge",
+        "thunderpunch",
+        "letssnuggleforever"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 88,
+        "def": 65,
+        "spa": 87,
+        "spd": 108,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 23,
+        "def": 1,
+        "spa": 18,
+        "spd": 25,
+        "spe": 20
+      }
+    },
+    {
       "name": "Saharaja",
       "species": "Saharaja",
       "level": 94,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Water Absorb",
+      "item": "bindingband",
+      "nature": "naive",
       "gender": "M",
       "moves": [
         "attract",
-        "sappyseed"
+        "sappyseed",
+        "flash",
+        "dragonenergy"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 90,
+        "atk": 112,
+        "def": 102,
+        "spa": 77,
+        "spd": 64,
+        "spe": 65
       },
       "ivs": {
-        "hp": 31,
+        "hp": 23,
         "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "def": 16,
+        "spa": 2,
+        "spd": 9,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Lunatone",
+      "species": "Lunatone",
+      "level": 87,
+      "ability": "Levitate",
+      "item": "salacberry",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "followme",
+        "falsesurrender",
+        "darkpulse",
+        "gmaxrapidflow"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 94,
+        "def": 80,
+        "spa": 62,
+        "spd": 105,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 12,
+        "def": 20,
+        "spa": 27,
+        "spd": 4,
+        "spe": 4
       }
     }
   ],
-  "_bug": "Diverges at line 37: JS=\"#37: turn=35, prng=96->99, P1=[Avalugg(0/276)], P2=[Saharaja(284/284)]\" vs Rust=\"#37: turn=35, prng=96->99, P1=[Avalugg(0/276)], P2=[Saharaja(0/284)]\""
+  "_bug": "Diverges at line 76: JS=\"#76: turn=68, prng=186->189, P1=[Avalugg(0/267)], P2=[Saharaja(183/277)]\" vs Rust=\"#76: turn=68, prng=186->189, P1=[Avalugg(0/267)], P2=[Saharaja(0/277)]\""
 }

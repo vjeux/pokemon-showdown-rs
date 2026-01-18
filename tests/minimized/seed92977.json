@@ -4,141 +4,186 @@
       "name": "Kakuna",
       "species": "Kakuna",
       "level": 66,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Shed Skin",
+      "item": "garchompite",
+      "nature": "hasty",
       "gender": "M",
       "moves": [
-        "purify"
+        "purify",
+        "swallow",
+        "hyperbeam",
+        "heatcrash"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 108,
+        "atk": 96,
+        "def": 72,
+        "spa": 62,
+        "spd": 97,
+        "spe": 75
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 26,
+        "atk": 15,
+        "def": 14,
+        "spa": 1,
+        "spd": 2,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Helioptile",
+      "species": "Helioptile",
+      "level": 73,
+      "ability": "Dry Skin",
+      "item": "heracronite",
+      "nature": "hardy",
+      "gender": "M",
+      "moves": [
+        "nightmare",
+        "continentalcrush",
+        "honeclaws",
+        "acrobatics"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 82,
+        "def": 87,
+        "spa": 97,
+        "spd": 85,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 7,
+        "def": 22,
+        "spa": 8,
+        "spd": 6,
+        "spe": 29
       }
     },
     {
       "name": "Scrafty-Mega",
       "species": "Scrafty-Mega",
       "level": 79,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Shed Skin",
+      "item": "tr45",
+      "nature": "gentle",
       "gender": "M",
       "moves": [
         "shockwave",
-        "dragonenergy"
+        "dragonenergy",
+        "healingwish",
+        "boneclub"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 96,
+        "atk": 88,
+        "def": 94,
+        "spa": 62,
+        "spd": 91,
+        "spe": 79
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 28,
+        "atk": 3,
+        "def": 16,
+        "spa": 7,
+        "spd": 15,
+        "spe": 24
       }
     },
     {
       "name": "Pikachu-Starter",
       "species": "Pikachu-Starter",
       "level": 53,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Static",
+      "item": "magnet",
+      "nature": "sassy",
       "gender": "F",
       "moves": [
-        "stickyweb"
+        "stickyweb",
+        "morningsun",
+        "psywave",
+        "tropkick"
       ],
       "evs": {
-        "hp": 85,
+        "hp": 109,
         "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "def": 79,
+        "spa": 91,
+        "spd": 62,
+        "spe": 84
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 25,
+        "atk": 19,
+        "def": 6,
+        "spa": 11,
+        "spd": 28,
+        "spe": 6
       }
     },
     {
       "name": "Kyurem",
       "species": "Kyurem",
       "level": 95,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Pressure",
+      "item": "electirizer",
+      "nature": "brave",
       "gender": "",
       "moves": [
-        "tackle"
+        "bodypress",
+        "razorleaf",
+        "revelationdance",
+        "spore"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 68,
+        "atk": 75,
+        "def": 91,
+        "spa": 102,
+        "spd": 104,
+        "spe": 70
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 20,
+        "atk": 19,
+        "def": 1,
+        "spa": 4,
+        "spd": 19,
+        "spe": 28
       }
     },
     {
       "name": "Staraptor-Mega",
       "species": "Staraptor-Mega",
       "level": 76,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Intimidate",
+      "item": "grassmemory",
+      "nature": "lax",
       "gender": "F",
       "moves": [
-        "tackle"
+        "ceaselessedge",
+        "pulverizingpancake",
+        "mudshot",
+        "polarflare"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 92,
+        "atk": 84,
+        "def": 79,
+        "spa": 81,
+        "spd": 104,
+        "spe": 70
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 26,
+        "atk": 22,
+        "def": 21,
+        "spa": 19,
+        "spd": 1,
+        "spe": 1
       }
     }
   ],
@@ -147,15 +192,15 @@
       "name": "Landorus",
       "species": "Landorus",
       "level": 70,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Sand Force",
+      "item": "steelmemory",
       "nature": "quirky",
       "gender": "M",
       "moves": [
-        "tackle",
-        "tackle",
-        "tackle",
-        "tackle"
+        "swagger",
+        "cosmicpower",
+        "terastarstorm",
+        "flameburst"
       ],
       "evs": {
         "hp": 109,
@@ -179,29 +224,156 @@
       "species": "Bisharp",
       "level": 61,
       "ability": "Defiant",
-      "item": "",
-      "nature": "docile",
+      "item": "salacberry",
+      "nature": "timid",
       "gender": "F",
       "moves": [
-        "tackle"
+        "firelash",
+        "sizzlyslide",
+        "flipturn",
+        "snatch"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 120,
+        "atk": 87,
+        "def": 46,
+        "spa": 103,
+        "spd": 74,
+        "spe": 80
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 27,
+        "atk": 9,
+        "def": 2,
+        "spa": 0,
+        "spd": 14,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Palpitoad",
+      "species": "Palpitoad",
+      "level": 66,
+      "ability": "Swift Swim",
+      "item": "enigmaberry",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "cosmicpower",
+        "hardpress",
+        "tidyup",
+        "helpinghand"
+      ],
+      "evs": {
+        "hp": 64,
+        "atk": 58,
+        "def": 117,
+        "spa": 81,
+        "spd": 98,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 26,
+        "def": 29,
+        "spa": 15,
+        "spd": 15,
+        "spe": 10
+      }
+    },
+    {
+      "name": "Xatu",
+      "species": "Xatu",
+      "level": 79,
+      "ability": "Synchronize",
+      "item": "prismscale",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "splash",
+        "gmaxcannonade",
+        "wakeupslap",
+        "powershift"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 94,
+        "def": 71,
+        "spa": 82,
+        "spd": 82,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 25,
+        "def": 23,
+        "spa": 12,
+        "spd": 7,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Nosepass",
+      "species": "Nosepass",
+      "level": 81,
+      "ability": "Sturdy",
+      "item": "aerodactylite",
+      "nature": "careful",
+      "gender": "F",
+      "moves": [
+        "takedown",
+        "hiddenpowerghost",
+        "copycat",
+        "shadowpunch"
+      ],
+      "evs": {
+        "hp": 100,
+        "atk": 87,
+        "def": 91,
+        "spa": 100,
+        "spd": 51,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 13,
+        "def": 16,
+        "spa": 2,
+        "spd": 11,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Miltank",
+      "species": "Miltank",
+      "level": 65,
+      "ability": "Thick Fat",
+      "item": "yacheberry",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "moonlight",
+        "flowertrick",
+        "chillyreception",
+        "dualchop"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 116,
+        "def": 101,
+        "spa": 69,
+        "spd": 86,
+        "spe": 68
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 10,
+        "def": 5,
+        "spa": 1,
+        "spd": 29,
+        "spe": 23
       }
     }
   ],
-  "_bug": "Diverges at line 30: JS=\"#30: turn=27, prng=87->93, P1=[Kyurem(271/391)], P2=[Bisharp(138/182)]\" vs Rust=\"#30: turn=27, prng=87->93, P1=[Kyurem(287/391)], P2=[Bisharp(138/182)]\""
+  "_bug": "Diverges at line 86: JS=\"#86: turn=81, prng=187->195, P1=[Staraptor(156/252)], P2=[Bisharp(121/185)]\" vs Rust=\"#86: turn=81, prng=187->195, P1=[Staraptor(183/252)], P2=[Bisharp(121/185)]\""
 }

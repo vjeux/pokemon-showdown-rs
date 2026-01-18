@@ -1,120 +1,379 @@
 {
   "p1": [
     {
+      "name": "Skwovet",
+      "species": "Skwovet",
+      "level": 85,
+      "ability": "Cheek Pouch",
+      "item": "rockgem",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "gmaxdrumsolo",
+        "pinmissile",
+        "withdraw",
+        "gigatonhammer"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 98,
+        "def": 82,
+        "spa": 84,
+        "spd": 92,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 23,
+        "def": 8,
+        "spa": 8,
+        "spd": 19,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Carvanha",
+      "species": "Carvanha",
+      "level": 89,
+      "ability": "Rough Skin",
+      "item": "skyplate",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "guillotine",
+        "menacingmoonrazemaelstrom",
+        "noxioustorque",
+        "healbell"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 80,
+        "def": 91,
+        "spa": 101,
+        "spd": 53,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 23,
+        "def": 4,
+        "spa": 12,
+        "spd": 2,
+        "spe": 9
+      }
+    },
+    {
       "name": "Celebi",
       "species": "Celebi",
       "level": 97,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Natural Cure",
+      "item": "wepearberry",
+      "nature": "hardy",
       "gender": "",
       "moves": [
-        "toxicthread"
+        "toxicthread",
+        "playrough",
+        "chillingwater",
+        "gmaxchistrike"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 97,
+        "atk": 88,
+        "def": 81,
+        "spa": 91,
+        "spd": 72,
+        "spe": 81
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 12,
+        "atk": 17,
+        "def": 30,
+        "spa": 15,
+        "spd": 16,
+        "spe": 20
       }
     },
     {
       "name": "Gumshoos",
       "species": "Gumshoos",
       "level": 92,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Stakeout",
+      "item": "oldamber",
+      "nature": "hardy",
       "gender": "F",
       "moves": [
-        "spikes"
+        "spikes",
+        "psyshieldbash",
+        "meditate",
+        "hydropump"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 87,
+        "atk": 83,
+        "def": 78,
+        "spa": 111,
+        "spd": 70,
+        "spe": 81
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 26,
+        "atk": 8,
+        "def": 18,
+        "spa": 10,
+        "spd": 26,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Scyther",
+      "species": "Scyther",
+      "level": 75,
+      "ability": "Swarm",
+      "item": "damprock",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "clangoroussoul",
+        "junglehealing",
+        "maxguard",
+        "tripledive"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 63,
+        "def": 87,
+        "spa": 86,
+        "spd": 99,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 19,
+        "def": 29,
+        "spa": 11,
+        "spd": 13,
+        "spe": 6
       }
     },
     {
       "name": "Roggenrola",
       "species": "Roggenrola",
       "level": 84,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Sturdy",
+      "item": "sitrusberry",
+      "nature": "calm",
       "gender": "F",
       "moves": [
-        "tackle"
+        "gyroball",
+        "bulletseed",
+        "bravebird",
+        "celebrate"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 91,
+        "atk": 100,
+        "def": 88,
+        "spa": 69,
+        "spd": 94,
+        "spe": 68
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
+        "hp": 30,
+        "atk": 10,
+        "def": 10,
+        "spa": 18,
+        "spd": 7,
         "spe": 31
       }
     }
   ],
   "p2": [
     {
+      "name": "Greninja-Bond",
+      "species": "Greninja-Bond",
+      "level": 88,
+      "ability": "Battle Bond",
+      "item": "netball",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "megadrain",
+        "meteormash",
+        "captivate",
+        "guardianofalola"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 82,
+        "def": 104,
+        "spa": 113,
+        "spd": 68,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 9,
+        "def": 4,
+        "spa": 13,
+        "spd": 13,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Floatzel",
+      "species": "Floatzel",
+      "level": 62,
+      "ability": "Swift Swim",
+      "item": "rustedshield",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "solarblade",
+        "dragonascent",
+        "lightscreen",
+        "branchpoke"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 74,
+        "def": 110,
+        "spa": 95,
+        "spd": 67,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 5,
+        "def": 19,
+        "spa": 10,
+        "spd": 31,
+        "spe": 11
+      }
+    },
+    {
       "name": "Toedscool",
       "species": "Toedscool",
       "level": 77,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Mycelium Might",
+      "item": "metagrossite",
+      "nature": "mild",
       "gender": "F",
       "moves": [
         "magiccoat",
-        "tackle"
+        "sacredfire",
+        "veeveevolley",
+        "psywave"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 83,
+        "atk": 72,
+        "def": 102,
+        "spa": 93,
+        "spd": 87,
+        "spe": 73
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
+        "hp": 29,
+        "atk": 18,
+        "def": 15,
+        "spa": 1,
+        "spd": 19,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Chimecho-Mega",
+      "species": "Chimecho-Mega",
+      "level": 52,
+      "ability": "Levitate",
+      "item": "charcoal",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "aircutter",
+        "acid",
+        "lunge",
+        "lightofruin"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 95,
+        "def": 75,
+        "spa": 84,
+        "spd": 79,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 2,
+        "def": 22,
+        "spa": 28,
+        "spd": 27,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Gengar-Gmax",
+      "species": "Gengar-Gmax",
+      "level": 75,
+      "ability": "Cursed Body",
+      "item": "feraligite",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "grasspledge",
+        "dazzlinggleam",
+        "aquaring",
+        "stoneaxe"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 100,
+        "def": 82,
+        "spa": 72,
+        "spd": 102,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 2,
+        "def": 2,
+        "spa": 16,
+        "spd": 5,
         "spe": 31
+      }
+    },
+    {
+      "name": "Heracross",
+      "species": "Heracross",
+      "level": 57,
+      "ability": "Swarm",
+      "item": "masterball",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "tropkick",
+        "payback",
+        "hurricane",
+        "populationbomb"
+      ],
+      "evs": {
+        "hp": 67,
+        "atk": 82,
+        "def": 105,
+        "spa": 91,
+        "spd": 71,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 13,
+        "def": 3,
+        "spa": 27,
+        "spd": 15,
+        "spe": 22
       }
     }
   ],
-  "_bug": "Diverges at line 44: JS=\"#44: turn=43, prng=65->65, P1=[Roggenrola(173/230)], P2=[Toedscool(91/188)]\" vs Rust=\"#44: turn=43, prng=65->65, P1=[Roggenrola(230/230)], P2=[Toedscool(91/188)]\""
+  "_bug": "Diverges at line 64: JS=\"#64: turn=58, prng=122->122, P1=[Roggenrola(173/230)], P2=[Toedscool(186/186)]\" vs Rust=\"#64: turn=58, prng=122->122, P1=[Roggenrola(230/230)], P2=[Toedscool(186/186)]\""
 }

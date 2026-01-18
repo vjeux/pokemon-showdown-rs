@@ -4,28 +4,186 @@
       "name": "Vivillon-Savanna",
       "species": "Vivillon-Savanna",
       "level": 94,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Shield Dust",
+      "item": "meowsticite",
+      "nature": "gentle",
       "gender": "M",
       "moves": [
-        "obstruct"
+        "obstruct",
+        "whirlpool",
+        "dragonrage",
+        "flameburst"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 87,
+        "atk": 60,
+        "def": 113,
+        "spa": 84,
+        "spd": 73,
+        "spe": 93
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 26,
+        "atk": 14,
+        "def": 27,
+        "spa": 22,
+        "spd": 10,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Finneon",
+      "species": "Finneon",
+      "level": 97,
+      "ability": "Swift Swim",
+      "item": "darkmemory",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "heatwave",
+        "thunder",
+        "shadowbone",
+        "collisioncourse"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 74,
+        "def": 86,
+        "spa": 92,
+        "spd": 104,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 2,
+        "def": 3,
+        "spa": 20,
+        "spd": 28,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Brambleghast",
+      "species": "Brambleghast",
+      "level": 87,
+      "ability": "Wind Rider",
+      "item": "heavyball",
+      "nature": "quiet",
+      "gender": "M",
+      "moves": [
+        "paraboliccharge",
+        "silverwind",
+        "allyswitch",
+        "clearsmog"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 91,
+        "def": 106,
+        "spa": 65,
+        "spd": 120,
+        "spe": 52
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 17,
+        "def": 19,
+        "spa": 2,
+        "spd": 8,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Gogoat",
+      "species": "Gogoat",
+      "level": 55,
+      "ability": "Sap Sipper",
+      "item": "rockyhelmet",
+      "nature": "gentle",
+      "gender": "M",
+      "moves": [
+        "hardpress",
+        "scaryface",
+        "roost",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 80,
+        "def": 78,
+        "spa": 98,
+        "spd": 70,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 2,
+        "def": 26,
+        "spa": 1,
+        "spd": 1,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Bouffalant",
+      "species": "Bouffalant",
+      "level": 66,
+      "ability": "Reckless",
+      "item": "nevermeltice",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "sketch",
+        "gmaxfinale",
+        "brickbreak",
+        "doubleironbash"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 104,
+        "def": 96,
+        "spa": 110,
+        "spd": 80,
+        "spe": 55
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 14,
+        "def": 12,
+        "spa": 16,
+        "spd": 15,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Rookidee",
+      "species": "Rookidee",
+      "level": 69,
+      "ability": "Keen Eye",
+      "item": "tr16",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "powersplit",
+        "megakick",
+        "infernooverdrive",
+        "bite"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 48,
+        "def": 67,
+        "spa": 96,
+        "spd": 90,
+        "spe": 130
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 16,
+        "def": 4,
+        "spa": 21,
+        "spd": 16,
+        "spe": 7
       }
     }
   ],
@@ -34,30 +192,188 @@
       "name": "Skuntank",
       "species": "Skuntank",
       "level": 57,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Stench",
+      "item": "liechiberry",
       "nature": "docile",
       "gender": "F",
       "moves": [
-        "pulverizingpancake"
+        "pulverizingpancake",
+        "populationbomb",
+        "sleeppowder",
+        "shockwave"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 75,
+        "atk": 114,
+        "def": 69,
+        "spa": 90,
+        "spd": 82,
+        "spe": 80
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
+        "hp": 20,
+        "atk": 16,
+        "def": 10,
+        "spa": 24,
+        "spd": 4,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Cradily",
+      "species": "Cradily",
+      "level": 64,
+      "ability": "Suction Cups",
+      "item": "souldew",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "healblock",
+        "icespinner",
+        "maxquake",
+        "gmaxdepletion"
+      ],
+      "evs": {
+        "hp": 98,
+        "atk": 75,
+        "def": 85,
+        "spa": 98,
+        "spd": 62,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 17,
+        "def": 22,
+        "spa": 11,
+        "spd": 5,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Venomoth",
+      "species": "Venomoth",
+      "level": 93,
+      "ability": "Shield Dust",
+      "item": "strangeball",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "gmaxvolcalith",
+        "ragepowder",
+        "meteorassault",
+        "dragonenergy"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 92,
+        "def": 67,
+        "spa": 97,
+        "spd": 93,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 30,
+        "def": 10,
         "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spd": 10,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Arceus-Ice",
+      "species": "Arceus-Ice",
+      "level": 79,
+      "ability": "Multitype",
+      "item": "friendball",
+      "nature": "relaxed",
+      "gender": "",
+      "moves": [
+        "nightdaze",
+        "volttackle",
+        "firelash",
+        "photongeyser"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 77,
+        "def": 80,
+        "spa": 79,
+        "spd": 97,
+        "spe": 104
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 23,
+        "def": 4,
+        "spa": 29,
+        "spd": 1,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Huntail",
+      "species": "Huntail",
+      "level": 79,
+      "ability": "Swift Swim",
+      "item": "whiteherb",
+      "nature": "rash",
+      "gender": "M",
+      "moves": [
+        "cottonspore",
+        "naturalgift",
+        "victorydance",
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 99,
+        "atk": 104,
+        "def": 76,
+        "spa": 95,
+        "spd": 46,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 13,
+        "def": 16,
+        "spa": 23,
+        "spd": 6,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Perrserker",
+      "species": "Perrserker",
+      "level": 79,
+      "ability": "Battle Armor",
+      "item": "gyaradosite",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "nuzzle",
+        "solarblade",
+        "shatteredpsyche",
+        "crunch"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 79,
+        "def": 90,
+        "spa": 61,
+        "spd": 98,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 3,
+        "def": 0,
+        "spa": 24,
+        "spd": 29,
+        "spe": 23
       }
     }
   ],
-  "_bug": "Diverges at line 3: JS=\"#3: turn=4, prng=5->8, P1=[Vivillon(195/303)], P2=[Skuntank(160/214)]\" vs Rust=\"#3: turn=4, prng=5->8, P1=[Vivillon(172/303)], P2=[Skuntank(160/214)]\""
+  "_bug": "Diverges at line 8: JS=\"#8: turn=9, prng=13->44, P1=[Vivillon(109/298)], P2=[Skuntank(206/206)]\" vs Rust=\"#8: turn=9, prng=13->44, P1=[Vivillon(12/298)], P2=[Skuntank(206/206)]\""
 }

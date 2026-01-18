@@ -5,11 +5,14 @@
       "species": "Ampharos",
       "level": 93,
       "ability": "Static",
-      "item": "",
+      "item": "tr02",
       "nature": "mild",
       "gender": "M",
       "moves": [
-        "tackle"
+        "quash",
+        "strugglebug",
+        "shelter",
+        "rapidspin"
       ],
       "evs": {
         "hp": 101,
@@ -32,12 +35,15 @@
       "name": "Slither Wing",
       "species": "Slither Wing",
       "level": 98,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Protosynthesis",
+      "item": "ironplate",
       "nature": "hardy",
       "gender": "",
       "moves": [
-        "tackle"
+        "blazekick",
+        "gmaxfoamburst",
+        "icehammer",
+        "sludge"
       ],
       "evs": {
         "hp": 73,
@@ -55,6 +61,130 @@
         "spd": 3,
         "spe": 29
       }
+    },
+    {
+      "name": "Beheeyem",
+      "species": "Beheeyem",
+      "level": 71,
+      "ability": "Telepathy",
+      "item": "grassyseed",
+      "nature": "rash",
+      "gender": "M",
+      "moves": [
+        "hiddenpowerfighting",
+        "maxovergrowth",
+        "slam",
+        "payback"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 94,
+        "def": 94,
+        "spa": 90,
+        "spd": 97,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 14,
+        "atk": 28,
+        "def": 20,
+        "spa": 16,
+        "spd": 29,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Centiskorch",
+      "species": "Centiskorch",
+      "level": 96,
+      "ability": "Flash Fire",
+      "item": "ganlonberry",
+      "nature": "brave",
+      "gender": "F",
+      "moves": [
+        "maxsteelspike",
+        "maxovergrowth",
+        "happyhour",
+        "inferno"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 90,
+        "def": 108,
+        "spa": 80,
+        "spd": 76,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 12,
+        "def": 2,
+        "spa": 15,
+        "spd": 30,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Seadra",
+      "species": "Seadra",
+      "level": 60,
+      "ability": "Poison Point",
+      "item": "cornerstonemask",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "willowisp",
+        "gmaxstunshock",
+        "struggle",
+        "breakneckblitz"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 71,
+        "def": 70,
+        "spa": 116,
+        "spd": 77,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 3,
+        "def": 27,
+        "spa": 6,
+        "spd": 0,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Skrelp",
+      "species": "Skrelp",
+      "level": 81,
+      "ability": "Poison Point",
+      "item": "greninjite",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "calmmind",
+        "doubleshock",
+        "captivate",
+        "meditate"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 72,
+        "def": 86,
+        "spa": 86,
+        "spd": 99,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 19,
+        "def": 9,
+        "spa": 2,
+        "spd": 18,
+        "spe": 5
+      }
     }
   ],
   "p2": [
@@ -62,56 +192,124 @@
       "name": "Darumaka-Galar",
       "species": "Darumaka-Galar",
       "level": 69,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Hustle",
+      "item": "kelpsyberry",
+      "nature": "relaxed",
       "gender": "M",
       "moves": [
-        "tackle"
+        "sacredsword",
+        "sludgebomb",
+        "grasspledge",
+        "ruination"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 97,
+        "atk": 87,
+        "def": 93,
+        "spa": 77,
+        "spd": 80,
+        "spe": 76
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
+        "hp": 29,
+        "atk": 28,
+        "def": 15,
+        "spa": 24,
+        "spd": 2,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Forretress",
+      "species": "Forretress",
+      "level": 72,
+      "ability": "Sturdy",
+      "item": "tr05",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "tailglow",
+        "lavaplume",
+        "boltstrike",
+        "swordsdance"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 81,
+        "def": 79,
+        "spa": 110,
+        "spd": 71,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 24,
+        "def": 14,
+        "spa": 20,
         "spd": 31,
-        "spe": 31
+        "spe": 20
       }
     },
     {
       "name": "Quaxwell",
       "species": "Quaxwell",
       "level": 89,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Torrent",
+      "item": "powerlens",
+      "nature": "adamant",
       "gender": "F",
       "moves": [
-        "tackle"
+        "maxquake",
+        "autotomize",
+        "leafstorm",
+        "searingsunrazesmash"
       ],
       "evs": {
         "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "atk": 77,
+        "def": 74,
+        "spa": 80,
+        "spd": 95,
+        "spe": 99
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 26,
+        "atk": 13,
+        "def": 13,
+        "spa": 1,
+        "spd": 30,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Chuggalong",
+      "species": "Chuggalong",
+      "level": 50,
+      "ability": "Armor Tail",
+      "item": "groundmemory",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "noxioustorque",
+        "boomburst",
+        "teatime",
+        "kowtowcleave"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 113,
+        "def": 52,
+        "spa": 87,
+        "spd": 91,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 16,
+        "def": 17,
+        "spa": 21,
+        "spd": 8,
+        "spe": 12
       }
     },
     {
@@ -120,28 +318,62 @@
       "level": 53,
       "ability": "Anger Shell",
       "item": "iapapaberry",
-      "nature": "docile",
+      "nature": "serious",
       "gender": "M",
       "moves": [
-        "tidyup"
+        "tidyup",
+        "dig",
+        "psyshock",
+        "defendorder"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 94,
+        "atk": 68,
+        "def": 96,
+        "spa": 100,
+        "spd": 83,
+        "spe": 69
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
+        "hp": 30,
+        "atk": 17,
+        "def": 23,
+        "spa": 16,
+        "spd": 23,
         "spe": 31
+      }
+    },
+    {
+      "name": "Crucibelle",
+      "species": "Crucibelle",
+      "level": 74,
+      "ability": "Regenerator",
+      "item": "absorbbulb",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "highjumpkick",
+        "alloutpummeling",
+        "zenheadbutt",
+        "doubleteam"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 79,
+        "def": 74,
+        "spa": 98,
+        "spd": 87,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 14,
+        "def": 22,
+        "spa": 2,
+        "spd": 29,
+        "spe": 16
       }
     }
   ],
-  "_bug": "Diverges at line 24: JS=\"#24: turn=23, prng=102->105, P1=[Ampharos(86/311)], P2=[Klawf(45/164)]\" vs Rust=\"#24: turn=23, prng=102->105, P1=[Ampharos(86/311)], P2=[Klawf(36/164)]\""
+  "_bug": "Diverges at line 25: JS=\"#25: turn=20, prng=88->92, P1=[Slither Wing(275/301)], P2=[Klawf(0/165)]\" vs Rust=\"#25: turn=21, prng=88->92, P1=[Slither Wing(275/301)], P2=[Klawf(3/165)]\""
 }

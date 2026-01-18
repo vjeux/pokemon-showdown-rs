@@ -1,63 +1,379 @@
 {
   "p1": [
     {
-      "name": "Groudon",
-      "species": "Groudon",
-      "level": 75,
-      "ability": "Run Away",
-      "item": "redorb",
-      "nature": "docile",
-      "gender": "",
+      "name": "Bibarel",
+      "species": "Bibarel",
+      "level": 79,
+      "ability": "Simple",
+      "item": "zygardite",
+      "nature": "naive",
+      "gender": "F",
       "moves": [
-        "tackle"
+        "hardpress",
+        "xscissor",
+        "chatter",
+        "odorsleuth"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 95,
+        "atk": 77,
+        "def": 73,
+        "spa": 96,
+        "spd": 96,
+        "spe": 73
       },
       "ivs": {
         "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
+        "atk": 23,
+        "def": 30,
+        "spa": 21,
+        "spd": 23,
+        "spe": 26
+      }
+    },
+    {
+      "name": "Gimmighoul-Roaming",
+      "species": "Gimmighoul-Roaming",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "shinystone",
+      "nature": "relaxed",
+      "gender": "",
+      "moves": [
+        "followme",
+        "mindblown",
+        "stoneedge",
+        "cut"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 94,
+        "def": 115,
+        "spa": 68,
+        "spd": 79,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 23,
+        "def": 14,
+        "spa": 9,
+        "spd": 5,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Muk",
+      "species": "Muk",
+      "level": 93,
+      "ability": "Stench",
+      "item": "tr83",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "hyperfang",
+        "oblivionwing",
+        "facade",
+        "spectralthief"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 91,
+        "def": 86,
+        "spa": 86,
+        "spd": 89,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 3,
+        "def": 10,
+        "spa": 6,
+        "spd": 22,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Groudon",
+      "species": "Groudon",
+      "level": 75,
+      "ability": "Drought",
+      "item": "redorb",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "teatime",
+        "hiddenpowerfire",
+        "furyattack",
+        "recycle"
+      ],
+      "evs": {
+        "hp": 115,
+        "atk": 79,
+        "def": 89,
+        "spa": 92,
+        "spd": 46,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 12,
+        "def": 12,
+        "spa": 24,
+        "spd": 22,
+        "spe": 7
+      }
+    },
+    {
+      "name": "Xerneas-Neutral",
+      "species": "Xerneas-Neutral",
+      "level": 69,
+      "ability": "Fairy Aura",
+      "item": "tapuniumz",
+      "nature": "timid",
+      "gender": "",
+      "moves": [
+        "slackoff",
+        "tackle",
+        "clangingscales",
+        "psychocut"
+      ],
+      "evs": {
+        "hp": 83,
+        "atk": 82,
+        "def": 90,
+        "spa": 65,
+        "spd": 114,
+        "spe": 76
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 20,
+        "def": 27,
+        "spa": 4,
+        "spd": 14,
+        "spe": 13
+      }
+    },
+    {
+      "name": "Raticate-Alola-Totem",
+      "species": "Raticate-Alola-Totem",
+      "level": 62,
+      "ability": "Thick Fat",
+      "item": "cornnberry",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "fling",
+        "multiattack",
+        "maxsteelspike",
+        "steelbeam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 92,
+        "def": 59,
+        "spa": 76,
+        "spd": 98,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 25,
+        "def": 2,
+        "spa": 17,
+        "spd": 28,
         "spe": 31
       }
     }
   ],
   "p2": [
     {
+      "name": "Sandy Shocks",
+      "species": "Sandy Shocks",
+      "level": 80,
+      "ability": "Protosynthesis",
+      "item": "magnet",
+      "nature": "mild",
+      "gender": "",
+      "moves": [
+        "aromaticmist",
+        "volttackle",
+        "bounce",
+        "hiddenpowerdragon"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 54,
+        "def": 71,
+        "spa": 65,
+        "spd": 130,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 24,
+        "def": 14,
+        "spa": 28,
+        "spd": 6,
+        "spe": 25
+      }
+    },
+    {
+      "name": "Jolteon",
+      "species": "Jolteon",
+      "level": 64,
+      "ability": "Volt Absorb",
+      "item": "rarebone",
+      "nature": "bashful",
+      "gender": "M",
+      "moves": [
+        "dive",
+        "maxflutterby",
+        "spore",
+        "shellsidearm"
+      ],
+      "evs": {
+        "hp": 103,
+        "atk": 78,
+        "def": 77,
+        "spa": 77,
+        "spd": 89,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 15,
+        "def": 6,
+        "spa": 21,
+        "spd": 30,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Pokestar Smeargle",
+      "species": "Pokestar Smeargle",
+      "level": 61,
+      "ability": "Own Tempo",
+      "item": "dracoplate",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "teleport",
+        "cut",
+        "direclaw",
+        "torment"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 78,
+        "def": 93,
+        "spa": 106,
+        "spd": 56,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 8,
+        "def": 13,
+        "spa": 26,
+        "spd": 24,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Solrock",
+      "species": "Solrock",
+      "level": 93,
+      "ability": "Levitate",
+      "item": "tr94",
+      "nature": "bashful",
+      "gender": "",
+      "moves": [
+        "stuffcheeks",
+        "pluck",
+        "hydrocannon",
+        "razorwind"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 79,
+        "def": 98,
+        "spa": 81,
+        "spd": 81,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 13,
+        "def": 16,
+        "spa": 24,
+        "spd": 30,
+        "spe": 11
+      }
+    },
+    {
       "name": "Melmetal-Gmax",
       "species": "Melmetal-Gmax",
       "level": 73,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Iron Fist",
+      "item": "sailfossil",
+      "nature": "bold",
       "gender": "",
       "moves": [
-        "tackle"
+        "bleakwindstorm",
+        "camouflage",
+        "sandstorm",
+        "taunt"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 79,
+        "atk": 88,
+        "def": 87,
+        "spa": 87,
+        "spd": 93,
+        "spe": 76
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 28,
+        "atk": 1,
+        "def": 0,
+        "spa": 0,
+        "spd": 18,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Enamorus",
+      "species": "Enamorus",
+      "level": 51,
+      "ability": "Cute Charm",
+      "item": "lightball",
+      "nature": "naughty",
+      "gender": "F",
+      "moves": [
+        "hydropump",
+        "mysticalfire",
+        "circlethrow",
+        "growl"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 78,
+        "def": 100,
+        "spa": 71,
+        "spd": 88,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 14,
+        "def": 11,
+        "spa": 16,
+        "spd": 24,
+        "spe": 10
       }
     }
   ],
-  "_bug": "Diverges at line 14: JS=\"#14: turn=14, prng=78->84, P1=[Groudon(0/274)], P2=[Melmetal(104/318)]\" vs Rust=\"#14: turn=14, prng=78->84, P1=[Groudon(0/100)], P2=[Melmetal(104/318)]\""
+  "_bug": "Diverges at line 66: JS=\"#66: turn=58, prng=195->198, P1=[Groudon(32/268)], P2=[Melmetal(0/314)]\" vs Rust=\"#66: turn=59, prng=195->198, P1=[Groudon(32/268)], P2=[Melmetal(14/314)]\""
 }

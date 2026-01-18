@@ -1,120 +1,379 @@
 {
   "p1": [
     {
+      "name": "Silvally-Poison",
+      "species": "Silvally-Poison",
+      "level": 71,
+      "ability": "RKS System",
+      "item": "lureball",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "barrage",
+        "megadrain",
+        "bugbuzz",
+        "hydrocannon"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 88,
+        "def": 90,
+        "spa": 86,
+        "spd": 82,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 22,
+        "def": 27,
+        "spa": 17,
+        "spd": 26,
+        "spe": 28
+      }
+    },
+    {
       "name": "Toxicroak",
       "species": "Toxicroak",
       "level": 53,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Anticipation",
+      "item": "lumberry",
+      "nature": "lonely",
       "gender": "F",
       "moves": [
-        "tackle"
+        "mountaingale",
+        "conversion",
+        "focusenergy",
+        "grudge"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 77,
+        "atk": 100,
+        "def": 87,
+        "spa": 93,
+        "spd": 106,
+        "spe": 47
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 21,
+        "atk": 0,
+        "def": 13,
+        "spa": 12,
+        "spd": 4,
+        "spe": 30
       }
     },
     {
       "name": "Rhyperior",
       "species": "Rhyperior",
       "level": 61,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Lightning Rod",
+      "item": "lightclay",
+      "nature": "bold",
       "gender": "M",
       "moves": [
-        "lastresort"
+        "lastresort",
+        "crosschop",
+        "ficklebeam",
+        "esperwing"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 95,
+        "atk": 79,
+        "def": 86,
+        "spa": 105,
+        "spd": 64,
+        "spe": 81
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 19,
+        "atk": 22,
+        "def": 17,
+        "spa": 26,
+        "spd": 1,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Wurmple",
+      "species": "Wurmple",
+      "level": 79,
+      "ability": "Shield Dust",
+      "item": "flameorb",
+      "nature": "naughty",
+      "gender": "F",
+      "moves": [
+        "taunt",
+        "terablast",
+        "mindblown",
+        "jetpunch"
+      ],
+      "evs": {
+        "hp": 57,
+        "atk": 99,
+        "def": 105,
+        "spa": 90,
+        "spd": 84,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 11,
+        "def": 13,
+        "spa": 18,
+        "spd": 20,
+        "spe": 11
       }
     },
     {
       "name": "Yamask",
       "species": "Yamask",
       "level": 98,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Mummy",
+      "item": "scopelens",
+      "nature": "hardy",
       "gender": "F",
       "moves": [
-        "barrier"
+        "barrier",
+        "magicroom",
+        "sacredsword",
+        "doomdesire"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 106,
+        "atk": 104,
+        "def": 81,
+        "spa": 60,
+        "spd": 82,
+        "spe": 77
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 5,
+        "atk": 17,
+        "def": 25,
+        "spa": 11,
+        "spd": 22,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Regigigas",
+      "species": "Regigigas",
+      "level": 77,
+      "ability": "Slow Start",
+      "item": "bindingband",
+      "nature": "brave",
+      "gender": "",
+      "moves": [
+        "headcharge",
+        "swagger",
+        "flareblitz",
+        "screech"
+      ],
+      "evs": {
+        "hp": 64,
+        "atk": 73,
+        "def": 80,
+        "spa": 89,
+        "spd": 95,
+        "spe": 109
+      },
+      "ivs": {
+        "hp": 22,
+        "atk": 16,
+        "def": 28,
+        "spa": 9,
+        "spd": 4,
+        "spe": 22
       }
     }
   ],
   "p2": [
     {
+      "name": "Sandygast",
+      "species": "Sandygast",
+      "level": 97,
+      "ability": "Water Compaction",
+      "item": "tr89",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "constrict",
+        "maxgeyser",
+        "moonlight",
+        "strengthsap"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 65,
+        "def": 95,
+        "spa": 91,
+        "spd": 89,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 19,
+        "def": 23,
+        "spa": 19,
+        "spd": 13,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Grookey",
+      "species": "Grookey",
+      "level": 53,
+      "ability": "Overgrow",
+      "item": "thunderstone",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "temperflare",
+        "flipturn",
+        "clangoroussoul",
+        "grudge"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 93,
+        "def": 70,
+        "spa": 90,
+        "spd": 84,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 21,
+        "def": 4,
+        "spa": 31,
+        "spd": 10,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Dugtrio",
+      "species": "Dugtrio",
+      "level": 69,
+      "ability": "Sand Veil",
+      "item": "wikiberry",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "attract",
+        "rage",
+        "skyattack",
+        "sparklyswirl"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 112,
+        "def": 66,
+        "spa": 86,
+        "spd": 74,
+        "spe": 95
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 18,
+        "def": 26,
+        "spa": 7,
+        "spd": 21,
+        "spe": 28
+      }
+    },
+    {
       "name": "Girafarig",
       "species": "Girafarig",
       "level": 68,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Inner Focus",
+      "item": "watmelberry",
+      "nature": "calm",
       "gender": "F",
       "moves": [
         "futuresight",
-        "stompingtantrum"
+        "stompingtantrum",
+        "collisioncourse",
+        "leechseed"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 87,
+        "atk": 70,
+        "def": 75,
+        "spa": 88,
+        "spd": 93,
+        "spe": 97
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
+        "hp": 22,
+        "atk": 30,
+        "def": 15,
+        "spa": 4,
+        "spd": 26,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Meowth",
+      "species": "Meowth",
+      "level": 82,
+      "ability": "Pickup",
+      "item": "chartiberry",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "shadowforce",
+        "forestscurse",
+        "forcepalm",
+        "doodle"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 71,
+        "def": 78,
+        "spa": 119,
+        "spd": 80,
+        "spe": 81
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 3,
+        "def": 28,
         "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spd": 27,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Ho-Oh",
+      "species": "Ho-Oh",
+      "level": 79,
+      "ability": "Pressure",
+      "item": "charizarditex",
+      "nature": "gentle",
+      "gender": "",
+      "moves": [
+        "guardianofalola",
+        "shiftgear",
+        "iceshard",
+        "bugbuzz"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 68,
+        "def": 72,
+        "spa": 100,
+        "spd": 80,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 19,
+        "def": 16,
+        "spa": 9,
+        "spd": 27,
+        "spe": 22
       }
     }
   ],
-  "_bug": "Diverges at line 19: JS=\"#19: turn=18, prng=24->27, P1=[Yamask(57/233)], P2=[Girafarig(147/208)]\" vs Rust=\"#19: turn=18, prng=24->27, P1=[Yamask(51/233)], P2=[Girafarig(147/208)]\""
+  "_bug": "Diverges at line 63: JS=\"#63: turn=57, prng=198->201, P1=[Yamask(123/212)], P2=[Girafarig(39/202)]\" vs Rust=\"#63: turn=57, prng=198->201, P1=[Yamask(117/212)], P2=[Girafarig(39/202)]\""
 }

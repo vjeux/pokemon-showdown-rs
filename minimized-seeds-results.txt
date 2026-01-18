@@ -1,0 +1,985 @@
+=======================================
+Part 1: Regression Tests (Seeds 1-1000)
+=======================================
+
+Building Rust binaries...
+Running unified tests...
+Comparing unified results...
+
+FAIL Seed 943:
+  JS:   SEED 943: turns=94, prng=159, winner=none
+  Rust: SEED 943: turns=95, prng=162, winner=none
+
+Unified tests: 999/1000 passed
+REGRESSION DETECTED! Failed seeds: 943
+
+=======================================
+Part 2: Minimized Seeds Tests (minimized teams)
+=======================================
+
+Running 156 minimized seed tests...
+Comparing minimized results...
+
+FAIL Seed 943 (minimized):
+  JS:   SEED 943: turns=94, prng=159, winner=none
+  Rust: SEED 943: turns=95, prng=162, winner=none
+FAIL Seed 1101 (minimized):
+  JS:   SEED 1101: turns=9, prng=11, winner=p1
+  Rust: SEED 1101: turns=9, prng=12, winner=p1
+FAIL Seed 2719 (minimized):
+  JS:   SEED 2719: turns=46, prng=69, winner=p1
+  Rust: SEED 2719: turns=46, prng=73, winner=p2
+FAIL Seed 4682 (minimized):
+  JS:   SEED 4682: turns=38, prng=144, winner=p2
+  Rust: SEED 4682: turns=38, prng=143, winner=p2
+FAIL Seed 6991 (minimized):
+  JS:   SEED 6991: turns=20, prng=58, winner=p2
+  Rust: SEED 6991: turns=19, prng=63, winner=p1
+FAIL Seed 10653 (minimized):
+  JS:   SEED 10653: turns=14, prng=65, winner=p1
+  Rust: SEED 10653: turns=15, prng=68, winner=p1
+FAIL Seed 10825 (minimized):
+  JS:   SEED 10825: turns=19, prng=49, winner=p1
+  Rust: SEED 10825: turns=17, prng=50, winner=p1
+FAIL Seed 12832 (minimized):
+  JS:   SEED 12832: turns=19, prng=43, winner=p2
+  Rust: SEED 12832: turns=19, prng=44, winner=p2
+FAIL Seed 14097 (minimized):
+  JS:   SEED 14097: turns=12, prng=33, winner=p2
+  Rust: SEED 14097: turns=17, prng=53, winner=p1
+FAIL Seed 15080 (minimized):
+  JS:   SEED 15080: turns=40, prng=165, winner=p1
+  Rust: SEED 15080: turns=41, prng=170, winner=p1
+FAIL Seed 15759 (minimized):
+  JS:   SEED 15759: turns=49, prng=121, winner=p1
+  Rust: SEED 15759: turns=48, prng=118, winner=p1
+FAIL Seed 15974 (minimized):
+  JS:   SEED 15974: turns=20, prng=197, winner=p1
+  Rust: SEED 15974: turns=20, prng=169, winner=p1
+FAIL Seed 16240 (minimized):
+  JS:   SEED 16240: turns=98, prng=99, winner=none
+  Rust: SEED 16240: turns=98, prng=102, winner=none
+FAIL Seed 17644 (minimized):
+  JS:   SEED 17644: turns=57, prng=148, winner=p2
+  Rust: SEED 17644: turns=60, prng=174, winner=p2
+FAIL Seed 19367 (minimized):
+  JS:   SEED 19367: turns=20, prng=57, winner=p1
+  Rust: SEED 19367: turns=19, prng=63, winner=p1
+FAIL Seed 19405 (minimized):
+  JS:   SEED 19405: turns=20, prng=87, winner=p1
+  Rust: SEED 19405: turns=20, prng=90, winner=p1
+FAIL Seed 19450 (minimized):
+  JS:   SEED 19450: turns=4, prng=10, winner=p1
+  Rust: SEED 19450: turns=2, prng=6, winner=p1
+FAIL Seed 19576 (minimized):
+  JS:   SEED 19576: turns=8, prng=16, winner=p2
+  Rust: SEED 19576: turns=5, prng=17, winner=p2
+FAIL Seed 20356 (minimized):
+  JS:   SEED 20356: turns=38, prng=159, winner=p1
+  Rust: SEED 20356: turns=39, prng=164, winner=p1
+FAIL Seed 22002 (minimized):
+  JS:   SEED 22002: turns=7, prng=27, winner=p2
+  Rust: SEED 22002: turns=7, prng=23, winner=p2
+FAIL Seed 23054 (minimized):
+  JS:   SEED 23054: turns=27, prng=76, winner=p1
+  Rust: SEED 23054: turns=33, prng=88, winner=p1
+FAIL Seed 23363 (minimized):
+  JS:   SEED 23363: turns=25, prng=325, winner=p2
+  Rust: SEED 23363: turns=24, prng=360, winner=p2
+FAIL Seed 25177 (minimized):
+  JS:   SEED 25177: turns=18, prng=99, winner=p1
+  Rust: SEED 25177: turns=20, prng=105, winner=p1
+FAIL Seed 25574 (minimized):
+  JS:   SEED 25574: turns=11, prng=33, winner=p2
+  Rust: SEED 25574: turns=11, prng=43, winner=p2
+FAIL Seed 26303 (minimized):
+  JS:   SEED 26303: turns=50, prng=242, winner=p1
+  Rust: SEED 26303: turns=52, prng=242, winner=p1
+FAIL Seed 26791 (minimized):
+  JS:   SEED 26791: turns=10, prng=26, winner=p2
+  Rust: SEED 26791: turns=6, prng=18, winner=p2
+FAIL Seed 29161 (minimized):
+  JS:   SEED 29161: turns=25, prng=78, winner=p2
+  Rust: SEED 29161: turns=25, prng=80, winner=p1
+FAIL Seed 29444 (minimized):
+  JS:   SEED 29444: turns=11, prng=26, winner=p2
+  Rust: SEED 29444: turns=4, prng=12, winner=p2
+FAIL Seed 30232 (minimized):
+  JS:   SEED 30232: turns=31, prng=152, winner=p2
+  Rust: SEED 30232: turns=32, prng=155, winner=p2
+FAIL Seed 30637 (minimized):
+  JS:   SEED 30637: turns=46, prng=236, winner=p1
+  Rust: SEED 30637: turns=51, prng=266, winner=p1
+FAIL Seed 31834 (minimized):
+  JS:   SEED 31834: turns=55, prng=327, winner=p2
+  Rust: SEED 31834: turns=56, prng=344, winner=p2
+FAIL Seed 32939 (minimized):
+  JS:   SEED 32939: turns=13, prng=65, winner=p1
+  Rust: SEED 32939: turns=13, prng=64, winner=p1
+FAIL Seed 34408 (minimized):
+  JS:   SEED 34408: turns=12, prng=26, winner=p1
+  Rust: SEED 34408: turns=17, prng=53, winner=p2
+FAIL Seed 34957 (minimized):
+  JS:   SEED 34957: turns=19, prng=54, winner=p1
+  Rust: SEED 34957: turns=18, prng=56, winner=p1
+FAIL Seed 35203 (minimized):
+  JS:   SEED 35203: turns=6, prng=104, winner=p2
+  Rust: SEED 35203: turns=6, prng=105, winner=p2
+FAIL Seed 35620 (minimized):
+  JS:   SEED 35620: turns=9, prng=27, winner=p2
+  Rust: SEED 35620: turns=9, prng=35, winner=p2
+FAIL Seed 35671 (minimized):
+  JS:   SEED 35671: turns=6, prng=18, winner=p2
+  Rust: SEED 35671: turns=5, prng=15, winner=p2
+FAIL Seed 37514 (minimized):
+  JS:   SEED 37514: turns=35, prng=168, winner=p1
+  Rust: SEED 37514: turns=36, prng=172, winner=p1
+FAIL Seed 38902 (minimized):
+  JS:   SEED 38902: turns=20, prng=117, winner=p1
+  Rust: SEED 38902: turns=21, prng=135, winner=p1
+FAIL Seed 39361 (minimized):
+  JS:   SEED 39361: turns=11, prng=56, winner=p1
+  Rust: SEED 39361: turns=25, prng=98, winner=p2
+FAIL Seed 39892 (minimized):
+  JS:   SEED 39892: turns=6, prng=24, winner=p1
+  Rust: SEED 39892: turns=17, prng=42, winner=p2
+FAIL Seed 40097 (minimized):
+  JS:   SEED 40097: turns=17, prng=66, winner=p2
+  Rust: SEED 40097: turns=11, prng=43, winner=p2
+FAIL Seed 40192 (minimized):
+  JS:   SEED 40192: turns=57, prng=403, winner=p1
+  Rust: SEED 40192: turns=57, prng=405, winner=p1
+FAIL Seed 40910 (minimized):
+  JS:   SEED 40910: turns=2, prng=16, winner=p1
+  Rust: SEED 40910: turns=3, prng=24, winner=p1
+FAIL Seed 42063 (minimized):
+  JS:   SEED 42063: turns=23, prng=88, winner=p2
+  Rust: SEED 42063: turns=22, prng=84, winner=p1
+FAIL Seed 42438 (minimized):
+  JS:   SEED 42438: turns=94, prng=250, winner=none
+  Rust: SEED 42438: turns=66, prng=160, winner=p2
+FAIL Seed 42548 (minimized):
+  JS:   SEED 42548: turns=80, prng=315, winner=p2
+  Rust: SEED 42548: turns=80, prng=322, winner=p2
+FAIL Seed 42627 (minimized):
+  JS:   SEED 42627: turns=21, prng=78, winner=p1
+  Rust: SEED 42627: turns=24, prng=98, winner=p1
+FAIL Seed 43891 (minimized):
+  JS:   SEED 43891: turns=18, prng=80, winner=p2
+  Rust: SEED 43891: turns=17, prng=75, winner=p2
+FAIL Seed 44135 (minimized):
+  JS:   SEED 44135: turns=20, prng=81, winner=p1
+  Rust: SEED 44135: turns=20, prng=81, winner=p2
+FAIL Seed 45311 (minimized):
+  JS:   SEED 45311: turns=3, prng=18, winner=p2
+  Rust: SEED 45311: turns=2, prng=12, winner=p2
+FAIL Seed 47061 (minimized):
+  JS:   SEED 47061: turns=11, prng=26, winner=p1
+  Rust: SEED 47061: turns=4, prng=12, winner=p1
+FAIL Seed 48133 (minimized):
+  JS:   SEED 48133: turns=24, prng=103, winner=p1
+  Rust: SEED 48133: turns=23, prng=100, winner=p1
+FAIL Seed 48178 (minimized):
+  JS:   SEED 48178: turns=18, prng=58, winner=p1
+  Rust: SEED 48178: turns=17, prng=53, winner=p1
+FAIL Seed 48311 (minimized):
+  JS:   SEED 48311: turns=15, prng=69, winner=p2
+  Rust: SEED 48311: turns=17, prng=85, winner=p1
+FAIL Seed 48318 (minimized):
+  JS:   SEED 48318: turns=2, prng=7, winner=p2
+  Rust: SEED 48318: turns=10, prng=30, winner=p1
+FAIL Seed 48869 (minimized):
+  JS:   SEED 48869: turns=3, prng=15, winner=p2
+  Rust: SEED 48869: turns=4, prng=25, winner=p2
+FAIL Seed 49341 (minimized):
+  JS:   SEED 49341: turns=16, prng=210, winner=p1
+  Rust: SEED 49341: turns=16, prng=236, winner=p1
+FAIL Seed 49637 (minimized):
+  JS:   SEED 49637: turns=87, prng=237, winner=p2
+  Rust: SEED 49637: turns=92, prng=191, winner=none
+FAIL Seed 51150 (minimized):
+  JS:   SEED 51150: turns=35, prng=208, winner=p2
+  Rust: SEED 51150: turns=54, prng=261, winner=p1
+FAIL Seed 52895 (minimized):
+  JS:   SEED 52895: turns=12, prng=24, winner=p2
+  Rust: SEED 52895: turns=12, prng=25, winner=p2
+FAIL Seed 53040 (minimized):
+  JS:   SEED 53040: turns=10, prng=24, winner=p1
+  Rust: SEED 53040: turns=4, prng=12, winner=p1
+FAIL Seed 53148 (minimized):
+  JS:   SEED 53148: turns=5, prng=23, winner=p1
+  Rust: SEED 53148: turns=6, prng=30, winner=p1
+FAIL Seed 53557 (minimized):
+  JS:   SEED 53557: turns=27, prng=81, winner=p1
+  Rust: SEED 53557: turns=27, prng=83, winner=p1
+FAIL Seed 53747 (minimized):
+  JS:   SEED 53747: turns=27, prng=133, winner=p1
+  Rust: SEED 53747: turns=28, prng=139, winner=p1
+FAIL Seed 54588 (minimized):
+  JS:   SEED 54588: turns=74, prng=276, winner=p2
+  Rust: SEED 54588: turns=68, prng=249, winner=p2
+FAIL Seed 55736 (minimized):
+  JS:   SEED 55736: turns=47, prng=271, winner=p2
+  Rust: SEED 55736: turns=49, prng=231, winner=p1
+FAIL Seed 56089 (minimized):
+  JS:   SEED 56089: turns=17, prng=53, winner=p1
+  Rust: SEED 56089: turns=18, prng=55, winner=p1
+FAIL Seed 56264 (minimized):
+  JS:   SEED 56264: turns=2, prng=9, winner=p2
+  Rust: SEED 56264: turns=3, prng=15, winner=p2
+FAIL Seed 56825 (minimized):
+  JS:   SEED 56825: turns=40, prng=48, winner=p2
+  Rust: SEED 56825: turns=41, prng=51, winner=p2
+FAIL Seed 59646 (minimized):
+  JS:   SEED 59646: turns=17, prng=0, winner=p1
+  Rust: SEED 59646: turns=21, prng=0, winner=p2
+FAIL Seed 60349 (minimized):
+  JS:   SEED 60349: turns=9, prng=51, winner=p2
+  Rust: SEED 60349: turns=9, prng=60, winner=p2
+FAIL Seed 60521 (minimized):
+  JS:   SEED 60521: turns=19, prng=97, winner=p2
+  Rust: SEED 60521: turns=19, prng=94, winner=p1
+FAIL Seed 60818 (minimized):
+  JS:   SEED 60818: turns=70, prng=295, winner=p2
+  Rust: SEED 60818: turns=58, prng=247, winner=p2
+FAIL Seed 60885 (minimized):
+  JS:   SEED 60885: turns=32, prng=106, winner=p1
+  Rust: SEED 60885: turns=32, prng=109, winner=p1
+FAIL Seed 61343 (minimized):
+  JS:   SEED 61343: turns=8, prng=270, winner=p1
+  Rust: SEED 61343: turns=8, prng=170, winner=p1
+FAIL Seed 61431 (minimized):
+  JS:   SEED 61431: turns=17, prng=45, winner=p2
+  Rust: SEED 61431: turns=17, prng=47, winner=p2
+FAIL Seed 62723 (minimized):
+  JS:   SEED 62723: turns=15, prng=34, winner=p1
+  Rust: SEED 62723: turns=17, prng=50, winner=p2
+FAIL Seed 63529 (minimized):
+  JS:   SEED 63529: turns=18, prng=52, winner=p1
+  Rust: SEED 63529: turns=18, prng=53, winner=p1
+FAIL Seed 63843 (minimized):
+  JS:   SEED 63843: turns=11, prng=30, winner=p1
+  Rust: SEED 63843: turns=10, prng=31, winner=p1
+FAIL Seed 64286 (minimized):
+  JS:   SEED 64286: turns=73, prng=200, winner=p2
+  Rust: SEED 64286: turns=81, prng=218, winner=p2
+FAIL Seed 64566 (minimized):
+  JS:   SEED 64566: turns=6, prng=189, winner=p1
+  Rust: SEED 64566: turns=6, prng=126, winner=p1
+FAIL Seed 64920 (minimized):
+  JS:   SEED 64920: turns=8, prng=116, winner=p1
+  Rust: SEED 64920: turns=9, prng=132, winner=p1
+FAIL Seed 65490 (minimized):
+  JS:   SEED 65490: turns=33, prng=125, winner=p2
+  Rust: SEED 65490: turns=31, prng=114, winner=p2
+FAIL Seed 65503 (minimized):
+  JS:   SEED 65503: turns=18, prng=47, winner=p1
+  Rust: SEED 65503: turns=19, prng=52, winner=p1
+FAIL Seed 65917 (minimized):
+  JS:   SEED 65917: turns=13, prng=32, winner=p2
+  Rust: SEED 65917: turns=6, prng=18, winner=p2
+FAIL Seed 67475 (minimized):
+  JS:   SEED 67475: turns=14, prng=58, winner=p1
+  Rust: SEED 67475: turns=9, prng=38, winner=p1
+FAIL Seed 67628 (minimized):
+  JS:   SEED 67628: turns=16, prng=37, winner=p2
+  Rust: SEED 67628: turns=17, prng=53, winner=p1
+FAIL Seed 67961 (minimized):
+  JS:   SEED 67961: turns=67, prng=238, winner=p1
+  Rust: SEED 67961: turns=65, prng=232, winner=p2
+FAIL Seed 68529 (minimized):
+  JS:   SEED 68529: turns=30, prng=16, winner=p1
+  Rust: SEED 68529: turns=30, prng=20, winner=p1
+FAIL Seed 68764 (minimized):
+  JS:   SEED 68764: turns=89, prng=213, winner=p2
+  Rust: SEED 68764: turns=93, prng=231, winner=none
+FAIL Seed 69794 (minimized):
+  JS:   SEED 69794: turns=10, prng=20, winner=p2
+  Rust: SEED 69794: turns=12, prng=27, winner=p2
+FAIL Seed 70293 (minimized):
+  JS:   SEED 70293: turns=11, prng=66, winner=p2
+  Rust: SEED 70293: turns=8, prng=54, winner=p2
+FAIL Seed 70719 (minimized):
+  JS:   SEED 70719: turns=48, prng=319, winner=p1
+  Rust: SEED 70719: turns=49, prng=324, winner=p1
+FAIL Seed 71124 (minimized):
+  JS:   SEED 71124: turns=20, prng=26, winner=p2
+  Rust: SEED 71124: turns=20, prng=8, winner=p2
+FAIL Seed 71148 (minimized):
+  JS:   SEED 71148: turns=86, prng=313, winner=p1
+  Rust: SEED 71148: turns=82, prng=308, winner=p1
+FAIL Seed 71155 (minimized):
+  JS:   SEED 71155: turns=4, prng=37, winner=p2
+  Rust: SEED 71155: turns=4, prng=39, winner=p2
+FAIL Seed 71505 (minimized):
+  JS:   SEED 71505: turns=38, prng=179, winner=p1
+  Rust: SEED 71505: turns=38, prng=178, winner=p1
+FAIL Seed 71847 (minimized):
+  JS:   SEED 71847: turns=25, prng=219, winner=p2
+  Rust: SEED 71847: turns=25, prng=200, winner=p2
+FAIL Seed 72568 (minimized):
+  JS:   SEED 72568: turns=41, prng=209, winner=p1
+  Rust: SEED 72568: turns=82, prng=224, winner=p1
+FAIL Seed 72782 (minimized):
+  JS:   SEED 72782: turns=21, prng=58, winner=p1
+  Rust: SEED 72782: turns=18, prng=64, winner=p1
+FAIL Seed 73093 (minimized):
+  JS:   SEED 73093: turns=92, prng=223, winner=none
+  Rust: SEED 73093: turns=66, prng=200, winner=p2
+FAIL Seed 73448 (minimized):
+  JS:   SEED 73448: turns=33, prng=162, winner=p1
+  Rust: SEED 73448: turns=30, prng=149, winner=p1
+FAIL Seed 73726 (minimized):
+  JS:   SEED 73726: turns=19, prng=49, winner=p2
+  Rust: SEED 73726: turns=18, prng=55, winner=p2
+FAIL Seed 73880 (minimized):
+  JS:   SEED 73880: turns=6, prng=24, winner=p2
+  Rust: SEED 73880: turns=9, prng=20, winner=p1
+FAIL Seed 74337 (minimized):
+  JS:   SEED 74337: turns=37, prng=201, winner=p1
+  Rust: SEED 74337: turns=37, prng=195, winner=p1
+FAIL Seed 74439 (minimized):
+  JS:   SEED 74439: turns=10, prng=57, winner=p2
+  Rust: SEED 74439: turns=10, prng=60, winner=p2
+FAIL Seed 75224 (minimized):
+  JS:   SEED 75224: turns=19, prng=103, winner=p2
+  Rust: SEED 75224: turns=21, prng=111, winner=p1
+FAIL Seed 75599 (minimized):
+  JS:   SEED 75599: turns=3, prng=30, winner=p1
+  Rust: SEED 75599: turns=4, prng=57, winner=p1
+FAIL Seed 76907 (minimized):
+  JS:   SEED 76907: turns=22, prng=264, winner=p2
+  Rust: SEED 76907: turns=22, prng=265, winner=p2
+FAIL Seed 77336 (minimized):
+  JS:   SEED 77336: turns=30, prng=33, winner=p2
+  Rust: SEED 77336: turns=32, prng=42, winner=p1
+FAIL Seed 77624 (minimized):
+  JS:   SEED 77624: turns=3, prng=15, winner=p2
+  Rust: SEED 77624: turns=3, prng=15, winner=p1
+FAIL Seed 77833 (minimized):
+  JS:   SEED 77833: turns=12, prng=24, winner=p2
+  Rust: SEED 77833: turns=10, prng=23, winner=p2
+FAIL Seed 77834 (minimized):
+  JS:   SEED 77834: turns=68, prng=187, winner=p2
+  Rust: SEED 77834: turns=70, prng=209, winner=p2
+FAIL Seed 78126 (minimized):
+  JS:   SEED 78126: turns=48, prng=202, winner=p2
+  Rust: SEED 78126: turns=50, prng=211, winner=p1
+FAIL Seed 78875 (minimized):
+  JS:   SEED 78875: turns=31, prng=93, winner=p1
+  Rust: SEED 78875: turns=32, prng=111, winner=p1
+FAIL Seed 79574 (minimized):
+  JS:   SEED 79574: turns=26, prng=93, winner=p1
+  Rust: SEED 79574: turns=23, prng=87, winner=p1
+FAIL Seed 80374 (minimized):
+  JS:   SEED 80374: turns=20, prng=52, winner=p2
+  Rust: SEED 80374: turns=18, prng=55, winner=p2
+FAIL Seed 81160 (minimized):
+  JS:   SEED 81160: turns=20, prng=57, winner=p2
+  Rust: SEED 81160: turns=19, prng=63, winner=p1
+FAIL Seed 81290 (minimized):
+  JS:   SEED 81290: turns=7, prng=21, winner=p2
+  Rust: SEED 81290: turns=5, prng=15, winner=p2
+FAIL Seed 81757 (minimized):
+  JS:   SEED 81757: turns=41, prng=60, winner=p2
+  Rust: SEED 81757: turns=43, prng=69, winner=p2
+FAIL Seed 81764 (minimized):
+  JS:   SEED 81764: turns=20, prng=74, winner=p2
+  Rust: SEED 81764: turns=22, prng=80, winner=p2
+FAIL Seed 82263 (minimized):
+  JS:   SEED 82263: turns=30, prng=143, winner=p2
+  Rust: SEED 82263: turns=14, prng=73, winner=p2
+FAIL Seed 82556 (minimized):
+  JS:   SEED 82556: turns=4, prng=14, winner=p2
+  Rust: SEED 82556: turns=6, prng=21, winner=p2
+FAIL Seed 82565 (minimized):
+  JS:   SEED 82565: turns=11, prng=39, winner=p1
+  Rust: SEED 82565: turns=11, prng=40, winner=p1
+FAIL Seed 82568 (minimized):
+  JS:   SEED 82568: turns=2, prng=7, winner=p1
+  Rust: SEED 82568: turns=2, prng=6, winner=p1
+FAIL Seed 82834 (minimized):
+  JS:   SEED 82834: turns=29, prng=56, winner=p1
+  Rust: SEED 82834: turns=30, prng=59, winner=p1
+FAIL Seed 83469 (minimized):
+  JS:   SEED 83469: turns=20, prng=118, winner=p2
+  Rust: SEED 83469: turns=21, prng=124, winner=p2
+FAIL Seed 83489 (minimized):
+  JS:   SEED 83489: turns=59, prng=434, winner=p2
+  Rust: SEED 83489: turns=59, prng=435, winner=p2
+FAIL Seed 83798 (minimized):
+  JS:   SEED 83798: turns=17, prng=69, winner=p2
+  Rust: SEED 83798: turns=17, prng=71, winner=p2
+FAIL Seed 84717 (minimized):
+  JS:   SEED 84717: turns=11, prng=35, winner=p2
+  Rust: SEED 84717: turns=11, prng=39, winner=p2
+FAIL Seed 85281 (minimized):
+  JS:   SEED 85281: turns=71, prng=158, winner=p2
+  Rust: SEED 85281: turns=69, prng=156, winner=p1
+FAIL Seed 85483 (minimized):
+  JS:   SEED 85483: turns=8, prng=16, winner=p2
+  Rust: SEED 85483: turns=6, prng=19, winner=p2
+FAIL Seed 87270 (minimized):
+  JS:   SEED 87270: turns=45, prng=193, winner=p1
+  Rust: SEED 87270: turns=37, prng=152, winner=p2
+FAIL Seed 87363 (minimized):
+  JS:   SEED 87363: turns=7, prng=28, winner=p1
+  Rust: SEED 87363: turns=8, prng=32, winner=p1
+FAIL Seed 87633 (minimized):
+  JS:   SEED 87633: turns=4, prng=32, winner=p2
+  Rust: SEED 87633: turns=4, prng=34, winner=p2
+FAIL Seed 88000 (minimized):
+  JS:   SEED 88000: turns=7, prng=27, winner=p1
+  Rust: SEED 88000: turns=5, prng=19, winner=p1
+FAIL Seed 88904 (minimized):
+  JS:   SEED 88904: turns=15, prng=61, winner=p2
+  Rust: SEED 88904: turns=9, prng=22, winner=p1
+FAIL Seed 89312 (minimized):
+  JS:   SEED 89312: turns=28, prng=135, winner=p2
+  Rust: SEED 89312: turns=33, prng=150, winner=p2
+FAIL Seed 89804 (minimized):
+  JS:   SEED 89804: turns=86, prng=216, winner=p2
+  Rust: SEED 89804: turns=87, prng=219, winner=p2
+FAIL Seed 90577 (minimized):
+  JS:   SEED 90577: turns=11, prng=33, winner=p2
+  Rust: SEED 90577: turns=10, prng=70, winner=p2
+FAIL Seed 91750 (minimized):
+  JS:   SEED 91750: turns=9, prng=20, winner=p2
+  Rust: SEED 91750: turns=6, prng=18, winner=p1
+FAIL Seed 92615 (minimized):
+  JS:   SEED 92615: turns=25, prng=131, winner=p1
+  Rust: SEED 92615: turns=25, prng=133, winner=p1
+FAIL Seed 92938 (minimized):
+  JS:   SEED 92938: turns=4, prng=21, winner=p1
+  Rust: SEED 92938: turns=4, prng=24, winner=p1
+FAIL Seed 92977 (minimized):
+  JS:   SEED 92977: turns=82, prng=211, winner=p2
+  Rust: SEED 92977: turns=83, prng=219, winner=p2
+FAIL Seed 93338 (minimized):
+  JS:   SEED 93338: turns=9, prng=20, winner=p2
+  Rust: SEED 93338: turns=12, prng=36, winner=p1
+FAIL Seed 94256 (minimized):
+  JS:   SEED 94256: turns=59, prng=434, winner=p2
+  Rust: SEED 94256: turns=59, prng=440, winner=p1
+FAIL Seed 95041 (minimized):
+  JS:   SEED 95041: turns=25, prng=119, winner=p1
+  Rust: SEED 95041: turns=24, prng=114, winner=p1
+FAIL Seed 95061 (minimized):
+  JS:   SEED 95061: turns=36, prng=18, winner=p2
+  Rust: SEED 95061: turns=36, prng=20, winner=p2
+FAIL Seed 95236 (minimized):
+  JS:   SEED 95236: turns=16, prng=74, winner=p2
+  Rust: SEED 95236: turns=17, prng=80, winner=p2
+FAIL Seed 96183 (minimized):
+  JS:   SEED 96183: turns=24, prng=128, winner=p2
+  Rust: SEED 96183: turns=23, prng=122, winner=p2
+FAIL Seed 96673 (minimized):
+  JS:   SEED 96673: turns=47, prng=85, winner=p2
+  Rust: SEED 96673: turns=46, prng=82, winner=p2
+FAIL Seed 97470 (minimized):
+  JS:   SEED 97470: turns=10, prng=64, winner=p2
+  Rust: SEED 97470: turns=11, prng=68, winner=p2
+FAIL Seed 97549 (minimized):
+  JS:   SEED 97549: turns=34, prng=135, winner=p1
+  Rust: SEED 97549: turns=50, prng=182, winner=p1
+FAIL Seed 97945 (minimized):
+  JS:   SEED 97945: turns=17, prng=40, winner=p2
+  Rust: SEED 97945: turns=2, prng=6, winner=p2
+FAIL Seed 99388 (minimized):
+  JS:   SEED 99388: turns=59, prng=201, winner=p1
+  Rust: SEED 99388: turns=70, prng=240, winner=p1
+
+=======================================
+Part 3: Full Team Tests (same seeds, generated teams)
+=======================================
+
+Running 156 seeds with full generated teams...
+Comparing full team results...
+
+FAIL Seed 943 (full team):
+  JS:   SEED 943: turns=94, prng=159, winner=none
+  Rust: SEED 943: turns=95, prng=162, winner=none
+FAIL Seed 1101 (full team):
+  JS:   SEED 1101: turns=78, prng=252, winner=p1
+  Rust: SEED 1101: turns=77, prng=255, winner=p1
+FAIL Seed 2719 (full team):
+  JS:   SEED 2719: turns=82, prng=148, winner=p2
+  Rust: SEED 2719: turns=49, prng=84, winner=p2
+FAIL Seed 4682 (full team):
+  JS:   SEED 4682: turns=66, prng=162, winner=p2
+  Rust: SEED 4682: turns=68, prng=171, winner=p2
+FAIL Seed 6991 (full team):
+  JS:   SEED 6991: turns=56, prng=214, winner=p1
+  Rust: SEED 6991: turns=47, prng=152, winner=p1
+FAIL Seed 10653 (full team):
+  JS:   SEED 10653: turns=27, prng=150, winner=p1
+  Rust: SEED 10653: turns=28, prng=156, winner=p1
+FAIL Seed 10825 (full team):
+  JS:   SEED 10825: turns=73, prng=257, winner=p1
+  Rust: SEED 10825: turns=82, prng=226, winner=p1
+FAIL Seed 12832 (full team):
+  JS:   SEED 12832: turns=52, prng=127, winner=p2
+  Rust: SEED 12832: turns=49, prng=130, winner=p2
+FAIL Seed 14097 (full team):
+  JS:   SEED 14097: turns=85, prng=309, winner=p2
+  Rust: SEED 14097: turns=64, prng=359, winner=p2
+FAIL Seed 15080 (full team):
+  JS:   SEED 15080: turns=40, prng=165, winner=p1
+  Rust: SEED 15080: turns=41, prng=170, winner=p1
+FAIL Seed 15759 (full team):
+  JS:   SEED 15759: turns=71, prng=217, winner=p2
+  Rust: SEED 15759: turns=63, prng=182, winner=p2
+FAIL Seed 15974 (full team):
+  JS:   SEED 15974: turns=83, prng=260, winner=p2
+  Rust: SEED 15974: turns=84, prng=252, winner=p2
+FAIL Seed 16240 (full team):
+  JS:   SEED 16240: turns=98, prng=99, winner=none
+  Rust: SEED 16240: turns=98, prng=102, winner=none
+FAIL Seed 17644 (full team):
+  JS:   SEED 17644: turns=57, prng=148, winner=p2
+  Rust: SEED 17644: turns=60, prng=174, winner=p2
+FAIL Seed 19367 (full team):
+  JS:   SEED 19367: turns=34, prng=182, winner=p2
+  Rust: SEED 19367: turns=34, prng=183, winner=p2
+FAIL Seed 19405 (full team):
+  JS:   SEED 19405: turns=20, prng=87, winner=p1
+  Rust: SEED 19405: turns=20, prng=90, winner=p1
+FAIL Seed 19450 (full team):
+  JS:   SEED 19450: turns=37, prng=256, winner=p2
+  Rust: SEED 19450: turns=40, prng=276, winner=p2
+FAIL Seed 19576 (full team):
+  JS:   SEED 19576: turns=60, prng=266, winner=p2
+  Rust: SEED 19576: turns=59, prng=256, winner=p2
+FAIL Seed 20356 (full team):
+  JS:   SEED 20356: turns=52, prng=186, winner=p1
+  Rust: SEED 20356: turns=53, prng=191, winner=p1
+FAIL Seed 22002 (full team):
+  JS:   SEED 22002: turns=35, prng=163, winner=p2
+  Rust: SEED 22002: turns=36, prng=163, winner=p2
+FAIL Seed 23054 (full team):
+  JS:   SEED 23054: turns=46, prng=313, winner=p1
+  Rust: SEED 23054: turns=53, prng=310, winner=p1
+FAIL Seed 23363 (full team):
+  JS:   SEED 23363: turns=34, prng=208, winner=p2
+  Rust: SEED 23363: turns=34, prng=232, winner=p2
+FAIL Seed 25177 (full team):
+  JS:   SEED 25177: turns=40, prng=176, winner=p1
+  Rust: SEED 25177: turns=41, prng=179, winner=p1
+FAIL Seed 25574 (full team):
+  JS:   SEED 25574: turns=59, prng=230, winner=p2
+  Rust: SEED 25574: turns=57, prng=233, winner=p2
+FAIL Seed 26303 (full team):
+  JS:   SEED 26303: turns=50, prng=242, winner=p1
+  Rust: SEED 26303: turns=52, prng=242, winner=p1
+FAIL Seed 26791 (full team):
+  JS:   SEED 26791: turns=54, prng=217, winner=p1
+  Rust: SEED 26791: turns=80, prng=276, winner=p2
+FAIL Seed 29161 (full team):
+  JS:   SEED 29161: turns=87, prng=273, winner=p2
+  Rust: SEED 29161: turns=58, prng=274, winner=p2
+FAIL Seed 29444 (full team):
+  JS:   SEED 29444: turns=33, prng=125, winner=p2
+  Rust: SEED 29444: turns=28, prng=110, winner=p2
+FAIL Seed 30232 (full team):
+  JS:   SEED 30232: turns=52, prng=282, winner=p1
+  Rust: SEED 30232: turns=64, prng=348, winner=p1
+FAIL Seed 30637 (full team):
+  JS:   SEED 30637: turns=46, prng=236, winner=p1
+  Rust: SEED 30637: turns=51, prng=266, winner=p1
+FAIL Seed 31834 (full team):
+  JS:   SEED 31834: turns=55, prng=327, winner=p2
+  Rust: SEED 31834: turns=56, prng=344, winner=p2
+FAIL Seed 32939 (full team):
+  JS:   SEED 32939: turns=37, prng=161, winner=p1
+  Rust: SEED 32939: turns=39, prng=174, winner=p1
+FAIL Seed 34408 (full team):
+  JS:   SEED 34408: turns=30, prng=150, winner=p2
+  Rust: SEED 34408: turns=27, prng=145, winner=p2
+FAIL Seed 34957 (full team):
+  JS:   SEED 34957: turns=94, prng=196, winner=none
+  Rust: SEED 34957: turns=93, prng=204, winner=none
+FAIL Seed 35203 (full team):
+  JS:   SEED 35203: turns=95, prng=301, winner=none
+  Rust: SEED 35203: turns=95, prng=304, winner=none
+FAIL Seed 35620 (full team):
+  JS:   SEED 35620: turns=70, prng=314, winner=p1
+  Rust: SEED 35620: turns=72, prng=329, winner=p1
+FAIL Seed 35671 (full team):
+  JS:   SEED 35671: turns=66, prng=270, winner=p2
+  Rust: SEED 35671: turns=46, prng=199, winner=p2
+FAIL Seed 37514 (full team):
+  JS:   SEED 37514: turns=94, prng=351, winner=none
+  Rust: SEED 37514: turns=91, prng=337, winner=p1
+FAIL Seed 38902 (full team):
+  JS:   SEED 38902: turns=54, prng=285, winner=p2
+  Rust: SEED 38902: turns=66, prng=420, winner=p2
+FAIL Seed 39361 (full team):
+  JS:   SEED 39361: turns=44, prng=241, winner=p1
+  Rust: SEED 39361: turns=55, prng=275, winner=p1
+FAIL Seed 39892 (full team):
+  JS:   SEED 39892: turns=9, prng=30, winner=p1
+  Rust: SEED 39892: turns=46, prng=134, winner=p1
+FAIL Seed 40097 (full team):
+  JS:   SEED 40097: turns=47, prng=246, winner=p1
+  Rust: SEED 40097: turns=39, prng=188, winner=p1
+FAIL Seed 40192 (full team):
+  JS:   SEED 40192: turns=85, prng=490, winner=p2
+  Rust: SEED 40192: turns=85, prng=522, winner=p2
+FAIL Seed 40910 (full team):
+  JS:   SEED 40910: turns=39, prng=201, winner=p1
+  Rust: SEED 40910: turns=51, prng=263, winner=p2
+FAIL Seed 42063 (full team):
+  JS:   SEED 42063: turns=39, prng=152, winner=p2
+  Rust: SEED 42063: turns=86, prng=294, winner=p2
+FAIL Seed 42438 (full team):
+  JS:   SEED 42438: turns=94, prng=250, winner=none
+  Rust: SEED 42438: turns=66, prng=160, winner=p2
+FAIL Seed 42548 (full team):
+  JS:   SEED 42548: turns=80, prng=315, winner=p2
+  Rust: SEED 42548: turns=80, prng=322, winner=p2
+FAIL Seed 42627 (full team):
+  JS:   SEED 42627: turns=48, prng=168, winner=p2
+  Rust: SEED 42627: turns=21, prng=95, winner=p2
+FAIL Seed 43891 (full team):
+  JS:   SEED 43891: turns=18, prng=80, winner=p2
+  Rust: SEED 43891: turns=17, prng=75, winner=p2
+FAIL Seed 44135 (full team):
+  JS:   SEED 44135: turns=48, prng=212, winner=p2
+  Rust: SEED 44135: turns=39, prng=171, winner=p2
+FAIL Seed 45311 (full team):
+  JS:   SEED 45311: turns=17, prng=81, winner=p2
+  Rust: SEED 45311: turns=14, prng=71, winner=p2
+FAIL Seed 47061 (full team):
+  JS:   SEED 47061: turns=68, prng=229, winner=p1
+  Rust: SEED 47061: turns=66, prng=222, winner=p1
+FAIL Seed 48133 (full team):
+  JS:   SEED 48133: turns=24, prng=103, winner=p1
+  Rust: SEED 48133: turns=23, prng=100, winner=p1
+FAIL Seed 48178 (full team):
+  JS:   SEED 48178: turns=47, prng=221, winner=p1
+  Rust: SEED 48178: turns=44, prng=213, winner=p1
+FAIL Seed 48311 (full team):
+  JS:   SEED 48311: turns=52, prng=280, winner=p2
+  Rust: SEED 48311: turns=53, prng=286, winner=p2
+FAIL Seed 48318 (full team):
+  JS:   SEED 48318: turns=45, prng=185, winner=p2
+  Rust: SEED 48318: turns=47, prng=201, winner=p2
+FAIL Seed 48869 (full team):
+  JS:   SEED 48869: turns=41, prng=85, winner=p2
+  Rust: SEED 48869: turns=41, prng=93, winner=p2
+FAIL Seed 49341 (full team):
+  JS:   SEED 49341: turns=71, prng=254, winner=p1
+  Rust: SEED 49341: turns=72, prng=267, winner=p1
+FAIL Seed 49637 (full team):
+  JS:   SEED 49637: turns=87, prng=237, winner=p2
+  Rust: SEED 49637: turns=92, prng=191, winner=none
+FAIL Seed 51150 (full team):
+  JS:   SEED 51150: turns=35, prng=208, winner=p2
+  Rust: SEED 51150: turns=54, prng=261, winner=p1
+FAIL Seed 52895 (full team):
+  JS:   SEED 52895: turns=58, prng=279, winner=p2
+  Rust: SEED 52895: turns=51, prng=257, winner=p1
+FAIL Seed 53040 (full team):
+  JS:   SEED 53040: turns=39, prng=137, winner=p2
+  Rust: SEED 53040: turns=41, prng=167, winner=p2
+FAIL Seed 53148 (full team):
+  JS:   SEED 53148: turns=40, prng=171, winner=p1
+  Rust: SEED 53148: turns=61, prng=240, winner=p1
+FAIL Seed 53557 (full team):
+  JS:   SEED 53557: turns=39, prng=172, winner=p1
+  Rust: SEED 53557: turns=41, prng=190, winner=p1
+FAIL Seed 53747 (full team):
+  JS:   SEED 53747: turns=60, prng=214, winner=p2
+  Rust: SEED 53747: turns=58, prng=198, winner=p2
+FAIL Seed 54588 (full team):
+  JS:   SEED 54588: turns=74, prng=276, winner=p2
+  Rust: SEED 54588: turns=68, prng=249, winner=p2
+FAIL Seed 55736 (full team):
+  JS:   SEED 55736: turns=47, prng=271, winner=p2
+  Rust: SEED 55736: turns=49, prng=231, winner=p1
+FAIL Seed 56089 (full team):
+  JS:   SEED 56089: turns=48, prng=206, winner=p1
+  Rust: SEED 56089: turns=49, prng=212, winner=p1
+FAIL Seed 56264 (full team):
+  JS:   SEED 56264: turns=14, prng=67, winner=p2
+  Rust: SEED 56264: turns=20, prng=105, winner=p2
+FAIL Seed 56825 (full team):
+  JS:   SEED 56825: turns=52, prng=144, winner=p2
+  Rust: SEED 56825: turns=65, prng=197, winner=p2
+FAIL Seed 59646 (full team):
+  JS:   SEED 59646: turns=47, prng=103, winner=p1
+  Rust: SEED 59646: turns=43, prng=48, winner=p2
+FAIL Seed 60349 (full team):
+  JS:   SEED 60349: turns=63, prng=215, winner=p1
+  Rust: SEED 60349: turns=64, prng=223, winner=p1
+FAIL Seed 60521 (full team):
+  JS:   SEED 60521: turns=23, prng=111, winner=p2
+  Rust: SEED 60521: turns=22, prng=114, winner=p2
+FAIL Seed 60818 (full team):
+  JS:   SEED 60818: turns=74, prng=293, winner=p1
+  Rust: SEED 60818: turns=70, prng=277, winner=p1
+FAIL Seed 60885 (full team):
+  JS:   SEED 60885: turns=60, prng=243, winner=p1
+  Rust: SEED 60885: turns=60, prng=246, winner=p1
+FAIL Seed 61343 (full team):
+  JS:   SEED 61343: turns=49, prng=431, winner=p1
+  Rust: SEED 61343: turns=49, prng=342, winner=p1
+FAIL Seed 61431 (full team):
+  JS:   SEED 61431: turns=83, prng=219, winner=p2
+  Rust: SEED 61431: turns=53, prng=214, winner=p2
+FAIL Seed 62723 (full team):
+  JS:   SEED 62723: turns=60, prng=182, winner=p2
+  Rust: SEED 62723: turns=61, prng=212, winner=p2
+FAIL Seed 63529 (full team):
+  JS:   SEED 63529: turns=80, prng=233, winner=p2
+  Rust: SEED 63529: turns=63, prng=206, winner=p2
+FAIL Seed 63843 (full team):
+  JS:   SEED 63843: turns=77, prng=252, winner=p1
+  Rust: SEED 63843: turns=71, prng=199, winner=p1
+FAIL Seed 64286 (full team):
+  JS:   SEED 64286: turns=73, prng=200, winner=p2
+  Rust: SEED 64286: turns=81, prng=218, winner=p2
+FAIL Seed 64566 (full team):
+  JS:   SEED 64566: turns=93, prng=418, winner=none
+  Rust: SEED 64566: turns=93, prng=346, winner=none
+FAIL Seed 64920 (full team):
+  JS:   SEED 64920: turns=39, prng=252, winner=p2
+  Rust: SEED 64920: turns=39, prng=243, winner=p2
+FAIL Seed 65490 (full team):
+  JS:   SEED 65490: turns=42, prng=167, winner=p2
+  Rust: SEED 65490: turns=43, prng=172, winner=p2
+FAIL Seed 65503 (full team):
+  JS:   SEED 65503: turns=44, prng=178, winner=p2
+  Rust: SEED 65503: turns=45, prng=185, winner=p2
+FAIL Seed 65917 (full team):
+  JS:   SEED 65917: turns=31, prng=172, winner=p1
+  Rust: SEED 65917: turns=29, prng=172, winner=p1
+FAIL Seed 67475 (full team):
+  JS:   SEED 67475: turns=45, prng=110, winner=p1
+  Rust: SEED 67475: turns=41, prng=91, winner=p1
+FAIL Seed 67628 (full team):
+  JS:   SEED 67628: turns=39, prng=147, winner=p2
+  Rust: SEED 67628: turns=37, prng=139, winner=p2
+FAIL Seed 67961 (full team):
+  JS:   SEED 67961: turns=67, prng=238, winner=p1
+  Rust: SEED 67961: turns=65, prng=232, winner=p2
+FAIL Seed 68529 (full team):
+  JS:   SEED 68529: turns=81, prng=101, winner=p2
+  Rust: SEED 68529: turns=49, prng=103, winner=p2
+FAIL Seed 68764 (full team):
+  JS:   SEED 68764: turns=89, prng=213, winner=p2
+  Rust: SEED 68764: turns=93, prng=231, winner=none
+FAIL Seed 69794 (full team):
+  JS:   SEED 69794: turns=59, prng=196, winner=p1
+  Rust: SEED 69794: turns=60, prng=203, winner=p1
+FAIL Seed 70293 (full team):
+  JS:   SEED 70293: turns=59, prng=312, winner=p2
+  Rust: SEED 70293: turns=51, prng=260, winner=p2
+FAIL Seed 70719 (full team):
+  JS:   SEED 70719: turns=67, prng=371, winner=p2
+  Rust: SEED 70719: turns=67, prng=368, winner=p2
+FAIL Seed 71124 (full team):
+  JS:   SEED 71124: turns=32, prng=134, winner=p2
+  Rust: SEED 71124: turns=29, prng=127, winner=p2
+FAIL Seed 71148 (full team):
+  JS:   SEED 71148: turns=86, prng=313, winner=p1
+  Rust: SEED 71148: turns=82, prng=308, winner=p1
+FAIL Seed 71155 (full team):
+  JS:   SEED 71155: turns=73, prng=280, winner=p1
+  Rust: SEED 71155: turns=76, prng=297, winner=p1
+FAIL Seed 71505 (full team):
+  JS:   SEED 71505: turns=48, prng=208, winner=p1
+  Rust: SEED 71505: turns=49, prng=208, winner=p1
+FAIL Seed 71847 (full team):
+  JS:   SEED 71847: turns=38, prng=172, winner=p2
+  Rust: SEED 71847: turns=40, prng=170, winner=p2
+FAIL Seed 72568 (full team):
+  JS:   SEED 72568: turns=41, prng=209, winner=p1
+  Rust: SEED 72568: turns=82, prng=224, winner=p1
+FAIL Seed 72782 (full team):
+  JS:   SEED 72782: turns=57, prng=150, winner=p1
+  Rust: SEED 72782: turns=62, prng=196, winner=p1
+FAIL Seed 73093 (full team):
+  JS:   SEED 73093: turns=92, prng=223, winner=none
+  Rust: SEED 73093: turns=66, prng=200, winner=p2
+FAIL Seed 73448 (full team):
+  JS:   SEED 73448: turns=33, prng=162, winner=p1
+  Rust: SEED 73448: turns=30, prng=149, winner=p1
+FAIL Seed 73726 (full team):
+  JS:   SEED 73726: turns=90, prng=317, winner=p1
+  Rust: SEED 73726: turns=93, prng=337, winner=none
+FAIL Seed 73880 (full team):
+  JS:   SEED 73880: turns=48, prng=231, winner=p2
+  Rust: SEED 73880: turns=47, prng=174, winner=p2
+FAIL Seed 74337 (full team):
+  JS:   SEED 74337: turns=37, prng=201, winner=p1
+  Rust: SEED 74337: turns=37, prng=195, winner=p1
+FAIL Seed 74439 (full team):
+  JS:   SEED 74439: turns=25, prng=100, winner=p2
+  Rust: SEED 74439: turns=23, prng=99, winner=p2
+FAIL Seed 75224 (full team):
+  JS:   SEED 75224: turns=17, prng=100, winner=p2
+  Rust: SEED 75224: turns=19, prng=110, winner=p2
+FAIL Seed 75599 (full team):
+  JS:   SEED 75599: turns=57, prng=254, winner=p2
+  Rust: SEED 75599: turns=54, prng=263, winner=p2
+FAIL Seed 76907 (full team):
+  JS:   SEED 76907: turns=77, prng=174, winner=p1
+  Rust: SEED 76907: turns=77, prng=170, winner=p1
+FAIL Seed 77336 (full team):
+  JS:   SEED 77336: turns=56, prng=151, winner=p2
+  Rust: SEED 77336: turns=59, prng=168, winner=p2
+FAIL Seed 77624 (full team):
+  JS:   SEED 77624: turns=75, prng=359, winner=p2
+  Rust: SEED 77624: turns=82, prng=406, winner=p2
+FAIL Seed 77833 (full team):
+  JS:   SEED 77833: turns=71, prng=159, winner=p1
+  Rust: SEED 77833: turns=71, prng=158, winner=p1
+FAIL Seed 77834 (full team):
+  JS:   SEED 77834: turns=68, prng=187, winner=p2
+  Rust: SEED 77834: turns=70, prng=209, winner=p2
+FAIL Seed 78126 (full team):
+  JS:   SEED 78126: turns=48, prng=202, winner=p2
+  Rust: SEED 78126: turns=50, prng=211, winner=p1
+FAIL Seed 78875 (full team):
+  JS:   SEED 78875: turns=67, prng=271, winner=p1
+  Rust: SEED 78875: turns=70, prng=298, winner=p1
+FAIL Seed 79574 (full team):
+  JS:   SEED 79574: turns=26, prng=93, winner=p1
+  Rust: SEED 79574: turns=23, prng=87, winner=p1
+FAIL Seed 80374 (full team):
+  JS:   SEED 80374: turns=93, prng=285, winner=none
+  Rust: SEED 80374: turns=93, prng=281, winner=none
+FAIL Seed 81160 (full team):
+  JS:   SEED 81160: turns=49, prng=197, winner=p1
+  Rust: SEED 81160: turns=68, prng=212, winner=p1
+FAIL Seed 81290 (full team):
+  JS:   SEED 81290: turns=50, prng=225, winner=p2
+  Rust: SEED 81290: turns=48, prng=217, winner=p2
+FAIL Seed 81757 (full team):
+  JS:   SEED 81757: turns=66, prng=202, winner=p2
+  Rust: SEED 81757: turns=61, prng=180, winner=p1
+FAIL Seed 81764 (full team):
+  JS:   SEED 81764: turns=47, prng=245, winner=p2
+  Rust: SEED 81764: turns=53, prng=263, winner=p2
+FAIL Seed 82263 (full team):
+  JS:   SEED 82263: turns=83, prng=241, winner=p2
+  Rust: SEED 82263: turns=78, prng=202, winner=p2
+FAIL Seed 82556 (full team):
+  JS:   SEED 82556: turns=13, prng=63, winner=p1
+  Rust: SEED 82556: turns=16, prng=77, winner=p1
+FAIL Seed 82565 (full team):
+  JS:   SEED 82565: turns=41, prng=164, winner=p1
+  Rust: SEED 82565: turns=45, prng=176, winner=p1
+FAIL Seed 82568 (full team):
+  JS:   SEED 82568: turns=29, prng=117, winner=p1
+  Rust: SEED 82568: turns=29, prng=116, winner=p1
+FAIL Seed 82834 (full team):
+  JS:   SEED 82834: turns=58, prng=254, winner=p2
+  Rust: SEED 82834: turns=56, prng=256, winner=p2
+FAIL Seed 83469 (full team):
+  JS:   SEED 83469: turns=33, prng=161, winner=p1
+  Rust: SEED 83469: turns=94, prng=362, winner=none
+FAIL Seed 83489 (full team):
+  JS:   SEED 83489: turns=25, prng=179, winner=p2
+  Rust: SEED 83489: turns=24, prng=151, winner=p2
+FAIL Seed 83798 (full team):
+  JS:   SEED 83798: turns=97, prng=281, winner=none
+  Rust: SEED 83798: turns=52, prng=196, winner=p2
+FAIL Seed 84717 (full team):
+  JS:   SEED 84717: turns=89, prng=417, winner=p2
+  Rust: SEED 84717: turns=88, prng=455, winner=p2
+FAIL Seed 85281 (full team):
+  JS:   SEED 85281: turns=78, prng=180, winner=p1
+  Rust: SEED 85281: turns=74, prng=170, winner=p1
+FAIL Seed 85483 (full team):
+  JS:   SEED 85483: turns=93, prng=321, winner=none
+  Rust: SEED 85483: turns=94, prng=312, winner=none
+FAIL Seed 87270 (full team):
+  JS:   SEED 87270: turns=45, prng=193, winner=p1
+  Rust: SEED 87270: turns=37, prng=152, winner=p2
+FAIL Seed 87363 (full team):
+  JS:   SEED 87363: turns=27, prng=104, winner=p1
+  Rust: SEED 87363: turns=28, prng=108, winner=p1
+FAIL Seed 87633 (full team):
+  JS:   SEED 87633: turns=26, prng=191, winner=p2
+  Rust: SEED 87633: turns=26, prng=193, winner=p2
+FAIL Seed 88000 (full team):
+  JS:   SEED 88000: turns=68, prng=336, winner=p1
+  Rust: SEED 88000: turns=67, prng=332, winner=p1
+FAIL Seed 88904 (full team):
+  JS:   SEED 88904: turns=84, prng=414, winner=p1
+  Rust: SEED 88904: turns=89, prng=418, winner=p1
+FAIL Seed 89312 (full team):
+  JS:   SEED 89312: turns=28, prng=135, winner=p2
+  Rust: SEED 89312: turns=33, prng=150, winner=p2
+FAIL Seed 89804 (full team):
+  JS:   SEED 89804: turns=62, prng=210, winner=p1
+  Rust: SEED 89804: turns=63, prng=219, winner=p1
+FAIL Seed 90577 (full team):
+  JS:   SEED 90577: turns=41, prng=182, winner=p2
+  Rust: SEED 90577: turns=36, prng=277, winner=p2
+FAIL Seed 91750 (full team):
+  JS:   SEED 91750: turns=46, prng=206, winner=p2
+  Rust: SEED 91750: turns=41, prng=197, winner=p1
+FAIL Seed 92615 (full team):
+  JS:   SEED 92615: turns=34, prng=161, winner=p1
+  Rust: SEED 92615: turns=33, prng=158, winner=p1
+FAIL Seed 92938 (full team):
+  JS:   SEED 92938: turns=18, prng=69, winner=p1
+  Rust: SEED 92938: turns=42, prng=145, winner=p1
+FAIL Seed 92977 (full team):
+  JS:   SEED 92977: turns=82, prng=211, winner=p2
+  Rust: SEED 92977: turns=83, prng=219, winner=p2
+FAIL Seed 93338 (full team):
+  JS:   SEED 93338: turns=86, prng=236, winner=p2
+  Rust: SEED 93338: turns=66, prng=185, winner=p1
+FAIL Seed 94256 (full team):
+  JS:   SEED 94256: turns=31, prng=262, winner=p2
+  Rust: SEED 94256: turns=30, prng=239, winner=p2
+FAIL Seed 95041 (full team):
+  JS:   SEED 95041: turns=25, prng=119, winner=p1
+  Rust: SEED 95041: turns=24, prng=114, winner=p1
+FAIL Seed 95061 (full team):
+  JS:   SEED 95061: turns=62, prng=123, winner=p2
+  Rust: SEED 95061: turns=59, prng=105, winner=p2
+FAIL Seed 95236 (full team):
+  JS:   SEED 95236: turns=50, prng=295, winner=p2
+  Rust: SEED 95236: turns=37, prng=209, winner=p1
+FAIL Seed 96183 (full team):
+  JS:   SEED 96183: turns=74, prng=273, winner=p2
+  Rust: SEED 96183: turns=74, prng=269, winner=p2
+FAIL Seed 96673 (full team):
+  JS:   SEED 96673: turns=69, prng=198, winner=p2
+  Rust: SEED 96673: turns=69, prng=204, winner=p2
+FAIL Seed 97470 (full team):
+  JS:   SEED 97470: turns=85, prng=262, winner=p2
+  Rust: SEED 97470: turns=55, prng=198, winner=p2
+FAIL Seed 97549 (full team):
+  JS:   SEED 97549: turns=34, prng=135, winner=p1
+  Rust: SEED 97549: turns=50, prng=182, winner=p1
+FAIL Seed 97945 (full team):
+  JS:   SEED 97945: turns=60, prng=552, winner=p2
+  Rust: SEED 97945: turns=59, prng=551, winner=p2
+FAIL Seed 99388 (full team):
+  JS:   SEED 99388: turns=59, prng=201, winner=p1
+  Rust: SEED 99388: turns=70, prng=240, winner=p1
+
+=======================================
+Final Summary
+=======================================
+
+Regression tests (1-1000): 999/1000 passed
+Minimized teams: 0/156 passed
+Full teams: 0/156 passed
+
+REGRESSION DETECTED in unified tests!
+Failed seeds: 943
+Failed full team seeds: 943 1101 2719 4682 6991 10653 10825 12832 14097 15080 15759 15974 16240 17644 19367 19405 19450 19576 20356 22002 23054 23363 25177 25574 26303 26791 29161 29444 30232 30637 31834 32939 34408 34957 35203 35620 35671 37514 38902 39361 39892 40097 40192 40910 42063 42438 42548 42627 43891 44135 45311 47061 48133 48178 48311 48318 48869 49341 49637 51150 52895 53040 53148 53557 53747 54588 55736 56089 56264 56825 59646 60349 60521 60818 60885 61343 61431 62723 63529 63843 64286 64566 64920 65490 65503 65917 67475 67628 67961 68529 68764 69794 70293 70719 71124 71148 71155 71505 71847 72568 72782 73093 73448 73726 73880 74337 74439 75224 75599 76907 77336 77624 77833 77834 78126 78875 79574 80374 81160 81290 81757 81764 82263 82556 82565 82568 82834 83469 83489 83798 84717 85281 85483 87270 87363 87633 88000 88904 89312 89804 90577 91750 92615 92938 92977 93338 94256 95041 95061 95236 96183 96673 97470 97549 97945 99388
+Minimized seeds pass rate: 0%
+Failed minimized seeds: 943 1101 2719 4682 6991 10653 10825 12832 14097 15080 15759 15974 16240 17644 19367 19405 19450 19576 20356 22002 23054 23363 25177 25574 26303 26791 29161 29444 30232 30637 31834 32939 34408 34957 35203 35620 35671 37514 38902 39361 39892 40097 40192 40910 42063 42438 42548 42627 43891 44135 45311 47061 48133 48178 48311 48318 48869 49341 49637 51150 52895 53040 53148 53557 53747 54588 55736 56089 56264 56825 59646 60349 60521 60818 60885 61343 61431 62723 63529 63843 64286 64566 64920 65490 65503 65917 67475 67628 67961 68529 68764 69794 70293 70719 71124 71148 71155 71505 71847 72568 72782 73093 73448 73726 73880 74337 74439 75224 75599 76907 77336 77624 77833 77834 78126 78875 79574 80374 81160 81290 81757 81764 82263 82556 82565 82568 82834 83469 83489 83798 84717 85281 85483 87270 87363 87633 88000 88904 89312 89804 90577 91750 92615 92938 92977 93338 94256 95041 95061 95236 96183 96673 97470 97549 97945 99388
+
+Updating bug-analysis.txt...
+Done. See tests/bug-analysis.txt for patterns in failing seeds.
+
+FAILURE: Regressions or failures detected.

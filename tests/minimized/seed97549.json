@@ -4,28 +4,186 @@
       "name": "Meowth",
       "species": "Meowth",
       "level": 70,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Pickup",
+      "item": "tr89",
+      "nature": "hardy",
       "gender": "F",
       "moves": [
-        "playrough"
+        "playrough",
+        "dreameater",
+        "wildboltstorm",
+        "maxguard"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 73,
+        "atk": 72,
+        "def": 81,
+        "spa": 122,
+        "spd": 89,
+        "spe": 73
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
+        "hp": 7,
+        "atk": 21,
         "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spa": 25,
+        "spd": 27,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Pawniard",
+      "species": "Pawniard",
+      "level": 95,
+      "ability": "Defiant",
+      "item": "metagrossite",
+      "nature": "brave",
+      "gender": "M",
+      "moves": [
+        "hiddenpowerflying",
+        "woodhammer",
+        "gigadrain",
+        "snatch"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 95,
+        "def": 69,
+        "spa": 89,
+        "spd": 82,
+        "spe": 94
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 29,
+        "def": 29,
+        "spa": 16,
+        "spd": 20,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Necrozma-Dawn-Wings",
+      "species": "Necrozma-Dawn-Wings",
+      "level": 78,
+      "ability": "Prism Armor",
+      "item": "nanabberry",
+      "nature": "modest",
+      "gender": "",
+      "moves": [
+        "megapunch",
+        "dragonbreath",
+        "gmaxmeltdown",
+        "shadowstrike"
+      ],
+      "evs": {
+        "hp": 93,
+        "atk": 121,
+        "def": 59,
+        "spa": 54,
+        "spd": 94,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 28,
+        "def": 31,
+        "spa": 8,
+        "spd": 2,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Wo-Chien",
+      "species": "Wo-Chien",
+      "level": 92,
+      "ability": "Tablets of Ruin",
+      "item": "miracleseed",
+      "nature": "quirky",
+      "gender": "",
+      "moves": [
+        "behemothbash",
+        "upperhand",
+        "axekick",
+        "leafstorm"
+      ],
+      "evs": {
+        "hp": 124,
+        "atk": 61,
+        "def": 68,
+        "spa": 85,
+        "spd": 84,
+        "spe": 88
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 0,
+        "def": 24,
+        "spa": 10,
+        "spd": 26,
+        "spe": 4
+      }
+    },
+    {
+      "name": "Embirch",
+      "species": "Embirch",
+      "level": 97,
+      "ability": "Reckless",
+      "item": "roomservice",
+      "nature": "brave",
+      "gender": "F",
+      "moves": [
+        "synthesis",
+        "vitalthrow",
+        "pound",
+        "whirlwind"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 110,
+        "def": 86,
+        "spa": 77,
+        "spd": 69,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 17,
+        "def": 31,
+        "spa": 3,
+        "spd": 0,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Houndoom-Mega",
+      "species": "Houndoom-Mega",
+      "level": 98,
+      "ability": "Solar Power",
+      "item": "hardstone",
+      "nature": "calm",
+      "gender": "M",
+      "moves": [
+        "tailwind",
+        "worryseed",
+        "mistyterrain",
+        "makeitrain"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 90,
+        "def": 60,
+        "spa": 91,
+        "spd": 114,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 11,
+        "def": 20,
+        "spa": 27,
+        "spd": 7,
+        "spe": 0
       }
     }
   ],
@@ -36,28 +194,186 @@
       "level": 70,
       "ability": "Berserk",
       "item": "enigmaberry",
-      "nature": "docile",
+      "nature": "brave",
       "gender": "",
       "moves": [
-        "tackle"
+        "sandattack",
+        "pounce",
+        "holdback",
+        "icehammer"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 126,
+        "atk": 64,
+        "def": 71,
+        "spa": 84,
+        "spd": 81,
+        "spe": 84
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
+        "hp": 27,
+        "atk": 30,
+        "def": 26,
+        "spa": 1,
+        "spd": 10,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Nickit",
+      "species": "Nickit",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "tr37",
+      "nature": "adamant",
+      "gender": "M",
+      "moves": [
+        "healblock",
+        "earthquake",
+        "payday",
+        "shelter"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 98,
+        "def": 75,
+        "spa": 81,
+        "spd": 77,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 9,
+        "def": 0,
+        "spa": 21,
+        "spd": 23,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Simipour",
+      "species": "Simipour",
+      "level": 74,
+      "ability": "Gluttony",
+      "item": "tr24",
+      "nature": "naive",
+      "gender": "M",
+      "moves": [
+        "bloomdoom",
+        "hiddenpowerpsychic",
+        "maxphantasm",
+        "dracometeor"
+      ],
+      "evs": {
+        "hp": 110,
+        "atk": 66,
+        "def": 88,
+        "spa": 96,
+        "spd": 66,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 27,
+        "def": 6,
+        "spa": 10,
+        "spd": 23,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Slowbro-Galar",
+      "species": "Slowbro-Galar",
+      "level": 51,
+      "ability": "Quick Draw",
+      "item": "tr72",
+      "nature": "modest",
+      "gender": "F",
+      "moves": [
+        "echoedvoice",
+        "partingshot",
+        "landswrath",
+        "bugbuzz"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 91,
+        "def": 102,
+        "spa": 82,
+        "spd": 75,
+        "spe": 71
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 2,
+        "def": 6,
+        "spa": 10,
+        "spd": 9,
+        "spe": 13
+      }
+    },
+    {
+      "name": "Cloyster",
+      "species": "Cloyster",
+      "level": 68,
+      "ability": "Shell Armor",
+      "item": "softsand",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "endure",
+        "attract",
+        "solarblade",
+        "aquajet"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 80,
+        "def": 93,
+        "spa": 97,
+        "spd": 65,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 30,
+        "def": 12,
+        "spa": 22,
+        "spd": 27,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Feebas",
+      "species": "Feebas",
+      "level": 66,
+      "ability": "Swift Swim",
+      "item": "sportball",
+      "nature": "calm",
+      "gender": "F",
+      "moves": [
+        "leaftornado",
+        "stoneaxe",
+        "meanlook",
+        "focusblast"
+      ],
+      "evs": {
+        "hp": 113,
+        "atk": 60,
+        "def": 69,
+        "spa": 74,
+        "spd": 87,
+        "spe": 107
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 26,
+        "def": 18,
         "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spd": 30,
+        "spe": 9
       }
     }
   ],
-  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=16->34, P1=[Meowth(70/172)], P2=[Moltres(174/242)]\" vs Rust=\"#2: turn=3, prng=16->34, P1=[Meowth(70/172)], P2=[Moltres(234/242)]\""
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->5, P1=[Meowth(153/153)], P2=[Moltres(190/246)]\" vs Rust=\"#1: turn=2, prng=0->5, P1=[Meowth(153/153)], P2=[Moltres(246/246)]\""
 }

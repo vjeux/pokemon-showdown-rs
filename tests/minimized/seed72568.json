@@ -1,63 +1,379 @@
 {
   "p1": [
     {
-      "name": "Zapdos",
-      "species": "Zapdos",
-      "level": 69,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
-      "gender": "",
+      "name": "Pinsir",
+      "species": "Pinsir",
+      "level": 55,
+      "ability": "Hyper Cutter",
+      "item": "whiteherb",
+      "nature": "lax",
+      "gender": "M",
       "moves": [
-        "round"
+        "kowtowcleave",
+        "flatter",
+        "skittersmack",
+        "magnitude"
       ],
       "evs": {
         "hp": 85,
-        "atk": 85,
-        "def": 85,
+        "atk": 68,
+        "def": 79,
         "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "spd": 77,
+        "spe": 116
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 9,
+        "def": 9,
+        "spa": 13,
+        "spd": 14,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Cresselia",
+      "species": "Cresselia",
+      "level": 79,
+      "ability": "Levitate",
+      "item": "fightiniumz",
+      "nature": "modest",
+      "gender": "F",
+      "moves": [
+        "xscissor",
+        "scratch",
+        "liquidation",
+        "spiritshackle"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 86,
+        "def": 63,
+        "spa": 82,
+        "spd": 112,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 9,
+        "def": 22,
+        "spa": 15,
+        "spd": 25,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Zapdos",
+      "species": "Zapdos",
+      "level": 69,
+      "ability": "Pressure",
+      "item": "chandelurite",
+      "nature": "lax",
+      "gender": "",
+      "moves": [
+        "round",
+        "softboiled",
+        "secretpower",
+        "pound"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 64,
+        "def": 92,
+        "spa": 95,
+        "spd": 99,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 21,
+        "def": 18,
+        "spa": 6,
+        "spd": 27,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Duosion",
+      "species": "Duosion",
+      "level": 50,
+      "ability": "Overcoat",
+      "item": "tr30",
+      "nature": "bashful",
+      "gender": "F",
+      "moves": [
+        "hiddenpowerwater",
+        "overheat",
+        "headlongrush",
+        "acrobatics"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 73,
+        "def": 55,
+        "spa": 90,
+        "spd": 104,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 27,
+        "atk": 0,
+        "def": 21,
+        "spa": 7,
+        "spd": 3,
+        "spe": 17
+      }
+    },
+    {
+      "name": "Bramblin",
+      "species": "Bramblin",
+      "level": 87,
+      "ability": "Wind Rider",
+      "item": "tr31",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "punishment",
+        "shelter",
+        "gastroacid",
+        "synthesis"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 83,
+        "def": 72,
+        "spa": 85,
+        "spd": 73,
+        "spe": 116
       },
       "ivs": {
         "hp": 31,
+        "atk": 8,
+        "def": 30,
+        "spa": 26,
+        "spd": 5,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Cramorant-Gulping",
+      "species": "Cramorant-Gulping",
+      "level": 96,
+      "ability": "Gulp Missile",
+      "item": "pyroarite",
+      "nature": "quiet",
+      "gender": "F",
+      "moves": [
+        "nightslash",
+        "lightscreen",
+        "rockwrecker",
+        "ficklebeam"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 74,
+        "def": 109,
+        "spa": 82,
+        "spd": 69,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 26,
         "atk": 31,
-        "def": 31,
-        "spa": 31,
+        "def": 11,
+        "spa": 12,
         "spd": 31,
-        "spe": 31
+        "spe": 27
       }
     }
   ],
   "p2": [
     {
+      "name": "Corvisquire",
+      "species": "Corvisquire",
+      "level": 61,
+      "ability": "Keen Eye",
+      "item": "tr95",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "bubblebeam",
+        "terrainpulse",
+        "auroraveil",
+        "spikecannon"
+      ],
+      "evs": {
+        "hp": 121,
+        "atk": 86,
+        "def": 73,
+        "spa": 73,
+        "spd": 65,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 29,
+        "def": 25,
+        "spa": 25,
+        "spd": 27,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Torkoal",
+      "species": "Torkoal",
+      "level": 66,
+      "ability": "White Smoke",
+      "item": "tr15",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "heatcrash",
+        "judgment",
+        "spark",
+        "raindance"
+      ],
+      "evs": {
+        "hp": 69,
+        "atk": 81,
+        "def": 108,
+        "spa": 82,
+        "spd": 93,
+        "spe": 77
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 29,
+        "def": 26,
+        "spa": 12,
+        "spd": 31,
+        "spe": 30
+      }
+    },
+    {
       "name": "Minior-Yellow",
       "species": "Minior-Yellow",
       "level": 90,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Shields Down",
+      "item": "earthplate",
+      "nature": "relaxed",
       "gender": "M",
       "moves": [
-        "round"
+        "round",
+        "mindblown",
+        "rocktomb",
+        "horndrill"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
+        "hp": 89,
+        "atk": 93,
+        "def": 65,
         "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "spd": 103,
+        "spe": 75
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 6,
+        "atk": 11,
+        "def": 24,
+        "spa": 17,
+        "spd": 25,
+        "spe": 1
+      }
+    },
+    {
+      "name": "Cradily",
+      "species": "Cradily",
+      "level": 50,
+      "ability": "Suction Cups",
+      "item": "fastball",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "leaftornado",
+        "echoedvoice",
+        "visegrip",
+        "telekinesis"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 90,
+        "def": 76,
+        "spa": 107,
+        "spd": 74,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 11,
+        "def": 20,
+        "spa": 28,
+        "spd": 30,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Heliolisk",
+      "species": "Heliolisk",
+      "level": 83,
+      "ability": "Dry Skin",
+      "item": "tr86",
+      "nature": "relaxed",
+      "gender": "F",
+      "moves": [
+        "facade",
+        "closecombat",
+        "soak",
+        "fierydance"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 85,
+        "def": 88,
+        "spa": 85,
+        "spd": 74,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 23,
+        "def": 12,
+        "spa": 0,
+        "spd": 3,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Bidoof",
+      "species": "Bidoof",
+      "level": 75,
+      "ability": "Simple",
+      "item": "pomegberry",
+      "nature": "relaxed",
+      "gender": "M",
+      "moves": [
+        "magicalleaf",
+        "stokedsparksurfer",
+        "struggle",
+        "metalburst"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 84,
+        "def": 101,
+        "spa": 73,
+        "spd": 71,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 24,
+        "def": 25,
+        "spa": 6,
+        "spd": 10,
+        "spe": 26
       }
     }
   ],
-  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->6, P1=[Zapdos(184/239)], P2=[Minior(210/254)]\" vs Rust=\"#1: turn=2, prng=0->6, P1=[Zapdos(184/239)], P2=[Minior(232/254)]\""
+  "_bug": "Diverges at line 24: JS=\"#24: turn=21, prng=105->111, P1=[Zapdos(138/228)], P2=[Minior(166/233)]\" vs Rust=\"#24: turn=21, prng=105->111, P1=[Zapdos(183/228)], P2=[Minior(166/233)]\""
 }

@@ -6,26 +6,184 @@
       "level": 53,
       "ability": "Rivalry",
       "item": "polkadotbow",
-      "nature": "docile",
+      "nature": "relaxed",
       "gender": "F",
       "moves": [
-        "cut"
+        "cut",
+        "disarmingvoice",
+        "plasmafists",
+        "aeroblast"
       ],
       "evs": {
-        "hp": 85,
+        "hp": 82,
         "atk": 85,
         "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "spa": 78,
+        "spd": 111,
+        "spe": 69
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 3,
+        "def": 15,
+        "spa": 11,
+        "spd": 2,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Regigigas",
+      "species": "Regigigas",
+      "level": 95,
+      "ability": "Slow Start",
+      "item": "tr11",
+      "nature": "lax",
+      "gender": "",
+      "moves": [
+        "syrupbomb",
+        "gmaxdepletion",
+        "breakneckblitz",
+        "magicalleaf"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 76,
+        "def": 106,
+        "spa": 83,
+        "spd": 99,
+        "spe": 58
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 25,
+        "def": 6,
+        "spa": 8,
+        "spd": 15,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Dracovish",
+      "species": "Dracovish",
+      "level": 70,
+      "ability": "Water Absorb",
+      "item": "berry",
+      "nature": "relaxed",
+      "gender": "",
+      "moves": [
+        "howl",
+        "gmaxsandblast",
+        "glaciate",
+        "maxhailstorm"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 66,
+        "def": 109,
+        "spa": 88,
+        "spd": 86,
+        "spe": 91
       },
       "ivs": {
         "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
+        "atk": 3,
+        "def": 17,
+        "spa": 28,
+        "spd": 0,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Torterra",
+      "species": "Torterra",
+      "level": 82,
+      "ability": "Overgrow",
+      "item": "tr29",
+      "nature": "gentle",
+      "gender": "F",
+      "moves": [
+        "softboiled",
+        "liquidation",
+        "astralbarrage",
+        "drainpunch"
+      ],
+      "evs": {
+        "hp": 68,
+        "atk": 66,
+        "def": 87,
+        "spa": 90,
+        "spd": 101,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 3,
+        "def": 30,
+        "spa": 6,
+        "spd": 3,
+        "spe": 29
+      }
+    },
+    {
+      "name": "Arceus-Water",
+      "species": "Arceus-Water",
+      "level": 56,
+      "ability": "Multitype",
+      "item": "assaultvest",
+      "nature": "naughty",
+      "gender": "",
+      "moves": [
+        "reflecttype",
+        "quiverdance",
+        "ragingbull",
+        "flyingpress"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 90,
+        "def": 99,
+        "spa": 91,
+        "spd": 70,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 25,
+        "def": 14,
+        "spa": 22,
         "spd": 31,
-        "spe": 31
+        "spe": 10
+      }
+    },
+    {
+      "name": "Alcremie-Mint-Cream",
+      "species": "Alcremie-Mint-Cream",
+      "level": 67,
+      "ability": "Sweet Veil",
+      "item": "przcureberry",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "trickroom",
+        "megapunch",
+        "ceaselessedge",
+        "banefulbunker"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 73,
+        "def": 73,
+        "spa": 92,
+        "spd": 103,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 7,
+        "atk": 21,
+        "def": 14,
+        "spa": 14,
+        "spd": 30,
+        "spe": 17
       }
     }
   ],
@@ -34,30 +192,188 @@
       "name": "Nidoqueen",
       "species": "Nidoqueen",
       "level": 83,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Poison Point",
+      "item": "kangaskhanite",
+      "nature": "modest",
       "gender": "F",
       "moves": [
-        "tackle"
+        "trickroom",
+        "crushclaw",
+        "polarflare",
+        "taunt"
       ],
       "evs": {
         "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "atk": 74,
+        "def": 74,
+        "spa": 95,
+        "spd": 87,
+        "spe": 95
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
+        "hp": 7,
+        "atk": 7,
+        "def": 27,
         "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spd": 16,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Morpeko-Hangry",
+      "species": "Morpeko-Hangry",
+      "level": 93,
+      "ability": "Hunger Switch",
+      "item": "choicescarf",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "electroshot",
+        "curse",
+        "megakick",
+        "gmaxcuddle"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 108,
+        "def": 81,
+        "spa": 72,
+        "spd": 86,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 9,
+        "def": 21,
+        "spa": 27,
+        "spd": 27,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Nidoran-M",
+      "species": "Nidoran-M",
+      "level": 99,
+      "ability": "Poison Point",
+      "item": "miracleseed",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "knockoff",
+        "comeuppance",
+        "aurawheel",
+        "rollout"
+      ],
+      "evs": {
+        "hp": 97,
+        "atk": 56,
+        "def": 97,
+        "spa": 71,
+        "spd": 96,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 15,
+        "def": 20,
+        "spa": 14,
+        "spd": 12,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Pikachu-Unova",
+      "species": "Pikachu-Unova",
+      "level": 99,
+      "ability": "Static",
+      "item": "przcureberry",
+      "nature": "serious",
+      "gender": "M",
+      "moves": [
+        "futuresight",
+        "shadowforce",
+        "boltstrike",
+        "supercellslam"
+      ],
+      "evs": {
+        "hp": 55,
+        "atk": 102,
+        "def": 103,
+        "spa": 81,
+        "spd": 89,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 28,
+        "def": 19,
+        "spa": 16,
+        "spd": 12,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Okidogi",
+      "species": "Okidogi",
+      "level": 73,
+      "ability": "Toxic Chain",
+      "item": "nanabberry",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "playrough",
+        "takeheart",
+        "skillswap",
+        "gastroacid"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 90,
+        "def": 106,
+        "spa": 85,
+        "spd": 87,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 30,
+        "atk": 13,
+        "def": 2,
+        "spa": 13,
+        "spd": 4,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Pokestar Giant",
+      "species": "Pokestar Giant",
+      "level": 67,
+      "ability": "Huge Power",
+      "item": "tr85",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "noretreat",
+        "lightscreen",
+        "scaryface",
+        "hiddenpowerghost"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 85,
+        "def": 114,
+        "spa": 64,
+        "spd": 69,
+        "spe": 91
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 13,
+        "def": 27,
+        "spa": 6,
+        "spd": 0,
+        "spe": 29
       }
     }
   ],
-  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->6, P1=[Litleo(101/156)], P2=[Nidoqueen(267/285)]\" vs Rust=\"#1: turn=2, prng=0->6, P1=[Litleo(101/156)], P2=[Nidoqueen(263/285)]\""
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->4, P1=[Litleo(145/145)], P2=[Nidoqueen(250/265)]\" vs Rust=\"#1: turn=2, prng=0->4, P1=[Litleo(145/145)], P2=[Nidoqueen(249/265)]\""
 }

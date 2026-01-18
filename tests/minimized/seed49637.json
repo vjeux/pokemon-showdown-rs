@@ -4,69 +4,77 @@
       "name": "Electrode-Hisui",
       "species": "Electrode-Hisui",
       "level": 54,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Soundproof",
+      "item": "thickclub",
+      "nature": "timid",
       "gender": "",
       "moves": [
-        "shedtail"
+        "shedtail",
+        "gmaxchistrike",
+        "naturalgift",
+        "acrobatics"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 97,
+        "atk": 93,
+        "def": 94,
+        "spa": 64,
+        "spd": 98,
+        "spe": 64
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 3,
+        "atk": 9,
+        "def": 4,
+        "spa": 10,
+        "spd": 27,
+        "spe": 16
       }
     },
     {
       "name": "Numel",
       "species": "Numel",
       "level": 52,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Oblivious",
+      "item": "tr82",
+      "nature": "quiet",
       "gender": "F",
       "moves": [
-        "spiderweb"
+        "spiderweb",
+        "peck",
+        "multiattack",
+        "block"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 88,
+        "atk": 79,
+        "def": 87,
+        "spa": 106,
+        "spd": 69,
+        "spe": 81
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 1,
+        "atk": 3,
+        "def": 18,
+        "spa": 26,
+        "spd": 7,
+        "spe": 0
       }
     },
     {
       "name": "Zweilous",
       "species": "Zweilous",
       "level": 94,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Hustle",
+      "item": "groundmemory",
       "nature": "quirky",
       "gender": "F",
       "moves": [
         "banefulbunker",
-        "conversion2"
+        "conversion2",
+        "acupressure",
+        "tackle"
       ],
       "evs": {
         "hp": 85,
@@ -89,12 +97,15 @@
       "name": "Slurpuff",
       "species": "Slurpuff",
       "level": 89,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Sweet Veil",
+      "item": "fistplate",
       "nature": "lax",
       "gender": "F",
       "moves": [
-        "destinybond"
+        "destinybond",
+        "crosschop",
+        "storedpower",
+        "noxioustorque"
       ],
       "evs": {
         "hp": 87,
@@ -112,6 +123,68 @@
         "spd": 20,
         "spe": 16
       }
+    },
+    {
+      "name": "Sandy Shocks",
+      "species": "Sandy Shocks",
+      "level": 68,
+      "ability": "Protosynthesis",
+      "item": "tr29",
+      "nature": "brave",
+      "gender": "",
+      "moves": [
+        "mirrorshot",
+        "powerswap",
+        "eruption",
+        "fishiousrend"
+      ],
+      "evs": {
+        "hp": 51,
+        "atk": 82,
+        "def": 110,
+        "spa": 100,
+        "spd": 106,
+        "spe": 61
+      },
+      "ivs": {
+        "hp": 23,
+        "atk": 15,
+        "def": 22,
+        "spa": 22,
+        "spd": 26,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Polteageist-Antique",
+      "species": "Polteageist-Antique",
+      "level": 72,
+      "ability": "Weak Armor",
+      "item": "firiumz",
+      "nature": "naughty",
+      "gender": "",
+      "moves": [
+        "noretreat",
+        "lowkick",
+        "orderup",
+        "entrainment"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 100,
+        "def": 69,
+        "spa": 76,
+        "spd": 87,
+        "spe": 100
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 22,
+        "def": 10,
+        "spa": 12,
+        "spd": 10,
+        "spe": 20
+      }
     }
   ],
   "p2": [
@@ -119,13 +192,15 @@
       "name": "Wynaut",
       "species": "Wynaut",
       "level": 78,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Shadow Tag",
+      "item": "flowersweet",
       "nature": "hardy",
       "gender": "M",
       "moves": [
         "headlongrush",
-        "poweruppunch"
+        "poweruppunch",
+        "lightofruin",
+        "brutalswing"
       ],
       "evs": {
         "hp": 95,
@@ -148,32 +223,157 @@
       "name": "Delcatty",
       "species": "Delcatty",
       "level": 82,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Cute Charm",
+      "item": "tr81",
+      "nature": "naughty",
       "gender": "M",
       "moves": [
         "firstimpression",
         "gmaxvoltcrash",
-        "bleakwindstorm"
+        "bleakwindstorm",
+        "boltbeak"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
+        "hp": 72,
+        "atk": 86,
+        "def": 90,
+        "spa": 89,
+        "spd": 99,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 16,
+        "def": 9,
+        "spa": 31,
+        "spd": 30,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Sandshrew-Alola",
+      "species": "Sandshrew-Alola",
+      "level": 59,
+      "ability": "Snow Cloak",
+      "item": "luxuryball",
+      "nature": "sassy",
+      "gender": "F",
+      "moves": [
+        "raindance",
+        "whirlwind",
+        "hydrovortex",
+        "shadowclaw"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 62,
+        "def": 61,
+        "spa": 113,
+        "spd": 95,
         "spe": 85
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
+        "hp": 8,
+        "atk": 11,
         "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spa": 15,
+        "spd": 28,
+        "spe": 30
+      }
+    },
+    {
+      "name": "Linoone",
+      "species": "Linoone",
+      "level": 73,
+      "ability": "Pickup",
+      "item": "heavyball",
+      "nature": "lonely",
+      "gender": "F",
+      "moves": [
+        "banefulbunker",
+        "spiritshackle",
+        "psyshock",
+        "gearup"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 82,
+        "def": 91,
+        "spa": 99,
+        "spd": 77,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 15,
+        "def": 3,
+        "spa": 13,
+        "spd": 7,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Fomantis",
+      "species": "Fomantis",
+      "level": 91,
+      "ability": "Leaf Guard",
+      "item": "powerherb",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "junglehealing",
+        "victorydance",
+        "maxhailstorm",
+        "petalblizzard"
+      ],
+      "evs": {
+        "hp": 118,
+        "atk": 94,
+        "def": 91,
+        "spa": 61,
+        "spd": 63,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 20,
+        "def": 4,
+        "spa": 12,
+        "spd": 8,
+        "spe": 27
+      }
+    },
+    {
+      "name": "Chandelure",
+      "species": "Chandelure",
+      "level": 56,
+      "ability": "Flash Fire",
+      "item": "tr68",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "solarblade",
+        "iceball",
+        "airslash",
+        "letssnuggleforever"
+      ],
+      "evs": {
+        "hp": 120,
+        "atk": 61,
+        "def": 84,
+        "spa": 87,
+        "spd": 73,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 11,
+        "def": 29,
+        "spa": 28,
+        "spd": 16,
+        "spe": 19
       }
     }
   ],
-  "_bug": "Diverges at line 56: JS=\"#56: turn=51, prng=131->135, P1=[Slurpuff(0/263)], P2=[Delcatty(249/249)]\" vs Rust=\"#56: turn=51, prng=131->135, P1=[Slurpuff(0/263)], P2=[Delcatty(0/249)]\""
+  "_bug": "Diverges at line 56: JS=\"#56: turn=51, prng=131->135, P1=[Slurpuff(0/263)], P2=[Delcatty(225/225)]\" vs Rust=\"#56: turn=51, prng=131->135, P1=[Slurpuff(0/263)], P2=[Delcatty(0/225)]\""
 }

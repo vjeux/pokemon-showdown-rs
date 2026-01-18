@@ -1,17 +1,80 @@
 {
   "p1": [
     {
+      "name": "Swellow",
+      "species": "Swellow",
+      "level": 50,
+      "ability": "Guts",
+      "item": "emboarite",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "kingsshield",
+        "cottonguard",
+        "corrosivegas",
+        "recover"
+      ],
+      "evs": {
+        "hp": 112,
+        "atk": 84,
+        "def": 104,
+        "spa": 55,
+        "spd": 57,
+        "spe": 98
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 17,
+        "def": 14,
+        "spa": 0,
+        "spd": 18,
+        "spe": 19
+      }
+    },
+    {
+      "name": "Nacli",
+      "species": "Nacli",
+      "level": 99,
+      "ability": "Purifying Salt",
+      "item": "bugmemory",
+      "nature": "mild",
+      "gender": "F",
+      "moves": [
+        "hiddenpowerpsychic",
+        "dragondarts",
+        "plasmafists",
+        "gmaxchistrike"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 78,
+        "def": 86,
+        "spa": 81,
+        "spd": 91,
+        "spe": 99
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 18,
+        "def": 19,
+        "spa": 16,
+        "spd": 15,
+        "spe": 24
+      }
+    },
+    {
       "name": "Groudon-Primal",
       "species": "Groudon-Primal",
       "level": 85,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Desolate Land",
+      "item": "sachet",
       "nature": "timid",
       "gender": "",
       "moves": [
-        "tackle",
-        "tackle",
-        "tackle"
+        "coil",
+        "swift",
+        "furyswipes",
+        "acidspray"
       ],
       "evs": {
         "hp": 101,
@@ -34,28 +97,93 @@
       "name": "Toxtricity",
       "species": "Toxtricity",
       "level": 81,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Punk Rock",
+      "item": "icememory",
+      "nature": "impish",
       "gender": "M",
       "moves": [
-        "tackle"
+        "spikecannon",
+        "nastyplot",
+        "diamondstorm",
+        "silktrap"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 84,
+        "atk": 119,
+        "def": 57,
+        "spa": 99,
+        "spd": 55,
+        "spe": 96
       },
       "ivs": {
-        "hp": 31,
+        "hp": 23,
+        "atk": 12,
+        "def": 0,
+        "spa": 28,
+        "spd": 29,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Altaria-Mega",
+      "species": "Altaria-Mega",
+      "level": 78,
+      "ability": "Pixilate",
+      "item": "duskstone",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "roleplay",
+        "belch",
+        "shelter",
+        "electrodrift"
+      ],
+      "evs": {
+        "hp": 107,
+        "atk": 73,
+        "def": 83,
+        "spa": 74,
+        "spd": 89,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 13,
         "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "def": 10,
+        "spa": 14,
+        "spd": 11,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Silvally-Grass",
+      "species": "Silvally-Grass",
+      "level": 79,
+      "ability": "RKS System",
+      "item": "weaknesspolicy",
+      "nature": "rash",
+      "gender": "",
+      "moves": [
+        "matblock",
+        "focusblast",
+        "sacredsword",
+        "destinybond"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 102,
+        "def": 73,
+        "spa": 91,
+        "spd": 104,
+        "spe": 60
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 31,
+        "def": 4,
+        "spa": 3,
+        "spd": 27,
+        "spe": 5
       }
     }
   ],
@@ -64,56 +192,93 @@
       "name": "Aurorus",
       "species": "Aurorus",
       "level": 53,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Refrigerate",
+      "item": "tr41",
+      "nature": "hardy",
       "gender": "F",
       "moves": [
-        "tackle"
+        "floatyfall",
+        "switcheroo",
+        "crushclaw",
+        "focusenergy"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 102,
+        "atk": 88,
+        "def": 90,
+        "spa": 89,
+        "spd": 83,
+        "spe": 58
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 6,
+        "atk": 26,
+        "def": 20,
+        "spa": 9,
+        "spd": 25,
+        "spe": 18
+      }
+    },
+    {
+      "name": "Inkay",
+      "species": "Inkay",
+      "level": 64,
+      "ability": "Contrary",
+      "item": "flyiniumz",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "wildboltstorm",
+        "clangingscales",
+        "spotlight",
+        "brine"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 85,
+        "def": 100,
+        "spa": 79,
+        "spd": 70,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 30,
+        "def": 12,
+        "spa": 16,
+        "spd": 13,
+        "spe": 23
       }
     },
     {
       "name": "Eelektross-Mega",
       "species": "Eelektross-Mega",
       "level": 66,
-      "ability": "Run Away",
-      "item": "",
+      "ability": "Levitate",
+      "item": "absolite",
       "nature": "docile",
       "gender": "M",
       "moves": [
-        "tackle"
+        "shadowpunch",
+        "focusblast",
+        "endeavor",
+        "sonicboom"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 82,
+        "atk": 72,
+        "def": 110,
+        "spa": 66,
+        "spd": 77,
+        "spe": 103
       },
       "ivs": {
         "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "atk": 18,
+        "def": 15,
+        "spa": 1,
+        "spd": 4,
+        "spe": 13
       }
     },
     {
@@ -121,29 +286,94 @@
       "species": "Bramblin",
       "level": 58,
       "ability": "Wind Rider",
-      "item": "",
-      "nature": "docile",
+      "item": "steelixite",
+      "nature": "jolly",
       "gender": "F",
       "moves": [
-        "tailwind"
+        "tailwind",
+        "fireblast",
+        "wavecrash",
+        "aurorabeam"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 76,
+        "atk": 120,
+        "def": 71,
+        "spa": 108,
+        "spd": 65,
+        "spe": 70
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 0,
+        "atk": 16,
+        "def": 15,
+        "spa": 25,
+        "spd": 2,
+        "spe": 15
+      }
+    },
+    {
+      "name": "Armarouge",
+      "species": "Armarouge",
+      "level": 69,
+      "ability": "Flash Fire",
+      "item": "adamantcrystal",
+      "nature": "naughty",
+      "gender": "F",
+      "moves": [
+        "watersport",
+        "dragonrush",
+        "powersplit",
+        "wavecrash"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 111,
+        "def": 67,
+        "spa": 89,
+        "spd": 80,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 10,
+        "atk": 29,
+        "def": 10,
+        "spa": 15,
+        "spd": 25,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Wiglett",
+      "species": "Wiglett",
+      "level": 92,
+      "ability": "Gooey",
+      "item": "expertbelt",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "sinisterarrowraid",
+        "beatup",
+        "doublehit",
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 114,
+        "atk": 93,
+        "def": 92,
+        "spa": 60,
+        "spd": 76,
+        "spe": 75
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 2,
+        "def": 17,
+        "spa": 13,
+        "spd": 0,
+        "spe": 14
       }
     }
   ],
-  "_bug": "Diverges at line 37: JS=\"#37: turn=36, prng=54->56, P1=[Groudon(179/301)], P2=[Bramblin(108/144)]\" vs Rust=\"#37: turn=36, prng=54->56, P1=[Groudon(206/301)], P2=[Bramblin(108/144)]\""
+  "_bug": "Diverges at line 98: JS=\"#98: turn=93, prng=153->156, P1=[Toxtricity(60/248)], P2=[Bramblin(72/125)]\" vs Rust=\"#98: turn=93, prng=153->156, P1=[Toxtricity(180/248)], P2=[Bramblin(111/125)]\""
 }

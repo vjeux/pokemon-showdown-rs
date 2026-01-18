@@ -4,86 +4,186 @@
       "name": "Beartic",
       "species": "Beartic",
       "level": 62,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Snow Cloak",
+      "item": "ribbonsweet",
+      "nature": "serious",
       "gender": "F",
       "moves": [
-        "tackle",
-        "tackle",
-        "tackle"
+        "bodyslam",
+        "block",
+        "torment",
+        "ragepowder"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 79,
+        "atk": 93,
+        "def": 90,
+        "spa": 92,
+        "spd": 94,
+        "spe": 62
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
+        "hp": 30,
+        "atk": 14,
         "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "spa": 16,
+        "spd": 19,
+        "spe": 22
       }
     },
     {
       "name": "Slugma",
       "species": "Slugma",
       "level": 81,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Magma Armor",
+      "item": "wiseglasses",
+      "nature": "naive",
       "gender": "F",
       "moves": [
-        "magiccoat"
+        "magiccoat",
+        "hornleech",
+        "boltstrike",
+        "burnup"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 96,
+        "atk": 80,
+        "def": 101,
+        "spa": 95,
+        "spd": 69,
+        "spe": 69
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 0,
+        "atk": 16,
+        "def": 0,
+        "spa": 16,
+        "spd": 11,
+        "spe": 30
       }
     },
     {
       "name": "Seaking",
       "species": "Seaking",
       "level": 76,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Swift Swim",
+      "item": "scopelens",
+      "nature": "timid",
       "gender": "M",
       "moves": [
-        "tackle"
+        "smackdown",
+        "kinesis",
+        "sweetkiss",
+        "bellydrum"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 77,
+        "atk": 104,
+        "def": 66,
+        "spa": 96,
+        "spd": 55,
+        "spe": 112
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 24,
+        "atk": 3,
+        "def": 15,
+        "spa": 14,
+        "spd": 21,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Zorua",
+      "species": "Zorua",
+      "level": 60,
+      "ability": "Illusion",
+      "item": "firestone",
+      "nature": "sassy",
+      "gender": "M",
+      "moves": [
+        "bulldoze",
+        "freezedry",
+        "venomdrench",
+        "doodle"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 89,
+        "def": 80,
+        "spa": 89,
+        "spd": 86,
+        "spe": 74
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 15,
+        "def": 9,
+        "spa": 24,
+        "spd": 27,
+        "spe": 16
+      }
+    },
+    {
+      "name": "Naviathan",
+      "species": "Naviathan",
+      "level": 99,
+      "ability": "Guts",
+      "item": "sitrusberry",
+      "nature": "lonely",
+      "gender": "M",
+      "moves": [
+        "wringout",
+        "spark",
+        "sappyseed",
+        "drainingkiss"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 68,
+        "def": 110,
+        "spa": 68,
+        "spd": 94,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 8,
+        "def": 5,
+        "spa": 7,
+        "spd": 27,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Miraidon",
+      "species": "Miraidon",
+      "level": 68,
+      "ability": "Hadron Engine",
+      "item": "flyiniumz",
+      "nature": "rash",
+      "gender": "",
+      "moves": [
+        "captivate",
+        "nightdaze",
+        "magnetrise",
+        "acidarmor"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 60,
+        "def": 116,
+        "spa": 82,
+        "spd": 68,
+        "spe": 107
+      },
+      "ivs": {
+        "hp": 8,
+        "atk": 19,
+        "def": 20,
+        "spa": 10,
+        "spd": 12,
+        "spe": 4
       }
     }
   ],
@@ -92,86 +192,188 @@
       "name": "Heracross-Mega",
       "species": "Heracross-Mega",
       "level": 79,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Skill Link",
+      "item": "chandelurite",
+      "nature": "naive",
       "gender": "F",
       "moves": [
-        "obstruct"
+        "obstruct",
+        "cosmicpower",
+        "fusionbolt",
+        "shellsidearm"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
+        "hp": 101,
+        "atk": 63,
         "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "spa": 82,
+        "spd": 77,
+        "spe": 102
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 0,
+        "atk": 5,
+        "def": 17,
+        "spa": 26,
+        "spd": 2,
+        "spe": 0
       }
     },
     {
       "name": "Banette",
       "species": "Banette",
       "level": 52,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Insomnia",
+      "item": "quickclaw",
+      "nature": "brave",
       "gender": "F",
       "moves": [
-        "spikes"
+        "spikes",
+        "fly",
+        "honeclaws",
+        "seedbomb"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 74,
+        "atk": 74,
+        "def": 90,
+        "spa": 99,
+        "spd": 77,
+        "spe": 96
       },
       "ivs": {
-        "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "hp": 29,
+        "atk": 25,
+        "def": 14,
+        "spa": 27,
+        "spd": 2,
+        "spe": 24
       }
     },
     {
       "name": "Houndour",
       "species": "Houndour",
       "level": 98,
-      "ability": "Run Away",
-      "item": "",
-      "nature": "docile",
+      "ability": "Early Bird",
+      "item": "throatspray",
+      "nature": "timid",
       "gender": "M",
       "moves": [
-        "tackle"
+        "withdraw",
+        "confuseray",
+        "flameburst",
+        "magicaltorque"
       ],
       "evs": {
-        "hp": 85,
-        "atk": 85,
-        "def": 85,
-        "spa": 85,
-        "spd": 85,
-        "spe": 85
+        "hp": 95,
+        "atk": 64,
+        "def": 89,
+        "spa": 92,
+        "spd": 68,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 5,
+        "def": 11,
+        "spa": 4,
+        "spd": 4,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Tauros",
+      "species": "Tauros",
+      "level": 97,
+      "ability": "Intimidate",
+      "item": "pinkbow",
+      "nature": "impish",
+      "gender": "M",
+      "moves": [
+        "ragingfury",
+        "lightscreen",
+        "ingrain",
+        "surf"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 78,
+        "def": 60,
+        "spa": 94,
+        "spd": 101,
+        "spe": 82
       },
       "ivs": {
         "hp": 31,
-        "atk": 31,
-        "def": 31,
-        "spa": 31,
-        "spd": 31,
-        "spe": 31
+        "atk": 24,
+        "def": 9,
+        "spa": 1,
+        "spd": 26,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Astrolotl",
+      "species": "Astrolotl",
+      "level": 57,
+      "ability": "Regenerator",
+      "item": "hearthflamemask",
+      "nature": "bold",
+      "gender": "F",
+      "moves": [
+        "nobleroar",
+        "bugbite",
+        "lunarblessing",
+        "gmaxreplenish"
+      ],
+      "evs": {
+        "hp": 81,
+        "atk": 84,
+        "def": 78,
+        "spa": 107,
+        "spd": 88,
+        "spe": 72
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 5,
+        "def": 11,
+        "spa": 13,
+        "spd": 6,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Burmy-Trash",
+      "species": "Burmy-Trash",
+      "level": 86,
+      "ability": "Shed Skin",
+      "item": "pyroarite",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "steameruption",
+        "psychoboost",
+        "aquastep",
+        "maxflare"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 68,
+        "def": 82,
+        "spa": 97,
+        "spd": 101,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 16,
+        "atk": 20,
+        "def": 2,
+        "spa": 10,
+        "spd": 22,
+        "spe": 13
       }
     }
   ],
-  "_bug": "Diverges at line 56: JS=\"#56: turn=53, prng=53->53, P1=[Seaking(141/247)], P2=[Houndour(186/247)]\" vs Rust=\"#56: turn=53, prng=53->53, P1=[Seaking(141/247)], P2=[Houndour(247/247)]\""
+  "_bug": "Diverges at line 52: JS=\"#52: turn=49, prng=120->120, P1=[Seaking(180/240)], P2=[Houndour(185/221)]\" vs Rust=\"#52: turn=49, prng=120->120, P1=[Seaking(180/240)], P2=[Houndour(221/221)]\""
 }
