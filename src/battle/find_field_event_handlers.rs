@@ -76,12 +76,32 @@ impl Battle {
             // JS: handlers.push(this.resolvePriority({...}, callbackName));
             // JavaScript does NOT set handler.effectOrder in findFieldEventHandlers
             // Only resolve_priority sets it for SwitchIn/RedirectTarget events
+            //
+            // IMPORTANT: In JavaScript, resolvePriority determines subOrder based on state.target:
+            // - If state.target instanceof Field -> subOrder = 5 (field condition)
+            // - Otherwise -> subOrder = 2 (generic condition)
+            //
+            // state.target gets set by runEvent (line 912: this.effectState.target = effectHolder)
+            // when a callback for this effect runs. For pseudo-weathers like fairylock that have
+            // callbacks running via runEvent (e.g., onTrapPokemon), state.target becomes Field.
+            // For pseudo-weathers like echoedvoice that only have FieldStart/FieldRestart callbacks
+            // (which run via singleEvent, not runEvent), state.target stays undefined.
+            //
+            // In Rust, we track this via EffectState.target_is_field flag, which gets set
+            // during run_event callback execution when effectHolder is a field-level entity.
+            // We use this to determine the correct effectType for subOrder calculation.
+            let effect_type = if pw_state.target_is_field {
+                EffectType::FieldCondition // subOrder = 5
+            } else {
+                EffectType::Condition // subOrder = 2
+            };
+
             let mut handler = EventListener {
                 callback_name: String::new(),
                 effect: Effect {
                     id: pw_id,
                     name: pw_name,
-                    effect_type: EffectType::Condition,
+                    effect_type,
                     effect_holder: custom_holder,
                     side_index: None,
                     prankster_boosted: false,
