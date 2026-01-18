@@ -103,13 +103,13 @@ impl Pokemon {
                     }
 
                     // JS: if (this.battle.dex.conditions.getByID(i as ID).noCopy) continue;
-                    // ✅ NOW IMPLEMENTED (Session 24 Part 39): Check noCopy flag from condition data
+                    // Check noCopy flag from condition data
+                    // noCopy is a top-level field on ConditionData, not in extra
                     let no_copy = battle
                         .dex
-                        .conditions
-                        .get(id)
-                        .and_then(|cond| cond.extra.get("noCopy"))
-                        .and_then(|v| v.as_bool())
+                        .conditions()
+                        .get(id.as_str())
+                        .map(|cond| cond.no_copy)
                         .unwrap_or(false);
 
                     if no_copy {

@@ -1,4 +1,4 @@
-Analyzing 107 failing minimized seed files...
+Analyzing 105 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -89,8 +89,6 @@ reflect: 2 seeds
   Seeds: 28200, 34858
 gmaxresonance: 2 seeds
   Seeds: 30232, 30853
-saltcure: 2 seeds
-  Seeds: 30446, 59120
 blastburn: 2 seeds
   Seeds: 30530, 55954
 odorsleuth: 2 seeds
@@ -99,8 +97,6 @@ polarflare: 2 seeds
   Seeds: 32517, 64605
 circlethrow: 2 seeds
   Seeds: 32939, 62883
-batonpass: 2 seeds
-  Seeds: 34248, 59120
 magicroom: 2 seeds
   Seeds: 35671, 48178
 burningbulwark: 2 seeds
@@ -201,6 +197,8 @@ torchsong: 1 seeds
   Seeds: 30446
 blackholeeclipse: 1 seeds
   Seeds: 30446
+saltcure: 1 seeds
+  Seeds: 30446
 disarmingvoice: 1 seeds
   Seeds: 30446
 tectonicrage: 1 seeds
@@ -223,12 +221,6 @@ steelroller: 1 seeds
   Seeds: 32939
 spotlight: 1 seeds
   Seeds: 32939
-sandsearstorm: 1 seeds
-  Seeds: 34248
-attract: 1 seeds
-  Seeds: 34248
-weatherball: 1 seeds
-  Seeds: 34248
 recycle: 1 seeds
   Seeds: 34858
 wideguard: 1 seeds
@@ -381,12 +373,6 @@ magiccoat: 1 seeds
   Seeds: 56825
 searingshot: 1 seeds
   Seeds: 58474
-firespin: 1 seeds
-  Seeds: 59120
-shatteredpsyche: 1 seeds
-  Seeds: 59120
-spikyshield: 1 seeds
-  Seeds: 59120
 triplekick: 1 seeds
   Seeds: 59646
 curse: 1 seeds
@@ -457,8 +443,6 @@ revivalblessing: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Levitate: 2 seeds
-  Seeds: 30530, 34248
 Air Lock: 2 seeds
   Seeds: 35203, 38902
 Hunger Switch: 2 seeds
@@ -481,6 +465,8 @@ Minus: 1 seeds
   Seeds: 26095
 Soundproof: 1 seeds
   Seeds: 30446
+Levitate: 1 seeds
+  Seeds: 30530
 Snow Warning: 1 seeds
   Seeds: 30853
 Intimidate: 1 seeds
@@ -511,8 +497,6 @@ Slow Start: 1 seeds
   Seeds: 5613
 Gulp Missile: 1 seeds
   Seeds: 56264
-Pressure: 1 seeds
-  Seeds: 59120
 Wonder Guard: 1 seeds
   Seeds: 59646
 Poison Touch: 1 seeds
@@ -565,9 +549,9 @@ laggingtail: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 107
-Unique moves: 226 (225 non-simple)
-Unique abilities: 37 (34 non-simple)
+Total minimized seeds: 105
+Unique moves: 219 (218 non-simple)
+Unique abilities: 36 (33 non-simple)
 Unique items: 16
 
 --- Most Common Moves (top 10) ---
@@ -583,7 +567,6 @@ Unique items: 16
   stompingtantrum: 3 seeds
 
 --- Most Common Abilities (top 10) ---
-  Levitate: 2 seeds
   Air Lock: 2 seeds
   Hunger Switch: 2 seeds
   Effect Spore: 2 seeds
@@ -593,3 +576,4 @@ Unique items: 16
   Poison Point: 1 seeds
   Defiant: 1 seeds
   Shield Dust: 1 seeds
+  Minus: 1 seeds
