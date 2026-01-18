@@ -87,12 +87,23 @@ pub mod condition {
         let effect_id_str = effect_id.unwrap();
 
         // if (effect.effectType === 'Move' && !effect.flags['futuremove'] && source.lastMove) {
-        let is_move_effect =
+        // Check effectType using battle.event.effect (not battle.effect - that's a different context)
+        let is_move_effect = battle.event
+            .as_ref()
+            .and_then(|e| e.effect.as_ref())
+            .map(|e| e.effect_type == crate::battle::EffectType::Move)
+            .unwrap_or(false);
+
+        // Also check futuremove flag if it's a move
+        let has_futuremove_flag = if is_move_effect {
             if let Some(move_data) = battle.dex.moves().get_by_id(&ID::from(effect_id_str)) {
-                !move_data.flags.contains_key("futuremove")
+                move_data.flags.contains_key("futuremove")
             } else {
                 false
-            };
+            }
+        } else {
+            false
+        };
 
         let source_last_move = {
             let source_pokemon = match battle.pokemon_at(source.0, source.1) {
@@ -102,7 +113,7 @@ pub mod condition {
             source_pokemon.last_move.clone()
         };
 
-        if let (true, Some(mut move_id)) = (is_move_effect, source_last_move) {
+        if let (true, Some(mut move_id)) = (is_move_effect && !has_futuremove_flag, source_last_move) {
             // let move: Move = source.lastMove;
 
             // if (move.isMax && move.baseMove) move = this.dex.moves.get(move.baseMove);
@@ -133,6 +144,11 @@ pub mod condition {
                         };
                         if i < source_pokemon.move_slots.len() {
                             source_pokemon.move_slots[i].pp = 0;
+                            // Also update baseMoveSlots - in JavaScript these share the same MoveSlot objects
+                            // because slice() creates a shallow copy. In Rust we clone, so we need to update both.
+                            if i < source_pokemon.base_move_slots.len() {
+                                source_pokemon.base_move_slots[i].pp = 0;
+                            }
                         }
                     }
 
