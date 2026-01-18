@@ -1,0 +1,235 @@
+100k Seeds Test Results
+=======================
+Date: 2026-01-18
+Total: 100,000 seeds tested
+Passed: 99,844 (99.844%)
+Failed: 156 (0.156%)
+
+Batch Summary
+-------------
+Batch 1  (1-10k):     9,995 passed, 5 failed (99.95%)
+Batch 2  (10k-20k):   9,987 passed, 13 failed (99.87%)
+Batch 3  (20k-30k):   9,990 passed, 10 failed (99.90%)
+Batch 4  (30k-40k):   9,987 passed, 13 failed (99.87%)
+Batch 5  (40k-50k):   9,982 passed, 18 failed (99.82%)
+Batch 6  (50k-60k):   9,988 passed, 12 failed (99.88%)
+Batch 7  (60k-70k):   9,979 passed, 21 failed (99.79%)
+Batch 8  (70k-80k):   9,975 passed, 25 failed (99.75%)
+Batch 9  (80k-90k):   9,977 passed, 23 failed (99.77%)
+Batch 10 (90k-100k):  9,984 passed, 16 failed (99.84%)
+
+Failing Seeds with Divergence Details
+=====================================
+
+Format: SEED <n>: JS(turns=<t>, prng=<p>, winner=<w>) vs Rust(turns=<t>, prng=<p>, winner=<w>)
+
+Batch 1 (1-10000)
+-----------------
+SEED 943:    JS(turns=94, prng=159, winner=none)  vs Rust(turns=95, prng=162, winner=none)
+SEED 1101:   JS(turns=78, prng=252, winner=p1)    vs Rust(turns=77, prng=255, winner=p1)
+SEED 2719:   JS(turns=82, prng=148, winner=p2)    vs Rust(turns=49, prng=84, winner=p2)
+SEED 4682:   JS(turns=66, prng=162, winner=p2)    vs Rust(turns=68, prng=171, winner=p2)
+SEED 6991:   JS(turns=56, prng=214, winner=p1)    vs Rust(turns=47, prng=152, winner=p1)
+
+Batch 2 (10001-20000)
+---------------------
+SEED 10653:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 10825:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 12832:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 14097:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 15080:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 15759:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 15974:  JS(turns=83, prng=260, winner=p2)    vs Rust(turns=84, prng=252, winner=p2)
+SEED 16240:  JS(turns=98, prng=99, winner=none)   vs Rust(turns=98, prng=102, winner=none)
+SEED 17644:  JS(turns=57, prng=148, winner=p2)    vs Rust(turns=60, prng=174, winner=p2)
+SEED 19367:  JS(turns=34, prng=182, winner=p2)    vs Rust(turns=34, prng=183, winner=p2)
+SEED 19405:  JS(turns=20, prng=87, winner=p1)     vs Rust(turns=20, prng=90, winner=p1)
+SEED 19450:  JS(turns=37, prng=256, winner=p2)    vs Rust(turns=40, prng=276, winner=p2)
+SEED 19576:  JS(turns=60, prng=266, winner=p2)    vs Rust(turns=59, prng=256, winner=p2)
+
+Batch 3 (20001-30000)
+---------------------
+SEED 20356:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 22002:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 23054:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 23363:  JS(turns=34, prng=208, winner=p2)    vs Rust(turns=34, prng=232, winner=p2)
+SEED 25177:  JS(turns=40, prng=176, winner=p1)    vs Rust(turns=41, prng=179, winner=p1)
+SEED 25574:  JS(turns=59, prng=230, winner=p2)    vs Rust(turns=57, prng=233, winner=p2)
+SEED 26303:  JS(turns=50, prng=242, winner=p1)    vs Rust(turns=52, prng=242, winner=p1)
+SEED 26791:  JS(turns=54, prng=217, winner=p1)    vs Rust(turns=80, prng=276, winner=p2)
+SEED 29161:  JS(turns=87, prng=273, winner=p2)    vs Rust(turns=58, prng=274, winner=p2)
+SEED 29444:  JS(turns=33, prng=125, winner=p2)    vs Rust(turns=28, prng=110, winner=p2)
+
+Batch 4 (30001-40000)
+---------------------
+SEED 30232:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 30637:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 31834:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 32939:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 34408:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 34957:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 35203:  JS(turns=95, prng=301, winner=none)  vs Rust(turns=95, prng=304, winner=none)
+SEED 35620:  JS(turns=70, prng=314, winner=p1)    vs Rust(turns=72, prng=329, winner=p1)
+SEED 35671:  JS(turns=66, prng=270, winner=p2)    vs Rust(turns=46, prng=199, winner=p2)
+SEED 37514:  JS(turns=94, prng=351, winner=none)  vs Rust(turns=91, prng=337, winner=p1)
+SEED 38902:  JS(turns=54, prng=285, winner=p2)    vs Rust(turns=66, prng=420, winner=p2)
+SEED 39361:  JS(turns=44, prng=241, winner=p1)    vs Rust(turns=55, prng=275, winner=p1)
+SEED 39892:  JS(turns=9, prng=30, winner=p1)      vs Rust(turns=46, prng=134, winner=p1)
+
+Batch 5 (40001-50000)
+---------------------
+SEED 40097:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 40192:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 40910:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 42063:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 42438:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 42548:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 42627:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 43891:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 44135:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 45311:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 47061:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 48133:  JS(turns=24, prng=103, winner=p1)    vs Rust(turns=23, prng=100, winner=p1)
+SEED 48178:  JS(turns=47, prng=221, winner=p1)    vs Rust(turns=44, prng=213, winner=p1)
+SEED 48311:  JS(turns=52, prng=280, winner=p2)    vs Rust(turns=53, prng=286, winner=p2)
+SEED 48318:  JS(turns=45, prng=185, winner=p2)    vs Rust(turns=47, prng=201, winner=p2)
+SEED 48869:  JS(turns=41, prng=85, winner=p2)     vs Rust(turns=41, prng=93, winner=p2)
+SEED 49341:  JS(turns=71, prng=254, winner=p1)    vs Rust(turns=72, prng=267, winner=p1)
+SEED 49637:  JS(turns=87, prng=237, winner=p2)    vs Rust(turns=92, prng=191, winner=none)
+
+Batch 6 (50001-60000)
+---------------------
+SEED 51150:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 52895:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 53040:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 53148:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 53557:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 53747:  JS(turns=60, prng=214, winner=p2)    vs Rust(turns=58, prng=198, winner=p2)
+SEED 54588:  JS(turns=74, prng=276, winner=p2)    vs Rust(turns=68, prng=249, winner=p2)
+SEED 55736:  JS(turns=47, prng=271, winner=p2)    vs Rust(turns=49, prng=231, winner=p1)
+SEED 56089:  JS(turns=48, prng=206, winner=p1)    vs Rust(turns=49, prng=212, winner=p1)
+SEED 56264:  JS(turns=14, prng=67, winner=p2)     vs Rust(turns=20, prng=105, winner=p2)
+SEED 56825:  JS(turns=52, prng=144, winner=p2)    vs Rust(turns=65, prng=197, winner=p2)
+SEED 59646:  JS(turns=47, prng=103, winner=p1)    vs Rust(turns=43, prng=48, winner=p2)
+
+Batch 7 (60001-70000)
+---------------------
+SEED 60349:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 60521:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 60818:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 60885:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 61343:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 61431:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 62723:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 63529:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 63843:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 64286:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 64566:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 64920:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 65490:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 65503:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 65917:  JS(turns=31, prng=172, winner=p1)    vs Rust(turns=29, prng=172, winner=p1)
+SEED 67475:  JS(turns=45, prng=110, winner=p1)    vs Rust(turns=41, prng=91, winner=p1)
+SEED 67628:  JS(turns=39, prng=147, winner=p2)    vs Rust(turns=37, prng=139, winner=p2)
+SEED 67961:  JS(turns=67, prng=238, winner=p1)    vs Rust(turns=65, prng=232, winner=p2)
+SEED 68529:  JS(turns=81, prng=101, winner=p2)    vs Rust(turns=49, prng=103, winner=p2)
+SEED 68764:  JS(turns=89, prng=213, winner=p2)    vs Rust(turns=93, prng=231, winner=none)
+SEED 69794:  JS(turns=59, prng=196, winner=p1)    vs Rust(turns=60, prng=203, winner=p1)
+
+Batch 8 (70001-80000)
+---------------------
+SEED 70293:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 70719:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 71124:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 71148:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 71155:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 71505:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 71847:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 72568:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 72782:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 73093:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 73448:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 73726:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 73880:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 74337:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 74439:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 75224:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 75599:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 76907:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 77336:  JS(turns=56, prng=151, winner=p2)    vs Rust(turns=59, prng=168, winner=p2)
+SEED 77624:  JS(turns=75, prng=359, winner=p2)    vs Rust(turns=82, prng=406, winner=p2)
+SEED 77833:  JS(turns=71, prng=159, winner=p1)    vs Rust(turns=71, prng=158, winner=p1)
+SEED 77834:  JS(turns=68, prng=187, winner=p2)    vs Rust(turns=70, prng=209, winner=p2)
+SEED 78126:  JS(turns=48, prng=202, winner=p2)    vs Rust(turns=50, prng=211, winner=p1)
+SEED 78875:  JS(turns=67, prng=271, winner=p1)    vs Rust(turns=70, prng=298, winner=p1)
+SEED 79574:  JS(turns=26, prng=93, winner=p1)     vs Rust(turns=23, prng=87, winner=p1)
+
+Batch 9 (80001-90000)
+---------------------
+SEED 80374:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 81160:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 81290:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 81757:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 81764:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 82263:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 82556:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 82565:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 82568:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 82834:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 83469:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 83489:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 83798:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 84717:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 85281:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 85483:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 87270:  JS(turns=45, prng=193, winner=p1)    vs Rust(turns=37, prng=152, winner=p2)
+SEED 87363:  JS(turns=27, prng=104, winner=p1)    vs Rust(turns=28, prng=108, winner=p1)
+SEED 87633:  JS(turns=26, prng=191, winner=p2)    vs Rust(turns=26, prng=193, winner=p2)
+SEED 88000:  JS(turns=68, prng=336, winner=p1)    vs Rust(turns=67, prng=332, winner=p1)
+SEED 88904:  JS(turns=84, prng=414, winner=p1)    vs Rust(turns=89, prng=418, winner=p1)
+SEED 89312:  JS(turns=28, prng=135, winner=p2)    vs Rust(turns=33, prng=150, winner=p2)
+SEED 89804:  JS(turns=62, prng=210, winner=p1)    vs Rust(turns=63, prng=219, winner=p1)
+
+Batch 10 (90001-100000)
+-----------------------
+SEED 90577:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 91750:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 92615:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 92938:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 92977:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 93338:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 94256:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 95041:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 95061:  JS(turns=?, prng=?, winner=?)        vs Rust(turns=?, prng=?, winner=?)
+SEED 95236:  JS(turns=50, prng=295, winner=p2)    vs Rust(turns=37, prng=209, winner=p1)
+SEED 96183:  JS(turns=74, prng=273, winner=p2)    vs Rust(turns=74, prng=269, winner=p2)
+SEED 96673:  JS(turns=69, prng=198, winner=p2)    vs Rust(turns=69, prng=204, winner=p2)
+SEED 97470:  JS(turns=85, prng=262, winner=p2)    vs Rust(turns=55, prng=198, winner=p2)
+SEED 97549:  JS(turns=34, prng=135, winner=p1)    vs Rust(turns=50, prng=182, winner=p1)
+SEED 97945:  JS(turns=60, prng=552, winner=p2)    vs Rust(turns=59, prng=551, winner=p2)
+SEED 99388:  JS(turns=59, prng=201, winner=p1)    vs Rust(turns=70, prng=240, winner=p1)
+
+All Failing Seeds (sorted)
+==========================
+943, 1101, 2719, 4682, 6991, 10653, 10825, 12832, 14097, 15080, 15759, 15974,
+16240, 17644, 19367, 19405, 19450, 19576, 20356, 22002, 23054, 23363, 25177,
+25574, 26303, 26791, 29161, 29444, 30232, 30637, 31834, 32939, 34408, 34957,
+35203, 35620, 35671, 37514, 38902, 39361, 39892, 40097, 40192, 40910, 42063,
+42438, 42548, 42627, 43891, 44135, 45311, 47061, 48133, 48178, 48311, 48318,
+48869, 49341, 49637, 51150, 52895, 53040, 53148, 53557, 53747, 54588, 55736,
+56089, 56264, 56825, 59646, 60349, 60521, 60818, 60885, 61343, 61431, 62723,
+63529, 63843, 64286, 64566, 64920, 65490, 65503, 65917, 67475, 67628, 67961,
+68529, 68764, 69794, 70293, 70719, 71124, 71148, 71155, 71505, 71847, 72568,
+72782, 73093, 73448, 73726, 73880, 74337, 74439, 75224, 75599, 76907, 77336,
+77624, 77833, 77834, 78126, 78875, 79574, 80374, 81160, 81290, 81757, 81764,
+82263, 82556, 82565, 82568, 82834, 83469, 83489, 83798, 84717, 85281, 85483,
+87270, 87363, 87633, 88000, 88904, 89312, 89804, 90577, 91750, 92615, 92938,
+92977, 93338, 94256, 95041, 95061, 95236, 96183, 96673, 97470, 97549, 97945,
+99388
+
+Notable Patterns in Failures
+============================
+- Winner mismatch (different outcome): 26791, 37514, 49637, 55736, 59646, 67961, 68764, 78126, 87270, 95236
+- Large turn difference (>10 turns): 2719, 6991, 29161, 35671, 38902, 39892, 56825, 68529, 97470
+- Same turns, different PRNG: Indicates extra/missing RNG calls
+- Same winner, slight turn/PRNG diff: Minor divergences in damage calc or event ordering
