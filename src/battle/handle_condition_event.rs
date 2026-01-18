@@ -399,6 +399,14 @@ impl Battle {
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
                 condition_callbacks::dispatch_on_modify_accuracy(self, condition_id, accuracy, pokemon_pos, source_pos)
             }
+            "ModifyBoost" => {
+                // Foresight and Miracle Eye negate positive evasion boosts
+                // The boosts are modified in-place via event.relay_var
+                crate::data::move_callbacks::dispatch_condition_on_modify_boost(
+                    self,
+                    condition_id,
+                )
+            }
             "ModifyCritRatio" => {
                 // Extract crit_ratio from relay_var and source_pos from event
                 // gmaxchistrike, focusenergy, dragoncheer, laserfocus - move-embedded conditions

@@ -2182,12 +2182,12 @@ pub fn dispatch_condition_on_modify_accuracy(
 }
 
 /// Dispatch condition onModifyBoost callbacks
+/// Takes condition_id directly to support volatiles like foresight and miracleeye
 pub fn dispatch_condition_on_modify_boost(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
-    _source_pos: (usize, usize),
+    condition_id: &str,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "foresight" => foresight::condition::on_modify_boost(battle),
         "miracleeye" => miracleeye::condition::on_modify_boost(battle),
         _ => EventResult::Continue,

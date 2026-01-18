@@ -1,4 +1,4 @@
-Analyzing 89 failing minimized seed files...
+Analyzing 84 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -7,8 +7,6 @@ mindblown: 4 seeds
   Seeds: 17626, 37514, 53360, 6527
 transform: 4 seeds
   Seeds: 2814, 61343, 64566, 64920
-assist: 4 seeds
-  Seeds: 30853, 39435, 41340, 6527
 speedswap: 4 seeds
   Seeds: 34471, 39290, 43980, 62883
 metronome: 4 seeds
@@ -21,18 +19,14 @@ skydrop: 3 seeds
   Seeds: 17535, 35876, 55162
 flipturn: 3 seeds
   Seeds: 18219, 6527, 65490
-miracleeye: 3 seeds
-  Seeds: 20191, 30446, 58474
 ivycudgel: 3 seeds
   Seeds: 21366, 22436, 42590
 healblock: 3 seeds
   Seeds: 2814, 55162, 5613
 ragingbull: 3 seeds
   Seeds: 28200, 34858, 62499
-minimize: 3 seeds
-  Seeds: 30446, 30853, 58474
-leechseed: 3 seeds
-  Seeds: 30530, 40097, 44135
+assist: 3 seeds
+  Seeds: 39435, 41340, 6527
 ceaselessedge: 2 seeds
   Seeds: 10025, 57522
 playrough: 2 seeds
@@ -45,12 +39,8 @@ encore: 2 seeds
   Seeds: 15759, 29611
 charge: 2 seeds
   Seeds: 15974, 43153
-comeuppance: 2 seeds
-  Seeds: 15974, 30530
 maliciousmoonsault: 2 seeds
   Seeds: 18219, 60885
-zippyzap: 2 seeds
-  Seeds: 20191, 30530
 maxknuckle: 2 seeds
   Seeds: 20356, 53209
 magneticflux: 2 seeds
@@ -67,14 +57,6 @@ pursuit: 2 seeds
   Seeds: 25574, 35620
 reflect: 2 seeds
   Seeds: 28200, 34858
-gmaxresonance: 2 seeds
-  Seeds: 30232, 30853
-shadowforce: 2 seeds
-  Seeds: 30446, 39290
-blastburn: 2 seeds
-  Seeds: 30530, 55954
-odorsleuth: 2 seeds
-  Seeds: 30530, 30853
 circlethrow: 2 seeds
   Seeds: 32939, 62883
 magicroom: 2 seeds
@@ -91,6 +73,8 @@ synchronoise: 2 seeds
   Seeds: 39435, 56089
 grudge: 2 seeds
   Seeds: 40097, 42063
+leechseed: 2 seeds
+  Seeds: 40097, 44135
 ragefist: 2 seeds
   Seeds: 40910, 60885
 bounce: 2 seeds
@@ -119,6 +103,8 @@ maxquake: 1 seeds
   Seeds: 15759
 mightycleave: 1 seeds
   Seeds: 15759
+comeuppance: 1 seeds
+  Seeds: 15974
 obstruct: 1 seeds
   Seeds: 17535
 morningsun: 1 seeds
@@ -165,30 +151,12 @@ babydolleyes: 1 seeds
   Seeds: 30232
 doubleteam: 1 seeds
   Seeds: 30232
+gmaxresonance: 1 seeds
+  Seeds: 30232
 combattorque: 1 seeds
   Seeds: 30232
 gmaxcannonade: 1 seeds
   Seeds: 30232
-torchsong: 1 seeds
-  Seeds: 30446
-blackholeeclipse: 1 seeds
-  Seeds: 30446
-saltcure: 1 seeds
-  Seeds: 30446
-disarmingvoice: 1 seeds
-  Seeds: 30446
-tectonicrage: 1 seeds
-  Seeds: 30530
-maxguard: 1 seeds
-  Seeds: 30530
-needlearm: 1 seeds
-  Seeds: 30530
-gigaimpact: 1 seeds
-  Seeds: 30853
-closecombat: 1 seeds
-  Seeds: 30853
-drainpunch: 1 seeds
-  Seeds: 30853
 sacredfire: 1 seeds
   Seeds: 32939
 struggle: 1 seeds
@@ -216,6 +184,8 @@ skittersmack: 1 seeds
 wish: 1 seeds
   Seeds: 38902
 icehammer: 1 seeds
+  Seeds: 39290
+shadowforce: 1 seeds
   Seeds: 39290
 autotomize: 1 seeds
   Seeds: 39290
@@ -301,6 +271,8 @@ tailwind: 1 seeds
   Seeds: 55162
 banefulbunker: 1 seeds
   Seeds: 55162
+blastburn: 1 seeds
+  Seeds: 55954
 roar: 1 seeds
   Seeds: 55954
 razorleaf: 1 seeds
@@ -315,8 +287,6 @@ stealthrock: 1 seeds
   Seeds: 56825
 magiccoat: 1 seeds
   Seeds: 56825
-searingshot: 1 seeds
-  Seeds: 58474
 triplekick: 1 seeds
   Seeds: 59646
 curse: 1 seeds
@@ -389,12 +359,6 @@ Shield Dust: 1 seeds
   Seeds: 25177
 Minus: 1 seeds
   Seeds: 26095
-Soundproof: 1 seeds
-  Seeds: 30446
-Levitate: 1 seeds
-  Seeds: 30530
-Snow Warning: 1 seeds
-  Seeds: 30853
 Intimidate: 1 seeds
   Seeds: 32939
 Shields Down: 1 seeds
@@ -451,8 +415,6 @@ powerlens: 1 seeds
   Seeds: 22366
 razorfang: 1 seeds
   Seeds: 25177
-berryjuice: 1 seeds
-  Seeds: 30446
 choiceband: 1 seeds
   Seeds: 32939
 rockyhelmet: 1 seeds
@@ -469,22 +431,22 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 89
-Unique moves: 183 (182 non-simple)
-Unique abilities: 33 (31 non-simple)
-Unique items: 14
+Total minimized seeds: 84
+Unique moves: 168 (167 non-simple)
+Unique abilities: 30 (28 non-simple)
+Unique items: 13
 
 --- Most Common Moves (top 10) ---
   mindblown: 4 seeds
   transform: 4 seeds
-  assist: 4 seeds
   speedswap: 4 seeds
   metronome: 4 seeds
   copycat: 3 seeds
   scaleshot: 3 seeds
   skydrop: 3 seeds
   flipturn: 3 seeds
-  miracleeye: 3 seeds
+  ivycudgel: 3 seeds
+  healblock: 3 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds
@@ -496,4 +458,4 @@ Unique items: 14
   Defiant: 1 seeds
   Shield Dust: 1 seeds
   Minus: 1 seeds
-  Soundproof: 1 seeds
+  Intimidate: 1 seeds
