@@ -53,8 +53,10 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
         target_pokemon.stored_stats.spe = source_spe;
-        // Update speed field to match stored_stats.spe (same pattern as Transform fix)
-        target_pokemon.speed = target_pokemon.stored_stats.spe as i32;
+        // NOTE: Do NOT set pokemon.speed here directly!
+        // In JavaScript, pokemon.speed is dynamically calculated via getStat('spe')
+        // which applies modifiers from abilities, items (like Power Bracer), etc.
+        // The speed will be recalculated when needed via get_stat() or battle.update_speed().
     }
     {
         let source_pokemon = match battle.pokemon_at_mut(source.0, source.1) {
@@ -62,8 +64,10 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
         source_pokemon.stored_stats.spe = target_spe;
-        // Update speed field to match stored_stats.spe (same pattern as Transform fix)
-        source_pokemon.speed = source_pokemon.stored_stats.spe as i32;
+        // NOTE: Do NOT set pokemon.speed here directly!
+        // In JavaScript, pokemon.speed is dynamically calculated via getStat('spe')
+        // which applies modifiers from abilities, items (like Power Bracer), etc.
+        // The speed will be recalculated when needed via get_stat() or battle.update_speed().
     }
 
     // this.add('-activate', source, 'move: Speed Swap', `[of] ${target}`);

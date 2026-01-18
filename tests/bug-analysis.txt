@@ -1,4 +1,4 @@
-Analyzing 84 failing minimized seed files...
+Analyzing 80 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -7,8 +7,6 @@ mindblown: 4 seeds
   Seeds: 17626, 37514, 53360, 6527
 transform: 4 seeds
   Seeds: 2814, 61343, 64566, 64920
-speedswap: 4 seeds
-  Seeds: 34471, 39290, 43980, 62883
 metronome: 4 seeds
   Seeds: 36737, 43394, 48145, 55954
 copycat: 3 seeds
@@ -57,8 +55,6 @@ pursuit: 2 seeds
   Seeds: 25574, 35620
 reflect: 2 seeds
   Seeds: 28200, 34858
-circlethrow: 2 seeds
-  Seeds: 32939, 62883
 magicroom: 2 seeds
   Seeds: 35671, 48178
 burningbulwark: 2 seeds
@@ -165,6 +161,8 @@ steelroller: 1 seeds
   Seeds: 32939
 spotlight: 1 seeds
   Seeds: 32939
+circlethrow: 1 seeds
+  Seeds: 32939
 recycle: 1 seeds
   Seeds: 34858
 wideguard: 1 seeds
@@ -183,12 +181,6 @@ skittersmack: 1 seeds
   Seeds: 38902
 wish: 1 seeds
   Seeds: 38902
-icehammer: 1 seeds
-  Seeds: 39290
-shadowforce: 1 seeds
-  Seeds: 39290
-autotomize: 1 seeds
-  Seeds: 39290
 gmaxstonesurge: 1 seeds
   Seeds: 39361
 maxphantasm: 1 seeds
@@ -231,10 +223,6 @@ mistyexplosion: 1 seeds
   Seeds: 43394
 accelerock: 1 seeds
   Seeds: 43394
-dragonenergy: 1 seeds
-  Seeds: 43980
-acupressure: 1 seeds
-  Seeds: 43980
 knockoff: 1 seeds
   Seeds: 45311
 tarshot: 1 seeds
@@ -315,8 +303,6 @@ gmaxbefuddle: 1 seeds
   Seeds: 61431
 baddybad: 1 seeds
   Seeds: 62499
-pounce: 1 seeds
-  Seeds: 62883
 sharpen: 1 seeds
   Seeds: 63094
 leechlife: 1 seeds
@@ -343,8 +329,6 @@ ABILITIES (excluding simple ones)
 ============================================================
 Air Lock: 2 seeds
   Seeds: 35203, 38902
-Hunger Switch: 2 seeds
-  Seeds: 39290, 48318
 Effect Spore: 2 seeds
   Seeds: 48869, 65490
 Unaware: 2 seeds
@@ -361,20 +345,18 @@ Minus: 1 seeds
   Seeds: 26095
 Intimidate: 1 seeds
   Seeds: 32939
-Shields Down: 1 seeds
-  Seeds: 34471
 Disguise: 1 seeds
   Seeds: 37514
 Victory Star: 1 seeds
   Seeds: 38902
-Dry Skin: 1 seeds
-  Seeds: 39290
 Unseen Fist: 1 seeds
   Seeds: 39892
 Limber: 1 seeds
   Seeds: 43394
 As One (Glastrier): 1 seeds
   Seeds: 44135
+Hunger Switch: 1 seeds
+  Seeds: 48318
 Color Change: 1 seeds
   Seeds: 53747
 Flash Fire: 1 seeds
@@ -419,8 +401,6 @@ choiceband: 1 seeds
   Seeds: 32939
 rockyhelmet: 1 seeds
   Seeds: 32939
-powerbracer: 1 seeds
-  Seeds: 34471
 hearthflamemask: 1 seeds
   Seeds: 45311
 sitrusberry: 1 seeds
@@ -431,15 +411,14 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 84
-Unique moves: 168 (167 non-simple)
-Unique abilities: 30 (28 non-simple)
-Unique items: 13
+Total minimized seeds: 80
+Unique moves: 161 (160 non-simple)
+Unique abilities: 28 (26 non-simple)
+Unique items: 12
 
 --- Most Common Moves (top 10) ---
   mindblown: 4 seeds
   transform: 4 seeds
-  speedswap: 4 seeds
   metronome: 4 seeds
   copycat: 3 seeds
   scaleshot: 3 seeds
@@ -447,10 +426,10 @@ Unique items: 13
   flipturn: 3 seeds
   ivycudgel: 3 seeds
   healblock: 3 seeds
+  ragingbull: 3 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds
-  Hunger Switch: 2 seeds
   Effect Spore: 2 seeds
   Unaware: 2 seeds
   Plus: 1 seeds
@@ -459,3 +438,4 @@ Unique items: 13
   Shield Dust: 1 seeds
   Minus: 1 seeds
   Intimidate: 1 seeds
+  Disguise: 1 seeds
