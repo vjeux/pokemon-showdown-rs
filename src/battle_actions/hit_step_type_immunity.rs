@@ -30,11 +30,15 @@ pub fn hit_step_type_immunity(
     // if (move.ignoreImmunity === undefined) {
     //     move.ignoreImmunity = (move.category === 'Status');
     // }
+    debug_elog!("[HIT_STEP_TYPE_IMM] BEFORE: move={}, category={}, ignore_immunity={:?}",
+        active_move.id, active_move.category, active_move.ignore_immunity);
     if active_move.ignore_immunity.is_none() {
         if active_move.category == "Status" {
             active_move.ignore_immunity = Some(crate::battle_actions::IgnoreImmunity::All);
+            debug_elog!("[HIT_STEP_TYPE_IMM] Set ignore_immunity=All for Status move");
         }
     }
+    debug_elog!("[HIT_STEP_TYPE_IMM] AFTER: ignore_immunity={:?}", active_move.ignore_immunity);
 
     // const hitResults = [];
     // for (const i of targets.keys()) {

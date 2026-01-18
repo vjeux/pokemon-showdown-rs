@@ -109,7 +109,18 @@ impl Dex {
             ignore_accuracy: move_data.ignore_accuracy,
             ignore_evasion: move_data.ignore_evasion,
             ignore_positive_evasion: None,
-            ignore_immunity: move_data.ignore_immunity.clone(),
+            ignore_immunity: {
+                // JavaScript (dex-moves.ts:497):
+                // this.ignoreImmunity = (data.ignoreImmunity !== undefined ? data.ignoreImmunity : this.category === 'Status');
+                // Status moves default to ignoring immunity if not explicitly set
+                if move_data.ignore_immunity.is_some() {
+                    move_data.ignore_immunity.clone()
+                } else if move_data.category == "Status" {
+                    Some(crate::battle_actions::IgnoreImmunity::All)
+                } else {
+                    None
+                }
+            },
             ignore_defensive: move_data.ignore_defensive,
             ignore_offensive: false,
             ignore_negative_offensive: false,
