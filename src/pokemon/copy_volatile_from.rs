@@ -87,42 +87,45 @@ impl Pokemon {
 
         // ✅ NOW IMPLEMENTED (Session 24 Part 39): Loop through ALL source volatiles
         // Extract volatile list and states from source
-        let volatiles_to_copy: Vec<(ID, crate::event_system::EffectState)> = {
+        // Also track which volatile IDs are being copied so we can delete their linkedPokemon/linkedStatus
+        let (volatiles_to_copy, copied_volatile_ids): (Vec<(ID, crate::event_system::EffectState)>, Vec<ID>) = {
             let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
                 Some(p) => p,
                 None => return,
             };
 
-            source_pokemon
-                .volatiles
-                .iter()
-                .filter_map(|(id, state)| {
-                    // JS: if (switchCause === 'shedtail' && i !== 'substitute') continue;
-                    if is_shedtail && id.as_str() != "substitute" {
-                        return None;
-                    }
+            let mut to_copy = Vec::new();
+            let mut copied_ids = Vec::new();
 
-                    // JS: if (this.battle.dex.conditions.getByID(i as ID).noCopy) continue;
-                    // Check noCopy flag from condition data
-                    // noCopy is a top-level field on ConditionData, not in extra
-                    let no_copy = battle
-                        .dex
-                        .conditions()
-                        .get(id.as_str())
-                        .map(|cond| cond.no_copy)
-                        .unwrap_or(false);
+            for (id, state) in &source_pokemon.volatiles {
+                // JS: if (switchCause === 'shedtail' && i !== 'substitute') continue;
+                if is_shedtail && id.as_str() != "substitute" {
+                    continue;
+                }
 
-                    if no_copy {
-                        return None;
-                    }
+                // JS: if (this.battle.dex.conditions.getByID(i as ID).noCopy) continue;
+                // Check noCopy flag from condition data
+                // noCopy is a top-level field on ConditionData, not in extra
+                let no_copy = battle
+                    .dex
+                    .conditions()
+                    .get(id.as_str())
+                    .map(|cond| cond.no_copy)
+                    .unwrap_or(false);
 
-                    // Clone the state and update target
-                    let mut new_state = state.clone();
-                    new_state.target = Some(target_pos);
+                if no_copy {
+                    continue;
+                }
 
-                    Some((id.clone(), new_state))
-                })
-                .collect()
+                // Clone the state and update target
+                let mut new_state = state.clone();
+                new_state.target = Some(target_pos);
+
+                to_copy.push((id.clone(), new_state));
+                copied_ids.push(id.clone());
+            }
+
+            (to_copy, copied_ids)
         };
 
         // Copy the volatiles to target
@@ -215,10 +218,58 @@ impl Pokemon {
             }
         }
 
+        // JS: delete pokemon.volatiles[i].linkedPokemon; delete pokemon.volatiles[i].linkedStatus;
+        // Delete linkedPokemon/linkedStatus from SOURCE volatiles that were COPIED
+        // This matches JavaScript lines 138-139: only copied volatiles have their links deleted
+        {
+            let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+                Some(p) => p,
+                None => return,
+            };
+            for volatile_id in &copied_volatile_ids {
+                if let Some(state) = source_pokemon.volatiles.get_mut(volatile_id) {
+                    state.linked_pokemon = None;
+                    state.linked_status = None;
+                }
+            }
+        }
+
         // JS: pokemon.clearVolatile();
         // ✅ NOW IMPLEMENTED (Session 24 Part 39): Clear source's volatiles
         // Note: Can't call clear_volatile due to borrow checker, so inline the logic
+        // For volatiles that were NOT copied, they still have linkedPokemon/linkedStatus,
+        // so we need to call removeLinkedVolatiles for those (matching JS clearVolatile behavior)
         {
+            // Collect linked volatiles from source (only non-copied ones still have linkedStatus)
+            let linked_volatiles: Vec<(String, Vec<(usize, usize)>)> = {
+                let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                    Some(p) => p,
+                    None => return,
+                };
+                source_pokemon
+                    .volatiles
+                    .iter()
+                    .filter_map(|(_, state)| {
+                        if let (Some(status), Some(pokemon_vec)) = (&state.linked_status, &state.linked_pokemon) {
+                            Some((status.clone(), pokemon_vec.clone()))
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+            };
+
+            // Remove linked volatiles from other pokemon (for non-copied volatiles)
+            for (status, pokemon_vec) in linked_volatiles {
+                Pokemon::remove_linked_volatiles(
+                    battle,
+                    source_pos,
+                    &ID::from(status.as_str()),
+                    &pokemon_vec,
+                );
+            }
+
+            // Now clear the source's volatiles
             let source_pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
                 Some(p) => p,
                 None => return,

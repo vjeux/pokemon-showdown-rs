@@ -327,9 +327,19 @@ pub fn switch_in(
                 }
 
                 // Handle linked volatiles before clearing
+                // Debug: Log all volatiles and their linked status
+                debug_elog!("[SWITCH_CLEAR_VOLATILE] Pokemon at ({}, {}) has {} volatiles",
+                    side_index, old_idx, (*pokemon).volatiles.len());
+                for (volatile_id, state) in &(*pokemon).volatiles {
+                    debug_elog!("[SWITCH_CLEAR_VOLATILE]   volatile='{}' linked_status={:?} linked_pokemon={:?}",
+                        volatile_id.as_str(), state.linked_status, state.linked_pokemon);
+                }
+
                 let linked_volatiles: Vec<_> = (*pokemon).volatiles.iter()
-                    .filter_map(|(_, state)| {
+                    .filter_map(|(volatile_id, state)| {
                         if let (Some(status), Some(pokemon_vec)) = (&state.linked_status, &state.linked_pokemon) {
+                            debug_elog!("[SWITCH_LINKED] Found linked volatile='{}' with linked_status='{}' linked_pokemon={:?}",
+                                volatile_id.as_str(), status, pokemon_vec);
                             Some((status.clone(), pokemon_vec.clone()))
                         } else {
                             None
@@ -338,6 +348,8 @@ pub fn switch_in(
                     .collect();
 
                 for (status, pokemon_vec) in linked_volatiles {
+                    debug_elog!("[SWITCH_LINKED] Calling remove_linked_volatiles: this_pokemon=({}, {}), linked_status='{}', linked_pokemon={:?}",
+                        side_index, old_idx, status, pokemon_vec);
                     Pokemon::remove_linked_volatiles(
                         &mut *battle_ptr,
                         (side_index, old_idx),
