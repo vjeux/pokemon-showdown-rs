@@ -75,11 +75,11 @@ else
 fi
 
 #######################################
-# Part 2: Run minimized seed tests
+# Part 2: Run minimized seed tests (with minimized teams)
 #######################################
 log ""
 log "======================================="
-log "Part 2: Minimized Seeds Tests"
+log "Part 2: Minimized Seeds Tests (minimized teams)"
 log "======================================="
 log ""
 
@@ -120,11 +120,63 @@ while IFS= read -r js_line && IFS= read -r rust_line <&3; do
         ((minimized_failed++))
         minimized_failed_seeds="$minimized_failed_seeds $seed"
         echo "$seed" >> "$FAILING_SEEDS_FILE"
-        log "FAIL Seed $seed:"
+        log "FAIL Seed $seed (minimized):"
         log "  JS:   $js_line"
         log "  Rust: $rust_line"
     fi
 done < /tmp/js-minimized.txt 3< /tmp/rust-minimized.txt
+
+#######################################
+# Part 3: Run full team tests for minimized seeds
+#######################################
+log ""
+log "======================================="
+log "Part 3: Full Team Tests (same seeds, generated teams)"
+log "======================================="
+log ""
+
+# Get list of seeds from minimized directory
+SEED_LIST=$(ls "$MINIMIZED_DIR"/seed*.json 2>/dev/null | sed 's/.*seed\([0-9]*\)\.json/\1/' | sort -n | tr '\n' ' ')
+
+log "Running $total_minimized seeds with full generated teams..."
+
+# Create seed list file in workspace (accessible to both host and Docker)
+SEED_LIST_FILE="$SCRIPT_DIR/seed-list-tmp.txt"
+echo "$SEED_LIST" | tr ' ' '\n' | grep -E '^[0-9]+$' > "$SEED_LIST_FILE"
+
+# Run unified tests for just these seeds
+node "$SCRIPT_DIR/test-unified-parallel.js" --seeds "$SEED_LIST_FILE" > /tmp/js-full.txt 2>&1 &
+JS_FULL_PID=$!
+
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && ./target/release/examples/test_unified --seeds tests/seed-list-tmp.txt 2>/dev/null" > /tmp/rust-full.txt 2>&1 &
+RUST_FULL_PID=$!
+
+wait $JS_FULL_PID
+wait $RUST_FULL_PID
+
+# Clean up temp file
+rm -f "$SEED_LIST_FILE"
+
+log "Comparing full team results..."
+log ""
+
+full_passed=0
+full_failed=0
+full_failed_seeds=""
+
+while IFS= read -r js_line && IFS= read -r rust_line <&3; do
+    seed=$(echo "$js_line" | grep -o 'SEED [0-9]*' | cut -d' ' -f2)
+
+    if [ "$js_line" = "$rust_line" ]; then
+        ((full_passed++))
+    else
+        ((full_failed++))
+        full_failed_seeds="$full_failed_seeds $seed"
+        log "FAIL Seed $seed (full team):"
+        log "  JS:   $js_line"
+        log "  Rust: $rust_line"
+    fi
+done < /tmp/js-full.txt 3< /tmp/rust-full.txt
 
 #######################################
 # Final Summary
@@ -135,13 +187,18 @@ log "Final Summary"
 log "======================================="
 log ""
 log "Regression tests (1-1000): $unified_passed/1000 passed"
-log "Minimized seeds: $minimized_passed/$total_minimized passed"
+log "Minimized teams: $minimized_passed/$total_minimized passed"
+log "Full teams: $full_passed/$total_minimized passed"
 log ""
 
 if [ $unified_failed -gt 0 ]; then
     log "REGRESSION DETECTED in unified tests!"
     log "Failed seeds:$unified_failed_seeds"
     overall_success=false
+fi
+
+if [ $full_failed -gt 0 ]; then
+    log "Failed full team seeds:$full_failed_seeds"
 fi
 
 if [ "$minimized_passed" = "$total_minimized" ]; then

@@ -4,33 +4,53 @@
  * Unified Battle Test Runner (JavaScript) - Parallel Version
  * Uses worker threads for parallel execution.
  *
- * Usage: node tests/test-unified-parallel.js <start_seed> <end_seed>
+ * Usage:
+ *   node tests/test-unified-parallel.js <start_seed> <end_seed>
+ *   node tests/test-unified-parallel.js --seeds <file>
  */
 
 const {Worker, isMainThread, parentPort, workerData} = require('worker_threads');
 const os = require('os');
+const fs = require('fs');
 
 if (isMainThread) {
-    const startSeed = parseInt(process.argv[2]) || 1;
-    const endSeed = parseInt(process.argv[3]) || startSeed;
-    const numWorkers = Math.min(os.cpus().length, endSeed - startSeed + 1);
+    let seeds = [];
+
+    // Parse arguments
+    if (process.argv[2] === '--seeds' && process.argv[3]) {
+        // Read seeds from file
+        const content = fs.readFileSync(process.argv[3], 'utf8');
+        seeds = content.trim().split(/\s+/).map(s => parseInt(s)).filter(n => !isNaN(n) && n > 0);
+    } else {
+        // Range mode
+        const startSeed = parseInt(process.argv[2]) || 1;
+        const endSeed = parseInt(process.argv[3]) || startSeed;
+        for (let i = startSeed; i <= endSeed; i++) {
+            seeds.push(i);
+        }
+    }
+
+    if (seeds.length === 0) {
+        console.error('No seeds to process');
+        process.exit(1);
+    }
+
+    const numWorkers = Math.min(os.cpus().length, seeds.length);
 
     const results = new Map();
     let completed = 0;
-    const totalSeeds = endSeed - startSeed + 1;
 
     // Divide work among workers
-    const seedsPerWorker = Math.ceil(totalSeeds / numWorkers);
+    const seedsPerWorker = Math.ceil(seeds.length / numWorkers);
     const workers = [];
 
     for (let i = 0; i < numWorkers; i++) {
-        const workerStart = startSeed + (i * seedsPerWorker);
-        const workerEnd = Math.min(workerStart + seedsPerWorker - 1, endSeed);
+        const workerSeeds = seeds.slice(i * seedsPerWorker, (i + 1) * seedsPerWorker);
 
-        if (workerStart > endSeed) break;
+        if (workerSeeds.length === 0) break;
 
         const worker = new Worker(__filename, {
-            workerData: {startSeed: workerStart, endSeed: workerEnd}
+            workerData: {seeds: workerSeeds}
         });
 
         worker.on('message', (msg) => {
@@ -48,8 +68,9 @@ if (isMainThread) {
     // Wait for all workers to complete
     Promise.all(workers.map(w => new Promise(resolve => w.on('exit', resolve))))
         .then(() => {
-            // Output results in order
-            for (let seed = startSeed; seed <= endSeed; seed++) {
+            // Output results in seed order
+            seeds.sort((a, b) => a - b);
+            for (const seed of seeds) {
                 console.log(results.get(seed));
             }
         });
@@ -59,7 +80,7 @@ if (isMainThread) {
     const {PRNG} = require('./../../pokemon-showdown-ts/dist/sim/prng');
     const {Battle} = require('./../../pokemon-showdown-ts/dist/sim/battle');
 
-    const {startSeed, endSeed} = workerData;
+    const {seeds} = workerData;
 
     // Pre-load data once
     const allSpecies = Object.values(Dex.data.Pokedex).sort((a, b) => a.name.localeCompare(b.name));
@@ -67,7 +88,7 @@ if (isMainThread) {
     const allItems = Object.keys(Dex.data.Items).sort();
     const allNatures = Object.keys(Dex.data.Natures).sort();
 
-    for (let seedNum = startSeed; seedNum <= endSeed; seedNum++) {
+    for (const seedNum of seeds) {
         try {
             const prng = new PRNG([0, 0, 0, seedNum]);
             const team1 = generateRandomTeam(prng, allSpecies, allMoves, allItems, allNatures, Dex);
