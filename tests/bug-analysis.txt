@@ -1,10 +1,8 @@
-Analyzing 63 failing minimized seed files...
+Analyzing 59 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-ivycudgel: 3 seeds
-  Seeds: 21366, 22436, 42590
 ragingbull: 3 seeds
   Seeds: 28200, 34858, 62499
 transform: 3 seeds
@@ -53,8 +51,6 @@ dive: 2 seeds
   Seeds: 52895, 63529
 copycat: 2 seeds
   Seeds: 53747, 60885
-catastropika: 2 seeds
-  Seeds: 55954, 60818
 playrough: 1 seeds
   Seeds: 10025
 lightscreen: 1 seeds
@@ -85,10 +81,6 @@ lastresort: 1 seeds
   Seeds: 20356
 maxknuckle: 1 seeds
   Seeds: 20356
-howl: 1 seeds
-  Seeds: 22436
-harden: 1 seeds
-  Seeds: 22436
 bellydrum: 1 seeds
   Seeds: 25177
 outrage: 1 seeds
@@ -191,14 +183,6 @@ roost: 1 seeds
   Seeds: 54222
 doubleedge: 1 seeds
   Seeds: 54222
-metronome: 1 seeds
-  Seeds: 55954
-blastburn: 1 seeds
-  Seeds: 55954
-roar: 1 seeds
-  Seeds: 55954
-razorleaf: 1 seeds
-  Seeds: 55954
 synchronoise: 1 seeds
   Seeds: 56089
 surf: 1 seeds
@@ -213,6 +197,8 @@ triplekick: 1 seeds
   Seeds: 59646
 curse: 1 seeds
   Seeds: 59646
+catastropika: 1 seeds
+  Seeds: 60818
 painsplit: 1 seeds
   Seeds: 60818
 bide: 1 seeds
@@ -287,8 +273,6 @@ Hunger Switch: 1 seeds
   Seeds: 48318
 Color Change: 1 seeds
   Seeds: 53747
-Flash Fire: 1 seeds
-  Seeds: 55954
 Anger Shell: 1 seeds
   Seeds: 56089
 Gulp Missile: 1 seeds
@@ -331,13 +315,12 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 63
-Unique moves: 127 (126 non-simple)
-Unique abilities: 23 (21 non-simple)
+Total minimized seeds: 59
+Unique moves: 120 (119 non-simple)
+Unique abilities: 22 (20 non-simple)
 Unique items: 11
 
 --- Most Common Moves (top 10) ---
-  ivycudgel: 3 seeds
   ragingbull: 3 seeds
   transform: 3 seeds
   ceaselessedge: 2 seeds
@@ -347,6 +330,7 @@ Unique items: 11
   charge: 2 seeds
   maliciousmoonsault: 2 seeds
   flipturn: 2 seeds
+  magneticflux: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds

@@ -73,9 +73,9 @@ pub fn on_modify_type(
     //     move.type = 'Rock';
     //     break;
     let new_type = match species_name {
-        "ogerpenwellspring" | "ogerponwellspringtera" => Some("Water"),
-        "ogerponhearthflame" | "ogerponhearthflamtera" => Some("Fire"),
-        "ogerponcornerstone" | "ogerponcornerstontera" => Some("Rock"),
+        "ogerponwellspring" | "ogerponwellspringtera" => Some("Water"),
+        "ogerponhearthflame" | "ogerponhearthflametera" => Some("Fire"),
+        "ogerponcornerstone" | "ogerponcornerstonetera" => Some("Rock"),
         _ => None,
     };
 
