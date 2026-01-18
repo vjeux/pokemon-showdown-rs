@@ -35,8 +35,10 @@ pub fn on_hit(
         target_pokemon.boosts.atk
     };
 
+    // if (target.boosts.atk === -6) return false;
+    // JS returns false (boolean), not NOT_FAIL
     if atk_boost == -6 {
-        return EventResult::NotFail;
+        return EventResult::Boolean(false);
     }
 
     // const atk = target.getStat('atk', false, true);

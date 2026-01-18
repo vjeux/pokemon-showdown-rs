@@ -1,4 +1,4 @@
-Analyzing 48 failing minimized seed files...
+Analyzing 46 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -27,8 +27,6 @@ ragefist: 2 seeds
   Seeds: 40910, 60885
 bounce: 2 seeds
   Seeds: 42063, 53148
-strengthsap: 2 seeds
-  Seeds: 43581, 54222
 voltswitch: 2 seeds
   Seeds: 43782, 52111
 telekinesis: 2 seeds
@@ -151,10 +149,6 @@ vcreate: 1 seeds
   Seeds: 53747
 lavaplume: 1 seeds
   Seeds: 53747
-roost: 1 seeds
-  Seeds: 54222
-doubleedge: 1 seeds
-  Seeds: 54222
 synchronoise: 1 seeds
   Seeds: 56089
 surf: 1 seeds
@@ -281,8 +275,8 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 48
-Unique moves: 105 (104 non-simple)
+Total minimized seeds: 46
+Unique moves: 102 (101 non-simple)
 Unique abilities: 20 (18 non-simple)
 Unique items: 11
 
