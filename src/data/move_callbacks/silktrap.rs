@@ -250,7 +250,9 @@ pub mod condition {
         }
 
         // return this.NOT_FAIL;
-        EventResult::Boolean(false)
+        // NOT_FAIL is a special value (empty string '') that means "blocked but doesn't count as failure"
+        // This prevents moves like Stomping Tantrum from getting the power boost
+        EventResult::NotFail
     }
 
     /// onHit(target, source, move) {
