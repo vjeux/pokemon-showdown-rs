@@ -66,7 +66,12 @@ pub mod condition {
         );
 
         // this.boost({ spe: -1 }, pokemon, pokemon.side.foe.active[0], this.dex.getActiveMove('stickyweb'));
-        battle.boost(&[("spe", -1)], pokemon, None, Some("stickyweb"), false, false);
+        // Get the foe's first active Pokemon as the source
+        let foe_side_index = 1 - pokemon.0;
+        let foe_active = battle.sides[foe_side_index].active.get(0).copied().flatten();
+        let source = foe_active.map(|idx| (foe_side_index, idx));
+
+        battle.boost(&[("spe", -1)], pokemon, source, Some("stickyweb"), false, false);
 
         EventResult::Continue
     }
