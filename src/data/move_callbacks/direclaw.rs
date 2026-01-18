@@ -29,7 +29,7 @@ use crate::Pokemon;
 pub fn on_hit(
     battle: &mut Battle,
     target_pos: (usize, usize),
-    _source_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // const result = this.random(3);
     // if (result === 0) {
@@ -43,12 +43,13 @@ pub fn on_hit(
     let result = battle.random(3);
 
     if let Some(_target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
+        // JavaScript passes source for all status effects (for Synchronize to work)
         if result == 0 {
-            Pokemon::try_set_status(battle, target_pos, ID::from("psn"), None, None);
+            Pokemon::try_set_status(battle, target_pos, ID::from("psn"), source_pos, None);
         } else if result == 1 {
-            Pokemon::try_set_status(battle, target_pos, ID::from("par"), None, None);
+            Pokemon::try_set_status(battle, target_pos, ID::from("par"), source_pos, None);
         } else {
-            Pokemon::try_set_status(battle, target_pos, ID::from("slp"), None, None);
+            Pokemon::try_set_status(battle, target_pos, ID::from("slp"), source_pos, None);
         }
     }
 

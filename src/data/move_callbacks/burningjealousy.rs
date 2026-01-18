@@ -24,7 +24,7 @@ use crate::Pokemon;
 pub fn on_hit(
     battle: &mut Battle,
     target_pos: (usize, usize),
-    _source_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // if (target?.statsRaisedThisTurn) {
     //     target.trySetStatus('brn', source, move);
@@ -43,8 +43,10 @@ pub fn on_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
+        // JavaScript: target.trySetStatus('brn', source, move);
+        // source is the pokemon using the move (for Synchronize to work)
         let move_effect = crate::battle::Effect::move_("burningjealousy");
-        Pokemon::try_set_status(battle, target_pos, ID::from("brn"), None, Some(&move_effect));
+        Pokemon::try_set_status(battle, target_pos, ID::from("brn"), source_pos, Some(&move_effect));
     }
 
     EventResult::Continue

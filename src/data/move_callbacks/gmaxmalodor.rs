@@ -44,7 +44,8 @@ pub mod self_callbacks {
         };
 
         for foe_pos in foe_positions {
-            Pokemon::try_set_status(battle, foe_pos, ID::from("psn"), None, None);
+            // JavaScript: pokemon.trySetStatus('psn', source) - passes source for Synchronize
+            Pokemon::try_set_status(battle, foe_pos, ID::from("psn"), Some(source_pos), None);
         }
 
         EventResult::Continue

@@ -45,7 +45,8 @@ pub fn on_hit(
     };
 
     for foe_pos in foe_positions {
-        Pokemon::try_set_status(battle, foe_pos, ID::from("par"), None, None);
+        // JavaScript: pokemon.trySetStatus('par', source) - passes source for Synchronize
+        Pokemon::try_set_status(battle, foe_pos, ID::from("par"), Some(source), None);
     }
 
     EventResult::Continue
@@ -94,7 +95,8 @@ pub mod self_callbacks {
         };
 
         for foe_pos in foe_positions {
-            Pokemon::try_set_status(battle, foe_pos, ID::from("par"), None, None);
+            // JavaScript: pokemon.trySetStatus("par", source) - passes source for Synchronize
+            Pokemon::try_set_status(battle, foe_pos, ID::from("par"), Some(source_pos), None);
         }
 
         EventResult::Continue

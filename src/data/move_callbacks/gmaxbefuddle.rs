@@ -61,12 +61,13 @@ pub mod self_callbacks {
         for foe_pos in foe_positions {
             let result = battle.random(3);
 
+            // JavaScript: pokemon.trySetStatus('xxx', source) - passes source for Synchronize
             if result == 0 {
-                Pokemon::try_set_status(battle, foe_pos, ID::from("slp"), None, None);
+                Pokemon::try_set_status(battle, foe_pos, ID::from("slp"), Some(source_pos), None);
             } else if result == 1 {
-                Pokemon::try_set_status(battle, foe_pos, ID::from("par"), None, None);
+                Pokemon::try_set_status(battle, foe_pos, ID::from("par"), Some(source_pos), None);
             } else {
-                Pokemon::try_set_status(battle, foe_pos, ID::from("psn"), None, None);
+                Pokemon::try_set_status(battle, foe_pos, ID::from("psn"), Some(source_pos), None);
             }
         }
 
