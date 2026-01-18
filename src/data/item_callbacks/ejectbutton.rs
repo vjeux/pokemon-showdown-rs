@@ -108,11 +108,16 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: Option<(usize, u
     // for (const pokemon of this.getAllActive()) {
     //     if (pokemon.switchFlag === true) return;
     // }
+    // IMPORTANT: JavaScript checks `switchFlag === true` (strict equality with boolean true)
+    // - switchFlag = true (boolean) -> represented in Rust as Some("") (empty string)
+    // - switchFlag = "flipturn" (string from selfSwitch) -> represented in Rust as Some("flipturn")
+    // The JS check only matches boolean true, NOT string values like "flipturn"
+    // So in Rust, we only match Some("") (empty string), not any Some value
     let any_switch_flag = {
         let all_active = battle.get_all_active(false);
         all_active.iter().any(|&pos| {
             battle.pokemon_at(pos.0, pos.1)
-                .map(|p| p.switch_flag.is_some())
+                .map(|p| p.switch_flag.as_deref() == Some(""))
                 .unwrap_or(false)
         })
     };

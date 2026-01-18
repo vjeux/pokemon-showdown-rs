@@ -37,21 +37,22 @@ pub fn on_after_move_secondary_self(battle: &mut Battle, source_pos: (usize, usi
         None => return EventResult::Continue,
     };
 
-    // Check source.switchFlag === true
-    let (switch_flag, has_item, has_gem_volatile) = {
+    // Check source.switchFlag === true - strict equality check for boolean true
+    // In Rust, boolean true is represented as Some("") (empty string)
+    let (switch_flag_is_true, has_item, has_gem_volatile) = {
         let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
         (
-            source.switch_flag.is_some(),
+            source.switch_flag.as_deref() == Some(""),
             !source.item.is_empty(),
             source.volatiles.contains_key(&ID::from("gem")),
         )
     };
 
-    if switch_flag {
+    if switch_flag_is_true {
         return EventResult::Continue;
     }
 

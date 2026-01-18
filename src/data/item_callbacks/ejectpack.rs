@@ -187,13 +187,18 @@ pub fn on_use_item(battle: &mut Battle, _item_id: &str, pokemon_pos: (usize, usi
     }
 
     // for (const active of this.getAllActive()) { if (active.switchFlag === true) return false; }
+    // IMPORTANT: JavaScript checks `switchFlag === true` (strict equality with boolean true)
+    // - switchFlag = true (boolean) -> represented in Rust as Some("") (empty string)
+    // - switchFlag = "flipturn" (string from selfSwitch) -> represented in Rust as Some("flipturn")
+    // The JS check only matches boolean true, NOT string values like "flipturn"
+    // So in Rust, we only match Some("") (empty string), not any Some value
     let all_active_positions = battle.get_all_active(false);
     for pos in all_active_positions {
         let pokemon = match battle.pokemon_at(pos.0, pos.1) {
             Some(p) => p,
             None => continue,
         };
-        if pokemon.switch_flag.is_some() {
+        if pokemon.switch_flag.as_deref() == Some("") {
             return EventResult::Boolean(false);
         }
     }

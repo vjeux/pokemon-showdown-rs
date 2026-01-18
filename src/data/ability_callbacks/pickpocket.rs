@@ -59,15 +59,17 @@ pub fn on_after_move_secondary(battle: &mut Battle, target_pos: (usize, usize), 
         return EventResult::Continue;
     }
 
-    let source_switch_flag = {
+    // source.switchFlag === true - strict equality check for boolean true
+    // In Rust, boolean true is represented as Some("") (empty string)
+    let source_switch_flag_is_true = {
         let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source.switch_flag.is_some()
+        source.switch_flag.as_deref() == Some("")
     };
 
-    if source_switch_flag {
+    if source_switch_flag_is_true {
         return EventResult::Continue;
     }
 
