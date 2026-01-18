@@ -853,11 +853,10 @@ pub fn use_move_inner(
         // if (this.battle.gen === 4 && move.selfdestruct === 'always') {
         //     this.battle.faint(pokemon, pokemon, move);
         // }
+        // NOTE: Use local active_move for consistency with JS which uses local 'move' variable
         if battle.gen == 4 {
-            if let Some(ref am) = battle.active_move {
-                if am.self_destruct.as_deref() == Some("always") {
-                    battle.faint(pokemon_pos, Some(pokemon_pos), Some(active_move.id.as_str()));
-                }
+            if active_move.self_destruct.as_deref() == Some("always") {
+                battle.faint(pokemon_pos, Some(pokemon_pos), Some(active_move.id.as_str()));
             }
         }
 
@@ -872,33 +871,31 @@ pub fn use_move_inner(
     }
 
     // if (move.selfBoost && moveResult) this.moveHit(pokemon, pokemon, move, move.selfBoost, false, true);
-    let (self_boost, move_for_boost) = if let Some(ref am) = battle.active_move {
-        (am.self_boost.clone(), Some(am.clone()))
-    } else {
-        (None, None)
-    };
+    // NOTE: We must use the LOCAL active_move variable here, not battle.active_move!
+    // In JS, "move" is a local variable that doesn't change even if useMove is called recursively
+    // (e.g., via metronome's onHit calling useMove for the selected move).
+    // If we read from battle.active_move, we'd get the wrong move's selfBoost.
+    let self_boost = active_move.self_boost.clone();
 
     if let Some(ref boosts) = self_boost {
         if move_result.is_success() {
-            if let Some(ref active_move_for_boost) = move_for_boost {
-                // Apply self-boost using moveHit
-                // moveHit(pokemon, pokemon, move, move.selfBoost, false, true)
-                // Parameters: targets, pokemon, move, moveData, isSecondary, isSelf
-                // Create a MoveSecondary containing just the boosts
-                let self_boost_effect = crate::dex::MoveSecondary {
-                    boosts: Some(boosts.clone()),
-                    ..Default::default()
-                };
-                crate::battle_actions::move_hit(
-                    battle,
-                    &[Some(pokemon_pos)], // targets = [pokemon] (self-targeting)
-                    pokemon_pos,          // pokemon (user)
-                    active_move_for_boost, // move
-                    Some(crate::battle_actions::HitEffect::Secondary(&self_boost_effect)),
-                    false,                // isSecondary
-                    true,                 // isSelf
-                );
-            }
+            // Apply self-boost using moveHit
+            // moveHit(pokemon, pokemon, move, move.selfBoost, false, true)
+            // Parameters: targets, pokemon, move, moveData, isSecondary, isSelf
+            // Create a MoveSecondary containing just the boosts
+            let self_boost_effect = crate::dex::MoveSecondary {
+                boosts: Some(boosts.clone()),
+                ..Default::default()
+            };
+            crate::battle_actions::move_hit(
+                battle,
+                &[Some(pokemon_pos)], // targets = [pokemon] (self-targeting)
+                pokemon_pos,          // pokemon (user)
+                &active_move,         // move - use local active_move, not battle.active_move
+                Some(crate::battle_actions::HitEffect::Secondary(&self_boost_effect)),
+                false,                // isSecondary
+                true,                 // isSelf
+            );
         }
     }
 
@@ -940,8 +937,8 @@ pub fn use_move_inner(
     // }
     let has_sheer_force = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1]
         .has_ability(battle, &["sheerforce"]);
-    let has_futuremove = battle.active_move.as_ref()
-        .map_or(false, |am| am.flags.future_move);
+    // NOTE: Use local active_move, not battle.active_move (same reason as selfBoost)
+    let has_futuremove = active_move.flags.future_move;
 
     if !(active_move.has_sheer_force && has_sheer_force) && !has_futuremove {
         let original_hp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].hp;
