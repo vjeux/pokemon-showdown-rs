@@ -1,12 +1,10 @@
-Analyzing 105 failing minimized seed files...
+Analyzing 102 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 mindblown: 4 seeds
   Seeds: 17626, 37514, 53360, 6527
-mindreader: 4 seeds
-  Seeds: 21443, 40678, 49003, 53499
 mudsport: 4 seeds
   Seeds: 23542, 24867, 47054, 53537
 hiddenpowerelectric: 4 seeds
@@ -35,14 +33,10 @@ miracleeye: 3 seeds
   Seeds: 20191, 30446, 58474
 ivycudgel: 3 seeds
   Seeds: 21366, 22436, 42590
-dive: 3 seeds
-  Seeds: 21443, 52895, 63529
 healblock: 3 seeds
   Seeds: 2814, 55162, 5613
 ragingbull: 3 seeds
   Seeds: 28200, 34858, 62499
-shadowforce: 3 seeds
-  Seeds: 30446, 39290, 53499
 minimize: 3 seeds
   Seeds: 30446, 30853, 58474
 leechseed: 3 seeds
@@ -89,6 +83,8 @@ reflect: 2 seeds
   Seeds: 28200, 34858
 gmaxresonance: 2 seeds
   Seeds: 30232, 30853
+shadowforce: 2 seeds
+  Seeds: 30446, 39290
 blastburn: 2 seeds
   Seeds: 30530, 55954
 odorsleuth: 2 seeds
@@ -105,8 +101,6 @@ celebrate: 2 seeds
   Seeds: 36737, 43394
 nuzzle: 2 seeds
   Seeds: 37514, 8342
-maxphantasm: 2 seeds
-  Seeds: 39435, 53499
 corkscrewcrash: 2 seeds
   Seeds: 39435, 53148
 synchronoise: 2 seeds
@@ -121,9 +115,9 @@ strengthsap: 2 seeds
   Seeds: 43581, 54222
 voltswitch: 2 seeds
   Seeds: 43782, 52111
-recover: 2 seeds
-  Seeds: 4479, 53499
 telekinesis: 2 seeds
+  Seeds: 52895, 63529
+dive: 2 seeds
   Seeds: 52895, 63529
 catastropika: 2 seeds
   Seeds: 55954, 60818
@@ -151,10 +145,6 @@ meanlook: 1 seeds
   Seeds: 20356
 lastresort: 1 seeds
   Seeds: 20356
-octazooka: 1 seeds
-  Seeds: 21443
-gmaxfinale: 1 seeds
-  Seeds: 21443
 ember: 1 seeds
   Seeds: 22366
 howl: 1 seeds
@@ -243,6 +233,8 @@ autotomize: 1 seeds
   Seeds: 39290
 gmaxstonesurge: 1 seeds
   Seeds: 39361
+maxphantasm: 1 seeds
+  Seeds: 39435
 hyperdrill: 1 seeds
   Seeds: 39435
 waterspout: 1 seeds
@@ -262,6 +254,8 @@ iondeluge: 1 seeds
 technoblast: 1 seeds
   Seeds: 40097
 icefang: 1 seeds
+  Seeds: 40678
+mindreader: 1 seeds
   Seeds: 40678
 mudslap: 1 seeds
   Seeds: 40678
@@ -303,6 +297,8 @@ acupressure: 1 seeds
   Seeds: 43980
 dynamicpunch: 1 seeds
   Seeds: 4479
+recover: 1 seeds
+  Seeds: 4479
 gravity: 1 seeds
   Seeds: 4479
 knockoff: 1 seeds
@@ -311,8 +307,6 @@ tarshot: 1 seeds
   Seeds: 48145
 aurawheel: 1 seeds
   Seeds: 48318
-fly: 1 seeds
-  Seeds: 49003
 softboiled: 1 seeds
   Seeds: 52895
 gust: 1 seeds
@@ -329,20 +323,6 @@ kingsshield: 1 seeds
   Seeds: 53209
 extremespeed: 1 seeds
   Seeds: 53360
-bulletseed: 1 seeds
-  Seeds: 53499
-gmaxwildfire: 1 seeds
-  Seeds: 53499
-clearsmog: 1 seeds
-  Seeds: 53499
-dragontail: 1 seeds
-  Seeds: 53499
-revelationdance: 1 seeds
-  Seeds: 53499
-stokedsparksurfer: 1 seeds
-  Seeds: 53499
-aquajet: 1 seeds
-  Seeds: 53499
 playnice: 1 seeds
   Seeds: 53747
 vcreate: 1 seeds
@@ -549,14 +529,13 @@ laggingtail: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 105
-Unique moves: 219 (218 non-simple)
+Total minimized seeds: 102
+Unique moves: 209 (208 non-simple)
 Unique abilities: 36 (33 non-simple)
 Unique items: 16
 
 --- Most Common Moves (top 10) ---
   mindblown: 4 seeds
-  mindreader: 4 seeds
   mudsport: 4 seeds
   hiddenpowerelectric: 4 seeds
   transform: 4 seeds
@@ -565,6 +544,7 @@ Unique items: 16
   speedswap: 4 seeds
   metronome: 4 seeds
   stompingtantrum: 3 seeds
+  copycat: 3 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds

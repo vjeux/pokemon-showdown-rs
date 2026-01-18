@@ -2597,14 +2597,18 @@ pub fn dispatch_condition_on_source_base_power(
 }
 
 /// Dispatch condition onSourceInvulnerability callbacks
+/// These are callbacks on conditions/volatiles on the SOURCE Pokemon
+/// Lock-On/Mind Reader return 0 to bypass invulnerability
 pub fn dispatch_condition_on_source_invulnerability(
     battle: &mut Battle,
+    condition_id: &str,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
     active_move: Option<&ActiveMove>,
-    source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "lockon" => {
-            lockon::condition::on_source_invulnerability(battle, None, Some(source_pos), active_move)
+            lockon::condition::on_source_invulnerability(battle, target_pos, source_pos, active_move)
         }
         _ => EventResult::Continue,
     }

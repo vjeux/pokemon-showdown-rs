@@ -706,6 +706,22 @@ impl Battle {
                     active_move_clone.as_ref()
                 )
             }
+            "SourceInvulnerability" => {
+                // For onSourceInvulnerability, call the dispatch for source invulnerability callbacks
+                // This handles Lock-On/Mind Reader which allow hitting invulnerable targets
+                // condition_id is the volatile on the SOURCE (e.g., "lockon")
+                // target_pos is the defender (the invulnerable Pokemon)
+                // source_pos is the attacker (the Pokemon with the lockon volatile)
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                let source_pos = self.event.as_ref().and_then(|e| e.source).unwrap_or(pokemon_pos);
+                crate::data::move_callbacks::dispatch_condition_on_source_invulnerability(
+                    self,
+                    condition_id,
+                    target_pos,
+                    Some(source_pos),
+                    active_move_clone.as_ref()
+                )
+            }
             "AnyModifyDamage" | "ModifyDamage" => {
                 // For side conditions like Aurora Veil, Light Screen, and Reflect
                 // Extract damage from relay_var, source and target from event
