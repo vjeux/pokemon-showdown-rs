@@ -11,10 +11,10 @@ use crate::pokemon::Pokemon;
 /// onStart(pokemon) {
 ///     this.singleEvent('TerrainChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(_battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
-    // NOTE: singleEvent('TerrainChange') skipped - requires event system infrastructure
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
     // this.singleEvent('TerrainChange', this.effect, this.effectState, pokemon);
-    EventResult::Continue
+    // Call on_terrain_change to apply Mimicry type change when entering the field
+    on_terrain_change(battle, pokemon_pos, source_pos, effect_id)
 }
 
 /// onTerrainChange(pokemon) {
