@@ -916,7 +916,7 @@ impl Battle {
             "SourceTryPrimaryHit" => ability_callbacks::dispatch_on_source_try_primary_hit(
                 self,
                 ability_id.as_str(),
-                Some(pokemon_pos), None, None
+                event_target_pos, Some(pokemon_pos), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }
             ),
             "Start" => ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }),
             "SwitchIn" => {
