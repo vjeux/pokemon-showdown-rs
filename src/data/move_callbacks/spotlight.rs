@@ -10,10 +10,11 @@ use crate::event::EventResult;
 /// onTryHit(target) {
 ///     if (this.activePerHalf === 1) return false;
 /// }
+/// NOTE: dispatch_on_try_hit passes (target_pos, source_pos) per JS convention
 pub fn on_try_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
     _target_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     // onTryHit(target) {
     //     if (this.activePerHalf === 1) return false;

@@ -13,10 +13,11 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
+/// NOTE: dispatch_on_try_hit passes (target_pos, source_pos) per JS convention
 pub fn on_try_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
     target_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     // Get the pokemon (target is the user for this move)
     let pokemon = match battle.pokemon_at(target_pos.0, target_pos.1) {

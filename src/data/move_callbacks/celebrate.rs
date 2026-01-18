@@ -10,10 +10,11 @@ use crate::event::EventResult;
 /// onTryHit(target, source) {
 ///     this.add('-activate', target, 'move: Celebrate');
 /// }
+/// NOTE: dispatch_on_try_hit passes (target_pos, source_pos) per JS convention
 pub fn on_try_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
     target_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     // this.add('-activate', target, 'move: Celebrate');
     let target_ident = {

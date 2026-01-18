@@ -1,10 +1,8 @@
-Analyzing 59 failing minimized seed files...
+Analyzing 56 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-ragingbull: 3 seeds
-  Seeds: 28200, 34858, 62499
 transform: 3 seeds
   Seeds: 61343, 64566, 64920
 ceaselessedge: 2 seeds
@@ -29,8 +27,6 @@ chatter: 2 seeds
   Seeds: 25177, 43153
 pursuit: 2 seeds
   Seeds: 25574, 35620
-reflect: 2 seeds
-  Seeds: 28200, 34858
 magicroom: 2 seeds
   Seeds: 35671, 48178
 grudge: 2 seeds
@@ -125,8 +121,6 @@ lastrespects: 1 seeds
   Seeds: 32939
 circlethrow: 1 seeds
   Seeds: 32939
-recycle: 1 seeds
-  Seeds: 34858
 wideguard: 1 seeds
   Seeds: 35620
 gigavolthavoc: 1 seeds
@@ -221,8 +215,6 @@ gmaxsandblast: 1 seeds
   Seeds: 61431
 gmaxbefuddle: 1 seeds
   Seeds: 61431
-baddybad: 1 seeds
-  Seeds: 62499
 leechlife: 1 seeds
   Seeds: 63529
 maxstarfall: 1 seeds
@@ -315,13 +307,12 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 59
-Unique moves: 120 (119 non-simple)
+Total minimized seeds: 56
+Unique moves: 116 (115 non-simple)
 Unique abilities: 22 (20 non-simple)
 Unique items: 11
 
 --- Most Common Moves (top 10) ---
-  ragingbull: 3 seeds
   transform: 3 seeds
   ceaselessedge: 2 seeds
   stompingtantrum: 2 seeds
@@ -331,6 +322,7 @@ Unique items: 11
   maliciousmoonsault: 2 seeds
   flipturn: 2 seeds
   magneticflux: 2 seeds
+  soak: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds

@@ -10,10 +10,11 @@ use crate::event::EventResult;
 /// onTryHit(target, source) {
 ///     this.add('-activate', target, 'move: Happy Hour');
 /// }
+/// NOTE: dispatch_on_try_hit passes (target_pos, source_pos) per JS convention
 pub fn on_try_hit(
     battle: &mut Battle,
-    _source_pos: (usize, usize),
     target_pos: (usize, usize),
+    _source_pos: (usize, usize),
 ) -> EventResult {
     let target = target_pos;
 
