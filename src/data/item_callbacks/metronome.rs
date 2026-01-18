@@ -93,7 +93,8 @@ pub mod condition {
         let (has_item, last_move_str, move_last_turn_result, has_two_turn_move, current_num) = {
             if let Some(side) = battle.sides.get(pokemon_pos.0) {
                 if let Some(pokemon) = side.pokemon.get(pokemon_pos.1) {
-                    let has_item = pokemon.item == ID::new("metronome");
+                    // Use has_item which checks if item is being ignored (Magic Room, etc.)
+                    let has_item = pokemon.has_item(battle, &["metronome"]);
                     let move_result = pokemon.move_last_turn_result == crate::battle_actions::MoveResult::Success;
                     let has_ttm = pokemon.volatiles.contains_key(&ID::new("twoturnmove"));
 
