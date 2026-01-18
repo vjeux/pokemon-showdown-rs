@@ -1,4 +1,4 @@
-Analyzing 50 failing minimized seed files...
+Analyzing 48 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -11,8 +11,6 @@ maliciousmoonsault: 2 seeds
   Seeds: 18219, 60885
 flipturn: 2 seeds
   Seeds: 18219, 65490
-magneticflux: 2 seeds
-  Seeds: 20875, 26095
 soak: 2 seeds
   Seeds: 23363, 49341
 chatter: 2 seeds
@@ -223,14 +221,10 @@ Effect Spore: 2 seeds
   Seeds: 48869, 65490
 Unaware: 2 seeds
   Seeds: 61343, 64566
-Plus: 1 seeds
-  Seeds: 20875
 Defiant: 1 seeds
   Seeds: 25177
 Shield Dust: 1 seeds
   Seeds: 25177
-Minus: 1 seeds
-  Seeds: 26095
 Intimidate: 1 seeds
   Seeds: 32939
 Disguise: 1 seeds
@@ -287,9 +281,9 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 50
-Unique moves: 106 (105 non-simple)
-Unique abilities: 22 (20 non-simple)
+Total minimized seeds: 48
+Unique moves: 105 (104 non-simple)
+Unique abilities: 20 (18 non-simple)
 Unique items: 11
 
 --- Most Common Moves (top 10) ---
@@ -297,21 +291,21 @@ Unique items: 11
   charge: 2 seeds
   maliciousmoonsault: 2 seeds
   flipturn: 2 seeds
-  magneticflux: 2 seeds
   soak: 2 seeds
   chatter: 2 seeds
   pursuit: 2 seeds
   magicroom: 2 seeds
   grudge: 2 seeds
+  leechseed: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds
   Effect Spore: 2 seeds
   Unaware: 2 seeds
-  Plus: 1 seeds
   Defiant: 1 seeds
   Shield Dust: 1 seeds
-  Minus: 1 seeds
   Intimidate: 1 seeds
   Disguise: 1 seeds
   Victory Star: 1 seeds
+  Unseen Fist: 1 seeds
+  As One (Glastrier): 1 seeds

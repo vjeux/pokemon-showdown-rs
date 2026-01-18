@@ -39,17 +39,15 @@ pub fn on_hit_side(
     //     ally.hasAbility(['plus', 'minus']) &&
     //     (!ally.volatiles['maxguard'] || this.runEvent('TryHit', ally, source, move))
     // ));
-    // Get all allies excluding self (source)
+    // Note: JavaScript's side.allies() includes self, not just other allies!
+    // Magnetic Flux affects the user too if they have Plus/Minus ability.
     let allies: Vec<(usize, usize)> = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
         source_pokemon.allies_and_self(battle, false)
-    }
-        .into_iter()
-        .filter(|&pos| pos != source)
-        .collect();
+    };
 
     let mut targets = Vec::new();
     for ally_pos in allies {
