@@ -172,12 +172,14 @@ pub fn on_hit(
     }
 
     // this.directDamage(source.maxhp / 2, source, source);
+    // NOTE: JavaScript uses floating-point division, so 1/2 = 0.5, which is truthy.
+    // directDamage then clamps to at least 1. Use hp_fraction for the same behavior.
     let damage = {
         let source_pokemon = match battle.pokemon_at(source.0, source.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.maxhp / 2
+        hp_fraction(source_pokemon.maxhp, 2)
     };
 
     battle.direct_damage(damage, Some(source), Some(source), None);
