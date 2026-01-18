@@ -281,10 +281,9 @@ impl Pokemon {
         // JS:     return false;
         // JS: }
         // ✅ NOW IMPLEMENTED (Session 24 Part 78): runEvent('AfterSetStatus')
-        // Note: JavaScript passes status as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
-        //       Passing None for now - handlers can check target pokemon's status field which has been set
+        // JavaScript passes status as 5th parameter (relayVar) - handlers like Poison Puppeteer need to check the status ID
         if !status.as_str().is_empty() {
-            let after_result = battle.run_event("AfterSetStatus", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, source_effect, EventResult::Continue, false, false);
+            let after_result = battle.run_event("AfterSetStatus", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, source_effect, EventResult::String(status.to_string()), false, false);
             // runEvent returns Option<i32>, None or Some(0) means failure
             if matches!(after_result, EventResult::Number(0)) || matches!(after_result, EventResult::Null) {
                 return false;

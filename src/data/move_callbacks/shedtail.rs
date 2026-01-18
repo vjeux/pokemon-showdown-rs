@@ -55,7 +55,7 @@ pub fn on_try_hit(
         };
 
         battle.add("-fail", &[source_arg.into()]);
-        return EventResult::Boolean(false); // this.NOT_FAIL
+        return EventResult::NotFail; // this.NOT_FAIL
     }
 
     // if (source.volatiles['substitute']) {
@@ -82,7 +82,7 @@ pub fn on_try_hit(
         };
 
         battle.add("-fail", &[source_arg.into(), "move: Shed Tail".into()]);
-        return EventResult::Boolean(false); // this.NOT_FAIL
+        return EventResult::NotFail; // this.NOT_FAIL
     }
 
     // if (source.hp <= Math.ceil(source.maxhp / 2)) {
@@ -111,7 +111,7 @@ pub fn on_try_hit(
             "-fail",
             &[source_arg.into(), "move: Shed Tail".into(), "[weak]".into()],
         );
-        return EventResult::Boolean(false); // this.NOT_FAIL
+        return EventResult::NotFail; // this.NOT_FAIL
     }
 
     EventResult::Continue

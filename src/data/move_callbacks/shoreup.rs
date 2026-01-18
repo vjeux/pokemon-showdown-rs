@@ -73,7 +73,7 @@ pub fn on_hit(
 
         battle.add("-fail", &[pokemon_arg.into(), "heal".into()]);
 
-        return EventResult::Boolean(false); // this.NOT_FAIL
+        return EventResult::NotFail; // this.NOT_FAIL
     }
 
     // return success;
