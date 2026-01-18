@@ -377,6 +377,29 @@ pub fn use_move_inner(
     battle.set_active_move(Some(active_move.id.clone()), Some(pokemon_pos), target_pos);
     battle.active_move = Some(active_move.clone());
 
+    // Run ModifyPriority to allow abilities like Prankster to boost priority
+    // This is needed because the active_move was just created from dex data with base priority
+    // Abilities like Dazzling check move.priority, which needs to include these boosts
+    let priority_result = battle.run_event(
+        "ModifyPriority",
+        Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
+        target_pos,
+        Some(&Effect::move_(active_move.id.clone())),
+        EventResult::Number(active_move.priority as i32),
+        false,
+        false,
+    );
+    // Apply the modified priority
+    if let EventResult::Number(new_priority) = priority_result {
+        if let Some(ref mut am) = battle.active_move {
+            am.priority = new_priority as i8;
+        }
+    }
+    // Re-clone the active_move to get any modifications
+    if let Some(ref modified) = battle.active_move {
+        active_move = modified.clone();
+    }
+
     // this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
     battle.single_event(
         "ModifyType",

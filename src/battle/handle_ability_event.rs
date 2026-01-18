@@ -566,7 +566,12 @@ impl Battle {
                 ability_id.as_str()
             ),
             "FoeTryMove" => {
-                ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), Some(pokemon_pos), event_source_pos, active_move_clone.as_ref())
+                // JavaScript: onFoeTryMove(target, source, move)
+                // In JavaScript callbacks, 'source' refers to the entity whose callback is being called
+                // (the ability holder), NOT the event source. So source.isAlly(dazzlingHolder) is always true.
+                // target = the event target (move user)
+                // source = the ability holder (pokemon_pos, which is extracted from handler.effect_holder)
+                ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), event_target_pos, Some(pokemon_pos), active_move_clone.as_ref())
             }
             "FractionalPriority" => ability_callbacks::dispatch_on_fractional_priority(
                 self,

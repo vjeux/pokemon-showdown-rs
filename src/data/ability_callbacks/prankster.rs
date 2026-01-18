@@ -23,6 +23,8 @@ pub fn on_modify_priority(battle: &mut Battle, priority: i32, _pokemon_pos: (usi
         if active_move.category == "Status" {
             // move.pranksterBoosted = true;
             active_move.prankster_boosted = true;
+            // Also update the move's priority so it's available for later checks (like Dazzling)
+            active_move.priority = (priority + 1) as i8;
             // return priority + 1;
             return EventResult::Number(priority + 1);
         }
