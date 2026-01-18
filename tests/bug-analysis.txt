@@ -1,4 +1,4 @@
-Analyzing 95 failing minimized seed files...
+Analyzing 89 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -9,8 +9,6 @@ transform: 4 seeds
   Seeds: 2814, 61343, 64566, 64920
 assist: 4 seeds
   Seeds: 30853, 39435, 41340, 6527
-relicsong: 4 seeds
-  Seeds: 33826, 40678, 43873, 52074
 speedswap: 4 seeds
   Seeds: 34471, 39290, 43980, 62883
 metronome: 4 seeds
@@ -77,8 +75,6 @@ blastburn: 2 seeds
   Seeds: 30530, 55954
 odorsleuth: 2 seeds
   Seeds: 30530, 30853
-polarflare: 2 seeds
-  Seeds: 32517, 64605
 circlethrow: 2 seeds
   Seeds: 32939, 62883
 magicroom: 2 seeds
@@ -239,18 +235,6 @@ gmaxfireball: 1 seeds
   Seeds: 39435
 technoblast: 1 seeds
   Seeds: 40097
-icefang: 1 seeds
-  Seeds: 40678
-mindreader: 1 seeds
-  Seeds: 40678
-mudslap: 1 seeds
-  Seeds: 40678
-cometpunch: 1 seeds
-  Seeds: 40678
-takeheart: 1 seeds
-  Seeds: 40678
-upperhand: 1 seeds
-  Seeds: 40678
 dragondarts: 1 seeds
   Seeds: 40910
 ficklebeam: 1 seeds
@@ -423,8 +407,6 @@ Dry Skin: 1 seeds
   Seeds: 39290
 Unseen Fist: 1 seeds
   Seeds: 39892
-Serene Grace: 1 seeds
-  Seeds: 40678
 Limber: 1 seeds
   Seeds: 43394
 As One (Glastrier): 1 seeds
@@ -487,22 +469,22 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 95
-Unique moves: 191 (190 non-simple)
-Unique abilities: 34 (32 non-simple)
+Total minimized seeds: 89
+Unique moves: 183 (182 non-simple)
+Unique abilities: 33 (31 non-simple)
 Unique items: 14
 
 --- Most Common Moves (top 10) ---
   mindblown: 4 seeds
   transform: 4 seeds
   assist: 4 seeds
-  relicsong: 4 seeds
   speedswap: 4 seeds
   metronome: 4 seeds
   copycat: 3 seeds
   scaleshot: 3 seeds
   skydrop: 3 seeds
   flipturn: 3 seeds
+  miracleeye: 3 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds

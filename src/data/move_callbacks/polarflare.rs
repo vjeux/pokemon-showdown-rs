@@ -12,28 +12,44 @@ use crate::event::EventResult;
 ///         move.willChangeForme = true;
 ///     }
 /// }
+/// NOTE: dispatch_on_hit calls on_hit(battle, target_pos, source_pos)
+/// JS signature: onHit(target, pokemon/source, move)
+/// So first param is target, second param is source (the one using the move)
 pub fn on_hit(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
-    _target_pos: Option<(usize, usize)>,
+    _target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    use crate::dex_data::ID;
-
-    let pokemon = pokemon_pos;
+    // pokemon is the SOURCE (user of the move), not target
+    let pokemon = match source_pos {
+        Some(pos) => pos,
+        None => return EventResult::Continue,
+    };
 
     // if (pokemon.baseSpecies.baseSpecies === 'Ramnarok' && !pokemon.transformed) {
-    let (is_ramnarok, transformed) = {
+    // JavaScript: pokemon.baseSpecies is the Species object for the Pokemon's current species
+    // JavaScript: pokemon.baseSpecies.baseSpecies is the base species NAME (e.g., "Ramnarok" for Ramnarok-Radiant)
+    let (species_base_species, transformed) = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
+
+        // Look up the species data to get the true base species
+        // JavaScript: pokemon.baseSpecies.baseSpecies (species object's baseSpecies property)
+        let base_species_name = battle.dex.species()
+            .get(pokemon_pokemon.base_species.as_str())
+            .and_then(|species_data| species_data.base_species.as_ref())
+            .map(|bs| bs.to_lowercase())
+            .unwrap_or_else(|| pokemon_pokemon.base_species.to_string());
+
         (
-            pokemon_pokemon.base_species == ID::from("ramnarok"),
+            base_species_name,
             pokemon_pokemon.transformed,
         )
     };
 
-    if is_ramnarok && !transformed {
+    if species_base_species == "ramnarok" && !transformed {
         // move.willChangeForme = true;
         if let Some(ref mut active_move) = battle.active_move {
             active_move.will_change_forme = true;
