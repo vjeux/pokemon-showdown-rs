@@ -117,9 +117,10 @@ pub mod condition {
 
         // const damageAmounts = [0, 3, 4, 6]; // 1/8, 1/6, 1/4
         // this.damage(damageAmounts[this.effectState.layers] * pokemon.maxhp / 24);
-        let layers = battle.with_effect_state_ref(|state| {
+        let layers_result = battle.with_effect_state_ref(|state| {
             state.layers.unwrap_or(1)
-        }).unwrap_or(1);
+        });
+        let layers = layers_result.unwrap_or(1);
         let damage_amounts = [0, 3, 4, 6];
 
         let max_hp = {
@@ -130,7 +131,16 @@ pub mod condition {
             pokemon_data.maxhp
         };
 
-        let damage_amount = damage_amounts[layers as usize] * max_hp / 24;
+        // JavaScript uses floating point division, then rounds fractional damage to 1
+        // In Pokemon.damage(): if (d < 1 && d > 0) d = 1;
+        // We compute the numerator and check if integer division would lose precision
+        let numerator = damage_amounts[layers as usize] * max_hp;
+        let damage_amount = if numerator > 0 && numerator < 24 {
+            // Would be between 0 and 1 in floating point - round up to 1
+            1
+        } else {
+            numerator / 24
+        };
         battle.damage(damage_amount, Some(pokemon), None, None, false);
 
         EventResult::Continue
