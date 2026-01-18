@@ -568,11 +568,11 @@ impl Battle {
             ),
             "FoeTryMove" => {
                 // JavaScript: onFoeTryMove(target, source, move)
-                // In JavaScript callbacks, 'source' refers to the entity whose callback is being called
-                // (the ability holder), NOT the event source. So source.isAlly(dazzlingHolder) is always true.
-                // target = the event target (move user)
-                // source = the ability holder (pokemon_pos, which is extracted from handler.effect_holder)
-                ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), event_target_pos, Some(pokemon_pos), active_move_clone.as_ref())
+                // target = the move's target (event_target_pos)
+                // source = the move's user (event_source_pos, the Pokemon using the move)
+                // The ability holder is accessed via this.effectState.target in JS / battle.effect_state.target in Rust
+                // NOT the source parameter!
+                ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), event_target_pos, event_source_pos, active_move_clone.as_ref())
             }
             "FractionalPriority" => ability_callbacks::dispatch_on_fractional_priority(
                 self,
