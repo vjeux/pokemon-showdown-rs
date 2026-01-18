@@ -103,16 +103,18 @@ pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
 ///         this.boost({ spa: length }, source, source, this.dex.abilities.get('grimneigh'));
 ///     }
 /// }
-pub fn on_source_after_faint(battle: &mut Battle, _length: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_source_after_faint(battle: &mut Battle, _length: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&crate::battle::Effect>) -> EventResult {
     use crate::dex_data::ID;
 
     // if (effect && effect.effectType === 'Move')
-    if let Some(eff_id) = effect_id {
-        if battle.dex.moves().get(eff_id).is_some() {
-            // Effect is a move, boost Special Attack by 1 (length parameter not available in current dispatcher)
-            if let Some(src_pos) = source_pos {
-                battle.boost(&[("spa", 1)], src_pos, Some(src_pos), Some(&ID::from("grimneigh").to_string()), false, false);
-            }
+    let is_move_effect = effect
+        .map(|e| e.effect_type == crate::battle::EffectType::Move)
+        .unwrap_or(false);
+
+    if is_move_effect {
+        // Effect is a move, boost Special Attack by 1 (length parameter not available in current dispatcher)
+        if let Some(src_pos) = source_pos {
+            battle.boost(&[("spa", 1)], src_pos, Some(src_pos), Some(&ID::from("grimneigh").to_string()), false, false);
         }
     }
     EventResult::Continue

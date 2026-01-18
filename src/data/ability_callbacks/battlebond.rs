@@ -5,6 +5,8 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
+use crate::battle::EffectType;
 use crate::event::EventResult;
 use crate::dex::Multihit;
 
@@ -17,7 +19,7 @@ use crate::dex::Multihit;
 ///         source.bondTriggered = true;
 ///     }
 /// }
-pub fn on_source_after_faint(_battle: &mut Battle, _length: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_source_after_faint(_battle: &mut Battle, _length: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
     let source = match source_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
@@ -37,13 +39,11 @@ pub fn on_source_after_faint(_battle: &mut Battle, _length: i32, _target_pos: Op
     }
 
     // if (effect?.effectType !== 'Move') return;
-    let is_move = if let Some(eff_id) = effect_id {
-        _battle.dex.moves().get_by_id(&crate::dex_data::ID::from(eff_id)).is_some()
-    } else {
-        false
-    };
+    let is_move_effect = effect
+        .map(|e| e.effect_type == EffectType::Move)
+        .unwrap_or(false);
 
-    if !is_move {
+    if !is_move_effect {
         return EventResult::Continue;
     }
 

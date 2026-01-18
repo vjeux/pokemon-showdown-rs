@@ -34,11 +34,12 @@ impl Battle {
         // Extract context from event for parameter wiring
         // For SetStatus/AllySetStatus events, status ID comes from relay_var (String)
         // For other events, effect_id comes from event.effect
-        let (event_source_pos, event_target_pos, event_effect_id) = if let Some(ref event) = self.event {
+        let (event_source_pos, event_target_pos, event_effect_id, event_effect) = if let Some(ref event) = self.event {
             let effect_str = event.effect.as_ref().map(|eff| eff.id.to_string()).unwrap_or_else(|| String::new());
-            (event.source, event.target, effect_str)
+            let effect_clone = event.effect.clone();
+            (event.source, event.target, effect_str, effect_clone)
         } else {
-            (None, None, String::new())
+            (None, None, String::new(), None)
         };
 
         // For SetStatus events, the status ID is passed via relay_var as String
@@ -784,7 +785,7 @@ impl Battle {
                     event_source_pos
                 )
             }
-            "SourceAfterFaint" => ability_callbacks::dispatch_on_source_after_faint(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }),
+            "SourceAfterFaint" => ability_callbacks::dispatch_on_source_after_faint(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), event_source_pos, event_effect.as_ref()),
             "SourceBasePower" => ability_callbacks::dispatch_on_source_base_power(
                 self,
                 ability_id.as_str(),

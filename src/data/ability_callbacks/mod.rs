@@ -4,6 +4,7 @@
 //! Each ability with callbacks is in its own file.
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::battle_actions::ActiveMove;
 use crate::event::EventResult;
 
@@ -1466,16 +1467,16 @@ pub fn dispatch_on_source_after_faint(
     battle: &mut Battle,
     ability_id: &str,
     length: i32,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>,
 ) -> EventResult {
     match ability_id {
-        "asoneglastrier" => asoneglastrier::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
-        "asonespectrier" => asonespectrier::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
-        "battlebond" => battlebond::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
-        "beastboost" => beastboost::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
-        "chillingneigh" => chillingneigh::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
-        "grimneigh" => grimneigh::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
-        "moxie" => moxie::on_source_after_faint(battle, length, target_pos, source_pos, effect_id),
+        "asoneglastrier" => asoneglastrier::on_source_after_faint(battle, length, target_pos, source_pos, effect),
+        "asonespectrier" => asonespectrier::on_source_after_faint(battle, length, target_pos, source_pos, effect),
+        "battlebond" => battlebond::on_source_after_faint(battle, length, target_pos, source_pos, effect),
+        "beastboost" => beastboost::on_source_after_faint(battle, length, target_pos, source_pos, effect),
+        "chillingneigh" => chillingneigh::on_source_after_faint(battle, length, target_pos, source_pos, effect),
+        "grimneigh" => grimneigh::on_source_after_faint(battle, length, target_pos, source_pos, effect),
+        "moxie" => moxie::on_source_after_faint(battle, length, target_pos, source_pos, effect),
         _ => EventResult::Continue,
     }
 }
@@ -4021,9 +4022,9 @@ pub fn dispatch_on_source_after_faint_priority(
     battle: &mut Battle,
     ability_id: &str,
     length: i32,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>,
 ) -> EventResult {
-    dispatch_on_source_after_faint(battle, ability_id, length, target_pos, source_pos, effect_id)
+    dispatch_on_source_after_faint(battle, ability_id, length, target_pos, source_pos, effect)
 }
 
 /// Dispatch onSourceAfterFaintOrder callbacks (alias for onSourceAfterFaint)
@@ -4031,9 +4032,9 @@ pub fn dispatch_on_source_after_faint_order(
     battle: &mut Battle,
     ability_id: &str,
     length: i32,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>,
 ) -> EventResult {
-    dispatch_on_source_after_faint(battle, ability_id, length, target_pos, source_pos, effect_id)
+    dispatch_on_source_after_faint(battle, ability_id, length, target_pos, source_pos, effect)
 }
 
 /// Dispatch onSourceAfterFaintSubOrder callbacks (alias for onSourceAfterFaint)
@@ -4041,9 +4042,9 @@ pub fn dispatch_on_source_after_faint_sub_order(
     battle: &mut Battle,
     ability_id: &str,
     length: i32,
-    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>,
+    target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>,
 ) -> EventResult {
-    dispatch_on_source_after_faint(battle, ability_id, length, target_pos, source_pos, effect_id)
+    dispatch_on_source_after_faint(battle, ability_id, length, target_pos, source_pos, effect)
 }
 
 /// Dispatch onSourceBasePowerPriority callbacks (alias for onSourceBasePower)
