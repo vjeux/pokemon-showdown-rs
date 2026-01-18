@@ -2587,15 +2587,19 @@ pub fn dispatch_condition_on_source_accuracy(
 }
 
 /// Dispatch condition onSourceBasePower callbacks
+/// These are callbacks on volatiles (conditions) on the TARGET Pokemon
+/// that modify the SOURCE's base power (e.g., Bounce doubles Gust/Twister damage)
 pub fn dispatch_condition_on_source_base_power(
     battle: &mut Battle,
+    condition_id: &str,
+    target_pos: (usize, usize),
     active_move: Option<&ActiveMove>,
-    source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "bounce" => {
-            bounce::condition::on_source_base_power(battle, 0, None, Some(source_pos), active_move)
+            bounce::condition::on_source_base_power(battle, 0, Some(target_pos), None, active_move)
         }
+        // Note: Fly and Dive use onSourceModifyDamage, not onSourceBasePower
         _ => EventResult::Continue,
     }
 }

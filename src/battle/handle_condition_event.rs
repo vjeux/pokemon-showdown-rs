@@ -818,6 +818,18 @@ impl Battle {
                     active_move_clone.as_ref(),
                 )
             }
+            "SourceBasePower" => {
+                // onSourceBasePower callback for conditions (bounce, fly, dive, etc.)
+                // Doubles damage from moves like Gust/Twister when target is in the air
+                // condition_id is the volatile on the TARGET (e.g., "bounce")
+                // The modifier is applied to the source's base power
+                crate::data::move_callbacks::dispatch_condition_on_source_base_power(
+                    self,
+                    condition_id,
+                    pokemon_pos,
+                    active_move_clone.as_ref(),
+                )
+            }
             _ => EventResult::Continue,
         };
 
