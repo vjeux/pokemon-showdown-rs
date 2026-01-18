@@ -1,20 +1,18 @@
-Analyzing 70 failing minimized seed files...
+Analyzing 68 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-transform: 4 seeds
-  Seeds: 2814, 61343, 64566, 64920
 skydrop: 3 seeds
   Seeds: 17535, 35876, 55162
 flipturn: 3 seeds
   Seeds: 18219, 6527, 65490
 ivycudgel: 3 seeds
   Seeds: 21366, 22436, 42590
-healblock: 3 seeds
-  Seeds: 2814, 55162, 5613
 ragingbull: 3 seeds
   Seeds: 28200, 34858, 62499
+transform: 3 seeds
+  Seeds: 61343, 64566, 64920
 ceaselessedge: 2 seeds
   Seeds: 10025, 57522
 playrough: 2 seeds
@@ -215,6 +213,8 @@ doubleedge: 1 seeds
   Seeds: 54222
 tailwind: 1 seeds
   Seeds: 55162
+healblock: 1 seeds
+  Seeds: 55162
 banefulbunker: 1 seeds
   Seeds: 55162
 metronome: 1 seeds
@@ -227,8 +227,6 @@ razorleaf: 1 seeds
   Seeds: 55954
 synchronoise: 1 seeds
   Seeds: 56089
-seedflare: 1 seeds
-  Seeds: 5613
 surf: 1 seeds
   Seeds: 56264
 hypervoice: 1 seeds
@@ -321,8 +319,6 @@ Flash Fire: 1 seeds
   Seeds: 55954
 Anger Shell: 1 seeds
   Seeds: 56089
-Slow Start: 1 seeds
-  Seeds: 5613
 Gulp Missile: 1 seeds
   Seeds: 56264
 Wonder Guard: 1 seeds
@@ -367,22 +363,22 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 70
-Unique moves: 142 (141 non-simple)
-Unique abilities: 26 (24 non-simple)
+Total minimized seeds: 68
+Unique moves: 141 (140 non-simple)
+Unique abilities: 25 (23 non-simple)
 Unique items: 11
 
 --- Most Common Moves (top 10) ---
-  transform: 4 seeds
   skydrop: 3 seeds
   flipturn: 3 seeds
   ivycudgel: 3 seeds
-  healblock: 3 seeds
   ragingbull: 3 seeds
+  transform: 3 seeds
   ceaselessedge: 2 seeds
   playrough: 2 seeds
   stompingtantrum: 2 seeds
   silktrap: 2 seeds
+  encore: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds

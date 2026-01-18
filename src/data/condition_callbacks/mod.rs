@@ -801,11 +801,13 @@ pub fn has_on_restart_callback(condition_id: &str) -> bool {
         // - furycutter: onRestart refreshes
         // - defensecurl: onRestart returns null (restarts silently)
         // - allyswitch: onRestart refreshes
+        // - healblock: onRestart shows fail message but doesn't actually fail (returns undefined)
         //
         // NOT in this list (no onRestart, so addVolatile returns false):
-        // - rollout, iceball, uproar, focusenergy, healblock
+        // - rollout, iceball, uproar, focusenergy
         "laserfocus" | "stockpile" | "gmaxchistrike" | "minimize" | "charge" | "smackdown" |
-        "powertrick" | "powershift" | "helpinghand" | "furycutter" | "defensecurl" | "allyswitch" => true,
+        "powertrick" | "powershift" | "helpinghand" | "furycutter" | "defensecurl" | "allyswitch" |
+        "healblock" => true,
         _ => false,
     }
 }

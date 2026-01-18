@@ -27,6 +27,7 @@ pub fn hit_step_move_hit_loop(
     attacker_pos: (usize, usize),
     active_move: &mut ActiveMove,
 ) -> SpreadMoveDamage {
+    debug_elog!("[HIT_LOOP] ENTRY: move={}, targets.len()={}, turn={}", active_move.id, targets.len(), battle.turn);
     // let damage: (number | boolean | undefined)[] = [];
     // for (const i of targets.keys()) {
     //     damage[i] = 0;
@@ -116,9 +117,12 @@ pub fn hit_step_move_hit_loop(
     // let hit: number;
     // for (hit = 1; hit <= targetHits; hit++) {
     let mut hit = 1;
+    debug_elog!("[HIT_LOOP] Starting loop: move={}, target_hits={}, turn={}", active_move.id, target_hits, battle.turn);
     while hit <= target_hits {
+        debug_elog!("[HIT_LOOP] Loop iteration: move={}, hit={}, target_hits={}, turn={}", active_move.id, hit, target_hits, battle.turn);
         // if (damage.includes(false)) break;
         if damage.iter().any(|d| matches!(d, DamageResult::Failed)) {
+            debug_elog!("[HIT_LOOP] Breaking due to Failed damage: move={}", active_move.id);
             break;
         }
 
@@ -415,7 +419,9 @@ pub fn hit_step_move_hit_loop(
         }
 
         // if (!moveDamage.some(val => val !== false)) break;
+        debug_elog!("[HIT_LOOP] After spread_move_hit: move={}, move_damage={:?}", active_move.id, move_damage);
         if !move_damage.iter().any(|d| !matches!(d, DamageResult::Failed)) {
+            debug_elog!("[HIT_LOOP] Breaking due to all Failed move_damage: move={}", active_move.id);
             break;
         }
 
@@ -482,6 +488,7 @@ pub fn hit_step_move_hit_loop(
         }
 
         // this.battle.eachEvent('Update');
+        debug_elog!("[HIT_LOOP] About to call each_event:Update (inside loop): move={}, hit={}, turn={}", active_move.id, hit, battle.turn);
         battle.each_event("Update", None, None);
 
         // if (!pokemon.hp && targets.length === 1) {
@@ -667,11 +674,19 @@ pub fn hit_step_move_hit_loop(
     }
 
     // if (!damage.some(val => !!val || val === 0)) return damage;
-    if !damage.iter().any(|d| matches!(d, DamageResult::Damage(_))) {
+    // JavaScript: !!val is true for truthy values (true, non-zero numbers)
+    //             val === 0 is true for 0
+    // So return early only if ALL values are falsy and not 0
+    // Truthy in Rust: Success, Damage(n) where n != 0
+    // Equals 0 in Rust: Damage(0), HitSubstitute (which is 0)
+    debug_elog!("[HIT_LOOP] After loop: move={}, damage={:?}, turn={}", active_move.id, damage, battle.turn);
+    if !damage.iter().any(|d| matches!(d, DamageResult::Success | DamageResult::Damage(_) | DamageResult::HitSubstitute)) {
+        debug_elog!("[HIT_LOOP] Early return (no truthy or zero damage): move={}", active_move.id);
         return damage;
     }
 
     // this.battle.eachEvent('Update');
+    debug_elog!("[HIT_LOOP] About to call each_event:Update (after loop): move={}, turn={}", active_move.id, battle.turn);
     battle.each_event("Update", None, None);
 
     // this.afterMoveSecondaryEvent(targetsCopy.filter(val => !!val), pokemon, move);
