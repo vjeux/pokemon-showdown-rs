@@ -920,16 +920,32 @@ impl Battle {
             ),
             "Start" => ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }),
             "SwitchIn" => {
-                // JavaScript getCallback() special logic:
-                // In gen >= 5, abilities use onStart callback during SwitchIn event
-                // instead of onSwitchIn callback (unless ability has onAnySwitchIn)
-                if self.gen >= 5 {
-                    let result = ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) });
-                    if !matches!(result, EventResult::Continue) {
-                        return result;
-                    }
+                // JavaScript getCallback() special logic (battle.ts:996-1001):
+                // if (callback === undefined && target instanceof Pokemon && this.gen >= 5 && callbackName === 'onSwitchIn' &&
+                //     !(effect as any).onAnySwitchIn && (['Ability', 'Item'].includes(effect.effectType) ...)) {
+                //     callback = (effect as any).onStart;
+                // }
+                //
+                // Key: callback === undefined means the ability does NOT have a custom onSwitchIn
+                // If the ability HAS a custom onSwitchIn, use only that (it will call onStart itself if needed)
+                // If the ability does NOT have a custom onSwitchIn and gen >= 5, use onStart instead
+                //
+                // Check if this ability has a real onSwitchIn callback in the dispatcher
+                let has_custom_switch_in = matches!(
+                    ability_id.as_str(),
+                    "airlock" | "cloudnine" | "imposter" | "neutralizinggas" | "terashift" | "zerotohero"
+                );
+
+                if has_custom_switch_in {
+                    // Ability has custom onSwitchIn that handles its own onStart call
+                    ability_callbacks::dispatch_on_switch_in(self, ability_id.as_str(), pokemon_pos)
+                } else if self.gen >= 5 {
+                    // No custom onSwitchIn, gen >= 5: use onStart
+                    ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
+                } else {
+                    // gen < 5: try to call onSwitchIn (which likely doesn't exist)
+                    ability_callbacks::dispatch_on_switch_in(self, ability_id.as_str(), pokemon_pos)
                 }
-                ability_callbacks::dispatch_on_switch_in(self, ability_id.as_str(), pokemon_pos)
             },
             "SwitchInPriority" => ability_callbacks::dispatch_on_switch_in_priority(
                 self,

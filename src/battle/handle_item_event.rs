@@ -458,18 +458,34 @@ impl Battle {
             // TypeScript: onStart(target:Pokemon?)
             "Start" => item_callbacks::dispatch_on_start(self, item_id.as_str(), target_opt),
 
-            // JavaScript getCallback() special logic:
-            // In gen >= 5, items use onStart callback during SwitchIn event
-            // instead of onSwitchIn callback
+            // JavaScript getCallback() special logic (battle.ts:996-1001):
+            // if (callback === undefined && target instanceof Pokemon && this.gen >= 5 && callbackName === 'onSwitchIn' &&
+            //     !(effect as any).onAnySwitchIn && (['Ability', 'Item'].includes(effect.effectType) ...)) {
+            //     callback = (effect as any).onStart;
+            // }
+            //
+            // Key: callback === undefined means the item does NOT have a custom onSwitchIn
+            // If the item HAS a custom onSwitchIn, use only that (it will call onStart itself if needed)
+            // If the item does NOT have a custom onSwitchIn and gen >= 5, use onStart instead
+            //
             // TypeScript: onSwitchIn(pokemon:Pokemon)
             "SwitchIn" => {
-                if self.gen >= 5 {
-                    let result = item_callbacks::dispatch_on_start(self, item_id.as_str(), target_opt);
-                    if !matches!(result, EventResult::Continue) {
-                        return result;
-                    }
+                // Check if this item has a real onSwitchIn callback in the dispatcher
+                let has_custom_switch_in = matches!(
+                    item_id.as_str(),
+                    "blueorb" | "redorb"
+                );
+
+                if has_custom_switch_in {
+                    // Item has custom onSwitchIn that handles its own onStart call
+                    item_callbacks::dispatch_on_switch_in(self, item_id.as_str(), pokemon_pos)
+                } else if self.gen >= 5 {
+                    // No custom onSwitchIn, gen >= 5: use onStart
+                    item_callbacks::dispatch_on_start(self, item_id.as_str(), target_opt)
+                } else {
+                    // gen < 5: try to call onSwitchIn (which likely doesn't exist)
+                    item_callbacks::dispatch_on_switch_in(self, item_id.as_str(), pokemon_pos)
                 }
-                item_callbacks::dispatch_on_switch_in(self, item_id.as_str(), pokemon_pos)
             }
 
             // TypeScript: onTakeItem(item:Pokemon?, pokemon:Pokemon, source:Pokemon?)
