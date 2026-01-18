@@ -1,14 +1,10 @@
-Analyzing 102 failing minimized seed files...
+Analyzing 95 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 mindblown: 4 seeds
   Seeds: 17626, 37514, 53360, 6527
-mudsport: 4 seeds
-  Seeds: 23542, 24867, 47054, 53537
-hiddenpowerelectric: 4 seeds
-  Seeds: 23542, 24867, 47054, 53537
 transform: 4 seeds
   Seeds: 2814, 61343, 64566, 64920
 assist: 4 seeds
@@ -19,8 +15,6 @@ speedswap: 4 seeds
   Seeds: 34471, 39290, 43980, 62883
 metronome: 4 seeds
   Seeds: 36737, 43394, 48145, 55954
-stompingtantrum: 3 seeds
-  Seeds: 14287, 36529, 8342
 copycat: 3 seeds
   Seeds: 15935, 53747, 60885
 scaleshot: 3 seeds
@@ -41,12 +35,12 @@ minimize: 3 seeds
   Seeds: 30446, 30853, 58474
 leechseed: 3 seeds
   Seeds: 30530, 40097, 44135
-wonderroom: 3 seeds
-  Seeds: 35876, 4479, 65503
 ceaselessedge: 2 seeds
   Seeds: 10025, 57522
 playrough: 2 seeds
   Seeds: 10025, 53209
+stompingtantrum: 2 seeds
+  Seeds: 14287, 36529
 silktrap: 2 seeds
   Seeds: 14287, 36529
 encore: 2 seeds
@@ -55,8 +49,6 @@ charge: 2 seeds
   Seeds: 15974, 43153
 comeuppance: 2 seeds
   Seeds: 15974, 30530
-obstruct: 2 seeds
-  Seeds: 17535, 24867
 maliciousmoonsault: 2 seeds
   Seeds: 18219, 60885
 zippyzap: 2 seeds
@@ -67,16 +59,12 @@ magneticflux: 2 seeds
   Seeds: 20875, 26095
 lastrespects: 2 seeds
   Seeds: 22366, 32939
-aquatail: 2 seeds
-  Seeds: 22366, 24867
 steelbeam: 2 seeds
   Seeds: 22366, 63094
 soak: 2 seeds
   Seeds: 23363, 49341
 chatter: 2 seeds
   Seeds: 25177, 43153
-noxioustorque: 2 seeds
-  Seeds: 25177, 4479
 pursuit: 2 seeds
   Seeds: 25574, 35620
 reflect: 2 seeds
@@ -97,10 +85,10 @@ magicroom: 2 seeds
   Seeds: 35671, 48178
 burningbulwark: 2 seeds
   Seeds: 35876, 39892
+wonderroom: 2 seeds
+  Seeds: 35876, 65503
 celebrate: 2 seeds
   Seeds: 36737, 43394
-nuzzle: 2 seeds
-  Seeds: 37514, 8342
 corkscrewcrash: 2 seeds
   Seeds: 39435, 53148
 synchronoise: 2 seeds
@@ -135,6 +123,8 @@ maxquake: 1 seeds
   Seeds: 15759
 mightycleave: 1 seeds
   Seeds: 15759
+obstruct: 1 seeds
+  Seeds: 17535
 morningsun: 1 seeds
   Seeds: 20356
 icespinner: 1 seeds
@@ -145,21 +135,21 @@ meanlook: 1 seeds
   Seeds: 20356
 lastresort: 1 seeds
   Seeds: 20356
+aquatail: 1 seeds
+  Seeds: 22366
 ember: 1 seeds
   Seeds: 22366
 howl: 1 seeds
   Seeds: 22436
 harden: 1 seeds
   Seeds: 22436
-meditate: 1 seeds
-  Seeds: 24867
-absorb: 1 seeds
-  Seeds: 24867
 bellydrum: 1 seeds
   Seeds: 25177
 outrage: 1 seeds
   Seeds: 25177
 stickyweb: 1 seeds
+  Seeds: 25177
+noxioustorque: 1 seeds
   Seeds: 25177
 quickguard: 1 seeds
   Seeds: 25574
@@ -221,6 +211,8 @@ shoreup: 1 seeds
   Seeds: 35876
 gigavolthavoc: 1 seeds
   Seeds: 37514
+nuzzle: 1 seeds
+  Seeds: 37514
 blazekick: 1 seeds
   Seeds: 38902
 skittersmack: 1 seeds
@@ -245,12 +237,6 @@ meteorbeam: 1 seeds
   Seeds: 39435
 gmaxfireball: 1 seeds
   Seeds: 39435
-naturepower: 1 seeds
-  Seeds: 39514
-eeriespell: 1 seeds
-  Seeds: 39514
-iondeluge: 1 seeds
-  Seeds: 39514
 technoblast: 1 seeds
   Seeds: 40097
 icefang: 1 seeds
@@ -295,12 +281,6 @@ dragonenergy: 1 seeds
   Seeds: 43980
 acupressure: 1 seeds
   Seeds: 43980
-dynamicpunch: 1 seeds
-  Seeds: 4479
-recover: 1 seeds
-  Seeds: 4479
-gravity: 1 seeds
-  Seeds: 4479
 knockoff: 1 seeds
   Seeds: 45311
 tarshot: 1 seeds
@@ -403,22 +383,6 @@ magicaltorque: 1 seeds
   Seeds: 65503
 superfang: 1 seeds
   Seeds: 65503
-magmastorm: 1 seeds
-  Seeds: 8342
-maxstrike: 1 seeds
-  Seeds: 8342
-chillingwater: 1 seeds
-  Seeds: 8342
-xscissor: 1 seeds
-  Seeds: 8342
-jumpkick: 1 seeds
-  Seeds: 8342
-watersport: 1 seeds
-  Seeds: 8342
-leafstorm: 1 seeds
-  Seeds: 8342
-revivalblessing: 1 seeds
-  Seeds: 8342
 
 ============================================================
 ABILITIES (excluding simple ones)
@@ -435,8 +399,6 @@ Plus: 1 seeds
   Seeds: 20875
 Iron Barbs: 1 seeds
   Seeds: 22366
-Poison Point: 1 seeds
-  Seeds: 24867
 Defiant: 1 seeds
   Seeds: 25177
 Shield Dust: 1 seeds
@@ -521,30 +483,26 @@ sitrusberry: 1 seeds
   Seeds: 56089
 micleberry: 1 seeds
   Seeds: 61431
-whiteherb: 1 seeds
-  Seeds: 8342
-laggingtail: 1 seeds
-  Seeds: 8342
 
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 102
-Unique moves: 209 (208 non-simple)
-Unique abilities: 36 (33 non-simple)
-Unique items: 16
+Total minimized seeds: 95
+Unique moves: 191 (190 non-simple)
+Unique abilities: 34 (32 non-simple)
+Unique items: 14
 
 --- Most Common Moves (top 10) ---
   mindblown: 4 seeds
-  mudsport: 4 seeds
-  hiddenpowerelectric: 4 seeds
   transform: 4 seeds
   assist: 4 seeds
   relicsong: 4 seeds
   speedswap: 4 seeds
   metronome: 4 seeds
-  stompingtantrum: 3 seeds
   copycat: 3 seeds
+  scaleshot: 3 seeds
+  skydrop: 3 seeds
+  flipturn: 3 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds
@@ -553,7 +511,7 @@ Unique items: 16
   Unaware: 2 seeds
   Plus: 1 seeds
   Iron Barbs: 1 seeds
-  Poison Point: 1 seeds
   Defiant: 1 seeds
   Shield Dust: 1 seeds
   Minus: 1 seeds
+  Soundproof: 1 seeds
