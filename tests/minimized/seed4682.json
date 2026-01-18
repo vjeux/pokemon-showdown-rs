@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Dialga-Origin",
+      "species": "Dialga-Origin",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "sassy",
+      "gender": "",
+      "moves": [
+        "thunderwave"
+      ],
+      "evs": {
+        "hp": 70,
+        "atk": 75,
+        "def": 92,
+        "spa": 90,
+        "spd": 97,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 22,
+        "def": 4,
+        "spa": 8,
+        "spd": 25,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Bergmite",
+      "species": "Bergmite",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "sing"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pokestar UFO-PropU2",
+      "species": "Pokestar UFO-PropU2",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "rash",
+      "gender": "",
+      "moves": [
+        "telekinesis"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 86,
+        "def": 91,
+        "spa": 85,
+        "spd": 90,
+        "spe": 68
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 10,
+        "def": 6,
+        "spa": 5,
+        "spd": 21,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Rhyhorn",
+      "species": "Rhyhorn",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Dugtrio-Alola",
+      "species": "Dugtrio-Alola",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "aurorabeam"
+      ],
+      "evs": {
+        "hp": 88,
+        "atk": 93,
+        "def": 78,
+        "spa": 83,
+        "spd": 90,
+        "spe": 78
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 7,
+        "def": 21,
+        "spa": 20,
+        "spd": 22,
+        "spe": 24
+      }
+    }
+  ],
+  "_bug": "Diverges at line 40: JS=\"#40: turn=38, prng=133->140, P1=[Rhyhorn(92/268)], P2=[Dugtrio(170/185)]\" vs Rust=\"#40: turn=38, prng=133->139, P1=[Rhyhorn(92/268)], P2=[Dugtrio(168/185)]\""
+}

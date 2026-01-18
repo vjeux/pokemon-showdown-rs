@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Cetitan",
+      "species": "Cetitan",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "mirrormove"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Skiddo",
+      "species": "Skiddo",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "mudsport",
+        "round"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 26: JS=\"#26: turn=27, prng=3->9, P1=[Cetitan(334/457)], P2=[Skiddo(213/254)]\" vs Rust=\"#26: turn=27, prng=3->9, P1=[Cetitan(374/457)], P2=[Skiddo(213/254)]\""
+}

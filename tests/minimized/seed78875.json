@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Haunter",
+      "species": "Haunter",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "pursuit"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Shox",
+      "species": "Shox",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "junglehealing",
+        "wideguard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 17: JS=\"#17: turn=18, prng=48->51, P1=[Haunter(249/249)], P2=[Shox(358/383)]\" vs Rust=\"#17: turn=18, prng=48->52, P1=[Haunter(249/249)], P2=[Shox(358/383)]\""
+}

@@ -1,0 +1,235 @@
+{
+  "p1": [
+    {
+      "name": "Kubfu",
+      "species": "Kubfu",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Sandslash",
+      "species": "Sandslash",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 103,
+        "def": 80,
+        "spa": 71,
+        "spd": 87,
+        "spe": 96
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 26,
+        "def": 27,
+        "spa": 30,
+        "spd": 26,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Argalis",
+      "species": "Argalis",
+      "level": 68,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "drainingkiss",
+        "celebrate"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Dugtrio-Alola",
+      "species": "Dugtrio-Alola",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "spitup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Giratina",
+      "species": "Giratina",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "",
+      "moves": [
+        "sweetscent"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 75,
+        "def": 90,
+        "spa": 90,
+        "spd": 82,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 12,
+        "def": 15,
+        "spa": 27,
+        "spd": 13,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Archaludon",
+      "species": "Archaludon",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Budew",
+      "species": "Budew",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "iceshard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Moltres-Galar",
+      "species": "Moltres-Galar",
+      "level": 89,
+      "ability": "Berserk",
+      "item": "sitrusberry",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "endure",
+        "firespin"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 92: JS=\"#92: turn=86, prng=212->216, P1=[Argalis(0/194)], P2=[Moltres(227/305)]\" vs Rust=\"#92: turn=87, prng=212->216, P1=[Argalis(40/194)], P2=[Moltres(227/305)]\""
+}

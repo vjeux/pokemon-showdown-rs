@@ -1,0 +1,232 @@
+{
+  "p1": [
+    {
+      "name": "Urshifu",
+      "species": "Urshifu",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Spewpa",
+      "species": "Spewpa",
+      "level": 84,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pikachu-Kalos",
+      "species": "Pikachu-Kalos",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naughty",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 65,
+        "atk": 98,
+        "def": 83,
+        "spa": 103,
+        "spd": 74,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 19,
+        "def": 11,
+        "spa": 2,
+        "spd": 19,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Silvally",
+      "species": "Silvally",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle",
+        "voltswitch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Whiscash",
+      "species": "Whiscash",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Moltres",
+      "species": "Moltres",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "polarflare"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Rattata-Alola",
+      "species": "Rattata-Alola",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "grudge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Treecko",
+      "species": "Treecko",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 25: JS=\"#25: turn=19, prng=85->91, P1=[Silvally(17/293)], P2=[Treecko(79/214)]\" vs Rust=\"#25: turn=19, prng=85->91, P1=[Silvally(17/293)], P2=[Treecko(35/214)]\""
+}

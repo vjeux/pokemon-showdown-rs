@@ -1,0 +1,179 @@
+{
+  "p1": [
+    {
+      "name": "Electrode-Hisui",
+      "species": "Electrode-Hisui",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "shedtail"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Numel",
+      "species": "Numel",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "spiderweb"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zweilous",
+      "species": "Zweilous",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "banefulbunker",
+        "conversion2"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 79,
+        "def": 92,
+        "spa": 89,
+        "spd": 82,
+        "spe": 83
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 24,
+        "def": 7,
+        "spa": 23,
+        "spd": 17,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Slurpuff",
+      "species": "Slurpuff",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "F",
+      "moves": [
+        "destinybond"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 94,
+        "def": 72,
+        "spa": 83,
+        "spd": 81,
+        "spe": 93
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 14,
+        "def": 26,
+        "spa": 5,
+        "spd": 20,
+        "spe": 16
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Wynaut",
+      "species": "Wynaut",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hardy",
+      "gender": "M",
+      "moves": [
+        "headlongrush",
+        "poweruppunch"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 77,
+        "def": 84,
+        "spa": 83,
+        "spd": 68,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 29,
+        "atk": 30,
+        "def": 2,
+        "spa": 21,
+        "spd": 8,
+        "spe": 5
+      }
+    },
+    {
+      "name": "Delcatty",
+      "species": "Delcatty",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "firstimpression",
+        "gmaxvoltcrash",
+        "bleakwindstorm"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 56: JS=\"#56: turn=51, prng=131->135, P1=[Slurpuff(0/263)], P2=[Delcatty(249/249)]\" vs Rust=\"#56: turn=51, prng=131->135, P1=[Slurpuff(0/263)], P2=[Delcatty(0/249)]\""
+}

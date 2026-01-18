@@ -1,0 +1,65 @@
+{
+  "p1": [
+    {
+      "name": "Eelektross",
+      "species": "Eelektross",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "playrough",
+        "dig"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Oricorio",
+      "species": "Oricorio",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "obstruct",
+        "telekinesis"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 17: JS=\"#17: turn=18, prng=46->47, P1=[Eelektross(219/219)], P2=[Oricorio(147/308)]\" vs Rust=\"#17: turn=18, prng=46->48, P1=[Eelektross(219/219)], P2=[Oricorio(147/308)]\""
+}

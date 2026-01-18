@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Klawf",
+      "species": "Klawf",
+      "level": 58,
+      "ability": "Anger Shell",
+      "item": "figyberry",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "fairywind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Camerupt-Mega",
+      "species": "Camerupt-Mega",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "maxwyrmwind",
+        "multiattack"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 22: JS=\"#22: turn=23, prng=110->116, P1=[Klawf(38/179)], P2=[Camerupt(49/164)]\" vs Rust=\"#22: turn=23, prng=110->116, P1=[Klawf(21/179)], P2=[Camerupt(46/164)]\""
+}

@@ -1,0 +1,177 @@
+{
+  "p1": [
+    {
+      "name": "Necrozma",
+      "species": "Necrozma",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "explosion"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Ribombee",
+      "species": "Ribombee",
+      "level": 87,
+      "ability": "Honey Gather",
+      "item": "",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "lightthatburnsthesky",
+        "babydolleyes"
+      ],
+      "evs": {
+        "hp": 79,
+        "atk": 95,
+        "def": 65,
+        "spa": 90,
+        "spd": 75,
+        "spe": 106
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 0,
+        "def": 16,
+        "spa": 11,
+        "spd": 23,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Koffing",
+      "species": "Koffing",
+      "level": 51,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "doubleteam"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Onix",
+      "species": "Onix",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "focusband",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gmaxresonance"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Duohm",
+      "species": "Duohm",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Zoroark",
+      "species": "Zoroark",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "combattorque",
+        "gmaxcannonade"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 74,
+        "def": 81,
+        "spa": 79,
+        "spd": 77,
+        "spe": 109
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 27,
+        "def": 10,
+        "spa": 27,
+        "spd": 19,
+        "spe": 20
+      }
+    }
+  ],
+  "_bug": "Diverges at line 34: JS=\"#34: turn=31, prng=146->152, P1=[Onix(0/212)], P2=[Zoroark(250/256)]\" vs Rust=\"#34: turn=32, prng=146->152, P1=[Onix(1/212)], P2=[Zoroark(250/256)]\""
+}

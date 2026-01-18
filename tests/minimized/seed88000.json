@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Gardevoir",
+      "species": "Gardevoir",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "metronome",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Girafarig",
+      "species": "Girafarig",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "embargo"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=4->8, P1=[Gardevoir(197/197)], P2=[Girafarig(112/164)]\" vs Rust=\"#2: turn=3, prng=4->8, P1=[Gardevoir(197/197)], P2=[Girafarig(107/164)]\""
+}

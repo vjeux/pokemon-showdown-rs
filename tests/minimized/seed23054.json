@@ -1,0 +1,175 @@
+{
+  "p1": [
+    {
+      "name": "Dubwool",
+      "species": "Dubwool",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "solarblade"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Grovyle",
+      "species": "Grovyle",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Staryu",
+      "species": "Staryu",
+      "level": 67,
+      "ability": "Illuminate",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Grookey",
+      "species": "Grookey",
+      "level": 78,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gmaxchistrike"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Garchomp-Mega",
+      "species": "Garchomp-Mega",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "F",
+      "moves": [
+        "grudge"
+      ],
+      "evs": {
+        "hp": 117,
+        "atk": 83,
+        "def": 79,
+        "spa": 93,
+        "spd": 73,
+        "spe": 65
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 14,
+        "def": 22,
+        "spa": 30,
+        "spd": 28,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Dodrio",
+      "species": "Dodrio",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "whirlwind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 23: JS=\"#23: turn=22, prng=52->55, P1=[Staryu(152/152)], P2=[Dodrio(128/200)]\" vs Rust=\"#23: turn=22, prng=52->53, P1=[Grovyle(176/176)], P2=[Dodrio(157/200)]\""
+}

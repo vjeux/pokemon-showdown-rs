@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Necrozma-Ultra",
+      "species": "Necrozma-Ultra",
+      "level": 84,
+      "ability": "Neuroforce",
+      "item": "metronome",
+      "nature": "timid",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 75,
+        "atk": 75,
+        "def": 83,
+        "spa": 92,
+        "spd": 93,
+        "spe": 92
+      },
+      "ivs": {
+        "hp": 11,
+        "atk": 29,
+        "def": 24,
+        "spa": 27,
+        "spd": 29,
+        "spe": 6
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Pokestar Smeargle",
+      "species": "Pokestar Smeargle",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kyogre-Primal",
+      "species": "Kyogre-Primal",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "iapapaberry",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "embargo"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 6: JS=\"#6: turn=6, prng=19->23, P1=[Necrozma(253/281)], P2=[Kyogre(223/316)]\" vs Rust=\"#6: turn=6, prng=19->23, P1=[Necrozma(253/281)], P2=[Kyogre(195/316)]\""
+}

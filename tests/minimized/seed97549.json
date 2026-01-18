@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Meowth",
+      "species": "Meowth",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "playrough"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Moltres-Galar",
+      "species": "Moltres-Galar",
+      "level": 70,
+      "ability": "Berserk",
+      "item": "enigmaberry",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=16->34, P1=[Meowth(70/172)], P2=[Moltres(174/242)]\" vs Rust=\"#2: turn=3, prng=16->34, P1=[Meowth(70/172)], P2=[Moltres(234/242)]\""
+}

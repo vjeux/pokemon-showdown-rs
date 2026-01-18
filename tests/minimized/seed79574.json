@@ -1,0 +1,91 @@
+{
+  "p1": [
+    {
+      "name": "Electrelk",
+      "species": "Electrelk",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 81,
+        "def": 89,
+        "spa": 102,
+        "spd": 75,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 11,
+        "def": 5,
+        "spa": 1,
+        "spd": 13,
+        "spe": 1
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Golisopod",
+      "species": "Golisopod",
+      "level": 84,
+      "ability": "Emergency Exit",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "filletaway"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Floragato",
+      "species": "Floragato",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=1, prng=0->3, P1=[Electrelk(221/221)], P2=[Golisopod(114/263)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Electrelk(221/221)], P2=[Golisopod(114/263)]\""
+}

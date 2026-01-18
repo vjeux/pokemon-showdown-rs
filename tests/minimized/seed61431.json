@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Sandaconda",
+      "species": "Sandaconda",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "trickroom"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Arceus-Fire",
+      "species": "Arceus-Fire",
+      "level": 88,
+      "ability": "Run Away",
+      "item": "micleberry",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "lockon"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Electrode",
+      "species": "Electrode",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "gmaxsandblast",
+        "gmaxbefuddle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 17: JS=\"#17: turn=17, prng=40->43, P1=[Arceus(39/354)], P2=[Electrode(260/260)]\" vs Rust=\"#17: turn=17, prng=40->44, P1=[Arceus(39/354)], P2=[Electrode(260/260)]\""
+}

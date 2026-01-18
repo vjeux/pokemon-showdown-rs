@@ -1,0 +1,203 @@
+{
+  "p1": [
+    {
+      "name": "Archen",
+      "species": "Archen",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mudsdale",
+      "species": "Mudsdale",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Terapagos-Stellar",
+      "species": "Terapagos-Stellar",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "naive",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 95,
+        "atk": 57,
+        "def": 85,
+        "spa": 82,
+        "spd": 94,
+        "spe": 97
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 21,
+        "def": 2,
+        "spa": 10,
+        "spd": 3,
+        "spe": 14
+      }
+    },
+    {
+      "name": "Bounsweet",
+      "species": "Bounsweet",
+      "level": 80,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "impish",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 121,
+        "atk": 91,
+        "def": 80,
+        "spa": 76,
+        "spd": 73,
+        "spe": 69
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 17,
+        "def": 30,
+        "spa": 31,
+        "spd": 26,
+        "spe": 21
+      }
+    },
+    {
+      "name": "Silvally-Electric",
+      "species": "Silvally-Electric",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "sketch"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Lugia",
+      "species": "Lugia",
+      "level": 59,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "perishsong"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Revenankh",
+      "species": "Revenankh",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "round"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 32: JS=\"#32: turn=29, prng=81->84, P1=[Silvally(241/324)], P2=[Revenankh(298/298)]\" vs Rust=\"#32: turn=29, prng=81->84, P1=[Silvally(268/324)], P2=[Revenankh(298/298)]\""
+}

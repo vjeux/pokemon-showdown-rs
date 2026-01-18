@@ -1,0 +1,147 @@
+{
+  "p1": [
+    {
+      "name": "Ampharos",
+      "species": "Ampharos",
+      "level": 93,
+      "ability": "Static",
+      "item": "",
+      "nature": "mild",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 83,
+        "def": 71,
+        "spa": 69,
+        "spd": 78,
+        "spe": 108
+      },
+      "ivs": {
+        "hp": 19,
+        "atk": 31,
+        "def": 27,
+        "spa": 0,
+        "spd": 23,
+        "spe": 24
+      }
+    },
+    {
+      "name": "Slither Wing",
+      "species": "Slither Wing",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hardy",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 73,
+        "atk": 74,
+        "def": 99,
+        "spa": 81,
+        "spd": 93,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 19,
+        "def": 12,
+        "spa": 28,
+        "spd": 3,
+        "spe": 29
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Darumaka-Galar",
+      "species": "Darumaka-Galar",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Quaxwell",
+      "species": "Quaxwell",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Klawf",
+      "species": "Klawf",
+      "level": 53,
+      "ability": "Anger Shell",
+      "item": "iapapaberry",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tidyup"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 24: JS=\"#24: turn=23, prng=102->105, P1=[Ampharos(86/311)], P2=[Klawf(45/164)]\" vs Rust=\"#24: turn=23, prng=102->105, P1=[Ampharos(86/311)], P2=[Klawf(36/164)]\""
+}

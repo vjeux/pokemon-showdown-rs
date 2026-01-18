@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Bruxish",
+      "species": "Bruxish",
+      "level": 81,
+      "ability": "Dazzling",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Flygon",
+      "species": "Flygon",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "banefulbunker"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->1, P1=[Bruxish(213/243)], P2=[Flygon(206/206)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Bruxish(243/243)], P2=[Flygon(162/206)]\""
+}

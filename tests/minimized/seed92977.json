@@ -1,0 +1,207 @@
+{
+  "p1": [
+    {
+      "name": "Kakuna",
+      "species": "Kakuna",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "purify"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Scrafty-Mega",
+      "species": "Scrafty-Mega",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "shockwave",
+        "dragonenergy"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pikachu-Starter",
+      "species": "Pikachu-Starter",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "stickyweb"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Kyurem",
+      "species": "Kyurem",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Staraptor-Mega",
+      "species": "Staraptor-Mega",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Landorus",
+      "species": "Landorus",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 109,
+        "atk": 64,
+        "def": 111,
+        "spa": 66,
+        "spd": 90,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 17,
+        "def": 26,
+        "spa": 5,
+        "spd": 18,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Bisharp",
+      "species": "Bisharp",
+      "level": 61,
+      "ability": "Defiant",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 30: JS=\"#30: turn=27, prng=87->93, P1=[Kyurem(271/391)], P2=[Bisharp(138/182)]\" vs Rust=\"#30: turn=27, prng=87->93, P1=[Kyurem(287/391)], P2=[Bisharp(138/182)]\""
+}

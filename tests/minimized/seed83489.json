@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Skeledirge",
+      "species": "Skeledirge",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 78,
+        "def": 64,
+        "spa": 108,
+        "spd": 93,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 20,
+        "atk": 27,
+        "def": 3,
+        "spa": 8,
+        "spd": 5,
+        "spe": 30
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Revenankh",
+      "species": "Revenankh",
+      "level": 93,
+      "ability": "Air Lock",
+      "item": "",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 86,
+        "def": 68,
+        "spa": 93,
+        "spd": 108,
+        "spe": 73
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 28,
+        "def": 15,
+        "spa": 9,
+        "spd": 11,
+        "spe": 9
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=4->11, P1=[Skeledirge(320/320)], P2=[Revenankh(312/312)]\" vs Rust=\"#1: turn=2, prng=5->12, P1=[Skeledirge(320/320)], P2=[Revenankh(312/312)]\""
+}

@@ -1,0 +1,65 @@
+{
+  "p1": [
+    {
+      "name": "Falinks-Mega",
+      "species": "Falinks-Mega",
+      "level": 96,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Mimikyu-Totem",
+      "species": "Mimikyu-Totem",
+      "level": 55,
+      "ability": "Disguise",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "gigavolthavoc",
+        "nuzzle",
+        "mindblown"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 34: JS=\"#34: turn=35, prng=161->165, P1=[Falinks(73/280)], P2=[Mimikyu(77/154)]\" vs Rust=\"#34: turn=35, prng=161->165, P1=[Falinks(73/280)], P2=[Mimikyu(135/154)]\""
+}

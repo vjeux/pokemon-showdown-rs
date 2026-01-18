@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Ting-Lu",
+      "species": "Ting-Lu",
+      "level": 89,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 86,
+        "def": 79,
+        "spa": 107,
+        "spd": 99,
+        "spe": 59
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 12,
+        "def": 28,
+        "spa": 0,
+        "spd": 6,
+        "spe": 27
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Revenankh",
+      "species": "Revenankh",
+      "level": 74,
+      "ability": "Air Lock",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 96,
+        "def": 89,
+        "spa": 95,
+        "spd": 67,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 21,
+        "def": 9,
+        "spa": 16,
+        "spd": 31,
+        "spe": 22
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=4->16, P1=[Ting-Lu(392/411)], P2=[Revenankh(235/235)]\" vs Rust=\"#1: turn=2, prng=5->17, P1=[Ting-Lu(393/411)], P2=[Revenankh(235/235)]\""
+}

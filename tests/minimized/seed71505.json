@@ -1,0 +1,301 @@
+{
+  "p1": [
+    {
+      "name": "Arceus-Fire",
+      "species": "Arceus-Fire",
+      "level": 50,
+      "ability": "Run Away",
+      "item": "choicescarf",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "healorder",
+        "revivalblessing",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Druddigon",
+      "species": "Druddigon",
+      "level": 82,
+      "ability": "Rough Skin",
+      "item": "",
+      "nature": "quirky",
+      "gender": "F",
+      "moves": [
+        "assist"
+      ],
+      "evs": {
+        "hp": 86,
+        "atk": 72,
+        "def": 73,
+        "spa": 76,
+        "spd": 101,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 26,
+        "atk": 17,
+        "def": 6,
+        "spa": 5,
+        "spd": 20,
+        "spe": 6
+      }
+    },
+    {
+      "name": "Deoxys-Attack",
+      "species": "Deoxys-Attack",
+      "level": 60,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "milkdrink",
+        "whirlwind",
+        "bonerush",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Gothitelle",
+      "species": "Gothitelle",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "blueflare",
+        "maxflare",
+        "maxhailstorm",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Tapu Koko",
+      "species": "Tapu Koko",
+      "level": 95,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle",
+        "plasmafists",
+        "tackle",
+        "skullbash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Maractus",
+      "species": "Maractus",
+      "level": 62,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "gastroacid",
+        "burnup",
+        "overheat"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Sawk",
+      "species": "Sawk",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Mimikyu-Busted",
+      "species": "Mimikyu-Busted",
+      "level": 63,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "F",
+      "moves": [
+        "spikecannon"
+      ],
+      "evs": {
+        "hp": 72,
+        "atk": 77,
+        "def": 69,
+        "spa": 94,
+        "spd": 61,
+        "spe": 137
+      },
+      "ivs": {
+        "hp": 12,
+        "atk": 20,
+        "def": 9,
+        "spa": 13,
+        "spd": 22,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Vivillon-Marine",
+      "species": "Vivillon-Marine",
+      "level": 99,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "M",
+      "moves": [
+        "strength"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 84,
+        "def": 97,
+        "spa": 56,
+        "spd": 102,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 17,
+        "atk": 14,
+        "def": 0,
+        "spa": 7,
+        "spd": 13,
+        "spe": 8
+      }
+    },
+    {
+      "name": "Golbat",
+      "species": "Golbat",
+      "level": 64,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 43: JS=\"#43: turn=36, prng=165->170, P1=[Druddigon(150/256)], P2=[Vivillon(0/304)]\" vs Rust=\"#43: turn=36, prng=165->169, P1=[Druddigon(150/256)], P2=[Vivillon(0/304)]\""
+}

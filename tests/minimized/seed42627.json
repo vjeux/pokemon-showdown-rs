@@ -1,0 +1,175 @@
+{
+  "p1": [
+    {
+      "name": "Cubone",
+      "species": "Cubone",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "grudge"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Arceus-Steel",
+      "species": "Arceus-Steel",
+      "level": 69,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "spicyextract"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Relicanth",
+      "species": "Relicanth",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "heatwave"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Armaldo",
+      "species": "Armaldo",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Mienfoo",
+      "species": "Mienfoo",
+      "level": 98,
+      "ability": "Run Away",
+      "item": "ejectpack",
+      "nature": "bold",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 89,
+        "def": 99,
+        "spa": 53,
+        "spd": 105,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 28,
+        "def": 4,
+        "spa": 27,
+        "spd": 28,
+        "spe": 13
+      }
+    },
+    {
+      "name": "Raticate-Alola-Totem",
+      "species": "Raticate-Alola-Totem",
+      "level": 93,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 25: JS=\"#25: turn=21, prng=68->73, P1=[Armaldo(165/272)], P2=[Mienfoo(104/210)]\" vs Rust=\"#25: turn=21, prng=68->74, P1=[Armaldo(187/272)], P2=[Mienfoo(158/210)]\""
+}

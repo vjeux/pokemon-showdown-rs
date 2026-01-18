@@ -1,0 +1,92 @@
+{
+  "p1": [
+    {
+      "name": "Cetitan",
+      "species": "Cetitan",
+      "level": 91,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "captivate"
+      ],
+      "evs": {
+        "hp": 87,
+        "atk": 79,
+        "def": 76,
+        "spa": 103,
+        "spd": 75,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 10,
+        "def": 9,
+        "spa": 23,
+        "spd": 16,
+        "spe": 23
+      }
+    },
+    {
+      "name": "Klefki",
+      "species": "Klefki",
+      "level": 76,
+      "ability": "Run Away",
+      "item": "focusband",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "gmaxsweetness"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Smoochum",
+      "species": "Smoochum",
+      "level": 69,
+      "ability": "Oblivious",
+      "item": "",
+      "nature": "hardy",
+      "gender": "F",
+      "moves": [
+        "zapcannon",
+        "gmaxwildfire"
+      ],
+      "evs": {
+        "hp": 89,
+        "atk": 101,
+        "def": 67,
+        "spa": 89,
+        "spd": 94,
+        "spe": 70
+      },
+      "ivs": {
+        "hp": 21,
+        "atk": 2,
+        "def": 20,
+        "spa": 8,
+        "spd": 24,
+        "spe": 6
+      }
+    }
+  ],
+  "_bug": "Diverges at line 17: JS=\"#17: turn=16, prng=68->74, P1=[Klefki(0/212)], P2=[Smoochum(162/170)]\" vs Rust=\"#17: turn=17, prng=68->74, P1=[Klefki(1/212)], P2=[Smoochum(162/170)]\""
+}

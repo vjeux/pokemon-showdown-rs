@@ -1,0 +1,207 @@
+{
+  "p1": [
+    {
+      "name": "Diggersby",
+      "species": "Diggersby",
+      "level": 100,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "facade",
+        "naturesmadness",
+        "aromatherapy",
+        "iciclespear"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pokestar F-00",
+      "species": "Pokestar F-00",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "brave",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 74,
+        "def": 84,
+        "spa": 69,
+        "spd": 88,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 3,
+        "atk": 6,
+        "def": 6,
+        "spa": 2,
+        "spd": 26,
+        "spe": 29
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Dunsparce",
+      "species": "Dunsparce",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Drifloon",
+      "species": "Drifloon",
+      "level": 61,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "coil",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lanturn",
+      "species": "Lanturn",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "hiddenpowerfire"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hypno",
+      "species": "Hypno",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 105,
+        "atk": 85,
+        "def": 79,
+        "spa": 78,
+        "spd": 74,
+        "spe": 89
+      },
+      "ivs": {
+        "hp": 13,
+        "atk": 0,
+        "def": 18,
+        "spa": 10,
+        "spd": 7,
+        "spe": 28
+      }
+    },
+    {
+      "name": "Garbodor-Gmax",
+      "species": "Garbodor-Gmax",
+      "level": 84,
+      "ability": "Stench",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "skydrop"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 74: JS=\"#74: turn=70, prng=149->153, P1=[Pokestar F-00(1/251)], P2=[Garbodor(24/272)]\" vs Rust=\"#74: turn=69, prng=149->156, P1=[Pokestar F-00(1/251)], P2=[Garbodor(0/272)]\""
+}

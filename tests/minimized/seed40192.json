@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Revenankh",
+      "species": "Revenankh",
+      "level": 60,
+      "ability": "Air Lock",
+      "item": "",
+      "nature": "relaxed",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 76,
+        "atk": 89,
+        "def": 81,
+        "spa": 74,
+        "spd": 88,
+        "spe": 102
+      },
+      "ivs": {
+        "hp": 9,
+        "atk": 17,
+        "def": 10,
+        "spa": 18,
+        "spd": 14,
+        "spe": 0
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Shedinja",
+      "species": "Shedinja",
+      "level": 86,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "sassy",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 77,
+        "atk": 81,
+        "def": 89,
+        "spa": 111,
+        "spd": 67,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 15,
+        "atk": 7,
+        "def": 24,
+        "spa": 7,
+        "spd": 5,
+        "spe": 8
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=4->11, P1=[Revenankh(194/194)], P2=[Shedinja(1/1)]\" vs Rust=\"#1: turn=2, prng=5->12, P1=[Revenankh(194/194)], P2=[Shedinja(1/1)]\""
+}

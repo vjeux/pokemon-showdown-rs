@@ -1,0 +1,178 @@
+{
+  "p1": [
+    {
+      "name": "Komala",
+      "species": "Komala",
+      "level": 54,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "quirky",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 61,
+        "atk": 101,
+        "def": 86,
+        "spa": 86,
+        "spd": 94,
+        "spe": 82
+      },
+      "ivs": {
+        "hp": 1,
+        "atk": 16,
+        "def": 27,
+        "spa": 4,
+        "spd": 17,
+        "spe": 3
+      }
+    },
+    {
+      "name": "Aegislash",
+      "species": "Aegislash",
+      "level": 67,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "filletaway"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bombirdier",
+      "species": "Bombirdier",
+      "level": 74,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "hasty",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 66,
+        "atk": 90,
+        "def": 100,
+        "spa": 98,
+        "spd": 77,
+        "spe": 79
+      },
+      "ivs": {
+        "hp": 24,
+        "atk": 17,
+        "def": 1,
+        "spa": 4,
+        "spd": 6,
+        "spe": 22
+      }
+    },
+    {
+      "name": "Vanillite",
+      "species": "Vanillite",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Darkrai-Mega",
+      "species": "Darkrai-Mega",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "weatherball",
+        "quash"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Shedinja",
+      "species": "Shedinja",
+      "level": 97,
+      "ability": "Wonder Guard",
+      "item": "",
+      "nature": "sassy",
+      "gender": "",
+      "moves": [
+        "blueflare",
+        "spikes",
+        "metronome"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 65,
+        "def": 102,
+        "spa": 87,
+        "spd": 96,
+        "spe": 66
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 18,
+        "def": 3,
+        "spa": 21,
+        "spd": 21,
+        "spe": 0
+      }
+    }
+  ],
+  "_bug": "Diverges at line 50: JS=\"#50: turn=46, prng=68->69, P1=[Darkrai(79/220)], P2=[Shedinja(0/1)]\" vs Rust=\"#50: turn=46, prng=68->73, P1=[Darkrai(0/220)], P2=[Shedinja(1/1)]\""
+}

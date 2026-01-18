@@ -1,0 +1,248 @@
+{
+  "p1": [
+    {
+      "name": "Klinklang",
+      "species": "Klinklang",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "recycle",
+        "imprison",
+        "calmmind",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Skitty",
+      "species": "Skitty",
+      "level": 93,
+      "ability": "Cute Charm",
+      "item": "",
+      "nature": "modest",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle",
+        "sharpen",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 94,
+        "atk": 88,
+        "def": 99,
+        "spa": 63,
+        "spd": 102,
+        "spe": 64
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 2,
+        "def": 21,
+        "spa": 23,
+        "spd": 3,
+        "spe": 12
+      }
+    },
+    {
+      "name": "Beautifly",
+      "species": "Beautifly",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "assist"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lucario",
+      "species": "Lucario",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle",
+        "floralhealing"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Helioptile",
+      "species": "Helioptile",
+      "level": 57,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Lechonk",
+      "species": "Lechonk",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "leechseed",
+        "gmaxsandblast",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Abra",
+      "species": "Abra",
+      "level": 82,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "maliciousmoonsault",
+        "noxioustorque",
+        "gmaxreplenish",
+        "populationbomb"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Pachirisu",
+      "species": "Pachirisu",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "psychicnoise"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 48: JS=\"#48: turn=46, prng=293->298, P1=[Beautifly(142/246)], P2=[Pachirisu(156/208)]\" vs Rust=\"#48: turn=46, prng=293->298, P1=[Beautifly(142/246)], P2=[Pachirisu(182/208)]\""
+}

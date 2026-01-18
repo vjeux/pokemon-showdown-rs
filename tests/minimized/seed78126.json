@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Pokestar MT2",
+      "species": "Pokestar MT2",
+      "level": 97,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Cramorant-Gulping",
+      "species": "Cramorant-Gulping",
+      "level": 57,
+      "ability": "Gulp Missile",
+      "item": "assaultvest",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "hypnosis",
+        "surf"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 2: JS=\"#2: turn=3, prng=6->12, P1=[Pokestar MT2(109/351)], P2=[Cramorant(22/176)]\" vs Rust=\"#2: turn=3, prng=6->12, P1=[Pokestar MT2(196/351)], P2=[Cramorant(22/176)]\""
+}

@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Rayquaza",
+      "species": "Rayquaza",
+      "level": 60,
+      "ability": "Air Lock",
+      "item": "",
+      "nature": "quirky",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 82,
+        "atk": 76,
+        "def": 102,
+        "spa": 74,
+        "spd": 96,
+        "spe": 80
+      },
+      "ivs": {
+        "hp": 5,
+        "atk": 30,
+        "def": 20,
+        "spa": 1,
+        "spd": 6,
+        "spe": 19
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Goodra-Hisui",
+      "species": "Goodra-Hisui",
+      "level": 83,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "bashful",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 80,
+        "atk": 109,
+        "def": 54,
+        "spa": 88,
+        "spd": 89,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 12,
+        "def": 25,
+        "spa": 26,
+        "spd": 26,
+        "spe": 24
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=4->21, P1=[Rayquaza(175/211)], P2=[Goodra(231/242)]\" vs Rust=\"#1: turn=2, prng=5->22, P1=[Rayquaza(171/211)], P2=[Goodra(232/242)]\""
+}

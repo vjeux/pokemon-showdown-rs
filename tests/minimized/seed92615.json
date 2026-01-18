@@ -1,0 +1,203 @@
+{
+  "p1": [
+    {
+      "name": "Kecleon",
+      "species": "Kecleon",
+      "level": 94,
+      "ability": "Color Change",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "solarblade"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Hoppip",
+      "species": "Hoppip",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "serious",
+      "gender": "F",
+      "moves": [
+        "mudshot"
+      ],
+      "evs": {
+        "hp": 91,
+        "atk": 74,
+        "def": 74,
+        "spa": 121,
+        "spd": 82,
+        "spe": 68
+      },
+      "ivs": {
+        "hp": 28,
+        "atk": 11,
+        "def": 26,
+        "spa": 7,
+        "spd": 1,
+        "spe": 4
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Cramorant-Gorging",
+      "species": "Cramorant-Gorging",
+      "level": 71,
+      "ability": "Gulp Missile",
+      "item": "",
+      "nature": "gentle",
+      "gender": "M",
+      "moves": [
+        "toxicspikes"
+      ],
+      "evs": {
+        "hp": 78,
+        "atk": 107,
+        "def": 66,
+        "spa": 77,
+        "spd": 92,
+        "spe": 90
+      },
+      "ivs": {
+        "hp": 25,
+        "atk": 24,
+        "def": 5,
+        "spa": 24,
+        "spd": 21,
+        "spe": 20
+      }
+    },
+    {
+      "name": "Quagsire",
+      "species": "Quagsire",
+      "level": 71,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Meloetta",
+      "species": "Meloetta",
+      "level": 55,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "gmaxtartness"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Polteageist",
+      "species": "Polteageist",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "petalblizzard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Girafarig",
+      "species": "Girafarig",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lax",
+      "gender": "M",
+      "moves": [
+        "soak"
+      ],
+      "evs": {
+        "hp": 71,
+        "atk": 87,
+        "def": 84,
+        "spa": 74,
+        "spd": 108,
+        "spe": 86
+      },
+      "ivs": {
+        "hp": 0,
+        "atk": 28,
+        "def": 14,
+        "spa": 2,
+        "spd": 16,
+        "spe": 18
+      }
+    }
+  ],
+  "_bug": "Diverges at line 25: JS=\"#25: turn=21, prng=94->107, P1=[Hoppip(68/183)], P2=[Girafarig(134/189)]\" vs Rust=\"#25: turn=21, prng=94->109, P1=[Hoppip(68/183)], P2=[Girafarig(134/189)]\""
+}

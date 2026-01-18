@@ -1,0 +1,119 @@
+{
+  "p1": [
+    {
+      "name": "Urshifu-Rapid-Strike",
+      "species": "Urshifu-Rapid-Strike",
+      "level": 100,
+      "ability": "Unseen Fist",
+      "item": "",
+      "nature": "jolly",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 91,
+        "def": 90,
+        "spa": 74,
+        "spd": 68,
+        "spe": 103
+      },
+      "ivs": {
+        "hp": 6,
+        "atk": 26,
+        "def": 19,
+        "spa": 22,
+        "spd": 28,
+        "spe": 9
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Deino",
+      "species": "Deino",
+      "level": 92,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Excadrill",
+      "species": "Excadrill",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Coalossal-Gmax",
+      "species": "Coalossal-Gmax",
+      "level": 94,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "banefulbunker"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 16: JS=\"#16: turn=15, prng=72->76, P1=[Urshifu(7/337)], P2=[Coalossal(341/359)]\" vs Rust=\"#16: turn=14, prng=72->73, P1=[Urshifu(0/337)], P2=[Coalossal(359/359)]\""
+}

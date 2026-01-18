@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Pecharunt",
+      "species": "Pecharunt",
+      "level": 78,
+      "ability": "Poison Puppeteer",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "banefulbunker"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Calyrex",
+      "species": "Calyrex",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->1, P1=[Pecharunt(265/265)], P2=[Calyrex(169/193)]\" vs Rust=\"#1: turn=2, prng=0->2, P1=[Pecharunt(265/265)], P2=[Calyrex(169/193)]\""
+}

@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Lilligant",
+      "species": "Lilligant",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "absorb"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Pecharunt",
+      "species": "Pecharunt",
+      "level": 99,
+      "ability": "Poison Puppeteer",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "superfang",
+        "gmaxmalodor"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 17: JS=\"#17: turn=17, prng=64->69, P1=[Lilligant(0/240)], P2=[Pecharunt(176/334)]\" vs Rust=\"#17: turn=17, prng=64->71, P1=[Lilligant(0/240)], P2=[Pecharunt(176/334)]\""
+}

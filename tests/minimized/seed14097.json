@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Draggalong",
+      "species": "Draggalong",
+      "level": 79,
+      "ability": "Armor Tail",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Venusaur-Mega",
+      "species": "Venusaur-Mega",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "bide"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 3: JS=\"#3: turn=4, prng=6->9, P1=[Draggalong(143/193)], P2=[Venusaur(190/228)]\" vs Rust=\"#3: turn=4, prng=6->9, P1=[Draggalong(193/193)], P2=[Venusaur(190/228)]\""
+}

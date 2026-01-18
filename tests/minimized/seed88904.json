@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Rayquaza-Mega",
+      "species": "Rayquaza-Mega",
+      "level": 70,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "banefulbunker"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Urshifu-Rapid-Strike-Gmax",
+      "species": "Urshifu-Rapid-Strike-Gmax",
+      "level": 56,
+      "ability": "Unseen Fist",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->4, P1=[Rayquaza(244/263)], P2=[Urshifu(207/207)]\" vs Rust=\"#1: turn=2, prng=0->1, P1=[Rayquaza(263/263)], P2=[Urshifu(182/207)]\""
+}

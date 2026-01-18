@@ -1,0 +1,65 @@
+{
+  "p1": [
+    {
+      "name": "Pumpkaboo-Large",
+      "species": "Pumpkaboo-Large",
+      "level": 77,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "armorcannon",
+        "searingsunrazesmash",
+        "gmaxgoldrush"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Reshiram",
+      "species": "Reshiram",
+      "level": 65,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "safeguard"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 10: JS=\"#10: turn=11, prng=34->36, P1=[Pumpkaboo(210/210)], P2=[Reshiram(94/238)]\" vs Rust=\"#10: turn=11, prng=34->37, P1=[Pumpkaboo(210/210)], P2=[Reshiram(94/238)]\""
+}

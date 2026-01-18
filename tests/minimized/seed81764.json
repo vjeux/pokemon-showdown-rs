@@ -1,0 +1,64 @@
+{
+  "p1": [
+    {
+      "name": "Magearna",
+      "species": "Magearna",
+      "level": 79,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "gmaxtartness"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Cramorant",
+      "species": "Cramorant",
+      "level": 76,
+      "ability": "Gulp Missile",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "maxphantasm",
+        "dive"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 18: JS=\"#18: turn=19, prng=65->70, P1=[Magearna(58/256)], P2=[Cramorant(165/231)]\" vs Rust=\"#18: turn=19, prng=65->70, P1=[Magearna(122/256)], P2=[Cramorant(165/231)]\""
+}

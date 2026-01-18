@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Pikachu-World",
+      "species": "Pikachu-World",
+      "level": 72,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "kingsshield"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Bruxish",
+      "species": "Bruxish",
+      "level": 89,
+      "ability": "Dazzling",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->1, P1=[Pikachu(169/169)], P2=[Bruxish(266/266)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Pikachu(63/169)], P2=[Bruxish(266/266)]\""
+}

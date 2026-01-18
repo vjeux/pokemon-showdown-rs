@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Groudon",
+      "species": "Groudon",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "redorb",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Melmetal-Gmax",
+      "species": "Melmetal-Gmax",
+      "level": 73,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 14: JS=\"#14: turn=14, prng=78->84, P1=[Groudon(0/274)], P2=[Melmetal(104/318)]\" vs Rust=\"#14: turn=14, prng=78->84, P1=[Groudon(0/100)], P2=[Melmetal(104/318)]\""
+}

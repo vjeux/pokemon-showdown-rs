@@ -1,0 +1,93 @@
+{
+  "p1": [
+    {
+      "name": "Weedle",
+      "species": "Weedle",
+      "level": 75,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "lonely",
+      "gender": "F",
+      "moves": [
+        "waterspout",
+        "soulstealing7starstrike",
+        "safeguard"
+      ],
+      "evs": {
+        "hp": 90,
+        "atk": 109,
+        "def": 65,
+        "spa": 63,
+        "spd": 99,
+        "spe": 84
+      },
+      "ivs": {
+        "hp": 2,
+        "atk": 20,
+        "def": 4,
+        "spa": 18,
+        "spd": 24,
+        "spe": 5
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Zebstrika",
+      "species": "Zebstrika",
+      "level": 87,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "autotomize"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Staraptor",
+      "species": "Staraptor",
+      "level": 52,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "gmaxgoldrush"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 13: JS=\"#13: turn=13, prng=32->34, P1=[Weedle(160/163)], P2=[Staraptor(177/177)]\" vs Rust=\"#13: turn=13, prng=32->37, P1=[Weedle(118/163)], P2=[Staraptor(177/177)]\""
+}

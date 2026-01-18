@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Chuggalong",
+      "species": "Chuggalong",
+      "level": 68,
+      "ability": "Armor Tail",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Kingambit",
+      "species": "Kingambit",
+      "level": 90,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "protect"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->1, P1=[Chuggalong(174/174)], P2=[Kingambit(326/326)]\" vs Rust=\"#1: turn=2, prng=0->3, P1=[Chuggalong(174/174)], P2=[Kingambit(322/326)]\""
+}

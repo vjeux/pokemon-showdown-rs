@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Purugly",
+      "species": "Purugly",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "careful",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 92,
+        "atk": 81,
+        "def": 78,
+        "spa": 103,
+        "spd": 83,
+        "spe": 73
+      },
+      "ivs": {
+        "hp": 4,
+        "atk": 26,
+        "def": 11,
+        "spa": 2,
+        "spd": 17,
+        "spe": 9
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Revenankh",
+      "species": "Revenankh",
+      "level": 71,
+      "ability": "Air Lock",
+      "item": "",
+      "nature": "jolly",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 84,
+        "atk": 89,
+        "def": 80,
+        "spa": 51,
+        "spd": 119,
+        "spe": 87
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 9,
+        "def": 19,
+        "spa": 11,
+        "spd": 2,
+        "spe": 20
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=4->16, P1=[Purugly(110/152)], P2=[Revenankh(236/236)]\" vs Rust=\"#1: turn=2, prng=5->17, P1=[Purugly(107/152)], P2=[Revenankh(236/236)]\""
+}

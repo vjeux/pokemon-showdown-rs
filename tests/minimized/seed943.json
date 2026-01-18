@@ -1,0 +1,149 @@
+{
+  "p1": [
+    {
+      "name": "Groudon-Primal",
+      "species": "Groudon-Primal",
+      "level": 85,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "timid",
+      "gender": "",
+      "moves": [
+        "tackle",
+        "tackle",
+        "tackle"
+      ],
+      "evs": {
+        "hp": 101,
+        "atk": 87,
+        "def": 109,
+        "spa": 75,
+        "spd": 71,
+        "spe": 67
+      },
+      "ivs": {
+        "hp": 18,
+        "atk": 25,
+        "def": 16,
+        "spa": 19,
+        "spd": 6,
+        "spe": 2
+      }
+    },
+    {
+      "name": "Toxtricity",
+      "species": "Toxtricity",
+      "level": 81,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Aurorus",
+      "species": "Aurorus",
+      "level": 53,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Eelektross-Mega",
+      "species": "Eelektross-Mega",
+      "level": 66,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "M",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    },
+    {
+      "name": "Bramblin",
+      "species": "Bramblin",
+      "level": 58,
+      "ability": "Wind Rider",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "tailwind"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 37: JS=\"#37: turn=36, prng=54->56, P1=[Groudon(179/301)], P2=[Bramblin(108/144)]\" vs Rust=\"#37: turn=36, prng=54->56, P1=[Groudon(206/301)], P2=[Bramblin(108/144)]\""
+}

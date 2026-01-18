@@ -1,0 +1,63 @@
+{
+  "p1": [
+    {
+      "name": "Moltres-Galar",
+      "species": "Moltres-Galar",
+      "level": 74,
+      "ability": "Berserk",
+      "item": "enigmaberry",
+      "nature": "docile",
+      "gender": "",
+      "moves": [
+        "tackle"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "p2": [
+    {
+      "name": "Hatenna",
+      "species": "Hatenna",
+      "level": 58,
+      "ability": "Run Away",
+      "item": "",
+      "nature": "docile",
+      "gender": "F",
+      "moves": [
+        "gigavolthavoc"
+      ],
+      "evs": {
+        "hp": 85,
+        "atk": 85,
+        "def": 85,
+        "spa": 85,
+        "spd": 85,
+        "spe": 85
+      },
+      "ivs": {
+        "hp": 31,
+        "atk": 31,
+        "def": 31,
+        "spa": 31,
+        "spd": 31,
+        "spe": 31
+      }
+    }
+  ],
+  "_bug": "Diverges at line 1: JS=\"#1: turn=2, prng=0->5, P1=[Moltres(253/255)], P2=[Hatenna(102/146)]\" vs Rust=\"#1: turn=2, prng=0->5, P1=[Moltres(255/255)], P2=[Hatenna(102/146)]\""
+}
