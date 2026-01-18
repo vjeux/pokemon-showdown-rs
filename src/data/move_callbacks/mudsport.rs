@@ -54,23 +54,25 @@ pub mod condition {
         _pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        // Get the move type
-        let move_type = {
-            let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
-                None => return EventResult::Continue,
-            };
-            let move_data = battle.dex.moves().get_by_id(active_move);
-            move_data.map(|m| m.move_type.clone())
-        };
+        // Get the move type from the ACTIVE move (not the base move data)
+        // Hidden Power and other moves may have variable types that are set on the active move
+        let move_type = battle.active_move.as_ref()
+            .map(|m| m.move_type.clone());
+
+        debug_elog!("[MUDSPORT] on_base_power: move_type={:?}", move_type);
 
         // if (move.type === 'Electric') {
         if move_type.as_deref() == Some("Electric") {
             // this.debug('mud sport weaken');
             // (debug is typically not needed in Rust implementation)
 
+            debug_elog!("[MUDSPORT] Electric type detected, applying chain_modify_fraction(1352, 4096)");
+            let modifier_before = battle.event.as_ref().map(|e| e.modifier).unwrap_or(0);
             // return this.chainModify([1352, 4096]);
-            battle.chain_modify_fraction(1352, 4096); return EventResult::Continue;
+            battle.chain_modify_fraction(1352, 4096);
+            let modifier_after = battle.event.as_ref().map(|e| e.modifier).unwrap_or(0);
+            debug_elog!("[MUDSPORT] modifier: {} -> {}", modifier_before, modifier_after);
+            return EventResult::Continue;
         }
 
         EventResult::Continue

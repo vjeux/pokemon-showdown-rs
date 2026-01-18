@@ -643,9 +643,10 @@ impl Battle {
                     result
                 }
                 EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain
-                | EffectType::SideCondition | EffectType::SlotCondition => {
-                    if event_id.contains("DamagingHit") {
-                        debug_elog!("[RUN_EVENT] Calling handle_condition_event: callback={}, effect_id={}", callback_name_for_dispatch, effect_id.as_str());
+                | EffectType::SideCondition | EffectType::SlotCondition | EffectType::FieldCondition => {
+                    if event_id.contains("DamagingHit") || event_id.contains("BasePower") {
+                        debug_elog!("[RUN_EVENT] Calling handle_condition_event: callback={}, effect_id={}, type={:?}",
+                            callback_name_for_dispatch, effect_id.as_str(), handler.effect.effect_type);
                     }
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
                     // Set up effect_state so condition callbacks can access it

@@ -138,7 +138,11 @@ impl Battle {
                 let _move_id = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
-                condition_callbacks::dispatch_on_base_power(self, condition_id, base_power, pokemon_pos, defender_pos, active_move_clone.as_ref())
+                debug_elog!("[HANDLE_CONDITION_EVENT] BasePower: condition_id={}, base_power={}, pokemon_pos={:?}, defender_pos={:?}",
+                    condition_id, base_power, pokemon_pos, defender_pos);
+                let result = condition_callbacks::dispatch_on_base_power(self, condition_id, base_power, pokemon_pos, defender_pos, active_move_clone.as_ref());
+                debug_elog!("[HANDLE_CONDITION_EVENT] BasePower result: {:?}, modifier after={}", result, self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
+                result
             }
             "BeforeMove" => {
                 // Extract target from event and move_id from active_move
