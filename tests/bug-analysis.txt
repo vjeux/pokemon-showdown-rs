@@ -1,20 +1,12 @@
-Analyzing 46 failing minimized seed files...
+Analyzing 42 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 transform: 3 seeds
   Seeds: 61343, 64566, 64920
-charge: 2 seeds
-  Seeds: 15974, 43153
-maliciousmoonsault: 2 seeds
-  Seeds: 18219, 60885
-flipturn: 2 seeds
-  Seeds: 18219, 65490
 soak: 2 seeds
   Seeds: 23363, 49341
-chatter: 2 seeds
-  Seeds: 25177, 43153
 pursuit: 2 seeds
   Seeds: 25574, 35620
 magicroom: 2 seeds
@@ -27,8 +19,6 @@ ragefist: 2 seeds
   Seeds: 40910, 60885
 bounce: 2 seeds
   Seeds: 42063, 53148
-voltswitch: 2 seeds
-  Seeds: 43782, 52111
 telekinesis: 2 seeds
   Seeds: 52895, 63529
 dive: 2 seeds
@@ -41,6 +31,8 @@ ragingfury: 1 seeds
   Seeds: 10653
 trick: 1 seeds
   Seeds: 10653
+charge: 1 seeds
+  Seeds: 15974
 comeuppance: 1 seeds
   Seeds: 15974
 morningsun: 1 seeds
@@ -56,6 +48,8 @@ lastresort: 1 seeds
 maxknuckle: 1 seeds
   Seeds: 20356
 bellydrum: 1 seeds
+  Seeds: 25177
+chatter: 1 seeds
   Seeds: 25177
 outrage: 1 seeds
   Seeds: 25177
@@ -125,14 +119,6 @@ maxgeyser: 1 seeds
   Seeds: 42063
 sappyseed: 1 seeds
   Seeds: 42063
-helpinghand: 1 seeds
-  Seeds: 43153
-thundercage: 1 seeds
-  Seeds: 43153
-waterpledge: 1 seeds
-  Seeds: 43153
-grassyterrain: 1 seeds
-  Seeds: 43153
 knockoff: 1 seeds
   Seeds: 45311
 aurawheel: 1 seeds
@@ -175,6 +161,8 @@ discharge: 1 seeds
   Seeds: 60818
 rage: 1 seeds
   Seeds: 60818
+maliciousmoonsault: 1 seeds
+  Seeds: 60885
 maxdarkness: 1 seeds
   Seeds: 60885
 futuresight: 1 seeds
@@ -192,6 +180,8 @@ leechlife: 1 seeds
 maxstarfall: 1 seeds
   Seeds: 65490
 horndrill: 1 seeds
+  Seeds: 65490
+flipturn: 1 seeds
   Seeds: 65490
 infernooverdrive: 1 seeds
   Seeds: 65490
@@ -251,8 +241,6 @@ ITEMS
 ============================================================
 metronome: 3 seeds
   Seeds: 10653, 35671, 48178
-ejectbutton: 3 seeds
-  Seeds: 18219, 43782, 52111
 protectivepads: 3 seeds
   Seeds: 48869, 60349, 65490
 focusband: 2 seeds
@@ -275,22 +263,22 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 46
-Unique moves: 102 (101 non-simple)
+Total minimized seeds: 42
+Unique moves: 97 (96 non-simple)
 Unique abilities: 20 (18 non-simple)
-Unique items: 11
+Unique items: 10
 
 --- Most Common Moves (top 10) ---
   transform: 3 seeds
-  charge: 2 seeds
-  maliciousmoonsault: 2 seeds
-  flipturn: 2 seeds
   soak: 2 seeds
-  chatter: 2 seeds
   pursuit: 2 seeds
   magicroom: 2 seeds
   grudge: 2 seeds
   leechseed: 2 seeds
+  ragefist: 2 seeds
+  bounce: 2 seeds
+  telekinesis: 2 seeds
+  dive: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds

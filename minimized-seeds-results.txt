@@ -26,9 +26,6 @@ FAIL Seed 10653:
 FAIL Seed 15974:
   JS:   SEED 15974: turns=20, prng=197, winner=p1
   Rust: SEED 15974: turns=20, prng=169, winner=p1
-FAIL Seed 18219:
-  JS:   SEED 18219: turns=6, prng=23, winner=p1
-  Rust: SEED 18219: turns=6, prng=26, winner=p1
 FAIL Seed 20356:
   JS:   SEED 20356: turns=38, prng=159, winner=p1
   Rust: SEED 20356: turns=39, prng=164, winner=p1
@@ -80,12 +77,6 @@ FAIL Seed 40910:
 FAIL Seed 42063:
   JS:   SEED 42063: turns=23, prng=88, winner=p2
   Rust: SEED 42063: turns=22, prng=84, winner=p1
-FAIL Seed 43153:
-  JS:   SEED 43153: turns=40, prng=96, winner=p1
-  Rust: SEED 43153: turns=39, prng=87, winner=p1
-FAIL Seed 43782:
-  JS:   SEED 43782: turns=12, prng=57, winner=p2
-  Rust: SEED 43782: turns=12, prng=60, winner=p2
 FAIL Seed 44135:
   JS:   SEED 44135: turns=20, prng=81, winner=p1
   Rust: SEED 44135: turns=20, prng=81, winner=p2
@@ -104,9 +95,6 @@ FAIL Seed 48869:
 FAIL Seed 49341:
   JS:   SEED 49341: turns=16, prng=210, winner=p1
   Rust: SEED 49341: turns=16, prng=236, winner=p1
-FAIL Seed 52111:
-  JS:   SEED 52111: turns=7, prng=36, winner=p1
-  Rust: SEED 52111: turns=5, prng=30, winner=p1
 FAIL Seed 52895:
   JS:   SEED 52895: turns=12, prng=24, winner=p2
   Rust: SEED 52895: turns=12, prng=25, winner=p2
@@ -164,12 +152,12 @@ Final Summary
 =======================================
 
 Regression tests (1-1000): 999/1000 passed
-Minimized seeds: 1847/1893 passed
+Minimized seeds: 1851/1893 passed
 
 REGRESSION DETECTED in unified tests!
 Failed seeds: 943
 Minimized seeds pass rate: 97%
-Failed minimized seeds: 10653 15974 18219 20356 23363 25177 25574 29161 30232 32939 35203 35620 35671 37514 38902 39361 39892 40097 40910 42063 43153 43782 44135 45311 48178 48318 48869 49341 52111 52895 53148 53747 56089 56264 56825 59646 60349 60818 60885 61343 61431 63529 64566 64920 65490 65503
+Failed minimized seeds: 10653 15974 20356 23363 25177 25574 29161 30232 32939 35203 35620 35671 37514 38902 39361 39892 40097 40910 42063 44135 45311 48178 48318 48869 49341 52895 53148 53747 56089 56264 56825 59646 60349 60818 60885 61343 61431 63529 64566 64920 65490 65503
 
 Updating bug-analysis.txt...
 Done. See tests/bug-analysis.txt for patterns in failing seeds.
