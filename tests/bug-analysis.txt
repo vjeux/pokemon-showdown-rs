@@ -1,10 +1,8 @@
-Analyzing 64 failing minimized seed files...
+Analyzing 63 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-flipturn: 3 seeds
-  Seeds: 18219, 6527, 65490
 ivycudgel: 3 seeds
   Seeds: 21366, 22436, 42590
 ragingbull: 3 seeds
@@ -23,6 +21,8 @@ charge: 2 seeds
   Seeds: 15974, 43153
 maliciousmoonsault: 2 seeds
   Seeds: 18219, 60885
+flipturn: 2 seeds
+  Seeds: 18219, 65490
 magneticflux: 2 seeds
   Seeds: 20875, 26095
 soak: 2 seeds
@@ -35,8 +35,6 @@ reflect: 2 seeds
   Seeds: 28200, 34858
 magicroom: 2 seeds
   Seeds: 35671, 48178
-mindblown: 2 seeds
-  Seeds: 37514, 6527
 grudge: 2 seeds
   Seeds: 40097, 42063
 leechseed: 2 seeds
@@ -143,6 +141,8 @@ gigavolthavoc: 1 seeds
   Seeds: 37514
 nuzzle: 1 seeds
   Seeds: 37514
+mindblown: 1 seeds
+  Seeds: 37514
 blazekick: 1 seeds
   Seeds: 38902
 skittersmack: 1 seeds
@@ -239,10 +239,6 @@ baddybad: 1 seeds
   Seeds: 62499
 leechlife: 1 seeds
   Seeds: 63529
-healorder: 1 seeds
-  Seeds: 6527
-assist: 1 seeds
-  Seeds: 6527
 maxstarfall: 1 seeds
   Seeds: 65490
 horndrill: 1 seeds
@@ -303,10 +299,6 @@ Poison Touch: 1 seeds
   Seeds: 60349
 Mimicry: 1 seeds
   Seeds: 64920
-Fluffy: 1 seeds
-  Seeds: 6527
-Water Absorb: 1 seeds
-  Seeds: 6527
 Sweet Veil: 1 seeds
   Seeds: 65490
 
@@ -339,13 +331,12 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 64
-Unique moves: 129 (128 non-simple)
-Unique abilities: 25 (23 non-simple)
+Total minimized seeds: 63
+Unique moves: 127 (126 non-simple)
+Unique abilities: 23 (21 non-simple)
 Unique items: 11
 
 --- Most Common Moves (top 10) ---
-  flipturn: 3 seeds
   ivycudgel: 3 seeds
   ragingbull: 3 seeds
   transform: 3 seeds
@@ -355,6 +346,7 @@ Unique items: 11
   encore: 2 seeds
   charge: 2 seeds
   maliciousmoonsault: 2 seeds
+  flipturn: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds

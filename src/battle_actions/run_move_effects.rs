@@ -631,10 +631,21 @@ pub fn run_move_effects<'a>(
         }
 
         // if (moveData.selfSwitch) {
-        // IMPORTANT: Use battle.active_move, not hit_effect!
-        // The on_hit callback (e.g., partingshot) can delete move.selfSwitch by setting
-        // battle.active_move.self_switch = None. We need to check the updated value.
-        if battle.active_move.as_ref().map(|m| m.self_switch.is_some()).unwrap_or(false) {
+        // Check the active_move parameter's self_switch, not battle.active_move!
+        // When a move like Assist calls another move (e.g., flipturn), battle.active_move
+        // gets set to the called move. But we should check the OUTER move's selfSwitch.
+        //
+        // Special case: if battle.active_move.id matches active_move.id, check battle.active_move
+        // because callbacks (like partingshot's onHit) may have deleted selfSwitch on it.
+        let self_switch_to_check = if battle.active_move.as_ref().map(|m| m.id == active_move.id).unwrap_or(false) {
+            // Same move - use battle.active_move to see any modifications from callbacks
+            battle.active_move.as_ref().and_then(|m| m.self_switch.clone())
+        } else {
+            // Different move (e.g., assist called flipturn) - use the parameter's selfSwitch
+            active_move.self_switch.clone()
+        };
+
+        if self_switch_to_check.is_some() {
             //     if (this.battle.canSwitch(source.side) && !source.volatiles['commanded']) {
             let can_switch_count = battle.can_switch(source_pos.0);
             let has_commanded = {
@@ -699,27 +710,40 @@ pub fn run_move_effects<'a>(
         battle.debug("move failed because it did nothing");
     }
     // else if (move.selfSwitch && source.hp && !source.volatiles['commanded']) {
-    // IMPORTANT: Use battle.active_move, not the local active_move parameter!
-    // The on_hit callback (e.g., partingshot) can delete move.selfSwitch by setting
-    // battle.active_move.self_switch = None. We need to check the updated value.
-    else if battle.active_move.as_ref().map(|m| m.self_switch.is_some()).unwrap_or(false) {
-        //     source.switchFlag = move.id;
-        // Check source.hp and source.volatiles['commanded']
-        let (source_hp, has_commanded) = {
-            let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
-                Some(p) => p,
-                None => return damages,
-            };
-            (pokemon.hp, pokemon.volatiles.contains_key(&ID::new("commanded")))
+    // Check the active_move parameter's self_switch, not battle.active_move!
+    // When a move like Assist calls another move (e.g., flipturn), battle.active_move
+    // gets set to the called move. But we should check the OUTER move's selfSwitch.
+    //
+    // Special case: if battle.active_move.id matches active_move.id, check battle.active_move
+    // because callbacks (like partingshot's onHit) may have deleted selfSwitch on it.
+    else {
+        let self_switch_to_check = if battle.active_move.as_ref().map(|m| m.id == active_move.id).unwrap_or(false) {
+            // Same move - use battle.active_move to see any modifications from callbacks
+            battle.active_move.as_ref().and_then(|m| m.self_switch.clone())
+        } else {
+            // Different move (e.g., assist called flipturn) - use the parameter's selfSwitch
+            active_move.self_switch.clone()
         };
 
-        if source_hp > 0 && !has_commanded {
-            // Set switch flag
-            let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
-                Some(p) => p,
-                None => return damages,
+        if self_switch_to_check.is_some() {
+            //     source.switchFlag = move.id;
+            // Check source.hp and source.volatiles['commanded']
+            let (source_hp, has_commanded) = {
+                let pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                    Some(p) => p,
+                    None => return damages,
+                };
+                (pokemon.hp, pokemon.volatiles.contains_key(&ID::new("commanded")))
             };
-            pokemon.switch_flag = Some(active_move.id.to_string());
+
+            if source_hp > 0 && !has_commanded {
+                // Set switch flag
+                let pokemon = match battle.pokemon_at_mut(source_pos.0, source_pos.1) {
+                    Some(p) => p,
+                    None => return damages,
+                };
+                pokemon.switch_flag = Some(active_move.id.to_string());
+            }
         }
     }
 
