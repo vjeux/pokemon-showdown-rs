@@ -101,13 +101,22 @@ pub fn hit_step_accuracy(
         debug_elog!("[HIT_STEP_ACCURACY] Processing target {} of {}: {:?}", i, targets.len(), target_pos);
         // Get base accuracy from move
         // Use the passed active_move parameter directly
+        // JavaScript: let accuracy = move.accuracy;
+        // NOTE: In JavaScript, accuracy can be:
+        //   - A number (e.g., 100)
+        //   - Boolean true (always hits)
+        // IMPORTANT: `accuracy: true` is DIFFERENT from `alwaysHit: true`:
+        //   - accuracy: true -> The move has 100% accuracy, but Accuracy event still runs
+        //   - alwaysHit: true -> Skip the Accuracy event entirely
+        // In Rust, we use 0 to represent boolean true for accuracy.
+        // We do NOT early return here - the `always_hit` check later determines if the
+        // Accuracy event is skipped.
         let mut accuracy = match active_move.accuracy {
             crate::dex::Accuracy::Percent(p) => p,
-            crate::dex::Accuracy::AlwaysHits => {
-                hit_results[i] = true;
-                continue;
-            }
+            crate::dex::Accuracy::AlwaysHits => 0, // 0 represents boolean true
         };
+        // Track whether accuracy started as boolean true (for ModifyAccuracy handling)
+        let accuracy_is_true = accuracy == 0;
 
         // Handle OHKO moves
         // JavaScript: if (move.ohko) { ... }

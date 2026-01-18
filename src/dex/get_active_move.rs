@@ -95,7 +95,12 @@ impl Dex {
             },
             self_effect: move_data.self_effect.clone(),
             has_sheer_force: move_data.has_sheer_force,
-            always_hit: matches!(move_data.accuracy, Accuracy::AlwaysHits),
+            // JavaScript: alwaysHit?: boolean; // currently unused (dex-moves.ts:216)
+            // IMPORTANT: `accuracy: true` is DIFFERENT from `alwaysHit: true`:
+            //   - accuracy: true -> The move has 100% accuracy, but Accuracy event still runs
+            //   - alwaysHit: true -> Skip the Accuracy event entirely
+            // alwaysHit is almost never set in JavaScript, so default to false
+            always_hit: false,
             base_move_type: None,
             base_power_modifier: None,
             crit_modifier: None,
