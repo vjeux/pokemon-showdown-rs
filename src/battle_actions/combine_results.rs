@@ -64,8 +64,9 @@ pub fn combine_results(left: DamageResult, right: DamageResult) -> DamageResult 
     //     return left;
     // In JavaScript: truthy left, falsy right (but not 0)
     // For DamageResult: Success/Damage are truthy, Failed/Undefined are falsy
-    // NotFail is truthy (non-empty string), HitSubstitute is 0 so falsy but equals 0
-    let is_truthy = |r: &DamageResult| matches!(r, Success | Damage(_) | NotFail);
+    // NotFail is '' (empty string) in JS, which is FALSY
+    // HitSubstitute is 0 so falsy but equals 0
+    let is_truthy = |r: &DamageResult| matches!(r, Success | Damage(_));
 
     if is_truthy(&left) && !is_truthy(&right) && !matches!(right, HitSubstitute | Damage(0)) {
         return left;

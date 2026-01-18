@@ -1,4 +1,4 @@
-Analyzing 109 failing minimized seed files...
+Analyzing 107 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -11,8 +11,6 @@ mudsport: 4 seeds
   Seeds: 23542, 24867, 47054, 53537
 hiddenpowerelectric: 4 seeds
   Seeds: 23542, 24867, 47054, 53537
-batonpass: 4 seeds
-  Seeds: 27999, 34248, 59120, 61530
 transform: 4 seeds
   Seeds: 2814, 61343, 64566, 64920
 assist: 4 seeds
@@ -101,6 +99,8 @@ polarflare: 2 seeds
   Seeds: 32517, 64605
 circlethrow: 2 seeds
   Seeds: 32939, 62883
+batonpass: 2 seeds
+  Seeds: 34248, 59120
 magicroom: 2 seeds
   Seeds: 35671, 48178
 burningbulwark: 2 seeds
@@ -177,8 +177,6 @@ stickyweb: 1 seeds
   Seeds: 25177
 quickguard: 1 seeds
   Seeds: 25574
-bloodmoon: 1 seeds
-  Seeds: 27999
 instruct: 1 seeds
   Seeds: 29161
 thousandwaves: 1 seeds
@@ -415,8 +413,6 @@ gmaxsandblast: 1 seeds
   Seeds: 61431
 gmaxbefuddle: 1 seeds
   Seeds: 61431
-guardianofalola: 1 seeds
-  Seeds: 61530
 baddybad: 1 seeds
   Seeds: 62499
 pounce: 1 seeds
@@ -569,8 +565,8 @@ laggingtail: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 109
-Unique moves: 228 (227 non-simple)
+Total minimized seeds: 107
+Unique moves: 226 (225 non-simple)
 Unique abilities: 37 (34 non-simple)
 Unique items: 16
 
@@ -579,12 +575,12 @@ Unique items: 16
   mindreader: 4 seeds
   mudsport: 4 seeds
   hiddenpowerelectric: 4 seeds
-  batonpass: 4 seeds
   transform: 4 seeds
   assist: 4 seeds
   relicsong: 4 seeds
   speedswap: 4 seeds
   metronome: 4 seeds
+  stompingtantrum: 3 seeds
 
 --- Most Common Abilities (top 10) ---
   Levitate: 2 seeds
