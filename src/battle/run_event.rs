@@ -321,7 +321,8 @@ impl Battle {
 
         // JavaScript: const handlers = this.findEventHandlers(target, eventid, effectSource);
         // Find all event handlers for this event
-        let mut handlers = self.find_event_handlers(event_id, target_pos, source);
+        // Pass the full EventTarget so find_event_handlers can handle Side targets with bubble down
+        let mut handlers = self.find_event_handlers(event_id, target.as_ref(), source);
 
         // JavaScript: if (onEffect) { ... } (lines 134-143)
         // Insert the sourceEffect's own handler at the front of the handlers list

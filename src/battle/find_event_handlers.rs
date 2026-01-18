@@ -1,5 +1,6 @@
 use crate::*;
 use crate::battle::EventListener;
+use crate::event::EventTarget;
 
 impl Battle {
 
@@ -13,7 +14,7 @@ impl Battle {
     /// - Adds prefixed handlers (onAlly, onFoe, onAny, onSource)
     ///
     /// Rust Implementation Notes:
-    /// - Currently simplified: only handles Pokemon targets (no Side/Battle distinction)
+    /// - Handles Pokemon and Side targets
     /// - No array recursion (not used in current Rust codebase)
     /// - Calls specialized find*EventHandlers methods
     /// - Returns full EventListener structs for proper sorting
@@ -83,7 +84,7 @@ impl Battle {
     pub fn find_event_handlers(
         &mut self,
         event_id: &str,
-        target: Option<(usize, usize)>,
+        target: Option<&EventTarget>,
         source: Option<(usize, usize)>,
     ) -> Vec<EventListener> {
         let mut handlers = Vec::new();
@@ -95,12 +96,24 @@ impl Battle {
             "BeforeTurn" | "Update" | "Weather" | "WeatherChange" | "TerrainChange"
         );
 
+        // JavaScript: const shouldBubbleDown = target instanceof Side;
+        let should_bubble_down = matches!(target, Some(EventTarget::Side(_)));
+
+        // Get target as Pokemon position if applicable
+        let target_pos = target.and_then(|t| t.as_pokemon());
+
+        // Get target as Side index if applicable
+        let target_side_from_target = match target {
+            Some(EventTarget::Side(idx)) => Some(*idx),
+            Some(EventTarget::Pokemon((side, _))) => Some(*side),
+            _ => None,
+        };
+
         // JavaScript: if (target instanceof Pokemon && (target.isActive || source?.isActive))
-        // Rust: We only handle Pokemon targets currently
-        if let Some(target_pos) = target {
+        if let Some(target_pokemon_pos) = target_pos {
             // JavaScript: handlers = this.findPokemonEventHandlers(target, `on${eventName}`);
             let prefixed_event = format!("on{}", event_name);
-            let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pos, None);
+            let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pokemon_pos, None);
             // Add event name to each handler and resolve priority
             for handler in &mut pokemon_handlers {
                 handler.callback_name = event_name.to_string();
@@ -108,7 +121,7 @@ impl Battle {
             handlers.extend(pokemon_handlers);
 
             if prefixed_handlers {
-                let (target_side, _target_idx) = target_pos;
+                let (target_side, _target_idx) = target_pokemon_pos;
 
                 // Add prefixed handlers (onAlly, onFoe, onAny)
                 // JavaScript:
@@ -218,12 +231,19 @@ impl Battle {
             }
         }
 
-        // JavaScript (lines 56-77):
-        // After Pokemon handlers, target becomes target.side
-        // Then for each side in battle, find side event handlers
+        // JavaScript (lines 57-78):
         // if (target instanceof Side) {
         //     for (const side of this.sides) {
-        //         // ... shouldBubbleDown logic (not implemented yet) ...
+        //         if (shouldBubbleDown) {
+        //             for (const active of side.active) {
+        //                 if (side === target || side === target.allySide) {
+        //                     handlers = handlers.concat(this.findPokemonEventHandlers(active, `on${eventName}`));
+        //                 } else if (prefixedHandlers) {
+        //                     handlers = handlers.concat(this.findPokemonEventHandlers(active, `onFoe${eventName}`));
+        //                 }
+        //                 if (prefixedHandlers) handlers = handlers.concat(this.findPokemonEventHandlers(active, `onAny${eventName}`));
+        //             }
+        //         }
         //         if (side.n < 2 || !side.allySide) {
         //             if (side === target || side === target.allySide) {
         //                 handlers.push(...this.findSideEventHandlers(side, `on${eventName}`));
@@ -235,14 +255,56 @@ impl Battle {
         //     }
         // }
 
-        // When target is a Pokemon, convert to its side for side event handlers
-        let target_side_idx = target.map(|(side, _)| side);
+        // Use target_side_from_target which handles both Pokemon and Side targets
+        let target_side_idx = target_side_from_target;
 
         // Loop through all sides to find side event handlers
         for side_idx in 0..self.sides.len() {
+            // JavaScript: if (shouldBubbleDown)
+            // When target is a Side directly, we need to bubble DOWN to find Pokemon handlers
+            if should_bubble_down {
+                // Get active Pokemon on this side
+                let active_pokemon: Vec<(usize, usize)> = self.sides.get(side_idx)
+                    .map(|side| side.active.iter().flatten().map(|idx| (side_idx, *idx)).collect())
+                    .unwrap_or_default();
+
+                for poke_pos in active_pokemon {
+                    // JavaScript: if (side === target || side === target.allySide)
+                    if let Some(target_side) = target_side_idx {
+                        if side_idx == target_side {
+                            // Find handlers for on${eventName}
+                            let prefixed_event = format!("on{}", event_name);
+                            let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, poke_pos, None);
+                            for handler in &mut pokemon_handlers {
+                                handler.callback_name = event_name.to_string();
+                            }
+                            handlers.extend(pokemon_handlers);
+                        } else if prefixed_handlers {
+                            // JavaScript: else if (prefixedHandlers)
+                            //     handlers = handlers.concat(this.findPokemonEventHandlers(active, `onFoe${eventName}`));
+                            let foe_event = format!("onFoe{}", event_name);
+                            let mut foe_handlers = self.find_pokemon_event_handlers(&foe_event, poke_pos, None);
+                            for handler in &mut foe_handlers {
+                                handler.callback_name = format!("Foe{}", event_name);
+                            }
+                            handlers.extend(foe_handlers);
+                        }
+
+                        // JavaScript: if (prefixedHandlers) handlers = handlers.concat(this.findPokemonEventHandlers(active, `onAny${eventName}`));
+                        if prefixed_handlers {
+                            let any_event = format!("onAny{}", event_name);
+                            let mut any_handlers = self.find_pokemon_event_handlers(&any_event, poke_pos, None);
+                            for handler in &mut any_handlers {
+                                handler.callback_name = format!("Any{}", event_name);
+                            }
+                            handlers.extend(any_handlers);
+                        }
+                    }
+                }
+            }
+
             // JavaScript: if (side.n < 2 || !side.allySide)
             // In Rust, we don't have allySide yet, so we just check all sides
-
             if let Some(target_side) = target_side_idx {
                 // JavaScript: if (side === target || side === target.allySide)
                 if side_idx == target_side {
