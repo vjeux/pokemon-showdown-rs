@@ -88,8 +88,10 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         );
     } else {
         // source.trySetStatus('par', target, move);
+        // JavaScript: source = the attacker (being paralyzed), target = Cramorant (causing the paralysis)
+        // For try_set_status: first param is pokemon getting status, source_pos is who caused it
         let move_effect = Effect::move_(move_id);
-        Pokemon::try_set_status(battle, source_pos, ID::from("par"), None, Some(&move_effect));
+        Pokemon::try_set_status(battle, source_pos, ID::from("par"), Some(target_pos), Some(&move_effect));
     }
 
     // target.formeChange('cramorant', move);
