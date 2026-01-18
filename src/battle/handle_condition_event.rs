@@ -794,6 +794,20 @@ impl Battle {
                     pokemon_pos,
                 )
             }
+            "OverrideAction" => {
+                // onOverrideAction callback for conditions (encore)
+                // Returns a move ID to override the Pokemon's chosen move
+                // pokemon_pos is the Pokemon using the move (and with the volatile)
+                // target_pos is their target
+                let target_pos = self.event.as_ref().and_then(|e| e.source);
+                crate::data::move_callbacks::dispatch_condition_on_override_action(
+                    self,
+                    condition_id,
+                    pokemon_pos,
+                    target_pos,
+                    active_move_clone.as_ref(),
+                )
+            }
             "Update" => {
                 // onUpdate callback for conditions (volatiles like fling)
                 // pokemon_pos is the Pokemon with the volatile

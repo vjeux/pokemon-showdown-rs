@@ -80,16 +80,24 @@ pub fn run_move(
 
     // Check for OverrideAction event
     // if (baseMove.id !== 'struggle' && !zMove && !maxMove && !externalMove)
+    // This can change the move (e.g., Encore forces a specific move)
+    let mut effective_move_id = move_id.clone();
     if move_id.as_str() != "struggle" && z_move.is_none() && max_move.is_none() && !external_move {
         // const changedMove = this.battle.runEvent('OverrideAction', pokemon, target, baseMove);
-        // JavaScript: if (changedMove && changedMove.id !== move.id) { ... }
-        // For now, just run the event - full implementation would require changing the move
-        battle.run_event("OverrideAction", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+        let changed_move_result = battle.run_event("OverrideAction", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+
+        // if (changedMove && changedMove.id !== move.id) { move = changedMove; }
+        if let EventResult::ID(new_move_id) = changed_move_result {
+            if new_move_id != *move_id {
+                debug_elog!("[RUN_MOVE] OverrideAction changed move from {} to {}", move_id.as_str(), new_move_id.as_str());
+                effective_move_id = new_move_id;
+            }
+        }
     }
 
-    // Set active move
+    // Set active move (use effective_move_id which may have been changed by OverrideAction)
     // this.battle.setActiveMove(move, pokemon, target);
-    battle.set_active_move(Some(move_id.clone()), Some(pokemon_pos), target_pos);
+    battle.set_active_move(Some(effective_move_id.clone()), Some(pokemon_pos), target_pos);
 
     // CRITICAL: Propagate prankster_boosted flag from the move action to the active_move
     // In JavaScript, the move object carries pranksterBoosted from when it was set by Prankster's
@@ -108,7 +116,7 @@ pub fn run_move(
                 "BeforeMove",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         target_pos,
-        Some(&crate::battle::Effect::move_(move_id.clone())),
+        Some(&crate::battle::Effect::move_(effective_move_id.clone())),
         crate::event::EventResult::Number(1),
         false,
         false,
@@ -117,7 +125,7 @@ pub fn run_move(
 
     if !will_try_move {
         // this.battle.runEvent('MoveAborted', pokemon, target, move);
-        battle.run_event("MoveAborted", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+        battle.run_event("MoveAborted", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(effective_move_id.clone())), EventResult::Continue, false, false);
 
         // this.battle.clearActiveMove(true);
         battle.clear_active_move(true);
@@ -142,20 +150,21 @@ pub fn run_move(
     // }
     // NOTE: This does NOT fail/return - it just adds a volatile for tracking purposes.
     // The actual disable happens at end_turn in DisableMove event.
-    let has_cantusetwice_flag = base_move.flags.contains_key("cantusetwice");
+    // Use active_move to get flags since the move may have been changed by OverrideAction
+    let has_cantusetwice_flag = battle.active_move.as_ref().map_or(false, |m| m.flags.contains_key("cantusetwice"));
     if has_cantusetwice_flag {
         let last_move_matches = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return,
             };
-            pokemon.last_move.as_ref().map_or(false, |lm| lm == move_id)
+            pokemon.last_move.as_ref().map_or(false, |lm| lm == &effective_move_id)
         };
 
         if last_move_matches {
             // Add volatile with move ID - allows tracking that this move was used via Instruct/etc.
             // The volatile is removed after the move completes (with a hint message)
-            Pokemon::add_volatile(battle, pokemon_pos, move_id.clone(), None, None, None, None);
+            Pokemon::add_volatile(battle, pokemon_pos, effective_move_id.clone(), None, None, None, None);
         }
     }
 
@@ -218,8 +227,8 @@ pub fn run_move(
         //     }
         let gen = battle.gen;
         if !is_locked {
-            // Create ActiveMove for deduct_pp
-            let active_move_for_pp = battle.dex.get_active_move(move_id.as_str());
+            // Create ActiveMove for deduct_pp - use effective_move_id since it may have changed
+            let active_move_for_pp = battle.dex.get_active_move(effective_move_id.as_str());
             let pp_deducted = if let (Some(pokemon), Some(ref am)) = (battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1), &active_move_for_pp) {
                 pokemon.deduct_pp(gen, am, Some(1))
             } else {
@@ -232,8 +241,8 @@ pub fn run_move(
             //         pokemon.moveThisTurnResult = false;
             //         return;
             //     }
-            if pp_deducted == 0 && move_id.as_str() != "struggle" {
-                debug_elog!("[RUN_MOVE] No PP left for {}, adding 'cant' message and returning", move_id);
+            if pp_deducted == 0 && effective_move_id.as_str() != "struggle" {
+                debug_elog!("[RUN_MOVE] No PP left for {}, adding 'cant' message and returning", effective_move_id);
                 // Get pokemon ident for the 'cant' message
                 let pokemon_ident = {
                     let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
@@ -242,9 +251,9 @@ pub fn run_move(
                     };
                     pokemon.get_slot()
                 };
-                let move_name = battle.dex.moves().get_by_id(&move_id)
+                let move_name = battle.dex.moves().get_by_id(&effective_move_id)
                     .map(|m| m.name.clone())
-                    .unwrap_or_else(|| move_id.to_string());
+                    .unwrap_or_else(|| effective_move_id.to_string());
 
                 // JS: this.battle.add('cant', pokemon, 'nopp', move);
                 battle.add("cant", &[
@@ -275,15 +284,16 @@ pub fn run_move(
         // pokemon.moveUsed(move, targetLoc);
         // Note: Need to extract gen before calling move_used to avoid borrow checker issues
         // (gen already extracted above for PP deduction)
+        // Use effective_move_id since the move may have been changed by OverrideAction (e.g., Encore)
         if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
             // Manually inline move_used to avoid double borrow
-            pokemon.last_move = Some(move_id.clone());
+            pokemon.last_move = Some(effective_move_id.clone());
             if gen == 2 {
-                pokemon.last_move_encore = Some(move_id.clone());
+                pokemon.last_move_encore = Some(effective_move_id.clone());
             }
             // last_move_used is set in use_move_inner after ModifyType runs
             pokemon.last_move_target_loc = Some(target_loc);
-            pokemon.move_this_turn = Some(move_id.clone());
+            pokemon.move_this_turn = Some(effective_move_id.clone());
         }
     }
 
@@ -337,9 +347,22 @@ pub fn run_move(
 
     // Call useMove
     // const moveDidSomething = this.useMove(baseMove, pokemon, { target, sourceEffect, zMove, maxMove });
+    // If the move was changed by OverrideAction (e.g., Encore), we need to get the new move data
+    let effective_move_data: std::borrow::Cow<'_, crate::dex::MoveData> = if effective_move_id != *move_id {
+        // Fetch the new move data from dex - clone to avoid borrow conflict with use_move
+        match battle.dex.moves().get(effective_move_id.as_str()) {
+            Some(data) => std::borrow::Cow::Owned(data.clone()),
+            None => {
+                // Fallback to original move if not found
+                std::borrow::Cow::Borrowed(move_data)
+            }
+        }
+    } else {
+        std::borrow::Cow::Borrowed(move_data)
+    };
     let move_did_something = crate::battle_actions::use_move(
         battle,
-        move_data,
+        &effective_move_data,
         pokemon_pos,
         target_pos,
         source_effect_for_use_move.as_ref(),
@@ -354,12 +377,12 @@ pub fn run_move(
         None
     };
 
-    // AfterMove events
+    // AfterMove events - use effective_move_id since the move may have been changed by OverrideAction
     // this.battle.singleEvent('AfterMove', move, null, pokemon, target, move);
-    battle.single_event("AfterMove", &crate::battle::Effect::move_(move_id.clone()), None, Some(pokemon_pos), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), None);
+    battle.single_event("AfterMove", &crate::battle::Effect::move_(effective_move_id.clone()), None, Some(pokemon_pos), target_pos, Some(&crate::battle::Effect::move_(effective_move_id.clone())), None);
 
     // this.battle.runEvent('AfterMove', pokemon, target, move);
-    battle.run_event("AfterMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+    battle.run_event("AfterMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(effective_move_id.clone())), EventResult::Continue, false, false);
 
     // Handle 'cantusetwice' hint
     // JavaScript: if (move.flags['cantusetwice'] && pokemon.removeVolatile(move.id)) {
@@ -371,12 +394,13 @@ pub fn run_move(
                 Some(p) => p,
                 None => return,
             };
-            pokemon.volatiles.contains_key(move_id)
+            pokemon.volatiles.contains_key(&effective_move_id)
         };
         if had_volatile {
-            Pokemon::remove_volatile(battle, pokemon_pos, move_id);
-            // Show the hint
-            battle.add("-hint", &[crate::battle::Arg::String(format!("Some effects can force a Pokemon to use {} again in a row.", base_move.name))]);
+            Pokemon::remove_volatile(battle, pokemon_pos, &effective_move_id);
+            // Show the hint - get the move name from the effective move
+            let move_name = battle.active_move.as_ref().map(|m| m.name.clone()).unwrap_or_else(|| effective_move_id.to_string());
+            battle.add("-hint", &[crate::battle::Arg::String(format!("Some effects can force a Pokemon to use {} again in a row.", move_name))]);
         }
     }
 

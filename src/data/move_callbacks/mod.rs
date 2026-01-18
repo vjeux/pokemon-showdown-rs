@@ -2286,13 +2286,17 @@ pub fn dispatch_condition_on_negate_immunity(
 }
 
 /// Dispatch condition onOverrideAction callbacks
+/// condition_id is the volatile (e.g., "encore") that has the callback
+/// source_pos is the Pokemon using the move (with the volatile)
 pub fn dispatch_condition_on_override_action(
     battle: &mut Battle,
-    active_move: Option<&ActiveMove>,
+    condition_id: &str,
     source_pos: (usize, usize),
+    target_pos: Option<(usize, usize)>,
+    active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "encore" => encore::condition::on_override_action(battle, source_pos, None, active_move),
+    match condition_id {
+        "encore" => encore::condition::on_override_action(battle, source_pos, target_pos, active_move),
         _ => EventResult::Continue,
     }
 }

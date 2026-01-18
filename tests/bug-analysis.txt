@@ -1,18 +1,10 @@
-Analyzing 56 failing minimized seed files...
+Analyzing 50 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
 transform: 3 seeds
   Seeds: 61343, 64566, 64920
-ceaselessedge: 2 seeds
-  Seeds: 10025, 57522
-stompingtantrum: 2 seeds
-  Seeds: 14287, 36529
-silktrap: 2 seeds
-  Seeds: 14287, 36529
-encore: 2 seeds
-  Seeds: 15759, 29611
 charge: 2 seeds
   Seeds: 15974, 43153
 maliciousmoonsault: 2 seeds
@@ -47,22 +39,12 @@ dive: 2 seeds
   Seeds: 52895, 63529
 copycat: 2 seeds
   Seeds: 53747, 60885
-playrough: 1 seeds
-  Seeds: 10025
 lightscreen: 1 seeds
   Seeds: 10653
 ragingfury: 1 seeds
   Seeds: 10653
 trick: 1 seeds
   Seeds: 10653
-torment: 1 seeds
-  Seeds: 15759
-powershift: 1 seeds
-  Seeds: 15759
-maxquake: 1 seeds
-  Seeds: 15759
-mightycleave: 1 seeds
-  Seeds: 15759
 comeuppance: 1 seeds
   Seeds: 15974
 morningsun: 1 seeds
@@ -93,8 +75,6 @@ thousandwaves: 1 seeds
   Seeds: 29161
 round: 1 seeds
   Seeds: 29161
-gigatonhammer: 1 seeds
-  Seeds: 29611
 explosion: 1 seeds
   Seeds: 30232
 lightthatburnsthesky: 1 seeds
@@ -307,22 +287,22 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 56
-Unique moves: 116 (115 non-simple)
+Total minimized seeds: 50
+Unique moves: 106 (105 non-simple)
 Unique abilities: 22 (20 non-simple)
 Unique items: 11
 
 --- Most Common Moves (top 10) ---
   transform: 3 seeds
-  ceaselessedge: 2 seeds
-  stompingtantrum: 2 seeds
-  silktrap: 2 seeds
-  encore: 2 seeds
   charge: 2 seeds
   maliciousmoonsault: 2 seeds
   flipturn: 2 seeds
   magneticflux: 2 seeds
   soak: 2 seeds
+  chatter: 2 seeds
+  pursuit: 2 seeds
+  magicroom: 2 seeds
+  grudge: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds
