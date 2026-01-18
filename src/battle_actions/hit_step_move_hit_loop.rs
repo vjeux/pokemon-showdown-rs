@@ -463,7 +463,10 @@ pub fn hit_step_move_hit_loop(
             };
 
             let recoil_damage = (maxhp as f64 / 2.0).round() as i32;
-            battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::move_(active_move.id.clone())), false);
+            // JS: this.battle.damage(Math.round(pokemon.maxhp / 2), pokemon, pokemon, this.dex.conditions.get(move.id), true);
+            // Note: instafaint=true is critical here - it causes faint_messages to run immediately,
+            // which sets pokemon.fainted=true before the subsequent eachEvent('Update') call.
+            battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::move_(active_move.id.clone())), true);
             active_move.mindblown_recoil = false;
             // Also update battle.active_move since callbacks read from there, not the local active_move
             if let Some(ref mut am) = battle.active_move {

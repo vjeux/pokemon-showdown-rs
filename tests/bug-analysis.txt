@@ -1,18 +1,10 @@
-Analyzing 80 failing minimized seed files...
+Analyzing 70 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-mindblown: 4 seeds
-  Seeds: 17626, 37514, 53360, 6527
 transform: 4 seeds
   Seeds: 2814, 61343, 64566, 64920
-metronome: 4 seeds
-  Seeds: 36737, 43394, 48145, 55954
-copycat: 3 seeds
-  Seeds: 15935, 53747, 60885
-scaleshot: 3 seeds
-  Seeds: 15935, 39435, 41340
 skydrop: 3 seeds
   Seeds: 17535, 35876, 55162
 flipturn: 3 seeds
@@ -23,8 +15,6 @@ healblock: 3 seeds
   Seeds: 2814, 55162, 5613
 ragingbull: 3 seeds
   Seeds: 28200, 34858, 62499
-assist: 3 seeds
-  Seeds: 39435, 41340, 6527
 ceaselessedge: 2 seeds
   Seeds: 10025, 57522
 playrough: 2 seeds
@@ -43,10 +33,6 @@ maxknuckle: 2 seeds
   Seeds: 20356, 53209
 magneticflux: 2 seeds
   Seeds: 20875, 26095
-lastrespects: 2 seeds
-  Seeds: 22366, 32939
-steelbeam: 2 seeds
-  Seeds: 22366, 63094
 soak: 2 seeds
   Seeds: 23363, 49341
 chatter: 2 seeds
@@ -61,12 +47,8 @@ burningbulwark: 2 seeds
   Seeds: 35876, 39892
 wonderroom: 2 seeds
   Seeds: 35876, 65503
-celebrate: 2 seeds
-  Seeds: 36737, 43394
-corkscrewcrash: 2 seeds
-  Seeds: 39435, 53148
-synchronoise: 2 seeds
-  Seeds: 39435, 56089
+mindblown: 2 seeds
+  Seeds: 37514, 6527
 grudge: 2 seeds
   Seeds: 40097, 42063
 leechseed: 2 seeds
@@ -83,6 +65,8 @@ telekinesis: 2 seeds
   Seeds: 52895, 63529
 dive: 2 seeds
   Seeds: 52895, 63529
+copycat: 2 seeds
+  Seeds: 53747, 60885
 catastropika: 2 seeds
   Seeds: 55954, 60818
 lightscreen: 1 seeds
@@ -113,10 +97,6 @@ meanlook: 1 seeds
   Seeds: 20356
 lastresort: 1 seeds
   Seeds: 20356
-aquatail: 1 seeds
-  Seeds: 22366
-ember: 1 seeds
-  Seeds: 22366
 howl: 1 seeds
   Seeds: 22436
 harden: 1 seeds
@@ -161,6 +141,8 @@ steelroller: 1 seeds
   Seeds: 32939
 spotlight: 1 seeds
   Seeds: 32939
+lastrespects: 1 seeds
+  Seeds: 32939
 circlethrow: 1 seeds
   Seeds: 32939
 recycle: 1 seeds
@@ -183,26 +165,10 @@ wish: 1 seeds
   Seeds: 38902
 gmaxstonesurge: 1 seeds
   Seeds: 39361
-maxphantasm: 1 seeds
-  Seeds: 39435
-hyperdrill: 1 seeds
-  Seeds: 39435
-waterspout: 1 seeds
-  Seeds: 39435
-menacingmoonrazemaelstrom: 1 seeds
-  Seeds: 39435
-meteorbeam: 1 seeds
-  Seeds: 39435
-gmaxfireball: 1 seeds
-  Seeds: 39435
 technoblast: 1 seeds
   Seeds: 40097
 dragondarts: 1 seeds
   Seeds: 40910
-ficklebeam: 1 seeds
-  Seeds: 41340
-floatyfall: 1 seeds
-  Seeds: 41340
 partingshot: 1 seeds
   Seeds: 42063
 maxgeyser: 1 seeds
@@ -217,21 +183,15 @@ waterpledge: 1 seeds
   Seeds: 43153
 grassyterrain: 1 seeds
   Seeds: 43153
-heartstamp: 1 seeds
-  Seeds: 43394
-mistyexplosion: 1 seeds
-  Seeds: 43394
-accelerock: 1 seeds
-  Seeds: 43394
 knockoff: 1 seeds
   Seeds: 45311
-tarshot: 1 seeds
-  Seeds: 48145
 aurawheel: 1 seeds
   Seeds: 48318
 softboiled: 1 seeds
   Seeds: 52895
 gust: 1 seeds
+  Seeds: 53148
+corkscrewcrash: 1 seeds
   Seeds: 53148
 kinesis: 1 seeds
   Seeds: 53209
@@ -243,8 +203,6 @@ shellsidearm: 1 seeds
   Seeds: 53209
 kingsshield: 1 seeds
   Seeds: 53209
-extremespeed: 1 seeds
-  Seeds: 53360
 playnice: 1 seeds
   Seeds: 53747
 vcreate: 1 seeds
@@ -259,12 +217,16 @@ tailwind: 1 seeds
   Seeds: 55162
 banefulbunker: 1 seeds
   Seeds: 55162
+metronome: 1 seeds
+  Seeds: 55954
 blastburn: 1 seeds
   Seeds: 55954
 roar: 1 seeds
   Seeds: 55954
 razorleaf: 1 seeds
   Seeds: 55954
+synchronoise: 1 seeds
+  Seeds: 56089
 seedflare: 1 seeds
   Seeds: 5613
 surf: 1 seeds
@@ -303,11 +265,11 @@ gmaxbefuddle: 1 seeds
   Seeds: 61431
 baddybad: 1 seeds
   Seeds: 62499
-sharpen: 1 seeds
-  Seeds: 63094
 leechlife: 1 seeds
   Seeds: 63529
 healorder: 1 seeds
+  Seeds: 6527
+assist: 1 seeds
   Seeds: 6527
 maxstarfall: 1 seeds
   Seeds: 65490
@@ -335,8 +297,6 @@ Unaware: 2 seeds
   Seeds: 61343, 64566
 Plus: 1 seeds
   Seeds: 20875
-Iron Barbs: 1 seeds
-  Seeds: 22366
 Defiant: 1 seeds
   Seeds: 25177
 Shield Dust: 1 seeds
@@ -351,8 +311,6 @@ Victory Star: 1 seeds
   Seeds: 38902
 Unseen Fist: 1 seeds
   Seeds: 39892
-Limber: 1 seeds
-  Seeds: 43394
 As One (Glastrier): 1 seeds
   Seeds: 44135
 Hunger Switch: 1 seeds
@@ -393,8 +351,6 @@ focusband: 2 seeds
   Seeds: 20356, 30232
 fullincense: 1 seeds
   Seeds: 10653
-powerlens: 1 seeds
-  Seeds: 22366
 razorfang: 1 seeds
   Seeds: 25177
 choiceband: 1 seeds
@@ -411,31 +367,31 @@ micleberry: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 80
-Unique moves: 161 (160 non-simple)
-Unique abilities: 28 (26 non-simple)
-Unique items: 12
+Total minimized seeds: 70
+Unique moves: 142 (141 non-simple)
+Unique abilities: 26 (24 non-simple)
+Unique items: 11
 
 --- Most Common Moves (top 10) ---
-  mindblown: 4 seeds
   transform: 4 seeds
-  metronome: 4 seeds
-  copycat: 3 seeds
-  scaleshot: 3 seeds
   skydrop: 3 seeds
   flipturn: 3 seeds
   ivycudgel: 3 seeds
   healblock: 3 seeds
   ragingbull: 3 seeds
+  ceaselessedge: 2 seeds
+  playrough: 2 seeds
+  stompingtantrum: 2 seeds
+  silktrap: 2 seeds
 
 --- Most Common Abilities (top 10) ---
   Air Lock: 2 seeds
   Effect Spore: 2 seeds
   Unaware: 2 seeds
   Plus: 1 seeds
-  Iron Barbs: 1 seeds
   Defiant: 1 seeds
   Shield Dust: 1 seeds
   Minus: 1 seeds
   Intimidate: 1 seeds
   Disguise: 1 seeds
+  Victory Star: 1 seeds
