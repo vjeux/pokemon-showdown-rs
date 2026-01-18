@@ -1,66 +1,30 @@
-Analyzing 135 failing minimized seed files...
+Analyzing 102 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-gmaxsandblast: 8 seeds
-  Seeds: 12832, 16240, 19405, 43891, 61431, 70719, 73448, 87270
-banefulbunker: 8 seeds
-  Seeds: 49637, 73726, 73880, 82263, 87270, 88904, 91750, 93338
-round: 7 seeds
-  Seeds: 19405, 29161, 31834, 68764, 72568, 77336, 89312
-maxguard: 7 seeds
-  Seeds: 29444, 34957, 53040, 55736, 71148, 77834, 97549
-telekinesis: 7 seeds
-  Seeds: 30637, 52895, 63529, 69794, 72568, 77833, 81757
-lightscreen: 6 seeds
-  Seeds: 10653, 54588, 72568, 73093, 77834, 87270
-kingsshield: 6 seeds
-  Seeds: 16240, 19367, 31834, 78126, 943, 97945
-gearup: 6 seeds
-  Seeds: 16240, 30637, 49637, 68764, 71148, 89312
 healblock: 6 seeds
   Seeds: 16240, 42438, 51150, 82834, 83469, 97549
-assist: 6 seeds
-  Seeds: 19405, 43891, 70719, 71148, 71505, 83469
-soak: 6 seeds
-  Seeds: 23363, 49341, 72568, 74337, 87633, 92615
+gmaxsandblast: 6 seeds
+  Seeds: 16240, 43891, 61431, 70719, 73448, 87270
+telekinesis: 6 seeds
+  Seeds: 30637, 52895, 63529, 69794, 77833, 81757
 surf: 6 seeds
   Seeds: 42548, 55736, 56264, 73093, 77624, 78126
-protect: 6 seeds
-  Seeds: 54588, 6991, 71124, 74337, 78126, 89312
-shelter: 5 seeds
-  Seeds: 16240, 72568, 943, 95041, 97549
-horndrill: 5 seeds
-  Seeds: 19405, 42548, 65490, 68764, 72568
-branchpoke: 5 seeds
-  Seeds: 19405, 31834, 73448, 74337, 77834
-struggle: 5 seeds
-  Seeds: 22002, 32939, 72568, 79574, 95041
+lightscreen: 5 seeds
+  Seeds: 10653, 54588, 73093, 77834, 87270
+soak: 5 seeds
+  Seeds: 23363, 49341, 74337, 87633, 92615
 noxioustorque: 5 seeds
   Seeds: 25177, 49637, 70719, 77834, 95041
 maxhailstorm: 5 seeds
   Seeds: 30637, 42438, 49637, 71505, 87270
-hiddenpowerdragon: 5 seeds
-  Seeds: 30637, 43891, 68764, 96673, 99388
-ragefist: 5 seeds
-  Seeds: 30637, 31834, 40910, 43891, 60885
-copycat: 5 seeds
-  Seeds: 31834, 53747, 55736, 60885, 92977
-grasspledge: 5 seeds
-  Seeds: 31834, 55736, 77834, 89312, 95041
-transform: 5 seeds
-  Seeds: 31834, 61343, 64566, 89312, 90577
-clangoroussoul: 5 seeds
-  Seeds: 31834, 42548, 43891, 67961, 77834
-storedpower: 5 seeds
-  Seeds: 31834, 43891, 49637, 78126, 89312
-spikyshield: 5 seeds
-  Seeds: 34408, 47061, 62723, 65917, 67628
 magicroom: 5 seeds
   Seeds: 35671, 42438, 48178, 67961, 81290
-acrobatics: 5 seeds
-  Seeds: 49637, 72568, 73448, 74337, 92977
+assist: 5 seeds
+  Seeds: 43891, 70719, 71148, 71505, 83469
+banefulbunker: 5 seeds
+  Seeds: 49637, 73880, 82263, 87270, 88904
 whirlwind: 5 seeds
   Seeds: 49637, 71505, 74337, 78126, 97549
 solarblade: 5 seeds
@@ -69,60 +33,30 @@ flameburst: 5 seeds
   Seeds: 51150, 71148, 73093, 78126, 92977
 dive: 5 seeds
   Seeds: 52895, 63529, 81764, 82556, 99388
-attract: 5 seeds
-  Seeds: 54588, 64286, 67961, 68764, 97549
-trickroom: 5 seeds
-  Seeds: 61431, 68764, 74337, 78126, 87270
-captivate: 5 seeds
-  Seeds: 73093, 77834, 89312, 95041, 95236
 playrough: 5 seeds
   Seeds: 77834, 79574, 81757, 87270, 97549
-encore: 4 seeds
-  Seeds: 15759, 16240, 19405, 79574
-tailwind: 4 seeds
-  Seeds: 15759, 19405, 943, 97549
 meditate: 4 seeds
   Seeds: 16240, 77834, 95041, 96673
-punishment: 4 seeds
-  Seeds: 16240, 30637, 68764, 72568
 dualchop: 4 seeds
   Seeds: 16240, 30637, 55736, 92977
 junglehealing: 4 seeds
   Seeds: 16240, 49637, 77834, 78875
+gearup: 4 seeds
+  Seeds: 16240, 30637, 49637, 71148
+shelter: 4 seeds
+  Seeds: 16240, 943, 95041, 97549
 meteorassault: 4 seeds
   Seeds: 16240, 42548, 51150, 64286
-gastroacid: 4 seeds
-  Seeds: 19405, 71505, 72568, 87270
-hypervoice: 4 seeds
-  Seeds: 19405, 55736, 56825, 71148
-psychup: 4 seeds
-  Seeds: 19405, 31834, 42548, 43891
-pursuit: 4 seeds
-  Seeds: 25574, 35620, 68764, 78875
-detect: 4 seeds
-  Seeds: 26791, 63843, 78126, 84717
-kowtowcleave: 4 seeds
-  Seeds: 30637, 72568, 78126, 95041
 gust: 4 seeds
   Seeds: 30637, 53148, 64286, 78126
-raindance: 4 seeds
-  Seeds: 31834, 49637, 72568, 89312
-rockpolish: 4 seeds
-  Seeds: 31834, 73448, 74337, 78126
-magicaltorque: 4 seeds
-  Seeds: 31834, 42438, 65503, 73093
-honeclaws: 4 seeds
-  Seeds: 31834, 42438, 73093, 92977
-spotlight: 4 seeds
-  Seeds: 32939, 54588, 68764, 943
-mindblown: 4 seeds
-  Seeds: 37514, 67961, 72568, 99388
+hiddenpowerdragon: 4 seeds
+  Seeds: 30637, 43891, 96673, 99388
+ragefist: 4 seeds
+  Seeds: 30637, 40910, 43891, 60885
 taunt: 4 seeds
   Seeds: 42438, 67961, 87270, 99388
-sunsteelstrike: 4 seeds
-  Seeds: 42548, 54588, 68764, 71148
-relicsong: 4 seeds
-  Seeds: 42548, 43891, 54588, 68764
+clangoroussoul: 4 seeds
+  Seeds: 42548, 43891, 67961, 77834
 moonlight: 4 seeds
   Seeds: 42548, 67961, 74337, 92977
 hiddenpowerflying: 4 seeds
@@ -135,22 +69,20 @@ flipturn: 4 seeds
   Seeds: 43891, 65490, 67961, 92977
 gmaxchistrike: 4 seeds
   Seeds: 49637, 55736, 77834, 943
-multiattack: 4 seeds
-  Seeds: 49637, 68764, 96183, 99388
+acrobatics: 4 seeds
+  Seeds: 49637, 73448, 74337, 92977
 lightofruin: 4 seeds
   Seeds: 49637, 64286, 77834, 78126
-obstruct: 4 seeds
-  Seeds: 51150, 73093, 81160, 81757
-brickbreak: 4 seeds
-  Seeds: 51150, 54588, 64286, 68764
 populationbomb: 4 seeds
   Seeds: 51150, 70719, 74337, 77834
 volttackle: 4 seeds
   Seeds: 51150, 54588, 71148, 99388
-landswrath: 4 seeds
-  Seeds: 54588, 55736, 68764, 97549
-gmaxfoamburst: 4 seeds
-  Seeds: 54588, 82834, 89312, 95041
+copycat: 4 seeds
+  Seeds: 53747, 55736, 60885, 92977
+attract: 4 seeds
+  Seeds: 54588, 64286, 67961, 97549
+maxguard: 4 seeds
+  Seeds: 55736, 71148, 77834, 97549
 iondeluge: 4 seeds
   Seeds: 55736, 73448, 78126, 79574
 plasmafists: 4 seeds
@@ -159,46 +91,40 @@ magiccoat: 4 seeds
   Seeds: 56825, 73093, 77834, 78126
 triplekick: 4 seeds
   Seeds: 59646, 71148, 71847, 79574
+trickroom: 4 seeds
+  Seeds: 61431, 74337, 78126, 87270
 temperflare: 4 seeds
   Seeds: 67961, 73448, 78126, 82834
-kinesis: 4 seeds
-  Seeds: 68764, 71148, 73093, 96673
 dig: 4 seeds
   Seeds: 69794, 77833, 81757, 95041
+captivate: 4 seeds
+  Seeds: 73093, 77834, 95041, 95236
 stoneaxe: 4 seeds
   Seeds: 77834, 87363, 97470, 97549
 ragingfury: 3 seeds
   Seeds: 10653, 42438, 73093
-silktrap: 3 seeds
-  Seeds: 10825, 19450, 943
-shedtail: 3 seeds
-  Seeds: 12832, 49637, 68529
 torment: 3 seeds
   Seeds: 15759, 73093, 99388
-powershift: 3 seeds
-  Seeds: 15759, 19405, 92977
-gmaxoneblow: 3 seeds
-  Seeds: 16240, 19405, 54588
+encore: 3 seeds
+  Seeds: 15759, 16240, 79574
+tailwind: 3 seeds
+  Seeds: 15759, 943, 97549
 followme: 3 seeds
   Seeds: 16240, 64286, 99388
-barrier: 3 seeds
-  Seeds: 16240, 19405, 67961
 afteryou: 3 seeds
   Seeds: 16240, 64286, 78126
-venomdrench: 3 seeds
-  Seeds: 16240, 31834, 73093
 soulstealing7starstrike: 3 seeds
   Seeds: 16240, 43891, 80374
 gigavolthavoc: 3 seeds
   Seeds: 16240, 37514, 73448
+kingsshield: 3 seeds
+  Seeds: 16240, 78126, 943
 healbell: 3 seeds
   Seeds: 16240, 71148, 77834
 forestscurse: 3 seeds
   Seeds: 16240, 67961, 71148
 bleakwindstorm: 3 seeds
   Seeds: 16240, 49637, 99388
-hiddenpowerground: 3 seeds
-  Seeds: 16240, 54588, 89312
 sweetscent: 3 seeds
   Seeds: 16240, 74337, 89804
 skydrop: 3 seeds
@@ -207,84 +133,52 @@ blackholeeclipse: 3 seeds
   Seeds: 16240, 43891, 74337
 dreameater: 3 seeds
   Seeds: 16240, 71148, 97549
-highjumpkick: 3 seeds
-  Seeds: 19405, 43891, 95041
-floralhealing: 3 seeds
-  Seeds: 19405, 64286, 70719
-powder: 3 seeds
-  Seeds: 19405, 54588, 78126
-scaryface: 3 seeds
-  Seeds: 19405, 51150, 87270
-swordsdance: 3 seeds
-  Seeds: 19405, 31834, 95041
-sketch: 3 seeds
-  Seeds: 19405, 51150, 89312
-gmaxcuddle: 3 seeds
-  Seeds: 19405, 78126, 87270
-moongeistbeam: 3 seeds
-  Seeds: 19405, 71148, 79574
 morningsun: 3 seeds
   Seeds: 20356, 64286, 92977
 icespinner: 3 seeds
   Seeds: 20356, 51150, 79574
 gmaxvolcalith: 3 seeds
   Seeds: 20356, 30637, 51150
-meanlook: 3 seeds
-  Seeds: 20356, 68529, 97549
 lastresort: 3 seeds
   Seeds: 20356, 30637, 67961
-allyswitch: 3 seeds
-  Seeds: 22002, 51150, 82568
 bellydrum: 3 seeds
   Seeds: 25177, 71148, 73093
+pursuit: 3 seeds
+  Seeds: 25574, 35620, 78875
 filletaway: 3 seeds
   Seeds: 2719, 42548, 79574
-quash: 3 seeds
-  Seeds: 2719, 31834, 95041
 spikes: 3 seeds
   Seeds: 2719, 73093, 77834
 gmaxcannonade: 3 seeds
   Seeds: 30232, 79574, 92977
 megahorn: 3 seeds
   Seeds: 30637, 64286, 71148
+kowtowcleave: 3 seeds
+  Seeds: 30637, 78126, 95041
 hydrovortex: 3 seeds
   Seeds: 30637, 49637, 65490
-electroshot: 3 seeds
-  Seeds: 30637, 31834, 87270
-razorshell: 3 seeds
-  Seeds: 30637, 42548, 89312
 paleowave: 3 seeds
   Seeds: 30637, 42438, 54588
 bounce: 3 seeds
   Seeds: 30637, 53148, 99388
 painsplit: 3 seeds
   Seeds: 30637, 60818, 79574
-partingshot: 3 seeds
-  Seeds: 31834, 79574, 97549
-thunderfang: 3 seeds
-  Seeds: 31834, 42438, 54588
-earthquake: 3 seeds
-  Seeds: 31834, 64286, 97549
-powerswap: 3 seeds
-  Seeds: 31834, 49637, 68764
-gmaxmeltdown: 3 seeds
-  Seeds: 31834, 64286, 97549
-spiritshackle: 3 seeds
-  Seeds: 31834, 49637, 72568
+struggle: 3 seeds
+  Seeds: 32939, 79574, 95041
+spotlight: 3 seeds
+  Seeds: 32939, 54588, 943
 circlethrow: 3 seeds
   Seeds: 32939, 74337, 99388
-searingsunrazesmash: 3 seeds
-  Seeds: 34957, 72782, 95041
+mindblown: 3 seeds
+  Seeds: 37514, 67961, 99388
 blazekick: 3 seeds
   Seeds: 38902, 64286, 95041
-skittersmack: 3 seeds
-  Seeds: 38902, 72568, 73448
 corrosivegas: 3 seeds
   Seeds: 42438, 73448, 943
-ficklebeam: 3 seeds
-  Seeds: 42438, 67961, 72568
 chillingwater: 3 seeds
   Seeds: 42438, 71148, 77834
+magicaltorque: 3 seeds
+  Seeds: 42438, 65503, 73093
 makeitrain: 3 seeds
   Seeds: 42438, 54588, 97549
 pulverizingpancake: 3 seeds
@@ -295,34 +189,32 @@ petalblizzard: 3 seeds
   Seeds: 42438, 49637, 92615
 gmaxreplenish: 3 seeds
   Seeds: 42438, 70719, 73093
+honeclaws: 3 seeds
+  Seeds: 42438, 73093, 92977
+sunsteelstrike: 3 seeds
+  Seeds: 42548, 54588, 71148
 fairywind: 3 seeds
   Seeds: 42548, 74337, 96183
 blastburn: 3 seeds
   Seeds: 42548, 71148, 73448
-closecombat: 3 seeds
-  Seeds: 42548, 72568, 73448
 wringout: 3 seeds
   Seeds: 42548, 71148, 73093
-imprison: 3 seeds
-  Seeds: 42548, 68529, 70719
 firstimpression: 3 seeds
   Seeds: 42548, 49637, 74337
 powersplit: 3 seeds
   Seeds: 42548, 51150, 943
 glaciate: 3 seeds
   Seeds: 42548, 73448, 87270
-ingrain: 3 seeds
-  Seeds: 42548, 68764, 73093
+relicsong: 3 seeds
+  Seeds: 42548, 43891, 54588
 mirrorshot: 3 seeds
   Seeds: 42548, 43891, 49637
 hornleech: 3 seeds
   Seeds: 42548, 73093, 73448
-flamethrower: 3 seeds
-  Seeds: 42548, 68764, 78126
-maxrockfall: 3 seeds
-  Seeds: 42548, 78126, 89312
 crosschop: 3 seeds
   Seeds: 42548, 49637, 67961
+storedpower: 3 seeds
+  Seeds: 43891, 49637, 78126
 maxdarkness: 3 seeds
   Seeds: 43891, 55736, 60885
 toxicthread: 3 seeds
@@ -339,32 +231,28 @@ naturalgift: 3 seeds
   Seeds: 49637, 51150, 82834
 spiderweb: 3 seeds
   Seeds: 49637, 74337, 79574
+multiattack: 3 seeds
+  Seeds: 49637, 96183, 99388
 destinybond: 3 seeds
   Seeds: 49637, 64286, 943
-headlongrush: 3 seeds
-  Seeds: 49637, 71148, 72568
-brutalswing: 3 seeds
-  Seeds: 49637, 68764, 89312
 victorydance: 3 seeds
   Seeds: 49637, 51150, 55736
-collisioncourse: 3 seeds
-  Seeds: 51150, 67961, 89312
+obstruct: 3 seeds
+  Seeds: 51150, 73093, 81757
 hardpress: 3 seeds
   Seeds: 51150, 92977, 99388
+brickbreak: 3 seeds
+  Seeds: 51150, 54588, 64286
 shockwave: 3 seeds
   Seeds: 51150, 71148, 92977
-gmaxdepletion: 3 seeds
-  Seeds: 51150, 87270, 89312
 dragonenergy: 3 seeds
   Seeds: 51150, 64286, 92977
-softboiled: 3 seeds
-  Seeds: 52895, 72568, 87270
 vcreate: 3 seeds
   Seeds: 53747, 54588, 74337
-supersonic: 3 seeds
-  Seeds: 54588, 89312, 96673
 autotomize: 3 seeds
   Seeds: 54588, 80374, 95041
+landswrath: 3 seeds
+  Seeds: 54588, 55736, 97549
 happyhour: 3 seeds
   Seeds: 54588, 73448, 95041
 lunarblessing: 3 seeds
@@ -373,68 +261,52 @@ razorleaf: 3 seeds
   Seeds: 54588, 79574, 92977
 behemothbash: 3 seeds
   Seeds: 54588, 71148, 97549
+gmaxfoamburst: 3 seeds
+  Seeds: 54588, 82834, 95041
+protect: 3 seeds
+  Seeds: 54588, 74337, 78126
 dracometeor: 3 seeds
   Seeds: 54588, 79574, 97549
-flatter: 3 seeds
-  Seeds: 54588, 72568, 74337
 slam: 3 seeds
   Seeds: 54588, 55736, 95041
 focusblast: 3 seeds
   Seeds: 55736, 943, 97549
+grasspledge: 3 seeds
+  Seeds: 55736, 77834, 95041
+hypervoice: 3 seeds
+  Seeds: 55736, 56825, 71148
 wingattack: 3 seeds
   Seeds: 55736, 71148, 74337
 maliciousmoonsault: 3 seeds
   Seeds: 60885, 70719, 78126
 futuresight: 3 seeds
   Seeds: 60885, 67961, 87270
+transform: 3 seeds
+  Seeds: 61343, 64566, 90577
 maxsteelspike: 3 seeds
   Seeds: 64286, 95041, 99388
-hurricane: 3 seeds
-  Seeds: 64286, 68764, 77834
 polarflare: 3 seeds
   Seeds: 64286, 87270, 92977
-overheat: 3 seeds
-  Seeds: 64286, 71505, 72568
-sharpen: 3 seeds
-  Seeds: 64286, 70719, 89312
-headcharge: 3 seeds
-  Seeds: 64286, 67961, 68764
 embargo: 3 seeds
   Seeds: 67475, 71148, 88000
 sacredsword: 3 seeds
   Seeds: 67961, 943, 95041
-maxgeyser: 3 seeds
-  Seeds: 67961, 68764, 71148
-shadowpunch: 3 seeds
-  Seeds: 68764, 92977, 943
-spark: 3 seeds
-  Seeds: 68764, 72568, 73093
-icehammer: 3 seeds
-  Seeds: 68764, 95041, 97549
 recycle: 3 seeds
   Seeds: 70719, 73448, 99388
-mysticalpower: 3 seeds
-  Seeds: 71148, 78126, 89312
 celebrate: 3 seeds
   Seeds: 71148, 77834, 89804
 belch: 3 seeds
   Seeds: 71148, 73448, 943
 cut: 3 seeds
   Seeds: 71148, 87270, 99388
+kinesis: 3 seeds
+  Seeds: 71148, 73093, 96673
 ceaselessedge: 3 seeds
   Seeds: 71148, 87270, 92977
 tidyup: 3 seeds
   Seeds: 71148, 92977, 95041
 maxflare: 3 seeds
   Seeds: 71505, 73093, 73448
-spikecannon: 3 seeds
-  Seeds: 71505, 72568, 943
-xscissor: 3 seeds
-  Seeds: 72568, 73448, 99388
-synthesis: 3 seeds
-  Seeds: 72568, 74337, 97549
-facade: 3 seeds
-  Seeds: 72568, 85281, 99388
 boltstrike: 3 seeds
   Seeds: 73093, 87270, 95041
 drainingkiss: 3 seeds
@@ -443,8 +315,12 @@ firefang: 3 seeds
   Seeds: 73448, 74337, 78126
 steelbeam: 3 seeds
   Seeds: 73448, 96673, 99388
+branchpoke: 3 seeds
+  Seeds: 73448, 74337, 77834
 mudshot: 3 seeds
   Seeds: 73448, 92615, 92977
+rockpolish: 3 seeds
+  Seeds: 73448, 74337, 78126
 gmaxwildfire: 3 seeds
   Seeds: 74337, 79574, 95236
 crushclaw: 3 seeds
@@ -453,22 +329,24 @@ tropkick: 3 seeds
   Seeds: 77834, 87633, 92977
 clangingscales: 3 seeds
   Seeds: 78126, 943, 99388
-roleplay: 2 seeds
-  Seeds: 12832, 943
-gmaxterror: 2 seeds
-  Seeds: 12832, 68764
-bide: 2 seeds
-  Seeds: 14097, 60818
+powershift: 2 seeds
+  Seeds: 15759, 92977
 comeuppance: 2 seeds
   Seeds: 15974, 87270
+gmaxoneblow: 2 seeds
+  Seeds: 16240, 54588
 zenheadbutt: 2 seeds
   Seeds: 16240, 95041
+barrier: 2 seeds
+  Seeds: 16240, 67961
 electrodrift: 2 seeds
   Seeds: 16240, 943
-fleurcannon: 2 seeds
-  Seeds: 16240, 89312
+punishment: 2 seeds
+  Seeds: 16240, 30637
 steelwing: 2 seeds
   Seeds: 16240, 73448
+venomdrench: 2 seeds
+  Seeds: 16240, 73093
 gmaxfireball: 2 seeds
   Seeds: 16240, 79574
 snaptrap: 2 seeds
@@ -479,44 +357,14 @@ roost: 2 seeds
   Seeds: 16240, 51150
 superfang: 2 seeds
   Seeds: 16240, 65503
-buzzybuzz: 2 seeds
-  Seeds: 16240, 89312
 nihillight: 2 seeds
   Seeds: 16240, 78126
+hiddenpowerground: 2 seeds
+  Seeds: 16240, 54588
 scald: 2 seeds
   Seeds: 16240, 43891
-headsmash: 2 seeds
-  Seeds: 19405, 89312
-bravebird: 2 seeds
-  Seeds: 19405, 77834
-aromaticmist: 2 seeds
-  Seeds: 19405, 99388
-hyperspacefury: 2 seeds
-  Seeds: 19405, 79574
-bonerush: 2 seeds
-  Seeds: 19405, 71505
-milkdrink: 2 seeds
-  Seeds: 19405, 71505
-howl: 2 seeds
-  Seeds: 19405, 87270
-freezyfrost: 2 seeds
-  Seeds: 19405, 54588
-speedswap: 2 seeds
-  Seeds: 19405, 74337
-outrage: 2 seeds
-  Seeds: 19405, 25177
-aromatherapy: 2 seeds
-  Seeds: 19405, 85281
-powergem: 2 seeds
-  Seeds: 19405, 54588
-gravapple: 2 seeds
-  Seeds: 19405, 78126
-dynamaxcannon: 2 seeds
-  Seeds: 19405, 74337
-sludgewave: 2 seeds
-  Seeds: 19405, 31834
-mudbomb: 2 seeds
-  Seeds: 19405, 89312
+meanlook: 2 seeds
+  Seeds: 20356, 97549
 chatter: 2 seeds
   Seeds: 25177, 99388
 stickyweb: 2 seeds
@@ -525,64 +373,40 @@ quickguard: 2 seeds
   Seeds: 25574, 73448
 weatherball: 2 seeds
   Seeds: 2719, 79574
+quash: 2 seeds
+  Seeds: 2719, 95041
 blueflare: 2 seeds
   Seeds: 2719, 71505
 metronome: 2 seeds
   Seeds: 2719, 64286
-thousandwaves: 2 seeds
-  Seeds: 29161, 74337
 babydolleyes: 2 seeds
   Seeds: 30232, 55736
 doubleteam: 2 seeds
   Seeds: 30232, 95041
 gmaxresonance: 2 seeds
   Seeds: 30232, 42438
-terrainpulse: 2 seeds
-  Seeds: 30637, 72568
 dizzypunch: 2 seeds
   Seeds: 30637, 43891
 flowertrick: 2 seeds
   Seeds: 30637, 92977
 spitup: 2 seeds
   Seeds: 30637, 89804
+electroshot: 2 seeds
+  Seeds: 30637, 87270
 gyroball: 2 seeds
   Seeds: 30637, 77834
 spectralthief: 2 seeds
   Seeds: 30637, 99388
-maxlightning: 2 seeds
-  Seeds: 30637, 89312
 shadowbone: 2 seeds
   Seeds: 30637, 51150
 camouflage: 2 seeds
   Seeds: 30637, 99388
 wildcharge: 2 seeds
   Seeds: 30637, 78126
+razorshell: 2 seeds
+  Seeds: 30637, 42548
 doomdesire: 2 seeds
   Seeds: 30637, 67961
-gmaxstunshock: 2 seeds
-  Seeds: 31834, 95041
-drillrun: 2 seeds
-  Seeds: 31834, 73448
-hyperspacehole: 2 seeds
-  Seeds: 31834, 73448
-flamewheel: 2 seeds
-  Seeds: 31834, 74337
-playnice: 2 seeds
-  Seeds: 31834, 53747
-gmaxsweetness: 2 seeds
-  Seeds: 31834, 95236
-ironhead: 2 seeds
-  Seeds: 31834, 78126
-ominouswind: 2 seeds
-  Seeds: 31834, 55736
-electricterrain: 2 seeds
-  Seeds: 31834, 74337
-frenzyplant: 2 seeds
-  Seeds: 31834, 78126
-signalbeam: 2 seeds
-  Seeds: 31834, 74337
-coaching: 2 seeds
-  Seeds: 31834, 42438
 sacredfire: 2 seeds
   Seeds: 32939, 77834
 lastrespects: 2 seeds
@@ -591,18 +415,24 @@ wideguard: 2 seeds
   Seeds: 35620, 78875
 nuzzle: 2 seeds
   Seeds: 37514, 51150
+skittersmack: 2 seeds
+  Seeds: 38902, 73448
 gmaxstonesurge: 2 seeds
   Seeds: 39361, 79574
 dragondarts: 2 seeds
   Seeds: 40910, 943
 psychoboost: 2 seeds
   Seeds: 42438, 73093
+ficklebeam: 2 seeds
+  Seeds: 42438, 67961
 catastropika: 2 seeds
   Seeds: 42438, 60818
 strugglebug: 2 seeds
   Seeds: 42438, 95041
 snore: 2 seeds
   Seeds: 42438, 79574
+thunderfang: 2 seeds
+  Seeds: 42438, 54588
 pinmissile: 2 seeds
   Seeds: 42438, 77834
 worryseed: 2 seeds
@@ -625,8 +455,8 @@ fly: 2 seeds
   Seeds: 42438, 73093
 doublekick: 2 seeds
   Seeds: 42438, 54588
-secretpower: 2 seeds
-  Seeds: 42548, 72568
+psychup: 2 seeds
+  Seeds: 42548, 43891
 craftyshield: 2 seeds
   Seeds: 42548, 95061
 savagespinout: 2 seeds
@@ -635,8 +465,12 @@ featherdance: 2 seeds
   Seeds: 42548, 43891
 skullbash: 2 seeds
   Seeds: 42548, 71505
+closecombat: 2 seeds
+  Seeds: 42548, 73448
 ember: 2 seeds
   Seeds: 42548, 54588
+imprison: 2 seeds
+  Seeds: 42548, 70719
 photongeyser: 2 seeds
   Seeds: 42548, 51150
 terastarstorm: 2 seeds
@@ -645,14 +479,24 @@ hypnosis: 2 seeds
   Seeds: 42548, 78126
 waterpulse: 2 seeds
   Seeds: 42548, 74337
+ingrain: 2 seeds
+  Seeds: 42548, 73093
 spite: 2 seeds
   Seeds: 42548, 64286
+horndrill: 2 seeds
+  Seeds: 42548, 65490
+flamethrower: 2 seeds
+  Seeds: 42548, 78126
+maxrockfall: 2 seeds
+  Seeds: 42548, 78126
 airslash: 2 seeds
   Seeds: 42548, 49637
 purify: 2 seeds
   Seeds: 43891, 92977
 pluck: 2 seeds
   Seeds: 43891, 99388
+highjumpkick: 2 seeds
+  Seeds: 43891, 95041
 lusterpurge: 2 seeds
   Seeds: 43891, 55736
 sizzlyslide: 2 seeds
@@ -667,14 +511,10 @@ reflecttype: 2 seeds
   Seeds: 43891, 87270
 aeroblast: 2 seeds
   Seeds: 43891, 87270
-mudsport: 2 seeds
-  Seeds: 43891, 77336
 razorwind: 2 seeds
   Seeds: 43891, 99388
 terablast: 2 seeds
   Seeds: 43891, 67961
-visegrip: 2 seeds
-  Seeds: 43891, 72568
 confuseray: 2 seeds
   Seeds: 43891, 73093
 dragonhammer: 2 seeds
@@ -683,30 +523,32 @@ knockoff: 2 seeds
   Seeds: 45311, 87270
 block: 2 seeds
   Seeds: 49637, 73093
-conversion2: 2 seeds
-  Seeds: 49637, 68764
 eruption: 2 seeds
   Seeds: 49637, 79574
 noretreat: 2 seeds
   Seeds: 49637, 87270
-entrainment: 2 seeds
-  Seeds: 49637, 68764
+headlongrush: 2 seeds
+  Seeds: 49637, 71148
 boltbeak: 2 seeds
   Seeds: 49637, 74337
 psyshock: 2 seeds
   Seeds: 49637, 95041
 letssnuggleforever: 2 seeds
   Seeds: 49637, 64286
-dragonrage: 2 seeds
-  Seeds: 51150, 68764
 heatwave: 2 seeds
   Seeds: 51150, 55736
+collisioncourse: 2 seeds
+  Seeds: 51150, 67961
+scaryface: 2 seeds
+  Seeds: 51150, 87270
 megakick: 2 seeds
   Seeds: 51150, 87270
 infernooverdrive: 2 seeds
   Seeds: 51150, 65490
 maxquake: 2 seeds
   Seeds: 51150, 95041
+gmaxdepletion: 2 seeds
+  Seeds: 51150, 87270
 ragepowder: 2 seeds
   Seeds: 51150, 73093
 nightdaze: 2 seeds
@@ -717,10 +559,14 @@ shatteredpsyche: 2 seeds
   Seeds: 51150, 71148
 crunch: 2 seeds
   Seeds: 51150, 55736
+softboiled: 2 seeds
+  Seeds: 52895, 87270
 corkscrewcrash: 2 seeds
   Seeds: 53148, 55736
 lavaplume: 2 seeds
   Seeds: 53747, 95041
+supersonic: 2 seeds
+  Seeds: 54588, 96673
 batonpass: 2 seeds
   Seeds: 54588, 79574
 toxicspikes: 2 seeds
@@ -731,8 +577,12 @@ splinteredstormshards: 2 seeds
   Seeds: 54588, 82834
 aquajet: 2 seeds
   Seeds: 54588, 97549
+powder: 2 seeds
+  Seeds: 54588, 78126
 dazzlinggleam: 2 seeds
   Seeds: 54588, 77834
+flatter: 2 seeds
+  Seeds: 54588, 74337
 memento: 2 seeds
   Seeds: 55736, 73448
 psychocut: 2 seeds
@@ -761,14 +611,28 @@ curse: 2 seeds
   Seeds: 59646, 87270
 rage: 2 seeds
   Seeds: 60818, 67961
+gmaxmeltdown: 2 seeds
+  Seeds: 64286, 97549
+hurricane: 2 seeds
+  Seeds: 64286, 77834
+floralhealing: 2 seeds
+  Seeds: 64286, 70719
 tarshot: 2 seeds
   Seeds: 64286, 79574
+earthquake: 2 seeds
+  Seeds: 64286, 97549
+overheat: 2 seeds
+  Seeds: 64286, 71505
 healorder: 2 seeds
   Seeds: 64286, 71505
 recover: 2 seeds
   Seeds: 64286, 943
+sharpen: 2 seeds
+  Seeds: 64286, 70719
 gmaxhydrosnipe: 2 seeds
   Seeds: 64286, 71148
+headcharge: 2 seeds
+  Seeds: 64286, 67961
 sappyseed: 2 seeds
   Seeds: 64286, 73093
 falsesurrender: 2 seeds
@@ -789,10 +653,10 @@ screech: 2 seeds
   Seeds: 67961, 79574
 constrict: 2 seeds
   Seeds: 67961, 74337
+maxgeyser: 2 seeds
+  Seeds: 67961, 71148
 strengthsap: 2 seeds
   Seeds: 67961, 83469
-skyattack: 2 seeds
-  Seeds: 67961, 68764
 leechseed: 2 seeds
   Seeds: 67961, 70719
 shadowforce: 2 seeds
@@ -803,50 +667,30 @@ guardianofalola: 2 seeds
   Seeds: 67961, 77834
 iceshard: 2 seeds
   Seeds: 67961, 89804
-boneclub: 2 seeds
-  Seeds: 68764, 92977
-thief: 2 seeds
-  Seeds: 68764, 73448
-odorsleuth: 2 seeds
-  Seeds: 68764, 99388
-shadowstrike: 2 seeds
-  Seeds: 68764, 97549
-freezeshock: 2 seeds
-  Seeds: 68764, 79574
-defog: 2 seeds
-  Seeds: 68764, 71148
 calmmind: 2 seeds
   Seeds: 70719, 95041
 stuffcheeks: 2 seeds
   Seeds: 71148, 99388
+mysticalpower: 2 seeds
+  Seeds: 71148, 78126
 gigadrain: 2 seeds
   Seeds: 71148, 97549
+moongeistbeam: 2 seeds
+  Seeds: 71148, 79574
 armorcannon: 2 seeds
   Seeds: 71148, 72782
 acidarmor: 2 seeds
   Seeds: 71148, 73093
+gastroacid: 2 seeds
+  Seeds: 71505, 87270
 burnup: 2 seeds
   Seeds: 71505, 73093
-suckerpunch: 2 seeds
-  Seeds: 71847, 89312
+spikecannon: 2 seeds
+  Seeds: 71505, 943
 sandattack: 2 seeds
   Seeds: 71847, 97549
-liquidation: 2 seeds
-  Seeds: 72568, 87270
-pound: 2 seeds
-  Seeds: 72568, 97549
-rockwrecker: 2 seeds
-  Seeds: 72568, 79574
-heatcrash: 2 seeds
-  Seeds: 72568, 92977
-leaftornado: 2 seeds
-  Seeds: 72568, 97549
-echoedvoice: 2 seeds
-  Seeds: 72568, 97549
-magicalleaf: 2 seeds
-  Seeds: 72568, 87270
-stokedsparksurfer: 2 seeds
-  Seeds: 72568, 73448
+searingsunrazesmash: 2 seeds
+  Seeds: 72782, 95041
 gmaxgoldrush: 2 seeds
   Seeds: 72782, 80374
 safeguard: 2 seeds
@@ -865,10 +709,12 @@ aurorabeam: 2 seeds
   Seeds: 73448, 943
 endeavor: 2 seeds
   Seeds: 73448, 943
+xscissor: 2 seeds
+  Seeds: 73448, 99388
 growl: 2 seeds
   Seeds: 73448, 99388
-sleeptalk: 2 seeds
-  Seeds: 74337, 89312
+synthesis: 2 seeds
+  Seeds: 74337, 97549
 oblivionwing: 2 seeds
   Seeds: 74337, 99388
 pounce: 2 seeds
@@ -879,8 +725,6 @@ hydropump: 2 seeds
   Seeds: 77834, 99388
 tripledive: 2 seeds
   Seeds: 77834, 79574
-bulletseed: 2 seeds
-  Seeds: 77834, 89312
 psywave: 2 seeds
   Seeds: 77834, 92977
 payback: 2 seeds
@@ -893,14 +737,16 @@ drainpunch: 2 seeds
   Seeds: 78126, 87270
 cottonguard: 2 seeds
   Seeds: 78126, 943
-revenge: 2 seeds
-  Seeds: 78126, 89312
 flyingpress: 2 seeds
+  Seeds: 78126, 87270
+gmaxcuddle: 2 seeds
   Seeds: 78126, 87270
 nightmare: 2 seeds
   Seeds: 79574, 92977
 firespin: 2 seeds
   Seeds: 79574, 89804
+partingshot: 2 seeds
+  Seeds: 79574, 97549
 skillswap: 2 seeds
   Seeds: 79574, 87270
 maxovergrowth: 2 seeds
@@ -911,10 +757,10 @@ gmaxtartness: 2 seeds
   Seeds: 81764, 92615
 maxphantasm: 2 seeds
   Seeds: 81764, 97549
-tectonicrage: 2 seeds
-  Seeds: 82834, 89312
 stoneedge: 2 seeds
   Seeds: 83469, 99388
+facade: 2 seeds
+  Seeds: 85281, 99388
 coil: 2 seeds
   Seeds: 85281, 943
 hiddenpowerfire: 2 seeds
@@ -923,30 +769,22 @@ megapunch: 2 seeds
   Seeds: 87270, 97549
 hiddenpowerghost: 2 seeds
   Seeds: 87270, 92977
-incinerate: 2 seeds
-  Seeds: 89312, 95061
-helpinghand: 2 seeds
-  Seeds: 89312, 92977
-furyattack: 2 seeds
-  Seeds: 89312, 99388
-rapidspin: 2 seeds
-  Seeds: 89312, 95041
-slackoff: 2 seeds
-  Seeds: 89312, 99388
-watersport: 2 seeds
-  Seeds: 89312, 943
 endure: 2 seeds
   Seeds: 89804, 97549
 spore: 2 seeds
   Seeds: 92977, 99388
 snatch: 2 seeds
   Seeds: 92977, 97549
+shadowpunch: 2 seeds
+  Seeds: 92977, 943
 hiddenpowerpsychic: 2 seeds
   Seeds: 943, 97549
 switcheroo: 2 seeds
   Seeds: 943, 95061
 wildboltstorm: 2 seeds
   Seeds: 943, 97549
+icehammer: 2 seeds
+  Seeds: 95041, 97549
 leafstorm: 2 seeds
   Seeds: 95041, 97549
 teatime: 2 seeds
@@ -965,44 +803,32 @@ mindreader: 1 seeds
   Seeds: 16240
 gmaxcentiferno: 1 seeds
   Seeds: 16240
+fleurcannon: 1 seeds
+  Seeds: 16240
 hiddenpowerice: 1 seeds
   Seeds: 16240
 wickedtorque: 1 seeds
   Seeds: 16240
 throatchop: 1 seeds
   Seeds: 16240
+buzzybuzz: 1 seeds
+  Seeds: 16240
 selfdestruct: 1 seeds
   Seeds: 16240
 mightycleave: 1 seeds
   Seeds: 16240
-vinewhip: 1 seeds
-  Seeds: 19405
-avalanche: 1 seeds
-  Seeds: 19405
-guardswap: 1 seeds
-  Seeds: 19405
-anchorshot: 1 seeds
-  Seeds: 19405
-strangesteam: 1 seeds
-  Seeds: 19405
-rocksmash: 1 seeds
-  Seeds: 19405
-waterpledge: 1 seeds
-  Seeds: 19405
-spinout: 1 seeds
-  Seeds: 19405
-seedflare: 1 seeds
-  Seeds: 19405
 maxknuckle: 1 seeds
   Seeds: 20356
-instruct: 1 seeds
-  Seeds: 29161
+outrage: 1 seeds
+  Seeds: 25177
 explosion: 1 seeds
   Seeds: 30232
 lightthatburnsthesky: 1 seeds
   Seeds: 30232
 combattorque: 1 seeds
   Seeds: 30232
+terrainpulse: 1 seeds
+  Seeds: 30637
 crosspoison: 1 seeds
   Seeds: 30637
 dualwingbeat: 1 seeds
@@ -1014,6 +840,8 @@ tearfullook: 1 seeds
 tickle: 1 seeds
   Seeds: 30637
 snowscape: 1 seeds
+  Seeds: 30637
+maxlightning: 1 seeds
   Seeds: 30637
 sheercold: 1 seeds
   Seeds: 30637
@@ -1037,26 +865,6 @@ icebeam: 1 seeds
   Seeds: 30637
 simplebeam: 1 seeds
   Seeds: 30637
-10000000voltthunderbolt: 1 seeds
-  Seeds: 31834
-maxairstream: 1 seeds
-  Seeds: 31834
-astonish: 1 seeds
-  Seeds: 31834
-vacuumwave: 1 seeds
-  Seeds: 31834
-maxmindstorm: 1 seeds
-  Seeds: 31834
-thunderouskick: 1 seeds
-  Seeds: 31834
-devastatingdrake: 1 seeds
-  Seeds: 31834
-electroball: 1 seeds
-  Seeds: 31834
-courtchange: 1 seeds
-  Seeds: 31834
-eerieimpulse: 1 seeds
-  Seeds: 31834
 steelroller: 1 seeds
   Seeds: 32939
 wish: 1 seeds
@@ -1068,6 +876,8 @@ overdrive: 1 seeds
 sandtomb: 1 seeds
   Seeds: 42438
 karatechop: 1 seeds
+  Seeds: 42438
+coaching: 1 seeds
   Seeds: 42438
 reversal: 1 seeds
   Seeds: 42438
@@ -1086,6 +896,8 @@ skyuppercut: 1 seeds
 mistball: 1 seeds
   Seeds: 42548
 iceburn: 1 seeds
+  Seeds: 42548
+secretpower: 1 seeds
   Seeds: 42548
 rockblast: 1 seeds
   Seeds: 42548
@@ -1107,13 +919,23 @@ gravity: 1 seeds
   Seeds: 43891
 confide: 1 seeds
   Seeds: 43891
+mudsport: 1 seeds
+  Seeds: 43891
 triplearrows: 1 seeds
   Seeds: 43891
 metalclaw: 1 seeds
   Seeds: 43891
+visegrip: 1 seeds
+  Seeds: 43891
+shedtail: 1 seeds
+  Seeds: 49637
 peck: 1 seeds
   Seeds: 49637
+conversion2: 1 seeds
+  Seeds: 49637
 acupressure: 1 seeds
+  Seeds: 49637
+powerswap: 1 seeds
   Seeds: 49637
 fishiousrend: 1 seeds
   Seeds: 49637
@@ -1121,15 +943,25 @@ lowkick: 1 seeds
   Seeds: 49637
 orderup: 1 seeds
   Seeds: 49637
+entrainment: 1 seeds
+  Seeds: 49637
 poweruppunch: 1 seeds
+  Seeds: 49637
+brutalswing: 1 seeds
   Seeds: 49637
 gmaxvoltcrash: 1 seeds
   Seeds: 49637
+raindance: 1 seeds
+  Seeds: 49637
 shadowclaw: 1 seeds
+  Seeds: 49637
+spiritshackle: 1 seeds
   Seeds: 49637
 iceball: 1 seeds
   Seeds: 49637
 whirlpool: 1 seeds
+  Seeds: 51150
+dragonrage: 1 seeds
   Seeds: 51150
 thunder: 1 seeds
   Seeds: 51150
@@ -1137,7 +969,11 @@ paraboliccharge: 1 seeds
   Seeds: 51150
 silverwind: 1 seeds
   Seeds: 51150
+allyswitch: 1 seeds
+  Seeds: 51150
 clearsmog: 1 seeds
+  Seeds: 51150
+sketch: 1 seeds
   Seeds: 51150
 gmaxfinale: 1 seeds
   Seeds: 51150
@@ -1147,6 +983,8 @@ bite: 1 seeds
   Seeds: 51150
 cottonspore: 1 seeds
   Seeds: 51150
+playnice: 1 seeds
+  Seeds: 53747
 hornattack: 1 seeds
   Seeds: 54588
 flail: 1 seeds
@@ -1157,7 +995,11 @@ alluringvoice: 1 seeds
   Seeds: 54588
 decorate: 1 seeds
   Seeds: 54588
+freezyfrost: 1 seeds
+  Seeds: 54588
 grasswhistle: 1 seeds
+  Seeds: 54588
+powergem: 1 seeds
   Seeds: 54588
 zippyzap: 1 seeds
   Seeds: 54588
@@ -1193,10 +1035,14 @@ mortalspin: 1 seeds
   Seeds: 55736
 maxstrike: 1 seeds
   Seeds: 55736
+ominouswind: 1 seeds
+  Seeds: 55736
 assurance: 1 seeds
   Seeds: 55736
 stealthrock: 1 seeds
   Seeds: 56825
+bide: 1 seeds
+  Seeds: 60818
 gmaxsnooze: 1 seeds
   Seeds: 60818
 discharge: 1 seeds
@@ -1249,6 +1095,8 @@ jetpunch: 1 seeds
   Seeds: 67961
 flareblitz: 1 seeds
   Seeds: 67961
+skyattack: 1 seeds
+  Seeds: 67961
 sparklyswirl: 1 seeds
   Seeds: 67961
 stompingtantrum: 1 seeds
@@ -1257,32 +1105,6 @@ forcepalm: 1 seeds
   Seeds: 67961
 shiftgear: 1 seeds
   Seeds: 67961
-infestation: 1 seeds
-  Seeds: 68529
-haze: 1 seeds
-  Seeds: 68529
-attackorder: 1 seeds
-  Seeds: 68764
-gmaxsteelsurge: 1 seeds
-  Seeds: 68764
-chloroblast: 1 seeds
-  Seeds: 68764
-octolock: 1 seeds
-  Seeds: 68764
-flowershield: 1 seeds
-  Seeds: 68764
-flamecharge: 1 seeds
-  Seeds: 68764
-irontail: 1 seeds
-  Seeds: 68764
-teeterdance: 1 seeds
-  Seeds: 68764
-lovelykiss: 1 seeds
-  Seeds: 68764
-superpower: 1 seeds
-  Seeds: 68764
-furycutter: 1 seeds
-  Seeds: 68764
 psychicnoise: 1 seeds
   Seeds: 70719
 bubble: 1 seeds
@@ -1299,6 +1121,8 @@ tachyoncutter: 1 seeds
   Seeds: 71148
 twinkletackle: 1 seeds
   Seeds: 71148
+defog: 1 seeds
+  Seeds: 71148
 leafage: 1 seeds
   Seeds: 71148
 electroweb: 1 seeds
@@ -1307,28 +1131,14 @@ watershuriken: 1 seeds
   Seeds: 71155
 revivalblessing: 1 seeds
   Seeds: 71505
+milkdrink: 1 seeds
+  Seeds: 71505
+bonerush: 1 seeds
+  Seeds: 71505
 strength: 1 seeds
   Seeds: 71505
-magnitude: 1 seeds
-  Seeds: 72568
-scratch: 1 seeds
-  Seeds: 72568
-hiddenpowerwater: 1 seeds
-  Seeds: 72568
-nightslash: 1 seeds
-  Seeds: 72568
-bubblebeam: 1 seeds
-  Seeds: 72568
-auroraveil: 1 seeds
-  Seeds: 72568
-judgment: 1 seeds
-  Seeds: 72568
-rocktomb: 1 seeds
-  Seeds: 72568
-fierydance: 1 seeds
-  Seeds: 72568
-metalburst: 1 seeds
-  Seeds: 72568
+suckerpunch: 1 seeds
+  Seeds: 71847
 bodyslam: 1 seeds
   Seeds: 73093
 smackdown: 1 seeds
@@ -1338,6 +1148,8 @@ sweetkiss: 1 seeds
 bulldoze: 1 seeds
   Seeds: 73093
 freezedry: 1 seeds
+  Seeds: 73093
+spark: 1 seeds
   Seeds: 73093
 magnetrise: 1 seeds
   Seeds: 73093
@@ -1355,35 +1167,59 @@ minimize: 1 seeds
   Seeds: 73448
 aerialace: 1 seeds
   Seeds: 73448
+drillrun: 1 seeds
+  Seeds: 73448
 bind: 1 seeds
   Seeds: 73448
 supersonicskystrike: 1 seeds
+  Seeds: 73448
+stokedsparksurfer: 1 seeds
   Seeds: 73448
 mefirst: 1 seeds
   Seeds: 73448
 powertrick: 1 seeds
   Seeds: 73448
+hyperspacehole: 1 seeds
+  Seeds: 73448
 extremeevoboost: 1 seeds
   Seeds: 73448
+thief: 1 seeds
+  Seeds: 73448
+flamewheel: 1 seeds
+  Seeds: 74337
 frostbreath: 1 seeds
   Seeds: 74337
 icefang: 1 seeds
   Seeds: 74337
 spicyextract: 1 seeds
   Seeds: 74337
+sleeptalk: 1 seeds
+  Seeds: 74337
+thousandwaves: 1 seeds
+  Seeds: 74337
+electricterrain: 1 seeds
+  Seeds: 74337
 drillpeck: 1 seeds
+  Seeds: 74337
+dynamaxcannon: 1 seeds
+  Seeds: 74337
+signalbeam: 1 seeds
   Seeds: 74337
 appleacid: 1 seeds
   Seeds: 74337
 torchsong: 1 seeds
   Seeds: 74337
+speedswap: 1 seeds
+  Seeds: 74337
 substitute: 1 seeds
   Seeds: 74337
-mirrormove: 1 seeds
-  Seeds: 77336
 gmaxdrumsolo: 1 seeds
   Seeds: 77834
 gigatonhammer: 1 seeds
+  Seeds: 77834
+bulletseed: 1 seeds
+  Seeds: 77834
+bravebird: 1 seeds
   Seeds: 77834
 meteormash: 1 seeds
   Seeds: 77834
@@ -1395,13 +1231,21 @@ aircutter: 1 seeds
   Seeds: 77834
 aquaring: 1 seeds
   Seeds: 77834
+detect: 1 seeds
+  Seeds: 78126
 feint: 1 seeds
   Seeds: 78126
 psybeam: 1 seeds
   Seeds: 78126
 ivycudgel: 1 seeds
   Seeds: 78126
+gravapple: 1 seeds
+  Seeds: 78126
 hydrosteam: 1 seeds
+  Seeds: 78126
+ironhead: 1 seeds
+  Seeds: 78126
+revenge: 1 seeds
   Seeds: 78126
 sing: 1 seeds
   Seeds: 78126
@@ -1409,6 +1253,10 @@ mistyexplosion: 1 seeds
   Seeds: 78126
 roar: 1 seeds
   Seeds: 78126
+frenzyplant: 1 seeds
+  Seeds: 78126
+rockwrecker: 1 seeds
+  Seeds: 79574
 tailslap: 1 seeds
   Seeds: 79574
 bittermalice: 1 seeds
@@ -1431,17 +1279,31 @@ meteorbeam: 1 seeds
   Seeds: 79574
 thunderbolt: 1 seeds
   Seeds: 79574
+freezeshock: 1 seeds
+  Seeds: 79574
 trumpcard: 1 seeds
+  Seeds: 79574
+hyperspacefury: 1 seeds
   Seeds: 79574
 energyball: 1 seeds
   Seeds: 79574
 waterspout: 1 seeds
   Seeds: 80374
+tectonicrage: 1 seeds
+  Seeds: 82834
+aromatherapy: 1 seeds
+  Seeds: 85281
 iciclespear: 1 seeds
   Seeds: 85281
 disarmingvoice: 1 seeds
   Seeds: 87270
 syrupbomb: 1 seeds
+  Seeds: 87270
+magicalleaf: 1 seeds
+  Seeds: 87270
+howl: 1 seeds
+  Seeds: 87270
+liquidation: 1 seeds
   Seeds: 87270
 quiverdance: 1 seeds
   Seeds: 87270
@@ -1455,37 +1317,19 @@ takeheart: 1 seeds
   Seeds: 87270
 electrify: 1 seeds
   Seeds: 87363
-secretsword: 1 seeds
-  Seeds: 89312
-gmaxsmite: 1 seeds
-  Seeds: 89312
-amnesia: 1 seeds
-  Seeds: 89312
-spiritbreak: 1 seeds
-  Seeds: 89312
-quickattack: 1 seeds
-  Seeds: 89312
-perishsong: 1 seeds
-  Seeds: 89312
-sandsearstorm: 1 seeds
-  Seeds: 89312
-guardsplit: 1 seeds
-  Seeds: 89312
-twinbeam: 1 seeds
-  Seeds: 89312
-chargebeam: 1 seeds
-  Seeds: 89312
-twineedle: 1 seeds
-  Seeds: 89312
-refresh: 1 seeds
-  Seeds: 89312
 swallow: 1 seeds
   Seeds: 92977
 hyperbeam: 1 seeds
   Seeds: 92977
+heatcrash: 1 seeds
+  Seeds: 92977
 continentalcrush: 1 seeds
   Seeds: 92977
+boneclub: 1 seeds
+  Seeds: 92977
 revelationdance: 1 seeds
+  Seeds: 92977
+helpinghand: 1 seeds
   Seeds: 92977
 splash: 1 seeds
   Seeds: 92977
@@ -1501,11 +1345,17 @@ nastyplot: 1 seeds
   Seeds: 943
 diamondstorm: 1 seeds
   Seeds: 943
+silktrap: 1 seeds
+  Seeds: 943
+roleplay: 1 seeds
+  Seeds: 943
 floatyfall: 1 seeds
   Seeds: 943
 sonicboom: 1 seeds
   Seeds: 943
 fireblast: 1 seeds
+  Seeds: 943
+watersport: 1 seeds
   Seeds: 943
 dragonrush: 1 seeds
   Seeds: 943
@@ -1515,11 +1365,15 @@ beatup: 1 seeds
   Seeds: 943
 doublehit: 1 seeds
   Seeds: 943
+rapidspin: 1 seeds
+  Seeds: 95041
 hiddenpowerfighting: 1 seeds
   Seeds: 95041
 inferno: 1 seeds
   Seeds: 95041
 willowisp: 1 seeds
+  Seeds: 95041
+gmaxstunshock: 1 seeds
   Seeds: 95041
 doubleshock: 1 seeds
   Seeds: 95041
@@ -1529,21 +1383,31 @@ ruination: 1 seeds
   Seeds: 95041
 tailglow: 1 seeds
   Seeds: 95041
+swordsdance: 1 seeds
+  Seeds: 95041
 boomburst: 1 seeds
   Seeds: 95041
 defendorder: 1 seeds
   Seeds: 95041
 alloutpummeling: 1 seeds
   Seeds: 95041
+incinerate: 1 seeds
+  Seeds: 95061
+gmaxsweetness: 1 seeds
+  Seeds: 95236
 zapcannon: 1 seeds
   Seeds: 95236
 maxwyrmwind: 1 seeds
   Seeds: 96183
 dragonbreath: 1 seeds
   Seeds: 97549
+shadowstrike: 1 seeds
+  Seeds: 97549
 axekick: 1 seeds
   Seeds: 97549
 vitalthrow: 1 seeds
+  Seeds: 97549
+pound: 1 seeds
   Seeds: 97549
 holdback: 1 seeds
   Seeds: 97549
@@ -1551,7 +1415,19 @@ payday: 1 seeds
   Seeds: 97549
 bloomdoom: 1 seeds
   Seeds: 97549
+echoedvoice: 1 seeds
+  Seeds: 97549
+leaftornado: 1 seeds
+  Seeds: 97549
+odorsleuth: 1 seeds
+  Seeds: 99388
 hyperfang: 1 seeds
+  Seeds: 99388
+furyattack: 1 seeds
+  Seeds: 99388
+slackoff: 1 seeds
+  Seeds: 99388
+aromaticmist: 1 seeds
   Seeds: 99388
 maxflutterby: 1 seeds
   Seeds: 99388
@@ -1567,58 +1443,42 @@ mysticalfire: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Armor Tail: 19 seeds
-  Seeds: 10825, 14097, 19367, 22002, 29444, 34408, 34957, 47061, 62723, 63843... (+9 more)
-Levitate: 13 seeds
-  Seeds: 16240, 30637, 31834, 54588, 64286, 71148, 72568, 74337, 77834, 79574... (+3 more)
-Gulp Missile: 10 seeds
-  Seeds: 55736, 56264, 72568, 74337, 77624, 78126, 79574, 81764, 82556, 92615
-Intimidate: 9 seeds
-  Seeds: 31834, 32939, 42438, 55736, 68764, 73093, 74439, 89312, 92977
-Swift Swim: 8 seeds
-  Seeds: 31834, 42438, 51150, 73093, 73448, 77834, 92977, 97549
-Air Lock: 8 seeds
-  Seeds: 35203, 38902, 40192, 74337, 76907, 83489, 89312, 94256
-Shield Dust: 7 seeds
-  Seeds: 19405, 25177, 51150, 67961, 71148, 71847, 79574
-Dazzling: 7 seeds
-  Seeds: 19450, 26791, 53040, 82568, 91750, 93338, 97945
-Pickup: 7 seeds
-  Seeds: 30637, 43891, 49637, 55736, 67961, 68764, 97549
+Levitate: 10 seeds
+  Seeds: 16240, 30637, 54588, 64286, 71148, 74337, 77834, 79574, 943, 99388
+Gulp Missile: 9 seeds
+  Seeds: 55736, 56264, 74337, 77624, 78126, 79574, 81764, 82556, 92615
+Air Lock: 7 seeds
+  Seeds: 35203, 38902, 40192, 74337, 76907, 83489, 94256
+Swift Swim: 7 seeds
+  Seeds: 42438, 51150, 73093, 73448, 77834, 92977, 97549
 Swarm: 7 seeds
   Seeds: 42548, 55736, 64286, 71148, 73448, 74337, 77834
-Keen Eye: 6 seeds
-  Seeds: 16240, 30637, 51150, 55736, 68764, 72568
-Torrent: 6 seeds
-  Seeds: 16240, 19405, 30637, 31834, 78126, 95041
-Own Tempo: 6 seeds
-  Seeds: 19405, 64286, 74337, 74439, 89312, 99388
-Guts: 6 seeds
-  Seeds: 19405, 30637, 42438, 73093, 78126, 943
-Multitype: 6 seeds
-  Seeds: 30637, 31834, 42548, 51150, 87270, 89312
-Static: 5 seeds
-  Seeds: 16240, 19405, 87270, 92977, 95041
-Chlorophyll: 5 seeds
-  Seeds: 16240, 42438, 64286, 74337, 89312
+Shield Dust: 6 seeds
+  Seeds: 25177, 51150, 67961, 71148, 71847, 79574
+Pickup: 6 seeds
+  Seeds: 30637, 43891, 49637, 55736, 67961, 97549
+Intimidate: 6 seeds
+  Seeds: 32939, 42438, 55736, 73093, 74439, 92977
 Shed Skin: 5 seeds
   Seeds: 30637, 64286, 73093, 73448, 92977
+Guts: 5 seeds
+  Seeds: 30637, 42438, 73093, 78126, 943
 Sweet Veil: 5 seeds
   Seeds: 42438, 49637, 65490, 73448, 87270
 Poison Point: 5 seeds
   Seeds: 43891, 78126, 79574, 87270, 95041
-Overgrow: 5 seeds
-  Seeds: 67961, 68764, 73448, 79574, 87270
-Pressure: 5 seeds
-  Seeds: 67961, 72568, 78126, 89312, 92977
-Effect Spore: 4 seeds
-  Seeds: 19405, 48869, 65490, 70293
-Sand Veil: 4 seeds
-  Seeds: 19405, 42438, 67961, 74337
+Static: 4 seeds
+  Seeds: 16240, 87270, 92977, 95041
+Keen Eye: 4 seeds
+  Seeds: 16240, 30637, 51150, 55736
+Torrent: 4 seeds
+  Seeds: 16240, 30637, 78126, 95041
+Chlorophyll: 4 seeds
+  Seeds: 16240, 42438, 64286, 74337
 Illusion: 4 seeds
   Seeds: 30637, 54588, 73093, 90577
-Lightning Rod: 4 seeds
-  Seeds: 31834, 42548, 67961, 68764
+Multitype: 4 seeds
+  Seeds: 30637, 42548, 51150, 87270
 Unseen Fist: 4 seeds
   Seeds: 39892, 73880, 82263, 88904
 Berserk: 4 seeds
@@ -1631,28 +1491,28 @@ Flash Fire: 4 seeds
   Seeds: 49637, 78126, 943, 95041
 Stench: 4 seeds
   Seeds: 51150, 54588, 85281, 99388
-RKS System: 4 seeds
-  Seeds: 55736, 67961, 89312, 943
+Own Tempo: 4 seeds
+  Seeds: 64286, 74337, 74439, 99388
 Water Absorb: 4 seeds
   Seeds: 64286, 71148, 74337, 87270
+Overgrow: 4 seeds
+  Seeds: 67961, 73448, 79574, 87270
 Defiant: 3 seeds
   Seeds: 25177, 92977, 97549
+Sand Veil: 3 seeds
+  Seeds: 42438, 67961, 74337
 Volt Absorb: 3 seeds
   Seeds: 42548, 43891, 99388
-Hustle: 3 seeds
-  Seeds: 49637, 68764, 95041
+Effect Spore: 3 seeds
+  Seeds: 48869, 65490, 70293
 Protosynthesis: 3 seeds
   Seeds: 49637, 95041, 99388
 Weak Armor: 3 seeds
   Seeds: 49637, 78126, 87633
 Cute Charm: 3 seeds
   Seeds: 49637, 70719, 99388
-Wind Rider: 3 seeds
-  Seeds: 51150, 72568, 943
-Color Change: 3 seeds
-  Seeds: 53747, 68764, 92615
-Rivalry: 3 seeds
-  Seeds: 54588, 68764, 87270
+RKS System: 3 seeds
+  Seeds: 55736, 67961, 943
 Regenerator: 3 seeds
   Seeds: 55736, 73093, 95041
 Punk Rock: 3 seeds
@@ -1663,32 +1523,22 @@ Unaware: 3 seeds
   Seeds: 61343, 64566, 71847
 Slow Start: 3 seeds
   Seeds: 64286, 67961, 87270
+Pressure: 3 seeds
+  Seeds: 67961, 78126, 92977
 Sturdy: 3 seeds
   Seeds: 77834, 92977, 95041
-Hyper Cutter: 2 seeds
-  Seeds: 16240, 72568
-Teraform Zero: 2 seeds
-  Seeds: 19405, 89312
-Shell Armor: 2 seeds
-  Seeds: 19405, 97549
-Inner Focus: 2 seeds
-  Seeds: 19405, 67961
 Wonder Guard: 2 seeds
   Seeds: 2719, 59646
 Toxic Chain: 2 seeds
   Seeds: 30637, 87270
 Early Bird: 2 seeds
   Seeds: 30637, 73093
-Victory Star: 2 seeds
-  Seeds: 31834, 38902
-Prankster: 2 seeds
-  Seeds: 31834, 54588
-Sand Rush: 2 seeds
-  Seeds: 42438, 68764
 Vital Spirit: 2 seeds
   Seeds: 42438, 42548
 Stakeout: 2 seeds
   Seeds: 42438, 77834
+Lightning Rod: 2 seeds
+  Seeds: 42548, 67961
 Strong Jaw: 2 seeds
   Seeds: 42548, 78126
 Gluttony: 2 seeds
@@ -1705,18 +1555,22 @@ Hunger Switch: 2 seeds
   Seeds: 48318, 87270
 Oblivious: 2 seeds
   Seeds: 49637, 95236
-Leaf Guard: 2 seeds
-  Seeds: 49637, 89312
+Hustle: 2 seeds
+  Seeds: 49637, 95041
+Wind Rider: 2 seeds
+  Seeds: 51150, 943
 Sap Sipper: 2 seeds
   Seeds: 51150, 71148
 Reckless: 2 seeds
   Seeds: 51150, 97549
-Suction Cups: 2 seeds
-  Seeds: 51150, 72568
+Color Change: 2 seeds
+  Seeds: 53747, 92615
 Adaptability: 2 seeds
   Seeds: 54588, 55736
 Download: 2 seeds
   Seeds: 54588, 79574
+Rivalry: 2 seeds
+  Seeds: 54588, 87270
 Skill Link: 2 seeds
   Seeds: 54588, 73093
 Blaze: 2 seeds
@@ -1727,8 +1581,6 @@ Poison Touch: 2 seeds
   Seeds: 60349, 92938
 Commander: 2 seeds
   Seeds: 64286, 71148
-Clear Body: 2 seeds
-  Seeds: 68764, 74337
 Insomnia: 2 seeds
   Seeds: 71148, 73093
 Iron Fist: 2 seeds
@@ -1737,15 +1589,11 @@ Battle Bond: 2 seeds
   Seeds: 71155, 77834
 Rough Skin: 2 seeds
   Seeds: 71505, 77834
-Shields Down: 2 seeds
-  Seeds: 72568, 78126
-Dry Skin: 2 seeds
-  Seeds: 72568, 92977
-Simple: 2 seeds
-  Seeds: 72568, 99388
 Turboblaze: 1 seeds
   Seeds: 16240
 Competitive: 1 seeds
+  Seeds: 16240
+Hyper Cutter: 1 seeds
   Seeds: 16240
 Earth Eater: 1 seeds
   Seeds: 16240
@@ -1755,16 +1603,12 @@ Light Metal: 1 seeds
   Seeds: 30637
 Magic Bounce: 1 seeds
   Seeds: 30637
-Flower Veil: 1 seeds
-  Seeds: 31834
-Quark Drive: 1 seeds
-  Seeds: 31834
-Aftermath: 1 seeds
-  Seeds: 31834
-Serene Grace: 1 seeds
-  Seeds: 31834
 Disguise: 1 seeds
   Seeds: 37514
+Victory Star: 1 seeds
+  Seeds: 38902
+Sand Rush: 1 seeds
+  Seeds: 42438
 Liquid Ooze: 1 seeds
   Seeds: 42438
 Truant: 1 seeds
@@ -1787,8 +1631,14 @@ Soundproof: 1 seeds
   Seeds: 49637
 Shadow Tag: 1 seeds
   Seeds: 49637
+Leaf Guard: 1 seeds
+  Seeds: 49637
+Suction Cups: 1 seeds
+  Seeds: 51150
 Battle Armor: 1 seeds
   Seeds: 51150
+Prankster: 1 seeds
+  Seeds: 54588
 Mold Breaker: 1 seeds
   Seeds: 54588
 Compound Eyes: 1 seeds
@@ -1809,18 +1659,12 @@ Mummy: 1 seeds
   Seeds: 67961
 Water Compaction: 1 seeds
   Seeds: 67961
-Frisk: 1 seeds
-  Seeds: 68764
-Sword of Ruin: 1 seeds
-  Seeds: 68764
+Inner Focus: 1 seeds
+  Seeds: 67961
 Electromorphosis: 1 seeds
   Seeds: 71148
 Stamina: 1 seeds
   Seeds: 71148
-Overcoat: 1 seeds
-  Seeds: 72568
-White Smoke: 1 seeds
-  Seeds: 72568
 Magma Armor: 1 seeds
   Seeds: 73093
 Hadron Engine: 1 seeds
@@ -1833,6 +1677,8 @@ Healer: 1 seeds
   Seeds: 73448
 Rattled: 1 seeds
   Seeds: 74337
+Clear Body: 1 seeds
+  Seeds: 74337
 Battery: 1 seeds
   Seeds: 74337
 Cheek Pouch: 1 seeds
@@ -1841,6 +1687,8 @@ Natural Cure: 1 seeds
   Seeds: 77834
 Mycelium Might: 1 seeds
   Seeds: 77834
+Shields Down: 1 seeds
+  Seeds: 78126
 Neutralizing Gas: 1 seeds
   Seeds: 78126
 Water Veil: 1 seeds
@@ -1855,8 +1703,8 @@ Speed Boost: 1 seeds
   Seeds: 79574
 Huge Power: 1 seeds
   Seeds: 87270
-Defeatist: 1 seeds
-  Seeds: 89312
+Dry Skin: 1 seeds
+  Seeds: 92977
 Synchronize: 1 seeds
   Seeds: 92977
 Purifying Salt: 1 seeds
@@ -1871,6 +1719,8 @@ Gooey: 1 seeds
   Seeds: 943
 Telepathy: 1 seeds
   Seeds: 95041
+Armor Tail: 1 seeds
+  Seeds: 95041
 Sticky Hold: 1 seeds
   Seeds: 95061
 Prism Armor: 1 seeds
@@ -1881,6 +1731,10 @@ Solar Power: 1 seeds
   Seeds: 97549
 Quick Draw: 1 seeds
   Seeds: 97549
+Shell Armor: 1 seeds
+  Seeds: 97549
+Simple: 1 seeds
+  Seeds: 99388
 Drought: 1 seeds
   Seeds: 99388
 Fairy Aura: 1 seeds
@@ -1899,14 +1753,10 @@ focusband: 4 seeds
   Seeds: 20356, 30232, 74337, 95236
 sitrusberry: 4 seeds
   Seeds: 56089, 73093, 77834, 89804
-decidiumz: 3 seeds
-  Seeds: 31834, 43891, 89312
 heavyball: 3 seeds
   Seeds: 43891, 49637, 51150
 tr64: 3 seeds
   Seeds: 43891, 64286, 71148
-rockgem: 3 seeds
-  Seeds: 43891, 77834, 89312
 hearthflamemask: 3 seeds
   Seeds: 45311, 64286, 73093
 falinksite: 3 seeds
@@ -1917,40 +1767,30 @@ scopelens: 3 seeds
   Seeds: 54588, 67961, 73093
 salacberry: 3 seeds
   Seeds: 64286, 78126, 92977
-nanabberry: 3 seeds
-  Seeds: 68764, 87270, 97549
 absolite: 3 seeds
   Seeds: 78126, 79574, 943
 micleberry: 2 seeds
   Seeds: 16240, 61431
 tr37: 2 seeds
   Seeds: 16240, 97549
-lansatberry: 2 seeds
-  Seeds: 16240, 68764
 custapberry: 2 seeds
   Seeds: 16240, 83469
 cornnberry: 2 seeds
   Seeds: 16240, 99388
-eeviumz: 2 seeds
-  Seeds: 19405, 42548
-masterball: 2 seeds
-  Seeds: 19405, 77834
 tr41: 2 seeds
   Seeds: 30637, 943
 netball: 2 seeds
   Seeds: 30637, 77834
 zoomlens: 2 seeds
   Seeds: 30637, 73448
-wiseglasses: 2 seeds
-  Seeds: 31834, 73093
-tr15: 2 seeds
-  Seeds: 31834, 72568
 rockyhelmet: 2 seeds
   Seeds: 32939, 51150
 liechiberry: 2 seeds
   Seeds: 42438, 51150
 tr16: 2 seeds
   Seeds: 43891, 51150
+rockgem: 2 seeds
+  Seeds: 43891, 77834
 banettite: 2 seeds
   Seeds: 43891, 64286
 groundmemory: 2 seeds
@@ -1961,12 +1801,8 @@ meowsticite: 2 seeds
   Seeds: 51150, 74337
 strangeball: 2 seeds
   Seeds: 51150, 74337
-whiteherb: 2 seeds
-  Seeds: 51150, 72568
 tr51: 2 seeds
   Seeds: 54588, 79574
-mindplate: 2 seeds
-  Seeds: 54588, 68764
 raichunitey: 2 seeds
   Seeds: 55736, 79574
 wellspringmask: 2 seeds
@@ -1981,34 +1817,20 @@ bindingband: 2 seeds
   Seeds: 64286, 67961
 iapapaberry: 2 seeds
   Seeds: 67475, 95041
-lumberry: 2 seeds
-  Seeds: 67961, 68764
 lightclay: 2 seeds
   Seeds: 67961, 74337
 tr89: 2 seeds
   Seeds: 67961, 97549
-oldamber: 2 seeds
-  Seeds: 68764, 77834
-heracronite: 2 seeds
-  Seeds: 68764, 92977
 throatspray: 2 seeds
   Seeds: 71148, 73093
 adrenalineorb: 2 seeds
   Seeds: 71148, 74439
 choicescarf: 2 seeds
   Seeds: 71505, 87270
-chandelurite: 2 seeds
-  Seeds: 72568, 73093
-pyroarite: 2 seeds
-  Seeds: 72568, 73093
-pomegberry: 2 seeds
-  Seeds: 72568, 73448
 flyiniumz: 2 seeds
   Seeds: 73093, 943
 tr05: 2 seeds
   Seeds: 73448, 95041
-dubiousdisc: 2 seeds
-  Seeds: 73448, 89312
 feraligite: 2 seeds
   Seeds: 74337, 77834
 tr02: 2 seeds
@@ -2021,12 +1843,10 @@ rarebone: 2 seeds
   Seeds: 78126, 99388
 assaultvest: 2 seeds
   Seeds: 78126, 87270
-berry: 2 seeds
-  Seeds: 87270, 89312
 miracleseed: 2 seeds
   Seeds: 87270, 97549
-expertbelt: 2 seeds
-  Seeds: 89312, 943
+nanabberry: 2 seeds
+  Seeds: 87270, 97549
 magnet: 2 seeds
   Seeds: 92977, 99388
 fullincense: 1 seeds
@@ -2037,6 +1857,8 @@ fightinggem: 1 seeds
   Seeds: 16240
 mewtwonitex: 1 seeds
   Seeds: 16240
+lansatberry: 1 seeds
+  Seeds: 16240
 metalalloy: 1 seeds
   Seeds: 16240
 normalgem: 1 seeds
@@ -2045,26 +1867,6 @@ poisoniumz: 1 seeds
   Seeds: 16240
 firememory: 1 seeds
   Seeds: 16240
-cloversweet: 1 seeds
-  Seeds: 19405
-watermemory: 1 seeds
-  Seeds: 19405
-armorfossil: 1 seeds
-  Seeds: 19405
-belueberry: 1 seeds
-  Seeds: 19405
-tr14: 1 seeds
-  Seeds: 19405
-cameruptite: 1 seeds
-  Seeds: 19405
-tr56: 1 seeds
-  Seeds: 19405
-steeliumz: 1 seeds
-  Seeds: 19405
-firegem: 1 seeds
-  Seeds: 19405
-chesnaughtite: 1 seeds
-  Seeds: 19405
 razorfang: 1 seeds
   Seeds: 25177
 ringtarget: 1 seeds
@@ -2085,24 +1887,6 @@ pinapberry: 1 seeds
   Seeds: 30637
 starsweet: 1 seeds
   Seeds: 30637
-utilityumbrella: 1 seeds
-  Seeds: 31834
-zeraorite: 1 seeds
-  Seeds: 31834
-tr19: 1 seeds
-  Seeds: 31834
-griseouscore: 1 seeds
-  Seeds: 31834
-garchompitez: 1 seeds
-  Seeds: 31834
-tr00: 1 seeds
-  Seeds: 31834
-dragalgite: 1 seeds
-  Seeds: 31834
-terrainextender: 1 seeds
-  Seeds: 31834
-tr87: 1 seeds
-  Seeds: 31834
 choiceband: 1 seeds
   Seeds: 32939
 sunstone: 1 seeds
@@ -2139,6 +1923,8 @@ victreebelite: 1 seeds
   Seeds: 42548
 sceptilite: 1 seeds
   Seeds: 42548
+eeviumz: 1 seeds
+  Seeds: 42548
 powerweight: 1 seeds
   Seeds: 42548
 tr96: 1 seeds
@@ -2148,6 +1934,8 @@ manectite: 1 seeds
 psychiumz: 1 seeds
   Seeds: 43891
 cherishball: 1 seeds
+  Seeds: 43891
+decidiumz: 1 seeds
   Seeds: 43891
 lustrousglobe: 1 seeds
   Seeds: 43891
@@ -2183,6 +1971,8 @@ souldew: 1 seeds
   Seeds: 51150
 friendball: 1 seeds
   Seeds: 51150
+whiteherb: 1 seeds
+  Seeds: 51150
 gyaradosite: 1 seeds
   Seeds: 51150
 fairiumz: 1 seeds
@@ -2196,6 +1986,8 @@ chopleberry: 1 seeds
 fightingmemory: 1 seeds
   Seeds: 54588
 crackedpot: 1 seeds
+  Seeds: 54588
+mindplate: 1 seeds
   Seeds: 54588
 diveball: 1 seeds
   Seeds: 54588
@@ -2227,6 +2019,8 @@ petayaberry: 1 seeds
   Seeds: 64286
 lureball: 1 seeds
   Seeds: 67961
+lumberry: 1 seeds
+  Seeds: 67961
 flameorb: 1 seeds
   Seeds: 67961
 thunderstone: 1 seeds
@@ -2239,18 +2033,6 @@ chartiberry: 1 seeds
   Seeds: 67961
 charizarditex: 1 seeds
   Seeds: 67961
-wateriumz: 1 seeds
-  Seeds: 68764
-spelltag: 1 seeds
-  Seeds: 68764
-tr80: 1 seeds
-  Seeds: 68764
-grepaberry: 1 seeds
-  Seeds: 68764
-loveball: 1 seeds
-  Seeds: 68764
-galaricacuff: 1 seeds
-  Seeds: 68764
 rindoberry: 1 seeds
   Seeds: 71148
 shellbell: 1 seeds
@@ -2267,31 +2049,25 @@ scolipite: 1 seeds
   Seeds: 71148
 powerband: 1 seeds
   Seeds: 71148
-fightiniumz: 1 seeds
-  Seeds: 72568
-tr30: 1 seeds
-  Seeds: 72568
-tr31: 1 seeds
-  Seeds: 72568
-tr95: 1 seeds
-  Seeds: 72568
-earthplate: 1 seeds
-  Seeds: 72568
-fastball: 1 seeds
-  Seeds: 72568
-tr86: 1 seeds
-  Seeds: 72568
 ribbonsweet: 1 seeds
   Seeds: 73093
+wiseglasses: 1 seeds
+  Seeds: 73093
 firestone: 1 seeds
+  Seeds: 73093
+chandelurite: 1 seeds
   Seeds: 73093
 quickclaw: 1 seeds
   Seeds: 73093
 pinkbow: 1 seeds
   Seeds: 73093
+pyroarite: 1 seeds
+  Seeds: 73093
 spelonberry: 1 seeds
   Seeds: 73448
 tr78: 1 seeds
+  Seeds: 73448
+pomegberry: 1 seeds
   Seeds: 73448
 focussash: 1 seeds
   Seeds: 73448
@@ -2302,6 +2078,8 @@ keeberry: 1 seeds
 helixfossil: 1 seeds
   Seeds: 73448
 pikashuniumz: 1 seeds
+  Seeds: 73448
+dubiousdisc: 1 seeds
   Seeds: 73448
 tr48: 1 seeds
   Seeds: 74337
@@ -2315,9 +2093,13 @@ skyplate: 1 seeds
   Seeds: 77834
 wepearberry: 1 seeds
   Seeds: 77834
+oldamber: 1 seeds
+  Seeds: 77834
 damprock: 1 seeds
   Seeds: 77834
 rustedshield: 1 seeds
+  Seeds: 77834
+masterball: 1 seeds
   Seeds: 77834
 nestball: 1 seeds
   Seeds: 78126
@@ -2353,24 +2135,14 @@ polkadotbow: 1 seeds
   Seeds: 87270
 tr11: 1 seeds
   Seeds: 87270
+berry: 1 seeds
+  Seeds: 87270
 kangaskhanite: 1 seeds
   Seeds: 87270
 tr85: 1 seeds
   Seeds: 87270
-solganiumz: 1 seeds
-  Seeds: 89312
-electricseed: 1 seeds
-  Seeds: 89312
-tr91: 1 seeds
-  Seeds: 89312
-levelball: 1 seeds
-  Seeds: 89312
-tr50: 1 seeds
-  Seeds: 89312
-tr22: 1 seeds
-  Seeds: 89312
-protector: 1 seeds
-  Seeds: 89312
+heracronite: 1 seeds
+  Seeds: 92977
 electirizer: 1 seeds
   Seeds: 92977
 grassmemory: 1 seeds
@@ -2398,6 +2170,8 @@ weaknesspolicy: 1 seeds
 steelixite: 1 seeds
   Seeds: 943
 adamantcrystal: 1 seeds
+  Seeds: 943
+expertbelt: 1 seeds
   Seeds: 943
 ironplate: 1 seeds
   Seeds: 95041
@@ -2451,31 +2225,31 @@ lightball: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 135
-Unique moves: 781 (780 non-simple)
-Unique abilities: 161 (159 non-simple)
-Unique items: 279
+Total minimized seeds: 102
+Unique moves: 719 (718 non-simple)
+Unique abilities: 150 (148 non-simple)
+Unique items: 239
 
 --- Top 10 Moves ---
-  gmaxsandblast: 8 seeds
-  banefulbunker: 8 seeds
-  round: 7 seeds
-  maxguard: 7 seeds
-  telekinesis: 7 seeds
-  lightscreen: 6 seeds
-  kingsshield: 6 seeds
-  gearup: 6 seeds
   healblock: 6 seeds
-  assist: 6 seeds
+  gmaxsandblast: 6 seeds
+  telekinesis: 6 seeds
+  surf: 6 seeds
+  lightscreen: 5 seeds
+  soak: 5 seeds
+  noxioustorque: 5 seeds
+  maxhailstorm: 5 seeds
+  magicroom: 5 seeds
+  assist: 5 seeds
 
 --- Top 10 Abilities ---
-  Armor Tail: 19 seeds
-  Levitate: 13 seeds
-  Gulp Missile: 10 seeds
-  Intimidate: 9 seeds
-  Swift Swim: 8 seeds
-  Air Lock: 8 seeds
-  Shield Dust: 7 seeds
-  Dazzling: 7 seeds
-  Pickup: 7 seeds
+  Levitate: 10 seeds
+  Gulp Missile: 9 seeds
+  Air Lock: 7 seeds
+  Swift Swim: 7 seeds
   Swarm: 7 seeds
+  Shield Dust: 6 seeds
+  Pickup: 6 seeds
+  Intimidate: 6 seeds
+  Shed Skin: 5 seeds
+  Guts: 5 seeds

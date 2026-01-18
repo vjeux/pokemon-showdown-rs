@@ -30,10 +30,12 @@ pub fn base_power_callback(
     };
 
     let base_power = active_move.base_power;
+    // JavaScript sets move.sourceEffect = sourceEffect.id (a string ID)
+    // In Rust, this is stored in source_effect_name
     let is_round_source = active_move
-        .source_effect
+        .source_effect_name
         .as_ref()
-        .map(|se| se.as_str() == "round")
+        .map(|se| se == "round")
         .unwrap_or(false);
 
     if is_round_source {
@@ -59,6 +61,7 @@ pub fn on_try(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     use crate::dex_data::ID;
+    use crate::battle::Effect;
 
     // for (const action of this.queue.list as MoveAction[]) {
     //     if (!action.pokemon || !action.move || action.maxMove || action.zmove) continue;
@@ -68,7 +71,7 @@ pub fn on_try(
     //     }
     // }
     let queue_list = battle.queue.list.clone();
-    let _active_move_id = {
+    let active_move_id = {
         let active_move = match &battle.active_move {
             Some(active_move) => &active_move.id,
             None => return EventResult::Continue,
@@ -86,9 +89,16 @@ pub fn on_try(
 
                 // Check if move is 'round'
                 if move_action.move_id == ID::from("round") {
-                    battle
-                        .queue
-                        .prioritize_action(move_action.side_index, move_action.pokemon_index);
+                    // JavaScript: this.queue.prioritizeAction(action, move);
+                    // The second parameter (move) is the current move being executed,
+                    // which sets sourceEffect on the prioritized action.
+                    // This is what triggers the base power doubling in basePowerCallback.
+                    let source_effect = Effect::move_(active_move_id.clone());
+                    battle.queue.prioritize_action_with_source(
+                        move_action.side_index,
+                        move_action.pokemon_index,
+                        Some(source_effect),
+                    );
                     return EventResult::Continue;
                 }
             }

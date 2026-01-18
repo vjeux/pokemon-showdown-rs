@@ -388,7 +388,7 @@ impl Battle {
                                 &move_data_for_run,
                                 (side_idx, poke_idx),
                                 target_loc,
-                                None, // source_effect
+                                move_action.source_effect.as_ref(), // source_effect from action queue (e.g., Round)
                                 move_action.zmove.clone(), // z_move
                                 false, // external_move
                                 move_action.max_move.clone(), // max_move
