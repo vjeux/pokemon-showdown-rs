@@ -30,13 +30,14 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         (pokemon.active_turns, pokemon.move_this_turn_result)
     };
 
+    // Check if queue.willMove(pokemon) - does this pokemon have a move action queued?
+    let will_move = battle.queue.will_move(pokemon_pos.0, pokemon_pos.1).is_some();
+
     // Check if activeTurns > 0 (JavaScript treats 0 as falsy)
     if active_turns > 0 {
         // Check if moveThisTurnResult !== undefined (in Rust: not MoveResult::Undefined)
         // OR !this.queue.willMove(pokemon)
-        // Note: We don't have access to queue.willMove yet, but moveThisTurnResult being not Undefined
-        // should cover the main case (Pokemon moved this turn)
-        if move_this_turn_result != MoveResult::Undefined {
+        if move_this_turn_result != MoveResult::Undefined || !will_move {
             // pokemon.addVolatile('truant');
             Pokemon::add_volatile(battle, pokemon_pos, ID::from("truant"), None, None, None, None);
         }

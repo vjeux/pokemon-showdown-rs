@@ -40,7 +40,7 @@ fn print_battle_state(battle: &Battle, iteration: usize, prng_calls: usize) {
                     pokemon.hp, pokemon.maxhp, hp_percent, status_str);
 
                 let item_name = if pokemon.item.as_str().is_empty() { "none" } else { pokemon.item.as_str() };
-                let ability_name = pokemon.base_ability.as_str();
+                let ability_name = pokemon.ability.as_str();
                 eprintln!("    Item: {} | Ability: {}", item_name, ability_name);
 
                 eprintln!("    Stats: Atk:{} Def:{} SpA:{} SpD:{} Spe:{}",
@@ -100,7 +100,7 @@ fn print_battle_state(battle: &Battle, iteration: usize, prng_calls: usize) {
                     pokemon.hp, pokemon.maxhp, hp_percent, status_str);
 
                 let item_name = if pokemon.item.as_str().is_empty() { "none" } else { pokemon.item.as_str() };
-                let ability_name = pokemon.base_ability.as_str();
+                let ability_name = pokemon.ability.as_str();
                 eprintln!("    Item: {} | Ability: {}", item_name, ability_name);
 
                 eprintln!("    Stats: Atk:{} Def:{} SpA:{} SpD:{} Spe:{}",

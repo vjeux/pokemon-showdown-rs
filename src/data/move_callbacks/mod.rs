@@ -946,7 +946,8 @@ pub fn dispatch_on_hit(
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    match move_id {
         "acupressure" => acupressure::on_hit(battle, target_pos, source_pos),
         "afteryou" => afteryou::on_hit(battle, target_pos, source_pos),
         "alluringvoice" => alluringvoice::on_hit(battle, target_pos, source_pos),
