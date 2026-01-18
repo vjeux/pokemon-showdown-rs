@@ -14,7 +14,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MINIMIZED_DIR="$SCRIPT_DIR/minimized"
 SEEDS_INPUT="${1:--}"
-NUM_WORKERS="${2:-8}"
+NUM_WORKERS="${2:-10}"
 
 # Read seeds from file or stdin
 if [ "$SEEDS_INPUT" = "-" ]; then
