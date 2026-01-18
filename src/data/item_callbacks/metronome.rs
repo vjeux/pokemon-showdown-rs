@@ -122,8 +122,6 @@ pub mod condition {
         }
 
         // Calculate new numConsecutive
-        debug_elog!("[METRONOME onTryMove] turn={}, move={}, lastMove={}, moveLastTurnResult={}, hasTwoTurnMove={}, currentNum={}",
-            battle.turn, move_id_str, last_move_str, move_last_turn_result, has_two_turn_move, current_num);
         let new_num_consecutive = if last_move_str == move_id_str && move_last_turn_result {
             // Same move and it succeeded last turn - increment
             current_num + 1
@@ -138,7 +136,6 @@ pub mod condition {
             // Different move or first use - reset to 0
             0
         };
-        debug_elog!("[METRONOME onTryMove] new_num_consecutive={}", new_num_consecutive);
 
         // Update volatile state
         let metronome_id = ID::new("metronome");

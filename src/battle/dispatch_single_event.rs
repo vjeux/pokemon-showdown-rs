@@ -78,6 +78,18 @@ impl Battle {
             }
         }
 
+        // IMPORTANT: Check if we're explicitly in an Item context BEFORE checking volatiles
+        // This handles cases like "metronome" which exists both as an item AND as a volatile
+        // When the item's onStart fires (via set_item), we want to call the item's callback,
+        // not the volatile's callback even if the target has a volatile with the same name
+        if let Some(ref effect) = self.effect {
+            if effect.effect_type == crate::battle::EffectType::Item {
+                if self.dex.items().get(effect_id.as_str()).is_some() {
+                    return self.handle_item_event(event_id, effect_id, target);
+                }
+            }
+        }
+
         // Check if effect is a condition (volatile, status, etc.) on the target Pokemon
         // This handles cases where a volatile needs to be checked before other effect types
         if let Some(target_pokemon_pos) = target_pos {

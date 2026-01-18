@@ -92,6 +92,7 @@ pub fn try_spread_move_hit(
 ) -> crate::battle_actions::DamageResult {
     use crate::battle_actions::DamageResult;
     let move_id = active_move.id.clone();
+    debug_elog!("[TRY_SPREAD_MOVE_HIT] ENTRY: move={}, pokemon={:?}, targets={:?}", move_id, pokemon_pos, targets);
     // Convert targets to mutable Vec for filtering
     // JS: targets: Pokemon[]
     let mut target_list: Vec<(usize, usize)> = targets.to_vec();
@@ -165,6 +166,7 @@ pub fn try_spread_move_hit(
     //     this.battle.runEvent('PrepareHit', pokemon, targets[0], move);
 
     // Phase 1: Call Try event
+    debug_elog!("[TRY_SPREAD_MOVE_HIT] Calling Try event: move={}, pokemon={:?}, target_0={:?}", move_id, pokemon_pos, target_0);
     let try_result = battle.single_event(
         "Try",
         &crate::battle::Effect::move_(move_id.clone()),
@@ -174,6 +176,7 @@ pub fn try_spread_move_hit(
         Some(&Effect::move_(move_id.clone())),
         None,
     );
+    debug_elog!("[TRY_SPREAD_MOVE_HIT] Try result={:?}", try_result);
 
     // Check if try_result is truthy (in JS, falsy = false, null, undefined, 0, "", NaN)
     // NotFail also means the move should fail (it's a signal that onTry returned false)
@@ -182,6 +185,7 @@ pub fn try_spread_move_hit(
 
     // Phase 2: Only call PrepareHit(move) if Try succeeded (short-circuit AND)
     let prepare_hit_1 = if try_truthy {
+        debug_elog!("[TRY_SPREAD_MOVE_HIT] Calling PrepareHit(move) event");
         let result = battle.single_event(
             "PrepareHit",
             &crate::battle::Effect::move_(move_id.clone()),
@@ -191,6 +195,7 @@ pub fn try_spread_move_hit(
             Some(&Effect::move_(move_id.clone())),
             None,
         );
+        debug_elog!("[TRY_SPREAD_MOVE_HIT] PrepareHit(move) result={:?}", result);
         result
     } else {
         try_result.clone() // Propagate the falsy result
@@ -201,7 +206,9 @@ pub fn try_spread_move_hit(
 
     // Phase 3: Only call PrepareHit event if PrepareHit(move) succeeded (short-circuit AND)
     let prepare_hit_2 = if prepare_hit_1_truthy {
+        debug_elog!("[TRY_SPREAD_MOVE_HIT] Calling PrepareHit(runEvent)");
         let result = battle.run_event("PrepareHit", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_0, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+        debug_elog!("[TRY_SPREAD_MOVE_HIT] PrepareHit(runEvent) result={:?}", result);
         result
     } else {
         prepare_hit_1.clone() // Propagate the falsy result
@@ -218,6 +225,7 @@ pub fn try_spread_move_hit(
     // Final result check (same as before)
     // Stop represents "return null" in JavaScript - should be treated as falsy
     let hit_result = !matches!(prepare_hit_2, EventResult::Number(0) | EventResult::Boolean(false) | EventResult::Null | EventResult::NotFail | EventResult::Stop);
+    debug_elog!("[TRY_SPREAD_MOVE_HIT] hit_result={}, try_truthy={}, prepare_hit_1_truthy={}", hit_result, try_truthy, prepare_hit_1_truthy);
 
     // JS: if (!hitResult) { ... }
     if !hit_result {

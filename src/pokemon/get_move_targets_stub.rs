@@ -197,6 +197,11 @@ impl Pokemon {
                 debug_elog!("[GET_MOVE_TARGETS] Default case: move_id={}, move_target={}, target={:?}", move_id, move_target, target);
                 let selected_target = target;
 
+                // Check if target is fainted and needs retargeting
+                let target_fainted = target.is_some() && battle.is_pokemon_fainted(target.unwrap());
+                let target_is_ally = target.is_some() && battle.is_ally(target.unwrap(), user_pos);
+                debug_elog!("[GET_MOVE_TARGETS] target_fainted={}, target_is_ally={}, game_type={:?}", target_fainted, target_is_ally, battle.game_type);
+
                 // JS: if (!target || (target.fainted && !target.isAlly(this)) && this.battle.gameType !== 'freeforall')
                 if target.is_none()
                     || (battle.is_pokemon_fainted(target.unwrap())
@@ -204,8 +209,11 @@ impl Pokemon {
                         && battle.game_type != GameType::FreeForAll)
                 {
                     // JS: const possibleTarget = this.battle.getRandomTarget(this, move);
+                    debug_elog!("[GET_MOVE_TARGETS] Need to retarget, calling get_random_target");
                     target = battle.get_random_target(user_pos.0, user_pos.1, &move_target);
+                    debug_elog!("[GET_MOVE_TARGETS] get_random_target returned {:?}", target);
                     if target.is_none() {
+                        debug_elog!("[GET_MOVE_TARGETS] No valid target found, returning empty");
                         return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] };
                     }
                 }
@@ -291,7 +299,10 @@ impl Pokemon {
                 }
 
                 // JS: if (target.fainted && !move.flags['futuremove']) return { targets: [], pressureTargets: [] };
-                if target.is_some_and(|t| battle.is_pokemon_fainted(t)) && !has_futuremove {
+                let target_still_fainted = target.is_some_and(|t| battle.is_pokemon_fainted(t));
+                debug_elog!("[GET_MOVE_TARGETS] Final check: target={:?}, target_still_fainted={}, has_futuremove={}", target, target_still_fainted, has_futuremove);
+                if target_still_fainted && !has_futuremove {
+                    debug_elog!("[GET_MOVE_TARGETS] Target is still fainted, returning empty");
                     return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] };
                 }
 
