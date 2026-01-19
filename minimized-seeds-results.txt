@@ -26,9 +26,6 @@ FAIL Seed 15974 (minimized):
 FAIL Seed 20356 (minimized):
   JS:   SEED 20356: turns=38, prng=159, winner=p1
   Rust: SEED 20356: turns=39, prng=164, winner=p1
-FAIL Seed 23363 (minimized):
-  JS:   SEED 23363: turns=25, prng=325, winner=p2
-  Rust: SEED 23363: turns=24, prng=360, winner=p2
 FAIL Seed 25574 (minimized):
   JS:   SEED 25574: turns=11, prng=33, winner=p2
   Rust: SEED 25574: turns=11, prng=43, winner=p2
@@ -65,12 +62,6 @@ FAIL Seed 48318 (minimized):
 FAIL Seed 48869 (minimized):
   JS:   SEED 48869: turns=3, prng=15, winner=p2
   Rust: SEED 48869: turns=4, prng=25, winner=p2
-FAIL Seed 49341 (minimized):
-  JS:   SEED 49341: turns=16, prng=210, winner=p1
-  Rust: SEED 49341: turns=16, prng=236, winner=p1
-FAIL Seed 51150 (minimized):
-  JS:   SEED 51150: turns=35, prng=208, winner=p2
-  Rust: SEED 51150: turns=54, prng=261, winner=p1
 FAIL Seed 53747 (minimized):
   JS:   SEED 53747: turns=27, prng=133, winner=p1
   Rust: SEED 53747: turns=28, prng=139, winner=p1
@@ -176,9 +167,6 @@ FAIL Seed 87270 (minimized):
 FAIL Seed 87363 (minimized):
   JS:   SEED 87363: turns=7, prng=28, winner=p1
   Rust: SEED 87363: turns=8, prng=32, winner=p1
-FAIL Seed 87633 (minimized):
-  JS:   SEED 87633: turns=4, prng=32, winner=p2
-  Rust: SEED 87633: turns=4, prng=34, winner=p2
 FAIL Seed 88904 (minimized):
   JS:   SEED 88904: turns=15, prng=61, winner=p2
   Rust: SEED 88904: turns=9, prng=22, winner=p1
@@ -188,9 +176,6 @@ FAIL Seed 89804 (minimized):
 FAIL Seed 90577 (minimized):
   JS:   SEED 90577: turns=11, prng=33, winner=p2
   Rust: SEED 90577: turns=10, prng=70, winner=p2
-FAIL Seed 92615 (minimized):
-  JS:   SEED 92615: turns=25, prng=131, winner=p1
-  Rust: SEED 92615: turns=25, prng=133, winner=p1
 FAIL Seed 92938 (minimized):
   JS:   SEED 92938: turns=4, prng=21, winner=p1
   Rust: SEED 92938: turns=4, prng=24, winner=p1
@@ -235,9 +220,6 @@ FAIL Seed 15974 (full team):
 FAIL Seed 20356 (full team):
   JS:   SEED 20356: turns=52, prng=186, winner=p1
   Rust: SEED 20356: turns=53, prng=191, winner=p1
-FAIL Seed 23363 (full team):
-  JS:   SEED 23363: turns=34, prng=208, winner=p2
-  Rust: SEED 23363: turns=34, prng=232, winner=p2
 FAIL Seed 25574 (full team):
   JS:   SEED 25574: turns=59, prng=230, winner=p2
   Rust: SEED 25574: turns=57, prng=233, winner=p2
@@ -277,12 +259,6 @@ FAIL Seed 48318 (full team):
 FAIL Seed 48869 (full team):
   JS:   SEED 48869: turns=41, prng=85, winner=p2
   Rust: SEED 48869: turns=41, prng=93, winner=p2
-FAIL Seed 49341 (full team):
-  JS:   SEED 49341: turns=71, prng=254, winner=p1
-  Rust: SEED 49341: turns=72, prng=267, winner=p1
-FAIL Seed 51150 (full team):
-  JS:   SEED 51150: turns=35, prng=208, winner=p2
-  Rust: SEED 51150: turns=54, prng=261, winner=p1
 FAIL Seed 53747 (full team):
   JS:   SEED 53747: turns=60, prng=214, winner=p2
   Rust: SEED 53747: turns=58, prng=198, winner=p2
@@ -388,9 +364,6 @@ FAIL Seed 87270 (full team):
 FAIL Seed 87363 (full team):
   JS:   SEED 87363: turns=27, prng=104, winner=p1
   Rust: SEED 87363: turns=28, prng=108, winner=p1
-FAIL Seed 87633 (full team):
-  JS:   SEED 87633: turns=26, prng=191, winner=p2
-  Rust: SEED 87633: turns=26, prng=193, winner=p2
 FAIL Seed 88904 (full team):
   JS:   SEED 88904: turns=84, prng=414, winner=p1
   Rust: SEED 88904: turns=89, prng=418, winner=p1
@@ -400,9 +373,6 @@ FAIL Seed 89804 (full team):
 FAIL Seed 90577 (full team):
   JS:   SEED 90577: turns=41, prng=182, winner=p2
   Rust: SEED 90577: turns=36, prng=277, winner=p2
-FAIL Seed 92615 (full team):
-  JS:   SEED 92615: turns=34, prng=161, winner=p1
-  Rust: SEED 92615: turns=33, prng=158, winner=p1
 FAIL Seed 92938 (full team):
   JS:   SEED 92938: turns=18, prng=69, winner=p1
   Rust: SEED 92938: turns=42, prng=145, winner=p1
@@ -436,12 +406,12 @@ Final Summary
 =======================================
 
 Regression tests (1-1000): 1000/1000 passed
-Minimized teams: 89/156 passed
-Full teams: 88/156 passed
+Minimized teams: 94/156 passed
+Full teams: 93/156 passed
 
-Failed full team seeds: 15759 15974 20356 23363 25574 30232 32939 35620 37514 39361 39892 40192 40910 42548 45311 48318 48869 49341 51150 53747 54588 56089 56825 60349 60818 60885 61343 64286 64566 65490 65503 67961 70293 71148 71155 71505 71847 72782 73093 73448 73880 74439 77834 78126 78875 79574 80374 81764 82263 82556 82834 85281 87270 87363 87633 88904 89804 90577 92615 92938 95041 95061 95236 96183 96673 97470 97549 99388
-Minimized seeds pass rate: 57%
-Failed minimized seeds: 15759 15974 20356 23363 25574 30232 32939 35620 37514 39361 39892 40910 42548 45311 48318 48869 49341 51150 53747 54588 56089 56825 60349 60818 60885 61343 64286 64566 65490 65503 67961 70293 71148 71155 71505 71847 72782 73093 73448 73880 74439 77834 78126 78875 79574 80374 81764 82263 82556 82834 85281 87270 87363 87633 88904 89804 90577 92615 92938 95041 95061 95236 96183 96673 97470 97549 99388
+Failed full team seeds: 15759 15974 20356 25574 30232 32939 35620 37514 39361 39892 40192 40910 42548 45311 48318 48869 53747 54588 56089 56825 60349 60818 60885 61343 64286 64566 65490 65503 67961 70293 71148 71155 71505 71847 72782 73093 73448 73880 74439 77834 78126 78875 79574 80374 81764 82263 82556 82834 85281 87270 87363 88904 89804 90577 92938 95041 95061 95236 96183 96673 97470 97549 99388
+Minimized seeds pass rate: 60%
+Failed minimized seeds: 15759 15974 20356 25574 30232 32939 35620 37514 39361 39892 40910 42548 45311 48318 48869 53747 54588 56089 56825 60349 60818 60885 61343 64286 64566 65490 65503 67961 70293 71148 71155 71505 71847 72782 73093 73448 73880 74439 77834 78126 78875 79574 80374 81764 82263 82556 82834 85281 87270 87363 88904 89804 90577 92938 95041 95061 95236 96183 96673 97470 97549 99388
 
 Updating bug-analysis.txt...
 Done. See tests/bug-analysis.txt for patterns in failing seeds.

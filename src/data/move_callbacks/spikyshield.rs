@@ -271,11 +271,13 @@ pub mod condition {
         //         this.damage(source.baseMaxhp / 8, source, target);
         //     }
         // }
-        let target = match target_pos {
+        // pokemon_pos = target (defender with Spiky Shield)
+        // target_pos = source (attacker) - confusingly named in dispatcher
+        let target = pokemon_pos;
+        let source = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
         };
-        let source = pokemon_pos;
 
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         let is_z_or_max_powered = {

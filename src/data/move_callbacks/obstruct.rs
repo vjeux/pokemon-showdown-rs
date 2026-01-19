@@ -252,11 +252,14 @@ pub mod condition {
     ) -> EventResult {
         use crate::dex_data::ID;
 
-        let target = match target_pos {
+        // pokemon_pos = target (defender with volatile, being protected)
+        // target_pos = source (attacker) - confusingly named in dispatcher
+        // Match JavaScript: onHit(target, source, move)
+        let target = pokemon_pos;
+        let source = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,
         };
-        let source = pokemon_pos;
 
         // if (move.isZOrMaxPowered && this.checkMoveMakesContact(move, source, target)) {
         let is_z_or_max_powered = {
