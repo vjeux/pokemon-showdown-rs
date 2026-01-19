@@ -75,7 +75,21 @@ battle.speedSort = function(list, comparator) {
     originalSpeedSort(list, comparator);
     const endPrng = totalPrngCalls;
     if (endPrng > startPrng) {
-        console.error(`[SPEED_SORT_JS] turn=${battle.turn}, shuffled ${list.length} items, PRNG calls: ${endPrng - startPrng}`);
+        // Log details about what was shuffled
+        const items = list.slice(0, 3).map(h => {
+            const choice = h.choice || 'handler';
+            const moveName = h.move?.name || h.move?.id || h.effect?.id || 'no-move';
+            const pokemonName = h.pokemon?.name || h.effectHolder?.name || 'no-pokemon';
+            return `${choice}(${moveName},${pokemonName},spd=${h.speed})`;
+        });
+        console.error(`[SPEED_SORT_JS] turn=${battle.turn}, shuffled ${list.length} items, PRNG calls: ${endPrng - startPrng}, items=[${items.join(', ')}]`);
+        // Log detailed info for each shuffled handler
+        for (let i = 0; i < Math.min(list.length, 5); i++) {
+            const h = list[i];
+            console.error(`[SPEED_SORT_DETAIL]   [${i}] effect.id=${h.effect?.id}, effect.name=${h.effect?.name}, effectType=${h.effect?.effectType}`);
+            console.error(`[SPEED_SORT_DETAIL]   [${i}] effectHolder=${h.effectHolder?.name || h.effectHolder?.constructor?.name || 'none'}, state.target=${h.state?.target?.constructor?.name || 'none'}`);
+            console.error(`[SPEED_SORT_DETAIL]   [${i}] speed=${h.speed}, priority=${h.priority}, subOrder=${h.subOrder}, order=${h.order}`);
+        }
     }
 };
 
@@ -138,6 +152,25 @@ battle.runEvent = function(eventid, target, ...args) {
         console.error(`[RUNEVENT_JS] turn=${battle.turn}, event=BeforeMove, pokemon=${target.name}, status=${target.status || 'none'}, volatiles=${Object.keys(target.volatiles || {}).join(',') || 'none'}`);
     }
     return originalRunEvent(eventid, target, ...args);
+};
+
+// Instrument hitStepAccuracy to log accuracy checks
+const originalHitStepAccuracy = battle.actions.hitStepAccuracy.bind(battle.actions);
+battle.actions.hitStepAccuracy = function(targets, pokemon, move) {
+    const startPrng = totalPrngCalls;
+    console.error(`[HIT_STEP_ACCURACY_JS] turn=${battle.turn}, move=${move.id}, accuracy=${move.accuracy}, alwaysHit=${move.alwaysHit || false}, PRNG=${totalPrngCalls}`);
+    const result = originalHitStepAccuracy(targets, pokemon, move);
+    const endPrng = totalPrngCalls;
+    console.error(`[HIT_STEP_ACCURACY_JS] turn=${battle.turn}, move=${move.id}, result=${JSON.stringify(result)}, PRNG_used=${endPrng - startPrng}`);
+    return result;
+};
+
+// Instrument randomChance to log when it's called
+const originalRandomChance = battle.randomChance.bind(battle);
+battle.randomChance = function(numerator, denominator) {
+    const result = originalRandomChance(numerator, denominator);
+    console.error(`[RANDOM_CHANCE_JS] turn=${battle.turn}, numerator=${numerator}, denominator=${denominator}, result=${result}, PRNG=${totalPrngCalls}`);
+    return result;
 };
 
 // Instrument modifyDamage to log STAB check

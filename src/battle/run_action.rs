@@ -1310,6 +1310,7 @@ impl Battle {
             };
 
             if should_sort {
+                debug_elog!("[RUN_ACTION] Gen 8 queue re-sort: calling update_speed and sort_action_queue");
                 // JS: this.updateSpeed();
                 self.update_speed();
 
@@ -1323,6 +1324,8 @@ impl Battle {
                     }
                 }
                 self.queue.list = list;
+
+                debug_elog!("[RUN_ACTION] About to call sort_action_queue, queue.len()={}", self.queue.list.len());
 
                 // JS: this.queue.sort();
                 self.sort_action_queue();

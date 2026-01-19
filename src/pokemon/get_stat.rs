@@ -57,7 +57,6 @@ impl Pokemon {
 
         // JS: Download ignores Wonder Room's effect, but this results in
         // JS: stat stages being calculated on the opposite defensive stat
-        // ✅ NOW IMPLEMENTED: Wonder Room swap for unmodified (Download)
         if unmodified && battle.field.has_pseudo_weather(&ID::new("wonderroom")) {
             stat_name = match stat_name {
                 StatID::Def => StatID::SpD,
@@ -73,14 +72,48 @@ impl Pokemon {
             return base_stat;
         }
 
-        // JS: let boost = boosts[statName];
-        let boost = match stat_name {
-            StatID::HP => return base_stat,
-            StatID::Atk => self.boosts.atk,
-            StatID::Def => self.boosts.def,
-            StatID::SpA => self.boosts.spa,
-            StatID::SpD => self.boosts.spd,
-            StatID::Spe => self.boosts.spe,
+        if stat_name == StatID::HP {
+            return base_stat;
+        }
+
+        // Get pokemon position for event
+        let pokemon_pos = (self.side_index, self.position);
+
+        // JS: if (!unmodified) {
+        //         boosts = this.battle.runEvent('ModifyBoost', this, null, null, { ...boosts });
+        //     }
+        // Get the boost for the requested stat, potentially modified by abilities like Unaware
+        let boost = if !unmodified {
+            // Run ModifyBoost event - allows abilities like Unaware to modify boosts
+            let modified_boosts = battle.run_event(
+                "ModifyBoost",
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
+                None,
+                None,
+                EventResult::Boost(self.boosts.clone()),
+                false,
+                false,
+            ).boost().unwrap_or(self.boosts.clone());
+
+            // Extract the (possibly modified) boost for this stat
+            match stat_name {
+                StatID::HP => 0,
+                StatID::Atk => modified_boosts.atk,
+                StatID::Def => modified_boosts.def,
+                StatID::SpA => modified_boosts.spa,
+                StatID::SpD => modified_boosts.spd,
+                StatID::Spe => modified_boosts.spe,
+            }
+        } else {
+            // unmodified: use raw boosts
+            match stat_name {
+                StatID::HP => 0,
+                StatID::Atk => self.boosts.atk,
+                StatID::Def => self.boosts.def,
+                StatID::SpA => self.boosts.spa,
+                StatID::SpD => self.boosts.spd,
+                StatID::Spe => self.boosts.spe,
+            }
         };
 
         // JS: const boostTable = [1, 1.5, 2, 2.5, 3, 3.5, 4];
@@ -109,9 +142,6 @@ impl Pokemon {
                 StatID::Spe => "ModifySpe",
                 StatID::HP => return stat_value, // HP never has Modify event
             };
-
-            // Get pokemon position for event
-            let pokemon_pos = (self.side_index, self.position);
 
             // Run the Modify* event (e.g., ModifySpe for Slow Start)
             if let EventResult::Number(modified_stat) = battle.run_event(event_name, Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Number(stat_value), false, false) {

@@ -19,6 +19,8 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+    debug_elog!("[BERSERK_ON_DAMAGE] turn={}, effect_id={:?}, target={:?}, battle.effect={:?}",
+        battle.turn, effect_id, _target_pos, battle.effect.as_ref().map(|e| (e.id.as_str(), e.effect_type)));
     // if (effect.effectType === "Move" && !effect.multihit && !(effect.hasSheerForce && source.hasAbility('sheerforce'))) {
     let should_check = if let Some(effect_id) = effect_id {
         // Check if effect is a move
@@ -50,9 +52,11 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
 
     // this.effectState.checkedBerserk = !should_check;
     // Use with_effect_state to persist in the ability's effect state
-    battle.with_effect_state(|state| {
+    let result = battle.with_effect_state(|state| {
         state.checked_berserk = Some(!should_check);
+        debug_elog!("[BERSERK_ON_DAMAGE] set checked_berserk = {:?}", state.checked_berserk);
     });
+    debug_elog!("[BERSERK_ON_DAMAGE] with_effect_state returned: {:?}", result.is_some());
 
     EventResult::Continue
 }
@@ -66,8 +70,11 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
 ///     }
 ///     return true;
 /// }
-pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_eat_item(battle: &mut Battle, item_id: Option<&str>, _pokemon_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
+
+    debug_elog!("[BERSERK_ON_TRY_EAT_ITEM] turn={}, item_id={:?}, pokemon={:?}, battle.effect={:?}",
+        battle.turn, item_id, _pokemon_pos, battle.effect.as_ref().map(|e| (e.id.as_str(), e.effect_type)));
 
     // const healingItems = [...]
     let healing_items = vec![
@@ -82,23 +89,19 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
         ID::from("berryjuice"),
     ];
 
-    // Get the item being eaten from current event
-    // In JavaScript, this is passed as the `item` parameter
-    // In Rust, we need to extract it from the event system
-    // The effect field contains the item ID when eating an item
-    let item_id = if let Some(ref event) = battle.event {
-        event.effect.as_ref().map(|e| e.id.clone())
-    } else {
-        None
-    };
-
     // if (healingItems.includes(item.id))
-    if let Some(item_id) = item_id {
-        if healing_items.contains(&item_id) {
+    // JavaScript receives item as parameter (passed via relayVar in runEvent)
+    if let Some(item_id_str) = item_id {
+        let item_id_id = ID::from(item_id_str);
+        debug_elog!("[BERSERK_ON_TRY_EAT_ITEM] Checking if item {:?} is in healing_items", item_id_id);
+        if healing_items.contains(&item_id_id) {
+            debug_elog!("[BERSERK_ON_TRY_EAT_ITEM] Item IS a healing item");
             // return this.effectState.checkedBerserk;
             let checked_berserk = battle.with_effect_state_ref(|state| {
+                debug_elog!("[BERSERK_ON_TRY_EAT_ITEM] Reading from state, checked_berserk = {:?}", state.checked_berserk);
                 state.checked_berserk
             }).flatten().unwrap_or(true);
+            debug_elog!("[BERSERK_ON_TRY_EAT_ITEM] Returning EventResult::Boolean({})", checked_berserk);
             return EventResult::Boolean(checked_berserk);
         }
     }

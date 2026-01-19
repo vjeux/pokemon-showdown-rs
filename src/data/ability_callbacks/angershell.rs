@@ -66,7 +66,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
 ///     }
 ///     return true;
 /// }
-pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos: (usize, usize)) -> EventResult {
+pub fn on_try_eat_item(battle: &mut Battle, item_id: Option<&str>, _pokemon_pos: (usize, usize)) -> EventResult {
     use crate::dex_data::ID;
 
     // const healingItems = [...]
@@ -82,16 +82,11 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, _pokemon_pos
         ID::from("berryjuice"),
     ];
 
-    // Get the item being eaten from current event
-    let item_id = if let Some(ref event) = battle.event {
-        event.effect.as_ref().map(|e| e.id.clone())
-    } else {
-        None
-    };
-
     // if (healingItems.includes(item.id))
-    if let Some(item_id) = item_id {
-        if healing_items.contains(&item_id) {
+    // JavaScript receives item as parameter (passed via relayVar in runEvent)
+    if let Some(item_id_str) = item_id {
+        let item_id_id = ID::from(item_id_str);
+        if healing_items.contains(&item_id_id) {
             // return this.effectState.checkedAngerShell;
             let checked_anger_shell = battle.with_effect_state_ref(|state| {
                 state.checked_anger_shell

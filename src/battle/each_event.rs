@@ -32,11 +32,13 @@ impl Battle {
             for poke_idx in side.active.iter().flatten() {
                 if let Some(pokemon) = side.pokemon.get(*poke_idx) {
                     if !pokemon.fainted {
+                        debug_elog!("[EACH_EVENT] Collecting active: side={}, poke_idx={}, species={:?}, speed={}", side_idx, poke_idx, pokemon.species_id, pokemon.speed);
                         actives.push((side_idx, *poke_idx, pokemon.speed));
                     }
                 }
             }
         }
+        debug_elog!("[EACH_EVENT] event_id={}, actives.len()={}, speeds={:?}", event_id, actives.len(), actives.iter().map(|a| a.2).collect::<Vec<_>>());
 
         // JS: if (!effect && this.effect) effect = this.effect;
         // JavaScript's this.effect is the current effect context on the Battle object

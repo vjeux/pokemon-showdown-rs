@@ -229,6 +229,8 @@ impl Battle {
                 // The 6th parameter (true) is onEffect - this allows the move's own onDamage callback to run
                 // Only use on_effect=true when we have an actual effect (e.g., a move like False Swipe)
                 let on_effect = effect.is_some();
+                debug_elog!("[SPREAD_DAMAGE] turn={}, About to run Damage event: target={:?}, source={:?}, effect={:?}, damage={}, on_effect={}",
+                    self.turn, target_pos, source, effect.map(|e| e.id.as_str()), target_damage, on_effect);
                 let event_result = self.run_event(
                 "Damage",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
@@ -238,6 +240,7 @@ impl Battle {
                     on_effect,   // onEffect: include the move's onDamage callback (e.g., False Swipe)
                     false,
                 );
+                debug_elog!("[SPREAD_DAMAGE] turn={}, Damage event result: {:?}", self.turn, event_result);
 
                 match event_result {
                     EventResult::Number(modified_damage) => {

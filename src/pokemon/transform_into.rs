@@ -116,6 +116,8 @@ impl Pokemon {
     // 	}
     //
     pub fn transform_into(battle: &mut Battle, pokemon_pos: (usize, usize), target_pos: (usize, usize), effect_id: Option<&dex_data::ID>) -> bool {
+        debug_elog!("[TRANSFORM_INTO] ENTRY: pokemon={:?} transforming into target={:?}", pokemon_pos, target_pos);
+
         // Extract gen value upfront (before any mutable borrows)
         let gen = battle.gen;
 
@@ -265,8 +267,12 @@ impl Pokemon {
 
         // JS: for (statName in this.storedStats) { this.storedStats[statName] = pokemon.storedStats[statName]; }
         // Copy target's storedStats (overwrites what setSpecies calculated)
-        // NOTE: This does NOT update speed - speed remains at the value setSpecies set
+        // IMPORTANT: In JavaScript, pokemon.speed is a SEPARATE field from storedStats.spe
+        // It's set by setSpecies to the calculated stat, but NOT updated here when storedStats is copied.
+        // The speed field is updated LATER by updateSpeed() which is called after the move action completes.
+        // So we should NOT update self_pokemon_mut.speed here - it will be updated by update_speed() later.
         self_pokemon_mut.stored_stats = target_stored_stats.clone();
+        // DO NOT update speed here - it should remain at the setSpecies calculated value until updateSpeed() is called
 
         // JS: if (this.modifiedStats) this.modifiedStats[statName] = pokemon.modifiedStats![statName];
         // Note: Missing modifiedStats copying for Gen 1
@@ -500,6 +506,7 @@ impl Pokemon {
         // Note: Missing Ogerpon/Terapagos canTerastallize blocking
 
         // JS: return true;
+        debug_elog!("[TRANSFORM_INTO] SUCCESS: pokemon={:?}, new species={:?}", pokemon_pos, battle.pokemon_at(pokemon_pos.0, pokemon_pos.1).map(|p| (&p.species_id, p.speed)));
         true
     }
 }

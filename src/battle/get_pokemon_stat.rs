@@ -58,7 +58,7 @@ impl Battle {
     pub fn get_pokemon_stat(&mut self, pokemon_pos: (usize, usize), stat: StatID, unboosted: bool, unmodified: bool) -> i32 {
         // JS: let stat = this.storedStats[statName];
         // Get pokemon data we need
-        let (base_stat, boost) = {
+        let (base_stat, boosts) = {
             let pokemon = match self.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return 0,
@@ -69,17 +69,49 @@ impl Battle {
                 return base_stat;
             }
 
-            // JS: let boost = boosts[statName];
-            let boost = match stat {
-                StatID::HP => return base_stat,
-                StatID::Atk => pokemon.boosts.atk,
-                StatID::Def => pokemon.boosts.def,
-                StatID::SpA => pokemon.boosts.spa,
-                StatID::SpD => pokemon.boosts.spd,
-                StatID::Spe => pokemon.boosts.spe,
-            };
+            if stat == StatID::HP {
+                return base_stat;
+            }
 
-            (base_stat, boost)
+            // JS: let boosts = this.boosts;
+            (base_stat, pokemon.boosts.clone())
+        };
+
+        // JS: if (!unmodified) {
+        //         boosts = this.battle.runEvent('ModifyBoost', this, null, null, { ...boosts });
+        //     }
+        // Get the boost for the requested stat, potentially modified by abilities like Unaware
+        let boost = if !unmodified {
+            // Run ModifyBoost event - allows abilities like Unaware to modify boosts
+            let modified_boosts = self.run_event(
+                "ModifyBoost",
+                Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
+                None,
+                None,
+                EventResult::Boost(boosts.clone()),
+                false,
+                false,
+            ).boost().unwrap_or(boosts);
+
+            // Extract the (possibly modified) boost for this stat
+            match stat {
+                StatID::HP => 0,
+                StatID::Atk => modified_boosts.atk,
+                StatID::Def => modified_boosts.def,
+                StatID::SpA => modified_boosts.spa,
+                StatID::SpD => modified_boosts.spd,
+                StatID::Spe => modified_boosts.spe,
+            }
+        } else {
+            // unmodified: use raw boosts
+            match stat {
+                StatID::HP => 0,
+                StatID::Atk => boosts.atk,
+                StatID::Def => boosts.def,
+                StatID::SpA => boosts.spa,
+                StatID::SpD => boosts.spd,
+                StatID::Spe => boosts.spe,
+            }
         };
 
         // JS: const boostTable = [1, 1.5, 2, 2.5, 3, 3.5, 4];

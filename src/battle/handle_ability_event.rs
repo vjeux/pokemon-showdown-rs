@@ -1033,12 +1033,18 @@ impl Battle {
                 }
             }
             "TryEatItem" => {
-                ability_callbacks::dispatch_on_try_eat_item(self, ability_id.as_str(), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }, pokemon_pos)
+                // JavaScript: runEvent('TryEatItem', this, null, null, item)
+                // The item is passed as relayVar (5th param), not as sourceEffect
+                // So we get item_id from relay_var_string, not event_effect_id
+                ability_callbacks::dispatch_on_try_eat_item(self, ability_id.as_str(), if relay_var_string.is_empty() { None } else { Some(relay_var_string.as_str()) }, pokemon_pos)
             }
-            "TryEatItemPriority" => ability_callbacks::dispatch_on_try_eat_item_priority(
-                self,
-                ability_id.as_str(), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }, pokemon_pos
-            ),
+            "TryEatItemPriority" => {
+                // Same as TryEatItem - item is passed as relayVar
+                ability_callbacks::dispatch_on_try_eat_item_priority(
+                    self,
+                    ability_id.as_str(), if relay_var_string.is_empty() { None } else { Some(relay_var_string.as_str()) }, pokemon_pos
+                )
+            }
             "TryHeal" => {
                 // Pass the effect_id so abilities like Ripen can check if it's a berry
                 ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), None, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })

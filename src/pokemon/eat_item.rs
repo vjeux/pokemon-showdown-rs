@@ -127,8 +127,10 @@ impl Pokemon {
         }
 
         // Check TryEatItem unless forced
+        // JavaScript: this.battle.runEvent('TryEatItem', this, null, null, item)
+        // The item is passed as relayVar (5th parameter), so handlers receive it as first argument
         if !_is_forced {
-            let try_eat_result = battle.run_event("TryEatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::Continue, false, false);
+            let try_eat_result = battle.run_event("TryEatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::String(item_id.to_string()), false, false);
             // Check for falsy results: Boolean(false), Number(0), Null, or Stop
             if matches!(try_eat_result, EventResult::Boolean(false) | EventResult::Number(0) | EventResult::Null | EventResult::Stop) {
                 return None; // false in JavaScript

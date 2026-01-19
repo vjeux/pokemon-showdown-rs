@@ -8,8 +8,8 @@ use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 
 /// onDamage(damage, target, source, effect) {
-///     if (effect?.effectType === 'Move' && ['mimikyu', 'mimikyutotem'].includes(target.species.id)) {
-///         this.add('-activate', target, 'ability: Disguise');
+///     if (effect?.effectType === "Move" && ["mimikyu", "mimikyutotem"].includes(target.species.id)) {
+///         this.add("-activate", target, "ability: Disguise");
 ///         this.effectState.busted = true;
 ///         return 0;
 ///     }
@@ -18,7 +18,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
     use crate::battle::Arg;
     use crate::battle::EffectType;
 
-    // if (effect?.effectType === 'Move' ...)
+    // if (effect?.effectType === "Move" ...)
     // JavaScript checks the effect parameter's effectType, not this.effect (the handler's effect).
     // The effect parameter is the effect that caused the damage, stored in battle.event.effect.
     // battle.effect is the current handler's effect (the ability), not the damage source.
@@ -36,7 +36,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
         return EventResult::Continue;
     }
 
-    // ['mimikyu', 'mimikyutotem'].includes(target.species.id)
+    // ["mimikyu", "mimikyutotem"].includes(target.species.id)
     let species_id = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
@@ -51,7 +51,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
         return EventResult::Continue;
     }
 
-    // this.add('-activate', target, 'ability: Disguise');
+    // this.add("-activate", target, "ability: Disguise");
     let target_slot = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
@@ -77,10 +77,10 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), 
 
 /// onCriticalHit(target, source, move) {
 ///     if (!target) return;
-///     if (!['mimikyu', 'mimikyutotem'].includes(target.species.id)) {
+///     if (!["mimikyu", "mimikyutotem"].includes(target.species.id)) {
 ///         return;
 ///     }
-///     const hitSub = target.volatiles['substitute'] && !move.flags['bypasssub'] && !(move.infiltrates && this.gen >= 6);
+///     const hitSub = target.volatiles["substitute"] && !move.flags["bypasssub"] && !(move.infiltrates && this.gen >= 6);
 ///     if (hitSub) return;
 ///
 ///     if (!target.runImmunity(move)) return;
@@ -101,7 +101,7 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
         None => return EventResult::Continue,
     };
 
-    // if (!['mimikyu', 'mimikyutotem'].includes(target.species.id)) return;
+    // if (!["mimikyu", "mimikyutotem"].includes(target.species.id)) return;
     let species_id = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
@@ -116,7 +116,7 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
         return EventResult::Continue;
     }
 
-    // const hitSub = target.volatiles['substitute'] && !move.flags['bypasssub'] && !(move.infiltrates && this.gen >= 6);
+    // const hitSub = target.volatiles["substitute"] && !move.flags["bypasssub"] && !(move.infiltrates && this.gen >= 6);
     let hit_sub = {
         let target_pokemon = match battle.pokemon_at(target.0, target.1) {
             Some(p) => p,
@@ -144,12 +144,12 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 }
 
 /// onEffectiveness(typeMod, target, type, move) {
-///     if (!target || move.category === 'Status') return;
-///     if (!['mimikyu', 'mimikyutotem'].includes(target.species.id)) {
+///     if (!target || move.category === "Status") return;
+///     if (!["mimikyu", "mimikyutotem"].includes(target.species.id)) {
 ///         return;
 ///     }
 ///
-///     const hitSub = target.volatiles['substitute'] && !move.flags['bypasssub'] && !(move.infiltrates && this.gen >= 6);
+///     const hitSub = target.volatiles["substitute"] && !move.flags["bypasssub"] && !(move.infiltrates && this.gen >= 6);
 ///     if (hitSub) return;
 ///
 ///     if (!target.runImmunity(move)) return;
@@ -164,12 +164,12 @@ pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize,
         None => return EventResult::Continue,
     };
 
-    // if (move.category === 'Status') return;
+    // if (move.category === "Status") return;
     if active_move_ref.category == "Status" {
         return EventResult::Continue;
     }
 
-    // if (!['mimikyu', 'mimikyutotem'].includes(target.species.id)) return;
+    // if (!["mimikyu", "mimikyutotem"].includes(target.species.id)) return;
     let species_id = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
@@ -184,7 +184,7 @@ pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize,
         return EventResult::Continue;
     }
 
-    // const hitSub = target.volatiles['substitute'] && !move.flags['bypasssub'] && !(move.infiltrates && this.gen >= 6);
+    // const hitSub = target.volatiles["substitute"] && !move.flags["bypasssub"] && !(move.infiltrates && this.gen >= 6);
     let hit_sub = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
@@ -212,8 +212,8 @@ pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize,
 }
 
 /// onUpdate(pokemon) {
-///     if (['mimikyu', 'mimikyutotem'].includes(pokemon.species.id) && this.effectState.busted) {
-///         const speciesid = pokemon.species.id === 'mimikyutotem' ? 'Mimikyu-Busted-Totem' : 'Mimikyu-Busted';
+///     if (["mimikyu", "mimikyutotem"].includes(pokemon.species.id) && this.effectState.busted) {
+///         const speciesid = pokemon.species.id === "mimikyutotem" ? "Mimikyu-Busted-Totem" : "Mimikyu-Busted";
 ///         pokemon.formeChange(speciesid, this.effect, true);
 ///         this.damage(pokemon.baseMaxhp / 8, pokemon, pokemon, this.dex.species.get(speciesid));
 ///     }
@@ -230,7 +230,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         return EventResult::Continue;
     }
 
-    // if (['mimikyu', 'mimikyutotem'].includes(pokemon.species.id))
+    // if (["mimikyu", "mimikyutotem"].includes(pokemon.species.id))
     let (species_id, base_maxhp) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -245,7 +245,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
         return EventResult::Continue;
     }
 
-    // const speciesid = pokemon.species.id === 'mimikyutotem' ? 'Mimikyu-Busted-Totem' : 'Mimikyu-Busted';
+    // const speciesid = pokemon.species.id === "mimikyutotem" ? "Mimikyu-Busted-Totem" : "Mimikyu-Busted";
     let new_species_id = if species_id.as_str() == "mimikyutotem" {
         "mimikyubustedtotem"
     } else {
@@ -274,4 +274,3 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
     EventResult::Continue
 }
-
