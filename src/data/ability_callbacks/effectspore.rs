@@ -22,7 +22,7 @@ use crate::Pokemon;
 /// }
 pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Check if move makes contact
-    let _target_pos = match target_pos {
+    let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -32,15 +32,9 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         None => return EventResult::Continue,
     };
 
-    // Get active_move to check if it makes contact (use runtime flags, not dex data)
-    // Shell Side Arm dynamically adds contact flag via onModifyMove when it uses physical attack
-    let has_contact = match active_move {
-        Some(m) => m.flags.contact,
-        None => return EventResult::Continue,
-    };
-
     // JavaScript: if (this.checkMoveMakesContact(move, source, target) && !source.status && source.runStatusImmunity('powder'))
-    if !has_contact {
+    // Use check_move_makes_contact which handles Protective Pads (returns false if attacker has protectivepads)
+    if !battle.check_move_makes_contact_with_active_move(active_move, source_pos, target_pos, false) {
         return EventResult::Continue;
     }
 
@@ -72,15 +66,14 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     // Apply status based on random roll
     if r < 11 {
         // JavaScript: source.setStatus('slp', target);
-        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("slp"), target_pos, None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("slp"), Some(target_pos), None);
     } else if r < 21 {
         // JavaScript: source.setStatus('par', target);
-        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("par"), target_pos, None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("par"), Some(target_pos), None);
     } else if r < 30 {
         // JavaScript: source.setStatus('psn', target);
-        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("psn"), target_pos, None);
+        Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from("psn"), Some(target_pos), None);
     }
 
     EventResult::Continue
 }
-
