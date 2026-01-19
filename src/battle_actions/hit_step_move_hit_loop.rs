@@ -277,8 +277,7 @@ pub fn hit_step_move_hit_loop(
             // if (!move.ignoreAccuracy)
             if !active_move.ignore_accuracy {
                 // const boosts = this.battle.runEvent('ModifyBoost', pokemon, null, null, { ...pokemon.boosts });
-                // For now, directly read pokemon boosts - full event system would modify boosts
-                let accuracy_boost = {
+                let boosts_table = {
                     let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                         Some(p) => p,
                         None => {
@@ -286,11 +285,22 @@ pub fn hit_step_move_hit_loop(
                             continue;
                         }
                     };
-                    pokemon.boosts.accuracy
+                    pokemon.boosts.clone()
                 };
 
+                // Run ModifyBoost event - returns modified boosts table
+                let modified_boosts = battle.run_event(
+                    "ModifyBoost",
+                    Some(crate::event::EventTarget::Pokemon(attacker_pos)),
+                    None,
+                    None,
+                    crate::event::EventResult::Boost(boosts_table),
+                    false,
+                    false,
+                ).boost().unwrap_or(boosts_table);
+
                 // const boost = this.battle.clampIntRange(boosts['accuracy'], -6, 6);
-                let boost = accuracy_boost.max(-6).min(6);
+                let boost = modified_boosts.accuracy.max(-6).min(6);
 
                 // if (boost > 0) {
                 //     accuracy *= boostTable[boost];
@@ -307,7 +317,7 @@ pub fn hit_step_move_hit_loop(
             // if (!move.ignoreEvasion)
             if !active_move.ignore_evasion {
                 // const boosts = this.battle.runEvent('ModifyBoost', target, null, null, { ...target.boosts });
-                let evasion_boost = {
+                let boosts_table = {
                     let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                         Some(p) => p,
                         None => {
@@ -315,11 +325,22 @@ pub fn hit_step_move_hit_loop(
                             continue;
                         }
                     };
-                    target_pokemon.boosts.evasion
+                    target_pokemon.boosts.clone()
                 };
 
+                // Run ModifyBoost event - returns modified boosts table
+                let modified_boosts = battle.run_event(
+                    "ModifyBoost",
+                    Some(crate::event::EventTarget::Pokemon(target)),
+                    None,
+                    None,
+                    crate::event::EventResult::Boost(boosts_table),
+                    false,
+                    false,
+                ).boost().unwrap_or(boosts_table);
+
                 // const boost = this.battle.clampIntRange(boosts['evasion'], -6, 6);
-                let boost = evasion_boost.max(-6).min(6);
+                let boost = modified_boosts.evasion.max(-6).min(6);
 
                 // if (boost > 0) {
                 //     accuracy /= boostTable[boost];
