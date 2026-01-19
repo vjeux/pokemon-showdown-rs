@@ -199,14 +199,24 @@ pub fn on_before_move(
     // JavaScript: getConfusionDamage(pokemon, basePower)
     let damage = {
         // Extract all needed data from pokemon first
+        // Note: Wonder Room swaps Def and SpD before calculating stats
         let (atk_stat, def_stat, atk_boost, def_boost, level) = {
             let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
+
+            // Wonder Room swaps defenses before calculating anything else
+            // JavaScript: if ('wonderroom' in this.battle.field.pseudoWeather) { stat = storedStats['spd'] }
+            let def_stat = if battle.field.pseudo_weather.contains_key(&ID::from("wonderroom")) {
+                pokemon.stored_stats.spd
+            } else {
+                pokemon.stored_stats.def
+            };
+
             (
                 pokemon.stored_stats.atk,
-                pokemon.stored_stats.def,
+                def_stat,
                 pokemon.boosts.atk,
                 pokemon.boosts.def,
                 pokemon.level as f64
