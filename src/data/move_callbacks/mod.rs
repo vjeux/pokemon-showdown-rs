@@ -1633,12 +1633,14 @@ pub fn dispatch_condition_on_after_move(
 /// Dispatch condition onAllyTryHitSide callbacks
 pub fn dispatch_condition_on_ally_try_hit_side(
     battle: &mut Battle,
+    condition_id: &str,
+    target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
     active_move: Option<&ActiveMove>,
-    source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "magiccoat" => {
-            magiccoat::condition::on_ally_try_hit_side(battle, None, Some(source_pos), active_move)
+            magiccoat::condition::on_ally_try_hit_side(battle, target_pos, source_pos, active_move)
         }
         _ => EventResult::Continue,
     }

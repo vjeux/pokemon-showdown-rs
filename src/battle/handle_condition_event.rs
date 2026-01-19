@@ -830,6 +830,21 @@ impl Battle {
                     active_move_clone.as_ref(),
                 )
             }
+            "AllyTryHitSide" => {
+                // onAllyTryHitSide callback for conditions like Magic Coat
+                // Allows Magic Coat to bounce back side-targeting moves like Stealth Rock
+                // pokemon_pos is the Pokemon with the volatile (Magic Coat holder)
+                // source_pos is the Pokemon using the move
+                let source_pos = self.event.as_ref().and_then(|e| e.source);
+                let target_pos = self.event.as_ref().and_then(|e| e.target);
+                crate::data::move_callbacks::dispatch_condition_on_ally_try_hit_side(
+                    self,
+                    condition_id,
+                    target_pos,
+                    source_pos,
+                    active_move_clone.as_ref(),
+                )
+            }
             _ => EventResult::Continue,
         };
 
