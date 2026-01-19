@@ -31,7 +31,8 @@ pub fn on_modify_type(
             None => return EventResult::Continue,
         };
 
-        let is_terapagos = pokemon_ref.species_id.as_str() == "Terapagos-Stellar";
+        // species_id is lowercase without dashes
+        let is_terapagos = pokemon_ref.species_id.as_str() == "terapagosstellar";
 
         if is_terapagos {
             // if (pokemon.terastallized && pokemon.getStat('atk', false, true) > pokemon.getStat('spa', false, true))
@@ -84,7 +85,8 @@ pub fn on_modify_move(
             None => return EventResult::Continue,
         };
 
-        pokemon_ref.species_id.as_str() == "Terapagos-Stellar"
+        // species_id is lowercase without dashes
+        pokemon_ref.species_id.as_str() == "terapagosstellar"
     };
 
     if is_terapagos_stellar {
