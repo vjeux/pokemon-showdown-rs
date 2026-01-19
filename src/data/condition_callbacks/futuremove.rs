@@ -336,7 +336,11 @@ pub fn on_end_with_data(
     debug_elog!("[FUTUREMOVE::ON_END] Returning Continue");
 
     // TODO: Handle Life Orb damage
-    // TODO: this.checkWin();
+
+    // this.checkWin();
+    // JavaScript calls checkWin after executing the future move hit
+    // This is critical for ending the battle early if a side loses
+    battle.check_win(None);
 
     EventResult::Continue
 }
