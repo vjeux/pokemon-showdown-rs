@@ -1,4 +1,4 @@
-Analyzing 25 failing minimized seed files...
+Analyzing 24 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
@@ -17,26 +17,6 @@ aurawheel: 2 seeds
   Seeds: 48318, 87270
 painsplit: 2 seeds
   Seeds: 60818, 79574
-maxsteelspike: 2 seeds
-  Seeds: 64286, 99388
-afteryou: 2 seeds
-  Seeds: 64286, 78126
-polarflare: 2 seeds
-  Seeds: 64286, 87270
-tarshot: 2 seeds
-  Seeds: 64286, 79574
-gust: 2 seeds
-  Seeds: 64286, 78126
-overheat: 2 seeds
-  Seeds: 64286, 71505
-healorder: 2 seeds
-  Seeds: 64286, 71505
-lightofruin: 2 seeds
-  Seeds: 64286, 78126
-followme: 2 seeds
-  Seeds: 64286, 99388
-falsesurrender: 2 seeds
-  Seeds: 64286, 78126
 whirlwind: 2 seeds
   Seeds: 71505, 78126
 maxhailstorm: 2 seeds
@@ -103,82 +83,10 @@ discharge: 1 seeds
   Seeds: 60818
 rage: 1 seeds
   Seeds: 60818
-gmaxmeltdown: 1 seeds
-  Seeds: 64286
-hurricane: 1 seeds
-  Seeds: 64286
-brickbreak: 1 seeds
-  Seeds: 64286
-rockthrow: 1 seeds
-  Seeds: 64286
-counter: 1 seeds
-  Seeds: 64286
-thundershock: 1 seeds
-  Seeds: 64286
-floralhealing: 1 seeds
-  Seeds: 64286
-snaptrap: 1 seeds
-  Seeds: 64286
-matchagotcha: 1 seeds
-  Seeds: 64286
-metronome: 1 seeds
-  Seeds: 64286
-thunderpunch: 1 seeds
-  Seeds: 64286
-firepledge: 1 seeds
-  Seeds: 64286
-destinybond: 1 seeds
-  Seeds: 64286
-crushgrip: 1 seeds
-  Seeds: 64286
-aurasphere: 1 seeds
-  Seeds: 64286
-blazekick: 1 seeds
-  Seeds: 64286
-spite: 1 seeds
-  Seeds: 64286
-dragoncheer: 1 seeds
-  Seeds: 64286
-earthquake: 1 seeds
-  Seeds: 64286
-submission: 1 seeds
-  Seeds: 64286
-hex: 1 seeds
-  Seeds: 64286
-meteorassault: 1 seeds
-  Seeds: 64286
-originpulse: 1 seeds
-  Seeds: 64286
-recover: 1 seeds
-  Seeds: 64286
-sharpen: 1 seeds
-  Seeds: 64286
-morningsun: 1 seeds
-  Seeds: 64286
-megahorn: 1 seeds
-  Seeds: 64286
-lunge: 1 seeds
-  Seeds: 64286
-gmaxhydrosnipe: 1 seeds
-  Seeds: 64286
-headcharge: 1 seeds
-  Seeds: 64286
-letssnuggleforever: 1 seeds
-  Seeds: 64286
-attract: 1 seeds
-  Seeds: 64286
-sappyseed: 1 seeds
-  Seeds: 64286
-flash: 1 seeds
-  Seeds: 64286
-dragonenergy: 1 seeds
-  Seeds: 64286
-darkpulse: 1 seeds
-  Seeds: 64286
-gmaxrapidflow: 1 seeds
-  Seeds: 64286
 watershuriken: 1 seeds
   Seeds: 71155
+healorder: 1 seeds
+  Seeds: 71505
 revivalblessing: 1 seeds
   Seeds: 71505
 assist: 1 seeds
@@ -194,6 +102,8 @@ maxflare: 1 seeds
 skullbash: 1 seeds
   Seeds: 71505
 burnup: 1 seeds
+  Seeds: 71505
+overheat: 1 seeds
   Seeds: 71505
 spikecannon: 1 seeds
   Seeds: 71505
@@ -215,7 +125,11 @@ psybeam: 1 seeds
   Seeds: 78126
 temperflare: 1 seeds
   Seeds: 78126
+gust: 1 seeds
+  Seeds: 78126
 ivycudgel: 1 seeds
+  Seeds: 78126
+afteryou: 1 seeds
   Seeds: 78126
 gravapple: 1 seeds
   Seeds: 78126
@@ -242,6 +156,10 @@ protect: 1 seeds
 revenge: 1 seeds
   Seeds: 78126
 sing: 1 seeds
+  Seeds: 78126
+lightofruin: 1 seeds
+  Seeds: 78126
+falsesurrender: 1 seeds
   Seeds: 78126
 magiccoat: 1 seeds
   Seeds: 78126
@@ -335,6 +253,8 @@ trumpcard: 1 seeds
   Seeds: 79574
 hyperspacefury: 1 seeds
   Seeds: 79574
+tarshot: 1 seeds
+  Seeds: 79574
 matblock: 1 seeds
   Seeds: 79574
 gmaxwildfire: 1 seeds
@@ -405,6 +325,8 @@ banefulbunker: 1 seeds
   Seeds: 87270
 crushclaw: 1 seeds
   Seeds: 87270
+polarflare: 1 seeds
+  Seeds: 87270
 electroshot: 1 seeds
   Seeds: 87270
 curse: 1 seeds
@@ -457,6 +379,8 @@ chatter: 1 seeds
   Seeds: 99388
 odorsleuth: 1 seeds
   Seeds: 99388
+followme: 1 seeds
+  Seeds: 99388
 mindblown: 1 seeds
   Seeds: 99388
 stoneedge: 1 seeds
@@ -478,6 +402,8 @@ slackoff: 1 seeds
 psychocut: 1 seeds
   Seeds: 99388
 multiattack: 1 seeds
+  Seeds: 99388
+maxsteelspike: 1 seeds
   Seeds: 99388
 aromaticmist: 1 seeds
   Seeds: 99388
@@ -523,42 +449,22 @@ growl: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Own Tempo: 3 seeds
-  Seeds: 64286, 74439, 99388
-Levitate: 3 seeds
-  Seeds: 64286, 79574, 99388
 Poison Point: 3 seeds
   Seeds: 78126, 79574, 87270
 Hunger Switch: 2 seeds
   Seeds: 48318, 87270
 Poison Touch: 2 seeds
   Seeds: 60349, 92938
-Slow Start: 2 seeds
-  Seeds: 64286, 87270
-Water Absorb: 2 seeds
-  Seeds: 64286, 87270
+Own Tempo: 2 seeds
+  Seeds: 74439, 99388
 Gulp Missile: 2 seeds
   Seeds: 78126, 79574
 Overgrow: 2 seeds
   Seeds: 79574, 87270
+Levitate: 2 seeds
+  Seeds: 79574, 99388
 Stench: 2 seeds
   Seeds: 85281, 99388
-Swarm: 1 seeds
-  Seeds: 64286
-Storm Drain: 1 seeds
-  Seeds: 64286
-Chlorophyll: 1 seeds
-  Seeds: 64286
-Commander: 1 seeds
-  Seeds: 64286
-Snow Cloak: 1 seeds
-  Seeds: 64286
-Shed Skin: 1 seeds
-  Seeds: 64286
-Pure Power: 1 seeds
-  Seeds: 64286
-Schooling: 1 seeds
-  Seeds: 64286
 Battle Bond: 1 seeds
   Seeds: 71155
 Rough Skin: 1 seeds
@@ -599,6 +505,10 @@ Speed Boost: 1 seeds
   Seeds: 79574
 Rivalry: 1 seeds
   Seeds: 87270
+Slow Start: 1 seeds
+  Seeds: 87270
+Water Absorb: 1 seeds
+  Seeds: 87270
 Multitype: 1 seeds
   Seeds: 87270
 Sweet Veil: 1 seeds
@@ -633,14 +543,8 @@ Cute Charm: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-hearthflamemask: 2 seeds
-  Seeds: 45311, 64286
 protectivepads: 2 seeds
   Seeds: 60349, 92938
-sailfossil: 2 seeds
-  Seeds: 64286, 99388
-salacberry: 2 seeds
-  Seeds: 64286, 78126
 choicescarf: 2 seeds
   Seeds: 71505, 87270
 rarebone: 2 seeds
@@ -649,24 +553,8 @@ absolite: 2 seeds
   Seeds: 78126, 79574
 assaultvest: 2 seeds
   Seeds: 78126, 87270
-tr64: 1 seeds
-  Seeds: 64286
-banettite: 1 seeds
-  Seeds: 64286
-goldbottlecap: 1 seeds
-  Seeds: 64286
-wellspringmask: 1 seeds
-  Seeds: 64286
-tyranitarite: 1 seeds
-  Seeds: 64286
-galaricawreath: 1 seeds
-  Seeds: 64286
-cobaberry: 1 seeds
-  Seeds: 64286
-petayaberry: 1 seeds
-  Seeds: 64286
-bindingband: 1 seeds
-  Seeds: 64286
+hearthflamemask: 1 seeds
+  Seeds: 45311
 adrenalineorb: 1 seeds
   Seeds: 74439
 garchompite: 1 seeds
@@ -678,6 +566,8 @@ psychicseed: 1 seeds
 muscleband: 1 seeds
   Seeds: 78126
 cheriberry: 1 seeds
+  Seeds: 78126
+salacberry: 1 seeds
   Seeds: 78126
 burndrive: 1 seeds
   Seeds: 78126
@@ -745,16 +635,18 @@ dracoplate: 1 seeds
   Seeds: 99388
 tr94: 1 seeds
   Seeds: 99388
+sailfossil: 1 seeds
+  Seeds: 99388
 lightball: 1 seeds
   Seeds: 99388
 
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 25
-Unique moves: 259 (258 non-simple)
-Unique abilities: 54 (53 non-simple)
-Unique items: 57
+Total minimized seeds: 24
+Unique moves: 222 (221 non-simple)
+Unique abilities: 46 (45 non-simple)
+Unique items: 48
 
 --- Top 10 Moves ---
   torment: 2 seeds
@@ -764,18 +656,18 @@ Unique items: 57
   knockoff: 2 seeds
   aurawheel: 2 seeds
   painsplit: 2 seeds
-  maxsteelspike: 2 seeds
-  afteryou: 2 seeds
-  polarflare: 2 seeds
+  whirlwind: 2 seeds
+  maxhailstorm: 2 seeds
+  plasmafists: 2 seeds
 
 --- Top 10 Abilities ---
-  Own Tempo: 3 seeds
-  Levitate: 3 seeds
   Poison Point: 3 seeds
   Hunger Switch: 2 seeds
   Poison Touch: 2 seeds
-  Slow Start: 2 seeds
-  Water Absorb: 2 seeds
+  Own Tempo: 2 seeds
   Gulp Missile: 2 seeds
   Overgrow: 2 seeds
+  Levitate: 2 seeds
   Stench: 2 seeds
+  Battle Bond: 1 seeds
+  Rough Skin: 1 seeds

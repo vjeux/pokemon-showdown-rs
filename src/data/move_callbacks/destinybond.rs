@@ -102,12 +102,27 @@ pub mod condition {
         }
 
         // if (effect.effectType === 'Move' && !effect.flags['futuremove']) {
-        // Check if effect is a move (get_move_by_id returns Some) and doesn't have futuremove flag
-        let effect_data = battle.dex.moves().get_by_id(&ID::from(_effect));
-        if let Some(move_data) = effect_data {
+        // Check the actual effect type from battle.event.effect (the effect that caused the faint),
+        // not battle.effect (which is set to the handler's effect, i.e., destinybond).
+        //
+        // In JavaScript, the 'effect' parameter to onFaint is faintData.effect - the effect
+        // that caused the faint (e.g., freezeshock move). This is stored in battle.event.effect.
+        //
+        // This check is important because some IDs (like "leechseed") are both moves AND volatile
+        // conditions. When damage came from the condition (e.g., residual damage), not from the
+        // move being used, Destiny Bond should NOT trigger.
+        let is_move_effect = battle.event.as_ref()
+            .and_then(|e| e.effect.as_ref())
+            .map(|e| e.effect_type == crate::battle::EffectType::Move)
+            .unwrap_or(false);
+
+        if is_move_effect {
             // Check if move has futuremove flag
-            if move_data.flags.contains_key("futuremove") {
-                return EventResult::Continue;
+            let effect_data = battle.dex.moves().get_by_id(&ID::from(_effect));
+            if let Some(move_data) = effect_data {
+                if move_data.flags.contains_key("futuremove") {
+                    return EventResult::Continue;
+                }
             }
 
             // if (source.volatiles['dynamax']) {
