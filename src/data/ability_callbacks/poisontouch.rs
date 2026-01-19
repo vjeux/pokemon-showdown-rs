@@ -35,8 +35,10 @@ pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Opt
 
         // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
         // Note: For on_source_damaging_hit, target is the defender and source is the attacker (ability holder)
-        // So source attacks target, we check contact with (source, target) for the attacker/defender relationship
-        if battle.check_move_makes_contact_with_active_move(active_move, source, target, false) {
+        // JavaScript calls: checkMoveMakesContact(move, target, source)
+        // This means attacker param = target (defender), defender param = source (attacker with ability)
+        // Protective Pads is checked on the attacker parameter, so we pass target first
+        if battle.check_move_makes_contact_with_active_move(active_move, target, source, false) {
             if battle.random_chance(3, 10) {
                 // target.trySetStatus('psn', source);
                 // Note: source (the Poison Touch Pokemon/attacker) is the source of the poison status
