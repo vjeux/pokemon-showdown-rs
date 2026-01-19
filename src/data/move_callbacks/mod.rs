@@ -2360,24 +2360,25 @@ pub fn dispatch_condition_on_residual(
 pub fn dispatch_condition_on_restart(
     battle: &mut Battle,
     condition_id: &str,
-    source_pos: (usize, usize),
+    target_pos: (usize, usize),
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     match condition_id {
-        "allyswitch" => allyswitch::condition::on_restart(battle, source_pos),
-        "charge" => charge::condition::on_restart(battle, source_pos, None, None),
-        "defensecurl" => defensecurl::condition::on_restart(battle, source_pos),
+        "allyswitch" => allyswitch::condition::on_restart(battle, target_pos),
+        "charge" => charge::condition::on_restart(battle, target_pos, None, None),
+        "defensecurl" => defensecurl::condition::on_restart(battle, target_pos),
         "furycutter" => furycutter::condition::on_restart(battle),
         "gmaxchistrike" => {
-            gmaxchistrike::condition::on_restart(battle, None, Some(source_pos), None)
+            gmaxchistrike::condition::on_restart(battle, Some(target_pos), source_pos, None)
         }
-        "healblock" => healblock::condition::on_restart(battle, None, Some(source_pos), None),
-        "helpinghand" => helpinghand::condition::on_restart(battle, None, Some(source_pos)),
-        "laserfocus" => laserfocus::condition::on_restart(battle, source_pos),
-        "minimize" => minimize::condition::on_restart(battle, source_pos),
-        "powershift" => powershift::condition::on_restart(battle, source_pos),
-        "powertrick" => powertrick::condition::on_restart(battle, source_pos),
-        "smackdown" => smackdown::condition::on_restart(battle, source_pos),
-        "stockpile" => stockpile::condition::on_restart(battle, Some(source_pos)),
+        "healblock" => healblock::condition::on_restart(battle, Some(target_pos), source_pos, None),
+        "helpinghand" => helpinghand::condition::on_restart(battle, Some(target_pos), source_pos),
+        "laserfocus" => laserfocus::condition::on_restart(battle, target_pos),
+        "minimize" => minimize::condition::on_restart(battle, target_pos),
+        "powershift" => powershift::condition::on_restart(battle, target_pos),
+        "powertrick" => powertrick::condition::on_restart(battle, target_pos),
+        "smackdown" => smackdown::condition::on_restart(battle, target_pos),
+        "stockpile" => stockpile::condition::on_restart(battle, Some(target_pos)),
         _ => EventResult::Continue,
     }
 }

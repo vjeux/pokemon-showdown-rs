@@ -828,7 +828,8 @@ pub fn dispatch_on_restart(
         "stall" => stall::on_restart(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_restart(battle, condition_id, pokemon_pos)
+            // pokemon_pos is the target (pokemon with the volatile), source_pos is the move user
+            move_callbacks::dispatch_condition_on_restart(battle, condition_id, pokemon_pos, source_pos)
         }
     }
 }
