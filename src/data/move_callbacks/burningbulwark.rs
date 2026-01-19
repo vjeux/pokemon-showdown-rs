@@ -122,7 +122,14 @@ pub mod condition {
         };
 
         // if (!move.flags['protect'] || move.category === 'Status') {
-        if !move_data.flags.contains_key("protect") || move_data.category == "Status" {
+        // IMPORTANT: Check the ACTIVE move's runtime flags, not the dex data
+        // Abilities like Unseen Fist modify active_move.flags.protect at runtime
+        let (has_protect_flag, move_category) = match &battle.active_move {
+            Some(active_move) => (active_move.flags.protect, active_move.category.as_str()),
+            None => (true, ""), // Default to having protect if no active move
+        };
+
+        if !has_protect_flag || move_category == "Status" {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
             if move_id.as_str() == "gmaxoneblow" || move_id.as_str() == "gmaxrapidflow" {
                 // return;

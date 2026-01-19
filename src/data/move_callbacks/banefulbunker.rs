@@ -126,7 +126,14 @@ pub mod condition {
         };
 
         // if (!move.flags['protect']) {
-        if !move_data.flags.contains_key("protect") {
+        // IMPORTANT: Check the ACTIVE move's runtime flags, not the dex data
+        // Abilities like Unseen Fist modify active_move.flags.protect at runtime
+        let has_protect_flag = match &battle.active_move {
+            Some(active_move) => active_move.flags.protect,
+            None => true, // Default to having protect if no active move
+        };
+
+        if !has_protect_flag {
             // if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
             if move_id == ID::from("gmaxoneblow") || move_id == ID::from("gmaxrapidflow") {
                 return EventResult::Continue;
