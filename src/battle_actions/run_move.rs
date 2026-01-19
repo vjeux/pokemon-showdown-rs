@@ -82,6 +82,7 @@ pub fn run_move(
     // if (baseMove.id !== 'struggle' && !zMove && !maxMove && !externalMove)
     // This can change the move (e.g., Encore forces a specific move)
     let mut effective_move_id = move_id.clone();
+    let mut target_pos = target_pos;
     if move_id.as_str() != "struggle" && z_move.is_none() && max_move.is_none() && !external_move {
         // const changedMove = this.battle.runEvent('OverrideAction', pokemon, target, baseMove);
         let changed_move_result = battle.run_event("OverrideAction", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
@@ -90,7 +91,16 @@ pub fn run_move(
         if let EventResult::ID(new_move_id) = changed_move_result {
             if new_move_id != *move_id {
                 debug_elog!("[RUN_MOVE] OverrideAction changed move from {} to {}", move_id.as_str(), new_move_id.as_str());
-                effective_move_id = new_move_id;
+                effective_move_id = new_move_id.clone();
+
+                // IMPORTANT: When the move is changed, JavaScript recalculates the target
+                // JavaScript: target = this.battle.getRandomTarget(pokemon, baseMove);
+                // This is critical because different moves may have different target types
+                // (e.g., if encore forces a self-targeting move when the original was normal-targeting)
+                let new_move_target = battle.dex.moves.get(&new_move_id)
+                    .map(|m| m.target.clone())
+                    .unwrap_or_else(|| "normal".to_string());
+                target_pos = battle.get_random_target(pokemon_pos.0, pokemon_pos.1, &new_move_target);
             }
         }
     }
