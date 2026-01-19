@@ -30,7 +30,8 @@ pub fn on_try(
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        source_pokemon.species_id.as_str() == "Darkrai"
+        // species_id is lowercase, so compare to "darkrai"
+        source_pokemon.species_id.as_str() == "darkrai"
     };
 
     let has_bounced = battle
