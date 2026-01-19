@@ -14,7 +14,7 @@ use crate::battle::Arg;
 ///         return target.hp - 1;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>, effect_type: Option<&str>) -> EventResult {
     // if (this.randomChance(1, 10) && damage >= target.hp && effect && effect.effectType === 'Move')
 
     // this.randomChance(1, 10)
@@ -39,26 +39,26 @@ pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, us
     }
 
     // effect && effect.effectType === 'Move'
-    if let Some(eff_id) = effect_id {
-        let effect_type = battle.get_effect_type(&eff_id.into());
-        if effect_type == "Move" {
-            // this.add("-activate", target, "item: Focus Band");
-            // Get the pokemon name first to avoid borrow checker issues
-            let target_str = if let Some(target_pokemon) = battle.pokemon_at(target.0, target.1) {
-                target_pokemon.to_string()
-            } else {
-                String::new()
-            };
+    // Use the effect_type passed from the Effect struct directly
+    // This is correct because the Effect struct preserves the actual effect type
+    // (e.g., gmaxvolcalith side condition has type "Condition", not "Move")
+    if effect_type == Some("Move") {
+        // this.add("-activate", target, "item: Focus Band");
+        // Get the pokemon name first to avoid borrow checker issues
+        let target_str = if let Some(target_pokemon) = battle.pokemon_at(target.0, target.1) {
+            target_pokemon.to_string()
+        } else {
+            String::new()
+        };
 
-            if !target_str.is_empty() {
-                battle.add("-activate", &[
-                    Arg::String(target_str),
-                    Arg::Str("item: Focus Band"),
-                ]);
-            }
-            // return target.hp - 1;
-            return EventResult::Number(target_hp - 1);
+        if !target_str.is_empty() {
+            battle.add("-activate", &[
+                Arg::String(target_str),
+                Arg::Str("item: Focus Band"),
+            ]);
         }
+        // return target.hp - 1;
+        return EventResult::Number(target_hp - 1);
     }
 
     EventResult::Continue

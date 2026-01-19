@@ -631,10 +631,11 @@ pub fn dispatch_on_damage(
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
     effect_id: Option<&str>,
+    effect_type: Option<&str>,
 ) -> EventResult {
     match item_id {
-        "focusband" => focusband::on_damage(battle, damage, target_pos, source_pos, effect_id),
-        "focussash" => focussash::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "focusband" => focusband::on_damage(battle, damage, target_pos, source_pos, effect_id, effect_type),
+        "focussash" => focussash::on_damage(battle, damage, target_pos, source_pos, effect_id, effect_type),
         _ => EventResult::Continue,
     }
 }
