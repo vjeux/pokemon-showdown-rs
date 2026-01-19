@@ -76,10 +76,11 @@ pub fn on_start(
         };
         // JavaScript: target.species.name === 'Shaymin-Sky'
         // JavaScript: target.baseSpecies.baseSpecies === 'Shaymin'
-        // The base_species field is an ID (lowercase), so we compare with lowercase
-        // OR we can use get_base_species_base_species which returns the proper name
+        // Use species_id (current species after forme changes), not set.species (original from team)
+        let species_data = battle.dex.species().get(pokemon.species_id.as_str());
+        let species_name = species_data.map(|s| s.name.as_str()).unwrap_or("");
         let base_species_base_species = pokemon.get_base_species_base_species(&battle.dex);
-        pokemon.set.species == "Shaymin-Sky" && base_species_base_species.as_deref() == Some("Shaymin")
+        species_name == "Shaymin-Sky" && base_species_base_species.as_deref() == Some("Shaymin")
     };
 
     if is_shaymin_sky {

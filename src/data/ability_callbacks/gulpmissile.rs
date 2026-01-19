@@ -21,7 +21,8 @@ use crate::pokemon::Pokemon;
 ///         target.formeChange('cramorant', move);
 ///     }
 /// }
-pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult { let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
     // Get source and target positions
     let source_pos = match source_pos {
         Some(pos) => pos,
@@ -133,8 +134,10 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, _target_pos: Option<(usize
 
         let has_ability = source.has_ability(battle, &["gulpmissile"]);
 
-        // Check species is Cramorant (base species check)
-        let species_data = battle.dex.species().get(&source.set.species);
+        // Check if current species is Cramorant (base form)
+        // JavaScript: source.species.name === 'Cramorant'
+        // Use species_id (current species after forme changes), not set.species (original from team)
+        let species_data = battle.dex.species().get(source.species_id.as_str());
         let is_cramorant = species_data.map(|s| s.name.as_str() == "Cramorant").unwrap_or(false);
 
         (has_ability, source.hp, source.maxhp, is_cramorant)
@@ -157,4 +160,3 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, _target_pos: Option<(usize
 
     EventResult::Continue
 }
-
