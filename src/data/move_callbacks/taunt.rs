@@ -172,7 +172,7 @@ pub mod condition {
             .map(|md| md.name.clone())
             .unwrap_or_else(|| active_move_ref.id.to_string());
         let is_z = active_move_ref.is_z.is_some();
-        let is_z_or_max_powered = is_z_or_max;
+        let is_z_or_max_powered = active_move_ref.is_z_or_max_powered;
         let category = &active_move_ref.category;
         let move_id = &active_move_ref.id;
         let move_name = name;
