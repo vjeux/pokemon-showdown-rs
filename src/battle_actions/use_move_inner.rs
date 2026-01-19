@@ -441,7 +441,7 @@ pub fn use_move_inner(
     battle.run_event("ModifyType", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
 
     // move = this.battle.runEvent('ModifyMove', pokemon, target, move, move);
-    battle.run_event("ModifyMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
+    let modify_move_result = battle.run_event("ModifyMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
 
     // Get potentially modified move again
     if let Some(ref modified) = battle.active_move {
@@ -464,6 +464,16 @@ pub fn use_move_inner(
     // if (!move || pokemon.fainted) {
     //     return false;
     // }
+    // JavaScript: if (!move || pokemon.fainted) - "!move" means if move became falsy (e.g., false/null from onModifyMove)
+    // We check if modify_move_result is falsy (Boolean(false), Null, etc.)
+    let move_blocked = match modify_move_result {
+        EventResult::Boolean(false) | EventResult::Null => true,
+        _ => false,
+    };
+    if move_blocked {
+        debug_elog!("[USE_MOVE_INNER] Move blocked by ModifyMove (result: {:?}), returning false", modify_move_result);
+        return false;
+    }
     let pokemon_fainted = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].is_fainted();
     if pokemon_fainted {
         debug_elog!("[USE_MOVE_INNER] Pokemon fainted, returning false");
