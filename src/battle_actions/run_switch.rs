@@ -47,13 +47,19 @@ pub fn run_switch(battle: &mut Battle, side_idx: usize, poke_idx: usize) {
     // JS: const allActive = this.battle.getAllActive(true);
     // JS: this.battle.speedSort(allActive);
     // Collect all active Pokemon with their speeds
+    // Note: JS passes includeFainted=true here, so we include all active Pokemon
+    // regardless of their fainted status. This is important for proper speedSort
+    // shuffling when Pokemon with tied speeds are still technically active
+    // even if they've been queued to faint.
     let mut all_active: Vec<(usize, usize, i32)> = Vec::new();
     for (side_idx, side) in battle.sides.iter().enumerate() {
+        debug_elog!("[RUN_SWITCH DEBUG] Side {} active slots: {:?}", side_idx, side.active);
         for poke_idx in side.active.iter().flatten() {
             if let Some(pokemon) = side.pokemon.get(*poke_idx) {
-                if !pokemon.fainted {
-                    all_active.push((side_idx, *poke_idx, pokemon.speed));
-                }
+                debug_elog!("[RUN_SWITCH DEBUG] Side {} poke {} - fainted={}, faint_queued={}, speed={}",
+                    side_idx, poke_idx, pokemon.fainted, pokemon.faint_queued, pokemon.speed);
+                // Include all active Pokemon, even if fainted (matches JS getAllActive(true))
+                all_active.push((side_idx, *poke_idx, pokemon.speed));
             }
         }
     }
