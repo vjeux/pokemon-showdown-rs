@@ -27,7 +27,41 @@ impl Battle {
         let relay_var = self.event.as_ref().and_then(|e| e.relay_var.clone());
 
         // Clone active_move to pass to dispatch functions
-        let active_move_clone = self.active_move.clone();
+        // IMPORTANT: For events like AfterMoveSecondarySelf, the event.effect contains the
+        // correct move (e.g., Assist), while self.active_move might have been changed by
+        // a called move (e.g., healbell called via Assist). We need to check:
+        // - If event.effect matches battle.active_move.id -> use battle.active_move (has runtime state like total_damage)
+        // - If event.effect differs -> look up from dex (correct flags for items like Throat Spray)
+        let active_move_clone = {
+            // First try to get the move from event.effect (the move passed to the event)
+            let event_move_id = self.event.as_ref()
+                .and_then(|e| e.effect.as_ref())
+                .filter(|eff| eff.effect_type == crate::battle::EffectType::Move)
+                .map(|eff| eff.id.clone());
+
+            if let Some(ref move_id) = event_move_id {
+                // Check if event's move ID matches battle.active_move
+                let active_move_matches = self.active_move.as_ref()
+                    .map(|am| am.id == *move_id)
+                    .unwrap_or(false);
+
+                if active_move_matches {
+                    // Same move - use battle.active_move which has runtime state (total_damage, etc.)
+                    self.active_move.clone()
+                } else {
+                    // Different move (e.g., Assist vs healbell) - look up from dex for correct flags
+                    if let Some(active_move) = self.dex.get_active_move(move_id.as_str()) {
+                        Some(active_move)
+                    } else {
+                        // Fallback to active_move if move not found in dex
+                        self.active_move.clone()
+                    }
+                }
+            } else {
+                // No event effect or not a move effect - use active_move
+                self.active_move.clone()
+            }
+        };
 
         match event_id {
             // TypeScript: onAfterBoost(target:Pokemon, boost:BoostsTable)
