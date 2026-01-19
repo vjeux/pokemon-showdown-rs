@@ -10,9 +10,9 @@ use crate::event::EventResult;
 /// onAfterMove(pokemon, target, move) {
 ///     if (move.mindBlownRecoil && !move.multihit) {
 ///         const hpBeforeRecoil = pokemon.hp;
-///         this.damage(Math.round(pokemon.maxhp / 2), pokemon, pokemon, this.dex.conditions.get('Mind Blown'), true);
+///         this.damage(Math.round(pokemon.maxhp / 2), pokemon, pokemon, this.dex.conditions.get("Mind Blown"), true);
 ///         if (pokemon.hp <= pokemon.maxhp / 2 && hpBeforeRecoil > pokemon.maxhp / 2) {
-///             this.runEvent('EmergencyExit', pokemon, pokemon);
+///             this.runEvent("EmergencyExit", pokemon, pokemon);
 ///         }
 ///     }
 /// }
@@ -32,7 +32,7 @@ pub fn on_after_move(
             None => return EventResult::Continue,
         };
         // JS: if (move.mindBlownRecoil && !move.multihit)
-        // In JS, 'move' is the active move, which may have mindBlownRecoil set to false
+        // In JS, "move" is the active move, which may have mindBlownRecoil set to false
         // if the hit loop already applied recoil.
         (active_move.mindblown_recoil, active_move.multi_hit.is_some())
     };
@@ -48,13 +48,15 @@ pub fn on_after_move(
             (pokemon_pokemon.hp, pokemon_pokemon.maxhp)
         };
 
-        // this.damage(Math.round(pokemon.maxhp / 2), pokemon, pokemon, this.dex.conditions.get('Mind Blown'), true);
+        // this.damage(Math.round(pokemon.maxhp / 2), pokemon, pokemon, this.dex.conditions.get("Mind Blown"), true);
+        // Note: JS uses this.dex.conditions.get("Mind Blown") which creates a Condition effect,
+        // NOT a Move effect. This is important because Disguise only blocks damage from Move effects.
         let damage_amount = (max_hp as f64 / 2.0).round() as i32;
         battle.damage(
             damage_amount,
             Some(pokemon),
             Some(pokemon),
-            Some(&Effect::move_(ID::from("mindblown"))),
+            Some(&Effect::condition(ID::from("mindblown"))),
             true, // ignoreability
         );
 
@@ -69,7 +71,7 @@ pub fn on_after_move(
 
         let half_hp = max_hp / 2;
         if hp_after_recoil <= half_hp && hp_before_recoil > half_hp {
-            // this.runEvent('EmergencyExit', pokemon, pokemon);
+            // this.runEvent("EmergencyExit", pokemon, pokemon);
             battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(pokemon)), Some(pokemon), None, EventResult::Continue, false, false);
         }
     }
