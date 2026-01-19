@@ -91,13 +91,9 @@ impl Battle {
 
         // JS: this.queue.sort();
         // JavaScript's BattleQueue.sort() calls this.battle.speedSort(this.list)
-        // speedSort gets action speed first via getActionSpeed, then sorts
+        // Note: getActionSpeed is already called inside resolveAction (line 270 in battle-queue.ts)
+        // during add_choice, so we don't need to call it again here - speeds are already set
         let mut list = std::mem::take(&mut self.queue.list);
-
-        // getActionSpeed is called inside resolveAction (line 270 in battle-queue.ts)
-        for action in &mut list {
-            self.get_action_speed(action);
-        }
 
         self.speed_sort_with_callsite(&mut list, |action| {
             PriorityItem {
