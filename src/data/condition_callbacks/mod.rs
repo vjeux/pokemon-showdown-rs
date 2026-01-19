@@ -755,7 +755,7 @@ pub fn dispatch_on_move_aborted(
         "charge" => move_callbacks::charge::condition::on_move_aborted(battle, pokemon_pos, target_pos, active_move),
         _ => {
             // Fallback to move-embedded condition callbacks
-            move_callbacks::dispatch_condition_on_move_aborted(battle, active_move, pokemon_pos)
+            move_callbacks::dispatch_condition_on_move_aborted(battle, condition_id, active_move, pokemon_pos)
         }
     }
 }

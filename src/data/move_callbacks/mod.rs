@@ -2259,12 +2259,14 @@ pub fn dispatch_condition_on_modify_type(
 }
 
 /// Dispatch condition onMoveAborted callbacks
+/// Takes condition_id directly to support fallback from condition_callbacks
 pub fn dispatch_condition_on_move_aborted(
     battle: &mut Battle,
+    condition_id: &str,
     active_move: Option<&ActiveMove>,
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    match condition_id {
         "bide" => bide::condition::on_move_aborted(battle, source_pos),
         "charge" => charge::condition::on_move_aborted(battle, source_pos, None, active_move),
         "destinybond" => destinybond::condition::on_move_aborted(battle, source_pos, None, active_move),
