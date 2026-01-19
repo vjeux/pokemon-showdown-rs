@@ -224,7 +224,7 @@ pub fn use_move_inner(
         // Store the move temporarily in battle.active_move for the event
         battle.active_move = Some(active_move.clone());
 
-        battle.single_event(
+        let modify_type_result = battle.single_event(
             "ModifyType",
             &crate::battle::Effect::move_(active_move.id.clone()),
             None,
@@ -233,6 +233,13 @@ pub fn use_move_inner(
             Some(&Effect::move_(active_move.id.clone())),
             None,
         );
+        // Apply the returned type to active_move if the callback returned a String
+        if let EventResult::String(new_type) = modify_type_result {
+            active_move.move_type = new_type.clone();
+            if let Some(ref mut am) = battle.active_move {
+                am.move_type = new_type;
+            }
+        }
 
         // Get the potentially modified move back
         if let Some(ref modified_move) = battle.active_move {
@@ -272,7 +279,7 @@ pub fn use_move_inner(
     if max_move.is_some() && active_move.category != "Status" {
         battle.active_move = Some(active_move.clone());
 
-        battle.single_event(
+        let modify_type_result = battle.single_event(
             "ModifyType",
             &crate::battle::Effect::move_(active_move.id.clone()),
             None,
@@ -281,6 +288,13 @@ pub fn use_move_inner(
             Some(&Effect::move_(active_move.id.clone())),
             None,
         );
+        // Apply the returned type to active_move if the callback returned a String
+        if let EventResult::String(new_type) = modify_type_result {
+            active_move.move_type = new_type.clone();
+            if let Some(ref mut am) = battle.active_move {
+                am.move_type = new_type;
+            }
+        }
 
         battle.run_event("ModifyType", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
 
@@ -401,7 +415,9 @@ pub fn use_move_inner(
     }
 
     // this.battle.singleEvent('ModifyType', move, null, pokemon, target, move, move);
-    battle.single_event(
+    // In JavaScript, the callback modifies move.type directly.
+    // In Rust, the callback returns EventResult::String(type_name) which we apply to active_move.move_type.
+    let modify_type_result = battle.single_event(
         "ModifyType",
         &crate::battle::Effect::move_(active_move.id.clone()),
         None,
@@ -410,6 +426,14 @@ pub fn use_move_inner(
         Some(&Effect::move_(active_move.id.clone())),
         None,
     );
+    // Apply the returned type to active_move if the callback returned a String
+    if let EventResult::String(new_type) = modify_type_result {
+        active_move.move_type = new_type.clone();
+        // Also update battle.active_move so the change persists
+        if let Some(ref mut am) = battle.active_move {
+            am.move_type = new_type;
+        }
+    }
 
     // this.battle.singleEvent('ModifyMove', move, null, pokemon, target, move, move);
     battle.single_event(
