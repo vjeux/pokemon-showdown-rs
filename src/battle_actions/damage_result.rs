@@ -1,14 +1,15 @@
 //! DamageResult enum for battle action damage calculation results
 
 /// Damage calculation result
-/// Matches JavaScript return types: number | undefined | false | true | '' (NOT_FAIL) | HIT_SUBSTITUTE
-/// JavaScript functions return number (damage) | undefined (no effect) | false (failed) | true (success) | '' (NOT_FAIL)
+/// Matches JavaScript return types: number | undefined | false | true | null | '' (NOT_FAIL) | HIT_SUBSTITUTE
+/// JavaScript functions return number (damage) | undefined (no effect) | false (failed) | true (success) | null (silent fail) | '' (NOT_FAIL)
 ///
 /// In JavaScript Pokemon Showdown:
 /// - number: Actual damage dealt
 /// - false: Move explicitly failed (shows "But it failed!" message)
 /// - true: Move succeeded without dealing damage
 /// - undefined: Move had no effect/immune (no failure message)
+/// - null: Move silently failed (no message, but treated as false when combining damage)
 /// - '' (NOT_FAIL): Move didn't fail but also didn't succeed normally (e.g., protected)
 /// - HIT_SUBSTITUTE: Substitute took the hit (treated as 0 damage)
 #[derive(Debug, Clone, Copy, Default, PartialEq)]
@@ -33,6 +34,12 @@ pub enum DamageResult {
     #[default]
     Undefined,
 
+    /// Silent failure (null in JS)
+    /// Move failed but animation still plays, no failure message
+    /// When combining into damage[i], null is converted to false
+    /// JavaScript: return null
+    Null,
+
     /// NOT_FAIL - didn't fail but also didn't succeed normally ('' in JS)
     /// Used when move was blocked (e.g., by Protect) but shouldn't show failure message
     /// JavaScript: return this.battle.NOT_FAIL (which is '')
@@ -53,7 +60,7 @@ impl From<crate::event::EventResult> for DamageResult {
             EventResult::Boolean(true) | EventResult::Stop => DamageResult::Success,
             EventResult::Boolean(false) => DamageResult::Failed,
             EventResult::NotFail => DamageResult::NotFail,
-            EventResult::Null => DamageResult::Undefined,
+            EventResult::Null => DamageResult::Null,
             EventResult::Continue => DamageResult::Success,
             _ => DamageResult::Undefined,
         }

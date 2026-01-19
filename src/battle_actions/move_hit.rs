@@ -55,6 +55,7 @@ pub fn move_hit<'a>(
         Some(DamageResult::Success) | None => DamageResult::Undefined,
         Some(DamageResult::NotFail) => DamageResult::NotFail,
         Some(DamageResult::Undefined) => DamageResult::Undefined,
+        Some(DamageResult::Null) => DamageResult::Null,
         Some(DamageResult::HitSubstitute) => DamageResult::Damage(0),
     };
 

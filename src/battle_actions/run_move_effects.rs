@@ -674,9 +674,13 @@ pub fn run_move_effects<'a>(
             active_move.id, i, damages[i], did_something);
 
         // damage[i] = this.combineResults(damage[i], didSomething === null ? false : didSomething);
-        // Note: JavaScript null doesn't have a direct DamageResult equivalent
-        // Assuming "null" would be represented as Undefined in our context
-        damages[i] = combine_results(damages[i], did_something);
+        // In JavaScript, null is explicitly converted to false when combining into damage[i]
+        let did_something_for_damage = if matches!(did_something, DamageResult::Null) {
+            DamageResult::Failed
+        } else {
+            did_something
+        };
+        damages[i] = combine_results(damages[i], did_something_for_damage);
 
         // didAnything = this.combineResults(didAnything, didSomething);
         did_anything = combine_results(did_anything, did_something);

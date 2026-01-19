@@ -148,7 +148,7 @@ impl Battle {
             // Handle undefined/failed damage
             let damage_value = match cur_damage {
                 DamageResult::Damage(n) => *n,
-                DamageResult::Failed | DamageResult::Undefined | DamageResult::NotFail => {
+                DamageResult::Failed | DamageResult::Undefined | DamageResult::NotFail | DamageResult::Null => {
                     ret_vals.push(*cur_damage);
                     continue;
                 }

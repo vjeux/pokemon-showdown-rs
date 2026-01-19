@@ -42,13 +42,13 @@ pub fn combine_results(left: DamageResult, right: DamageResult) -> DamageResult 
 
     // Type priority mapping (matches JavaScript resultsPriorities array)
     // const resultsPriorities = ['undefined', NOT_FAILURE, NULL, 'boolean', 'number'];
+    // Indices: undefined=0, ''=1, null=2, boolean=3, number=4
     let get_priority = |r: &DamageResult| match r {
         Undefined => 0,         // 'undefined'
         NotFail => 1,           // 'string' (NOT_FAIL = '')
-        // Note: JavaScript null (NULL = 'object') is represented differently
-        // In practice, null is not returned as a separate DamageResult variant
-        Failed | Success => 2,  // 'boolean' (false | true)
-        Damage(_) | HitSubstitute => 3, // 'number'
+        Null => 2,              // 'object' (null)
+        Failed | Success => 3,  // 'boolean' (false | true)
+        Damage(_) | HitSubstitute => 4, // 'number'
     };
 
     let left_priority = get_priority(&left);
@@ -63,7 +63,7 @@ pub fn combine_results(left: DamageResult, right: DamageResult) -> DamageResult 
     // else if (left && !right && right !== 0)
     //     return left;
     // In JavaScript: truthy left, falsy right (but not 0)
-    // For DamageResult: Success/Damage are truthy, Failed/Undefined are falsy
+    // For DamageResult: Success/Damage are truthy, Failed/Undefined/Null are falsy
     // NotFail is '' (empty string) in JS, which is FALSY
     // HitSubstitute is 0 so falsy but equals 0
     let is_truthy = |r: &DamageResult| matches!(r, Success | Damage(_));
