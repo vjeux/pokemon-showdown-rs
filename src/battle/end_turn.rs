@@ -699,10 +699,13 @@ impl Battle {
 
             // MaybeTrapPokemon event - conditional trapping based on type immunity
             // JS: if (!pokemon.knownType || this.dex.getImmunity('trapped', pokemon))
+            // NOTE: Must use dex.get_immunity() here, NOT run_status_immunity()
+            // JavaScript uses dex.getImmunity() which is a simple lookup, not runEvent('Immunity')
             let should_run_maybe_trap = {
                 let pokemon = &self.sides[pokemon_pos.0].pokemon[pokemon_pos.1];
+                let pokemon_types = pokemon.get_types(self, false);
                 // Run if type is not known OR if not immune to trapped status
-                !pokemon.known_type || Pokemon::run_status_immunity(self, pokemon_pos, "trapped", false)
+                !pokemon.known_type || self.dex.get_immunity("trapped", &pokemon_types)
             };
 
             if should_run_maybe_trap {
@@ -817,9 +820,12 @@ impl Battle {
                         }
 
                         // JS: if (pokemon.knownType && !this.dex.getImmunity('trapped', pokemon)) continue;
+                        // NOTE: Must use dex.get_immunity() here, NOT run_status_immunity()
+                        // JavaScript uses dex.getImmunity() which is a simple lookup, not runEvent('Immunity')
                         let should_skip = {
                             let pokemon = &self.sides[side_idx].pokemon[poke_idx];
-                            pokemon.known_type && !Pokemon::run_status_immunity(self, pokemon_pos, "trapped", false)
+                            let pokemon_types = pokemon.get_types(self, false);
+                            pokemon.known_type && !self.dex.get_immunity("trapped", &pokemon_types)
                         };
 
                         if should_skip {
