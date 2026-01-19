@@ -249,11 +249,14 @@ pub fn try_spread_move_hit(
         }
 
         // JS: return hitResult === this.battle.NOT_FAIL;
-        // If it's NOT_FAIL (null/undefined), return NOT_FAIL; if explicitly false, return Failed
+        // In JavaScript, this returns a boolean: true if hitResult is NOT_FAIL (''), false otherwise.
+        // When NOT_FAIL, the move succeeded (just didn't deal damage); when explicit false, it failed.
         if is_explicit_false {
             return DamageResult::Failed;
         } else {
-            return DamageResult::NotFail;
+            // NOT_FAIL in JS means the move succeeded without dealing damage (e.g., Future Sight queued)
+            // JavaScript returns `true` here, so we return Success
+            return DamageResult::Success;
         }
     }
 
