@@ -14,7 +14,7 @@ No regressions detected.
 Part 2: Minimized Seeds Tests (minimized teams)
 =======================================
 
-Running 157 minimized seed tests...
+Running 156 minimized seed tests...
 Comparing minimized results...
 
 
@@ -22,12 +22,9 @@ Comparing minimized results...
 Part 3: Full Team Tests (same seeds, generated teams)
 =======================================
 
-Running 157 seeds with full generated teams...
+Running 156 seeds with full generated teams...
 Comparing full team results...
 
-FAIL Seed 30232 (full team):
-  JS:   SEED 30232: turns=52, prng=282, winner=p1
-  Rust: SEED 30232: turns=45, prng=256, winner=p2
 FAIL Seed 40192 (full team):
   JS:   SEED 40192: turns=85, prng=490, winner=p2
   Rust: SEED 40192: turns=85, prng=522, winner=p2
@@ -37,10 +34,10 @@ Final Summary
 =======================================
 
 Regression tests (1-1000): 1000/1000 passed
-Minimized teams: 157/157 passed
-Full teams: 155/157 passed
+Minimized teams: 156/156 passed
+Full teams: 155/156 passed
 
-Failed full team seeds: 30232 40192
+Failed full team seeds: 40192
 All minimized seeds passed!
 
 SUCCESS: No regressions detected.
