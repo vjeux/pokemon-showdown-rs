@@ -28,30 +28,16 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 
     if is_active && base_species_name == Some("Kyogre".to_string()) && !transformed {
         // pokemon.formeChange('Kyogre-Primal', this.effect, true);
-        unsafe {
-            // SAFETY: We're creating two mutable references to battle.
-            // This is safe because we're accessing different parts of the battle structure.
-            let battle_ptr = battle as *mut Battle;
-            let battle_ref1 = &mut *battle_ptr;
-            let battle_ref2 = &mut *battle_ptr;
-
-            // Get pokemon directly from sides array
-            let side = &mut battle_ref1.sides[pokemon_pos.0];
-            let active_slot = side.active.get(pokemon_pos.1).cloned().flatten();
-            if let Some(pokemon_index) = active_slot {
-                if pokemon_index < side.pokemon.len() {
-                    crate::pokemon::Pokemon::forme_change(
-                        battle_ref2,
-                        (pokemon_pos.0, pokemon_index),
-                        ID::from("kyogreprimal"),
-                        Some(Effect::item("blueorb")),
-                        true,
-                        "0",
-                        None,
-                    );
-                }
-            }
-        }
+        // Note: pokemon_pos is already (side_idx, team_array_index) - the correct format for forme_change
+        crate::pokemon::Pokemon::forme_change(
+            battle,
+            pokemon_pos,
+            ID::from("kyogreprimal"),
+            Some(Effect::item("blueorb")),
+            true,
+            "0",
+            None,
+        );
     }
 
     EventResult::Continue
