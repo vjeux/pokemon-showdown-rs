@@ -123,14 +123,14 @@ pub fn on_source_after_faint(_battle: &mut Battle, _length: i32, _target_pos: Op
 ///     }
 /// }
 pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battle_actions::ActiveMove>, source_pos: (usize, usize), _target_pos: Option<(usize, usize)>) -> EventResult {
-    // Check if move is watershuriken
-    let is_water_shuriken = if let Some(ref active_move) = battle.active_move {
-        active_move.id.as_str() == "watershuriken"
-    } else {
-        return EventResult::Continue;
+    // Use the passed active_move parameter (battle.active_move is None during dispatch)
+    let active_move = match active_move {
+        Some(m) => m,
+        None => return EventResult::Continue,
     };
 
-    if !is_water_shuriken {
+    // Check if move is watershuriken
+    if active_move.id.as_str() != "watershuriken" {
         return EventResult::Continue;
     }
 
@@ -151,9 +151,7 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
 
     if species_name == "Greninja-Ash" && !transformed {
         // move.multihit = 3;
-        if let Some(active_move) = active_move {
-            active_move.multi_hit = Some(Multihit::Fixed(3));
-        }
+        active_move.multi_hit = Some(Multihit::Fixed(3));
     }
 
     EventResult::Continue
