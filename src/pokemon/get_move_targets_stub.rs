@@ -106,8 +106,12 @@ impl Pokemon {
                     m.flags.contains_key("futuremove"),
                     m.smart_target.unwrap_or(false),
                 ),
-                None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] },
+                None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target: false },
             };
+
+        // Track whether smartTarget should be set to false (when only one target is found)
+        // This is set in the default arm when handling smartTarget moves in singles
+        let mut should_clear_smart_target = false;
 
         // Handle different target types
         match move_target.as_str() {
@@ -117,7 +121,7 @@ impl Pokemon {
                     let allies = {
                         let pokemon = match battle.pokemon_at(user_pos.0, user_pos.1) {
                             Some(p) => p,
-                            None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] },
+                            None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target: false },
                         };
                         pokemon.allies_and_self(battle, true)
                     };
@@ -128,7 +132,7 @@ impl Pokemon {
                     let foes = {
                         let pokemon = match battle.pokemon_at(user_pos.0, user_pos.1) {
                             Some(p) => p,
-                            None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] },
+                            None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target: false },
                         };
                         pokemon.foes(battle, true)
                     };
@@ -146,7 +150,7 @@ impl Pokemon {
                 let adjacent_allies = {
                     let pokemon = match battle.pokemon_at(user_pos.0, user_pos.1) {
                         Some(p) => p,
-                        None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] },
+                        None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target: false },
                     };
                     pokemon.adjacent_allies(battle)
                 };
@@ -155,7 +159,7 @@ impl Pokemon {
                 let adjacent_foes = {
                     let pokemon = match battle.pokemon_at(user_pos.0, user_pos.1) {
                         Some(p) => p,
-                        None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] },
+                        None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target: false },
                     };
                     pokemon.adjacent_foes(battle)
                 };
@@ -171,7 +175,7 @@ impl Pokemon {
                 let adjacent_foes = {
                     let pokemon = match battle.pokemon_at(user_pos.0, user_pos.1) {
                         Some(p) => p,
-                        None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] },
+                        None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target: false },
                     };
                     pokemon.adjacent_foes(battle)
                 };
@@ -187,7 +191,7 @@ impl Pokemon {
                 targets = {
                     let pokemon = match battle.pokemon_at(user_pos.0, user_pos.1) {
                         Some(p) => p,
-                        None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] },
+                        None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target: false },
                     };
                     pokemon.allies_and_self(battle, false)
                 };
@@ -214,7 +218,7 @@ impl Pokemon {
                     debug_elog!("[GET_MOVE_TARGETS] get_random_target returned {:?}", target);
                     if target.is_none() {
                         debug_elog!("[GET_MOVE_TARGETS] No valid target found, returning empty");
-                        return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] };
+                        return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target: false };
                     }
                 }
 
@@ -275,19 +279,27 @@ impl Pokemon {
                             if !target2_is_self && target2_has_hp {
                                 if !target_has_hp {
                                     // Target fainted, use target2 instead
+                                    // JS: move.smartTarget = false (only one target)
+                                    should_clear_smart_target = true;
                                     targets.push((ally_side, ally_pos));
                                     target = Some((ally_side, ally_pos));
                                 } else {
-                                    // Both targets alive, hit both
+                                    // Both targets alive, hit both (Dragon Darts in doubles)
+                                    // JS: return [target, target2]
                                     targets.push((target_side, target_pos));
+                                    targets.push((ally_side, ally_pos));
                                     target = Some((target_side, target_pos));
                                 }
                             } else {
-                                // target2 invalid, just use target
+                                // target2 invalid (is self or fainted), just use target
+                                // JS: move.smartTarget = false
+                                should_clear_smart_target = true;
                                 targets.push((target_side, target_pos));
                             }
                         } else {
-                            // No target2, just use target
+                            // No target2 (singles or no adjacent ally), just use target
+                            // JS: move.smartTarget = false
+                            should_clear_smart_target = true;
                             targets.push((target_side, target_pos));
                         }
                     }
@@ -303,7 +315,7 @@ impl Pokemon {
                 debug_elog!("[GET_MOVE_TARGETS] Final check: target={:?}, target_still_fainted={}, has_futuremove={}", target, target_still_fainted, has_futuremove);
                 if target_still_fainted && !has_futuremove {
                     debug_elog!("[GET_MOVE_TARGETS] Target is still fainted, returning empty");
-                    return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] };
+                    return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target };
                 }
 
                 // JS: if (selectedTarget !== target) this.battle.retargetLastMove(target);
@@ -331,12 +343,12 @@ impl Pokemon {
             pressure_targets = {
                 let pokemon = match battle.pokemon_at(user_pos.0, user_pos.1) {
                     Some(p) => p,
-                    None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![] },
+                    None => return GetMoveTargetsResult { targets: vec![], pressure_targets: vec![], should_clear_smart_target: false },
                 };
                 pokemon.foes(battle, true)
             };
         }
 
-        GetMoveTargetsResult { targets, pressure_targets }
+        GetMoveTargetsResult { targets, pressure_targets, should_clear_smart_target }
     }
 }

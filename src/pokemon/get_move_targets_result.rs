@@ -13,4 +13,8 @@ pub struct GetMoveTargetsResult {
     /// JavaScript: pressureTargets: Pokemon[]
     /// TODO: Rust uses indices (side_index, position), JavaScript uses Pokemon references
     pub pressure_targets: Vec<(usize, usize)>,
+    /// Whether the caller should set move.smartTarget = false
+    /// This happens in JavaScript when getSmartTargets returns only one target
+    /// (no valid adjacent ally in doubles, or when in singles)
+    pub should_clear_smart_target: bool,
 }

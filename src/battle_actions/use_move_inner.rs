@@ -661,6 +661,12 @@ pub fn use_move_inner(
     let targets = get_move_targets_result.targets;
     let pressure_targets = get_move_targets_result.pressure_targets;
 
+    // Handle smartTarget clearing (JS: move.smartTarget = false in getSmartTargets)
+    // This happens when there's no valid adjacent ally for Dragon Darts
+    if get_move_targets_result.should_clear_smart_target {
+        active_move.smart_target = Some(false);
+    }
+
     // if (targets.length) {
     //     target = targets[targets.length - 1];
     // }
