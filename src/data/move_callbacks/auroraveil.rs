@@ -102,11 +102,19 @@ pub mod condition {
             return EventResult::Continue;
         }
 
-        // Check if target's side has aurora veil
-        let target_side_idx = target.0;
-        let auroraveil_id = ID::from("auroraveil");
-        if !battle.sides[target_side_idx].has_side_condition(&auroraveil_id) {
-            debug_elog!("[AURORAVEIL] Target side {} doesn't have aurora veil, returning Continue", target_side_idx);
+        // Check if this Aurora Veil's effectState.target is an ally of the actual target
+        // This ensures that when both sides have Aurora Veil, only the defending side's applies
+        let effect_target = match battle.with_effect_state_ref(|state| state.target).flatten() {
+            Some(t) => t,
+            None => {
+                debug_elog!("[AURORAVEIL] No effect_target, returning Continue");
+                return EventResult::Continue;
+            }
+        };
+
+        let has_ally = battle.is_ally(effect_target, target);
+        if !has_ally {
+            debug_elog!("[AURORAVEIL] effect_target {:?} is not ally of target {:?}, returning Continue", effect_target, target);
             return EventResult::Continue;
         }
 
@@ -120,6 +128,7 @@ pub mod condition {
         let reflect_id = ID::from("reflect");
         let lightscreen_id = ID::from("lightscreen");
 
+        let target_side_idx = target.0;
         let has_reflect = battle.sides[target_side_idx].has_side_condition(&reflect_id);
         let has_lightscreen = battle.sides[target_side_idx].has_side_condition(&lightscreen_id);
 
