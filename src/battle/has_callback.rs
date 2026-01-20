@@ -380,6 +380,7 @@ impl Battle {
         // In Rust, we check for boolean (true OR false) OR any number (static return value)
         // The KEY existing is what matters - even if the value is false, the callback exists!
         if let Some(item_data) = self.dex.items().get(item_id) {
+
             // Check for static value fields that are defined as dedicated ItemData fields
             // (not in extra HashMap). These are: onPlate, onMemory, onDrive
             if (event_id == "onDrive" || event_id == "Drive") && item_data.on_drive.is_some() {

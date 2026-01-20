@@ -1,18 +1,8 @@
-Analyzing 12 failing minimized seed files...
+Analyzing 7 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-maxhailstorm: 2 seeds
-  Seeds: 71505, 87270
-plasmafists: 2 seeds
-  Seeds: 71505, 87270
-gastroacid: 2 seeds
-  Seeds: 71505, 87270
-gmaxgoldrush: 2 seeds
-  Seeds: 72782, 80374
-safeguard: 2 seeds
-  Seeds: 72782, 80374
 skillswap: 2 seeds
   Seeds: 79574, 87270
 playrough: 2 seeds
@@ -29,38 +19,6 @@ steelbeam: 2 seeds
   Seeds: 96673, 99388
 hiddenpowerdragon: 2 seeds
   Seeds: 96673, 99388
-watershuriken: 1 seeds
-  Seeds: 71155
-healorder: 1 seeds
-  Seeds: 71505
-revivalblessing: 1 seeds
-  Seeds: 71505
-assist: 1 seeds
-  Seeds: 71505
-milkdrink: 1 seeds
-  Seeds: 71505
-whirlwind: 1 seeds
-  Seeds: 71505
-bonerush: 1 seeds
-  Seeds: 71505
-blueflare: 1 seeds
-  Seeds: 71505
-maxflare: 1 seeds
-  Seeds: 71505
-skullbash: 1 seeds
-  Seeds: 71505
-burnup: 1 seeds
-  Seeds: 71505
-overheat: 1 seeds
-  Seeds: 71505
-spikecannon: 1 seeds
-  Seeds: 71505
-strength: 1 seeds
-  Seeds: 71505
-armorcannon: 1 seeds
-  Seeds: 72782
-searingsunrazesmash: 1 seeds
-  Seeds: 72782
 rockwrecker: 1 seeds
   Seeds: 79574
 tailslap: 1 seeds
@@ -151,12 +109,6 @@ drainingkiss: 1 seeds
   Seeds: 79574
 menacingmoonrazemaelstrom: 1 seeds
   Seeds: 79574
-waterspout: 1 seeds
-  Seeds: 80374
-soulstealing7starstrike: 1 seeds
-  Seeds: 80374
-autotomize: 1 seeds
-  Seeds: 80374
 naturesmadness: 1 seeds
   Seeds: 85281
 aromatherapy: 1 seeds
@@ -168,6 +120,8 @@ coil: 1 seeds
 skydrop: 1 seeds
   Seeds: 85281
 disarmingvoice: 1 seeds
+  Seeds: 87270
+plasmafists: 1 seeds
   Seeds: 87270
 aeroblast: 1 seeds
   Seeds: 87270
@@ -184,6 +138,8 @@ howl: 1 seeds
 gmaxsandblast: 1 seeds
   Seeds: 87270
 glaciate: 1 seeds
+  Seeds: 87270
+maxhailstorm: 1 seeds
   Seeds: 87270
 softboiled: 1 seeds
   Seeds: 87270
@@ -238,6 +194,8 @@ boltstrike: 1 seeds
 supercellslam: 1 seeds
   Seeds: 87270
 takeheart: 1 seeds
+  Seeds: 87270
+gastroacid: 1 seeds
   Seeds: 87270
 noretreat: 1 seeds
   Seeds: 87270
@@ -349,8 +307,6 @@ growl: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Own Tempo: 2 seeds
-  Seeds: 74439, 99388
 Overgrow: 2 seeds
   Seeds: 79574, 87270
 Levitate: 2 seeds
@@ -359,12 +315,6 @@ Poison Point: 2 seeds
   Seeds: 79574, 87270
 Stench: 2 seeds
   Seeds: 85281, 99388
-Battle Bond: 1 seeds
-  Seeds: 71155
-Rough Skin: 1 seeds
-  Seeds: 71505
-Intimidate: 1 seeds
-  Seeds: 74439
 Bulletproof: 1 seeds
   Seeds: 79574
 Shield Dust: 1 seeds
@@ -413,6 +363,8 @@ Protosynthesis: 1 seeds
   Seeds: 99388
 Volt Absorb: 1 seeds
   Seeds: 99388
+Own Tempo: 1 seeds
+  Seeds: 99388
 Iron Fist: 1 seeds
   Seeds: 99388
 Cute Charm: 1 seeds
@@ -421,10 +373,6 @@ Cute Charm: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-choicescarf: 2 seeds
-  Seeds: 71505, 87270
-adrenalineorb: 1 seeds
-  Seeds: 74439
 delphoxite: 1 seeds
   Seeds: 79574
 heavydutyboots: 1 seeds
@@ -463,6 +411,8 @@ przcureberry: 1 seeds
   Seeds: 87270
 kangaskhanite: 1 seeds
   Seeds: 87270
+choicescarf: 1 seeds
+  Seeds: 87270
 miracleseed: 1 seeds
   Seeds: 87270
 nanabberry: 1 seeds
@@ -499,31 +449,31 @@ lightball: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 12
-Unique moves: 172 (171 non-simple)
-Unique abilities: 35 (34 non-simple)
-Unique items: 37
+Total minimized seeds: 7
+Unique moves: 151 (150 non-simple)
+Unique abilities: 32 (31 non-simple)
+Unique items: 36
 
 --- Top 10 Moves ---
-  maxhailstorm: 2 seeds
-  plasmafists: 2 seeds
-  gastroacid: 2 seeds
-  gmaxgoldrush: 2 seeds
-  safeguard: 2 seeds
   skillswap: 2 seeds
   playrough: 2 seeds
   facade: 2 seeds
   hiddenpowerfire: 2 seeds
   cut: 2 seeds
+  taunt: 2 seeds
+  steelbeam: 2 seeds
+  hiddenpowerdragon: 2 seeds
+  rockwrecker: 1 seeds
+  tailslap: 1 seeds
 
 --- Top 10 Abilities ---
-  Own Tempo: 2 seeds
   Overgrow: 2 seeds
   Levitate: 2 seeds
   Poison Point: 2 seeds
   Stench: 2 seeds
-  Battle Bond: 1 seeds
-  Rough Skin: 1 seeds
-  Intimidate: 1 seeds
   Bulletproof: 1 seeds
   Shield Dust: 1 seeds
+  Download: 1 seeds
+  Wandering Spirit: 1 seeds
+  Emergency Exit: 1 seeds
+  Gulp Missile: 1 seeds
