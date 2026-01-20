@@ -43,9 +43,16 @@ pub fn on_base_power(
     }
 
     // if (!this.singleEvent('TakeItem', item, target.itemState, target, target, move, item)) return;
+    // JavaScript's !result is true for: false, null, undefined
+    // So we need to check for all falsy results, not just Boolean(false)
     let result = battle.single_event("TakeItem", &crate::battle::Effect::item(item_id.clone()), None, Some(target), Some(target), None, None);
-    if let EventResult::Boolean(false) = result {
-        return EventResult::Continue;
+    match result {
+        // Continue means callback returned undefined (truthy for singleEvent - relayVar=true)
+        EventResult::Continue => {}
+        // Boolean(true) means callback explicitly returned true
+        EventResult::Boolean(true) => {}
+        // All other cases are falsy in JavaScript: Boolean(false), Null, Stop, etc.
+        _ => return EventResult::Continue,
     }
 
     // if (item.id) {

@@ -39,8 +39,10 @@ pub fn on_base_power(battle: &mut Battle, _base_power: i32, pokemon_pos: (usize,
 /// }
 pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // if (source.baseSpecies.baseSpecies === 'Ogerpon') return false;
+    // In JavaScript, pokemon.baseSpecies is a Species object, and species.baseSpecies
+    // is the name of the base species (or the species name itself if it's the base form).
 
-    // Get source position
+    // Get source position - in the TakeItem callback, source is the Pokemon holding the item
     let source = source_pos.unwrap_or(pokemon_pos);
 
     let base_species_is_ogerpon = {
@@ -49,10 +51,19 @@ pub fn on_take_item(battle: &mut Battle, _item_pos: Option<(usize, usize)>, poke
             None => return EventResult::Continue,
         };
 
-        battle.dex.species().get(source_pokemon.base_species.as_str())
-            .and_then(|species| species.base_species.as_ref())
-            .map(|base_species| base_species == "Ogerpon")
-            .unwrap_or(false)
+        // Get the species from dex
+        let species = battle.dex.species().get(source_pokemon.base_species.as_str());
+        match species {
+            Some(s) => {
+                // If the species has a baseSpecies field (it's a forme), use that
+                // Otherwise, the species IS the base species, so use its name
+                let base_species_name = s.base_species.as_ref()
+                    .map(|bs| bs.as_str())
+                    .unwrap_or(s.name.as_str());
+                base_species_name == "Ogerpon"
+            }
+            None => false,
+        }
     };
 
     if base_species_is_ogerpon {
