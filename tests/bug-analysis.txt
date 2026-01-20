@@ -1,12 +1,8 @@
-Analyzing 7 failing minimized seed files...
+Analyzing 6 failing minimized seed files...
 
 ============================================================
 MOVES (excluding tackle)
 ============================================================
-skillswap: 2 seeds
-  Seeds: 79574, 87270
-playrough: 2 seeds
-  Seeds: 79574, 87270
 facade: 2 seeds
   Seeds: 85281, 99388
 hiddenpowerfire: 2 seeds
@@ -19,96 +15,6 @@ steelbeam: 2 seeds
   Seeds: 96673, 99388
 hiddenpowerdragon: 2 seeds
   Seeds: 96673, 99388
-rockwrecker: 1 seeds
-  Seeds: 79574
-tailslap: 1 seeds
-  Seeds: 79574
-encore: 1 seeds
-  Seeds: 79574
-bittermalice: 1 seeds
-  Seeds: 79574
-screech: 1 seeds
-  Seeds: 79574
-nightmare: 1 seeds
-  Seeds: 79574
-gmaxfireball: 1 seeds
-  Seeds: 79574
-firepunch: 1 seeds
-  Seeds: 79574
-pyroball: 1 seeds
-  Seeds: 79574
-gmaxcannonade: 1 seeds
-  Seeds: 79574
-weatherball: 1 seeds
-  Seeds: 79574
-struggle: 1 seeds
-  Seeds: 79574
-steamroller: 1 seeds
-  Seeds: 79574
-springtidestorm: 1 seeds
-  Seeds: 79574
-gmaxstonesurge: 1 seeds
-  Seeds: 79574
-snipeshot: 1 seeds
-  Seeds: 79574
-snore: 1 seeds
-  Seeds: 79574
-lifedew: 1 seeds
-  Seeds: 79574
-oceanicoperetta: 1 seeds
-  Seeds: 79574
-firespin: 1 seeds
-  Seeds: 79574
-partingshot: 1 seeds
-  Seeds: 79574
-batonpass: 1 seeds
-  Seeds: 79574
-tripledive: 1 seeds
-  Seeds: 79574
-filletaway: 1 seeds
-  Seeds: 79574
-meteorbeam: 1 seeds
-  Seeds: 79574
-thunderbolt: 1 seeds
-  Seeds: 79574
-razorleaf: 1 seeds
-  Seeds: 79574
-dracometeor: 1 seeds
-  Seeds: 79574
-freezeshock: 1 seeds
-  Seeds: 79574
-moongeistbeam: 1 seeds
-  Seeds: 79574
-spiderweb: 1 seeds
-  Seeds: 79574
-maxovergrowth: 1 seeds
-  Seeds: 79574
-trumpcard: 1 seeds
-  Seeds: 79574
-hyperspacefury: 1 seeds
-  Seeds: 79574
-tarshot: 1 seeds
-  Seeds: 79574
-matblock: 1 seeds
-  Seeds: 79574
-iondeluge: 1 seeds
-  Seeds: 79574
-gmaxwildfire: 1 seeds
-  Seeds: 79574
-triplekick: 1 seeds
-  Seeds: 79574
-painsplit: 1 seeds
-  Seeds: 79574
-energyball: 1 seeds
-  Seeds: 79574
-icespinner: 1 seeds
-  Seeds: 79574
-eruption: 1 seeds
-  Seeds: 79574
-drainingkiss: 1 seeds
-  Seeds: 79574
-menacingmoonrazemaelstrom: 1 seeds
-  Seeds: 79574
 naturesmadness: 1 seeds
   Seeds: 85281
 aromatherapy: 1 seeds
@@ -193,7 +99,11 @@ boltstrike: 1 seeds
   Seeds: 87270
 supercellslam: 1 seeds
   Seeds: 87270
+playrough: 1 seeds
+  Seeds: 87270
 takeheart: 1 seeds
+  Seeds: 87270
+skillswap: 1 seeds
   Seeds: 87270
 gastroacid: 1 seeds
   Seeds: 87270
@@ -307,37 +217,21 @@ growl: 1 seeds
 ============================================================
 ABILITIES (excluding simple ones)
 ============================================================
-Overgrow: 2 seeds
-  Seeds: 79574, 87270
-Levitate: 2 seeds
-  Seeds: 79574, 99388
-Poison Point: 2 seeds
-  Seeds: 79574, 87270
 Stench: 2 seeds
   Seeds: 85281, 99388
-Bulletproof: 1 seeds
-  Seeds: 79574
-Shield Dust: 1 seeds
-  Seeds: 79574
-Download: 1 seeds
-  Seeds: 79574
-Wandering Spirit: 1 seeds
-  Seeds: 79574
-Emergency Exit: 1 seeds
-  Seeds: 79574
-Gulp Missile: 1 seeds
-  Seeds: 79574
-Speed Boost: 1 seeds
-  Seeds: 79574
 Rivalry: 1 seeds
   Seeds: 87270
 Slow Start: 1 seeds
   Seeds: 87270
 Water Absorb: 1 seeds
   Seeds: 87270
+Overgrow: 1 seeds
+  Seeds: 87270
 Multitype: 1 seeds
   Seeds: 87270
 Sweet Veil: 1 seeds
+  Seeds: 87270
+Poison Point: 1 seeds
   Seeds: 87270
 Hunger Switch: 1 seeds
   Seeds: 87270
@@ -365,6 +259,8 @@ Volt Absorb: 1 seeds
   Seeds: 99388
 Own Tempo: 1 seeds
   Seeds: 99388
+Levitate: 1 seeds
+  Seeds: 99388
 Iron Fist: 1 seeds
   Seeds: 99388
 Cute Charm: 1 seeds
@@ -373,30 +269,6 @@ Cute Charm: 1 seeds
 ============================================================
 ITEMS
 ============================================================
-delphoxite: 1 seeds
-  Seeds: 79574
-heavydutyboots: 1 seeds
-  Seeds: 79574
-fairymemory: 1 seeds
-  Seeds: 79574
-raichunitey: 1 seeds
-  Seeds: 79574
-psychicmemory: 1 seeds
-  Seeds: 79574
-tr09: 1 seeds
-  Seeds: 79574
-dragonscale: 1 seeds
-  Seeds: 79574
-absolite: 1 seeds
-  Seeds: 79574
-enigmaberry: 1 seeds
-  Seeds: 79574
-tr51: 1 seeds
-  Seeds: 79574
-latiasite: 1 seeds
-  Seeds: 79574
-steelgem: 1 seeds
-  Seeds: 79574
 polkadotbow: 1 seeds
   Seeds: 87270
 tr11: 1 seeds
@@ -449,31 +321,31 @@ lightball: 1 seeds
 ============================================================
 SUMMARY
 ============================================================
-Total minimized seeds: 7
-Unique moves: 151 (150 non-simple)
-Unique abilities: 32 (31 non-simple)
-Unique items: 36
+Total minimized seeds: 6
+Unique moves: 106 (105 non-simple)
+Unique abilities: 25 (24 non-simple)
+Unique items: 24
 
 --- Top 10 Moves ---
-  skillswap: 2 seeds
-  playrough: 2 seeds
   facade: 2 seeds
   hiddenpowerfire: 2 seeds
   cut: 2 seeds
   taunt: 2 seeds
   steelbeam: 2 seeds
   hiddenpowerdragon: 2 seeds
-  rockwrecker: 1 seeds
-  tailslap: 1 seeds
+  naturesmadness: 1 seeds
+  aromatherapy: 1 seeds
+  iciclespear: 1 seeds
+  coil: 1 seeds
 
 --- Top 10 Abilities ---
-  Overgrow: 2 seeds
-  Levitate: 2 seeds
-  Poison Point: 2 seeds
   Stench: 2 seeds
-  Bulletproof: 1 seeds
-  Shield Dust: 1 seeds
-  Download: 1 seeds
-  Wandering Spirit: 1 seeds
-  Emergency Exit: 1 seeds
-  Gulp Missile: 1 seeds
+  Rivalry: 1 seeds
+  Slow Start: 1 seeds
+  Water Absorb: 1 seeds
+  Overgrow: 1 seeds
+  Multitype: 1 seeds
+  Sweet Veil: 1 seeds
+  Poison Point: 1 seeds
+  Hunger Switch: 1 seeds
+  Static: 1 seeds
