@@ -197,18 +197,14 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        // Get the move type
-        let move_type = {
-            let active_move = match &battle.active_move {
-                Some(active_move) => &active_move.id,
-                None => return EventResult::Continue,
-            };
-            let move_data = battle.dex.moves().get_by_id(active_move);
-            move_data.map(|m| m.move_type.clone())
+        // Get the move type from the active_move (NOT from dex, since Hidden Power has dynamic type)
+        let move_type = match &battle.active_move {
+            Some(active_move) => active_move.move_type.as_str(),
+            None => return EventResult::Continue,
         };
 
         // if (move.type === 'Dragon' && defender.isGrounded() && !defender.isSemiInvulnerable()) {
-        if move_type.as_deref() != Some("Dragon") {
+        if move_type != "Dragon" {
             return EventResult::Continue;
         }
 
@@ -223,10 +219,9 @@ pub mod condition {
 
         if is_grounded && !is_semi_invulnerable {
             // this.debug('misty terrain weaken');
-            // (debug is typically not needed in Rust implementation)
-
             // return this.chainModify(0.5);
-            battle.chain_modify_fraction(1, 2); return EventResult::Continue; // 0.5 = 1/2
+            battle.chain_modify_fraction(1, 2);
+            return EventResult::Continue;
         }
 
         EventResult::Continue
