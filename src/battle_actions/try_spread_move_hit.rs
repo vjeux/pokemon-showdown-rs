@@ -249,14 +249,24 @@ pub fn try_spread_move_hit(
         }
 
         // JS: return hitResult === this.battle.NOT_FAIL;
-        // In JavaScript, this returns a boolean: true if hitResult is NOT_FAIL (''), false otherwise.
-        // When NOT_FAIL, the move succeeded (just didn't deal damage); when explicit false, it failed.
-        if is_explicit_false {
-            return DamageResult::Failed;
-        } else {
+        // In JavaScript, NOT_FAIL is '' (empty string).
+        // This returns true ONLY if hitResult === '' (NOT_FAIL).
+        // Otherwise (including null, false, 0), it returns false.
+        //
+        // - EventResult::Boolean(false) -> JS false -> return false
+        // - EventResult::Number(0) -> JS 0 -> return false
+        // - EventResult::Null -> JS null -> return false (null !== '')
+        // - EventResult::NotFail -> JS '' (NOT_FAIL) -> return true
+        // - EventResult::Stop -> similar to null -> return false
+        if matches!(prepare_hit_2, EventResult::NotFail) ||
+           (matches!(try_result, EventResult::NotFail) && !matches!(prepare_hit_2, EventResult::Boolean(false) | EventResult::Number(0) | EventResult::Null | EventResult::Stop)) ||
+           (matches!(prepare_hit_1, EventResult::NotFail) && !matches!(prepare_hit_2, EventResult::Boolean(false) | EventResult::Number(0) | EventResult::Null | EventResult::Stop))
+        {
             // NOT_FAIL in JS means the move succeeded without dealing damage (e.g., Future Sight queued)
-            // JavaScript returns `true` here, so we return Success
             return DamageResult::Success;
+        } else {
+            // Everything else (false, null, 0, Stop) means the move failed
+            return DamageResult::Failed;
         }
     }
 

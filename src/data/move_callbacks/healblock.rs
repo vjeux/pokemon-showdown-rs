@@ -449,14 +449,11 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
         // if (effect?.name === 'Psychic Noise') return;
-        if let Some(eff_id) = effect_id {
-            use crate::dex_data::ID;
-            let effect_id_obj = ID::from(eff_id);
-
-            if let Some(move_data) = battle.dex.moves().get_by_id(&effect_id_obj) {
+        if let Some(eff) = effect {
+            if let Some(move_data) = battle.dex.moves().get_by_id(&eff.id) {
                 if move_data.name == "Psychic Noise" {
                     return EventResult::Continue;
                 }

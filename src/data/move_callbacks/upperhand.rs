@@ -30,18 +30,21 @@ pub fn on_try(
     // const move = action?.choice === 'move' ? action.move : null;
     let (move_id, move_priority) = match action {
         Some(move_action) => (&move_action.move_id, move_action.priority),
-        None => return EventResult::NotFail,
+        // !move -> return false
+        None => return EventResult::Boolean(false),
     };
 
     // Get move data to check category
     let move_data = match battle.dex.moves().get_by_id(move_id) {
         Some(m) => m,
-        None => return EventResult::NotFail,
+        // !move -> return false
+        None => return EventResult::Boolean(false),
     };
 
     // if (!move || move.priority <= 0.1 || move.category === 'Status')
+    // JavaScript returns false here, not NOT_FAIL
     if move_priority as f64 <= 0.1 || move_data.category.as_str() == "Status" {
-        return EventResult::NotFail;
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

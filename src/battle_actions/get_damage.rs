@@ -355,7 +355,7 @@ pub fn get_damage(
     //                                                                                      on_effect=true
     // When on_effect is true, the move's onBasePower handler is called (e.g., Knock Off's 1.5x boost)
     debug_elog!("[GET_DAMAGE] basePower BEFORE BasePower event: {}", base_power);
-    if let EventResult::Number(modified_bp) = battle.run_event(
+    let bp_result = battle.run_event(
                 "BasePower",
                 Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
@@ -363,11 +363,22 @@ pub fn get_damage(
         EventResult::Number(base_power),
         true,
         false
-    ) {
-        base_power = modified_bp;
-        debug_elog!("[GET_DAMAGE] basePower AFTER BasePower event: {}", base_power);
-    } else {
-        debug_elog!("[GET_DAMAGE] No BasePower event modification");
+    );
+    match bp_result {
+        EventResult::Number(modified_bp) => {
+            base_power = modified_bp;
+            debug_elog!("[GET_DAMAGE] basePower AFTER BasePower event (Number): {}", base_power);
+        }
+        EventResult::Float(modified_bp) => {
+            // Items like Polkadot Bow return Float(basePower * 1.1) = Float(55.0)
+            // In JavaScript, this float value is used directly and eventually floored
+            // when used in the damage formula's integer operations.
+            base_power = modified_bp.floor() as i32;
+            debug_elog!("[GET_DAMAGE] basePower AFTER BasePower event (Float): {} -> {}", modified_bp, base_power);
+        }
+        _ => {
+            debug_elog!("[GET_DAMAGE] No BasePower event modification");
+        }
     }
 
     // JavaScript: if (!basePower) return 0;

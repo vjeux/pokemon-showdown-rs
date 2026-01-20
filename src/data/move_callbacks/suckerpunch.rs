@@ -32,13 +32,15 @@ pub fn on_try(
     // const move = action?.choice === 'move' ? action.move : null;
     let move_id = match action {
         Some(move_action) => &move_action.move_id,
-        None => return EventResult::NotFail,
+        // !move -> return false
+        None => return EventResult::Boolean(false),
     };
 
     // Get move data to check category
     let move_data = match battle.dex.moves().get_by_id(move_id) {
         Some(m) => m,
-        None => return EventResult::NotFail,
+        // !move -> return false
+        None => return EventResult::Boolean(false),
     };
 
     // Check if target has mustrecharge volatile
@@ -51,10 +53,11 @@ pub fn on_try(
     };
 
     // if (!move || (move.category === 'Status' && move.id !== 'mefirst') || target.volatiles['mustrecharge'])
+    // JavaScript returns false here, not NOT_FAIL
     if (move_data.category.as_str() == "Status" && move_id.as_str() != "mefirst")
         || has_must_recharge
     {
-        return EventResult::NotFail;
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

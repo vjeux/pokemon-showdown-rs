@@ -66,9 +66,9 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,
-        _effect: Option<&crate::battle::Effect>,
+        effect: Option<&crate::battle::Effect>,
     ) -> EventResult {
-        let effect_id = _effect.map(|e| e.id.as_str());
+        let effect_id = effect.map(|e| e.id.as_str());
         // if (this.effectState.layers >= 3) return false;
         let layers = battle
             .with_effect_state_ref(|state| state.layers.unwrap_or(1))

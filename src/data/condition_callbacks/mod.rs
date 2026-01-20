@@ -4,6 +4,7 @@
 //! Individual condition implementations are in separate files.
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::battle_actions::ActiveMove;
 use crate::data::ability_callbacks;
 use crate::data::move_callbacks;
@@ -821,15 +822,16 @@ pub fn dispatch_on_restart(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     match condition_id {
         "lockedmove" => lockedmove::on_restart(battle, pokemon_pos, source_pos, effect_id),
         "stall" => stall::on_restart(battle, pokemon_pos, source_pos, effect_id),
         _ => {
             // Fallback to move-embedded condition callbacks
             // pokemon_pos is the target (pokemon with the volatile), source_pos is the move user
-            move_callbacks::dispatch_condition_on_restart(battle, condition_id, pokemon_pos, source_pos)
+            move_callbacks::dispatch_condition_on_restart(battle, condition_id, pokemon_pos, source_pos, effect)
         }
     }
 }

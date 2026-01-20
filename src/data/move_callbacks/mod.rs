@@ -2362,16 +2362,17 @@ pub fn dispatch_condition_on_restart(
     condition_id: &str,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
+    effect: Option<&crate::battle::Effect>,
 ) -> EventResult {
     match condition_id {
         "allyswitch" => allyswitch::condition::on_restart(battle, target_pos),
-        "charge" => charge::condition::on_restart(battle, target_pos, None, None),
+        "charge" => charge::condition::on_restart(battle, target_pos, None, effect.map(|e| e.id.as_str())),
         "defensecurl" => defensecurl::condition::on_restart(battle, target_pos),
         "furycutter" => furycutter::condition::on_restart(battle),
         "gmaxchistrike" => {
-            gmaxchistrike::condition::on_restart(battle, Some(target_pos), source_pos, None)
+            gmaxchistrike::condition::on_restart(battle, Some(target_pos), source_pos, effect)
         }
-        "healblock" => healblock::condition::on_restart(battle, Some(target_pos), source_pos, None),
+        "healblock" => healblock::condition::on_restart(battle, Some(target_pos), source_pos, effect),
         "helpinghand" => helpinghand::condition::on_restart(battle, Some(target_pos), source_pos),
         "laserfocus" => laserfocus::condition::on_restart(battle, target_pos),
         "minimize" => minimize::condition::on_restart(battle, target_pos),

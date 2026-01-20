@@ -452,10 +452,10 @@ impl Battle {
             "Restart" => {
                 // Extract source and effect from event
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.event.as_ref()
+                let effect_cloned = self.event.as_ref()
                     .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.to_string());
-                condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
+                    .cloned();
+                condition_callbacks::dispatch_on_restart(self, condition_id, pokemon_pos, source_pos, effect_cloned.as_ref())
             }
             "SourceModifyDamage" => {
                 // SourceModifyDamage needs damage, source, target, and move

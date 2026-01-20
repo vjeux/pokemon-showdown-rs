@@ -1,0 +1,143 @@
+Git Bisect Results for Failing Seeds
+=====================================
+Good commit: 6c844c41 (all pass)
+Bad commit: 33613114 (HEAD)
+Total seeds: 125
+
+Seed 40192: 836dd399 - Major performance optimization: global Dex cache and conditional debug logging
+Seed 13693: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 15480: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 18657: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 24205: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 28590: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 33325: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 34206: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 35489: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 64149: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 80299: 7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+Seed 2682: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 3713: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 3965: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 4604: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 5097: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 8191: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 8438: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 10692: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 12933: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 19679: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 19733: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 19949: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 20260: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 20493: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 20567: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 23953: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 27963: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 30629: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 34332: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 34356: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 34482: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 36916: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 37523: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 42028: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 42999: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 45826: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 46243: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 46701: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 51943: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 52456: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 55628: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 56906: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 64783: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 76122: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 78895: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 81526: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 85223: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 87017: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 87301: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 91774: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 92859: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 97654: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 98576: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 99626: a5a69bb5 - Fix accuracy: true vs alwaysHit: true confusion
+Seed 4338: 2b28a4b3 - Fix onRestart callback parameter passing for volatiles
+Seed 5793: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 8101: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 14528: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 16324: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 20414: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 21056: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 22656: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 27573: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 29714: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 29849: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 36783: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 53659: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 61685: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 63149: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 73454: eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+Seed 47174: 2053d675 - Fix Fillet Away not triggering Emergency Exit after direct damage
+Seed 29000: 4957f043 - Fix Transform illusion check and Incinerate source_pos for Sticky Hold
+Seed 87989: 4782b475 - Fix Polkadot Bow modifier interaction with Rivalry
+Seed 1152: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 1973: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 3434: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 4931: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 5379: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 6040: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 10201: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 14173: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 14559: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 18783: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 19583: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 22065: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 24554: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 25849: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 27309: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 30106: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 31870: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 34258: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 36393: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 41861: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 42664: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 43416: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 45846: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 46081: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 47285: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 47848: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 54465: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 56176: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 60168: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 64572: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 64877: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 67107: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 70134: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 72144: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 73741: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 74207: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 78205: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 78716: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 79339: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 79495: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 82537: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 83215: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 84170: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 87749: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 89079: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 90130: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 92910: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 96436: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 97456: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 99041: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+Seed 99593: 3b7b1907 - Fix EventResult::Float flooring that broke fractional priority
+
+Summary:
+--------
+  51  3b7b1907 - Fix EventResult
+  44  a5a69bb5 - Fix accuracy
+  15  eb44ef32 - Fix NOT_FAIL return value in try_spread_move_hit
+  10  7da64d18 - Fix telekinesis immunity and Poison Puppeteer effectType check
+   1  836dd399 - Major performance optimization
+   1  4957f043 - Fix Transform illusion check and Incinerate source_pos for Sticky Hold
+   1  4782b475 - Fix Polkadot Bow modifier interaction with Rivalry
+   1  2b28a4b3 - Fix onRestart callback parameter passing for volatiles
+   1  2053d675 - Fix Fillet Away not triggering Emergency Exit after direct damage
