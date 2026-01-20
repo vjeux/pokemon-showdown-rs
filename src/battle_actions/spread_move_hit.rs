@@ -161,8 +161,20 @@ pub fn spread_move_hit<'a>(
     // Get move target type directly from active_move
     let move_target = &active_move.target;
 
+    // Check if this is a secondary effect
+    // JavaScript: moveData = hitEffect as ActiveMove
+    // For secondary effects, moveData is the secondary object itself, NOT the move.
+    // Secondaries don't have TryHit callbacks, so singleEvent returns relayVar (defaults to true).
+    // We must NOT call the move's TryHit callback for secondary effects!
+    let is_secondary_effect = matches!(hit_effect, Some(HitEffect::Secondary(_)));
+
     // Run TryHitField, TryHitSide, or TryHit events based on move target
-    let hit_result = if move_target == "all" && !is_self {
+    // IMPORTANT: Skip for secondary effects - secondaries don't have TryHit callbacks
+    let hit_result = if is_secondary_effect {
+        // For secondary effects, JavaScript calls singleEvent on the secondary object
+        // which has no TryHit callback, so it returns true by default
+        event::EventResult::Boolean(true)
+    } else if move_target == "all" && !is_self {
         // JS: hitResult = this.battle.singleEvent('TryHitField', moveData, {}, target || null, pokemon, move);
         battle.single_event(
             "TryHitField",
