@@ -108,16 +108,20 @@ pub fn get_spread_damage<'a>(
         match cur_damage {
             None => {
                 // Check if this is a damaging move that should have dealt damage
-                // If basePower is 0, it's a charging move or special case - return Undefined
+                // If basePower is 0 AND no fixed damage, it's a charging move or special case - return Undefined
                 // If category is Status, it never deals damage - return Undefined
                 // Otherwise, None means immunity blocked the damage - return Failed
-                let is_damaging = active_move.category != "Status" && active_move.base_power > 0;
+                //
+                // IMPORTANT: Moves with fixed damage (like Bide's release) have basePower=0 but ARE damaging.
+                // Check for active_move.damage being set to distinguish from charging moves.
+                let has_fixed_damage = active_move.damage.is_some();
+                let is_damaging = active_move.category != "Status" && (active_move.base_power > 0 || has_fixed_damage);
                 if is_damaging {
                     // Damaging move blocked by immunity
                     // JavaScript: return false from getDamage
                     result_damages[i] = DamageResult::Failed;
                 } else {
-                    // Status move or basePower=0 - no damage dealt but move succeeds
+                    // Status move or basePower=0 with no fixed damage - no damage dealt but move succeeds
                     // JavaScript: return undefined
                     result_damages[i] = DamageResult::Undefined;
                 }
