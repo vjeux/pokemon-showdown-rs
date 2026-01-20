@@ -113,7 +113,9 @@ pub fn on_weather_modify_damage(
     if active_move_ref.move_type == "Water" {
         // this.debug('Rain water boost');
         // return this.chainModify(1.5);
-        return EventResult::Float(1.5);
+        // JavaScript's chainModify modifies event.modifier and returns void
+        battle.chain_modify(1.5);
+        return EventResult::Continue;
     }
 
     EventResult::Continue

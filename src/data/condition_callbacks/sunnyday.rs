@@ -91,7 +91,9 @@ pub fn on_weather_modify_damage(
         if !has_utility_umbrella {
             // this.debug('Sunny Day Hydro Steam boost');
             // return this.chainModify(1.5);
-            return EventResult::Float(1.5);
+            // JavaScript's chainModify modifies event.modifier and returns void
+            battle.chain_modify(1.5);
+            return EventResult::Continue;
         }
     }
 
@@ -112,14 +114,16 @@ pub fn on_weather_modify_damage(
     if active_move_ref.move_type == "Fire" {
         // this.debug('Sunny Day fire boost');
         // return this.chainModify(1.5);
-        return EventResult::Float(1.5);
+        battle.chain_modify(1.5);
+        return EventResult::Continue;
     }
 
     // if (move.type === 'Water')
     if active_move_ref.move_type == "Water" {
         // this.debug('Sunny Day water suppress');
         // return this.chainModify(0.5);
-        return EventResult::Float(0.5);
+        battle.chain_modify(0.5);
+        return EventResult::Continue;
     }
 
     EventResult::Continue

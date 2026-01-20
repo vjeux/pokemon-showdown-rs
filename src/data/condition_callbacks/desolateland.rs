@@ -113,7 +113,10 @@ pub fn on_weather_modify_damage(
     if active_move_ref.move_type == "Fire" {
         // this.debug('Sunny Day fire boost');
         // return this.chainModify(1.5);
-        return EventResult::Float(1.5);
+        // JavaScript's chainModify modifies event.modifier and returns void
+        // The modifier is then applied at the end of runEvent
+        battle.chain_modify(1.5);
+        return EventResult::Continue;
     }
 
     EventResult::Continue

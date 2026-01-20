@@ -54,7 +54,7 @@ pub fn duration_callback(
 /// ```
 pub fn on_modify_def(
     battle: &mut Battle,
-    _def: i32,
+    def: i32,
     pokemon_pos: (usize, usize),
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
@@ -73,7 +73,9 @@ pub fn on_modify_def(
 
     if has_ice_type && is_snowscape {
         // return this.modify(def, 1.5);
-        EventResult::Float(1.5)
+        // JavaScript's this.modify(value, multiplier) returns the modified value
+        let modified_def = battle.modify_f(def, 1.5);
+        EventResult::Number(modified_def)
     } else {
         EventResult::Continue
     }
