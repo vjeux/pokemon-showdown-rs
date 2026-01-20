@@ -72,4 +72,3 @@ pub fn on_take_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (u
 
     EventResult::Continue
 }
-

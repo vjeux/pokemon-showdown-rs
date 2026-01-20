@@ -127,7 +127,7 @@ impl Pokemon {
         let (target_species_id, target_weight_hg, target_types, target_added_type, target_stored_stats,
              target_move_slots, target_boosts, target_ability, target_has_substitute, target_transformed,
              target_fainted, target_times_attacked, target_apparent_type, target_hp_type, target_hp_power,
-             target_base_species, target_terastallized) = {
+             target_base_species, target_terastallized, target_has_illusion) = {
             let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
                 Some(p) => p,
                 None => return false,
@@ -155,6 +155,7 @@ impl Pokemon {
                 target.hp_power,
                 target.base_species.clone(),
                 target.terastallized.clone(),
+                target.illusion.is_some(),
             )
         };
 
@@ -167,8 +168,13 @@ impl Pokemon {
 
             // JS: const species = pokemon.species;
             // JS: if (pokemon.fainted || this.illusion || pokemon.illusion || ...) return false;
-            // Note: Missing illusion checks on both pokemon
             if self_pokemon.fainted || target_fainted {
+                return false;
+            }
+
+            // JS: this.illusion || pokemon.illusion
+            // If either the source or target has an active Illusion disguise, Transform fails
+            if self_pokemon.illusion.is_some() || target_has_illusion {
                 return false;
             }
 

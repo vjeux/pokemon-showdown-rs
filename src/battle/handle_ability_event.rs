@@ -989,7 +989,7 @@ impl Battle {
                 ability_callbacks::dispatch_on_switch_out(self, ability_id.as_str(), pokemon_pos)
             },
             "TakeItem" => {
-                ability_callbacks::dispatch_on_take_item(self, ability_id.as_str(), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }, pokemon_pos, None)
+                ability_callbacks::dispatch_on_take_item(self, ability_id.as_str(), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }, pokemon_pos, event_source_pos)
             },
             "TerrainChange" => ability_callbacks::dispatch_on_terrain_change(
                 self,

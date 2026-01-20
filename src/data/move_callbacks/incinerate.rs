@@ -19,8 +19,9 @@ pub fn on_hit(
     pokemon_pos: (usize, usize),
     target_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    // JavaScript params: onHit(pokemon, source) where pokemon is target, source is attacker
+    // Rust params: pokemon_pos is target, target_pos is source (confusing naming)
     let pokemon = pokemon_pos;
-    let _source = target_pos;
 
     // const item = pokemon.getItem();
     let (is_berry_or_gem, item_name) = {
@@ -40,7 +41,8 @@ pub fn on_hit(
 
     // if ((item.isBerry || item.isGem) && pokemon.takeItem(source)) {
     if is_berry_or_gem {
-        let took_item = Pokemon::take_item(battle, pokemon, None).is_some();
+        // target_pos is actually the source (attacker) in move callbacks
+        let took_item = Pokemon::take_item(battle, pokemon, target_pos).is_some();
         if took_item {
             // this.add('-enditem', pokemon, item.name, '[from] move: Incinerate');
             let pokemon_ident = {
