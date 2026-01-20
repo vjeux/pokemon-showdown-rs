@@ -186,10 +186,12 @@ impl Pokemon {
                 );
 
                 // JavaScript behavior for restart case:
-                // - singleEvent('Restart') returns the callback's return value
-                // - If callback returns undefined (EventResult::Continue), singleEvent returns undefined
-                // - undefined is truthy-ish in combineResults but not a success/failure
-                // - This is why we return None for restart case: neither success nor explicit failure
+                // - singleEvent('Restart') is called with no relayVar argument
+                // - When relayVar is undefined, singleEvent sets it to `true` (line 610-612 in battle.ts)
+                // - singleEvent returns relayVar when callback returns undefined (line 668 in battle.ts)
+                // - So when onRestart returns nothing (undefined), addVolatile returns `true`
+                // - This is important because it means the move "succeeded" even though the
+                //   volatile was already present - the restart was successful
                 use crate::event::EventResult;
                 match restart_result {
                     // Callback explicitly returned false - treat as failure
@@ -201,9 +203,10 @@ impl Pokemon {
                     // Map to Some(false) so that combine_results(Success, Failed) returns Success
                     // and combine_results(Failed, Failed) returns Failed.
                     EventResult::Null => return Some(false),
-                    // Callback returned undefined/Continue - restart happened but neither success nor failure
-                    // This matches JavaScript returning undefined from singleEvent when callback returns undefined
-                    EventResult::Continue => return None,
+                    // Callback returned undefined/Continue - JavaScript's singleEvent returns
+                    // relayVar (which defaults to `true`) when callback returns undefined.
+                    // So addVolatile returns true, meaning the restart succeeded.
+                    EventResult::Continue => return Some(true),
                     // Other truthy values (Number, String, etc.) - treat as success
                     _ => return Some(true),
                 }
