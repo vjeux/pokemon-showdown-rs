@@ -18,7 +18,7 @@ use crate::pokemon::Pokemon;
 pub fn on_hit(
     battle: &mut Battle,
     target_pos: (usize, usize),
-    _source_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     let target = target_pos;
 
@@ -47,7 +47,10 @@ pub fn on_hit(
     }
 
     // target.addVolatile('yawn');
-    Pokemon::add_volatile(battle, target, ID::from("yawn"), None, None, None, None);
+    // JavaScript: pokemon.addVolatile('yawn') uses default parameters from battle context
+    // In Rust, we need to pass source and sourceEffect explicitly
+    let move_effect = crate::battle::Effect::move_(ID::from("gmaxsnooze"));
+    Pokemon::add_volatile(battle, target, ID::from("yawn"), source_pos, Some(&move_effect), None, None);
 
     EventResult::Continue
 }
@@ -61,6 +64,7 @@ pub fn on_after_sub_damage(
     battle: &mut Battle,
     _damage: i32,
     target_pos: Option<(usize, usize)>,
+    source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     let target = match target_pos {
         Some(pos) => pos,
@@ -92,7 +96,10 @@ pub fn on_after_sub_damage(
     }
 
     // target.addVolatile('yawn');
-    Pokemon::add_volatile(battle, target, ID::from("yawn"), None, None, None, None);
+    // JavaScript: pokemon.addVolatile('yawn') uses default parameters from battle context
+    // In Rust, we need to pass source and sourceEffect explicitly
+    let move_effect = crate::battle::Effect::move_(ID::from("gmaxsnooze"));
+    Pokemon::add_volatile(battle, target, ID::from("yawn"), source_pos, Some(&move_effect), None, None);
 
     EventResult::Continue
 }

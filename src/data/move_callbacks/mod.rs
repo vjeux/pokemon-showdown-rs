@@ -657,7 +657,7 @@ pub fn dispatch_on_after_sub_damage(
         "flameburst" => {
             flameburst::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos), active_move)
         }
-        "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, damage, target_pos),
+        "gmaxsnooze" => gmaxsnooze::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos)),
         "icespinner" => {
             icespinner::on_after_sub_damage(battle, damage, target_pos, Some(pokemon_pos))
         }
