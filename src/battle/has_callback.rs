@@ -252,7 +252,6 @@ impl Battle {
         if item_id.is_empty() {
             return false;
         }
-        debug_elog!("[HAS_ITEM_ID_CALLBACK] item_id={}, event_id={}", item_id.as_str(), event_id);
         self.item_has_callback(item_id.as_str(), event_id)
     }
 
@@ -262,7 +261,6 @@ impl Battle {
         if species_id.is_empty() {
             return false;
         }
-        debug_elog!("[HAS_SPECIES_ID_CALLBACK] species_id={}, event_id={}", species_id.as_str(), event_id);
         self.species_has_callback(species_id.as_str(), event_id)
     }
 
@@ -273,7 +271,6 @@ impl Battle {
         if move_id.is_empty() {
             return false;
         }
-        debug_elog!("[HAS_MOVE_ID_CALLBACK] move_id={}, event_id={}", move_id.as_str(), event_id);
         self.move_has_callback(move_id.as_str(), event_id)
     }
 
@@ -395,7 +392,8 @@ impl Battle {
 
             // Check the exact event_id first, then try with "on" prefix for backward compatibility
             // IMPORTANT: Check if the key EXISTS and is a bool/number, not just if it's true
-            let has_callback = item_data.extra.get(event_id)
+            let extra_value = item_data.extra.get(event_id);
+            let has_callback = extra_value
                 .map(|v| v.is_boolean() || v.as_f64().is_some() || v.as_i64().is_some())
                 .unwrap_or(false);
 

@@ -747,14 +747,13 @@ impl Battle {
                 }
             }
             // Negative numbers (like -1 for type effectiveness) are passed through unchanged
-        } else if let EventResult::Float(f) = relay_var {
-            // CRITICAL: When a handler returns Float, it means JavaScript would have a
-            // non-integer relay_var (e.g., from basePower * 1.1 = 55.00000000000001).
-            // In JavaScript, the condition `relayVar === Math.floor(relayVar)` fails for
-            // non-integers, so the modifier is NOT applied. We replicate this behavior
-            // by flooring the float and converting to Number WITHOUT applying the modifier.
-            relay_var = EventResult::Number(f.floor() as i32);
         }
+        // NOTE: EventResult::Float values are PRESERVED unchanged.
+        // In JavaScript, non-integer numbers (like 0.1 for fractionalPriority or 55.00001
+        // from damage calculations) fail the `relayVar === Math.floor(relayVar)` check,
+        // so the modifier is NOT applied and the value is kept as-is.
+        // For FractionalPriority events, the callback returns Float(0.1) which must be
+        // preserved to correctly set action.fractionalPriority.
 
         // CRITICAL FIX: For EventResult::Boost, handlers may have modified the boosts in-place
         // via self.event.relay_var rather than returning a new value. In JavaScript, the boosts
