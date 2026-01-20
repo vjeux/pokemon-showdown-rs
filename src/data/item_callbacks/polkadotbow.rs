@@ -22,7 +22,10 @@ pub fn on_base_power(battle: &mut Battle, base_power: i32, _pokemon_pos: (usize,
     // if (move.type === 'Normal')
     if move_type == "Normal" {
         // return basePower * 1.1;
-        return EventResult::Number((base_power as f32 * 1.1) as i32);
+        // CRITICAL: Return Float to match JavaScript behavior where basePower * 1.1
+        // produces a non-integer (e.g., 55.00000000000001), which causes the
+        // modifier (e.g., from Rivalry's chainModify) to NOT be applied.
+        return EventResult::Float(base_power as f64 * 1.1);
     }
 
     EventResult::Continue

@@ -747,6 +747,13 @@ impl Battle {
                 }
             }
             // Negative numbers (like -1 for type effectiveness) are passed through unchanged
+        } else if let EventResult::Float(f) = relay_var {
+            // CRITICAL: When a handler returns Float, it means JavaScript would have a
+            // non-integer relay_var (e.g., from basePower * 1.1 = 55.00000000000001).
+            // In JavaScript, the condition `relayVar === Math.floor(relayVar)` fails for
+            // non-integers, so the modifier is NOT applied. We replicate this behavior
+            // by flooring the float and converting to Number WITHOUT applying the modifier.
+            relay_var = EventResult::Number(f.floor() as i32);
         }
 
         // CRITICAL FIX: For EventResult::Boost, handlers may have modified the boosts in-place
