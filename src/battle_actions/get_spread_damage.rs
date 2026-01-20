@@ -93,16 +93,34 @@ pub fn get_spread_damage<'a>(
         //   a number (Some(i32)):
         //     means that much damage is dealt (0 damage still counts as dealing
         //     damage for the purposes of things like Static)
-        //   None (undefined):
-        //     Status moves return undefined - no damage calculation performed
-        //     Move succeeds but doesn't trigger DamagingHit
+        //   None:
+        //     In JavaScript, this can be:
+        //       - false: immunity (type immunity, ability immunity) - shows "But it failed!"
+        //       - undefined: Status moves or basePower=0 moves - no damage but move continues
         //
         // JavaScript: if (curDamage === false || curDamage === null) { damage[i] = false; }
         // JavaScript: damage[i] = curDamage;  // This can be undefined or a number
+        //
+        // To distinguish:
+        // - Status category moves return undefined (Undefined)
+        // - basePower=0 moves (like Bide charging) return undefined (Undefined)
+        // - Damaging moves (category != Status && basePower > 0) with None were blocked by immunity (Failed)
         match cur_damage {
             None => {
-                // undefined - Status move, no damage dealt but move succeeds
-                result_damages[i] = DamageResult::Undefined;
+                // Check if this is a damaging move that should have dealt damage
+                // If basePower is 0, it's a charging move or special case - return Undefined
+                // If category is Status, it never deals damage - return Undefined
+                // Otherwise, None means immunity blocked the damage - return Failed
+                let is_damaging = active_move.category != "Status" && active_move.base_power > 0;
+                if is_damaging {
+                    // Damaging move blocked by immunity
+                    // JavaScript: return false from getDamage
+                    result_damages[i] = DamageResult::Failed;
+                } else {
+                    // Status move or basePower=0 - no damage dealt but move succeeds
+                    // JavaScript: return undefined
+                    result_damages[i] = DamageResult::Undefined;
+                }
             }
             Some(dmg) => {
                 // Numeric damage value
