@@ -367,6 +367,8 @@ pub fn use_move_inner(
     // }
     if let Some(ref se) = source_effect {
         active_move.source_effect_name = Some(se.to_string());
+        // Also store the full source_effect for callbacks that check it (e.g., twoturnmove.onStart)
+        active_move.source_effect = Some(se.clone());
         // Check if source effect is an active move and has ignoreAbility
         if let Some(ref existing_active) = battle.active_move {
             if existing_active.id == se.id {
