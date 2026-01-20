@@ -45,14 +45,9 @@ impl Pokemon {
         // JS: let totalTypeMod = 0;
         let mut total_type_mod = 0;
 
-        // Get move type
-        let move_type = if let Some(active_move) = &battle.active_move {
-            active_move.move_type.clone()
-        } else if let Some(move_data) = battle.dex.moves().get_by_id(move_id) {
-            move_data.move_type.clone()
-        } else {
-            return total_type_mod;
-        };
+        // Get move type from the passed-in active_move parameter
+        // NOT from battle.active_move (which might be from a previous move)
+        let move_type = active_move.move_type.clone();
 
         // JS: if (this.terastallized && move.type === 'Stellar') {
         // JS:     totalTypeMod = 1;

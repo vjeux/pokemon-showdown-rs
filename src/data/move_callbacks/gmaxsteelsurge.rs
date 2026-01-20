@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -55,35 +56,23 @@ pub mod condition {
         // const steelHazard = this.dex.getActiveMove('Stealth Rock');
         // steelHazard.type = 'Steel';
         // const typeMod = this.clampIntRange(pokemon.runEffectiveness(steelHazard), -6, 6);
-        // We need to run effectiveness as if using a Steel-type Stealth Rock
-        use crate::dex_data::ID;
-
-        // Create a Steel-type move ID for effectiveness calculation
-        let _steel_move_id = ID::from("stealthrock"); // Using Stealth Rock as base move
-
-        // Run effectiveness for Steel-type (the move type is checked in run_effectiveness)
-        // Note: In full implementation, we'd modify battle.active_move.move_type to "Steel" temporarily
-        // For now, we'll use a direct Steel type effectiveness check
-        let type_mod = {
-            // Use the Dex to get Steel type effectiveness against pokemon's types
-            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            let pokemon_types = pokemon_ref.get_types(battle, false);
-            let mut total_mod = 0;
-            for poke_type in &pokemon_types {
-                total_mod += battle.dex.get_effectiveness("Steel", poke_type);
-            }
-            // Clamp between -6 and 6
-            battle.clamp_int_range(total_mod, Some(-6), Some(6))
+        // Create a Steel-type Stealth Rock move for effectiveness calculation
+        let mut steel_hazard = match battle.dex.get_active_move("stealthrock") {
+            Some(m) => m,
+            None => return EventResult::Continue,
         };
+        steel_hazard.move_type = "Steel".to_string();
+
+        // Run effectiveness using the proper event system (matches JS pokemon.runEffectiveness())
+        let raw_type_mod = Pokemon::run_effectiveness(battle, pokemon, &steel_hazard);
+        let type_mod = battle.clamp_int_range(raw_type_mod, Some(-6), Some(6));
 
         // this.damage(pokemon.maxhp * (2 ** typeMod) / 8);
         // JavaScript uses floating-point math here, so 1 * (2 ** 0) / 8 = 0.125
-        // Then spreadDamage clamps non-zero values to minimum 1
-        // We need to use floating-point to match this behavior
-        let damage_amount = {
+        // In spreadDamage, non-zero values get clamped to at least 1:
+        //   if (targetDamage !== 0) targetDamage = this.clampIntRange(targetDamage, 1);
+        // So 0.125 becomes 1 in JavaScript. We must replicate this behavior.
+        let damage_float = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
@@ -91,16 +80,14 @@ pub mod condition {
             // JavaScript: pokemon.maxhp * (2 ** typeMod) / 8
             let maxhp = pokemon_pokemon.maxhp as f64;
             let multiplier = 2f64.powi(type_mod);
-            let damage = maxhp * multiplier / 8.0;
-            // Convert to i32 - spreadDamage will handle clamping non-zero to min 1
-            // But we need to preserve fractional values as non-zero for the clamp to work
-            // So if damage > 0 but < 1, we should pass it as a small positive value
-            // that will be clamped to 1 by spreadDamage
-            if damage > 0.0 && damage < 1.0 {
-                1 // Pass 1 so the damage is applied
-            } else {
-                damage as i32
-            }
+            maxhp * multiplier / 8.0
+        };
+
+        // Match JavaScript's clampIntRange behavior: non-zero values become at least 1
+        let damage_amount = if damage_float > 0.0 {
+            std::cmp::max(damage_float.floor() as i32, 1)
+        } else {
+            0
         };
 
         battle.damage(damage_amount, Some(pokemon), None, None, false);

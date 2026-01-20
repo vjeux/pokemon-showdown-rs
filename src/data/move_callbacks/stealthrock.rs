@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::event::EventResult;
+use crate::Pokemon;
 
 pub mod condition {
     use super::*;
@@ -56,20 +57,15 @@ pub mod condition {
         }
 
         // const typeMod = this.clampIntRange(pokemon.runEffectiveness(this.dex.getActiveMove('stealthrock')), -6, 6);
-        // Run effectiveness for Rock-type Stealth Rock
-        let type_mod = {
-            let pokemon_ref = match battle.pokemon_at(pokemon.0, pokemon.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            let pokemon_types = pokemon_ref.get_types(battle, false);
-            let mut total_mod = 0;
-            for poke_type in &pokemon_types {
-                total_mod += battle.dex.get_effectiveness("Rock", poke_type);
-            }
-            // Clamp between -6 and 6
-            battle.clamp_int_range(total_mod, Some(-6), Some(6))
+        // Get the active move for stealthrock to properly run effectiveness through the event system
+        let active_move = match battle.dex.get_active_move("stealthrock") {
+            Some(m) => m,
+            None => return EventResult::Continue,
         };
+
+        // Run effectiveness using the proper event system (matches JS pokemon.runEffectiveness())
+        let raw_type_mod = Pokemon::run_effectiveness(battle, pokemon, &active_move);
+        let type_mod = battle.clamp_int_range(raw_type_mod, Some(-6), Some(6));
 
         // this.damage(pokemon.maxhp * (2 ** typeMod) / 8);
         let max_hp = {
@@ -82,15 +78,25 @@ pub mod condition {
 
         // JavaScript uses 2 ** typeMod which handles negative exponents as fractions
         // e.g., 2 ** -2 = 0.25, so maxhp * 0.25 / 8 = maxhp / 32
-        // In Rust, we need to handle negative typeMod specially
-        let damage_amount = if type_mod >= 0 {
+        // IMPORTANT: JavaScript uses floating point math here, so 1 * 2 / 8 = 0.25
+        // In spreadDamage, non-zero values get clamped to at least 1:
+        //   if (targetDamage !== 0) targetDamage = this.clampIntRange(targetDamage, 1);
+        // So 0.25 becomes 1 in JavaScript. We must replicate this behavior.
+        let damage_float = if type_mod >= 0 {
             // Positive: multiply by 2^typeMod
             let multiplier = 1_i32 << type_mod;
-            (max_hp * multiplier) / 8
+            (max_hp * multiplier) as f64 / 8.0
         } else {
             // Negative: divide by 2^(-typeMod)
             let divisor = 1_i32 << (-type_mod);
-            max_hp / (8 * divisor)
+            max_hp as f64 / (8.0 * divisor as f64)
+        };
+
+        // Match JavaScript's clampIntRange behavior: non-zero values become at least 1
+        let damage_amount = if damage_float > 0.0 {
+            std::cmp::max(damage_float.floor() as i32, 1)
+        } else {
+            0
         };
         battle.damage(damage_amount, Some(pokemon), None, None, false);
 
