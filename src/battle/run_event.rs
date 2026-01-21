@@ -324,6 +324,13 @@ impl Battle {
         // Pass the full EventTarget so find_event_handlers can handle Side targets with bubble down
         let mut handlers = self.find_event_handlers(event_id, target.as_ref(), source);
 
+        // Debug logging for AfterBoost to track Opportunist issue
+        if event_id == "AfterBoost" {
+            debug_elog!("[RUN_EVENT AfterBoost] Found {} handlers: {:?}",
+                handlers.len(),
+                handlers.iter().map(|h| (h.effect.id.as_str(), h.callback_name.as_str())).collect::<Vec<_>>());
+        }
+
         // JavaScript: if (onEffect) { ... } (lines 134-143)
         // Insert the sourceEffect's own handler at the front of the handlers list
         // This allows moves like Knock Off to modify their own base power via onBasePower
@@ -615,9 +622,28 @@ impl Battle {
                     // JavaScript: this.effectState.target = effectHolder;
                     self.effect_state.target = handler_target;
 
+                    // Debug logging for ability event dispatch
+                    if event_id == "AfterBoost" {
+                        debug_elog!("[RUN_EVENT AfterBoost DISPATCH] About to call handle_ability_event: callback={}, effect_id={}, handler_target={:?}",
+                            callback_name_for_dispatch, effect_id.as_str(), handler_target);
+                        debug_elog!("[RUN_EVENT AfterBoost DISPATCH] effect_state.boosts before = {:?}", self.effect_state.boosts);
+                    }
+
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
                     let result = self.handle_ability_event(&callback_name_for_dispatch, &effect_id, handler_target_event.as_ref());
+
+                    // Debug logging after ability event
+                    if event_id == "AfterBoost" {
+                        debug_elog!("[RUN_EVENT AfterBoost DISPATCH] After handle_ability_event: result={:?}", result);
+                        debug_elog!("[RUN_EVENT AfterBoost DISPATCH] effect_state.boosts after = {:?}", self.effect_state.boosts);
+                    }
+
+                    // NOTE: We do NOT copy self.effect_state back to pokemon.ability_state
+                    // because ability callbacks use with_effect_state() which modifies pokemon.ability_state DIRECTLY.
+                    // Copying self.effect_state back would overwrite those changes with stale data!
+                    // JavaScript: effectState is a reference, so changes via with_effect_state are automatically persistent.
+                    // Rust: with_effect_state() modifies the actual pokemon.ability_state, not the clone in self.effect_state.
 
                     // Restore parent context
                     self.restore_effect_context(parent_effect);
@@ -636,6 +662,10 @@ impl Battle {
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
                     let result = self.handle_item_event(&callback_name_for_dispatch, &effect_id, handler_target_event.as_ref());
+
+                    // NOTE: We do NOT copy self.effect_state back to pokemon.item_state
+                    // because item callbacks use with_effect_state() which modifies pokemon.item_state DIRECTLY.
+                    // Copying self.effect_state back would overwrite those changes with stale data!
 
                     // Restore parent context
                     self.restore_effect_context(parent_effect);

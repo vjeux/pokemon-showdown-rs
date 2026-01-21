@@ -55,7 +55,16 @@ impl Battle {
                 // Ability state on a Pokemon
                 let pos = ctx.effect_holder?;
                 let pokemon = self.pokemon_at_mut(pos.0, pos.1)?;
-                Some(f(&mut pokemon.ability_state))
+                let boosts_before = pokemon.ability_state.boosts;
+                debug_elog!("[WITH_EFFECT_STATE Ability WRITE] pos={:?}, ability={}, ability_state.boosts BEFORE={:?}",
+                    pos, pokemon.ability, boosts_before);
+                let result = Some(f(&mut pokemon.ability_state));
+                debug_elog!("[WITH_EFFECT_STATE Ability WRITE] ability_state.boosts AFTER={:?}", pokemon.ability_state.boosts);
+                // Add stack trace when boosts are cleared
+                if pokemon.ability.as_str() == "opportunist" && boosts_before.is_some() && pokemon.ability_state.boosts.is_none() {
+                    debug_elog!("[WITH_EFFECT_STATE Ability WRITE] BOOSTS WERE CLEARED! Stack trace: {}", std::backtrace::Backtrace::force_capture());
+                }
+                result
             }
             EffectType::Item => {
                 // Item state on a Pokemon
@@ -123,6 +132,8 @@ impl Battle {
             EffectType::Ability => {
                 let pos = ctx.effect_holder?;
                 let pokemon = self.pokemon_at(pos.0, pos.1)?;
+                debug_elog!("[WITH_EFFECT_STATE_REF Ability READ] pos={:?}, ability={}, ability_state.boosts={:?}",
+                    pos, pokemon.ability, pokemon.ability_state.boosts);
                 Some(f(&pokemon.ability_state))
             }
             EffectType::Item => {
