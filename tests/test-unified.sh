@@ -3,24 +3,52 @@
 # Ultra-Fast Unified Test - No file I/O, direct comparison
 #
 # Usage: ./tests/test-unified.sh [start] [end]
+#        ./tests/test-unified.sh --failing-seeds
 
-start_seed=${1:-1}
-end_seed=${2:-500}
+if [ "$1" = "--failing-seeds" ]; then
+    # Read seeds from failing-seeds.txt
+    FAILING_SEEDS_FILE="failing-seeds.txt"
+    if [ ! -f "$FAILING_SEEDS_FILE" ]; then
+        echo "Error: $FAILING_SEEDS_FILE not found"
+        exit 1
+    fi
 
-total_seeds=$((end_seed - start_seed + 1))
+    # Extract seed numbers (skip comments and empty lines)
+    seeds=$(grep -v "^#" "$FAILING_SEEDS_FILE" | grep -v "^$" | tr '\n' ' ')
+    total_seeds=$(echo $seeds | wc -w)
 
-echo "======================================="
-echo "Unified Testing Seeds ${start_seed}-${end_seed} (${total_seeds} seeds)"
-echo "======================================="
-echo ""
+    echo "======================================="
+    echo "Unified Testing Failing Seeds ($total_seeds seeds)"
+    echo "======================================="
+    echo ""
 
-# Run JS and Rust in parallel, capture outputs
-echo "Running battles..."
-node tests/test-unified-parallel.js $start_seed $end_seed > /tmp/js-unified.txt 2>&1 &
-JS_PID=$!
+    # Run JS and Rust in parallel, capture outputs
+    echo "Running battles..."
+    node tests/test-unified-parallel.js --seeds <(echo $seeds | tr ' ' '\n') > /tmp/js-unified.txt 2>&1 &
+    JS_PID=$!
 
-docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && ./target/release/examples/test_unified $start_seed $end_seed 2>/dev/null" > /tmp/rust-unified.txt &
-RUST_PID=$!
+    docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && echo '$seeds' | tr ' ' '\n' | ./target/release/examples/test_unified --seeds /dev/stdin 2>/dev/null" > /tmp/rust-unified.txt &
+    RUST_PID=$!
+else
+    # Range mode
+    start_seed=${1:-1}
+    end_seed=${2:-500}
+
+    total_seeds=$((end_seed - start_seed + 1))
+
+    echo "======================================="
+    echo "Unified Testing Seeds ${start_seed}-${end_seed} (${total_seeds} seeds)"
+    echo "======================================="
+    echo ""
+
+    # Run JS and Rust in parallel, capture outputs
+    echo "Running battles..."
+    node tests/test-unified-parallel.js $start_seed $end_seed > /tmp/js-unified.txt 2>&1 &
+    JS_PID=$!
+
+    docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && ./target/release/examples/test_unified $start_seed $end_seed 2>/dev/null" > /tmp/rust-unified.txt &
+    RUST_PID=$!
+fi
 
 wait $JS_PID
 wait $RUST_PID
