@@ -400,7 +400,9 @@ impl Battle {
                 ability_id.as_str(),
                 Some(pokemon_pos),
                 event_source_pos,
-                relay_var_string.as_str(),
+                // Weather ID comes from source_effect (Effect::weather(weather_id)), not relay_var
+                // JavaScript: onAnySetWeather(target, source, weather) - weather is the Effect
+                event_effect_id.as_str(),
             ),
             "AnySwitchIn" => {
                 ability_callbacks::dispatch_on_any_switch_in(self, ability_id.as_str())
