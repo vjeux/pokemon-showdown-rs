@@ -21,12 +21,9 @@ fn run_battle(seed_num: u32, dex: &Dex) -> (u32, String) {
 }
 
 fn run_battle_inner(seed_num: u32, dex: &Dex) -> String {
-    // Split u32 seed into two u16 values for PRNGSeed::Gen5
-    let seed_lo = (seed_num & 0xFFFF) as u16;
-    let seed_hi = ((seed_num >> 16) & 0xFFFF) as u16;
-
-    // Generate teams using the seed
-    let mut prng = PRNG::new(Some(PRNGSeed::Gen5([0, 0, seed_hi, seed_lo])));
+    // Pass full seed value as 4th element, matching JavaScript behavior
+    // JavaScript: new PRNG([0, 0, 0, seedNum]) where seedNum can be > 65535
+    let mut prng = PRNG::new(Some(PRNGSeed::Gen5([0, 0, 0, seed_num])));
 
     let team1 = team_generator::generate_random_team(&mut prng, dex);
     let team2 = team_generator::generate_random_team(&mut prng, dex);
@@ -34,7 +31,7 @@ fn run_battle_inner(seed_num: u32, dex: &Dex) -> String {
     // Create battle with fresh PRNG (same seed)
     let mut battle = Battle::new(BattleOptions {
         format_id: ID::new("gen9randombattle"),
-        seed: Some(PRNGSeed::Gen5([0, 0, seed_hi, seed_lo])),
+        seed: Some(PRNGSeed::Gen5([0, 0, 0, seed_num])),
         p1: Some(PlayerOptions {
             name: "Player 1".to_string(),
             team: TeamFormat::Sets(team1),

@@ -34,20 +34,22 @@ pub fn on_before_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> 
         pokemon.illusion = None;
     }
 
-    // Get pokemon position and terastallized status
-    let (position, is_terastallized) = {
+    // Get pokemon terastallized status
+    let is_terastallized = {
         let pokemon = match battle.pokemon_at(side_index, pokemon_index) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon.position, pokemon.terastallized.is_some())
+        pokemon.terastallized.is_some()
     };
 
     // for (let i = pokemon.side.pokemon.length - 1; i > pokemon.position; i--)
     // Iterate from right to left through pokemon on the side
+    // NOTE: In JavaScript, pokemon.position is the party index (0-5), not the active slot.
+    // In Rust, we use pokemon_index which is the party index.
     let side_pokemon_count = battle.sides[side_index].pokemon.len();
 
-    for i in (position + 1..side_pokemon_count).rev() {
+    for i in (pokemon_index + 1..side_pokemon_count).rev() {
         // const possibleTarget = pokemon.side.pokemon[i];
         // if (!possibleTarget.fainted)
         let (target_fainted, target_base_species) = {

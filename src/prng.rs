@@ -20,8 +20,9 @@ use serde::{Deserialize, Serialize};
 pub enum PRNGSeed {
     /// Sodium/ChaCha20-based RNG seed (hex string)
     Sodium(String),
-    /// Gen 5 RNG seed (4 x 16-bit values)
-    Gen5([u16; 4]),
+    /// Gen 5 RNG seed (4 values, can be > 16-bit initially like JavaScript)
+    /// JavaScript allows values > 65535 and only masks during multiplyAdd operations
+    Gen5([u32; 4]),
 }
 
 impl PRNGSeed {
@@ -34,10 +35,10 @@ impl PRNGSeed {
                 return Err(format!("Gen5 seed too short: {}", s));
             }
             let seed = [
-                u16::from_str_radix(&hex[0..4], 16).map_err(|e| e.to_string())?,
-                u16::from_str_radix(&hex[4..8], 16).map_err(|e| e.to_string())?,
-                u16::from_str_radix(&hex[8..12], 16).map_err(|e| e.to_string())?,
-                u16::from_str_radix(&hex[12..16], 16).map_err(|e| e.to_string())?,
+                u32::from_str_radix(&hex[0..4], 16).map_err(|e| e.to_string())?,
+                u32::from_str_radix(&hex[4..8], 16).map_err(|e| e.to_string())?,
+                u32::from_str_radix(&hex[8..12], 16).map_err(|e| e.to_string())?,
+                u32::from_str_radix(&hex[12..16], 16).map_err(|e| e.to_string())?,
             ];
             Ok(PRNGSeed::Gen5(seed))
         } else if s
@@ -46,8 +47,8 @@ impl PRNGSeed {
             .map(|c| c.is_ascii_digit())
             .unwrap_or(false)
         {
-            // Old format: comma-separated numbers
-            let parts: Result<Vec<u16>, _> = s.split(',').map(|p| p.parse::<u16>()).collect();
+            // Old format: comma-separated numbers (can be > 65535 to match JavaScript)
+            let parts: Result<Vec<u32>, _> = s.split(',').map(|p| p.parse::<u32>()).collect();
             let parts = parts.map_err(|e| e.to_string())?;
             if parts.len() != 4 {
                 return Err(format!("Expected 4 parts in seed, got {}", parts.len()));
@@ -82,25 +83,26 @@ pub trait RNG {
 /// JavaScript equivalent: Gen5RNG (sim/prng.ts)
 /// 1 field in JavaScript
 pub struct Gen5RNG {
-    /// Current seed state (4 x 16-bit values)
+    /// Current seed state (4 values, can be > 16-bit initially)
+    /// JavaScript stores full values and masks during multiplyAdd operations
     /// JavaScript: seed: [number, number, number, number]
-    seed: [u16; 4],
+    seed: [u32; 4],
 }
 
 impl Gen5RNG {
     /// Create a new Gen5RNG with the given seed
-    pub fn new(seed: [u16; 4]) -> Self {
+    pub fn new(seed: [u32; 4]) -> Self {
         Self { seed }
     }
 
-    /// Generate a random seed
-    pub fn generate_seed() -> [u16; 4] {
+    /// Generate a random seed (uses u16 values for compatibility)
+    pub fn generate_seed() -> [u32; 4] {
         let mut rng = rand::thread_rng();
         [
-            rng.gen::<u16>(),
-            rng.gen::<u16>(),
-            rng.gen::<u16>(),
-            rng.gen::<u16>(),
+            rng.gen::<u16>() as u32,
+            rng.gen::<u16>() as u32,
+            rng.gen::<u16>() as u32,
+            rng.gen::<u16>() as u32,
         ]
     }
 
@@ -129,17 +131,21 @@ impl Gen5RNG {
     // 		return out;
     // 	}
     //
-    fn multiply_add(a: [u16; 4], b: [u16; 4], c: [u16; 4]) -> [u16; 4] {
-        let mut out = [0u16; 4];
-        let mut carry: u32 = 0;
+    /// Calculates `a * b + c` using the full input values (can be > 16-bit)
+    /// Output values are always masked to 16 bits to match JavaScript behavior
+    fn multiply_add(a: [u32; 4], b: [u32; 4], c: [u32; 4]) -> [u32; 4] {
+        let mut out = [0u32; 4];
+        let mut carry: u64 = 0;
 
         for out_index in (0..4).rev() {
             for (local_b_index, &b_val) in b[out_index..].iter().enumerate() {
                 let a_index = 3 - local_b_index;
-                carry = carry.wrapping_add((a[a_index] as u32).wrapping_mul(b_val as u32));
+                // Use full values in multiplication (matches JavaScript behavior)
+                carry = carry.wrapping_add((a[a_index] as u64).wrapping_mul(b_val as u64));
             }
-            carry = carry.wrapping_add(c[out_index] as u32);
-            out[out_index] = (carry & 0xFFFF) as u16;
+            carry = carry.wrapping_add(c[out_index] as u64);
+            // Output is masked to 16 bits (matches JavaScript: out[outIndex] = carry & 0xFFFF)
+            out[out_index] = (carry & 0xFFFF) as u32;
             carry >>= 16;
         }
 
@@ -180,8 +186,8 @@ impl Gen5RNG {
     // 	}
     //
     fn next_frame(&mut self) {
-        const A: [u16; 4] = [0x5D58, 0x8B65, 0x6C07, 0x8965];
-        const C: [u16; 4] = [0, 0, 0x26, 0x9EC3];
+        const A: [u32; 4] = [0x5D58, 0x8B65, 0x6C07, 0x8965];
+        const C: [u32; 4] = [0, 0, 0x26, 0x9EC3];
         self.seed = Self::multiply_add(self.seed, A, C);
     }
 }
@@ -193,8 +199,8 @@ impl RNG for Gen5RNG {
 
     fn next(&mut self) -> u32 {
         self.next_frame();
-        // Use the upper 32 bits
-        ((self.seed[0] as u32) << 16) | (self.seed[1] as u32)
+        // Use the upper 32 bits (seed values are already masked to 16 bits after first frame)
+        ((self.seed[0]) << 16) | (self.seed[1])
     }
 }
 

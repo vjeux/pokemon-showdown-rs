@@ -41,7 +41,8 @@ struct StatsExport {
 }
 
 fn main() {
-    let seed_num: u16 = env::args()
+    // Parse seed as u32 to handle large values (matching JavaScript behavior)
+    let seed_num: u32 = env::args()
         .nth(1)
         .and_then(|s| s.parse().ok())
         .unwrap_or(1);
@@ -51,7 +52,7 @@ fn main() {
     // Load dex
     let dex = Dex::load_default().expect("Failed to load dex");
 
-    // Create PRNG with seed
+    // Create PRNG with seed (pass full u32 value, masking happens in PRNG operations)
     let mut prng = PRNG::new(Some(PRNGSeed::Gen5([0, 0, 0, seed_num])));
 
     // Generate teams

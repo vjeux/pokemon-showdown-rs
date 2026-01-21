@@ -80,25 +80,19 @@ pub fn on_hit(
     let pokemon = pokemon_pos;
 
     // this.directDamage(pokemon.maxhp / 2);
-    let (max_hp, hp_before) = {
+    let max_hp = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        (pokemon_pokemon.maxhp, pokemon_pokemon.hp)
+        pokemon_pokemon.maxhp
     };
 
     battle.direct_damage(max_hp / 2, Some(pokemon), None, None);
 
-    // Check for Emergency Exit after direct damage
-    // JavaScript: if (pokemon.hp <= pokemon.maxhp / 2 && hpBeforeDamage > pokemon.maxhp / 2)
-    //             this.battle.runEvent('EmergencyExit', pokemon, pokemon);
-    let hp_after = battle.pokemon_at(pokemon.0, pokemon.1)
-        .map(|p| p.hp)
-        .unwrap_or(0);
-    if hp_after <= max_hp / 2 && hp_before > max_hp / 2 {
-        battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(pokemon)), Some(pokemon), None, EventResult::Continue, false, false);
-    }
+    // NOTE: directDamage in JavaScript does NOT trigger EmergencyExit.
+    // The EmergencyExit check was incorrectly added here in a previous commit.
+    // Only regular move damage triggers EmergencyExit, not directDamage.
 
     EventResult::Continue
 }
