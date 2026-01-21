@@ -17,10 +17,14 @@ pub fn on_try(
 ) -> EventResult {
     // return !this.field.isTerrain('');
     // Returns true if there is a terrain active (not empty)
+    // Returns false if no terrain (move fails)
     let has_terrain = !battle.is_terrain("");
 
     if !has_terrain {
-        return EventResult::NotFail;
+        // No terrain - move fails (return false, NOT NotFail)
+        // NotFail ('') means "succeeded but did nothing" (like Future Sight queuing)
+        // Boolean(false) means "move failed" and shows -fail message
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue
