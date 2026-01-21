@@ -146,7 +146,9 @@ impl Gen5RNG {
             carry = carry.wrapping_add(c[out_index] as u64);
             // Output is masked to 16 bits (matches JavaScript: out[outIndex] = carry & 0xFFFF)
             out[out_index] = (carry & 0xFFFF) as u32;
-            carry >>= 16;
+            // JavaScript's >>>= 16 truncates to 32 bits before shifting
+            // This matches: carry = (carry as u32) >> 16
+            carry = ((carry as u32) >> 16) as u64;
         }
 
         out
