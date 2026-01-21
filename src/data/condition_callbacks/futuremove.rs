@@ -323,7 +323,33 @@ pub fn on_end_with_data(
         battle.executing_future_move = false;
         debug_elog!("[FUTUREMOVE::ON_END] try_spread_move_hit returned");
 
-        // JavaScript explicitly sets this.activeMove = null; after trySpreadMoveHit
+        // if (data.source.isActive && data.source.hasItem('lifeorb') && this.gen >= 5) {
+        //     this.singleEvent('AfterMoveSecondarySelf', data.source.getItem(), data.source.itemState, data.source, target, data.source.getItem());
+        // }
+        let (source_is_active, source_item_id) = {
+            if let Some(source_pokemon) = battle.pokemon_at(src.0, src.1) {
+                (source_pokemon.is_active, source_pokemon.item.clone())
+            } else {
+                (false, ID::from(""))
+            }
+        };
+
+        if source_is_active && source_item_id.as_str() == "lifeorb" && battle.gen >= 5 {
+            debug_elog!("[FUTUREMOVE::ON_END] Source has Life Orb and is active, calling AfterMoveSecondarySelf");
+            // this.singleEvent('AfterMoveSecondarySelf', data.source.getItem(), data.source.itemState, data.source, target, data.source.getItem());
+            // handle_item_event will get active_move from battle.active_move (still set from try_spread_move_hit)
+            battle.single_event(
+                "AfterMoveSecondarySelf",
+                &crate::battle::Effect::item(source_item_id),
+                None,
+                Some(src), // target = source of Future Sight (the user, who holds Life Orb)
+                Some(pokemon_pos), // source = target of Future Sight
+                Some(&crate::battle::Effect::item(ID::from("lifeorb"))),
+                None,
+            );
+        }
+
+        // JavaScript explicitly sets this.activeMove = null; AFTER the Life Orb event
         // This prevents clearActiveMove from updating last_move
         battle.active_move = None;
 
@@ -334,8 +360,6 @@ pub fn on_end_with_data(
     }
 
     debug_elog!("[FUTUREMOVE::ON_END] Returning Continue");
-
-    // TODO: Handle Life Orb damage
 
     // this.checkWin();
     // JavaScript calls checkWin after executing the future move hit
