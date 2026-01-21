@@ -622,13 +622,6 @@ impl Battle {
                     // JavaScript: this.effectState.target = effectHolder;
                     self.effect_state.target = handler_target;
 
-                    // Debug logging for ability event dispatch
-                    if event_id == "AfterBoost" {
-                        debug_elog!("[RUN_EVENT AfterBoost DISPATCH] About to call handle_ability_event: callback={}, effect_id={}, handler_target={:?}",
-                            callback_name_for_dispatch, effect_id.as_str(), handler_target);
-                        debug_elog!("[RUN_EVENT AfterBoost DISPATCH] effect_state.boosts before = {:?}", self.effect_state.boosts);
-                    }
-
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
                     let result = self.handle_ability_event(&callback_name_for_dispatch, &effect_id, handler_target_event.as_ref());
