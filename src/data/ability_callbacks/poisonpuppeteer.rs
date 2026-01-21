@@ -62,16 +62,20 @@ pub fn on_any_after_set_status(battle: &mut Battle, status: Option<&str>, target
     }
 
     // Check if effect is a Move - JavaScript: effect.effectType !== 'Move'
-    // The effect is passed as a parameter (effect_id), not battle.effect
-    // JavaScript: onAnyAfterSetStatus(status, target, source, effect)
-    // We need to check the effect_id parameter and look up its type
-    let effect_id_str = match effect_id {
-        Some(id) => id,
-        None => return EventResult::Continue,
+    // JavaScript passes effect as a parameter with effectType property
+    // We check the effect from battle.event which has the effect_type field
+    // NOTE: Just checking if effect_id exists in dex.moves() is insufficient because
+    // some moves (like Baneful Bunker) have embedded conditions with the same ID.
+    // When the condition triggers set_status, the effect IS the condition, not the move.
+    let is_move_effect = if let Some(ref event) = battle.event {
+        if let Some(ref effect) = event.effect {
+            effect.effect_type == crate::battle::EffectType::Move
+        } else {
+            false
+        }
+    } else {
+        false
     };
-
-    // Check if the effect is a Move by looking it up in the dex
-    let is_move_effect = battle.dex.moves().get(effect_id_str).is_some();
 
     if !is_move_effect {
         return EventResult::Continue;
