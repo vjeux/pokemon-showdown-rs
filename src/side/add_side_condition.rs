@@ -64,9 +64,17 @@ impl Side {
         // Note: Simplified - we require source_pos to be provided
 
         // JavaScript: status = this.battle.dex.conditions.get(status);
+        // The JavaScript dex.conditions.get() looks up from:
+        // 1. conditions.json
+        // 2. moves.json (if the move has a condition block, e.g., safeguard)
+        // 3. abilities.json (if the ability has a condition block)
+        // 4. items.json (if the item has a condition block)
         let status_duration = {
             if let Some(condition) = battle.dex.conditions().get_by_id(&status_id) {
                 condition.duration
+            } else if let Some(move_data) = battle.dex.moves().get(&status_id.as_str()) {
+                // Move-embedded conditions (like safeguard)
+                move_data.condition.as_ref().and_then(|c| c.duration)
             } else {
                 return false; // Condition not found
             }

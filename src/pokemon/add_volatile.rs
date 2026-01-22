@@ -139,11 +139,29 @@ impl Pokemon {
         // JS:     if (!source) source = this.battle.event.source;
         // JS:     if (!sourceEffect) sourceEffect = this.battle.effect;
         // JS: }
-        // Note: Missing battle.event source/sourceEffect defaulting - requires event system
+        // ✅ NOW IMPLEMENTED: Default source/sourceEffect from battle.event/battle.effect
+        let (source_pos, default_effect) = if battle.event.is_some() {
+            // If source_pos is None, try to get it from battle.event.source
+            let event_source = battle.event.as_ref().and_then(|e| e.source);
+            let resolved_source = source_pos.or(event_source);
+
+            // If source_effect is None, get battle.effect as owned value
+            let resolved_effect = if source_effect.is_none() {
+                battle.effect.clone()
+            } else {
+                None  // We'll use the passed-in source_effect
+            };
+            (resolved_source, resolved_effect)
+        } else {
+            (source_pos, None)
+        };
 
         // JS: if (!source) source = this;
         // ✅ NOW IMPLEMENTED (Session 24 Part 37): Default source to target if not provided
         let source_pos = source_pos.or(Some(target_pos));
+
+        // Use passed-in source_effect if available, otherwise use the default from battle.effect
+        let source_effect_ref = source_effect.or(default_effect.as_ref());
 
         // Check if pokemon already has this volatile
         {
@@ -181,7 +199,7 @@ impl Pokemon {
                     None,
                     Some(target_pos),
                     source_pos,
-                    source_effect,
+                    source_effect_ref,
                     None,
                 );
 
@@ -226,7 +244,7 @@ impl Pokemon {
         if !can_be_volatile {
             debug_elog!("[ADD_VOLATILE_FAIL] {} is immune to volatile '{}'", _pokemon_name, volatile_id.as_str());
             // ✅ NOW IMPLEMENTED (Session 24 Part 37): sourceEffect.status check for -immune message
-            if let Some(src_effect) = source_effect {
+            if let Some(src_effect) = source_effect_ref {
                 // Check if sourceEffect is a Move with a status property
                 if let Some(move_data) = battle.dex.moves().get_by_id(&src_effect.id) {
                     if move_data.secondary.is_some() || move_data.status.is_some() {
@@ -258,7 +276,7 @@ impl Pokemon {
                 "TryAddVolatile",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
             source_pos,
-            source_effect,
+            source_effect_ref,
             crate::event::EventResult::String(volatile_id.as_str().to_string()),
             false,
             false,
@@ -304,7 +322,7 @@ impl Pokemon {
                 volatile_id.as_str(),
                 target_pos,
                 source_pos,
-                source_effect,
+                source_effect_ref,
             );
             match result {
                 crate::event::EventResult::Number(n) => Some(n),
@@ -345,7 +363,7 @@ impl Pokemon {
             state.source_slot = Some(source_position);
         }
         // ✅ NOW IMPLEMENTED: sourceEffect assignment (Session 24 Part 27)
-        if let Some(src_effect) = source_effect {
+        if let Some(src_effect) = source_effect_ref {
             state.source_effect = Some(src_effect.clone());
         }
 
@@ -378,7 +396,7 @@ impl Pokemon {
             None,
             Some(target_pos),
             source_pos,
-            source_effect,
+            source_effect_ref,
             None,
         );
 
@@ -427,7 +445,7 @@ impl Pokemon {
                     if !source_has_volatile {
                         // Add the linked volatile to source (recursive call)
                         // JS: source.addVolatile(linkedStatus, this, sourceEffect);
-                        Pokemon::add_volatile(battle, src_pos, linked_status_id.clone(), Some(target_pos), source_effect, None, None);
+                        Pokemon::add_volatile(battle, src_pos, linked_status_id.clone(), Some(target_pos), source_effect_ref, None, None);
 
                         // Initialize linkedPokemon array for source
                         // JS: source.volatiles[linkedStatus.toString()].linkedPokemon = [this];
