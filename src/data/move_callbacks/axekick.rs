@@ -32,11 +32,14 @@ pub fn on_move_fail(
     // this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('High Jump Kick'));
     let damage_amount = hp_fraction(source_pokemon.base_maxhp, 2);
 
+    // JavaScript: this.dex.conditions.get('High Jump Kick')
+    // JavaScript passes a CONDITION effect, not a MOVE effect. This prevents Disguise from
+    // blocking the crash damage (Disguise only blocks damage from effectType === 'Move').
     battle.damage(
         damage_amount,
         Some(source),
         Some(source),
-        Some(&Effect::move_(ID::from("highjumpkick"))),
+        Some(&Effect::condition(ID::from("highjumpkick"))),
         false,
     );
 
