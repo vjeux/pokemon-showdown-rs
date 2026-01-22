@@ -5,6 +5,11 @@
 # Usage: ./tests/test-unified.sh [start] [end]
 #        ./tests/test-unified.sh --failing-seeds
 
+# Build release version first to ensure we're testing the latest code
+echo "Building release version..."
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo build --release --examples 2>&1" | tail -5
+echo ""
+
 if [ "$1" = "--failing-seeds" ]; then
     # Read seeds from failing-seeds.txt
     FAILING_SEEDS_FILE="failing-seeds.txt"
