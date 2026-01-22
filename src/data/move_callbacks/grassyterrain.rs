@@ -211,7 +211,7 @@ pub mod condition {
 
         if battle.turn >= 66 && pokemon_name.to_lowercase().contains("groudon") {
             debug_elog!("[GRASSY_TERRAIN_RESIDUAL] turn={}, pokemon={}, active_turns={}",
-                battle.turn, pokemon_name, active_turns_val);
+                battle.turn, pokemon_name, _active_turns_val);
         }
 
         // if (pokemon.isGrounded() && !pokemon.isSemiInvulnerable()) {

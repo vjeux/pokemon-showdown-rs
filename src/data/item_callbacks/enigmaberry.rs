@@ -63,7 +63,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
     };
 
     debug_elog!("[ENIGMABERRY] Turn {}: on_hit called for move '{}', type_effectiveness={}, is_super_effective={}, target HP={}/{}",
-        battle.turn, move_id, type_effectiveness, is_super_effective, target_hp, target_base_maxhp);
+        battle.turn, _move_id, type_effectiveness, is_super_effective, _target_hp, target_base_maxhp);
 
     if !is_super_effective {
         debug_elog!("[ENIGMABERRY] Turn {}: NOT super-effective, returning early (no heal)", battle.turn);

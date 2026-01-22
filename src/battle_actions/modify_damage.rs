@@ -174,7 +174,7 @@ pub fn modify_damage(
         let _before_crit = base_damage;
         base_damage = battle.trunc(base_damage as f64 * crit_multiplier, None) as i32;
         debug_elog!("[MODIFY_DAMAGE CRIT] Applying crit multiplier: {} * {} = {}",
-            before_crit, crit_multiplier, base_damage);
+            _before_crit, crit_multiplier, base_damage);
     }
 
     // baseDamage = this.battle.randomizer(baseDamage);

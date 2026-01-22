@@ -35,7 +35,7 @@ impl Battle {
                     debug_elog!("[WITH_EFFECT_STATE] Condition: id={}, pos={:?}, found volatile={}",
                         ctx.id.as_str(), pos, pokemon.volatiles.contains_key(&ctx.id));
                     if let Some(_state) = pokemon.volatiles.get(&ctx.id) {
-                        debug_elog!("[WITH_EFFECT_STATE] BEFORE: slot={:?}, damage={:?}", state.slot, state.damage);
+                        debug_elog!("[WITH_EFFECT_STATE] BEFORE: slot={:?}, damage={:?}", _state.slot, _state.damage);
                     }
                 }
                 let state = pokemon.volatiles.get_mut(&ctx.id)?;

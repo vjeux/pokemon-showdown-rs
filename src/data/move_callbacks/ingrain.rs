@@ -54,7 +54,7 @@ pub mod condition {
         };
 
         debug_elog!("[INGRAIN RESIDUAL] turn={}, pokemon={}, healing {} HP",
-            battle.turn, pokemon_name, heal_amount);
+            battle.turn, _pokemon_name, heal_amount);
         battle.heal(heal_amount, Some(pokemon), None, None);
 
         EventResult::Continue

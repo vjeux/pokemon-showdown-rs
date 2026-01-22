@@ -37,13 +37,15 @@ pub fn on_hit(
     let pokemon = pokemon_pos;
 
     // Get effective weather and determine factor
+    // NOTE: Must use battle.effective_weather() to account for Air Lock/Cloud Nine
+    let field_weather = battle.effective_weather();
     let (numerator, denominator) = {
         let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        let weather = pokemon_pokemon.effective_weather(battle, battle.field.weather.as_str());
+        let weather = pokemon_pokemon.effective_weather(battle, field_weather.as_str());
 
         // let factor = 0.5;
         // switch (pokemon.effectiveWeather()) {

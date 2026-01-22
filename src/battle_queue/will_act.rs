@@ -26,7 +26,7 @@ impl BattleQueue {
                 Action::Pokemon(p) => format!("Pokemon({:?})", p.choice),
                 Action::Team(_) => "Team".to_string(),
             };
-            debug_elog!("[WILL_ACT]   [{}] {}", i, desc);
+            debug_elog!("[WILL_ACT]   [{}] {}", _i, _desc);
         }
 
         for action in &self.list {

@@ -123,7 +123,7 @@ impl Battle {
             .map(|(stat, value)| format!("{}:{:+}", stat, value))
             .collect();
         crate::trace_boost!("turn={}, target={}, boosts=[{}], effect={:?}",
-            self.turn, pokemon_name, boost_str.join(", "), effect);
+            self.turn, _pokemon_name, _boost_str.join(", "), effect);
 
         // Create a BoostsTable from the input boosts for the AfterBoost event
         let mut boost_table = crate::dex_data::BoostsTable::new();

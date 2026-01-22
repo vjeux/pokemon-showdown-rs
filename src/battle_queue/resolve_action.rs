@@ -499,10 +499,10 @@ impl BattleQueue {
 
         // Debug: trace what actions are being returned
         if let Action::Move(_m) = action {
-            debug_elog!("[RESOLVE_ACTION] Exit: move={}, returning {} actions", m.move_id.as_str(), prefix_actions.len());
+            debug_elog!("[RESOLVE_ACTION] Exit: move={}, returning {} actions", _m.move_id.as_str(), prefix_actions.len());
             for (_i, act) in prefix_actions.iter().enumerate() {
                 if let Action::Move(_ma) = act {
-                    debug_elog!("[RESOLVE_ACTION]   [{}] move={}, choice={:?}", i, ma.move_id.as_str(), ma.choice);
+                    debug_elog!("[RESOLVE_ACTION]   [{}] move={}, choice={:?}", _i, _ma.move_id.as_str(), _ma.choice);
                 }
             }
         }

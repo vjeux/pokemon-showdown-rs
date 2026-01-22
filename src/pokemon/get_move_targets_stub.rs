@@ -204,7 +204,7 @@ impl Pokemon {
                 // Check if target is fainted and needs retargeting
                 let _target_fainted = target.is_some() && battle.is_pokemon_fainted(target.unwrap());
                 let _target_is_ally = target.is_some() && battle.is_ally(target.unwrap(), user_pos);
-                debug_elog!("[GET_MOVE_TARGETS] target_fainted={}, target_is_ally={}, game_type={:?}", target_fainted, target_is_ally, battle.game_type);
+                debug_elog!("[GET_MOVE_TARGETS] target_fainted={}, target_is_ally={}, game_type={:?}", _target_fainted, _target_is_ally, battle.game_type);
 
                 // JS: if (!target || (target.fainted && !target.isAlly(this)) && this.battle.gameType !== 'freeforall')
                 if target.is_none()

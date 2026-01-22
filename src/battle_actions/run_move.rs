@@ -416,7 +416,8 @@ pub fn run_move(
 
     // Handle Dancer ability
     // if (move.flags['dance'] && moveDidSomething && !move.isExternal)
-    // JavaScript source (battle-actions.ts:322-348):
+    // JavaScript source (battle-actions.ts:313, 322-348):
+    //     if (this.battle.activeMove) move = this.battle.activeMove;  // <-- KEY: use activeMove for dance check
     //     if (move.flags['dance'] && moveDidSomething && !move.isExternal) {
     //         const dancers = [];
     //         for (const currentPoke of this.battle.getAllActive()) {
@@ -440,8 +441,19 @@ pub fn run_move(
     //             this.runMove(move.id, dancer, dancersTargetLoc, { sourceEffect: this.dex.abilities.get('dancer'), externalMove: true });
     //         }
     //     }
-    let has_dance_flag = base_move.flags.contains_key("dance");
+    // JavaScript: if (this.battle.activeMove) move = this.battle.activeMove;
+    // Check dance flag on activeMove if available (e.g., when Metronome calls fierydance)
+    let has_dance_flag = battle.active_move.as_ref()
+        .map(|m| m.flags.contains_key("dance"))
+        .unwrap_or_else(|| base_move.flags.contains_key("dance"));
     if has_dance_flag && move_did_something && !external_move {
+        // JavaScript: if (this.battle.activeMove) move = this.battle.activeMove;
+        // Get the dance move to use - this is activeMove (e.g., fierydance when called via Metronome)
+        let dance_move_id = battle.active_move.as_ref()
+            .map(|m| m.id.clone())
+            .unwrap_or_else(|| move_data.id.clone());
+        let dance_move_data: Option<MoveData> = battle.dex.moves().get_by_id(&dance_move_id).cloned();
+
         // const dancers = [];
         // for (const currentPoke of this.battle.getAllActive())
         let mut dancers: Vec<(usize, usize)> = Vec::new();
@@ -560,19 +572,22 @@ pub fn run_move(
             };
 
             // this.runMove(move.id, dancer, dancersTargetLoc, { sourceEffect: this.dex.abilities.get('dancer'), externalMove: true });
-            let dancer_ability = Effect::ability(ID::new("dancer"));
-            run_move(
-                battle,
-                move_data,
-                dancer_pos,
-                dancers_target_loc,
-                Some(&dancer_ability),
-                None, // z_move
-                true, // external_move
-                None, // max_move
-                None, // original_target
-                false, // prankster_boosted - Dancer copies don't get Prankster boost
-            );
+            // Use the dance move (activeMove), not the original move
+            if let Some(ref dance_move) = dance_move_data {
+                let dancer_ability = Effect::ability(ID::new("dancer"));
+                run_move(
+                    battle,
+                    dance_move,
+                    dancer_pos,
+                    dancers_target_loc,
+                    Some(&dancer_ability),
+                    None, // z_move
+                    true, // external_move
+                    None, // max_move
+                    None, // original_target
+                    false, // prankster_boosted - Dancer copies don't get Prankster boost
+                );
+            }
         }
     }
 

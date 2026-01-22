@@ -88,10 +88,10 @@ impl Battle {
             if next_indexes.len() > 1 {
                 // Debug: print the priority items that are tying
                 let priorities: Vec<_> = next_indexes.iter().map(|&i| get_priority(&list[i])).collect();
-                debug_elog!("[SPEED_SORT] {} items tying at positions {:?}, turn={}, callsite={}", next_indexes.len(), next_indexes, self.turn, callsite);
+                debug_elog!("[SPEED_SORT] {} items tying at positions {:?}, turn={}, callsite={}", next_indexes.len(), next_indexes, self.turn, _callsite);
                 for (_i, _priority) in priorities.iter().enumerate() {
                     debug_elog!("[SPEED_SORT]   Item {}: order={:?}, priority={}, speed={}, sub_order={}, effect_order={}",
-                        i, priority.order, priority.priority, priority.speed, priority.sub_order, priority.effect_order);
+                        _i, _priority.order, _priority.priority, _priority.speed, _priority.sub_order, _priority.effect_order);
                 }
                 let end = sorted + next_indexes.len();
                 self.shuffle_range(list, sorted, end);

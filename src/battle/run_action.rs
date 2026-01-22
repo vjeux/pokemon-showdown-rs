@@ -424,7 +424,7 @@ impl Battle {
                                 temp_active_move.as_ref(),
                                 (side_idx, poke_idx)
                             );
-                            debug_elog!("[RUN_ACTION] beforeTurnMove callback returned {:?}", result);
+                            debug_elog!("[RUN_ACTION] beforeTurnMove callback returned {:?}", _result);
                         }
                         MoveActionType::PriorityChargeMove => {
                             // JS: case 'priorityChargeMove':
@@ -445,7 +445,7 @@ impl Battle {
                                 temp_active_move.as_ref(),
                                 (side_idx, poke_idx)
                             );
-                            debug_elog!("[RUN_ACTION] priorityChargeMove callback returned {:?}", result);
+                            debug_elog!("[RUN_ACTION] priorityChargeMove callback returned {:?}", _result);
                         }
                     }
                 }
@@ -1276,7 +1276,7 @@ impl Battle {
         debug_elog!("[RUN_ACTION] Switches array: {:?}", switches);
         for (_i, &player_switch) in switches.iter().enumerate() {
             if player_switch {
-                debug_elog!("[RUN_ACTION] Side {} needs to switch, calling make_request(Switch)", i);
+                debug_elog!("[RUN_ACTION] Side {} needs to switch, calling make_request(Switch)", _i);
                 self.make_request(Some(BattleRequestState::Switch));
                 return;
             }

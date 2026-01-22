@@ -71,7 +71,7 @@ pub mod condition {
             // return this.chainModify([1352, 4096]);
             battle.chain_modify_fraction(1352, 4096);
             let _modifier_after = battle.event.as_ref().map(|e| e.modifier).unwrap_or(0);
-            debug_elog!("[MUDSPORT] modifier: {} -> {}", modifier_before, modifier_after);
+            debug_elog!("[MUDSPORT] modifier: {} -> {}", _modifier_before, _modifier_after);
             return EventResult::Continue;
         }
 

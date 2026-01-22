@@ -332,11 +332,11 @@ pub fn switch_in(
                     side_index, old_idx, (*pokemon).volatiles.len());
                 for (_volatile_id, _state) in &(*pokemon).volatiles {
                     debug_elog!("[SWITCH_CLEAR_VOLATILE]   volatile='{}' linked_status={:?} linked_pokemon={:?}",
-                        volatile_id.as_str(), state.linked_status, state.linked_pokemon);
+                        _volatile_id.as_str(), _state.linked_status, _state.linked_pokemon);
                 }
 
                 let linked_volatiles: Vec<_> = (*pokemon).volatiles.iter()
-                    .filter_map(|(_volatile_id, state)| {
+                    .filter_map(|(volatile_id, state)| {
                         if let (Some(status), Some(pokemon_vec)) = (&state.linked_status, &state.linked_pokemon) {
                             debug_elog!("[SWITCH_LINKED] Found linked volatile='{}' with linked_status='{}' linked_pokemon={:?}",
                                 volatile_id.as_str(), status, pokemon_vec);

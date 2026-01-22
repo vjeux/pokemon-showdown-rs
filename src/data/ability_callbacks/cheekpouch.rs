@@ -21,7 +21,7 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
     };
 
     debug_elog!("[CHEEKPOUCH] Turn {}: on_eat_item called! Healing {} HP (current {}/{})",
-        battle.turn, heal_amount, current_hp, max_hp);
+        battle.turn, heal_amount, _current_hp, _max_hp);
 
     battle.heal(heal_amount, Some(pokemon_pos), None, None);
     EventResult::Continue

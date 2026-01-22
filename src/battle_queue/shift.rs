@@ -19,7 +19,7 @@ impl BattleQueue {
             match &action {
                 Action::Move(_move_action) => {
                     debug_elog!("[QUEUE.SHIFT] Removed Move action: move={} from ({}, {}), priority={}, speed={}, order={:?}",
-                        move_action.move_id.as_str(), move_action.side_index, move_action.pokemon_index,
+                        _move_action.move_id.as_str(), _move_action.side_index, _move_action.pokemon_index,
                         action.priority(), action.speed(), action.order());
                 }
                 _ => {

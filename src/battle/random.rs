@@ -22,7 +22,7 @@ impl Battle {
         let _before = self.prng.call_count;
         let result = self.prng.random_int(n);
         let _after = self.prng.call_count;
-        debug_elog!("[RANDOM] turn={}, n={}, result={}, PRNG: {}->{}",  self.turn, n, result, before, after);
+        debug_elog!("[RANDOM] turn={}, n={}, result={}, PRNG: {}->{}",  self.turn, n, result, _before, _after);
         result
     }
 
@@ -33,7 +33,7 @@ impl Battle {
         let result = self.prng.random_range(from, to);
         let _after = self.prng.call_count;
         debug_elog!("[RANDOM_WITH_RANGE] turn={}, from={}, to={}, result={}, PRNG: {}->{}",
-                  self.turn, from, to, result, before, after);
+                  self.turn, from, to, result, _before, _after);
         result
     }
 }

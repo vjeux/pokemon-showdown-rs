@@ -55,7 +55,7 @@ impl BattleQueue {
         debug_elog!("[QUEUE.INSERT_CHOICE] Queue BEFORE insert:");
         for (_i, _act) in self.list.iter().enumerate() {
             debug_elog!("  Index {}: priority={}, speed={}, order={:?}",
-                i, act.priority(), act.speed(), act.order());
+                _i, _act.priority(), _act.speed(), _act.order());
         }
 
         // JS: let firstIndex = null; let lastIndex = null;
@@ -102,7 +102,7 @@ impl BattleQueue {
         debug_elog!("[QUEUE.INSERT_CHOICE] Queue AFTER insert:");
         for (_i, _act) in self.list.iter().enumerate() {
             debug_elog!("  Index {}: priority={}, speed={}, order={:?}",
-                i, act.priority(), act.speed(), act.order());
+                _i, _act.priority(), _act.speed(), _act.order());
         }
     }
 }

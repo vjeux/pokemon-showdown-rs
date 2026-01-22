@@ -219,7 +219,7 @@ pub mod condition {
                 state.damage = Some(2 * damage);
                 debug_elog!("[COUNTER] on_damaging_hit: set effect_state: slot={:?}, damage={:?}", state.slot, state.damage);
             });
-            debug_elog!("[COUNTER] with_effect_state returned: {:?}", update_result);
+            debug_elog!("[COUNTER] with_effect_state returned: {:?}", _update_result);
         } else {
             debug_elog!("[COUNTER] on_damaging_hit: is_ally={}, category='{}' - NOT storing damage", is_ally, category);
         }

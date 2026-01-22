@@ -1683,10 +1683,10 @@ pub fn dispatch_condition_on_any_invulnerability(
 ) -> EventResult {
     let _attacking_move_id = attacking_active_move.map(|m| m.id.as_str()).unwrap_or("");
     debug_elog!("[DISPATCH_COND_ANY_INVULN] condition_id='{}', attacking_move_id='{}', target_pos={:?}, source_pos={:?}",
-        condition_id, attacking_move_id, target_pos, source_pos);
+        condition_id, _attacking_move_id, target_pos, source_pos);
     let result = match condition_id {
         "skydrop" => {
-            debug_elog!("[DISPATCH_COND_ANY_INVULN] Matched skydrop, calling callback with attacking_move_id={}", attacking_move_id);
+            debug_elog!("[DISPATCH_COND_ANY_INVULN] Matched skydrop, calling callback with attacking_move_id={}", _attacking_move_id);
             skydrop::condition::on_any_invulnerability(battle, Some(target_pos), Some(source_pos), attacking_active_move)
         }
         _ => {

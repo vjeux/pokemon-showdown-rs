@@ -67,7 +67,7 @@ impl Pokemon {
                     linked_pokemon_vec.retain(|&pos| pos != this_pokemon);
                     let _after_len = linked_pokemon_vec.len();
                     debug_elog!("[REMOVE_LINKED_VOLATILES]   Removed this_pokemon from linked_pokemon: {} -> {} items",
-                        before_len, after_len);
+                        _before_len, _after_len);
 
                     // JS: if (volatileData.linkedPokemon.length === 0) {
                     linked_pokemon_vec.is_empty()

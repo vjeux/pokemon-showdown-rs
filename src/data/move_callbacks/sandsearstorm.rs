@@ -23,13 +23,14 @@ pub fn on_modify_move(
     //     move.accuracy = true;
     // }
     if let Some(target) = target_pos {
+        // NOTE: Must use battle.effective_weather() to account for Air Lock/Cloud Nine
+        let field_weather = battle.effective_weather();
         let effective_weather = {
-            let field_weather = battle.field.weather.as_str();
             let pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            let weather_str = pokemon.effective_weather(battle, field_weather);
+            let weather_str = pokemon.effective_weather(battle, field_weather.as_str());
             if weather_str.is_empty() {
                 None
             } else {

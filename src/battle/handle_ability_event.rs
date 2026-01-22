@@ -29,7 +29,7 @@ impl Battle {
         };
 
         crate::trace_ability!("turn={}, ability='{}' on {}, event='{}'",
-            self.turn, ability_id.as_str(), pokemon_name, event_id);
+            self.turn, ability_id.as_str(), _pokemon_name, event_id);
 
         // Extract context from event for parameter wiring
         // For SetStatus/AllySetStatus events, status ID comes from relay_var (String)
@@ -1107,7 +1107,7 @@ impl Battle {
             _ => EventResult::Continue,
         };
 
-        crate::trace_ability!("  ← Ability '{}' on {} returned: {:?}", ability_id.as_str(), pokemon_name, result);
+        crate::trace_ability!("  ← Ability '{}' on {} returned: {:?}", ability_id.as_str(), _pokemon_name, result);
 
         result
     }

@@ -87,13 +87,14 @@ pub fn on_try_move(
     );
 
     // if (['sunnyday', 'desolateland'].includes(attacker.effectiveWeather())) {
+    // NOTE: Must use battle.effective_weather() to account for Air Lock/Cloud Nine
+    let field_weather = battle.effective_weather();
     let weather = {
-        let field_weather = battle.field.weather.as_str();
         let pokemon = match battle.pokemon_at(attacker.0, attacker.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let weather_str = pokemon.effective_weather(battle, field_weather);
+        let weather_str = pokemon.effective_weather(battle, field_weather.as_str());
         if weather_str.is_empty() {
             None
         } else {
@@ -168,13 +169,14 @@ pub fn on_base_power(
 
     // const weakWeathers = ['raindance', 'primordialsea', 'sandstorm', 'hail', 'snowscape'];
     // if (weakWeathers.includes(pokemon.effectiveWeather())) {
+    // NOTE: Must use battle.effective_weather() to account for Air Lock/Cloud Nine
+    let field_weather = battle.effective_weather();
     let weather = {
-        let field_weather = battle.field.weather.as_str();
         let pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        let weather_str = pokemon.effective_weather(battle, field_weather);
+        let weather_str = pokemon.effective_weather(battle, field_weather.as_str());
         if weather_str.is_empty() {
             None
         } else {

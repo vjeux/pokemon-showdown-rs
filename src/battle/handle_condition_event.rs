@@ -749,7 +749,7 @@ impl Battle {
                     .unwrap_or_default();
 
                 debug_elog!("[HANDLE_CONDITION_EVENT] Calling dispatch_condition_on_any_modify_damage for condition={}, move={}, source(attacker)={:?}, target(defender)={:?}",
-                    condition_id, move_id_for_log, callback_source, callback_target);
+                    condition_id, _move_id_for_log, callback_source, callback_target);
 
                 // Call dispatcher in move_callbacks (for move-embedded conditions like auroraveil)
                 // Pass the active move, not just the ID

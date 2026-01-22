@@ -449,7 +449,7 @@ impl PRNG {
 
                 let _compact = frames.join(" <- ");
                 debug_elog!("[Rust PRNG #{}] raw={}", self.call_count, value);
-                debug_elog!("  Stack: {}", compact);
+                debug_elog!("  Stack: {}", _compact);
             }
         }
 
@@ -511,7 +511,7 @@ impl PRNG {
                     Some(t) => format!("{}", t),
                     None => "None".to_string(),
                 };
-                debug_elog!("  [random(from={}, to={})]", from_val, to_val);
+                debug_elog!("  [random(from={}, to={})]", _from_val, _to_val);
             }
         }
 

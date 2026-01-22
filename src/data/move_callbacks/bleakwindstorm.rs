@@ -29,8 +29,9 @@ pub fn on_modify_move(
     };
 
     // Get the field weather and target's effective weather
-    let field_weather = battle.field.weather.to_string();
-    let effective_weather = target_pokemon.effective_weather(battle, &field_weather);
+    // NOTE: Must use battle.effective_weather() to account for Air Lock/Cloud Nine
+    let field_weather = battle.effective_weather();
+    let effective_weather = target_pokemon.effective_weather(battle, field_weather.as_str());
 
     if effective_weather == "raindance" || effective_weather == "primordialsea" {
         // move.accuracy = true;

@@ -19,12 +19,14 @@ pub fn on_modify_move(
 ) -> EventResult {
     // if (target && ['raindance', 'primordialsea'].includes(target.effectiveWeather()))
     if let Some(target) = target_pos {
+        // NOTE: Must use battle.effective_weather() to account for Air Lock/Cloud Nine
+        let field_weather = battle.effective_weather();
         let weather = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.effective_weather(battle, battle.field.weather.as_str())
+            target_pokemon.effective_weather(battle, field_weather.as_str())
         };
 
         if weather == "raindance" || weather == "primordialsea" {

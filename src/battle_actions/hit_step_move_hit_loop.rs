@@ -623,13 +623,13 @@ pub fn hit_step_move_hit_loop(
 
         if battle.turn >= 64 && battle.turn <= 66 {
             debug_elog!("[RECOIL] turn={}, pokemon={}, move={}, total_damage={}, recoil_fraction={:?}, calculated_recoil={}",
-                battle.turn, pokemon_name, active_move.id.as_str(), active_move.total_damage,
+                battle.turn, _pokemon_name, active_move.id.as_str(), active_move.total_damage,
                 active_move.recoil, recoil_damage);
         }
 
         if recoil_damage > 0 {
             if battle.turn >= 64 && battle.turn <= 66 {
-                debug_elog!("[RECOIL] Applying {} recoil damage to {} on turn {}", recoil_damage, pokemon_name, battle.turn);
+                debug_elog!("[RECOIL] Applying {} recoil damage to {} on turn {}", recoil_damage, _pokemon_name, battle.turn);
             }
             battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::condition("recoil")), false);
 

@@ -555,7 +555,7 @@ pub fn get_damage(
         .unwrap_or_default();
     let mut attack = battle.calculate_stat(attacker_pos, attack_stat_id, atk_boost as i8, 1.0, Some(source_pos));
     debug_elog!("[GET_DAMAGE] Attack calc (stat={:?}): pokemon={}, boost={}, attack={}",
-        attack_stat_id, attacker_name, atk_boost, attack);
+        attack_stat_id, _attacker_name, atk_boost, attack);
     if attack == 0 {
         return None;
     }
@@ -576,7 +576,7 @@ pub fn get_damage(
         .unwrap_or_default();
     let mut defense = battle.calculate_stat(defender_pos, defense_stat_id, def_boost as i8, 1.0, Some(target_pos));
     debug_elog!("[GET_DAMAGE] Defense calc (stat={:?}): pokemon={}, boost={}, defense={}",
-        defense_stat_id, defender_name, def_boost, defense);
+        defense_stat_id, _defender_name, def_boost, defense);
     if defense == 0 {
         return None;
     }
@@ -612,7 +612,7 @@ pub fn get_damage(
         EventResult::Float(multiplier) => {
             let _old_attack = attack;
             attack = battle.modify_f(attack, multiplier);
-            debug_elog!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, attack changed from {} to {}", attack_modifier_event, multiplier, old_attack, attack);
+            debug_elog!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, attack changed from {} to {}", attack_modifier_event, multiplier, _old_attack, attack);
         }
         _ => {
             debug_elog!("[GET_DAMAGE] AFTER {}: no change, attack={}", attack_modifier_event, attack);
@@ -629,7 +629,7 @@ pub fn get_damage(
         EventResult::Float(multiplier) => {
             let _old_defense = defense;
             defense = battle.modify_f(defense, multiplier);
-            debug_elog!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, defense changed from {} to {}", defense_modifier_event, multiplier, old_defense, defense);
+            debug_elog!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, defense changed from {} to {}", defense_modifier_event, multiplier, _old_defense, defense);
         }
         _ => {
             debug_elog!("[GET_DAMAGE] AFTER {}: no change, defense={}", defense_modifier_event, defense);

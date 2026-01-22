@@ -18,21 +18,23 @@ impl Battle {
         // Collect indices first to avoid borrow checker issues
         let indices: Vec<(usize, usize)> = self.get_all_active(false);
 
-        // Update each active Pokemon's speed
-        // Two-phase approach: calculate speeds first, then update
-        let mut speeds: Vec<((usize, usize), i32)> = Vec::new();
-
+        // IMPORTANT: We must update each Pokemon's speed IMMEDIATELY after calculating it,
+        // just like JavaScript does. This is because during speed calculation, events like
+        // ModifyBoost are triggered, and their handlers read pokemon.speed from OTHER Pokemon.
+        // If we batch all calculations first, handlers will see stale cached speeds.
+        //
+        // JavaScript behavior:
+        //   for (const pokemon of this.getAllActive()) {
+        //       pokemon.updateSpeed();  // Updates pokemon.speed IMMEDIATELY
+        //   }
         for (side_idx, poke_idx) in &indices {
-            if let Some(_pokemon) = self.sides.get(*side_idx).and_then(|s| s.pokemon.get(*poke_idx)) {
+            if self.sides.get(*side_idx).and_then(|s| s.pokemon.get(*poke_idx)).is_some() {
+                // Calculate speed (may trigger events that read other Pokemon's speeds)
                 let new_speed = self.get_pokemon_action_speed(*side_idx, *poke_idx);
-                speeds.push(((*side_idx, *poke_idx), new_speed));
-            }
-        }
-
-        // Apply the calculated speeds
-        for ((side_idx, poke_idx), new_speed) in speeds {
-            if let Some(pokemon) = self.sides.get_mut(side_idx).and_then(|s| s.pokemon.get_mut(poke_idx)) {
-                pokemon.speed = new_speed;
+                // Update IMMEDIATELY before processing next Pokemon
+                if let Some(pokemon) = self.sides.get_mut(*side_idx).and_then(|s| s.pokemon.get_mut(*poke_idx)) {
+                    pokemon.speed = new_speed;
+                }
             }
         }
     }

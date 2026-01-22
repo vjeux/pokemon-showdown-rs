@@ -17,9 +17,6 @@ Part 2: Minimized Seeds Tests (minimized teams)
 Running 156 minimized seed tests...
 Comparing minimized results...
 
-FAIL Seed 79574 (minimized):
-  JS:   SEED 79574: turns=26, prng=93, winner=p1
-  Rust: SEED 79574: turns=23, prng=87, winner=p1
 
 =======================================
 Part 3: Full Team Tests (same seeds, generated teams)
@@ -31,23 +28,16 @@ Comparing full team results...
 FAIL Seed 40192 (full team):
   JS:   SEED 40192: turns=85, prng=490, winner=p2
   Rust: SEED 40192: turns=85, prng=522, winner=p2
-FAIL Seed 79574 (full team):
-  JS:   SEED 79574: turns=26, prng=93, winner=p1
-  Rust: SEED 79574: turns=23, prng=87, winner=p1
 
 =======================================
 Final Summary
 =======================================
 
 Regression tests (1-1000): 1000/1000 passed
-Minimized teams: 155/156 passed
-Full teams: 154/156 passed
+Minimized teams: 156/156 passed
+Full teams: 155/156 passed
 
-Failed full team seeds: 40192 79574
-Minimized seeds pass rate: 99%
-Failed minimized seeds: 79574
-
-Updating bug-analysis.txt...
-Done. See tests/bug-analysis.txt for patterns in failing seeds.
+Failed full team seeds: 40192
+All minimized seeds passed!
 
 SUCCESS: No regressions detected.

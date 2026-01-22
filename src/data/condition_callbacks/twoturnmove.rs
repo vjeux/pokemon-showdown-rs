@@ -234,7 +234,7 @@ pub fn on_lock_move(
     battle: &mut Battle,
     _pokemon_pos: (usize, usize),
 ) -> EventResult {
-    debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] Called for pokemon=({},{}), turn={}", pokemon_pos.0, pokemon_pos.1, battle.turn);
+    debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] Called for pokemon=({},{}), turn={}", _pokemon_pos.0, _pokemon_pos.1, battle.turn);
 
     // return this.effectState.move;
     // Get the move ID from effectState using with_effect_state_ref

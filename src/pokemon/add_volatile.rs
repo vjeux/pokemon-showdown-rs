@@ -91,11 +91,11 @@ impl Pokemon {
 
         if battle.turn == 17 && volatile_id.as_str() == "skydrop" {
             debug_elog!("[ADD_VOLATILE_DEBUG] turn=17, adding skydrop to {}, source_effect={:?}",
-                pokemon_name, source_effect.map(|s| s.id.as_str()));
+                _pokemon_name, source_effect.map(|s| s.id.as_str()));
         }
 
         crate::trace_volatile!("turn={}, ADD volatile='{}' to {}, source_effect={:?}, embedded_condition={}",
-            battle.turn, volatile_id.as_str(), pokemon_name, source_effect.map(|s| s.id.as_str()), embedded_condition.is_some());
+            battle.turn, volatile_id.as_str(), _pokemon_name, source_effect.map(|s| s.id.as_str()), embedded_condition.is_some());
 
         // JS: status = this.battle.dex.conditions.get(status);
         // JS: if (!this.hp && !status.affectsFainted) return false;
@@ -224,7 +224,7 @@ impl Pokemon {
         let can_be_volatile = Pokemon::run_status_immunity(battle, target_pos, volatile_id.as_str(), false);
 
         if !can_be_volatile {
-            debug_elog!("[ADD_VOLATILE_FAIL] {} is immune to volatile '{}'", pokemon_name, volatile_id.as_str());
+            debug_elog!("[ADD_VOLATILE_FAIL] {} is immune to volatile '{}'", _pokemon_name, volatile_id.as_str());
             // ✅ NOW IMPLEMENTED (Session 24 Part 37): sourceEffect.status check for -immune message
             if let Some(src_effect) = source_effect {
                 // Check if sourceEffect is a Move with a status property
@@ -265,7 +265,7 @@ impl Pokemon {
         );
         // runEvent returns EventResult, check if it's falsy (Boolean(false), Number(0), Null)
         if !try_add_result.is_truthy() {
-            debug_elog!("[ADD_VOLATILE_FAIL] TryAddVolatile blocked for '{}' on {}", volatile_id.as_str(), pokemon_name);
+            debug_elog!("[ADD_VOLATILE_FAIL] TryAddVolatile blocked for '{}' on {}", volatile_id.as_str(), _pokemon_name);
             return Some(false);
         }
 
@@ -291,7 +291,7 @@ impl Pokemon {
                 .and_then(|cond| cond.duration);
             let _from_embedded = embedded_condition.and_then(|cond| cond.duration);
             debug_elog!("[ADD_VOLATILE_DURATION] turn=17, volatile='skydrop', from_dex={:?}, from_embedded={:?}, final={:?}",
-                from_dex, from_embedded, default_duration);
+                _from_dex, _from_embedded, default_duration);
         }
 
         // Check if condition has a durationCallback
@@ -359,7 +359,7 @@ impl Pokemon {
             None => return Some(false),
         };
         pokemon_mut.volatiles.insert(volatile_id.clone(), state);
-        debug_elog!("[ADD_VOLATILE_SUCCESS] Added volatile '{}' to {}", volatile_id.as_str(), pokemon_name);
+        debug_elog!("[ADD_VOLATILE_SUCCESS] Added volatile '{}' to {}", volatile_id.as_str(), _pokemon_name);
 
         // JavaScript: result = this.battle.singleEvent("Start", status, this.volatiles[status.id], this, source, sourceEffect);
         // Call the Start event for the newly added volatile

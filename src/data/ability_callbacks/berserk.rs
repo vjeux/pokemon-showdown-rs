@@ -58,7 +58,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
         state.checked_berserk = Some(!should_check);
         debug_elog!("[BERSERK_ON_DAMAGE] set checked_berserk = {:?}", state.checked_berserk);
     });
-    debug_elog!("[BERSERK_ON_DAMAGE] with_effect_state returned: {:?}", result.is_some());
+    debug_elog!("[BERSERK_ON_DAMAGE] with_effect_state returned: {:?}", _result.is_some());
 
     EventResult::Continue
 }

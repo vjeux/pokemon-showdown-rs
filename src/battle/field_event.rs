@@ -439,7 +439,7 @@ impl Battle {
             handlers.iter().map(|h| h.effect_id.as_str()).collect::<Vec<_>>());
         for (_i, _h) in handlers.iter().enumerate() {
             debug_elog!("  [{}] id={}, order={:?}, priority={}, speed={}, sub_order={}, effect_order={}",
-                i, h.effect_id.as_str(), h.order, h.priority, h.speed, h.sub_order, h.effect_order);
+                _i, _h.effect_id.as_str(), _h.order, _h.priority, _h.speed, _h.sub_order, _h.effect_order);
         }
         self.speed_sort_with_callsite(&mut handlers, |h| {
             PriorityItem {

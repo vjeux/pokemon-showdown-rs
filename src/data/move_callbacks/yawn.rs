@@ -107,7 +107,7 @@ pub mod condition {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            debug_elog!("[YAWN_END] Target {} current status={:?}", target_pokemon.get_slot(), target_pokemon.status.as_str());
+            debug_elog!("[YAWN_END] Target {} current status={:?}", _target_pokemon.get_slot(), _target_pokemon.status.as_str());
         }
 
         // this.add('-end', target, 'move: Yawn', '[silent]');

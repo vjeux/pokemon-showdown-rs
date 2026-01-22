@@ -31,7 +31,7 @@ impl Pokemon {
         };
 
         crate::trace_volatile!("turn={}, REMOVE volatile='{}' from {}",
-            battle.turn, volatile_id.as_str(), pokemon_name);
+            battle.turn, volatile_id.as_str(), _pokemon_name);
 
         // Phase 1: Check HP and volatile existence
         let (_hp, _has_volatile, linked_pokemon, linked_status) = {

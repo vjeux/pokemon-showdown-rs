@@ -75,7 +75,7 @@ pub fn on_start(
     let true_duration = battle.random_with_range(2, 4);
 
     debug_elog!("[LOCKEDMOVE_START] turn={}, pokemon=({}, {}), trueDuration={}",
-        battle.turn, pokemon_pos.0, pokemon_pos.1, true_duration);
+        battle.turn, _pokemon_pos.0, _pokemon_pos.1, true_duration);
 
     // this.effectState.move = effect.id;
     // Get move ID from source_effect or current_effect
