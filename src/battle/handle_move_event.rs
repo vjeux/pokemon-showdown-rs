@@ -24,6 +24,7 @@ impl Battle {
 
         // Clone active_move to pass to dispatch functions
         let active_move_clone = self.active_move.clone();
+        debug_elog!("[HANDLE_MOVE_EVENT] event_id={}, move_id={}, active_move={:?}", event_id, move_id.as_str(), active_move_clone.as_ref().map(|m| m.id.as_str()));
 
         match event_id {
             "AfterHit" => {

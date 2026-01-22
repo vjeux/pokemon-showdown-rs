@@ -29,7 +29,7 @@ if [ "$1" = "--failing-seeds" ]; then
 
     # Run JS and Rust in parallel, capture outputs
     echo "Running battles..."
-    node tests/test-unified-parallel.js --seeds <(echo $seeds | tr ' ' '\n') > /tmp/js-unified.txt 2>&1 &
+    node tests/test-unified-parallel.js --seeds <(echo $seeds | tr ' ' '\n') > /tmp/js-unified.txt 2>/dev/null &
     JS_PID=$!
 
     docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && echo '$seeds' | tr ' ' '\n' | ./target/release/examples/test_unified --seeds /dev/stdin 2>/dev/null" > /tmp/rust-unified.txt &
@@ -48,7 +48,7 @@ else
 
     # Run JS and Rust in parallel, capture outputs
     echo "Running battles..."
-    node tests/test-unified-parallel.js $start_seed $end_seed > /tmp/js-unified.txt 2>&1 &
+    node tests/test-unified-parallel.js $start_seed $end_seed > /tmp/js-unified.txt 2>/dev/null &
     JS_PID=$!
 
     docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && ./target/release/examples/test_unified $start_seed $end_seed 2>/dev/null" > /tmp/rust-unified.txt &

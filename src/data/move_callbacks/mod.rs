@@ -563,7 +563,9 @@ pub fn dispatch_on_after_hit(
     target_pos: (usize, usize),  // JavaScript: onAfterHit(target, source) - target first
     source_pos: (usize, usize),
 ) -> EventResult {
-    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
+    let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+    debug_elog!("[DISPATCH_ON_AFTER_HIT] move_id={}, active_move_present={}", move_id, active_move.is_some());
+    match move_id {
         "ceaselessedge" => ceaselessedge::on_after_hit(battle, target_pos, source_pos),
         "covet" => covet::on_after_hit(battle, target_pos, source_pos),
         "icespinner" => icespinner::on_after_hit(battle, target_pos, source_pos),

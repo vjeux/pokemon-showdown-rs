@@ -358,6 +358,7 @@ impl Battle {
 
     /// Check if a an item has a callback for an event
     pub fn item_has_callback(&self, item_id: &str, event_id: &str) -> bool {
+        debug_elog!("[ITEM_HAS_CALLBACK] item_id={}, event_id={}", item_id, event_id);
         // Gen 5+ special case: items use onStart during SwitchIn events
         // This matches JavaScript getCallback() behavior (same logic as abilities)
         // Items don't have onAnySwitchIn callbacks, so always check onStart if gen >= 5
@@ -393,9 +394,12 @@ impl Battle {
             // Check the exact event_id first, then try with "on" prefix for backward compatibility
             // IMPORTANT: Check if the key EXISTS and is a bool/number, not just if it's true
             let extra_value = item_data.extra.get(event_id);
+            debug_elog!("[ITEM_HAS_CALLBACK] item_id={}, event_id={}, extra_value={:?}, extra_keys={:?}",
+                item_id, event_id, extra_value, item_data.extra.keys().collect::<Vec<_>>());
             let has_callback = extra_value
                 .map(|v| v.is_boolean() || v.as_f64().is_some() || v.as_i64().is_some())
                 .unwrap_or(false);
+            debug_elog!("[ITEM_HAS_CALLBACK] item_id={}, event_id={}, has_callback={}", item_id, event_id, has_callback);
 
             if has_callback {
                 true
@@ -417,6 +421,7 @@ impl Battle {
     /// Check if a move has a callback for an event
     // TODO: Verify move parameter type matches JavaScript's ActiveMove usage
     pub fn move_has_callback(&self, move_id: &str, event_id: &str) -> bool {
+        debug_elog!("[MOVE_HAS_CALLBACK] move_id={}, event_id={}", move_id, event_id);
         // Look up the move in dex data and check its extra field for callback boolean
         if let Some(move_data) = self.dex.moves().get(move_id) {
             // Check the move's direct callbacks (not self callbacks)
@@ -426,6 +431,7 @@ impl Battle {
             let has_callback = move_data.extra.get(event_id)
                 .map(|v| v.is_boolean())
                 .unwrap_or(false);
+            debug_elog!("[MOVE_HAS_CALLBACK] Direct check for '{}': {}", event_id, has_callback);
 
             if has_callback {
                 return true;
@@ -437,13 +443,16 @@ impl Battle {
                 let has_callback_with_on = move_data.extra.get(&with_on)
                     .map(|v| v.is_boolean())
                     .unwrap_or(false);
+                debug_elog!("[MOVE_HAS_CALLBACK] Prefix check for '{}': {}", with_on, has_callback_with_on);
                 if has_callback_with_on {
                     return true;
                 }
             }
 
+            debug_elog!("[MOVE_HAS_CALLBACK] No callback found for {} on {}", event_id, move_id);
             false
         } else {
+            debug_elog!("[MOVE_HAS_CALLBACK] Move not found in dex: {}", move_id);
             // If not found in dex, return false
             false
         }

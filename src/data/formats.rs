@@ -519,7 +519,8 @@ pub static FORMATS: Lazy<HashMap<ID, FormatDef>> = Lazy::new(|| {
             min_team_size: 6,
             max_level: 100,
             default_level: 100,
-            rulesets: &["HP Percentage Mod", "Cancel Mod"],
+            // JavaScript: ['PotD', 'Obtainable', 'Species Clause', 'HP Percentage Mod', 'Cancel Mod', 'Sleep Clause Mod', 'Illusion Level Mod']
+            rulesets: &["HP Percentage Mod", "Cancel Mod", "Sleep Clause Mod"],
             bans: &[],
             unbans: &[],
             rated: true,
@@ -2047,9 +2048,11 @@ impl DexFormats {
     pub fn get_rule_table(&self, format: &Format) -> RuleTable {
         let mut rule_table = RuleTable::new();
 
-        // Add rules from ruleset
+        // Add rules from ruleset - convert to IDs (lowercase alphanumeric)
         for rule in &format.ruleset {
-            rule_table.set(rule, "");
+            // JavaScript: ruleTable.set(ruleid, sourceFormat);
+            // where ruleid is the ID form (toID(ruleName))
+            rule_table.set(&ID::new(rule).to_string(), "");
         }
 
         // Add bans

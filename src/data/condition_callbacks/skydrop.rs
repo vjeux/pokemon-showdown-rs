@@ -36,8 +36,8 @@ pub fn on_any_invulnerability(
     // Get the Pokemon that has the skydrop volatile from effect_holder
     // This is set by single_event to be the Pokemon that owns the volatile
     // The volatile is on the SKY DROP USER (e.g., Zygarde), not the grabbed target
-    let effect_holder = match battle.effect.as_ref().and_then(|e| e.effect_holder) {
-        Some(pos) => pos,
+    let effect_holder = match battle.effect.as_ref().and_then(|e| e.effect_holder.clone()) {
+        Some(holder) => holder,
         None => {
             debug_log!("[SKYDROP_INVULN] No effect_holder, returning Continue");
             return EventResult::Continue;

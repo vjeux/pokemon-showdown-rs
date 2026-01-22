@@ -36,6 +36,9 @@ impl Battle {
         get_key: Option<&str>,
         custom_holder: Option<(usize, usize)>,
     ) -> Vec<EventListener> {
+        debug_elog!("[FIND_BATTLE_EVENT_HANDLERS] callback_name='{}', get_key={:?}, custom_holder={:?}",
+            callback_name, get_key, custom_holder);
+
         // JS: const handlers: EventListener[] = [];
         let mut handlers: Vec<EventListener> = Vec::new();
 
@@ -59,6 +62,48 @@ impl Battle {
         // TODO: Implement format event handlers when static dispatch system is ready
         if has_get_key {
             // Would create format handler here if getCallback was implemented
+        }
+
+        // Static dispatch for format/rule callbacks
+        // Check if the format includes rules with callbacks and add handlers for them
+        if callback_name == "onSetStatus" {
+            // Sleep Clause Mod: Prevents putting multiple Pokemon to sleep
+            // JavaScript: rulesets.ts lines 1392-1410
+            let has_sleep_clause = self.rule_table.as_ref().map(|rt| rt.has("sleepclausemod")).unwrap_or(false);
+
+            // Debug: print all rules in rule_table
+            if let Some(ref rule_table) = self.rule_table {
+                let all_rules: Vec<_> = rule_table.keys().collect();
+                debug_elog!("[FIND_BATTLE_EVENT_HANDLERS] All rules in rule_table: {:?}", all_rules);
+            }
+
+            debug_elog!("[FIND_BATTLE_EVENT_HANDLERS] Checking for sleepclausemod, rule_table exists={}, has_sleep_clause={}",
+                self.rule_table.is_some(), has_sleep_clause);
+
+            if let Some(ref rule_table) = self.rule_table {
+                if rule_table.has("sleepclausemod") {
+                    handlers.push(EventListener {
+                        callback_name: "SetStatus".to_string(),
+                        effect: Effect {
+                            id: ID::new("sleepclausemod"),
+                            name: "Sleep Clause Mod".to_string(),
+                            effect_type: EffectType::Format,
+                            effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Battle)),
+                            side_index: None,
+                            prankster_boosted: false,
+                        },
+                        target: None,
+                        index: None,
+                        state: None,
+                        effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Battle)),
+                        order: None,
+                        priority: 0,
+                        sub_order: 0,
+                        effect_order: None,
+                        speed: None,
+                    });
+                }
+            }
         }
 
         // JS: if (this.events && (callback = this.events[callbackName]) !== undefined) {

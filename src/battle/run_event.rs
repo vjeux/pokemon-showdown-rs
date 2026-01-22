@@ -455,30 +455,23 @@ impl Battle {
             // JavaScript: const effectHolder = handler.effectHolder;
 
             // Convert handler_target to EventTarget for passing to handle_*_event functions
-            let handler_target_event = handler_target.as_ref().and_then(|h| h.as_pokemon()).map(crate::event::EventTarget::Pokemon);
+            // IMPORTANT: For Format/Rule/Ruleset handlers (like Sleep Clause Mod), use the event's
+            // target rather than the handler's effect_holder. Format handlers don't have a specific
+            // Pokemon as their effect_holder - they're format-level rules that receive the target
+            // Pokemon from the event being processed.
+            let handler_target_event = if matches!(handler.effect.effect_type, EffectType::Format | EffectType::Rule | EffectType::Ruleset) {
+                // For Format handlers, use the event's target
+                target.as_ref().and_then(|t| t.as_pokemon()).map(crate::event::EventTarget::Pokemon)
+            } else {
+                // For other handlers (abilities, items, moves, etc.), use the handler's effect_holder
+                handler_target.as_ref().and_then(|h| h.as_pokemon()).map(crate::event::EventTarget::Pokemon)
+            };
 
-            // JavaScript: if ((handler.effectHolder as Pokemon).fainted) {
-            //     if (!(handler.state?.isSlotCondition)) continue;
-            // }
-            // Skip handlers from fainted Pokemon (unless it's a slot condition)
-            // Note: This checks .fainted (not hp==0) because faint queue processing
-            // sets .fainted=true. The hp==0 check is only used in allies()/foes()
-            // for finding handlers, not for executing them.
-            //
-            // IMPORTANT: For side conditions (like Light Screen), the effect_holder is a
-            // dummy position (side_idx, 0) representing the side, not a specific Pokemon.
-            // We should NOT skip side condition handlers based on fainted Pokemon.
-            if handler.effect.effect_type != EffectType::SideCondition {
-                if let Some(EffectHolder::Pokemon(side, pos)) = &handler_target {
-                    if let Some(pokemon) = self.pokemon_at(*side, *pos) {
-                        if pokemon.fainted {
-                            // TODO: Add isSlotCondition check when slot conditions are implemented
-                            // For now, skip all handlers from fainted Pokemon (except side conditions)
-                            continue;
-                        }
-                    }
-                }
-            }
+            // NOTE: JavaScript's runEvent does NOT have a fainted check here.
+            // The fainted check exists only in JavaScript's fieldEvent (battle.ts line 529-530),
+            // which is implemented separately in field_event.rs.
+            // This was incorrectly added here and caused bugs like Z-crystals (onTakeItem: false)
+            // being stolen from fainted Pokemon because their handlers were skipped.
 
             // JavaScript: if (effect.effectType === 'Status' && (effectHolder as Pokemon).status !== effect.id) continue;
             // Check if status has changed
@@ -700,6 +693,22 @@ impl Battle {
                     // because self.effect_state is not updated by with_effect_state.
 
                     // Restore parent effect context
+                    self.restore_effect_context(parent_effect);
+                    self.effect_state = parent_effect_state;
+
+                    result
+                }
+                EffectType::Format | EffectType::Rule | EffectType::Ruleset => {
+                    // Format/Rule callbacks (e.g., Sleep Clause Mod)
+                    // JavaScript: these are attached to the format and processed like any other handler
+                    let parent_effect_state = std::mem::take(&mut self.effect_state);
+                    self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
+                    self.effect_state.target = handler_target.as_ref().and_then(|h| h.as_pokemon());
+
+                    let parent_effect = self.set_effect_context(handler.effect.clone());
+
+                    let result = self.handle_format_event(&callback_name_for_dispatch, effect_id.as_str(), handler_target_event.as_ref(), source);
+
                     self.restore_effect_context(parent_effect);
                     self.effect_state = parent_effect_state;
 

@@ -34,7 +34,7 @@ docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && cargo build 
 log "Running unified tests..."
 
 # Run JS and Rust in parallel for unified tests
-node "$SCRIPT_DIR/test-unified-parallel.js" 1 1000 > /tmp/js-unified.txt 2>&1 &
+node "$SCRIPT_DIR/test-unified-parallel.js" 1 1000 > /tmp/js-unified.txt 2>/dev/null &
 JS_UNIFIED_PID=$!
 
 docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && ./target/release/examples/test_unified 1 1000 2>/dev/null" > /tmp/rust-unified.txt &
@@ -88,7 +88,7 @@ total_minimized=$(ls "$MINIMIZED_DIR"/seed*.json 2>/dev/null | wc -l | tr -d ' '
 log "Running $total_minimized minimized seed tests..."
 
 # Run JS and Rust in parallel for minimized tests
-node "$SCRIPT_DIR/test-minimized.js" > /tmp/js-minimized.txt 2>&1 &
+node "$SCRIPT_DIR/test-minimized.js" > /tmp/js-minimized.txt 2>/dev/null &
 JS_MIN_PID=$!
 
 docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && ./target/release/examples/test_minimized tests/minimized 2>/dev/null" > /tmp/rust-minimized.txt &
@@ -145,10 +145,10 @@ SEED_LIST_FILE="$SCRIPT_DIR/seed-list-tmp.txt"
 echo "$SEED_LIST" | tr ' ' '\n' | grep -E '^[0-9]+$' > "$SEED_LIST_FILE"
 
 # Run unified tests for just these seeds
-node "$SCRIPT_DIR/test-unified-parallel.js" --seeds "$SEED_LIST_FILE" > /tmp/js-full.txt 2>&1 &
+node "$SCRIPT_DIR/test-unified-parallel.js" --seeds "$SEED_LIST_FILE" > /tmp/js-full.txt 2>/dev/null &
 JS_FULL_PID=$!
 
-docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && ./target/release/examples/test_unified --seeds tests/seed-list-tmp.txt 2>/dev/null" > /tmp/rust-full.txt 2>&1 &
+docker exec pokemon-rust-dev bash -c "cd /home/builder/workspace && ./target/release/examples/test_unified --seeds tests/seed-list-tmp.txt 2>/dev/null" > /tmp/rust-full.txt &
 RUST_FULL_PID=$!
 
 wait $JS_FULL_PID

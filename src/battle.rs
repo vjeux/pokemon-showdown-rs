@@ -128,6 +128,7 @@ mod handle_ability_event;
 mod handle_item_event;
 mod handle_move_event;
 mod handle_condition_event;
+mod handle_format_event;
 mod run_event;
 mod with_effect_state;
 mod find_event_handlers;

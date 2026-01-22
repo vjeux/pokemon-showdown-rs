@@ -181,7 +181,7 @@ fn apply_accumulated_boosts(battle: &mut Battle) {
     // this.boost(this.effectState.boosts, this.effectState.target);
     // Note: In JS, this.effectState.target is set to the effect holder by the event system.
     // In Rust, we use battle.current_effect_holder() which returns the effect holder from battle.effect.
-    let target_pos = match battle.current_effect_holder() {
+    let target_pos = match battle.current_effect_holder().and_then(|h| h.as_pokemon()) {
         Some(pos) => {
             debug_elog!("[OPPORTUNIST apply_accumulated_boosts] target_pos={:?}", pos);
             pos

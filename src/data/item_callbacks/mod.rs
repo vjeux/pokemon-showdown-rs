@@ -1455,11 +1455,17 @@ pub fn dispatch_on_take_item(
         _ => {
             // Z-crystals (items with zMove) cannot be removed
             // Check if this item is a Z-crystal by looking up its z_move field
+            eprintln!("[DISPATCH_ON_TAKE_ITEM] item_id={}", item_id);
             if let Some(item_data) = battle.dex.items().get_by_id(&item_id.into()) {
+                eprintln!("[DISPATCH_ON_TAKE_ITEM] item_data found, z_move={:?}, z_move.is_some()={}", item_data.z_move, item_data.z_move.is_some());
                 if item_data.z_move.is_some() {
+                    eprintln!("[DISPATCH_ON_TAKE_ITEM] Returning Boolean(false) to block Z-crystal removal");
                     return EventResult::Boolean(false);
                 }
+            } else {
+                eprintln!("[DISPATCH_ON_TAKE_ITEM] item_data NOT found for {}", item_id);
             }
+            eprintln!("[DISPATCH_ON_TAKE_ITEM] Returning Continue (allowing item removal)");
             EventResult::Continue
         }
     }

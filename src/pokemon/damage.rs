@@ -57,8 +57,9 @@ impl Pokemon {
             debug_elog!("[DAMAGE] Pokemon {} fainted! Adding to faint_queue. pokemon_pos={:?}, source={:?}",
                 self.name, pokemon_pos, source);
 
-            // JS equivalent: this.faint(source, effect) -> sets faintQueued and adds to faintQueue
-            // Note: switch_flag clearing happens in faint() but not relevant here since we're in damage()
+            // JS equivalent: this.faint(source, effect) -> sets faintQueued, clears switchFlag, and adds to faintQueue
+            // JS: this.switchFlag = false;
+            self.switch_flag = None;
             self.faint_queued = true;
 
             faint_queue.push(FaintData {
