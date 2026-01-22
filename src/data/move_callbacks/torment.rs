@@ -43,7 +43,7 @@ pub mod condition {
 
         if has_dynamax {
             Pokemon::remove_volatile(battle, pokemon, &ID::from("torment"));
-            return EventResult::NotFail;
+            return EventResult::Boolean(false);
         }
 
         // if (effect?.id === 'gmaxmeltdown') this.effectState.duration = 3;

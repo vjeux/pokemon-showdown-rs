@@ -34,7 +34,7 @@ pub fn on_try(
     };
 
     if layers >= 3 {
-        return EventResult::NotFail;
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue
@@ -146,7 +146,7 @@ pub mod condition {
             .unwrap_or(0);
 
         if layers >= 3 {
-            return EventResult::NotFail;
+            return EventResult::Boolean(false);
         }
 
         // this.effectState.layers++;

@@ -31,7 +31,7 @@ pub fn on_try_hit(
     };
 
     if !newly_switched && !will_move {
-        return EventResult::NotFail;
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue

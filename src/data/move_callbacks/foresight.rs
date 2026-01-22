@@ -30,7 +30,7 @@ pub fn on_try_hit(
     };
 
     if has_miracle_eye {
-        return EventResult::NotFail;
+        return EventResult::Boolean(false);
     }
 
     EventResult::Continue
