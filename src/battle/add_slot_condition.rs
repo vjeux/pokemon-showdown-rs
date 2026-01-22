@@ -52,6 +52,9 @@ impl Battle {
         source_effect: Option<&Effect>,
         duration: Option<i32>,
     ) -> bool {
+        // JavaScript: source ??= this.battle.event?.target || null;
+        let source_pos = source_pos.or_else(|| self.event.as_ref().and_then(|e| e.target));
+
         let side_idx = target_pos.0;
 
         // JavaScript: if (target instanceof Pokemon) target = target.position;

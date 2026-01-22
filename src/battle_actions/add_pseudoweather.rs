@@ -51,9 +51,12 @@ impl Battle {
     pub fn add_pseudoweather(
         &mut self,
         condition_id: &str,
-        _source_pos: Option<(usize, usize)>,
+        source_pos: Option<(usize, usize)>,
         _source_effect: Option<&Effect>,
     ) -> bool {
+        // JavaScript: if (!source && this.battle.event?.target) source = this.battle.event.target;
+        let source_pos = source_pos.or_else(|| self.event.as_ref().and_then(|e| e.target));
+
         let id = ID::from(condition_id);
 
         debug_elog!("[ADD_PSEUDOWEATHER] Attempting to add pseudoweather: {}", condition_id);
@@ -108,6 +111,12 @@ impl Battle {
             debug_elog!("[ADD_PSEUDOWEATHER] Creating new pseudoweather");
 
             let mut state = EffectState::new(id.clone());
+
+            // JavaScript: source, sourceSlot: source?.getSlot(),
+            state.source = source_pos;
+            state.source_slot = source_pos.and_then(|pos| {
+                self.pokemon_at(pos.0, pos.1).map(|p| p.position)
+            });
 
             // Get duration from condition data
             // Check both standalone conditions and conditions embedded in moves
