@@ -755,21 +755,21 @@ pub fn hit_step_move_hit_loop(
                 }
             };
 
-            if cur_damage > 0 {
-                if let Some(SpreadMoveTarget::Target(target_pos)) = targets.get(i) {
-                    let (target_hp, target_max_hp, hurt_this_turn) = {
-                        let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
-                            Some(p) => p,
-                            None => continue,
-                        };
-                        (target.hp, target.maxhp, target.hurt_this_turn)
+            // EmergencyExit check - JS uses `typeof curDamage === 'number'` which is always true for numbers including 0
+            // So we don't gate on cur_damage > 0, we always check if the target crossed the 50% HP threshold
+            if let Some(SpreadMoveTarget::Target(target_pos)) = targets.get(i) {
+                let (target_hp, target_max_hp, hurt_this_turn) = {
+                    let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
+                        Some(p) => p,
+                        None => continue,
                     };
+                    (target.hp, target.maxhp, target.hurt_this_turn)
+                };
 
-                    if target_hp > 0 {
-                        let target_hp_before_damage = hurt_this_turn.unwrap_or(0) + cur_damage;
-                        if target_hp <= target_max_hp / 2 && target_hp_before_damage > target_max_hp / 2 {
-                            battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(*target_pos)), Some(attacker_pos), None, EventResult::Continue, false, false);
-                        }
+                if target_hp > 0 {
+                    let target_hp_before_damage = hurt_this_turn.unwrap_or(0) + cur_damage;
+                    if target_hp <= target_max_hp / 2 && target_hp_before_damage > target_max_hp / 2 {
+                        battle.run_event("EmergencyExit", Some(crate::event::EventTarget::Pokemon(*target_pos)), Some(attacker_pos), None, EventResult::Continue, false, false);
                     }
                 }
             }
