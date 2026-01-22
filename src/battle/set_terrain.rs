@@ -36,6 +36,11 @@ use crate::event_system::EffectState;
 
 impl Battle {
     pub fn set_terrain(&mut self, terrain_id: ID, source_pos: Option<(usize, usize)>, source_effect: Option<Effect>) -> bool {
+        // JavaScript: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
+        // JavaScript: if (!source && this.battle.event?.target) source = this.battle.event.target;
+        let source_effect = source_effect.or_else(|| self.effect.clone());
+        let source_pos = source_pos.or_else(|| self.event.as_ref().and_then(|e| e.target));
+
         // if (this.terrain === status.id) return false;
         if self.field.terrain == terrain_id {
             return false;
