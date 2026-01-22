@@ -30,7 +30,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
     // IMPORTANT: Use the ActiveMove directly to get the correct flags (including inherited flags for G-Max moves)
     if battle.check_move_makes_contact_with_active_move(active_move, source_pos, target_pos, false) {
         // if (this.randomChance(3, 10))
-        if battle.random_chance(3, 10) {
+        if battle.random_chance(3.0, 10) {
             // source.trySetStatus('brn', target);
             // Note: target_pos (the Flame Body Pokemon) is the source of the burn status
             // This is important for Synchronize to know who to pass the status back to

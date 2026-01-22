@@ -22,7 +22,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
     // if (this.field.isWeather(['sunnyday', 'desolateland']) || this.randomChance(1, 2))
     // JavaScript isWeather accepts array - check each weather
     let should_activate = battle.is_weather("sunnyday") || battle.is_weather("desolateland")
-        || battle.random_chance(1, 2);
+        || battle.random_chance(1.0, 2);
 
     if !should_activate {
         return EventResult::Continue;

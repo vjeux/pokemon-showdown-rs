@@ -40,7 +40,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 
     if makes_contact {
         // if (this.randomChance(3, 10))
-        if battle.random_chance(3, 10) {
+        if battle.random_chance(3.0, 10) {
             // source.addVolatile('attract', this.effectState.target);
             // The second parameter in JS is the source of the attract (the Pokemon with Cute Charm)
             // In the Rust API, this is passed as source_pos to add_volatile

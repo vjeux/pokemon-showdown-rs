@@ -18,7 +18,7 @@ pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, us
     // if (this.randomChance(1, 10) && damage >= target.hp && effect && effect.effectType === 'Move')
 
     // this.randomChance(1, 10)
-    if !battle.random_chance(1, 10) {
+    if !battle.random_chance(1.0, 10) {
         return EventResult::Continue;
     }
 

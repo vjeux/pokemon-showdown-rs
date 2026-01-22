@@ -39,7 +39,7 @@ pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Opt
         // This means attacker param = target (defender), defender param = source (attacker with ability)
         // Protective Pads is checked on the attacker parameter, so we pass target first
         if battle.check_move_makes_contact_with_active_move(active_move, target, source, false) {
-            if battle.random_chance(3, 10) {
+            if battle.random_chance(3.0, 10) {
                 // target.trySetStatus('psn', source);
                 // Note: source (the Poison Touch Pokemon/attacker) is the source of the poison status
                 // This is important for Synchronize to know who to pass the status back to

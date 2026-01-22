@@ -32,7 +32,7 @@ pub fn on_source_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Opt
             return EventResult::Continue;
         }
 
-        if battle.random_chance(3, 10) {
+        if battle.random_chance(3.0, 10) {
             // target.trySetStatus('tox', source);
             // Note: source (the Toxic Chain Pokemon/attacker) is the source of the toxic status
             // This is important for Synchronize to know who to pass the status back to

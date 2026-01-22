@@ -249,7 +249,9 @@ pub fn hit_step_move_hit_loop(
         //         if (accuracy !== true && !this.battle.randomChance(accuracy, 100)) break;
         //     }
         // }
+        debug_elog!("[HITLOOP] hit={}, targets_copy.empty={}, multi_accuracy={}", hit, targets_copy.is_empty(), active_move.multi_accuracy);
         if !targets_copy.is_empty() && active_move.multi_accuracy && hit > 1 {
+            debug_elog!("[MULTIACCURACY] hit={}, move={}, checking accuracy", hit, active_move.id);
             use crate::dex::Accuracy;
 
             let target = match targets_copy.first() {
@@ -355,36 +357,72 @@ pub fn hit_step_move_hit_loop(
             }
 
             // accuracy = this.battle.runEvent('ModifyAccuracy', target, pokemon, move, accuracy);
-            // Run ModifyAccuracy event (items like Bright Powder reduce accuracy here)
-            if let crate::event::EventResult::Number(modified_acc) = battle.run_event(
+            // Run ModifyAccuracy event (items like Bright Powder, Gravity modify accuracy here)
+            // NOTE: JavaScript applies the modifier only if accuracy is a non-negative integer:
+            //   if (typeof relayVar === 'number' && relayVar === Math.abs(Math.floor(relayVar)))
+            // So we pass Number if accuracy is an integer, Float if it's a non-integer (e.g. 67.5).
+            // This ensures Gravity's chain_modify() is applied for integer accuracies.
+            let is_integer = accuracy_value >= 0.0 && accuracy_value == accuracy_value.floor();
+            let accuracy_relay = if is_integer {
+                crate::event::EventResult::Number(accuracy_value as i32)
+            } else {
+                crate::event::EventResult::Float(accuracy_value)
+            };
+            let accuracy_result = battle.run_event(
                 "ModifyAccuracy",
                 Some(crate::event::EventTarget::Pokemon(target)),
                 Some(attacker_pos),
                 Some(&crate::battle::Effect::move_(active_move.id.clone())),
-                crate::event::EventResult::Number(accuracy_value as i32),
+                accuracy_relay,
                 false,
                 false
-            ) {
-                accuracy_value = modified_acc as f64;
+            );
+            // Handle the result - could be Float or Number depending on callbacks
+            match accuracy_result {
+                crate::event::EventResult::Float(modified_acc) => {
+                    accuracy_value = modified_acc;
+                }
+                crate::event::EventResult::Number(modified_acc) => {
+                    accuracy_value = modified_acc as f64;
+                }
+                _ => {}
             }
 
             // accuracy = this.battle.runEvent('Accuracy', target, pokemon, move, accuracy);
             // This is critical for abilities like No Guard that bypass accuracy checks
+            // Same logic as ModifyAccuracy: pass Number for integers, Float for non-integers
+            let is_integer = accuracy_value >= 0.0 && accuracy_value == accuracy_value.floor();
+            let accuracy_relay = if is_integer {
+                crate::event::EventResult::Number(accuracy_value as i32)
+            } else {
+                crate::event::EventResult::Float(accuracy_value)
+            };
             let accuracy_result = battle.run_event(
                 "Accuracy",
                 Some(crate::event::EventTarget::Pokemon(target)),
                 Some(attacker_pos),
                 Some(&crate::battle::Effect::move_(active_move.id.clone())),
-                crate::event::EventResult::Number(accuracy_value as i32),
+                accuracy_relay,
                 false,
                 false
             );
 
-            // Check result: if true, always hit; if number, use that accuracy
+            // Check result: if true, always hit; if number/float, use that accuracy
+            debug_elog!("[MULTIACCURACY] accuracy_value={}, accuracy_result={:?}", accuracy_value, accuracy_result);
             let accuracy_check_passed = match accuracy_result {
                 crate::event::EventResult::Boolean(true) => {
                     // No Guard or similar ability - always hit, no random check needed
                     true
+                }
+                crate::event::EventResult::Float(modified_acc) => {
+                    // if (!move.alwaysHit) {
+                    //     if (accuracy !== true && !this.battle.randomChance(accuracy, 100)) break;
+                    // }
+                    if active_move.always_hit {
+                        true
+                    } else {
+                        battle.random_chance(modified_acc, 100)
+                    }
                 }
                 crate::event::EventResult::Number(modified_acc) => {
                     // if (!move.alwaysHit) {
@@ -396,23 +434,25 @@ pub fn hit_step_move_hit_loop(
                         // 0 in our system represents "true" (always hit)
                         true
                     } else {
-                        battle.random_chance(modified_acc, 100)
+                        battle.random_chance(modified_acc as f64, 100)
                     }
                 }
                 _ => {
-                    // Fallback: use original accuracy
+                    // Fallback: use original accuracy (as float)
                     if active_move.always_hit {
                         true
                     } else {
-                        battle.random_chance(accuracy_value as i32, 100)
+                        battle.random_chance(accuracy_value, 100)
                     }
                 }
             };
 
             if !accuracy_check_passed {
                 // Accuracy check failed, break out of hit loop
+                battle.debug(&format!("[MULTIACCURACY] Accuracy check FAILED for hit={}, breaking", hit));
                 break;
             }
+            battle.debug(&format!("[MULTIACCURACY] Accuracy check PASSED for hit={}", hit));
         }
 
         // Modifies targetsCopy (which is why it's a copy)

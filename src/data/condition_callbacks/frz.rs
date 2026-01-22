@@ -150,7 +150,7 @@ pub fn on_before_move(
     }
 
     // if (this.randomChance(1, 5))
-    if battle.random_chance(1, 5) {
+    if battle.random_chance(1.0, 5) {
         // pokemon.cureStatus();
         crate::pokemon::Pokemon::cure_status(battle, pokemon_pos, false);
         // return;

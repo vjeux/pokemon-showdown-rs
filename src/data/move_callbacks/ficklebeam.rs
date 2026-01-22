@@ -23,7 +23,7 @@ pub fn on_base_power(
     let pokemon = pokemon_pos;
 
     // if (this.randomChance(3, 10)) {
-    if battle.random_chance(3, 10) {
+    if battle.random_chance(3.0, 10) {
         // this.attrLastMove('[anim] Fickle Beam All Out');
         battle.attr_last_move(&["[anim] Fickle Beam All Out"]);
 

@@ -42,7 +42,7 @@ pub fn on_hit(
     }
 
     // if (this.randomChance(1, 2)) return;
-    if battle.random_chance(1, 2) {
+    if battle.random_chance(1.0, 2) {
         return EventResult::Continue;
     }
 
@@ -91,7 +91,7 @@ pub fn on_after_sub_damage(
     }
 
     // if (this.randomChance(1, 2)) return;
-    if battle.random_chance(1, 2) {
+    if battle.random_chance(1.0, 2) {
         return EventResult::Continue;
     }
 

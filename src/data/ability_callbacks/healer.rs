@@ -38,7 +38,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
             !ally.status.is_empty()
         };
 
-        if has_status && battle.random_chance(3, 10) {
+        if has_status && battle.random_chance(3.0, 10) {
             let pokemon_id = {
                 let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                     Some(p) => p,

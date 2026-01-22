@@ -196,7 +196,7 @@ pub mod condition {
         battle.debug(&format!("Ally Switch success chance: {}%", success_percent));
 
         // const success = this.randomChance(1, counter);
-        let success = battle.random_chance(1, counter);
+        let success = battle.random_chance(1.0, counter);
 
         // Determine what to do based on success
         let (new_counter, should_remove) = if !success {

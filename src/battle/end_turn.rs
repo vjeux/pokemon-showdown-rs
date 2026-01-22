@@ -921,12 +921,12 @@ impl Battle {
 
         // JS: if (this.gen === 2) this.quickClawRoll = this.randomChance(60, 256);
         if self.gen == 2 {
-            self.quick_claw_roll = self.random_chance(60, 256);
+            self.quick_claw_roll = self.random_chance(60.0, 256);
         }
 
         // JS: if (this.gen === 3) this.quickClawRoll = this.randomChance(1, 5);
         if self.gen == 3 {
-            self.quick_claw_roll = self.random_chance(1, 5);
+            self.quick_claw_roll = self.random_chance(1.0, 5);
         }
 
         // JS: this.makeRequest('move');

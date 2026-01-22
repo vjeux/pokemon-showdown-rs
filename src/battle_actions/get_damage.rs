@@ -320,7 +320,7 @@ pub fn get_damage(
         if crit_ratio > 0 && crit_ratio < crit_mult.len() as i32 {
             let crit_chance = crit_mult[crit_ratio as usize];
             if crit_chance > 0 {
-                is_crit = battle.random_chance(1, crit_chance);
+                is_crit = battle.random_chance(1.0, crit_chance);
                 debug_elog!("[GET_DAMAGE CRIT] crit_ratio={}, crit_chance=1/{}, is_crit={}", crit_ratio, crit_chance, is_crit);
             }
         }

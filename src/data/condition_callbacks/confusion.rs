@@ -185,7 +185,7 @@ pub fn on_before_move(
     battle.add("-activate", &[Arg::String(pokemon_ident.clone()), Arg::Str("confusion")]);
 
     // if (!this.randomChance(33, 100))
-    let hit_self = battle.random_chance(33, 100);
+    let hit_self = battle.random_chance(33.0, 100);
     if !hit_self {
         // return;
         return EventResult::Continue;

@@ -45,7 +45,7 @@ pub fn on_stall_move(
     }).unwrap_or(1);
 
     // Call randomChance(1, counter)
-    let success = battle.random_chance(1, counter);
+    let success = battle.random_chance(1.0, counter);
 
     // If unsuccessful, remove the stall volatile
     if !success {

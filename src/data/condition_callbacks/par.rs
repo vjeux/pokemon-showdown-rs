@@ -126,7 +126,7 @@ pub fn on_before_move(
     _active_move: Option<&crate::battle_actions::ActiveMove>,
 ) -> EventResult {
     // if (this.randomChance(1, 4))
-    let is_paralyzed = battle.random_chance(1, 4);
+    let is_paralyzed = battle.random_chance(1.0, 4);
 
     if is_paralyzed {
         // this.add('cant', pokemon, 'par');

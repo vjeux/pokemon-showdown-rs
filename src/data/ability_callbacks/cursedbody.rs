@@ -54,7 +54,7 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 
     if should_activate {
         // if (this.randomChance(3, 10))
-        if battle.random_chance(3, 10) {
+        if battle.random_chance(3.0, 10) {
             // source.addVolatile('disable', this.effectState.target);
             Pokemon::add_volatile(battle, source_pos, crate::dex_data::ID::from("disable"), Some(target_pos), None, None,
             None);

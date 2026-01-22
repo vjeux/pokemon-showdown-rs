@@ -1,0 +1,183 @@
+Analyzing 1 failing minimized seed files...
+
+============================================================
+MOVES (excluding tackle)
+============================================================
+rockwrecker: 1 seeds
+  Seeds: 79574
+tailslap: 1 seeds
+  Seeds: 79574
+encore: 1 seeds
+  Seeds: 79574
+bittermalice: 1 seeds
+  Seeds: 79574
+screech: 1 seeds
+  Seeds: 79574
+nightmare: 1 seeds
+  Seeds: 79574
+gmaxfireball: 1 seeds
+  Seeds: 79574
+firepunch: 1 seeds
+  Seeds: 79574
+pyroball: 1 seeds
+  Seeds: 79574
+gmaxcannonade: 1 seeds
+  Seeds: 79574
+weatherball: 1 seeds
+  Seeds: 79574
+struggle: 1 seeds
+  Seeds: 79574
+steamroller: 1 seeds
+  Seeds: 79574
+springtidestorm: 1 seeds
+  Seeds: 79574
+gmaxstonesurge: 1 seeds
+  Seeds: 79574
+snipeshot: 1 seeds
+  Seeds: 79574
+snore: 1 seeds
+  Seeds: 79574
+lifedew: 1 seeds
+  Seeds: 79574
+oceanicoperetta: 1 seeds
+  Seeds: 79574
+firespin: 1 seeds
+  Seeds: 79574
+partingshot: 1 seeds
+  Seeds: 79574
+skillswap: 1 seeds
+  Seeds: 79574
+batonpass: 1 seeds
+  Seeds: 79574
+tripledive: 1 seeds
+  Seeds: 79574
+filletaway: 1 seeds
+  Seeds: 79574
+meteorbeam: 1 seeds
+  Seeds: 79574
+thunderbolt: 1 seeds
+  Seeds: 79574
+razorleaf: 1 seeds
+  Seeds: 79574
+dracometeor: 1 seeds
+  Seeds: 79574
+freezeshock: 1 seeds
+  Seeds: 79574
+moongeistbeam: 1 seeds
+  Seeds: 79574
+spiderweb: 1 seeds
+  Seeds: 79574
+maxovergrowth: 1 seeds
+  Seeds: 79574
+trumpcard: 1 seeds
+  Seeds: 79574
+hyperspacefury: 1 seeds
+  Seeds: 79574
+tarshot: 1 seeds
+  Seeds: 79574
+playrough: 1 seeds
+  Seeds: 79574
+matblock: 1 seeds
+  Seeds: 79574
+iondeluge: 1 seeds
+  Seeds: 79574
+gmaxwildfire: 1 seeds
+  Seeds: 79574
+triplekick: 1 seeds
+  Seeds: 79574
+painsplit: 1 seeds
+  Seeds: 79574
+energyball: 1 seeds
+  Seeds: 79574
+icespinner: 1 seeds
+  Seeds: 79574
+eruption: 1 seeds
+  Seeds: 79574
+drainingkiss: 1 seeds
+  Seeds: 79574
+menacingmoonrazemaelstrom: 1 seeds
+  Seeds: 79574
+
+============================================================
+ABILITIES (excluding simple ones)
+============================================================
+Overgrow: 1 seeds
+  Seeds: 79574
+Bulletproof: 1 seeds
+  Seeds: 79574
+Shield Dust: 1 seeds
+  Seeds: 79574
+Levitate: 1 seeds
+  Seeds: 79574
+Download: 1 seeds
+  Seeds: 79574
+Wandering Spirit: 1 seeds
+  Seeds: 79574
+Emergency Exit: 1 seeds
+  Seeds: 79574
+Gulp Missile: 1 seeds
+  Seeds: 79574
+Speed Boost: 1 seeds
+  Seeds: 79574
+Poison Point: 1 seeds
+  Seeds: 79574
+
+============================================================
+ITEMS
+============================================================
+delphoxite: 1 seeds
+  Seeds: 79574
+heavydutyboots: 1 seeds
+  Seeds: 79574
+fairymemory: 1 seeds
+  Seeds: 79574
+raichunitey: 1 seeds
+  Seeds: 79574
+psychicmemory: 1 seeds
+  Seeds: 79574
+tr09: 1 seeds
+  Seeds: 79574
+dragonscale: 1 seeds
+  Seeds: 79574
+absolite: 1 seeds
+  Seeds: 79574
+enigmaberry: 1 seeds
+  Seeds: 79574
+tr51: 1 seeds
+  Seeds: 79574
+latiasite: 1 seeds
+  Seeds: 79574
+steelgem: 1 seeds
+  Seeds: 79574
+
+============================================================
+SUMMARY
+============================================================
+Total minimized seeds: 1
+Unique moves: 47 (47 non-simple)
+Unique abilities: 10 (10 non-simple)
+Unique items: 12
+
+--- Top 10 Moves ---
+  rockwrecker: 1 seeds
+  tailslap: 1 seeds
+  encore: 1 seeds
+  bittermalice: 1 seeds
+  screech: 1 seeds
+  nightmare: 1 seeds
+  gmaxfireball: 1 seeds
+  firepunch: 1 seeds
+  pyroball: 1 seeds
+  gmaxcannonade: 1 seeds
+
+--- Top 10 Abilities ---
+  Overgrow: 1 seeds
+  Bulletproof: 1 seeds
+  Shield Dust: 1 seeds
+  Levitate: 1 seeds
+  Download: 1 seeds
+  Wandering Spirit: 1 seeds
+  Emergency Exit: 1 seeds
+  Gulp Missile: 1 seeds
+  Speed Boost: 1 seeds
+  Poison Point: 1 seeds

@@ -42,7 +42,7 @@ pub fn on_fractional_priority(
     };
 
     // if (move.category !== "Status" && this.randomChance(3, 10))
-    if !is_status && battle.random_chance(3, 10) {
+    if !is_status && battle.random_chance(3.0, 10) {
         // this.add("-activate", pokemon, "ability: Quick Draw");
         if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             let pokemon_ident = pokemon.get_slot();

@@ -279,7 +279,7 @@ pub mod condition {
         }
 
         // if (this.randomChance(1, 2)) {
-        if battle.random_chance(1, 2) {
+        if battle.random_chance(1.0, 2) {
             // this.add('cant', pokemon, 'Attract');
             let pokemon_ident = {
                 let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

@@ -9,7 +9,7 @@ impl Battle {
     // 		return this.prng.randomChance(numerator, denominator);
     // 	}
     //
-    pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
+    pub fn random_chance(&mut self, numerator: f64, denominator: i32) -> bool {
         // JavaScript: if (this.forceRandomChance !== null) return this.forceRandomChance;
         // Check forced value FIRST before making PRNG call
         if let Some(forced) = self.force_random_chance {

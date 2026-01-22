@@ -24,7 +24,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
         (pokemon.hp > 0, !pokemon.status.is_empty(), pokemon.get_slot(), pokemon.name.clone())
     };
 
-    if has_hp && has_status && battle.random_chance(33, 100) {
+    if has_hp && has_status && battle.random_chance(33.0, 100) {
         battle.debug("shed skin");
         battle.add(
             "-activate",

@@ -559,10 +559,13 @@ impl PRNG {
     // 		return this.random(denominator) < numerator;
     // 	}
     //
-    pub fn random_chance(&mut self, numerator: i32, denominator: i32) -> bool {
+    pub fn random_chance(&mut self, numerator: f64, denominator: i32) -> bool {
         // JS: return this.random(denominator) < numerator;
-        let roll = self.random(Some(denominator), None) as i32;
-        let result = roll < numerator;
+        // NOTE: In JS, numerator can be a float (e.g., 67.5 for accuracy checks with boosts).
+        // The comparison `roll < 67.5` where roll=67 returns true (hit) in JS.
+        // We must use f64 comparison to match this behavior.
+        let roll = self.random(Some(denominator), None);
+        let result = (roll as f64) < numerator;
         debug_elog!("[RANDOM_CHANCE] numerator={}, denominator={}, roll={}, result={}", numerator, denominator, roll, result);
         result
     }

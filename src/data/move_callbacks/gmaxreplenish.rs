@@ -42,7 +42,7 @@ pub fn on_hit(
     };
 
     // if (this.randomChance(1, 2)) return;
-    if battle.random_chance(1, 2) {
+    if battle.random_chance(1.0, 2) {
         return EventResult::Continue;
     }
 
@@ -167,7 +167,7 @@ pub mod self_callbacks {
         use crate::dex_data::ID;
 
         // if (this.randomChance(1, 2)) return;
-        if battle.random_chance(1, 2) {
+        if battle.random_chance(1.0, 2) {
             return EventResult::Continue;
         }
 

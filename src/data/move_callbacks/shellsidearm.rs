@@ -93,7 +93,7 @@ pub fn on_modify_move(
     //     move.category = 'Physical';
     //     move.flags.contact = 1;
     // }
-    if physical > special || (physical == special && battle.random_chance(1, 2)) {
+    if physical > special || (physical == special && battle.random_chance(1.0, 2)) {
         if let Some(active_move) = &mut battle.active_move {
             active_move.category = String::from("Physical");
             active_move.flags.contact = true;
