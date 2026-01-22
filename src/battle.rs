@@ -191,7 +191,7 @@ mod hp_fraction;
 // Re-export types from submodules
 pub use split_message::SplitMessage;
 pub use arg::Arg;
-pub use event_listener::EventListener;
+pub use event_listener::{EventListener, EffectHolder};
 pub use effect_type::EffectType;
 pub use effect::Effect;
 pub use custom_event_handler::{CustomEventHandler, EventCallback};

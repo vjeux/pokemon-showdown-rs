@@ -1,7 +1,7 @@
 // 1:1 port of findBattleEventHandlers from battle.ts
 
 use crate::*;
-use crate::battle::{Effect, EventListener, EffectType};
+use crate::battle::{Effect, EffectHolder, EventListener, EffectType};
 
 impl Battle {
     /// Find battle-level event handlers
@@ -88,14 +88,14 @@ impl Battle {
                         id: handler.target_id.clone(),
                         name: handler.target_id.to_string(),
                         effect_type: handler.target_type,
-                        effect_holder: custom_holder,
+                        effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Battle)),
                         side_index: None,
                         prankster_boosted: false,
                     },
                     target: None,
                     index: None,
                     state,
-                    effect_holder: custom_holder,
+                    effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Battle)),
                     order: if handler.order { Some(0) } else { None },
                     priority: handler.priority,
                     sub_order: handler.sub_order,

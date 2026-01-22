@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::{Effect, EffectType, EventInfo, EventListener, PriorityItem};
+use crate::battle::{Effect, EffectHolder, EffectType, EventInfo, EventListener, PriorityItem};
 use crate::event::EventResult;
 use crate::event_system::EffectState;
 
@@ -367,7 +367,7 @@ impl Battle {
                     target: None,
                     index: None,
                     state: None, // JavaScript: state: this.initEffectState({})
-                    effect_holder: target_pos, // JavaScript: effectHolder: target
+                    effect_holder: target_pos.map(|(s, p)| EffectHolder::Pokemon(s, p)), // JavaScript: effectHolder: target
                     order: None,
                     priority: 0,
                     sub_order: 0,
@@ -449,13 +449,13 @@ impl Battle {
         // Execute each handler and accumulate results
         for handler in handlers {
             let effect_id = handler.effect.id.clone();
-            let handler_target = handler.effect_holder;
+            let handler_target = handler.effect_holder.clone();
 
             // JavaScript: const effect = handler.effect;
             // JavaScript: const effectHolder = handler.effectHolder;
 
             // Convert handler_target to EventTarget for passing to handle_*_event functions
-            let handler_target_event = handler_target.map(crate::event::EventTarget::Pokemon);
+            let handler_target_event = handler_target.as_ref().and_then(|h| h.as_pokemon()).map(crate::event::EventTarget::Pokemon);
 
             // JavaScript: if ((handler.effectHolder as Pokemon).fainted) {
             //     if (!(handler.state?.isSlotCondition)) continue;
@@ -469,8 +469,8 @@ impl Battle {
             // dummy position (side_idx, 0) representing the side, not a specific Pokemon.
             // We should NOT skip side condition handlers based on fainted Pokemon.
             if handler.effect.effect_type != EffectType::SideCondition {
-                if let Some(handler_pos) = handler_target {
-                    if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
+                if let Some(EffectHolder::Pokemon(side, pos)) = &handler_target {
+                    if let Some(pokemon) = self.pokemon_at(*side, *pos) {
                         if pokemon.fainted {
                             // TODO: Add isSlotCondition check when slot conditions are implemented
                             // For now, skip all handlers from fainted Pokemon (except side conditions)
@@ -483,8 +483,8 @@ impl Battle {
             // JavaScript: if (effect.effectType === 'Status' && (effectHolder as Pokemon).status !== effect.id) continue;
             // Check if status has changed
             // IMPORTANT: Only apply this check for Status-type conditions, not Weather/Terrain
-            if let Some(handler_pos) = handler_target {
-                if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
+            if let Some(EffectHolder::Pokemon(side, pos)) = &handler_target {
+                if let Some(pokemon) = self.pokemon_at(*side, *pos) {
                     // Check if this is a status effect and it's no longer active
                     if let Some(status_data) = self.dex.conditions().get_by_id(&effect_id) {
                         // Only check pokemon status/volatiles for Status-type conditions
@@ -505,9 +505,9 @@ impl Battle {
             // IMPORTANT: Only check for actual Ability handlers, not volatiles with the same name
             if handler.effect.effect_type == EffectType::Ability {
                 if let Some(ability_data) = self.dex.abilities().get(effect_id.as_str()) {
-                    if let Some(handler_pos) = handler_target {
+                    if let Some(EffectHolder::Pokemon(side, pos)) = &handler_target {
                         // Check if ability is suppressed by Mold Breaker
-                        if self.suppressing_ability(Some(handler_pos)) {
+                        if self.suppressing_ability(Some((*side, *pos))) {
                             // JavaScript: if (effect.flags['breakable']) { continue; }
                             let is_breakable = ability_data.flags.get("breakable").copied().unwrap_or(0) != 0;
 
@@ -554,8 +554,8 @@ impl Battle {
             if event_id != "Start" && event_id != "SwitchIn" && event_id != "TakeItem" {
                 if handler.effect.effect_type == EffectType::Item {
                     if let Some(_item_data) = self.dex.items().get(effect_id.as_str()) {
-                        if let Some(handler_pos) = handler_target {
-                            if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
+                        if let Some(EffectHolder::Pokemon(side, pos)) = &handler_target {
+                            if let Some(pokemon) = self.pokemon_at(*side, *pos) {
                                 if pokemon.ignoring_item(self, false) {
                                     if event_id != "Update" {
                                         self.debug(&format!("{} handler suppressed by Embargo, Klutz or Magic Room", event_id));
@@ -574,8 +574,8 @@ impl Battle {
             if event_id != "End" {
                 if handler.effect.effect_type == EffectType::Ability {
                     if let Some(_ability_data) = self.dex.abilities().get(effect_id.as_str()) {
-                        if let Some(handler_pos) = handler_target {
-                            if let Some(pokemon) = self.pokemon_at(handler_pos.0, handler_pos.1) {
+                        if let Some(EffectHolder::Pokemon(side, pos)) = &handler_target {
+                            if let Some(pokemon) = self.pokemon_at(*side, *pos) {
                                 if pokemon.ignoring_ability(self) {
                                     if event_id != "Update" {
                                         self.debug(&format!("{} handler suppressed by Gastro Acid or Neutralizing Gas", event_id));
@@ -620,7 +620,7 @@ impl Battle {
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
                     // JavaScript: this.effectState.target = effectHolder;
-                    self.effect_state.target = handler_target;
+                    self.effect_state.target = handler_target.as_ref().and_then(|h| h.as_pokemon());
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
@@ -650,7 +650,7 @@ impl Battle {
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
                     // JavaScript: this.effectState.target = effectHolder;
-                    self.effect_state.target = handler_target;
+                    self.effect_state.target = handler_target.as_ref().and_then(|h| h.as_pokemon());
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
@@ -677,7 +677,7 @@ impl Battle {
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
                     self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
                     // JavaScript: this.effectState.target = effectHolder;
-                    self.effect_state.target = handler_target;
+                    self.effect_state.target = handler_target.as_ref().and_then(|h| h.as_pokemon());
 
                     // For pseudo-weather (Condition effectType with effectHolder=None, i.e. Field),
                     // update target_is_field on the ORIGINAL state in field.pseudo_weather.

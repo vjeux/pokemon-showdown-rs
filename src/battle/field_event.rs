@@ -192,7 +192,7 @@ impl Battle {
         let field_handlers = self.find_field_event_handlers(&field_event, get_key, None);
         for handler in field_handlers {
             let effect_id = handler.effect.id;
-            let holder = handler.effect_holder;
+            let holder = handler.effect_holder.as_ref().and_then(|h| h.as_pokemon());
             let effect_type = handler.effect.effect_type;  // Use effect_type from handler, not determine_effect_type
             // JavaScript sets effectOrder for SwitchIn/RedirectTarget events, undefined for others
             let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
@@ -229,7 +229,7 @@ impl Battle {
                 let side_handlers = self.find_side_event_handlers(&side_event, side_idx, get_key, None);
                 for handler in side_handlers {
                     let effect_id = handler.effect.id;
-                    let holder = handler.effect_holder;
+                    let holder = handler.effect_holder.as_ref().and_then(|h| h.as_pokemon());
                     let effect_type = handler.effect.effect_type;  // Use effect_type from handler, not determine_effect_type
                     // JavaScript fieldEvent() in resolvePriority only sets effectOrder for 'SwitchIn' and 'RedirectTarget' events.
                     // For these events, effectOrder comes from handler.state.effectOrder to ensure hazards activate
@@ -279,7 +279,7 @@ impl Battle {
                     let any_handlers = self.find_pokemon_event_handlers(&any_event, target_pos, None);
                     for handler in any_handlers {
                         let effect_id = handler.effect.id;
-                        let holder = handler.effect_holder;
+                        let holder = handler.effect_holder.as_ref().and_then(|h| h.as_pokemon());
                         let effect_type = handler.effect.effect_type;
                         // JavaScript sets effectOrder for SwitchIn and RedirectTarget events from handler.state.effectOrder
                         // onAnySwitchIn ends with "SwitchIn" so it should also get effectOrder
@@ -314,7 +314,7 @@ impl Battle {
                 let pokemon_handlers = self.find_pokemon_event_handlers(&callback_name, target_pos, get_key);
                 for handler in pokemon_handlers {
                     let effect_id = handler.effect.id;
-                    let holder = handler.effect_holder;
+                    let holder = handler.effect_holder.as_ref().and_then(|h| h.as_pokemon());
                     let effect_type = handler.effect.effect_type;
                     // JavaScript fieldEvent() in resolvePriority only sets effectOrder for 'SwitchIn' and 'RedirectTarget' events.
                     // For other events like 'Residual', effectOrder is undefined (0), causing ties and shuffles.

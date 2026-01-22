@@ -2,7 +2,7 @@
 
 use crate::dex_data::ID;
 use serde::{Deserialize, Serialize};
-use super::EffectType;
+use super::{EffectType, EffectHolder};
 
 /// Effect - represents an effect with its ID and type
 /// JavaScript equivalent: Effect interface (sim/global-types.ts)
@@ -16,7 +16,7 @@ pub struct Effect {
     /// Type of effect (Ability, Item, Move, Condition, etc.)
     pub effect_type: EffectType,
     /// Pokemon that holds this effect (for volatiles, abilities, items, status)
-    pub effect_holder: Option<(usize, usize)>,
+    pub effect_holder: Option<EffectHolder>,
     /// Side index (for side conditions)
     pub side_index: Option<usize>,
     /// Whether this effect was Prankster boosted

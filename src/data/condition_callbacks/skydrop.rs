@@ -4,7 +4,7 @@
 //!
 //! JavaScript source: data/moves.ts (skydrop condition)
 
-use crate::battle::Battle;
+use crate::battle::{Battle, EffectHolder};
 use crate::event::EventResult;
 
 /// onAnyInvulnerability
@@ -47,7 +47,11 @@ pub fn on_any_invulnerability(
     debug_log!("[SKYDROP_INVULN] effect_holder={:?}", effect_holder);
 
     let (effectstate_target, effectstate_source) = {
-        let pokemon = match battle.pokemon_at(effect_holder.0, effect_holder.1) {
+        let EffectHolder::Pokemon(side_idx, poke_idx) = effect_holder else {
+            debug_log!("[SKYDROP_INVULN] Effect holder is not a Pokemon, returning Continue");
+            return EventResult::Continue;
+        };
+        let pokemon = match battle.pokemon_at(side_idx, poke_idx) {
             Some(p) => p,
             None => {
                 debug_log!("[SKYDROP_INVULN] Pokemon not found at effect_holder {:?}, returning Continue", effect_holder);

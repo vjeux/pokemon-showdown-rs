@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::{EventInfo, EffectType, Effect};
+use crate::battle::{EventInfo, EffectHolder, EffectType, Effect};
 use crate::event::EventResult;
 use crate::event_system::EffectState;
 
@@ -253,7 +253,7 @@ impl Battle {
             id: effect_id.clone(),
             name: effect_name,
             effect_type,
-            effect_holder: target,
+            effect_holder: target.map(|(s, p)| EffectHolder::Pokemon(s, p)),
             side_index: target.map(|(side, _)| side),
             prankster_boosted: false,
         });

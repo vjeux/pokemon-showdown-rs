@@ -3,6 +3,58 @@
 use crate::event_system::EffectState;
 use super::Effect;
 
+/// Effect holder - represents who holds the effect
+/// JavaScript: effectHolder: Pokemon | Side | Field | Battle
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub enum EffectHolder {
+    /// A Pokemon at (side_index, position)
+    Pokemon(usize, usize),
+    /// A Side by index
+    Side(usize),
+    /// The Field
+    Field,
+    /// The Battle itself
+    Battle,
+}
+
+impl EffectHolder {
+    /// Get as Pokemon position if this is a Pokemon holder
+    pub fn as_pokemon(&self) -> Option<(usize, usize)> {
+        match self {
+            EffectHolder::Pokemon(side, pos) => Some((*side, *pos)),
+            _ => None,
+        }
+    }
+
+    /// Get as Side index if this is a Side holder
+    pub fn as_side(&self) -> Option<usize> {
+        match self {
+            EffectHolder::Side(idx) => Some(*idx),
+            _ => None,
+        }
+    }
+
+    /// Check if this is a Pokemon holder
+    pub fn is_pokemon(&self) -> bool {
+        matches!(self, EffectHolder::Pokemon(_, _))
+    }
+
+    /// Check if this is a Side holder
+    pub fn is_side(&self) -> bool {
+        matches!(self, EffectHolder::Side(_))
+    }
+
+    /// Check if this is a Field holder
+    pub fn is_field(&self) -> bool {
+        matches!(self, EffectHolder::Field)
+    }
+
+    /// Check if this is a Battle holder
+    pub fn is_battle(&self) -> bool {
+        matches!(self, EffectHolder::Battle)
+    }
+}
+
 /// Event listener - matches JavaScript EventListener interface
 /// JavaScript: interface EventListener extends EventListenerWithoutPriority
 #[derive(Clone)]
@@ -26,7 +78,7 @@ pub struct EventListener {
     pub state: Option<EffectState>,
     /// Effect holder (Pokemon/Side/Field/Battle)
     /// JavaScript: effectHolder: Pokemon | Side | Field | Battle
-    pub effect_holder: Option<(usize, usize)>,
+    pub effect_holder: Option<EffectHolder>,
     /// Order value (false = first in JS, represented as Option<i32>)
     /// JavaScript: order: number | false
     pub order: Option<i32>,

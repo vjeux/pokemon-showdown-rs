@@ -2,7 +2,7 @@
 // This provides a closure-based API that mirrors JavaScript's this.effectState
 
 use crate::event_system::EffectState;
-use crate::battle::{EffectType, Effect};
+use crate::battle::{EffectHolder, EffectType, Effect};
 use crate::Battle;
 
 impl Battle {
@@ -29,11 +29,11 @@ impl Battle {
         match ctx.effect_type {
             EffectType::Condition => {
                 // Volatile condition on a Pokemon
-                let pos = ctx.effect_holder?;
-                let pokemon = self.pokemon_at_mut(pos.0, pos.1)?;
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder? else { return None };
+                let pokemon = self.pokemon_at_mut(side_idx, poke_idx)?;
                 if ctx.id.as_str() == "counter" {
-                    debug_elog!("[WITH_EFFECT_STATE] Condition: id={}, pos={:?}, found volatile={}",
-                        ctx.id.as_str(), pos, pokemon.volatiles.contains_key(&ctx.id));
+                    debug_elog!("[WITH_EFFECT_STATE] Condition: id={}, pos=({},{}), found volatile={}",
+                        ctx.id.as_str(), side_idx, poke_idx, pokemon.volatiles.contains_key(&ctx.id));
                     if let Some(_state) = pokemon.volatiles.get(&ctx.id) {
                         debug_elog!("[WITH_EFFECT_STATE] BEFORE: slot={:?}, damage={:?}", _state.slot, _state.damage);
                     }
@@ -47,17 +47,17 @@ impl Battle {
             }
             EffectType::Status => {
                 // Status condition on a Pokemon (burn, paralysis, etc.)
-                let pos = ctx.effect_holder?;
-                let pokemon = self.pokemon_at_mut(pos.0, pos.1)?;
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder? else { return None };
+                let pokemon = self.pokemon_at_mut(side_idx, poke_idx)?;
                 Some(f(&mut pokemon.status_state))
             }
             EffectType::Ability => {
                 // Ability state on a Pokemon
-                let pos = ctx.effect_holder?;
-                let pokemon = self.pokemon_at_mut(pos.0, pos.1)?;
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder? else { return None };
+                let pokemon = self.pokemon_at_mut(side_idx, poke_idx)?;
                 let boosts_before = pokemon.ability_state.boosts;
-                debug_elog!("[WITH_EFFECT_STATE Ability WRITE] pos={:?}, ability={}, ability_state.boosts BEFORE={:?}",
-                    pos, pokemon.ability, boosts_before);
+                debug_elog!("[WITH_EFFECT_STATE Ability WRITE] pos=({},{}), ability={}, ability_state.boosts BEFORE={:?}",
+                    side_idx, poke_idx, pokemon.ability, boosts_before);
                 let result = Some(f(&mut pokemon.ability_state));
                 debug_elog!("[WITH_EFFECT_STATE Ability WRITE] ability_state.boosts AFTER={:?}", pokemon.ability_state.boosts);
                 // Add stack trace when boosts are cleared
@@ -68,8 +68,8 @@ impl Battle {
             }
             EffectType::Item => {
                 // Item state on a Pokemon
-                let pos = ctx.effect_holder?;
-                let pokemon = self.pokemon_at_mut(pos.0, pos.1)?;
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder? else { return None };
+                let pokemon = self.pokemon_at_mut(side_idx, poke_idx)?;
                 Some(f(&mut pokemon.item_state))
             }
             EffectType::SideCondition => {
@@ -84,13 +84,13 @@ impl Battle {
             EffectType::SlotCondition => {
                 // For slot conditions, effect_holder is (side_idx, party_idx) of the Pokemon
                 // We need to use pokemon.position to look up the slot condition
-                let pos = ctx.effect_holder?;
-                if pos.0 >= self.sides.len() {
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder? else { return None };
+                if side_idx >= self.sides.len() {
                     return None;
                 }
                 // Get the Pokemon's active position to look up slot_conditions
-                let slot = self.sides.get(pos.0)?.pokemon.get(pos.1)?.position;
-                let state = self.sides[pos.0].slot_conditions.get_mut(slot)?.get_mut(&ctx.id)?;
+                let slot = self.sides.get(side_idx)?.pokemon.get(poke_idx)?.position;
+                let state = self.sides[side_idx].slot_conditions.get_mut(slot)?.get_mut(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::Weather => {
@@ -119,26 +119,26 @@ impl Battle {
 
         match ctx.effect_type {
             EffectType::Condition => {
-                let pos = ctx.effect_holder?;
-                let pokemon = self.pokemon_at(pos.0, pos.1)?;
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder.clone()? else { return None };
+                let pokemon = self.pokemon_at(side_idx, poke_idx)?;
                 let state = pokemon.volatiles.get(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::Status => {
-                let pos = ctx.effect_holder?;
-                let pokemon = self.pokemon_at(pos.0, pos.1)?;
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder.clone()? else { return None };
+                let pokemon = self.pokemon_at(side_idx, poke_idx)?;
                 Some(f(&pokemon.status_state))
             }
             EffectType::Ability => {
-                let pos = ctx.effect_holder?;
-                let pokemon = self.pokemon_at(pos.0, pos.1)?;
-                debug_elog!("[WITH_EFFECT_STATE_REF Ability READ] pos={:?}, ability={}, ability_state.boosts={:?}",
-                    pos, pokemon.ability, pokemon.ability_state.boosts);
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder.clone()? else { return None };
+                let pokemon = self.pokemon_at(side_idx, poke_idx)?;
+                debug_elog!("[WITH_EFFECT_STATE_REF Ability READ] pos=({},{}), ability={}, ability_state.boosts={:?}",
+                    side_idx, poke_idx, pokemon.ability, pokemon.ability_state.boosts);
                 Some(f(&pokemon.ability_state))
             }
             EffectType::Item => {
-                let pos = ctx.effect_holder?;
-                let pokemon = self.pokemon_at(pos.0, pos.1)?;
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder.clone()? else { return None };
+                let pokemon = self.pokemon_at(side_idx, poke_idx)?;
                 Some(f(&pokemon.item_state))
             }
             EffectType::SideCondition => {
@@ -152,14 +152,14 @@ impl Battle {
             EffectType::SlotCondition => {
                 // For slot conditions, effect_holder is (side_idx, party_idx) of the Pokemon
                 // We need to use pokemon.position to look up the slot condition
-                let pos = ctx.effect_holder?;
-                if pos.0 >= self.sides.len() {
+                let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder.clone()? else { return None };
+                if side_idx >= self.sides.len() {
                     return None;
                 }
                 // Get the Pokemon's active position to look up slot_conditions
-                let pokemon = self.sides.get(pos.0)?.pokemon.get(pos.1)?;
+                let pokemon = self.sides.get(side_idx)?.pokemon.get(poke_idx)?;
                 let slot = pokemon.position;
-                let state = self.sides[pos.0].slot_conditions.get(slot)?.get(&ctx.id)?;
+                let state = self.sides[side_idx].slot_conditions.get(slot)?.get(&ctx.id)?;
                 Some(f(state))
             }
             EffectType::Weather => {
@@ -208,7 +208,7 @@ impl Battle {
     }
 
     /// Get the current effect holder position
-    pub fn current_effect_holder(&self) -> Option<(usize, usize)> {
-        self.effect.as_ref().and_then(|ctx| ctx.effect_holder)
+    pub fn current_effect_holder(&self) -> Option<EffectHolder> {
+        self.effect.as_ref().and_then(|ctx| ctx.effect_holder.clone())
     }
 }

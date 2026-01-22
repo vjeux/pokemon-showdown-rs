@@ -1,7 +1,7 @@
 // 1:1 port of findFieldEventHandlers from battle.ts
 
 use crate::*;
-use crate::battle::{Effect, EventListener, EffectType};
+use crate::battle::{Effect, EffectHolder, EventListener, EffectType};
 use crate::event_system::EffectState;
 
 impl Battle {
@@ -102,14 +102,14 @@ impl Battle {
                     id: pw_id,
                     name: pw_name,
                     effect_type,
-                    effect_holder: custom_holder,
+                    effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Field)),
                     side_index: None,
                     prankster_boosted: false,
                 },
                 target: None,
                 index: None,
                 state: Some(pw_state.clone()),
-                effect_holder: custom_holder, // JS: customHolder || field (field not representable as tuple)
+                effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Field)), // JS: customHolder || field (field not representable as tuple)
                 order: None,
                 priority: 0,
                 sub_order: 0,
@@ -162,14 +162,14 @@ impl Battle {
                     id: weather_id,
                     name: weather_name,
                     effect_type: EffectType::Weather,
-                    effect_holder: custom_holder,
+                    effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Field)),
                     side_index: None,
                     prankster_boosted: false,
                 },
                 target: None,
                 index: None,
                 state: Some(weather_state.clone()),
-                effect_holder: custom_holder, // JS: customHolder || field (field not representable as tuple)
+                effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Field)), // JS: customHolder || field (field not representable as tuple)
                 order: None,
                 priority: 0,
                 sub_order: 0,
@@ -216,14 +216,14 @@ impl Battle {
                     id: terrain_id,
                     name: terrain_name,
                     effect_type: EffectType::Terrain,
-                    effect_holder: custom_holder,
+                    effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Field)),
                     side_index: None,
                     prankster_boosted: false,
                 },
                 target: None,
                 index: None,
                 state: Some(terrain_state.clone()),
-                effect_holder: custom_holder, // JS: customHolder || field (field not representable as tuple)
+                effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Field)), // JS: customHolder || field (field not representable as tuple)
                 order: None,
                 priority: 0,
                 sub_order: 0,

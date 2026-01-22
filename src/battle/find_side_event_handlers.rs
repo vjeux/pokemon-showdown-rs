@@ -1,7 +1,7 @@
 // 1:1 port of findSideEventHandlers from battle.ts
 
 use crate::*;
-use crate::battle::{Effect, EventListener, EffectType};
+use crate::battle::{Effect, EffectHolder, EventListener, EffectType};
 
 impl Battle {
     /// Find side event handlers
@@ -76,9 +76,11 @@ impl Battle {
                 // For side conditions, if no custom holder is provided, effectHolder is the Side itself (not a Pokemon).
                 // JavaScript checks (handler.effectHolder as Pokemon).getStat to determine if it's a Pokemon.
                 // Only Pokemon have getStat, so Side objects don't set handler.speed.
-                // In Rust, we use None to represent "holder is Side, not Pokemon" so speed stays at 0.
-                // The side_index field on the Effect struct already tracks which side owns this condition.
-                let effective_holder = custom_holder;
+                // Now we can properly represent Side as EffectHolder::Side.
+                let effective_holder: Option<EffectHolder> = match custom_holder {
+                    Some((s, p)) => Some(EffectHolder::Pokemon(s, p)),
+                    None => Some(EffectHolder::Side(side_idx)),
+                };
 
                 handlers.push(EventListener {
                     callback_name: String::new(),
@@ -86,7 +88,7 @@ impl Battle {
                         id: sc_id.clone(),
                         name: sc_name,
                         effect_type: EffectType::SideCondition,
-                        effect_holder: effective_holder,
+                        effect_holder: effective_holder.clone(),
                         side_index: Some(side_idx),
                         prankster_boosted: false,
                     },

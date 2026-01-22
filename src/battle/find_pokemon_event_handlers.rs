@@ -1,7 +1,7 @@
 // 1:1 port of findPokemonEventHandlers from battle.ts
 
 use crate::*;
-use crate::battle::{Effect, EventListener, EffectType};
+use crate::battle::{Effect, EffectHolder, EventListener, EffectType};
 
 impl Battle {
     /// Find Pokemon event handlers
@@ -102,14 +102,14 @@ impl Battle {
                         id: pokemon.status.clone(),
                         name: status_name,
                         effect_type: EffectType::Status,
-                        effect_holder: Some(target),
+                        effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                         side_index: Some(target.0),
                         prankster_boosted: false,
                     },
                     target: Some(target),
                     index: None,
                     state: Some(pokemon.status_state.clone()),
-                    effect_holder: Some(target),
+                    effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                     order: None,
                     priority: 0,
                     sub_order: 0,
@@ -151,7 +151,7 @@ impl Battle {
                         id: volatile_id.clone(),
                         name: volatile_name,
                         effect_type: EffectType::Condition,
-                        effect_holder: Some(target),
+                        effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                         side_index: Some(target.0),
                         prankster_boosted: false,
                     },
@@ -163,7 +163,7 @@ impl Battle {
                     // }, callbackName));
                     // This is critical for volatiles like "stall" which have counter state
                     state: Some(volatile_state.clone()),
-                    effect_holder: Some(target),
+                    effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                     order: None,
                     priority: 0,
                     sub_order: 0,
@@ -205,14 +205,14 @@ impl Battle {
                         id: pokemon.ability.clone(),
                         name: ability_name,
                         effect_type: EffectType::Ability,
-                        effect_holder: Some(target),
+                        effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                         side_index: Some(target.0),
                         prankster_boosted: false,
                     },
                     target: Some(target),
                     index: None,
                     state: Some(pokemon.ability_state.clone()),
-                    effect_holder: Some(target),
+                    effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                     order: None,
                     priority: 0,
                     sub_order: 0,
@@ -246,14 +246,14 @@ impl Battle {
                         id: pokemon.item.clone(),
                         name: item_name,
                         effect_type: EffectType::Item,
-                        effect_holder: Some(target),
+                        effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                         side_index: Some(target.0),
                         prankster_boosted: false,
                     },
                     target: Some(target),
                     index: None,
                     state: Some(pokemon.item_state.clone()),
-                    effect_holder: Some(target),
+                    effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                     order: None,
                     priority: 0,
                     sub_order: 0,
@@ -283,14 +283,14 @@ impl Battle {
                     id: pokemon.species_id.clone(),
                     name: species_name,
                     effect_type: EffectType::Condition,
-                    effect_holder: Some(target),
+                    effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                     side_index: Some(target.0),
                     prankster_boosted: false,
                 },
                 target: Some(target),
                 index: None,
                 state: Some(pokemon.species_state.clone()),
-                effect_holder: Some(target),
+                effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                 order: None,
                 priority: 0,
                 sub_order: 0,
@@ -328,14 +328,14 @@ impl Battle {
                             id: slot_cond_id.clone(),
                             name: slot_cond_name,
                             effect_type: EffectType::SlotCondition,
-                            effect_holder: Some(target),  // Party index for callbacks
+                            effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),  // Party index for callbacks
                             side_index: Some(side_idx),
                             prankster_boosted: false,
                         },
                         target: Some(target),  // Party index for event dispatch
                         index: None,
                         state: Some(slot_cond_state.clone()),
-                        effect_holder: Some(target),  // Party index - with_effect_state converts to slot
+                        effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),  // Party index - with_effect_state converts to slot
                         order: None,
                         priority: 0,
                         sub_order: 0,

@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::Effect;
+use crate::battle::{Effect, EffectHolder};
 use crate::event::EventResult;
 
 impl Pokemon {
@@ -189,7 +189,7 @@ impl Pokemon {
                     id: volatile_id.clone(),
                     name: volatile_id.to_string(),
                     effect_type: crate::battle::EffectType::Condition,
-                    effect_holder: Some(target_pos),
+                    effect_holder: Some(EffectHolder::Pokemon(target_pos.0, target_pos.1)),
                     side_index: Some(target_pos.0),
                     prankster_boosted: false,
                 };
@@ -386,7 +386,7 @@ impl Pokemon {
             id: volatile_id.clone(),
             name: volatile_id.to_string(),
             effect_type: crate::battle::EffectType::Condition,
-            effect_holder: Some(target_pos),
+            effect_holder: Some(EffectHolder::Pokemon(target_pos.0, target_pos.1)),
             side_index: Some(target_pos.0),
             prankster_boosted: false,
         };
