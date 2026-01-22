@@ -90,11 +90,19 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
+            // Check baseSpecies.baseSpecies for ground-type Pokemon
             let base_species_name = target_pokemon.get_base_species_name(&battle.dex);
-            let is_immune = matches!(
+            let is_ground_immune = matches!(
                 base_species_name.as_deref(),
-                Some("Diglett") | Some("Dugtrio") | Some("Palossand") | Some("Sandygast") | Some("Gengar-Mega")
+                Some("Diglett") | Some("Dugtrio") | Some("Palossand") | Some("Sandygast")
             );
+
+            // Check baseSpecies.name for Gengar-Mega (the species name, not base species)
+            let species_name = battle.dex.species().get(target_pokemon.species_id.as_str())
+                .map(|s| s.name.clone());
+            let is_gengar_mega = species_name.as_deref() == Some("Gengar-Mega");
+
+            let is_immune = is_ground_immune || is_gengar_mega;
 
             (is_immune, target_pokemon.get_slot())
         };
@@ -192,8 +200,10 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
 
-            let base_species_name = pokemon_ref.get_base_species_name(&battle.dex);
-            let is_gengar_mega = base_species_name.as_deref() == Some("Gengar-Mega");
+            // Check baseSpecies.name (the species name, not base species)
+            let species_name = battle.dex.species().get(pokemon_ref.species_id.as_str())
+                .map(|s| s.name.clone());
+            let is_gengar_mega = species_name.as_deref() == Some("Gengar-Mega");
 
             (is_gengar_mega, pokemon_ref.get_slot())
         };
