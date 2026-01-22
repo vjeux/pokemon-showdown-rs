@@ -77,6 +77,7 @@ pub fn on_after_hit(
 ) -> EventResult {
     let source = source_pos;
     let target = target_pos;
+    debug_elog!("[KNOCKOFF_ON_AFTER_HIT] target_pos={:?}, source_pos={:?}", target_pos, source_pos);
 
     // if (source.hp) {
     let source_has_hp = {
@@ -84,6 +85,7 @@ pub fn on_after_hit(
             Some(p) => p,
             None => return EventResult::Continue,
         };
+        debug_elog!("[KNOCKOFF_ON_AFTER_HIT] source_hp={}", source_pokemon.hp);
         source_pokemon.hp > 0
     };
 
@@ -92,7 +94,9 @@ pub fn on_after_hit(
     }
 
     //     const item = target.takeItem();
-    let taken_item = Pokemon::take_item(battle, target, Some(source));
+    // Note: JavaScript calls takeItem() with no parameters, so source defaults to target (this)
+    // NOT the attacker. This is important for items like Splash Plate which check if source is Arceus.
+    let taken_item = Pokemon::take_item(battle, target, None);
 
     //     if (item) {
     //         this.add('-enditem', target, item.name, '[from] move: Knock Off', `[of] ${source}`);
