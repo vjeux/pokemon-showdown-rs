@@ -49,11 +49,18 @@ impl Battle {
     //
     pub fn get_action_speed(&mut self, action: &mut crate::battle_queue::Action) {
         use crate::battle_queue::Action;
+        use crate::battle_queue::MoveActionType;
 
         match action {
             Action::Move(ref mut move_action) => {
                 // JS: if (action.choice === 'move')
+                // IMPORTANT: Only calculate priority for 'move' choice type, NOT for
+                // 'beforeTurnMove' or 'priorityChargeMove'. JavaScript explicitly checks
+                // `action.choice === 'move'` before the priority calculation block.
+                // priorityChargeMove and beforeTurnMove keep their original priority (0).
+                let is_main_move = move_action.choice == MoveActionType::Move;
 
+                if is_main_move {
                 // Get the move (considering Z-Move/Max Move transformations)
                 let mut move_id = move_action.move_id.clone();
 
@@ -163,8 +170,10 @@ impl Battle {
                 if self.gen > 5 {
                     move_action.move_priority_modified = Some(priority);
                 }
+                } // End of if is_main_move
 
                 // JS: action.speed = action.pokemon.getActionSpeed();
+                // Speed is calculated for ALL move action types (move, beforeTurnMove, priorityChargeMove)
                 let pokemon_speed = self
                     .get_pokemon_action_speed(move_action.side_index, move_action.pokemon_index);
                 move_action.speed = pokemon_speed as f64;
