@@ -53,8 +53,8 @@ impl Pokemon {
     pub fn use_item(
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
-        _source_pos: Option<(usize, usize)>,
-        _source_effect: Option<&Effect>,
+        source_pos_param: Option<(usize, usize)>,
+        source_effect_param: Option<&Effect>,
     ) -> Option<ID> {
         // Phase 1: Extract pokemon data immutably to check conditions
         let (hp, is_active, item_id, is_gem) = {
@@ -89,13 +89,44 @@ impl Pokemon {
 
         // JS: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
         // JS: if (!source && this.battle.event?.target) source = this.battle.event.target;
-        // Note: battle.event source/sourceEffect defaulting still missing (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED: Default source/sourceEffect from battle.event/battle.effect
+        let (source_pos, default_effect) = if battle.event.is_some() {
+            // If source_pos is None, try to get it from battle.event.target
+            // Note: use_item uses event.target, not event.source (per JavaScript)
+            let event_target = battle.event.as_ref().and_then(|e| e.target);
+            let resolved_source = source_pos_param.or(event_target);
+
+            // If source_effect is None, get battle.effect as owned value
+            let resolved_effect = if source_effect_param.is_none() {
+                battle.effect.clone()
+            } else {
+                None  // We'll use the passed-in source_effect
+            };
+            (resolved_source, resolved_effect)
+        } else {
+            (source_pos_param, None)
+        };
+
+        // Use passed-in source_effect if available, otherwise use the default from battle.effect
+        let source_effect_ref = source_effect_param.or(default_effect.as_ref());
 
         // JS: const item = this.getItem();
         // JS: if (sourceEffect?.effectType === 'Item' && this.item !== sourceEffect.id && source === this) {
         // JS:     return false;
         // JS: }
-        // Note: Missing sourceEffect item type check (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED: sourceEffect item type check
+        if let Some(effect) = source_effect_ref {
+            if effect.effect_type == crate::battle::EffectType::Item {
+                // If an item is telling us to eat/use it but we aren't holding it,
+                // and source is this pokemon, we probably shouldn't use what we are holding
+                if item_id.as_str() != effect.id.as_str() {
+                    // Check if source === this (source_pos matches pokemon_pos)
+                    if source_pos == Some(pokemon_pos) {
+                        return None;
+                    }
+                }
+            }
+        }
 
         // JS: if (this.battle.runEvent('UseItem', this, null, null, item)) {
         // ✅ NOW IMPLEMENTED (Session 24 Part 82): runEvent('UseItem')
@@ -131,8 +162,8 @@ impl Pokemon {
 
             if item_id.as_str() == "redcard" {
                 // Red Card case: add source if available
-                if let Some(source_pos) = _source_pos {
-                    if let Some(source) = battle.pokemon_at(source_pos.0, source_pos.1) {
+                if let Some(src_pos) = source_pos {
+                    if let Some(source) = battle.pokemon_at(src_pos.0, src_pos.1) {
                         let source_str = format!("[of] {}", source);
                         vec![Arg::String(pokemon_str), Arg::String(item_str), Arg::String(source_str)]
                     } else {
@@ -191,7 +222,7 @@ impl Pokemon {
                     battle.boost(
                         &boosts_array,
                         pokemon_pos,
-                        _source_pos,
+                        source_pos,
                         Some(item_id.as_str()),
                         false,  // is_secondary
                         false,  // is_self
@@ -202,7 +233,7 @@ impl Pokemon {
 
         // JS: this.battle.singleEvent('Use', item, this.itemState, this, source, sourceEffect);
         // ✅ NOW IMPLEMENTED (Session 24 Part 82): singleEvent('Use')
-        battle.single_event("Use", &crate::battle::Effect::item(item_id.clone()), None, Some(pokemon_pos), _source_pos, None, None);
+        battle.single_event("Use", &crate::battle::Effect::item(item_id.clone()), None, Some(pokemon_pos), source_pos, source_effect_ref, None);
 
         // Phase 2: Mutate pokemon to consume item
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

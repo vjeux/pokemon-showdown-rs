@@ -72,9 +72,9 @@ impl Pokemon {
     pub fn eat_item(
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
-        _is_forced: bool,
-        _source_pos: Option<(usize, usize)>,
-        _source_effect: Option<&Effect>,
+        is_forced: bool,
+        source_pos_param: Option<(usize, usize)>,
+        source_effect_param: Option<&Effect>,
     ) -> Option<ID> {
         // Phase 1: Extract pokemon data to check conditions
         let (item_id, hp, is_active) = {
@@ -105,13 +105,44 @@ impl Pokemon {
 
         // JS: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
         // JS: if (!source && this.battle.event?.target) source = this.battle.event.target;
-        // Note: battle.event source/sourceEffect defaulting still missing (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED: Default source/sourceEffect from battle.event/battle.effect
+        let (source_pos, default_effect) = if battle.event.is_some() {
+            // If source_pos is None, try to get it from battle.event.target
+            // Note: eat_item uses event.target, not event.source (per JavaScript)
+            let event_target = battle.event.as_ref().and_then(|e| e.target);
+            let resolved_source = source_pos_param.or(event_target);
+
+            // If source_effect is None, get battle.effect as owned value
+            let resolved_effect = if source_effect_param.is_none() {
+                battle.effect.clone()
+            } else {
+                None  // We'll use the passed-in source_effect
+            };
+            (resolved_source, resolved_effect)
+        } else {
+            (source_pos_param, None)
+        };
+
+        // Use passed-in source_effect if available, otherwise use the default from battle.effect
+        let source_effect_ref = source_effect_param.or(default_effect.as_ref());
 
         // JS: const item = this.getItem();
         // JS: if (sourceEffect?.effectType === 'Item' && this.item !== sourceEffect.id && source === this) {
         // JS:     return false;
         // JS: }
-        // Note: Missing sourceEffect item type check (needs event system infrastructure)
+        // ✅ NOW IMPLEMENTED: sourceEffect item type check
+        if let Some(effect) = source_effect_ref {
+            if effect.effect_type == crate::battle::EffectType::Item {
+                // If an item is telling us to eat it but we aren't holding it,
+                // and source is this pokemon, we probably shouldn't eat what we are holding
+                if item_id.as_str() != effect.id.as_str() {
+                    // Check if source === this (source_pos matches pokemon_pos)
+                    if source_pos == Some(pokemon_pos) {
+                        return None;
+                    }
+                }
+            }
+        }
 
         // JS: if (
         // JS:     this.battle.runEvent('UseItem', this, null, null, item) &&
@@ -129,7 +160,7 @@ impl Pokemon {
         // Check TryEatItem unless forced
         // JavaScript: this.battle.runEvent('TryEatItem', this, null, null, item)
         // The item is passed as relayVar (5th parameter), so handlers receive it as first argument
-        if !_is_forced {
+        if !is_forced {
             let try_eat_result = battle.run_event("TryEatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::String(item_id.to_string()), false, false);
             // Check for falsy results: Boolean(false), Number(0), Null, or Stop
             if matches!(try_eat_result, EventResult::Boolean(false) | EventResult::Number(0) | EventResult::Null | EventResult::Stop) {
@@ -155,8 +186,8 @@ impl Pokemon {
         // JS: this.battle.singleEvent('Eat', item, this.itemState, this, source, sourceEffect);
         // JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
         // ✅ NOW IMPLEMENTED (Session 24 Part 83): singleEvent('Eat') and runEvent('EatItem')
-        battle.single_event("Eat", &crate::battle::Effect::item(item_id.clone()), None, Some(pokemon_pos), _source_pos, None, None);
-        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), _source_pos, Some(&crate::battle::Effect::item(item_id.clone())), EventResult::Continue, false, false);
+        battle.single_event("Eat", &crate::battle::Effect::item(item_id.clone()), None, Some(pokemon_pos), source_pos, source_effect_ref, None);
+        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, Some(&crate::battle::Effect::item(item_id.clone())), EventResult::Continue, false, false);
 
         // JS: if (RESTORATIVE_BERRIES.has(item.id)) {
         // JS:     switch (this.pendingStaleness) {
