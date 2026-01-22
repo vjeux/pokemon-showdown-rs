@@ -161,12 +161,17 @@ impl Pokemon {
         // JavaScript: this.battle.runEvent('TryEatItem', this, null, null, item)
         // The item is passed as relayVar (5th parameter), so handlers receive it as first argument
         if !is_forced {
+            debug_elog!("[EAT_ITEM] About to call TryEatItem for item={}", item_id);
             let try_eat_result = battle.run_event("TryEatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, None, EventResult::String(item_id.to_string()), false, false);
+            debug_elog!("[EAT_ITEM] TryEatItem result={:?}", try_eat_result);
             // Check for falsy results: Boolean(false), Number(0), Null, or Stop
             if matches!(try_eat_result, EventResult::Boolean(false) | EventResult::Number(0) | EventResult::Null | EventResult::Stop) {
+                debug_elog!("[EAT_ITEM] TryEatItem returned falsy, returning None");
                 return None; // false in JavaScript
             }
         }
+
+        debug_elog!("[EAT_ITEM] Passed TryEatItem check, about to add -enditem");
 
         // JS: this.battle.add('-enditem', this, item, '[eat]');
         // ✅ NOW IMPLEMENTED (Session 24 Part 51): battle.add message for eating items
@@ -181,12 +186,15 @@ impl Pokemon {
             vec![Arg::String(pokemon_str), Arg::String(item_str), Arg::String("[eat]".to_string())]
         };
         // All borrows dropped - now safe to call battle.add
+        debug_elog!("[EAT_ITEM] Adding -enditem message");
         battle.add("-enditem", &message_args);
 
         // JS: this.battle.singleEvent('Eat', item, this.itemState, this, source, sourceEffect);
         // JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
         // ✅ NOW IMPLEMENTED (Session 24 Part 83): singleEvent('Eat') and runEvent('EatItem')
+        debug_elog!("[EAT_ITEM] About to call singleEvent('Eat') for item={}", item_id);
         battle.single_event("Eat", &crate::battle::Effect::item(item_id.clone()), None, Some(pokemon_pos), source_pos, source_effect_ref, None);
+        debug_elog!("[EAT_ITEM] About to call runEvent('EatItem')");
         battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, Some(&crate::battle::Effect::item(item_id.clone())), EventResult::Continue, false, false);
 
         // JS: if (RESTORATIVE_BERRIES.has(item.id)) {

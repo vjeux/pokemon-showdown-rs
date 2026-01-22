@@ -89,7 +89,15 @@ pub fn on_eat(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         };
 
         let move_slot = &mut pokemon_mut.move_slots[move_slot_index];
-        move_slot.pp = move_slot.pp.saturating_add(10).min(move_slot.maxpp);
+        let new_pp = move_slot.pp.saturating_add(10).min(move_slot.maxpp);
+        let move_id = move_slot.id.clone();
+        move_slot.pp = new_pp;
+
+        // Also sync to base_move_slots so clearVolatile preserves PP
+        // (In JS, moveSlots and baseMoveSlots share the same MoveSlot objects)
+        if let Some(base_slot) = pokemon_mut.base_move_slots.iter_mut().find(|s| s.id == move_id) {
+            base_slot.pp = new_pp;
+        }
     }
 
     // this.add('-activate', pokemon, 'item: Leppa Berry', moveSlot.move, '[consumed]');

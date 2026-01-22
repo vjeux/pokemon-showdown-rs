@@ -256,7 +256,10 @@ impl Battle {
             }
 
             // TypeScript: onEat(pokemon:Pokemon)
-            "Eat" => item_callbacks::dispatch_on_eat(self, item_id.as_str(), pokemon_pos),
+            "Eat" => {
+                crate::debug_elog!("[HANDLE_ITEM_EVENT] Eat event for item={}", item_id);
+                item_callbacks::dispatch_on_eat(self, item_id.as_str(), pokemon_pos)
+            }
 
             // TypeScript: onEffectiveness(target:Pokemon?)
             "Effectiveness" => {

@@ -46,6 +46,9 @@ impl Battle {
         source: Option<(usize, usize)>,
     ) -> crate::event::EventResult {
         use crate::event::EventResult;
+        use crate::debug_elog;
+
+        debug_elog!("[DISPATCH_SINGLE_EVENT] event_id={}, effect_id={}", event_id, effect_id);
 
         // Extract pokemon position from EventTarget for pokemon checks
         let target_pos = target.and_then(|t| t.as_pokemon());
@@ -83,8 +86,10 @@ impl Battle {
         // When the item's onStart fires (via set_item), we want to call the item's callback,
         // not the volatile's callback even if the target has a volatile with the same name
         if let Some(ref effect) = self.effect {
+            debug_elog!("[DISPATCH_SINGLE_EVENT] effect.effect_type={:?}", effect.effect_type);
             if effect.effect_type == crate::battle::EffectType::Item {
                 if self.dex.items().get(effect_id.as_str()).is_some() {
+                    debug_elog!("[DISPATCH_SINGLE_EVENT] routing to handle_item_event for item={}", effect_id);
                     return self.handle_item_event(event_id, effect_id, target);
                 }
             }
