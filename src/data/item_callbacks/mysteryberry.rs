@@ -31,9 +31,13 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
         // const moveSlot = pokemon.lastMove && pokemon.getMoveData(pokemon.lastMove.id);
         // if (moveSlot && moveSlot.pp === 0)
-        if let Some(ref last_move) = pokemon.last_move_used {
+        // Note: JS uses pokemon.lastMove (set in moveUsed only when !externalMove),
+        // NOT pokemon.lastMoveUsed (set unconditionally in useMoveInner).
+        // This matters for moves like Mirror Move where the copied move shouldn't
+        // override lastMove.
+        if let Some(ref last_move_id) = pokemon.last_move {
             let move_slot_idx = pokemon.move_slots.iter()
-                .position(|m| m.id == last_move.id);
+                .position(|m| m.id == *last_move_id);
 
             if let Some(idx) = move_slot_idx {
                 let has_zero_pp = pokemon.move_slots[idx].pp == 0;
