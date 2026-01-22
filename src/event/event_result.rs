@@ -118,4 +118,11 @@ impl EventResult {
             _ => true,
         }
     }
+
+    /// Check if the result is strictly false (=== false in JavaScript)
+    /// This is different from is_truthy() which uses falsy semantics.
+    /// In JavaScript, `result === false` only matches Boolean(false), not Number(0) or other falsy values.
+    pub fn is_strictly_false(&self) -> bool {
+        matches!(self, EventResult::Boolean(false))
+    }
 }

@@ -43,7 +43,8 @@ pub fn on_hit_field(
 
     for pokemon_pos in all_active {
         // if (this.runEvent('Invulnerability', pokemon, source, move) === false)
-        let invuln_result = battle.run_event(
+        // Note: JavaScript uses === false (strictly false), not just falsy
+        let invuln_event_result = battle.run_event(
                 "Invulnerability",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
             source,
@@ -51,9 +52,11 @@ pub fn on_hit_field(
             crate::event::EventResult::Number(1),
             false,
             false,
-        ).is_truthy();
+        );
+        // JavaScript === false means Boolean(false), not Number(0) or other falsy values
+        let is_invulnerable = invuln_event_result.is_strictly_false();
 
-        if !invuln_result {
+        if is_invulnerable {
             // this.add('-miss', source, pokemon);
             if let Some(src_pos) = source {
                 let (source_slot, pokemon_slot) = {
