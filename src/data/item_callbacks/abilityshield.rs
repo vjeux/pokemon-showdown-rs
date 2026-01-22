@@ -5,6 +5,7 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onSetAbility(ability, target, source, effect) {
@@ -14,7 +15,8 @@ use crate::event::EventResult;
 ///     this.add('-block', target, 'item: Ability Shield');
 ///     return null;
 /// }
-pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
     use crate::battle::EffectType;
 

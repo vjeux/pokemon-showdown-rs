@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -36,7 +37,7 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        _effect: Option<&Effect>,
     ) -> EventResult {
         // if (source?.hasItem('lightclay')) {
         //     return 8;

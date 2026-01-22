@@ -5,12 +5,13 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
 ///     pokemon.abilityState.choiceLock = "";
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // pokemon.abilityState.choiceLock = "";
     let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
         Some(p) => p,

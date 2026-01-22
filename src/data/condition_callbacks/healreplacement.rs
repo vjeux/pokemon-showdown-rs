@@ -5,6 +5,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::battle::Arg;
 use crate::dex_data::ID;
 use crate::event::EventResult;
@@ -23,7 +24,7 @@ pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // this.effectState.sourceEffect = sourceEffect;
     // For slot conditions, the source effect should be stored in the slot condition's effect state
@@ -109,7 +110,7 @@ pub fn on_switch_in(
 
     // target.heal(target.maxhp);
     let maxhp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;
-    use crate::battle::Effect;
+    
     battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&Effect::condition(ID::from("zpower"))));
 
     // this.add('-heal', target, target.getHealth, '[from] move: ' + this.effectState.sourceEffect, '[zeffect]');

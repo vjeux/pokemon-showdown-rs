@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onTryHit(target, source, move) {
@@ -86,7 +87,7 @@ pub mod condition {
     /// onStart(target) {
     ///     this.add('-start', target, 'ability: Flash Fire');
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
         use crate::battle::Arg;
 
         // this.add('-start', target, 'ability: Flash Fire');

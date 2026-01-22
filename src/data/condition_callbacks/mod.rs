@@ -61,19 +61,19 @@ pub fn dispatch_duration_callback(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match condition_id {
-        "hail" => hail::duration_callback(battle, pokemon_pos, source_pos, effect_id),
-        "partiallytrapped" => partiallytrapped::duration_callback(battle, pokemon_pos, source_pos, effect_id),
-        "raindance" => raindance::duration_callback(battle, pokemon_pos, source_pos, effect_id),
-        "sandstorm" => sandstorm::duration_callback(battle, pokemon_pos, source_pos, effect_id),
-        "snowscape" => snowscape::duration_callback(battle, pokemon_pos, source_pos, effect_id),
-        "sunnyday" => sunnyday::duration_callback(battle, pokemon_pos, source_pos, effect_id),
+        "hail" => hail::duration_callback(battle, pokemon_pos, source_pos, effect),
+        "partiallytrapped" => partiallytrapped::duration_callback(battle, pokemon_pos, source_pos, effect),
+        "raindance" => raindance::duration_callback(battle, pokemon_pos, source_pos, effect),
+        "sandstorm" => sandstorm::duration_callback(battle, pokemon_pos, source_pos, effect),
+        "snowscape" => snowscape::duration_callback(battle, pokemon_pos, source_pos, effect),
+        "sunnyday" => sunnyday::duration_callback(battle, pokemon_pos, source_pos, effect),
         _ => {
             // Fallback to move-embedded condition callbacks
             // Pass effect_id through so durationCallbacks can check the source effect
-            move_callbacks::dispatch_condition_duration_callback(battle, condition_id, pokemon_pos, effect_id)
+            move_callbacks::dispatch_condition_duration_callback(battle, condition_id, pokemon_pos, effect)
         }
     }
 }
@@ -291,10 +291,10 @@ pub fn dispatch_side_condition_on_try_boost(
     condition_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     match condition_id {
-        "mist" => move_callbacks::mist::condition::on_try_boost(battle, target_pos, source_pos, _effect_id),
+        "mist" => move_callbacks::mist::condition::on_try_boost(battle, target_pos, source_pos, _effect),
         _ => EventResult::Continue,
     }
 }
@@ -326,12 +326,12 @@ pub fn dispatch_on_damage(
     damage: i32,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
     is_move_effect: bool,
 ) -> EventResult {
     match condition_id {
-        "bide" => move_callbacks::bide::condition::on_damage(battle, damage, target_pos, source_pos, effect_id, is_move_effect),
-        "endure" => move_callbacks::endure::condition::on_damage(battle, damage, target_pos, source_pos, effect_id, is_move_effect),
+        "bide" => move_callbacks::bide::condition::on_damage(battle, damage, target_pos, source_pos, effect, is_move_effect),
+        "endure" => move_callbacks::endure::condition::on_damage(battle, damage, target_pos, source_pos, effect, is_move_effect),
         _ => EventResult::Continue,
     }
 }
@@ -432,11 +432,11 @@ pub fn dispatch_on_faint(
     condition_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     // Route to actual implementation in move_callbacks
     use crate::data::move_callbacks;
-    move_callbacks::dispatch_condition_on_faint(battle, condition_id, target_pos, source_pos, effect_id)
+    move_callbacks::dispatch_condition_on_faint(battle, condition_id, target_pos, source_pos, effect)
 }
 /// Dispatch onFieldEnd callbacks
 pub fn dispatch_on_field_end(
@@ -766,18 +766,18 @@ pub fn dispatch_on_residual(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     debug_elog!("[DISPATCH_ON_RESIDUAL] condition_id='{}', pokemon_pos={:?}, turn={}",
         condition_id, pokemon_pos, battle.turn);
     match condition_id {
-        "brn" => brn::on_residual(battle, pokemon_pos, source_pos, effect_id),
-        "dynamax" => dynamax::on_residual(battle, pokemon_pos, source_pos, effect_id),
-        "futuremove" => futuremove::on_residual(battle, pokemon_pos, source_pos, effect_id),
-        "lockedmove" => lockedmove::on_residual(battle, pokemon_pos, source_pos, effect_id),
-        "partiallytrapped" => partiallytrapped::on_residual(battle, pokemon_pos, source_pos, effect_id),
-        "psn" => psn::on_residual(battle, pokemon_pos, source_pos, effect_id),
-        "tox" => tox::on_residual(battle, pokemon_pos, source_pos, effect_id),
+        "brn" => brn::on_residual(battle, pokemon_pos, source_pos, effect),
+        "dynamax" => dynamax::on_residual(battle, pokemon_pos, source_pos, effect),
+        "futuremove" => futuremove::on_residual(battle, pokemon_pos, source_pos, effect),
+        "lockedmove" => lockedmove::on_residual(battle, pokemon_pos, source_pos, effect),
+        "partiallytrapped" => partiallytrapped::on_residual(battle, pokemon_pos, source_pos, effect),
+        "psn" => psn::on_residual(battle, pokemon_pos, source_pos, effect),
+        "tox" => tox::on_residual(battle, pokemon_pos, source_pos, effect),
         _ => {
             // Fallback to move-embedded condition callbacks
             move_callbacks::dispatch_condition_on_residual(battle, condition_id, pokemon_pos)
@@ -826,8 +826,8 @@ pub fn dispatch_on_restart(
 ) -> EventResult {
     let effect_id = effect.map(|e| e.id.as_str());
     match condition_id {
-        "lockedmove" => lockedmove::on_restart(battle, pokemon_pos, source_pos, effect_id),
-        "stall" => stall::on_restart(battle, pokemon_pos, source_pos, effect_id),
+        "lockedmove" => lockedmove::on_restart(battle, pokemon_pos, source_pos, effect),
+        "stall" => stall::on_restart(battle, pokemon_pos, source_pos, effect),
         _ => {
             // Fallback to move-embedded condition callbacks
             // pokemon_pos is the target (pokemon with the volatile), source_pos is the move user
@@ -874,24 +874,24 @@ pub fn dispatch_on_start(
     // Extract effect_id for callbacks that still use the string form
     let effect_id = effect.map(|e| e.id.as_str());
     match condition_id {
-        "brn" => brn::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "choicelock" => choicelock::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "commanded" => commanded::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "confusion" => confusion::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "dynamax" => dynamax::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "frz" => frz::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "futuremove" => futuremove::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "healreplacement" => healreplacement::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "lockedmove" => lockedmove::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "mustrecharge" => mustrecharge::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "par" => par::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "partiallytrapped" => partiallytrapped::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "psn" => psn::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "slp" => slp::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "stall" => stall::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "tox" => tox::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "trapped" => trapped::on_start(battle, pokemon_pos, source_pos, effect_id),
-        "twoturnmove" => twoturnmove::on_start(battle, pokemon_pos, source_pos, effect_id),
+        "brn" => brn::on_start(battle, pokemon_pos, source_pos, effect),
+        "choicelock" => choicelock::on_start(battle, pokemon_pos, source_pos, effect),
+        "commanded" => commanded::on_start(battle, pokemon_pos, source_pos, effect),
+        "confusion" => confusion::on_start(battle, pokemon_pos, source_pos, effect),
+        "dynamax" => dynamax::on_start(battle, pokemon_pos, source_pos, effect),
+        "frz" => frz::on_start(battle, pokemon_pos, source_pos, effect),
+        "futuremove" => futuremove::on_start(battle, pokemon_pos, source_pos, effect),
+        "healreplacement" => healreplacement::on_start(battle, pokemon_pos, source_pos, effect),
+        "lockedmove" => lockedmove::on_start(battle, pokemon_pos, source_pos, effect),
+        "mustrecharge" => mustrecharge::on_start(battle, pokemon_pos, source_pos, effect),
+        "par" => par::on_start(battle, pokemon_pos, source_pos, effect),
+        "partiallytrapped" => partiallytrapped::on_start(battle, pokemon_pos, source_pos, effect),
+        "psn" => psn::on_start(battle, pokemon_pos, source_pos, effect),
+        "slp" => slp::on_start(battle, pokemon_pos, source_pos, effect),
+        "stall" => stall::on_start(battle, pokemon_pos, source_pos, effect),
+        "tox" => tox::on_start(battle, pokemon_pos, source_pos, effect),
+        "trapped" => trapped::on_start(battle, pokemon_pos, source_pos, effect),
+        "twoturnmove" => twoturnmove::on_start(battle, pokemon_pos, source_pos, effect),
         _ => {
             // Try move-embedded condition callbacks (nightmare, etc.)
             use crate::data::move_callbacks;
@@ -938,11 +938,11 @@ pub fn dispatch_on_try_heal(
     damage: i32,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match condition_id {
         // Move-embedded conditions with onTryHeal callbacks
-        "healblock" => move_callbacks::healblock::condition::on_try_heal(battle, damage, target_pos, source_pos, effect_id),
+        "healblock" => move_callbacks::healblock::condition::on_try_heal(battle, damage, target_pos, source_pos, effect),
         _ => EventResult::Continue,
     }
 }
@@ -953,15 +953,15 @@ pub fn dispatch_on_try_add_volatile(
     status: Option<&str>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match condition_id {
-        "dynamax" => dynamax::on_try_add_volatile(battle, status, target_pos.unwrap_or((0,0)), source_pos, effect_id),
+        "dynamax" => dynamax::on_try_add_volatile(battle, status, target_pos.unwrap_or((0,0)), source_pos, effect),
         // Move-embedded conditions with onTryAddVolatile callbacks
         "electricterrain" => move_callbacks::electricterrain::condition::on_try_add_volatile(battle, status, target_pos),
         "focuspunch" => move_callbacks::focuspunch::condition::on_try_add_volatile(battle, status, target_pos.unwrap_or((0,0))),
-        "mistyterrain" => move_callbacks::mistyterrain::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
-        "safeguard" => move_callbacks::safeguard::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect_id),
+        "mistyterrain" => move_callbacks::mistyterrain::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect),
+        "safeguard" => move_callbacks::safeguard::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect),
         _ => EventResult::Continue,
     }
 }
@@ -1005,11 +1005,11 @@ pub fn dispatch_on_weather(
     condition_id: &str,
     pokemon_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match condition_id {
-        "hail" => hail::on_weather(battle, pokemon_pos, source_pos, effect_id),
-        "sandstorm" => sandstorm::on_weather(battle, pokemon_pos, source_pos, effect_id),
+        "hail" => hail::on_weather(battle, pokemon_pos, source_pos, effect),
+        "sandstorm" => sandstorm::on_weather(battle, pokemon_pos, source_pos, effect),
         _ => EventResult::Continue,
     }
 }
@@ -1083,22 +1083,22 @@ pub fn dispatch_on_set_status(
     status: Option<&str>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match condition_id {
         "electricterrain" => {
             crate::data::move_callbacks::electricterrain::condition::on_set_status(
-                battle, status, target_pos, source_pos, effect_id,
+                battle, status, target_pos, source_pos, effect,
             )
         }
         "mistyterrain" => {
             crate::data::move_callbacks::mistyterrain::condition::on_set_status(
-                battle, status, target_pos, source_pos, effect_id,
+                battle, status, target_pos, source_pos, effect,
             )
         }
         "safeguard" => {
             crate::data::move_callbacks::safeguard::condition::on_set_status(
-                battle, status, target_pos, source_pos, effect_id,
+                battle, status, target_pos, source_pos, effect,
             )
         }
         _ => EventResult::Continue,

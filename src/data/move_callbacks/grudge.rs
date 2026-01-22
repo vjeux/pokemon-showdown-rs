@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -58,8 +59,10 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&Effect>,
     ) -> EventResult {
+        let effect_id = effect.map(|e| e.id.as_str());
+
         use crate::dex_data::ID;
 
         // if (!source || source.fainted || !effect) return;

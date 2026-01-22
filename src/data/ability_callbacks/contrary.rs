@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onChangeBoost(boost, target, source, effect) {
@@ -14,7 +15,8 @@ use crate::event::EventResult;
 ///         boost[i]! *= -1;
 ///     }
 /// }
-pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // if (effect && effect.id === 'zpower') return;
     if let Some(eff_id) = effect_id {
         if eff_id == "zpower" {

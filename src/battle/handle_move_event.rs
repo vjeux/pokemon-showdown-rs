@@ -84,21 +84,13 @@ impl Battle {
             }
             "Damage" => {
                 // Extract all parameters immutably first
-                let (damage, effect_id) = {
-                    let damage = self
-                        .event
-                        .as_ref()
-                        .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
-                        .unwrap_or(0);
+                let damage = self
+                    .event
+                    .as_ref()
+                    .and_then(|e| match &e.relay_var { Some(EventResult::Number(n)) => Some(*n), _ => None })
+                    .unwrap_or(0);
 
-                    let effect_id = self
-                        .event
-                        .as_ref()
-                        .and_then(|e| e.effect.as_ref())
-                        .map(|eff| eff.id.to_string());
-
-                    (damage, effect_id)
-                };
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
 
                 move_callbacks::dispatch_on_damage(
                     self,
@@ -106,7 +98,7 @@ impl Battle {
                     damage,
                     target_pos.unwrap_or((0,0)),
                     source_pos,
-                    effect_id.as_deref(),
+                    event_effect.as_ref(),
                 )
             }
             "DisableMove" => move_callbacks::dispatch_on_disable_move(self, move_id.as_str(), target_pos.unwrap_or((0,0))),

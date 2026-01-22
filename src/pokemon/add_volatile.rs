@@ -304,7 +304,7 @@ impl Pokemon {
                 volatile_id.as_str(),
                 target_pos,
                 source_pos,
-                source_effect.map(|eff| eff.id.as_str()),
+                source_effect,
             );
             match result {
                 crate::event::EventResult::Number(n) => Some(n),

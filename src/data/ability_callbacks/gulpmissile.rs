@@ -108,7 +108,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 ///         source.formeChange(forme, effect);
 ///     }
 /// }
-pub fn on_source_try_primary_hit(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_source_try_primary_hit(battle: &mut Battle, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // Get source position
     let source_pos = match source_pos {
         Some(pos) => pos,

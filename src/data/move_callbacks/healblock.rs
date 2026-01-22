@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 pub mod condition {
@@ -24,8 +25,9 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&Effect>,
     ) -> EventResult {
+        let effect_id = effect.map(|e| e.id.as_str());
         // if (effect?.name === "Psychic Noise") {
         //     return 2;
         // }
@@ -360,8 +362,9 @@ pub mod condition {
         damage: i32,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&Effect>,
     ) -> EventResult {
+        let effect_id = effect.map(|e| e.id.as_str());
         use crate::dex_data::ID;
 
         // if (effect && (effect.id === 'zpower' || (effect as Move).isZ)) return damage;

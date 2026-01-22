@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, hp_fraction};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -21,7 +21,7 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        _effect: Option<&Effect>,
     ) -> EventResult {
         // if (source?.hasItem('terrainextender')) {
         if let Some(source) = source_pos {
@@ -137,8 +137,10 @@ pub mod condition {
         battle: &mut Battle,
         _field_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&Effect>,
     ) -> EventResult {
+        let effect_id = effect.map(|e| e.id.as_str());
+
         // if (effect?.effectType === 'Ability') {
         let is_ability_effect = if let Some(eid) = effect_id {
             if let Some(ability) = battle

@@ -19,7 +19,8 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::dex_data::ID;
 
     // if (pokemon.baseSpecies.baseSpecies !== 'Minior' || pokemon.transformed) return;
@@ -82,7 +83,8 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///         }
 ///     }
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::dex_data::ID;
 
     // if (pokemon.baseSpecies.baseSpecies !== 'Minior' || pokemon.transformed || !pokemon.hp) return;
@@ -140,7 +142,8 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
 ///     }
 ///     return false;
 /// }
-pub fn on_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
     use crate::dex_data::ID;
 
@@ -194,7 +197,8 @@ pub fn on_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, 
 ///     this.add('-immune', target, '[from] ability: Shields Down');
 ///     return null;
 /// }
-pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
 
     // if (target.species.id !== 'miniormeteor' || target.transformed) return;

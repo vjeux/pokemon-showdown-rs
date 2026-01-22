@@ -114,17 +114,14 @@ impl Battle {
             "AfterSubDamage" => {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 // JS passes the original effect from the event, not the item's ID
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.as_str().to_string());
-                let effect_id_str = effect_id_owned.as_deref();
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
                 item_callbacks::dispatch_on_after_sub_damage(
                     self,
                     item_id.as_str(),
                     damage,
                     target_opt,
                     source,
-                    effect_id_str,
+                    event_effect.as_ref(),
                 )
             }
 
@@ -199,36 +196,31 @@ impl Battle {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 // JS passes the original effect (e.g., the move) from the Damage event,
                 // not the item's own ID. Use event.effect instead of current_effect_id().
-                let (effect_id_owned, effect_type_str) = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| {
-                        let id = eff.id.as_str().to_string();
-                        // Use effect_type from the Effect struct directly
-                        // This is crucial because looking up by ID can give wrong type
-                        // (e.g., "gmaxvolcalith" is both a move and a condition)
-                        let effect_type = match eff.effect_type {
-                            crate::battle::EffectType::Move => "Move",
-                            crate::battle::EffectType::Ability => "Ability",
-                            crate::battle::EffectType::Item => "Item",
-                            crate::battle::EffectType::Status => "Status",
-                            crate::battle::EffectType::Weather => "Weather",
-                            crate::battle::EffectType::Terrain => "Terrain",
-                            crate::battle::EffectType::Condition => "Condition",
-                            // All other effect types (ZMove, SlotCondition, SideCondition, etc.)
-                            // are not Move, so Focus Band/Sash won't trigger for them
-                            _ => "Other",
-                        };
-                        (id, Some(effect_type))
-                    })
-                    .unwrap_or((String::new(), None));
-                let effect_id_str = if effect_id_owned.is_empty() { None } else { Some(effect_id_owned.as_str()) };
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
+                let effect_type_str = event_effect.as_ref().map(|eff| {
+                    // Use effect_type from the Effect struct directly
+                    // This is crucial because looking up by ID can give wrong type
+                    // (e.g., "gmaxvolcalith" is both a move and a condition)
+                    match eff.effect_type {
+                        crate::battle::EffectType::Move => "Move",
+                        crate::battle::EffectType::Ability => "Ability",
+                        crate::battle::EffectType::Item => "Item",
+                        crate::battle::EffectType::Status => "Status",
+                        crate::battle::EffectType::Weather => "Weather",
+                        crate::battle::EffectType::Terrain => "Terrain",
+                        crate::battle::EffectType::Condition => "Condition",
+                        // All other effect types (ZMove, SlotCondition, SideCondition, etc.)
+                        // are not Move, so Focus Band/Sash won't trigger for them
+                        _ => "Other",
+                    }
+                });
                 item_callbacks::dispatch_on_damage(
                     self,
                     item_id.as_str(),
                     damage,
                     target_opt,
                     source,
-                    effect_id_str,
+                    event_effect.as_ref(),
                     effect_type_str,
                 )
             }
@@ -280,14 +272,13 @@ impl Battle {
                     Some(EventResult::Boost(b)) => b,
                     _ => return EventResult::Continue,
                 };
-                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
-                let effect_id_str = effect_id_owned.as_deref();
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
                 item_callbacks::dispatch_on_foe_after_boost(
                     self,
                     item_id.as_str(),
                     target_opt,
                     source,
-                    effect_id_str,
+                    event_effect.as_ref(),
                     boost,
                 )
             }
@@ -453,14 +444,13 @@ impl Battle {
 
             // TypeScript: onSetAbility(target:Pokemon?, source:Pokemon?, effect:Effect?)
             "SetAbility" => {
-                let effect_id_owned = self.current_effect_id().map(|e| e.to_string());
-                let effect_id_str = effect_id_owned.as_deref();
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
                 item_callbacks::dispatch_on_set_ability(
                     self,
                     item_id.as_str(),
                     target_opt,
                     source,
-                    effect_id_str,
+                    event_effect.as_ref(),
                 )
             }
 
@@ -618,17 +608,14 @@ impl Battle {
                 let damage = match &relay_var { Some(EventResult::Number(n)) => *n, _ => 0 };
                 // JS passes the original effect from the event (e.g., "drain" from heal()),
                 // not the item's own ID. Use event.effect instead of current_effect_id().
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.as_str().to_string());
-                let effect_id_str = effect_id_owned.as_deref();
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
                 item_callbacks::dispatch_on_try_heal(
                     self,
                     item_id.as_str(),
                     damage,
                     target_opt,
                     source,
-                    effect_id_str,
+                    event_effect.as_ref(),
                 )
             }
 

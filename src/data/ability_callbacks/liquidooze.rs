@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onSourceTryHeal(damage, target, source, effect) {
@@ -15,7 +16,8 @@ use crate::event::EventResult;
 ///         return 0;
 ///     }
 /// }
-pub fn on_source_try_heal(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_source_try_heal(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // Check if the effect is one that can be reversed by Liquid Ooze
     let can_ooze = match effect_id {
         Some("drain") | Some("leechseed") | Some("strengthsap") => true,

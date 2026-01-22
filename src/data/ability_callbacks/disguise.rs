@@ -14,7 +14,7 @@ use crate::event::EventResult;
 ///         return 0;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     use crate::battle::Arg;
     use crate::battle::EffectType;
 

@@ -5,6 +5,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -23,7 +24,7 @@ pub fn on_residual(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     debug_elog!("[LOCKEDMOVE_RESIDUAL ENTRY] turn={}, pokemon=({}, {})",
         battle.turn, pokemon_pos.0, pokemon_pos.1);
@@ -68,7 +69,7 @@ pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // this.effectState.trueDuration = this.random(2, 4);
     let true_duration = battle.random_with_range(2, 4);
@@ -114,7 +115,7 @@ pub fn on_restart(
     battle: &mut Battle,
     _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // if (this.effectState.trueDuration >= 2) { this.effectState.duration = 2; }
     battle.with_effect_state(|state| {

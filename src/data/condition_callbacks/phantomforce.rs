@@ -5,6 +5,7 @@
 //! JavaScript source: data/moves.ts - phantomforce condition
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onInvulnerability

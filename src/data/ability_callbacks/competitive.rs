@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onAfterEachBoost(boost, target, source, effect) {
@@ -22,7 +23,7 @@ use crate::event::EventResult;
 ///         this.boost({ spa: 2 }, target, target, null, false, true);
 ///     }
 /// }
-pub fn on_after_each_boost(battle: &mut Battle, boost: &crate::dex_data::BoostsTable, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_after_each_boost(battle: &mut Battle, boost: &crate::dex_data::BoostsTable, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,

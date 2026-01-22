@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 pub mod condition {
@@ -21,7 +22,7 @@ pub mod condition {
         battle: &mut Battle,
         _target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        _effect: Option<&Effect>,
     ) -> EventResult {
         // if (source?.hasAbility('persistent')) {
         //     this.add('-activate', source, 'ability: Persistent', '[move] Safeguard');
@@ -78,8 +79,9 @@ pub mod condition {
         _status: Option<&str>,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&Effect>,
     ) -> EventResult {
+        let effect_id = effect.map(|e| e.id.as_str());
         use crate::dex_data::ID;
 
         // if (!effect || !source) return;
@@ -177,8 +179,9 @@ pub mod condition {
         status: Option<&str>,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&Effect>,
     ) -> EventResult {
+        let effect_id = effect.map(|e| e.id.as_str());
         use crate::dex_data::ID;
 
         // if (!effect || !source) return;

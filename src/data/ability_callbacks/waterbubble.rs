@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::{Battle, Arg, Effect};
 use crate::event::EventResult;
 
 /// onSourceModifyAtk(atk, attacker, defender, move) {
@@ -119,7 +119,8 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///     }
 ///     return false;
 /// }
-pub fn on_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_set_status(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // if (status.id !== 'brn') return;
     if status_id != "brn" {
         return EventResult::Continue;

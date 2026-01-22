@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onDamage(damage, target, source, effect) {
@@ -15,7 +16,7 @@ pub fn on_damage(
     damage: i32,
     target_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     let target = target_pos;
 

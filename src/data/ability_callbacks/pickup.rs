@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -21,7 +22,7 @@ use crate::pokemon::Pokemon;
 ///     this.add('-item', pokemon, this.dex.items.get(item), '[from] ability: Pickup');
 ///     pokemon.setItem(item);
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // if (pokemon.item) return;
     let has_item = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

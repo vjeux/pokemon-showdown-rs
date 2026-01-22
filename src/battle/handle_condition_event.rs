@@ -189,15 +189,13 @@ impl Battle {
                 // Called when stat boosts are being applied
                 // Mist prevents negative boosts from opponent's moves
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.as_str().to_string());
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
                 condition_callbacks::dispatch_side_condition_on_try_boost(
                     self,
                     condition_id,
                     Some(pokemon_pos),
                     source_pos,
-                    effect_id.as_deref()
+                    event_effect.as_ref(),
                 )
             }
             "DamagingHit" => {
@@ -222,16 +220,13 @@ impl Battle {
                     _ => None
                 }).unwrap_or(0);
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.as_str().to_string());
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
                 // Check if the effect is a Move type
                 // JavaScript: if (!move || move.effectType !== 'Move' || !source) return;
-                let is_move_effect = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
+                let is_move_effect = event_effect.as_ref()
                     .map(|eff| eff.effect_type == crate::battle::EffectType::Move)
                     .unwrap_or(false);
-                condition_callbacks::dispatch_on_damage(self, condition_id, damage, pokemon_pos, source_pos, effect_id.as_deref(), is_move_effect)
+                condition_callbacks::dispatch_on_damage(self, condition_id, damage, pokemon_pos, source_pos, event_effect.as_ref(), is_move_effect)
             }
             "DisableMove" => {
                 condition_callbacks::dispatch_on_disable_move(self, condition_id, pokemon_pos)
@@ -282,19 +277,18 @@ impl Battle {
                 // Faint needs target, source, and effect from event
                 // target_pos is the pokemon that fainted (pokemon_pos)
                 // source_pos is the pokemon that caused the faint (from event)
-                // effect_id is the move/ability/item that caused the faint (from event)
+                // effect is the move/ability/item that caused the faint (from event)
                 // Extract values first to avoid borrow checker issues
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.to_string());
+                let event_effect = self.event.as_ref()
+                    .and_then(|e| e.effect.clone());
 
                 condition_callbacks::dispatch_on_faint(
                     self,
                     condition_id,
                     Some(pokemon_pos),
                     source_pos,
-                    effect_id_owned.as_deref(),
+                    event_effect.as_ref(),
                 )
             }
             "FieldEnd" => {
@@ -433,10 +427,8 @@ impl Battle {
             "Residual" => {
                 // Extract source and effect from event
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.to_string());
-                condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
+                condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos, source_pos, event_effect.as_ref())
             }
             "SideResidual" => {
                 // Some side conditions use onResidual callback for SideResidual events
@@ -444,10 +436,8 @@ impl Battle {
                 // This matches JavaScript behavior where the callback signature is compatible
                 // Extract source and effect from event
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.to_string());
-                condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref())
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
+                condition_callbacks::dispatch_on_residual(self, condition_id, pokemon_pos, source_pos, event_effect.as_ref())
             }
             "Restart" => {
                 // Extract source and effect from event
@@ -482,10 +472,8 @@ impl Battle {
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
                 let source_effect = self.event.as_ref()
                     .and_then(|e| e.effect.clone());
-                let effect_id_owned = source_effect.as_ref()
-                    .map(|eff| eff.id.to_string());
                 // Try ability-embedded condition callbacks first (for abilities like Zen Mode)
-                crate::data::ability_callbacks::dispatch_condition_on_start(self, condition_id, pokemon_pos, source_pos, effect_id_owned.as_deref());
+                crate::data::ability_callbacks::dispatch_condition_on_start(self, condition_id, pokemon_pos, source_pos, source_effect.as_ref());
                 // Then try standalone/move-embedded condition callbacks
                 condition_callbacks::dispatch_on_start(self, condition_id, pokemon_pos, source_pos, source_effect.as_ref())
             }
@@ -497,9 +485,7 @@ impl Battle {
                 // target_pos is from the event (the Pokemon receiving status)
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.to_string());
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
                 // Extract status from relay_var - passed as EventResult::String from set_status.rs
                 let status_owned = self.event.as_ref()
                     .and_then(|e| e.relay_var.as_ref())
@@ -513,7 +499,7 @@ impl Battle {
                     status_owned.as_deref(),
                     target_pos,
                     source_pos,
-                    effect_id_owned.as_deref(),
+                    event_effect.as_ref(),
                 )
             }
             "SwitchIn" => {
@@ -554,16 +540,14 @@ impl Battle {
                     _ => None
                 }).unwrap_or(0);
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.to_string());
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
                 condition_callbacks::dispatch_on_try_heal(
                     self,
                     condition_id,
                     damage,
                     Some(pokemon_pos),
                     source_pos,
-                    effect_id_owned.as_deref()
+                    event_effect.as_ref(),
                 )
             }
             "TryAddVolatile" => {
@@ -580,9 +564,7 @@ impl Battle {
                 // NOT the Pokemon having the volatile added. We need to get the actual target from event.
                 let target_pos = self.event.as_ref().and_then(|e| e.target);
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.to_string());
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
 
                 condition_callbacks::dispatch_on_try_add_volatile(
                     self,
@@ -590,7 +572,7 @@ impl Battle {
                     status_owned.as_deref(),
                     target_pos,
                     source_pos,
-                    effect_id_owned.as_deref()
+                    event_effect.as_ref(),
                 )
             }
             "TryPrimaryHit" => {
@@ -637,15 +619,13 @@ impl Battle {
             "Weather" => {
                 // Extract source and effect from event
                 let source_pos = self.event.as_ref().and_then(|e| e.source);
-                let effect_id_owned = self.event.as_ref()
-                    .and_then(|e| e.effect.as_ref())
-                    .map(|eff| eff.id.to_string());
+                let event_effect = self.event.as_ref().and_then(|e| e.effect.clone());
                 condition_callbacks::dispatch_on_weather(
                     self,
                     condition_id,
                     pokemon_pos,
                     source_pos,
-                    effect_id_owned.as_deref(),
+                    event_effect.as_ref(),
                 )
             }
             "WeatherModifyDamage" => {

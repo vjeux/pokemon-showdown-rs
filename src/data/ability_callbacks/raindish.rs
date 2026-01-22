@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, hp_fraction};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 
 /// onWeather(target, source, effect) {
@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///         this.heal(target.baseMaxhp / 16);
 ///     }
 /// }
-pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_weather(battle: &mut Battle, weather_id: &str, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // Check if target has Utility Umbrella
     let has_umbrella = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

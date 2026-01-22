@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onAllyTryBoost(boost, target, source, effect) {
@@ -22,7 +23,8 @@ use crate::event::EventResult;
 ///         this.add('-block', target, 'ability: Flower Veil', `[of] ${effectHolder}`);
 ///     }
 /// }
-pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
 
     // if ((source && target === source) || !target.hasType('Grass')) return;
@@ -122,7 +124,8 @@ pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>
 ///         return null;
 ///     }
 /// }
-pub fn on_ally_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_ally_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
 
     // if (target.hasType('Grass') && source && target !== source && effect && effect.id !== 'yawn') {
@@ -211,7 +214,8 @@ pub fn on_ally_set_status(battle: &mut Battle, _status_id: &str, target_pos: (us
 ///         return null;
 ///     }
 /// }
-pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
 
     // if (target.hasType('Grass') && status.id === 'yawn') {

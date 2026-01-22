@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, hp_fraction};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 
 /// onDamagingHit(damage, target, source, move) {

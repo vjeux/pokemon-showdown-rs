@@ -5,6 +5,7 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -15,7 +16,7 @@ use crate::Pokemon;
 ///         }
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>, effect_type: Option<&str>) -> EventResult {
+pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>, effect_type: Option<&str>) -> EventResult {
     // if (target.hp === target.maxhp && damage >= target.hp && effect && effect.effectType === 'Move')
     let target = match target_pos {
         Some(pos) => pos,

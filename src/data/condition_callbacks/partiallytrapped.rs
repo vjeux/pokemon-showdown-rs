@@ -5,8 +5,9 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
-use crate::battle::Arg;
 use crate::battle::Effect;
+use crate::battle::Arg;
+
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -22,7 +23,7 @@ pub fn duration_callback(
     battle: &mut Battle,
     _target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     debug_elog!("[PARTIALLYTRAPPED_DURATION_CALLBACK] Called for source_pos={:?}", source_pos);
 
@@ -60,7 +61,7 @@ pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // Get source and sourceEffect from effectState using with_effect_state_ref
     // JavaScript: this.effectState.source, this.effectState.sourceEffect
@@ -139,7 +140,7 @@ pub fn on_residual(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     debug_elog!("[PARTIALLYTRAPPED_ON_RESIDUAL] Called for {:?}", pokemon_pos);
 

@@ -5,12 +5,14 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
 ///     this.add('-ability', pokemon, 'Comatose');
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     let pokemon_ident = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
@@ -35,7 +37,8 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///     }
 ///     return false;
 /// }
-pub fn on_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // Check if effect is a move with status
     if let Some(eff_id) = effect_id {
         if let Some(move_data) = battle.dex.moves().get(eff_id) {

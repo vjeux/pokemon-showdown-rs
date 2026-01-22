@@ -13,7 +13,7 @@ use crate::Pokemon;
 /// onStart(pokemon) {
 ///     this.singleEvent('TerrainChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // Trigger TerrainChange event to check if Quark Drive should activate
     // Pass the ability ID as the effect
     let ability_id = ID::from("quarkdrive");
@@ -28,7 +28,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///         pokemon.removeVolatile('quarkdrive');
 ///     }
 /// }
-pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // Check if it's electric terrain
     let is_electric_terrain = battle.is_terrain("electricterrain");
 
@@ -104,7 +104,7 @@ pub mod condition {
     ///     this.effectState.bestStat = pokemon.getBestStat(false, true);
     ///     this.add('-start', pokemon, 'quarkdrive' + this.effectState.bestStat);
     /// }
-    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+    pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
         // Get pokemon slot for messages
         let slot = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             pokemon.get_slot()

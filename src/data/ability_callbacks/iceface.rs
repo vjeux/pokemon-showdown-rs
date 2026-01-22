@@ -14,7 +14,8 @@ use crate::event::EventResult;
 ///         pokemon.formeChange('Eiscue', this.effect, true);
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
     use crate::dex_data::ID;
 
@@ -66,7 +67,8 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///         return 0;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
 
     // if (effect?.effectType === 'Move' && effect.category === 'Physical' && target.species.id === 'eiscue')
@@ -289,7 +291,8 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 ///         pokemon.formeChange('Eiscue', this.effect, true);
 ///     }
 /// }
-pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
     use crate::dex_data::ID;
 

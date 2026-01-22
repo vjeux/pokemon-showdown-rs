@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onDamagingHit(damage, target, source, move) {
@@ -43,7 +44,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
 ///         this.boost({ spe: 1 });
 ///     }
 /// }
-pub fn on_after_boost(battle: &mut Battle, boost: &crate::dex_data::BoostsTable, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_after_boost(battle: &mut Battle, boost: &crate::dex_data::BoostsTable, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     let target_pos = match target_pos {
         Some(pos) => pos,
         None => return EventResult::Continue,

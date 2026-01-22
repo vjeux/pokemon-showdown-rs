@@ -5,6 +5,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::battle::Arg;
 use crate::dex_data::ID;
 use crate::event::EventResult;
@@ -23,7 +24,7 @@ pub fn duration_callback(
     battle: &mut Battle,
     _target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // if (source?.hasItem('smoothrock'))
     let has_smoothrock = if let Some(pos) = source_pos {
@@ -165,7 +166,7 @@ pub fn on_field_residual(
     if battle.field.weather == ID::from("sandstorm") {
         // Pass sandstorm as the effect so Weather event knows which weather condition to use
         // In JavaScript: this.eachEvent('Weather') uses this.effect which is the sandstorm condition
-        use crate::battle::Effect;
+        
         battle.each_event("Weather", Some(&Effect::weather(ID::from("sandstorm"))), None);
     }
 
@@ -184,7 +185,7 @@ pub fn on_weather(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // Get target's base max HP
     let base_maxhp = {

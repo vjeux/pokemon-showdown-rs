@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onFoeAfterBoost(boost, target, source, effect) {
@@ -18,7 +19,8 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_foe_after_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_foe_after_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // Debug logging
     debug_elog!("[OPPORTUNIST on_foe_after_boost] ENTRY: effect_id={:?}", effect_id);
     debug_elog!("[OPPORTUNIST on_foe_after_boost] battle.event={:?}", battle.event.as_ref().map(|e| (&e.id, &e.relay_var)));
@@ -132,7 +134,8 @@ pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
 ///     this.boost(this.effectState.boosts, this.effectState.target);
 ///     delete this.effectState.boosts;
 /// }
-pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     debug_elog!("[OPPORTUNIST on_residual] Called");
     apply_accumulated_boosts(battle);
     EventResult::Continue

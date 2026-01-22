@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
@@ -77,8 +78,10 @@ pub mod condition {
         battle: &mut Battle,
         pokemon_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&Effect>,
     ) -> EventResult {
+        let effect_id = effect.map(|e| e.name.as_str());
+
         // Same logic as onStart
         // if (effect && ['Electromorphosis', 'Wind Power'].includes(effect.name)) {
         let is_special_ability = if let Some(eid) = effect_id {

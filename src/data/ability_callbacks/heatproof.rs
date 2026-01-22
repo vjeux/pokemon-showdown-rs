@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onSourceModifyAtk(atk, attacker, defender, move) {
@@ -50,7 +51,8 @@ pub fn on_source_modify_sp_a(_battle: &mut Battle, _spa: i32, _attacker_pos: (us
 ///         return damage / 2;
 ///     }
 /// }
-pub fn on_damage(_battle: &mut Battle, damage: i32, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(_battle: &mut Battle, damage: i32, _target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     if let Some(effect) = effect_id {
         if effect == "brn" {
             return EventResult::Number(damage / 2);

@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onTryHeal(damage, target, source, effect) {
@@ -14,7 +15,8 @@ use crate::event::EventResult;
 ///     }
 ///     if ((effect as Item).isBerry) return this.chainModify(2);
 /// }
-pub fn on_try_heal(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_try_heal(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
 
     // if (!effect) return;
@@ -62,7 +64,8 @@ pub fn on_try_heal(battle: &mut Battle, _damage: i32, target_pos: Option<(usize,
 ///         }
 ///     }
 /// }
-pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_change_boost(battle: &mut Battle, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // if (effect && (effect as Item).isBerry)
     if let Some(effect_id) = effect_id {
         if let Some(item_data) = battle.dex.items().get(effect_id) {
@@ -152,7 +155,8 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos:
 ///     // Record if the pokemon ate a berry to resist the attack
 ///     pokemon.abilityState.berryWeaken = weakenBerries.includes(item.name);
 /// }
-pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // const weakenBerries = [...]
     const WEAKEN_BERRIES: &[&str] = &[
         "babiriberry",

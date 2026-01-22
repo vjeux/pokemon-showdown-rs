@@ -15,7 +15,8 @@ use crate::event::EventResult;
 ///         if (!this.queue.peek()) this.effectState.counter--;
 ///     }
 /// }
-pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     
 
     // Get the item from battle.event.effect
@@ -80,7 +81,8 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
 ///         delete this.effectState.counter;
 ///     }
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
     use crate::dex_data::ID;
 

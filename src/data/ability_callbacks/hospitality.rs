@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, hp_fraction};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
@@ -12,7 +12,7 @@ use crate::event::EventResult;
 ///         this.heal(ally.baseMaxhp / 4, ally, pokemon);
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // for (const ally of pokemon.adjacentAllies())
     let adjacent_allies = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

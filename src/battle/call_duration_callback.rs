@@ -34,9 +34,6 @@ impl Battle {
         source_pos: Option<(usize, usize)>,
         source_effect: Option<&Effect>,
     ) -> EventResult {
-        // Extract effect ID string for callbacks that need it
-        let effect_id_str = source_effect.map(|e| e.id.as_str());
-
         // Dispatch to condition-specific duration callback
         match condition_id.as_str() {
             "auroraveil" => {
@@ -44,7 +41,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "electricterrain" => {
@@ -52,7 +49,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "grassyterrain" => {
@@ -60,7 +57,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "gravity" => {
@@ -68,7 +65,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "healblock" => {
@@ -76,7 +73,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "lightscreen" => {
@@ -84,7 +81,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "magicroom" => {
@@ -92,7 +89,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "mistyterrain" => {
@@ -100,7 +97,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "psychicterrain" => {
@@ -108,7 +105,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "reflect" => {
@@ -116,7 +113,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "safeguard" => {
@@ -124,7 +121,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "tailwind" => {
@@ -132,7 +129,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "trickroom" => {
@@ -140,7 +137,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "wonderroom" => {
@@ -148,7 +145,7 @@ impl Battle {
                     self,
                     target_pos,
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             // Weather duration callbacks
@@ -157,7 +154,7 @@ impl Battle {
                     self,
                     target_pos.unwrap_or((0, 0)),
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "raindance" => {
@@ -165,7 +162,7 @@ impl Battle {
                     self,
                     target_pos.unwrap_or((0, 0)),
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "sandstorm" => {
@@ -173,7 +170,7 @@ impl Battle {
                     self,
                     target_pos.unwrap_or((0, 0)),
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "snowscape" => {
@@ -181,7 +178,7 @@ impl Battle {
                     self,
                     target_pos.unwrap_or((0, 0)),
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             "sunnyday" => {
@@ -189,7 +186,7 @@ impl Battle {
                     self,
                     target_pos.unwrap_or((0, 0)),
                     source_pos,
-                    effect_id_str,
+                    source_effect,
                 )
             }
             _ => EventResult::Continue,

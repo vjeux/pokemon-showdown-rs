@@ -5,6 +5,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::dex_data::ID;
 
@@ -23,7 +24,7 @@ pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     debug_elog!("[FUTUREMOVE::ON_START] ENTRY: pokemon_pos={:?}, turn={}", pokemon_pos, battle.turn);
 
@@ -72,7 +73,7 @@ pub fn on_residual(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     debug_elog!("[FUTUREMOVE::ON_RESIDUAL] ENTRY: pokemon_pos={:?}, turn={}", pokemon_pos, battle.turn);
 

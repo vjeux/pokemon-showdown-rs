@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onAnyTryMove(target, source, effect) {
@@ -14,7 +15,8 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_any_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_any_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
 
     // if (['explosion', 'mindblown', 'mistyexplosion', 'selfdestruct'].includes(effect.id))
@@ -82,7 +84,8 @@ pub fn on_any_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 ///         return false;
 ///     }
 /// }
-pub fn on_any_damage(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_any_damage(_battle: &mut Battle, _damage: i32, _target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // JavaScript checks effect.name === 'Aftermath', but in Rust we get the effect ID (lowercase)
     if let Some(effect) = effect_id {
         if effect == "aftermath" {

@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onTryBoost(boost, target, source, effect) {
@@ -26,7 +27,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_try_boost(
     battle: &mut Battle,
-    boost: Option<&mut crate::dex_data::BoostsTable>, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, _effect_id: Option<&str>,
+    boost: Option<&mut crate::dex_data::BoostsTable>, target_pos: (usize, usize), source_pos: Option<(usize, usize)>, _effect: Option<&Effect>,
 ) -> EventResult {
     // if (!source || target === source) return;
     if source_pos.is_none() {

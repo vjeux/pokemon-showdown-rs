@@ -5,16 +5,17 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
 
 /// onStart(pokemon) {
 ///     this.singleEvent('TerrainChange', this.effect, this.effectState, pokemon);
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
     // this.singleEvent('TerrainChange', this.effect, this.effectState, pokemon);
     // Call on_terrain_change to apply Mimicry type change when entering the field
-    on_terrain_change(battle, pokemon_pos, source_pos, effect_id)
+    on_terrain_change(battle, pokemon_pos, source_pos, effect)
 }
 
 /// onTerrainChange(pokemon) {
@@ -45,7 +46,8 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Op
 ///         this.add('-end', pokemon, 'typechange', '[silent]');
 ///     }
 /// }
-pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // Determine new types based on terrain
     let types = {
         let terrain = battle.field.get_terrain().as_str();

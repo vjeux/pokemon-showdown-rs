@@ -4,6 +4,7 @@
 //! Each move with callbacks is in its own file.
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::battle_actions::ActiveMove;
 use crate::event::EventResult;
 
@@ -749,11 +750,11 @@ pub fn dispatch_on_damage(
     damage: i32,
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
-        "falseswipe" => falseswipe::on_damage(battle, damage, target_pos, source_pos, effect_id),
-        "holdback" => holdback::on_damage(battle, damage, target_pos, source_pos, effect_id),
+        "falseswipe" => falseswipe::on_damage(battle, damage, target_pos, source_pos, effect),
+        "holdback" => holdback::on_damage(battle, damage, target_pos, source_pos, effect),
         _ => EventResult::Continue,
     }
 }
@@ -1532,64 +1533,64 @@ pub fn dispatch_condition_duration_callback(
     battle: &mut Battle,
     condition_id: &str,
     source_pos: (usize, usize),
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match condition_id {
         "auroraveil" => {
-            auroraveil::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            auroraveil::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         "electricterrain" => electricterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            effect_id,
+            effect,
         ),
         "grassyterrain" => grassyterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            effect_id,
+            effect,
         ),
         "gravity" => {
-            gravity::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            gravity::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         "healblock" => {
             // IMPORTANT: Pass effect_id (the source move like "psychicnoise"), not condition_id
             // Healblock's durationCallback checks effect.name === "Psychic Noise" to return 2
-            healblock::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            healblock::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         "lightscreen" => {
-            lightscreen::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            lightscreen::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         "magicroom" => {
-            magicroom::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            magicroom::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         "mistyterrain" => mistyterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            effect_id,
+            effect,
         ),
         "psychicterrain" => psychicterrain::condition::duration_callback(
             battle,
             None,
             Some(source_pos),
-            effect_id,
+            effect,
         ),
         "reflect" => {
-            reflect::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            reflect::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         "safeguard" => {
-            safeguard::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            safeguard::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         "tailwind" => {
-            tailwind::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            tailwind::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         "trickroom" => {
-            trickroom::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            trickroom::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         "wonderroom" => {
-            wonderroom::condition::duration_callback(battle, None, Some(source_pos), effect_id)
+            wonderroom::condition::duration_callback(battle, None, Some(source_pos), effect)
         }
         _ => EventResult::Continue,
     }
@@ -1966,11 +1967,11 @@ pub fn dispatch_condition_on_faint(
     condition_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match condition_id {
-        "destinybond" => destinybond::condition::on_faint(battle, target_pos, source_pos, effect_id),
-        "grudge" => grudge::condition::on_faint(battle, target_pos, source_pos, effect_id),
+        "destinybond" => destinybond::condition::on_faint(battle, target_pos, source_pos, effect),
+        "grudge" => grudge::condition::on_faint(battle, target_pos, source_pos, effect),
         "skydrop" => skydrop::condition::on_faint(battle, target_pos),
         _ => EventResult::Continue,
     }
@@ -2366,7 +2367,7 @@ pub fn dispatch_condition_on_restart(
 ) -> EventResult {
     match condition_id {
         "allyswitch" => allyswitch::condition::on_restart(battle, target_pos),
-        "charge" => charge::condition::on_restart(battle, target_pos, None, effect.map(|e| e.id.as_str())),
+        "charge" => charge::condition::on_restart(battle, target_pos, None, effect),
         "defensecurl" => defensecurl::condition::on_restart(battle, target_pos),
         "furycutter" => furycutter::condition::on_restart(battle),
         "gmaxchistrike" => {
@@ -2824,7 +2825,7 @@ pub fn dispatch_condition_on_try_add_volatile(
     status: Option<&str>,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     let move_id = active_move.map(|m| m.id.as_str()).unwrap_or(""); match move_id {
         "electricterrain" => {
@@ -2832,10 +2833,10 @@ pub fn dispatch_condition_on_try_add_volatile(
         }
         "focuspunch" => focuspunch::condition::on_try_add_volatile(battle, status, target_pos.unwrap_or((0,0))),
         "mistyterrain" => {
-            mistyterrain::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect_id)
+            mistyterrain::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect)
         }
         "safeguard" => {
-            safeguard::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect_id)
+            safeguard::condition::on_try_add_volatile(battle, status, target_pos, source_pos, effect)
         }
         _ => EventResult::Continue,
     }

@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
@@ -71,9 +72,11 @@ pub mod condition {
         damage: i32,
         _target_pos: (usize, usize),
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&Effect>,
         is_move_effect: bool,
     ) -> EventResult {
+        let effect_id = effect.map(|e| e.id.as_str());
+
         // if (!move || move.effectType !== 'Move' || !source) return;
         // effect_id represents the move, source_pos is the source
         // is_move_effect checks that effectType === 'Move'

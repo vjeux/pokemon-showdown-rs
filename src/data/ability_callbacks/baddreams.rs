@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, hp_fraction};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 
 /// onResidual(pokemon) {
@@ -15,7 +15,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // if (!pokemon.hp) return;
     let pokemon_hp = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
@@ -14,7 +15,7 @@ use crate::event::EventResult;
 ///         this.boost({ def: 1 }, pokemon);
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // if (pokemon.baseSpecies.name === 'Ogerpon-Cornerstone-Tera' && pokemon.terastallized && !this.effectState.embodied)
     let (base_species_name, is_terastallized, already_embodied) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

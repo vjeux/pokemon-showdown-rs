@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, hp_fraction};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 
 /// onDamage(damage, target, source, effect) {
@@ -13,7 +13,8 @@ use crate::event::EventResult;
 ///         return false;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // if (effect.id === 'psn' || effect.id === 'tox')
     if let Some(eff_id) = effect_id {
         if eff_id == "psn" || eff_id == "tox" {

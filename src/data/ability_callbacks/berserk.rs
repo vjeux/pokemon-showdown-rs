@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onDamage(damage, target, source, effect) {
@@ -18,7 +19,8 @@ use crate::event::EventResult;
 ///         this.effectState.checkedBerserk = true;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     debug_elog!("[BERSERK_ON_DAMAGE] turn={}, effect_id={:?}, target={:?}, battle.effect={:?}",
         battle.turn, effect_id, _target_pos, battle.effect.as_ref().map(|e| (e.id.as_str(), e.effect_type)));
     // if (effect.effectType === "Move" && !effect.multihit && !(effect.hasSheerForce && source.hasAbility('sheerforce'))) {

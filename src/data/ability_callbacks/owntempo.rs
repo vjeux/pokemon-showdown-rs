@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onUpdate(pokemon) {
@@ -51,7 +52,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 /// onTryAddVolatile(status, pokemon) {
 ///     if (status.id === 'confusion') return null;
 /// }
-pub fn on_try_add_volatile(_battle: &mut Battle, status_id: &str, _target_pos: (usize, usize), __source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_try_add_volatile(_battle: &mut Battle, status_id: &str, _target_pos: (usize, usize), __source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     if status_id == "confusion" {
         return EventResult::Null;
     }
@@ -97,7 +98,7 @@ pub fn on_hit(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: (us
 /// }
 pub fn on_try_boost(
     battle: &mut Battle,
-    boost: Option<&mut crate::dex_data::BoostsTable>, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>,
+    boost: Option<&mut crate::dex_data::BoostsTable>, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>,
 ) -> EventResult {
     let is_intimidate = battle.event.as_ref()
         .and_then(|e| e.effect.as_ref())

@@ -6,6 +6,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -16,7 +17,7 @@ pub fn on_start(
     battle: &mut Battle,
     _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // Set counter to 3 when stall is first added
     // In JavaScript: this.effectState.counter = 3
@@ -69,7 +70,7 @@ pub fn on_restart(
     battle: &mut Battle,
     _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     const COUNTER_MAX: i32 = 729; // From conditions.json
 

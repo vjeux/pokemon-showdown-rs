@@ -106,7 +106,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
 ///         this.runEvent('AfterUseItem', target, null, null, this.dex.items.get('airballoon'));
 ///     }
 /// }
-pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     // this.debug('effect: ' + effect.id);
     // if (effect.effectType === 'Move') {
     //     this.add('-enditem', target, 'Air Balloon');

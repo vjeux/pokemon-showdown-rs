@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 pub mod condition {
@@ -30,7 +31,7 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        _effect: Option<&Effect>,
     ) -> EventResult {
         // if (effect.effectType === 'Move' && effect.infiltrates && !target.isAlly(source)) return;
         if let (Some(source), Some(target)) = (source_pos, target_pos) {

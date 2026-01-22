@@ -5,6 +5,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::battle::Arg;
 use crate::dex_data::ID;
 use crate::event::EventResult;
@@ -22,7 +23,7 @@ pub fn on_start(
     battle: &mut Battle,
     _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // if (!this.activeMove) throw new Error("Battle.activeMove is null");
     let active_move = match &battle.active_move {

@@ -5,6 +5,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::battle::Arg;
 use crate::dex_data::ID;
 use crate::event::EventResult;
@@ -33,7 +34,7 @@ pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // Get target ident
     let target_ident = {

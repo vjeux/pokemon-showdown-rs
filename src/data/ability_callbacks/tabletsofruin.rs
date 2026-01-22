@@ -4,14 +4,14 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, Arg};
+use crate::battle::{Battle, Arg, Effect};
 use crate::event::EventResult;
 
 /// onStart(pokemon) {
 ///     if (this.suppressingAbility(pokemon)) return;
 ///     this.add('-ability', pokemon, 'Tablets of Ruin');
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     if battle.suppressing_ability(Some(pokemon_pos)) {
         return EventResult::Continue;
     }

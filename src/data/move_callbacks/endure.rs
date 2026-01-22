@@ -5,6 +5,7 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onPrepareHit(pokemon) {
@@ -96,7 +97,7 @@ pub mod condition {
         damage: i32,
         target_pos: (usize, usize),
         _source_pos: Option<(usize, usize)>,
-        _effect_id: Option<&str>,
+        _effect: Option<&Effect>,
         is_move_effect: bool,
     ) -> EventResult {
         let target = target_pos;

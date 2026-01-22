@@ -75,8 +75,10 @@ pub mod condition {
         battle: &mut Battle,
         target_pos: Option<(usize, usize)>,
         source_pos: Option<(usize, usize)>,
-        effect_id: Option<&str>,
+        effect: Option<&Effect>,
     ) -> EventResult {
+        let effect_id = effect.map(|e| e.id.as_str());
+
         use crate::dex_data::ID;
 
         // if (!source || !effect || target.isAlly(source)) return;

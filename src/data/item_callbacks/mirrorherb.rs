@@ -5,6 +5,7 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -24,9 +25,11 @@ pub fn on_foe_after_boost(
     battle: &mut Battle,
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
     boost: &crate::dex_data::BoostsTable,
 ) -> EventResult {
+    let effect_id = effect.map(|e| e.name.as_str());
+
     // if (effect?.name === 'Opportunist' || effect?.name === 'Mirror Herb') return;
     if let Some(eff_id) = effect_id {
         if eff_id == "Opportunist" || eff_id == "Mirror Herb" {

@@ -5,13 +5,14 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onStart(source) {
 ///     if (source.species.id === 'groudon' && source.item === 'redorb') return;
 ///     this.field.setWeather('sunnyday');
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect_id: Option<&str>) -> EventResult {
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // Check if it's Groudon with Red Orb
     let is_groudon_with_red_orb = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {

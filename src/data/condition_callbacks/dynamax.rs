@@ -5,6 +5,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::battle::Arg;
 use crate::event::EventResult;
 use crate::dex_data::ID;
@@ -38,7 +39,7 @@ pub fn on_start(
     battle: &mut Battle,
     pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // this.effectState.turns = 0;
     // JavaScript: this.effectState.turns = 0
@@ -171,7 +172,7 @@ pub fn on_try_add_volatile(
     status: Option<&str>,
     _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // if (status.id === 'flinch') return null;
     if let Some(status_id) = status {
@@ -269,7 +270,7 @@ pub fn on_residual(
     battle: &mut Battle,
     _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // this.effectState.turns++;
     // JavaScript: this.effectState.turns++

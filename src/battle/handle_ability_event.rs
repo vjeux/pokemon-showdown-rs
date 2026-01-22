@@ -119,7 +119,7 @@ impl Battle {
                 let default_boost = crate::dex_data::BoostsTable::new();
                 let boost = relay_var_boost.as_ref().unwrap_or(&default_boost);
                 // effect_id comes from event.effect (e.g., "intimidate" when boost was caused by Intimidate)
-                ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), boost, Some(pokemon_pos), event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
+                ability_callbacks::dispatch_on_after_boost(self, ability_id.as_str(), boost, Some(pokemon_pos), event_source_pos, event_effect.as_ref())
             }
             "AfterEachBoost" => {
                 let default_boost = crate::dex_data::BoostsTable::new();
@@ -130,7 +130,7 @@ impl Battle {
                     boost,
                     Some(pokemon_pos),
                     event_source_pos,
-                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                    event_effect.as_ref(),
                 )
             }
             "AfterMoveSecondary" => ability_callbacks::dispatch_on_after_move_secondary(
@@ -153,7 +153,7 @@ impl Battle {
                 Some(event_status_id.as_str()),
                 Some(pokemon_pos),
                 event_source_pos,
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref(),
             ),
             "AfterTerastallization" => ability_callbacks::dispatch_on_after_terastallization(
                 self,
@@ -163,13 +163,13 @@ impl Battle {
             "AfterUseItem" => ability_callbacks::dispatch_on_after_use_item(
                 self,
                 ability_id.as_str(),
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref().map(|e| e.id.as_str()),
                 pokemon_pos,
             ),
             "AllyAfterUseItem" => ability_callbacks::dispatch_on_ally_after_use_item(
                 self,
                 ability_id.as_str(),
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref().map(|e| e.id.as_str()),
                 pokemon_pos,
             ),
             "AllyBasePower" => ability_callbacks::dispatch_on_ally_base_power(
@@ -221,7 +221,7 @@ impl Battle {
                 event_status_id.as_str(),
                 pokemon_pos,
                 event_source_pos,
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref(),
             ),
             "AllyTryAddVolatile" => ability_callbacks::dispatch_on_ally_try_add_volatile(
                 self,
@@ -229,14 +229,14 @@ impl Battle {
                 Some(event_status_id.as_str()),
                 Some(pokemon_pos),
                 event_source_pos,
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref(),
             ),
             "AllyTryBoost" => ability_callbacks::dispatch_on_ally_try_boost(
                 self,
                 ability_id.as_str(),
                 Some(pokemon_pos),
                 event_source_pos,
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref(),
             ),
             "AllyTryHitSide" => ability_callbacks::dispatch_on_ally_try_hit_side(
                 self,
@@ -267,7 +267,7 @@ impl Battle {
                 Some(event_status_id.as_str()),
                 event_target_pos,
                 event_source_pos,
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref(),
             ),
             "AnyAfterTerastallization" => {
                 ability_callbacks::dispatch_on_any_after_terastallization(
@@ -302,7 +302,7 @@ impl Battle {
                     relay_var_int,
                     Some(pokemon_pos),
                     event_source_pos,
-                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                    event_effect.as_ref(),
                 )
             }
             "AnyFaint" => {
@@ -417,7 +417,7 @@ impl Battle {
                     ability_id.as_str(),
                     Some(pokemon_pos),
                     event_source_pos,
-                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                    event_effect.as_ref(),
                 )
             }
             "AnyTryPrimaryHit" => ability_callbacks::dispatch_on_any_try_primary_hit(
@@ -466,17 +466,12 @@ impl Battle {
                 pokemon_pos,
             ),
             "ChangeBoost" => {
-                let (target_pos, source_pos, effect_id_string) = if let Some(ref event) = self.event {
-                    (
-                        event.target,
-                        event.source,
-                        event.effect.as_ref().map(|eff| eff.id.as_str().to_string())
-                    )
+                let (target_pos, source_pos) = if let Some(ref event) = self.event {
+                    (event.target, event.source)
                 } else {
-                    (Some(pokemon_pos), None, None)
+                    (Some(pokemon_pos), None)
                 };
-                let effect_id = effect_id_string.as_ref().map(|s| s.as_str());
-                ability_callbacks::dispatch_on_change_boost(self, ability_id.as_str(), target_pos, source_pos, effect_id)
+                ability_callbacks::dispatch_on_change_boost(self, ability_id.as_str(), target_pos, source_pos, event_effect.as_ref())
             }
             "CheckShow" => {
                 ability_callbacks::dispatch_on_check_show(self, ability_id.as_str(), pokemon_pos)
@@ -491,7 +486,7 @@ impl Battle {
                     relay_var_int,
                     pokemon_pos,
                     event_source_pos,
-                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                    event_effect.as_ref(),
                 )
             }
             "DamagePriority" => ability_callbacks::dispatch_on_damage_priority(
@@ -500,7 +495,7 @@ impl Battle {
                 relay_var_int,
                 pokemon_pos,
                 event_source_pos,
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref(),
             ),
             "DamagingHit" => {
                 // Get move_id, source, and damage from current event context
@@ -546,10 +541,10 @@ impl Battle {
                 ability_callbacks::dispatch_on_eat_item(
                     self,
                     ability_id.as_str(),
-                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                    event_effect.as_ref().map(|e| e.id.as_str()),
                     pokemon_pos,
                     event_source_pos,
-                    if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                    event_effect.as_ref(),
                 )
             }
             "Effectiveness" => {
@@ -578,14 +573,14 @@ impl Battle {
                 Some(pokemon_pos)
             ),
             "End" => ability_callbacks::dispatch_on_end(self, ability_id.as_str(), pokemon_pos),
-            "Faint" => ability_callbacks::dispatch_on_faint(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }),
+            "Faint" => ability_callbacks::dispatch_on_faint(self, ability_id.as_str(), pokemon_pos, event_source_pos, event_effect.as_ref()),
             "Flinch" => {
                 ability_callbacks::dispatch_on_flinch(self, ability_id.as_str(), pokemon_pos)
             }
             "FoeAfterBoost" => ability_callbacks::dispatch_on_foe_after_boost(
                 self,
                 ability_id.as_str(),
-                Some(pokemon_pos), event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }
+                Some(pokemon_pos), event_source_pos, event_effect.as_ref()
             ),
             "FoeMaybeTrapPokemon" => ability_callbacks::dispatch_on_foe_maybe_trap_pokemon(
                 self,
@@ -779,24 +774,24 @@ impl Battle {
                 ability_callbacks::dispatch_on_prepare_hit(self, ability_id.as_str(), Some(pokemon_pos), event_target_pos, active_move_clone.as_ref())
             }
             "Residual" => {
-                ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
+                ability_callbacks::dispatch_on_residual(self, ability_id.as_str(), pokemon_pos, event_source_pos, event_effect.as_ref())
             }
             "ResidualOrder" => ability_callbacks::dispatch_on_residual_order(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
                 event_source_pos,
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref(),
             ),
             "ResidualSubOrder" => ability_callbacks::dispatch_on_residual_sub_order(
                 self,
                 ability_id.as_str(),
                 pokemon_pos,
                 event_source_pos,
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref(),
             ),
             "SetStatus" => {
-                ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), event_status_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
+                ability_callbacks::dispatch_on_set_status(self, ability_id.as_str(), event_status_id.as_str(), pokemon_pos, event_source_pos, event_effect.as_ref())
             }
             "SideConditionStart" => {
                 let side_condition_id_string = self.event.as_ref()
@@ -946,14 +941,14 @@ impl Battle {
             "SourceTryHeal" => ability_callbacks::dispatch_on_source_try_heal(
                 self,
                 ability_id.as_str(),
-                relay_var_int, event_target_pos, Some(pokemon_pos), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }
+                relay_var_int, event_target_pos, Some(pokemon_pos), event_effect.as_ref()
             ),
             "SourceTryPrimaryHit" => ability_callbacks::dispatch_on_source_try_primary_hit(
                 self,
                 ability_id.as_str(),
-                event_target_pos, Some(pokemon_pos), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }
+                event_target_pos, Some(pokemon_pos), event_effect.as_ref()
             ),
-            "Start" => ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }),
+            "Start" => ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, event_effect.as_ref()),
             "SwitchIn" => {
                 // JavaScript getCallback() special logic (battle.ts:996-1001):
                 // if (callback === undefined && target instanceof Pokemon && this.gen >= 5 && callbackName === 'onSwitchIn' &&
@@ -976,7 +971,7 @@ impl Battle {
                     ability_callbacks::dispatch_on_switch_in(self, ability_id.as_str(), pokemon_pos)
                 } else if self.gen >= 5 {
                     // No custom onSwitchIn, gen >= 5: use onStart
-                    ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
+                    ability_callbacks::dispatch_on_start(self, ability_id.as_str(), pokemon_pos, event_source_pos, event_effect.as_ref())
                 } else {
                     // gen < 5: try to call onSwitchIn (which likely doesn't exist)
                     ability_callbacks::dispatch_on_switch_in(self, ability_id.as_str(), pokemon_pos)
@@ -991,12 +986,12 @@ impl Battle {
                 ability_callbacks::dispatch_on_switch_out(self, ability_id.as_str(), pokemon_pos)
             },
             "TakeItem" => {
-                ability_callbacks::dispatch_on_take_item(self, ability_id.as_str(), if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }, pokemon_pos, event_source_pos)
+                ability_callbacks::dispatch_on_take_item(self, ability_id.as_str(), event_effect.as_ref().map(|e| e.id.as_str()), pokemon_pos, event_source_pos)
             },
             "TerrainChange" => ability_callbacks::dispatch_on_terrain_change(
                 self,
                 ability_id.as_str(),
-                pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) }
+                pokemon_pos, event_source_pos, event_effect.as_ref()
             ),
             "TryAddVolatile" => {
                 // Extract status_id from relay_var (e.g., "confusion")
@@ -1030,7 +1025,7 @@ impl Battle {
                 let result = ability_callbacks::dispatch_on_try_boost(
                     self,
                     ability_id.as_str(),
-                    boost.as_mut(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                    boost.as_mut(), pokemon_pos, event_source_pos, event_effect.as_ref(),
                 );
                 // Return the modified boost so run_event can use it
                 // In JavaScript, the boost object is modified in-place and returned by runEvent
@@ -1058,7 +1053,7 @@ impl Battle {
                 let result = ability_callbacks::dispatch_on_try_boost_priority(
                     self,
                     ability_id.as_str(),
-                    boost.as_mut(), pokemon_pos, event_source_pos, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                    boost.as_mut(), pokemon_pos, event_source_pos, event_effect.as_ref(),
                 );
                 // Return the modified boost so run_event can use it
                 if let Some(b) = boost {
@@ -1082,7 +1077,7 @@ impl Battle {
             }
             "TryHeal" => {
                 // Pass the effect_id so abilities like Ripen can check if it's a berry
-                ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), None, if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) })
+                ability_callbacks::dispatch_on_try_heal(self, ability_id.as_str(), relay_var_int, Some(pokemon_pos), None, event_effect.as_ref())
             }
             "TryHit" => {
                 ability_callbacks::dispatch_on_try_hit(self, ability_id.as_str(), pokemon_pos, event_source_pos.unwrap_or((0, 0)), active_move_clone.as_ref())
@@ -1107,7 +1102,7 @@ impl Battle {
                 ability_id.as_str(),
                 pokemon_pos,
                 event_source_pos,
-                if event_effect_id.is_empty() { None } else { Some(event_effect_id.as_str()) },
+                event_effect.as_ref(),
             ),
             _ => EventResult::Continue,
         };

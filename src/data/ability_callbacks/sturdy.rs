@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onTryHit(pokemon, target, move) {
@@ -59,7 +60,8 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), _source_pos: 
 ///         return target.hp - 1;
 ///     }
 /// }
-pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_damage(battle: &mut Battle, damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
 
     // if (target.hp === target.maxhp && damage >= target.hp && effect && effect.effectType === 'Move')

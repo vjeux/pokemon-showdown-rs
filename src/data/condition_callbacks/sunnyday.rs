@@ -5,6 +5,7 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::battle::Arg;
 use crate::event::EventResult;
 
@@ -22,7 +23,7 @@ pub fn duration_callback(
     battle: &mut Battle,
     _target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
-    _effect_id: Option<&str>,
+    _effect: Option<&Effect>,
 ) -> EventResult {
     // if (source?.hasItem('heatrock')) { return 8; }
     let has_heat_rock = if let Some(pos) = source_pos {

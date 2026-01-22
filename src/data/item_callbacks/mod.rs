@@ -3,7 +3,7 @@
 //! This module provides dispatch functions for item callbacks.
 //! Individual item implementations will be added as needed.
 
-use crate::battle::Battle;
+use crate::battle::{Battle, Effect};
 use crate::battle_actions::ActiveMove;
 use crate::event::EventResult;
 
@@ -433,10 +433,10 @@ pub fn dispatch_on_after_sub_damage(
     damage: i32,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match item_id {
-        "airballoon" => airballoon::on_after_sub_damage(battle, damage, target_pos, source_pos, effect_id),
+        "airballoon" => airballoon::on_after_sub_damage(battle, damage, target_pos, source_pos, effect),
         _ => EventResult::Continue,
     }
 }
@@ -630,12 +630,12 @@ pub fn dispatch_on_damage(
     damage: i32,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
     effect_type: Option<&str>,
 ) -> EventResult {
     match item_id {
-        "focusband" => focusband::on_damage(battle, damage, target_pos, source_pos, effect_id, effect_type),
-        "focussash" => focussash::on_damage(battle, damage, target_pos, source_pos, effect_id, effect_type),
+        "focusband" => focusband::on_damage(battle, damage, target_pos, source_pos, effect, effect_type),
+        "focussash" => focussash::on_damage(battle, damage, target_pos, source_pos, effect, effect_type),
         _ => EventResult::Continue,
     }
 }
@@ -789,11 +789,11 @@ pub fn dispatch_on_foe_after_boost(
     item_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
     boost: &crate::dex_data::BoostsTable,
 ) -> EventResult {
     match item_id {
-        "mirrorherb" => mirrorherb::on_foe_after_boost(battle, target_pos, source_pos, effect_id, boost),
+        "mirrorherb" => mirrorherb::on_foe_after_boost(battle, target_pos, source_pos, effect, boost),
         _ => EventResult::Continue,
     }
 }
@@ -1147,10 +1147,10 @@ pub fn dispatch_on_set_ability(
     item_id: &str,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match item_id {
-        "abilityshield" => abilityshield::on_set_ability(battle, target_pos, source_pos, effect_id),
+        "abilityshield" => abilityshield::on_set_ability(battle, target_pos, source_pos, effect),
         _ => EventResult::Continue,
     }
 }
@@ -1543,10 +1543,10 @@ pub fn dispatch_on_try_heal(
     damage: i32,
     target_pos: Option<(usize, usize)>,
     source_pos: Option<(usize, usize)>,
-    effect_id: Option<&str>,
+    effect: Option<&Effect>,
 ) -> EventResult {
     match item_id {
-        "bigroot" => bigroot::on_try_heal(battle, damage, target_pos, source_pos, effect_id),
+        "bigroot" => bigroot::on_try_heal(battle, damage, target_pos, source_pos, effect),
         _ => EventResult::Continue,
     }
 }

@@ -5,6 +5,7 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onAfterSetStatus(status, target, source, effect) {
@@ -16,7 +17,8 @@ use crate::event::EventResult;
 ///     // and show messages when activating against it.
 ///     source.trySetStatus(status, target, { status: status.id, id: 'synchronize' } as Effect);
 /// }
-pub fn on_after_set_status(battle: &mut Battle, _status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect_id: Option<&str>) -> EventResult {
+pub fn on_after_set_status(battle: &mut Battle, _status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
+    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
     use crate::Pokemon;
 

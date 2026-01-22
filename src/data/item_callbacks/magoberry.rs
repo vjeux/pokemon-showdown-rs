@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::{Battle, hp_fraction};
+use crate::battle::{Battle, Effect, hp_fraction};
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
 
