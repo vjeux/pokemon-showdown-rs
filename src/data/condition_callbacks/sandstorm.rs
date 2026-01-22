@@ -162,11 +162,13 @@ pub fn on_field_residual(
         Arg::from("[upkeep]"),
     ]);
 
-    // Check if weather is still sandstorm
-    if battle.field.weather == ID::from("sandstorm") {
+    // Check if weather is still sandstorm (using is_weather to respect suppressingWeather)
+    // JS: if (this.field.isWeather('sandstorm')) this.eachEvent('Weather');
+    // isWeather() uses effectiveWeather() which checks suppressingWeather() (Air Lock/Cloud Nine)
+    if battle.is_weather("sandstorm") {
         // Pass sandstorm as the effect so Weather event knows which weather condition to use
         // In JavaScript: this.eachEvent('Weather') uses this.effect which is the sandstorm condition
-        
+
         battle.each_event("Weather", Some(&Effect::weather(ID::from("sandstorm"))), None);
     }
 

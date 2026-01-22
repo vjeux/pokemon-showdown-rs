@@ -1101,6 +1101,22 @@ impl Battle {
         if should_check_fainted {
             self.check_fainted();
         }
+        // TODO: megaEvo case not needed yet (Gen 7 only)
+        // JS: } else if (['megaEvo', 'megaEvoX', 'megaEvoY'].includes(action.choice) && this.gen === 7) {
+        //         this.eachEvent('Update');
+        //         // In Gen 7, the action order is recalculated for a Pokémon that mega evolves.
+        //         ...
+        //         return false;
+        // JS: } else if (this.queue.peek()?.choice === 'instaswitch') {
+        //         return false;
+        //     }
+        // Check for instaswitch: if next action is instaswitch, return early
+        if let Some(Action::Switch(switch_action)) = self.queue.peek() {
+            if switch_action.choice == crate::battle_queue::SwitchActionType::InstaSwitch {
+                debug_elog!("[RUN_ACTION] Next action is instaswitch, returning early");
+                return;
+            }
+        }
 
         // JS: if (this.gen >= 5 && action.choice !== "start") {
         //         this.eachEvent("Update");
