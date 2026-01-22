@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
+use crate::battle::{Battle, hp_fraction};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -249,7 +249,10 @@ pub mod condition {
                 source_pokemon.base_maxhp
             };
 
-            battle.damage(base_max_hp / 8, Some(source), None, None, false);
+            // JavaScript uses float division: 1/8 = 0.125, then clampIntRange(0.125, 1) = 1
+            // Use hp_fraction to ensure minimum of 1 when base_max_hp > 0
+            let damage = hp_fraction(base_max_hp, 8);
+            battle.damage(damage, Some(source), None, None, false);
         }
 
         // return this.NOT_FAIL;
@@ -308,7 +311,10 @@ pub mod condition {
                 source_pokemon.base_maxhp
             };
 
-            battle.damage(base_max_hp / 8, Some(source), None, None, false);
+            // JavaScript uses float division: 1/8 = 0.125, then clampIntRange(0.125, 1) = 1
+            // Use hp_fraction to ensure minimum of 1 when base_max_hp > 0
+            let damage = hp_fraction(base_max_hp, 8);
+            battle.damage(damage, Some(source), None, None, false);
         }
 
         EventResult::Continue
