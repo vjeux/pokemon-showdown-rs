@@ -72,8 +72,14 @@ impl Pokemon {
         // Note: In Rust we receive ID directly
 
         // JS: if (!sourceEffect && this.battle.effect) sourceEffect = this.battle.effect;
-        // ✅ NOW IMPLEMENTED (Session 24 Part 29): source_pos and source_effect parameters
-        // Note: battle.event source/sourceEffect defaulting still missing
+        // ✅ NOW IMPLEMENTED: Default sourceEffect from battle.effect
+        // Clone the effect to avoid borrow conflicts with later mutable operations
+        let default_effect = if source_effect.is_none() && battle.effect.is_some() {
+            battle.effect.clone()
+        } else {
+            None
+        };
+        let source_effect_ref = source_effect.or(default_effect.as_ref());
 
         // JS: const oldAbility = this.battle.dex.abilities.get(this.ability);
         // Already have old_ability_id from Phase 1
@@ -112,7 +118,7 @@ impl Pokemon {
         // Note: JavaScript passes ability as 5th parameter (relayVar), but Rust run_event only accepts Option<i32>
         //       Passing None for now - handlers can check pokemon's ability field after it's set
         if !_is_from_forme_change && !is_transform {
-            let set_ability_result = battle.run_event("SetAbility", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, source_effect, EventResult::Continue, false, false);
+            let set_ability_result = battle.run_event("SetAbility", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, source_effect_ref, EventResult::Continue, false, false);
             // runEvent returns Option<i32>, None or Some(0) means failure
             if matches!(set_ability_result, EventResult::Number(0)) || matches!(set_ability_result, EventResult::Null) {
                 return ID::default();
@@ -167,7 +173,7 @@ impl Pokemon {
         // JS:     }
         // JS: }
         // ✅ NOW IMPLEMENTED (Session 24 Part 93): battle.add message with actual ability names and fullname
-        if let Some(src_effect) = source_effect {
+        if let Some(src_effect) = source_effect_ref {
             if !_is_from_forme_change && !is_transform {
                 // Get ability names from Dex
                 let new_ability_name = battle
@@ -229,7 +235,7 @@ impl Pokemon {
         if !ability_id.as_str().is_empty() && battle.gen > 3 {
             // JS: (!isTransform || oldAbility.id !== ability.id || this.battle.gen <= 4)
             if !is_transform || old_ability_id != ability_id || battle.gen <= 4 {
-                battle.single_event("Start", &crate::battle::Effect::ability(ability_id.clone()), None, Some(pokemon_pos), source_pos, source_effect, None);
+                battle.single_event("Start", &crate::battle::Effect::ability(ability_id.clone()), None, Some(pokemon_pos), source_pos, source_effect_ref, None);
             }
         }
 
