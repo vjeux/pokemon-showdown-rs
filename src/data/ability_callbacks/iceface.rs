@@ -67,15 +67,15 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 ///     }
 /// }
 pub fn on_damage(battle: &mut Battle, _damage: i32, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
+    use crate::battle::EffectType;
 
     // if (effect?.effectType === 'Move' && effect.category === 'Physical' && target.species.id === 'eiscue')
-    // Check if effect is a move
-    let is_move = if let Some(eff_id) = effect_id {
-        battle.dex.moves().get_by_id(&crate::dex_data::ID::from(eff_id)).is_some()
-    } else {
-        false
+    // Check if effect is a move by checking its effectType, not by looking up in dex
+    // This is important because crash damage uses a Condition effect, not a Move effect
+    let is_move = match effect {
+        Some(e) => e.effect_type == EffectType::Move,
+        None => false,
     };
 
     if !is_move {
