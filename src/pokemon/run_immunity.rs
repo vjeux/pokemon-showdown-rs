@@ -1,5 +1,6 @@
 use crate::*;
 use crate::event::EventResult;
+use crate::battle_actions::IgnoreImmunity;
 
 impl Pokemon {
 
@@ -40,6 +41,7 @@ impl Pokemon {
     // - Ground type → is_grounded() call
     // - Other types → battle.dex.get_immunity() call
     // - battle.add('-immune') messages when appropriate
+    // - Added ignoreImmunity check for Scrappy and similar abilities
     //
     pub fn run_immunity(
         battle: &mut Battle,
@@ -47,6 +49,40 @@ impl Pokemon {
         move_type: &str,
         with_message: bool,
     ) -> bool {
+        Self::run_immunity_with_ignore(battle, pokemon_pos, move_type, with_message, None)
+    }
+
+    /// Run immunity check with optional ignoreImmunity from active move
+    pub fn run_immunity_with_ignore(
+        battle: &mut Battle,
+        pokemon_pos: (usize, usize),
+        move_type: &str,
+        with_message: bool,
+        ignore_immunity: Option<&IgnoreImmunity>,
+    ) -> bool {
+        // JS: if (typeof source !== 'string') {
+        // JS:     if (source.ignoreImmunity && (source.ignoreImmunity === true || source.ignoreImmunity[type])) {
+        // JS:         return true;
+        // JS:     }
+        // JS: }
+        if let Some(ignore) = ignore_immunity {
+            match ignore {
+                IgnoreImmunity::All => {
+                    debug_elog!("[RUN_IMMUNITY] ignoreImmunity=All, returning true (not immune)");
+                    return true;
+                }
+                IgnoreImmunity::Specific(map) => {
+                    if map.get(move_type).copied().unwrap_or(false) {
+                        debug_elog!("[RUN_IMMUNITY] ignoreImmunity[{}]=true, returning true (not immune)", move_type);
+                        return true;
+                    }
+                }
+                IgnoreImmunity::NoIgnore => {
+                    // Explicitly set to false, don't ignore immunity
+                }
+            }
+        }
+
         // JS: if (!type || type === '???') return true;
         if move_type.is_empty() || move_type == "???" {
             return true;

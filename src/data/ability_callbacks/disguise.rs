@@ -133,7 +133,8 @@ pub fn on_critical_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
     }
 
     // if (!target.runImmunity(move)) return;
-    let immune = !crate::Pokemon::run_immunity(battle, target, &active_move_ref.move_type, false);
+    let ignore_immunity = active_move_ref.ignore_immunity.as_ref();
+    let immune = !crate::Pokemon::run_immunity_with_ignore(battle, target, &active_move_ref.move_type, false, ignore_immunity);
 
     if immune {
         return EventResult::Continue;
@@ -201,7 +202,8 @@ pub fn on_effectiveness(battle: &mut Battle, _type_mod: i32, target_pos: (usize,
     }
 
     // if (!target.runImmunity(move)) return;
-    let immune = !crate::Pokemon::run_immunity(battle, target_pos, &active_move_ref.move_type, false);
+    let ignore_immunity = active_move_ref.ignore_immunity.as_ref();
+    let immune = !crate::Pokemon::run_immunity_with_ignore(battle, target_pos, &active_move_ref.move_type, false, ignore_immunity);
 
     if immune {
         return EventResult::Continue;
