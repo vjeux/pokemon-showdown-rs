@@ -51,8 +51,6 @@ pub fn on_any_set_weather(battle: &mut Battle, _target_pos: Option<(usize, usize
 ///     this.field.clearWeather();
 /// }
 pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
-    use crate::dex_data::ID;
-
     // if (this.field.weatherState.source !== pokemon) return;
     let weather_source = &battle.field.weather_state.source;
     if weather_source != &Some(pokemon_pos) {
@@ -69,12 +67,13 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         }
 
         // if (target.hasAbility('primordialsea'))
+        // JavaScript uses hasAbility() which checks ignoringAbility() for suppression
         let has_primordial_sea = {
             let pokemon = match battle.pokemon_at(active_pos.0, active_pos.1) {
                 Some(p) => p,
                 None => continue,
             };
-            pokemon.base_ability == ID::from("primordialsea") || pokemon.ability == ID::from("primordialsea")
+            pokemon.has_ability(battle, &["primordialsea"])
         };
 
         if has_primordial_sea {

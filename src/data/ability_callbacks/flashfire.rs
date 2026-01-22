@@ -114,8 +114,6 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
-        use crate::dex_data::ID;
-
         // if (move.type === 'Fire' && attacker.hasAbility('flashfire'))
         let move_type = if let Some(active_move) = active_move {
             active_move.move_type.clone()
@@ -127,12 +125,13 @@ pub mod condition {
             return EventResult::Continue;
         }
 
+        // JavaScript uses hasAbility() which checks ignoringAbility() for suppression (e.g., Neutralizing Gas)
         let has_flash_fire = {
             let attacker = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            attacker.ability == ID::from("flashfire") || attacker.base_ability == ID::from("flashfire")
+            attacker.has_ability(battle, &["flashfire"])
         };
 
         if !has_flash_fire {
@@ -151,8 +150,6 @@ pub mod condition {
     ///     }
     /// }
     pub fn on_modify_sp_a(battle: &mut Battle, _spa: i32, attacker_pos: (usize, usize), _defender_pos: (usize, usize), active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
-        use crate::dex_data::ID;
-
         // if (move.type === 'Fire' && attacker.hasAbility('flashfire'))
         let move_type = if let Some(active_move) = active_move {
             active_move.move_type.clone()
@@ -164,12 +161,13 @@ pub mod condition {
             return EventResult::Continue;
         }
 
+        // JavaScript uses hasAbility() which checks ignoringAbility() for suppression (e.g., Neutralizing Gas)
         let has_flash_fire = {
             let attacker = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            attacker.ability == ID::from("flashfire") || attacker.base_ability == ID::from("flashfire")
+            attacker.has_ability(battle, &["flashfire"])
         };
 
         if !has_flash_fire {
