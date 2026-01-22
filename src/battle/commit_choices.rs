@@ -32,8 +32,8 @@ impl Battle {
         // JS: const oldQueue = this.queue.list;
         let old_queue = self.queue.list.clone();
         debug_elog!("[COMMIT_CHOICES] Old queue has {} actions before clearing", old_queue.len());
-        for (i, action) in old_queue.iter().enumerate() {
-            if let crate::battle_queue::Action::Move(move_action) = action {
+        for (_i, action) in old_queue.iter().enumerate() {
+            if let crate::battle_queue::Action::Move(_move_action) = action {
                 debug_elog!("[COMMIT_CHOICES] old_queue[{}]: Move {} from ({}, {})",
                     i, move_action.move_id.as_str(), move_action.side_index, move_action.pokemon_index);
             }
@@ -66,7 +66,7 @@ impl Battle {
         for side_idx in 0..self.sides.len() {
             let side_actions = self.sides[side_idx].choice.actions.clone();
             debug_elog!("[COMMIT_CHOICES] Side {} has {} actions", side_idx, side_actions.len());
-            for (action_idx, side_action) in side_actions.iter().enumerate() {
+            for (_action_idx, side_action) in side_actions.iter().enumerate() {
                 if let crate::side::ChoiceType::Move = side_action.choice {
                     debug_elog!("[COMMIT_CHOICES] Side {} action[{}]: Move {} targeting {:?}",
                         side_idx, action_idx,
@@ -79,8 +79,8 @@ impl Battle {
         self.queue = queue;
 
         debug_elog!("[COMMIT_CHOICES] Queue after adding all choices: {} actions", self.queue.list.len());
-        for (i, action) in self.queue.list.iter().enumerate() {
-            if let crate::battle_queue::Action::Move(move_action) = action {
+        for (_i, action) in self.queue.list.iter().enumerate() {
+            if let crate::battle_queue::Action::Move(_move_action) = action {
                 debug_elog!("[COMMIT_CHOICES] queue[{}]: Move {} from ({}, {})",
                     i, move_action.move_id.as_str(), move_action.side_index, move_action.pokemon_index);
             }
@@ -108,14 +108,14 @@ impl Battle {
         }, "commit_choices:queue");
 
         debug_elog!("[COMMIT_CHOICES] Queue after sorting: list has {} actions, self.queue.list has {} actions", list.len(), self.queue.list.len());
-        for (i, action) in list.iter().enumerate() {
-            if let crate::battle_queue::Action::Move(move_action) = action {
+        for (_i, action) in list.iter().enumerate() {
+            if let crate::battle_queue::Action::Move(_move_action) = action {
                 debug_elog!("[COMMIT_CHOICES] sorted list[{}]: Move {} from ({}, {})",
                     i, move_action.move_id.as_str(), move_action.side_index, move_action.pokemon_index);
             }
         }
-        for (i, action) in self.queue.list.iter().enumerate() {
-            if let crate::battle_queue::Action::Move(move_action) = action {
+        for (_i, action) in self.queue.list.iter().enumerate() {
+            if let crate::battle_queue::Action::Move(_move_action) = action {
                 debug_elog!("[COMMIT_CHOICES] ORPHAN self.queue.list[{}]: Move {} from ({}, {})",
                     i, move_action.move_id.as_str(), move_action.side_index, move_action.pokemon_index);
             }
@@ -138,8 +138,8 @@ impl Battle {
 
         // JS: this.turnLoop();
         debug_elog!("[COMMIT_CHOICES] Right before turn_loop, queue has {} actions", self.queue.list.len());
-        for (i, action) in self.queue.list.iter().enumerate() {
-            if let crate::battle_queue::Action::Move(move_action) = action {
+        for (_i, action) in self.queue.list.iter().enumerate() {
+            if let crate::battle_queue::Action::Move(_move_action) = action {
                 debug_elog!("[COMMIT_CHOICES] final queue[{}]: Move {} from ({}, {})",
                     i, move_action.move_id.as_str(), move_action.side_index, move_action.pokemon_index);
             }

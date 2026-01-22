@@ -232,7 +232,7 @@ pub fn on_end(
 /// ```
 pub fn on_lock_move(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
 ) -> EventResult {
     debug_elog!("[TWOTURNMOVE_ONLOCKMOVE] Called for pokemon=({},{}), turn={}", pokemon_pos.0, pokemon_pos.1, battle.turn);
 

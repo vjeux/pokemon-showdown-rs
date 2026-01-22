@@ -60,7 +60,7 @@ pub mod condition {
         target_pos: Option<(usize, usize)>,
         active_move: Option<&crate::battle_actions::ActiveMove>,
     ) -> EventResult {
-        let move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
+        let _move_id = active_move.map(|m| m.id.as_str()).unwrap_or("");
         let target = match target_pos {
             Some(pos) => pos,
             None => return EventResult::Continue,

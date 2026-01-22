@@ -24,7 +24,7 @@ impl Pokemon {
         volatile_id: &ID,
     ) -> bool {
         // Get Pokemon name for logging
-        let pokemon_name = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+        let _pokemon_name = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             pokemon.name.clone()
         } else {
             "Unknown".to_string()

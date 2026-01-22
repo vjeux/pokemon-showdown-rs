@@ -201,7 +201,7 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // Debug logging
-        let (pokemon_name, active_turns_val) = {
+        let (pokemon_name, _active_turns_val) = {
             let p = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,

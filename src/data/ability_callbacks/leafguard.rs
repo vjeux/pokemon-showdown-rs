@@ -72,8 +72,7 @@ pub fn on_set_status(battle: &mut Battle, _status_id: &str, target_pos: (usize, 
 ///         return null;
 ///     }
 /// }
-pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_try_add_volatile(battle: &mut Battle, status_id: &str, target_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     use crate::battle::Arg;
 
     // if (status.id === 'yawn' && ['sunnyday', 'desolateland'].includes(target.effectiveWeather()))

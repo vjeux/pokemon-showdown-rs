@@ -5,7 +5,6 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
-use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onSourceModifyAtk(atk, attacker, defender, move) {

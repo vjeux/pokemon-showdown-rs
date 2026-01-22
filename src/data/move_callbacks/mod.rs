@@ -1681,7 +1681,7 @@ pub fn dispatch_condition_on_any_invulnerability(
     source_pos: (usize, usize),
     attacking_active_move: Option<&ActiveMove>,
 ) -> EventResult {
-    let attacking_move_id = attacking_active_move.map(|m| m.id.as_str()).unwrap_or("");
+    let _attacking_move_id = attacking_active_move.map(|m| m.id.as_str()).unwrap_or("");
     debug_elog!("[DISPATCH_COND_ANY_INVULN] condition_id='{}', attacking_move_id='{}', target_pos={:?}, source_pos={:?}",
         condition_id, attacking_move_id, target_pos, source_pos);
     let result = match condition_id {

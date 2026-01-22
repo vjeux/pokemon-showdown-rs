@@ -722,9 +722,9 @@ impl Battle {
                     condition_id, self.event.as_ref().map(|e| e.modifier).unwrap_or(0));
 
                 // Debug: print event details
-                if let Some(ref curr_ev) = self.event {
+                if let Some(ref _curr_ev) = self.event {
                     debug_elog!("[HANDLE_CONDITION_EVENT] event: source={:?}, target={:?}, effect={:?}",
-                        curr_ev.source, curr_ev.target, curr_ev.effect);
+                        _curr_ev.source, _curr_ev.target, _curr_ev.effect);
                 }
 
                 // In runEvent("ModifyDamage", pokemon, target, move, baseDamage):
@@ -744,7 +744,7 @@ impl Battle {
                 let callback_target = event_source; // defender
 
                 // Extract the active move ID for logging
-                let move_id_for_log = self.active_move.as_ref()
+                let _move_id_for_log = self.active_move.as_ref()
                     .map(|m| m.id.to_string())
                     .unwrap_or_default();
 

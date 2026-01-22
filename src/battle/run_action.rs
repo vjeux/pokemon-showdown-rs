@@ -419,7 +419,7 @@ impl Battle {
                             let temp_active_move = self.dex.get_active_move(move_id.as_str());
 
                             // Call the move's before_turn_callback
-                            let result = crate::data::move_callbacks::dispatch_before_turn_callback(
+                            let _result = crate::data::move_callbacks::dispatch_before_turn_callback(
                                 self,
                                 temp_active_move.as_ref(),
                                 (side_idx, poke_idx)
@@ -440,7 +440,7 @@ impl Battle {
                             let temp_active_move = self.dex.get_active_move(move_id.as_str());
 
                             // Call the move's priority_charge_callback
-                            let result = crate::data::move_callbacks::dispatch_priority_charge_callback(
+                            let _result = crate::data::move_callbacks::dispatch_priority_charge_callback(
                                 self,
                                 temp_active_move.as_ref(),
                                 (side_idx, poke_idx)
@@ -1274,7 +1274,7 @@ impl Battle {
         //         }
         //     }
         debug_elog!("[RUN_ACTION] Switches array: {:?}", switches);
-        for (i, &player_switch) in switches.iter().enumerate() {
+        for (_i, &player_switch) in switches.iter().enumerate() {
             if player_switch {
                 debug_elog!("[RUN_ACTION] Side {} needs to switch, calling make_request(Switch)", i);
                 self.make_request(Some(BattleRequestState::Switch));

@@ -167,7 +167,7 @@ pub mod condition {
         };
 
         // Get active move properties
-        let is_z_or_max = active_move_ref.is_z.is_some() || active_move_ref.is_max.is_some();
+        let _is_z_or_max = active_move_ref.is_z.is_some() || active_move_ref.is_max.is_some();
         let name = battle.dex.moves().get_by_id(&active_move_ref.id)
             .map(|md| md.name.clone())
             .unwrap_or_else(|| active_move_ref.id.to_string());

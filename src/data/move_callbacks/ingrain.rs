@@ -45,7 +45,7 @@ pub mod condition {
         let pokemon = pokemon_pos;
 
         // this.heal(pokemon.baseMaxhp / 16);
-        let (heal_amount, pokemon_name) = {
+        let (heal_amount, _pokemon_name) = {
             let pokemon_pokemon = match battle.pokemon_at(pokemon.0, pokemon.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,

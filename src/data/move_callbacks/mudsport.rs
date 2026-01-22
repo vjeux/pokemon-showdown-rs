@@ -67,10 +67,10 @@ pub mod condition {
             // (debug is typically not needed in Rust implementation)
 
             debug_elog!("[MUDSPORT] Electric type detected, applying chain_modify_fraction(1352, 4096)");
-            let modifier_before = battle.event.as_ref().map(|e| e.modifier).unwrap_or(0);
+            let _modifier_before = battle.event.as_ref().map(|e| e.modifier).unwrap_or(0);
             // return this.chainModify([1352, 4096]);
             battle.chain_modify_fraction(1352, 4096);
-            let modifier_after = battle.event.as_ref().map(|e| e.modifier).unwrap_or(0);
+            let _modifier_after = battle.event.as_ref().map(|e| e.modifier).unwrap_or(0);
             debug_elog!("[MUDSPORT] modifier: {} -> {}", modifier_before, modifier_after);
             return EventResult::Continue;
         }

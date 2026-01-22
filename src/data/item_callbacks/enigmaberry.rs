@@ -42,7 +42,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
         }
     }
 
-    let move_id = active_move_ref.id.as_str();
+    let _move_id = active_move_ref.id.as_str();
 
     // JavaScript: target.getMoveHitData(move).typeMod > 0
     // IMPORTANT: Use the stored type_mod from move hit data, NOT recalculated run_effectiveness!
@@ -53,7 +53,7 @@ pub fn on_hit(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_po
         .map(|hit_data| hit_data.type_mod as i32)
         .unwrap_or(0);
 
-    let (is_super_effective, target_base_maxhp, target_hp) = {
+    let (is_super_effective, target_base_maxhp, _target_hp) = {
         let target = match battle.pokemon_at(target_pos.0, target_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,

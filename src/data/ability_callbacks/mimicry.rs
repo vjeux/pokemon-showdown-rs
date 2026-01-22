@@ -46,8 +46,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Op
 ///         this.add('-end', pokemon, 'typechange', '[silent]');
 ///     }
 /// }
-pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // Determine new types based on terrain
     let types = {
         let terrain = battle.field.get_terrain().as_str();

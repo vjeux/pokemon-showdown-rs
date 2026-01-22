@@ -140,7 +140,7 @@ pub mod condition {
     ///     if (move && !move.ohko) return true;
     /// }
     pub fn on_accuracy(
-        battle: &mut Battle,
+        _battle: &mut Battle,
         _accuracy: i32,
         _target_pos: Option<(usize, usize)>,
         _source_pos: Option<(usize, usize)>,

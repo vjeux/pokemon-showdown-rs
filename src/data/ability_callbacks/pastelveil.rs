@@ -16,8 +16,7 @@ use crate::event::EventResult;
 ///         }
 ///     }
 /// }
-pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     use crate::battle::Arg;
     use crate::Pokemon;
 

@@ -5,7 +5,6 @@
 //! JavaScript source: data/moves.ts - shadowforce condition
 
 use crate::battle::Battle;
-use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onInvulnerability

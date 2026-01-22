@@ -19,9 +19,9 @@ impl Battle {
     // - random(n) returns an integer in [0, n)
     // - random_with_range(m, n) returns an integer in [m, n)
     pub fn random(&mut self, n: i32) -> i32 {
-        let before = self.prng.call_count;
+        let _before = self.prng.call_count;
         let result = self.prng.random_int(n);
-        let after = self.prng.call_count;
+        let _after = self.prng.call_count;
         debug_elog!("[RANDOM] turn={}, n={}, result={}, PRNG: {}->{}",  self.turn, n, result, before, after);
         result
     }
@@ -29,9 +29,9 @@ impl Battle {
     /// Random number in range [from, to)
     /// Equivalent to TypeScript random(from, to)
     pub fn random_with_range(&mut self, from: i32, to: i32) -> i32 {
-        let before = self.prng.call_count;
+        let _before = self.prng.call_count;
         let result = self.prng.random_range(from, to);
-        let after = self.prng.call_count;
+        let _after = self.prng.call_count;
         debug_elog!("[RANDOM_WITH_RANGE] turn={}, from={}, to={}, result={}, PRNG: {}->{}",
                   self.turn, from, to, result, before, after);
         result

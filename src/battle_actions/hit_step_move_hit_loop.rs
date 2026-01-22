@@ -609,7 +609,7 @@ pub fn hit_step_move_hit_loop(
     //     }
     // }
     if (active_move.recoil.is_some() || active_move.id.as_str() == "chloroblast") && active_move.total_damage > 0 {
-        let (hp_before_recoil, max_hp, recoil_damage, pokemon_name) = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+        let (hp_before_recoil, max_hp, recoil_damage, _pokemon_name) = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
             Some(pokemon) => {
                 let recoil = battle_actions::BattleActions::calc_recoil_damage(
                     active_move.total_damage,

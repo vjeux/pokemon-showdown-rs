@@ -250,7 +250,7 @@ pub mod condition {
         pokemon_pos: (usize, usize),
         target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         // pokemon_pos = target (defender with volatile, being protected)
         // target_pos = source (attacker) - confusingly named in dispatcher

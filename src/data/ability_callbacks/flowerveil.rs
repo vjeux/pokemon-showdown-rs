@@ -23,8 +23,7 @@ use crate::event::EventResult;
 ///         this.add('-block', target, 'ability: Flower Veil', `[of] ${effectHolder}`);
 ///     }
 /// }
-pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     use crate::battle::Arg;
 
     // if ((source && target === source) || !target.hasType('Grass')) return;
@@ -214,8 +213,7 @@ pub fn on_ally_set_status(battle: &mut Battle, _status_id: &str, target_pos: (us
 ///         return null;
 ///     }
 /// }
-pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     use crate::battle::Arg;
 
     // if (target.hasType('Grass') && status.id === 'yawn') {

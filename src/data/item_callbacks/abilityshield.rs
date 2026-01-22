@@ -15,8 +15,7 @@ use crate::event::EventResult;
 ///     this.add('-block', target, 'item: Ability Shield');
 ///     return null;
 /// }
-pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_set_ability(battle: &mut Battle, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     use crate::battle::Arg;
     use crate::battle::EffectType;
 

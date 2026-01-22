@@ -155,8 +155,7 @@ pub fn on_try_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos:
 ///     // Record if the pokemon ate a berry to resist the attack
 ///     pokemon.abilityState.berryWeaken = weakenBerries.includes(item.name);
 /// }
-pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // const weakenBerries = [...]
     const WEAKEN_BERRIES: &[&str] = &[
         "babiriberry",

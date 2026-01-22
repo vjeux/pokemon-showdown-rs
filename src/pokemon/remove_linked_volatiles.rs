@@ -62,10 +62,10 @@ impl Pokemon {
                 // JS: volatileData.linkedPokemon.splice(volatileData.linkedPokemon.indexOf(this), 1);
                 // Access linkedPokemon as typed field, remove this_pokemon
                 if let Some(linked_pokemon_vec) = volatile_data.linked_pokemon.as_mut() {
-                    let before_len = linked_pokemon_vec.len();
+                    let _before_len = linked_pokemon_vec.len();
                     // Find and remove this_pokemon from the Vec
                     linked_pokemon_vec.retain(|&pos| pos != this_pokemon);
-                    let after_len = linked_pokemon_vec.len();
+                    let _after_len = linked_pokemon_vec.len();
                     debug_elog!("[REMOVE_LINKED_VOLATILES]   Removed this_pokemon from linked_pokemon: {} -> {} items",
                         before_len, after_len);
 

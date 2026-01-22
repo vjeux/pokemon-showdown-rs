@@ -263,7 +263,7 @@ pub mod condition {
         pokemon_pos: (usize, usize),
         target_pos: Option<(usize, usize)>,
     ) -> EventResult {
-        use crate::dex_data::ID;
+        
 
         debug_elog!("[KINGSSHIELD::CONDITION::ON_HIT] Called with pokemon_pos={:?}, target_pos={:?}", pokemon_pos, target_pos);
 

@@ -127,8 +127,8 @@ impl BattleQueue {
         mid_turn: bool,
     ) -> Vec<Action> {
         // Debug: trace what action is being resolved
-        if let Action::Move(ref m) = action {
-            debug_elog!("[RESOLVE_ACTION] Entry: move={}, choice={:?}, mid_turn={}", m.move_id.as_str(), m.choice, mid_turn);
+        if let Action::Move(ref _m) = action {
+            debug_elog!("[RESOLVE_ACTION] Entry: move={}, choice={:?}, mid_turn={}", _m.move_id.as_str(), _m.choice, mid_turn);
         }
 
         // JS: if (action.choice === 'pass') return [];
@@ -498,10 +498,10 @@ impl BattleQueue {
         prefix_actions.push(action.clone());
 
         // Debug: trace what actions are being returned
-        if let Action::Move(ref m) = action {
+        if let Action::Move(_m) = action {
             debug_elog!("[RESOLVE_ACTION] Exit: move={}, returning {} actions", m.move_id.as_str(), prefix_actions.len());
-            for (i, act) in prefix_actions.iter().enumerate() {
-                if let Action::Move(ref ma) = act {
+            for (_i, act) in prefix_actions.iter().enumerate() {
+                if let Action::Move(_ma) = act {
                     debug_elog!("[RESOLVE_ACTION]   [{}] move={}, choice={:?}", i, ma.move_id.as_str(), ma.choice);
                 }
             }

@@ -116,7 +116,7 @@ pub fn hit_step_accuracy(
             crate::dex::Accuracy::AlwaysHits => 0, // 0 represents boolean true
         };
         // Track whether accuracy started as boolean true (for ModifyAccuracy handling)
-        let accuracy_is_true = accuracy == 0;
+        let _accuracy_is_true = accuracy == 0;
 
         // Handle OHKO moves
         // JavaScript: if (move.ohko) { ... }

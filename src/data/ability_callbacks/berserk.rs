@@ -54,7 +54,7 @@ pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize),
 
     // this.effectState.checkedBerserk = !should_check;
     // Use with_effect_state to persist in the ability's effect state
-    let result = battle.with_effect_state(|state| {
+    let _result = battle.with_effect_state(|state| {
         state.checked_berserk = Some(!should_check);
         debug_elog!("[BERSERK_ON_DAMAGE] set checked_berserk = {:?}", state.checked_berserk);
     });

@@ -5,7 +5,6 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
-use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -16,7 +15,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
     debug_elog!("[TOXIC_ORB DEBUG] on_residual called for Pokemon at {:?}", pokemon_pos);
 
     // Get pokemon name and status for logging
-    let (name, status_before) = {
+    let (_name, _status_before) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,
@@ -29,7 +28,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
     // pokemon.trySetStatus('tox', pokemon);
     Pokemon::try_set_status(battle, pokemon_pos, crate::dex_data::ID::new("tox"), None, None);
 
-    let status_after = {
+    let _status_after = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,

@@ -67,7 +67,7 @@ pub fn on_residual(
 /// ```
 pub fn on_start(
     battle: &mut Battle,
-    pokemon_pos: (usize, usize),
+    _pokemon_pos: (usize, usize),
     _source_pos: Option<(usize, usize)>,
     _effect: Option<&Effect>,
 ) -> EventResult {

@@ -5,7 +5,6 @@
 //! Quick Draw: 30% chance to move first in its priority bracket
 
 use crate::battle::Battle;
-use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onFractionalPriority(priority, pokemon, target, move) {

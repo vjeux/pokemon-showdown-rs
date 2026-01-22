@@ -6,7 +6,6 @@
 //! It grants a 1.2x accuracy boost to the next move used.
 
 use crate::battle::Battle;
-use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;

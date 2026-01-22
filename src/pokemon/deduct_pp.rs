@@ -38,7 +38,7 @@ impl Pokemon {
         };
 
         // Debug logging
-        let old_pp = self.move_slots[slot_index].pp;
+        let _old_pp = self.move_slots[slot_index].pp;
         debug_elog!("[DEDUCT_PP] Pokemon={}, move={}, old_pp={}, amount={:?}",
             self.species_id.as_str(), move_id.as_str(), old_pp, amount);
 

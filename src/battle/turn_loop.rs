@@ -38,21 +38,21 @@ impl Battle {
     //
     pub fn turn_loop(&mut self) {
         static CALL_COUNTER: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
-        let call_id = CALL_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+        let _call_id = CALL_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
 
         // Debug immediately at entry
-        debug_elog!("[TURN_LOOP_ENTRY #{}] Queue contents at very start:", call_id);
-        for (i, action) in self.queue.list.iter().enumerate() {
+        debug_elog!("[TURN_LOOP_ENTRY #{}] Queue contents at very start:", _call_id);
+        for (_i, action) in self.queue.list.iter().enumerate() {
             match action {
-                Action::Move(m) => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Move: {} from ({}, {})", i, m.move_id.as_str(), m.side_index, m.pokemon_index),
-                Action::Switch(s) => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Switch: pokemon {}", i, s.pokemon_index),
-                Action::Field(f) => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Field: {:?}", i, f.choice),
-                _ => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Other", i),
+                Action::Move(_m) => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Move: {} from ({}, {})", _i, _m.move_id.as_str(), _m.side_index, _m.pokemon_index),
+                Action::Switch(_s) => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Switch: pokemon {}", _i, _s.pokemon_index),
+                Action::Field(_f) => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Field: {:?}", _i, _f.choice),
+                _ => debug_elog!("[TURN_LOOP_ENTRY]   [{}] Other", _i),
             }
         }
 
         debug_elog!("[TURN_LOOP #{}] Entry: turn={}, mid_turn={}, request_state={:?}, queue_size={}",
-            call_id, self.turn, self.mid_turn, self.request_state, self.queue.list.len());
+            _call_id, self.turn, self.mid_turn, self.request_state, self.queue.list.len());
 
         self.add("", &[]);
 
@@ -75,12 +75,12 @@ impl Battle {
             use crate::battle_queue::{Action, FieldAction, FieldActionType};
 
             debug_elog!("[TURN_LOOP] Queue BEFORE adding beforeTurn/residual:");
-            for (i, action) in self.queue.list.iter().enumerate() {
+            for (_i, action) in self.queue.list.iter().enumerate() {
                 match action {
-                    Action::Move(m) => debug_elog!("  [{}] Move: {}", i, m.move_id.as_str()),
-                    Action::Switch(s) => debug_elog!("  [{}] Switch: pokemon {}", i, s.pokemon_index),
-                    Action::Field(f) => debug_elog!("  [{}] Field: {:?}", i, f.choice),
-                    _ => debug_elog!("  [{}] Other", i),
+                    Action::Move(_m) => debug_elog!("  [{}] Move: {}", _i, _m.move_id.as_str()),
+                    Action::Switch(_s) => debug_elog!("  [{}] Switch: pokemon {}", _i, _s.pokemon_index),
+                    Action::Field(_f) => debug_elog!("  [{}] Field: {:?}", _i, _f.choice),
+                    _ => debug_elog!("  [{}] Other", _i),
                 }
             }
 
@@ -103,12 +103,12 @@ impl Battle {
             self.queue.list.push(residual_action);
 
             debug_elog!("[TURN_LOOP] Queue AFTER adding beforeTurn/residual:");
-            for (i, action) in self.queue.list.iter().enumerate() {
+            for (_i, action) in self.queue.list.iter().enumerate() {
                 match action {
-                    Action::Move(m) => debug_elog!("  [{}] Move: {}", i, m.move_id.as_str()),
-                    Action::Switch(s) => debug_elog!("  [{}] Switch: pokemon {}", i, s.pokemon_index),
-                    Action::Field(f) => debug_elog!("  [{}] Field: {:?}", i, f.choice),
-                    _ => debug_elog!("  [{}] Other", i),
+                    Action::Move(_m) => debug_elog!("  [{}] Move: {}", _i, _m.move_id.as_str()),
+                    Action::Switch(_s) => debug_elog!("  [{}] Switch: pokemon {}", _i, _s.pokemon_index),
+                    Action::Field(_f) => debug_elog!("  [{}] Field: {:?}", _i, _f.choice),
+                    _ => debug_elog!("  [{}] Other", _i),
                 }
             }
 
@@ -122,17 +122,17 @@ impl Battle {
         // JS:     this.runAction(action);
         // JS:     if (this.requestState || this.ended) return;
         // JS: }
-        let mut action_count = 0;
+        let mut _action_count = 0;
         while let Some(action) = self.queue.shift() {
-            action_count += 1;
-            let action_desc = match &action {
+            _action_count += 1;
+            let _action_desc = match &action {
                 Action::Move(m) => format!("Move({})", m.move_id.as_str()),
                 Action::Switch(s) => format!("Switch(slot {})", s.pokemon_index),
                 Action::Field(f) => format!("Field({:?})", f.choice),
                 Action::Pokemon(p) => format!("Pokemon({:?})", p.choice),
                 Action::Team(_) => "Team".to_string(),
             };
-            debug_elog!("[TURN_LOOP] Processing action #{}: {}, queue remaining: {}", action_count, action_desc, self.queue.list.len());
+            debug_elog!("[TURN_LOOP] Processing action #{}: {}, queue remaining: {}", _action_count, _action_desc, self.queue.list.len());
 
             self.run_action(&action);
 

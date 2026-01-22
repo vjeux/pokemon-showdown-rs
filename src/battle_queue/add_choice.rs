@@ -157,12 +157,12 @@ impl BattleQueue {
 
         // JS: this.list.push(...resolvedChoices);
         for action in resolved_actions {
-            if let Action::Move(ref m) = action {
-                debug_elog!("[ADD_CHOICE] Adding move={} to queue (before: {})", m.move_id.as_str(), self.list.len());
+            if let Action::Move(ref _m) = action {
+                debug_elog!("[ADD_CHOICE] Adding move={} to queue (before: {})", _m.move_id.as_str(), self.list.len());
             }
             self.list.push(action.clone());
-            if let Action::Move(ref m) = action {
-                debug_elog!("[ADD_CHOICE] Added move={} to queue (after: {})", m.move_id.as_str(), self.list.len());
+            if let Action::Move(ref _m) = action {
+                debug_elog!("[ADD_CHOICE] Added move={} to queue (after: {})", _m.move_id.as_str(), self.list.len());
             }
 
             // JS: if (resolvedChoice && resolvedChoice.choice === 'move' && resolvedChoice.move.id !== 'recharge') {

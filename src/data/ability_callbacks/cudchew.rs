@@ -81,8 +81,7 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
 ///         delete this.effectState.counter;
 ///     }
 /// }
-pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     use crate::battle::Arg;
     use crate::dex_data::ID;
 

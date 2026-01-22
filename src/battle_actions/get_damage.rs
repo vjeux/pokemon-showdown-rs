@@ -550,7 +550,7 @@ pub fn get_damage(
         "spe" => StatID::Spe,
         _ => if is_physical { StatID::Atk } else { StatID::SpA }
     };
-    let attacker_name = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
+    let _attacker_name = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
         .map(|p| p.name.clone())
         .unwrap_or_default();
     let mut attack = battle.calculate_stat(attacker_pos, attack_stat_id, atk_boost as i8, 1.0, Some(source_pos));
@@ -571,7 +571,7 @@ pub fn get_damage(
         "spe" => StatID::Spe,
         _ => if is_physical { StatID::Def } else { StatID::SpD }
     };
-    let defender_name = battle.pokemon_at(defender_pos.0, defender_pos.1)
+    let _defender_name = battle.pokemon_at(defender_pos.0, defender_pos.1)
         .map(|p| p.name.clone())
         .unwrap_or_default();
     let mut defense = battle.calculate_stat(defender_pos, defense_stat_id, def_boost as i8, 1.0, Some(target_pos));
@@ -610,7 +610,7 @@ pub fn get_damage(
             attack = n;
         },
         EventResult::Float(multiplier) => {
-            let old_attack = attack;
+            let _old_attack = attack;
             attack = battle.modify_f(attack, multiplier);
             debug_elog!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, attack changed from {} to {}", attack_modifier_event, multiplier, old_attack, attack);
         }
@@ -627,7 +627,7 @@ pub fn get_damage(
             defense = n;
         },
         EventResult::Float(multiplier) => {
-            let old_defense = defense;
+            let _old_defense = defense;
             defense = battle.modify_f(defense, multiplier);
             debug_elog!("[GET_DAMAGE] AFTER {}: Float multiplier {}x applied, defense changed from {} to {}", defense_modifier_event, multiplier, old_defense, defense);
         }

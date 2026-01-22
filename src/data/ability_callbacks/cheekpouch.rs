@@ -12,7 +12,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // Heal 1/3 max HP when eating an item
-    let (heal_amount, current_hp, max_hp) = {
+    let (heal_amount, _current_hp, _max_hp) = {
         let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
             Some(p) => p,
             None => return EventResult::Continue,

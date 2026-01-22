@@ -17,7 +17,7 @@ impl BattleQueue {
         } else {
             let action = self.list.remove(0);
             match &action {
-                Action::Move(move_action) => {
+                Action::Move(_move_action) => {
                     debug_elog!("[QUEUE.SHIFT] Removed Move action: move={} from ({}, {}), priority={}, speed={}, order={:?}",
                         move_action.move_id.as_str(), move_action.side_index, move_action.pokemon_index,
                         action.priority(), action.speed(), action.order());

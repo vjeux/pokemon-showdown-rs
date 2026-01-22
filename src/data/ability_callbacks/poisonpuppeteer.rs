@@ -15,8 +15,7 @@ use crate::event::EventResult;
 ///         target.addVolatile('confusion');
 ///     }
 /// }
-pub fn on_any_after_set_status(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_any_after_set_status(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     use crate::dex_data::ID;
     use crate::Pokemon;
 

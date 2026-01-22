@@ -113,13 +113,13 @@ impl Battle {
         let (target_side, target_idx) = target;
 
         // Get Pokemon name for logging
-        let pokemon_name = if let Some(pokemon) = self.pokemon_at(target_side, target_idx) {
+        let _pokemon_name = if let Some(pokemon) = self.pokemon_at(target_side, target_idx) {
             pokemon.name.clone()
         } else {
             "Unknown".to_string()
         };
 
-        let boost_str: Vec<String> = boosts.iter()
+        let _boost_str: Vec<String> = boosts.iter()
             .map(|(stat, value)| format!("{}:{:+}", stat, value))
             .collect();
         crate::trace_boost!("turn={}, target={}, boosts=[{}], effect={:?}",

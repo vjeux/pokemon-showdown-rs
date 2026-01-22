@@ -5,7 +5,6 @@
 //! Generated from data/abilities.ts
 
 use crate::battle::Battle;
-use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::dex::Multihit;
 
@@ -18,7 +17,7 @@ use crate::dex::Multihit;
 pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, _target_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (move.category === 'Status' || move.multihit || move.flags['noparentalbond'] || move.flags['charge'] ||
     //     move.flags['futuremove'] || move.spreadHit || move.isZ || move.isMax) return;
-    let (should_return, reason) = if let Some(am) = active_move {
+    let (should_return, _reason) = if let Some(am) = active_move {
         let reason = if am.category == "Status" {
             "Status move"
         } else if am.multi_hit.is_some() {
@@ -65,7 +64,7 @@ pub fn on_prepare_hit(battle: &mut Battle, _source_pos: Option<(usize, usize)>, 
 ///     }
 /// }
 pub fn on_source_modify_secondaries(
-    battle: &mut Battle,
+    _battle: &mut Battle,
     secondaries: &Vec<crate::dex::MoveSecondary>,
     _target_pos: Option<(usize, usize)>,
     _source_pos: Option<(usize, usize)>,

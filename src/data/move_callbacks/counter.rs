@@ -206,7 +206,7 @@ pub mod condition {
             let _slot = source_pokemon.get_slot();
 
             // this.effectState.damage = 2 * damage;
-            let update_result = battle.with_effect_state(|state| {
+            let _update_result = battle.with_effect_state(|state| {
                 // Store slot as integer (parse from slot string like "a: Pikachu" -> position)
                 // Actually, slot is the string identifier, but we need to store it
                 // The slot field is i32, but Pokemon::get_slot() returns a string

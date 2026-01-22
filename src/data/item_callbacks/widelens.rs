@@ -5,7 +5,6 @@
 //! Generated from data/items.ts
 
 use crate::battle::Battle;
-use crate::battle::Effect;
 use crate::event::EventResult;
 
 /// onSourceModifyAccuracy(accuracy) {

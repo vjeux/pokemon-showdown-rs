@@ -184,7 +184,7 @@ pub fn on_before_move(
     });
 
     // Debug: read the time value after decrement
-    let time_after_decrement = battle.with_effect_state_ref(|state| state.time).flatten();
+    let _time_after_decrement = battle.with_effect_state_ref(|state| state.time).flatten();
     debug_elog!("[SLP_BEFORE_MOVE] After decrement, time={:?}", time_after_decrement);
 
     // if (pokemon.statusState.time <= 0)

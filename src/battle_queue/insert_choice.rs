@@ -53,7 +53,7 @@ impl BattleQueue {
     /// by taking Battle as a parameter instead of storing a reference.
     pub fn insert_choice(&mut self, battle: &mut Battle, action: Action) {
         debug_elog!("[QUEUE.INSERT_CHOICE] Queue BEFORE insert:");
-        for (i, act) in self.list.iter().enumerate() {
+        for (_i, _act) in self.list.iter().enumerate() {
             debug_elog!("  Index {}: priority={}, speed={}, order={:?}",
                 i, act.priority(), act.speed(), act.order());
         }
@@ -100,7 +100,7 @@ impl BattleQueue {
         }
 
         debug_elog!("[QUEUE.INSERT_CHOICE] Queue AFTER insert:");
-        for (i, act) in self.list.iter().enumerate() {
+        for (_i, _act) in self.list.iter().enumerate() {
             debug_elog!("  Index {}: priority={}, speed={}, order={:?}",
                 i, act.priority(), act.speed(), act.order());
         }

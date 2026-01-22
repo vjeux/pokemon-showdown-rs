@@ -824,7 +824,6 @@ pub fn dispatch_on_restart(
     source_pos: Option<(usize, usize)>,
     effect: Option<&Effect>,
 ) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
     match condition_id {
         "lockedmove" => lockedmove::on_restart(battle, pokemon_pos, source_pos, effect),
         "stall" => stall::on_restart(battle, pokemon_pos, source_pos, effect),
@@ -872,7 +871,6 @@ pub fn dispatch_on_start(
     effect: Option<&crate::battle::Effect>,
 ) -> EventResult {
     // Extract effect_id for callbacks that still use the string form
-    let effect_id = effect.map(|e| e.id.as_str());
     match condition_id {
         "brn" => brn::on_start(battle, pokemon_pos, source_pos, effect),
         "choicelock" => choicelock::on_start(battle, pokemon_pos, source_pos, effect),

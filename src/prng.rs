@@ -447,7 +447,7 @@ impl PRNG {
                     })
                     .collect();
 
-                let compact = frames.join(" <- ");
+                let _compact = frames.join(" <- ");
                 debug_elog!("[Rust PRNG #{}] raw={}", self.call_count, value);
                 debug_elog!("  Stack: {}", compact);
             }
@@ -503,11 +503,11 @@ impl PRNG {
             });
 
             if should_trace {
-                let from_val = match from {
+                let _from_val = match from {
                     Some(f) => format!("{}", f),
                     None => "None".to_string(),
                 };
-                let to_val = match to {
+                let _to_val = match to {
                     Some(t) => format!("{}", t),
                     None => "None".to_string(),
                 };

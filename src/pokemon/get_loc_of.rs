@@ -20,7 +20,7 @@ impl Pokemon {
         &self,
         target_side_index: usize,
         target_position: usize,
-        active_per_half: usize,
+        _active_per_half: usize,
     ) -> i8 {
         // JavaScript convention:
         // - Positive = foe (opposing side)

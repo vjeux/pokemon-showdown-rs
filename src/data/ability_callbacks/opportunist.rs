@@ -134,8 +134,7 @@ pub fn on_any_after_move(battle: &mut Battle) -> EventResult {
 ///     this.boost(this.effectState.boosts, this.effectState.target);
 ///     delete this.effectState.boosts;
 /// }
-pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
+pub fn on_residual(battle: &mut Battle, _pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     debug_elog!("[OPPORTUNIST on_residual] Called");
     apply_accumulated_boosts(battle);
     EventResult::Continue

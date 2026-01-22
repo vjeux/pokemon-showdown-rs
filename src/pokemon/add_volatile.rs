@@ -83,7 +83,7 @@ impl Pokemon {
         embedded_condition: Option<&crate::dex::ConditionData>,
     ) -> Option<bool> {
         // Get Pokemon name for logging
-        let pokemon_name = if let Some(pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
+        let _pokemon_name = if let Some(pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
             pokemon.name.clone()
         } else {
             "Unknown".to_string()
@@ -287,9 +287,9 @@ impl Pokemon {
             });
 
         if battle.turn == 17 && volatile_id.as_str() == "skydrop" {
-            let from_dex = battle.dex.conditions().get_by_id(&volatile_id)
+            let _from_dex = battle.dex.conditions().get_by_id(&volatile_id)
                 .and_then(|cond| cond.duration);
-            let from_embedded = embedded_condition.and_then(|cond| cond.duration);
+            let _from_embedded = embedded_condition.and_then(|cond| cond.duration);
             debug_elog!("[ADD_VOLATILE_DURATION] turn=17, volatile='skydrop', from_dex={:?}, from_embedded={:?}, final={:?}",
                 from_dex, from_embedded, default_duration);
         }

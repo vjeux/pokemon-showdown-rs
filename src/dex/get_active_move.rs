@@ -1,6 +1,5 @@
 use crate::*;
 use crate::battle_actions::ActiveMove;
-use crate::dex::Accuracy;
 
 impl Dex {
 

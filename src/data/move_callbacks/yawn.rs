@@ -103,7 +103,7 @@ pub mod condition {
 
         // Debug: check if target already has slp
         {
-            let target_pokemon = match battle.pokemon_at(target.0, target.1) {
+            let _target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };

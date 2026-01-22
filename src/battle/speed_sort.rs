@@ -49,7 +49,7 @@ impl Battle {
         self.speed_sort_with_callsite(list, get_priority, "unknown");
     }
 
-    pub fn speed_sort_with_callsite<T, F>(&mut self, list: &mut [T], mut get_priority: F, callsite: &str)
+    pub fn speed_sort_with_callsite<T, F>(&mut self, list: &mut [T], mut get_priority: F, _callsite: &str)
     where
         F: FnMut(&T) -> PriorityItem,
     {
@@ -89,7 +89,7 @@ impl Battle {
                 // Debug: print the priority items that are tying
                 let priorities: Vec<_> = next_indexes.iter().map(|&i| get_priority(&list[i])).collect();
                 debug_elog!("[SPEED_SORT] {} items tying at positions {:?}, turn={}, callsite={}", next_indexes.len(), next_indexes, self.turn, callsite);
-                for (i, priority) in priorities.iter().enumerate() {
+                for (_i, _priority) in priorities.iter().enumerate() {
                     debug_elog!("[SPEED_SORT]   Item {}: order={:?}, priority={}, speed={}, sub_order={}, effect_order={}",
                         i, priority.order, priority.priority, priority.speed, priority.sub_order, priority.effect_order);
                 }

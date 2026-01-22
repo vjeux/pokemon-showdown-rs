@@ -437,7 +437,7 @@ impl Battle {
         debug_elog!("[FIELD_EVENT] event='{}', turn={}, BEFORE speed_sort, handlers.len()={}, handler IDs: {:?}",
             event_id, self.turn, handlers.len(),
             handlers.iter().map(|h| h.effect_id.as_str()).collect::<Vec<_>>());
-        for (i, h) in handlers.iter().enumerate() {
+        for (_i, _h) in handlers.iter().enumerate() {
             debug_elog!("  [{}] id={}, order={:?}, priority={}, speed={}, sub_order={}, effect_order={}",
                 i, h.effect_id.as_str(), h.order, h.priority, h.speed, h.sub_order, h.effect_order);
         }

@@ -18,8 +18,8 @@ impl BattleQueue {
     ///            return null;
     pub fn will_act(&self) -> Option<&Action> {
         debug_elog!("[WILL_ACT] Checking queue, list.len()={}", self.list.len());
-        for (i, action) in self.list.iter().enumerate() {
-            let desc = match action {
+        for (_i, action) in self.list.iter().enumerate() {
+            let _desc = match action {
                 Action::Move(m) => format!("Move({})", m.move_id.as_str()),
                 Action::Switch(s) => format!("Switch(slot {})", s.pokemon_index),
                 Action::Field(f) => format!("Field({:?})", f.choice),

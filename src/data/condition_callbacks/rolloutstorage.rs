@@ -5,7 +5,6 @@
 //! JavaScript source: data/conditions.ts
 
 use crate::battle::Battle;
-use crate::battle::Effect;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
