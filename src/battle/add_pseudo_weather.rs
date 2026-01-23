@@ -122,8 +122,16 @@ impl Battle {
         self.field.pseudo_weather.insert(pseudo_weather_id.clone(), state);
 
         // this.battle.runEvent('PseudoWeatherChange', source, source, status);
-        // TODO: Implement PseudoWeatherChange event
-        // self.run_event("PseudoWeatherChange", source_pos, source_pos);
+        // This triggers onAnyPseudoWeatherChange callbacks (e.g., Room Service item)
+        self.run_event(
+            "PseudoWeatherChange",
+            source_pos.map(crate::event::EventTarget::Pokemon),
+            source_pos,
+            None,
+            crate::event::EventResult::Continue,
+            false,
+            false,
+        );
 
         true
     }
