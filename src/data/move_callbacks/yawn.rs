@@ -101,24 +101,23 @@ pub mod condition {
             None => return EventResult::Continue,
         };
 
-        // Debug: check if target already has slp
-        {
-            let _target_pokemon = match battle.pokemon_at(target.0, target.1) {
-                Some(p) => p,
-                None => return EventResult::Continue,
-            };
-            debug_elog!("[YAWN_END] Target {} current status={:?}", _target_pokemon.get_slot(), _target_pokemon.status.as_str());
-        }
-
-        // this.add('-end', target, 'move: Yawn', '[silent]');
-        let target_slot = {
+        // Get target slot and source from yawn volatile's effectState
+        let (target_slot, source_pos) = {
             let target_pokemon = match battle.pokemon_at(target.0, target.1) {
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target_pokemon.get_slot()
+            debug_elog!("[YAWN_END] Target {} current status={:?}", target_pokemon.get_slot(), target_pokemon.status.as_str());
+
+            // Get the source from the yawn volatile's effectState (this.effectState.source)
+            let source = target_pokemon.volatiles.get(&ID::from("yawn"))
+                .and_then(|effect_state| effect_state.source);
+            debug_elog!("[YAWN_END] effectState.source={:?}", source);
+
+            (target_pokemon.get_slot(), source)
         };
 
+        // this.add('-end', target, 'move: Yawn', '[silent]');
         battle.add(
             "-end",
             &[
@@ -129,7 +128,7 @@ pub mod condition {
         );
 
         // target.trySetStatus('slp', this.effectState.source);
-        Pokemon::try_set_status(battle, target, ID::from("slp"), None, None);
+        Pokemon::try_set_status(battle, target, ID::from("slp"), source_pos, None);
 
         EventResult::Continue
     }
