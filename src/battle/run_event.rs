@@ -445,6 +445,13 @@ impl Battle {
         // JavaScript: this.eventDepth++;
         self.event_depth += 1;
 
+        // DEBUG: Log handlers found for Hit events to debug Focus Punch issue
+        if event_id == "Hit" {
+            debug_elog!("[RUN_EVENT Hit] Found {} handlers: {:?}",
+                handlers.len(),
+                handlers.iter().map(|h| (h.effect.id.as_str(), h.effect.effect_type.clone())).collect::<Vec<_>>());
+        }
+
         // JavaScript: Loop through handlers (lines 174-282)
         // Execute each handler and accumulate results
         for handler in handlers {
@@ -661,7 +668,7 @@ impl Battle {
                 }
                 EffectType::Condition | EffectType::Status | EffectType::Weather | EffectType::Terrain
                 | EffectType::SideCondition | EffectType::SlotCondition | EffectType::FieldCondition => {
-                    if event_id.contains("DamagingHit") || event_id.contains("BasePower") {
+                    if event_id.contains("DamagingHit") || event_id.contains("BasePower") || event_id == "Hit" {
                         debug_elog!("[RUN_EVENT] Calling handle_condition_event: callback={}, effect_id={}, type={:?}",
                             callback_name_for_dispatch, effect_id.as_str(), handler.effect.effect_type);
                     }

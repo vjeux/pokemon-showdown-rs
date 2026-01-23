@@ -38,12 +38,20 @@ pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
             None => return EventResult::Continue,
         };
 
+        debug_elog!("[FOCUSPUNCH before_move_callback] pokemon_pos={:?}, has volatile={}, volatiles={:?}",
+            pokemon_pos,
+            pokemon_ref.volatiles.contains_key(&ID::from("focuspunch")),
+            pokemon_ref.volatiles.keys().map(|k| k.as_str()).collect::<Vec<_>>());
+
         if let Some(volatile_state) = pokemon_ref.volatiles.get(&ID::from("focuspunch")) {
+            debug_elog!("[FOCUSPUNCH before_move_callback] volatile state: lost_focus={:?}", volatile_state.lost_focus);
             volatile_state.lost_focus.unwrap_or(false)
         } else {
             false
         }
     };
+
+    debug_elog!("[FOCUSPUNCH before_move_callback] lost_focus={}", lost_focus);
 
     if lost_focus {
         // this.add('cant', pokemon, 'Focus Punch', 'Focus Punch');
@@ -112,20 +120,29 @@ pub mod condition {
     /// }
     pub fn on_hit(
         battle: &mut Battle,
-        _pokemon_pos: (usize, usize),
+        pokemon_pos: (usize, usize),
         _target_pos: Option<(usize, usize)>,
     ) -> EventResult {
+        // DEBUG: Log effect context
+        debug_elog!("[FOCUSPUNCH on_hit] pokemon_pos={:?}, effect={:?}",
+            pokemon_pos,
+            battle.effect.as_ref().map(|e| (e.id.as_str(), e.effect_type, e.effect_holder.clone())));
+
         // if (move.category !== 'Status') {
         let move_category = match &battle.active_move {
             Some(active_move) => active_move.category.as_str(),
             None => return EventResult::Continue,
         };
 
+        debug_elog!("[FOCUSPUNCH on_hit] move_category={}", move_category);
+
         if move_category != "Status" {
             // this.effectState.lostFocus = true;
-            battle.with_effect_state(|state| {
+            let result = battle.with_effect_state(|state| {
                 state.lost_focus = Some(true);
+                debug_elog!("[FOCUSPUNCH on_hit] Set lost_focus=true in effect_state");
             });
+            debug_elog!("[FOCUSPUNCH on_hit] with_effect_state returned: {:?}", result.is_some());
         }
 
         EventResult::Continue

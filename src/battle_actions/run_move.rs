@@ -189,7 +189,13 @@ pub fn run_move(
     if crate::data::move_callbacks::has_before_move_callback(active_move_for_callback.as_ref()) {
         let callback_result = crate::data::move_callbacks::dispatch_before_move_callback(battle, active_move_for_callback.as_ref(), pokemon_pos);
         if let crate::event::EventResult::Boolean(true) = callback_result {
-            // Move was cancelled by beforeMoveCallback
+            // Move was cancelled by beforeMoveCallback (e.g., Focus Punch when lostFocus)
+            // Must call clear_active_move(true) to prevent this cancelled move from becoming lastMove
+            // JS: When beforeMoveCallback returns true, the move fails and should not be Copycat-able
+            battle.clear_active_move(true);
+            if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
+                pokemon.move_this_turn_result = crate::battle_actions::MoveResult::Failed;
+            }
             return;
         }
     }
