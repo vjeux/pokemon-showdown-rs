@@ -102,15 +102,38 @@ impl Battle {
         // Get target as Pokemon position if applicable
         let target_pos = target.and_then(|t| t.as_pokemon());
 
+        // JavaScript: if (target instanceof Pokemon && (target.isActive || source?.isActive))
+        // Check if target Pokemon is active OR source Pokemon is active
+        // If neither is active, we skip the Pokemon handlers AND side handlers
+        // (because in JS, target = target.side is inside this block, so if we skip it,
+        // target stays as Pokemon and the "if (target instanceof Side)" check fails)
+        let target_is_active = target_pos
+            .and_then(|pos| self.pokemon_at(pos.0, pos.1))
+            .map(|p| p.is_active)
+            .unwrap_or(false);
+        let source_is_active = source
+            .and_then(|pos| self.pokemon_at(pos.0, pos.1))
+            .map(|p| p.is_active)
+            .unwrap_or(false);
+        let should_find_pokemon_handlers = target_is_active || source_is_active;
+
         // Get target as Side index if applicable
+        // IMPORTANT: For Pokemon targets, we only set this if the active check passes
+        // This mimics JavaScript's "target = target.side" which is inside the isActive block
         let target_side_from_target = match target {
             Some(EventTarget::Side(idx)) => Some(*idx),
-            Some(EventTarget::Pokemon((side, _))) => Some(*side),
+            Some(EventTarget::Pokemon((side, _))) if should_find_pokemon_handlers => Some(*side),
             _ => None,
         };
 
         // JavaScript: if (target instanceof Pokemon && (target.isActive || source?.isActive))
         if let Some(target_pokemon_pos) = target_pos {
+            // Skip if neither target nor source is active
+            if !should_find_pokemon_handlers {
+                // In JavaScript, when this check fails, the entire block is skipped
+                // including "target = target.side", so side handlers are also not found
+                // We achieve this by having target_side_from_target be None above
+            } else {
             // JavaScript: handlers = this.findPokemonEventHandlers(target, `on${eventName}`);
             let prefixed_event = format!("on{}", event_name);
             let mut pokemon_handlers = self.find_pokemon_event_handlers(&prefixed_event, target_pokemon_pos, None);
@@ -211,6 +234,7 @@ impl Battle {
                     }
                 }
             }
+            } // end of else for should_find_pokemon_handlers
         }
 
         // JavaScript: if (source && prefixedHandlers) {
