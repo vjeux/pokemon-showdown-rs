@@ -73,7 +73,14 @@ pub fn dispatch_duration_callback(
         _ => {
             // Fallback to move-embedded condition callbacks
             // Pass effect_id through so durationCallbacks can check the source effect
-            move_callbacks::dispatch_condition_duration_callback(battle, condition_id, pokemon_pos, effect)
+            // IMPORTANT: Pass source_pos (the Pokemon using the move) for ability checks like Persistent
+            // If source_pos is None, fallback to pokemon_pos
+            move_callbacks::dispatch_condition_duration_callback(
+                battle,
+                condition_id,
+                source_pos.unwrap_or(pokemon_pos),
+                effect,
+            )
         }
     }
 }
