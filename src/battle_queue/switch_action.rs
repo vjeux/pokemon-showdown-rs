@@ -34,7 +34,7 @@ pub struct SwitchAction {
     // TODO: DELETE - Not in JavaScript SwitchAction (Rust-specific for tie-breaking)
     /// Effect order for tie-breaking (lower = earlier)
     pub effect_order: i32,
-    /// Index of the pokemon doing the switch
+    /// Team index of the pokemon doing the switch (resolved from active slot at choice time)
     /// JavaScript: pokemon: Pokemon
     /// TODO: Rust uses indices instead of Pokemon reference due to ownership
     pub pokemon_index: usize,

@@ -71,12 +71,21 @@ impl BattleQueue {
             }
             crate::side::ChoiceType::Switch => {
                 if let Some(switch_to) = side_action.switch_index {
+                    // Look up the actual Pokemon index from the active array, just like Move actions
+                    // In JS, action.pokemon is a Pokemon reference stored at choice time.
+                    // In Rust, we need to resolve the slot position to team index here.
+                    let pokemon_idx = battle.sides[side_idx]
+                        .active
+                        .get(side_action.pokemon_index)
+                        .and_then(|opt| *opt)
+                        .unwrap_or(0);
+
                     Action::Switch(SwitchAction {
                         choice: SwitchActionType::Switch,
                         sub_order: 0,
                         effect_order: 0,
                         side_index: side_idx,
-                        pokemon_index: side_action.pokemon_index,
+                        pokemon_index: pokemon_idx,
                         target_index: switch_to,
                         source_effect: None,
                         priority: 0,
@@ -110,12 +119,19 @@ impl BattleQueue {
             }
             crate::side::ChoiceType::InstaSwitch => {
                 if let Some(switch_to) = side_action.switch_index {
+                    // Look up the actual Pokemon index from the active array, just like Move actions
+                    let pokemon_idx = battle.sides[side_idx]
+                        .active
+                        .get(side_action.pokemon_index)
+                        .and_then(|opt| *opt)
+                        .unwrap_or(0);
+
                     Action::Switch(SwitchAction {
                         choice: SwitchActionType::InstaSwitch,
                         sub_order: 0,
                         effect_order: 0,
                         side_index: side_idx,
-                        pokemon_index: side_action.pokemon_index,
+                        pokemon_index: pokemon_idx,
                         target_index: switch_to,
                         source_effect: None,
                         priority: 0,
@@ -128,12 +144,19 @@ impl BattleQueue {
             }
             crate::side::ChoiceType::RevivalBlessing => {
                 if let Some(switch_to) = side_action.switch_index {
+                    // Look up the actual Pokemon index from the active array, just like Move actions
+                    let pokemon_idx = battle.sides[side_idx]
+                        .active
+                        .get(side_action.pokemon_index)
+                        .and_then(|opt| *opt)
+                        .unwrap_or(0);
+
                     Action::Switch(SwitchAction {
                         choice: SwitchActionType::RevivalBlessing,
                         sub_order: 0,
                         effect_order: 0,
                         side_index: side_idx,
-                        pokemon_index: side_action.pokemon_index,
+                        pokemon_index: pokemon_idx,
                         target_index: switch_to,
                         source_effect: None,
                         priority: 0,

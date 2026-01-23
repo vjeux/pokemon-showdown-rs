@@ -179,21 +179,12 @@ impl Battle {
                 move_action.speed = pokemon_speed as f64;
             }
             Action::Switch(ref mut switch_action) => {
-                // JS: if (!action.pokemon) { action.speed = 1; }
-                // For switches, get the pokemon's speed
-                // IMPORTANT: switch_action.pokemon_index is the SLOT POSITION (0, 1, etc.),
-                // not the Pokemon's index in the team. We need to look up the actual Pokemon
-                // from the active array to get its speed.
-                // JavaScript: action.pokemon.getActionSpeed() where action.pokemon is the Pokemon object
-                let actual_pokemon_idx = self.sides.get(switch_action.side_index)
-                    .and_then(|side| side.active.get(switch_action.pokemon_index))
-                    .and_then(|opt| *opt);
-
-                let pokemon_speed = if let Some(poke_idx) = actual_pokemon_idx {
-                    self.get_pokemon_action_speed(switch_action.side_index, poke_idx)
-                } else {
-                    1 // Fallback if no Pokemon in slot
-                };
+                // JS: action.speed = action.pokemon.getActionSpeed()
+                // In JS, action.pokemon is a reference to the Pokemon stored at choice time.
+                // In Rust, pokemon_index is now the team index (resolved in add_choice.rs),
+                // so we can use it directly.
+                let pokemon_speed = self
+                    .get_pokemon_action_speed(switch_action.side_index, switch_action.pokemon_index);
                 switch_action.speed = pokemon_speed as f64;
             }
             Action::Pokemon(ref mut poke_action) => {

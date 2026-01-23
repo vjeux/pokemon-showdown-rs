@@ -404,39 +404,32 @@ impl BattleQueue {
                 if switch_action.choice == SwitchActionType::Switch
                     || switch_action.choice == SwitchActionType::InstaSwitch
                 {
-                    // Note: switch_action.pokemon_index is the active slot index (0 for active[0]),
-                    // not the pokemon array index. We need to convert it.
+                    // Note: switch_action.pokemon_index is the team array index (not the slot position).
+                    // We can use it directly to access the pokemon.
                     let side_idx = switch_action.side_index;
-                    let active_slot = switch_action.pokemon_index;
+                    let poke_idx = switch_action.pokemon_index;
 
-                    // Get the actual pokemon array index from the active slot
-                    let actual_poke_idx = battle.sides.get(side_idx)
-                        .and_then(|side| side.active.get(active_slot))
-                        .and_then(|&opt_idx| opt_idx);
-
-                    if let Some(poke_idx) = actual_poke_idx {
-                        // Check if switchFlag is a string (move ID)
-                        // JS: if (typeof action.pokemon.switchFlag === 'string')
-                        let switch_flag_move = {
-                            if let Some(pokemon) = battle.pokemon_at(side_idx, poke_idx) {
-                                // switch_flag is Option<String> - Some(move_id) means a move forced the switch
-                                pokemon.switch_flag.clone()
-                            } else {
-                                None
-                            }
-                        };
-
-                        // JS: action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
-                        if let Some(move_id) = switch_flag_move {
-                            if !move_id.is_empty() {
-                                switch_action.source_effect = Some(Effect::move_(ID::new(&move_id)));
-                            }
+                    // Check if switchFlag is a string (move ID)
+                    // JS: if (typeof action.pokemon.switchFlag === 'string')
+                    let switch_flag_move = {
+                        if let Some(pokemon) = battle.pokemon_at(side_idx, poke_idx) {
+                            // switch_flag is Option<String> - Some(move_id) means a move forced the switch
+                            pokemon.switch_flag.clone()
+                        } else {
+                            None
                         }
+                    };
 
-                        // JS: action.pokemon.switchFlag = false;
-                        if let Some(pokemon) = battle.pokemon_at_mut(side_idx, poke_idx) {
-                            pokemon.switch_flag = None;
+                    // JS: action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
+                    if let Some(move_id) = switch_flag_move {
+                        if !move_id.is_empty() {
+                            switch_action.source_effect = Some(Effect::move_(ID::new(&move_id)));
                         }
+                    }
+
+                    // JS: action.pokemon.switchFlag = false;
+                    if let Some(pokemon) = battle.pokemon_at_mut(side_idx, poke_idx) {
+                        pokemon.switch_flag = None;
                     }
                 }
             }

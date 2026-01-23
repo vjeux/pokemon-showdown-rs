@@ -611,14 +611,15 @@ impl Battle {
                     // JS:     }
 
                     // Check if switching Pokemon has a status condition
-                    let has_status = if let Some(side) = self.sides.get(side_idx) {
+                    // Also get the Pokemon's actual position (slot index) - poke_idx is the team index
+                    let (has_status, pokemon_position) = if let Some(side) = self.sides.get(side_idx) {
                         if let Some(pokemon) = side.pokemon.get(poke_idx) {
-                            !pokemon.status.is_empty()
+                            (!pokemon.status.is_empty(), pokemon.position)
                         } else {
-                            false
+                            (false, 0)
                         }
                     } else {
-                        false
+                        (false, 0)
                     };
 
                     if switch_action.choice == crate::battle_queue::SwitchActionType::Switch && has_status {
@@ -627,11 +628,12 @@ impl Battle {
                     }
 
                     // JS: if (this.actions.switchIn(action.target, action.pokemon.position, action.sourceEffect) === 'pursuitfaint') {
+                    // Note: JavaScript uses action.pokemon.position (slot position), not the team index
                     let source_effect = switch_action.source_effect.as_ref();
                     let switch_result = crate::battle_actions::switch_in(
                         self,
                         side_idx,
-                        poke_idx,  // position
+                        pokemon_position,  // position (slot index from pokemon.position, not team index)
                         target_idx, // pokemon to switch in
                         source_effect,
                         false, // is_drag
