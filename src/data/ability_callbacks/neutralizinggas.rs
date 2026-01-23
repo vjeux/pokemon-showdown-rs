@@ -259,15 +259,40 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // this.speedSort(sortedActive);
     let mut sorted_active: Vec<(usize, usize)> = battle.get_all_active(false).iter().map(|p| (p.0, p.1)).collect();
 
+    // DEBUG: Log what get_all_active returned and why
+    debug_elog!("[NEUTRALIZING_GAS_END] sorted_active.len()={}, pokemon_pos={:?}", sorted_active.len(), pokemon_pos);
+    for (side_idx, side) in battle.sides.iter().enumerate() {
+        for (slot, opt_idx) in side.active.iter().enumerate() {
+            debug_elog!("[NEUTRALIZING_GAS_END] side={}, slot={}, active[slot]={:?}", side_idx, slot, opt_idx);
+            if let Some(poke_idx) = opt_idx {
+                if let Some(pokemon) = side.pokemon.get(*poke_idx) {
+                    debug_elog!("[NEUTRALIZING_GAS_END]   poke_idx={}, species={}, fainted={}, hp={}",
+                        poke_idx, pokemon.species_id, pokemon.fainted, pokemon.hp);
+                }
+            }
+        }
+    }
+
     // Extract speeds before sorting to avoid borrow checker issues
+    // IMPORTANT: Use pokemon.speed (cached action speed) NOT get_pokemon_stat()
+    // JS speedSort uses pokemon.speed which is updated via updateSpeed() at specific times,
+    // not recalculated on-the-fly with current stat boosts.
     let speeds: Vec<((usize, usize), f64)> = sorted_active.iter().map(|&pos| {
-        use crate::dex_data::StatID;
-        let speed = battle.get_pokemon_stat(pos, StatID::Spe, false, false) as f64;
+        let speed = if let Some(pokemon) = battle.pokemon_at(pos.0, pos.1) {
+            pokemon.speed as f64
+        } else {
+            0.0
+        };
         (pos, speed)
     }).collect();
 
     // Create a HashMap for quick speed lookup in the closure
     let speed_map: std::collections::HashMap<(usize, usize), f64> = speeds.into_iter().collect();
+
+    // DEBUG: Log the speeds
+    for (&pos, &speed) in &speed_map {
+        debug_elog!("[NEUTRALIZING_GAS_END] pos={:?}, speed={}", pos, speed);
+    }
 
     // Speed sort using pre-calculated speeds
     battle.speed_sort_with_callsite(&mut sorted_active, |&pos| {
