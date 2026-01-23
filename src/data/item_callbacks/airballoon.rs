@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::{Battle, Effect, EffectType};
 use crate::event::EventResult;
 
 /// onStart(target) {
@@ -107,7 +107,6 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
 ///     }
 /// }
 pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
     // this.debug('effect: ' + effect.id);
     // if (effect.effectType === 'Move') {
     //     this.add('-enditem', target, 'Air Balloon');
@@ -123,17 +122,17 @@ pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option
         None => return EventResult::Continue,
     };
 
-    let effect_id = match effect_id {
-        Some(id) => id,
+    let effect = match effect {
+        Some(e) => e,
         None => return EventResult::Continue,
     };
 
     // this.debug('effect: ' + effect.id);
-    battle.debug(&format!("effect: {}", effect_id));
+    battle.debug(&format!("effect: {}", effect.id));
 
     // if (effect.effectType === 'Move')
-    // Check if the effect_id corresponds to a move
-    let is_move = battle.dex.moves().get_by_id(&ID::from(effect_id)).is_some();
+    // Check if the effect type is Move (not just if a move with this ID exists!)
+    let is_move = effect.effect_type == EffectType::Move;
 
     if is_move {
         // this.add('-enditem', target, 'Air Balloon');

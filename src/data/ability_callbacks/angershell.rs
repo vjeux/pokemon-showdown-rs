@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::battle::Effect;
+use crate::battle::EffectType;
 use crate::event::EventResult;
 
 /// onDamage(damage, target, source, effect) {
@@ -20,29 +21,33 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_damage(battle: &mut Battle, _damage: i32, _target_pos: (usize, usize), source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
     // if (effect.effectType === "Move" && !effect.multihit && !(effect.hasSheerForce && source.hasAbility('sheerforce'))) {
-    let should_check = if let Some(effect_id) = effect_id {
-        // Check if effect is a move
-        if let Some(move_data) = battle.dex.moves().get(effect_id) {
-            // Check if move is not multi-hit
-            let is_not_multihit = move_data.multi_hit.is_none();
+    let should_check = if let Some(effect) = effect {
+        // Check if effect type is Move (not just if a move with this ID exists!)
+        if effect.effect_type == EffectType::Move {
+            // Get move data for additional checks
+            if let Some(move_data) = battle.dex.moves().get(effect.id.as_str()) {
+                // Check if move is not multi-hit
+                let is_not_multihit = move_data.multi_hit.is_none();
 
-            // Check if move has Sheer Force and source has sheerforce ability
-            let has_sheer_force_boost = if let Some(source_pos) = source_pos {
-                let source_has_sheer_force = {
-                    let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
-                        Some(p) => p,
-                        None => return EventResult::Continue,
+                // Check if move has Sheer Force and source has sheerforce ability
+                let has_sheer_force_boost = if let Some(source_pos) = source_pos {
+                    let source_has_sheer_force = {
+                        let source = match battle.pokemon_at(source_pos.0, source_pos.1) {
+                            Some(p) => p,
+                            None => return EventResult::Continue,
+                        };
+                        source.has_ability(battle, &["sheerforce"])
                     };
-                    source.has_ability(battle, &["sheerforce"])
+                    move_data.has_sheer_force && source_has_sheer_force
+                } else {
+                    false
                 };
-                move_data.has_sheer_force && source_has_sheer_force
+
+                is_not_multihit && !has_sheer_force_boost
             } else {
                 false
-            };
-
-            is_not_multihit && !has_sheer_force_boost
+            }
         } else {
             false
         }

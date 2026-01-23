@@ -6,6 +6,7 @@
 
 use crate::battle::Battle;
 use crate::battle::Effect;
+use crate::battle::EffectType;
 use crate::event::EventResult;
 
 /// onAllyTryAddVolatile(status, target, source, effect) {
@@ -18,7 +19,6 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, target_pos: Option<(usize, usize)>, _source_pos: Option<(usize, usize)>, effect: Option<&Effect>) -> EventResult {
-    let effect_id = effect.map(|e| e.id.as_str());
     use crate::battle::Arg;
 
     let status_id = match status {
@@ -38,9 +38,9 @@ pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, targe
     }
 
     // if (effect.effectType === 'Move')
-    let is_from_move = if let Some(effect) = effect_id {
-        // Check if the effect is a move by looking it up in the moves dex
-        battle.dex.moves().get(effect).is_some()
+    // Check if the effect type is Move (not just if a move with this ID exists!)
+    let is_from_move = if let Some(effect) = effect {
+        effect.effect_type == EffectType::Move
     } else {
         false
     };
