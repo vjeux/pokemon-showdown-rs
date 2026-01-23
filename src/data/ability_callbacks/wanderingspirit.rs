@@ -63,6 +63,21 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         return EventResult::Continue;
     }
 
+    // const targetCanBeSet = this.runEvent('SetAbility', target, source, this.effect, source.ability);
+    // if (!targetCanBeSet) return targetCanBeSet;
+    let target_can_be_set = battle.run_event(
+        "SetAbility",
+        Some(crate::event::EventTarget::Pokemon(target_pos)),
+        Some(source_pos),
+        None,
+        EventResult::Continue,
+        false,
+        false,
+    );
+    if matches!(target_can_be_set, EventResult::Number(0)) || matches!(target_can_be_set, EventResult::Null) {
+        return EventResult::Continue;
+    }
+
     // const sourceAbility = source.setAbility('wanderingspirit', target);
     let source_ability_id = Pokemon::set_ability(battle, source_pos, ID::from("wanderingspirit"), Some(target_pos), None, false, false);
 
