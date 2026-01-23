@@ -19,10 +19,12 @@ pub fn on_try(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // return this.activePerHalf > 1;
+    // In JS, returning false from onTry means the move failed
+    // Must use Boolean(false) not NotFail to properly set moveThisTurnResult = false
     if battle.active_per_half > 1 {
-        EventResult::Continue
+        EventResult::Boolean(true)
     } else {
-        EventResult::NotFail
+        EventResult::Boolean(false)
     }
 }
 
