@@ -138,14 +138,16 @@ pub fn on_hit(
     }
 
     // if (item.onEat) source.ateBerry = true;
-    // In JavaScript, onEat is a callback function for berries
-    // Check if the item is a berry instead
+    // JavaScript checks `if (item.onEat)` which is a truthy check
+    // `onEat: false` is falsy, so we need to check the value, not just key existence
     let has_on_eat = {
         let item_data = match battle.dex.items().get_by_id(&item_id) {
             Some(item) => item,
             None => return EventResult::Continue,
         };
-        item_data.is_berry
+        item_data.extra.get("onEat").map_or(false, |v| {
+            !v.is_null() && v != &serde_json::Value::Bool(false)
+        })
     };
 
     if has_on_eat {

@@ -237,7 +237,12 @@ pub fn on_hit(
             Some(data) => data,
             None => return EventResult::Continue,
         };
-        (item_data.is_berry, item_data.extra.contains_key("onEat"))
+        // JavaScript checks `if (item.onEat)` which is truthy check
+        // `onEat: false` is falsy, so we need to check the value, not just key existence
+        let on_eat_is_truthy = item_data.extra.get("onEat").map_or(false, |v| {
+            !v.is_null() && v != &serde_json::Value::Bool(false)
+        });
+        (item_data.is_berry, on_eat_is_truthy)
     };
 
     // if (item.isBerry) {

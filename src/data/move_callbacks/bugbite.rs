@@ -127,19 +127,14 @@ pub fn on_hit(
                 }
 
                 // if (item.onEat) source.ateBerry = true;
-                // Check if item is a berry with onEat callback
-                // Berries with onEat: false (past berries, EV berries) don't trigger ateBerry
+                // JavaScript checks `if (item.onEat)` which is a truthy check
+                // `onEat: false` is falsy, so we need to check the value, not just key existence
                 let has_on_eat = {
                     let item = battle.dex.items().get(item_id.as_str());
                     if let Some(item_data) = item {
-                        // List of berries with onEat: false from data/items.ts
-                        let berries_without_on_eat = [
-                            "belueberry", "blukberry", "cornnberry", "durinberry", "grepaberry",
-                            "hondewberry", "kelpsyberry", "magostberry", "nanabberry", "nomelberry",
-                            "pamtreberry", "pinapberry", "pomegberry", "qualotberry", "rabutaberry",
-                            "razzberry", "spelonberry", "tamatoberry", "watmelberry", "wepearberry"
-                        ];
-                        item_data.is_berry && !berries_without_on_eat.contains(&item_id.as_str())
+                        item_data.extra.get("onEat").map_or(false, |v| {
+                            !v.is_null() && v != &serde_json::Value::Bool(false)
+                        })
                     } else {
                         false
                     }

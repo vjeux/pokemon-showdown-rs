@@ -167,11 +167,13 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
     }
 
     // if (item.onEat) pokemon.ateBerry = true;
+    // JavaScript checks `if (item.onEat)` which is a truthy check
+    // `onEat: false` is falsy, so we need to check the value, not just key existence
     if let Some(item_data) = battle.dex.items().get_by_id(&berry_id) {
-        // Check if item has onEat callback by checking item_callbacks dispatcher
-        // For now, we'll set ateBerry to true for all berries that get eaten
-        // This matches the JavaScript behavior where most berries have onEat
-        if item_data.is_berry {
+        let on_eat_is_truthy = item_data.extra.get("onEat").map_or(false, |v| {
+            !v.is_null() && v != &serde_json::Value::Bool(false)
+        });
+        if on_eat_is_truthy {
             if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                 pokemon.ate_berry = true;
             }
