@@ -18,11 +18,15 @@ pub fn on_try(
     let source = source_pos;
 
     // return !!this.canSwitch(source.side);
+    // JavaScript: returns true if canSwitch returns > 0, false otherwise
+    // When returning false, the move fails (TryMove check fails in use_move_inner)
     let can_switch = battle.can_switch(source.0);
 
     if can_switch > 0 {
         EventResult::Continue
     } else {
-        EventResult::NotFail
+        // Return Boolean(false) to properly fail the move
+        // EventResult::NotFail would be treated as truthy and let the move proceed
+        EventResult::Boolean(false)
     }
 }
