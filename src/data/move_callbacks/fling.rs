@@ -9,6 +9,83 @@ use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
 
+/// Dispatch to item-specific fling effect callbacks
+/// Each item with a fling.effect in JavaScript has its own implementation here
+fn dispatch_fling_effect(battle: &mut Battle, item_id: &ID, target: (usize, usize)) {
+    debug_elog!("[FLING_EFFECT] Dispatching fling effect for item: {}", item_id.as_str());
+    match item_id.as_str() {
+        "whiteherb" => {
+            // White Herb's fling.effect: clear negative boosts
+            // JavaScript:
+            // effect(pokemon) {
+            //     let activate = false;
+            //     const boosts: SparseBoostsTable = {};
+            //     for (i in pokemon.boosts) {
+            //         if (pokemon.boosts[i] < 0) {
+            //             activate = true;
+            //             boosts[i] = 0;
+            //         }
+            //     }
+            //     if (activate) {
+            //         pokemon.setBoost(boosts);
+            //         this.add('-clearnegativeboost', pokemon, '[silent]');
+            //     }
+            // }
+            use crate::dex_data::BoostID;
+
+            let (activate, boosts_to_clear) = {
+                let pokemon = match battle.pokemon_at(target.0, target.1) {
+                    Some(p) => p,
+                    None => return,
+                };
+
+                let mut activate = false;
+                let mut boosts_map = std::collections::HashMap::new();
+
+                for boost_id in BoostID::all() {
+                    if pokemon.boosts.get(*boost_id) < 0 {
+                        activate = true;
+                        boosts_map.insert(*boost_id, 0);
+                    }
+                }
+
+                (activate, boosts_map)
+            };
+
+            if activate {
+                // pokemon.setBoost(boosts);
+                if let Some(pokemon) = battle.pokemon_at_mut(target.0, target.1) {
+                    pokemon.set_boost(boosts_to_clear);
+                }
+
+                // this.add('-clearnegativeboost', pokemon, '[silent]');
+                let pokemon_slot = {
+                    let pokemon = match battle.pokemon_at(target.0, target.1) {
+                        Some(p) => p,
+                        None => return,
+                    };
+                    pokemon.get_slot()
+                };
+
+                battle.add(
+                    "-clearnegativeboost",
+                    &[
+                        crate::battle::Arg::from(pokemon_slot),
+                        crate::battle::Arg::from("[silent]"),
+                    ],
+                );
+            }
+        }
+        // TODO: Add other items with fling.effect as needed
+        // Common ones: Mental Herb (cure infatuation/taunt/etc),
+        // Luminous Moss (+1 SpD if hit by Water), etc.
+        _ => {
+            // Unknown fling effect - log for debugging
+            debug_elog!("[FLING] Unknown fling.effect for item: {}", item_id.as_str());
+        }
+    }
+}
+
 /// onPrepareHit(target, source, move) {
 ///     if (source.ignoringItem(true)) return false;
 ///     const item = source.getItem();
@@ -213,6 +290,7 @@ pub fn on_hit(
     target_pos: (usize, usize),
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
+    debug_elog!("[FLING_ON_HIT] Called with target={:?}, source={:?}", target_pos, source_pos);
     let target = target_pos;
 
     let source = match source_pos {
@@ -223,10 +301,19 @@ pub fn on_hit(
     // Get the flung item ID from active_move.flung_item (set in on_prepare_hit)
     let item_id = match &battle.active_move {
         Some(active_move) => match &active_move.flung_item {
-            Some(id) => id.clone(),
-            None => return EventResult::Continue,
+            Some(id) => {
+                debug_elog!("[FLING_ON_HIT] Flung item: {}", id.as_str());
+                id.clone()
+            },
+            None => {
+                debug_elog!("[FLING_ON_HIT] No flung_item in active_move");
+                return EventResult::Continue;
+            },
         },
-        None => return EventResult::Continue,
+        None => {
+            debug_elog!("[FLING_ON_HIT] No active_move");
+            return EventResult::Continue;
+        },
     };
 
     let item_effect = Effect::item(item_id.clone());
@@ -276,9 +363,13 @@ pub fn on_hit(
                 target_pokemon.ate_berry = true;
             }
         }
+    } else {
+        // else if (item.fling.effect) { move.onHit = item.fling.effect; }
+        // Note: In JavaScript, fling.effect is a function, which doesn't serialize to JSON.
+        // We dispatch to hardcoded implementations based on item ID instead.
+        debug_elog!("[FLING_ON_HIT] Item is not a berry, dispatching fling effect");
+        dispatch_fling_effect(battle, &item_id, target);
     }
-    // Note: fling.effect would be handled here if it's not None
-    // But that requires dynamic callback execution which isn't implemented yet
 
     EventResult::Continue
 }
