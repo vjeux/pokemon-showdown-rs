@@ -130,9 +130,7 @@ pub fn on_hit(
     // return !!this.boost({ atk: 1, spe: 1 }, pokemon, pokemon, null, false, true) || success;
     let boost_success = battle.boost(&[("atk", 1), ("spe", 1)], pokemon, Some(pokemon), None, false, false);
 
-    if boost_success || success {
-        return EventResult::Continue;
-    }
-
-    EventResult::Continue
+    // In JavaScript, this returns `!!boost_result || success`
+    // If boost fails (stats maxed) and no subs/hazards were cleared, returns false
+    EventResult::Boolean(boost_success || success)
 }

@@ -320,10 +320,6 @@ pub mod self_callbacks {
         battle.clear_terrain();
 
         // return success;
-        if success {
-            EventResult::Boolean(true)
-        } else {
-            EventResult::Continue
-        }
+        EventResult::Boolean(success)
     }
 }

@@ -54,9 +54,6 @@ pub fn on_hit(
     // Rust heal signature: heal(damage, target_to_heal, source_of_heal, effect)
     let heal_result = battle.heal(atk, Some(source), Some(target), None);
 
-    if heal_result.is_some() || success {
-        EventResult::Continue
-    } else {
-        EventResult::NotFail
-    }
+    // JS returns true/false boolean, not NotFail
+    EventResult::Boolean(heal_result.is_some() || success)
 }
