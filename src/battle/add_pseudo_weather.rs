@@ -85,7 +85,18 @@ impl Battle {
         //     if (!source) throw new Error(`setting fieldcond without a source`);
         //     state.duration = status.durationCallback.call(this.battle, source, source, sourceEffect);
         // }
-        // TODO: Implement durationCallback if needed
+        // Call durationCallback if it exists for this pseudo-weather
+        if source_pos.is_some() {
+            let duration_result = self.call_duration_callback(
+                &pseudo_weather_id,
+                source_pos,  // target
+                source_pos,  // source (same as target in JS)
+                None,        // sourceEffect
+            );
+            if let crate::event::EventResult::Number(duration) = duration_result {
+                state.duration = Some(duration);
+            }
+        }
 
         // if (!this.battle.singleEvent('FieldStart', status, state, this, source, sourceEffect)) {
         //     delete this.pseudoWeather[status.id];

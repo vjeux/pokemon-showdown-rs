@@ -180,7 +180,7 @@ pub fn self_drops(
                             // }
                             if let Some(ref pseudo_weather_name) = self_data.pseudo_weather {
                                 let pseudo_weather_id = crate::dex_data::ID::new(pseudo_weather_name);
-                                let _applied = battle.add_pseudo_weather(pseudo_weather_id, None);
+                                let _applied = battle.add_pseudo_weather(pseudo_weather_id, Some(source_pos));
                             }
 
                             // Apply terrain from self effect
