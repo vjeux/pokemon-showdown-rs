@@ -952,6 +952,16 @@ impl Battle {
 
                 match poke_action.choice {
                     PokemonActionType::RunSwitch => {
+                        // JS: const pokemonOriginalHP = action.pokemon?.hp;
+                        // Capture original HP before switch-in effects (entry hazards)
+                        let pokemon_original_hp = {
+                            if let Some(pokemon) = self.pokemon_at(poke_action.side_index, poke_action.pokemon_index) {
+                                pokemon.hp
+                            } else {
+                                0
+                            }
+                        };
+
                         // JS: const switchersIn = [pokemon];
                         let mut switchers_in = vec![(poke_action.side_index, poke_action.pokemon_index)];
 
@@ -1028,6 +1038,33 @@ impl Battle {
                                 pokemon.is_started = true;
                                 pokemon.dragged_in = None;
                             }
+                        }
+
+                        // JS: if (action.choice === 'runSwitch') {
+                        //         const pokemon = action.pokemon;
+                        //         if (pokemon.hp && pokemon.hp <= pokemon.maxhp / 2 && pokemonOriginalHP! > pokemon.maxhp / 2) {
+                        //             this.runEvent('EmergencyExit', pokemon);
+                        //         }
+                        //     }
+                        // Check if original action.pokemon dropped below 50% HP from entry hazards
+                        let (current_hp, max_hp) = {
+                            if let Some(pokemon) = self.pokemon_at(poke_action.side_index, poke_action.pokemon_index) {
+                                (pokemon.hp, pokemon.maxhp)
+                            } else {
+                                (0, 0)
+                            }
+                        };
+
+                        if current_hp > 0 && current_hp <= max_hp / 2 && pokemon_original_hp > max_hp / 2 {
+                            self.run_event(
+                                "EmergencyExit",
+                                Some(crate::event::EventTarget::Pokemon((poke_action.side_index, poke_action.pokemon_index))),
+                                None,
+                                None,
+                                EventResult::Continue,
+                                false,
+                                false,
+                            );
                         }
                     }
                     _ => {
