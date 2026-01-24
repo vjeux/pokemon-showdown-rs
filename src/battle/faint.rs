@@ -1,6 +1,5 @@
 use crate::*;
 use crate::Pokemon;
-use crate::battle::Effect;
 
 impl Battle {
 
@@ -19,7 +18,7 @@ impl Battle {
     ) {
         // JS: pokemon.faint(source, effect)
         // ✅ NOW USES: Pokemon::faint() which handles both marking as fainted AND adding to faint_queue
-        let effect_obj = effect.map(|e| Effect::condition(ID::new(e)));
+        let effect_obj = effect.map(|e| self.make_condition_effect(&ID::new(e)));
         Pokemon::faint(self, target, source, effect_obj.as_ref());
 
         // NOTE: pokemon.fainted is NOT set here!

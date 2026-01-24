@@ -51,9 +51,10 @@ pub fn on_ally_after_use_item(battle: &mut Battle, _item_id: Option<&str>, pokem
     // if (!this.singleEvent('TakeItem', myItem, source.itemState, pokemon, source, this.effect, myItem))
     // Note: singleEvent returns the relay variable, which is true by default unless modified
     // For TakeItem event, if it returns false/Null, we should not proceed
+    let item_effect = battle.make_item_effect(&my_item);
     let take_item_result = battle.single_event(
         "TakeItem",
-        &crate::battle::Effect::item(my_item.clone()),
+        &item_effect,
         None,
         Some(pokemon_pos),
         Some(source_pos),

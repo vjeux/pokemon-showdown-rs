@@ -233,7 +233,8 @@ impl Pokemon {
 
         // JS: this.battle.singleEvent('Use', item, this.itemState, this, source, sourceEffect);
         // ✅ NOW IMPLEMENTED (Session 24 Part 82): singleEvent('Use')
-        battle.single_event("Use", &crate::battle::Effect::item(item_id.clone()), None, Some(pokemon_pos), source_pos, source_effect_ref, None);
+        let item_effect = battle.make_item_effect(&item_id);
+        battle.single_event("Use", &item_effect, None, Some(pokemon_pos), source_pos, source_effect_ref, None);
 
         // Phase 2: Mutate pokemon to consume item
         let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {

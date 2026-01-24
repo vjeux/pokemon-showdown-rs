@@ -49,11 +49,12 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
 
     // pokemon.formeChange(targetForme);
     // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+    let hungerswitch_id = ID::from("hungerswitch");
     crate::pokemon::Pokemon::forme_change(
         battle,
         pokemon_pos,
         ID::from(target_forme),
-        Some(Effect::ability("hungerswitch")),
+        Some(battle.make_ability_effect(&hungerswitch_id)),
         false,
         "0",
         None

@@ -123,13 +123,15 @@ pub mod condition {
             pokemon_pokemon.ability.clone()
         };
 
+        let ability_effect = battle.make_ability_effect(&ability_id);
+        let move_effect = battle.make_move_effect(&ID::from("gastroacid"));
         battle.single_event(
             "End",
-            &crate::battle::Effect::ability(ability_id),
+            &ability_effect,
             None,
             Some(pokemon),
             Some(pokemon),
-            Some(&crate::battle::Effect::move_(ID::from("gastroacid"))),
+            Some(&move_effect),
             None,
         );
 

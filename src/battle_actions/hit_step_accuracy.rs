@@ -72,7 +72,6 @@
 
 use crate::*;
 use crate::event::EventResult;
-use crate::battle::Effect;
 use crate::battle_actions::ActiveMove;
 
 /// Check accuracy for each target
@@ -86,6 +85,8 @@ pub fn hit_step_accuracy(
     active_move: &mut ActiveMove,
 ) -> Vec<bool> {
     let move_id = active_move.id.clone();
+    // Create move effect once and reuse
+    let move_effect = battle.make_move_effect(&move_id);
     debug_elog!("[HIT_STEP_ACCURACY] Called for move {:?} from {:?} targeting {:?}", move_id, pokemon_pos, targets);
     let mut hit_results = vec![false; targets.len()];
 
@@ -194,7 +195,7 @@ pub fn hit_step_accuracy(
                 "ModifyAccuracy",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
-                Some(&Effect::move_(move_id.clone())),
+                Some(&move_effect),
                 EventResult::Number(accuracy),
                 false,
                 false
@@ -305,7 +306,7 @@ pub fn hit_step_accuracy(
                 "Accuracy",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
-                Some(&Effect::move_(move_id.clone())),
+                Some(&move_effect),
                 EventResult::Number(accuracy),
                 false,
                 false

@@ -188,6 +188,7 @@ mod on_event_priority;
 mod run_custom_event_handlers;
 mod use_move;
 mod hp_fraction;
+mod make_effect;
 
 // Re-export types from submodules
 pub use split_message::SplitMessage;

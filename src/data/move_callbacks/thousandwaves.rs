@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onHit(target, source, move) {
@@ -37,12 +37,13 @@ pub fn on_hit(
         // JavaScript: target.addVolatile('trapped', source, move, 'trapper')
         // ✅ NOW PASSING: source_pos = Some(source), source_effect = Some("thousandwaves"), linked_status = Some("trapper")
         use crate::pokemon::Pokemon;
+        let move_effect = battle.make_move_effect(&ID::new("thousandwaves"));
         Pokemon::add_volatile(
             battle,
             target,
             ID::from("trapped"),
             Some(source),
-            Some(&Effect::move_(ID::new("thousandwaves"))),
+            Some(&move_effect),
             Some(ID::from("trapper")),
             None,
         );

@@ -32,7 +32,9 @@ pub fn try_primary_hit_event(
     move_data: &ActiveMove,
     _is_secondary: bool,
 ) -> SpreadMoveDamage {
-    let move_id = &move_data.id;
+    // Create move effect once and reuse
+    let move_effect = battle.make_move_effect(&move_data.id);
+
     // for (const [i, target] of targets.entries()) {
     for (i, target) in targets.iter().enumerate() {
         // if (!target) continue;
@@ -42,7 +44,7 @@ pub fn try_primary_hit_event(
         };
 
         // damage[i] = this.battle.runEvent('TryPrimaryHit', target, pokemon, moveData);
-        let result = battle.run_event("TryPrimaryHit", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(pokemon_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+        let result = battle.run_event("TryPrimaryHit", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(pokemon_pos), Some(&move_effect), EventResult::Continue, false, false);
 
         // JavaScript: damage[i] = result
         // Direct assignment - runEvent returns number | boolean | undefined in JS

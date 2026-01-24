@@ -36,11 +36,14 @@ pub fn after_move_secondary_event(
     let sheer_force_active = active_move.has_sheer_force && has_sheer_force_ability;
 
     if !sheer_force_active {
+        // Create move effect once and reuse
+        let move_effect = battle.make_move_effect(&active_move.id);
+
         //     this.battle.singleEvent('AfterMoveSecondary', move, null, targets[0], pokemon, move);
         if let Some(&first_target) = targets.first() {
             battle.single_event(
                 "AfterMoveSecondary",
-                &crate::battle::Effect::move_(active_move.id.clone()),
+                &move_effect,
                 None,
                 Some(first_target),
                 Some(attacker_pos),
@@ -53,7 +56,7 @@ pub fn after_move_secondary_event(
         // Note: runEvent in JavaScript takes targets array, but Rust version takes single target
         // We need to fire the event for each target
         for &target in targets {
-            battle.run_event("AfterMoveSecondary", Some(crate::event::EventTarget::Pokemon(target)), Some(attacker_pos), Some(&crate::battle::Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
+            battle.run_event("AfterMoveSecondary", Some(crate::event::EventTarget::Pokemon(target)), Some(attacker_pos), Some(&move_effect), EventResult::Continue, false, false);
         }
     }
 

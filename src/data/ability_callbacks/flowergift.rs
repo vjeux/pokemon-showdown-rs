@@ -73,7 +73,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
                 battle,
                 pokemon_pos,
                 ID::from("cherrimsunshine"),
-                Some(Effect::ability("flowergift")),
+                Some(battle.make_ability_effect(&ID::from("flowergift"))),
                 false,
                 "0",
                 Some("[msg]")
@@ -88,7 +88,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
                 battle,
                 pokemon_pos,
                 ID::from("cherrim"),
-                Some(Effect::ability("flowergift")),
+                Some(battle.make_ability_effect(&ID::from("flowergift"))),
                 false,
                 "0",
                 Some("[msg]")

@@ -1,5 +1,4 @@
 use crate::*;
-use crate::battle::Effect;
 use crate::battle_queue::*;
 
 impl BattleQueue {
@@ -374,12 +373,12 @@ impl BattleQueue {
                 // IMPORTANT: Only run for main move actions (choice === 'move' in JS),
                 // not for beforeTurnMove, priorityChargeMove, etc.
                 if is_main_move_action {
-                    let effect = Effect::move_(move_id.clone());
+                    let move_effect = battle.make_move_effect(&move_id);
                     let frac_result = battle.run_event(
                         "FractionalPriority",
                         Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                         None,
-                        Some(&effect),
+                        Some(&move_effect),
                         crate::event::EventResult::Float(0.0),
                         false,
                         false,
@@ -423,7 +422,7 @@ impl BattleQueue {
                     // JS: action.sourceEffect = this.battle.dex.moves.get(action.pokemon.switchFlag as ID) as any;
                     if let Some(move_id) = switch_flag_move {
                         if !move_id.is_empty() {
-                            switch_action.source_effect = Some(Effect::move_(ID::new(&move_id)));
+                            switch_action.source_effect = Some(battle.make_move_effect(&ID::new(&move_id)));
                         }
                     }
 

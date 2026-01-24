@@ -1,6 +1,5 @@
 use crate::*;
 use crate::event::EventResult;
-use crate::battle::Effect;
 use crate::dex::MoveData;
 
 /// Inner implementation of useMove - handles the actual move execution
@@ -212,6 +211,9 @@ pub fn use_move_inner(
         }
     };
 
+    // Create move effect once for reuse in all run_event/single_event calls
+    let move_effect = battle.make_move_effect(&active_move.id);
+
     // pokemon.lastMoveUsed = move;
     // Note: We set this after ModifyType runs so we capture the runtime type
 
@@ -226,11 +228,11 @@ pub fn use_move_inner(
 
         let modify_type_result = battle.single_event(
             "ModifyType",
-            &crate::battle::Effect::move_(active_move.id.clone()),
+            &move_effect,
             None,
             Some(pokemon_pos),
             target_pos,
-            Some(&Effect::move_(active_move.id.clone())),
+            Some(&move_effect),
             None,
         );
         // Apply the returned type to active_move if the callback returned a String
@@ -244,7 +246,7 @@ pub fn use_move_inner(
         // Get the potentially modified move back
         if let Some(ref modified_move) = battle.active_move {
             if modified_move.borrow().move_type != "Normal" {
-                source_effect = Some(Effect::move_(active_move.id.clone()));
+                source_effect = Some(move_effect.clone());
             }
             active_move = modified_move.borrow().clone();
         }
@@ -281,11 +283,11 @@ pub fn use_move_inner(
 
         let modify_type_result = battle.single_event(
             "ModifyType",
-            &crate::battle::Effect::move_(active_move.id.clone()),
+            &move_effect,
             None,
             Some(pokemon_pos),
             target_pos,
-            Some(&Effect::move_(active_move.id.clone())),
+            Some(&move_effect),
             None,
         );
         // Apply the returned type to active_move if the callback returned a String
@@ -296,7 +298,7 @@ pub fn use_move_inner(
             }
         }
 
-        battle.run_event("ModifyType", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
+        battle.run_event("ModifyType", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&move_effect), EventResult::Continue, false, false);
 
         if let Some(ref modified_move) = battle.active_move {
             active_move = modified_move.borrow().clone();
@@ -342,7 +344,7 @@ pub fn use_move_inner(
     // let targetRelayVar = { target };
     // targetRelayVar = this.battle.runEvent('ModifyTarget', pokemon, target, move, targetRelayVar, true);
     // if (targetRelayVar.target !== undefined) target = targetRelayVar.target;
-    let modify_target_result = battle.run_event("ModifyTarget", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
+    let modify_target_result = battle.run_event("ModifyTarget", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&move_effect), EventResult::Continue, false, false);
 
     // Extract the new target if ModifyTarget returned a position
     if let EventResult::Position(new_target) = modify_target_result {
@@ -402,7 +404,7 @@ pub fn use_move_inner(
         "ModifyPriority",
         Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         target_pos,
-        Some(&Effect::move_(active_move.id.clone())),
+        Some(&move_effect),
         EventResult::Number(active_move.priority as i32),
         false,
         false,
@@ -423,11 +425,11 @@ pub fn use_move_inner(
     // In Rust, the callback returns EventResult::String(type_name) which we apply to active_move.move_type.
     let modify_type_result = battle.single_event(
         "ModifyType",
-        &crate::battle::Effect::move_(active_move.id.clone()),
+        &move_effect,
         None,
         Some(pokemon_pos),
         target_pos,
-        Some(&Effect::move_(active_move.id.clone())),
+        Some(&move_effect),
         None,
     );
     // Apply the returned type to active_move if the callback returned a String
@@ -442,11 +444,11 @@ pub fn use_move_inner(
     // this.battle.singleEvent('ModifyMove', move, null, pokemon, target, move, move);
     battle.single_event(
         "ModifyMove",
-        &crate::battle::Effect::move_(active_move.id.clone()),
+        &move_effect,
         None,
         Some(pokemon_pos),
         target_pos,
-        Some(&Effect::move_(active_move.id.clone())),
+        Some(&move_effect),
         None,
     );
 
@@ -466,10 +468,10 @@ pub fn use_move_inner(
     }
 
     // move = this.battle.runEvent('ModifyType', pokemon, target, move, move);
-    battle.run_event("ModifyType", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
+    battle.run_event("ModifyType", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&move_effect), EventResult::Continue, false, false);
 
     // move = this.battle.runEvent('ModifyMove', pokemon, target, move, move);
-    let modify_move_result = battle.run_event("ModifyMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
+    let modify_move_result = battle.run_event("ModifyMove", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_pos, Some(&move_effect), EventResult::Continue, false, false);
 
     // Get potentially modified move again
     if let Some(ref modified) = battle.active_move {
@@ -555,6 +557,7 @@ pub fn use_move_inner(
             if am_borrowed.category == "Status" {
                 // Get Z-power effect ID
                 let zpower_id = ID::from("zpower");
+                let zpower_effect = battle.make_move_effect(&zpower_id);
 
                 // Check if there's a boost
                 if let Some(ref z_move_data) = am_borrowed.z_move {
@@ -580,18 +583,17 @@ pub fn use_move_inner(
                         match effect_str.as_str() {
                             "heal" => {
                                 let maxhp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;
-                                battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&Effect::move_(zpower_id.clone())));
+                                battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&zpower_effect));
                             }
                             "healreplacement" => {
                                 // pokemon.side.addSlotCondition(pokemon, 'healreplacement', pokemon, move);
                                 let pokemon_position = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].position;
                                 let healreplacement_id = ID::from("healreplacement");
-                                let move_effect = Effect::move_(zpower_id.clone());
                                 battle.add_slot_condition(
                                     (pokemon_pos.0, pokemon_position),
                                     healreplacement_id,
                                     Some(pokemon_pos),
-                                    Some(&move_effect),
+                                    Some(&zpower_effect),
                                     None,
                                 );
                             }
@@ -616,19 +618,19 @@ pub fn use_move_inner(
                             "redirect" => {
                                 // pokemon.addVolatile('followme', pokemon, zPower);
                                 let followme_id = ID::from("followme");
-                                Pokemon::add_volatile(battle, pokemon_pos, followme_id, Some(pokemon_pos), Some(&Effect::move_(zpower_id.clone())), None, None);
+                                Pokemon::add_volatile(battle, pokemon_pos, followme_id, Some(pokemon_pos), Some(&zpower_effect), None, None);
                             }
                             "crit2" => {
                                 // pokemon.addVolatile('focusenergy', pokemon, zPower);
                                 let focusenergy_id = ID::from("focusenergy");
-                                Pokemon::add_volatile(battle, pokemon_pos, focusenergy_id, Some(pokemon_pos), Some(&Effect::move_(zpower_id.clone())), None, None);
+                                Pokemon::add_volatile(battle, pokemon_pos, focusenergy_id, Some(pokemon_pos), Some(&zpower_effect), None, None);
                             }
                             "curse" => {
                                 let has_ghost = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1]
                                     .has_type(battle, "Ghost");
                                 if has_ghost {
                                     let maxhp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;
-                                    battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&Effect::move_(zpower_id.clone())));
+                                    battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&zpower_effect));
                                 } else {
                                     let boosts_array = [("atk", 1i8)];
                                     battle.boost(&boosts_array, pokemon_pos, Some(pokemon_pos), Some(zpower_id.as_str()), false, false);
@@ -723,7 +725,7 @@ pub fn use_move_inner(
                 "DeductPP",
                 Some(crate::event::EventTarget::Pokemon(pressure_target_pos)),
                 Some(pokemon_pos),
-                Some(&Effect::move_(active_move.id.clone())),
+                Some(&move_effect),
                 EventResult::Boolean(true), // Default is true (no extra PP)
                 false,
                 false,
@@ -765,11 +767,11 @@ pub fn use_move_inner(
     // we should NOT run other onTryMove callbacks (like Metronome's condition callback).
     let try_move_single = battle.single_event(
         "TryMove",
-        &crate::battle::Effect::move_(active_move.id.clone()),
+        &move_effect,
         None,
         Some(pokemon_pos),
         Some(final_target),
-        Some(&Effect::move_(active_move.id.clone())),
+        Some(&move_effect),
         None,
     );
 
@@ -784,7 +786,7 @@ pub fn use_move_inner(
             "TryMove",
             Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
             Some(final_target),
-            Some(&Effect::move_(active_move.id.clone())),
+            Some(&move_effect),
             crate::event::EventResult::Number(1),
             false,
             false,
@@ -808,11 +810,11 @@ pub fn use_move_inner(
     // this.battle.singleEvent('UseMoveMessage', move, null, pokemon, target, move);
     battle.single_event(
         "UseMoveMessage",
-        &crate::battle::Effect::move_(active_move.id.clone()),
+        &move_effect,
         None,
         Some(pokemon_pos),
         Some(final_target),
-        Some(&Effect::move_(active_move.id.clone())),
+        Some(&move_effect),
         None,
     );
 
@@ -967,11 +969,11 @@ pub fn use_move_inner(
     if !move_result.is_success() {
         battle.single_event(
             "MoveFail",
-            &crate::battle::Effect::move_(active_move.id.clone()),
+            &move_effect,
             None,
             Some(final_target),
             Some(pokemon_pos),
-            Some(&Effect::move_(active_move.id.clone())),
+            Some(&move_effect),
             None,
         );
         debug_elog!("[USE_MOVE_INNER] Move failed, returning false");
@@ -998,15 +1000,15 @@ pub fn use_move_inner(
 
         battle.single_event(
             "AfterMoveSecondarySelf",
-            &crate::battle::Effect::move_(active_move.id.clone()),
+            &move_effect,
             None,
             Some(pokemon_pos),
             Some(final_target),
-            Some(&Effect::move_(active_move.id.clone())),
+            Some(&move_effect),
             None,
         );
 
-        battle.run_event("AfterMoveSecondarySelf", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(final_target), Some(&Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
+        battle.run_event("AfterMoveSecondarySelf", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), Some(final_target), Some(&move_effect), EventResult::Continue, false, false);
 
         let current_hp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].hp;
         let max_hp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;

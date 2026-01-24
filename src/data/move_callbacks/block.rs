@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -23,12 +23,13 @@ pub fn on_hit(
     // source = source_pos (the Pokemon that used Block)
     // move = "block"
     // linkedStatus = 'trapper'
+    let move_effect = battle.make_move_effect(&ID::new("block"));
     let result = Pokemon::add_volatile(
             battle,
             target_pos,  // Add "trapped" to the TARGET (the one hit by Block)
             ID::from("trapped"),
             source_pos,  // Source is the attacker (who used Block)
-            Some(&Effect::move_(ID::new("block"))),
+            Some(&move_effect),
             Some(ID::from("trapper")),
             None,
         );

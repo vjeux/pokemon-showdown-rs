@@ -1,6 +1,5 @@
 use crate::*;
 use crate::event::EventResult;
-use crate::battle::Effect;
 
 impl Battle {
 
@@ -116,8 +115,9 @@ impl Battle {
                 let move_id_ref = &move_action.move_id.clone();
                 let pokemon_pos = (move_action.side_index, move_action.pokemon_index);
                 // Pass priority as relay_var so callbacks can modify it (e.g., Grassy Glide adds +1)
+                let move_effect = self.make_move_effect(move_id_ref);
                 let result =
-                    self.single_event("ModifyPriority", &crate::battle::Effect::move_(move_id_ref.clone()), None, Some(pokemon_pos), None, None, Some(EventResult::Number(priority as i32)));
+                    self.single_event("ModifyPriority", &move_effect, None, Some(pokemon_pos), None, None, Some(EventResult::Number(priority as i32)));
                 if let Some(new_priority) = result.number() {
                     priority = new_priority as i8;
                 }
@@ -126,7 +126,7 @@ impl Battle {
                 // Allows ability/item-based priority modification (e.g., Prankster, Quick Claw)
                 // IMPORTANT: We need to temporarily set battle.active_move for callbacks like
                 // Prankster that check move.category and set move.pranksterBoosted
-                let effect_id = move_action.move_id.clone();
+                let move_effect = self.make_move_effect(&move_action.move_id);
 
                 // Create a temporary ActiveMove for the ModifyPriority event
                 // This is needed because ability callbacks like Prankster check battle.active_move
@@ -139,7 +139,7 @@ impl Battle {
                 "ModifyPriority",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                     None,
-                    Some(&Effect::move_(effect_id)),
+                    Some(&move_effect),
                     EventResult::Number(priority as i32),
                     false,
                     false,

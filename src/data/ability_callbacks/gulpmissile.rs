@@ -91,13 +91,14 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: Option<(us
         // source.trySetStatus('par', target, move);
         // JavaScript: source = the attacker (being paralyzed), target = Cramorant (causing the paralysis)
         // For try_set_status: first param is pokemon getting status, source_pos is who caused it
-        let move_effect = Effect::move_(move_id.clone());
+        let move_effect = battle.make_move_effect(&ID::from(move_id.as_str()));
         Pokemon::try_set_status(battle, source_pos, ID::from("par"), Some(target_pos), Some(&move_effect));
     }
 
     // target.formeChange('cramorant', move);
     // target_pos is already (side_idx, pokemon_index), pass it directly
-    crate::pokemon::Pokemon::forme_change(battle, target_pos, ID::from("cramorant"), Some(Effect::move_(move_id)), false, "0", None);
+    let move_effect = battle.make_move_effect(&ID::from(move_id.as_str()));
+    crate::pokemon::Pokemon::forme_change(battle, target_pos, ID::from("cramorant"), Some(move_effect), false, "0", None);
 
     EventResult::Continue
 }
@@ -157,7 +158,8 @@ pub fn on_source_try_primary_hit(battle: &mut Battle, _target_pos: Option<(usize
 
     // source.formeChange(forme, effect);
     // source_pos is already (side_idx, pokemon_index), pass it directly
-    crate::pokemon::Pokemon::forme_change(battle, source_pos, ID::from(forme), Some(Effect::move_(effect_id)), false, "0", None);
+    let move_effect = battle.make_move_effect(&ID::from(effect_id));
+    crate::pokemon::Pokemon::forme_change(battle, source_pos, ID::from(forme), Some(move_effect), false, "0", None);
 
     EventResult::Continue
 }

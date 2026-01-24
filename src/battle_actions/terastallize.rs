@@ -103,10 +103,11 @@ pub fn terastallize(
         if illusion_base_species.as_str() == "ogerpon" || illusion_base_species.as_str() == "terapagos" {
             // Get Illusion ability
             let illusion_id = ID::new("illusion");
+            let illusion_effect = battle.make_ability_effect(&illusion_id);
             // singleEvent('End', ability, abilityState, pokemon)
             battle.single_event(
                 "End",
-                &crate::battle::Effect::ability(illusion_id),
+                &illusion_effect,
                 None,
                 Some(pokemon_pos),
                 None,

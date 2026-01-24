@@ -80,7 +80,7 @@ pub fn on_after_set_status(battle: &mut Battle, _status: Option<&str>, target_po
     // Hack to make status-prevention abilities think Synchronize is a status move
     // and show messages when activating against it.
     // Note: target (Ralts with Synchronize) is passed as the source for the sync effect
-    let sync_effect = crate::battle::Effect::ability("synchronize");
+    let sync_effect = battle.make_ability_effect(&crate::dex_data::ID::from("synchronize"));
     Pokemon::try_set_status(battle, source_pos, crate::dex_data::ID::from(status_id.as_str()), Some(target_pos), Some(&sync_effect));
 
     EventResult::Continue

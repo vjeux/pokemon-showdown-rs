@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -47,11 +47,12 @@ pub fn on_hit_field(
 
     for pokemon_pos in all_active {
         // if (this.runEvent('Invulnerability', pokemon, source, move) === false) {
+        let move_effect = battle.make_move_effect(&ID::from(move_id.clone()));
         let invulnerability_result = battle.run_event(
                 "Invulnerability",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
             source,
-            Some(&Effect::move_(ID::from(move_id.clone()))),
+            Some(&move_effect),
             EventResult::Continue,
             false,
             false
@@ -83,11 +84,12 @@ pub fn on_hit_field(
             result = true;
         // } else if (this.runEvent('TryHit', pokemon, source, move) === null) {
         } else {
+            let try_hit_effect = battle.make_move_effect(&ID::from(move_id.clone()));
             let try_hit_result = battle.run_event(
                 "TryHit",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                 source,
-                Some(&Effect::move_(ID::from(move_id.clone()))),
+                Some(&try_hit_effect),
                 EventResult::Continue,
                 false,
                 false

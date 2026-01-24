@@ -97,9 +97,10 @@ fn self_check_try_immunity(
     // } else if (!this.battle.singleEvent('TryImmunity', move, {}, target, pokemon, move)) {
     //     this.battle.add('-immune', target);
     //     hitResults[i] = false;
+    let move_effect = battle.make_move_effect(&active_move.id);
     let try_immunity_result = battle.single_event(
         "TryImmunity",
-        &crate::battle::Effect::move_(active_move.id.clone()),
+        &move_effect,
         None,
         Some(target_pos),
         Some(attacker_pos),

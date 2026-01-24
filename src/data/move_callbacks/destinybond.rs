@@ -162,7 +162,8 @@ pub mod condition {
 
             // source.faint();
             // Source faints due to destiny bond from target
-            Pokemon::faint(battle, source, Some(target), Some(&Effect::move_(ID::from("destinybond"))));
+            let move_effect = battle.make_move_effect(&ID::from("destinybond"));
+            Pokemon::faint(battle, source, Some(target), Some(&move_effect));
         }
 
         EventResult::Continue

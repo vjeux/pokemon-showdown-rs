@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -44,7 +44,7 @@ pub fn on_hit(
         .filter(|(side_idx, _)| *side_idx == source_side)
         .collect();
 
-    let move_effect = Effect::move_(ID::from("gmaxfinale"));
+    let move_effect = battle.make_move_effect(&ID::from("gmaxfinale"));
 
     for ally_pos in ally_positions {
         // Get max HP for this pokemon
@@ -107,7 +107,7 @@ pub mod self_callbacks {
             source_pokemon.allies_and_self(battle, false)
         };
 
-        let move_effect = Effect::move_(ID::from("gmaxfinale"));
+        let move_effect = battle.make_move_effect(&ID::from("gmaxfinale"));
 
         for ally_pos in ally_positions {
             // Get max HP for this pokemon

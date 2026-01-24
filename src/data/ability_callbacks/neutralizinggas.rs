@@ -107,7 +107,9 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 
         if has_illusion {
             // this.singleEvent('End', this.dex.abilities.get('Illusion'), target.abilityState, target, pokemon, 'neutralizinggas');
-            battle.single_event("End", &crate::battle::Effect::ability(ID::from("illusion")), None, Some(target_pos), Some(pokemon_pos), Some(&crate::battle::Effect::ability(ID::from("neutralizinggas"))), None);
+            let illusion_id = ID::from("illusion");
+            let neutralizinggas_id = ID::from("neutralizinggas");
+            battle.single_event("End", &battle.make_ability_effect(&illusion_id), None, Some(target_pos), Some(pokemon_pos), Some(&battle.make_ability_effect(&neutralizinggas_id)), None);
         }
 
         // if (target.volatiles['slowstart']) {
@@ -145,7 +147,9 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
 
         if strong_weathers.contains(&target_ability_id.as_str()) {
             // this.singleEvent('End', this.dex.abilities.get(target.getAbility().id), target.abilityState, target, pokemon, 'neutralizinggas');
-            battle.single_event("End", &crate::battle::Effect::ability(ID::from(target_ability_id.as_str())), None, Some(target_pos), Some(pokemon_pos), Some(&crate::battle::Effect::ability(ID::from("neutralizinggas"))), None);
+            let ability_id = ID::from(target_ability_id.as_str());
+            let neutralizinggas_id = ID::from("neutralizinggas");
+            battle.single_event("End", &battle.make_ability_effect(&ability_id), None, Some(target_pos), Some(pokemon_pos), Some(&battle.make_ability_effect(&neutralizinggas_id)), None);
         }
     }
 
@@ -361,7 +365,8 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             };
             target.get_ability().to_string()
         };
-        battle.single_event("Start", &crate::battle::Effect::ability(ID::from(target_ability_id.as_str())), None, Some(target_pos), None, None, None);
+        let ability_id = ID::from(target_ability_id.as_str());
+        battle.single_event("Start", &battle.make_ability_effect(&ability_id), None, Some(target_pos), None, None, None);
 
         // if (pokemon.ability === "gluttony") {
         //     pokemon.abilityState.gluttony = false;

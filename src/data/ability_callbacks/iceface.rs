@@ -54,7 +54,8 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 
     // pokemon.formeChange('Eiscue', this.effect, true);
     // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-    crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("eiscue"), Some(Effect::ability("iceface")), true, "0", None);
+    let iceface_id = ID::from("iceface");
+    crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("eiscue"), Some(battle.make_ability_effect(&iceface_id)), true, "0", None);
 
     EventResult::Continue
 }
@@ -275,7 +276,8 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
     // pokemon.formeChange('Eiscue-Noice', this.effect, true);
     // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-    crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("eiscuenoice"), Some(Effect::ability("iceface")), true, "0", None);
+    let iceface_id = ID::from("iceface");
+    crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("eiscuenoice"), Some(battle.make_ability_effect(&iceface_id)), true, "0", None);
 
     EventResult::Continue
 }
@@ -339,7 +341,8 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
 
     // pokemon.formeChange('Eiscue', this.effect, true);
     // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-    crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("eiscue"), Some(Effect::ability("iceface")), true, "0", None);
+    let iceface_id = ID::from("iceface");
+    crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("eiscue"), Some(battle.make_ability_effect(&iceface_id)), true, "0", None);
 
     EventResult::Continue
 }

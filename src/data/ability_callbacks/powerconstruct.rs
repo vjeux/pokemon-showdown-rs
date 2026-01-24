@@ -62,11 +62,12 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
 
     // pokemon.formeChange('Zygarde-Complete', this.effect, true);
     // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+    let powerconstruct_id = ID::from("powerconstruct");
     crate::pokemon::Pokemon::forme_change(
         battle,
         pokemon_pos,
         ID::from("zygardecomplete"),
-        Some(Effect::ability("powerconstruct")),
+        Some(battle.make_ability_effect(&powerconstruct_id)),
         true,
         "0",
         None

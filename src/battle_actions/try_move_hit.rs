@@ -68,26 +68,29 @@ pub fn try_move_hit(
     // Restore active_move to battle so event handlers can access it with all fields (including base_move)
     battle.active_move = Some(crate::battle_actions::SharedActiveMove::new(active_move.clone()));
 
+    // Create move effect once and reuse it for all event calls
+    let move_effect = battle.make_move_effect(&move_id);
+
     // let hitResult = this.battle.singleEvent('Try', move, null, pokemon, target, move) &&
     //     this.battle.singleEvent('PrepareHit', move, {}, target, pokemon, move) &&
     //     this.battle.runEvent('PrepareHit', pokemon, target, move);
     let try_result = battle.single_event(
         "Try",
-        &crate::battle::Effect::move_(move_id.clone()),
+        &move_effect,
         None,
         Some(pokemon_pos),
         Some(target),
-        Some(&crate::battle::Effect::move_(move_id.clone())),
+        Some(&move_effect),
         None,
     );
 
     let prepare_hit_single = battle.single_event(
         "PrepareHit",
-        &crate::battle::Effect::move_(move_id.clone()),
+        &move_effect,
         None,
         Some(target),
         Some(pokemon_pos),
-        Some(&crate::battle::Effect::move_(move_id.clone())),
+        Some(&move_effect),
         None,
     );
 
@@ -95,7 +98,7 @@ pub fn try_move_hit(
                 "PrepareHit",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         Some(target),
-        Some(&crate::battle::Effect::move_(move_id.clone())),
+        Some(&move_effect),
         crate::event::EventResult::Number(1),
         false,
         false,
@@ -150,7 +153,7 @@ pub fn try_move_hit(
                 "TryHitField",
                 Some(crate::event::EventTarget::Pokemon(target)),
             Some(pokemon_pos),
-            Some(&crate::battle::Effect::move_(move_id.clone())),
+            Some(&move_effect),
             crate::event::EventResult::Number(1),
             false,
             false,
@@ -165,7 +168,7 @@ pub fn try_move_hit(
                 "TryHitSide",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
                 Some(pokemon_pos),
-                Some(&crate::battle::Effect::move_(move_id.clone())),
+                Some(&move_effect),
                 crate::event::EventResult::Number(1),
                 false,
                 false,
@@ -184,7 +187,7 @@ pub fn try_move_hit(
                 "TryHitSide",
                 Some(crate::event::EventTarget::Pokemon(target)),
             Some(pokemon_pos),
-            Some(&crate::battle::Effect::move_(move_id.clone())),
+            Some(&move_effect),
             crate::event::EventResult::Number(1),
             false,
             false,

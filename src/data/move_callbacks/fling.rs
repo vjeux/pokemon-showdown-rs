@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
@@ -150,13 +150,15 @@ pub fn on_prepare_hit(
     };
 
     // if (!this.singleEvent('TakeItem', item, source.itemState, source, source, move, item)) return false;
+    let item_effect = battle.make_item_effect(&item_id);
+    let move_effect = battle.make_move_effect(&ID::new("fling"));
     let take_item_result = battle.single_event(
         "TakeItem",
-        &crate::battle::Effect::item(item_id.clone()),
+        &item_effect,
         None,
         Some(pokemon),
         Some(pokemon),
-        Some(&Effect::move_(ID::new("fling"))),
+        Some(&move_effect),
         None,
     );
     if take_item_result.boolean() == Some(false) {
@@ -228,13 +230,15 @@ pub fn on_prepare_hit(
                 pokemon_ref.ability.clone()
             };
 
+            let ability_effect = battle.make_ability_effect(&ability_id);
+            let item_effect_cudchew = battle.make_item_effect(&item_id);
             battle.single_event(
                 "EatItem",
-                &crate::battle::Effect::ability(ability_id),
+                &ability_effect,
                 None,
                 Some(pokemon),
                 Some(pokemon),
-                Some(&Effect::item(item_id.clone())),
+                Some(&item_effect_cudchew),
                 None,
             );
         }
@@ -316,7 +320,7 @@ pub fn on_hit(
         },
     };
 
-    let item_effect = Effect::item(item_id.clone());
+    let item_effect = battle.make_item_effect(&item_id);
 
     // Get item data
     let (is_berry, has_on_eat) = {
@@ -446,7 +450,8 @@ pub mod condition {
         );
 
         // this.runEvent('AfterUseItem', pokemon, null, null, item);
-        battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(pokemon)), None, Some(&Effect::item(item_id.clone())), EventResult::Continue, false, false);
+        let item_effect = battle.make_item_effect(&item_id);
+        battle.run_event("AfterUseItem", Some(crate::event::EventTarget::Pokemon(pokemon)), None, Some(&item_effect), EventResult::Continue, false, false);
 
         // pokemon.removeVolatile('fling');
         Pokemon::remove_volatile(battle, pokemon, &ID::from("fling"));

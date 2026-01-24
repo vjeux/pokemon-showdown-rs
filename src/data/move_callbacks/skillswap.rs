@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onTryHit(target, source) {
@@ -81,11 +81,12 @@ pub fn on_try_hit(
 
     // const sourceCanBeSet = this.runEvent('SetAbility', source, source, this.effect, targetAbility);
     // if (!sourceCanBeSet) return sourceCanBeSet;
+    let target_ability_effect = battle.make_ability_effect(&target_ability_id);
     let source_can_be_set = battle.run_event(
                 "SetAbility",
                 Some(crate::event::EventTarget::Pokemon(source)),
         Some(source),
-        Some(&Effect::ability(target_ability_id.clone())),
+        Some(&target_ability_effect),
         crate::event::EventResult::Number(1),
         false,
         false,
@@ -96,11 +97,12 @@ pub fn on_try_hit(
 
     // const targetCanBeSet = this.runEvent('SetAbility', target, source, this.effect, sourceAbility);
     // if (!targetCanBeSet) return targetCanBeSet;
+    let source_ability_effect = battle.make_ability_effect(&source_ability_id);
     let target_can_be_set = battle.run_event(
                 "SetAbility",
                 Some(crate::event::EventTarget::Pokemon(target)),
         Some(source),
-        Some(&Effect::ability(source_ability_id.clone())),
+        Some(&source_ability_effect),
         crate::event::EventResult::Number(1),
         false,
         false,
@@ -237,8 +239,10 @@ pub fn on_hit(
 
     // this.singleEvent('End', sourceAbility, source.abilityState, source);
     // this.singleEvent('End', targetAbility, target.abilityState, target);
-    battle.single_event("End", &crate::battle::Effect::ability(source_ability_id.clone()), None, Some(source), None, None, None);
-    battle.single_event("End", &crate::battle::Effect::ability(target_ability_id.clone()), None, Some(target), None, None, None);
+    let source_ability_effect = battle.make_ability_effect(&source_ability_id);
+    let target_ability_effect = battle.make_ability_effect(&target_ability_id);
+    battle.single_event("End", &source_ability_effect, None, Some(source), None, None, None);
+    battle.single_event("End", &target_ability_effect, None, Some(target), None, None, None);
 
     // source.ability = targetAbility.id;
     // target.ability = sourceAbility.id;
@@ -297,8 +301,10 @@ pub fn on_hit(
 
     // this.singleEvent('Start', targetAbility, source.abilityState, source);
     // this.singleEvent('Start', sourceAbility, target.abilityState, target);
-    battle.single_event("Start", &crate::battle::Effect::ability(target_ability_id), None, Some(source), None, None, None);
-    battle.single_event("Start", &crate::battle::Effect::ability(source_ability_id), None, Some(target), None, None, None);
+    let target_ability_effect_start = battle.make_ability_effect(&target_ability_id);
+    let source_ability_effect_start = battle.make_ability_effect(&source_ability_id);
+    battle.single_event("Start", &target_ability_effect_start, None, Some(source), None, None, None);
+    battle.single_event("Start", &source_ability_effect_start, None, Some(target), None, None, None);
 
     EventResult::Continue
 }

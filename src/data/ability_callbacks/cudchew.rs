@@ -151,9 +151,10 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
     ]);
 
     // if (this.singleEvent('Eat', item, null, pokemon, null, null))
+    let item_effect = battle.make_item_effect(&berry_id);
     let eat_result = battle.single_event(
         "Eat",
-        &crate::battle::Effect::item(berry_id.clone()),
+        &item_effect,
         None,
         Some(pokemon_pos),
         None,
@@ -163,7 +164,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
 
     if eat_result.is_not_fail() {
         // this.runEvent('EatItem', pokemon, null, null, item);
-        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, Some(&Effect::item(berry_id.clone())), EventResult::Continue, false, false);
+        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), None, Some(&item_effect), EventResult::Continue, false, false);
     }
 
     // if (item.onEat) pokemon.ateBerry = true;

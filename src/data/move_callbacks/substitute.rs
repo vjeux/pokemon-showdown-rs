@@ -4,7 +4,8 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
+use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -23,8 +24,6 @@ pub fn on_try_hit(
     source_pos: (usize, usize),
     _target_pos: (usize, usize),
 ) -> EventResult {
-    use crate::dex_data::ID;
-
     let source = source_pos;
 
     // if (source.volatiles['substitute'])
@@ -400,21 +399,24 @@ pub mod condition {
             let recoil_damage =
                 BattleActions::calc_recoil_damage(actual_damage, active_move_ref, source_max_hp);
 
-            battle.damage(recoil_damage, Some(source), Some(target), Some(&Effect::move_(ID::from("recoil"))), false);
+            let recoil_effect = battle.make_move_effect(&ID::from("recoil"));
+            battle.damage(recoil_damage, Some(source), Some(target), Some(&recoil_effect), false);
         }
 
         // if (move.drain)
         if let Some((drain_num, drain_denom)) = drain {
             // this.heal(Math.ceil(damage * move.drain[0] / move.drain[1]), source, target, 'drain');
             let heal_amount = ((actual_damage * drain_num + drain_denom - 1) / drain_denom).max(1);
-            battle.heal(heal_amount, Some(source), Some(target), Some(&Effect::move_(ID::from("drain"))));
+            let drain_effect = battle.make_move_effect(&ID::from("drain"));
+            battle.heal(heal_amount, Some(source), Some(target), Some(&drain_effect));
         }
 
         // this.singleEvent('AfterSubDamage', move, null, target, source, move, damage);
-        battle.single_event("AfterSubDamage", &crate::battle::Effect::move_(move_id.clone()), None, Some(target), Some(source), Some(&Effect::move_(move_id.clone())), Some(EventResult::Number(actual_damage)));
+        let move_effect = battle.make_move_effect(&move_id);
+        battle.single_event("AfterSubDamage", &move_effect, None, Some(target), Some(source), Some(&move_effect), Some(EventResult::Number(actual_damage)));
 
         // this.runEvent('AfterSubDamage', target, source, move, damage);
-        battle.run_event("AfterSubDamage", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&Effect::move_(move_id.clone())), EventResult::Number(actual_damage), false, false);
+        battle.run_event("AfterSubDamage", Some(crate::event::EventTarget::Pokemon(target)), Some(source), Some(&move_effect), EventResult::Number(actual_damage), false, false);
 
         // return this.HIT_SUBSTITUTE;
         EventResult::HitSubstitute

@@ -41,7 +41,7 @@ pub fn on_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos: Opti
     }
 
     // this.field.setTerrain('psychicterrain');
-    let source_effect = Some(crate::battle::Effect::move_("maxmindstorm"));
+    let source_effect = Some(battle.make_move_effect(&ID::from("maxmindstorm")));
     battle.set_terrain(ID::from("psychicterrain"), source_pos, source_effect);
 
     EventResult::Continue
@@ -92,7 +92,7 @@ pub mod self_callbacks {
         }
 
         // this.field.setTerrain("psychicterrain");
-        let source_effect = Some(crate::battle::Effect::move_("maxmindstorm"));
+        let source_effect = Some(battle.make_move_effect(&ID::from("maxmindstorm")));
         battle.set_terrain(ID::from("psychicterrain"), source_pos, source_effect);
 
         EventResult::Continue

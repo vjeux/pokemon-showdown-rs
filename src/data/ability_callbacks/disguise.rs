@@ -256,11 +256,12 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 
     // pokemon.formeChange(speciesid, this.effect, true);
     // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+    let disguise_id = crate::dex_data::ID::from("disguise");
     crate::pokemon::Pokemon::forme_change(
         battle,
         pokemon_pos,
         ID::from(new_species_id),
-        Some(Effect::ability("disguise")),
+        Some(battle.make_ability_effect(&disguise_id)),
         true,
         "0",
         None,

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onModifyMove(move, attacker, defender) {
@@ -67,11 +67,12 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
 
     // if (attacker.species.name !== targetForme) attacker.formeChange(targetForme);
     if species_name != target_forme && species_name.to_lowercase().replace("-", "") != target_forme {
+        let stancechange_id = ID::from("stancechange");
         crate::pokemon::Pokemon::forme_change(
             battle,
             attacker_pos,
             ID::from(target_forme),
-            Some(Effect::ability("stancechange")),
+            Some(battle.make_ability_effect(&stancechange_id)),
             false,
             "0",
             None

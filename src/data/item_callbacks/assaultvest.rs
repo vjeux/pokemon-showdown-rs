@@ -47,11 +47,11 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
             // if (move.category === 'Status' && move.id !== 'mefirst')
             if move_data.category == "Status" && move_id.as_str() != "mefirst" {
                 // pokemon.disableMove(moveSlot.id);
+                let effect = battle.make_item_effect(&crate::dex_data::ID::from("assaultvest"));
                 let pokemon_mut = match battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                let effect = crate::battle::Effect::item("assaultvest");
                 pokemon_mut.disable_move(move_id.as_str(), false, Some(&effect));
             }
         }

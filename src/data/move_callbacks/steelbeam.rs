@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onAfterMove(pokemon, target, move) {
@@ -52,11 +52,12 @@ pub fn on_after_move(
         // Note: JS uses this.dex.conditions.get("Steel Beam") which creates a Condition effect,
         // NOT a Move effect. This is important because Disguise only blocks damage from Move effects.
         let damage_amount = (max_hp as f64 / 2.0).round() as i32;
+        let condition_effect = battle.make_condition_effect(&ID::from("steelbeam"));
         battle.damage(
             damage_amount,
             Some(pokemon),
             Some(pokemon),
-            Some(&Effect::condition(ID::from("steelbeam"))),
+            Some(&condition_effect),
             true, // ignoreability
         );
 

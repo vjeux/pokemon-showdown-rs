@@ -3,7 +3,6 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::pokemon::GetMoveTargetsResult;
-use crate::battle::Effect;
 use crate::battle_actions::ActiveMove;
 
 impl Pokemon {
@@ -233,12 +232,15 @@ impl Pokemon {
                             if let Some((target_side, target_pos)) = target {
                                 let encoded_target = (target_side as i32 * 10) + target_pos as i32;
 
+                                // Create move effect for RedirectTarget event
+                                let move_effect = battle.make_move_effect(move_id);
+
                                 // Call RedirectTarget priority event
                                 let redirect_result = battle.priority_event(
                                     "RedirectTarget",
                                     Some(user_pos),
                                     Some(user_pos),
-                                    Some(&Effect::move_(move_id.clone())),
+                                    Some(&move_effect),
                                     EventResult::Number(encoded_target),
                                 );
 

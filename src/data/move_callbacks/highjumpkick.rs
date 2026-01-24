@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{hp_fraction, Battle, Effect};
+use crate::battle::{hp_fraction, Battle};
 use crate::event::EventResult;
 
 /// onMoveFail(target, source, move) {
@@ -35,11 +35,12 @@ pub fn on_move_fail(
     // this.damage(source.baseMaxhp / 2, source, source, this.dex.conditions.get('High Jump Kick'));
     // JavaScript passes a CONDITION effect, not a MOVE effect. This prevents Disguise from
     // blocking the crash damage (Disguise only blocks damage from effectType === 'Move').
+    let condition_effect = battle.make_condition_effect(&ID::from("highjumpkick"));
     battle.damage(
         damage_amount,
         Some(source),
         Some(source),
-        Some(&Effect::condition(ID::from("highjumpkick"))),
+        Some(&condition_effect),
         false,
     );
 

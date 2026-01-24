@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -43,12 +43,13 @@ pub fn on_hit(
     if source_is_active {
         // target.addVolatile('trapped', source, move, 'trapper');
         // JavaScript: target.addVolatile('trapped', source, move, 'trapper')
+        let move_effect = battle.make_move_effect(&ID::from("anchorshot"));
         Pokemon::add_volatile(
             battle,
             target_pos,
             ID::from("trapped"),
             Some(source),
-            Some(&Effect::move_(ID::new("anchorshot"))),
+            Some(&move_effect),
             Some(ID::from("trapper")),
             None,
         );

@@ -4,7 +4,6 @@
 
 use crate::*;
 use crate::battle_actions::{SpreadMoveDamage, SpreadMoveTargets, SpreadMoveTarget, DamageResult, combine_results, SpreadMoveDamageExt, HitEffect};
-use crate::battle::Effect;
 
 /// Run move effects (boosts, healing, status, etc.)
 /// Equivalent to runMoveEffects() in battle-actions.ts:1201
@@ -155,6 +154,9 @@ pub fn run_move_effects<'a>(
     // In many cases they're the same, but moveData can differ for secondary effects
     // hit_effect provides access to the moveData fields via accessor methods
 
+    // Create move effect once and reuse for all event calls
+    let move_effect = battle.make_move_effect(&active_move.id);
+
     // let didAnything: number | boolean | null | undefined = damage.reduce(this.combineResults);
     let mut did_anything = damages.reduce();
 
@@ -265,7 +267,7 @@ pub fn run_move_effects<'a>(
                         amount_rounded,
                         Some(target_pos),
                         Some(source_pos),
-                        Some(&crate::battle::Effect::move_(active_move.id.clone())),
+                        Some(&move_effect),
                     );
                     // if (!d && d !== 0) {
                     match d {
@@ -323,9 +325,9 @@ pub fn run_move_effects<'a>(
                 // If the move has an ability (like Rest's Insomnia check), use that as the source effect
                 // Otherwise use the move itself as the source effect
                 let source_effect = if let Some(ref ability_id) = active_move.ability {
-                    crate::battle::Effect::ability(ability_id.clone())
+                    battle.make_ability_effect(ability_id)
                 } else {
-                    crate::battle::Effect::move_(active_move.id.clone())
+                    move_effect.clone()
                 };
                 let hit_result = Pokemon::try_set_status(
                     battle,
@@ -376,7 +378,7 @@ pub fn run_move_effects<'a>(
                     target_pos,
                     volatile_id.clone(),
                     Some(source_pos),
-                    Some(&crate::battle::Effect::move_(active_move.id.clone())),
+                    Some(&move_effect),
                     None, // linked_status
                     embedded_condition.as_ref(), // embedded_condition from move's condition field
                 );
@@ -397,7 +399,6 @@ pub fn run_move_effects<'a>(
             if let Some(side_condition) = hit_effect.side_condition() {
                 //     hitResult = target.side.addSideCondition(moveData.sideCondition, source, move);
                 let condition_id = ID::new(side_condition);
-                let move_effect = Effect::move_(active_move.id.clone());
                 let hit_result = battle.add_side_condition(
                     target_pos.0,
                     condition_id,
@@ -422,12 +423,11 @@ pub fn run_move_effects<'a>(
             if let Some(slot_condition) = hit_effect.slot_condition() {
                 //     hitResult = target.side.addSlotCondition(target, moveData.slotCondition, source, move);
                 let condition_id = ID::new(slot_condition);
-                let source_effect = Effect::move_(active_move.id.clone());
                 let hit_result = battle.add_slot_condition(
                     target_pos,
                     condition_id,
                     Some(source_pos),
-                    Some(&source_effect),
+                    Some(&move_effect),
                     None,
                 );
                 //     didSomething = this.combineResults(didSomething, hitResult);
@@ -446,7 +446,7 @@ pub fn run_move_effects<'a>(
                 let hit_result = battle.set_weather(
                     weather_id,
                     Some(source_pos),
-                    Some(Effect::move_(active_move.id.clone())),
+                    Some(move_effect.clone()),
                 );
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 // JavaScript returns true/false/null, convert to DamageResult
@@ -462,8 +462,7 @@ pub fn run_move_effects<'a>(
             if let Some(terrain) = hit_effect.terrain() {
                 //     hitResult = this.battle.field.setTerrain(moveData.terrain, source, move);
                 let terrain_id = ID::new(terrain);
-                let terrain_effect = Some(Effect::move_(active_move.id.clone()));
-                let hit_result = battle.set_terrain(terrain_id, Some(source_pos), terrain_effect);
+                let hit_result = battle.set_terrain(terrain_id, Some(source_pos), Some(move_effect.clone()));
                 //     didSomething = this.combineResults(didSomething, hitResult);
                 let hit_result_dr = if hit_result {
                     DamageResult::Success
@@ -508,6 +507,15 @@ pub fn run_move_effects<'a>(
             // Get effect_id for callbacks (use active_move.id if hit_effect is a SecondaryEffect)
             let effect_id = hit_effect.id().unwrap_or(&active_move.id);
 
+            // Create effect for effect_id if it differs from active_move.id
+            let effect_id_effect = if effect_id != &active_move.id {
+                Some(battle.make_move_effect(effect_id))
+            } else {
+                None
+            };
+            // Use effect_id_effect if available, otherwise use move_effect
+            let callback_effect = effect_id_effect.as_ref().unwrap_or(&move_effect);
+
             // if (move.target === 'all' && !isSelf) {
             if active_move.target == "all" && !is_self {
                 //     if (moveData.onHitField) {
@@ -515,11 +523,11 @@ pub fn run_move_effects<'a>(
                     //         hitResult = this.battle.singleEvent('HitField', moveData, {}, target, source, move);
                     let hit_result = battle.single_event(
                         "HitField",
-                        &crate::battle::Effect::move_(effect_id.clone()),
+                        callback_effect,
                         None,
                         Some(target_pos),
                         Some(source_pos),
-                        Some(&Effect::move_(active_move.id.clone())),
+                        Some(&move_effect),
                         None,
                     );
                     //         didSomething = this.combineResults(didSomething, hitResult);
@@ -533,11 +541,11 @@ pub fn run_move_effects<'a>(
                     //         hitResult = this.battle.singleEvent('HitSide', moveData, {}, target.side, source, move);
                     let hit_result = battle.single_event(
                         "HitSide",
-                        &crate::battle::Effect::move_(effect_id.clone()),
+                        callback_effect,
                         None,
                         Some(target_pos),
                         Some(source_pos),
-                        Some(&Effect::move_(active_move.id.clone())),
+                        Some(&move_effect),
                         None,
                     );
                     //         didSomething = this.combineResults(didSomething, hitResult);
@@ -579,13 +587,14 @@ pub fn run_move_effects<'a>(
                         // JavaScript: singleEvent('Hit', moveData.self, {}, source, source, move)
                         // For self effects, target is source (the move user)
                         // We use Effect::move_self() to indicate this is moveData.self
+                        let self_effect = crate::battle::Effect::move_self(effect_id.clone());
                         let hit_result = battle.single_event(
                             "Hit",
-                            &crate::battle::Effect::move_self(effect_id.clone()),  // moveData.self
+                            &self_effect,  // moveData.self
                             None,
                             Some(source_pos),  // target is source for self effects
                             Some(source_pos),  // source is also source
-                            Some(&Effect::move_(active_move.id.clone())),  // sourceEffect is the move
+                            Some(&move_effect),  // sourceEffect is the move
                             None,
                         );
                         did_something = combine_results(did_something, hit_result.into());
@@ -593,11 +602,11 @@ pub fn run_move_effects<'a>(
                         //         hitResult = this.battle.singleEvent('Hit', moveData, {}, target, source, move);
                         let hit_result = battle.single_event(
                             "Hit",
-                            &crate::battle::Effect::move_(effect_id.clone()),
+                            callback_effect,
                             None,
                             Some(target_pos),
                             Some(source_pos),
-                            Some(&Effect::move_(active_move.id.clone())),
+                            Some(&move_effect),
                             None,
                         );
                         //         didSomething = this.combineResults(didSomething, hitResult);
@@ -611,7 +620,7 @@ pub fn run_move_effects<'a>(
                         "Hit",
                         Some(crate::event::EventTarget::Pokemon(target_pos)),
                         Some(source_pos),
-                        Some(&crate::battle::Effect::move_(active_move.id.clone())),
+                        Some(&move_effect),
                         crate::event::EventResult::Continue,
                         false,
                         false,

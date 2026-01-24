@@ -41,6 +41,7 @@ pub fn on_after_hit(
         //     side.addSideCondition('spikes');
         // }
         let source_side_idx = source_pos.0;
+        let move_effect = battle.make_move_effect(&ID::from("ceaselessedge"));
 
         // Get foe sides (opposite side in a 2-player battle)
         for side_idx in 0..battle.sides.len() {
@@ -50,7 +51,7 @@ pub fn on_after_hit(
                     side_idx,
                     ID::from("spikes"),
                     Some(source_pos),
-                    Some(&crate::battle::Effect::move_("ceaselessedge")),
+                    Some(&move_effect),
                 );
             }
         }
@@ -99,6 +100,7 @@ pub fn on_after_sub_damage(
         //     side.addSideCondition('spikes');
         // }
         let source_side_idx = source.0;
+        let move_effect = battle.make_move_effect(&ID::from("ceaselessedge"));
 
         // Get foe sides (opposite side in a 2-player battle)
         for side_idx in 0..battle.sides.len() {
@@ -108,7 +110,7 @@ pub fn on_after_sub_damage(
                     side_idx,
                     ID::from("spikes"),
                     Some(source),
-                    Some(&crate::battle::Effect::move_("ceaselessedge")),
+                    Some(&move_effect),
                 );
             }
         }

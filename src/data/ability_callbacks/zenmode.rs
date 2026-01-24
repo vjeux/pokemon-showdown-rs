@@ -120,7 +120,8 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         if let Some(battle_only_species) = battle_only {
             // pokemon.formeChange(pokemon.species.battleOnly as string, this.effect, false, '0', '[silent]');
             // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(battle_only_species), Some(Effect::ability("zenmode")), false, "0", Some("[silent]"));
+            let zenmode_id = ID::from("zenmode");
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(battle_only_species), Some(battle.make_ability_effect(&zenmode_id)), false, "0", Some("[silent]"));
         }
     }
 
@@ -159,13 +160,13 @@ pub mod condition {
             // if (pokemon.species.id !== 'darmanitanzen') pokemon.formeChange('Darmanitan-Zen');
             if species_id.as_str() != "darmanitanzen" {
                 // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-                crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("darmanitanzen"), Some(Effect::ability("zenmode")), false, "0", None);
+                crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("darmanitanzen"), Some(battle.make_ability_effect(&ID::from("zenmode"))), false, "0", None);
             }
         } else {
             // if (pokemon.species.id !== 'darmanitangalarzen') pokemon.formeChange('Darmanitan-Galar-Zen');
             if species_id.as_str() != "darmanitangalarzen" {
                 // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-                crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("darmanitangalarzen"), Some(Effect::ability("zenmode")), false, "0", None);
+                crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("darmanitangalarzen"), Some(battle.make_ability_effect(&ID::from("zenmode"))), false, "0", None);
             }
         }
 
@@ -206,7 +207,7 @@ pub mod condition {
             // pokemon.formeChange(pokemon.species.battleOnly as string);
             if let Some(battle_only_species) = battle_only {
                 // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-                crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(battle_only_species.as_str()), Some(Effect::ability("zenmode")), false, "0", None);
+                crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(battle_only_species.as_str()), Some(battle.make_ability_effect(&ID::from("zenmode"))), false, "0", None);
             }
         }
 

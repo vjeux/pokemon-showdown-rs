@@ -122,13 +122,14 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
                 let battle_ptr = battle as *mut Battle;
                 let battle_ref2 = &mut *battle_ptr;
 
+                let forecast_id = crate::dex_data::ID::from("forecast");
                 // pokemon_pos is (side_idx, pokemon_idx) where pokemon_idx is the index in sides[side_idx].pokemon
                 // We need to use pokemon_idx directly, not the active slot
                 crate::pokemon::Pokemon::forme_change(
                     battle_ref2,
                     pokemon_pos,  // Use pokemon_pos directly, not active_slot lookup
                     ID::from(forme_id),
-                    Some(Effect::ability("forecast")),
+                    Some(battle.make_ability_effect(&forecast_id)),
                     false,
                     "0",
                     Some("[msg]")

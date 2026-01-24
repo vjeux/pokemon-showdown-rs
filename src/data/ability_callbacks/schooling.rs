@@ -51,14 +51,14 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         if species_id.as_str() == "wishiwashi" {
             // pokemon.formeChange('Wishiwashi-School');
             // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("wishiwashischool"), Some(Effect::ability("schooling")), false, "0", None);
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("wishiwashischool"), Some(battle.make_ability_effect(&ID::from("schooling"))), false, "0", None);
         }
     } else {
         // if (pokemon.species.id === 'wishiwashischool')
         if species_id.as_str() == "wishiwashischool" {
             // pokemon.formeChange('Wishiwashi');
             // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("wishiwashi"), Some(Effect::ability("schooling")), false, "0", None);
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("wishiwashi"), Some(battle.make_ability_effect(&ID::from("schooling"))), false, "0", None);
         }
     }
 
@@ -112,14 +112,14 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
         if species_id.as_str() == "wishiwashi" {
             // pokemon.formeChange('Wishiwashi-School');
             // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("wishiwashischool"), Some(Effect::ability("schooling")), false, "0", None);
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("wishiwashischool"), Some(battle.make_ability_effect(&ID::from("schooling"))), false, "0", None);
         }
     } else {
         // if (pokemon.species.id === 'wishiwashischool')
         if species_id.as_str() == "wishiwashischool" {
             // pokemon.formeChange('Wishiwashi');
             // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("wishiwashi"), Some(Effect::ability("schooling")), false, "0", None);
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("wishiwashi"), Some(battle.make_ability_effect(&ID::from("schooling"))), false, "0", None);
         }
     }
 

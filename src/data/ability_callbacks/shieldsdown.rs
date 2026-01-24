@@ -56,14 +56,14 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         if forme.as_deref() != Some("Meteor") {
             // pokemon.formeChange('Minior-Meteor');
             // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("miniormeteor"), Some(Effect::ability("shieldsdown")), false, "0", None);
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("miniormeteor"), Some(battle.make_ability_effect(&ID::from("shieldsdown"))), false, "0", None);
         }
     } else {
         // if (pokemon.species.forme === 'Meteor')
         if forme.as_deref() == Some("Meteor") {
             // pokemon.formeChange(pokemon.set.species);
             // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(set_species.clone()), Some(Effect::ability("shieldsdown")), false, "0", None);
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(set_species.clone()), Some(battle.make_ability_effect(&ID::from("shieldsdown"))), false, "0", None);
         }
     }
 
@@ -119,14 +119,14 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
         if forme.as_deref() != Some("Meteor") {
             // pokemon.formeChange('Minior-Meteor');
             // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("miniormeteor"), Some(Effect::ability("shieldsdown")), false, "0", None);
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from("miniormeteor"), Some(battle.make_ability_effect(&ID::from("shieldsdown"))), false, "0", None);
         }
     } else {
         // if (pokemon.species.forme === 'Meteor')
         if forme.as_deref() == Some("Meteor") {
             // pokemon.formeChange(pokemon.set.species);
             // pokemon_pos is already (side_idx, pokemon_index), pass it directly
-            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(set_species.clone()), Some(Effect::ability("shieldsdown")), false, "0", None);
+            crate::pokemon::Pokemon::forme_change(battle, pokemon_pos, ID::from(set_species.clone()), Some(battle.make_ability_effect(&ID::from("shieldsdown"))), false, "0", None);
         }
     }
 

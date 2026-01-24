@@ -1,7 +1,7 @@
 // NOTE: This method is NOT in JavaScript - Rust-specific implementation
 
 use crate::*;
-use crate::battle::{Effect, EffectType};
+use crate::battle::EffectType;
 use crate::event::EventResult;
 
 impl Battle {
@@ -498,7 +498,7 @@ impl Battle {
                                 .floor() as i32;
                             let amount = self.clamp_int_range(amount, Some(1), Some(i32::MAX));
 
-                            let recoil_effect = Effect::condition("recoil");
+                            let recoil_effect = self.make_condition_effect(&ID::from("recoil"));
                             self.damage(amount, Some(source_pos), Some(target_pos), Some(&recoil_effect), false);
                         }
                     }
@@ -517,7 +517,7 @@ impl Battle {
                             self.last_damage = amount;
                         }
 
-                        let drain_effect = Effect::condition("drain");
+                        let drain_effect = self.make_condition_effect(&ID::from("drain"));
                         self.heal(amount, Some(source_pos), Some(target_pos), Some(&drain_effect));
                     }
                 }
@@ -529,7 +529,7 @@ impl Battle {
                             / drain_denom as f64)
                             .round() as i32;
 
-                        let drain_effect = Effect::condition("drain");
+                        let drain_effect = self.make_condition_effect(&ID::from("drain"));
                         self.heal(amount, Some(source_pos), Some(target_pos), Some(&drain_effect));
                     }
                 }

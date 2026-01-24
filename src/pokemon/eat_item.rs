@@ -1,7 +1,6 @@
 use crate::*;
 use crate::event::EventResult;
 use crate::event_system::SharedEffectState;
-use crate::battle::Effect;
 
 /// Check if an item is a restorative berry
 /// JavaScript: RESTORATIVE_BERRIES.has(item.id)
@@ -193,9 +192,11 @@ impl Pokemon {
         // JS: this.battle.runEvent('EatItem', this, source, sourceEffect, item);
         // ✅ NOW IMPLEMENTED (Session 24 Part 83): singleEvent('Eat') and runEvent('EatItem')
         debug_elog!("[EAT_ITEM] About to call singleEvent('Eat') for item={}", item_id);
-        battle.single_event("Eat", &crate::battle::Effect::item(item_id.clone()), None, Some(pokemon_pos), source_pos, source_effect_ref, None);
+        let eat_effect = battle.make_item_effect(&item_id);
+        battle.single_event("Eat", &eat_effect, None, Some(pokemon_pos), source_pos, source_effect_ref, None);
         debug_elog!("[EAT_ITEM] About to call runEvent('EatItem')");
-        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, Some(&crate::battle::Effect::item(item_id.clone())), EventResult::Continue, false, false);
+        let eat_item_effect = battle.make_item_effect(&item_id);
+        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), source_pos, Some(&eat_item_effect), EventResult::Continue, false, false);
 
         // JS: if (RESTORATIVE_BERRIES.has(item.id)) {
         // JS:     switch (this.pendingStaleness) {

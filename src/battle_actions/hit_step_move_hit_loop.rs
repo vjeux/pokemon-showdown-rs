@@ -6,7 +6,6 @@ use crate::*;
 use crate::event::EventResult;
 use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, ActiveMove};
 use crate::dex::Multihit;
-use crate::battle::Effect;
 
 /// Main loop for handling multi-hit moves
 /// Equivalent to battle-actions.ts hitStepMoveHitLoop()
@@ -368,11 +367,12 @@ pub fn hit_step_move_hit_loop(
             } else {
                 crate::event::EventResult::Float(accuracy_value)
             };
+            let move_effect = battle.make_move_effect(&active_move.id);
             let accuracy_result = battle.run_event(
                 "ModifyAccuracy",
                 Some(crate::event::EventTarget::Pokemon(target)),
                 Some(attacker_pos),
-                Some(&crate::battle::Effect::move_(active_move.id.clone())),
+                Some(&move_effect),
                 accuracy_relay,
                 false,
                 false
@@ -401,7 +401,7 @@ pub fn hit_step_move_hit_loop(
                 "Accuracy",
                 Some(crate::event::EventTarget::Pokemon(target)),
                 Some(attacker_pos),
-                Some(&crate::battle::Effect::move_(active_move.id.clone())),
+                Some(&move_effect),
                 accuracy_relay,
                 false,
                 false
@@ -535,7 +535,8 @@ pub fn hit_step_move_hit_loop(
             // NOT a Move effect. This is important because Disguise only blocks damage from Move effects.
             // Note: instafaint=true is critical here - it causes faint_messages to run immediately,
             // which sets pokemon.fainted=true before the subsequent eachEvent('Update') call.
-            battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::condition(active_move.id.clone())), true);
+            let condition_effect = battle.make_condition_effect(&active_move.id);
+            battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&condition_effect), true);
             active_move.mindblown_recoil = false;
             // Also update battle.active_move since callbacks read from there, not the local active_move
             if let Some(ref am) = battle.active_move {
@@ -631,7 +632,8 @@ pub fn hit_step_move_hit_loop(
             if battle.turn >= 64 && battle.turn <= 66 {
                 debug_elog!("[RECOIL] Applying {} recoil damage to {} on turn {}", recoil_damage, _pokemon_name, battle.turn);
             }
-            battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::condition("recoil")), false);
+            let recoil_effect = battle.make_condition_effect(&ID::from("recoil"));
+            battle.damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&recoil_effect), false);
 
             let hp_after = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
                 .map(|p| p.hp)
@@ -672,7 +674,8 @@ pub fn hit_step_move_hit_loop(
         debug_elog!("[STRUGGLE_RECOIL] turn={}, attacker={:?}, hp_before={}, max_hp={}, base_max_hp={}, recoil_damage={}",
             battle.turn, attacker_pos, hp_before_recoil, max_hp, base_max_hp, recoil_damage);
 
-        battle.direct_damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&Effect::condition("strugglerecoil")));
+        let strugglerecoil_effect = battle.make_condition_effect(&ID::from("strugglerecoil"));
+        battle.direct_damage(recoil_damage, Some(attacker_pos), Some(attacker_pos), Some(&strugglerecoil_effect));
 
         let hp_after = battle.pokemon_at(attacker_pos.0, attacker_pos.1)
             .map(|p| p.hp)

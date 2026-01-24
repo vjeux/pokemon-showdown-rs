@@ -4,8 +4,7 @@
 //!
 //! JavaScript source: data/conditions.ts
 
-use crate::battle::Battle;
-use crate::battle::Effect;
+use crate::battle::{Battle, Effect};
 use crate::battle::Arg;
 use crate::dex_data::ID;
 use crate::event::EventResult;
@@ -30,7 +29,7 @@ pub fn on_start(
     // For slot conditions, the source effect should be stored in the slot condition's effect state
     // Get the sourceEffect from active_move which triggered this
     if let Some(ref active_move) = battle.active_move {
-        let source_effect = crate::battle::Effect::move_(active_move.borrow().id.clone());
+        let source_effect = battle.make_move_effect(&active_move.borrow().id);
 
         // Store sourceEffect in the slot condition's effect state
         let pokemon_position = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].position;
@@ -110,8 +109,9 @@ pub fn on_switch_in(
 
     // target.heal(target.maxhp);
     let maxhp = battle.sides[pokemon_pos.0].pokemon[pokemon_pos.1].maxhp;
-    
-    battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&Effect::condition(ID::from("zpower"))));
+
+    let condition_effect = battle.make_condition_effect(&ID::from("zpower"));
+    battle.heal(maxhp, Some(pokemon_pos), Some(pokemon_pos), Some(&condition_effect));
 
     // this.add('-heal', target, target.getHealth, '[from] move: ' + this.effectState.sourceEffect, '[zeffect]');
     // Note: The heal method already adds the -heal message, but we need to add the [from] and [zeffect] attributes

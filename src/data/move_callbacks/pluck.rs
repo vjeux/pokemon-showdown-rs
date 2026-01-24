@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -113,19 +113,21 @@ pub fn on_hit(
     );
 
     // if (this.singleEvent('Eat', item, target.itemState, source, source, move)) {
+    let pluck_effect = battle.make_move_effect(&ID::from("pluck"));
+    let item_effect = battle.make_item_effect(&item_id);
     let eat_result = battle.single_event(
         "Eat",
-        &crate::battle::Effect::item(item_id.clone()),
+        &item_effect,
         None,
         Some(source),
         Some(source),
-        Some(&Effect::move_(ID::from("pluck"))),
+        Some(&pluck_effect),
         None,
     );
 
     if !matches!(eat_result, EventResult::Boolean(false)) {
         // this.runEvent('EatItem', source, source, move, item);
-        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(source)), Some(source), Some(&Effect::item(item_id.clone())), EventResult::Continue, false, false);
+        battle.run_event("EatItem", Some(crate::event::EventTarget::Pokemon(source)), Some(source), Some(&item_effect), EventResult::Continue, false, false);
 
         // if (item.id === 'leppaberry') target.staleness = 'external';
         if item_id == ID::from("leppaberry") {

@@ -1,5 +1,5 @@
 use crate::*;
-use crate::battle::{Effect, EffectHolder};
+use crate::battle::Effect;
 use crate::event::EventResult;
 
 impl Pokemon {
@@ -185,14 +185,7 @@ impl Pokemon {
                 // IMPORTANT: Call through single_event (not dispatch_on_restart directly)
                 // to ensure current_effect_state is set up correctly
                 // IMPORTANT: Effect must have effect_holder set so with_effect_state can find the volatile state
-                let volatile_effect = crate::battle::Effect {
-                    id: volatile_id.clone(),
-                    name: volatile_id.as_str().into(),
-                    effect_type: crate::battle::EffectType::Condition,
-                    effect_holder: Some(EffectHolder::Pokemon(target_pos.0, target_pos.1)),
-                    side_index: Some(target_pos.0),
-                    prankster_boosted: false,
-                };
+                let volatile_effect = battle.make_condition_effect(&volatile_id);
                 let restart_result = battle.single_event(
                     "Restart",
                     &volatile_effect,
@@ -382,14 +375,7 @@ impl Pokemon {
         // JavaScript: result = this.battle.singleEvent("Start", status, this.volatiles[status.id], this, source, sourceEffect);
         // Call the Start event for the newly added volatile
         // IMPORTANT: Effect must have effect_holder set so with_effect_state can find the volatile state
-        let volatile_effect = crate::battle::Effect {
-            id: volatile_id.clone(),
-            name: volatile_id.as_str().into(),
-            effect_type: crate::battle::EffectType::Condition,
-            effect_holder: Some(EffectHolder::Pokemon(target_pos.0, target_pos.1)),
-            side_index: Some(target_pos.0),
-            prankster_boosted: false,
-        };
+        let volatile_effect = battle.make_condition_effect(&volatile_id);
         let start_result = battle.single_event(
             "Start",
             &volatile_effect,

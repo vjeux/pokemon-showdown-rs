@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::Pokemon;
@@ -72,13 +72,14 @@ pub fn on_after_hit(
     // }
 
     // Check if taking the item is allowed via singleEvent
+    let item_effect = battle.make_item_effect(&your_item_id);
     let take_item_result = battle.single_event(
         "TakeItem",
-        &crate::battle::Effect::item(your_item_id.clone()),
+        &item_effect,
         None,
         Some(source_pos),
         Some(target_pos),
-        Some(&Effect::item(your_item_id.clone())),
+        Some(&item_effect),
         None,
     );
 

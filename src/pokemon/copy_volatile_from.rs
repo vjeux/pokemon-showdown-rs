@@ -309,9 +309,10 @@ impl Pokemon {
         };
 
         for volatile_id in volatile_ids {
+            let condition_effect = battle.make_condition_effect(&volatile_id);
             battle.single_event(
                 "Copy",
-                &crate::battle::Effect::condition(volatile_id),
+                &condition_effect,
                 None,
                 Some(target_pos),
                 None,

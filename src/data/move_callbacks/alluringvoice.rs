@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -45,7 +45,8 @@ pub fn on_hit(
 
     if stats_raised {
         // target.addVolatile('confusion', source, move);
-        Pokemon::add_volatile(battle, target_pos, ID::from("confusion"), Some(source), Some(&Effect::move_(ID::new("alluringvoice"))), None, None);
+        let move_effect = battle.make_move_effect(&ID::new("alluringvoice"));
+        Pokemon::add_volatile(battle, target_pos, ID::from("confusion"), Some(source), Some(&move_effect), None, None);
     }
 
     EventResult::Continue

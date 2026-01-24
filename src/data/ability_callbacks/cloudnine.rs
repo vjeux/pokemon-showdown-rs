@@ -51,7 +51,8 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
     }
 
     // this.eachEvent('WeatherChange', this.effect);
-    battle.each_event("WeatherChange", Some(&Effect::ability(ID::from("cloudnine"))), None);
+    let cloudnine_id = ID::from("cloudnine");
+    battle.each_event("WeatherChange", Some(&battle.make_ability_effect(&cloudnine_id)), None);
 
     EventResult::Continue
 }
@@ -73,7 +74,8 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     }
 
     // this.eachEvent('WeatherChange', this.effect);
-    battle.each_event("WeatherChange", Some(&Effect::ability(ID::from("cloudnine"))), None);
+    let cloudnine_id = ID::from("cloudnine");
+    battle.each_event("WeatherChange", Some(&battle.make_ability_effect(&cloudnine_id)), None);
 
     EventResult::Continue
 }

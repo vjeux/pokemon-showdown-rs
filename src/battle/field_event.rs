@@ -663,7 +663,8 @@ impl Battle {
                             .cloned();
 
                         // Pass the SharedEffectState directly to single_event
-                        self.single_event("End", &crate::battle::Effect::condition(handler.effect_id.clone()),
+                        let condition_effect = self.make_condition_effect(&handler.effect_id);
+                        self.single_event("End", &condition_effect,
                             volatile_state, Some((side_idx, poke_idx)), None, None, None);
 
                         // Actually remove the volatile

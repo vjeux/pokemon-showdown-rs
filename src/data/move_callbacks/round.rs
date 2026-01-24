@@ -62,7 +62,6 @@ pub fn on_try(
     _target_pos: Option<(usize, usize)>,
 ) -> EventResult {
     use crate::dex_data::ID;
-    use crate::battle::Effect;
 
     // for (const action of this.queue.list as MoveAction[]) {
     //     if (!action.pokemon || !action.move || action.maxMove || action.zmove) continue;
@@ -91,7 +90,7 @@ pub fn on_try(
                     // The second parameter (move) is the current move being executed,
                     // which sets sourceEffect on the prioritized action.
                     // This is what triggers the base power doubling in basePowerCallback.
-                    let source_effect = Effect::move_(active_move_id.clone());
+                    let source_effect = battle.make_move_effect(&active_move_id);
                     battle.queue.prioritize_action_with_source(
                         move_action.side_index,
                         move_action.pokemon_index,

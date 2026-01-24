@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -29,11 +29,12 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
     if is_active && base_species_name == Some("Groudon".to_string()) && !transformed {
         // pokemon.formeChange('Groudon-Primal', this.effect, true);
         // Note: pokemon_pos is already (side_idx, team_array_index) - the correct format for forme_change
+        let item_effect = battle.make_item_effect(&ID::from("redorb"));
         crate::pokemon::Pokemon::forme_change(
             battle,
             pokemon_pos,
             ID::from("groudonprimal"),
-            Some(Effect::item("redorb")),
+            Some(item_effect),
             true,
             "0",
             None,

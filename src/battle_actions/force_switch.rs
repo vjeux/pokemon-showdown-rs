@@ -35,6 +35,10 @@ pub fn force_switch(
     active_move: &ActiveMove,
 ) -> SpreadMoveDamage {
     debug_elog!("[FORCE_SWITCH] Entry: move={}, source={:?}, targets.len()={}", active_move.id, source_pos, targets.len());
+
+    // Create move effect once and reuse
+    let move_effect = battle.make_move_effect(&active_move.id);
+
     // for (const [i, target] of targets.entries()) {
     for (i, target) in targets.iter().enumerate() {
         // if (target && target.hp > 0 && source.hp > 0 && this.battle.canSwitch(target.side)) {
@@ -60,7 +64,7 @@ pub fn force_switch(
 
                     if can_switch {
                         //     const hitResult = this.battle.runEvent('DragOut', target, source, move);
-                        let hit_result = battle.run_event("DragOut", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&crate::battle::Effect::move_(active_move.id.clone())), EventResult::Continue, false, false);
+                        let hit_result = battle.run_event("DragOut", Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&move_effect), EventResult::Continue, false, false);
 
                         //     if (hitResult) {
                         //         target.forceSwitchFlag = true;

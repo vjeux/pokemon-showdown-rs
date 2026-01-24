@@ -176,7 +176,8 @@ pub fn on_hit(
     // source = target (self-targeting move)
     // move = "rest"
     // ✅ NOW PASSING: source_pos = Some(target), source_effect = Some("rest"), ignore_immunities = false
-    let result = Pokemon::set_status(battle, target, ID::from("slp"), Some(target), Some(&crate::battle::Effect::move_(ID::new("rest"))), false);
+    let move_effect = battle.make_move_effect(&ID::new("rest"));
+    let result = Pokemon::set_status(battle, target, ID::from("slp"), Some(target), Some(&move_effect), false);
 
     // if (!result) return result;
     if !result {

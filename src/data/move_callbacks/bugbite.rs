@@ -102,9 +102,10 @@ pub fn on_hit(
                 //     this.runEvent('EatItem', source, source, move, item);
                 //     if (item.id === 'leppaberry') target.staleness = 'external';
                 // }
+                let item_effect = battle.make_item_effect(&item_id);
                 let eat_result = battle.single_event(
                     "Eat",
-                    &crate::battle::Effect::item(item_id.clone()),
+                    &item_effect,
                     None,
                     Some(source),
                     Some(source),

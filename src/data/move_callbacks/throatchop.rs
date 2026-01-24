@@ -15,12 +15,13 @@ pub fn on_hit(
     source_pos: Option<(usize, usize)>,
 ) -> EventResult {
     // target.addVolatile('throatchop');
+    let move_effect = battle.make_move_effect(&crate::dex_data::ID::from("throatchop"));
     crate::pokemon::Pokemon::add_volatile(
         battle,
         target_pos,
         crate::dex_data::ID::from("throatchop"),
         source_pos,
-        Some(&crate::battle::Effect::move_("throatchop")),
+        Some(&move_effect),
         None, // linked_status
         None, // embedded_condition - throatchop's condition data comes from dex.conditions
     );
@@ -98,12 +99,12 @@ pub mod condition {
         };
 
         // pokemon.disableMove(moveSlot.id);
+        let effect = battle.make_move_effect(&crate::dex_data::ID::from("throatchop"));
         let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        let effect = crate::battle::Effect::move_("throatchop");
         for move_id in moves_to_disable {
             pokemon_mut.disable_move(move_id.as_str(), false, Some(&effect));
         }

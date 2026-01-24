@@ -136,12 +136,13 @@ pub mod condition {
         };
 
         // pokemon.disableMove(moveSlot.id);
+        // Create effect before getting mutable reference
+        let effect = battle.make_move_effect(&crate::dex_data::ID::from("taunt"));
         let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        let effect = crate::battle::Effect::move_("taunt");
         for move_id in moves_to_disable {
             pokemon_mut.disable_move(move_id.as_str(), false, Some(&effect));
         }

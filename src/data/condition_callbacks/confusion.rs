@@ -282,7 +282,7 @@ pub fn on_before_move(
     // const activeMove = { id: this.toID('confused'), effectType: 'Move', type: '???' };
     // this.damage(damage, pokemon, pokemon, activeMove as ActiveMove);
     // JavaScript creates a fake "move" effect so Disguise.onDamage recognizes it as a move
-    let confused_effect = crate::battle::Effect::move_("confused");
+    let confused_effect = battle.make_move_effect(&ID::from("confused"));
     battle.damage(damage, Some(pokemon_pos), Some(pokemon_pos), Some(&confused_effect), false);
 
     // return false;

@@ -1,4 +1,3 @@
-use crate::battle::Effect;
 use crate::*;
 use crate::event_system::EffectState;
 
@@ -148,7 +147,8 @@ impl Pokemon {
         // JS: if (oldItem.exists) this.battle.singleEvent('End', oldItem, oldItemState, this);
         // ✅ NOW IMPLEMENTED (Session 24 Part 74): singleEvent('End') for old item
         if !old_item_id.as_str().is_empty() {
-            battle.single_event("End", &crate::battle::Effect::item(old_item_id.clone()), None, Some(pokemon_pos), None, None, None);
+            let old_item_effect = battle.make_item_effect(&old_item_id);
+            battle.single_event("End", &old_item_effect, None, Some(pokemon_pos), None, None, None);
         }
 
         // JS: if (item.id) {
@@ -156,7 +156,8 @@ impl Pokemon {
         // JS: }
         // ✅ NOW IMPLEMENTED (Session 24 Part 74): singleEvent('Start') for new item
         if !item_id.as_str().is_empty() {
-            battle.single_event("Start", &crate::battle::Effect::item(item_id.clone()), None, Some(pokemon_pos), source_pos, source_effect, None);
+            let new_item_effect = battle.make_item_effect(&item_id);
+            battle.single_event("Start", &new_item_effect, None, Some(pokemon_pos), source_pos, source_effect, None);
         }
 
         // JS: return true;

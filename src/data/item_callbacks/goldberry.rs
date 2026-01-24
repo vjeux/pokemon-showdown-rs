@@ -4,7 +4,7 @@
 //!
 //! Generated from data/items.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -35,11 +35,12 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
 pub fn on_try_eat_item(battle: &mut Battle, item_id: &str, pokemon_pos: (usize, usize)) -> EventResult {
     // if (!this.runEvent('TryHeal', pokemon, null, this.effect, 30)) return false;
     use crate::dex_data::ID;
+    let item_effect = battle.make_item_effect(&ID::from(item_id));
     let result = battle.run_event(
         "TryHeal",
         Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         None,
-        Some(&Effect::item(ID::from(item_id))),
+        Some(&item_effect),
         crate::event::EventResult::Number(1),
         false,
         false,

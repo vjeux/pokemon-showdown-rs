@@ -9,6 +9,7 @@ use crate::event::EventResult;
 
 pub mod condition {
     use super::*;
+    use crate::dex_data::ID;
 
     /// onStart(pokemon) {
     ///     this.add('-start', pokemon, 'Embargo');
@@ -42,7 +43,8 @@ pub mod condition {
             pokemon_pokemon.item.clone()
         };
 
-        battle.single_event("End", &crate::battle::Effect::item(item_id), None, Some(pokemon), None, None, None);
+        let item_effect = battle.make_item_effect(&ID::from(item_id.as_str()));
+        battle.single_event("End", &item_effect, None, Some(pokemon), None, None, None);
 
         EventResult::Continue
     }

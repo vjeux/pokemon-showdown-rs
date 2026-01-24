@@ -48,7 +48,7 @@ pub fn on_hit(
     // source = this.side.battle.event?.source || null
     // sourceEffect = this.side.battle.effect || null
     // In Rust, we need to pass these explicitly from the battle context
-    let move_effect = crate::battle::Effect::move_(ID::from("gmaxgoldrush"));
+    let move_effect = battle.make_move_effect(&ID::from("gmaxgoldrush"));
 
     for foe_pos in foe_positions {
         Pokemon::add_volatile(battle, foe_pos, ID::from("confusion"), Some(source), Some(&move_effect), None, None);
@@ -104,7 +104,7 @@ pub mod self_callbacks {
         // source = this.side.battle.event?.source || null
         // sourceEffect = this.side.battle.effect || null
         // In Rust, we need to pass these explicitly from the battle context
-        let move_effect = crate::battle::Effect::move_(ID::from("gmaxgoldrush"));
+        let move_effect = battle.make_move_effect(&ID::from("gmaxgoldrush"));
 
         for foe_pos in foe_positions {
             Pokemon::add_volatile(battle, foe_pos, ID::from("confusion"), Some(source_pos), Some(&move_effect), None, None);

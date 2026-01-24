@@ -109,7 +109,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             state.clone()
         }).unwrap_or_default();
 
-        battle.single_event("Update", &crate::battle::Effect::ability(ability_id), Some(crate::event_system::SharedEffectState::new(effect_state_clone)), Some(pokemon_pos), None, None, None);
+        battle.single_event("Update", &battle.make_ability_effect(&ability_id), Some(crate::event_system::SharedEffectState::new(effect_state_clone)), Some(pokemon_pos), None, None, None);
     }
 
     EventResult::Continue

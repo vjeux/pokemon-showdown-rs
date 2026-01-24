@@ -128,7 +128,8 @@ impl Pokemon {
         // JS: this.battle.singleEvent('End', oldAbility, this.abilityState, this, source);
         // ✅ NOW IMPLEMENTED (Session 24 Part 76): singleEvent('End') for old ability
         if !old_ability_id.as_str().is_empty() {
-            battle.single_event("End", &crate::battle::Effect::ability(old_ability_id.clone()), None, Some(pokemon_pos), source_pos, None, None);
+            let old_ability_effect = battle.make_ability_effect(&old_ability_id);
+            battle.single_event("End", &old_ability_effect, None, Some(pokemon_pos), source_pos, None, None);
         }
 
         // Get source pokemon's active slot position before mutable borrow
@@ -235,7 +236,8 @@ impl Pokemon {
         if !ability_id.as_str().is_empty() && battle.gen > 3 {
             // JS: (!isTransform || oldAbility.id !== ability.id || this.battle.gen <= 4)
             if !is_transform || old_ability_id != ability_id || battle.gen <= 4 {
-                battle.single_event("Start", &crate::battle::Effect::ability(ability_id.clone()), None, Some(pokemon_pos), source_pos, source_effect_ref, None);
+                let ability_effect = battle.make_ability_effect(&ability_id);
+                battle.single_event("Start", &ability_effect, None, Some(pokemon_pos), source_pos, source_effect_ref, None);
             }
         }
 

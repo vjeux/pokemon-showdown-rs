@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -46,7 +46,7 @@ pub fn on_hit(
 
     // JavaScript: this.dex.getActiveMove('G-Max Sandblast')
     // ID::from normalizes to lowercase alphanumeric, so this becomes "gmaxsandblast"
-    let move_effect = Effect::move_(ID::from("G-Max Sandblast"));
+    let move_effect = battle.make_move_effect(&ID::from("gmaxsandblast"));
 
     for foe_pos in foe_positions {
         Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source), Some(&move_effect), None, None);
@@ -99,7 +99,7 @@ pub mod self_callbacks {
 
         // JavaScript: this.dex.getActiveMove("G-Max Sandblast")
         // ID::from normalizes to lowercase alphanumeric, so this becomes "gmaxsandblast"
-        let move_effect = Effect::move_(ID::from("G-Max Sandblast"));
+        let move_effect = battle.make_move_effect(&ID::from("gmaxsandblast"));
 
         for foe_pos in foe_positions {
             Pokemon::add_volatile(battle, foe_pos, ID::from("partiallytrapped"), Some(source_pos), Some(&move_effect), None, None);

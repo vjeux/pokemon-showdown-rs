@@ -5,11 +5,11 @@
 //! Generated from data/moves.ts
 
 use crate::battle::Battle;
-use crate::battle::Effect;
 use crate::event::EventResult;
 
 pub mod condition {
     use super::*;
+    use crate::battle::Effect;
 
     /// durationCallback(source, effect) {
     ///     if (source?.hasAbility('persistent')) {
@@ -141,7 +141,8 @@ pub mod condition {
 
             // Check if item is not empty
             if item_id != ID::from("") {
-                battle.single_event("End", &crate::battle::Effect::item(item_id), None, Some(pokemon_pos), Some(pokemon_pos), None, None);
+                let item_effect = battle.make_item_effect(&item_id);
+                battle.single_event("End", &item_effect, None, Some(pokemon_pos), Some(pokemon_pos), None, None);
             }
         }
 

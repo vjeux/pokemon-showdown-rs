@@ -23,8 +23,8 @@ pub fn on_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos: Opti
     // onHit() { this.field.setTerrain('psychicterrain'); }
     // target_pos = Pokemon hit by the move (not used)
     // source_pos = Pokemon using the move (used as terrain source)
-    let source_effect = Some(crate::battle::Effect::move_("genesissupernova"));
-    battle.set_terrain(ID::from("psychicterrain"), source_pos, source_effect);
+    let source_effect = battle.make_move_effect(&ID::from("genesissupernova"));
+    battle.set_terrain(ID::from("psychicterrain"), source_pos, Some(source_effect));
 
     EventResult::Continue
 }

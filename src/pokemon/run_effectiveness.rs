@@ -1,5 +1,4 @@
 use crate::*;
-use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::battle_actions::ActiveMove;
 
@@ -49,6 +48,9 @@ impl Pokemon {
         // NOT from battle.active_move (which might be from a previous move)
         let move_type = active_move.move_type.clone();
 
+        // Create move effect once for reuse
+        let move_effect = battle.make_move_effect(move_id);
+
         // JS: if (this.terastallized && move.type === 'Stellar') {
         // JS:     totalTypeMod = 1;
         // JS: } else {
@@ -86,7 +88,7 @@ impl Pokemon {
                 // Call singleEvent on the move to allow move-specific effectiveness modifiers (e.g., Freeze-Dry, Flying Press)
                 let single_event_result = battle.single_event(
                     "Effectiveness",
-                    &crate::battle::Effect::move_(move_id.clone()),
+                    &move_effect,
                     None,
                     Some(pokemon_pos),
                     None,
@@ -107,7 +109,7 @@ impl Pokemon {
                     "Effectiveness",
                     Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                     None,
-                    Some(&Effect::move_(move_id.clone())),
+                    Some(&move_effect),
                     EventResult::Number(type_mod),
                     false,
                     false

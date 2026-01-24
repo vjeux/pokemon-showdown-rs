@@ -231,7 +231,8 @@ pub fn on_residual(
         damage, base_maxhp, bound_divisor);
 
     // Deal damage
-    battle.damage(damage, Some(pokemon_pos), source_pos, Some(&Effect::condition("partiallytrapped")), false);
+    let condition_effect = battle.make_condition_effect(&ID::from("partiallytrapped"));
+    battle.damage(damage, Some(pokemon_pos), source_pos, Some(&condition_effect), false);
 
     EventResult::Continue
 }

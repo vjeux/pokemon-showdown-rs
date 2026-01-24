@@ -145,7 +145,6 @@
 
 use crate::*;
 use crate::event::EventResult;
-use crate::battle::Effect;
 use crate::dex_data::StatID;
 use crate::battle_actions::{ActiveMove, IgnoreImmunity};
 
@@ -279,6 +278,9 @@ pub fn get_damage(
         return None; // undefined - Status move, no damage calculation
     }
 
+    // Create move effect once for reuse in all run_event calls
+    let move_effect = battle.make_move_effect(&active_move.id);
+
     // Calculate critical hit
     // JavaScript: let critRatio = this.battle.runEvent('ModifyCritRatio', source, target, move, move.critRatio || 0);
     let mut crit_ratio = active_move.crit_ratio;
@@ -289,7 +291,7 @@ pub fn get_damage(
                 "ModifyCritRatio",
                 Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
-        Some(&Effect::move_(active_move.id.clone())),
+        Some(&move_effect),
         EventResult::Number(crit_ratio),
         false,
         false
@@ -334,7 +336,7 @@ pub fn get_damage(
                 "CriticalHit",
                 Some(crate::event::EventTarget::Pokemon(target_pos)),
             None,
-            Some(&Effect::move_(active_move.id.clone())),
+            Some(&move_effect),
             crate::event::EventResult::Number(1),
             false,
             false,
@@ -359,7 +361,7 @@ pub fn get_damage(
                 "BasePower",
                 Some(crate::event::EventTarget::Pokemon(source_pos)),
         Some(target_pos),
-        Some(&Effect::move_(active_move.id.clone())),
+        Some(&move_effect),
         EventResult::Number(base_power),
         true,
         false
@@ -604,7 +606,7 @@ pub fn get_damage(
 
     // Apply attack modifier event
     debug_elog!("[GET_DAMAGE] BEFORE {}: attack={}", attack_modifier_event, attack);
-    match battle.run_event(attack_modifier_event, Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(attack), false, false) {
+    match battle.run_event(attack_modifier_event, Some(crate::event::EventTarget::Pokemon(source_pos)), Some(target_pos), Some(&move_effect), EventResult::Number(attack), false, false) {
         EventResult::Number(n) => {
             debug_elog!("[GET_DAMAGE] AFTER {}: attack changed from {} to {}", attack_modifier_event, attack, n);
             attack = n;
@@ -621,7 +623,7 @@ pub fn get_damage(
 
     // Apply defense modifier event
     debug_elog!("[GET_DAMAGE] BEFORE {}: defense={}", defense_modifier_event, defense);
-    match battle.run_event(defense_modifier_event, Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&Effect::move_(active_move.id.clone())), EventResult::Number(defense), false, false) {
+    match battle.run_event(defense_modifier_event, Some(crate::event::EventTarget::Pokemon(target_pos)), Some(source_pos), Some(&move_effect), EventResult::Number(defense), false, false) {
         EventResult::Number(n) => {
             debug_elog!("[GET_DAMAGE] AFTER {}: defense changed from {} to {}", defense_modifier_event, defense, n);
             defense = n;

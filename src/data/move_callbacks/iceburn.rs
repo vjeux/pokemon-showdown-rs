@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -70,7 +70,8 @@ pub fn on_try_move(
     }
 
     // attacker.addVolatile('twoturnmove', defender);
-    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&Effect::move_(move_id.borrow().id.clone())), None, None);
+    let move_effect = battle.make_move_effect(&move_id.borrow().id);
+    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&move_effect), None, None);
 
     // return null; - prevents the move from executing during charge turn
     EventResult::Null

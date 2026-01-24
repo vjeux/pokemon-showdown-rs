@@ -168,7 +168,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                let move_effect = crate::battle::Effect::move_("toxicspikes");
+                let move_effect = battle.make_move_effect(&ID::from("toxicspikes"));
                 Pokemon::try_set_status(battle, pokemon_pos, ID::from("tox"), foe_source, Some(&move_effect));
             } else {
                 // pokemon.trySetStatus('psn', pokemon.side.foe.active[0]);
@@ -176,7 +176,7 @@ pub mod condition {
                     Some(p) => p,
                     None => return EventResult::Continue,
                 };
-                let move_effect = crate::battle::Effect::move_("toxicspikes");
+                let move_effect = battle.make_move_effect(&ID::from("toxicspikes"));
                 Pokemon::try_set_status(battle, pokemon_pos, ID::from("psn"), foe_source, Some(&move_effect));
             }
         }

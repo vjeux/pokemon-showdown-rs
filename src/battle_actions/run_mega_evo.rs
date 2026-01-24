@@ -3,7 +3,6 @@
 //! 1:1 port of runMegaEvo from battle-actions.ts
 
 use crate::*;
-use crate::battle::Effect;
 use crate::event::EventResult;
 use crate::battle_actions::{can_mega_evo, can_ultra_burst};
 
@@ -58,11 +57,12 @@ pub fn run_mega_evo(
     };
 
     // Call the proper forme_change method (position-based to avoid borrow checker issues)
+    let item_effect = battle.make_item_effect(&item_id);
     let success = crate::pokemon::Pokemon::forme_change(
         battle,
         (side_index, pokemon_index),
         ID::from(speciesid.as_str()),
-        Some(Effect::item(item_id)), // source (item)
+        Some(item_effect), // source (item)
         true,          // is_permanent
         "0",           // ability_slot
         None,          // message

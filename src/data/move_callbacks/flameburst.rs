@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 
@@ -33,7 +33,7 @@ pub fn on_hit(
         target_pokemon.adjacent_allies(battle)
     };
 
-    let effect = Effect::condition(ID::from("flameburst"));
+    let effect = battle.make_condition_effect(&ID::from("flameburst"));
 
     for ally_pos in adjacent_allies {
         // this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));
@@ -88,7 +88,7 @@ pub fn on_after_sub_damage(
         target_pokemon.adjacent_allies(battle)
     };
 
-    let effect = Effect::condition(ID::from("flameburst"));
+    let effect = battle.make_condition_effect(&ID::from("flameburst"));
 
     for ally_pos in adjacent_allies {
         // this.damage(ally.baseMaxhp / 16, ally, source, this.dex.conditions.get('Flame Burst'));

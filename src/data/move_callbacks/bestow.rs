@@ -59,8 +59,9 @@ pub fn on_hit(
     };
 
     // if (!this.singleEvent('TakeItem', myItem, source.itemState, target, source, move, myItem) || !target.setItem(myItem)) {
+    let item_effect = battle.make_item_effect(&my_item);
     let take_item_event =
-        battle.single_event("TakeItem", &crate::battle::Effect::item(my_item.clone()), None, Some(target_pos), Some(source), None, None);
+        battle.single_event("TakeItem", &item_effect, None, Some(target_pos), Some(source), None, None);
 
     // Give item to target (the one receiving via Bestow)
     let set_item_success = Pokemon::set_item(battle, target_pos, my_item.clone(), None, None);

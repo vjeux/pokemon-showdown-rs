@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onModifyType(move, pokemon) {
@@ -33,7 +33,7 @@ pub fn on_modify_type(
 
     // move.type = this.runEvent('Drive', pokemon, null, move, 'Normal');
     // Extract the move ID before calling run_event to avoid borrow issues
-    let source_effect = battle.active_move.as_ref().map(|m| Effect::move_(m.borrow().id.clone()));
+    let source_effect = battle.active_move.as_ref().map(|m| battle.make_move_effect(&m.borrow().id));
     let move_type = match battle.run_event(
         "Drive",
         Some(crate::event::EventTarget::Pokemon(pokemon)),

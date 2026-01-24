@@ -47,6 +47,9 @@ pub fn secondaries(
         return;
     }
 
+    // Create move_data effect once for reuse
+    let move_data_effect = battle.make_move_effect(&move_data.id);
+
     // for (const target of targets) {
     for target in targets {
         // if (target === false) continue;
@@ -68,7 +71,7 @@ pub fn secondaries(
                 "ModifySecondaries",
                 Some(crate::event::EventTarget::Pokemon(tpos)),
                 Some(source_pos),
-                Some(&crate::battle::Effect::move_(move_data.id.clone())),
+                Some(&move_data_effect),
                 EventResult::Secondaries(move_data.secondaries.clone()),
                 false,
                 false,
@@ -80,7 +83,7 @@ pub fn secondaries(
                 "ModifySecondaries",
                 None,  // null target
                 Some(source_pos),
-                Some(&crate::battle::Effect::move_(move_data.id.clone())),
+                Some(&move_data_effect),
                 EventResult::Secondaries(move_data.secondaries.clone()),
                 false,
                 false,

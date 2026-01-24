@@ -4,7 +4,7 @@
 //!
 //! Generated from data/abilities.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onSwitchOut(pokemon) {
@@ -42,11 +42,12 @@ pub fn on_switch_out(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventR
     if forme.as_deref() != Some("Hero") {
         // pokemon.formeChange('Palafin-Hero', this.effect, true);
         // pokemon_pos is already (side_idx, pokemon_index), pass it directly
+        let zerotohero_id = ID::from("zerotohero");
         crate::pokemon::Pokemon::forme_change(
             battle,
             pokemon_pos,
             ID::from("palafinhero"),
-            Some(Effect::ability("zerotohero")),
+            Some(battle.make_ability_effect(&zerotohero_id)),
             true,
             "0",
             None

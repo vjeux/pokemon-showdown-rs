@@ -119,9 +119,10 @@ pub fn on_hit(
 
     // Check if TakeItem events allow the swap
     let my_item_allowed = if let Some(ref my_item_id) = my_item {
+        let my_item_effect = battle.make_item_effect(my_item_id);
         let result = battle.single_event(
             "TakeItem",
-            &crate::battle::Effect::item(my_item_id.clone()),
+            &my_item_effect,
             None,
             Some(source),
             Some(target_pos),
@@ -134,9 +135,10 @@ pub fn on_hit(
     };
 
     let your_item_allowed = if let Some(ref your_item_id) = your_item {
+        let your_item_effect = battle.make_item_effect(your_item_id);
         let result = battle.single_event(
             "TakeItem",
-            &crate::battle::Effect::item(your_item_id.clone()),
+            &your_item_effect,
             None,
             Some(target_pos),
             Some(source),

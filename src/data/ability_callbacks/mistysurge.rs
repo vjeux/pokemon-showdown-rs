@@ -13,7 +13,8 @@ use crate::event::EventResult;
 /// }
 pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: Option<(usize, usize)>, _effect: Option<&Effect>) -> EventResult {
     // Set terrain to Misty Terrain
-    let source_effect = Some(crate::battle::Effect::ability("mistysurge"));
+    let mistysurge_id = crate::ID::from("mistysurge");
+    let source_effect = Some(battle.make_ability_effect(&mistysurge_id));
     battle.set_terrain(crate::ID::from("mistyterrain"), Some(pokemon_pos), source_effect);
     EventResult::Continue
 }

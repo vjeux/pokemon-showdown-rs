@@ -174,11 +174,12 @@ pub fn on_start(
     // JavaScript: this.runEvent('PrepareHit', attacker, defender, effect);
     // Run side-effects normally associated with hitting (e.g., Protean, Libero)
     let defender_pos = battle.event.as_ref().and_then(|e| e.source);
+    let move_effect = move_id.as_ref().map(|id| battle.make_move_effect(id));
     battle.run_event(
         "PrepareHit",
         Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
         defender_pos,
-        move_id.as_ref().map(|id| Effect::move_(id.clone())).as_ref(),
+        move_effect.as_ref(),
         EventResult::Continue,
         false,
         false,

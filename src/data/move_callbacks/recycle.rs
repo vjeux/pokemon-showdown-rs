@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -81,7 +81,8 @@ pub fn on_hit(
     // source = pokemon (self-targeting move)
     // move = "recycle"
     // ✅ NOW PASSING: source_pos = Some(pokemon_pos), source_effect = Some("recycle")
-    Pokemon::set_item(battle, pokemon_pos, item, Some(pokemon_pos), Some(&Effect::move_(ID::new("recycle"))));
+    let move_effect = battle.make_move_effect(&ID::new("recycle"));
+    Pokemon::set_item(battle, pokemon_pos, item, Some(pokemon_pos), Some(&move_effect));
 
     EventResult::Continue
 }

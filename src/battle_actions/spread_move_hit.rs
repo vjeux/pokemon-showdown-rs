@@ -6,7 +6,6 @@ use crate::*;
 use crate::event::EventResult;
 use crate::battle::SpreadMoveHitResult;
 use crate::battle_actions::{SpreadMoveDamage, DamageResult, SpreadMoveTargets, SpreadMoveTarget, HitEffect, ActiveMove};
-use crate::battle::Effect;
 
 /// Spread move hit - handles individual target hit processing
 /// Equivalent to spreadMoveHit() in battle-actions.ts:1043
@@ -133,6 +132,8 @@ pub fn spread_move_hit<'a>(
     is_self: bool,
 ) -> SpreadMoveHitResult {
     let move_id = &active_move.id;
+    // Create move effect for move_id (move_data effect created later after move_data is known)
+    let move_effect = battle.make_move_effect(move_id);
     debug_elog!("[SPREAD_MOVE_HIT] ENTRY: move_id={}, targets.len()={}, is_secondary={}, is_self={}",
         move_id, targets.len(), is_secondary, is_self);
     // Initialize damage array with Success (true) for all targets
@@ -150,6 +151,8 @@ pub fn spread_move_hit<'a>(
         _ => active_move,
     };
     let move_data_id = &move_data.id;
+    // Create move_data effect for single_event calls
+    let move_data_effect = battle.make_move_effect(move_data_id);
 
     // Get target for TryHit events (first target)
     // JS: const target = targets[0];
@@ -178,11 +181,11 @@ pub fn spread_move_hit<'a>(
         // JS: hitResult = this.battle.singleEvent('TryHitField', moveData, {}, target || null, pokemon, move);
         battle.single_event(
             "TryHitField",
-            &crate::battle::Effect::move_(move_data_id.clone()),
+            &move_data_effect,
             None,
             target_pos,
             Some(source_pos),
-            Some(&Effect::move_(move_id.clone())),
+            Some(&move_effect),
             None,
         )
     } else if (move_target == "foeSide" ||
@@ -191,22 +194,22 @@ pub fn spread_move_hit<'a>(
         // JS: hitResult = this.battle.singleEvent('TryHitSide', moveData, {}, target || null, pokemon, move);
         battle.single_event(
             "TryHitSide",
-            &crate::battle::Effect::move_(move_data_id.clone()),
+            &move_data_effect,
             None,
             target_pos,
             Some(source_pos),
-            Some(&Effect::move_(move_id.clone())),
+            Some(&move_effect),
             None,
         )
     } else if target_pos.is_some() {
         // JS: hitResult = this.battle.singleEvent('TryHit', moveData, {}, target, pokemon, move);
         battle.single_event(
             "TryHit",
-            &crate::battle::Effect::move_(move_data_id.clone()),
+            &move_data_effect,
             None,
             target_pos,
             Some(source_pos),
-            Some(&Effect::move_(move_id.clone())),
+            Some(&move_effect),
             None,
         )
     } else {
@@ -326,7 +329,7 @@ pub fn spread_move_hit<'a>(
         damage,
         &targets_mut,
         Some(source_pos),
-        Some(&crate::battle::Effect::move_(move_id.clone())),
+        Some(&move_effect),
         false, // instafaint
     );
 
@@ -518,7 +521,7 @@ pub fn spread_move_hit<'a>(
         // And pass the corresponding damage amount as the relay variable
         for (i, target_pos) in damaged_targets.iter().enumerate() {
             let damage_amount = damaged_damage[i];
-            battle.run_event("DamagingHit", Some(crate::event::EventTarget::Pokemon(*target_pos)), Some(source_pos), Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Number(damage_amount), false, false);
+            battle.run_event("DamagingHit", Some(crate::event::EventTarget::Pokemon(*target_pos)), Some(source_pos), Some(&move_effect), EventResult::Number(damage_amount), false, false);
         }
 
         // Check if moveData has onAfterHit
@@ -527,11 +530,11 @@ pub fn spread_move_hit<'a>(
             for target_pos in &damaged_targets {
                 battle.single_event(
                     "AfterHit",
-                    &crate::battle::Effect::move_(move_data_id.clone()),
+                    &move_data_effect,
                     None,
                     Some(*target_pos),
                     Some(source_pos),
-                    Some(&Effect::move_(move_id.clone())),
+                    Some(&move_effect),
                     None,
                 );
             }

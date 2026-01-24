@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -65,8 +65,9 @@ pub fn on_try_move(
     battle.add("-prepare", &[attacker_arg.into(), move_name.into()]);
 
     // if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+    let move_effect = battle.make_move_effect(&move_id);
     let charge_result =
-        battle.run_event("ChargeMove", Some(crate::event::EventTarget::Pokemon(attacker)), defender, Some(&Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+        battle.run_event("ChargeMove", Some(crate::event::EventTarget::Pokemon(attacker)), defender, Some(&move_effect), EventResult::Continue, false, false);
 
     // runEvent returns false/null when the charge should be skipped (e.g., Power Herb)
     if matches!(charge_result, EventResult::Boolean(false) | EventResult::Null) {
@@ -75,7 +76,7 @@ pub fn on_try_move(
     }
 
     // attacker.addVolatile('twoturnmove', defender);
-    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&Effect::move_(move_id.clone())), None, None);
+    Pokemon::add_volatile(battle, attacker, ID::from("twoturnmove"), defender, Some(&move_effect), None, None);
 
     // return null; - prevents the move from executing during charge turn
     EventResult::Null

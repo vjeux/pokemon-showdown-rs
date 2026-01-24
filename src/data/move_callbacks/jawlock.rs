@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::dex_data::ID;
 use crate::event::EventResult;
 use crate::pokemon::Pokemon;
@@ -27,12 +27,13 @@ pub fn on_hit(
     // source.addVolatile('trapped', target, move, 'trapper');
     // JavaScript: source.addVolatile('trapped', target, move, 'trapper')
     // ✅ NOW PASSING: source_pos = Some(target), source_effect = Some("jawlock"), linked_status = Some("trapper")
+    let move_effect = battle.make_move_effect(&ID::from("jawlock"));
     Pokemon::add_volatile(
             battle,
             source,
             ID::from("trapped"),
             Some(target),
-            Some(&Effect::move_(ID::new("jawlock"))),
+            Some(&move_effect),
             Some(ID::from("trapper")),
             None,
         );
@@ -45,7 +46,7 @@ pub fn on_hit(
             target,
             ID::from("trapped"),
             Some(source),
-            Some(&Effect::move_(ID::new("jawlock"))),
+            Some(&move_effect),
             Some(ID::from("trapper")),
             None,
         );

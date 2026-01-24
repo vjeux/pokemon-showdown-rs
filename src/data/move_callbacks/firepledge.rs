@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{hp_fraction, Battle, Effect};
+use crate::battle::{hp_fraction, Battle};
 use crate::event::EventResult;
 use crate::Pokemon;
 
@@ -227,7 +227,8 @@ pub mod condition {
             // this.damage(pokemon.baseMaxhp / 8, pokemon);
             let damage_amount = hp_fraction(base_maxhp, 8);
             use crate::dex_data::ID;
-            battle.damage(damage_amount, Some(pokemon_pos), None, Some(&Effect::move_(ID::from("firepledge"))), false);
+            let move_effect = battle.make_move_effect(&ID::from("firepledge"));
+            battle.damage(damage_amount, Some(pokemon_pos), None, Some(&move_effect), false);
         }
 
         EventResult::Continue

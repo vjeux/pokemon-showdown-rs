@@ -45,7 +45,7 @@ pub fn on_hit(
         };
         // JavaScript: target.trySetStatus('brn', source, move);
         // source is the pokemon using the move (for Synchronize to work)
-        let move_effect = crate::battle::Effect::move_("burningjealousy");
+        let move_effect = battle.make_move_effect(&ID::from("burningjealousy"));
         Pokemon::try_set_status(battle, target_pos, ID::from("brn"), source_pos, Some(&move_effect));
     }
 

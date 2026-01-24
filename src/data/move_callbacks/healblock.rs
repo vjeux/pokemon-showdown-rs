@@ -4,8 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::Battle;
-use crate::battle::Effect;
+use crate::battle::{Battle, Effect};
 use crate::event::EventResult;
 
 pub mod condition {
@@ -160,12 +159,12 @@ pub mod condition {
         };
 
         // pokemon.disableMove(moveSlot.id);
+        let effect = battle.make_move_effect(&crate::dex_data::ID::from("healblock"));
         let pokemon_mut = match battle.pokemon_at_mut(pokemon.0, pokemon.1) {
             Some(p) => p,
             None => return EventResult::Continue,
         };
 
-        let effect = crate::battle::Effect::move_("healblock");
         for move_id in moves_to_disable {
             pokemon_mut.disable_move(move_id.as_str(), false, Some(&effect));
         }

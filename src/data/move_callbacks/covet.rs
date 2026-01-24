@@ -71,13 +71,15 @@ pub fn on_after_hit(
     // }
 
     // Check if taking the item is allowed via singleEvent
+    let item_effect = battle.make_item_effect(&your_item_id);
+    let move_effect = battle.make_move_effect(&ID::new("covet"));
     let take_item_result = battle.single_event(
         "TakeItem",
-        &crate::battle::Effect::item(your_item_id.clone()),
+        &item_effect,
         None,
         Some(source_pos),
         Some(target_pos),
-        Some(&crate::battle::Effect::move_(ID::new("covet"))),
+        Some(&move_effect),
         None,
     );
 

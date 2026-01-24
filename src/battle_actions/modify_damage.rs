@@ -92,6 +92,8 @@ pub fn modify_damage(
     active_move: &ActiveMove,
     is_crit: bool,
 ) -> i32 {
+    // Create move effect once and reuse
+    let move_effect = battle.make_move_effect(&active_move.id);
     if battle.turn >= 64 && battle.turn <= 66 {
         debug_elog!("[MODIFY_DAMAGE] ENTRY: turn={}, move={}, base_damage={}, source=({},{}), target=({},{})",
             battle.turn, active_move.id, base_damage, pokemon_pos.0, pokemon_pos.1, target_pos.0, target_pos.1);
@@ -144,7 +146,7 @@ pub fn modify_damage(
         "WeatherModifyDamage",
         Some(crate::event::EventTarget::Pokemon(target_pos)),  // target = defender
         Some(pokemon_pos),                                       // source = attacker
-        Some(&crate::battle::Effect::move_(active_move.id.clone())),
+        Some(&move_effect),
         EventResult::Number(base_damage),
         false,
         false
@@ -271,7 +273,7 @@ pub fn modify_damage(
             "ModifySTAB",
             Some(crate::event::EventTarget::Pokemon(pokemon_pos)),  // pokemon = attacker
             Some(target_pos),                                        // target = defender
-            Some(&crate::battle::Effect::move_(active_move.id.clone())),
+            Some(&move_effect),
             EventResult::Float(stab),
             false,
             false
@@ -377,7 +379,7 @@ pub fn modify_damage(
                 "ModifyDamage",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),  // pokemon = attacker (event target)
                 Some(target_pos),                                       // target = defender (source)
-                Some(&crate::battle::Effect::move_(active_move.id.clone())),
+                Some(&move_effect),
                 EventResult::Number(base_damage),
                 false,
                 false

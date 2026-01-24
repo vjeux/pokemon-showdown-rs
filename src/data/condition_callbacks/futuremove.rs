@@ -340,13 +340,15 @@ pub fn on_end_with_data(
             debug_elog!("[FUTUREMOVE::ON_END] Source has Life Orb and is active, calling AfterMoveSecondarySelf");
             // this.singleEvent('AfterMoveSecondarySelf', data.source.getItem(), data.source.itemState, data.source, target, data.source.getItem());
             // handle_item_event will get active_move from battle.active_move (still set from try_spread_move_hit)
+            let source_item_effect = battle.make_item_effect(&source_item_id);
+            let lifeorb_effect = battle.make_item_effect(&ID::from("lifeorb"));
             battle.single_event(
                 "AfterMoveSecondarySelf",
-                &crate::battle::Effect::item(source_item_id),
+                &source_item_effect,
                 None,
                 Some(src), // target = source of Future Sight (the user, who holds Life Orb)
                 Some(pokemon_pos), // source = target of Future Sight
-                Some(&crate::battle::Effect::item(ID::from("lifeorb"))),
+                Some(&lifeorb_effect),
                 None,
             );
         }

@@ -25,7 +25,6 @@
 
 use crate::*;
 use crate::battle_actions::{SpreadMoveTargets, SpreadMoveTarget};
-use crate::battle::Effect;
 
 /// Apply self stat drops after a move
 /// Equivalent to selfDrops() in battle-actions.ts
@@ -153,7 +152,7 @@ pub fn self_drops(
                             let side_condition_id = crate::dex_data::ID::new(side_condition_name);
                             // Use Battle::add_side_condition with source tracking (not Side::add_side_condition)
                             // This ensures durationCallback and SideStart callbacks are called
-                            let move_effect = Effect::move_(_move_id.clone());
+                            let move_effect = battle.make_move_effect(_move_id);
                             let _applied = battle.add_side_condition(
                                 source_pos.0,           // side_idx
                                 side_condition_id,      // condition_id
@@ -168,7 +167,7 @@ pub fn self_drops(
                         // }
                         if let Some(ref slot_condition_name) = self_data.slot_condition {
                             let slot_condition_id = crate::dex_data::ID::new(slot_condition_name);
-                            let slot_move_effect = Effect::move_(_move_id.clone());
+                            let slot_move_effect = battle.make_move_effect(_move_id);
                             let _applied = battle.add_slot_condition(
                                 source_pos,
                                 slot_condition_id,
@@ -193,7 +192,7 @@ pub fn self_drops(
                         // }
                         if let Some(ref terrain_name) = self_data.terrain {
                             let terrain_id = crate::dex_data::ID::new(terrain_name);
-                            let terrain_effect = Some(Effect::move_(_move_id.clone()));
+                            let terrain_effect = Some(battle.make_move_effect(_move_id));
                             let _applied = battle.set_terrain(terrain_id, Some(source_pos), terrain_effect);
                         }
 

@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onHitSide(side, source, move) {
@@ -72,11 +72,12 @@ pub fn on_hit_side(
         };
 
         let should_add = if has_maxguard {
+            let move_effect = battle.make_move_effect(&ID::from(move_id.clone()));
             battle.run_event(
                 "TryHit",
                 Some(crate::event::EventTarget::Pokemon(pokemon_pos)),
                 source,
-                Some(&Effect::move_(ID::from(move_id.clone()))),
+                Some(&move_effect),
                 crate::event::EventResult::Number(1),
                 false,
                 false,

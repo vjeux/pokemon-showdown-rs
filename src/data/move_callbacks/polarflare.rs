@@ -4,7 +4,7 @@
 //!
 //! Generated from data/moves.ts
 
-use crate::battle::{Battle, Effect};
+use crate::battle::Battle;
 use crate::event::EventResult;
 
 /// onHit(target, pokemon, move) {
@@ -101,14 +101,14 @@ pub fn on_after_move_secondary_self(
 
     // pokemon.formeChange('Ramnarok' + forme, this.effect, false, '0', '[msg]');
     let target_forme = format!("Ramnarok{}", forme);
-    let effect_id = active_move_ref.id.clone();
+    let move_effect = battle.make_move_effect(&active_move_ref.id);
 
     // Use position-based forme_change
     crate::pokemon::Pokemon::forme_change(
         battle,
         pokemon,
         ID::from(target_forme.as_str()),
-        Some(Effect::move_(effect_id)),
+        Some(move_effect),
         false,
         "0",
         Some("[msg]"),

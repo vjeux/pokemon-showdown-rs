@@ -41,8 +41,8 @@ pub fn on_hit(battle: &mut Battle, _target_pos: (usize, usize), source_pos: Opti
     }
 
     // this.field.setTerrain('electricterrain');
-    let source_effect = Some(crate::battle::Effect::move_("maxlightning"));
-    battle.set_terrain(ID::from("electricterrain"), source_pos, source_effect);
+    let source_effect = battle.make_move_effect(&ID::from("maxlightning"));
+    battle.set_terrain(ID::from("electricterrain"), source_pos, Some(source_effect));
 
     EventResult::Continue
 }
@@ -92,8 +92,8 @@ pub mod self_callbacks {
         }
 
         // this.field.setTerrain("electricterrain");
-        let source_effect = Some(crate::battle::Effect::move_("maxlightning"));
-        battle.set_terrain(ID::from("electricterrain"), source_pos, source_effect);
+        let source_effect = battle.make_move_effect(&ID::from("maxlightning"));
+        battle.set_terrain(ID::from("electricterrain"), source_pos, Some(source_effect));
 
         EventResult::Continue
     }

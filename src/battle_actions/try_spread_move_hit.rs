@@ -78,7 +78,6 @@
 
 use crate::*;
 use crate::event::EventResult;
-use crate::battle::Effect;
 use crate::battle_actions::ActiveMove;
 
 /// Try to hit targets with a spread move
@@ -165,15 +164,18 @@ pub fn try_spread_move_hit(
     //     this.battle.singleEvent('PrepareHit', move, {}, targets[0], pokemon, move) &&
     //     this.battle.runEvent('PrepareHit', pokemon, targets[0], move);
 
+    // Create move effect once and reuse it for all event calls
+    let move_effect = battle.make_move_effect(&move_id);
+
     // Phase 1: Call Try event
     debug_elog!("[TRY_SPREAD_MOVE_HIT] Calling Try event: move={}, pokemon={:?}, target_0={:?}", move_id, pokemon_pos, target_0);
     let try_result = battle.single_event(
         "Try",
-        &crate::battle::Effect::move_(move_id.clone()),
+        &move_effect,
         None,
         Some(pokemon_pos),
         target_0,
-        Some(&Effect::move_(move_id.clone())),
+        Some(&move_effect),
         None,
     );
     debug_elog!("[TRY_SPREAD_MOVE_HIT] Try result={:?}", try_result);
@@ -188,11 +190,11 @@ pub fn try_spread_move_hit(
         debug_elog!("[TRY_SPREAD_MOVE_HIT] Calling PrepareHit(move) event");
         let result = battle.single_event(
             "PrepareHit",
-            &crate::battle::Effect::move_(move_id.clone()),
+            &move_effect,
             None,
             target_0,
             Some(pokemon_pos),
-            Some(&Effect::move_(move_id.clone())),
+            Some(&move_effect),
             None,
         );
         debug_elog!("[TRY_SPREAD_MOVE_HIT] PrepareHit(move) result={:?}", result);
@@ -207,7 +209,7 @@ pub fn try_spread_move_hit(
     // Phase 3: Only call PrepareHit event if PrepareHit(move) succeeded (short-circuit AND)
     let prepare_hit_2 = if prepare_hit_1_truthy {
         debug_elog!("[TRY_SPREAD_MOVE_HIT] Calling PrepareHit(runEvent)");
-        let result = battle.run_event("PrepareHit", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_0, Some(&crate::battle::Effect::move_(move_id.clone())), EventResult::Continue, false, false);
+        let result = battle.run_event("PrepareHit", Some(crate::event::EventTarget::Pokemon(pokemon_pos)), target_0, Some(&move_effect), EventResult::Continue, false, false);
         debug_elog!("[TRY_SPREAD_MOVE_HIT] PrepareHit(runEvent) result={:?}", result);
         result
     } else {
