@@ -48,7 +48,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         None => return EventResult::Continue,
     };
 
-    pokemon.ability_state.counter = Some(5);
+    pokemon.ability_state.borrow_mut().counter = Some(5);
 
     EventResult::Continue
 }
@@ -68,7 +68,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
             None => return EventResult::Continue,
         };
 
-        (pokemon.active_turns, pokemon.ability_state.counter)
+        (pokemon.active_turns, pokemon.ability_state.borrow().counter)
     };
 
     if active_turns > 0 {
@@ -83,9 +83,9 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
 
                 if new_counter == 0 {
                     // Counter reached 0, remove it (equivalent to delete)
-                    pokemon_mut.ability_state.counter = None;
+                    pokemon_mut.ability_state.borrow_mut().counter = None;
                 } else {
-                    pokemon_mut.ability_state.counter = Some(new_counter);
+                    pokemon_mut.ability_state.borrow_mut().counter = Some(new_counter);
                 }
             }
         }
@@ -99,13 +99,16 @@ pub fn on_modify_atk(battle: &mut Battle, _atk: i32, attacker_pos: (usize, usize
     //         return this.chainModify(0.5);
     //     }
 
-    let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
+    let counter = {
+        let pokemon = match battle.pokemon_at(attacker_pos.0, attacker_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.ability_state.borrow().counter
     };
 
-    if let Some(counter) = pokemon.ability_state.counter {
-        if counter > 0 {
+    if let Some(c) = counter {
+        if c > 0 {
             battle.chain_modify(0.5);
             return EventResult::Continue;
         }
@@ -119,14 +122,17 @@ pub fn on_modify_spe(battle: &mut Battle, _spe: i32, pokemon_pos: (usize, usize)
     //         return this.chainModify(0.5);
     //     }
 
-    let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
-        Some(p) => p,
-        None => return EventResult::Continue,
+    let counter = {
+        let pokemon = match battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
+            Some(p) => p,
+            None => return EventResult::Continue,
+        };
+        pokemon.ability_state.borrow().counter
     };
 
-    if let Some(counter) = pokemon.ability_state.counter {
-        if counter > 0 {
-            debug_elog!("[SLOW START onModifySpe] counter={}, applying 0.5x modifier", counter);
+    if let Some(c) = counter {
+        if c > 0 {
+            debug_elog!("[SLOW START onModifySpe] counter={}, applying 0.5x modifier", c);
             battle.chain_modify(0.5);
             return EventResult::Continue;
         }

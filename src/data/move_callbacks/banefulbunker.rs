@@ -195,7 +195,7 @@ pub mod condition {
             let source_pokemon = battle.pokemon_at(source_pos.0, source_pos.1);
             if let Some(pokemon) = source_pokemon {
                 if let Some(volatile) = pokemon.volatiles.get(&lockedmove_id) {
-                    volatile.duration == Some(2)
+                    volatile.borrow().duration == Some(2)
                 } else {
                     false
                 }

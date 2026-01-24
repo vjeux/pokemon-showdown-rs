@@ -27,7 +27,7 @@ pub fn on_try(
         };
 
         if let Some(stockpile_volatile) = source_pokemon.volatiles.get(&ID::from("stockpile")) {
-            stockpile_volatile.layers.unwrap_or(0)
+            stockpile_volatile.borrow().layers.unwrap_or(0)
         } else {
             0
         }

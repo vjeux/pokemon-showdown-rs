@@ -113,7 +113,7 @@ impl Battle {
                     Some(p) => p,
                     None => continue,
                 };
-                (pokemon.hp, pokemon.status.clone(), pokemon.status_state.source.clone())
+                (pokemon.hp, pokemon.status.clone(), pokemon.status_state.borrow().source.clone())
             };
 
             // Skip the target itself - we only check OTHER pokemon

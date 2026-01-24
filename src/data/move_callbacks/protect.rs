@@ -215,7 +215,7 @@ pub mod condition {
                 source_pokemon
                     .volatiles
                     .get(&ID::from("lockedmove"))
-                    .and_then(|v| v.duration)
+                    .and_then(|v| v.borrow().duration)
                     .unwrap_or(0)
             };
 

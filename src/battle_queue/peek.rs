@@ -15,6 +15,6 @@ impl BattleQueue {
     // 	}
     //
     pub fn peek(&self) -> Option<&Action> {
-        self.list.first()
+        self.list.front()
     }
 }

@@ -64,7 +64,7 @@ pub fn base_power_callback(
         let multiplier = pokemon_ref
             .volatiles
             .get(&furycutter_id)
-            .and_then(|v| v.multiplier)
+            .and_then(|v| v.borrow().multiplier)
             .unwrap_or(1);
 
         (base_power, multiplier)

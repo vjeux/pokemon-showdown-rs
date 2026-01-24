@@ -108,7 +108,7 @@ pub fn on_weather_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
 pub fn on_ally_modify_atk(battle: &mut Battle, _atk: i32, _pokemon_pos: (usize, usize)) -> EventResult {
     // if (this.effectState.target.baseSpecies.baseSpecies !== 'Cherrim') return;
     let ability_holder_is_cherrim = {
-        let ability_holder_pos = match battle.effect_state.target {
+        let ability_holder_pos = match battle.effect_state.borrow().target {
             Some(pos) => pos,
             None => return EventResult::Continue,
         };
@@ -160,7 +160,7 @@ pub fn on_ally_modify_atk(battle: &mut Battle, _atk: i32, _pokemon_pos: (usize, 
 pub fn on_ally_modify_sp_d(battle: &mut Battle, _spd: i32, _pokemon_pos: (usize, usize)) -> EventResult {
     // if (this.effectState.target.baseSpecies.baseSpecies !== 'Cherrim') return;
     let ability_holder_is_cherrim = {
-        let ability_holder_pos = match battle.effect_state.target {
+        let ability_holder_pos = match battle.effect_state.borrow().target {
             Some(pos) => pos,
             None => return EventResult::Continue,
         };

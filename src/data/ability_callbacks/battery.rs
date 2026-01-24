@@ -15,7 +15,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_ally_base_power(battle: &mut Battle, _base_power: i32, attacker_pos: Option<(usize, usize)>, _defender_pos: Option<(usize, usize)>, active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // if (attacker !== this.effectState.target && move.category === 'Special')
-    let ability_holder = match battle.effect_state.target {
+    let ability_holder = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

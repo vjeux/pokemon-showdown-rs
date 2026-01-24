@@ -1,5 +1,5 @@
 // JS Source:
-// 
+//
 // 	getSideCondition(status: string | Effect): Effect | null {
 // 		status = this.battle.dex.conditions.get(status) as Effect;
 // 		if (!this.sideConditions[status.id]) return null;
@@ -8,6 +8,7 @@
 
 
 use crate::side::*;
+use crate::event_system::SharedEffectState;
 
 impl Side {
 
@@ -19,7 +20,7 @@ impl Side {
     // 		return status;
     // 	}
     //
-    pub fn get_side_condition(&self, id: &ID) -> Option<&EffectState> {
+    pub fn get_side_condition(&self, id: &ID) -> Option<&SharedEffectState> {
         self.side_conditions.get(id)
     }
 }

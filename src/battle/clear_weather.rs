@@ -13,7 +13,7 @@
 
 use crate::battle::Battle;
 use crate::dex_data::ID;
-use crate::event_system::EffectState;
+use crate::event_system::SharedEffectState;
 
 impl Battle {
     pub fn clear_weather(&mut self) -> bool {
@@ -40,7 +40,7 @@ impl Battle {
         self.field.weather = ID::empty();
 
         // this.battle.clearEffectState(this.weatherState);
-        self.field.weather_state = EffectState::new(ID::empty());
+        self.field.weather_state = SharedEffectState::with_id(ID::empty());
 
         // this.battle.eachEvent('WeatherChange');
         self.each_event("WeatherChange", None, None);

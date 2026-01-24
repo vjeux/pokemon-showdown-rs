@@ -200,7 +200,7 @@ pub mod condition {
                 .get(&ID::from("partiallytrapped"))
                 .map(|effect_state| {
                     (
-                        effect_state.source_effect.clone(),
+                        effect_state.borrow().source_effect.clone(),
                     )
                 })
         };

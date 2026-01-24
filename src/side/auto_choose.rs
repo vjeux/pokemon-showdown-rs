@@ -154,7 +154,7 @@ impl Side {
                                 let target_loc = {
                                     let pokemon = &self.pokemon[*pokemon_idx];
                                     pokemon.volatiles.get(&move_id)
-                                        .and_then(|v| v.target_loc)
+                                        .and_then(|v| v.borrow().target_loc)
                                         .map(|t| t as i8)
                                         .or_else(|| pokemon.last_move_target_loc)
                                 };

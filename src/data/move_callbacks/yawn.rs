@@ -111,7 +111,7 @@ pub mod condition {
 
             // Get the source from the yawn volatile's effectState (this.effectState.source)
             let source = target_pokemon.volatiles.get(&ID::from("yawn"))
-                .and_then(|effect_state| effect_state.source);
+                .and_then(|effect_state| effect_state.borrow().source);
             debug_elog!("[YAWN_END] effectState.source={:?}", source);
 
             (target_pokemon.get_slot(), source)

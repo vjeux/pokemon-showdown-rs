@@ -1,6 +1,6 @@
 use crate::*;
 use crate::event::EventResult;
-use crate::event_system::EffectState;
+use crate::event_system::SharedEffectState;
 
 impl Pokemon {
 
@@ -123,7 +123,7 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED: pendingStaleness reset (field exists in Rust)
         pokemon_mut.pending_staleness = None;
 
-        pokemon_mut.item_state = EffectState::new(ID::empty());
+        pokemon_mut.item_state = SharedEffectState::with_id(ID::empty());
 
         // JS: this.battle.singleEvent('End', item, oldItemState, this);
         // ✅ NOW IMPLEMENTED (Session 24 Part 75): singleEvent('End') for removed item

@@ -1,5 +1,5 @@
 use crate::*;
-use crate::event_system::EffectState;
+use crate::event_system::SharedEffectState;
 
 impl Pokemon {
 
@@ -11,7 +11,7 @@ impl Pokemon {
     // 		return status;
     // 	}
     //
-    pub fn get_volatile(&self, id: &ID) -> Option<&EffectState> {
+    pub fn get_volatile(&self, id: &ID) -> Option<&SharedEffectState> {
         self.volatiles.get(id)
     }
 }

@@ -102,7 +102,7 @@ pub fn on_hit(
                     target_pokemon
                         .volatiles
                         .get(volatile)
-                        .and_then(|v| v.layers)
+                        .and_then(|v| v.borrow().layers)
                         .unwrap_or(0)
                 };
 
@@ -111,7 +111,7 @@ pub fn on_hit(
                     None => return EventResult::Continue,
                 };
                 if let Some(volatile_effect) = source_pokemon.volatiles.get_mut(volatile) {
-                    volatile_effect.layers = Some(layers);
+                    volatile_effect.borrow_mut().layers = Some(layers);
                 }
             }
 
@@ -124,7 +124,7 @@ pub fn on_hit(
                     target_pokemon
                         .volatiles
                         .get(volatile)
-                        .and_then(|v| v.has_dragon_type)
+                        .and_then(|v| v.borrow().has_dragon_type)
                         .unwrap_or(false)
                 };
 
@@ -133,7 +133,7 @@ pub fn on_hit(
                     None => return EventResult::Continue,
                 };
                 if let Some(volatile_effect) = source_pokemon.volatiles.get_mut(volatile) {
-                    volatile_effect.has_dragon_type = Some(has_dragon_type);
+                    volatile_effect.borrow_mut().has_dragon_type = Some(has_dragon_type);
                 }
             }
         }

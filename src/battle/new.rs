@@ -52,7 +52,7 @@ impl Battle {
             format_id: options.format_id,
             format_name: options.format_name.unwrap_or_else(|| format_id_str.clone()),
             format: None, // Will be set later if needed
-            format_data: crate::event_system::EffectState::default(),
+            format_data: crate::event_system::SharedEffectState::with_id(crate::dex_data::ID::default()),
             game_type,
             gen,
             active_per_half,
@@ -88,7 +88,7 @@ impl Battle {
             active_target: None,
             effect_order: 0,
             effect: None,
-            effect_state: crate::event_system::EffectState::default(),
+            effect_state: crate::event_system::SharedEffectState::with_id(crate::dex_data::ID::default()),
             event: None,
             event_depth: 0,
             sent_log_pos: 0,

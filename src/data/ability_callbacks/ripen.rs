@@ -105,7 +105,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        target.ability_state.berry_weaken.unwrap_or(false)
+        target.ability_state.borrow().berry_weaken.unwrap_or(false)
     };
 
     if berry_weaken {
@@ -115,7 +115,7 @@ pub fn on_source_modify_damage(battle: &mut Battle, _damage: i32, _source_pos: (
                 Some(p) => p,
                 None => return EventResult::Continue,
             };
-            target.ability_state.berry_weaken = Some(false);
+            target.ability_state.borrow_mut().berry_weaken = Some(false);
         }
 
         // return this.chainModify(0.5);
@@ -195,7 +195,7 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
         None => return EventResult::Continue,
     };
 
-    pokemon.ability_state.berry_weaken = Some(berry_weaken);
+    pokemon.ability_state.borrow_mut().berry_weaken = Some(berry_weaken);
 
     EventResult::Continue
 }

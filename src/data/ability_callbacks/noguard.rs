@@ -17,7 +17,7 @@ pub fn on_any_invulnerability(battle: &mut Battle, target_pos: Option<(usize, us
     }
 
     // if (move && (source === this.effectState.target || target === this.effectState.target)) return 0;
-    let noguard_user = match battle.effect_state.target {
+    let noguard_user = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -47,7 +47,7 @@ pub fn on_any_accuracy(battle: &mut Battle, accuracy: i32, target_pos: Option<(u
         return EventResult::Continue;
     }
 
-    let noguard_user = match battle.effect_state.target {
+    let noguard_user = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

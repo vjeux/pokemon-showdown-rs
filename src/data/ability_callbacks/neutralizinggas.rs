@@ -52,7 +52,7 @@ pub fn on_switch_in(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRe
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.ending = Some(false);
+        pokemon.ability_state.borrow_mut().ending = Some(false);
     }
 
     // const strongWeathers = ['desolateland', 'primordialsea', 'deltastream'];
@@ -239,7 +239,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.ending.unwrap_or(false)
+        pokemon.ability_state.borrow().ending.unwrap_or(false)
     };
 
     if is_ending {
@@ -252,7 +252,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.ending = Some(true);
+        pokemon.ability_state.borrow_mut().ending = Some(true);
     }
 
     // const sortedActive = this.getAllActive();
@@ -379,7 +379,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
                 Some(p) => p,
                 None => continue,
             };
-            target.ability_state.gluttony = Some(false);
+            target.ability_state.borrow_mut().gluttony = Some(false);
         }
     }
 

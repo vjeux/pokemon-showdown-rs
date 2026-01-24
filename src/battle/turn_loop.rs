@@ -100,7 +100,7 @@ impl Battle {
                 sub_order: 0,
                 effect_order: 0,
             });
-            self.queue.list.push(residual_action);
+            self.queue.list.push_back(residual_action);
 
             debug_elog!("[TURN_LOOP] Queue AFTER adding beforeTurn/residual:");
             for (_i, action) in self.queue.list.iter().enumerate() {

@@ -25,7 +25,7 @@ pub fn on_ally_set_status(battle: &mut Battle, status_id: &str, target_pos: (usi
         // Note: Debug logging not implemented yet
 
         // const effectHolder = this.effectState.target;
-        let effect_holder_pos = match battle.effect_state.target {
+        let effect_holder_pos = match battle.effect_state.borrow().target {
             Some(pos) => pos,
             None => return EventResult::Null,
         };
@@ -83,7 +83,7 @@ pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, targe
         // Note: Debug logging not implemented yet
 
         // const effectHolder = this.effectState.target;
-        let effect_holder_pos = match battle.effect_state.target {
+        let effect_holder_pos = match battle.effect_state.borrow().target {
             Some(pos) => pos,
             None => return EventResult::Null,
         };

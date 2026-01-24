@@ -107,7 +107,7 @@ pub fn on_field_start(
     if is_ability {
         // if (this.gen <= 5) this.effectState.duration = 0;
         if battle.gen <= 5 {
-            battle.field.weather_state.duration = Some(0);
+            battle.field.weather_state.borrow_mut().duration = Some(0);
         }
 
         // this.add('-weather', 'Sandstorm', '[from] ability: ' + effect.name, `[of] ${source}`);

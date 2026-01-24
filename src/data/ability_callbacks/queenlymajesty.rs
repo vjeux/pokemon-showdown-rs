@@ -40,7 +40,7 @@ pub fn on_foe_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
     }
 
     // const dazzlingHolder = this.effectState.target;
-    let ability_holder = match battle.effect_state.target {
+    let ability_holder = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

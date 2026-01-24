@@ -16,7 +16,7 @@ use crate::pokemon::Pokemon;
 /// }
 pub fn on_foe_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // Get ability holder position from effectState.target
-    let ability_holder_pos = match battle.effect_state.target {
+    let ability_holder_pos = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -52,7 +52,7 @@ pub fn on_foe_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize)) -> 
 /// }
 pub fn on_foe_maybe_trap_pokemon(battle: &mut Battle, pokemon_pos: (usize, usize), source_pos: Option<(usize, usize)>) -> EventResult {
     // if (!source) source = this.effectState.target;
-    let source_pos = source_pos.or(battle.effect_state.target);
+    let source_pos = source_pos.or(battle.effect_state.borrow().target);
 
     // if (!source || !pokemon.isAdjacent(source)) return;
     let source_pos = match source_pos {

@@ -33,7 +33,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventRes
                 true
             } else if pokemon.hp <= half_hp {
                 let has_gluttony = pokemon.has_ability(battle, &["gluttony"]);
-                let gluttony_active = pokemon.ability_state.gluttony.unwrap_or(false);
+                let gluttony_active = pokemon.ability_state.borrow().gluttony.unwrap_or(false);
                 debug_elog!("[MICLEBERRY_RESIDUAL] hp <= half_hp, has_gluttony={}, gluttony_active={}",
                           has_gluttony, gluttony_active);
                 has_gluttony && gluttony_active

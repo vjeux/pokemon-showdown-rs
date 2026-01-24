@@ -1,5 +1,6 @@
 use crate::*;
 use crate::dex_data::BoostsTable;
+use crate::event_system::{EffectState, SharedEffectState};
 
 impl Pokemon {
     /// Copy volatiles from another Pokemon (for Baton Pass, Shed Tail, etc.)
@@ -88,7 +89,7 @@ impl Pokemon {
         // ✅ NOW IMPLEMENTED (Session 24 Part 39): Loop through ALL source volatiles
         // Extract volatile list and states from source
         // Also track which volatile IDs are being copied so we can delete their linkedPokemon/linkedStatus
-        let (volatiles_to_copy, copied_volatile_ids): (Vec<(ID, crate::event_system::EffectState)>, Vec<ID>) = {
+        let (volatiles_to_copy, copied_volatile_ids): (Vec<(ID, EffectState)>, Vec<ID>) = {
             let source_pokemon = match battle.pokemon_at(source_pos.0, source_pos.1) {
                 Some(p) => p,
                 None => return,
@@ -97,7 +98,7 @@ impl Pokemon {
             let mut to_copy = Vec::new();
             let mut copied_ids = Vec::new();
 
-            for (id, state) in &source_pokemon.volatiles {
+            for (id, shared_state) in &source_pokemon.volatiles {
                 // JS: if (switchCause === 'shedtail' && i !== 'substitute') continue;
                 if is_shedtail && id.as_str() != "substitute" {
                     continue;
@@ -117,7 +118,9 @@ impl Pokemon {
                     continue;
                 }
 
-                // Clone the state and update target
+                // Clone the inner state and update target
+                // Use borrow() to access SharedEffectState inner fields
+                let state = shared_state.borrow();
                 let mut new_state = state.clone();
                 new_state.target = Some(target_pos);
 
@@ -135,7 +138,8 @@ impl Pokemon {
                 Some(p) => p,
                 None => return,
             };
-            target_pokemon.volatiles.insert(id, state);
+            // Wrap in SharedEffectState when inserting
+            target_pokemon.volatiles.insert(id, SharedEffectState::new(state));
         }
 
         // JS: if (this.volatiles[i].linkedPokemon) {
@@ -159,7 +163,9 @@ impl Pokemon {
             target_pokemon
                 .volatiles
                 .iter()
-                .filter_map(|(volatile_id, state)| {
+                .filter_map(|(volatile_id, shared_state)| {
+                    // Use borrow() to access SharedEffectState inner fields
+                    let state = shared_state.borrow();
                     // Check if this volatile has linkedPokemon
                     let linked_pokemon = state.linked_pokemon.as_ref()?;
                     let linked_status_id = state.linked_status.as_ref()?;
@@ -202,9 +208,11 @@ impl Pokemon {
                     None => continue,
                 };
 
-                if let Some(linked_volatile_state) = linked_pokemon_mut.volatiles.get_mut(&linked_status_id) {
+                if let Some(linked_volatile_state) = linked_pokemon_mut.volatiles.get(&linked_status_id) {
+                    // Use borrow_mut() to access SharedEffectState inner fields
+                    let mut state = linked_volatile_state.borrow_mut();
                     // Update the linkedPokemon Vec directly
-                    if let Some(linked_poke_vec) = &mut linked_volatile_state.linked_pokemon {
+                    if let Some(linked_poke_vec) = &mut state.linked_pokemon {
                         // Find and replace source_pos with target_pos
                         // linkedPokeLinks[linkedPokeLinks.indexOf(pokemon)] = this;
                         for pos in linked_poke_vec.iter_mut() {
@@ -227,7 +235,9 @@ impl Pokemon {
                 None => return,
             };
             for volatile_id in &copied_volatile_ids {
-                if let Some(state) = source_pokemon.volatiles.get_mut(volatile_id) {
+                if let Some(shared_state) = source_pokemon.volatiles.get(volatile_id) {
+                    // Use borrow_mut() to access SharedEffectState inner fields
+                    let mut state = shared_state.borrow_mut();
                     state.linked_pokemon = None;
                     state.linked_status = None;
                 }
@@ -249,7 +259,9 @@ impl Pokemon {
                 source_pokemon
                     .volatiles
                     .iter()
-                    .filter_map(|(_, state)| {
+                    .filter_map(|(_, shared_state)| {
+                        // Use borrow() to access SharedEffectState inner fields
+                        let state = shared_state.borrow();
                         if let (Some(status), Some(pokemon_vec)) = (&state.linked_status, &state.linked_pokemon) {
                             Some((status.clone(), pokemon_vec.clone()))
                         } else {

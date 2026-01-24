@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 use crate::dex_data::{SideID, ID};
-use crate::event_system::EffectState;
+use crate::event_system::SharedEffectState;
 use crate::pokemon::{Pokemon, PokemonSet};
 
 // Function modules
@@ -277,10 +277,10 @@ pub struct Side {
 
     /// Side conditions (Stealth Rock, Spikes, etc.)
     /// JavaScript: sideConditions: {[id: string]: EffectState}
-    pub side_conditions: HashMap<ID, EffectState>,
+    pub side_conditions: HashMap<ID, SharedEffectState>,
     /// Slot conditions (per-slot effects)
     /// JavaScript: slotConditions: {[id: string]: EffectState}[]
-    pub slot_conditions: Vec<HashMap<ID, EffectState>>,
+    pub slot_conditions: Vec<HashMap<ID, SharedEffectState>>,
 
     /// Current request state
     /// JavaScript: requestState: 'teamPreview' | 'move' | 'switch' | ''

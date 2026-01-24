@@ -376,24 +376,25 @@ impl Battle {
                     "partiallytrapped" => {
                         // Get source effect name from volatiles
                         // JS: '[from] ' + target.volatiles['partiallytrapped'].sourceEffect.fullname
-                        let source_effect_name = if let Some(side) = self.sides.get(side_idx) {
+                        let source_effect_name: String = if let Some(side) = self.sides.get(side_idx) {
                             if let Some(pokemon) = side.pokemon.get(poke_idx) {
                                 let trap_id = ID::new("partiallytrapped");
                                 if let Some(trap_state) = pokemon.volatiles.get(&trap_id) {
                                     // Use the typed source_effect field from EffectState
-                                    if let Some(ref source_eff) = trap_state.source_effect {
-                                        source_eff.id.as_str()
+                                    let trap_borrow = trap_state.borrow();
+                                    if let Some(ref source_eff) = trap_borrow.source_effect {
+                                        source_eff.id.as_str().to_string()
                                     } else {
-                                        "partiallytrapped"
+                                        "partiallytrapped".to_string()
                                     }
                                 } else {
-                                    "partiallytrapped"
+                                    "partiallytrapped".to_string()
                                 }
                             } else {
-                                "partiallytrapped"
+                                "partiallytrapped".to_string()
                             }
                         } else {
-                            "partiallytrapped"
+                            "partiallytrapped".to_string()
                         };
 
                         let from_str = format!("[from] {}", source_effect_name);
@@ -592,10 +593,10 @@ impl Battle {
                                             pokemon.volatiles.get_mut(&bide_id)
                                         {
                                             // Check if the bide state has damage > 0
-                                            if let Some(damage) = bide_state.damage {
+                                            if let Some(damage) = bide_state.borrow().damage {
                                                 if damage > 0 {
                                                     // Clear Bide damage
-                                                    bide_state.damage = Some(0);
+                                                    bide_state.borrow_mut().damage = Some(0);
                                                     bide_cleared = true;
                                                 }
                                             }

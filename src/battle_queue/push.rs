@@ -9,6 +9,6 @@ impl BattleQueue {
     // 	}
     //
     pub fn push(&mut self, action: Action) {
-        self.list.push(action);
+        self.list.push_back(action);
     }
 }

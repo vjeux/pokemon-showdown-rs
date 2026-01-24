@@ -41,7 +41,7 @@ pub fn on_start(
             .get_mut(pokemon_position)
             .and_then(|slot_conds| slot_conds.get_mut(&healreplacement_id))
         {
-            condition_state.source_effect = Some(source_effect);
+            condition_state.borrow_mut().source_effect = Some(source_effect);
         }
     }
 
@@ -104,8 +104,8 @@ pub fn on_switch_in(
         .slot_conditions
         .get(pokemon_position)
         .and_then(|slot_conds| slot_conds.get(&healreplacement_id))
-        .and_then(|state| state.source_effect.as_ref())
-        .map(|eff| eff.as_str().to_string())
+        .map(|state| state.borrow().source_effect.as_ref().map(|eff| eff.as_str().to_string()))
+        .flatten()
         .unwrap_or_else(|| "Z-Move".to_string());
 
     // target.heal(target.maxhp);

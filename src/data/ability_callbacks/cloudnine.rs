@@ -47,7 +47,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.ending = Some(false);
+        pokemon.ability_state.borrow_mut().ending = Some(false);
     }
 
     // this.eachEvent('WeatherChange', this.effect);
@@ -69,7 +69,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.ending = Some(true);
+        pokemon.ability_state.borrow_mut().ending = Some(true);
     }
 
     // this.eachEvent('WeatherChange', this.effect);

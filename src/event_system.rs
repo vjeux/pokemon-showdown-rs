@@ -23,5 +23,6 @@ mod effect;
 pub use effect_type::EffectType;
 pub use effect_data::EffectData;
 pub use effect_state::EffectState;
+pub use effect_state::SharedEffectState;
 pub use event_handler::EventHandler;
 pub use effect::{Effect, EventCallback};

@@ -1,5 +1,5 @@
 use crate::*;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 
 impl Battle {
 
@@ -18,7 +18,7 @@ impl Battle {
     // 		return obj as EffectState;
     // 	}
     //
-    pub fn init_effect_state(&mut self, mut state: EffectState, effect_order: Option<i32>) -> EffectState {
+    pub fn init_effect_state(&mut self, mut state: EffectState, effect_order: Option<i32>) -> SharedEffectState {
         // JS: if (!obj.id) obj.id = '';
         if state.id.as_str().is_empty() {
             state.id = ID::new("");
@@ -42,7 +42,7 @@ impl Battle {
             state.effect_order = 0;
         }
 
-        state
+        SharedEffectState::new(state)
     }
 }
 

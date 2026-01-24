@@ -214,7 +214,7 @@ impl Battle {
                     if let Some(pokemon) = self.sides[side_idx].pokemon.get(*poke_idx) {
                         // Check if Pokemon has dynamax volatile with turns === 3
                         if let Some(dynamax_state) = pokemon.volatiles.get(&dynamax_id) {
-                            let turns = dynamax_state.turns.unwrap_or(0);
+                            let turns = dynamax_state.borrow().turns.unwrap_or(0);
                             if turns == 3 {
                                 dynamax_ending.push((side_idx, *poke_idx));
                             }
@@ -287,7 +287,7 @@ impl Battle {
                                 // Note: In JS, `locked` refers to the Pokemon object
                                 // In Rust, we use locked_target to store the Pokemon position
                                 let should_remove =
-                                    if let Some(target_pos) = lock_state.locked_target {
+                                    if let Some(target_pos) = lock_state.borrow().locked_target {
                                         // JS: if (target.hp <= 0 || !target.volatiles['partiallytrapped'])
                                         if let Some(target) = self
                                             .sides
@@ -315,7 +315,7 @@ impl Battle {
                             {
                                 // JS: const source = pokemon.volatiles['partiallytrapped'].source;
                                 // Use the typed source field from EffectState
-                                let should_remove = if let Some((source_side, source_poke)) = trapped_state.source {
+                                let should_remove = if let Some((source_side, source_poke)) = trapped_state.borrow().source {
                                     // JS: if (source.hp <= 0 || !source.volatiles['partialtrappinglock'])
                                     if let Some(source) = self
                                         .sides
@@ -344,7 +344,7 @@ impl Battle {
                             {
                                 // JS: const counterpart = pokemon.volatiles['fakepartiallytrapped'].counterpart;
                                 // Use the typed counterpart field from EffectState
-                                let should_remove = if let Some((counterpart_side, counterpart_poke)) = fake_state.counterpart {
+                                let should_remove = if let Some((counterpart_side, counterpart_poke)) = fake_state.borrow().counterpart {
                                     // JS: if (counterpart.hp <= 0 || !counterpart.volatiles['fakepartiallytrapped'])
                                     if let Some(counterpart) = self
                                         .sides

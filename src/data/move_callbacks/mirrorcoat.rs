@@ -31,7 +31,7 @@ pub fn damage_callback(
             Some(volatile) => {
                 // return pokemon.volatiles['mirrorcoat'].damage || 1;
                 // Note: In JS, `damage || 1` treats 0 as falsy and returns 1
-                let d = volatile.damage.unwrap_or(0);
+                let d = volatile.borrow().damage.unwrap_or(0);
                 if d == 0 { 1 } else { d }
             }
             None => {
@@ -79,7 +79,7 @@ pub fn on_try(
     };
 
     // if (source.volatiles['mirrorcoat'].slot === null) return false;
-    let slot = volatile.slot;
+    let slot = volatile.borrow().slot;
     if slot.is_none() {
         return EventResult::Boolean(false);
     }

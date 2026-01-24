@@ -60,10 +60,10 @@ pub mod condition {
         if let Some(side) = battle.sides.get_mut(side_idx) {
             if let Some(slot_conds) = side.slot_conditions.get_mut(slot) {
                 if let Some(wish_state) = slot_conds.get_mut(&ID::from("wish")) {
-                    wish_state.hp = Some(hp);
-                    wish_state.starting_turn = Some(starting_turn);
-                    wish_state.source = source_pos;
-                    wish_state.source_slot = source_active_slot;
+                    wish_state.borrow_mut().hp = Some(hp);
+                    wish_state.borrow_mut().starting_turn = Some(starting_turn);
+                    wish_state.borrow_mut().source = source_pos;
+                    wish_state.borrow_mut().source_slot = source_active_slot;
                 }
             }
         }

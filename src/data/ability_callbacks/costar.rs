@@ -100,7 +100,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                         None => continue,
                     };
                     ally.volatiles.get(volatile_id)
-                        .and_then(|v| v.layers)
+                        .and_then(|v| v.borrow().layers)
                 };
 
                 if let Some(layers) = ally_layers {
@@ -108,8 +108,8 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                         Some(p) => p,
                         None => continue,
                     };
-                    if let Some(volatile) = pokemon.volatiles.get_mut(volatile_id) {
-                        volatile.layers = Some(layers);
+                    if let Some(volatile) = pokemon.volatiles.get(volatile_id) {
+                        volatile.borrow_mut().layers = Some(layers);
                     }
                 }
             }
@@ -122,7 +122,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                         None => continue,
                     };
                     ally.volatiles.get(volatile_id)
-                        .and_then(|v| v.has_dragon_type)
+                        .and_then(|v| v.borrow().has_dragon_type)
                 };
 
                 if let Some(has_dragon_type) = ally_has_dragon_type {
@@ -130,8 +130,8 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
                         Some(p) => p,
                         None => continue,
                     };
-                    if let Some(volatile) = pokemon.volatiles.get_mut(volatile_id) {
-                        volatile.has_dragon_type = Some(has_dragon_type);
+                    if let Some(volatile) = pokemon.volatiles.get(volatile_id) {
+                        volatile.borrow_mut().has_dragon_type = Some(has_dragon_type);
                     }
                 }
             }

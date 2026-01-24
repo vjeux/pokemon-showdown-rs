@@ -13,7 +13,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     // Call onUpdate for the effectState.target (the ability holder)
-    let target_pos = match battle.effect_state.target {
+    let target_pos = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

@@ -37,6 +37,7 @@ use crate::side::*;
 use crate::battle::Battle;
 use crate::battle::Effect;
 use crate::dex_data::ID;
+use crate::event_system::{EffectState, SharedEffectState};
 
 impl Side {
     /// Add a side condition
@@ -140,7 +141,7 @@ impl Side {
         let side_idx = self.n;
 
         // Store effect state before firing events
-        self.side_conditions.insert(status_id.clone(), effect_state.clone());
+        self.side_conditions.insert(status_id.clone(), SharedEffectState::new(effect_state.clone()));
 
         // JavaScript: if (!this.battle.singleEvent('SideStart', status, ...)) { delete; return false; }
         let side_start_result = battle.single_event_side(
@@ -182,7 +183,7 @@ impl Side {
         }
         let mut state = EffectState::new(id.clone());
         state.duration = duration;
-        self.side_conditions.insert(id, state);
+        self.side_conditions.insert(id, SharedEffectState::new(state));
         true
     }
 }

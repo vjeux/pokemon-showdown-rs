@@ -45,7 +45,7 @@ pub fn on_start(
             None => return EventResult::Continue,
         };
 
-        pokemon.status_state.stage = Some(0);
+        pokemon.status_state.borrow_mut().stage = Some(0);
     }
 
     // Check if sourceEffect is toxicorb or ability
@@ -104,7 +104,7 @@ pub fn on_switch_in(
         None => return EventResult::Continue,
     };
 
-    pokemon.status_state.stage = Some(0);
+    pokemon.status_state.borrow_mut().stage = Some(0);
 
     EventResult::Continue
 }
@@ -133,7 +133,7 @@ pub fn on_residual(
             None => return EventResult::Continue,
         };
 
-        pokemon.status_state.stage.unwrap_or(0)
+        pokemon.status_state.borrow().stage.unwrap_or(0)
     };
 
     // this.effectState.stage++;
@@ -144,7 +144,7 @@ pub fn on_residual(
         };
 
         let incremented = stage + 1;
-        pokemon.status_state.stage = Some(incremented);
+        pokemon.status_state.borrow_mut().stage = Some(incremented);
         incremented
     } else {
         stage

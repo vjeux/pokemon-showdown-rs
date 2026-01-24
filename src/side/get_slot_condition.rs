@@ -1,4 +1,5 @@
 use crate::side::*;
+use crate::event_system::SharedEffectState;
 
 impl Side {
 
@@ -11,7 +12,7 @@ impl Side {
     // 		return status;
     // 	}
     //
-    pub fn get_slot_condition(&self, slot: usize, id: &ID) -> Option<&EffectState> {
+    pub fn get_slot_condition(&self, slot: usize, id: &ID) -> Option<&SharedEffectState> {
         self.slot_conditions.get(slot)?.get(id)
     }
 }

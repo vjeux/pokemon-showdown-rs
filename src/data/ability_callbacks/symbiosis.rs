@@ -37,7 +37,7 @@ pub fn on_ally_after_use_item(battle: &mut Battle, _item_id: Option<&str>, pokem
     }
 
     // const source = this.effectState.target;
-    let source_pos = match battle.effect_state.target {
+    let source_pos = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

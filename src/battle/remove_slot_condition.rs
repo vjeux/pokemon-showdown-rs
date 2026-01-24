@@ -49,7 +49,7 @@ impl Battle {
         self.single_event(
             "End",
             &crate::battle::Effect::slot_condition(id.clone()),
-            state_owned.as_ref(),  // Pass the state so on_end can access hp
+            state_owned,  // Pass the state so on_end can access hp
             target_pos,
             None,
             None,

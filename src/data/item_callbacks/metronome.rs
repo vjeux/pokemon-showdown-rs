@@ -43,9 +43,9 @@ pub mod condition {
             if let Some(pokemon) = side.pokemon.get_mut(pokemon_pos.1) {
                 if let Some(state) = pokemon.volatiles.get_mut(&metronome_id) {
                     // Use move_id for lastMove (empty string initially)
-                    state.move_id = Some(String::new());
+                    state.borrow_mut().move_id = Some(String::new());
                     // Use counter for numConsecutive
-                    state.counter = Some(0);
+                    state.borrow_mut().counter = Some(0);
                 }
             }
         }
@@ -101,10 +101,12 @@ pub mod condition {
                     // Get metronome volatile state
                     let metronome_id = ID::new("metronome");
                     let last_mv = pokemon.volatiles.get(&metronome_id)
-                        .and_then(|s| s.move_id.clone())
+                        .map(|s| s.borrow().move_id.clone())
+                        .flatten()
                         .unwrap_or_default();
                     let num = pokemon.volatiles.get(&metronome_id)
-                        .and_then(|s| s.counter)
+                        .map(|s| s.borrow().counter)
+                        .flatten()
                         .unwrap_or(0);
 
                     (has_item, last_mv, move_result, has_ttm, num)
@@ -143,8 +145,8 @@ pub mod condition {
         if let Some(side) = battle.sides.get_mut(pokemon_pos.0) {
             if let Some(pokemon) = side.pokemon.get_mut(pokemon_pos.1) {
                 if let Some(state) = pokemon.volatiles.get_mut(&metronome_id) {
-                    state.move_id = Some(move_id_str);
-                    state.counter = Some(new_num_consecutive);
+                    state.borrow_mut().move_id = Some(move_id_str);
+                    state.borrow_mut().counter = Some(new_num_consecutive);
                 }
             }
         }
@@ -178,7 +180,8 @@ pub mod condition {
                 if let Some(pokemon) = side.pokemon.get(source.1) {
                     let metronome_id = ID::new("metronome");
                     pokemon.volatiles.get(&metronome_id)
-                        .and_then(|s| s.counter)
+                        .map(|s| s.borrow().counter)
+                        .flatten()
                         .map(|c| if c > 5 { 5 } else { c })
                         .unwrap_or(0)
                 } else {

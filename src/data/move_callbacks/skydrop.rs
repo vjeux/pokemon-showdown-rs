@@ -107,7 +107,7 @@ pub fn on_move_fail(
         };
 
         if let Some(volatile) = source_pokemon.volatiles.get(&ID::from("twoturnmove")) {
-            volatile.duration == Some(1)
+            volatile.borrow().duration == Some(1)
         } else {
             false
         }
@@ -251,7 +251,7 @@ pub fn on_try_hit(
                 None => return EventResult::Continue,
             };
             if let Some(volatile) = source_pokemon.volatiles.get(&ID::from("twoturnmove")) {
-                volatile.source
+                volatile.borrow().source
             } else {
                 None
             }
@@ -740,7 +740,7 @@ pub mod condition {
 
             let twoturnmove_source =
                 if let Some(volatile) = target_pokemon.volatiles.get(&ID::from("twoturnmove")) {
-                    volatile.source
+                    volatile.borrow().source
                 } else {
                     None
                 };

@@ -13,7 +13,7 @@
 
 use crate::battle::Battle;
 use crate::dex_data::ID;
-use crate::event_system::EffectState;
+use crate::event_system::SharedEffectState;
 
 impl Battle {
     pub fn clear_terrain(&mut self) -> bool {
@@ -40,7 +40,7 @@ impl Battle {
         self.field.terrain = ID::empty();
 
         // this.battle.clearEffectState(this.terrainState);
-        self.field.terrain_state = EffectState::new(ID::empty());
+        self.field.terrain_state = SharedEffectState::with_id(ID::empty());
 
         // this.battle.eachEvent('TerrainChange');
         self.each_event("TerrainChange", None, None);

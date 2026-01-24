@@ -57,11 +57,11 @@ impl Pokemon {
                 };
 
                 debug_elog!("[REMOVE_LINKED_VOLATILES]   Found volatile '{}' with linked_pokemon={:?}",
-                    linked_status.as_str(), volatile_data.linked_pokemon);
+                    linked_status.as_str(), volatile_data.borrow().linked_pokemon);
 
                 // JS: volatileData.linkedPokemon.splice(volatileData.linkedPokemon.indexOf(this), 1);
                 // Access linkedPokemon as typed field, remove this_pokemon
-                if let Some(linked_pokemon_vec) = volatile_data.linked_pokemon.as_mut() {
+                if let Some(linked_pokemon_vec) = volatile_data.borrow_mut().linked_pokemon.as_mut() {
                     let _before_len = linked_pokemon_vec.len();
                     // Find and remove this_pokemon from the Vec
                     linked_pokemon_vec.retain(|&pos| pos != this_pokemon);

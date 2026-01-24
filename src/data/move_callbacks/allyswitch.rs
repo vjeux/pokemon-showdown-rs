@@ -185,7 +185,7 @@ pub mod condition {
 
             // const counter = this.effectState.counter || 1;
             if let Some(volatile) = pokemon.volatiles.get(&allyswitch_id) {
-                volatile.counter.unwrap_or(1)
+                volatile.borrow().counter.unwrap_or(1)
             } else {
                 return EventResult::Continue;
             }

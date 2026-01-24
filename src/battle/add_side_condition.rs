@@ -6,7 +6,7 @@
 //! source tracking, which is needed for moves like Pursuit that track multiple sources.
 
 use crate::*;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 use crate::battle::Effect;
 
 impl Battle {
@@ -120,7 +120,7 @@ impl Battle {
         }
 
         // Add the condition
-        self.sides[side_idx].side_conditions.insert(condition_id.clone(), state);
+        self.sides[side_idx].side_conditions.insert(condition_id.clone(), SharedEffectState::new(state));
 
         // if (!this.battle.singleEvent('SideStart', status, this.sideConditions[status.id], this, source, sourceEffect)) {
         //     delete this.sideConditions[status.id];
@@ -180,13 +180,13 @@ impl Battle {
         &mut self,
         side_idx: usize,
         condition_id: &ID,
-    ) -> Option<&mut EffectState> {
+    ) -> Option<&SharedEffectState> {
         if side_idx >= self.sides.len() {
             return None;
         }
 
         self.sides[side_idx]
             .side_conditions
-            .get_mut(condition_id)
+            .get(condition_id)
     }
 }

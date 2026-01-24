@@ -1,6 +1,6 @@
 use crate::battle::Effect;
 use crate::*;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 
 /// Check if an item is a restorative berry
 /// JavaScript: RESTORATIVE_BERRIES.has(item.id)

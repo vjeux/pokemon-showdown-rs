@@ -95,7 +95,8 @@ impl Battle {
         // during add_choice, so we don't need to call it again here - speeds are already set
         let mut list = std::mem::take(&mut self.queue.list);
 
-        self.speed_sort_with_callsite(&mut list, |action| {
+        // VecDeque needs to be made contiguous before we can get a slice for sorting
+        self.speed_sort_with_callsite(list.make_contiguous(), |action: &crate::battle_queue::Action| {
             PriorityItem {
                 order: Some(action.order()),
                 priority: action.priority() as i32,

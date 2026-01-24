@@ -88,7 +88,7 @@ pub fn on_ally_try_boost(battle: &mut Battle, target_pos: Option<(usize, usize)>
                 };
                 let target_slot = target.get_slot();
 
-                let effect_holder_slot = match battle.effect_state.target {
+                let effect_holder_slot = match battle.effect_state.borrow().target {
                     Some(pos) => {
                         let holder = match battle.pokemon_at(pos.0, pos.1) {
                             Some(p) => p,
@@ -180,7 +180,7 @@ pub fn on_ally_set_status(battle: &mut Battle, _status_id: &str, target_pos: (us
             };
             let target_slot = target.get_slot();
 
-            let effect_holder_slot = match battle.effect_state.target {
+            let effect_holder_slot = match battle.effect_state.borrow().target {
                 Some(pos) => {
                     let holder = match battle.pokemon_at(pos.0, pos.1) {
                         Some(p) => p,
@@ -253,7 +253,7 @@ pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, targe
         };
         let target_slot = target.get_slot();
 
-        let effect_holder_slot = match battle.effect_state.target {
+        let effect_holder_slot = match battle.effect_state.borrow().target {
             Some(pos) => {
                 let holder = match battle.pokemon_at(pos.0, pos.1) {
                     Some(p) => p,

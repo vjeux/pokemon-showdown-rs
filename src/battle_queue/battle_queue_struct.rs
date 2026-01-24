@@ -1,6 +1,7 @@
 //! The battle queue struct
 
 use serde::{Deserialize, Serialize};
+use std::collections::VecDeque;
 
 use super::Action;
 
@@ -10,7 +11,7 @@ use super::Action;
 /// 32 fields in JavaScript
 pub struct BattleQueue {
     /// List of actions
-    pub list: Vec<Action>,
+    pub list: VecDeque<Action>,
 }
 
 impl BattleQueue {

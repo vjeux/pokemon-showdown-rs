@@ -13,7 +13,7 @@ use crate::event::EventResult;
 ///     }
 /// }
 pub fn on_any_modify_accuracy(battle: &mut Battle, _accuracy: i32, _target_pos: Option<(usize, usize)>, source_pos: Option<(usize, usize)>) -> EventResult {
-    let ability_holder = match battle.effect_state.target {
+    let ability_holder = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

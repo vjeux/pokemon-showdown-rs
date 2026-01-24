@@ -9,6 +9,6 @@ impl BattleQueue {
     // 	}
     //
     pub fn unshift(&mut self, action: Action) {
-        self.list.insert(0, action);
+        self.list.push_front(action);
     }
 }

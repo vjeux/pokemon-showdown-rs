@@ -23,7 +23,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.unnerved.unwrap_or(false)
+        pokemon.ability_state.borrow().unnerved.unwrap_or(false)
     };
 
     if already_unnerved {
@@ -56,7 +56,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.unnerved = Some(true);
+        pokemon.ability_state.borrow_mut().unnerved = Some(true);
     }
 
     EventResult::Continue
@@ -71,7 +71,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon.ability_state.unnerved = Some(false);
+    pokemon.ability_state.borrow_mut().unnerved = Some(false);
 
     EventResult::Continue
 }
@@ -81,7 +81,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 /// }
 pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
     // Get ability holder position from effectState.target
-    let ability_holder_pos = match battle.effect_state.target {
+    let ability_holder_pos = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -92,7 +92,7 @@ pub fn on_foe_try_eat_item(battle: &mut Battle) -> EventResult {
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.unnerved.unwrap_or(false)
+        pokemon.ability_state.borrow().unnerved.unwrap_or(false)
     };
 
     // return !this.effectState.unnerved;

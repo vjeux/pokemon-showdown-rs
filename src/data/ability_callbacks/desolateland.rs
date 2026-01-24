@@ -52,7 +52,7 @@ pub fn on_any_set_weather(battle: &mut Battle, _target_pos: Option<(usize, usize
 /// }
 pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
     // if (this.field.weatherState.source !== pokemon) return;
-    let weather_source = battle.field.weather_state.source;
+    let weather_source = battle.field.weather_state.borrow().source;
     if weather_source != Some(pokemon_pos) {
         return EventResult::Continue;
     }
@@ -78,7 +78,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
 
         if has_desolate_land {
             // this.field.weatherState.source = target;
-            battle.field.weather_state.source = Some(active_pos);
+            battle.field.weather_state.borrow_mut().source = Some(active_pos);
             return EventResult::Continue;
         }
     }

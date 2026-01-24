@@ -1,6 +1,85 @@
 //! Effect State
 
 use crate::dex_data::ID;
+use std::cell::{Ref, RefCell, RefMut};
+use std::fmt;
+use std::ops::Deref;
+use std::rc::Rc;
+
+/// Shared effect state - allows multiple references to the same state
+/// This mimics JavaScript's reference semantics where effectState is shared.
+///
+/// Cloning a SharedEffectState is cheap (just increments the reference count).
+/// Serialization/deserialization works transparently - it serializes the inner EffectState.
+#[derive(Default)]
+pub struct SharedEffectState(Rc<RefCell<EffectState>>);
+
+impl SharedEffectState {
+    /// Create a new SharedEffectState with the given EffectState
+    pub fn new(state: EffectState) -> Self {
+        Self(Rc::new(RefCell::new(state)))
+    }
+
+    /// Create a new SharedEffectState with an empty EffectState with the given ID
+    pub fn with_id(id: ID) -> Self {
+        Self::new(EffectState::new(id))
+    }
+
+    /// Borrow the inner EffectState immutably
+    pub fn borrow(&self) -> Ref<'_, EffectState> {
+        self.0.borrow()
+    }
+
+    /// Borrow the inner EffectState mutably
+    pub fn borrow_mut(&self) -> RefMut<'_, EffectState> {
+        self.0.borrow_mut()
+    }
+
+    /// Get the reference count (for debugging)
+    pub fn ref_count(&self) -> usize {
+        Rc::strong_count(&self.0)
+    }
+}
+
+impl Clone for SharedEffectState {
+    /// Cheap clone - just increments the reference count
+    fn clone(&self) -> Self {
+        Self(Rc::clone(&self.0))
+    }
+}
+
+impl fmt::Debug for SharedEffectState {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_tuple("SharedEffectState")
+            .field(&*self.0.borrow())
+            .finish()
+    }
+}
+
+// Serialize the inner EffectState
+impl serde::Serialize for SharedEffectState {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        self.0.borrow().serialize(serializer)
+    }
+}
+
+// Deserialize creates a new SharedEffectState with the deserialized EffectState
+impl<'de> serde::Deserialize<'de> for SharedEffectState {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        let state = EffectState::deserialize(deserializer)?;
+        Ok(Self::new(state))
+    }
+}
+
+// Allow dereferencing to access inner EffectState fields directly via borrow()
+// Note: For mutation, use borrow_mut() explicitly
+impl Deref for SharedEffectState {
+    type Target = RefCell<EffectState>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
 
 /// Effect state - matches JavaScript EffectState
 /// Stores state for temporary effects (volatiles, side conditions, etc.)
@@ -299,5 +378,10 @@ impl EffectState {
     /// Set source slot (now uses typed field)
     pub fn set_source_slot(&mut self, slot: usize) {
         self.source_slot = Some(slot);
+    }
+
+    /// Convert this EffectState into a SharedEffectState
+    pub fn into_shared(self) -> SharedEffectState {
+        SharedEffectState::new(self)
     }
 }

@@ -56,7 +56,7 @@ impl Battle {
             let has_get_key = get_key.is_some_and(|key| {
                 // Check for the key on EffectState struct fields, not in data HashMap
                 match key {
-                    "duration" => sc_state.duration.is_some(),
+                    "duration" => sc_state.borrow().duration.is_some(),
                     _ => false, // Other keys can be added as needed
                 }
             });

@@ -183,7 +183,7 @@ impl BattleQueue {
             if let Action::Move(ref _m) = action {
                 debug_elog!("[ADD_CHOICE] Adding move={} to queue (before: {})", _m.move_id.as_str(), self.list.len());
             }
-            self.list.push(action.clone());
+            self.list.push_back(action.clone());
             if let Action::Move(ref _m) = action {
                 debug_elog!("[ADD_CHOICE] Added move={} to queue (after: {})", _m.move_id.as_str(), self.list.len());
             }

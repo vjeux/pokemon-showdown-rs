@@ -81,7 +81,7 @@ impl BattleQueue {
 
         // JS: if (firstIndex === null) { this.list.push(...actions); }
         if first_index.is_none() {
-            self.list.push(action);
+            self.list.push_back(action);
         } else {
             // JS: if (lastIndex === null) lastIndex = this.list.length;
             let first = first_index.unwrap();

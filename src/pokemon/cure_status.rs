@@ -65,7 +65,7 @@ impl Pokemon {
             Some(p) => p,
             None => return None,
         };
-        pokemon_mut.status_state.duration = None;
+        pokemon_mut.status_state.borrow_mut().duration = None;
 
         // Return (status_id, removed_nightmare, silent) for caller to log
         // Caller should call:

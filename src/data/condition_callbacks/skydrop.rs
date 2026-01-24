@@ -68,7 +68,7 @@ pub fn on_any_invulnerability(
             }
         };
 
-        (state.target, state.source)
+        (state.borrow().target, state.borrow().source)
     };
 
     debug_log!("[SKYDROP_INVULN] EffectState target: {:?}, source: {:?}", effectstate_target, effectstate_source);
@@ -149,8 +149,8 @@ pub fn on_foe_before_move(
             }
         };
 
-        debug_elog!("[SKYDROP_FOE_BEFORE_MOVE] Found skydrop volatile, source={:?}", state.source);
-        state.source
+        debug_elog!("[SKYDROP_FOE_BEFORE_MOVE] Found skydrop volatile, source={:?}", state.borrow().source);
+        state.borrow().source
     };
 
     debug_elog!("[SKYDROP_FOE_BEFORE_MOVE] Comparing target_pos={:?} with effect_source={:?}", target_pos, effect_source);

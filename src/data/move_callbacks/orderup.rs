@@ -42,7 +42,7 @@ pub fn on_after_move_secondary_self(
         pokemon_pokemon
             .volatiles
             .get(&ID::from("commanded"))
-            .and_then(|v| v.source)
+            .and_then(|v| v.borrow().source)
     };
 
     let tatsugiri_pos = match commanded_source {

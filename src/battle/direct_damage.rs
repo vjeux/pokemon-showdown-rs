@@ -189,7 +189,7 @@ impl Battle {
                         {
                             if let Some(sub_state) = foe_pokemon.volatiles.get_mut(&substitute_id) {
                                 // Get current HP from volatile state
-                                let current_hp = sub_state.hp.unwrap_or(0);
+                                let current_hp = sub_state.borrow().hp.unwrap_or(0);
 
                                 let new_hp = current_hp - damage;
 
@@ -198,7 +198,7 @@ impl Battle {
                                     sub_destroyed = true;
                                 } else {
                                     // Update HP
-                                    sub_state.hp = Some(new_hp);
+                                    sub_state.borrow_mut().hp = Some(new_hp);
                                 }
                             }
                         }

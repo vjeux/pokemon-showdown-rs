@@ -37,7 +37,7 @@
 use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
 use crate::event::EventResult;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 
 impl Battle {
     /// Add a slot condition to a side, firing the Start event
@@ -111,7 +111,7 @@ impl Battle {
         // Insert the condition
         if let Some(side) = self.sides.get_mut(side_idx) {
             if let Some(conds) = side.slot_conditions.get_mut(slot) {
-                conds.insert(status_id.clone(), state);
+                conds.insert(status_id.clone(), SharedEffectState::new(state));
             }
         }
 

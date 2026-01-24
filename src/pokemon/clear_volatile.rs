@@ -126,8 +126,10 @@ impl Pokemon {
         let this_pokemon = (self.side_index, self.position);
         for (_volatile_id, volatile_state) in &self.volatiles {
             // Check if this volatile has linkedStatus and linkedPokemon
+            // Use borrow() to access SharedEffectState inner fields
+            let state = volatile_state.borrow();
             if let (Some(ref linked_status_str), Some(ref linked_pokemon_vec)) =
-                (&volatile_state.linked_status, &volatile_state.linked_pokemon)
+                (&state.linked_status, &state.linked_pokemon)
             {
                 let linked_status_id = ID::from(linked_status_str.as_str());
 

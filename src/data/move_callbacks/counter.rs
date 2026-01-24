@@ -37,7 +37,7 @@ pub fn damage_callback(
     let damage = pokemon
         .volatiles
         .get(&counter_id)
-        .and_then(|v| v.damage)
+        .and_then(|v| v.borrow().damage)
         .unwrap_or(0);
     debug_elog!("[COUNTER] damage_callback: volatile damage={}", damage);
     let damage = if damage == 0 { 1 } else { damage };
@@ -82,10 +82,10 @@ pub fn on_try(
     let slot = source
         .volatiles
         .get(&counter_id)
-        .and_then(|v| v.slot);
+        .and_then(|v| v.borrow().slot);
 
     debug_elog!("[COUNTER] on_try: volatile slot={:?}, damage={:?}",
-        slot, source.volatiles.get(&counter_id).and_then(|v| v.damage));
+        slot, source.volatiles.get(&counter_id).and_then(|v| v.borrow().damage));
 
     match slot {
         None => {

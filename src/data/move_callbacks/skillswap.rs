@@ -265,8 +265,8 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
         source_pokemon.ability_state =
-            crate::event_system::EffectState::new(target_ability_id.clone());
-        source_pokemon.ability_state.target = Some(source);
+            crate::event_system::SharedEffectState::new(crate::event_system::EffectState::new(target_ability_id.clone()));
+        source_pokemon.ability_state.borrow_mut().target = Some(source);
     }
     {
         let target_pokemon = match battle.pokemon_at_mut(target.0, target.1) {
@@ -274,8 +274,8 @@ pub fn on_hit(
             None => return EventResult::Continue,
         };
         target_pokemon.ability_state =
-            crate::event_system::EffectState::new(source_ability_id.clone());
-        target_pokemon.ability_state.target = Some(target);
+            crate::event_system::SharedEffectState::new(crate::event_system::EffectState::new(source_ability_id.clone()));
+        target_pokemon.ability_state.borrow_mut().target = Some(target);
     }
 
     // source.volatileStaleness = undefined;

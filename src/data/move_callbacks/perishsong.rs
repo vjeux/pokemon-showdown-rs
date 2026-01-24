@@ -197,7 +197,7 @@ pub mod condition {
             pokemon_pokemon
                 .volatiles
                 .get(&ID::from("perishsong"))
-                .and_then(|v| v.duration)
+                .and_then(|v| v.borrow().duration)
                 .unwrap_or(0)
         };
 

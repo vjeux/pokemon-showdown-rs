@@ -25,7 +25,7 @@ pub fn on_try_hit(battle: &mut Battle, target_pos: (usize, usize), source_pos: (
     // if (this.effectState.target.activeTurns) return;
     // Rebound only works on the turn the Pokemon switches in (activeTurns == 0)
     let active_turns = {
-        let rebound_holder = match battle.effect_state.target {
+        let rebound_holder = match battle.effect_state.borrow().target {
             Some(holder) => holder,
             None => return EventResult::Continue,
         };
@@ -120,7 +120,7 @@ pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usiz
     // if (this.effectState.target.activeTurns) return;
     // Rebound only works on the turn the Pokemon switches in (activeTurns == 0)
     let active_turns = {
-        let rebound_holder = match battle.effect_state.target {
+        let rebound_holder = match battle.effect_state.borrow().target {
             Some(holder) => holder,
             None => return EventResult::Continue,
         };
@@ -170,7 +170,7 @@ pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usiz
 
     // this.actions.useMove(newMove, this.effectState.target, { target: source });
     // Get the Rebound holder from effect_state.target
-    let rebound_holder = match battle.effect_state.target {
+    let rebound_holder = match battle.effect_state.borrow().target {
         Some(holder) => holder,
         None => return EventResult::Continue,
     };

@@ -1,6 +1,6 @@
 use crate::*;
 use crate::event::EventResult;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 use crate::battle::Effect;
 
 impl Pokemon {
@@ -143,17 +143,17 @@ impl Pokemon {
         // MUST call init_effect_state for unique effect_order
         let mut new_ability_state = EffectState::new(ability_id.clone());
         new_ability_state.target = Some(pokemon_pos);
-        let mut new_ability_state = battle.init_effect_state(new_ability_state, None);
+        let new_ability_state = battle.init_effect_state(new_ability_state, None);
 
         // Set source and source_effect on the ability state
         // ✅ NOW IMPLEMENTED (Session 24 Part 29): source and source_effect assignments
         // source_slot should be the active slot position (pokemon.position), not party index
         if let Some(src_pos) = source_pos {
-            new_ability_state.source = Some(src_pos);
-            new_ability_state.source_slot = source_position;
+            new_ability_state.borrow_mut().source = Some(src_pos);
+            new_ability_state.borrow_mut().source_slot = source_position;
         }
         if let Some(src_effect) = source_effect {
-            new_ability_state.source_effect = Some(src_effect.clone());
+            new_ability_state.borrow_mut().source_effect = Some(src_effect.clone());
         }
 
         // Phase 2: Mutate pokemon to set new ability

@@ -108,7 +108,7 @@ pub fn on_hit_field(
         let side_order = vec![0, 3, 1, 2];
 
         // const temp: { [k: number]: typeof source.side.sideConditions } = { 0: {}, 1: {}, 2: {}, 3: {} };
-        let mut temp: std::collections::HashMap<usize, std::collections::HashMap<crate::dex_data::ID, crate::event_system::EffectState>> =
+        let mut temp: std::collections::HashMap<usize, std::collections::HashMap<crate::dex_data::ID, crate::event_system::SharedEffectState>> =
             std::collections::HashMap::new();
         for i in 0..4 {
             temp.insert(i, std::collections::HashMap::new());
@@ -155,12 +155,15 @@ pub fn on_hit_field(
             let source_conditions = temp.get(&source_side_n).unwrap().clone();
 
             if let Some(target_side) = battle.sides.get_mut(target_side_n) {
-                for (id, mut condition) in source_conditions {
+                for (id, condition) in source_conditions {
                     // targetSide.sideConditions[id].target = targetSide;
-                    condition.target_side = Some(target_side_n);
-                    // In Rust, for side conditions, we use (side_index, 0) as the effect_holder.
-                    // Update target to match the new side owner.
-                    condition.target = Some((target_side_n, 0));
+                    {
+                        let mut borrowed = condition.borrow_mut();
+                        borrowed.target_side = Some(target_side_n);
+                        // In Rust, for side conditions, we use (side_index, 0) as the effect_holder.
+                        // Update target to match the new side owner.
+                        borrowed.target = Some((target_side_n, 0));
+                    }
                     target_side.side_conditions.insert(id, condition);
                 }
             }
@@ -225,12 +228,15 @@ pub fn on_hit_field(
         //     targetSideConditions[id].target = source.side.foe;
         // }
         if let Some(target_side) = battle.sides.get_mut(target_side_index) {
-            for (id, mut condition) in source_temp {
+            for (id, condition) in source_temp {
                 // targetSideConditions[id].target = source.side.foe;
-                condition.target_side = Some(target_side_index);
-                // In Rust, for side conditions, we use (side_index, 0) as the effect_holder.
-                // Update target to match the new side owner.
-                condition.target = Some((target_side_index, 0));
+                {
+                    let mut borrowed = condition.borrow_mut();
+                    borrowed.target_side = Some(target_side_index);
+                    // In Rust, for side conditions, we use (side_index, 0) as the effect_holder.
+                    // Update target to match the new side owner.
+                    borrowed.target = Some((target_side_index, 0));
+                }
                 target_side.side_conditions.insert(id, condition);
             }
         }
@@ -240,12 +246,15 @@ pub fn on_hit_field(
         //     sourceSideConditions[id].target = source.side;
         // }
         if let Some(source_side) = battle.sides.get_mut(source_side_index) {
-            for (id, mut condition) in target_temp {
+            for (id, condition) in target_temp {
                 // sourceSideConditions[id].target = source.side;
-                condition.target_side = Some(source_side_index);
-                // In Rust, for side conditions, we use (side_index, 0) as the effect_holder.
-                // Update target to match the new side owner.
-                condition.target = Some((source_side_index, 0));
+                {
+                    let mut borrowed = condition.borrow_mut();
+                    borrowed.target_side = Some(source_side_index);
+                    // In Rust, for side conditions, we use (side_index, 0) as the effect_holder.
+                    // Update target to match the new side owner.
+                    borrowed.target = Some((source_side_index, 0));
+                }
                 source_side.side_conditions.insert(id, condition);
             }
         }

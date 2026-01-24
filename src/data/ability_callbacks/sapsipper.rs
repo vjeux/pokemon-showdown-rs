@@ -41,7 +41,7 @@ pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usiz
     
 
     // if (source === this.effectState.target || !target.isAlly(source)) return;
-    let ability_holder = match battle.effect_state.target {
+    let ability_holder = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

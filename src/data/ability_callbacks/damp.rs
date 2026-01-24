@@ -39,7 +39,7 @@ pub fn on_any_try_move(battle: &mut Battle, target_pos: Option<(usize, usize)>, 
 
     // this.add('cant', this.effectState.target, 'ability: Damp', effect, `[of] ${target}`);
     // this.effectState.target is the Damp holder's position
-    let damp_holder_pos = match battle.effect_state.target {
+    let damp_holder_pos = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Boolean(false),
     };

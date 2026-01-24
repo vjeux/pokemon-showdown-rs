@@ -46,7 +46,7 @@ pub fn on_start(
             if let Some(condition) = slot_conditions.get_mut(&ID::from("futuremove")) {
                 // Note: targetSlot is not stored as it's not used and there's no typed field for it
                 // The target position is already tracked via the slot condition's position
-                condition.ending_turn = Some(ending_turn);
+                condition.borrow_mut().ending_turn = Some(ending_turn);
             }
         }
     }
@@ -91,8 +91,8 @@ pub fn on_residual(
         let ending_turn = battle.sides.get(side_index)
             .and_then(|side| side.slot_conditions.get(position))
             .and_then(|slot_conditions| slot_conditions.get(&ID::from("futuremove")))
-            .and_then(|condition| condition.ending_turn)
-            .unwrap_or(0) as usize;
+            .map(|condition| condition.borrow().ending_turn.unwrap_or(0) as usize)
+            .unwrap_or(0);
 
         (ending_turn, position, side_index)
     };
@@ -115,9 +115,10 @@ pub fn on_residual(
         if let Some(side) = battle.sides.get(target_side_index) {
             if let Some(slot_conditions) = side.slot_conditions.get(target_position) {
                 if let Some(condition) = slot_conditions.get(&ID::from("futuremove")) {
-                    let move_id = condition.move_id.clone().unwrap_or_default();
-                    let source = condition.source;
-                    let move_data = condition.move_data.clone();
+                    let borrowed = condition.borrow();
+                    let move_id = borrowed.move_id.clone().unwrap_or_default();
+                    let source = borrowed.source;
+                    let move_data = borrowed.move_data.clone();
                     debug_elog!("[FUTUREMOVE::ON_RESIDUAL] Extracted move='{}', source={:?}, move_data={:?}", move_id, source, move_data);
                     (move_id, source, move_data)
                 } else {
@@ -391,9 +392,10 @@ pub fn on_end(
         if let Some(side) = battle.sides.get(side_index) {
             if let Some(slot_conditions) = side.slot_conditions.get(position) {
                 if let Some(condition) = slot_conditions.get(&ID::from("futuremove")) {
-                    let move_id = condition.move_id.clone().unwrap_or_default();
-                    let source = condition.source;
-                    let move_data = condition.move_data.clone();
+                    let borrowed = condition.borrow();
+                    let move_id = borrowed.move_id.clone().unwrap_or_default();
+                    let source = borrowed.source;
+                    let move_data = borrowed.move_data.clone();
                     (move_id, source, move_data)
                 } else {
                     (String::new(), None, None)

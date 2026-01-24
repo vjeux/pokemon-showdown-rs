@@ -196,7 +196,7 @@ pub mod condition {
         // if (this.effectState.source && !this.effectState.source.isActive && pokemon.volatiles['attract']) {
         let attract_id = ID::from("attract");
         let should_remove = if let Some(volatile) = pokemon.volatiles.get(&attract_id) {
-            if let Some(source_pos) = volatile.source {
+            if let Some(source_pos) = volatile.borrow().source {
                 // Check if source is not active
                 if let Some(source_pokemon) = battle.pokemon_at(source_pos.0, source_pos.1) {
                     !source_pokemon.is_active
@@ -247,7 +247,7 @@ pub mod condition {
         // Get the source from effect state
         let attract_id = ID::from("attract");
         let source_pos = if let Some(volatile) = pokemon.volatiles.get(&attract_id) {
-            volatile.source
+            volatile.borrow().source
         } else {
             None
         };

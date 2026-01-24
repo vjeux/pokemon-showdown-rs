@@ -47,7 +47,7 @@ pub fn on_ally_try_add_volatile(battle: &mut Battle, status: Option<&str>, targe
 
     if is_from_move {
         // const effectHolder = this.effectState.target;
-        let effect_holder_pos = match battle.effect_state.target {
+        let effect_holder_pos = match battle.effect_state.borrow().target {
             Some(pos) => pos,
             None => return EventResult::Null,
         };

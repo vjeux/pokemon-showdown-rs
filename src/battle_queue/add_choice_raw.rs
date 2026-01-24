@@ -14,6 +14,6 @@ impl BattleQueue {
             debug_elog!("[QUEUE add_choice_raw] Adding Move {} from ({}, {}), queue size before: {}",
                 _move_action.move_id.as_str(), _move_action.side_index, _move_action.pokemon_index, self.list.len());
         }
-        self.list.push(action);
+        self.list.push_back(action);
     }
 }

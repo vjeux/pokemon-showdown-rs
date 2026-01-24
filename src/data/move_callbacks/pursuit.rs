@@ -87,8 +87,8 @@ pub fn before_turn_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
         // data.sources.push(pokemon);
         if let Some(state) = battle.get_side_condition_data_mut(side_idx, &pursuit_id) {
             // Get or create sources array and add pokemon position
-            let sources = state.sources.get_or_insert_with(Vec::new);
-            sources.push(pokemon);
+            let mut state_mut = state.borrow_mut();
+            state_mut.sources.get_or_insert_with(Vec::new).push(pokemon);
         }
     }
 
@@ -206,7 +206,7 @@ pub mod condition {
 
             if let Some(state) = battle.get_side_condition_data_mut(side_idx, &pursuit_id) {
                 // Get sources - clone to avoid borrow issues
-                state.sources.clone().unwrap_or_default()
+                state.borrow().sources.clone().unwrap_or_default()
             } else {
                 Vec::new()
             }

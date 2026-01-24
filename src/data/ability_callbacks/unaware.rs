@@ -24,7 +24,7 @@ use crate::event::EventResult;
 /// }
 pub fn on_any_modify_boost(battle: &mut Battle, _boosts: &str, pokemon_pos: (usize, usize)) -> EventResult {
     // const unawareUser = this.effectState.target;
-    let unaware_user = match battle.effect_state.target {
+    let unaware_user = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

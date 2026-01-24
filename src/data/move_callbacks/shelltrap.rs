@@ -52,7 +52,7 @@ pub fn on_try_move(
         };
 
         if let Some(volatile) = pokemon_pokemon.volatiles.get(&ID::from("shelltrap")) {
-            volatile.got_hit.unwrap_or(false)
+            volatile.borrow().got_hit.unwrap_or(false)
         } else {
             false
         }

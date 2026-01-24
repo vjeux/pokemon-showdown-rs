@@ -95,7 +95,7 @@ impl Battle {
                 let is_ability = matches!(eff.effect_type, crate::battle::EffectType::Ability);
                 if is_ability {
                     // Ability weather - check gen or permanent duration
-                    if self.gen > 5 || self.field.weather_state.duration == Some(0) {
+                    if self.gen > 5 || self.field.weather_state.borrow().duration == Some(0) {
                         return Some(false);
                     }
                 } else if self.gen > 2 || weather_id.as_str() == "sandstorm" {
@@ -205,11 +205,11 @@ impl Battle {
 
         // Set new weather
         self.field.weather = weather_id.clone();
-        self.field.weather_state = crate::event_system::EffectState::new(weather_id.clone());
+        self.field.weather_state = crate::event_system::SharedEffectState::new(crate::event_system::EffectState::new(weather_id.clone()));
 
         // Set source if provided
         if let Some(source_position) = source_pos {
-            self.field.weather_state.source = Some(source_position);
+            self.field.weather_state.borrow_mut().source = Some(source_position);
         }
 
         // Set duration from condition data
@@ -229,7 +229,7 @@ impl Battle {
         };
 
         debug_elog!("[SET_WEATHER] Setting weather_state.duration to {:?}", weather_duration);
-        self.field.weather_state.duration = weather_duration;
+        self.field.weather_state.borrow_mut().duration = weather_duration;
 
         // Call durationCallback if it exists
         // Note: The callback name is "durationCallback" (lowercase d) in conditions.json
@@ -246,7 +246,7 @@ impl Battle {
             debug_elog!("[SET_WEATHER] Duration callback returned: {:?}", result);
             if let EventResult::Number(duration) = result {
                 debug_elog!("[SET_WEATHER] Setting duration from callback: {}", duration);
-                self.field.weather_state.duration = Some(duration);
+                self.field.weather_state.borrow_mut().duration = Some(duration);
             }
         } else {
             debug_elog!("[SET_WEATHER] No duration callback found for '{}'", weather_id.as_str());

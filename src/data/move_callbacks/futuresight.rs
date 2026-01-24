@@ -102,8 +102,8 @@ pub fn on_try(
                     slot_conditions.get_mut(&ID::from("futuremove"))
                 {
                     // Set move data
-                    future_move_condition.move_id = Some("futuresight".to_string());
-                    future_move_condition.source = Some(source);
+                    future_move_condition.borrow_mut().move_id = Some("futuresight".to_string());
+                    future_move_condition.borrow_mut().source = Some(source);
 
                     // Set moveData object
                     let mut move_data_map = std::collections::HashMap::new();
@@ -148,7 +148,7 @@ pub fn on_try(
                         serde_json::Value::String("Psychic".to_string()),
                     );
 
-                    future_move_condition.move_data = Some(move_data_map);
+                    future_move_condition.borrow_mut().move_data = Some(move_data_map);
                 }
             }
         }

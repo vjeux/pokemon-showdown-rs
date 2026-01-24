@@ -35,7 +35,7 @@
 
 use crate::battle::Battle;
 use crate::dex_data::ID;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 
 impl Battle {
     pub fn add_pseudo_weather(&mut self, pseudo_weather_id: ID, source_pos: Option<(usize, usize)>) -> bool {
@@ -119,7 +119,7 @@ impl Battle {
         }
 
         // Add to pseudo_weather
-        self.field.pseudo_weather.insert(pseudo_weather_id.clone(), state);
+        self.field.pseudo_weather.insert(pseudo_weather_id.clone(), SharedEffectState::new(state));
 
         // this.battle.runEvent('PseudoWeatherChange', source, source, status);
         // This triggers onAnyPseudoWeatherChange callbacks (e.g., Room Service item)

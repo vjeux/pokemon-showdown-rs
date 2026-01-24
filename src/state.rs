@@ -6,7 +6,7 @@
 //! enabling battle saving, loading, and replay functionality.
 
 use crate::dex_data::ID;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 use crate::prng::PRNGSeed;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -726,12 +726,12 @@ pub fn deserialize_field(state: &serde_json::Value, field: &mut crate::field::Fi
     if let Some(weather) = state.get("weather").and_then(|v| v.as_str()) {
         let weather_id = ID::new(weather);
         field.weather = weather_id.clone();
-        field.weather_state = EffectState::new(weather_id);
+        field.weather_state = SharedEffectState::new(EffectState::new(weather_id));
     }
     if let Some(terrain) = state.get("terrain").and_then(|v| v.as_str()) {
         let terrain_id = ID::new(terrain);
         field.terrain = terrain_id.clone();
-        field.terrain_state = EffectState::new(terrain_id);
+        field.terrain_state = SharedEffectState::new(EffectState::new(terrain_id));
     }
 }
 

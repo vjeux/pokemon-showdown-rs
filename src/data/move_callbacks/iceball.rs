@@ -52,8 +52,9 @@ pub fn base_power_callback(
             None => return EventResult::Continue,
         };
         if let Some(iceball_volatile) = pokemon_pokemon.volatiles.get(&ID::from("iceball")) {
-            let hit_count = iceball_volatile.hit_count.unwrap_or(0);
-            let contact_hit_count = iceball_volatile.contact_hit_count.unwrap_or(0);
+            let borrowed = iceball_volatile.borrow();
+            let hit_count = borrowed.hit_count.unwrap_or(0);
+            let contact_hit_count = borrowed.contact_hit_count.unwrap_or(0);
             (hit_count > 0, contact_hit_count as u32)
         } else {
             (false, 0)
@@ -97,10 +98,11 @@ pub fn base_power_callback(
             None => return EventResult::Continue,
         };
         if let Some(volatile_state) = pokemon_mut.volatiles.get_mut(&ID::from("iceball")) {
-            volatile_state.hit_count = Some(volatile_state.hit_count.unwrap_or(0) + 1);
-            volatile_state.contact_hit_count = Some(volatile_state.contact_hit_count.unwrap_or(0) + 1);
-            if volatile_state.hit_count.unwrap_or(0) < 5 {
-                volatile_state.duration = Some(2);
+            let mut borrowed = volatile_state.borrow_mut();
+            borrowed.hit_count = Some(borrowed.hit_count.unwrap_or(0) + 1);
+            borrowed.contact_hit_count = Some(borrowed.contact_hit_count.unwrap_or(0) + 1);
+            if borrowed.hit_count.unwrap_or(0) < 5 {
+                borrowed.duration = Some(2);
             }
         }
     }
@@ -230,8 +232,9 @@ pub fn on_after_move(
             None => return EventResult::Continue,
         };
         if let Some(iceball_volatile) = source_pokemon.volatiles.get(&ID::from("iceball")) {
-            let hit_count = iceball_volatile.hit_count.unwrap_or(0);
-            let contact_hit_count = iceball_volatile.contact_hit_count.unwrap_or(0);
+            let borrowed = iceball_volatile.borrow();
+            let hit_count = borrowed.hit_count.unwrap_or(0);
+            let contact_hit_count = borrowed.contact_hit_count.unwrap_or(0);
             (true, hit_count == 5, contact_hit_count)
         } else {
             (false, false, 0)
@@ -252,7 +255,7 @@ pub fn on_after_move(
             .volatiles
             .get_mut(&ID::from("rolloutstorage"))
         {
-            rollout_volatile.contact_hit_count = Some(contact_hit_count);
+            rollout_volatile.borrow_mut().contact_hit_count = Some(contact_hit_count);
         }
     }
 

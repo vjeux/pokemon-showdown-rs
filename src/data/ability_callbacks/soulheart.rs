@@ -11,7 +11,7 @@ use crate::event::EventResult;
 ///     this.boost({ spa: 1 }, this.effectState.target);
 /// }
 pub fn on_any_faint(battle: &mut Battle) -> EventResult {
-    let ability_holder = match battle.effect_state.target {
+    let ability_holder = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

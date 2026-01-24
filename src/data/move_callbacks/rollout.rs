@@ -57,8 +57,9 @@ pub fn base_power_callback(
     };
 
     if let Some(ref data) = rollout_data {
-        if data.hit_count.unwrap_or(0) > 0 {
-            bp *= 2_i32.pow(data.contact_hit_count.unwrap_or(0) as u32);
+        let borrowed = data.borrow();
+        if borrowed.hit_count.unwrap_or(0) > 0 {
+            bp *= 2_i32.pow(borrowed.contact_hit_count.unwrap_or(0) as u32);
         }
     }
 
@@ -86,10 +87,11 @@ pub fn base_power_callback(
                 None => return EventResult::Continue,
             };
             if let Some(volatile_state) = pokemon_mut.volatiles.get_mut(&ID::from("rollout")) {
-                volatile_state.hit_count = Some(volatile_state.hit_count.unwrap_or(0) + 1);
-                volatile_state.contact_hit_count = Some(volatile_state.contact_hit_count.unwrap_or(0) + 1);
-                if volatile_state.hit_count.unwrap_or(0) < 5 {
-                    volatile_state.duration = Some(2);
+                let mut borrowed = volatile_state.borrow_mut();
+                borrowed.hit_count = Some(borrowed.hit_count.unwrap_or(0) + 1);
+                borrowed.contact_hit_count = Some(borrowed.contact_hit_count.unwrap_or(0) + 1);
+                if borrowed.hit_count.unwrap_or(0) < 5 {
+                    borrowed.duration = Some(2);
                 }
             }
         }
@@ -216,7 +218,10 @@ pub fn on_after_move(
     };
 
     if let Some(data) = rollout_data {
-        if data.hit_count.unwrap_or(0) == 5 && data.contact_hit_count.unwrap_or(0) < 5 {
+        let borrowed = data.borrow();
+        if borrowed.hit_count.unwrap_or(0) == 5 && borrowed.contact_hit_count.unwrap_or(0) < 5 {
+            let contact_hit_count = borrowed.contact_hit_count;
+            drop(borrowed);  // Release borrow before modifying
             // source.addVolatile("rolloutstorage");
             Pokemon::add_volatile(battle, source, ID::from("rolloutstorage"), None, None, None, None);
 
@@ -230,7 +235,7 @@ pub fn on_after_move(
                 .volatiles
                 .get_mut(&ID::from("rolloutstorage"))
             {
-                storage_data.contact_hit_count = data.contact_hit_count;
+                storage_data.borrow_mut().contact_hit_count = contact_hit_count;
             }
         }
     }

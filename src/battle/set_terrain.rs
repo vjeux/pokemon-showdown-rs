@@ -32,7 +32,7 @@
 
 use crate::battle::{Battle, Effect};
 use crate::dex_data::ID;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 
 impl Battle {
     pub fn set_terrain(&mut self, terrain_id: ID, source_pos: Option<(usize, usize)>, source_effect: Option<Effect>) -> bool {
@@ -85,7 +85,7 @@ impl Battle {
             }
         }
 
-        self.field.terrain_state = terrain_state;
+        self.field.terrain_state = SharedEffectState::new(terrain_state);
 
         // if (!this.battle.singleEvent('FieldStart', status, this.terrainState, this, source, sourceEffect)) {
         //     this.terrain = prevTerrain;

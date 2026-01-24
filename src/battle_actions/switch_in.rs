@@ -331,13 +331,15 @@ pub fn switch_in(
                 debug_elog!("[SWITCH_CLEAR_VOLATILE] Pokemon at ({}, {}) has {} volatiles",
                     side_index, old_idx, (*pokemon).volatiles.len());
                 for (_volatile_id, _state) in &(*pokemon).volatiles {
+                    let _borrowed = _state.borrow();
                     debug_elog!("[SWITCH_CLEAR_VOLATILE]   volatile='{}' linked_status={:?} linked_pokemon={:?}",
-                        _volatile_id.as_str(), _state.linked_status, _state.linked_pokemon);
+                        _volatile_id.as_str(), _borrowed.linked_status, _borrowed.linked_pokemon);
                 }
 
                 let linked_volatiles: Vec<_> = (*pokemon).volatiles.iter()
                     .filter_map(|(volatile_id, state)| {
-                        if let (Some(status), Some(pokemon_vec)) = (&state.linked_status, &state.linked_pokemon) {
+                        let borrowed = state.borrow();
+                        if let (Some(status), Some(pokemon_vec)) = (&borrowed.linked_status, &borrowed.linked_pokemon) {
                             debug_elog!("[SWITCH_LINKED] Found linked volatile='{}' with linked_status='{}' linked_pokemon={:?}",
                                 volatile_id.as_str(), status, pokemon_vec);
                             Some((status.clone(), pokemon_vec.clone()))

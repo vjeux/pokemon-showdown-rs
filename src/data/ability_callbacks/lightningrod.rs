@@ -87,7 +87,7 @@ pub fn on_any_redirect_target(battle: &mut Battle, target_pos: Option<(usize, us
 
     // Get the Pokemon with Lightning Rod from effect_state.target
     // if (this.validTarget(this.effectState.target, source, redirectTarget)) {
-    let lightning_rod_holder = match battle.effect_state.target {
+    let lightning_rod_holder = match battle.effect_state.borrow().target {
         Some(target) => target,
         None => return EventResult::Continue,
     };

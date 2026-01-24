@@ -1,6 +1,7 @@
 use crate::*;
 use crate::battle::{Effect, EffectHolder};
 use crate::event::EventResult;
+use crate::event_system::SharedEffectState;
 
 impl Pokemon {
     /// Add a volatile condition to a Pokemon
@@ -449,23 +450,25 @@ impl Pokemon {
 
                         // Initialize linkedPokemon array for source
                         // JS: source.volatiles[linkedStatus.toString()].linkedPokemon = [this];
-                        if let Some(source_pokemon) = battle.pokemon_at_mut(src_pos.0, src_pos.1) {
-                            if let Some(state) = source_pokemon.volatiles.get_mut(&linked_status_id) {
-                                state.linked_pokemon = Some(vec![target_pos]);
+                        if let Some(source_pokemon) = battle.pokemon_at(src_pos.0, src_pos.1) {
+                            if let Some(state) = source_pokemon.volatiles.get(&linked_status_id) {
+                                let mut state_mut = state.borrow_mut();
+                                state_mut.linked_pokemon = Some(vec![target_pos]);
                                 // JS: source.volatiles[linkedStatus.toString()].linkedStatus = status;
-                                state.linked_status = Some(volatile_id.as_str().to_string());
+                                state_mut.linked_status = Some(volatile_id.as_str().to_string());
                             }
                         }
                     } else {
                         // Source already has the linked volatile, append to linkedPokemon array
                         // JS: source.volatiles[linkedStatus.toString()].linkedPokemon.push(this);
-                        if let Some(source_pokemon) = battle.pokemon_at_mut(src_pos.0, src_pos.1) {
-                            if let Some(state) = source_pokemon.volatiles.get_mut(&linked_status_id) {
-                                if let Some(ref mut linked_vec) = state.linked_pokemon {
+                        if let Some(source_pokemon) = battle.pokemon_at(src_pos.0, src_pos.1) {
+                            if let Some(state) = source_pokemon.volatiles.get(&linked_status_id) {
+                                let mut state_mut = state.borrow_mut();
+                                if let Some(ref mut linked_vec) = state_mut.linked_pokemon {
                                     linked_vec.push(target_pos);
                                 } else {
                                     // Initialize if missing
-                                    state.linked_pokemon = Some(vec![target_pos]);
+                                    state_mut.linked_pokemon = Some(vec![target_pos]);
                                 }
                             }
                         }
@@ -474,10 +477,11 @@ impl Pokemon {
                     // Set linkedPokemon and linkedStatus on the target's volatile
                     // JS: this.volatiles[status.toString()].linkedPokemon = [source];
                     // JS: this.volatiles[status.toString()].linkedStatus = linkedStatus;
-                    if let Some(target_pokemon) = battle.pokemon_at_mut(target_pos.0, target_pos.1) {
-                        if let Some(state) = target_pokemon.volatiles.get_mut(&volatile_id) {
-                            state.linked_pokemon = Some(vec![src_pos]);
-                            state.linked_status = Some(linked_status_id.as_str().to_string());
+                    if let Some(target_pokemon) = battle.pokemon_at(target_pos.0, target_pos.1) {
+                        if let Some(state) = target_pokemon.volatiles.get(&volatile_id) {
+                            let mut state_mut = state.borrow_mut();
+                            state_mut.linked_pokemon = Some(vec![src_pos]);
+                            state_mut.linked_status = Some(linked_status_id.as_str().to_string());
                         }
                     }
                 }

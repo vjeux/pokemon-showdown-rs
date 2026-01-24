@@ -104,7 +104,9 @@ impl BattleQueue {
                 // which is essential for matching JavaScript behavior.
                 debug_elog!("[SPEED_SORT] {} items tying at positions {:?}, turn={}, callsite=BattleQueue::sort",
                     next_indexes.len(), next_indexes, battle.turn);
-                battle.shuffle_range(&mut self.list, sorted, sorted + next_indexes.len());
+                // VecDeque needs to be made contiguous before we can get a slice
+                let slice = self.list.make_contiguous();
+                battle.shuffle_range(slice, sorted, sorted + next_indexes.len());
             }
 
             // sorted += nextIndexes.length;

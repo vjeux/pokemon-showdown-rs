@@ -35,13 +35,15 @@ impl Battle {
                     debug_elog!("[WITH_EFFECT_STATE] Condition: id={}, pos=({},{}), found volatile={}",
                         ctx.id.as_str(), side_idx, poke_idx, pokemon.volatiles.contains_key(&ctx.id));
                     if let Some(_state) = pokemon.volatiles.get(&ctx.id) {
-                        debug_elog!("[WITH_EFFECT_STATE] BEFORE: slot={:?}, damage={:?}", _state.slot, _state.damage);
+                        let _borrowed = _state.borrow();
+                        debug_elog!("[WITH_EFFECT_STATE] BEFORE: slot={:?}, damage={:?}", _borrowed.slot, _borrowed.damage);
                     }
                 }
-                let state = pokemon.volatiles.get_mut(&ctx.id)?;
-                let result = f(state);
+                let state = pokemon.volatiles.get(&ctx.id)?;
+                let mut borrowed = state.borrow_mut();
+                let result = f(&mut *borrowed);
                 if ctx.id.as_str() == "counter" {
-                    debug_elog!("[WITH_EFFECT_STATE] AFTER: slot={:?}, damage={:?}", state.slot, state.damage);
+                    debug_elog!("[WITH_EFFECT_STATE] AFTER: slot={:?}, damage={:?}", borrowed.slot, borrowed.damage);
                 }
                 Some(result)
             }
@@ -49,19 +51,21 @@ impl Battle {
                 // Status condition on a Pokemon (burn, paralysis, etc.)
                 let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder? else { return None };
                 let pokemon = self.pokemon_at_mut(side_idx, poke_idx)?;
-                Some(f(&mut pokemon.status_state))
+                let mut borrowed = pokemon.status_state.borrow_mut();
+                Some(f(&mut *borrowed))
             }
             EffectType::Ability => {
                 // Ability state on a Pokemon
                 let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder? else { return None };
                 let pokemon = self.pokemon_at_mut(side_idx, poke_idx)?;
-                let boosts_before = pokemon.ability_state.boosts;
+                let boosts_before = pokemon.ability_state.borrow().boosts;
                 debug_elog!("[WITH_EFFECT_STATE Ability WRITE] pos=({},{}), ability={}, ability_state.boosts BEFORE={:?}",
                     side_idx, poke_idx, pokemon.ability, boosts_before);
-                let result = Some(f(&mut pokemon.ability_state));
-                debug_elog!("[WITH_EFFECT_STATE Ability WRITE] ability_state.boosts AFTER={:?}", pokemon.ability_state.boosts);
+                let mut borrowed = pokemon.ability_state.borrow_mut();
+                let result = Some(f(&mut *borrowed));
+                debug_elog!("[WITH_EFFECT_STATE Ability WRITE] ability_state.boosts AFTER={:?}", borrowed.boosts);
                 // Add stack trace when boosts are cleared
-                if pokemon.ability.as_str() == "opportunist" && boosts_before.is_some() && pokemon.ability_state.boosts.is_none() {
+                if pokemon.ability.as_str() == "opportunist" && boosts_before.is_some() && borrowed.boosts.is_none() {
                     debug_elog!("[WITH_EFFECT_STATE Ability WRITE] BOOSTS WERE CLEARED! Stack trace: {}", std::backtrace::Backtrace::force_capture());
                 }
                 result
@@ -70,7 +74,8 @@ impl Battle {
                 // Item state on a Pokemon
                 let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder? else { return None };
                 let pokemon = self.pokemon_at_mut(side_idx, poke_idx)?;
-                Some(f(&mut pokemon.item_state))
+                let mut borrowed = pokemon.item_state.borrow_mut();
+                Some(f(&mut *borrowed))
             }
             EffectType::SideCondition => {
                 // Side condition state
@@ -78,8 +83,9 @@ impl Battle {
                 if side_idx >= self.sides.len() {
                     return None;
                 }
-                let state = self.sides[side_idx].side_conditions.get_mut(&ctx.id)?;
-                Some(f(state))
+                let state = self.sides[side_idx].side_conditions.get(&ctx.id)?;
+                let mut borrowed = state.borrow_mut();
+                Some(f(&mut *borrowed))
             }
             EffectType::SlotCondition => {
                 // For slot conditions, effect_holder is (side_idx, party_idx) of the Pokemon
@@ -90,21 +96,25 @@ impl Battle {
                 }
                 // Get the Pokemon's active position to look up slot_conditions
                 let slot = self.sides.get(side_idx)?.pokemon.get(poke_idx)?.position;
-                let state = self.sides[side_idx].slot_conditions.get_mut(slot)?.get_mut(&ctx.id)?;
-                Some(f(state))
+                let state = self.sides[side_idx].slot_conditions.get(slot)?.get(&ctx.id)?;
+                let mut borrowed = state.borrow_mut();
+                Some(f(&mut *borrowed))
             }
             EffectType::Weather => {
                 // Weather state on field
-                Some(f(&mut self.field.weather_state))
+                let mut borrowed = self.field.weather_state.borrow_mut();
+                Some(f(&mut *borrowed))
             }
             EffectType::Terrain => {
                 // Terrain state on field
-                Some(f(&mut self.field.terrain_state))
+                let mut borrowed = self.field.terrain_state.borrow_mut();
+                Some(f(&mut *borrowed))
             }
             EffectType::FieldCondition => {
                 // Pseudo-weather state on field
-                let state = self.field.pseudo_weather.get_mut(&ctx.id)?;
-                Some(f(state))
+                let state = self.field.pseudo_weather.get(&ctx.id)?;
+                let mut borrowed = state.borrow_mut();
+                Some(f(&mut *borrowed))
             }
             _ => None,
         }
@@ -122,24 +132,28 @@ impl Battle {
                 let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder.clone()? else { return None };
                 let pokemon = self.pokemon_at(side_idx, poke_idx)?;
                 let state = pokemon.volatiles.get(&ctx.id)?;
-                Some(f(state))
+                let borrowed = state.borrow();
+                Some(f(&*borrowed))
             }
             EffectType::Status => {
                 let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder.clone()? else { return None };
                 let pokemon = self.pokemon_at(side_idx, poke_idx)?;
-                Some(f(&pokemon.status_state))
+                let borrowed = pokemon.status_state.borrow();
+                Some(f(&*borrowed))
             }
             EffectType::Ability => {
                 let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder.clone()? else { return None };
                 let pokemon = self.pokemon_at(side_idx, poke_idx)?;
                 debug_elog!("[WITH_EFFECT_STATE_REF Ability READ] pos=({},{}), ability={}, ability_state.boosts={:?}",
-                    side_idx, poke_idx, pokemon.ability, pokemon.ability_state.boosts);
-                Some(f(&pokemon.ability_state))
+                    side_idx, poke_idx, pokemon.ability, pokemon.ability_state.borrow().boosts);
+                let borrowed = pokemon.ability_state.borrow();
+                Some(f(&*borrowed))
             }
             EffectType::Item => {
                 let EffectHolder::Pokemon(side_idx, poke_idx) = ctx.effect_holder.clone()? else { return None };
                 let pokemon = self.pokemon_at(side_idx, poke_idx)?;
-                Some(f(&pokemon.item_state))
+                let borrowed = pokemon.item_state.borrow();
+                Some(f(&*borrowed))
             }
             EffectType::SideCondition => {
                 let side_idx = ctx.side_index?;
@@ -147,7 +161,8 @@ impl Battle {
                     return None;
                 }
                 let state = self.sides[side_idx].side_conditions.get(&ctx.id)?;
-                Some(f(state))
+                let borrowed = state.borrow();
+                Some(f(&*borrowed))
             }
             EffectType::SlotCondition => {
                 // For slot conditions, effect_holder is (side_idx, party_idx) of the Pokemon
@@ -160,17 +175,21 @@ impl Battle {
                 let pokemon = self.sides.get(side_idx)?.pokemon.get(poke_idx)?;
                 let slot = pokemon.position;
                 let state = self.sides[side_idx].slot_conditions.get(slot)?.get(&ctx.id)?;
-                Some(f(state))
+                let borrowed = state.borrow();
+                Some(f(&*borrowed))
             }
             EffectType::Weather => {
-                Some(f(&self.field.weather_state))
+                let borrowed = self.field.weather_state.borrow();
+                Some(f(&*borrowed))
             }
             EffectType::Terrain => {
-                Some(f(&self.field.terrain_state))
+                let borrowed = self.field.terrain_state.borrow();
+                Some(f(&*borrowed))
             }
             EffectType::FieldCondition => {
                 let state = self.field.pseudo_weather.get(&ctx.id)?;
-                Some(f(state))
+                let borrowed = state.borrow();
+                Some(f(&*borrowed))
             }
             _ => None,
         }

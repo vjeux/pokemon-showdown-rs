@@ -113,7 +113,7 @@ pub fn on_before_move(
 
         let choicelock_id = ID::from("choicelock");
         let locked_move = pokemon.volatiles.get(&choicelock_id)
-            .and_then(|v| v.move_id.clone())
+            .and_then(|v| v.borrow().move_id.clone())
             .unwrap_or_default();
 
         (active_move_id, locked_move)
@@ -202,7 +202,7 @@ pub fn on_disable_move(
 
         let choicelock_id = ID::from("choicelock");
         let locked_move = pokemon.volatiles.get(&choicelock_id)
-            .and_then(|v| v.move_id.clone())
+            .and_then(|v| v.borrow().move_id.clone())
             .unwrap_or_default();
 
         // Create ActiveMove from ID to call has_move

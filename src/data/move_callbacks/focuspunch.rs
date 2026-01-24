@@ -44,8 +44,8 @@ pub fn before_move_callback(battle: &mut Battle, pokemon_pos: (usize, usize)) ->
             pokemon_ref.volatiles.keys().map(|k| k.as_str()).collect::<Vec<_>>());
 
         if let Some(volatile_state) = pokemon_ref.volatiles.get(&ID::from("focuspunch")) {
-            debug_elog!("[FOCUSPUNCH before_move_callback] volatile state: lost_focus={:?}", volatile_state.lost_focus);
-            volatile_state.lost_focus.unwrap_or(false)
+            debug_elog!("[FOCUSPUNCH before_move_callback] volatile state: lost_focus={:?}", volatile_state.borrow().lost_focus);
+            volatile_state.borrow().lost_focus.unwrap_or(false)
         } else {
             false
         }

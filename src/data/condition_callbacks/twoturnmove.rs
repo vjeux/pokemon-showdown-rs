@@ -164,7 +164,7 @@ pub fn on_start(
         };
 
         if let Some(state) = pokemon_mut.volatiles.get_mut(move_id_val) {
-            state.target_loc = Some(move_target_loc as i32);
+            state.borrow_mut().target_loc = Some(move_target_loc as i32);
         }
     }
 

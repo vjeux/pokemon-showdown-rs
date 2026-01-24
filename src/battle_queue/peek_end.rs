@@ -7,6 +7,6 @@ impl BattleQueue {
 
     /// Peek at the last action
     pub fn peek_end(&self) -> Option<&Action> {
-        self.list.last()
+        self.list.back()
     }
 }

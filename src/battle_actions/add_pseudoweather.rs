@@ -7,7 +7,7 @@
 //! JavaScript equivalent: field.ts addPseudoWeather()
 
 use crate::*;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 use crate::dex_data::ID;
 use crate::battle::Effect;
 
@@ -136,7 +136,7 @@ impl Battle {
             // }
 
             // Add to field first so the event handlers can access it
-            self.field.pseudo_weather.insert(id.clone(), state);
+            self.field.pseudo_weather.insert(id.clone(), SharedEffectState::new(state));
 
             // Look up condition name from dex
             let condition_name = self.dex.conditions().get_by_id(&id)

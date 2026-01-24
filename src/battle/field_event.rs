@@ -196,7 +196,7 @@ impl Battle {
             let effect_type = handler.effect.effect_type;  // Use effect_type from handler, not determine_effect_type
             // JavaScript sets effectOrder for SwitchIn/RedirectTarget events, undefined for others
             let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
-                handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                handler.state.as_ref().map(|s| s.borrow().effect_order).unwrap_or(0)
             } else {
                 0
             };
@@ -237,7 +237,7 @@ impl Battle {
                     // For other events like 'Residual', effectOrder is undefined, causing handlers with same
                     // priority/speed/subOrder to be tied and shuffled.
                     let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
-                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                        handler.state.as_ref().map(|s| s.borrow().effect_order).unwrap_or(0)
                     } else {
                         0
                     };
@@ -283,7 +283,7 @@ impl Battle {
                         let effect_type = handler.effect.effect_type;
                         // JavaScript sets effectOrder for SwitchIn and RedirectTarget events from handler.state.effectOrder
                         // onAnySwitchIn ends with "SwitchIn" so it should also get effectOrder
-                        let effect_order = handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0);
+                        let effect_order = handler.state.as_ref().map(|s| s.borrow().effect_order).unwrap_or(0);
                         // For any event handlers, check if the effect has this callback
                         let handler_has_callback = self.has_callback_for_effect_type(&effect_id, &any_event, &effect_type);
                         let handler = self.create_field_handler(
@@ -319,7 +319,7 @@ impl Battle {
                     // JavaScript fieldEvent() in resolvePriority only sets effectOrder for 'SwitchIn' and 'RedirectTarget' events.
                     // For other events like 'Residual', effectOrder is undefined (0), causing ties and shuffles.
                     let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
-                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                        handler.state.as_ref().map(|s| s.borrow().effect_order).unwrap_or(0)
                     } else {
                         0
                     };
@@ -350,7 +350,7 @@ impl Battle {
                     // For 'Residual' events, effectOrder is undefined (0), causing ties and shuffles.
                     // For 'SwitchIn' events, use the stored effect_order from state to prevent unnecessary shuffles.
                     let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
-                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                        handler.state.as_ref().map(|s| s.borrow().effect_order).unwrap_or(0)
                     } else {
                         0
                     };
@@ -380,7 +380,7 @@ impl Battle {
                     let effect_type = handler.effect.effect_type;
                     // JavaScript sets effectOrder for SwitchIn/RedirectTarget events, undefined for others
                     let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
-                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                        handler.state.as_ref().map(|s| s.borrow().effect_order).unwrap_or(0)
                     } else {
                         0
                     };
@@ -409,7 +409,7 @@ impl Battle {
                     let effect_type = handler.effect.effect_type;
                     // JavaScript sets effectOrder for SwitchIn/RedirectTarget events, undefined for others
                     let effect_order = if event_id == "SwitchIn" || event_id == "RedirectTarget" {
-                        handler.state.as_ref().map(|s| s.effect_order).unwrap_or(0)
+                        handler.state.as_ref().map(|s| s.borrow().effect_order).unwrap_or(0)
                     } else {
                         0
                     };
@@ -457,9 +457,11 @@ impl Battle {
             event_id, self.turn,
             handlers.iter().map(|h| h.effect_id.as_str()).collect::<Vec<_>>());
 
+        // Reverse handlers so we can use pop() instead of remove(0) - O(1) vs O(n)
+        handlers.reverse();
+
         // JS: while (handlers.length) { ... }
-        while !handlers.is_empty() {
-            let handler = handlers.remove(0);
+        while let Some(handler) = handlers.pop() {
 
             // JS: if ((handler.effectHolder as Pokemon).fainted) {
             //         if (!(handler.state?.isSlotCondition)) continue;
@@ -517,8 +519,9 @@ impl Battle {
                 let should_clear = {
                     // Check weather
                     if self.field.weather == handler.effect_id {
-                        debug_elog!("[WEATHER DURATION] Checking sandstorm duration, current={:?}", self.field.weather_state.duration);
-                        if let Some(duration) = self.field.weather_state.duration.as_mut() {
+                        debug_elog!("[WEATHER DURATION] Checking sandstorm duration, current={:?}", self.field.weather_state.borrow().duration);
+                        let mut borrowed = self.field.weather_state.borrow_mut();
+                        if let Some(duration) = borrowed.duration.as_mut() {
                             debug_elog!("[WEATHER DURATION] BEFORE decrement: duration={}", *duration);
                             *duration -= 1;
                             debug_elog!("[WEATHER DURATION] AFTER decrement: duration={}", *duration);
@@ -530,8 +533,9 @@ impl Battle {
                     }
                     // Check terrain
                     else if self.field.terrain == handler.effect_id {
-                        debug_elog!("[TERRAIN DURATION] Checking terrain duration, current={:?}", self.field.terrain_state.duration);
-                        if let Some(duration) = self.field.terrain_state.duration.as_mut() {
+                        debug_elog!("[TERRAIN DURATION] Checking terrain duration, current={:?}", self.field.terrain_state.borrow().duration);
+                        let mut borrowed = self.field.terrain_state.borrow_mut();
+                        if let Some(duration) = borrowed.duration.as_mut() {
                             debug_elog!("[TERRAIN DURATION] BEFORE decrement: duration={}", *duration);
                             *duration -= 1;
                             debug_elog!("[TERRAIN DURATION] AFTER decrement: duration={}", *duration);
@@ -542,8 +546,9 @@ impl Battle {
                         }
                     }
                     // Check pseudo-weather
-                    else if let Some(pw_state) = self.field.pseudo_weather.get_mut(&handler.effect_id) {
-                        if let Some(duration) = pw_state.duration.as_mut() {
+                    else if let Some(pw_state) = self.field.pseudo_weather.get(&handler.effect_id) {
+                        let mut borrowed = pw_state.borrow_mut();
+                        if let Some(duration) = borrowed.duration.as_mut() {
                             *duration -= 1;
                             *duration == 0
                         } else {
@@ -574,7 +579,7 @@ impl Battle {
                     //   this.battle.eachEvent('WeatherChange');
                     if self.field.weather == handler.effect_id {
                         self.field.weather = ID::new("");
-                        self.field.weather_state = crate::event_system::EffectState::new(ID::new(""));
+                        self.field.weather_state = crate::event_system::SharedEffectState::new(crate::event_system::EffectState::new(ID::new("")));
                         // JavaScript calls eachEvent('WeatherChange') after clearing weather
                         self.each_event("WeatherChange", None, None);
                     }
@@ -585,7 +590,7 @@ impl Battle {
                     //   this.battle.eachEvent('TerrainChange');
                     else if self.field.terrain == handler.effect_id {
                         self.field.terrain = ID::new("");
-                        self.field.terrain_state = crate::event_system::EffectState::new(ID::new(""));
+                        self.field.terrain_state = crate::event_system::SharedEffectState::new(crate::event_system::EffectState::new(ID::new("")));
                         // JavaScript calls eachEvent('TerrainChange') after clearing terrain
                         self.each_event("TerrainChange", None, None);
                     }
@@ -611,7 +616,8 @@ impl Battle {
 
                             // Check if this is a volatile with duration
                             if let Some(volatile_state) = pokemon.volatiles.get_mut(&handler.effect_id) {
-                                if let Some(duration) = volatile_state.duration.as_mut() {
+                                let mut borrowed = volatile_state.borrow_mut();
+                                if let Some(duration) = borrowed.duration.as_mut() {
                                     // JavaScript: Always decrement duration during Residual events
                                     // JavaScript code (battle.ts:515-522):
                                     // if (eventid === 'Residual' && handler.end && handler.state?.duration) {
@@ -656,8 +662,9 @@ impl Battle {
                             .and_then(|p| p.volatiles.get(&handler.effect_id))
                             .cloned();
 
+                        // Pass the SharedEffectState directly to single_event
                         self.single_event("End", &crate::battle::Effect::condition(handler.effect_id.clone()),
-                            volatile_state.as_ref(), Some((side_idx, poke_idx)), None, None, None);
+                            volatile_state, Some((side_idx, poke_idx)), None, None, None);
 
                         // Actually remove the volatile
                         if let Some(pokemon) = self.sides.get_mut(side_idx)
@@ -681,7 +688,8 @@ impl Battle {
                     let should_remove = {
                         if let Some(side) = self.sides.get_mut(side_idx) {
                             if let Some(condition_state) = side.side_conditions.get_mut(&handler.effect_id) {
-                                if let Some(duration) = condition_state.duration.as_mut() {
+                                let mut borrowed = condition_state.borrow_mut();
+                                if let Some(duration) = borrowed.duration.as_mut() {
                                     // JavaScript: handler.state.duration--; if (!handler.state.duration) { handler.end.call(...); }
                                     debug_elog!("[FIELD_EVENT RESIDUAL] turn={}, side_condition='{}', side={}, duration BEFORE decrement={}",
                                         self.turn, handler.effect_id.as_str(), side_idx, *duration);
@@ -808,7 +816,8 @@ impl Battle {
                         None
                     };
 
-                    self.single_event(&handler_event_id, &crate::battle::Effect::new(handler.effect_id.clone(), handler._effect_type), state_owned.as_ref(), handler.holder, None, None, None);
+                    // Pass the SharedEffectState directly to single_event
+                    self.single_event(&handler_event_id, &crate::battle::Effect::new(handler.effect_id.clone(), handler._effect_type), state_owned, handler.holder, None, None, None);
 
                     // JS: this.faintMessages();
                     self.faint_messages(false, false, true);

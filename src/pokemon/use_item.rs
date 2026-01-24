@@ -1,6 +1,6 @@
 use crate::*;
 use crate::event::EventResult;
-use crate::event_system::EffectState;
+use crate::event_system::SharedEffectState;
 use crate::battle::Effect;
 
 impl Pokemon {
@@ -248,7 +248,7 @@ impl Pokemon {
         pokemon_mut.item = ID::empty();
 
         // JS: this.battle.clearEffectState(this.itemState);
-        pokemon_mut.item_state = EffectState::new(ID::empty());
+        pokemon_mut.item_state = SharedEffectState::with_id(ID::empty());
 
         // JS: this.usedItemThisTurn = true;
         pokemon_mut.used_item_this_turn = true;

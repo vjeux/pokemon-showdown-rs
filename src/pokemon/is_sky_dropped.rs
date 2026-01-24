@@ -38,7 +38,7 @@ impl Pokemon {
                     if let Some(foe_pokemon) = foe_side.pokemon.get(*foe_pokemon_idx) {
                         // JS:     if (foeActive.volatiles['skydrop'] && foeActive.volatiles['skydrop'].source === this) {
                         if let Some(skydrop_volatile) = foe_pokemon.volatiles.get(&ID::new("skydrop")) {
-                            if skydrop_volatile.source == Some(pokemon_pos) {
+                            if skydrop_volatile.borrow().source == Some(pokemon_pos) {
                                 return true;
                             }
                         }

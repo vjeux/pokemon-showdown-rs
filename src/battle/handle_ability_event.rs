@@ -600,7 +600,7 @@ impl Battle {
                 // JavaScript: onFoeTryMove(target, source, move)
                 // target = the move's target (event_target_pos)
                 // source = the move's user (event_source_pos, the Pokemon using the move)
-                // The ability holder is accessed via this.effectState.target in JS / battle.effect_state.target in Rust
+                // The ability holder is accessed via this.effectState.target in JS / battle.effect_state.borrow().target in Rust
                 // NOT the source parameter!
                 ability_callbacks::dispatch_on_foe_try_move(self, ability_id.as_str(), event_target_pos, event_source_pos, active_move_clone.as_ref())
             }

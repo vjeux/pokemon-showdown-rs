@@ -1,4 +1,5 @@
 use crate::side::*;
+use crate::event_system::{EffectState, SharedEffectState};
 
 impl Side {
 
@@ -46,7 +47,7 @@ impl Side {
         }
         let mut state = EffectState::new(id.clone());
         state.duration = duration;
-        self.slot_conditions[slot].insert(id.clone(), state);
+        self.slot_conditions[slot].insert(id.clone(), SharedEffectState::new(state));
 
         // NOTE: This is incomplete - should call singleEvent('Start', ...) like JavaScript does
         // JavaScript: if (!this.battle.singleEvent('Start', status, conditionState, this.active[target], source, sourceEffect))

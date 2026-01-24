@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use std::fmt;
 
 use crate::dex_data::{BoostsTable, Gender, StatsTable, ID};
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 
 use super::{Attacker, MoveSlot, PokemonSet, TrappedState};
 
@@ -42,7 +42,7 @@ pub struct Pokemon {
     // pub base_species_obj: Species,
     /// Species effect state
     /// JavaScript: speciesState: EffectState
-    pub species_state: EffectState,
+    pub species_state: SharedEffectState,
     /// Pokemon level (1-100)
     /// JavaScript: level: number
     pub level: u8,
@@ -106,7 +106,7 @@ pub struct Pokemon {
     pub ability: ID,
     /// Ability effect state
     /// JavaScript: abilityState: EffectState
-    pub ability_state: EffectState,
+    pub ability_state: SharedEffectState,
 
     // Item
     /// Current held item
@@ -114,7 +114,7 @@ pub struct Pokemon {
     pub item: ID,
     /// Item effect state
     /// JavaScript: itemState: EffectState
-    pub item_state: EffectState,
+    pub item_state: SharedEffectState,
     /// Last item held (for Recycle)
     /// JavaScript: lastItem: ID
     pub last_item: ID,
@@ -184,13 +184,13 @@ pub struct Pokemon {
     pub status: ID,
     /// Status effect state
     /// JavaScript: statusState: EffectState
-    pub status_state: EffectState,
+    pub status_state: SharedEffectState,
     /// Whether to show cure message
     /// JavaScript: showCure?: boolean
     pub show_cure: Option<bool>,
     /// Volatile status conditions
     /// JavaScript: volatiles: { [id: string]: EffectState }
-    pub volatiles: HashMap<ID, EffectState>,
+    pub volatiles: HashMap<ID, SharedEffectState>,
 
     // Battle state
     /// Has this Pokemon fainted?

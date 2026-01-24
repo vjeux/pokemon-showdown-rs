@@ -130,7 +130,7 @@ pub fn on_ally_try_hit_side(battle: &mut Battle, target_pos: Option<(usize, usiz
 
     // this.actions.useMove(newMove, this.effectState.target, { target: source });
     // Get the Magic Bounce holder from effect_state.target
-    let magic_bounce_holder = match battle.effect_state.target {
+    let magic_bounce_holder = match battle.effect_state.borrow().target {
         Some(holder) => holder,
         None => return EventResult::Continue,
     };

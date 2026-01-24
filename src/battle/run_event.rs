@@ -1,7 +1,7 @@
 use crate::*;
 use crate::battle::{Effect, EffectHolder, EffectType, EventInfo, EventListener, PriorityItem};
 use crate::event::EventResult;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 
 impl Battle {
 
@@ -617,10 +617,12 @@ impl Battle {
                 EffectType::Ability => {
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
                     // Set up effect_state so ability callbacks can access it
+                    // OPTIMIZATION: Don't clone handler.state - callbacks only read effect_state.target
+                    // and modify actual state via with_effect_state() which looks up the original.
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
-                    self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
+                    self.effect_state = SharedEffectState::with_id(effect_id.clone());
                     // JavaScript: this.effectState.target = effectHolder;
-                    self.effect_state.target = handler_target.as_ref().and_then(|h| h.as_pokemon());
+                    self.effect_state.borrow_mut().target = handler_target.as_ref().and_then(|h| h.as_pokemon());
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
@@ -629,7 +631,7 @@ impl Battle {
                     // Debug logging after ability event
                     if event_id == "AfterBoost" {
                         debug_elog!("[RUN_EVENT AfterBoost DISPATCH] After handle_ability_event: result={:?}", result);
-                        debug_elog!("[RUN_EVENT AfterBoost DISPATCH] effect_state.boosts after = {:?}", self.effect_state.boosts);
+                        debug_elog!("[RUN_EVENT AfterBoost DISPATCH] effect_state.boosts after = {:?}", self.effect_state.borrow().boosts);
                     }
 
                     // NOTE: We do NOT copy self.effect_state back to pokemon.ability_state
@@ -647,10 +649,12 @@ impl Battle {
                 EffectType::Item => {
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
                     // Set up effect_state so item callbacks can access it
+                    // OPTIMIZATION: Don't clone handler.state - callbacks only read effect_state.target
+                    // and modify actual state via with_effect_state() which looks up the original.
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
-                    self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
+                    self.effect_state = SharedEffectState::with_id(effect_id.clone());
                     // JavaScript: this.effectState.target = effectHolder;
-                    self.effect_state.target = handler_target.as_ref().and_then(|h| h.as_pokemon());
+                    self.effect_state.borrow_mut().target = handler_target.as_ref().and_then(|h| h.as_pokemon());
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 
@@ -674,10 +678,12 @@ impl Battle {
                     }
                     // JavaScript: this.effectState = handler.state || this.initEffectState({});
                     // Set up effect_state so condition callbacks can access it
+                    // OPTIMIZATION: Don't clone handler.state - callbacks only read effect_state.target
+                    // and modify actual state via with_effect_state() which looks up the original.
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
-                    self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
+                    self.effect_state = SharedEffectState::with_id(effect_id.clone());
                     // JavaScript: this.effectState.target = effectHolder;
-                    self.effect_state.target = handler_target.as_ref().and_then(|h| h.as_pokemon());
+                    self.effect_state.borrow_mut().target = handler_target.as_ref().and_then(|h| h.as_pokemon());
 
                     // For pseudo-weather (Condition effectType with effectHolder=None, i.e. Field),
                     // update target_is_field on the ORIGINAL state in field.pseudo_weather.
@@ -686,7 +692,7 @@ impl Battle {
                     // This affects future resolve_priority calls which check state.target instanceof Field.
                     if handler.effect.effect_type == EffectType::Condition && handler.effect_holder.is_none() {
                         if let Some(pw_state) = self.field.pseudo_weather.get_mut(&effect_id) {
-                            pw_state.target_is_field = true;
+                            pw_state.borrow_mut().target_is_field = true;
                         }
                     }
 
@@ -708,9 +714,10 @@ impl Battle {
                 EffectType::Format | EffectType::Rule | EffectType::Ruleset => {
                     // Format/Rule callbacks (e.g., Sleep Clause Mod)
                     // JavaScript: these are attached to the format and processed like any other handler
+                    // OPTIMIZATION: Don't clone handler.state - callbacks only read effect_state.target
                     let parent_effect_state = std::mem::take(&mut self.effect_state);
-                    self.effect_state = handler.state.clone().unwrap_or_else(|| EffectState::new(effect_id.clone()));
-                    self.effect_state.target = handler_target.as_ref().and_then(|h| h.as_pokemon());
+                    self.effect_state = SharedEffectState::with_id(effect_id.clone());
+                    self.effect_state.borrow_mut().target = handler_target.as_ref().and_then(|h| h.as_pokemon());
 
                     let parent_effect = self.set_effect_context(handler.effect.clone());
 

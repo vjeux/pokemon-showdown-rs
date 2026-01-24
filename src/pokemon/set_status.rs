@@ -1,6 +1,6 @@
 use crate::*;
 use crate::event::EventResult;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 use crate::battle::{Effect, EffectType};
 
 impl Pokemon {
@@ -240,19 +240,22 @@ impl Pokemon {
         // JS: if (status.durationCallback) {
         // JS:     this.statusState.duration = status.durationCallback.call(...);
         // JS: }
-        pokemon_mut.status = status.clone();
-        pokemon_mut.status_state = EffectState::new(status.clone());
-        pokemon_mut.status_state.target = Some((pokemon_pos.0, pokemon_pos.1));
+        // Create EffectState, modify it, then wrap in SharedEffectState
+        let mut new_status_state = EffectState::new(status.clone());
+        new_status_state.target = Some((pokemon_pos.0, pokemon_pos.1));
         // ✅ NOW IMPLEMENTED (Session 24 Part 28): source and source_effect assignments
         // source_slot should be the active slot position (pokemon.position), not party index
         if let Some(src_pos) = source_pos {
-            pokemon_mut.status_state.source = Some(src_pos);
-            pokemon_mut.status_state.source_slot = source_position;
+            new_status_state.source = Some(src_pos);
+            new_status_state.source_slot = source_position;
         }
         if let Some(src_effect) = source_effect {
-            pokemon_mut.status_state.source_effect = Some(src_effect.clone());
+            new_status_state.source_effect = Some(src_effect.clone());
         }
         // Note: Missing duration and durationCallback logic (needs Battle/dex access)
+
+        pokemon_mut.status = status.clone();
+        pokemon_mut.status_state = SharedEffectState::new(new_status_state);
 
         // JS: if (status.id && !this.battle.singleEvent('Start', status, this.statusState, this, source, sourceEffect)) {
         // JS:     this.battle.debug('status start [' + status.id + '] interrupted');

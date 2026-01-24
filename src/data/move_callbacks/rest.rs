@@ -189,8 +189,8 @@ pub fn on_hit(
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    target_pokemon.status_state.time = Some(3);
-    target_pokemon.status_state.start_time = Some(3);
+    target_pokemon.status_state.borrow_mut().time = Some(3);
+    target_pokemon.status_state.borrow_mut().start_time = Some(3);
 
     // this.heal(target.maxhp); // Aesthetic only as the healing happens after you fall asleep in-game
     let maxhp = target_pokemon.maxhp;

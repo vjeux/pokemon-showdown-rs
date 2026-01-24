@@ -38,7 +38,7 @@ pub fn base_power_callback(
     debug_elog!("[ECHOED_VOICE] Checking for echoedvoice pseudoweather. pseudo_weather map size: {}", battle.field.pseudo_weather.len());
     if let Some(echoedvoice_condition) = battle.field.pseudo_weather.get(&ID::from("echoedvoice")) {
         // Get multiplier from effect state
-        let multiplier = echoedvoice_condition.multiplier.unwrap_or(1);
+        let multiplier = echoedvoice_condition.borrow().multiplier.unwrap_or(1);
 
         debug_elog!("[ECHOED_VOICE] Found echoedvoice pseudoweather! multiplier={}", multiplier);
         bp = base_power * multiplier;

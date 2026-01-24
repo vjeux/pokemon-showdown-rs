@@ -53,7 +53,7 @@ pub fn on_any_after_set_status(battle: &mut Battle, status: Option<&str>, target
     }
 
     // if (source !== this.effectState.target || target === source || effect.effectType !== 'Move') return;
-    let ability_holder_pos = match battle.effect_state.target {
+    let ability_holder_pos = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

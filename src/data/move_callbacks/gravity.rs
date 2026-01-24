@@ -177,7 +177,7 @@ pub mod condition {
                     pokemon
                         .volatiles
                         .get(&ID::from("skydrop"))
-                        .and_then(|v| v.source)
+                        .and_then(|v| v.borrow().source)
                 };
 
                 if let Some(source) = skydrop_source {

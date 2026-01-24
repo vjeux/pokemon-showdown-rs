@@ -45,7 +45,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
 /// }
 pub fn on_any_base_power(battle: &mut Battle, _base_power: i32, source_pos: Option<(usize, usize)>, target_pos: Option<(usize, usize)>, _active_move: Option<&crate::battle_actions::ActiveMove>) -> EventResult {
     // Get the Dark Aura holder
-    let aura_holder = match battle.effect_state.target {
+    let aura_holder = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

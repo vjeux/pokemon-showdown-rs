@@ -52,7 +52,7 @@ impl Battle {
         // Check if formatData has the specified key
         let has_get_key = get_key.is_some_and(|key| {
             match key {
-                "duration" => self.format_data.duration.is_some(),
+                "duration" => self.format_data.borrow().duration.is_some(),
                 _ => false,
             }
         });

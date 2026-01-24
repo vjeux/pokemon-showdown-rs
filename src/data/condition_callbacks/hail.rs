@@ -73,7 +73,7 @@ pub fn on_field_start(
         // if (this.gen <= 5) this.effectState.duration = 0;
         if battle.gen <= 5 {
             // Set weather duration to 0 (infinite)
-            battle.field.weather_state.duration = Some(0);
+            battle.field.weather_state.borrow_mut().duration = Some(0);
         }
 
         // this.add('-weather', 'Hail', '[from] ability: ' + effect.name, `[of] ${source}`);
@@ -84,7 +84,7 @@ pub fn on_field_start(
 
         // Get source Pokemon ident
         // The source is typically stored in the weather state
-        let source_ident = battle.field.weather_state.source
+        let source_ident = battle.field.weather_state.borrow().source
             .and_then(|(side_idx, poke_idx)| battle.pokemon_at(side_idx, poke_idx))
             .map(|p| p.get_slot())
             .unwrap_or_else(|| String::new());

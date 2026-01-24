@@ -243,7 +243,8 @@ impl Battle {
                     // Handle linked volatiles before clearing
                     let linked_volatiles: Vec<_> = (*pokemon).volatiles.iter()
                         .filter_map(|(_, state)| {
-                            if let (Some(status), Some(pokemon_vec)) = (&state.linked_status, &state.linked_pokemon) {
+                            let borrowed = state.borrow();
+                            if let (Some(status), Some(pokemon_vec)) = (&borrowed.linked_status, &borrowed.linked_pokemon) {
                                 Some((status.clone(), pokemon_vec.clone()))
                             } else {
                                 None
@@ -405,10 +406,10 @@ impl Battle {
                     // Check if pokemon has bide volatile with damage > 0
                     if let Some(bide_state) = pokemon.volatiles.get_mut(&bide_id) {
                         // Check if the bide state has damage > 0
-                        if let Some(damage) = bide_state.damage {
+                        if let Some(damage) = bide_state.borrow().damage {
                             if damage > 0 {
                                 // Reset damage to 0
-                                bide_state.damage = Some(0);
+                                bide_state.borrow_mut().damage = Some(0);
                                 bide_cleared = true;
                             }
                         }

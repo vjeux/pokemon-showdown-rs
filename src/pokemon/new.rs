@@ -2,7 +2,7 @@
 
 use crate::*;
 use crate::dex_data::BoostsTable;
-use crate::event_system::EffectState;
+use crate::event_system::SharedEffectState;
 use crate::dex_data::StatsTable;
 use crate::pokemon::MoveSlot;
 use std::collections::HashMap;
@@ -312,7 +312,7 @@ impl Pokemon {
             fullname: String::new(), // Will be set by fullname() method
             species_id: species_id.clone(),
             base_species: species_id.clone(),
-            species_state: EffectState::new(ID::empty()),
+            species_state: SharedEffectState::with_id(ID::empty()),
             level: set.level,
             gender: set.gender,
             happiness: set.happiness,
@@ -338,10 +338,10 @@ impl Pokemon {
 
             base_ability: ability_id.clone(),
             ability: ability_id,
-            ability_state: EffectState::new(ID::empty()),
+            ability_state: SharedEffectState::with_id(ID::empty()),
 
             item: item_id,
-            item_state: EffectState::new(ID::empty()),
+            item_state: SharedEffectState::with_id(ID::empty()),
             last_item: ID::empty(),
             used_item_this_turn: false,
             ate_berry: false,
@@ -392,7 +392,7 @@ impl Pokemon {
             },
 
             status: ID::empty(),
-            status_state: EffectState::new(ID::empty()),
+            status_state: SharedEffectState::with_id(ID::empty()),
             show_cure: None,
             volatiles: HashMap::new(),
 

@@ -49,7 +49,7 @@ pub fn on_terrain_change(battle: &mut Battle, pokemon_pos: (usize, usize), _sour
             // Check if fromBooster is set
             let from_booster = if let Some(pokemon) = battle.pokemon_at(pokemon_pos.0, pokemon_pos.1) {
                 pokemon.volatiles.get(&id)
-                    .and_then(|v| v.from_booster)
+                    .and_then(|v| v.borrow().from_booster)
                     .unwrap_or(false)
             } else {
                 false

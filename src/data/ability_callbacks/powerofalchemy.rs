@@ -23,7 +23,7 @@ pub fn on_ally_faint(battle: &mut Battle, target_pos: Option<(usize, usize)>) ->
     };
 
     // if (!this.effectState.target.hp) return;
-    let receiver_pos = match battle.effect_state.target {
+    let receiver_pos = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };

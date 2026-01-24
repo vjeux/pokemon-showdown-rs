@@ -113,7 +113,7 @@ pub fn on_update(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResul
 pub fn on_any_switch_in(battle: &mut Battle) -> EventResult {
     // ((this.effect as any).onStart as (p: Pokemon) => void).call(this, this.effectState.target);
     // This just calls onStart for the ability holder
-    let ability_holder_pos = match battle.effect_state.target {
+    let ability_holder_pos = match battle.effect_state.borrow().target {
         Some(pos) => pos,
         None => return EventResult::Continue,
     };
@@ -200,7 +200,7 @@ pub fn on_ally_set_status(battle: &mut Battle, status_id: &str, target_pos: (usi
 
     if is_move_effect {
         // const effectHolder = this.effectState.target;
-        let effect_holder_pos = match battle.effect_state.target {
+        let effect_holder_pos = match battle.effect_state.borrow().target {
             Some(pos) => pos,
             None => return EventResult::Continue,
         };

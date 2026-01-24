@@ -222,7 +222,7 @@ pub mod condition {
                     None => return EventResult::Continue,
                 };
                 if let Some(volatile) = source_pokemon.volatiles.get(&ID::from("lockedmove")) {
-                    volatile.duration.unwrap_or(0)
+                    volatile.borrow().duration.unwrap_or(0)
                 } else {
                     0
                 }

@@ -379,7 +379,7 @@ impl Battle {
                     // JS: if (handler.effect.effectType === 'Condition' && handler.state?.target instanceof Field)
                     // If the condition's target is a Field (pseudo-weather), use sub_order 5
                     // This happens after the first event has executed on the field condition
-                    if handler.state.as_ref().is_some_and(|s| s.target_is_field) {
+                    if handler.state.as_ref().is_some_and(|s| s.borrow().target_is_field) {
                         5
                     } else {
                         2
@@ -418,7 +418,7 @@ impl Battle {
         if callback_name.ends_with("SwitchIn") || callback_name.ends_with("RedirectTarget") {
             // JS: handler.effectOrder = handler.state?.effectOrder;
             if let Some(state) = &handler.state {
-                handler.effect_order = Some(state.effect_order);
+                handler.effect_order = Some(state.borrow().effect_order);
             }
         }
 

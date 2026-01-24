@@ -5,7 +5,7 @@ use std::collections::HashSet;
 
 use crate::battle_queue::BattleQueue;
 use crate::dex_data::{GameType, ID};
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 use crate::field::Field;
 use crate::side::Side;
 use crate::prng::{PRNGSeed, PRNG};
@@ -35,7 +35,7 @@ pub struct Battle {
     pub format: Option<crate::data::formats::Format>,
     /// Format data effect state
     /// JavaScript: readonly formatData: EffectState
-    pub format_data: EffectState,
+    pub format_data: SharedEffectState,
 
     /// Game type (singles, doubles, etc.)
     /// JavaScript: readonly gameType: GameType
@@ -165,7 +165,7 @@ pub struct Battle {
     pub effect: Option<Effect>,
     /// Current effect state (JavaScript: effectState: EffectState)
     /// JavaScript: effectState: EffectState
-    pub effect_state: EffectState,
+    pub effect_state: SharedEffectState,
     /// Current event object (JavaScript: event: AnyObject)
     /// JavaScript: event: AnyObject
     pub event: Option<EventInfo>,

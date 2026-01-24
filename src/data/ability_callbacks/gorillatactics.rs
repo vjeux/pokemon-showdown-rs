@@ -17,7 +17,7 @@ pub fn on_start(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos: O
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_mut.ability_state.choice_lock = Some(String::new());
+    pokemon_mut.ability_state.borrow_mut().choice_lock = Some(String::new());
 
     EventResult::Continue
 }
@@ -53,7 +53,7 @@ pub fn on_before_move(battle: &mut Battle, pokemon_pos: (usize, usize), _target_
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.choice_lock.clone()
+        pokemon.ability_state.borrow().choice_lock.clone()
     };
 
     if let Some(ref lock) = choice_lock {
@@ -111,7 +111,7 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.choice_lock.clone()
+        pokemon.ability_state.borrow().choice_lock.clone()
     };
 
     // If already locked, return
@@ -131,7 +131,7 @@ pub fn on_modify_move(battle: &mut Battle, active_move: Option<&mut crate::battl
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_mut.ability_state.choice_lock = Some(move_id.to_string());
+    pokemon_mut.ability_state.borrow_mut().choice_lock = Some(move_id.to_string());
 
     EventResult::Continue
 }
@@ -181,7 +181,7 @@ pub fn on_disable_move(battle: &mut Battle, pokemon_pos: (usize, usize)) -> Even
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.choice_lock.clone()
+        pokemon.ability_state.borrow().choice_lock.clone()
     };
 
     let lock = match choice_lock {
@@ -240,7 +240,7 @@ pub fn on_end(battle: &mut Battle, pokemon_pos: (usize, usize)) -> EventResult {
         Some(p) => p,
         None => return EventResult::Continue,
     };
-    pokemon_mut.ability_state.choice_lock = Some(String::new());
+    pokemon_mut.ability_state.borrow_mut().choice_lock = Some(String::new());
 
     EventResult::Continue
 }

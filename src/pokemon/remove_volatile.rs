@@ -53,10 +53,12 @@ impl Pokemon {
 
             // JS: const { linkedPokemon, linkedStatus } = this.volatiles[status.id];
             let linked_pokemon = pokemon.volatiles.get(volatile_id)
-                .and_then(|state| state.linked_pokemon.clone());
+                .map(|state| state.borrow().linked_pokemon.clone())
+                .flatten();
 
             let linked_status = pokemon.volatiles.get(volatile_id)
-                .and_then(|state| state.linked_status.as_ref().map(|s| ID::from(s.as_str())));
+                .map(|state| state.borrow().linked_status.as_ref().map(|s| ID::from(s.as_str())))
+                .flatten();
 
             (pokemon.hp, has_volatile, linked_pokemon, linked_status)
         };

@@ -1,7 +1,7 @@
 use crate::*;
 use crate::battle::{EventInfo, EffectHolder, EffectType, Effect};
 use crate::event::EventResult;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 
 impl Battle {
 
@@ -106,7 +106,7 @@ impl Battle {
         &mut self,
         event_id: &str,
         effect: &Effect,
-        state: Option<&EffectState>,
+        state: Option<SharedEffectState>,
         target: Option<(usize, usize)>,
         source: Option<(usize, usize)>,
         source_effect: Option<&Effect>,
@@ -226,7 +226,7 @@ impl Battle {
         // JavaScript: this.effectState = state as EffectState || this.initEffectState({});
         self.effect_state = match state {
             Some(s) => s.clone(),
-            None => EffectState::new(effect_id.clone()),
+            None => SharedEffectState::with_id(effect_id.clone()),
         };
 
         // Look up proper name based on effect type

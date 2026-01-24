@@ -107,9 +107,9 @@ pub fn on_try(
                 {
                     debug_elog!("[DOOMDESIRE::ON_TRY] Found futuremove condition, storing data...");
                     // Set move data
-                    future_move_condition.move_id = Some("doomdesire".to_string());
+                    future_move_condition.borrow_mut().move_id = Some("doomdesire".to_string());
                     debug_elog!("[DOOMDESIRE::ON_TRY] Stored move='doomdesire'");
-                    future_move_condition.source = Some(source);
+                    future_move_condition.borrow_mut().source = Some(source);
                     debug_elog!("[DOOMDESIRE::ON_TRY] Stored source={:?}", source);
 
                     // Set moveData object
@@ -153,7 +153,7 @@ pub fn on_try(
                         serde_json::Value::String("Steel".to_string()),
                     );
 
-                    future_move_condition.move_data = Some(move_data_map);
+                    future_move_condition.borrow_mut().move_data = Some(move_data_map);
                     debug_elog!("[DOOMDESIRE::ON_TRY] Successfully stored all move data");
                 } else {
                     debug_elog!("[DOOMDESIRE::ON_TRY] ERROR: Could not find futuremove condition after add_slot_condition!");

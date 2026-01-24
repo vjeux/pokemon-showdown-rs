@@ -2,7 +2,7 @@
 
 use crate::*;
 use crate::battle::{Effect, EffectHolder, EventListener, EffectType};
-use crate::event_system::EffectState;
+use crate::event_system::SharedEffectState;
 
 impl Battle {
     /// Find field event handlers
@@ -54,12 +54,12 @@ impl Battle {
 
         // Collect pseudo weather IDs that have callbacks or getKey
         // (need to extract before calling resolve_priority due to borrow checker)
-        let pseudo_weather_handlers: Vec<(ID, EffectState)> = self.field.pseudo_weather.iter()
+        let pseudo_weather_handlers: Vec<(ID, SharedEffectState)> = self.field.pseudo_weather.iter()
             .filter(|(pw_id, pw_state)| {
                 let has_callback = self.has_pseudo_weather_callback(pw_id, callback_name);
                 let has_get_key = get_key.is_some_and(|key| {
                     // JavaScript checks pseudoWeatherState[getKey], which means checking if duration exists
-                    key == "duration" && pw_state.duration.is_some()
+                    key == "duration" && pw_state.borrow().duration.is_some()
                 });
                 has_callback || has_get_key
             })
@@ -90,7 +90,7 @@ impl Battle {
             // In Rust, we track this via EffectState.target_is_field flag, which gets set
             // during run_event callback execution when effectHolder is a field-level entity.
             // We use this to determine the correct effectType for subOrder calculation.
-            let effect_type = if pw_state.target_is_field {
+            let effect_type = if pw_state.borrow().target_is_field {
                 EffectType::FieldCondition // subOrder = 5
             } else {
                 EffectType::Condition // subOrder = 2
@@ -132,7 +132,7 @@ impl Battle {
             debug_elog!("[FIND_FIELD_EVENT T{}] has_callback={}", self.turn, has_callback);
             let has_get_key = if let Some(key) = get_key {
                 // JavaScript checks weatherState[getKey], which in Rust means checking if the duration field exists
-                key == "duration" && self.field.weather_state.duration.is_some()
+                key == "duration" && self.field.weather_state.borrow().duration.is_some()
             } else {
                 false
             };
@@ -190,7 +190,7 @@ impl Battle {
             let has_callback = self.has_terrain_callback(&self.field.terrain, callback_name);
             let has_get_key = get_key.is_some_and(|key| {
                 // JavaScript checks terrainState[getKey], which means checking if duration exists
-                key == "duration" && self.field.terrain_state.duration.is_some()
+                key == "duration" && self.field.terrain_state.borrow().duration.is_some()
             });
             if has_callback || has_get_key {
                 Some((self.field.terrain.clone(), self.field.terrain_state.clone()))

@@ -85,8 +85,8 @@ pub fn on_damaging_hit(battle: &mut Battle, _damage: i32, target_pos: (usize, us
         };
         target_mut.item = ID::empty();
         // Clear item state inline (equivalent to battle.clearEffectState(target.itemState))
-        target_mut.item_state.id = ID::empty();
-        target_mut.item_state.effect_order = 0;
+        target_mut.item_state.borrow_mut().id = ID::empty();
+        target_mut.item_state.borrow_mut().effect_order = 0;
         // All typed fields on item_state will keep their values but that's fine
         // since the item is gone. The id being empty indicates no active item state.
     }
@@ -154,8 +154,8 @@ pub fn on_after_sub_damage(battle: &mut Battle, _damage: i32, target_pos: Option
             };
             target_mut.item = ID::empty();
             // Clear item state inline (equivalent to battle.clearEffectState(target.itemState))
-            target_mut.item_state.id = ID::empty();
-            target_mut.item_state.effect_order = 0;
+            target_mut.item_state.borrow_mut().id = ID::empty();
+            target_mut.item_state.borrow_mut().effect_order = 0;
             // All typed fields on item_state will keep their values but that's fine
             // since the item is gone. The id being empty indicates no active item state.
         }

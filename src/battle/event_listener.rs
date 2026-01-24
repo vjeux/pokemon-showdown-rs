@@ -1,6 +1,6 @@
 //! Event Listener
 
-use crate::event_system::EffectState;
+use crate::event_system::SharedEffectState;
 use super::Effect;
 
 /// Effect holder - represents who holds the effect
@@ -75,7 +75,7 @@ pub struct EventListener {
     pub callback_name: String,
     /// Effect state
     /// JavaScript: state: EffectState | null
-    pub state: Option<EffectState>,
+    pub state: Option<SharedEffectState>,
     /// Effect holder (Pokemon/Side/Field/Battle)
     /// JavaScript: effectHolder: Pokemon | Side | Field | Battle
     pub effect_holder: Option<EffectHolder>,

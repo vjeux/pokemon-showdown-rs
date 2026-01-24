@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use indexmap::IndexMap;
 
 use crate::dex_data::ID;
-use crate::event_system::EffectState;
+use crate::event_system::{EffectState, SharedEffectState};
 
 /// The battle field - contains weather, terrain, and field-wide effects
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -25,7 +25,7 @@ pub struct Field {
 
     /// Weather effect state
     /// JavaScript: weatherState: EffectState
-    pub weather_state: EffectState,
+    pub weather_state: SharedEffectState,
 
     /// Current terrain ID (empty string = no terrain)
     /// JavaScript: terrain: ID
@@ -33,12 +33,12 @@ pub struct Field {
 
     /// Terrain effect state
     /// JavaScript: terrainState: EffectState
-    pub terrain_state: EffectState,
+    pub terrain_state: SharedEffectState,
 
     /// Pseudo-weather conditions (like Trick Room, Magic Room, etc.)
     /// JavaScript: pseudoWeather: { [id: string]: EffectState }
     /// Uses IndexMap to preserve insertion order like JavaScript objects
-    pub pseudo_weather: IndexMap<ID, EffectState>,
+    pub pseudo_weather: IndexMap<ID, SharedEffectState>,
 }
 
 impl Default for Field {
@@ -53,9 +53,9 @@ impl Field {
         Self {
             id: ID::empty(),
             weather: ID::empty(),
-            weather_state: EffectState::new(ID::empty()),
+            weather_state: SharedEffectState::new(EffectState::new(ID::empty())),
             terrain: ID::empty(),
-            terrain_state: EffectState::new(ID::empty()),
+            terrain_state: SharedEffectState::new(EffectState::new(ID::empty())),
             pseudo_weather: IndexMap::new(),
         }
     }
@@ -136,7 +136,7 @@ impl Field {
     }
 
     /// Get pseudo-weather state
-    pub fn get_pseudo_weather(&self, id: &ID) -> Option<&EffectState> {
+    pub fn get_pseudo_weather(&self, id: &ID) -> Option<&SharedEffectState> {
         self.pseudo_weather.get(id)
     }
 }

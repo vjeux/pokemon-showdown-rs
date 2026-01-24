@@ -33,7 +33,7 @@ pub fn base_power_callback(
         };
 
         if let Some(volatile) = pokemon_data.volatiles.get(&ID::from("stockpile")) {
-            volatile.layers.unwrap_or(0)
+            volatile.borrow().layers.unwrap_or(0)
         } else {
             0
         }

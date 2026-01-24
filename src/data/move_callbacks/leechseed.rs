@@ -86,8 +86,8 @@ pub mod condition {
                 None => return EventResult::Continue,
             };
             // Get the side from source and the slot index from source_slot
-            let source_side = leechseed_volatile.source.map(|(side, _)| side);
-            let slot = leechseed_volatile.source_slot;
+            let source_side = leechseed_volatile.borrow().source.map(|(side, _)| side);
+            let slot = leechseed_volatile.borrow().source_slot;
             match (source_side, slot) {
                 (Some(side), Some(slot)) => (side, slot),
                 _ => return EventResult::Continue,

@@ -61,8 +61,8 @@ pub fn on_eat_item(battle: &mut Battle, _item_id: Option<&str>, pokemon_pos: (us
         None => return EventResult::Continue,
     };
 
-    pokemon.ability_state.berry = Some(item_id.to_string());
-    pokemon.ability_state.counter = Some(counter);
+    pokemon.ability_state.borrow_mut().berry = Some(item_id.to_string());
+    pokemon.ability_state.borrow_mut().counter = Some(counter);
 
     EventResult::Continue
 }
@@ -92,17 +92,17 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
             None => return EventResult::Continue,
         };
 
-        let berry_str = match pokemon.ability_state.berry.as_ref() {
-            Some(s) => s.as_str(),
+        let berry_str = match pokemon.ability_state.borrow().berry.as_ref() {
+            Some(s) => s.clone(),
             None => return EventResult::Continue,
         };
 
-        let counter = match pokemon.ability_state.counter {
+        let counter = match pokemon.ability_state.borrow().counter {
             Some(c) => c,
             None => return EventResult::Continue,
         };
 
-        (ID::from(berry_str), counter, pokemon.hp)
+        (ID::from(berry_str.as_str()), counter, pokemon.hp)
     };
 
     if hp == 0 {
@@ -118,7 +118,7 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
             Some(p) => p,
             None => return EventResult::Continue,
         };
-        pokemon.ability_state.counter = Some(new_counter);
+        pokemon.ability_state.borrow_mut().counter = Some(new_counter);
         return EventResult::Continue;
     }
 
@@ -183,8 +183,8 @@ pub fn on_residual(battle: &mut Battle, pokemon_pos: (usize, usize), _source_pos
     // delete this.effectState.berry;
     // delete this.effectState.counter;
     if let Some(pokemon) = battle.pokemon_at_mut(pokemon_pos.0, pokemon_pos.1) {
-        pokemon.ability_state.berry = None;
-        pokemon.ability_state.counter = None;
+        pokemon.ability_state.borrow_mut().berry = None;
+        pokemon.ability_state.borrow_mut().counter = None;
     }
 
     EventResult::Continue
