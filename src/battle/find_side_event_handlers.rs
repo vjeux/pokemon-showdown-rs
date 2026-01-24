@@ -86,7 +86,7 @@ impl Battle {
                     callback_name: String::new(),
                     effect: Effect {
                         id: sc_id.clone(),
-                        name: sc_name,
+                        name: sc_name.into(),
                         effect_type: EffectType::SideCondition,
                         effect_holder: effective_holder.clone(),
                         side_index: Some(side_idx),

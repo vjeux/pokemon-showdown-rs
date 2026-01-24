@@ -28,7 +28,7 @@ pub mod condition {
     ) -> EventResult {
         // if (effect && ['Electromorphosis', 'Wind Power'].includes(effect.name)) {
         let is_special_ability = if let Some(eff) = effect {
-            eff.name == "Electromorphosis" || eff.name == "Wind Power"
+            &*eff.name == "Electromorphosis" || &*eff.name == "Wind Power"
         } else {
             false
         };
@@ -48,7 +48,7 @@ pub mod condition {
                 None => "".to_string(),
             };
 
-            let effect_name = effect.map(|e| e.name.as_str()).unwrap_or("");
+            let effect_name = effect.map(|e| &*e.name).unwrap_or("");
             let from_str = format!("[from] ability: {}", effect_name);
             battle.add(
                 "-start",
@@ -80,7 +80,7 @@ pub mod condition {
         _source_pos: Option<(usize, usize)>,
         effect: Option<&Effect>,
     ) -> EventResult {
-        let effect_id = effect.map(|e| e.name.as_str());
+        let effect_id = effect.map(|e| &*e.name);
 
         // Same logic as onStart
         // if (effect && ['Electromorphosis', 'Wind Power'].includes(effect.name)) {

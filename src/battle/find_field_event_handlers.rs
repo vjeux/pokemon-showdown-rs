@@ -100,7 +100,7 @@ impl Battle {
                 callback_name: String::new(),
                 effect: Effect {
                     id: pw_id,
-                    name: pw_name,
+                    name: pw_name.into(),
                     effect_type,
                     effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Field)),
                     side_index: None,
@@ -160,7 +160,7 @@ impl Battle {
                 callback_name: String::new(),
                 effect: Effect {
                     id: weather_id,
-                    name: weather_name,
+                    name: weather_name.into(),
                     effect_type: EffectType::Weather,
                     effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Field)),
                     side_index: None,
@@ -214,7 +214,7 @@ impl Battle {
                 callback_name: String::new(),
                 effect: Effect {
                     id: terrain_id,
-                    name: terrain_name,
+                    name: terrain_name.into(),
                     effect_type: EffectType::Terrain,
                     effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Field)),
                     side_index: None,

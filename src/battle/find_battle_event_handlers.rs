@@ -86,7 +86,7 @@ impl Battle {
                         callback_name: "SetStatus".to_string(),
                         effect: Effect {
                             id: ID::new("sleepclausemod"),
-                            name: "Sleep Clause Mod".to_string(),
+                            name: "Sleep Clause Mod".into(),
                             effect_type: EffectType::Format,
                             effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Battle)),
                             side_index: None,
@@ -131,7 +131,7 @@ impl Battle {
                     callback_name: String::new(),
                     effect: Effect {
                         id: handler.target_id.clone(),
-                        name: handler.target_id.to_string(),
+                        name: handler.target_id.as_str().into(),
                         effect_type: handler.target_type,
                         effect_holder: custom_holder.map(|(s, p)| EffectHolder::Pokemon(s, p)).or(Some(EffectHolder::Battle)),
                         side_index: None,

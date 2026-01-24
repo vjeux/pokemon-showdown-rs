@@ -100,7 +100,7 @@ impl Battle {
                     callback_name: String::new(),
                     effect: Effect {
                         id: pokemon.status.clone(),
-                        name: status_name,
+                        name: status_name.into(),
                         effect_type: EffectType::Status,
                         effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                         side_index: Some(target.0),
@@ -149,7 +149,7 @@ impl Battle {
                     callback_name: String::new(),
                     effect: Effect {
                         id: volatile_id.clone(),
-                        name: volatile_name,
+                        name: volatile_name.into(),
                         effect_type: EffectType::Condition,
                         effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                         side_index: Some(target.0),
@@ -203,7 +203,7 @@ impl Battle {
                     callback_name: String::new(),
                     effect: Effect {
                         id: pokemon.ability.clone(),
-                        name: ability_name,
+                        name: ability_name.into(),
                         effect_type: EffectType::Ability,
                         effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                         side_index: Some(target.0),
@@ -244,7 +244,7 @@ impl Battle {
                     callback_name: String::new(),
                     effect: Effect {
                         id: pokemon.item.clone(),
-                        name: item_name,
+                        name: item_name.into(),
                         effect_type: EffectType::Item,
                         effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                         side_index: Some(target.0),
@@ -281,7 +281,7 @@ impl Battle {
                     callback_name: String::new(),
                 effect: Effect {
                     id: pokemon.species_id.clone(),
-                    name: species_name,
+                    name: species_name.into(),
                     effect_type: EffectType::Condition,
                     effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),
                     side_index: Some(target.0),
@@ -326,7 +326,7 @@ impl Battle {
                     callback_name: String::new(),
                         effect: Effect {
                             id: slot_cond_id.clone(),
-                            name: slot_cond_name,
+                            name: slot_cond_name.into(),
                             effect_type: EffectType::SlotCondition,
                             effect_holder: Some(EffectHolder::Pokemon(target.0, target.1)),  // Party index for callbacks
                             side_index: Some(side_idx),

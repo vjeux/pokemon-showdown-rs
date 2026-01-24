@@ -2,17 +2,22 @@
 
 use crate::dex_data::ID;
 use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 use super::{EffectType, EffectHolder};
 
 /// Effect - represents an effect with its ID and type
 /// JavaScript equivalent: Effect interface (sim/global-types.ts)
 /// In JavaScript, Effect has many fields (id, name, effectType, flags, etc.)
+///
+/// Uses Arc<str> for name field to enable cheap cloning.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Effect {
     /// Effect ID (e.g., "stall", "intimidate", "leftovers")
     pub id: ID,
     /// Display name of the effect (e.g., "Cute Charm", "Wind Power")
-    pub name: String,
+    /// Uses Arc<str> for cheap cloning
+    #[serde(serialize_with = "serialize_arc_str", deserialize_with = "deserialize_arc_str")]
+    pub name: Arc<str>,
     /// Type of effect (Ability, Item, Move, Condition, etc.)
     pub effect_type: EffectType,
     /// Pokemon that holds this effect (for volatiles, abilities, items, status)
@@ -23,11 +28,20 @@ pub struct Effect {
     pub prankster_boosted: bool,
 }
 
+fn serialize_arc_str<S: serde::Serializer>(s: &Arc<str>, serializer: S) -> Result<S::Ok, S::Error> {
+    serializer.serialize_str(s)
+}
+
+fn deserialize_arc_str<'de, D: serde::Deserializer<'de>>(deserializer: D) -> Result<Arc<str>, D::Error> {
+    let s = String::deserialize(deserializer)?;
+    Ok(Arc::from(s))
+}
+
 impl Effect {
     /// Create a new Effect with the given id, name, and effect_type
     pub fn new(id: ID, effect_type: EffectType) -> Self {
         // Default name to id string if not provided
-        let name = id.to_string();
+        let name: Arc<str> = Arc::from(id.as_str());
         Self {
             id,
             name,
@@ -39,10 +53,10 @@ impl Effect {
     }
 
     /// Create a new Effect with explicit name
-    pub fn new_with_name(id: ID, name: String, effect_type: EffectType) -> Self {
+    pub fn new_with_name(id: ID, name: impl Into<String>, effect_type: EffectType) -> Self {
         Self {
             id,
-            name,
+            name: Arc::from(name.into()),
             effect_type,
             effect_holder: None,
             side_index: None,
@@ -134,6 +148,16 @@ impl Effect {
     /// Get the ID as a string reference
     pub fn as_str(&self) -> &str {
         self.id.as_str()
+    }
+
+    /// Get the name as a string reference
+    pub fn name_str(&self) -> &str {
+        &self.name
+    }
+
+    /// Check if the name equals a given string
+    pub fn name_eq(&self, s: &str) -> bool {
+        &*self.name == s
     }
 }
 

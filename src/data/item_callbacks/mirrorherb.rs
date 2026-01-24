@@ -28,7 +28,7 @@ pub fn on_foe_after_boost(
     effect: Option<&Effect>,
     boost: &crate::dex_data::BoostsTable,
 ) -> EventResult {
-    let effect_id = effect.map(|e| e.name.as_str());
+    let effect_id = effect.map(|e| &*e.name);
 
     // if (effect?.name === 'Opportunist' || effect?.name === 'Mirror Herb') return;
     if let Some(eff_id) = effect_id {

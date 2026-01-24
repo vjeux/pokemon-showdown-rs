@@ -187,7 +187,7 @@ impl Pokemon {
                 // IMPORTANT: Effect must have effect_holder set so with_effect_state can find the volatile state
                 let volatile_effect = crate::battle::Effect {
                     id: volatile_id.clone(),
-                    name: volatile_id.to_string(),
+                    name: volatile_id.as_str().into(),
                     effect_type: crate::battle::EffectType::Condition,
                     effect_holder: Some(EffectHolder::Pokemon(target_pos.0, target_pos.1)),
                     side_index: Some(target_pos.0),
@@ -384,7 +384,7 @@ impl Pokemon {
         // IMPORTANT: Effect must have effect_holder set so with_effect_state can find the volatile state
         let volatile_effect = crate::battle::Effect {
             id: volatile_id.clone(),
-            name: volatile_id.to_string(),
+            name: volatile_id.as_str().into(),
             effect_type: crate::battle::EffectType::Condition,
             effect_holder: Some(EffectHolder::Pokemon(target_pos.0, target_pos.1)),
             side_index: Some(target_pos.0),

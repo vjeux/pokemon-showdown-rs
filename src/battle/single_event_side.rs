@@ -100,7 +100,7 @@ impl Battle {
         // Set current event context with SideCondition effect type
         self.effect = Some(crate::Effect {
             id: effect_id.clone(),
-            name: condition_name,
+            name: condition_name.into(),
             effect_type: crate::battle::EffectType::SideCondition,
             effect_holder: None,
             side_index: Some(side_idx),

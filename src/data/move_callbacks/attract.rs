@@ -144,7 +144,7 @@ pub mod condition {
         //     this.add('-start', pokemon, 'Attract');
         // }
         if let Some(eff) = effect {
-            if eff.name == "Cute Charm" {
+            if &*eff.name == "Cute Charm" {
                 battle.add(
                     "-start",
                     &[
@@ -154,7 +154,7 @@ pub mod condition {
                         format!("[of] {}", source_name).into(),
                     ],
                 );
-            } else if eff.name == "Destiny Knot" {
+            } else if &*eff.name == "Destiny Knot" {
                 battle.add(
                     "-start",
                     &[

@@ -251,7 +251,7 @@ impl Battle {
         // For slot conditions, with_effect_state_ref converts party index to slot position internally
         self.effect = Some(crate::Effect {
             id: effect_id.clone(),
-            name: effect_name,
+            name: effect_name.into(),
             effect_type,
             effect_holder: target.map(|(s, p)| EffectHolder::Pokemon(s, p)),
             side_index: target.map(|(side, _)| side),

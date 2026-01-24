@@ -79,7 +79,7 @@ impl Battle {
             // Set up effect context so callbacks can use with_effect_state to access/modify state
             let prev_context = self.set_effect_context(crate::Effect {
                 id: id.clone(),
-                name: condition_name,
+                name: condition_name.into(),
                 effect_type: crate::battle::EffectType::FieldCondition,
                 effect_holder: None,
                 side_index: None,
@@ -147,7 +147,7 @@ impl Battle {
             // Set up effect context so callbacks can use with_effect_state to access/modify state
             let prev_context = self.set_effect_context(crate::Effect {
                 id: id.clone(),
-                name: condition_name,
+                name: condition_name.into(),
                 effect_type: crate::battle::EffectType::FieldCondition,
                 effect_holder: None,
                 side_index: None,
